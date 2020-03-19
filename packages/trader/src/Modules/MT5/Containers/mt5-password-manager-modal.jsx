@@ -299,7 +299,7 @@ class MT5PasswordManagerModal extends React.Component {
             },
         ];
 
-        const MT5PasswordManagerTabContentWrapper = (
+        const MT5PasswordManagerTabContentWrapper = () => (
             <MultiStep ref={this.multistep_ref} steps={steps} className='mt5-password-manager' />
         );
 
@@ -318,7 +318,7 @@ class MT5PasswordManagerModal extends React.Component {
                         height='688px'
                         width='904px'
                     >
-                        {MT5PasswordManagerTabContentWrapper}
+                        <MT5PasswordManagerTabContentWrapper />
                     </Modal>
                 </DesktopWrapper>
                 <MobileWrapper>
@@ -328,7 +328,7 @@ class MT5PasswordManagerModal extends React.Component {
                         header={localize('Manage password')}
                         onClickClose={toggleModal}
                     >
-                        {MT5PasswordManagerTabContentWrapper}
+                        <MT5PasswordManagerTabContentWrapper />
                     </PageOverlay>
                 </MobileWrapper>
             </React.Suspense>

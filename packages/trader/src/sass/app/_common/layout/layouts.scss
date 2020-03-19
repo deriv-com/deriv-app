@@ -393,8 +393,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     opacity: 0.75;
 
                     &__menu {
-                        left: 1.2rem;
-
                         &__timeperiod {
                             top: 0.8rem;
                             left: 0.8rem;
@@ -473,6 +471,15 @@ $FLOATING_HEADER_HEIGHT: 41px;
     &-dark,
     &-light {
         @include mobile {
+            .cq-menu-dropdown-enter-done {
+                margin-top: 0;
+
+                .icon-close-menu {
+                    opacity: 1;
+                    pointer-events: auto;
+                    top: 8px;
+                }
+            }
             .cq-dialog-portal {
                 /* postcss-bem-linter: ignore */
                 .cq-dialog {

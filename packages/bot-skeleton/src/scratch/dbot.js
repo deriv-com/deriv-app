@@ -28,16 +28,22 @@ class DBot {
             __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
             ApiHelpers.setInstance(api_helpers_store);
             DBotStore.setInstance(store);
+            const window_width = window.innerWidth;
+            let workspaceScale = 0.9;
 
             const { handleFileChange, onBotNameTyped } = DBotStore.instance;
-
+            if (window_width < 1640) {
+                const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
+                const zoom_scale = scratch_div_width / window_width;
+                workspaceScale = zoom_scale;
+            }
             const el_scratch_div = document.getElementById('scratch_div');
             this.workspace = Blockly.inject(el_scratch_div, {
                 grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
                 media: `${__webpack_public_path__}media/`,
                 toolbox: toolbox_xml,
                 trashcan: true,
-                zoom: { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
+                zoom: { wheel: true, startScale: workspaceScale },
             });
 
             this.workspace.cached_xml = { main: main_xml, toolbox: toolbox_xml };
@@ -65,7 +71,9 @@ class DBot {
                 Blockly.derivWorkspace.current_strategy_id = latest_file.id;
             }
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
+
             onBotNameTyped(file_name);
+            this.workspace.cleanUp();
             this.workspace.clearUndo();
 
             window.addEventListener('resize', () => onWorkspaceResize());

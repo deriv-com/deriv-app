@@ -22,9 +22,27 @@
             .inline-icon .color1-fill {
                 fill: var(--text-general);
             }
+            @include mobile {
+                height: inherit;
+            }
         }
         &--align-left {
             text-align: left;
+        }
+        &--is-mobile {
+            @include mobile {
+                padding: 1.6rem;
+                width: 100vw;
+
+                .dc-collapsible {
+                    position: relative;
+                    background-color: var(--general-section-1);
+                    margin-bottom: 0.8rem;
+                    transform: none;
+                    width: 100%;
+                    z-index: 1;
+                }
+            }
         }
     }
     &__loader {
@@ -33,6 +51,10 @@
         &-wrapper {
             display: flex;
             height: 100%;
+
+            @include mobile {
+                height: initial;
+            }
         }
     }
     &__header {
@@ -74,16 +96,43 @@
         &-submit-button {
             margin: 1.6rem 2.4rem 2.4rem;
         }
+        @include mobile {
+            &-submit {
+                margin: 0;
+                flex-flow: column;
+                height: unset;
+            }
+            &-submit-button {
+                margin: 0;
+                width: 100%;
+            }
+            &-error-container {
+                display: flex;
+                align-items: center;
+                margin-bottom: 0.8rem;
+            }
+            &-error {
+                margin: 0;
+
+                &-small-icon {
+                    margin: 0;
+                    margin-right: 0.8rem;
+                }
+            }
+        }
     }
     &__input {
         display: inline-block !important;
-        margin-bottom: 0 !important;
+        margin-bottom: 0;
 
         &--short {
             width: 29rem;
         }
         &--long {
             width: 100%;
+        }
+        @include mobile {
+            margin-bottom: 3.2rem;
         }
     }
     &__drop-down {
@@ -435,6 +484,11 @@
         margin-top: calc(3.2rem + 1.7rem); // + height of hint/error
         font-size: 1.2rem;
         line-height: 1.5;
+
+        @include mobile {
+            margin: 0;
+            padding: 1.6rem 0.8rem;
+        }
     }
     &__bullet {
         background-color: var(--text-general);
@@ -454,6 +508,11 @@
         min-width: calc(calc(100% - calc(16px + 1.6rem)) / 2);
         width: auto;
         margin-bottom: 3.4rem;
+
+        @include mobile {
+            width: 100%;
+            margin-bottom: 2.4rem;
+        }
     }
     &__currency,
     &__balance {
@@ -472,6 +531,10 @@
     &__receipt {
         &-icon {
             margin: 5.6rem 0 1.6rem;
+
+            @include mobile {
+                margin: 1.6rem 0;
+            }
         }
     }
     &__transfer {
@@ -489,6 +552,13 @@
     }
     &__button-done {
         margin: 3.2rem auto 0;
+
+        @include mobile {
+            margin: 2.4rem auto 0;
+        }
+    }
+    &__native-select {
+        margin-bottom: 2.4rem;
     }
 }
 

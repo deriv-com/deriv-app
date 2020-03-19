@@ -102,6 +102,7 @@ export default class UIStore extends BaseStore {
     @observable mobile_toast_timeout = 1500;
 
     @observable is_mt5_page = false;
+    @observable is_nativepicker_visible = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -537,5 +538,10 @@ export default class UIStore extends BaseStore {
     setToastErrorMessage(msg, timeout = 1500) {
         this.mobile_toast_timeout = timeout;
         this.mobile_toast_error = msg;
+    }
+
+    @action.bound
+    setIsNativepickerVisible(is_nativepicker_visible) {
+        this.is_nativepicker_visible = is_nativepicker_visible;
     }
 }

@@ -50,4 +50,15 @@ storiesOf('Collapsible', module)
         {
             notes,
         }
+    )
+    .add(
+        'with Title',
+        () => (
+            <Collapsible position='top' is_collapsed title='Title'>
+                <li collapsible='true'>Content</li>
+            </Collapsible>
+        ),
+        {
+            notes,
+        }
     );

@@ -59,6 +59,7 @@
         }
         @include mobile {
             height: 4rem;
+            z-index: 3;
         }
     }
     &__content {
@@ -80,6 +81,7 @@
         max-width: 1232px;
         margin: auto;
         position: relative;
+
         @include mobile {
             width: 100%;
         }

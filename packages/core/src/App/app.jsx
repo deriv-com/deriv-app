@@ -6,6 +6,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { DesktopWrapper } from '@deriv/components';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { initializeTranslations } from '@deriv/translations';
 import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';
@@ -34,6 +35,42 @@ const App = ({ root_store }) => {
     React.useEffect(() => {
         initializeTranslations();
     }, []);
+
+    if (isMobile()) {
+        React.useEffect(() => {
+            const el_landscape_blocker = document.getElementById('landscape_blocker');
+
+            const onFocus = () => {
+                /* Prevent from showing Landscape blocker UI when keyboard is visible */
+                el_landscape_blocker.classList.add('landscape-blocker--keyboard-visible');
+                root_store.ui.setIsNativepickerVisible(true);
+            };
+
+            const onFocusOut = e => {
+                if (e.target.classList.contains('dc-dropdown__display')) return;
+                if (document.activeElement.tagName !== 'INPUT') {
+                    el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
+                    root_store.ui.setIsNativepickerVisible(false);
+                }
+            };
+
+            /**
+             * Adding `focus` and `focusout` event listeners to document here to detect for on-screen keyboard on mobile browsers
+             * and storing this value in UI-store to be used across the app stores.
+             *  - when document gets `focus` event - keyboard is visible
+             *  - when document gets `focusout` event - keyboard is hidden
+             * [TODO]: find an alternative solution to detect for on-screen keyboard
+             */
+            document.addEventListener('focus', onFocus, true);
+            document.addEventListener('focusout', onFocusOut, false);
+
+            // componentWillUnmount lifecycle
+            return () => {
+                document.removeEventListener('focus', onFocus);
+                document.removeEventListener('focusout', onFocusOut);
+            };
+        }, []);
+    }
 
     const platform_passthrough = {
         root_store,

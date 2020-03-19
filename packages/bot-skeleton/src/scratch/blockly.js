@@ -1,5 +1,8 @@
 /* eslint import/no-webpack-loader-syntax: 0 */
-const { goog, Blockly } = require('exports-loader?goog&Blockly!scratch-blocks/blockly_compressed_vertical');
+const {
+    goog,
+    Blockly,
+} = require('imports-loader?this=>window!exports-loader?goog&Blockly!scratch-blocks/blockly_compressed_vertical');
 
 window.goog = goog;
 window.Blockly = Blockly;

@@ -22,6 +22,8 @@
         top: 0;
         transform: translateY(0px);
         transition: transform 0.25s ease;
+        display: flex;
+        flex-wrap: wrap;
 
         &__platform {
             position: relative;
@@ -31,7 +33,7 @@
             text-decoration: none;
             margin: 24px 16px;
             padding: 24px 16px;
-            width: 302px;
+            width: 320px;
             border-radius: 8px;
 
             &__icon {

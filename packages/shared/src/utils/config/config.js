@@ -1,30 +1,30 @@
 // const Cookies = require('js-cookie');
+const isBot = require('../platform').isBot;
 
 /*
  * Configuration values needed in js codes
  *
  * NOTE:
  * Please use the following command to avoid accidentally committing personal changes
- * git update-index --assume-unchanged src/javascript/config.js
+ * git update-index --assume-unchanged packages/shared/src/utils/config.js
  *
  */
-const domain_app_ids = {
+export const domain_app_ids = {
     // these domains as supported "production domains"
     'deriv.app': 16929,
 };
+const binary_desktop_app_id = 14473;
 
-const getCurrentProductionDomain = () =>
+export const getCurrentProductionDomain = () =>
     !/^staging\./.test(window.location.hostname) &&
     Object.keys(domain_app_ids).find(domain => new RegExp(`.${domain}$`, 'i').test(window.location.hostname));
 
-const isProduction = () => {
+export const isProduction = () => {
     const all_domains = Object.keys(domain_app_ids).map(domain => `www\\.${domain.replace('.', '\\.')}`);
     return new RegExp(`^(${all_domains.join('|')})$`, 'i').test(window.location.hostname);
 };
 
-const binary_desktop_app_id = 14473;
-
-const getAppId = () => {
+export const getAppId = () => {
     let app_id = null;
     const user_app_id = ''; // you can insert Application ID of your registered application here
     const config_app_id = window.localStorage.getItem('config.app_id');
@@ -39,18 +39,18 @@ const getAppId = () => {
         app_id = user_app_id;
     } else if (/staging\.deriv\.app/i.test(window.location.hostname)) {
         window.localStorage.removeItem('config.default_app_id');
-        app_id = 16303; // it's being used in endpoint chrome extension - please do not remove
+        app_id = isBot() ? 19112 : 16303; // it's being used in endpoint chrome extension - please do not remove
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = 17044;
     } else {
         window.localStorage.removeItem('config.default_app_id');
         const current_domain = getCurrentProductionDomain();
-        app_id = domain_app_ids[current_domain] || 16929;
+        app_id = domain_app_ids[current_domain] || (isBot() ? 19111 : 16929);
     }
     return app_id;
 };
 
-const getSocketURL = () => {
+export const getSocketURL = () => {
     let server_url = window.localStorage.getItem('config.server_url');
     if (!server_url) {
         // const to_green_percent = { real: 100, virtual: 0, logged_out: 0 }; // default percentage
@@ -90,12 +90,4 @@ const getSocketURL = () => {
         server_url = `${server}.binaryws.com`;
     }
     return server_url;
-};
-
-module.exports = {
-    domain_app_ids,
-    getCurrentProductionDomain,
-    isProduction,
-    getAppId,
-    getSocketURL,
 };

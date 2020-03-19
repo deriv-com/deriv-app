@@ -2,7 +2,7 @@ import { Modal, Tabs, PasswordInput, PasswordMeter, Button } from '@deriv/compon
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { urlFor } from '_common/url';
+import { urlFor } from '@deriv/shared/utils/url';
 import UILoader from 'App/Components/Elements/ui-loader.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';

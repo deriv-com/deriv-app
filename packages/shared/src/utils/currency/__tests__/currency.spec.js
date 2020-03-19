@@ -11,7 +11,7 @@ describe('CurrencyUtils', () => {
             BTC: { fractional_digits: 8, type: 'crypto' },
         },
     };
-    beforeAll(() => {
+    beforeEach(() => {
         CurrencyUtils.setCurrencies(currencies_config);
     });
 

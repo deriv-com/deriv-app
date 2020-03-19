@@ -7,7 +7,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import { LocalStore, State } from '_common/storage';
-import { urlFor } from '_common/url';
+import { urlFor } from '@deriv/shared/utils/url';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */

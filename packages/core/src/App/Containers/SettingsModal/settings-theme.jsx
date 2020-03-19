@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
+import { isBot } from '@deriv/shared/utils/platform';
 import { Localize } from '@deriv/translations';
 import DarkModeIcon from 'Assets/SvgComponents/settings/img-theme-dark.svg';
 import LightModeIcon from 'Assets/SvgComponents/settings/img-theme-light.svg';
 import { connect } from 'Stores/connect';
-import { isBot } from 'Utils/PlatformSwitcher';
 
 // TODO: [disable-dark-bot] Delete all `isBot()` conditional checks when DBot dark theme is ready
 

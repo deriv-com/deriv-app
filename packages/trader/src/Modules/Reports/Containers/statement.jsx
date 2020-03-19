@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
-import { urlFor } from '_common/url';
+import { urlFor } from '@deriv/shared/utils/url';
 import DataTable from 'App/Components/Elements/DataTable';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
 import { getContractPath } from 'App/Components/Routes/helpers';

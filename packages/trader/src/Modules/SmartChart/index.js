@@ -1,5 +1,5 @@
 import React from 'react';
-import { getUrlBase } from '_common/url';
+import { getUrlBase } from '@deriv/shared/utils/url';
 
 const Module = import(/* webpackChunkName: "smart_chart", webpackPreload: true */ 'smartcharts-beta');
 

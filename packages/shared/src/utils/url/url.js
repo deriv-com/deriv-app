@@ -1,7 +1,10 @@
 const { getLanguage } = require('@deriv/translations');
-const urlForLanguage = require('./language').urlFor;
-const getCurrentProductionDomain = require('../config').getCurrentProductionDomain;
-require('url-polyfill');
+const { getCurrentProductionDomain } = require('../config');
+// const urlForLanguage = require('./language').urlFor;
+
+// TODO use language.js for this
+const urlForLanguage = (lang, url = window.location.href) =>
+    url.replace(new RegExp(`/${getLanguage()}/`, 'i'), `/${(lang || 'EN').trim().toLowerCase()}/`);
 
 const Url = (() => {
     let location_url, static_host;
@@ -36,6 +39,12 @@ const Url = (() => {
     const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_/])/g, '') : '');
 
     const urlFor = (path, pars, language, should_change_to_legacy = false) => {
+        if (/^bot$/.test(path)) {
+            if (should_change_to_legacy) {
+                return `https://${host_map['bot.binary.com']}`;
+            }
+        }
+
         const lang = (language || getLanguage()).toLowerCase();
         let domain = `https://${window.location.hostname}/`;
         if (should_change_to_legacy) {

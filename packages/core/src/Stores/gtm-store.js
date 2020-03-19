@@ -1,12 +1,12 @@
 import * as Cookies from 'js-cookie';
 import { action, computed } from 'mobx';
+import { getAppId } from '@deriv/shared/utils/config';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
 import { isLoginPages } from '_common/base/login';
 import { toMoment, epochToMoment } from 'Utils/Date';
 import BaseStore from './base-store';
 import { getMT5AccountType } from './Helpers/client';
-import { getAppId } from '../config';
 
 export default class GTMStore extends BaseStore {
     is_gtm_applicable = /^(16303|16929|19111|19112)$/.test(getAppId());

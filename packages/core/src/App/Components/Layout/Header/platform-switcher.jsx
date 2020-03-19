@@ -5,13 +5,14 @@ import { withRouter } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isBot, isMT5 } from 'Utils/PlatformSwitcher';
+import { getPlatformName, getPlatformIcon } from '@deriv/shared/utils/platform';
 import { PlatformDropdown } from './platform-dropdown.jsx';
 import 'Sass/app/_common/components/platform-switcher.scss';
 
 class PlatformSwitcher extends React.PureComponent {
     constructor(props) {
         super(props);
+
         this.state = { is_open: false };
     }
 
@@ -24,12 +25,8 @@ class PlatformSwitcher extends React.PureComponent {
                 className={classNames('platform_switcher', { 'platform_switcher--active': this.state.is_open })}
                 onClick={this.toggleDrawer}
             >
-                <Icon
-                    className='platform_switcher__icon'
-                    icon={isBot() ? 'IcBrandDbot' : isMT5() ? 'IcBrandDmt5' : 'IcBrandDtrader'}
-                    size={32}
-                />
-                <h1 className='platform_switcher__header'>{isBot() ? 'DBot' : isMT5() ? 'DMT5' : 'DTrader'}</h1>
+                <Icon className='platform_switcher__icon' icon={getPlatformIcon()} size={32} />
+                <h1 className='platform_switcher__header'>{getPlatformName()}</h1>
                 <p className='platform_switcher__label'>{localize('BETA')}</p>
                 <Icon className='platform_switcher__arrow' icon='IcChevronDownBold' />
             </div>

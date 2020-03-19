@@ -174,8 +174,8 @@ class AddressDetails extends Component {
 
     validateAddressDetails = values => {
         const validations = {
-            address_line_1: [v => !!v, v => /^[\w\W\s\/-]{1,70}$/gu.exec(v) !== null],
-            address_line_2: [v => !v || /^[\w\W\s\/-]{0,70}$/gu.exec(v) !== null],
+            address_line_1: [v => !!v, v => /^[\w\W\s/-]{1,70}$/gu.exec(v) !== null],
+            address_line_2: [v => !v || /^[\w\W\s/-]{0,70}$/gu.exec(v) !== null],
             address_city: [v => !!v, v => /^[a-zA-Z\s\W'.-]{1,35}$/gu.exec(v) !== null],
             address_state: [v => /^[a-zA-Z\s\W'.-]{0,35}$/gu.exec(v) !== null],
             address_postcode: [v => !!v, v => /^[^+]{0,20}$/gu.exec(v) !== null],

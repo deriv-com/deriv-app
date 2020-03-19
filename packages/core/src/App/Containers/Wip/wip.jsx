@@ -1,7 +1,7 @@
 import { Button, Icon } from '@deriv/components';
 import React from 'react';
 import BinarySocket from '_common/base/socket_base';
-import { urlFor } from '_common/url';
+import { urlFor } from '@deriv/shared/utils/url';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import 'Sass/app/_common/components/wip.scss';

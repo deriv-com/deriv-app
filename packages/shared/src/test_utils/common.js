@@ -1,8 +1,7 @@
-const { LiveApi } = require('binary-live-api');
 const expect = require('chai').expect;
 const jsdom = require('jsdom');
 const websocket = require('ws');
-const Url = require('../url');
+const Url = require('../utils/url/url.js');
 
 const setURL = url => {
     jsdom.changeURL(window, url);
@@ -13,5 +12,4 @@ module.exports = {
     expect,
     setURL,
     getApiToken: () => 'hhh9bfrbq0G3dRf',
-    api: new LiveApi({ websocket, appId: 1 }),
 };

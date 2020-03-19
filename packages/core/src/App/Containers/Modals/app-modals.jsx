@@ -1,8 +1,8 @@
 import React from 'react';
-import { urlFor } from '_common/url';
+import { isBot, isMT5 } from '@deriv/shared/utils/platform';
+import { urlFor } from '@deriv/shared/utils/url';
 import DenialOfServiceModal from 'App/Components/Elements/Modals/DenialOfServiceModal';
 import { connect } from 'Stores/connect';
-import { isBot, isMT5 } from 'Utils/PlatformSwitcher';
 
 const AccountSignupModal = React.lazy(() =>
     import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal')

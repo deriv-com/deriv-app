@@ -1,12 +1,12 @@
 import { lazy } from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
+import { getUrlBase } from '@deriv/shared/utils/url';
+import { isBot } from '@deriv/shared/utils/platform';
+import { localize } from '@deriv/translations';
 import { LocalStore } from '_common/storage';
 import { Redirect } from 'App/Containers/Redirect';
-import { localize } from '@deriv/translations';
 import { routes } from 'Constants';
 import { routing_control_key } from 'Constants/routes';
-import { isBot } from 'Utils/PlatformSwitcher';
-import { getUrlBase } from '_common/url';
 import Cashier, {
     Deposit,
     Withdrawal,

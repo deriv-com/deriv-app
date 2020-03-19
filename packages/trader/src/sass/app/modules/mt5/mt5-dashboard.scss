@@ -424,6 +424,10 @@
     &--hint {
         @include typeface(--small-left-normal-black, none);
         color: var(--text-less-prominent);
+
+        @include mobile {
+            padding: 1.6rem 0 0.8rem 0;
+        }
     }
     &__main-form,
     &__investor-wrapper {
@@ -442,6 +446,10 @@
         width: 100%;
         max-width: 300px;
         margin: 2.4em auto 0;
+
+        @include mobile {
+            max-width: unset;
+        }
     }
     &__actions {
         display: flex;
@@ -450,6 +458,11 @@
     }
     &--button {
         margin-top: 1.6rem;
+
+        @include mobile {
+            width: 100%;
+            margin-top: 0.8rem;
+        }
     }
     @include mobile {
         padding: 0 1.6rem;

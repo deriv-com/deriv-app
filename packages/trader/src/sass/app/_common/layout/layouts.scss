@@ -471,9 +471,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
     &-dark,
     &-light {
         @include mobile {
+            /* postcss-bem-linter: ignore */
             .cq-menu-dropdown-enter-done {
                 margin-top: 0;
 
+                /* postcss-bem-linter: ignore */
                 .icon-close-menu {
                     opacity: 1;
                     pointer-events: auto;

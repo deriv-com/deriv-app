@@ -47,34 +47,19 @@ commands:
           name: "build core"
           command: node_modules/lerna/cli.js exec --scope @deriv/core -- npm run build
 
-  docker_staging:
+  docker:
     description: "Build and Push image to docker hub"
     steps:
       - setup_remote_docker
       - run:
           name: Building docker image
           command: |
-            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG} -t ${DOCKHUB_ORGANISATION}/deriv-app:staging-latest .
+            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG} .
       - run:
           name: Pushing Image to docker hub
           command: |
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
             docker push ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
-            docker push ${DOCKHUB_ORGANISATION}/deriv-app:staging-latest
-  docker_production:
-    description: "Build and Push image to docker hub"
-    steps:
-      - setup_remote_docker
-      - run:
-          name: Building docker image
-          command: |
-            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG} -t ${DOCKHUB_ORGANISATION}/deriv-app:production-latest .
-      - run:
-          name: Pushing Image to docker hub
-          command: |
-            echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-            docker push ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
-            docker push ${DOCKHUB_ORGANISATION}/deriv-app:production-latest
   k8s_deploy_staging:
     description: "Deploy to k8s cluster"
     steps:
@@ -104,7 +89,7 @@ jobs:
       - git_checkout_from_cache
       - npm_install
       - build
-      - docker_staging
+      - docker
       - k8s_deploy_staging
     environment:
       NODE_ENV: staging
@@ -116,7 +101,7 @@ jobs:
       - git_checkout_from_cache
       - npm_install
       - build
-      - docker_production
+      - docker
       - k8s_deploy_production
     environment:
       NODE_ENV: production

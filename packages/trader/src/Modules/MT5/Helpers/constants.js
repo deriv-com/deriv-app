@@ -1,4 +1,4 @@
-import { OSDetect } from '_common/os_detect';
+import { OSDetect } from '@deriv/shared/utils/os';
 
 const getPlatformMt5DownloadLink = () => {
     switch (OSDetect()) {

@@ -1,6 +1,6 @@
-import { isDesktop } from '@deriv/shared/utils/os';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { isDesktop } from '@deriv/shared/utils/os';
 import { connect } from 'Stores/connect';
 import routes from '../../../Constants/routes';
 

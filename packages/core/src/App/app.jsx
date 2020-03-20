@@ -48,26 +48,33 @@ const App = ({ root_store }) => {
 
             const onFocusOut = e => {
                 if (e.target.classList.contains('dc-dropdown__display')) return;
-                if (document.activeElement.tagName !== 'INPUT') {
-                    el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
-                    root_store.ui.setIsNativepickerVisible(false);
-                }
+                root_store.ui.setIsNativepickerVisible(false);
             };
 
+            const onTouchStart = () => {
+                if (document.activeElement.tagName !== 'INPUT') {
+                    el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
+                }
+            };
             /**
              * Adding `focus` and `focusout` event listeners to document here to detect for on-screen keyboard on mobile browsers
              * and storing this value in UI-store to be used across the app stores.
              *  - when document gets `focus` event - keyboard is visible
-             *  - when document gets `focusout` event - keyboard is hidden
+             *  - when document gets `focusout` or `touchstart` event - keyboard is hidden
+             *  - note: the `touchstart` event comes after `focusout` and
+             *          we want to remove `landscape-blocker--keyboard-visible` class and
+             *          set is_nativepicker_visible to false as late as possible
              * [TODO]: find an alternative solution to detect for on-screen keyboard
              */
             document.addEventListener('focus', onFocus, true);
             document.addEventListener('focusout', onFocusOut, false);
+            document.addEventListener('touchstart', onTouchStart, true);
 
             // componentWillUnmount lifecycle
             return () => {
                 document.removeEventListener('focus', onFocus);
                 document.removeEventListener('focusout', onFocusOut);
+                document.addEventListener('touchstart', onTouchStart);
             };
         }, []);
     }

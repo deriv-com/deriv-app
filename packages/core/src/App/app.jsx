@@ -9,6 +9,7 @@ import { initializeTranslations } from '@deriv/translations';
 import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';
 import { MobxProvider } from 'Stores/connect';
+import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
 import Footer from './Containers/Layout/footer.jsx';
@@ -71,6 +72,7 @@ const App = ({ root_store }) => {
                         </ErrorBoundary>
                         <Footer />
                         <AppModals url_action_param={url_params.get('action')} />
+                        <SmartTraderIFrame />
                     </React.Fragment>
                 )}
             </MobxProvider>

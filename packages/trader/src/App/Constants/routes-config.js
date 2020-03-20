@@ -107,8 +107,8 @@ const route_default = { component: Page404, title: localize('Error 404') };
 const getRoutesConfig = () => {
     if (!routesConfig) {
         routesConfig = initRoutesConfig();
+        routesConfig.push(route_default);
     }
-    routesConfig.push(route_default);
     return routesConfig;
 };
 

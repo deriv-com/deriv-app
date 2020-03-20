@@ -1,0 +1,47 @@
+image: node:11.15.0
+
+stages:
+  - setup
+  - test
+  - deploy
+
+setup:
+  stage: setup
+  only:
+    refs:
+      - merge_requests
+  script: npm run bootstrap
+  artifacts:
+    paths:
+      - node_modules/
+      - packages/*/node_modules
+    expire_in: 1 day
+
+test_all:
+  stage: test
+  only:
+    refs:
+      - merge_requests
+  script:
+    - npm run build:travis
+    - npm run test
+  dependencies:
+    - setup
+
+pages:
+  stage: deploy
+  only:
+    refs:
+      - merge_requests
+  script:
+  - "npm run deploy:folder br_$CI_COMMIT_REF_SLUG"
+  - "mkdir -p ./public"
+  - "test -e /pages/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/public/ && cp -r /pages/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/public/. ./public/"
+  - "find ./public/* -maxdepth 0 -name 'br_*' -prune -o -exec rm -rf '{}' ';' && rm -rf ./public/br_$CI_COMMIT_REF_SLUG && mkdir -p ./public/br_$CI_COMMIT_REF_SLUG" # Reset deployment folder
+  - "cp -r ./packages/core/dist/. ./public/br_$CI_COMMIT_REF_SLUG"
+  - "cp -r ./packages/core/dist/. ./public/"
+  dependencies:
+    - setup
+  artifacts:
+    paths:
+    - public

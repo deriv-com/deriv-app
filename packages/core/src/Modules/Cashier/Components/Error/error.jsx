@@ -7,21 +7,19 @@ import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (
-    <div className='cashier__wrapper cashier__center-align-wrapper'>
-        <div className='cashier__center-align-content'>
-            <Icon icon='IcCashierError' className='cashier-error__icon' />
-            {header && <h2 className='cashier-error__header'>{header}</h2>}
-            {message && <p className='cashier__paragraph'>{message}</p>}
-            {button_link && (
-                <ButtonLink className='cashier-error__button' to={button_link} onClick={onClickButton} primary large>
-                    <span className='btn__text'>{button_text}</span>
-                </ButtonLink>
-            )}
-            {!button_link && button_text && (
-                <Button className='cashier-error__button' onClick={onClickButton} text={button_text} primary large />
-            )}
-            {footer && <h2 className='cashier-error__footer'>{footer}</h2>}
-        </div>
+    <div className='cashier__wrapper'>
+        <Icon icon='IcCashierError' className='cashier-error__icon' />
+        {header && <h2 className='cashier-error__header'>{header}</h2>}
+        {message && <p className='cashier__paragraph'>{message}</p>}
+        {button_link && (
+            <ButtonLink className='cashier-error__button' to={button_link} onClick={onClickButton} primary large>
+                <span className='btn__text'>{button_text}</span>
+            </ButtonLink>
+        )}
+        {!button_link && button_text && (
+            <Button className='cashier-error__button' onClick={onClickButton} text={button_text} primary large />
+        )}
+        {footer && <h2 className='cashier-error__footer'>{footer}</h2>}
     </div>
 );
 

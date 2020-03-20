@@ -1,7 +1,7 @@
 // auto-generated file. DO NOT MODIFY.
 
 export const icons = {
-    brand: ['IcBrandDbot', 'IcBrandDeriv', 'IcBrandDmt5', 'IcBrandDtrader', 'IcGoogleDrive'],
+    brand: ['IcBrandDbot', 'IcBrandDeriv', 'IcBrandDmt5', 'IcBrandDtrader', 'IcBrandSmarttrader', 'IcGoogleDrive'],
     cashier: [
         'IcCashierAuthenticate',
         'IcCashierDeposit',
@@ -72,6 +72,7 @@ export const icons = {
         'IcEmailSpam',
         'IcEmailTypo',
         'IcEmail',
+        'IcEmptyFolder',
         'IcEye',
         'IcFolderOpen',
         'IcFullScreen',
@@ -108,6 +109,7 @@ export const icons = {
         'IcPauseOutline',
         'IcPause',
         'IcPaymentAgent',
+        'IcPc',
         'IcPhone',
         'IcPlayOutline',
         'IcPlay',
@@ -126,6 +128,7 @@ export const icons = {
         'IcPuzzle',
         'IcRedo',
         'IcReports',
+        'IcReset',
         'IcSave',
         'IcSearch',
         'IcSecurity',

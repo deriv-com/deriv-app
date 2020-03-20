@@ -1,5 +1,7 @@
 import { action, observable } from 'mobx';
 import moment from 'moment';
+import { LocalStore } from '_common/storage';
+import AppRoutes, { routing_control_key } from 'Constants/routes';
 import { currentLanguage } from 'Utils/Language/index';
 import BaseStore from './base-store';
 import { clientNotifications } from './Helpers/client-notifications';
@@ -7,6 +9,19 @@ import { clientNotifications } from './Helpers/client-notifications';
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
         super({ root_store });
+        // Since we refresh the page on routing across bot, we need to identify
+        // if launch was from bot so we can redirect back to bot as platform
+        const routing_control_raw = LocalStore.get(routing_control_key);
+
+        if (routing_control_raw) {
+            const route_control = JSON.parse(routing_control_raw);
+
+            if (route_control.is_from_bot) {
+                this.addRouteHistoryItem({ pathname: AppRoutes.bot, action: 'PUSH' });
+                delete route_control.is_from_bot;
+                LocalStore.setObject(routing_control_key, route_control);
+            }
+        }
     }
 
     @observable server_time = moment.utc();
@@ -27,6 +42,9 @@ export default class CommonStore extends BaseStore {
 
     @observable deposit_url = '';
     @observable withdraw_url = '';
+
+    @observable app_routing_history = [];
+    @observable app_router = { history: null };
 
     @action.bound
     setIsSocketOpened(is_socket_opened) {
@@ -95,5 +113,47 @@ export default class CommonStore extends BaseStore {
     @action.bound
     setWithdrawURL(withdraw_url) {
         this.withdraw_url = withdraw_url;
+    }
+
+    @action.bound
+    setAppRouterHistory(history) {
+        this.app_router.history = history;
+    }
+
+    @action.bound
+    routeTo(pathname) {
+        if (this.app_router.history) this.app_router.history.push(pathname);
+    }
+
+    @action.bound
+    addRouteHistoryItem(router_action) {
+        const check_existing = this.app_routing_history.findIndex(
+            i => i.pathname === router_action.pathname && i.action === 'PUSH'
+        );
+        if (check_existing > -1) {
+            this.app_routing_history.splice(check_existing, 1);
+        }
+        this.app_routing_history.unshift(router_action);
+    }
+
+    @action.bound
+    routeBackInApp(history) {
+        let route_to_item_idx = -1;
+        const route_to_item = this.app_routing_history.find((history_item, idx) => {
+            const parent_path = history_item.pathname.split('/')[1];
+            const platform_parent_paths = [AppRoutes.mt5, AppRoutes.bot, AppRoutes.trade].map(i => i.split('/')[1]); // map full path to just base path (`/mt5/abc` -> `mt5`)
+            if (history_item.action === 'PUSH' && platform_parent_paths.includes(parent_path)) {
+                route_to_item_idx = idx;
+                return true;
+            }
+            return false;
+        });
+
+        if (route_to_item && route_to_item_idx > -1) {
+            this.app_routing_history.splice(0, route_to_item_idx + 1);
+            history.push(route_to_item.pathname);
+        } else {
+            history.push(AppRoutes.trade);
+        }
     }
 }

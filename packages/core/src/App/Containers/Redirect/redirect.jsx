@@ -9,6 +9,8 @@ const Redirect = ({
     history,
     setDeviceData,
     setVerificationCode,
+    fetchResidenceList,
+    openRealAccountSignup,
     toggleAccountSignupModal,
     toggleResetPasswordModal,
 }) => {
@@ -47,6 +49,10 @@ const Redirect = ({
             redirected_to_route = true;
             break;
         }
+        case 'add_account': {
+            fetchResidenceList().then(openRealAccountSignup);
+            break;
+        }
         default:
             break;
     }
@@ -73,7 +79,9 @@ export default withRouter(
     connect(({ client, ui, common }) => ({
         setDeviceData: client.setDeviceData,
         setVerificationCode: client.setVerificationCode,
+        fetchResidenceList: client.fetchResidenceList,
         server_time: common.server_time,
+        openRealAccountSignup: ui.openRealAccountSignup,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,
     }))(Redirect)

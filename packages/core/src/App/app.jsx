@@ -47,7 +47,10 @@ const App = ({ root_store }) => {
             };
 
             const onFocusOut = e => {
-                if (e.target.classList.contains('dc-dropdown__display')) return;
+                if (e.target.classList.contains('dc-dropdown__display')) {
+                    // if the next target is a dropdown, keep native picker open
+                    return;
+                }
                 root_store.ui.setIsNativepickerVisible(false);
             };
 
@@ -61,9 +64,8 @@ const App = ({ root_store }) => {
              * and storing this value in UI-store to be used across the app stores.
              *  - when document gets `focus` event - keyboard is visible
              *  - when document gets `focusout` or `touchstart` event - keyboard is hidden
-             *  - note: the `touchstart` event comes after `focusout` and
-             *          we want to remove `landscape-blocker--keyboard-visible` class and
-             *          set is_nativepicker_visible to false as late as possible
+             *  - note: the `touchstart` event comes after `focusout` and and we want to
+             *          remove `landscape-blocker--keyboard-visible` class as late as possible
              * [TODO]: find an alternative solution to detect for on-screen keyboard
              */
             document.addEventListener('focus', onFocus, true);

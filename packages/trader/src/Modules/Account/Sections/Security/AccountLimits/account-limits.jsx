@@ -5,7 +5,6 @@ import { Popover } from '@deriv/components';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 import Loading from '../../../../../templates/app/components/loading.jsx';
 import { ScrollbarsContainer, TextContainer, Text } from '../../../Components/layout-components.jsx';
 import DemoMessage from '../../ErrorMessages/DemoMessage';
@@ -51,21 +50,22 @@ class AccountLimits extends React.Component {
         if (this.props.is_virtual) {
             this.setState({ is_loading: false });
         } else {
-            WS.authorized.storage.getLimits().then(data => {
-                if (data.error) {
-                    this.setState({ api_initial_load_error: data.error.message });
-                    return;
-                }
-                this.setState({ ...data.get_limits, is_loading: false });
-            });
+            this.props.onMount();
+        }
+    }
+
+    componentDidUpdate() {
+        if (!this.props.is_virtual && this.props.account_limits && this.state.is_loading) {
+            this.setState({ is_loading: false });
         }
     }
 
     render() {
+        if (this.props.is_switching) return <Loading />;
         if (this.props.is_virtual) return <DemoMessage />;
+
         const {
             api_initial_load_error,
-            is_loading,
             open_positions,
             account_balance,
             payout,
@@ -73,10 +73,11 @@ class AccountLimits extends React.Component {
             num_of_days_limit,
             remainder,
             withdrawal_since_inception_monetary,
-        } = this.state;
+        } = this.props.account_limits;
 
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
-        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (this.props.is_switching || this.state.is_loading)
+            return <Loading is_fullscreen={false} className='account___intial-loader' />;
 
         const { commodities, forex, indices, synthetic_index } = market_specific;
         const { currency, is_fully_authenticated } = this.props;
@@ -246,6 +247,9 @@ class AccountLimits extends React.Component {
 
 export default connect(({ client }) => ({
     is_fully_authenticated: client.is_fully_authenticated,
+    account_limits: client.account_limits,
     is_virtual: client.is_virtual,
+    is_switching: client.is_switching,
     currency: client.currency,
+    onMount: client.getLimits,
 }))(AccountLimits);

@@ -47,10 +47,6 @@ const Trader = lazy(() => {
 });
 
 const Bot = lazy(() => {
-    const el_head = document.querySelector('head');
-    const el_scratch_js = document.createElement('script');
-    el_scratch_js.src = getUrlBase('/js/bot/scratch.min.js');
-    el_head.appendChild(el_scratch_js);
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
 });

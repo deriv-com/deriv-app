@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
+import { mobileOSDetect } from '@deriv/shared/utils/os';
 import ThemedScrollbars from 'Components/themed-scrollbars';
 import { getItemFromValue, getValueFromIndex, getPrevIndex, getNextIndex, listPropType } from './dropdown';
 import Items from './items.jsx';
@@ -145,7 +146,13 @@ class Dropdown extends React.Component {
 
     handleVisibility = () => {
         if (this.props.is_nativepicker && !this.state.is_list_visible) {
-            this.native_select_ref.current.focus();
+            if (mobileOSDetect() === 'iOS') {
+                /* .focus() doesn't trigger open <select /> in Android :(
+                 * so we use a CSS hack - refer to L237 in dropdown.scss
+                 * [TODO]: find alternative solution to trigger open <select /> with JS
+                 */
+                this.native_select_ref.current.focus();
+            }
             this.setState({ is_list_visible: true });
         } else {
             this.setState(state => ({ is_list_visible: !state.is_list_visible }));

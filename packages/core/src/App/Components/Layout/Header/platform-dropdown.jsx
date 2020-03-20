@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -7,6 +6,17 @@ import { BinaryLink } from 'App/Components/Routes';
 import routes from 'Constants/routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 
+const PlatformBox = ({ platform: { icon, title, description } }) => (
+    <>
+        <div className='platform_dropdown__list__platform__background' />
+        <Icon className='platform_dropdown__list__platform__icon' icon={icon} size={32} />
+
+        <div className='platform_dropdown__list__platform__details'>
+            <p className='platform_dropdown__list__platform__title'>{title}</p>
+            <p className='platform_dropdown__list__platform__description'>{description}</p>
+        </div>
+    </>
+);
 class PlatformDropdown extends React.PureComponent {
     handleClickOutside = event => {
         if (!event.target.closest('.platform_dropdown__list') && !event.target.closest('.platform_switcher')) {
@@ -31,22 +41,22 @@ class PlatformDropdown extends React.PureComponent {
             <div className='platform_dropdown'>
                 <div className='platform_dropdown__list'>
                     {platform_config.map((platform, idx) => (
-                        <BinaryLink
-                            to={platform.link_to}
-                            // This is here because in routes-config it needs to have children, but not in menu
-                            exact={platform.link_to === routes.trade}
-                            key={idx}
-                            onClick={closeDrawer}
-                            className={classNames('platform_dropdown__list__platform')}
-                        >
-                            <div className='platform_dropdown__list__platform__background' />
-                            <Icon className='platform_dropdown__list__platform__icon' icon={platform.icon} size={32} />
-
-                            <div className='platform_dropdown__list__platform__details'>
-                                <p className='platform_dropdown__list__platform__title'>{platform.title}</p>
-                                <p className='platform_dropdown__list__platform__description'>{platform.description}</p>
-                            </div>
-                        </BinaryLink>
+                        <div key={idx} onClick={closeDrawer}>
+                            {platform.link_to !== undefined ? (
+                                <BinaryLink
+                                    to={platform.link_to}
+                                    // This is here because in routes-config it needs to have children, but not in menu
+                                    exact={platform.link_to === routes.trade}
+                                    className='platform_dropdown__list__platform'
+                                >
+                                    <PlatformBox platform={platform} />
+                                </BinaryLink>
+                            ) : (
+                                <a href={platform.href} className='platform_dropdown__list__platform'>
+                                    <PlatformBox platform={platform} />
+                                </a>
+                            )}
+                        </div>
                     ))}
                 </div>
             </div>

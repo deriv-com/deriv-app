@@ -23,6 +23,7 @@ export default class ClientStore extends BaseStore {
     @observable accounts = {};
     @observable pre_switch_broadcast = false;
     @observable switched = '';
+    @observable is_switching = false;
     @observable switch_broadcast = false;
     @observable initialized_broadcast = false;
     @observable currencies_list = {};
@@ -57,6 +58,7 @@ export default class ClientStore extends BaseStore {
         payment_withdraw: '',
         payment_agent_withdraw: '',
     };
+    @observable account_limits = {};
 
     @observable local_currency_config = {
         currency: '',
@@ -376,6 +378,23 @@ export default class ClientStore extends BaseStore {
             can_upgrade_to,
             can_open_multi,
         };
+    }
+
+    @action.bound
+    getLimits() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getLimits().then(data => {
+                runInAction(() => {
+                    if (data.error) {
+                        this.account_limits = { api_initial_load_error: data.error.message };
+                        resolve(data);
+                    } else {
+                        this.account_limits = { ...data.get_limits, is_loading: false };
+                        resolve(data);
+                    }
+                });
+            });
+        });
     }
 
     @action.bound
@@ -805,6 +824,7 @@ export default class ClientStore extends BaseStore {
             return;
         }
 
+        runInAction(() => (this.is_switching = true));
         sessionStorage.setItem('active_tab', '1');
         // set local storage
         this.root_store.gtm.setLoginFlag();
@@ -814,6 +834,8 @@ export default class ClientStore extends BaseStore {
         await BinarySocket.authorize(this.getToken());
         await this.init();
         this.broadcastAccountChange();
+        this.getLimits();
+        runInAction(() => (this.is_switching = false));
     }
 
     @action.bound

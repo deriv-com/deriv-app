@@ -15,6 +15,7 @@ import Cashier, {
     PaymentAgentTransfer,
     P2PCashier,
 } from 'Modules/Cashier';
+import Endpoint from 'Modules/Endpoint';
 
 export const interceptAcrossBot = (route_to, action) => {
     const is_routing_to_bot = route_to.pathname.startsWith(routes.bot);
@@ -46,10 +47,6 @@ const Trader = lazy(() => {
 });
 
 const Bot = lazy(() => {
-    const el_head = document.querySelector('head');
-    const el_scratch_js = document.createElement('script');
-    el_scratch_js.src = getUrlBase('/js/bot/scratch.min.js');
-    el_head.appendChild(el_scratch_js);
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
 });
@@ -74,6 +71,7 @@ const modules = [
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
 const initRoutesConfig = () => [
     { path: routes.index, component: RouterRedirect, title: '', to: routes.root },
+    { path: routes.endpoint, component: Endpoint, title: 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, title: localize('Redirect') },
     {
         path: routes.cashier,

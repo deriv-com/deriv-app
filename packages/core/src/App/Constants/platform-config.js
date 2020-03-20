@@ -20,6 +20,12 @@ const platform_config = [
         description: localize('The platform of choice for professionals worldwide.'),
         link_to: routes.mt5,
     },
+    {
+        icon: 'IcBrandSmarttrader',
+        title: localize('SmartTrader'),
+        description: localize('Trade the world’s markets with our popular user-friendly platform'),
+        href: routes.smarttrader,
+    },
 ];
 
 export default platform_config;

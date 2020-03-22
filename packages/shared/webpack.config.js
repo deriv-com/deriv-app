@@ -43,6 +43,7 @@ module.exports = {
                 loader: 'babel-loader',
             },
         ],
+        strictExportPresence: true
     },
     plugins: [
         new CopyWebpackPlugin([

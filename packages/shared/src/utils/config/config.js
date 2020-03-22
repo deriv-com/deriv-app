@@ -1,5 +1,5 @@
 // const Cookies = require('js-cookie');
-const isBot = require('../platform').isBot;
+import { isBot } from '../platform/platform';
 
 /*
  * Configuration values needed in js codes

@@ -1,5 +1,5 @@
 const { getLanguage } = require('@deriv/translations');
-const { getCurrentProductionDomain } = require('../config');
+const { getCurrentProductionDomain } = require('../config/config');
 // const urlForLanguage = require('./language').urlFor;
 
 // TODO use language.js for this

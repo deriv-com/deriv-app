@@ -39,6 +39,9 @@ export default class JournalStore {
         const { message, className } = data;
         let message_string = message;
 
+        if (data.message === undefined) {
+            return;
+        }
         if (typeof message === 'boolean') {
             message_string = message.toString();
         }

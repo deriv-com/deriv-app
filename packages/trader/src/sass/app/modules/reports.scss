@@ -6,10 +6,6 @@ $side-padding: 1.2em;
 
 /** @define reports; weak */
 .reports {
-    margin: 16px;
-    box-shadow: 18px 8px 8px var(--shadow-menu);
-    border-radius: 4px;
-
     &__meta {
         width: 100%;
         display: flex;
@@ -32,10 +28,6 @@ $side-padding: 1.2em;
             position: relative;
             display: flex;
         }
-    }
-    &__inset_header {
-        box-shadow: inset 0 -1px 0 0 var(--general-section-1);
-        margin-bottom: 24px;
     }
     .unknown-icon {
         margin-left: 8px;

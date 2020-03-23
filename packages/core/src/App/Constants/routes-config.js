@@ -1,8 +1,10 @@
 import { lazy } from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
+import { LocalStore } from '_common/storage';
 import { Redirect } from 'App/Containers/Redirect';
 import { localize } from '@deriv/translations';
 import { routes } from 'Constants';
+import { routing_control_key } from 'Constants/routes';
 import { isBot } from 'Utils/PlatformSwitcher';
 import { getUrlBase } from '_common/url';
 import Cashier, {
@@ -13,11 +15,15 @@ import Cashier, {
     PaymentAgentTransfer,
     P2PCashier,
 } from 'Modules/Cashier';
+import Endpoint from 'Modules/Endpoint';
 
 export const interceptAcrossBot = (route_to, action) => {
     const is_routing_to_bot = route_to.pathname.startsWith(routes.bot);
 
     if (action === 'PUSH' && ((!isBot() && is_routing_to_bot) || (isBot() && !is_routing_to_bot))) {
+        if (isBot() && !is_routing_to_bot) {
+            LocalStore.setObject(routing_control_key, { is_from_bot: true });
+        }
         window.location.href = getUrlBase(route_to.pathname); // If url base exists, use pathname with base
 
         return false;
@@ -41,10 +47,6 @@ const Trader = lazy(() => {
 });
 
 const Bot = lazy(() => {
-    const el_head = document.querySelector('head');
-    const el_scratch_js = document.createElement('script');
-    el_scratch_js.src = getUrlBase('/js/bot/scratch.min.js');
-    el_head.appendChild(el_scratch_js);
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
 });
@@ -69,6 +71,7 @@ const modules = [
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
 const initRoutesConfig = () => [
     { path: routes.index, component: RouterRedirect, title: '', to: routes.root },
+    { path: routes.endpoint, component: Endpoint, title: 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, title: localize('Redirect') },
     {
         path: routes.cashier,
@@ -93,13 +96,13 @@ const initRoutesConfig = () => [
             {
                 path: routes.cashier_pa,
                 component: PaymentAgent,
-                title: localize('Payment agent'),
+                title: localize('Payment agents'),
                 icon_component: 'IcPaymentAgent',
             },
             {
                 path: routes.cashier_acc_transfer,
                 component: AccountTransfer,
-                title: localize('Transfer between accounts'),
+                title: localize('Transfer'),
                 icon_component: 'IcAccountTransfer',
             },
             {
@@ -108,7 +111,6 @@ const initRoutesConfig = () => [
                 title: localize('Transfer to client'),
                 icon_component: 'IcAccountTransfer',
             },
-            // To work with P2P please uncomment this line
             { path: routes.cashier_p2p, component: P2PCashier, title: localize('P2P'), icon_component: 'IcDp2p' },
         ],
     },
@@ -123,8 +125,8 @@ const route_default = { component: Page404, title: localize('Error 404') };
 const getRoutesConfig = () => {
     if (!routesConfig) {
         routesConfig = initRoutesConfig();
+        routesConfig.push(route_default);
     }
-    routesConfig.push(route_default);
     return routesConfig;
 };
 

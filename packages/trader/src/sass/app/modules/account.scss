@@ -1,14 +1,17 @@
 @import '../_common/base/index';
 
+$FLOATING_PADDING: 2.4rem;
+$FLOATING_HEADER_HEIGHT: 41px;
+$MIN_HEIGHT_FLOATING: calc(
+    100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - #{$FLOATING_PADDING}
+);
+
 .account {
     margin: 0 16px;
 
     .dc-vertical-tab {
-        height: calc(100vh - 83px);
-        max-width: calc(100vw - 32px);
-
-        &__tab {
-            min-width: 240px;
+        &__content {
+            height: $MIN_HEIGHT_FLOATING;
         }
     }
     &__inset_header {
@@ -60,7 +63,6 @@
     &-form {
         overflow: hidden;
         height: 100%;
-        min-height: 500px;
         width: 100%;
 
         &__header {
@@ -138,7 +140,7 @@
             padding: 16px 24px;
             align-items: center;
             justify-content: flex-end;
-            z-index: 999;
+            z-index: 4;
             border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
             border-top: 1px solid var(--general-section-1);
             border-width: 1px;

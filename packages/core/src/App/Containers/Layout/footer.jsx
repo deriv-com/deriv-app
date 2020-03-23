@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { NetworkStatus, ToggleFullScreen, ToggleSettings } from 'App/Components/Layout/Footer';
+import { EndpointNote, NetworkStatus, ToggleFullScreen, ToggleSettings } from 'App/Components/Layout/Footer';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
 
@@ -22,6 +22,7 @@ const Footer = ({
         })}
     >
         {footer_extension && <div className='footer__links footer__links--left'>{footer_extension}</div>}
+        <EndpointNote />
         <NetworkStatus />
         <ServerTime />
         <div className='footer__links'>
@@ -60,7 +61,6 @@ export default withRouter(
         is_positions_drawer_on: ui.is_positions_drawer_on,
         is_settings_modal_on: ui.is_settings_modal_on,
         disableApp: ui.disableApp,
-        show_positions_toggle: ui.show_positions_toggle,
         togglePositionsDrawer: ui.togglePositionsDrawer, // TODO: Remove positions drawer logic from UI store
         toggleSettingsModal: ui.toggleSettingsModal,
     }))(Footer)

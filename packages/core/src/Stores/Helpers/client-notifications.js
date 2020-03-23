@@ -113,10 +113,10 @@ export const clientNotifications = (ui = {}) => {
         },
         mf_retail: {
             key: 'mf_retail',
-            header: localize('Binary options trading disabled'),
+            header: localize('Digital options trading disabled'),
             message: (
                 <Localize
-                    i18n_default_text='Binary Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
+                    i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
                     components={[
                         <a
                             key={0}

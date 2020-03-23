@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { action, computed, observable, runInAction, when, reaction } from 'mobx';
+import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { requestLogout, WS } from 'Services';
@@ -23,6 +23,7 @@ export default class ClientStore extends BaseStore {
     @observable accounts = {};
     @observable pre_switch_broadcast = false;
     @observable switched = '';
+    @observable is_switching = false;
     @observable switch_broadcast = false;
     @observable initialized_broadcast = false;
     @observable currencies_list = {};
@@ -57,6 +58,7 @@ export default class ClientStore extends BaseStore {
         payment_withdraw: '',
         payment_agent_withdraw: '',
     };
+    @observable account_limits = {};
 
     @observable local_currency_config = {
         currency: '',
@@ -346,6 +348,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
         LocalStore.set('active_loginid', loginid);
+        this.syncWithSmartTrader(loginid, toJS(this.accounts));
         this.loginid = loginid;
     }
 
@@ -375,6 +378,23 @@ export default class ClientStore extends BaseStore {
             can_upgrade_to,
             can_open_multi,
         };
+    }
+
+    @action.bound
+    getLimits() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getLimits().then(data => {
+                runInAction(() => {
+                    if (data.error) {
+                        this.account_limits = { api_initial_load_error: data.error.message };
+                        resolve(data);
+                    } else {
+                        this.account_limits = { ...data.get_limits, is_loading: false };
+                        resolve(data);
+                    }
+                });
+            });
+        });
     }
 
     @action.bound
@@ -514,7 +534,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get residence() {
         // TODO Instead of return residence from each individual loginid, set in once in login, this is bound by user.
-        return this.accounts[this.loginid].residence;
+        return this.accounts[this.loginid]?.residence ?? '';
     }
 
     @computed
@@ -804,6 +824,7 @@ export default class ClientStore extends BaseStore {
             return;
         }
 
+        runInAction(() => (this.is_switching = true));
         sessionStorage.setItem('active_tab', '1');
         // set local storage
         this.root_store.gtm.setLoginFlag();
@@ -813,6 +834,8 @@ export default class ClientStore extends BaseStore {
         await BinarySocket.authorize(this.getToken());
         await this.init();
         this.broadcastAccountChange();
+        this.getLimits();
+        runInAction(() => (this.is_switching = false));
     }
 
     @action.bound
@@ -882,6 +905,7 @@ export default class ClientStore extends BaseStore {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
         this.root_store.ui.removeAllNotificationMessages();
+        this.syncWithSmartTrader(this.loginid, this.accounts);
     }
 
     @action.bound
@@ -1185,6 +1209,29 @@ export default class ClientStore extends BaseStore {
             return changeable_fields;
         }
         return [];
+    }
+
+    @action.bound
+    syncWithSmartTrader(active_loginid, client_accounts) {
+        const iframe_window = document.getElementById('localstorage-sync');
+        if (iframe_window) {
+            let origin;
+
+            if (/^staging\.deriv\.app$/i.test(window.location.hostname)) {
+                origin = 'https://smarttrader-staging.deriv.app';
+            } else if (/^deriv\.app$/i.test(window.location.hostname)) {
+                origin = 'https://smarttrader.deriv.app';
+            } else {
+                return;
+            }
+
+            // Keep client.accounts in sync (in case user wasn't logged in).
+            iframe_window.contentWindow.postMessage(
+                { key: 'client.accounts', value: JSON.stringify(client_accounts) },
+                origin
+            );
+            iframe_window.contentWindow.postMessage({ key: 'active_loginid', value: active_loginid }, origin);
+        }
     }
 
     @computed

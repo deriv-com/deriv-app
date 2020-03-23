@@ -91,6 +91,8 @@ jobs:
       - build
       - docker
       - k8s_deploy_staging
+    environment:
+      NODE_ENV: staging
 
   release_production:
     docker:
@@ -101,6 +103,8 @@ jobs:
       - build
       - docker
       - k8s_deploy_production
+    environment:
+      NODE_ENV: staging
 
 workflows:
   release_staging:

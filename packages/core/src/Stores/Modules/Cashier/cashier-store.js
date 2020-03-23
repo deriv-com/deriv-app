@@ -70,6 +70,21 @@ class ConfigAccountTransfer {
     @observable selected_to = {};
     @observable transfer_fee = null;
     @observable transfer_limit = {};
+
+    @action.bound
+    setBalanceByLoginId(loginid, balance) {
+        this.accounts_list.find(acc => loginid === acc.value).balance = balance;
+    }
+
+    @action.bound
+    setBalanceSelectedFrom(balance) {
+        this.selected_from.balance = balance;
+    }
+
+    @action.bound
+    setBalanceSelectedTo(balance) {
+        this.selected_to.balance = balance;
+    }
 }
 
 class ConfigVerification {
@@ -902,12 +917,11 @@ export default class CashierStore extends BaseStore {
         } else {
             this.setReceiptTransfer({ amount: CurrencyUtils.formatMoney(currency, amount, true) });
             transfer_between_accounts.accounts.forEach(account => {
-                this.config.account_transfer.accounts_list.find(acc => account.loginid === acc.value).balance =
-                    account.balance;
+                this.config.account_transfer.setBalanceByLoginId(account.loginid, account.balance);
                 if (account.loginid === this.config.account_transfer.selected_from.value) {
-                    this.config.account_transfer.selected_from.balance = account.balance;
+                    this.config.account_transfer.setBalanceSelectedFrom(account.balance);
                 } else if (account.loginid === this.config.account_transfer.selected_to.value) {
-                    this.config.account_transfer.selected_to.balance = account.balance;
+                    this.config.account_transfer.setBalanceSelectedTo(account.balance);
                 }
                 // if one of the accounts was mt5
                 if (account.mt5_group) {

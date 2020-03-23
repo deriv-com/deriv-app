@@ -1,6 +1,6 @@
-import { Button, Icon, Popover } from '@deriv/components';
 import * as PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Button, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import routes from 'Constants/routes';
@@ -37,6 +37,8 @@ export class AccountActions extends Component {
             balance,
             can_upgrade,
             currency,
+            disableApp,
+            enableApp,
             is_acc_switcher_on,
             is_acc_switcher_disabled,
             is_logged_in,
@@ -51,57 +53,84 @@ export class AccountActions extends Component {
         if (is_logged_in) {
             return (
                 <React.Fragment>
-                    <ToggleNotifications
-                        count={notifications_count}
-                        is_visible={is_notifications_visible}
-                        toggleDialog={toggleNotifications}
-                        tooltip_message={localize('View notifications')}
-                    />
-                    <Popover
-                        classNameBubble='account-settings-toggle__tooltip'
-                        alignment='bottom'
-                        message={localize('Manage account settings')}
-                    >
-                        <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
-                            <Icon icon='IcUserOutline' />
-                        </BinaryLink>
-                    </Popover>
-                    <React.Suspense fallback={<div />}>
-                        <AccountInfo
-                            acc_switcher_disabled_message={acc_switcher_disabled_message}
-                            balance={
-                                typeof balance === 'undefined'
-                                    ? balance
-                                    : CurrencyUtils.formatMoney(currency, balance, true)
-                            }
-                            is_upgrade_enabled={can_upgrade}
-                            is_disabled={is_acc_switcher_disabled}
-                            is_virtual={is_virtual}
-                            currency={currency}
-                            is_dialog_on={is_acc_switcher_on}
-                            toggleDialog={toggleAccountsDialog}
+                    <MobileWrapper>
+                        <ToggleNotifications
+                            count={notifications_count}
+                            is_visible={is_notifications_visible}
+                            toggleDialog={toggleNotifications}
                         />
-                    </React.Suspense>
-                    {!is_virtual && !currency && (
-                        <div className='set-currency'>
+                        <React.Suspense fallback={<div />}>
+                            <AccountInfo
+                                acc_switcher_disabled_message={acc_switcher_disabled_message}
+                                balance={
+                                    typeof balance === 'undefined'
+                                        ? balance
+                                        : CurrencyUtils.formatMoney(currency, balance, true)
+                                }
+                                is_upgrade_enabled={can_upgrade}
+                                is_disabled={is_acc_switcher_disabled}
+                                disableApp={disableApp}
+                                enableApp={enableApp}
+                                is_virtual={is_virtual}
+                                currency={currency}
+                                is_dialog_on={is_acc_switcher_on}
+                                toggleDialog={toggleAccountsDialog}
+                            />
+                        </React.Suspense>
+                    </MobileWrapper>
+                    <DesktopWrapper>
+                        <ToggleNotifications
+                            count={notifications_count}
+                            is_visible={is_notifications_visible}
+                            toggleDialog={toggleNotifications}
+                            tooltip_message={localize('View notifications')}
+                        />
+                        <Popover
+                            classNameBubble='account-settings-toggle__tooltip'
+                            alignment='bottom'
+                            message={localize('Manage account settings')}
+                        >
+                            <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
+                                <Icon icon='IcUserOutline' />
+                            </BinaryLink>
+                        </Popover>
+                        <React.Suspense fallback={<div />}>
+                            <AccountInfo
+                                acc_switcher_disabled_message={acc_switcher_disabled_message}
+                                balance={
+                                    typeof balance === 'undefined'
+                                        ? balance
+                                        : CurrencyUtils.formatMoney(currency, balance, true)
+                                }
+                                is_upgrade_enabled={can_upgrade}
+                                is_disabled={is_acc_switcher_disabled}
+                                is_virtual={is_virtual}
+                                currency={currency}
+                                is_dialog_on={is_acc_switcher_on}
+                                toggleDialog={toggleAccountsDialog}
+                            />
+                        </React.Suspense>
+                        {!is_virtual && !currency && (
+                            <div className='set-currency'>
+                                <Button
+                                    onClick={openRealAccountSignup}
+                                    has_effect
+                                    type='button'
+                                    text={localize('Set currency')}
+                                    primary
+                                />
+                            </div>
+                        )}
+                        {currency && (
                             <Button
-                                onClick={openRealAccountSignup}
+                                className='acc-info__button'
                                 has_effect
-                                type='button'
-                                text={localize('Set currency')}
+                                text={localize('Deposit')}
+                                onClick={onClickDeposit}
                                 primary
                             />
-                        </div>
-                    )}
-                    {currency && (
-                        <Button
-                            className='acc-info__button'
-                            has_effect
-                            text={localize('Deposit')}
-                            onClick={onClickDeposit}
-                            primary
-                        />
-                    )}
+                        )}
+                    </DesktopWrapper>
                 </React.Fragment>
             );
         }
@@ -121,6 +150,8 @@ AccountActions.propTypes = {
     can_upgrade_to: PropTypes.any,
     currency: PropTypes.any,
     is_acc_switcher_disabled: PropTypes.any,
+    disableApp: PropTypes.any,
+    enableApp: PropTypes.any,
     is_acc_switcher_on: PropTypes.any,
     is_logged_in: PropTypes.any,
     is_notifications_visible: PropTypes.any,

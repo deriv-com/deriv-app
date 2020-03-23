@@ -56,11 +56,13 @@ export default class MT5Store extends BaseStore {
     @action.bound
     onMount() {
         this.onRealAccountSignupEnd(this.realAccountSignupEndListener);
+        this.root_store.ui.is_mt5_page = true;
     }
 
     @action.bound
     onUnmount() {
         this.disposeRealAccountSignupEnd();
+        this.root_store.ui.is_mt5_page = false;
     }
 
     @action.bound

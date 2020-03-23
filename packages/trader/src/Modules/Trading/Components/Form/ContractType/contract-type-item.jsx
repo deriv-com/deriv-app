@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { Icon, DesktopWrapper } from '@deriv/components';
 import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories.jsx';
 
 const Item = ({ contract_types, handleInfoClick, handleSelect, is_equal, name, value }) =>
@@ -21,9 +21,11 @@ const Item = ({ contract_types, handleInfoClick, handleSelect, is_equal, name, v
         >
             <IconTradeCategory category={type.value} className='contract-type-item__icon-wrapper' />
             <span className='contract-type-item__title'>{type.text}</span>
-            <div id='info-icon' className='contract-type-item__icon' onClick={() => handleInfoClick(type)}>
-                <Icon icon='IcInfoOutline' />
-            </div>
+            <DesktopWrapper>
+                <div id='info-icon' className='contract-type-item__icon' onClick={() => handleInfoClick(type)}>
+                    <Icon icon='IcInfoOutline' />
+                </div>
+            </DesktopWrapper>
         </div>
     ));
 

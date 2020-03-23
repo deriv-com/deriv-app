@@ -1,31 +1,31 @@
-.platform_switcher {
+.platform-switcher {
     display: flex;
     align-items: center;
-    padding: 8px;
+    padding: 0.8rem;
     transition: background-color 0.3s;
     cursor: pointer;
 
-    &:hover {
+    &:not(&--is-mobile):hover {
         background-color: var(--general-hover);
     }
     & svg:first-child,
     p,
     h1 {
-        margin: 0 0 0 8px;
+        margin: 0 0 0 0.8rem;
     }
     & svg:last-child {
-        margin: 0 8px;
+        margin: 0 0.8rem;
     }
     &__header {
-        font-size: 16px;
-        line-height: 24px;
+        font-size: 1.6rem;
+        line-height: 2.4rem;
         font-weight: bold;
         color: var(--text-general);
     }
     &__label {
-        font-size: 14px;
-        line-height: 20px;
-        border-radius: 10px;
+        font-size: 1.4rem;
+        line-height: 2rem;
+        border-radius: 1rem;
         background-color: var(--brand-secondary);
         color: var(--text-colored-background);
         width: 50px;
@@ -42,5 +42,13 @@
     }
     &--active &__arrow {
         transform: rotate(180deg);
+    }
+    @include mobile {
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
     }
 }

@@ -25,6 +25,9 @@
             height: calc(100% - 36px);
             text-decoration: none;
         }
+        @include mobile {
+            pointer-events: none;
+        }
     }
     &__close-btn {
         position: absolute;

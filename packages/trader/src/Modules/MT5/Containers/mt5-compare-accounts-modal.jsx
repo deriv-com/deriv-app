@@ -1,34 +1,36 @@
-import { Button, Popover, Modal } from '@deriv/components';
-import React from 'react';
-import DataTable from 'App/Components/Elements/DataTable';
+import { Button, Popover, Modal, DesktopWrapper, MobileDialog, MobileWrapper, Table } from '@deriv/components';
+import React, { useState } from 'react';
 import UILoader from 'App/Components/Elements/ui-loader.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const compareAccountsColumns = [
-    {
-        title: '',
-        col_index: 'attribute',
-    },
-    {
-        title: <Localize i18n_default_text='Standard' />,
-        col_index: 'standard',
-    },
-    {
-        title: <Localize i18n_default_text='Advanced' />,
-        col_index: 'advanced',
-    },
-    {
-        title: <Localize i18n_default_text='Synthetic Indices' />,
-        col_index: 'synthetic',
-    },
-];
+const MT5AttributeDescriberModal = ({ is_visible, toggleModal, message }) => (
+    <Modal is_open={is_visible} small toggleModal={toggleModal}>
+        <Modal.Body>{message}</Modal.Body>
+        <Modal.Footer>
+            <Button has_effect text={localize('OK')} onClick={toggleModal} primary />
+        </Modal.Footer>
+    </Modal>
+);
 
 const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
+    const [is_visible, setIsVisible] = useState(false);
+    const toggleModal = () => setIsVisible(!is_visible);
+
     return tooltip ? (
         <React.Fragment>
-            <p className='mt5-attribute-describer'>{name}</p>
-            <Popover alignment='right' icon='counter' counter={counter} message={tooltip} />
+            <p className='mt5-attribute-describer' onClick={toggleModal}>
+                {name}
+                <MobileWrapper>
+                    <span className='counter'>{counter}</span>
+                </MobileWrapper>
+            </p>
+            <DesktopWrapper>
+                <Popover alignment='right' icon='counter' counter={counter} message={tooltip} />
+            </DesktopWrapper>
+            <MobileWrapper>
+                <MT5AttributeDescriberModal toggleModal={toggleModal} is_visible={is_visible} message={tooltip} />
+            </MobileWrapper>
         </React.Fragment>
     ) : (
         <p className='mt5-attribute-describer'>{name}</p>
@@ -158,19 +160,38 @@ const compareAccountsData = [
     },
 ];
 
+const MT5CompareAccountHint = () => (
+    <p className='mt5-compare-account--hint'>
+        <Localize i18n_default_text='Note: At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
+    </p>
+);
+
 const ModalContent = () => (
     <div className='mt5-compare-accounts'>
-        <DataTable
-            className='mt5-compare-accounts__data'
-            data_source={compareAccountsData}
-            columns={compareAccountsColumns}
-            custom_height={700}
-            custom_width={'100%'}
-            getRowSize={index => (index + 1 === compareAccountsData.length ? 120 : 40)}
-        />
-        <p className='mt5-compare-account--hint'>
-            <Localize i18n_default_text='Note: At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
-        </p>
+        <Table fixed>
+            <Table.Header>
+                <Table.Row>
+                    <Table.Head fixed>{localize('')}</Table.Head>
+                    <Table.Head>{localize('Standard')}</Table.Head>
+                    <Table.Head>{localize('Advanced')}</Table.Head>
+                    <Table.Head>{localize('Synthetic Indices')}</Table.Head>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {compareAccountsData.map((row, i) => (
+                    <Table.Row key={i}>
+                        {Object.keys(row).map((col, j) => (
+                            <Table.Cell key={j} fixed={j === 0}>
+                                {row[col]}
+                            </Table.Cell>
+                        ))}
+                    </Table.Row>
+                ))}
+            </Table.Body>
+        </Table>
+        <DesktopWrapper>
+            <MT5CompareAccountHint />
+        </DesktopWrapper>
     </div>
 );
 
@@ -184,19 +205,33 @@ const CompareAccountsModal = ({ disableApp, enableApp, is_compare_accounts_visib
             tertiary
         />
         <React.Suspense fallback={<UILoader />}>
-            <Modal
-                className='mt5-dashboard__compare-accounts'
-                disableApp={disableApp}
-                enableApp={enableApp}
-                is_open={is_compare_accounts_visible}
-                title={localize('Compare accounts')}
-                toggleModal={toggleCompareAccounts}
-                type='button'
-                height='595px'
-                width='904px'
-            >
-                <ModalContent />
-            </Modal>
+            <DesktopWrapper>
+                <Modal
+                    className='mt5-dashboard__compare-accounts'
+                    disableApp={disableApp}
+                    enableApp={enableApp}
+                    is_open={is_compare_accounts_visible}
+                    title={localize('Compare accounts')}
+                    toggleModal={toggleCompareAccounts}
+                    type='button'
+                    height='580px'
+                    width='904px'
+                >
+                    <ModalContent />
+                </Modal>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <MobileDialog
+                    portal_element_id='deriv_app'
+                    title={localize('Compare accounts')}
+                    wrapper_classname='mt5-dashboard__compare-accounts'
+                    visible={is_compare_accounts_visible}
+                    onClose={toggleCompareAccounts}
+                    footer={<MT5CompareAccountHint />}
+                >
+                    <ModalContent />
+                </MobileDialog>
+            </MobileWrapper>
         </React.Suspense>
     </div>
 );

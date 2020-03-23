@@ -19,14 +19,13 @@ export const AssetInformation = React.lazy(load('AssetInformation'));
 export const ChartTitle = React.lazy(load('ChartTitle'));
 
 export const ChartSize = React.lazy(load('ChartSize'));
-export const ChartTypes = React.lazy(load('ChartTypes'));
+export const ChartMode = React.lazy(load('ChartMode'));
 export const Comparison = React.lazy(load('Comparison'));
-export const CrosshairToggle = React.lazy(load('CrosshairToggle'));
 export const DrawTools = React.lazy(load('DrawTools'));
 export const Share = React.lazy(load('Share'));
 export const StudyLegend = React.lazy(load('StudyLegend'));
-export const Timeperiod = React.lazy(load('Timeperiod'));
 export const Views = React.lazy(load('Views'));
+export const ToolbarWidget = React.lazy(load('ToolbarWidget'));
 
 export const FastMarker = React.lazy(load('FastMarker'));
 export const RawMarker = React.lazy(load('RawMarker'));

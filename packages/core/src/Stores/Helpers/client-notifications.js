@@ -1,7 +1,9 @@
 import React from 'react';
+import { Button } from '@deriv/components';
 import { WS } from 'Services';
 import { formatDate } from 'Utils/Date';
 import ObjectUtils from '@deriv/shared/utils/object';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
 import { localize, Localize } from '@deriv/translations';
@@ -12,7 +14,8 @@ import { urlFor } from '@deriv/shared/utils/url';
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
 export const clientNotifications = (ui = {}) => {
-    return {
+    const mobile = ['mf_retail', 'unwelcome'];
+    const notifications = {
         currency: {
             action: {
                 text: localize('Set currency'),
@@ -96,7 +99,23 @@ export const clientNotifications = (ui = {}) => {
         unwelcome: {
             key: 'unwelcome',
             header: localize('Trading and deposits disabled'),
-            message: (
+            message: isMobile() ? (
+                <Localize
+                    i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact customer support for assistance.<0/>'
+                    components={[
+                        <React.Fragment key={0}>
+                            <br />
+                            <a
+                                className='link link--right'
+                                target='_blank'
+                                href={urlFor('contact', undefined, undefined, true)}
+                            >
+                                <Button secondary medium text={localize('Contact Us')} />
+                            </a>
+                        </React.Fragment>,
+                    ]}
+                />
+            ) : (
                 <Localize
                     i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
                     components={[
@@ -114,7 +133,23 @@ export const clientNotifications = (ui = {}) => {
         mf_retail: {
             key: 'mf_retail',
             header: localize('Digital options trading disabled'),
-            message: (
+            message: isMobile() ? (
+                <Localize
+                    i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact customer support for assistance.<0/>'
+                    components={[
+                        <React.Fragment key={0}>
+                            <br />
+                            <a
+                                className='link link--right'
+                                target='_blank'
+                                href={urlFor('contact', undefined, undefined, true)}
+                            >
+                                <Button secondary medium text={localize('Contact Us')} />
+                            </a>
+                        </React.Fragment>,
+                    ]}
+                />
+            ) : (
                 <Localize
                     i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
                     components={[
@@ -266,6 +301,13 @@ export const clientNotifications = (ui = {}) => {
             type: 'danger',
         },
     };
+    const allowed_notifications = Object.keys(notifications)
+        .filter(key => (isMobile() ? mobile.includes(key) : true))
+        .reduce((obj, key) => {
+            obj[key] = notifications[key];
+            return obj;
+        }, {});
+    return allowed_notifications;
 };
 
 const hasMissingRequiredField = (account_settings, client) => {

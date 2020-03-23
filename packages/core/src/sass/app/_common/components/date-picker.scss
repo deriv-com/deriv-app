@@ -4,6 +4,9 @@
     display: inline-block;
     width: 100%;
     max-width: 280px;
+    @include mobile {
+        max-width: unset;
+    }
 
     &__input-field {
         border-radius: $BORDER_RADIUS;
@@ -117,6 +120,36 @@
             &-exit {
                 transition: transform 0.25s ease, opacity 0.25s linear;
             }
+        }
+    }
+}
+
+/** @define datepicker-native */
+.datepicker-native {
+    position: relative;
+    border: 1px solid;
+    border-color: var(--border-normal);
+    border-radius: 4px;
+
+    &__input {
+        opacity: 0;
+    }
+    &__overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0px;
+        top: 0px;
+        pointer-events: none;
+        touch-action: none;
+        display: flex;
+        align-items: center;
+        margin-left: 8px;
+
+        &-text {
+            color: var(--text-general);
+            margin-left: 8px;
+            font-size: 1.4rem;
         }
     }
 }

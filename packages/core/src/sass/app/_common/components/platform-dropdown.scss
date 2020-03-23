@@ -1,4 +1,5 @@
-.platform_dropdown {
+/* @define platform-dropdown; weak */
+.platform-dropdown {
     z-index: 5;
     background-color: var(--overlay-outside-dialog);
     width: 100%;
@@ -8,10 +9,31 @@
     opacity: 0;
     transition: opacity 0.25s ease;
 
-    &-enter-done {
+    @include mobile {
+        position: absolute;
+
+        .platform-dropdown__list {
+            position: absolute;
+            top: -1.6rem;
+            left: 0;
+            width: 295px;
+            padding-right: 1.6rem;
+            background-color: var(--general-main-2);
+            overflow-x: hidden;
+            overflow-y: auto;
+
+            &-platform {
+                width: calc(100% - 1.6rem);
+                margin: 1.4rem 1.6rem;
+                padding: 1.4rem 1.6rem;
+            }
+        }
+    }
+
+    &--enter-done {
         opacity: 1;
 
-        .platform_dropdown__list {
+        .platform-dropdown__list {
             transform: translateY(48px);
         }
     }
@@ -22,36 +44,38 @@
         top: 0;
         transform: translateY(0px);
         transition: transform 0.25s ease;
-        display: flex;
-        flex-wrap: wrap;
+        @include desktop() {
+            display: flex;
+            flex-wrap: wrap;
+        }
 
-        &__platform {
+        &-platform {
             position: relative;
             display: inline-flex;
             background-color: transparent;
             color: var(--text-general);
             text-decoration: none;
-            margin: 24px 16px;
-            padding: 24px 16px;
+            margin: 2.4rem 1.6rem;
+            padding: 2.4rem 1.6rem;
             width: 320px;
-            border-radius: 8px;
+            border-radius: 0.8rem;
 
-            &__icon {
+            &-icon {
                 min-height: 32px;
                 min-width: 32px;
-                margin-right: 16px;
+                margin-right: 1.6rem;
             }
-            &__title {
-                font-size: 16px;
+            &-title {
+                font-size: 1.6rem;
                 font-weight: bold;
-                line-height: 24px;
+                line-height: 2.4rem;
             }
-            &__description {
-                font-size: 14px;
-                line-height: 20px;
-                margin-top: 8px;
+            &-description {
+                font-size: 1.4rem;
+                line-height: 2rem;
+                margin-top: 0.8rem;
             }
-            &__background {
+            &-background {
                 opacity: 0;
                 transition: opacity 0.25s ease;
                 background-color: var(--general-hover);
@@ -63,11 +87,15 @@
                 z-index: -1;
                 border-radius: inherit;
             }
+            /* postcss-bem-linter: ignore */
             &.active {
                 border: solid 2px var(--border-active);
             }
             &:not(.active):hover &__background {
                 opacity: 1;
+            }
+            @include mobile {
+                width: 302px;
             }
         }
     }

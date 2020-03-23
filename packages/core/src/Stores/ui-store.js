@@ -11,7 +11,6 @@ const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
     @observable is_account_settings_visible = false;
-    @observable is_main_drawer_on = false;
     @observable is_notifications_visible = false;
     @observable is_positions_drawer_on = false;
     @observable is_reports_visible = false;
@@ -19,6 +18,7 @@ export default class UIStore extends BaseStore {
 
     // Extensions
     @observable footer_extension = undefined;
+    @observable header_extension = undefined;
     @observable settings_extension = undefined;
     @observable notification_messages_ui = undefined;
 
@@ -96,6 +96,14 @@ export default class UIStore extends BaseStore {
     // UI Focus retention
     @observable current_focus = null;
 
+    // Mobile
+    @observable should_show_toast_error = false;
+    @observable mobile_toast_error = '';
+    @observable mobile_toast_timeout = 1500;
+
+    @observable is_mt5_page = false;
+    @observable is_nativepicker_visible = false;
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -145,6 +153,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     populateFooterExtensions(component) {
         this.footer_extension = component;
+    }
+
+    @action.bound
+    populateHeaderExtensions(component) {
+        this.header_extension = component;
     }
 
     @action.bound
@@ -352,16 +365,6 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    showMainDrawer() {
-        this.is_main_drawer_on = true;
-    }
-
-    @action.bound
-    hideDrawers() {
-        this.is_main_drawer_on = false;
-    }
-
-    @action.bound
     removePWAPromptEvent() {
         this.pwa_prompt_event = null;
     }
@@ -398,6 +401,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     addNotificationMessage(notification) {
+        if (!notification) return;
         if (!this.notification_messages.find(item => item.header === notification.header)) {
             this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
             if (!excluded_notifications.includes(notification.key)) {
@@ -419,7 +423,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    removeNotificationMessage({ key }) {
+    removeNotificationMessage({ key } = {}) {
+        if (!key) return;
         this.notification_messages = this.notification_messages.filter(n => n.key !== key);
         // Add notification messages to LocalStore when user closes, check for redundancy
         const active_loginid = LocalStore.get('active_loginid');
@@ -522,5 +527,21 @@ export default class UIStore extends BaseStore {
     @action.bound
     setCurrentFocus(value) {
         this.current_focus = value;
+    }
+
+    @action.bound
+    setToastErrorVisibility(status) {
+        this.should_show_toast_error = status;
+    }
+
+    @action.bound
+    setToastErrorMessage(msg, timeout = 1500) {
+        this.mobile_toast_timeout = timeout;
+        this.mobile_toast_error = msg;
+    }
+
+    @action.bound
+    setIsNativepickerVisible(is_nativepicker_visible) {
+        this.is_nativepicker_visible = is_nativepicker_visible;
     }
 }

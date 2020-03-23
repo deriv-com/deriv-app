@@ -136,7 +136,7 @@
     "react-router-dom": "^5.0.1",
     "react-transition-group": "^2.5.0",
     "react-window": "^1.8.4",
-    "smartcharts-beta": "^0.6.2",
+    "smartcharts-beta": "^0.8.0-betam.10",
     "web-push-notifications": "^3.2.15",
     "workbox-webpack-plugin": "^4.3.1"
   }

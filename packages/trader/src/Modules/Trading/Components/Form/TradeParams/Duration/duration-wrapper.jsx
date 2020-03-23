@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { connect } from 'Stores/connect';
-import { convertDurationLimit } from 'Stores/Modules/Trading/Helpers/duration';
+import { getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
 import Duration from './duration.jsx';
 
 class DurationWrapper extends React.Component {
@@ -46,14 +46,6 @@ class DurationWrapper extends React.Component {
             // If query string contains endtime but contract type does not e.g. digits (only ticks contracts)
             this.props.onChange({ target: { name: 'expiry_type', value: 'duration' } });
         }
-    };
-
-    getDurationMinMaxValues = (duration_min_max, contract_expiry_type, duration_unit) => {
-        if (!duration_min_max[contract_expiry_type]) return [];
-        const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, duration_unit);
-        const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, duration_unit);
-
-        return [min_value, max_value];
     };
 
     componentDidMount() {
@@ -126,7 +118,7 @@ class DurationWrapper extends React.Component {
     }
 
     assertDurationIsWithinBoundary(duration_unit, current_duration, onChangeUiStore, onChange) {
-        const [min_value, max_value] = this.getDurationMinMaxValues(
+        const [min_value, max_value] = getDurationMinMaxValues(
             this.props.duration_min_max,
             this.props.contract_expiry_type,
             duration_unit
@@ -157,11 +149,7 @@ class DurationWrapper extends React.Component {
         const has_missing_duration_unit = !this.hasDurationUnit(current_duration_unit, is_advanced_duration);
         const simple_is_missing_duration_unit =
             !is_advanced_duration && simple_duration_unit === 'd' && duration_units_list.length === 4;
-        const [min_value, max_value] = this.getDurationMinMaxValues(
-            duration_min_max,
-            contract_expiry_type,
-            duration_unit
-        );
+        const [min_value, max_value] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
 
         if (has_missing_duration_unit || simple_is_missing_duration_unit) {
             this.setDurationUnit();

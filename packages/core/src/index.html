@@ -218,6 +218,24 @@
     <footer class="footer__loading" style="background: var(--general-main-1); border-top: 1px solid var(--general-section-1); position: fixed; bottom: 0; width: 100%; height: 37px; z-index: 3;"></footer>
 </div>
 <div id="modal_root" class="modal-root"></div>
+<!-- Temporary Mobile Landscape UI Blocker -->
+<div id="landscape_blocker" class="landscape-blocker">
+    <div class="landscape-blocker__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="59" height="64" viewBox="0 0 59 64">
+            <g fill="none">
+                <path fill="#FF444F" d="M40.416 10.212c2.445 3.44 3.509 7.63 2.973 11.924-.112.904.995 1.047 1.472 1.108.218.028.42.038.582.038.886 0 1.076-.47 1.13-.886.617-4.953-.646-9.938-3.556-14.037-1.543-2.169-3.468-3.974-5.717-5.364C34.148 1.035 30.52 0 26.814 0c-4.941 0-9.675 1.816-13.33 5.11-.17.15-.494.172-.657.05l-1.35-1.046c-.614-.472-1.302-.447-1.7.003-.166.192-.351.545-.274 1.128l.556 4.326c.119.931.914 1.633 1.85 1.633l4.563-.571c.874-.106 1.109-.637 1.17-.86.06-.224.126-.799-.567-1.328l-1.22-.947-.03-.206c3.037-2.645 6.94-4.103 10.987-4.103 3.113 0 6.16.87 8.807 2.51 1.892 1.178 3.506 2.696 4.797 4.513z"/>
+                <path fill="#85ACB0" d="M58.063 57.177v-21.65c0-1.78-1.442-3.217-3.22-3.217H30.025v4.343h21.839c.49 0 .884.397.884.886v17.625c0 .49-.395.886-.884.886H30.025v4.346h24.816c1.78 0 3.222-1.441 3.222-3.219zM3.237 63.944h21.65c1.777 0 3.22-1.442 3.22-3.22V19.425c0-1.778-1.444-3.22-3.22-3.22H3.238c-1.78 0-3.219 1.442-3.219 3.22v41.299c.002 1.778 1.44 3.22 3.219 3.22zm10.772-1.967c-1.122 0-2.028-.906-2.028-2.026 0-1.12.906-2.027 2.028-2.027 1.118 0 2.026.907 2.026 2.027s-.908 2.026-2.026 2.026zM4.363 22.403c0-.49.397-.885.886-.885h17.625c.49 0 .886.396.886.885v31.795c0 .49-.397.885-.886.885H5.25c-.489 0-.886-.395-.886-.885V22.403z"/>
+            </g>
+        </svg>
+    </div>
+    <!-- Since its temporary blocker and landscape will be designed with multilingual support, we can ignore localization for text below -->
+    <div class="landscape-blocker__message">
+        Landscape view is currently not supported.
+        <br />
+        Please rotate your device to portrait view.
+    </div>
+</div>
+<!-- End Temporary Mobile Landscape UI Blocker -->
 <script>
     performance.mark('first-contentful-paint');
 </script>

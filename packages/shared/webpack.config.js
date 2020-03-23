@@ -10,6 +10,8 @@ module.exports = {
         date    : path.resolve(__dirname, 'src', 'utils/date/index.js'),
         currency: path.resolve(__dirname, 'src', 'utils/currency/index.js'),
         object  : path.resolve(__dirname, 'src', 'utils/object/index.js'),
+        screen  : path.resolve(__dirname, 'src', 'utils/screen/index.js'),
+        os      : path.resolve(__dirname, 'src', 'utils/os/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'utils'),

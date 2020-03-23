@@ -41,6 +41,9 @@ $color-green-4: #008079;
 $color-orange: #ff6444;
 $color-yellow: #ffad3a;
 $color-blue: #377cfc;
+$color-blue-2: #2a3052;
+$color-blue-1: #0dc2e7;
+$color-purple: #722fe4;
 
 /* alpha colors */
 $alpha-color-black-1: transparentize($color-black-7, 0.28);
@@ -125,5 +128,7 @@ $POSITIONS_DRAWER_MARGIN: 8px;
 
 $HEADER_HEIGHT: 48px;
 $FOOTER_HEIGHT: 36px;
+
+$MOBILE_HEADER_HEIGHT: 40px;
 
 $SIDEBAR_WIDTH: 240px;

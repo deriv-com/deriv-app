@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import NumberSelector from 'App/Components/Form/number-selector.jsx';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
@@ -11,7 +12,11 @@ const LastDigit = ({ is_minimized, last_digit, onChange }) => {
     }
     const arr_five = [...Array(5).keys()];
     return (
-        <Fieldset className='trade-container__fieldset' header={localize('Last Digit Prediction')} is_center>
+        <Fieldset
+            className='trade-container__fieldset'
+            header={isDesktop() ? localize('Last Digit Prediction') : null}
+            is_center
+        >
             <NumberSelector
                 arr_arr_numbers={[arr_five, arr_five.map(i => i + 5)]}
                 name='last_digit'

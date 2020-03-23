@@ -1,5 +1,6 @@
 import { action, computed, observable, toJS } from 'mobx';
 import { LocalStore } from '_common/storage';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import { switch_to_tick_chart } from './Helpers/chart-notifications';
 import ContractStore from './contract-store';
 import BaseStore from '../../base-store';
@@ -106,7 +107,7 @@ export default class ContractTradeStore extends BaseStore {
         });
         this.contracts.push(contract);
 
-        if (is_tick_contract && this.granularity !== 0) {
+        if (is_tick_contract && this.granularity !== 0 && isDesktop()) {
             this.root_store.ui.addNotificationMessage(switch_to_tick_chart);
         }
     }

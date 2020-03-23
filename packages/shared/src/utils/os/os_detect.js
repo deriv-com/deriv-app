@@ -1,6 +1,4 @@
-const { localize } = require('@deriv/translations');
-
-const systems = {
+export const systems = {
     mac: ['Mac68K', 'MacIntel', 'MacPPC'],
     linux: [
         'HP-UX',
@@ -25,14 +23,15 @@ const systems = {
     windows: ['Win16', 'Win32', 'Win64', 'WinCE'],
 };
 
-const isDesktop = () => {
+export const isDesktop = () => {
     const os = OSDetect();
     return !!['windows', 'mac', 'linux'].find(system => system === os);
 };
 
-const isMobile = () => /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+export const isMobile = () =>
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-const OSDetect = () => {
+export const OSDetect = () => {
     // For testing purposes or more compatibility, if we set 'config.os'
     // inside our localStorage, we ignore fetching information from
     // navigator object and return what we have straight away.
@@ -50,11 +49,25 @@ const OSDetect = () => {
             .filter(os => os)[0];
     }
 
-    return localize('Unknown OS');
+    return 'Unknown OS';
 };
 
-module.exports = {
-    OSDetect,
-    isDesktop,
-    isMobile,
+export const mobileOSDetect = () => {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    // Windows Phone must come first because its UA also contains "Android"
+    if (/windows phone/i.test(userAgent)) {
+        return 'Windows Phone';
+    }
+
+    if (/android/i.test(userAgent)) {
+        return 'Android';
+    }
+
+    // iOS detection from: http://stackoverflow.com/a/9039885/177710
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        return 'iOS';
+    }
+
+    return 'unknown';
 };

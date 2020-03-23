@@ -114,6 +114,10 @@ const Url = (() => {
         return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
     };
 
+    const removeBranchName = (path = '') => {
+        return path.replace(/^\/br_.*?\//, '/');
+    };
+
     return {
         getUrlBase,
         reset,
@@ -122,6 +126,7 @@ const Url = (() => {
         urlForCurrentDomain,
         urlForStatic,
 
+        removeBranchName,
         param: name => paramsHash()[name],
         websiteUrl: () => `${location.protocol}//${location.hostname}/`,
         getHostMap: () => host_map,

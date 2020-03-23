@@ -4,6 +4,7 @@ import './brand/ic-brand-dbot.svg';
 import './brand/ic-brand-deriv.svg';
 import './brand/ic-brand-dmt5.svg';
 import './brand/ic-brand-dtrader.svg';
+import './brand/ic-brand-smarttrader.svg';
 import './brand/ic-google-drive.svg';
 import './cashier/ic-cashier-authenticate.svg';
 import './cashier/ic-cashier-deposit.svg';

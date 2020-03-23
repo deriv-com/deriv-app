@@ -24,9 +24,10 @@ const DummyComponent = (props) => (
 
 | Name                     | Type                   | Default | Description                                                                                                              |
 |--------------------------|------------------------|---------|--------------------------------------------------------------------------------------------------------------------------|
-| position `*optional`     | {string} top `|` bottom  | top     | Set where to put the arrow button.                                                                                       |
+| position `*optional`     | {string} top `|` bottom  | top     | Set where to put the arrow button.                                                                                     |
 | as `*optional`           | {string} tag name      | div     | Use this prop to shape the container. Div is fine in most cases, but you may want to use ol, ul, or dl in certain areas. |
 | is_collapsed `*optional` | {boolean}              | false   | Set whether the collapsible should be closed by default.                                                                 |
+| title                    | {string}               | false   | Adds title besides the arrow button to the container. Shows only arrow button by default.                                |
 
 
 

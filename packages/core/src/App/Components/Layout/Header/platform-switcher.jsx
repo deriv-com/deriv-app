@@ -42,18 +42,15 @@ class PlatformSwitcher extends React.PureComponent {
             </div>
             <CSSTransition
                 mountOnEnter
+                appear
                 in={this.state.is_open}
                 classNames={{
                     enterDone: 'platform-dropdown--enter-done',
                 }}
-                timeout={this.state.is_open ? 0 : 250}
+                timeout={!isMobile() && this.state.is_open ? 0 : 250}
                 unmountOnExit
             >
-                <PlatformDropdown
-                    is_mobile={this.props.is_mobile}
-                    platform_config={this.props.platform_config}
-                    closeDrawer={this.closeDrawer}
-                />
+                <PlatformDropdown platform_config={this.props.platform_config} closeDrawer={this.closeDrawer} />
             </CSSTransition>
         </React.Fragment>
     );

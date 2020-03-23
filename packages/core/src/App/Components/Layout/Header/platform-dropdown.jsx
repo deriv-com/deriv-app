@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -8,6 +7,17 @@ import { BinaryLink } from 'App/Components/Routes';
 import routes from 'Constants/routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 
+const PlatformBox = ({ platform: { icon, title, description } }) => (
+    <>
+        <div className='platform-dropdown__list-platform-background' />
+        <Icon className='platform-dropdown__list-platform-icon' icon={icon} size={32} />
+
+        <div className='platform-dropdown__list-platform-details'>
+            <p className='platform-dropdown__list-platform-title'>{title}</p>
+            <p className='platform-dropdown__list-platform-description'>{description}</p>
+        </div>
+    </>
+);
 class PlatformDropdown extends React.PureComponent {
     handleClickOutside = event => {
         if (!event.target.closest('.platform-dropdown__list') && !event.target.closest('.platform-switcher')) {
@@ -17,12 +27,12 @@ class PlatformDropdown extends React.PureComponent {
 
     componentWillMount() {
         window.addEventListener('popstate', this.props.closeDrawer);
-        document.addEventListener('click', this.handleClickOutside);
+        if (isDesktop()) document.addEventListener('click', this.handleClickOutside);
     }
 
     componentWillUnmount() {
         window.removeEventListener('popstate', this.props.closeDrawer);
-        document.removeEventListener('click', this.handleClickOutside);
+        if (isDesktop()) document.removeEventListener('click', this.handleClickOutside);
     }
 
     render() {
@@ -30,24 +40,24 @@ class PlatformDropdown extends React.PureComponent {
 
         const platform_dropdown = (
             <div className='platform-dropdown'>
-                <Div100vhContainer className='platform-dropdown__list' height_offset='238px' is_disabled={isDesktop()}>
+                <Div100vhContainer className='platform-dropdown__list' height_offset='151px' is_disabled={isDesktop()}>
                     {platform_config.map((platform, idx) => (
-                        <BinaryLink
-                            to={platform.link_to}
-                            // This is here because in routes-config it needs to have children, but not in menu
-                            exact={platform.link_to === routes.trade}
-                            key={idx}
-                            onClick={closeDrawer}
-                            className={classNames('platform-dropdown__list-platform')}
-                        >
-                            <div className='platform-dropdown__list-platform-background' />
-                            <Icon className='platform-dropdown__list-platform-icon' icon={platform.icon} size={32} />
-
-                            <div className='platform-dropdown__list-platform-details'>
-                                <p className='platform-dropdown__list-platform-title'>{platform.title}</p>
-                                <p className='platform-dropdown__list-platform-description'>{platform.description}</p>
-                            </div>
-                        </BinaryLink>
+                        <div key={idx} onClick={closeDrawer}>
+                            {platform.link_to !== undefined ? (
+                                <BinaryLink
+                                    to={platform.link_to}
+                                    // This is here because in routes-config it needs to have children, but not in menu
+                                    exact={platform.link_to === routes.trade}
+                                    className='platform-dropdown__list-platform'
+                                >
+                                    <PlatformBox platform={platform} />
+                                </BinaryLink>
+                            ) : (
+                                <a href={platform.href} className='platform-dropdown__list-platform'>
+                                    <PlatformBox platform={platform} />
+                                </a>
+                            )}
+                        </div>
                     ))}
                 </Div100vhContainer>
             </div>

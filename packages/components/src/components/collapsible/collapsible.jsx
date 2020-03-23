@@ -10,7 +10,7 @@ const swipe_config = {
     trackMouse: true,
 };
 
-const Collapsible = ({ as, is_collapsed, position = 'top', children, onClick }) => {
+const Collapsible = ({ as, is_collapsed, position = 'top', children, onClick, title }) => {
     const [is_open, expand] = useState(!is_collapsed);
     const [should_show_collapsible, setShouldShowCollapsible] = useState(false);
 
@@ -35,7 +35,9 @@ const Collapsible = ({ as, is_collapsed, position = 'top', children, onClick }) 
         ...swipe_config,
     });
 
-    const arrow_button = <ArrowButton is_collapsed={!is_open} position={position} onClick={toggleExpand} />;
+    const arrow_button = (
+        <ArrowButton is_collapsed={!is_open} position={position} onClick={toggleExpand} title={title} />
+    );
     const CustomTag = as || 'div';
     return (
         <CustomTag
@@ -44,6 +46,7 @@ const Collapsible = ({ as, is_collapsed, position = 'top', children, onClick }) 
                 'dc-collapsible--is-expanded': is_open,
                 'dc-collapsible--is-collapsed': !is_open,
                 'dc-collapsible--has-collapsible-btn': should_show_collapsible,
+                'dc-collapsible--has-title': title,
             })}
         >
             {should_show_collapsible && position === 'top' && arrow_button}

@@ -2,6 +2,7 @@ import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS } from 'mobx';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -310,6 +311,11 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    setAllowEqual(is_equal) {
+        this.is_equal = is_equal;
+    }
+
+    @action.bound
     async resetPreviousSymbol() {
         this.setMarketStatus(isMarketClosed(this.active_symbols, this.previous_symbol));
         await Symbol.onChangeSymbolAsync(this.previous_symbol);
@@ -421,7 +427,7 @@ export default class TradeStore extends BaseStore {
                             // and then set the chart view to the start_time
                             // draw the start time line and show longcode then mount contract
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
-                            this.root_store.ui.openPositionsDrawer();
+                            if (isDesktop()) this.root_store.ui.openPositionsDrawer();
                             this.proposal_info = {};
                             WS.forgetAll('proposal');
                             this.purchase_info = response;

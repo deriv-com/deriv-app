@@ -53,11 +53,16 @@
     }
     & .dc-password-meter__container {
         flex-grow: 0;
-        width: 300px;
+        max-width: 300px;
+        margin: auto;
+        width: 100%;
     }
     & .mt5-password-field {
         margin-bottom: 1em;
         width: 80%;
+    }
+    .input-element {
+        width: 100%;
     }
 }
 
@@ -163,7 +168,7 @@
         }
     }
     .dc-tooltiptext {
-        @include typeface(--xsmall-left-normal-black);
+        @include typeface(--small-left-normal-black);
         text-transform: none;
         box-shadow: 0 0 8px 0 rgba(21, 33, 45, 0.32);
         visibility: hidden;

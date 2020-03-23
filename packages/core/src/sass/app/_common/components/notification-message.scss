@@ -5,7 +5,11 @@
     z-index: 4;
     position: absolute;
     right: 0;
-    top: 8px;
+
+    @include mobile {
+        left: 1.6rem;
+        right: 1.6rem;
+    }
 }
 
 /** @define notification; weak */
@@ -105,5 +109,12 @@
     }
     &:not(:last-child) {
         margin-bottom: 16px;
+    }
+    @include mobile {
+        max-width: unset;
+
+        &--small {
+            max-width: unset;
+        }
     }
 }

@@ -13,14 +13,21 @@
         width: 100%;
         line-height: 35px;
         display: flex;
+        position: relative;
+        @include mobile {
+            justify-content: center;
+        }
 
         &--top {
             order: 0;
-            border-bottom: 1px solid var(--general-section-1);
         }
         &--bottom {
             order: 1;
-            border-top: 1px solid var(--general-section-1);
+        }
+        &--fit-content {
+            @include mobile {
+                width: fit-content;
+            }
         }
     }
     &__item {
@@ -34,6 +41,15 @@
         &__counter {
             margin-left: 1rem;
             vertical-align: middle;
+        }
+        &--top {
+            border-bottom: 1px solid var(--general-section-1);
+        }
+        &--bottom {
+            border-top: 1px solid var(--general-section-1);
+        }
+        &--is-hidden {
+            display: none;
         }
         &:not(.dc-tabs__active) {
             cursor: pointer;
@@ -54,10 +70,18 @@
         transition: all ease-in-out 0.3s;
 
         &--top {
-            top: 34px;
+            bottom: 0;
         }
         &--bottom {
-            bottom: 34px;
+            bottom: 0;
+        }
+        &--is-hidden {
+            display: none;
+        }
+        &--fit-content {
+            @include mobile {
+                width: 120px;
+            }
         }
     }
 }

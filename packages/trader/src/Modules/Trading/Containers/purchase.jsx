@@ -11,6 +11,7 @@ const Purchase = ({
     contract_type,
     currency,
     is_client_allowed_to_visit,
+    is_mobile,
     // is_purchase_confirm_on,
     purchased_states_arr,
     // is_purchase_locked,
@@ -49,10 +50,11 @@ const Purchase = ({
                 currency={currency}
                 info={info}
                 key={index}
-                index={getSortedIndex()}
+                index={getSortedIndex(index, type)}
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={isLoading(info)}
+                is_mobile={is_mobile}
                 // is_purchase_confirm_on={is_purchase_confirm_on}
                 is_proposal_empty={is_proposal_empty}
                 is_proposal_error={is_proposal_error}
@@ -90,6 +92,7 @@ Purchase.propTypes = {
     basis: PropTypes.string,
     currency: PropTypes.string,
     is_client_allowed_to_visit: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     // is_purchase_confirm_on    : PropTypes.bool,
     is_purchase_locked: PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
@@ -118,6 +121,7 @@ export default connect(({ client, modules, ui, gtm }) => ({
     purchase_info: modules.trade.purchase_info,
     trade_types: modules.trade.trade_types,
     validation_errors: modules.trade.validation_errors,
+    is_mobile: ui.is_mobile,
     purchased_states_arr: ui.purchase_states,
     setPurchaseState: ui.setPurchaseState,
     // is_purchase_confirm_on    : ui.is_purchase_confirm_on,

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { PageOverlay, VerticalTab } from '@deriv/components';
+import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { FadeWrapper } from 'App/Components/Animations';
 import { connect } from 'Stores/connect';
@@ -17,6 +17,15 @@ class Reports extends React.Component {
     }
 
     onClickClose = () => this.props.routeBackInApp(this.props.history);
+
+    getRoutedReport() {
+        const { routes } = this.props;
+        const route = routes.find(r => r.path === this.props.location.pathname || r.path === r.default) || routes[0];
+        if (!route) return null;
+
+        const Content = route.component;
+        return <Content component_icon={route.icon_component} />;
+    }
 
     render() {
         const menu_options = () => {
@@ -43,16 +52,21 @@ class Reports extends React.Component {
             >
                 <div className='reports'>
                     <PageOverlay header={localize('Reports')} onClickClose={this.onClickClose}>
-                        <VerticalTab
-                            alignment='center'
-                            id='report'
-                            is_floating
-                            classNameHeader='reports__tab-header'
-                            current_path={this.props.location.pathname}
-                            is_routed={true}
-                            is_full_width={true}
-                            list={menu_options()}
-                        />
+                        <DesktopWrapper>
+                            <VerticalTab
+                                alignment='center'
+                                id='report'
+                                is_floating
+                                classNameHeader='reports__tab-header'
+                                current_path={this.props.location.pathname}
+                                is_routed={true}
+                                is_full_width={true}
+                                list={menu_options()}
+                            />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <div className='reports__mobile-wrapper'>{this.getRoutedReport()}</div>
+                        </MobileWrapper>
                     </PageOverlay>
                 </div>
             </FadeWrapper>

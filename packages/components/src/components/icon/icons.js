@@ -52,6 +52,7 @@ import './common/ic-chevron-down.svg';
 import './common/ic-chevron-left.svg';
 import './common/ic-chevron-right.svg';
 import './common/ic-chevron-up-bold.svg';
+import './common/ic-chevron-up.svg';
 import './common/ic-circle.svg';
 import './common/ic-clipboard.svg';
 import './common/ic-clock-outline.svg';

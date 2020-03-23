@@ -846,7 +846,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setBalance(obj_balance) {
-        if (this.accounts[obj_balance.loginid]) {
+        if (this.accounts[obj_balance?.loginid]) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
             if (obj_balance.total) {
                 const total_real = ObjectUtils.getPropertyValue(obj_balance, ['total', 'real']);

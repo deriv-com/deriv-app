@@ -1,6 +1,6 @@
 import { action, computed, observable, toJS } from 'mobx';
-import { LocalStore } from '_common/storage';
 import { isDesktop } from '@deriv/shared/utils/screen';
+import { LocalStore } from '_common/storage';
 import { switch_to_tick_chart } from './Helpers/chart-notifications';
 import ContractStore from './contract-store';
 import BaseStore from '../../base-store';

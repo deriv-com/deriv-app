@@ -1,6 +1,6 @@
 import extend from 'extend';
-import { isDigitContract } from 'Stores/Modules/Contract/Helpers/digits';
 import { isMobile } from '@deriv/shared/utils/screen';
+import { isDigitContract } from 'Stores/Modules/Contract/Helpers/digits';
 import { isUserSold, getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { MARKER_TYPES_CONFIG } from '../../SmartChart/Constants/markers';
 

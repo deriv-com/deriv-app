@@ -1,6 +1,6 @@
+import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import { routes } from 'Constants/index';
-import { isDesktop } from '@deriv/shared/utils/screen';
 
 const platform_config = [
     {

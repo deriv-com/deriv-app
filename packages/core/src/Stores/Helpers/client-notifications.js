@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button } from '@deriv/components';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { WS } from 'Services';
 import { formatDate } from 'Utils/Date';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { isMobile } from '@deriv/shared/utils/screen';
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
 import { localize, Localize } from '@deriv/translations';

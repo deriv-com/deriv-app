@@ -35,6 +35,8 @@ const routes = {
     cashier_acc_transfer: '/cashier/account-transfer',
     cashier_p2p: '/cashier/p2p',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
+    smarttrader: 'https://smarttrader.deriv.app',
+    endpoint: '/endpoint',
 };
 
 export const routing_control_key = 'routing_control';

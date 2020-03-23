@@ -42,6 +42,11 @@ const copyConfig = base => [
     },
     { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file' },
     { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },
+    {
+        from: path.resolve(__dirname, '../src/root_files/localstorage-sync.html'),
+        to: 'localstorage-sync.html',
+        toType: 'file',
+    },
     { from: path.resolve(__dirname, '../src/root_files/robots.txt'), to: 'robots.txt', toType: 'file' },
     { from: path.resolve(__dirname, '../src/root_files/sitemap.xml'), to: 'sitemap.xml', toType: 'file' },
     { from: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'), to: 'favicon.ico', toType: 'file' },
@@ -66,7 +71,7 @@ const copyConfig = base => [
 
 const generateSWConfig = () => ({
     cleanupOutdatedCaches: true,
-    exclude: [/CNAME$/, /index\.html$/, /404\.html$/],
+    exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^localstorage-sync\.html$/],
     skipWaiting: true,
     clientsClaim: true,
 });

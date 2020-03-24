@@ -1,11 +1,11 @@
-const StyleLintPlugin = require('stylelint-webpack-plugin');
-const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
+const StyleLintPlugin      = require('stylelint-webpack-plugin');
+const SpriteLoaderPlugin   = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path = require('path');
-const shared_utils = require('@deriv/shared/utils/index.js');
+const path                 = require('path');
+const shared_utils         = require('@deriv/shared/utils/index.js');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-const is_serve = process.env.BUILD_MODE === 'serve';
+const is_serve   = process.env.BUILD_MODE === 'serve';
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 module.exports = {
@@ -16,9 +16,10 @@ module.exports = {
         button               : 'Components/button',
         'button-toggle'      : 'Components/button-toggle',
         checkbox             : 'Components/checkbox',
-        counter              : 'Components/counter',
-        dialog               : 'Components/dialog',
-        drawer               : 'Components/drawer',
+        'circular-progress'             : 'Components/circular-progress',
+        collapsible                     : 'Components/collapsible',counter              : 'Components/counter',
+        'desktop-wrapper'               : 'Components/desktop-wrapper',dialog               : 'Components/dialog',
+        'div100vh-container'            : 'Components/div100vh-container',drawer               : 'Components/drawer',
         dropdown             : 'Components/dropdown',
         'field-error'        : 'Components/field-error',
         'file-dropzone'      : 'Components/file-dropzone',
@@ -29,24 +30,29 @@ module.exports = {
         input                : 'Components/input',
         label                : 'Components/label',
         loading              : 'Components/loading',
-        modal                : 'Components/modal',
+        'mobile-dialog'                 : 'Components/mobile-dialog',
+        'mobile-drawer'                 : 'Components/mobile-drawer',
+        'mobile-wrapper'                : 'Components/mobile-wrapper',modal                : 'Components/modal',
         money                : 'Components/money',
-        'page-overlay': 'Components/page-overlay',
+        numpad                          : 'Components/numpad/',
         'password-input'     : 'Components/password-input',
         'password-meter'     : 'Components/password-meter',
-        popover              : 'Components/popover',
+        'page-overlay'                  : 'Components/page-overlay',popover              : 'Components/popover',
+        'progress-bar'                  : 'Components/progress-bar',
         'radio-group'        : 'Components/radio-group',
-        table                : 'Components/table',
-        tabs                 : 'Components/tabs',
+        'swipeable-wrapper'             : 'Components/swipeable-wrapper',
+        'relative-datepicker'           : 'Components/relative-datepicker',table                : 'Components/table',
+        tabs                 : 'Components/tabs','toast-error'                   : 'Components/toast-error',
         'themed-scrollbars'  : 'Components/themed-scrollbars',
-        'toggle-switch'      : 'Components/toggle-switch',
-        'vertical-tab': 'Components/vertical-tab',
+        'toggle-switch'      : 'Components/toggle-switch','tick-picker'                   : 'Components/tick-picker',
+        'tick-progress'                 : 'Components/tick-progress',
+        'vertical-tab'                  : 'Components/vertical-tab',
     },
     output: {
-        path: path.resolve(__dirname, 'lib'),
-        filename: '[name].js',
+        path         : path.resolve(__dirname, 'lib'),
+        filename     : '[name].js',
         libraryExport: 'default',
-        library: '@deriv/component',
+        library      : '@deriv/component',
         libraryTarget: 'umd',
     },
     resolve: {
@@ -65,23 +71,23 @@ module.exports = {
         publicPath: '/dist/',
     },
     devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
-    module: {
+    module : {
         rules: [
             {
                 test: /\.(s*)css$/,
-                use: [
+                use : [
                     'css-hot-loader',
                     MiniCssExtractPlugin.loader,
                     {
-                        loader: 'css-loader',
+                        loader : 'css-loader',
                         options: { sourceMap: true },
                     },
                     {
-                        loader: 'sass-loader',
+                        loader : 'sass-loader',
                         options: { sourceMap: true },
                     },
                     {
-                        loader: 'sass-resources-loader',
+                        loader : 'sass-resources-loader',
                         options: {
                             resources: shared_utils,
                         },
@@ -90,11 +96,11 @@ module.exports = {
             },
             {
                 test: /\.svg$/,
-                use: [
-                    {
-                        loader: 'svg-sprite-loader',
+                use : [
+                   {
+                        loader : 'svg-sprite-loader',
                         options: {
-                            extract: true,
+                            extract       : true,
                             spriteFilename: svgPath => {
                                 if (svgPath.includes('components/icon/common')) {
                                     return 'common.svg';
@@ -120,29 +126,30 @@ module.exports = {
                         },
                     },
                     {
-                        loader: 'svgo-loader',
+                        loader : 'svgo-loader',
                         options: {
-                            plugins: [{ removeUselessStrokeAndFill: false }, { removeUnknownsAndDefaults: false }],
+                            plugins: [
+                                { removeUselessStrokeAndFill: false },
+                                { removeUnknownsAndDefaults: false },
+                            ],
                         },
                     },
                 ],
             },
-            !is_serve
-                ? {
-                      enforce: 'pre',
-                      test: /\.(js|jsx)$/,
-                      exclude: /node_modules|lib|shared\/utils/,
-                      include: /src/,
-                      loader: 'eslint-loader',
-                      options: {
-                          fix: true,
-                      },
-                  }
-                : {},
+            (!is_serve ? {
+                enforce: 'pre',
+                test   : /\.(js|jsx)$/,
+                exclude: /node_modules|lib|shared\/utils/,
+                include: /src/,
+                loader : 'eslint-loader',
+                options: {
+                    fix: true,
+                },
+            } : {}),
             {
-                test: /\.(js|jsx)$/,
+                test   : /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader: 'babel-loader',
+                loader : 'babel-loader',
             },
         ],
     },
@@ -154,19 +161,22 @@ module.exports = {
     ],
     externals: [
         {
-            formik: 'formik',
-            classnames: 'classnames',
-            '@contentpass/zxcvbn': '@contentpass/zxcvbn',
-            'react-pose': 'react-pose',
-            'babel-polyfill': 'babel-polyfill',
-            'prop-types': 'prop-types',
-            'react-transition-group': 'react-transition-group',
+            'formik'                    : 'formik',
+            'classnames'                : 'classnames',
+            '@contentpass/zxcvbn'       : '@contentpass/zxcvbn',
+            'react-div-100vh'           : 'react-div-100vh',
+            'react-drag-drawer'         : 'react-drag-drawer',
+            'react-pose'                : 'react-pose',
+            'babel-polyfill'            : 'babel-polyfill',
+            'prop-types'                : 'prop-types',
+            'react-transition-group'    : 'react-transition-group',
             'tt-react-custom-scrollbars': 'tt-react-custom-scrollbars',
-            react: 'react',
-            'react-dom': 'react-dom',
-            '@deriv/shared': '@deriv/shared',
-            'react-router-dom': 'react-router-dom',
-            'react-tiny-popover': 'react-tiny-popover',
+            'react'                     : 'react',
+            'react-dom'                 : 'react-dom',
+            '@deriv/shared'              : '@deriv/shared',
+            'react-router-dom'          : 'react-router-dom',
+            'react-swipeable'           : 'react-swipeable',
+            'react-tiny-popover'        : 'react-tiny-popover',
         },
         /^@deriv\/shared\/.+$/,
     ],

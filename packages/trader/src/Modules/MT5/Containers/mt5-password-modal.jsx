@@ -171,7 +171,7 @@ const MT5PasswordModal = ({
                     // message={error_message}
                     icon={<IconType />}
                     icon_size='xlarge'
-                    text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('Ok')}
+                    text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('OK')}
                     has_cancel={account_type.category === 'real'}
                 />
             </Modal>

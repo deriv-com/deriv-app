@@ -1,10 +1,11 @@
 import classNames from 'classnames';
+import { Icon, Modal, Loading, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Icon, Loading, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
+import AccountSignupUnavailableModal from './account-signup-unavailable-modal.jsx';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
@@ -207,22 +208,30 @@ class RealAccountSignup extends Component {
             this.active_modal_index < 2 || this.active_modal_index === 5 || this.active_modal_index === 6;
 
         return (
-            <Modal
-                id='real_account_signup_modal'
-                className={classNames('real-account-signup-modal', {
-                    'dc-modal__container_real-account-signup-modal--error': this.active_modal_index === 5,
-                    'dc-modal__container_real-account-signup-modal--success':
-                        this.active_modal_index >= 2 && this.active_modal_index < 5,
-                })}
-                is_open={is_real_acc_signup_on}
-                has_close_icon={has_close_icon}
-                title={title}
-                toggleModal={this.closeModal}
-                height={this.modal_height}
-                width='904px'
-            >
-                <Body />
-            </Modal>
+            <>
+                <DesktopWrapper>
+                    <Modal
+                        id='real_account_signup_modal'
+                        className={classNames('real-account-signup-modal', {
+                            'dc-modal__container_real-account-signup-modal--error': this.active_modal_index === 5,
+                            'dc-modal__container_real-account-signup-modal--success':
+                                this.active_modal_index >= 2 && this.active_modal_index < 5,
+                        })}
+                        is_open={is_real_acc_signup_on}
+                        has_close_icon={has_close_icon}
+                        title={title}
+                        toggleModal={this.closeModal}
+                        height={this.modal_height}
+                        width='904px'
+                    >
+                        <Body />
+                    </Modal>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    {/* TODO: remove this modal once real account signup is ready for mobile  */}
+                    <AccountSignupUnavailableModal is_visible={is_real_acc_signup_on} toggleModal={this.closeModal} />
+                </MobileWrapper>
+            </>
         );
     }
 }

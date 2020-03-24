@@ -33,4 +33,24 @@
             margin-right: 0;
         }
     }
+    @include mobile {
+        margin-top: 0;
+        padding: 0.8rem;
+        border-radius: $BORDER_RADIUS;
+        background-color: var(--fill-normal);
+
+        &__selection {
+            width: calc(20% - 7px);
+            height: 32px;
+            font-size: 1.6rem;
+            background-color: var(--general-section-1);
+
+            &--selected {
+                background-color: var(--state-active);
+            }
+            &:not(:first-child) {
+                margin-left: 0.8rem;
+            }
+        }
+    }
 }

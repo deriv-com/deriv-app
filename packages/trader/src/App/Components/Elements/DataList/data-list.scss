@@ -1,0 +1,64 @@
+/** @define data-list; weak */
+.data-list {
+    position: relative;
+
+    &__body {
+        flex: 1;
+    }
+    &__footer {
+        width: 100%;
+        background: var(--general-main-1);
+        border-top: 2px solid var(--border-disabled);
+        display: flex;
+        align-items: center;
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+    }
+    &__item {
+        height: calc(100% - 8px);
+        margin-bottom: 8px;
+        background-color: var(--general-section-1);
+        padding: 4px 0px;
+
+        &--wrapper {
+            text-decoration: none;
+        }
+        @include mobile {
+            border-radius: $BORDER_RADIUS;
+        }
+    }
+    &__row {
+        display: flex;
+        flex-direction: row;
+        padding: 4px 16px;
+        width: 100%;
+
+        > * {
+            flex: 1;
+        }
+        &-content {
+            font-size: 1.4rem;
+            line-height: 2rem;
+            color: var(--text-general);
+        }
+        &-cell {
+            &--amount {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                flex: none;
+            }
+        }
+        &-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--text-prominent);
+            line-height: 2rem;
+
+            @include mobile {
+                font-size: 1.2rem;
+            }
+        }
+    }
+}

@@ -1,7 +1,7 @@
+import { DesktopWrapper, Icon, MobileWrapper, Tabs } from '@deriv/components';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Tabs } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 import LoadingMT5RealAccountDisplay from './loading-mt5-real-account-display.jsx';
@@ -139,13 +139,45 @@ class MT5Dashboard extends React.Component {
                         </Tabs>
                         <CompareAccountsModal />
                     </div>
-                    <MT5DashboardContainer />
+
+                    <DesktopWrapper>
+                        <MT5DashboardContainer />
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <div className='mt5-dashboard__download-center'>
+                            <h1 className='mt5-dashboard__download-center--heading'>
+                                <Localize i18n_default_text='Run MT5 from your browser or download the DMT5 app for your devices' />
+                            </h1>
+                            <div className='mt5-dashboard__download-center-options--mobile'>
+                                <div className='mt5-dashboard__download-center-options--mobile-devices'>
+                                    <Icon icon='IcMt5DeviceTablet' width={133} height={106} />
+                                    <Icon icon='IcMt5DevicePhone' width={48} height={74} />
+                                </div>
+                                <div className='mt5-dashboard__download-center-options--mobile-links'>
+                                    <a
+                                        href='https://download.mql5.com/cdn/mobile/mt5/android?server=Binary.com-Server'
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                    >
+                                        <Icon icon='IcInstallationGoogle' width={135} height={40} />
+                                    </a>
+                                    <a
+                                        href='https://download.mql5.com/cdn/mobile/mt5/ios?server=Binary.com-Server'
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                    >
+                                        <Icon icon='IcInstallationApple' width={135} height={40} />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </MobileWrapper>
+                    <Mt5TopUpDemoModal />
+                    <MT5PasswordModal />
+                    <MT5ServerErrorDialog />
+                    <MT5AccountOpeningRealAdvancedModal />
+                    <Mt5AdvancedPendingDialog />
                 </div>
-                <Mt5TopUpDemoModal />
-                <MT5PasswordModal />
-                <MT5ServerErrorDialog />
-                <MT5AccountOpeningRealAdvancedModal />
-                <Mt5AdvancedPendingDialog />
             </div>
         );
     }

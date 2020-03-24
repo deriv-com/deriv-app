@@ -19,6 +19,70 @@
     outline: 0;
     font-size: 1rem;
 
+    @include mobile {
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        margin: initial;
+        height: 70px;
+
+        &__top,
+        &__bottom {
+            height: 50%;
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+        &__top {
+            width: 50%;
+        }
+        &__bottom {
+            width: 40vw; // TODO remove this when find a solution for fill-width inside flex.
+        }
+        &:hover {
+            transform: none !important;
+        }
+        &--disabled,
+        &[disabled] {
+            opacity: 0.32;
+        }
+        &--swoosh {
+            transform: none !important;
+        }
+        &__error {
+            position: absolute;
+            padding: 0.8rem;
+            width: 100%;
+            height: 100%;
+            color: var(--text-colored-background);
+            background-color: var(--status-danger);
+            justify-content: center;
+            align-items: center;
+            line-height: 1.4;
+            z-index: 2;
+            border-radius: $BORDER_RADIUS;
+            max-height: 70px;
+            overflow: hidden;
+            font-weight: bold;
+        }
+    }
+
+    &__icon_wrapper {
+        @extend %inline-icon.white;
+        /* postcss-bem-linter: ignore */
+        .color1-fill {
+            fill: var(--text-colored-background);
+        }
+        /* postcss-bem-linter: ignore */
+        .color2-fill {
+            fill: var(--text-colored-background);
+        }
+        @include mobile {
+            margin-right: 0.5rem;
+        }
+    }
     &__text {
         @include typeface(--paragraph-left-bold-active);
     }
@@ -41,17 +105,6 @@
         .btn-purchase__text_wrapper {
             margin-left: 24px;
             position: absolute;
-        }
-        .btn-purchase__icon_wrapper {
-            @extend %inline-icon.white;
-            /* postcss-bem-linter: ignore */
-            .color1-fill {
-                fill: var(--text-colored-background);
-            }
-            /* postcss-bem-linter: ignore */
-            .color2-fill {
-                fill: var(--text-colored-background);
-            }
         }
     }
     &__info--right {
@@ -153,6 +206,17 @@
                 background: var(--purchase-main-1);
             }
         }
+
+        @include mobile {
+            background: var(--purchase-section-1);
+            background: linear-gradient(
+                0deg,
+                var(--purchase-section-1) 0%,
+                var(--purchase-section-1) 50%,
+                var(--purchase-main-1) 50%,
+                var(--purchase-main-1) 100%
+            );
+        }
     }
     &--2 {
         background-color: var(--purchase-section-2);
@@ -166,6 +230,16 @@
             &--arrow {
                 background: var(--purchase-main-2);
             }
+        }
+        @include mobile {
+            background: var(--purchase-section-2);
+            background: linear-gradient(
+                0deg,
+                var(--purchase-section-2) 0%,
+                var(--purchase-section-2) 50%,
+                var(--purchase-main-2) 50%,
+                var(--purchase-main-2) 100%
+            );
         }
     }
     &--disabled,

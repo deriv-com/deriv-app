@@ -30,7 +30,7 @@ export const getStatementTableColumnsTemplate = currency => [
     {
         key: 'icon',
         title: '',
-        col_index: 'action_type',
+        col_index: 'icon',
         renderCellContent: ({ cell_value, row_obj }) => (
             <MarketSymbolIconRow action={cell_value} key={row_obj.transaction_id} payload={row_obj} />
         ),
@@ -98,6 +98,14 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
     {
         title: localize('Sell time'),
         col_index: 'sell_time',
+        renderHeader: ({ title }) => {
+            return (
+                <>
+                    <span>{title}</span>
+                    <Icon icon='IcContractFlag' />
+                </>
+            );
+        },
     },
     {
         title: localize('Sell price'),
@@ -147,8 +155,8 @@ export const getOpenPositionsColumnsTemplate = currency => [
         title: localize('Potential profit/loss'),
         col_index: 'profit',
         renderCellContent: ({ row_obj }) => {
-            if (!row_obj.contract_info || !row_obj.contract_info.profit) return;
-            const profit = row_obj.contract_info.profit;
+            if (!row_obj.profit_loss && (!row_obj.contract_info || !row_obj.contract_info.profit)) return;
+            const profit = row_obj.profit_loss || row_obj.contract_info.profit;
             // eslint-disable-next-line consistent-return
             return (
                 <div

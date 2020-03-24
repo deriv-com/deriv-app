@@ -63,7 +63,7 @@ const Amount = ({
             is_incrementable
             is_nativepicker={is_nativepicker}
             is_negative_disabled
-            max_length={10}
+            max_length={CurrencyUtils.AMOUNT_MAX_LENGTH}
             name='amount'
             onChange={onChange}
             type='tel'

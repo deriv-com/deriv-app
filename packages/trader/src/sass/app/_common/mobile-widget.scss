@@ -2,20 +2,35 @@
 
 /** @define mobile-widget */
 .mobile-widget {
-    border: 1px solid var(--border-normal);
     border-radius: 4px;
-    padding: 1em 0.5em;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto;
-    grid-template-areas: 'a b' 'c d';
-    font-size: 0.7em;
+    padding: 1em 0.8rem;
+    height: 4rem;
+    background-color: var(--general-main-1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 0.8rem;
+    flex: 1;
 
-    &:hover,
-    &:focus,
-    &:active {
-        cursor: pointer;
-        border: solid 1px var(--border-active);
+    &__amount {
+        @include typeface(--paragraph-center-bold-black);
+        color: var(--text-prominent);
+    }
+    &__duration {
+        @include typeface(--paragraph-center-normal-black);
+        color: var(--text-prominent);
+    }
+    &__type {
+        @include typeface(--paragraph-center-normal-black);
+        color: var(--text-less-prominent);
+    }
+    &__wrapper {
+        display: flex;
+
+        .mobile-widget:last-child:not(:only-child) {
+            margin-left: 0.8rem;
+            flex: unset;
+        }
     }
 }
 

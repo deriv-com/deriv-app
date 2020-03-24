@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { PageOverlay, VerticalTab } from '@deriv/components';
+import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { FadeWrapper } from 'App/Components/Animations';
 import routes from 'Constants/routes';
@@ -19,6 +19,16 @@ class Cashier extends React.Component {
     }
 
     onClickClose = () => this.props.routeBackInApp(this.props.history);
+
+    getRoutedCashier() {
+        const route =
+            this.props.routes.find(r => r.path === this.props.location.pathname || r.path === r.default) ||
+            this.props.routes[0];
+        if (!route) return null;
+
+        const Content = route.component;
+        return <Content component_icon={route.icon_component} />;
+    }
 
     render() {
         const menu_options = () => {
@@ -55,16 +65,23 @@ class Cashier extends React.Component {
             >
                 <div className='cashier'>
                     <PageOverlay header={localize('Cashier')} onClickClose={this.onClickClose} has_side_note>
-                        <VerticalTab
-                            alignment='center'
-                            id='cashier'
-                            classNameHeader='cashier__tab-header'
-                            current_path={this.props.location.pathname}
-                            is_floating
-                            is_full_width
-                            is_routed
-                            list={menu_options()}
-                        />
+                        <DesktopWrapper>
+                            <VerticalTab
+                                alignment='center'
+                                id='cashier'
+                                classNameHeader='cashier__tab-header'
+                                current_path={this.props.location.pathname}
+                                is_floating
+                                is_full_width
+                                is_routed
+                                list={menu_options()}
+                            />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <Div100vhContainer className='cashier__wrapper--is-mobile' height_offset='80px'>
+                                {this.getRoutedCashier()}
+                            </Div100vhContainer>
+                        </MobileWrapper>
                     </PageOverlay>
                 </div>
             </FadeWrapper>

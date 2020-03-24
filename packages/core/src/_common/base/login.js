@@ -1,8 +1,8 @@
 const { getLanguage } = require('@deriv/translations');
+const isMobile = require('@deriv/shared/utils/os').isMobile;
 const website_name = require('App/Constants/app-config').website_name;
 const Client = require('./client_base');
 const getElementById = require('../common_functions').getElementById;
-const isMobile = require('../os_detect').isMobile;
 const isStorageSupported = require('../storage').isStorageSupported;
 const LocalStore = require('../storage').LocalStore;
 const urlForCurrentDomain = require('../url').urlForCurrentDomain;

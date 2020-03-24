@@ -27,6 +27,11 @@
         &--lost {
             color: $COLOR_WHITE;
         }
+        @include mobile {
+            bottom: -9.5px;
+            margin-left: -8px;
+            font-size: 0.8rem;
+        }
     }
     &__entry {
         left: -12px;
@@ -34,12 +39,23 @@
         position: relative;
         border: 6px solid var(--brand-red-coral);
         background-color: var(--general-main-2);
+
+        @include mobile {
+            border-width: 3px;
+            left: -9px;
+            top: -9px;
+        }
     }
     &__spot,
     &__entry {
         width: 24px;
         height: 24px;
         border-radius: 50%;
+
+        @include mobile {
+            width: 16px;
+            height: 16px;
+        }
     }
     &__sell {
         border-radius: 50%;
@@ -70,6 +86,9 @@
             .chart-spot-label__time-container {
                 margin-bottom: 2px;
             }
+            @include mobile {
+                bottom: 9.5px;
+            }
         }
         &--bottom {
             top: 18px;
@@ -77,6 +96,9 @@
 
             .chart-spot-label__time-container {
                 margin-top: 2px;
+            }
+            @include mobile {
+                top: 7.5px;
             }
         }
     }
@@ -103,7 +125,7 @@
     }
     &__value-container {
         background: var(--text-less-prominent);
-        font-size: 14px;
+        font-size: 1.4rem;
         padding: 4px 8px;
         border-radius: 11px;
 
@@ -122,6 +144,13 @@
         &--won,
         &--lost {
             color: var(--text-colored-background);
+        }
+        @include mobile {
+            font-size: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.2rem;
         }
     }
 }
@@ -163,6 +192,12 @@
             circle {
                 fill: var(--text-loss-danger);
             }
+        }
+        @include mobile {
+            bottom: -15px;
+            left: -7px;
+            width: 16px;
+            height: 16px;
         }
     }
     &--solid {

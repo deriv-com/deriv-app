@@ -6,4 +6,4 @@ export { default as ProofOfAddress } from 'Modules/Account/Sections/Verification
 export { default as DerivPassword } from 'Modules/Account/Sections/Security/DerivPassword';
 export { default as AccountLimits } from 'Modules/Account/Sections/Security/AccountLimits';
 
-export default from './Containers/account.jsx';
+export default from './Containers/account-lazy.jsx';

@@ -1,1 +1,1 @@
-export default from './personal-details-wrapper.jsx';
+export default from './personal-details.jsx';

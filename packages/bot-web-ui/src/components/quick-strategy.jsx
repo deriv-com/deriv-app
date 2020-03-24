@@ -93,6 +93,7 @@ const QuickStrategyForm = ({
                                         type='text'
                                         label={localize('Duration unit')}
                                         list_items={duration_unit_dropdown}
+                                        disabled={duration_unit_dropdown.length === 1 ? 'disabled' : ''}
                                         onHideDropdownList={() => {
                                             onHideDropdownList('duration-unit', values[field.name], setFieldValue);
                                         }}

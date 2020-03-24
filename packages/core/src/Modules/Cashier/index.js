@@ -6,4 +6,4 @@ export { default as PaymentAgent } from './Containers/payment-agent.jsx';
 export { default as PaymentAgentTransfer } from './Containers/payment-agent-transfer.jsx';
 export { default as P2PCashier } from './Containers/p2p-cashier.jsx';
 
-export default from './Containers/cashier.jsx';
+export default from './Containers/cashier-lazy.jsx';

@@ -3,6 +3,9 @@
     justify-content: flex-start;
     cursor: pointer;
     align-items: center;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
 
     &__input {
         display: none;

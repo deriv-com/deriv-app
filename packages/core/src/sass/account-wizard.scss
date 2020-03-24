@@ -65,6 +65,7 @@
     flex-direction: column;
     flex: 1 1 0; /* fix for Safari */
     width: 100%;
+    position: relative;
 
     h1 {
         @include typeface(--title-center-bold-black);
@@ -73,10 +74,13 @@
         margin-top: 3rem;
     }
     h2 {
-        @include typeface(--title-center-bold-black);
         text-transform: none;
         margin-top: 2.4rem;
         color: var(--text-less-prominent);
+        @include typeface(--title-center-bold-black);
+        @include mobile {
+            margin-top: 0.8rem;
+        }
     }
     h3 {
         @include typeface(--small-center-normal-black);
@@ -88,10 +92,23 @@
         display: flex;
         flex: 1 1 0; /* fix for Safari */
         width: 100%;
-        padding: 0 2.4rem 3.2rem;
 
+        .currency-selector {
+            &__container {
+                width: 100%;
+                @include mobile {
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                    margin-top: 70px;
+                }
+            }
+        }
+        @include desktop {
+            padding: 0 2.4rem 3.2rem;
+        }
         @include mobile {
             height: calc(100vh - #{$MOBILE_HEADER_HEIGHT});
+            overflow: hidden;
         }
     }
     &__body {
@@ -116,11 +133,11 @@
         align-items: center;
         justify-content: flex-end;
         align-self: flex-end;
-        padding-top: 2.4em;
+        padding-top: 2.4rem;
         width: 100%;
 
         .btn:not(:last-child) {
-            margin: 0 1em;
+            margin: 0 1rem;
         }
         .btn:last-child {
             margin: 0;
@@ -129,7 +146,7 @@
             bottom: 0;
             position: absolute;
             left: 0;
-            padding: 2.4em;
+            padding: 2.4rem;
             border-top: 1px solid var(--general-section-1);
         }
         &--center {
@@ -137,13 +154,21 @@
             width: 100%;
 
             & .btn {
-                min-width: 9em;
+                min-width: 9rem;
             }
         }
         &--error {
             @include typeface(--paragraph-left-normal-black);
             text-transform: none;
             color: var(--brand-red-coral) !important;
+        }
+        @include mobile {
+            background-color: var(--general-section-2);
+
+            .btn {
+                height: 40px;
+                width: 100%;
+            }
         }
     }
     .checkbox {
@@ -198,6 +223,32 @@
                 line-height: 1.5;
                 width: 78%;
                 text-align: center;
+            }
+        }
+    }
+    @include mobile {
+        &__header {
+            &-steps {
+                padding-bottom: 0.8rem;
+                position: absolute;
+                top: 0;
+                width: 100%;
+                background: var(--general-main-1);
+
+                &-title {
+                    color: var(--brand-red-coral);
+                    font-size: 1.4rem;
+                    font-weight: bold;
+                    line-height: 20px;
+                    padding: 1.6rem 2.4rem 0.8rem;
+                }
+                &-subtitle {
+                    color: var(--text-prominent);
+                    line-height: 18px;
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    padding: 0 2.4rem;
+                }
             }
         }
     }

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
-import { DesktopWrapper } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { toMoment } from 'Utils/Date';
@@ -241,9 +241,28 @@ class AccountWizard extends React.Component {
             return (
                 <div className='account-wizard'>
                     {!this.props.has_real_account && (
-                        <DesktopWrapper>
-                            <FormProgress steps={this.state.items} current_step={this.state.step} />
-                        </DesktopWrapper>
+                        <>
+                            <DesktopWrapper>
+                                <FormProgress steps={this.state.items} current_step={this.state.step} />
+                            </DesktopWrapper>
+                            <MobileWrapper>
+                                <div className='account-wizard__header-steps'>
+                                    <h4 className='account-wizard__header-steps-title'>
+                                        <Localize
+                                            i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
+                                            values={{
+                                                step: this.state.step + 1,
+                                                steps: this.state.items.length,
+                                                step_title: this.state.items[this.state.step].header.title,
+                                            }}
+                                        />
+                                    </h4>
+                                    <h4 className='account-wizard__header-steps-subtitle'>
+                                        {this.state.items[this.state.step].header.active_title}
+                                    </h4>
+                                </div>
+                            </MobileWrapper>
+                        </>
                     )}
                     {this.props.has_real_account && (
                         <div className='account-wizard__set-currency'>

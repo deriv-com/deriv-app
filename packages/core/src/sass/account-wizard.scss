@@ -147,7 +147,7 @@
             position: absolute;
             left: 0;
             padding: 2.4rem;
-            border-top: 1px solid var(--general-section-1);
+            border-top: 1px solid var(--border-disabled);
         }
         &--center {
             justify-content: center;
@@ -233,7 +233,7 @@
                 position: absolute;
                 top: 0;
                 width: 100%;
-                background: var(--general-main-1);
+                background: var(--general-section-2);
 
                 &-title {
                     color: var(--brand-red-coral);

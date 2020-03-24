@@ -129,7 +129,7 @@ class CurrencySelector extends React.Component {
                     <form onSubmit={handleSubmit} className='currency-selector'>
                         <Div100vhContainer
                             className='currency-selector__container'
-                            height_offset='201px'
+                            height_offset='199px'
                             is_disabled={isDesktop()}
                         >
                             <ThemedScrollbars

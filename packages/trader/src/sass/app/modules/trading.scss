@@ -44,6 +44,16 @@
     }
 }
 
+/** @define modal-dialog; weak */
+.dc-mobile-dialog {
+    &__contracts-modal-list {
+        /* postcss-bem-linter: ignore */
+        .category-wrapper {
+            background-color: var(--general-main-1) !important;
+        }
+    }
+}
+
 /** @define trade-container */
 .trade-container {
     background: var(--general-main-1);
@@ -55,6 +65,10 @@
         background-color: var(--general-section-1);
         border-color: var(--general-section-1);
         color: var(--text-general);
+        @include mobile {
+            padding: 0;
+            margin-bottom: 0.8rem;
+        }
 
         &-header {
             height: 1.5rem;
@@ -145,6 +159,19 @@
             justify-self: left;
             align-items: center;
 
+            @include mobile {
+                color: var(--text-colored-background);
+                width: 100%;
+                justify-content: space-between;
+                align-items: center;
+
+                &-wrapper {
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                }
+            }
+
             &--slide {
                 width: 92px;
                 height: 8px;
@@ -172,12 +199,20 @@
                 color: var(--text-prominent);
                 opacity: 1;
                 transition: 0.3s;
+
+                @include mobile {
+                    color: var(--text-colored-background);
+                }
             }
             &-basis {
                 margin-left: 0;
                 font-weight: normal;
                 @include typeface(--paragraph-left-normal-black);
                 color: var(--text-less-prominent);
+                @include mobile {
+                    @include typeface(--xsmall-left-normal-black);
+                    color: var(--text-colored-background);
+                }
             }
             &-currency {
                 margin-left: 4px;
@@ -278,7 +313,7 @@
     }
 }
 
-/** @define purchase-container */
+/** @define purchase-container; weak */
 .purchase-container {
     position: relative;
 
@@ -304,6 +339,10 @@
                 }
             }
         }
+        @include mobile {
+            padding: initial;
+            position: relative;
+        }
     }
     &__loading {
         background: rgba(255, 255, 255, 0.6);
@@ -311,6 +350,11 @@
         width: calc(100% + 2px);
         height: calc(100% + 2px);
         left: -2px;
+    }
+    @include mobile {
+        display: grid;
+        grid-template-areas: 'a b';
+        grid-column-gap: 0.5rem;
     }
     //&__lock {
     //    position: absolute;
@@ -371,5 +415,32 @@
     /* postcss-bem-linter: ignore */
     .dropdown-container {
         margin-top: 0.8em;
+    }
+}
+
+/** @define dc-collapsible */
+@include mobile {
+    .dc-collapsible {
+        position: absolute;
+        bottom: 0;
+        z-index: 99999;
+        margin: 0 auto;
+        left: 0;
+        width: calc(100vw - 1.6rem);
+        transform: translate(0.8rem, 0);
+    }
+}
+
+/** @define popup-root */
+@include mobile {
+    .popup-root {
+        width: 100vw;
+        height: 100vh;
+
+        /* postcss-bem-linter: ignore */
+        .dc-toast-error {
+            z-index: 9999;
+            top: 2em;
+        }
     }
 }

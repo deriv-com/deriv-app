@@ -1,5 +1,6 @@
 import extend from 'extend';
 import { isDigitContract } from 'Stores/Modules/Contract/Helpers/digits';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { isUserSold, getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { MARKER_TYPES_CONFIG } from '../../SmartChart/Constants/markers';
 
@@ -108,5 +109,6 @@ export const createMarkerSpotMiddle = (contract_info, tick, idx) => {
     });
     marker_config.type = `${marker_config.type}_${idx}`;
 
+    if (isMobile() && spot_count > 1) return null;
     return marker_config;
 };

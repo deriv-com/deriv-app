@@ -20,6 +20,7 @@ const Button = ({
     large,
     medium,
     onClick,
+    rounded,
     tabIndex,
     text,
     wrapperClassName,
@@ -28,6 +29,7 @@ const Button = ({
     secondary,
     small,
     tertiary,
+    ...props
 }) => {
     const classes = classNames(
         'dc-btn',
@@ -37,6 +39,7 @@ const Button = ({
             'dc-btn--secondary': secondary,
             'dc-btn--tertiary': tertiary,
             'dc-btn--green': green,
+            'dc-btn__rounded': rounded,
             'dc-btn__large': large,
             'dc-btn__medium': medium,
             'dc-btn__small': small,
@@ -51,6 +54,7 @@ const Button = ({
             disabled={is_disabled}
             tabIndex={tabIndex || '0'}
             type={is_submit_success ? 'button' : type || 'submit'}
+            {...props}
         >
             {icon && <div className='dc-btn__icon'>{icon}</div>}
             {text && !(is_loading || is_submit_success) && (
@@ -83,6 +87,7 @@ Button.propTypes = {
     medium: PropTypes.bool,
     onClick: PropTypes.func,
     primary: PropTypes.bool,
+    rounded: PropTypes.bool,
     secondary: PropTypes.bool,
     small: PropTypes.bool,
     tertiary: PropTypes.bool,

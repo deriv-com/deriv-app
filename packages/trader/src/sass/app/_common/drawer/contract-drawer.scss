@@ -60,7 +60,7 @@ $header-height: 4em;
     }
 }
 
-/** @define .contract-card */
+/** @define .contract-card; weak */
 .contract-card {
     box-sizing: border-box;
     display: flex;
@@ -95,6 +95,7 @@ $header-height: 4em;
     &__grid {
         display: grid;
         grid-template-rows: 1fr auto;
+        grid-gap: 4px;
 
         &-underlying-trade {
             grid-template-columns: 1.5fr 1fr;
@@ -107,6 +108,20 @@ $header-height: 4em;
             margin-left: -4px;
             margin-right: -4px;
             background: var(--general-hover);
+        }
+        &-label {
+            font-size: 1rem;
+            align-self: flex-start;
+            text-transform: none;
+            line-height: 1.5;
+            color: var(--text-general);
+            white-space: nowrap;
+        }
+        &-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            align-self: flex-start;
+            line-height: 1.5;
         }
     }
     .purchase-price,
@@ -123,6 +138,7 @@ $header-height: 4em;
             text-transform: none;
             margin-bottom: 4px;
             color: var(--text-general);
+            white-space: nowrap;
         }
         &__value {
             font-size: 1em;
@@ -169,20 +185,33 @@ $header-height: 4em;
         }
     }
     &__symbol {
-        margin-left: 0.5rem;
-        font-size: 1em;
-        line-height: 1.5;
+        margin-left: 0.8rem;
+        font-size: 1.2rem;
+        line-height: normal;
     }
     &__header {
         display: flex;
         justify-content: space-evenly;
         margin: 0.5em 0.2em;
+
+        @include mobile {
+            margin: 0 8px;
+        }
     }
     &__body {
         border-radius: $BORDER_RADIUS;
         width: 100%;
         padding: 8px 12px 0;
         color: var(--text-prominent);
+
+        @include mobile {
+            padding: 0 8px;
+
+            &-wrapper {
+                display: flex;
+                padding-top: 0.8rem;
+            }
+        }
     }
     &__footer {
         margin-bottom: 0.5em;
@@ -216,6 +245,19 @@ $header-height: 4em;
         }
         .dc-btn--sell {
             height: 32px;
+
+            @include mobile {
+                width: 100%;
+            }
+        }
+    }
+    &__status {
+        min-width: 25%;
+        text-align: center;
+        margin-right: 0.4rem;
+
+        .result-icon {
+            margin-left: 0.4rem;
         }
     }
     .contract-audit {
@@ -238,5 +280,9 @@ $header-height: 4em;
             font-size: 1em;
             text-align: left;
         }
+    }
+    .contract-type__type-wrapper {
+        width: unset;
+        height: unset;
     }
 }

@@ -1,23 +1,13 @@
 /** @define app-contents; weak */
 .app-contents {
-    margin: $HEADER_HEIGHT 0 $FOOTER_HEIGHT;
-    height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
-    overflow: hidden;
-    backface-visibility: hidden;
-    background-color: var(--general-main-1);
-
-    &--is-disabled:after {
-        opacity: 1;
-        pointer-events: auto;
-    }
-    &--is-route-modal {
-        background-color: var(--overlay-outside-dialog);
-    }
-    &--show-positions-drawer {
+    &--show-positions-drawer:not(&--is-mobile) {
         .trade-container {
             .chart-container {
                 width: 100%;
 
+                .ciq-navigation-widget {
+                    transform: translate3d(248px, 0, 0);
+                }
                 .cq-top-ui-widgets {
                     transform: translate3d(248px, 0, 0);
                 }
@@ -47,10 +37,33 @@
             }
         }
     }
-    @media screen and (max-width: 768px) {
-        // no footer:
-        margin-bottom: 0;
-        height: calc(100vh - #{$HEADER_HEIGHT});
+    &--is-mobile {
+        .top-widgets-portal {
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            z-index: 1;
+
+            .recent-trade-info {
+                font-weight: bold;
+                min-width: 8rem;
+                font-size: 1.6rem;
+                line-height: 2.4rem;
+                margin-left: 0.8rem;
+                color: var(--text-general);
+            }
+        }
+        .cq-chart-title {
+            > .cq-menu-btn {
+                padding: 0.4rem;
+                user-select: none;
+                -webkit-touch-callout: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+        }
     }
 }
 
@@ -73,10 +86,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
         padding-bottom: 2.4rem;
 
         .contract-drawer {
-            height: calc(
-                100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - (#{$POSITIONS_DRAWER_MARGIN} *
-                            6)
-            );
+            /* prettier-ignore */
+            height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - (#{$POSITIONS_DRAWER_MARGIN} * 6));
             border-bottom-right-radius: 0;
             border-top-right-radius: 0;
             z-index: 1;
@@ -88,6 +99,22 @@ $FLOATING_HEADER_HEIGHT: 41px;
             }
             .contract-card__sell-button--exit {
                 display: none;
+            }
+            @include mobile {
+                height: fit-content;
+                border-bottom-right-radius: $BORDER_RADIUS;
+                border-top-right-radius: $BORDER_RADIUS;
+                width: calc(100% - 1.6rem);
+                margin-left: 0.8rem;
+                margin-bottom: 0.8rem;
+
+                .contract-card__grid-underlying-trade,
+                .contract-card__footer-wrapper {
+                    grid-template-columns: 1fr 1fr 0.7fr;
+                }
+                &--with-collapsible-btn {
+                    padding-top: 0;
+                }
             }
         }
         .replay-chart__container {
@@ -125,10 +152,13 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         top: 75px;
                     }
                     .stx_jump_today.home > svg {
-                        top: 6px;
+                        top: 10px;
                         left: 8px;
                         padding: 0;
                         position: absolute;
+                    }
+                    .ciq-navigation-widget {
+                        transition: transform 0.25s ease;
                     }
                     .cq-bottom-ui-widgets {
                         bottom: 30px !important;
@@ -143,10 +173,50 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     }
                 }
             }
+            @include mobile {
+                flex: 1;
+                margin-left: unset;
+
+                .drag-price {
+                    .arrow-icon {
+                        display: none;
+                    }
+                }
+            }
+        }
+        @include mobile {
+            display: flex;
+            flex-direction: column-reverse;
+            height: 100%;
+            padding-bottom: 0;
         }
     }
-    @media (max-width: 768px) {
+    @include mobile {
         flex-direction: column;
+        min-height: calc(100vh - 48px);
+        padding: 0;
+    }
+}
+
+/** @define mobile-wrapper; weak */
+.mobile-wrapper {
+    padding: 0 0.8rem;
+    display: flex;
+    flex-direction: column;
+    height: 202px;
+    position: relative;
+
+    &__content-loader {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        bottom: -0.8rem;
+
+        svg {
+            height: 100%;
+            width: 100%;
+        }
     }
 }
 
@@ -193,6 +263,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
         }
     }
     // smartchart library style fixes
+    .smartcharts-mobile {
+        .cq-categorical-display {
+            height: calc(100% - 8px) !important;
+        }
+    }
     .cq-context {
         top: 0;
         left: 0;
@@ -206,7 +281,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 bottom: 15px;
                 left: calc(45% - 150px);
             }
-            div.cq-chart-controls {
+            .info-box div.cq-chart-controls {
                 box-shadow: none;
             }
             // TODO: enable asset information
@@ -216,7 +291,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
             //     left: 0;
             // }
             div.stx_jump_today.home > svg {
-                top: 6px;
+                top: 10px;
                 left: 8px;
                 padding: 0;
                 position: absolute;
@@ -250,6 +325,9 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 transform: translate3d(0, 0, 0);
             }
         }
+        .ciq-navigation-widget {
+            transform: translate3d(0, 0, 0);
+        }
     }
     .ciq-chart {
         .cq-top-ui-widgets,
@@ -262,50 +340,74 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 &.ciq-disabled {
                     display: none;
                 }
+                @include mobile {
+                    top: 0.8rem;
+                    left: 0.8rem;
+                    min-width: 170px;
+                    max-width: 260px;
+                    width: auto;
+
+                    .cq-menu-btn {
+                        padding: 0.2rem;
+                    }
+                    .cq-symbol-select-btn {
+                        padding: 0.3rem 0.9rem;
+
+                        .cq-symbol-dropdown {
+                            transform: scale(1);
+                            margin-left: auto;
+                        }
+                        .cq-symbol {
+                            font-size: 1.2rem;
+                        }
+                        .cq-chart-price {
+                            display: none;
+                        }
+                    }
+                }
             }
         }
         .cq-chart-controls {
             transition: max-width 0.25s ease, transform 0.25s ease;
         }
+        .ciq-navigation-widget {
+            transform: translate3d(0, 0, 0);
+        }
+        .ciq-toolbar-widget {
+            @include mobile {
+                background: transparent;
+                border-width: 0;
+                bottom: 2.8rem;
+
+                /* postcss-bem-linter: ignore */
+                .ciq-chart-mode {
+                    background: var(--general-section-1);
+                    padding: 0.4rem 0.2rem;
+                    width: 4rem;
+                    height: 4rem;
+                    display: flex;
+                    border-radius: 50%;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 0.8rem;
+                    opacity: 0.75;
+
+                    &__menu {
+                        &__timeperiod {
+                            top: 0.8rem;
+                            left: 0.8rem;
+                        }
+                        & > .ic-icon {
+                            top: 0.6rem;
+                        }
+                    }
+                }
+            }
+        }
     }
     .chartContainer {
         background: transparent;
         min-height: 100%;
-    }
-    @media (max-width: 768px) {
-        height: 400px;
-        // smartchart library style fixes
-        .cq-context {
-            div.cq-chart-controls {
-                border: 1px solid $COLOR_LIGHT_BLACK_4;
-            }
-        }
-        .cq-modal-dropdown {
-            &.stxMenuActive {
-                position: fixed;
-                height: 100%;
-                width: 100%;
-                top: 4.7em;
-                left: -0.1em;
-            }
-            .cq-categorical-display {
-                .ic-icon.icon-close-menu {
-                    svg {
-                        width: 2.4em;
-                        height: 2.4em;
-                    }
-                }
-                .cq-lookup-filters.scroll-down {
-                    max-height: unset;
-                }
-                .scrollbar-container.cq-scroll-panel {
-                    left: -0.1em;
-                }
-            }
-        }
-        .smartcharts-mobile .cq-modal-dropdown .cq-menu-overlay .cq-menu-dropdown {
-            bottom: 4.8em;
-        }
     }
 }
 
@@ -363,111 +465,74 @@ $FLOATING_HEADER_HEIGHT: 41px;
     }
 }
 
-/** @define advanced-simple-toggle */
-.advanced-simple-toggle {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: calc(100% + 18px);
-    /* margin shorthand for values below does not work */
-    margin-top: 8px;
-    margin-left: -9px;
-    margin-bottom: -9px;
-    margin-right: 0;
-    padding: 8px 0;
-    border-bottom-right-radius: $BORDER_RADIUS;
-    border-bottom-left-radius: $BORDER_RADIUS;
-    border: 0;
-    background: none;
-    transition: background-color 0.25s linear;
+/** @define smartcharts; weak */
+/* postcss-bem-linter: ignore */
+.smartcharts {
+    &-dark,
+    &-light {
+        @include mobile {
+            /* postcss-bem-linter: ignore */
+            .cq-menu-dropdown-enter-done {
+                margin-top: 0;
 
-    &__icon {
-        transition: transform 0.2s ease;
-        @extend %inline-icon;
+                /* postcss-bem-linter: ignore */
+                .icon-close-menu {
+                    opacity: 1;
+                    pointer-events: auto;
+                    top: 8px;
+                }
+            }
+            .cq-dialog-portal {
+                /* postcss-bem-linter: ignore */
+                .cq-dialog {
+                    max-width: calc(100% - 36px);
+                }
+            }
+            /** @define ciq-chart-type; weak */
+            .ciq-chart-type {
+                &__item {
+                    /* postcss-bem-linter: ignore */
+                    .sc-tooltip,
+                    .dc-tooltip {
+                        display: none;
+                    }
+                }
+            }
+            /** @define ciq-chart-mode; weak */
+            .ciq-chart-mode {
+                /* postcss-bem-linter: ignore */
+                &__section__item {
+                    /* postcss-bem-linter: ignore */
+                    .cq-interval {
+                        display: grid;
+                        padding: 1.6rem;
+                        grid-template-columns: 1fr;
 
-        &--active {
-            transform: rotate(180deg);
+                        /* postcss-bem-linter: ignore */
+                        &__content {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr 1fr;
+                            padding-top: 16px;
+                        }
+                        /* postcss-bem-linter: ignore */
+                        &__item {
+                            width: 100% !important;
+                            margin: 0;
+
+                            /* postcss-bem-linter: ignore */
+                            .sc-tooltip,
+                            .dc-tooltip {
+                                display: none;
+                            }
+                        }
+                        /* postcss-bem-linter: ignore */
+                        &__info {
+                            margin-top: 0.4rem;
+                            padding-left: 0.2rem;
+                        }
+                    }
+                }
+            }
         }
-    }
-    &:hover {
-        cursor: pointer;
-        background-color: var(--general-hover);
-    }
-    &:focus {
-        outline: none;
-    }
-}
-
-@mixin contract_type_icon_wrapper {
-    width: 2.4em;
-    height: 2.4em;
-    border-radius: $BORDER_RADIUS;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--general-section-1);
-}
-
-/** @define category-wrapper */
-.category-wrapper {
-    @include contract_type_icon_wrapper;
-}
-
-/** @define type-wrapper */
-.type-wrapper {
-    @include contract_type_icon_wrapper;
-
-    /* postcss-bem-linter: ignore */
-    .color1-fill {
-        fill: var(--brand-red-coral);
-    }
-    /* postcss-bem-linter: ignore */
-    .color2-fill {
-        fill: var(--brand-secondary);
-    }
-}
-
-// Helpers
-/** @define no-scroll */
-.no-scroll {
-    overflow: hidden;
-    max-height: 100vh;
-}
-
-/** @define desktop-only */
-.desktop-only {
-    @media (max-width: 768px) {
-        display: none !important;
-    }
-}
-
-/** @define mobile-only */
-.mobile-only {
-    @media (min-width: 769px) {
-        display: none !important;
-    }
-}
-
-/** @define error */
-.error {
-    &__container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: calc(100vh - 9em); // TODO: replace with 100vh - header height - footer height
-    }
-    &__message {
-        @include interpolate(font-size, 320px, 1440px, 14px, 20px);
-        color: var(--text-general);
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
     }
 }

@@ -2,7 +2,7 @@ import { Money, Button } from '@deriv/components';
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Mt5AccountCopy } from './mt5-account-copy.jsx';
-import { getPlatformMt5DownloadLink } from '../Helpers/constants';
+import { getMT5WebTerminalLink } from '../Helpers/constants';
 
 const MT5AccountCard = ({
     commission_message,
@@ -100,11 +100,11 @@ const MT5AccountCard = ({
                     <a
                         className='dc-btn mt5-account-card__account-selection mt5-account-card__account-selection--primary'
                         type='button'
-                        href={getPlatformMt5DownloadLink()}
+                        href={getMT5WebTerminalLink(type.category)}
                         target='_blank'
                         rel='noopener noreferrer'
                     >
-                        <Localize i18n_default_text='Download' />
+                        <Localize i18n_default_text='Trade on web terminal' />
                     </a>
                 )}
                 {!existing_data && !has_mt5_account && (
@@ -116,7 +116,9 @@ const MT5AccountCard = ({
                         type='button'
                         primary
                     >
-                        <Localize i18n_default_text='Create account' />
+                        <Localize
+                            i18n_default_text={type.category === 'real' ? 'Add real account' : 'Add demo account'}
+                        />
                     </Button>
                 )}
             </div>

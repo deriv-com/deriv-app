@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { TogglePositions } from 'App/Components/Layout/Footer/toggle-positions.jsx';
+import TogglePositions from 'App/Components/Elements/TogglePositions';
 import AppRoutes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 
@@ -20,8 +20,8 @@ class TradeFooterExtensions extends React.Component {
 
         const footer_items = is_logged_in && show_positions_toggle && (
             <TogglePositions
-                is_positions_drawer_on={is_positions_drawer_on}
-                togglePositionsDrawer={togglePositionsDrawer}
+                is_open={is_positions_drawer_on}
+                togglePositions={togglePositionsDrawer}
                 positions_count={active_positions_count}
             />
         );

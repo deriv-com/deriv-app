@@ -1,0 +1,141 @@
+// Used for buttons
+$SQUARE_SIZE: 48px;
+@mixin append-button($position) {
+    border-top-#{$position}-radius: 0;
+    border-bottom-#{$position}-radius: 0;
+}
+
+/* S: Steps
+   N: Number
+   B: Backspace
+   O: Ok
+   Z: Zero
+ */
+.dc-numpad {
+    box-sizing: border-box;
+    display: grid;
+    grid-gap: 0.3rem;
+    grid-template-columns: repeat(4, 1fr);
+
+    &--is-regular {
+        grid-template-areas: /* numpad-layout */
+            'np np np np'
+            'r3 r3 r3 b'
+            'r2 r2 r2 b'
+            'r1 r1 r1 o'
+            'z z z o';
+        grid-template-columns: min-content min-content min-content minmax($SQUARE_SIZE, 1fr);
+        max-width: min-content;
+    }
+    &--is-currency {
+        grid-template-areas: /* numpad--with-currency layout */
+            'np np np np'
+            'r3 r3 r3 b'
+            'r2 r2 r2 b'
+            'r1 r1 r1 o'
+            'z z p o';
+        grid-template-columns: min-content min-content min-content minmax($SQUARE_SIZE, 1fr);
+        max-width: min-content;
+    }
+    &__input-area {
+        display: grid;
+        grid-area: np;
+        grid-template-areas: 'dc inp inp nc';
+        grid-template-columns: min-content 1fr 1fr min-content;
+    }
+    &__decrement {
+        grid-area: dc;
+        @include append-button(right);
+    }
+    &__increment {
+        grid-area: nc;
+        @include append-button(left);
+    }
+    &__increment,
+    &__decrement {
+        width: $SQUARE_SIZE;
+        height: $SQUARE_SIZE;
+    }
+    &__input-field,
+    &__increment,
+    &__decrement {
+        background-color: var(--general-section-2);
+        color: var(--text-prominent);
+    }
+    &__input-field {
+        grid-area: inp;
+        padding: 0;
+        margin: 0 !important;
+        border: none;
+        border-radius: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include typeface(--title-center-bold-black);
+        color: var(--text-prominent);
+
+        input {
+            padding: 0;
+            max-height: $SQUARE_SIZE;
+        }
+        &--has-error {
+            color: var(--status-danger);
+            font-weight: bold;
+        }
+    }
+    &__number {
+        border-radius: 2.4rem;
+        background-color: var(--general-section-2);
+        width: $SQUARE_SIZE;
+        height: $SQUARE_SIZE;
+        @include typeface(--title-left-bold-black);
+        color: var(--text-prominent);
+        text-align: left !important;
+
+        &--is-disabled,
+        &[disabled] {
+            background-color: var(--general-disabled) !important;
+            pointer-events: none;
+            touch-action: none;
+
+            .dc-btn__text {
+                color: var(--text-disabled) !important;
+            }
+        }
+        &--r3 {
+            grid-row: 2 / 2;
+        }
+        &--r2 {
+            grid-row: 3 / 3;
+        }
+        &--r1 {
+            grid-row: 4 / 4;
+        }
+        &--zero {
+            grid-area: z;
+            width: 100% !important;
+        }
+        &--is-left-aligned {
+            text-align: left;
+            width: 100%;
+            padding: 0 0 0 4px;
+        }
+    }
+    &__dot {
+        grid-area: p;
+    }
+    &__bkspace {
+        grid-area: b;
+
+        & button {
+            height: 100%;
+        }
+    }
+    &__ok {
+        grid-area: o;
+
+        & button {
+            height: 100%;
+        }
+    }
+}

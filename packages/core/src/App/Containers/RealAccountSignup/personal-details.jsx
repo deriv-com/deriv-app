@@ -235,7 +235,7 @@ class PersonalDetails extends React.Component {
             >
                 {({ handleSubmit, isSubmitting, errors, values }) => (
                     <form onSubmit={handleSubmit}>
-                        <Div100vhContainer className='details-form' height_offset='201px' is_disabled={isDesktop()}>
+                        <Div100vhContainer className='details-form' height_offset='199px' is_disabled={isDesktop()}>
                             <p className='details-form__description'>
                                 <Localize
                                     i18n_default_text={

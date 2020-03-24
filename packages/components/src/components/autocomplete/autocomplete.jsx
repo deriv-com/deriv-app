@@ -203,6 +203,7 @@ class Autocomplete extends React.PureComponent {
             onScrollStop,
             ...otherProps
         } = this.props;
+
         return (
             <div className={classNames('dc-autocomplete', className)}>
                 <div ref={this.setInputWrapperRef} className='dc-autocomplete__input-field'>
@@ -221,17 +222,13 @@ class Autocomplete extends React.PureComponent {
                             typeof onItemSelection === 'function' ? value : this.state.input_value
                         }
                         trailing_icon={
-                            !this.props.disabled ? (
-                                <Icon
-                                    icon='IcChevronDown'
-                                    className={{
-                                        'dc-autocomplete__trailing-icon': true,
-                                        'dc-autocomplete__trailing-icon--opened': this.state.should_show_list,
-                                    }}
-                                />
-                            ) : (
-                                ''
-                            )
+                            <Icon
+                                icon='IcChevronDown'
+                                className={{
+                                    'dc-autocomplete__trailing-icon': true,
+                                    'dc-autocomplete__trailing-icon--opened': this.state.should_show_list,
+                                }}
+                            />
                         }
                     />
                 </div>

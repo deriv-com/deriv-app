@@ -12,8 +12,8 @@ import React, { Component } from 'react';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared/utils/screen';
-import FormSubmitButton from './form-submit-button.jsx';
 import Icon from '@deriv/components/src/components/icon';
+import FormSubmitButton from './form-submit-button.jsx';
 
 const InputField = props => {
     return (

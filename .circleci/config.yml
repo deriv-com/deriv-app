@@ -64,7 +64,7 @@ commands:
             tar -cvf artifact.tar *
             mv artifact.tar ${OLDPWD}/
       - run:
-          name: "Tag commit id as artifact identifer"
+          name: "Tag git tag id as artifact identifer"
           command: echo "${CIRCLE_TAG}" > artifact-info.txt
   upload_artifact:
     description: "upload build artifact to s3 bucket"

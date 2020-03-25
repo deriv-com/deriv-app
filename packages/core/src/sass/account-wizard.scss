@@ -109,6 +109,8 @@
         @include mobile {
             height: calc(100vh - #{$MOBILE_HEADER_HEIGHT});
             overflow: hidden;
+            position: relative;
+            max-height: inherit;
         }
     }
     &__body {
@@ -164,6 +166,8 @@
         }
         @include mobile {
             background-color: var(--general-section-2);
+            top: unset;
+            bottom: 78px;
 
             .btn {
                 height: 40px;

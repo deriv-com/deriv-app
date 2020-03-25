@@ -32,6 +32,7 @@
             &__native {
                 opacity: 0;
                 width: 100%;
+                min-width: calc(100% - 1rem);
                 position: absolute;
                 height: 38px;
             }
@@ -98,6 +99,10 @@
         &-container {
             height: calc(100% - 76px);
             overflow: hidden;
+
+            @include mobile {
+                height: 100%;
+            }
         }
         .dc-input {
             label {
@@ -135,6 +140,8 @@
     }
     @include mobile {
         margin-top: 70px;
+        overflow-x: hidden;
+        overflow-y: auto;
 
         & .select-native {
             height: 38px;

@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { toMoment } from 'Utils/Date';
@@ -276,7 +277,7 @@ class AccountWizard extends React.Component {
                             </h2>
                         </div>
                     )}
-                    <div className='account-wizard__body'>
+                    <Div100vhContainer className='account-wizard__body' is_disabled={isDesktop()} height_offset='40px'>
                         <BodyComponent
                             value={this.getCurrent('form_value')}
                             index={this.state_index}
@@ -287,7 +288,7 @@ class AccountWizard extends React.Component {
                             form_error={this.state.form_error}
                             {...passthrough}
                         />
-                    </div>
+                    </Div100vhContainer>
                 </div>
             );
         }

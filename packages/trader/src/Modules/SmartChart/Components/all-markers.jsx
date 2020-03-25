@@ -439,7 +439,7 @@ const NonTickContract = RawMarkerMaker(
         });
 
         // start-time marker
-        if (start.visible && barrier) {
+        if (start && start.visible && barrier) {
             draw_path(ctx, {
                 top: barrier - 9 * scale,
                 left: start.left - 1 * scale,

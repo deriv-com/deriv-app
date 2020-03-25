@@ -1,15 +1,15 @@
 import React from 'react';
 import { Button } from '@deriv/components';
+import { urlFor } from '@deriv/shared/utils/url';
 import { isMobile } from '@deriv/shared/utils/screen';
+import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { formatDate } from 'Utils/Date';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
-import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import { LocalStore, State } from '_common/storage';
-import { urlFor } from '@deriv/shared/utils/url';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
@@ -40,12 +40,7 @@ export const clientNotifications = (ui = {}) => {
                         interpolation: { escapeValue: false },
                     }}
                     components={[
-                        <a
-                            key={0}
-                            className='link'
-                            target='_blank'
-                            href={urlFor('contact', undefined, undefined, true)}
-                        />,
+                        <a key={0} className='link' target='_blank' href={urlFor('contact', { legacy: true })} />,
                     ]}
                 />
             ),
@@ -105,11 +100,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <React.Fragment key={0}>
                             <br />
-                            <a
-                                className='link link--right'
-                                target='_blank'
-                                href={urlFor('contact', undefined, undefined, true)}
-                            >
+                            <a className='link link--right' target='_blank' href={urlFor('contact', { legacy: true })}>
                                 <Button secondary medium text={localize('Contact Us')} />
                             </a>
                         </React.Fragment>,
@@ -119,12 +110,7 @@ export const clientNotifications = (ui = {}) => {
                 <Localize
                     i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
                     components={[
-                        <a
-                            key={0}
-                            className='link'
-                            target='_blank'
-                            href={urlFor('contact', undefined, undefined, true)}
-                        />,
+                        <a key={0} className='link' target='_blank' href={urlFor('contact', { legacy: true })} />,
                     ]}
                 />
             ),
@@ -139,11 +125,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <React.Fragment key={0}>
                             <br />
-                            <a
-                                className='link link--right'
-                                target='_blank'
-                                href={urlFor('contact', undefined, undefined, true)}
-                            >
+                            <a className='link link--right' target='_blank' href={urlFor('contact', { legacy: true })}>
                                 <Button secondary medium text={localize('Contact Us')} />
                             </a>
                         </React.Fragment>,
@@ -153,12 +135,7 @@ export const clientNotifications = (ui = {}) => {
                 <Localize
                     i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
                     components={[
-                        <a
-                            key={0}
-                            className='link'
-                            target='_blank'
-                            href={urlFor('contact', undefined, undefined, true)}
-                        />,
+                        <a key={0} className='link' target='_blank' href={urlFor('contact', { legacy: true })} />,
                     ]}
                 />
             ),
@@ -175,7 +152,7 @@ export const clientNotifications = (ui = {}) => {
                             key={0}
                             className='link'
                             target='_blank'
-                            href={urlFor('user/security/self_exclusionws', undefined, undefined, true)}
+                            href={urlFor('user/security/self_exclusionws', { legacy: true })}
                         />,
                     ]}
                 />

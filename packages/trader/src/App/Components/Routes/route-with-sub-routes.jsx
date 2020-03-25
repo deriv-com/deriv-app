@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import ObjectUtils from '@deriv/shared/utils/object';
 import { removeBranchName } from '@deriv/shared/utils/url';
+import ObjectUtils from '@deriv/shared/utils/object';
 import { redirectToLogin, redirectToSignUp } from '_common/base/login';
 import { WS } from 'Services/ws-methods';
 import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';

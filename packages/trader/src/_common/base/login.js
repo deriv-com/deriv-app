@@ -1,7 +1,7 @@
-const isMobile = require('@deriv/shared/utils/os').isMobile;
 const domain_app_ids = require('@deriv/shared/utils/config').domain_app_ids;
 const getAppId = require('@deriv/shared/utils/config').getAppId;
 const urlForCurrentDomain = require('@deriv/shared/utils/url').urlForCurrentDomain;
+const isMobile = require('@deriv/shared/utils/os').isMobile;
 const { getLanguage } = require('@deriv/translations');
 const website_name = require('App/Constants/app-config').website_name;
 const getElementById = require('../common_functions').getElementById;

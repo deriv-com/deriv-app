@@ -6,8 +6,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { DesktopWrapper } from '@deriv/components';
+import { setUrlLanguage } from '@deriv/shared/utils/url';
 import { isMobile } from '@deriv/shared/utils/screen';
-import { initializeTranslations } from '@deriv/translations';
+import { initializeTranslations, getLanguage } from '@deriv/translations';
 import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';
 import { MobxProvider } from 'Stores/connect';
@@ -34,6 +35,7 @@ const App = ({ root_store }) => {
 
     React.useEffect(() => {
         initializeTranslations();
+        setUrlLanguage(getLanguage());
     }, []);
 
     if (isMobile()) {

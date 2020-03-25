@@ -1,6 +1,6 @@
 import React from 'react';
-import { connect } from 'Stores/connect';
 import { urlFor } from '@deriv/shared/utils/url';
+import { connect } from 'Stores/connect';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import MarketUnavailableModal from 'App/Components/Elements/Modals/MarketUnavailableModal';
 import ServicesErrorModal from 'App/Components/Elements/Modals/ServicesErrorModal';
@@ -23,7 +23,7 @@ const TradeModals = ({
     };
 
     const marketUnavailableOnCancel = () =>
-        window.open(urlFor('trading', undefined, undefined, true)) && setHasOnlyForwardingContracts(false);
+        window.open(urlFor('trading', { legacy: true })) && setHasOnlyForwardingContracts(false);
 
     const servicesErrorModalOnConfirm = () => {
         toggleServicesErrorModal(false);
@@ -34,7 +34,7 @@ const TradeModals = ({
     };
 
     const unsupportedContractOnConfirm = () => {
-        window.open(urlFor('user/portfoliows', undefined, undefined, true), '_blank');
+        window.open(urlFor('user/portfoliows', { legacy: true }), '_blank');
         unsupportedContractOnClose();
     };
 

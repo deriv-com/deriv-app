@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, ProgressBar } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
 import { urlFor } from '@deriv/shared/utils/url';
+import { localize, Localize } from '@deriv/translations';
 import DataList from 'App/Components/Elements/DataList';
 import DataTable from 'App/Components/Elements/DataTable';
 import { getTimePercentage } from 'App/Components/Elements/PositionsDrawer/helpers';
@@ -99,7 +99,7 @@ class OpenPositions extends React.Component {
                                   className='link link--orange'
                                   rel='noopener noreferrer'
                                   target='_blank'
-                                  href={urlFor('user/portfoliows', undefined, undefined, true)}
+                                  href={urlFor('user/portfoliows', { legacy: true })}
                               />,
                           ]}
                       />

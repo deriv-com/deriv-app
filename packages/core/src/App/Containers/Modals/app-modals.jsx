@@ -34,7 +34,7 @@ const AppModals = ({
                 const denialOfServiceOnCancel = () => {
                     const trade_link = isMT5() ? 'user/metatrader' : 'trading';
                     const link_to = isBot() ? 'bot' : trade_link;
-                    window.open(urlFor(link_to, undefined, undefined, true));
+                    window.open(urlFor(link_to, { legacy: true }));
                 };
 
                 const denialOfServiceOnConfirm = async () => {

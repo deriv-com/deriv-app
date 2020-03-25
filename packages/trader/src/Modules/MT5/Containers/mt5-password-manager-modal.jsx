@@ -32,7 +32,7 @@ const MT5PasswordResetUnavailable = () => (
             className='mt5-password-manager--button'
             has_effect
             text={localize('Take me to Binary.com MT5')}
-            onClick={() => window.open(urlFor('user/metatrader', undefined, undefined, true))}
+            onClick={() => window.open(urlFor('user/metatrader', { legacy: true }))}
             primary
             large
         />

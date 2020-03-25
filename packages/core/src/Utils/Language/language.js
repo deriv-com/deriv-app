@@ -1,4 +1,4 @@
-import { urlFor } from '_common/language';
+import { urlForLanguage } from '@deriv/shared/utis/url';
 import { getLanguage, getAllLanguages } from '@deriv/translations';
 
 export const currentLanguage = getLanguage();
@@ -18,4 +18,4 @@ export const getAllowedLanguages = () => {
     return language_list;
 };
 
-export const getURL = lang => urlFor(lang);
+export const getURL = lang => urlForLanguage(lang);

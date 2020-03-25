@@ -4,8 +4,8 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
 import { urlFor } from '@deriv/shared/utils/url';
+import { localize, Localize } from '@deriv/translations';
 import { website_name } from 'App/Constants/app-config';
 import DataTable from 'App/Components/Elements/DataTable';
 import DataList from 'App/Components/Elements/DataList';
@@ -100,7 +100,7 @@ class ProfitTable extends React.Component {
                                   className='link link--orange'
                                   rel='noopener noreferrer'
                                   target='_blank'
-                                  href={urlFor('user/profit_tablews', undefined, undefined, true)}
+                                  href={urlFor('user/profit_tablews', { legacy: true })}
                               />,
                           ]}
                       />

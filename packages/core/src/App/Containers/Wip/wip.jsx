@@ -1,14 +1,14 @@
 import { Button, Icon } from '@deriv/components';
 import React from 'react';
-import BinarySocket from '_common/base/socket_base';
 import { urlFor } from '@deriv/shared/utils/url';
+import BinarySocket from '_common/base/socket_base';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import 'Sass/app/_common/components/wip.scss';
 
 const onClick = e => {
     e.preventDefault();
-    window.open(urlFor('trading', undefined, undefined, true), '_blank', 'noopener, noreferrer');
+    window.open(urlFor('trading', { legacy: true }), '_blank', 'noopener, noreferrer');
 };
 
 const Wip = ({ is_dark_mode, pushDataLayer }) => {

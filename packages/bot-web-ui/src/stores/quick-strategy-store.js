@@ -3,10 +3,12 @@ import { localize } from '@deriv/translations';
 import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import GTM from '../utils/gtm';
+import { storeSetting, getSetting } from '../utils/settings';
 
 export default class QuickStrategyStore {
     constructor(root_store) {
         this.root_store = root_store;
+        this.qs_cache = getSetting('quick_strategy');
     }
 
     @observable selected_symbol = '';
@@ -31,10 +33,10 @@ export default class QuickStrategyStore {
             'quick-strategy__trade-type': this.selected_trade_type && this.selected_trade_type.text,
             'quick-strategy__duration-unit': this.selected_duration_unit && this.selected_duration_unit.text,
             'quick-strategy__duration-value': this.input_duration_value,
-            'quick-strategy__stake': this.input_stake,
-            'quick-strategy__size': this.input_size,
-            'quick-strategy__loss': this.input_loss,
-            'quick-strategy__profit': this.input_profit,
+            'quick-strategy__stake': this.input_stake || (this.qs_cache && this.qs_cache.input_stake),
+            'quick-strategy__size': this.input_size || (this.qs_cache && this.qs_cache.input_size),
+            'quick-strategy__loss': this.input_loss || (this.qs_cache && this.qs_cache.input_loss),
+            'quick-strategy__profit': this.input_profit || (this.qs_cache && this.qs_cache.input_profit),
         };
     }
 
@@ -124,7 +126,8 @@ export default class QuickStrategyStore {
 
     @action.bound
     onChangeInputValue(field, event) {
-        this[field] = event.currentTarget.value;
+        this.qs_cache[field] = this[field] = event.currentTarget.value;
+        storeSetting('quick_strategy', this.qs_cache);
     }
 
     @action.bound

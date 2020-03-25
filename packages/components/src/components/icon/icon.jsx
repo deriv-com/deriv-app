@@ -89,4 +89,4 @@ Icon.propTypes = {
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
-export default Icon;
+export default React.memo(Icon);

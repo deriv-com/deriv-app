@@ -9,6 +9,7 @@ import TableRowInfo from './table-row-info.jsx';
 const TableRow = ({
     className,
     columns,
+    getActionColumns,
     id,
     is_footer,
     is_header,
@@ -17,6 +18,8 @@ const TableRow = ({
     row_obj = {},
     to,
 }) => {
+    const action_columns = getActionColumns && getActionColumns({ row_obj, is_header, is_footer });
+
     const cells = columns.map(({ col_index, renderCellContent, title, key }) => {
         let cell_content = title;
         if (!is_header) {
@@ -45,20 +48,26 @@ const TableRow = ({
         );
     }
     return to ? (
-        <NavLink
-            id={`dt_reports_contract_${id}`}
-            className={row_class_name}
-            to={{
-                pathname: to,
-                state: {
-                    from_table_row: true,
-                },
-            }}
-        >
-            {cells}
-        </NavLink>
+        <div className={`${className}__row_wrapper`}>
+            <NavLink
+                id={`dt_reports_contract_${id}`}
+                className={row_class_name}
+                to={{
+                    pathname: to,
+                    state: {
+                        from_table_row: true,
+                    },
+                }}
+            >
+                {cells}
+            </NavLink>
+            {action_columns}
+        </div>
     ) : (
-        <TableRowInfo className={row_class_name} cells={cells} replace={replace} is_footer={is_footer} />
+        <div className={`${className}__row_wrapper`}>
+            <TableRowInfo className={row_class_name} cells={cells} replace={replace} is_footer={is_footer} />
+            {action_columns}
+        </div>
     );
 };
 

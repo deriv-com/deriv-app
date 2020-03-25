@@ -1,113 +1,66 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
 
-import React from 'react';
+import React, { Component } from 'react';
 import {
-  SafeAreaView,
+  Alert,
+  Button,
+  Platform,
   StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
-
+}                           from 'react-native';
 import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  WebView }                 from 'react-native-webview';
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
+// import { scratchHtml } from './src/components/scratch/index';
+
+import { DBot }             from '@deriv/bot-skeleton/dist/bot-skeleton';
+
+//   const scratch_div = document.getElementById('scratch_div');
+//   scratch_div.style.backgroundColor= '#889999';
+//   scratch_div.style.width='100vw';
+//   scratch_div.style.height='100vh';
+//   scratch_div.appendChild(scratch_div);
+// xDBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store);
+// `;
+
+class App extends Component {
+  render() {
+    return (
+      <>
+      <WebView 
+      style={styles.scratch}
+      originWhitelist={["*"]}
+      // source={Platform.OS === 'ios' ?
+      //  undefined: 
+      //  {uri: 'file:///android_asset/scratch.html'}
+      // }
+      // source={{html : scratchHtml}}
+      allowFileAccess={true}
+      mixedContentMode={'always'}
+      javaScriptEnabled={true}
+      domStorageEnabled={true}
+      useWebKit={true}
+      startInLoadingState={true}
+      />
+      <Button
+        title='Import Bot' 
+        color='#ff444f'
+        onPress={()=>{Alert.alert('Import strategy' , ' Coming soon...')}}
+       >
+       </Button>
+      <Button 
+        title='Run Bot'
+        color='#4bb4b3'
+        onPress={()=>{Alert.alert('Run Bot' , 'Coming soon...')}}></Button>
+      </>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  scratch: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    marginTop: 0,
   },
 });
 

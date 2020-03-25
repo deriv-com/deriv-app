@@ -63,7 +63,7 @@ const modules = [
 const lazyLoadCashierComponent = component => {
     return loadable.Map({
         loader: {
-            Cashier: () => import(/* webpackChunkName: "cashier", webpackPrefetch: true */ 'Modules/Cashier'),
+            Cashier: () => import(/* webpackChunkName: "cashier" */ 'Modules/Cashier'),
         },
         render(loaded, props) {
             const CashierLazy = loaded.Cashier.default[component];

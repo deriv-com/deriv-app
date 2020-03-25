@@ -1,6 +1,10 @@
 .dc-table {
     color: var(--text-general);
+    background: inherit;
 
+    * {
+        background: inherit;
+    }
     &__row {
         display: grid;
         height: 100%;
@@ -14,11 +18,18 @@
         border-bottom: 2px solid var(--general-section-1);
         height: 52px;
     }
-    &__cell, &__head {
+    &__cell,
+    &__head {
         font-size: 1.4rem;
         line-height: 1.43;
         display: flex;
         align-items: center;
+        white-space: unset;
+        text-align: left;
+        backface-visibility: hidden;
+        word-wrap: break-word;
+        word-break: break-word;
+        overflow-wrap: break-word;
     }
     &__cell {
         border-bottom: 1px solid var(--general-section-1);
@@ -27,6 +38,11 @@
             display: flex;
             justify-content: flex-end;
         }
+        &--fixed {
+            position: sticky;
+            left: 0;
+            z-index: 2;
+        }
     }
     &__head {
         font-weight: bold;
@@ -34,6 +50,13 @@
         &--right {
             display: flex;
             justify-content: flex-end;
+        }
+    }
+    &--scroll {
+        .dc-table__header {
+            position: sticky;
+            top: 0;
+            z-index: 3;
         }
     }
 }

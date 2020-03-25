@@ -1,4 +1,4 @@
 import Autocomplete from './autocomplete.jsx';
-import                   './autocomplete.scss';
+import './autocomplete.scss';
 
 export default Autocomplete;

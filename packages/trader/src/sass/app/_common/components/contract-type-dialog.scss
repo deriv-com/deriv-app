@@ -1,5 +1,5 @@
-/** @define contracts-type-dialog; */
-.contracts-type-dialog {
+/** @define contract-type-dialog; */
+.contract-type-dialog {
     right: 0.4em;
     width: 100%;
     pointer-events: none;
@@ -10,7 +10,7 @@
     height: 0;
     z-index: 999;
 
-    &__list-wrapper {
+    &__wrapper {
         position: absolute;
         width: 290px;
         right: calc(100% + 10px);
@@ -21,8 +21,58 @@
         border-radius: 4px;
         background: var(--general-main-2);
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
+        min-width: 560px;
+        height: 680px;
+        max-height: calc(100vh - 116px);
+        overflow: hidden;
+
+        /* postcss-bem-linter: ignore */
+        .dc-vertical-tab__action-bar {
+            flex-flow: row;
+            border-bottom: 2px solid var(--general-section-1);
+            height: 56px;
+            width: 320px;
+
+            /* postcss-bem-linter: ignore */
+            .dc-input {
+                margin-bottom: 0;
+
+                /* postcss-bem-linter: ignore */
+                &__field {
+                    padding: 0.8rem 1.2rem 0.8rem 3.6rem;
+                    height: 3.2rem;
+
+                    /* postcss-bem-linter: ignore */
+                    &::-moz-placeholder {
+                        line-height: 16px;
+                    }
+                }
+                /* postcss-bem-linter: ignore */
+                &__leading-icon {
+                    top: 0.8rem;
+                }
+                /* postcss-bem-linter: ignore */
+                &__trailing-icon {
+                    cursor: pointer;
+                }
+            }
+        }
+        /* postcss-bem-linter: ignore */
+        .dc-vertical-tab__content {
+            padding: 0 !important;
+        }
+        /* postcss-bem-linter: ignore */
+        .dc-vertical-tab__tab {
+            min-width: 240px;
+
+            /* postcss-bem-linter: ignore */
+            .dc-vertical-tab__header-title {
+                height: 56px;
+            }
+        }
     }
-    &--enter, &--exit {
+    &--enter,
+    &--exit {
         transform: translate3d(20%, 0, 0);
         pointer-events: none;
         opacity: 0;

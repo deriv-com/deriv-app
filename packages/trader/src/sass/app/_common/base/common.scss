@@ -30,7 +30,9 @@ html {
 }
 
 /* postcss-bem-linter: ignore */
-*, html, .body {
+*,
+html,
+.body {
     font-family: $FONT_STACK;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -60,19 +62,23 @@ html {
 }
 
 // Placeholders
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
     color: var(--text-general);
 }
 
-::-moz-placeholder { /* Firefox 19+ */
+::-moz-placeholder {
+    /* Firefox 19+ */
     color: var(--text-general);
 }
 
-:-ms-input-placeholder { /* IE 10+ */
+:-ms-input-placeholder {
+    /* IE 10+ */
     color: var(--text-general);
 }
 
-:-moz-placeholder { /* Firefox 18- */
+:-moz-placeholder {
+    /* Firefox 18- */
     color: var(--text-general);
 }
 
@@ -154,4 +160,22 @@ html {
 .deriv-app {
     height: 100%;
     overflow: hidden;
+}
+
+/** @define no-results-found */
+.no-results-found {
+    padding: 1.6rem;
+    text-align: center;
+
+    &__title,
+    &__subtitle {
+        line-height: 1.5;
+    }
+    &__title {
+        font-size: 1.4rem;
+        word-break: break-word;
+    }
+    &__subtitle {
+        font-size: 1.2rem;
+    }
 }

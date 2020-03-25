@@ -1,13 +1,13 @@
-import { configure }        from 'mobx';
-import Client               from '_common/base/client_base';
-import NetworkMonitor       from 'Services/network-monitor';
-import OutdatedBrowser      from 'Services/outdated-browser';
-import RootStore            from 'Stores';
+import { configure } from 'mobx';
+import Client from '_common/base/client_base';
+import NetworkMonitor from 'Services/network-monitor';
+// import OutdatedBrowser      from 'Services/outdated-browser';
+import RootStore from 'Stores';
 import { setStorageEvents } from 'Utils/Events/storage';
 
 configure({ enforceActions: 'observed' });
 
-const initStore = (notification_messages) => {
+const initStore = notification_messages => {
     Client.init();
 
     const root_store = new RootStore();
@@ -15,8 +15,10 @@ const initStore = (notification_messages) => {
     setStorageEvents();
 
     NetworkMonitor.init(root_store);
-    OutdatedBrowser.init(root_store);
+    // TODO: Re-enable and update browser checking
+    // OutdatedBrowser.init(root_store);
     root_store.client.init();
+    root_store.modules.cashier.init();
     root_store.ui.init(notification_messages);
     // root_store.modules.trade.init();
 

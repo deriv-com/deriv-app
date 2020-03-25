@@ -1,13 +1,9 @@
-import React          from 'react';
-import {
-    AssetInformation,
-    ChartTitle,
-    SmartChart,
-}                     from 'smartcharts-beta';
+import React from 'react';
+import { AssetInformation, ChartTitle, SmartChart } from 'smartcharts-beta';
 import ControlWidgets from './control-widgets.jsx';
-import { connect }    from '../../stores/connect';
+import { connect } from '../../stores/connect';
 
-import                     '../../assets/sass/chart.scss';
+import '../../assets/sass/chart.scss';
 
 // import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
 // import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
@@ -18,7 +14,6 @@ import                     '../../assets/sass/chart.scss';
 // import AllMarkers            from '../../SmartChart/Components/all-markers.jsx';
 
 class Chart extends React.Component {
-
     chartTopWidgets = () => (
         <>
             <ChartTitle onChange={this.props.onSymbolChange} />
@@ -27,10 +22,7 @@ class Chart extends React.Component {
     );
 
     chartControlsWidgets = () => (
-        <ControlWidgets
-            updateChartType={this.props.updateChartType}
-            updateGranularity={this.props.updateGranularity}
-        />
+        <ControlWidgets updateChartType={this.props.updateChartType} updateGranularity={this.props.updateGranularity} />
     );
 
     // bottomWidgets = ({ digits, tick }) => (
@@ -53,7 +45,6 @@ class Chart extends React.Component {
             settings,
             symbol,
             is_socket_opened,
-
         } = this.props;
 
         const barriers = main_barrier ? [main_barrier] : [];
@@ -74,7 +65,7 @@ class Chart extends React.Component {
                 // bottomWidgets={ show_digits_stats ? this.bottomWidgets : null}
                 showLastDigitStats={show_digits_stats}
                 chartControlsWidgets={this.chartControlsWidgets}
-                chartStatusListener={(v) => this.props.setChartStatus(!v)}
+                chartStatusListener={v => this.props.setChartStatus(!v)}
                 chartType={chart_type}
                 isMobile={is_mobile}
                 granularity={granularity}
@@ -86,10 +77,10 @@ class Chart extends React.Component {
                 symbol={symbol}
                 topWidgets={this.chartTopWidgets}
                 isConnectionOpened={is_socket_opened}
-            // clearChart={false}
-            // importedLayout={chart_layout}
-            // onExportLayout={this.props.exportLayout}
-            // shouldFetchTradingTimes={!this.props.end_epoch}
+                // clearChart={false}
+                // importedLayout={chart_layout}
+                // onExportLayout={this.props.exportLayout}
+                // shouldFetchTradingTimes={!this.props.end_epoch}
             >
                 {/* <ChartMarkers /> */}
             </SmartChart>
@@ -98,35 +89,35 @@ class Chart extends React.Component {
 }
 
 export default connect(({ chart_store, common, ui }) => ({
-    is_mobile        : ui.is_mobile,
-    is_socket_opened : common.is_socket_opened,
-    updateChartType  : chart_store.updateChartType,
+    is_mobile: ui.is_mobile,
+    is_socket_opened: common.is_socket_opened,
+    updateChartType: chart_store.updateChartType,
     updateGranularity: chart_store.updateGranularity,
-    granularity      : chart_store.granularity,
-    chart_type       : chart_store.chart_type,
-    onSymbolChange   : chart_store.onSymbolChange,
-    settings         : {
-        assetInformation            : false, // ui.is_chart_asset_info_visible,
-        countdown                   : true,
+    granularity: chart_store.granularity,
+    chart_type: chart_store.chart_type,
+    onSymbolChange: chart_store.onSymbolChange,
+    settings: {
+        assetInformation: false, // ui.is_chart_asset_info_visible,
+        countdown: true,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI,
-        lang                        : common.current_language,
-        position                    : ui.is_chart_layout_default ? 'bottom' : 'left',
-        theme                       : 'light',
+        lang: common.current_language,
+        position: ui.is_chart_layout_default ? 'bottom' : 'left',
+        theme: 'light',
     },
     last_contract: {
         is_digit_contract: false,
     },
-    main_barrier  : chart_store.main_barrier,
+    main_barrier: chart_store.main_barrier,
     // show_digits_stats: modules.trade.show_digits_stats,
     // contract_type    : modules.trade.contract_type,
-    symbol        : chart_store.symbol,
+    symbol: chart_store.symbol,
     // exportLayout     : modules.trade.exportLayout,
     setChartStatus: chart_store.setChartStatus,
     // chart_layout     : modules.trade.chart_layout,
-    wsForget      : chart_store.wsForget,
+    wsForget: chart_store.wsForget,
     wsForgetStream: chart_store.wsForgetStream,
-    wsSendRequest : chart_store.wsSendRequest,
-    wsSubscribe   : chart_store.wsSubscribe,
+    wsSendRequest: chart_store.wsSendRequest,
+    wsSubscribe: chart_store.wsSubscribe,
     // should_refresh   : modules.trade.should_refresh_active_symbols,
     // resetRefresh     : modules.trade.resetRefresh,
 }))(Chart);

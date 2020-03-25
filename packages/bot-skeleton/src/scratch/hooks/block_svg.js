@@ -1,17 +1,17 @@
 import { localize } from '@deriv/translations';
-import DBotStore    from '../dbot-store';
-import { save }     from '../utils';
+import DBotStore from '../dbot-store';
+import { save } from '../utils';
 
 /**
  * Select this block.  Highlight it visually.
  */
-Blockly.BlockSvg.prototype.addSelect = function () {
+Blockly.BlockSvg.prototype.addSelect = function() {
     if (!this.isInFlyout) {
         const { flyout } = DBotStore.instance;
         if (flyout) {
             flyout.setVisibility(false);
         }
-        Blockly.utils.addClass(/** @type {!Element} */(this.svgGroup_), 'blocklySelected');
+        Blockly.utils.addClass(/** @type {!Element} */ (this.svgGroup_), 'blocklySelected');
     }
 };
 
@@ -20,17 +20,13 @@ Blockly.BlockSvg.prototype.addSelect = function () {
  * @param {boolean} disabled True if disabled.
  * @deriv/bot: Call updateDisabled() when setDisabled is called.
  */
-Blockly.BlockSvg.prototype.setDisabled = function(disabled, is_user_action = false) {
+Blockly.BlockSvg.prototype.setDisabled = function(disabled) {
     if (this.disabled !== disabled) {
         Blockly.BlockSvg.superClass_.setDisabled.call(this, disabled);
 
         if (this.rendered) {
             this.updateDisabled();
         }
-
-        // Distinguish user + code disabled states. i.e. when user disabled a block, we
-        // shouldn't enable it through code, only enable when user re-enables it.
-        this.is_user_disabled_state = is_user_action;
     }
 };
 
@@ -38,7 +34,7 @@ Blockly.BlockSvg.prototype.setDisabled = function(disabled, is_user_action = fal
  * Enable or disable a block.
  * @deriv/bot: Update fill path if it doesn't match the disabledPatternId.
  */
-Blockly.BlockSvg.prototype.updateDisabled = function () {
+Blockly.BlockSvg.prototype.updateDisabled = function() {
     if (this.disabled || this.getInheritedDisabled()) {
         Blockly.utils.addClass(this.svgGroup_, 'blocklyDisabled');
 
@@ -63,13 +59,13 @@ Blockly.BlockSvg.prototype.updateDisabled = function () {
  * @private
  * @deriv/bot: Restore contextMenu options from Blockly unavailable in Scratch
  */
-Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
+Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
     if (this.workspace.options.readOnly || !this.contextMenu) {
         return;
     }
 
     // Save the current block in a variable for use in closures.
-    const block        = this;
+    const block = this;
     const menu_options = [];
 
     if (this.isDeletable() && this.isMovable() && !block.isInFlyout) {
@@ -104,9 +100,10 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
     if (this.workspace.options.disable) {
         const restricted_parents = block.restricted_parents || [];
         const disable_option = {
-            text   : this.disabled ? localize('Enable Block') : localize('Disable Block'),
+            text: this.disabled ? localize('Enable Block') : localize('Disable Block'),
             enabled:
-                !this.getInheritedDisabled() &&
+                !this.disabled ||
+                restricted_parents.length === 0 ||
                 restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent)),
             callback: () => {
                 const group = Blockly.Events.getGroup();
@@ -114,7 +111,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
                     Blockly.Events.setGroup(true);
                 }
 
-                block.setDisabled(!block.disabled, true);
+                block.setDisabled(!block.disabled);
 
                 if (!group) {
                     Blockly.Events.setGroup(false);
@@ -127,8 +124,8 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
     // Option to download block.
     if (this.isMovable()) {
         const has_next_block = block.nextConnection && block.nextConnection.isConnected();
-        const downloadBlock = (should_delete_next) => {
-            const xml       = Blockly.Xml.textToDom('<xml/>');
+        const downloadBlock = should_delete_next => {
+            const xml = Blockly.Xml.textToDom('<xml/>');
             const block_xml = Blockly.Xml.blockToDom(block);
             const file_name = should_delete_next ? block.type : `${block.type}_${localize('stack')}`;
 
@@ -141,19 +138,18 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
         };
 
         menu_options.push({
-            text    : localize('Download block'),
-            enabled : true,
+            text: localize('Download block'),
+            enabled: true,
             callback: () => downloadBlock(true),
         });
 
         if (has_next_block) {
             menu_options.push({
-                text    : localize('Download stack'),
-                enabled : true,
+                text: localize('Download stack'),
+                enabled: true,
                 callback: () => downloadBlock(false),
             });
         }
-
     }
     // Allow the block to add or modify menu_options.
     if (this.customContextMenu) {
@@ -168,9 +164,11 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
  * Set whether the block is error highlighted or not.
  * @param {boolean} highlighted True if highlighted for error.
  */
-Blockly.BlockSvg.prototype.setErrorHighlighted = function (
+Blockly.BlockSvg.prototype.setErrorHighlighted = function(
     should_be_error_highlighted,
-    error_message = localize('The block(s) highlighted in red are missing input values. Please update them and click "Run bot".')
+    error_message = localize(
+        'The block(s) highlighted in red are missing input values. Please update them and click "Run bot".'
+    )
 ) {
     if (this.is_error_highlighted === should_be_error_highlighted) {
         return;
@@ -193,12 +191,12 @@ Blockly.BlockSvg.prototype.setErrorHighlighted = function (
  * Set whether the block is collapsed or not.
  * @param {boolean} collapsed True if collapsed.
  */
-Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
+Blockly.BlockSvg.prototype.setCollapsed = function(collapsed) {
     if (this.collapsed_ === collapsed) {
         return;
     }
 
-    const render_list          = [];
+    const render_list = [];
     const COLLAPSED_INPUT_NAME = '_TEMP_COLLAPSED_INPUT';
 
     // Show/hide the inputs.
@@ -209,7 +207,28 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
         icons.forEach(icon => icon.setVisible(false));
 
         const text = this.toString(Blockly.COLLAPSE_CHARS);
-        this.appendDummyInput(COLLAPSED_INPUT_NAME).appendField(text).init();
+
+        // Ensure class persists through collapse. Falls back to first
+        // field that has a class. Doesn't work when multiple
+        // field_labels on a block have different classes. So far we
+        // don't have a situation like that, so it works. 👍
+        let field_class = null;
+
+        this.inputList.some(input =>
+            input.fieldRow.some(field => {
+                if (field.class_) {
+                    field_class = field.class_;
+                    return true;
+                }
+                return false;
+            })
+        );
+
+        const field_label = new Blockly.FieldLabel(text, field_class);
+
+        this.appendDummyInput(COLLAPSED_INPUT_NAME)
+            .appendField(field_label)
+            .init();
     } else {
         this.removeInput(COLLAPSED_INPUT_NAME);
         this.setWarningText(null); // Clear any warnings inherited from enclosed blocks.

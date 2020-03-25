@@ -1,11 +1,11 @@
-import classnames    from 'classnames';
-import PropTypes     from 'prop-types';
-import React         from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { Highlight } from './button-highlight.jsx';
 
 class HighlightWrapper extends React.PureComponent {
     state = {
-        left : 0,
+        left: 0,
         width: 0,
     };
 
@@ -31,7 +31,7 @@ class HighlightWrapper extends React.PureComponent {
     onClick = (e, buttonClick) => {
         if (!e.target) return;
         this.updateHighlightPosition(e.target.closest('button'));
-        if (typeof buttonClick  === 'function') {
+        if (typeof buttonClick === 'function') {
             buttonClick();
         }
     };
@@ -40,7 +40,7 @@ class HighlightWrapper extends React.PureComponent {
         this.setState({ left: 0 });
     };
 
-    updateHighlightPosition = (el) => {
+    updateHighlightPosition = el => {
         if (!el) return;
         const { offsetLeft: left } = el;
         if (this.state.left !== left) {
@@ -57,14 +57,12 @@ class HighlightWrapper extends React.PureComponent {
         const button_width = (100 / children.length).toFixed(2);
 
         return (
-            <div ref={(node) => this.node = node} {...props}>
-                {
-                    React.Children.map(children, child => (
-                        React.cloneElement(child, {
-                            onClick: (e) => this.onClick(e, child.props.onClick),
-                        })
-                    ))
-                }
+            <div ref={node => (this.node = node)} {...props}>
+                {React.Children.map(children, child =>
+                    React.cloneElement(child, {
+                        onClick: e => this.onClick(e, child.props.onClick),
+                    })
+                )}
                 <Highlight left={this.state.left} width={`${button_width}%`} />
             </div>
         );
@@ -72,9 +70,9 @@ class HighlightWrapper extends React.PureComponent {
 }
 
 HighlightWrapper.propTypes = {
-    children : PropTypes.array,
+    children: PropTypes.array,
     className: PropTypes.string,
-    timeout  : PropTypes.number,
+    timeout: PropTypes.number,
 };
 
 export default HighlightWrapper;

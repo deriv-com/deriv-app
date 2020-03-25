@@ -1,4 +1,5 @@
-:host, :root {
+:host,
+:root {
     // Text sizes
     --text-size-xxs: 1.2rem;
     --text-size-xs: 1.4rem;
@@ -52,6 +53,7 @@
         --overlay-inside-dialog: #{$alpha-color-white-1};
         // Shadow
         --shadow-menu: #{$alpha-color-black-4};
+        --shadow-menu-2: #{$alpha-color-black-4};
         // States
         --state-normal: #{$color-white};
         --state-hover: #{$color-grey-4};
@@ -116,6 +118,7 @@
         --overlay-inside-dialog: #{$alpha-color-black-2};
         // Shadow
         --shadow-menu: #{$alpha-color-black-5};
+        --shadow-menu-2: #{$alpha-color-black-1};
         // States
         --state-normal: #{$color-black};
         --state-hover: #{$color-black-5};

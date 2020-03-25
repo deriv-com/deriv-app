@@ -1,16 +1,13 @@
-import React             from 'react';
-import {
-    Redirect,
-    Route }              from 'react-router-dom';
-import ObjectUtils       from '@deriv/shared/utils/object';
-import {
-    redirectToLogin,
-    redirectToSignUp }   from '_common/base/login';
-import { WS }            from 'Services/ws-methods';
-import LoginPrompt       from 'App/Components/Elements/login-prompt.jsx';
+import React from 'react';
+import { Redirect, Route } from 'react-router-dom';
+import ObjectUtils from '@deriv/shared/utils/object';
+import { redirectToLogin, redirectToSignUp } from '_common/base/login';
+import { WS } from 'Services/ws-methods';
+import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
 import { default_title } from 'App/Constants/app-config';
-import routes            from 'Constants/routes';
-import { connect }       from 'Stores/connect';
+import routes from 'Constants/routes';
+import { connect } from 'Stores/connect';
+import { removeBranchName } from '_common/url';
 
 const RouteWithSubRoutes = route => {
     const renderFactory = props => {
@@ -33,31 +30,26 @@ const RouteWithSubRoutes = route => {
                 />
             );
         } else {
-            const default_subroute     = route.routes ? route.routes.find((r) => r.default) : {};
+            const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !ObjectUtils.isEmptyObject(default_subroute);
+            const pathname = removeBranchName(location.pathname);
             result = (
                 <React.Fragment>
-                    {has_default_subroute && location.pathname === route.path &&
-                    <Redirect to={default_subroute.path} />
-                    }
+                    {has_default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
                     <route.component {...props} routes={route.routes} />
                 </React.Fragment>
             );
         }
 
         const title = route.title ? `${route.title} | ` : '';
-        document.title = `${ title }${ default_title }`;
+        document.title = `${title}${default_title}`;
         WS.wait('website_status').then(() => {
             route.pushDataLayer({ event: 'page_load' });
         });
         return result;
     };
 
-    return <Route
-        exact={route.exact}
-        path={route.path}
-        render={renderFactory}
-    />;
+    return <Route exact={route.exact} path={route.path} render={renderFactory} />;
 };
 
 export { RouteWithSubRoutes as RouteWithSubRoutesRender }; // For tests

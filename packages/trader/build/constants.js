@@ -31,83 +31,88 @@ const {
 const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 const ALIASES = {
-    _common     : path.resolve(__dirname, '../src/_common'),
-    App         : path.resolve(__dirname, '../src/App'),
-    Assets      : path.resolve(__dirname, '../src/Assets'),
-    Constants   : path.resolve(__dirname, '../src/Constants'),
-    Fonts       : path.resolve(__dirname, '../src/public/fonts'),
-    Images      : path.resolve(__dirname, '../src/public/images'),
-    Modules     : path.resolve(__dirname, '../src/Modules'),
-    Sass        : path.resolve(__dirname, '../src/sass'),
-    Services    : path.resolve(__dirname, '../src/Services'),
-    Stores      : path.resolve(__dirname, '../src/Stores'),
+    _common: path.resolve(__dirname, '../src/_common'),
+    App: path.resolve(__dirname, '../src/App'),
+    Assets: path.resolve(__dirname, '../src/Assets'),
+    Constants: path.resolve(__dirname, '../src/Constants'),
+    Fonts: path.resolve(__dirname, '../src/public/fonts'),
+    Images: path.resolve(__dirname, '../src/public/images'),
+    Modules: path.resolve(__dirname, '../src/Modules'),
+    Sass: path.resolve(__dirname, '../src/sass'),
+    Services: path.resolve(__dirname, '../src/Services'),
+    Stores: path.resolve(__dirname, '../src/Stores'),
     Translations: path.resolve(__dirname, '../src/public/translations'),
-    Utils       : path.resolve(__dirname, '../src/Utils'),
+    Utils: path.resolve(__dirname, '../src/Utils'),
 };
 
-const rules = (is_test_env = false, is_mocha_only = false) => ([
-    ...(is_test_env && !is_mocha_only ? [
-        {
-            test   : /\.(js|jsx)$/,
-            exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
-            include: /src/,
-            loader : 'eslint-loader',
-            enforce: 'pre',
-            options: {
-                formatter : require('eslint-formatter-pretty'),
-                configFile: path.resolve(__dirname, '../.eslintrc.js'),
-                ignorePath: path.resolve(__dirname, '../.eslintignore'),
-            }
-        }
-    ] : []),
+const rules = (is_test_env = false, is_mocha_only = false) => [
+    ...(is_test_env && !is_mocha_only
+        ? [
+              {
+                  test: /\.(js|jsx)$/,
+                  exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
+                  include: /src/,
+                  loader: 'eslint-loader',
+                  enforce: 'pre',
+                  options: {
+                      formatter: require('eslint-formatter-pretty'),
+                      configFile: path.resolve(__dirname, '../.eslintrc.js'),
+                      ignorePath: path.resolve(__dirname, '../.eslintignore'),
+                  },
+              },
+          ]
+        : []),
     {
-        test   : /\.(js|jsx)$/,
+        test: /\.(js|jsx)$/,
         exclude: is_test_env ? /node_modules/ : /node_modules|__tests__/,
         include: is_test_env ? /__tests__|src/ : /src/,
-        use    : js_loaders
+        use: js_loaders,
     },
     {
-        test   : /\.html$/,
+        test: /\.html$/,
         exclude: /node_modules/,
-        use    : html_loaders
+        use: html_loaders,
     },
     {
-        test   : /\.(png|jpg|gif|woff|woff2|eot|ttf|otf)$/,
+        test: /\.(png|jpg|gif|woff|woff2|eot|ttf|otf)$/,
         exclude: /node_modules/,
-        use    : file_loaders
+        use: file_loaders,
     },
     {
-        test   : /\.svg$/,
+        test: /\.svg$/,
         exclude: /node_modules/,
         include: /public\//,
-        use    : svg_file_loaders
+        use: svg_file_loaders,
     },
     {
-        test   : /\.svg$/,
+        test: /\.svg$/,
         exclude: /node_modules|public\//,
-        use    : svg_loaders
+        use: svg_loaders,
     },
-    is_test_env ? {
-            test: /\.(sc|sa|c)ss$/,
-            loaders: 'null-loader'
-        }
-    : {
-        test: /\.(sc|sa|c)ss$/,
-        use : css_loaders
-    }
-]);
-
-const MINIMIZERS = !IS_RELEASE ? [] : [
-    new TerserPlugin({
-        test     : /\.js/,
-        exclude  : /(smartcharts)/,
-        parallel : true,
-        sourceMap: true,
-    }),
-    new OptimizeCssAssetsPlugin(),
+    is_test_env
+        ? {
+              test: /\.(sc|sa|c)ss$/,
+              loaders: 'null-loader',
+          }
+        : {
+              test: /\.(sc|sa|c)ss$/,
+              use: css_loaders,
+          },
 ];
 
-const plugins = (base, is_test_env, is_mocha_only) => ([
+const MINIMIZERS = !IS_RELEASE
+    ? []
+    : [
+          new TerserPlugin({
+              test: /\.js/,
+              exclude: /(smartcharts)/,
+              parallel: true,
+              sourceMap: true,
+          }),
+          new OptimizeCssAssetsPlugin(),
+      ];
+
+const plugins = (base, is_test_env, is_mocha_only) => [
     new CleanWebpackPlugin(),
     new CopyPlugin(copyConfig(base)),
     // new HtmlWebPackPlugin(htmlOutputConfig()),
@@ -115,13 +120,15 @@ const plugins = (base, is_test_env, is_mocha_only) => ([
     new IgnorePlugin(/^\.\/locale$/, /moment$/),
     new MiniCssExtractPlugin(cssConfig()),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
-    ...(IS_RELEASE ? [] : [ new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: (file) => file.name !== 'CNAME' }) ]),
-    ...(is_test_env && !is_mocha_only ? [
-        new StylelintPlugin(stylelintConfig()),
-    ] : [
-        // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
-    ])
-]);
+    ...(IS_RELEASE
+        ? []
+        : [new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: file => file.name !== 'CNAME' })]),
+    ...(is_test_env && !is_mocha_only
+        ? [new StylelintPlugin(stylelintConfig())]
+        : [
+              // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
+          ]),
+];
 
 module.exports = {
     IS_RELEASE,

@@ -1,4 +1,4 @@
-import { localize }  from '@deriv/translations';
+import { localize } from '@deriv/translations';
 
 Blockly.Blocks.total_profit = {
     init() {
@@ -6,20 +6,22 @@ Blockly.Blocks.total_profit = {
     },
     definition() {
         return {
-            message0       : localize('Total profit/loss'),
-            output         : 'Number',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            message0: localize('Total profit/loss'),
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Returns the total profit/loss'),
-            category       : Blockly.Categories.Miscellaneous,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Returns the total profit/loss'),
+            category: Blockly.Categories.Miscellaneous,
         };
     },
     meta() {
         return {
-            'display_name': localize('Total profit/loss'),
-            'description' : localize('This block gives you the total profit/loss of your trading strategy since your bot started running. You can reset this by clicking “Clear stats” on the Transaction Stats window, or by refreshing this page in your browser.'),
+            display_name: localize('Total profit/loss'),
+            description: localize(
+                'This block gives you the total profit/loss of your trading strategy since your bot started running. You can reset this by clicking “Clear stats” on the Transaction Stats window, or by refreshing this page in your browser.'
+            ),
         };
     },
     onchange(event) {
@@ -29,7 +31,7 @@ Blockly.Blocks.total_profit = {
 
         if (
             event.type === Blockly.Events.END_DRAG ||
-            event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)
+            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id))
         ) {
             const input_statement = this.getRootInputTargetBlock();
 
@@ -46,20 +48,20 @@ Blockly.Blocks.total_profit_string = {
     },
     definition() {
         return {
-            message0       : localize('Total Profit String'),
-            output         : 'String',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            message0: localize('Total Profit String'),
+            output: 'String',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Returns the total profit in string format'),
-            category       : Blockly.Categories.Miscellaneous,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Returns the total profit in string format'),
+            category: Blockly.Categories.Miscellaneous,
         };
     },
     meta() {
         return {
-            'display_name': localize('Total Profit String'),
-            'description' : localize('Total Profit String Description'),
+            display_name: localize('Total Profit String'),
+            description: localize('Total Profit String Description'),
         };
     },
     onchange: Blockly.Blocks.total_profit.onchange,

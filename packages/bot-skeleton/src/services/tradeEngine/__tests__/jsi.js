@@ -1,4 +1,4 @@
-import { expect }  from 'chai';
+import { expect } from 'chai';
 import Interpreter from '../utils/interpreter';
 
 const interpreter = new Interpreter();

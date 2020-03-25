@@ -8,7 +8,7 @@
 }
 
 .flyout {
-    $flyout        : &;
+    $flyout: &;
     $default-margin: 15px;
     $button-padding: 5px 20px;
 
@@ -75,8 +75,10 @@
             background-color: var(--general-section-1);
             display: flex;
 
-            &:focus {
-                outline: none;
+            &:disabled {
+                .btn__text {
+                    color: var(--text-disabled);
+                }
             }
         }
     }
@@ -117,7 +119,6 @@
         width: 100%;
         height: auto;
         border-radius: 0.5em;
-
     }
     &__video {
         width: 100%;

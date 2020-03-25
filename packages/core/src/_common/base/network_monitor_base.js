@@ -1,5 +1,5 @@
-const { localize }  = require('@deriv/translations');
-const BinarySocket  = require('./socket_base');
+const { localize } = require('@deriv/translations');
+const BinarySocket = require('./socket_base');
 
 /*
  * Monitors the network status and initialises the WebSocket connection
@@ -8,8 +8,8 @@ const BinarySocket  = require('./socket_base');
  */
 const NetworkMonitorBase = (() => {
     const status_config = {
-        online  : { class: 'online',  tooltip: localize('Online') },
-        offline : { class: 'offline', tooltip: localize('Offline') },
+        online: { class: 'online', tooltip: localize('Online') },
+        offline: { class: 'offline', tooltip: localize('Offline') },
         blinking: { class: 'blinker', tooltip: localize('Connecting to server') },
     };
 
@@ -17,7 +17,7 @@ const NetworkMonitorBase = (() => {
 
     const init = (socket_general_functions, fncUpdateUI) => {
         let last_status, last_is_online;
-        setNetworkStatus = (status) => {
+        setNetworkStatus = status => {
             const is_online = isOnline();
             if (status !== last_status || is_online !== last_is_online) {
                 last_status = status;
@@ -29,7 +29,7 @@ const NetworkMonitorBase = (() => {
         ws_config = Object.assign({ wsEvent, isOnline }, socket_general_functions);
 
         if ('onLine' in navigator) {
-            window.addEventListener('online',  () => {
+            window.addEventListener('online', () => {
                 setNetworkStatus('blinking');
                 reconnectAfter({ timeout: 500 });
             });
@@ -62,20 +62,19 @@ const NetworkMonitorBase = (() => {
                 BinarySocket.send({ ping: 1 }); // get stable status sooner
             }
         }, timeout);
-
     }
     const events = {
-        init   : () => setNetworkStatus(isOnline() ? 'blinking' : 'offline'),
-        open   : () => setNetworkStatus(isOnline() ? 'online' : 'offline'),
-        send   : () => {},
+        init: () => setNetworkStatus(isOnline() ? 'blinking' : 'offline'),
+        open: () => setNetworkStatus(isOnline() ? 'online' : 'offline'),
+        send: () => {},
         message: () => setNetworkStatus('online'),
-        close  : () => {
+        close: () => {
             setNetworkStatus(isOnline() ? 'blinking' : 'offline');
             reconnectAfter({ timeout: 5000 });
         },
     };
 
-    const wsEvent = (event) => {
+    const wsEvent = event => {
         events[event] && events[event](); // eslint-disable-line
     };
 

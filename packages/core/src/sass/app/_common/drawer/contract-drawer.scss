@@ -4,12 +4,8 @@ $header-height: 4em;
     width: $POSITIONS_DRAWER_WIDTH;
     // removing 2px below for borders
     height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - 2px - (#{$POSITIONS_DRAWER_MARGIN} * 4));
-    margin-top: #{$POSITIONS_DRAWER_MARGIN * 2};
-    position: absolute;
     z-index: 2;
     padding: 8px;
-    top: 0;
-    left: 4px;
     box-sizing: border-box;
     will-change: transform, opacity;
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -76,7 +72,8 @@ $header-height: 4em;
     background-color: var(--general-main-1);
     color: var(--text-prominent);
 
-    .progress-slider, .progress-slider--completed {
+    .progress-slider,
+    .progress-slider--completed {
         margin: 0;
         border-bottom: 1px solid var(--general-section-1);
     }
@@ -112,7 +109,8 @@ $header-height: 4em;
             background: var(--general-hover);
         }
     }
-    .purchase-price, .potential-payout {
+    .purchase-price,
+    .potential-payout {
         &-container {
             display: flex;
             flex-direction: column;
@@ -171,9 +169,9 @@ $header-height: 4em;
         }
     }
     &__symbol {
-        margin-left: 0.5rem;
-        font-size: 1em;
-        line-height: 1.5;
+        margin-left: 0.8rem;
+        font-size: 1.2rem;
+        line-height: normal;
     }
     &__header {
         display: flex;
@@ -211,7 +209,8 @@ $header-height: 4em;
             opacity: 1;
             transform: translateY(0);
         }
-        &--enter, &--exit {
+        &--enter,
+        &--exit {
             opacity: 0;
             transform: translateY(-8px);
         }

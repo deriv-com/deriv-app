@@ -1,22 +1,28 @@
-import PropTypes       from 'prop-types';
-import React           from 'react';
-import { connect }     from 'Stores/connect';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'Stores/connect';
 import { toGMTFormat } from 'Utils/Date';
 
-const ServerTime = ({ server_time }) => {
+const ServerTime = ({ is_mobile, server_time }) => {
     const gmt_time = toGMTFormat(server_time);
 
     return (
-        <div className='server-time'>{gmt_time}</div>
+        <div
+            className={classNames('server-time', {
+                'server-time--is-mobile': is_mobile,
+            })}
+        >
+            {gmt_time}
+        </div>
     );
 };
 
 ServerTime.propTypes = {
+    is_mobile: PropTypes.bool,
     server_time: PropTypes.object,
 };
 
-export default connect(
-    ({ common }) => ({
-        server_time: common.server_time,
-    })
-)(ServerTime);
+export default connect(({ common }) => ({
+    server_time: common.server_time,
+}))(ServerTime);

@@ -2,7 +2,8 @@
 .card-list {
     overflow: auto; // fixes margin collapse
 
-    & &__card { // keep & for higher specificity
+    & &__card {
+        // keep & for higher specificity
         display: block;
         text-decoration: none;
         max-width: 450px;

@@ -1,12 +1,6 @@
-import {
-    action,
-    intercept,
-    observable,
-    reaction,
-    toJS,
-    when }              from 'mobx';
-import ObjectUtils      from '@deriv/shared/utils/object';
-import Validator        from 'Utils/Validator';
+import { action, intercept, observable, reaction, toJS, when } from 'mobx';
+import ObjectUtils from '@deriv/shared/utils/object';
+import Validator from 'Utils/Validator';
 import { isProduction } from '../config';
 
 /**
@@ -15,12 +9,11 @@ import { isProduction } from '../config';
  *  2. Saving the store's snapshot in local/session storage and keeping them in sync.
  */
 export default class BaseStore {
-
     /**
      * An enum object to define LOCAL_STORAGE and SESSION_STORAGE
      */
     static STORAGES = Object.freeze({
-        LOCAL_STORAGE  : Symbol('LOCAL_STORAGE'),
+        LOCAL_STORAGE: Symbol('LOCAL_STORAGE'),
         SESSION_STORAGE: Symbol('SESSION_STORAGE'),
     });
 
@@ -74,19 +67,20 @@ export default class BaseStore {
 
         Object.defineProperty(this, 'root_store', {
             enumerable: false,
-            writable  : true,
+            writable: true,
         });
         Object.defineProperty(this, 'local_storage_properties', {
             enumerable: false,
-            writable  : true,
+            writable: true,
         });
         Object.defineProperty(this, 'session_storage_properties', {
             enumerable: false,
-            writable  : true,
+            writable: true,
         });
 
-        const has_local_or_session_storage = local_storage_properties && local_storage_properties.length
-            || session_storage_properties && session_storage_properties.length;
+        const has_local_or_session_storage =
+            (local_storage_properties && local_storage_properties.length) ||
+            (session_storage_properties && session_storage_properties.length);
 
         if (has_local_or_session_storage) {
             if (!store_name) {
@@ -94,14 +88,14 @@ export default class BaseStore {
             }
 
             Object.defineProperty(this, 'store_name', {
-                value     : store_name,
+                value: store_name,
                 enumerable: false,
-                writable  : false,
+                writable: false,
             });
         }
 
-        this.root_store                 = root_store;
-        this.local_storage_properties   = local_storage_properties || [];
+        this.root_store = root_store;
+        this.local_storage_properties = local_storage_properties || [];
         this.session_storage_properties = session_storage_properties || [];
         this.setValidationRules(validation_rules);
 
@@ -125,10 +119,7 @@ export default class BaseStore {
         }
 
         if (properties && properties.length) {
-            snapshot = properties.reduce(
-                (result, p) => Object.assign(result, { [p]: snapshot[p] }),
-                {},
-            );
+            snapshot = properties.reduce((result, p) => Object.assign(result, { [p]: snapshot[p] }), {});
         }
 
         return snapshot;
@@ -143,7 +134,7 @@ export default class BaseStore {
         if (this.local_storage_properties.length) {
             reaction(
                 () => this.local_storage_properties.map(i => this[i]),
-                () => this.saveToStorage(this.local_storage_properties, BaseStore.STORAGES.LOCAL_STORAGE),
+                () => this.saveToStorage(this.local_storage_properties, BaseStore.STORAGES.LOCAL_STORAGE)
             );
         }
     }
@@ -157,7 +148,7 @@ export default class BaseStore {
         if (this.session_storage_properties.length) {
             reaction(
                 () => this.session_storage_properties.map(i => this[i]),
-                () => this.saveToStorage(this.session_storage_properties, BaseStore.STORAGES.SESSION_STORAGE),
+                () => this.saveToStorage(this.session_storage_properties, BaseStore.STORAGES.SESSION_STORAGE)
             );
         }
     }
@@ -188,12 +179,12 @@ export default class BaseStore {
      */
     @action
     retrieveFromStorage() {
-        const local_storage_snapshot   = JSON.parse(localStorage.getItem(this.store_name, {}));
+        const local_storage_snapshot = JSON.parse(localStorage.getItem(this.store_name, {}));
         const session_storage_snapshot = JSON.parse(sessionStorage.getItem(this.store_name, {}));
 
         const snapshot = { ...local_storage_snapshot, ...session_storage_snapshot };
 
-        Object.keys(snapshot).forEach((k) => this[k] = snapshot[k]);
+        Object.keys(snapshot).forEach(k => (this[k] = snapshot[k]));
     }
 
     /**
@@ -205,10 +196,10 @@ export default class BaseStore {
      */
     @action
     setValidationErrorMessages(propertyName, messages) {
-        const is_different = () => !!this.validation_errors[propertyName]
-            .filter(x => !messages.includes(x))
-            .concat(messages.filter(x => !this.validation_errors[propertyName].includes(x)))
-            .length;
+        const is_different = () =>
+            !!this.validation_errors[propertyName]
+                .filter(x => !messages.includes(x))
+                .concat(messages.filter(x => !this.validation_errors[propertyName].includes(x))).length;
         if (!this.validation_errors[propertyName] || is_different()) {
             this.validation_errors[propertyName] = messages;
         }
@@ -253,20 +244,16 @@ export default class BaseStore {
      */
     @action
     validateProperty(property, value) {
-        const trigger          = this.validation_rules[property].trigger;
-        const inputs           = { [property]: value !== undefined ? value : this[property] };
-        const validation_rules = { [property]: (this.validation_rules[property].rules || []) };
+        const trigger = this.validation_rules[property].trigger;
+        const inputs = { [property]: value !== undefined ? value : this[property] };
+        const validation_rules = { [property]: this.validation_rules[property].rules || [] };
 
         if (!!trigger && Object.hasOwnProperty.call(this, trigger)) {
-            inputs[trigger]           = this[trigger];
+            inputs[trigger] = this[trigger];
             validation_rules[trigger] = this.validation_rules[trigger].rules || [];
         }
 
-        const validator = new Validator(
-            inputs,
-            validation_rules,
-            this,
-        );
+        const validator = new Validator(inputs, validation_rules, this);
 
         validator.isPassed();
 
@@ -281,7 +268,7 @@ export default class BaseStore {
      */
     @action
     validateAllProperties() {
-        const validation_rules  = Object.keys(this.validation_rules);
+        const validation_rules = Object.keys(this.validation_rules);
         const validation_errors = Object.keys(this.validation_errors);
 
         validation_rules.forEach(p => {
@@ -318,7 +305,7 @@ export default class BaseStore {
                         console.error(error); // eslint-disable-line
                     }
                 }
-            },
+            }
         );
         this.switch_account_listener = listener;
     }
@@ -345,7 +332,7 @@ export default class BaseStore {
                         console.error(error); // eslint-disable-line
                     }
                 }
-            },
+            }
         );
         this.pre_switch_account_listener = listener;
     }
@@ -372,7 +359,7 @@ export default class BaseStore {
                         console.error(error); // eslint-disable-line
                     }
                 }
-            },
+            }
         );
         this.logout_listener = listener;
     }
@@ -399,7 +386,7 @@ export default class BaseStore {
                         console.error(error); // eslint-disable-line
                     }
                 }
-            },
+            }
         );
         this.client_init_listener = listener;
     }
@@ -408,7 +395,7 @@ export default class BaseStore {
     onNetworkStatusChange(listener) {
         this.networkStatusChangeDisposer = reaction(
             () => this.root_store.common.is_network_online,
-            (is_online) => {
+            is_online => {
                 try {
                     this.network_status_change_listener(is_online);
                 } catch (error) {
@@ -418,7 +405,7 @@ export default class BaseStore {
                         console.error(error); // eslint-disable-line
                     }
                 }
-            },
+            }
         );
 
         this.network_status_change_listener = listener;
@@ -428,7 +415,7 @@ export default class BaseStore {
     onThemeChange(listener) {
         this.themeChangeDisposer = reaction(
             () => this.root_store.ui.is_dark_mode_on,
-            (is_dark_mode_on) => {
+            is_dark_mode_on => {
                 try {
                     this.theme_change_listener(is_dark_mode_on);
                 } catch (error) {
@@ -438,7 +425,7 @@ export default class BaseStore {
                         console.error(error); // eslint-disable-line
                     }
                 }
-            },
+            }
         );
 
         this.theme_change_listener = listener;
@@ -466,7 +453,7 @@ export default class BaseStore {
                         console.error(error); // eslint-disable-line
                     }
                 }
-            },
+            }
         );
 
         this.real_account_signup_ended_listener = listener;

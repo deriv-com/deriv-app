@@ -1,11 +1,11 @@
-import classNames     from 'classnames';
-import { Popover }    from '@deriv/components';
-import React          from 'react';
-import PropTypes      from 'prop-types';
+import classNames from 'classnames';
+import { DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
+import React from 'react';
+import PropTypes from 'prop-types';
 // import { localize }   from '@deriv/translations';
 // import { PopConfirm } from 'App/Components/Elements/PopConfirm';
-import Fieldset       from 'App/Components/Form/fieldset.jsx';
-import ContractInfo   from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
+import Fieldset from 'App/Components/Form/fieldset.jsx';
+import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 // import PurchaseLock   from 'Modules/Trading/Components/Form/Purchase/PurchaseLock';
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button.jsx';
 
@@ -54,101 +54,97 @@ class PurchaseFieldset extends React.PureComponent {
                 setPurchaseState={setPurchaseState}
                 should_fade={this.state.should_fade}
                 type={type}
+                basis={basis} // mobile-only
             />
         );
 
         return (
-            <Fieldset
-                className='trade-container__fieldset purchase-container__option'
-            >
+            <Fieldset className='trade-container__fieldset purchase-container__option'>
                 {/* {(is_purchase_locked && index === 0) && */}
                 {/* <PurchaseLock onClick={togglePurchaseLock} /> */}
                 {/* } */}
-                <div
-                    className={classNames(
-                        'trade-container__fieldset-wrapper', {
-                            'trade-container__fieldset-wrapper--disabled': (is_proposal_error || is_disabled),
-                        },
-                    )}
-                >
-                    <ContractInfo
-                        basis={basis}
-                        currency={currency}
-                        proposal_info={info}
-                        has_increased={info.has_increased}
-                        is_loading={is_loading}
-                        should_fade={this.state.should_fade}
-                        type={type}
-                    />
+                <DesktopWrapper>
                     <div
-                        className={classNames(
-                            'btn-purchase__shadow-wrapper', {
-                                'btn-purchase__shadow-wrapper--disabled': (is_proposal_error || is_disabled),
-                            },
-                        )}
-                        onMouseEnter={() => {
-                            if (!is_disabled) {
-                                onHoverPurchase(true, type);
-                            }
-                        }}
-                        onMouseLeave={() => {
-                            if (!is_disabled) {
-                                onHoverPurchase(false);
-                            }
-                        }}
+                        className={classNames('trade-container__fieldset-wrapper', {
+                            'trade-container__fieldset-wrapper--disabled': is_proposal_error || is_disabled,
+                        })}
                     >
-                        <div className='btn-purchase__box-shadow' />
-                        {is_proposal_error ?
-                            <Popover
-                                has_error
-                                is_open
-                                alignment='left'
-                                message={info.message}
-                            >
-                                { purchase_button }
-                            </Popover>
-                            :
-                            purchase_button
-                        }
-                        {
-                            // is_purchase_confirm_on ?
-                            //     <PopConfirm
-                            //         alignment='left'
-                            //         cancel_text={localize('Cancel')}
-                            //         confirm_text={localize('Purchase')}
-                            //         message={localize('Are you sure you want to purchase this contract?')}
-                            //     >
-                            //         {purchase_button}
-                            //     </PopConfirm>
-                            //     :
-                            //     purchase_button
-                        }
+                        <ContractInfo
+                            basis={basis}
+                            currency={currency}
+                            proposal_info={info}
+                            has_increased={info.has_increased}
+                            is_loading={is_loading}
+                            should_fade={this.state.should_fade}
+                            type={type}
+                        />
+                        <div
+                            className={classNames('btn-purchase__shadow-wrapper', {
+                                'btn-purchase__shadow-wrapper--disabled': is_proposal_error || is_disabled,
+                            })}
+                            onMouseEnter={() => {
+                                if (!is_disabled) {
+                                    onHoverPurchase(true, type);
+                                }
+                            }}
+                            onMouseLeave={() => {
+                                if (!is_disabled) {
+                                    onHoverPurchase(false);
+                                }
+                            }}
+                        >
+                            <div className='btn-purchase__box-shadow' />
+                            {is_proposal_error ? (
+                                <Popover has_error is_openalignment='left' message={info.message}>
+                                    {purchase_button}
+                                </Popover>
+                            ) : (
+                                purchase_button
+                            )}
+                            {
+                                // is_purchase_confirm_on ?
+                                //     <PopConfirm
+                                //         alignment='left'
+                                //         cancel_text={localize('Cancel')}
+                                //         confirm_text={localize('Purchase')}
+                                //         message={localize('Are you sure you want to purchase this contract?')}
+                                //     >
+                                //         {purchase_button}
+                                //     </PopConfirm>
+                                //     :
+                                //     purchase_button
+                            }
+                        </div>
                     </div>
-                </div>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    {is_proposal_error && <div className='btn-purchase__error'>{info.message}</div>}
+                    {purchase_button}
+                </MobileWrapper>
             </Fieldset>
         );
     }
 }
 
 PurchaseFieldset.propTypes = {
-    basis               : PropTypes.string,
-    buy_info            : PropTypes.object,
-    currency            : PropTypes.string,
-    index               : PropTypes.number,
-    info                : PropTypes.object,
-    is_disabled         : PropTypes.bool,
-    is_high_low         : PropTypes.bool,
-    is_loading          : PropTypes.bool,
-    is_proposal_empty   : PropTypes.bool,
-    is_proposal_error   : PropTypes.bool,
-    onClickPurchase     : PropTypes.func,
+    basis: PropTypes.string,
+    buy_info: PropTypes.object,
+    currency: PropTypes.string,
+    index: PropTypes.number,
+    info: PropTypes.object,
+    is_disabled: PropTypes.bool,
+    is_high_low: PropTypes.bool,
+    is_loading: PropTypes.bool,
+    is_proposal_empty: PropTypes.bool,
+    is_proposal_error: PropTypes.bool,
+    onClickPurchase: PropTypes.func,
     // is_purchase_confirm_on: PropTypes.bool,
     // is_purchase_locked    : PropTypes.bool,
-    onHoverPurchase     : PropTypes.func,
+    onHoverPurchase: PropTypes.func,
     purchased_states_arr: PropTypes.array,
     // togglePurchaseLock    : PropTypes.func,
-    setPurchaseState    : PropTypes.func,
-    type                : PropTypes.string,
+    setPurchaseState: PropTypes.func,
+    type: PropTypes.string,
 };
 
 export default PurchaseFieldset;

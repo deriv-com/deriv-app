@@ -1,6 +1,6 @@
-import { expect }    from 'chai';
+import { expect } from 'chai';
 import * as DateTime from '../date-time.js';
-import moment        from 'moment';
+import moment from 'moment';
 
 describe('toMoment', () => {
     it('return utc epoch value date based on client epoch value passed', () => {
@@ -19,7 +19,10 @@ describe('toMoment', () => {
 describe('convertToUnix', () => {
     const setTime = (moment_obj, time) => {
         const [hour, minute, second] = time.split(':');
-        moment_obj.hour(hour).minute(minute || 0).second(second || 0);
+        moment_obj
+            .hour(hour)
+            .minute(minute || 0)
+            .second(second || 0);
 
         return moment_obj;
     };
@@ -28,25 +31,39 @@ describe('convertToUnix', () => {
         const date_epoch = 1544745600;
         const time = '12:30';
 
-        expect(DateTime.convertToUnix(date_epoch, time)).to.deep.equal(setTime(DateTime.toMoment(date_epoch), time).unix());
+        expect(DateTime.convertToUnix(date_epoch, time)).to.deep.equal(
+            setTime(DateTime.toMoment(date_epoch), time).unix()
+        );
     });
 });
 
 describe('toGMTFormat', () => {
     it('return correct GMT value when no argument passed', () => {
-        expect(DateTime.toGMTFormat()).to.deep.equal(moment().utc().format('YYYY-MM-DD HH:mm:ss [GMT]'));
+        expect(DateTime.toGMTFormat()).to.deep.equal(
+            moment()
+                .utc()
+                .format('YYYY-MM-DD HH:mm:ss [GMT]')
+        );
     });
 
     it('return correct GMT value when argument passed', () => {
         const time_epoch = 1544757884620;
-        expect(DateTime.toGMTFormat(time_epoch)).to.deep.equal(moment(time_epoch).utc().format('YYYY-MM-DD HH:mm:ss [GMT]'));
+        expect(DateTime.toGMTFormat(time_epoch)).to.deep.equal(
+            moment(time_epoch)
+                .utc()
+                .format('YYYY-MM-DD HH:mm:ss [GMT]')
+        );
     });
 });
 
 describe('formatDate', () => {
-    const date_format = 'YYYY-MM-DD'
+    const date_format = 'YYYY-MM-DD';
     it('return correct response when no argument passed', () => {
-        expect(DateTime.formatDate()).to.eql(moment().utc().format(date_format));
+        expect(DateTime.formatDate()).to.eql(
+            moment()
+                .utc()
+                .format(date_format)
+        );
     });
 
     it('return correct date value when argument passed', () => {
@@ -63,20 +80,31 @@ describe('daysFromTodayTo', () => {
 
     it('return empty string if the user selected previous day', () => {
         //get previous day
-        const date = moment().utc().startOf('day').subtract(1, 'days').format('YYYY-MM-DD');
+        const date = moment()
+            .utc()
+            .startOf('day')
+            .subtract(1, 'days')
+            .format('YYYY-MM-DD');
         expect(DateTime.daysFromTodayTo(date)).to.be.empty;
     });
 
     it('return difference value between selected date and today', () => {
         //get date three days from now
-        const date = moment().utc().startOf('day').add('3', 'days').format('YYYY-MM-DD');
+        const date = moment()
+            .utc()
+            .startOf('day')
+            .add('3', 'days')
+            .format('YYYY-MM-DD');
         expect(DateTime.daysFromTodayTo(date)).to.deep.equal(3);
     });
 });
 
 describe('convertDuration', () => {
     const start_time = moment().unix();
-    const end_time = moment.unix(start_time).add(3, 'minutes').unix();
+    const end_time = moment
+        .unix(start_time)
+        .add(3, 'minutes')
+        .unix();
 
     describe('getDiffDuration', () => {
         it('return correct value when argument passed', () => {
@@ -86,7 +114,7 @@ describe('convertDuration', () => {
 
     describe('formatDuration', () => {
         it('return correct value when argument passed', () => {
-            const duration = moment.duration(moment.unix(end_time).diff(moment.unix(start_time)));// three minutes
+            const duration = moment.duration(moment.unix(end_time).diff(moment.unix(start_time))); // three minutes
             expect(DateTime.formatDuration(duration)).to.eql('00:03:00');
         });
     });

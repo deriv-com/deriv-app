@@ -26,8 +26,10 @@
         justify-content: center;
         z-index: 999;
         transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+        background-color: var(--overlay-outside-dialog);
 
-        &--enter, &--exit {
+        &--enter,
+        &--exit {
             transform: translate3d(0, 50px, 0);
             opacity: 0;
         }
@@ -78,6 +80,9 @@
         justify-content: flex-end;
         align-items: center;
         width: 100%;
+        @include mobile {
+            flex-wrap: wrap;
+        }
     }
     &__button {
         margin: 0.4em;
@@ -89,6 +94,7 @@
         &__dialog {
             width: 100vw;
             height: 100vh;
+            min-width: 100vw;
         }
     }
 }

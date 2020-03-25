@@ -1,14 +1,16 @@
-import PropTypes      from 'prop-types';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { isDesktop }  from '_common/os_detect';
-import { connect }    from 'Stores/connect';
-import routes         from '../../../Constants/routes';
+import { isDesktop } from '@deriv/shared/utils/os';
+import { connect } from 'Stores/connect';
+import routes from '../../../Constants/routes';
 
 const Redirect = ({
     server_time,
     history,
     setDeviceData,
     setVerificationCode,
+    fetchResidenceList,
+    openRealAccountSignup,
     toggleAccountSignupModal,
     toggleResetPasswordModal,
 }) => {
@@ -20,13 +22,13 @@ const Redirect = ({
     switch (url_params.get('action')) {
         case 'signup': {
             const device_data = {
-                affiliate_token   : url_params.get('affiliate_token') || '',
+                affiliate_token: url_params.get('affiliate_token') || '',
                 date_first_contact: url_params.get('date_first_contact') || server_time.format('YYYY-MM-DD'),
-                gclid_url         : url_params.get('gclid_url') || '',
-                signup_device     : url_params.get('signup_device') || isDesktop() ? 'desktop' : 'mobile',
-                utm_campaign      : url_params.get('utm_campaign') || '',
-                utm_medium        : url_params.get('utm_medium') || '',
-                utm_source        : url_params.get('utm_source') || '',
+                gclid_url: url_params.get('gclid_url') || '',
+                signup_device: url_params.get('signup_device') || isDesktop() ? 'desktop' : 'mobile',
+                utm_campaign: url_params.get('utm_campaign') || '',
+                utm_medium: url_params.get('utm_medium') || '',
+                utm_source: url_params.get('utm_source') || '',
             };
 
             setDeviceData(device_data);
@@ -47,7 +49,12 @@ const Redirect = ({
             redirected_to_route = true;
             break;
         }
-        default: break;
+        case 'add_account': {
+            fetchResidenceList().then(openRealAccountSignup);
+            break;
+        }
+        default:
+            break;
     }
 
     if (!redirected_to_route) {
@@ -60,20 +67,22 @@ const Redirect = ({
 };
 
 Redirect.propTypes = {
-    getServerTime           : PropTypes.object,
-    history                 : PropTypes.object,
-    setDeviceData           : PropTypes.func,
-    setVerificationCode     : PropTypes.func,
+    getServerTime: PropTypes.object,
+    history: PropTypes.object,
+    setDeviceData: PropTypes.func,
+    setVerificationCode: PropTypes.func,
     toggleAccountSignupModal: PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
 };
 
-export default withRouter(connect(
-    ({ client, ui, common }) => ({
-        setDeviceData           : client.setDeviceData,
-        setVerificationCode     : client.setVerificationCode,
-        server_time             : common.server_time,
+export default withRouter(
+    connect(({ client, ui, common }) => ({
+        setDeviceData: client.setDeviceData,
+        setVerificationCode: client.setVerificationCode,
+        fetchResidenceList: client.fetchResidenceList,
+        server_time: common.server_time,
+        openRealAccountSignup: ui.openRealAccountSignup,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,
-    }),
-)(Redirect));
+    }))(Redirect)
+);

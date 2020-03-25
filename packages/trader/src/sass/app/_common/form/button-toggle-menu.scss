@@ -47,7 +47,8 @@
         display: flex;
 
         .button-menu {
-            &__button, &__button--active {
+            &__button,
+            &__button--active {
                 background-color: rgba(0, 0, 0, 0) !important;
                 z-index: 1;
             }

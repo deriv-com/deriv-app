@@ -4,18 +4,18 @@ Blockly.Blocks.trade_definition_candleinterval = {
     init() {
         this.jsonInit({
             message0: 'Default Candle Interval: %1',
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'CANDLEINTERVAL_LIST',
+                    type: 'field_dropdown',
+                    name: 'CANDLEINTERVAL_LIST',
                     options: config.candleIntervals.slice(1),
                 },
             ],
-            colour           : Blockly.Colours.Base.colour,
-            colourSecondary  : Blockly.Colours.Base.colourSecondary,
-            colourTertiary   : Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
+            nextStatement: null,
         });
 
         this.setMovable(false);

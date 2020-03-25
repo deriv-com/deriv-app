@@ -1,9 +1,10 @@
 /** @define cashier; weak */
 .cashier {
-    margin: 16px;
-    box-shadow: 18px 8px 8px var(--shadow-menu);
-    border-radius: 4px;
-
+    &__counter {
+        position: absolute;
+        top: 0.4rem;
+        right: -1.5rem;
+    }
     &__content {
         width: 100%;
         background: var(--status-default);
@@ -11,20 +12,37 @@
     &__wrapper {
         text-align: center;
 
-        &, &--align-left {
+        &,
+        &--align-left {
             color: var(--text-general);
             width: 100%;
             height: 100%;
             line-height: 1.43;
-            position: absolute;
-            padding: 2.4rem;
 
             .inline-icon .color1-fill {
                 fill: var(--text-general);
             }
+            @include mobile {
+                height: inherit;
+            }
         }
         &--align-left {
             text-align: left;
+        }
+        &--is-mobile {
+            @include mobile {
+                padding: 1.6rem;
+                width: 100vw;
+
+                .dc-collapsible {
+                    position: relative;
+                    background-color: var(--general-section-1);
+                    margin-bottom: 0.8rem;
+                    transform: none;
+                    width: 100%;
+                    z-index: 1;
+                }
+            }
         }
     }
     &__loader {
@@ -33,6 +51,10 @@
         &-wrapper {
             display: flex;
             height: 100%;
+
+            @include mobile {
+                height: initial;
+            }
         }
     }
     &__header {
@@ -42,16 +64,12 @@
         margin-bottom: 16px;
         color: var(--text-prominent);
     }
-    &__inset_header {
-        box-shadow: inset 0 -1px 0 0 var(--general-section-1);
-    }
     &__form {
         &-submit {
             display: flex;
             justify-content: flex-end;
             width: 100%;
             margin-left: -2.4rem;
-            position: absolute;
             bottom: 0;
             height: 8rem;
             overflow: hidden;
@@ -78,16 +96,43 @@
         &-submit-button {
             margin: 1.6rem 2.4rem 2.4rem;
         }
+        @include mobile {
+            &-submit {
+                margin: 0;
+                flex-flow: column;
+                height: unset;
+            }
+            &-submit-button {
+                margin: 0;
+                width: 100%;
+            }
+            &-error-container {
+                display: flex;
+                align-items: center;
+                margin-bottom: 0.8rem;
+            }
+            &-error {
+                margin: 0;
+
+                &-small-icon {
+                    margin: 0;
+                    margin-right: 0.8rem;
+                }
+            }
+        }
     }
     &__input {
         display: inline-block !important;
-        margin-bottom: 0 !important;
+        margin-bottom: 0;
 
         &--short {
             width: 29rem;
         }
         &--long {
             width: 100%;
+        }
+        @include mobile {
+            margin-bottom: 3.2rem;
         }
     }
     &__drop-down {
@@ -113,7 +158,8 @@
                 align-items: center;
             }
         }
-        &-items, &-label {
+        &-items,
+        &-label {
             justify-content: left;
         }
         &-label {
@@ -195,26 +241,9 @@
         margin: 2.4rem auto;
     }
     &__virtual {
-        &-center {
-            margin: 12vh 0;
-        }
         &-header {
             margin-top: 0;
             margin-bottom: 0.8rem;
-        }
-    }
-    &__center-align {
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &-wrapper {
-            display: flex;
-        }
-        &-content {
-            align-self: center;
-            width: 100%;
         }
     }
     /** @define cashier-error */
@@ -248,7 +277,8 @@
         font-size: 1.6rem;
         line-height: 1.5;
     }
-    &__header, &__text {
+    &__header,
+    &__text {
         color: var(--text-general);
     }
     &__text {
@@ -286,7 +316,8 @@
                 color: var(--text-general);
             }
         }
-        &-resend, &-sent {
+        &-resend,
+        &-sent {
             &-text {
                 font-size: 1.4rem;
                 line-height: 1.43;
@@ -453,6 +484,11 @@
         margin-top: calc(3.2rem + 1.7rem); // + height of hint/error
         font-size: 1.2rem;
         line-height: 1.5;
+
+        @include mobile {
+            margin: 0;
+            padding: 1.6rem 0.8rem;
+        }
     }
     &__bullet {
         background-color: var(--text-general);
@@ -472,8 +508,14 @@
         min-width: calc(calc(100% - calc(16px + 1.6rem)) / 2);
         width: auto;
         margin-bottom: 3.4rem;
+
+        @include mobile {
+            width: 100%;
+            margin-bottom: 2.4rem;
+        }
     }
-    &__currency, &__balance {
+    &__currency,
+    &__balance {
         line-height: 1.43;
     }
     &__currency {
@@ -489,6 +531,10 @@
     &__receipt {
         &-icon {
             margin: 5.6rem 0 1.6rem;
+
+            @include mobile {
+                margin: 1.6rem 0;
+            }
         }
     }
     &__transfer {
@@ -497,7 +543,8 @@
             margin: 0 0.8rem;
         }
         &-details {
-            &-from, &-to {
+            &-from,
+            &-to {
                 display: flex;
                 align-items: center;
             }
@@ -505,6 +552,13 @@
     }
     &__button-done {
         margin: 3.2rem auto 0;
+
+        @include mobile {
+            margin: 2.4rem auto 0;
+        }
+    }
+    &__native-select {
+        margin-bottom: 2.4rem;
     }
 }
 
@@ -526,22 +580,3 @@ div.payment-agent-transfer {
     }
 }
 /* stylelint-enable plugin/selector-bem-pattern */
-
-/** @define dc-modal-header; */
-.dc-modal-header {
-    &__modal-cashier {
-        box-shadow: inset 0 -1px 0 0 var(--general-section-1);
-    }
-    &--modal-cashier {
-        background-color: var(--general-main-1);
-    }
-    &__title {
-        line-height: 1.65;
-
-        &--modal-cashier {
-            min-width: 24rem;
-            border-bottom: 1px solid var(--general-section-1);
-            background-color: var(--general-section-1);
-        }
-    }
-}

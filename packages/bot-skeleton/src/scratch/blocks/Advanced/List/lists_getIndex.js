@@ -30,16 +30,20 @@ Blockly.Blocks.lists_getIndex = {
             Blockly.Colours.Base.colourSecondary,
             Blockly.Colours.Base.colourTertiary
         );
-        this.setTooltip('This block gives you the value of a specific item in a list, given the position of the item. It can also remove the item from the list.');
+        this.setTooltip(
+            'This block gives you the value of a specific item in a list, given the position of the item. It can also remove the item from the list.'
+        );
         this.setOutput(true, null);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
         this.updateAt(true);
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Get list item'),
-            'description' : localize('This block gives you the value of a specific item in a list, given the position of the item. It can also remove the item from the list.'),
-            'category'    : Blockly.Categories.List,
+            display_name: localize('Get list item'),
+            description: localize(
+                'This block gives you the value of a specific item in a list, given the position of the item. It can also remove the item from the list.'
+            ),
+            category: Blockly.Categories.List,
         };
     },
     mutationToDom() {
@@ -105,8 +109,7 @@ Blockly.JavaScript.lists_getIndex = block => {
     const listOrder = where === 'RANDOM' ? Blockly.JavaScript.ORDER_COMMA : Blockly.JavaScript.ORDER_MEMBER;
     const list = Blockly.JavaScript.valueToCode(block, 'VALUE', listOrder) || '[]';
 
-    let code,
-        order;
+    let code, order;
 
     if (where === 'FIRST') {
         if (mode === 'GET') {

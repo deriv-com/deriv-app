@@ -4,13 +4,13 @@ Blockly.Blocks.math_on_list = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('%1 of list %2'),
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'OP',
+                    type: 'field_dropdown',
+                    name: 'OP',
                     options: [
                         [localize('sum'), 'SUM'],
                         [localize('min'), 'MIN'],
@@ -27,19 +27,21 @@ Blockly.Blocks.math_on_list = {
                     name: 'LIST',
                 },
             ],
-            output         : 'Number',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Aggregate operations'),
-            category       : Blockly.Categories.Mathematical,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Aggregate operations'),
+            category: Blockly.Categories.Mathematical,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Aggregate operations'),
-            'description' : localize('This block performs the following operations on a given list: sum, minimum, maximum, average, median, modes, standard deviation, random item.'),
+            display_name: localize('Aggregate operations'),
+            description: localize(
+                'This block performs the following operations on a given list: sum, minimum, maximum, average, median, modes, standard deviation, random item.'
+            ),
         };
     },
     getRequiredValueInputs() {
@@ -53,8 +55,7 @@ Blockly.Blocks.math_on_list = {
 Blockly.JavaScript.math_on_list = block => {
     const operation = block.getFieldValue('OP');
 
-    let code,
-        list;
+    let code, list;
 
     if (operation === 'SUM') {
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_MEMBER) || '[]';

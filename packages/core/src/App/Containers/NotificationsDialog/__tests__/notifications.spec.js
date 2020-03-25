@@ -1,9 +1,9 @@
-import React                  from 'react';
-import { expect }             from 'chai';
+import React from 'react';
+import { expect } from 'chai';
 import { configure, shallow } from 'enzyme';
-import Adapter                from 'enzyme-adapter-react-16';
-import { Notifications }      from '../notifications.jsx';
-import { EmptyNotification }  from 'App/Components/Elements/Notifications/empty-notification';
+import Adapter from 'enzyme-adapter-react-16';
+import { Notifications } from '../notifications.jsx';
+import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification';
 
 configure({ adapter: new Adapter() });
 

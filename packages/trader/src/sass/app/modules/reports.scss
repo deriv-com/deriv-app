@@ -6,14 +6,11 @@ $side-padding: 1.2em;
 
 /** @define reports; weak */
 .reports {
-    margin: 16px;
-    box-shadow: 18px 8px 8px var(--shadow-menu);
-    border-radius: 4px;
+    height: 100%;
 
     &__meta {
         width: 100%;
         display: flex;
-        align-items: center;
         justify-content: space-between;
         padding: 0 24px 16px;
 
@@ -26,16 +23,30 @@ $side-padding: 1.2em;
             &--paragraph {
                 @include typeface(--paragraph-left-normal-black, none);
                 color: var(--text-general);
+                @include mobile {
+                    padding: 16px;
+                }
+            }
+            @include mobile {
+                margin-top: 0.8rem;
             }
         }
         &-filter {
             position: relative;
             display: flex;
         }
+
+        @include desktop {
+            align-items: center;
+        }
+
+        @include mobile {
+            flex-direction: column;
+        }
     }
-    &__inset_header {
-        box-shadow: inset 0 -1px 0 0 var(--general-section-1);
-        margin-bottom: 24px;
+    &__mobile-wrapper {
+        display: flex;
+        flex-direction: column;
     }
     .unknown-icon {
         margin-left: 8px;
@@ -44,9 +55,38 @@ $side-padding: 1.2em;
     }
 }
 
+/** @define reports-page-wrapper; weak */
+.reports-page-wrapper {
+    height: 100%;
+}
+
 /** @define statement; weak */
 .statement {
-    height: 100%;
+    @include desktop {
+        height: 100%;
+    }
+
+    @include mobile {
+        flex: 1;
+
+        &__data-list-body,
+        &__data-list-footer {
+            padding: 0 24px;
+        }
+        &__data-list-body {
+            height: 100%;
+
+            .action_type {
+                display: flex;
+                flex: none;
+                align-items: center;
+
+                &__row-title {
+                    display: none;
+                }
+            }
+        }
+    }
 
     &__content {
         width: 100%;
@@ -61,17 +101,22 @@ $side-padding: 1.2em;
     }
     &__row {
         /*                     icon   refId tr_time  transaction cred/debt  balance */
-        grid-template-columns: 0.8fr  1.2fr 1fr      0.8fr         1fr        1fr;
+        grid-template-columns: 0.8fr 1.2fr 1fr 0.8fr 1fr 1fr;
 
-        &--detail {
+        // we need higher specificity than just &--detail here
+        // because otherwise table styling will override statement styling on first load
+        /* postcss-bem-linter: ignore */
+        &.statement__row--detail {
             overflow: hidden;
             max-height: 63px;
+            height: 63px;
             display: flex;
             align-items: center;
             padding: 0;
             justify-content: center;
             background-color: var(--general-section-1);
 
+            /* postcss-bem-linter: ignore */
             &-text {
                 padding: 1.12em;
             }
@@ -79,8 +124,12 @@ $side-padding: 1.2em;
         .date {
             text-align: left;
         }
+        .table__cell {
+            height: 63px;
+        }
     }
-    .amount, .balance {
+    .amount,
+    .balance {
         justify-content: flex-end;
     }
     .amount {
@@ -91,6 +140,21 @@ $side-padding: 1.2em;
         }
         &--loss {
             color: var(--text-loss-danger);
+        }
+    }
+    .refid {
+        @include mobile {
+            display: flex;
+            flex-direction: row;
+
+            &__row-title {
+                margin-right: 4px;
+            }
+        }
+    }
+    .market-symbol-icon {
+        @include mobile {
+            width: 80px;
         }
     }
     /*
@@ -160,10 +224,12 @@ $side-padding: 1.2em;
         vertical-align: middle;
     }
     &__amount {
-        &--sell, &--deposit {
+        &--sell,
+        &--deposit {
             color: var(--text-profit-success);
         }
-        &--buy, &--withdrawal {
+        &--buy,
+        &--withdrawal {
             color: var(--text-loss-danger);
         }
     }
@@ -197,7 +263,40 @@ $side-padding: 1.2em;
 
 /** @define profit-table; weak */
 .profit-table {
-    height: 100%;
+    @include desktop {
+        height: 100%;
+    }
+
+    @include mobile {
+        flex: 1;
+
+        &__data-list-body,
+        &__data-list-footer {
+            padding: 0 24px;
+        }
+        &__data-list-body {
+            height: calc(100% - 50px);
+
+            .sell_time__row-title {
+                display: flex;
+                align-items: center;
+
+                .dc-icon {
+                    margin-left: 4px;
+                }
+            }
+        }
+        &__data-list-footer {
+            height: 50px;
+            min-height: 50px;
+            font-weight: bold;
+
+            .data-list__row__content {
+                font-size: 1.2rem;
+                color: var(--text-prominent);
+            }
+        }
+    }
 
     &__content {
         width: 100%;
@@ -212,19 +311,147 @@ $side-padding: 1.2em;
     }
     &__row {
         /*                     icon   refId buy_time  buy_price sell_time  sell_price profit/loss */
-        grid-template-columns: 0.8fr  1.2fr 1fr       0.8fr     1fr        1fr        1fr;
+        grid-template-columns: 0.8fr 1.2fr 1fr 0.8fr 1fr 1fr 1fr;
     }
-    .buy_price, .sell_price, .profit_loss {
-        justify-content: flex-end;
+    .buy_price,
+    .sell_price,
+    .profit_loss {
+        @include desktop {
+            justify-content: flex-end;
+        }
+        @include mobile {
+            justify-content: center;
+        }
     }
-    .sell_time, .purchase_time {
+    .sell_time,
+    .purchase_time {
         text-align: left;
+    }
+    .transaction_id {
+        @include mobile {
+            display: flex;
+            flex-direction: row;
+
+            &__row-title {
+                margin-right: 4px;
+            }
+        }
+    }
+    .market-symbol-icon {
+        @include mobile {
+            width: 80px;
+        }
+    }
+    .duration-type {
+        flex: none;
+        position: relative;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0px 16px;
+        font-size: 1.4rem;
+        font-weight: bold;
+
+        &__background {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            opacity: 0.16;
+            border-radius: 16px;
+        }
+        &__ticks {
+            color: $color-yellow;
+
+            &__background {
+                background: $color-yellow;
+            }
+        }
+        &__seconds {
+            color: $color-green-1;
+
+            &__background {
+                background: $color-green-1;
+            }
+        }
+        &__minutes {
+            color: $color-blue-1;
+
+            &__background {
+                background: $color-blue-1;
+            }
+        }
+        &__hours {
+            color: $COLOR_BLUE;
+
+            &__background {
+                background: $COLOR_BLUE;
+            }
+        }
+        &__days {
+            color: $color-purple;
+
+            &__background {
+                background: $color-purple;
+            }
+        }
     }
 }
 
 /** @define open-positions; weak */
 .open-positions {
-    height: 100%;
+    @include desktop {
+        height: 100%;
+    }
+
+    @include mobile {
+        flex: 1;
+
+        &__data-list-body,
+        &__data-list-footer {
+            padding: 0 24px;
+        }
+        &__data-list-body {
+            height: calc(100% - 95px);
+
+            .dc-progress-bar__container {
+                max-width: 120px;
+            }
+        }
+        &__data-list-footer {
+            height: 95px;
+            min-height: 95px;
+            font-weight: bold;
+            align-items: flex-start;
+            padding: 16px 40px 0px;
+
+            &--title {
+                font-size: 1.4rem;
+                font-weight: bold;
+                color: var(--text-prominent);
+            }
+            &--content {
+                flex: 1;
+                padding-left: 32px;
+                display: flex;
+                justify-content: space-between;
+
+                .purchase,
+                .indicative {
+                    padding-bottom: 8px;
+                }
+            }
+            .data-list__row-title {
+                font-size: 1rem;
+                line-height: 1.4rem;
+            }
+            .data-list__row-content {
+                font-size: 1rem;
+                line-height: 1.4rem;
+                color: var(--text-prominent);
+            }
+        }
+    }
 
     &__content {
         width: 100%;
@@ -256,7 +483,8 @@ $side-padding: 1.2em;
             width: 16px;
             height: 16px;
 
-            &-complete, &-complete:after {
+            &-complete,
+            &-complete:after {
                 display: none;
             }
             &:after {
@@ -290,11 +518,21 @@ $side-padding: 1.2em;
     }
     &__row {
         /*                     icon   refId buy_price  potential_payout potential_profit  indicative_price rem_time */
-        grid-template-columns: 0.8fr  1.2fr 1fr        1fr            1fr               1fr              1fr;
+        grid-template-columns: 0.8fr 1.2fr 1fr 1fr 1fr 1fr 1fr;
         width: 100%;
     }
-    .buy_price, .payout, .indicative, .profit {
-        justify-content: flex-end;
+    &__reports-meta {
+        @include mobile {
+            padding-bottom: 0px;
+        }
+    }
+    .buy_price,
+    .payout,
+    .indicative,
+    .profit {
+        @include desktop {
+            justify-content: flex-end;
+        }
     }
     .type {
         padding-right: 0;
@@ -318,6 +556,21 @@ $side-padding: 1.2em;
                 padding: 0;
                 margin-right: 8px;
                 white-space: nowrap;
+            }
+        }
+    }
+    .market-symbol-icon {
+        @include mobile {
+            width: 80px;
+        }
+    }
+    .reference {
+        @include mobile {
+            display: flex;
+            flex-direction: row;
+
+            &__row-title {
+                margin-right: 4px;
             }
         }
     }

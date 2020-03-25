@@ -1,36 +1,56 @@
-// /*
-//  * Devices breakpoints - TODO: define proper breakpoints
-//  */
-// @mixin breakpoints($val) {
-//     $big-desktop: '(max-width: 1800px)';
-//     $tab-land   : '(max-width: 1200px)';
-//     $tab-port   : '(max-width: 900px)';
-//     $phone-xl   : '(max-width: 599px)';
-//     $phone-lg   : '(max-width: 480px)';
+/**
+ * Define Breakpoints here.
+ */
+$mobile-width: 320px;
+$tablet-width: 768px;
+$desktop-width: 1024px;
 
-//     @if $val == big-desktop {
-//         @media #{$big-desktop} {
-//             @content;
-//         }
-//     }
-//     @else if $val == tab-land {
-//         @media #{$tab-land} {
-//             @content;
-//         }
-//     }
-//     @else if $val == tab-port {
-//         @media #{$tab-port} {
-//             @content;
-//         }
-//     }
-//     @else if $val == phone-xl {
-//         @media #{$phone-xl} {
-//             @content;
-//         }
-//     }
-//     @else if $val == phone-lg {
-//         @media #{$phone-lg} {
-//             @content;
-//         }
-//     }
-// }
+@mixin tablet {
+    @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: #{$desktop-width}) {
+        @content;
+    }
+}
+
+@mixin tablet-down {
+    @media (max-width: #{$tablet-width}) {
+        @content;
+    }
+}
+
+@mixin tablet-up {
+    @media (min-width: #{$tablet-width}) {
+        @content;
+    }
+}
+
+@mixin mobile-up {
+    @media (min-width: #{$mobile-width}) {
+        @content;
+    }
+}
+
+@mixin mobile {
+    @media (min-width: #{$mobile-width}) and (max-width: #{$tablet-width - 1}) {
+        @content;
+    }
+}
+
+@mixin mobile-landscape {
+    @media only screen and (min-width: #{$mobile-width}) and (max-width: #{$desktop-width - 1}) and (orientation: landscape) {
+        @content;
+    }
+}
+
+@mixin touch-device {
+    // add css interaction media query to detect touch devices
+    // refer to: https://caniuse.com/#feat=css-media-interaction
+    @media (pointer: coarse) {
+        @content;
+    }
+}

@@ -1,49 +1,51 @@
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import { CSSTransition } from 'react-transition-group';
-import MobileDialog      from '../../Elements/mobile-dialog.jsx';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import ContractTypeMenu from './ContractTypeMenu';
 
 const ContractTypeDialog = ({
     children,
-    is_mobile,
-    open,
+    is_info_dialog_open,
     onClose,
+    is_open,
+    item,
+    list,
+    onBackButtonClick,
+    onChangeInput,
 }) => (
-    is_mobile ?
-        <React.Fragment>
+    <React.Fragment>
+        <MobileWrapper>
             <span className='contract-type-widget__select-arrow' />
             <MobileDialog
-                title='Select Trading Type'
-                visible={open}
+                portal_element_id='modal_root'
+                title={localize('Trade type')}
+                wrapper_classname='contracts-modal-list'
+                visible={is_open}
                 onClose={onClose}
             >
                 {children}
             </MobileDialog>
-        </React.Fragment>
-        :
-        <CSSTransition
-            in={open}
-            timeout={100}
-            classNames={{
-                enter    : 'contracts-type-dialog--enter',
-                enterDone: 'contracts-type-dialog--enterDone',
-                exit     : 'contracts-type-dialog--exit',
-            }}
-            unmountOnExit
-        >
-            <div className='contracts-type-dialog'>
-                <div className='contracts-type-dialog__list-wrapper'>
-                    {children}
-                </div>
-            </div>
-        </CSSTransition>
+        </MobileWrapper>
+        <DesktopWrapper>
+            <ContractTypeMenu
+                is_info_dialog_open={is_info_dialog_open}
+                is_open={is_open}
+                item={item}
+                list={list}
+                onBackButtonClick={onBackButtonClick}
+                onChangeInput={onChangeInput}
+            >
+                {children}
+            </ContractTypeMenu>
+        </DesktopWrapper>
+    </React.Fragment>
 );
 
 ContractTypeDialog.propTypes = {
-    children : PropTypes.element,
-    is_mobile: PropTypes.bool,
-    onClose  : PropTypes.func,
-    open     : PropTypes.bool,
+    children: PropTypes.element,
+    onClose: PropTypes.func,
+    open: PropTypes.bool,
 };
 
 export default ContractTypeDialog;

@@ -1,20 +1,21 @@
-import { localize }                   from '@deriv/translations';
-import                                    './blocks';
-import                                    './hooks';
-import {
-    hasAllRequiredBlocks,
-    updateDisabledBlocks }            from './utils';
-import DBotStore                      from './dbot-store';
-import { onWorkspaceResize }          from '../utils/workspace';
-import { config }                     from '../constants/config';
-import ApiHelpers                     from '../services/api/api-helpers';
-import Interpreter                    from '../services/tradeEngine/utils/interpreter';
+import { localize } from '@deriv/translations';
+import './blockly';
+import { hasAllRequiredBlocks, updateDisabledBlocks } from './utils';
+import main_xml from './xml/main.xml';
+import toolbox_xml from './xml/toolbox.xml';
+import DBotStore from './dbot-store';
+import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
+import { onWorkspaceResize } from '../utils/workspace';
+import { config } from '../constants/config';
+import { save_types } from '../constants/save-type';
+import ApiHelpers from '../services/api/api-helpers';
+import Interpreter from '../services/tradeEngine/utils/interpreter';
 import { observer as globalObserver } from '../utils/observer';
 
 class DBot {
     constructor() {
-        this.interpreter      = null;
-        this.workspace        = null;
+        this.interpreter = null;
+        this.workspace = null;
         this.before_run_funcs = [];
     }
 
@@ -26,44 +27,59 @@ class DBot {
             __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
             ApiHelpers.setInstance(api_helpers_store);
             DBotStore.setInstance(store);
+            const window_width = window.innerWidth;
+            let workspaceScale = 0.9;
 
-            const el_scratch_div  = document.getElementById('scratch_div');
-            const toolbox_xml     = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(r => r.text()); // eslint-disable-line
-            const main_xml        = await fetch(`${__webpack_public_path__}xml/main.xml`).then(r => r.text()); // eslint-disable-line
-            this.workspace        = Blockly.inject(el_scratch_div, {
-                grid    : { spacing: 40, length: 11, colour: '#f3f3f3' },
-                media   : `${__webpack_public_path__}media/`, // eslint-disable-line
-                toolbox : toolbox_xml,
+            const { handleFileChange, onBotNameTyped } = DBotStore.instance;
+            if (window_width < 1640) {
+                const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
+                const zoom_scale = scratch_div_width / window_width;
+                workspaceScale = zoom_scale;
+            }
+            const el_scratch_div = document.getElementById('scratch_div');
+            this.workspace = Blockly.inject(el_scratch_div, {
+                grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
+                media: `${__webpack_public_path__}media/`,
+                toolbox: toolbox_xml,
                 trashcan: true,
-                zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
+                zoom: { wheel: true, startScale: workspaceScale },
             });
 
-            this.workspace.blocksXmlStr  = main_xml;
-            this.workspace.toolboxXmlStr = toolbox_xml;
-            Blockly.derivWorkspace       = this.workspace;
+            this.workspace.cached_xml = { main: main_xml, toolbox: toolbox_xml };
+            Blockly.derivWorkspace = this.workspace;
 
+            this.workspace.addChangeListener(event => saveWorkspaceToRecent(save_types.UNSAVED, event));
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
-            this.workspace.addChangeListener((event) => updateDisabledBlocks(this.workspace, event));
+            this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
+            this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
+
             this.addBeforeRunFunction(this.unselectBlocks.bind(this));
             this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
             this.addBeforeRunFunction(this.checkForErroredBlocks.bind(this));
             this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
 
             // Push main.xml to workspace and reset the undo stack.
-            Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), this.workspace);
+            const recent_files = getSavedWorkspaces();
+            this.workspace.current_strategy_id = Blockly.utils.genUid();
+            let strategy_to_load = main_xml;
+            let file_name = config.default_file_name;
+            if (recent_files) {
+                const latest_file = recent_files[0];
+                strategy_to_load = latest_file.xml;
+                file_name = latest_file.name;
+                Blockly.derivWorkspace.current_strategy_id = latest_file.id;
+            }
+            Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
+
+            onBotNameTyped(file_name);
+            this.workspace.cleanUp();
             this.workspace.clearUndo();
 
-            const { handleFileChange } = DBotStore.instance;
-            const drop_zone    = document.body;
-    
             window.addEventListener('resize', () => onWorkspaceResize());
             window.dispatchEvent(new Event('resize'));
-            drop_zone.addEventListener('dragover', DBot.handleDragOver);
+            window.addEventListener('dragover', DBot.handleDragOver);
+            window.addEventListener('drop', e => DBot.handleDropOver(e, handleFileChange));
 
-            if (handleFileChange) {
-                drop_zone.addEventListener('drop', handleFileChange);
-            }
-    
             // disable overflow
             el_scratch_div.parentNode.style.overflow = 'hidden';
         } catch (error) {
@@ -212,7 +228,7 @@ class DBot {
         // Force a check on value inputs.
         this.valueInputLimitationsListener({}, true);
 
-        const all_blocks  = this.workspace.getAllBlocks(true);
+        const all_blocks = this.workspace.getAllBlocks(true);
         const error_blocks = all_blocks
             .filter(block => block.is_error_highlighted && !block.disabled)
             // filter out duplicated error message
@@ -224,7 +240,7 @@ class DBot {
 
         this.workspace.centerOnBlock(error_blocks[0].id);
         error_blocks.forEach(block => {
-            const message       = { name: 'BlocksError', message: block.error_message };
+            const message = { name: 'BlocksError', message: block.error_message };
             globalObserver.emit('Error', message);
         });
 
@@ -236,8 +252,12 @@ class DBot {
      */
     checkForRequiredBlocks() {
         if (!hasAllRequiredBlocks(this.workspace)) {
-            const error =  new Error(localize('One or more mandatory blocks are missing from your workspace. ' +
-            'Please add the required block(s) and then try again.'));
+            const error = new Error(
+                localize(
+                    'One or more mandatory blocks are missing from your workspace. ' +
+                        'Please add the required block(s) and then try again.'
+                )
+            );
 
             globalObserver.emit('Error', error);
 
@@ -261,12 +281,17 @@ class DBot {
 
         Blockly.JavaScript.init(this.workspace);
 
+        if (force_check) {
+            Blockly.hideChaff(false);
+        }
+
         const isGlobalEndDragEvent = () => event.type === Blockly.Events.END_DRAG;
-        const isGlobalDeleteEvent  = () => event.type === Blockly.Events.BLOCK_DELETE;
-        const isGlobalCreateEvent  = () => event.type === Blockly.Events.BLOCK_CREATE;
-        const isClickEvent         = () => event.type === Blockly.Events.UI && (event.element === 'click' || event.element === 'selected');
-        const isChangeEvent        = (b) => event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === b.id;
-        const isChangeInMyInputs   = (b) => {
+        const isGlobalDeleteEvent = () => event.type === Blockly.Events.BLOCK_DELETE;
+        const isGlobalCreateEvent = () => event.type === Blockly.Events.BLOCK_CREATE;
+        const isClickEvent = () =>
+            event.type === Blockly.Events.UI && (event.element === 'click' || event.element === 'selected');
+        const isChangeEvent = b => event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === b.id;
+        const isChangeInMyInputs = b => {
             if (event.type === Blockly.Events.BLOCK_CHANGE) {
                 return b.inputList.some(input => {
                     if (input.connection) {
@@ -278,7 +303,7 @@ class DBot {
             }
             return false;
         };
-        const isParentEnabledEvent = (b) => {
+        const isParentEnabledEvent = b => {
             if (event.type === Blockly.Events.BLOCK_CHANGE && event.element === 'disabled') {
                 let parent_block = b.getParent();
 
@@ -292,7 +317,7 @@ class DBot {
             }
             return false;
         };
-        
+
         this.workspace.getAllBlocks(true).forEach(block => {
             if (
                 force_check ||
@@ -306,7 +331,7 @@ class DBot {
             ) {
                 // Unhighlight disabled blocks and their optional children.
                 if (block.disabled) {
-                    const unhighlightRecursively = (child_blocks) => {
+                    const unhighlightRecursively = child_blocks => {
                         child_blocks.forEach(child_block => {
                             child_block.setErrorHighlighted(false);
                             unhighlightRecursively(child_block.getChildren());
@@ -323,8 +348,8 @@ class DBot {
                 }
 
                 const required_inputs_object = block.getRequiredValueInputs();
-                const required_input_names   = Object.keys(required_inputs_object);
-                const should_highlight       = required_input_names.some(input_name => {
+                const required_input_names = Object.keys(required_inputs_object);
+                const should_highlight = required_input_names.some(input_name => {
                     const is_selected = Blockly.selected === block; // Don't highlight selected blocks.
                     const is_disabled = block.disabled || block.getInheritedDisabled(); // Don't highlight disabled blocks.
 
@@ -346,8 +371,8 @@ class DBot {
                             type: block.type,
                         });
                     } else if (input.connection) {
-                        const order            = Blockly.JavaScript.ORDER_ATOMIC;
-                        const value            = Blockly.JavaScript.valueToCode(block, input_name, order);
+                        const order = Blockly.JavaScript.ORDER_ATOMIC;
+                        const value = Blockly.JavaScript.valueToCode(block, input_name, order);
                         const inputValidatorFn = required_inputs_object[input_name];
 
                         // If a custom validator was supplied, use this to determine whether
@@ -369,7 +394,16 @@ class DBot {
                     block.removeSelect();
                 }
 
-                block.setErrorHighlighted(should_highlight);
+                block.setErrorHighlighted(should_highlight, block.error_message || undefined);
+
+                // Automatically expand blocks that have been highlighted.
+                if (force_check && (block.is_error_highlighted || block.hasErrorHighlightedDescendant())) {
+                    let current_collapsed_block = block;
+                    while (current_collapsed_block) {
+                        current_collapsed_block.setCollapsed(false);
+                        current_collapsed_block = current_collapsed_block.getParent();
+                    }
+                }
             }
         });
     }
@@ -378,6 +412,22 @@ class DBot {
         event.stopPropagation();
         event.preventDefault();
         event.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
+    }
+
+    static handleDropOver(event, handleFileChange) {
+        const main_workspace_dom = document.getElementById('scratch_div');
+        const local_drag_zone = document.getElementById('import_dragndrop');
+
+        if (main_workspace_dom.contains(event.target)) {
+            handleFileChange(event);
+        } else if (local_drag_zone && local_drag_zone.contains(event.target)) {
+            handleFileChange(event, false);
+        } else {
+            event.stopPropagation();
+            event.preventDefault();
+            event.dataTransfer.effectAllowed = 'none';
+            event.dataTransfer.dropEffect = 'none';
+        }
     }
 }
 

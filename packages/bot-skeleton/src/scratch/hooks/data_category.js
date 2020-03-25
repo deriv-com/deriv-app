@@ -18,7 +18,7 @@ Blockly.DataCategory = function(workspace) {
     return xmlList;
 };
 
-Blockly.DataCategory.search = function(variableModelList){
+Blockly.DataCategory.search = function(variableModelList) {
     const xmlList = [];
     if (variableModelList.length > 0) {
         const generateVariableFieldXmlString = variableModel => {

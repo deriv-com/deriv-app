@@ -1,16 +1,14 @@
-import React         from 'react';
-import PropTypes     from 'prop-types';
-import { Table }     from '@deriv/components';
-import Dp2pContext   from 'Components/context/dp2p-context';
-import { localize }  from 'Components/i18next';
-import { BuyTable }  from './buy-table.jsx';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Table } from '@deriv/components';
+import { localize } from 'Components/i18next';
+import { BuyTable } from './buy-table.jsx';
 import { SellTable } from './sell-table.jsx';
 
 export const BuySellTable = ({ setSelectedAd, table_type }) => {
     const is_buy = table_type === 'buy';
-    const { is_agent } = React.useContext(Dp2pContext);
 
-    // TODO: [p2p-cleanup] cleanup repetition of header
+    // last column has an empty header
     return (
         <Table>
             <Table.Header>
@@ -19,15 +17,11 @@ export const BuySellTable = ({ setSelectedAd, table_type }) => {
                     <Table.Head>{localize('Limits')}</Table.Head>
                     <Table.Head>{localize('Price')}</Table.Head>
                     <Table.Head>{localize('Payment method')}</Table.Head>
-                    {!is_agent ? <Table.Head>{localize('Trade')}</Table.Head> : null}
+                    <Table.Head>{''}</Table.Head>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                { is_buy ?
-                    <BuyTable setSelectedAd={setSelectedAd} />
-                    :
-                    <SellTable setSelectedAd={setSelectedAd} />
-                }
+                {is_buy ? <BuyTable setSelectedAd={setSelectedAd} /> : <SellTable setSelectedAd={setSelectedAd} />}
             </Table.Body>
         </Table>
     );
@@ -35,6 +29,6 @@ export const BuySellTable = ({ setSelectedAd, table_type }) => {
 
 BuySellTable.propTypes = {
     exchange_to_currency: PropTypes.string,
-    setSelectedAd       : PropTypes.func,
-    table_type          : PropTypes.string,
+    setSelectedAd: PropTypes.func,
+    table_type: PropTypes.string,
 };

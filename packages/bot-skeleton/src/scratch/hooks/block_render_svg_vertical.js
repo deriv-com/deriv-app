@@ -32,12 +32,12 @@ Blockly.BlockSvg.prototype.computeOutputPadding_ = function(input_rows) {
         return;
     }
 
-    const row   = input_rows[0];
+    const row = input_rows[0];
     const shape = this.getOutputShape();
 
     // Reset any padding: it's about to be set.
     row.paddingStart = 0;
-    row.paddingEnd   = 0;
+    row.paddingEnd = 0;
 
     // Start row padding: based on first input or first field.
     const firstInput = row[0];
@@ -56,10 +56,10 @@ Blockly.BlockSvg.prototype.computeOutputPadding_ = function(input_rows) {
             // @deriv/bot: Don't collapse if there's no connection.
             return;
         } else if (!inputConnection.targetConnection) {
-        // Not connected: use the drawn shape.
+            // Not connected: use the drawn shape.
             otherShape = inputConnection.getOutputShape();
         } else {
-        // Connected: use the connected block's output shape.
+            // Connected: use the connected block's output shape.
             otherShape = inputConnection.targetConnection.getSourceBlock().getOutputShape();
         }
 
@@ -90,7 +90,7 @@ Blockly.BlockSvg.prototype.computeOutputPadding_ = function(input_rows) {
             // Not connected: use the drawn shape.
             otherShape = inputConnection.getOutputShape();
         } else {
-        // Connected: use the connected block's output shape.
+            // Connected: use the connected block's output shape.
             otherShape = inputConnection.targetConnection.getSourceBlock().getOutputShape();
         }
         // Special case for hexagonal output: if the connection is larger height

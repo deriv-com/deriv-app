@@ -1,44 +1,69 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
-import PropTypes                      from 'prop-types';
-import React                          from 'react';
-import { withRouter }                 from 'react-router';
-import BinaryRoutes                   from 'App/Components/Routes';
-import Lazy                           from 'App/Containers/Lazy';
-import { connect }                    from 'Stores/connect';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { withRouter } from 'react-router';
+import BinaryRoutes from 'App/Components/Routes';
+import Lazy from 'App/Containers/Lazy';
+import { connect } from 'Stores/connect';
 
-const Routes = (props) => {
-    if (props.has_error) {
-        return (
-            <Lazy
-                ctor={() => import(/* webpackChunkName: "error-component" */'App/Components/Elements/Errors')}
-                should_load={props.has_error}
-                has_progress={true}
-                {...props.error}
-            />
-        );
+class Routes extends React.Component {
+    unlisten_to_change = null;
+    initial_route = null;
+
+    componentDidMount() {
+        if (!this.unlisten_to_change && !this.initial_route) {
+            this.initial_route = this.props.location.pathname;
+        }
+
+        this.props.addRouteHistoryItem({ ...this.props.history.location, action: 'PUSH' });
+        this.unlisten_to_change = this.props.history.listen((route_to, action) => {
+            if (action === 'PUSH') this.props.addRouteHistoryItem({ ...route_to, action });
+        });
+
+        this.props.setAppRouterHistory(this.props.history);
     }
 
-    return (
-        <BinaryRoutes
-            is_logged_in={props.is_logged_in}
-            passthrough={props.passthrough}
-        />
-    );
-};
+    componentWillUnmount() {
+        if (typeof this.unlisten_to_change === 'function') {
+            this.unlisten_to_change();
+            this.unlisten_to_change = null;
+            this.initial_route = null;
+        }
+    }
+
+    render() {
+        const { error, has_error, is_logged_in, passthrough } = this.props;
+
+        if (has_error) {
+            return (
+                <Lazy
+                    ctor={() => import(/* webpackChunkName: "error-component" */ 'App/Components/Elements/Errors')}
+                    should_load={has_error}
+                    has_progress={true}
+                    {...error}
+                />
+            );
+        }
+
+        return <BinaryRoutes is_logged_in={is_logged_in} passthrough={passthrough} />;
+    }
+}
 
 Routes.propTypes = {
-    error       : MobxPropTypes.objectOrObservableObject,
-    has_error   : PropTypes.bool,
+    error: MobxPropTypes.objectOrObservableObject,
+    has_error: PropTypes.bool,
     is_logged_in: PropTypes.bool,
-    is_virtual  : PropTypes.bool,
+    is_virtual: PropTypes.bool,
 };
 
 // need to wrap withRouter around connect
 // to prevent updates on <BinaryRoutes /> from being blocked
-export default withRouter(connect(
-    ({ client, common }) => ({
+export default withRouter(
+    connect(({ client, common }) => ({
         is_logged_in: client.is_logged_in,
-        error       : common.error,
-        has_error   : common.has_error,
-    })
-)(Routes));
+        error: common.error,
+        has_error: common.has_error,
+        setAppRouterHistory: common.setAppRouterHistory,
+        addRouteHistoryItem: common.addRouteHistoryItem,
+    }))(Routes)
+);

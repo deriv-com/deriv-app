@@ -1,19 +1,10 @@
 import classNames from 'classnames';
-import PropTypes  from 'prop-types';
-import React      from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { Button } from '@deriv/components';
 
-const ToggleButton = ({
-    children,
-    className,
-    is_disabled,
-    is_selected,
-    onChange,
-    onClick,
-    value,
-    ...others
-}) => {
-    const handleChange = (e) => {
+const ToggleButton = ({ children, className, is_disabled, is_selected, onChange, onClick, value, ...others }) => {
+    const handleChange = e => {
         if (onClick) {
             onClick(e, value);
             if (e.isDefaultPrevented()) {
@@ -39,13 +30,13 @@ const ToggleButton = ({
 };
 
 ToggleButton.propTypes = {
-    children   : PropTypes.node.isRequired,
-    className  : PropTypes.string,
+    children: PropTypes.node.isRequired,
+    className: PropTypes.string,
     is_disabled: PropTypes.bool,
     is_selected: PropTypes.bool,
-    onChange   : PropTypes.func,
-    onClick    : PropTypes.func,
-    value      : PropTypes.any.isRequired,
+    onChange: PropTypes.func,
+    onClick: PropTypes.func,
+    value: PropTypes.any.isRequired,
 };
 
 ToggleButton.defaultProps = {

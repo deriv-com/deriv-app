@@ -11,17 +11,17 @@ Blockly.Blocks.math_number_property = {
             }
         });
     },
-    definition(){
+    definition() {
         return {
             message0: localize('%1 is %2'),
-            args0   : [
+            args0: [
                 {
                     type: 'input_value',
                     name: 'NUMBER_TO_CHECK',
                 },
                 {
-                    type   : 'field_dropdown',
-                    name   : 'PROPERTY',
+                    type: 'field_dropdown',
+                    name: 'PROPERTY',
                     options: [
                         [localize('even'), 'EVEN'],
                         [localize('odd'), 'ODD'],
@@ -33,19 +33,21 @@ Blockly.Blocks.math_number_property = {
                     ],
                 },
             ],
-            output         : 'Boolean',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Boolean',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            toolip         : localize('This block tests a given number according to the selection'),
-            category       : Blockly.Categories.Mathematical,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            toolip: localize('This block tests a given number according to the selection'),
+            category: Blockly.Categories.Mathematical,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Test a number'),
-            'description' : localize('This block tests a given number according to the selection and it returns a value of “True” or “False”. Available options: Even, Odd, Prime, Whole, Positive, Negative, Divisible'),
+            display_name: localize('Test a number'),
+            description: localize(
+                'This block tests a given number according to the selection and it returns a value of “True” or “False”. Available options: Even, Odd, Prime, Whole, Positive, Negative, Divisible'
+            ),
         };
     },
     domToMutation(xmlElement) {

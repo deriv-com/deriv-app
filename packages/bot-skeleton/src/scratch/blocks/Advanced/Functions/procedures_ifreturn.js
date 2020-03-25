@@ -10,10 +10,10 @@ Blockly.Blocks.procedures_ifreturn = {
 
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('if %1 return %2'),
-            args0   : [
+            args0: [
                 {
                     type: 'input_value',
                     name: 'CONDITION',
@@ -23,19 +23,21 @@ Blockly.Blocks.procedures_ifreturn = {
                     name: 'VALUE',
                 },
             ],
-            colour           : Blockly.Colours.Special2.colour,
-            colourSecondary  : Blockly.Colours.Special2.colourSecondary,
-            colourTertiary   : Blockly.Colours.Special2.colourTertiary,
+            colour: Blockly.Colours.Special2.colour,
+            colourSecondary: Blockly.Colours.Special2.colourSecondary,
+            colourTertiary: Blockly.Colours.Special2.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
-            tooltip          : localize('Prematurely returns a value within a function'),
-            category         : Blockly.Categories.Functions,
+            nextStatement: null,
+            tooltip: localize('Prematurely returns a value within a function'),
+            category: Blockly.Categories.Functions,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Conditional return'),
-            'description' : localize('This block returns a value when a condition is true. Use this block within either of the function blocks above.'),
+            display_name: localize('Conditional return'),
+            description: localize(
+                'This block returns a value when a condition is true. Use this block within either of the function blocks above.'
+            ),
         };
     },
     /**

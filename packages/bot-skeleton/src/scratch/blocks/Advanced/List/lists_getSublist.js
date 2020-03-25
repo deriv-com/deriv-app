@@ -25,15 +25,19 @@ Blockly.Blocks.lists_getSublist = {
         );
         this.setOutput(true, null);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip(localize('This block creates a list of items from an existing list, using specific item positions.'));
+        this.setTooltip(
+            localize('This block creates a list of items from an existing list, using specific item positions.')
+        );
         this.updateAt(1, true);
         this.updateAt(2, true);
     },
     meta() {
         return {
-            'display_name': localize('Get sub-list'),
-            'description' : localize('This block creates a list of items from an existing list, using specific item positions.'),
-            'category'    : Blockly.Categories.List,
+            display_name: localize('Get sub-list'),
+            description: localize(
+                'This block creates a list of items from an existing list, using specific item positions.'
+            ),
+            category: Blockly.Categories.List,
         };
     },
     mutationToDom() {
@@ -87,9 +91,7 @@ Blockly.JavaScript.lists_getSublist = block => {
     const where1 = block.getFieldValue('WHERE1');
     const where2 = block.getFieldValue('WHERE2');
 
-    let at1,
-        at2,
-        code;
+    let at1, at2, code;
 
     if (where1 === 'FIRST' && where2 === 'LAST') {
         code = `${list}.slice(0)`;
@@ -118,9 +120,9 @@ Blockly.JavaScript.lists_getSublist = block => {
         at2 = Blockly.JavaScript.getAdjusted(block, 'AT2');
         const where_pascal_case = {
             FROM_START: 'FromStart',
-            FROM_END  : 'FromEnd',
-            FIRST     : 'First',
-            LAST      : 'Last',
+            FROM_END: 'FromEnd',
+            FIRST: 'First',
+            LAST: 'Last',
         };
 
         const getIndex = (list_name, where, opt_at) => {
@@ -134,8 +136,8 @@ Blockly.JavaScript.lists_getSublist = block => {
             return `${opt_at}`;
         };
 
-        const has_at1  = (where1 === 'FROM_END' || where1 === 'FROM_START');
-        const has_at2  = (where2 === 'FROM_END' || where2 === 'FROM_START');
+        const has_at1 = where1 === 'FROM_END' || where1 === 'FROM_START';
+        const has_at2 = where2 === 'FROM_END' || where2 === 'FROM_START';
 
         // eslint-disable-next-line no-underscore-dangle
         const function_name = Blockly.JavaScript.provideFunction_(

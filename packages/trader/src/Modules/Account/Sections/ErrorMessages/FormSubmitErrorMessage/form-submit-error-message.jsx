@@ -1,4 +1,4 @@
-import React    from 'react';
+import React from 'react';
 import { Icon } from '@deriv/components';
 
 const FormSubmitErrorMessage = ({ message }) => (

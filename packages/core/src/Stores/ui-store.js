@@ -15,6 +15,13 @@ export default class UIStore extends BaseStore {
     @observable is_positions_drawer_on = false;
     @observable is_reports_visible = false;
     @observable is_cashier_visible = false;
+    @observable is_history_tab_active = false;
+
+    // TODO: [cleanup ui-store]
+    // Take profit, Stop loss & Deal cancellation checkbox
+    @observable should_show_take_profit_warning = true;
+    @observable should_show_stop_loss_warning = true;
+    @observable should_show_cancellation_warning = true;
 
     // Extensions
     @observable footer_extension = undefined;
@@ -78,7 +85,10 @@ export default class UIStore extends BaseStore {
     // set currency modal
     @observable is_set_currency_modal_visible = false;
 
-    @observable vertical_tab_index = 0;
+    // position states
+    @observable show_positions_toggle = true;
+
+    @observable modal_index = 0;
 
     // Mt5 topup
     @observable is_top_up_virtual_open = false;
@@ -126,6 +136,9 @@ export default class UIStore extends BaseStore {
             'is_reports_visible',
             // 'is_purchase_confirm_on',
             // 'is_purchase_lock_on',
+            'should_show_stop_loss_warning',
+            'should_show_take_profit_warning',
+            'should_show_cancellation_warning',
         ];
 
         super({ root_store, local_storage_properties, store_name });
@@ -308,8 +321,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    setVerticalTabIndex(index = 0) {
-        this.vertical_tab_index = index;
+    setModalIndex(index = 0) {
+        this.modal_index = index;
     }
 
     @action.bound
@@ -478,6 +491,26 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleSetResidenceModal(state_change = !this.is_set_residence_modal_visible) {
         this.is_set_residence_modal_visible = state_change;
+    }
+
+    @action.bound
+    toggleTakeProfitWarning(state_change = !this.should_show_take_profit_warning) {
+        this.should_show_take_profit_warning = state_change;
+    }
+
+    @action.bound
+    toggleStopLossWarning(state_change = !this.should_show_stop_loss_warning) {
+        this.should_show_stop_loss_warning = state_change;
+    }
+
+    @action.bound
+    toggleCancellationWarning(state_change = !this.should_show_cancellation_warning) {
+        this.should_show_cancellation_warning = state_change;
+    }
+
+    @action.bound
+    toggleHistoryTab(state_change = !this.is_history_tab_active) {
+        this.is_history_tab_active = state_change;
     }
 
     @action.bound

@@ -41,6 +41,7 @@ class InputField extends React.Component {
             name,
             onChange,
             onClick,
+            onClickInputWrapper,
             placeholder,
             prefix,
             required,
@@ -116,11 +117,12 @@ class InputField extends React.Component {
             const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
             if (is_crypto || (!currency && is_float)) {
-                const new_value = parseFloat(+value) + parseFloat(1 * 10 ** (0 - decimal_places));
+                const new_value = parseFloat(+(value || 0)) + parseFloat(1 * 10 ** (0 - decimal_places));
                 increment_value = parseFloat(new_value).toFixed(decimal_places);
             } else {
-                increment_value = parseFloat(+value + 1).toFixed(decimal_places);
+                increment_value = parseFloat(+(value || 0) + 1).toFixed(decimal_places);
             }
+
             onChange({ target: { value: increment_value, name } });
         };
 
@@ -131,10 +133,10 @@ class InputField extends React.Component {
             const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
             if (is_crypto || (!currency && is_float)) {
-                const new_value = parseFloat(+value) - parseFloat(1 * 10 ** (0 - decimal_places));
+                const new_value = parseFloat(+(value || 0)) - parseFloat(1 * 10 ** (0 - decimal_places));
                 decrement_value = parseFloat(new_value).toFixed(decimal_places);
             } else {
-                decrement_value = parseFloat(+value - 1).toFixed(decimal_places);
+                decrement_value = parseFloat(+(value || 0) - 1).toFixed(decimal_places);
             }
             return decrement_value;
         };
@@ -198,9 +200,11 @@ class InputField extends React.Component {
         const increment_buttons = (
             <IncrementButtons
                 id={id}
-                max_is_disabled={max_is_disabled}
+                max_is_disabled={max_is_disabled || !!is_disabled}
                 incrementValue={incrementValue}
-                min_is_disabled={min_is_disabled || (is_negative_disabled && calculateDecrementedValue() < 0)}
+                min_is_disabled={
+                    min_is_disabled || (is_negative_disabled && calculateDecrementedValue() < 0) || !!is_disabled
+                }
                 decrementValue={decrementValue}
             />
         );
@@ -219,7 +223,11 @@ class InputField extends React.Component {
                 )}
                 {!!helper && <span className='input-field__helper'>{helper}</span>}
                 {is_increment_input ? (
-                    <div className='input-wrapper'>
+                    <div
+                        className={classNames('input-wrapper', {
+                            'input-wrapper--disabled': !!is_disabled,
+                        })}
+                    >
                         {increment_buttons}
                         {input}
                     </div>
@@ -242,7 +250,7 @@ class InputField extends React.Component {
                         />
                     </div>
                 )}
-                <div className={classNames('input-field', className)}>
+                <div className={classNames('input-field', className)} onClick={onClickInputWrapper}>
                     {this.props.icon && <Icon onClick={onClick} />}
                     {input_tooltip}
                 </div>
@@ -282,6 +290,7 @@ InputField.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func,
     onClick: PropTypes.func,
+    onClickInputWrapper: PropTypes.func,
     placeholder: PropTypes.string,
     prefix: PropTypes.string,
     required: PropTypes.bool,

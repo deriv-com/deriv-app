@@ -21,12 +21,14 @@ class PurchaseFieldset extends React.PureComponent {
             basis,
             buy_info,
             currency,
+            has_cancellation,
             // index,
             info,
             index,
             is_disabled,
             is_high_low,
             is_loading,
+            is_multiplier,
             is_proposal_empty,
             is_proposal_error,
             purchased_states_arr,
@@ -48,6 +50,7 @@ class PurchaseFieldset extends React.PureComponent {
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={is_loading}
+                is_multiplier={is_multiplier}
                 is_proposal_empty={is_proposal_empty}
                 purchased_states_arr={purchased_states_arr}
                 onClickPurchase={onClickPurchase}
@@ -73,8 +76,10 @@ class PurchaseFieldset extends React.PureComponent {
                             basis={basis}
                             currency={currency}
                             proposal_info={info}
+                            has_cancellation={has_cancellation}
                             has_increased={info.has_increased}
                             is_loading={is_loading}
+                            is_multiplier={is_multiplier}
                             should_fade={this.state.should_fade}
                             type={type}
                         />
@@ -130,11 +135,13 @@ PurchaseFieldset.propTypes = {
     basis: PropTypes.string,
     buy_info: PropTypes.object,
     currency: PropTypes.string,
+    has_cancellation: PropTypes.bool,
     index: PropTypes.number,
     info: PropTypes.object,
     is_disabled: PropTypes.bool,
     is_high_low: PropTypes.bool,
     is_loading: PropTypes.bool,
+    is_multiplier: PropTypes.bool,
     is_proposal_empty: PropTypes.bool,
     is_proposal_error: PropTypes.bool,
     onClickPurchase: PropTypes.func,

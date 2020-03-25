@@ -40,13 +40,17 @@ class ContractReplay extends React.Component {
     render() {
         const {
             contract_info,
+            contract_update_history,
             is_chart_loading,
             is_dark_theme,
             is_digit_contract,
             is_sell_requested,
+            is_valid_to_cancel,
+            onClickCancel,
             NotificationMessages,
             onClickSell,
             indicative_status,
+            toggleHistoryTab,
         } = this.props;
 
         if (!contract_info.underlying) return null;
@@ -72,10 +76,14 @@ class ContractReplay extends React.Component {
                     >
                         <ContractDrawer
                             contract_info={contract_info}
+                            contract_update_history={contract_update_history}
                             is_dark_theme={is_dark_theme}
                             is_sell_requested={is_sell_requested}
+                            is_valid_to_cancel={is_valid_to_cancel}
+                            onClickCancel={onClickCancel}
                             onClickSell={onClickSell}
                             status={indicative_status}
+                            toggleHistoryTab={toggleHistoryTab}
                         />
                         <React.Suspense fallback={<div />}>
                             <div className='replay-chart__container'>
@@ -118,7 +126,6 @@ ContractReplay.propTypes = {
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
-    server_time: PropTypes.object,
 };
 
 export default withRouter(
@@ -128,8 +135,11 @@ export default withRouter(
         return {
             routeBackInApp: common.routeBackInApp,
             contract_info: contract_store.contract_info,
+            contract_update_history: contract_store.contract_update_history,
             is_digit_contract: contract_store.is_digit_contract,
             is_sell_requested: contract_replay.is_sell_requested,
+            is_valid_to_cancel: contract_replay.is_valid_to_cancel,
+            onClickCancel: contract_replay.onClickCancel,
             onClickSell: contract_replay.onClickSell,
             onMount: contract_replay.onMount,
             onUnmount: contract_replay.onUnmount,
@@ -137,6 +147,7 @@ export default withRouter(
             is_chart_loading: contract_replay.is_chart_loading,
             is_dark_theme: ui.is_dark_mode_on,
             NotificationMessages: ui.notification_messages_ui,
+            toggleHistoryTab: ui.toggleHistoryTab,
         };
     })(ContractReplay)
 );

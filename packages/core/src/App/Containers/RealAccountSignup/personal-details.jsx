@@ -129,7 +129,11 @@ export class DateOfBirth extends React.Component {
                                 })}
                             >
                                 <div className='datepicker__display'>
-                                    {value && <span className='datepicker__display-text'>{value}</span>}
+                                    {value && (
+                                        <span className='datepicker__display-text'>
+                                            {toMoment(value).format('DD-MM-YYYY')}
+                                        </span>
+                                    )}
                                 </div>
                                 <label
                                     className={classNames('datepicker__placeholder', {
@@ -140,6 +144,7 @@ export class DateOfBirth extends React.Component {
                                 >
                                     {localize('Date of birth*')}
                                 </label>
+                                <Icon icon='IcCalendar' className='datepicker__calendar-icon' />
                                 <input
                                     id={this.props.id}
                                     name={name}
@@ -159,7 +164,7 @@ export class DateOfBirth extends React.Component {
                                             target.defaultValue = '';
                                         }
                                         window.setTimeout(iosClearDefault, 0);
-                                        setFieldValue(name, toMoment(e.target.value).format('DD-MM-YYYY'), true);
+                                        setFieldValue(name, toMoment(e.target.value).format('YYYY-MM-DD'), true);
                                     }}
                                 />
                                 {touched[name] && errors[name] && (

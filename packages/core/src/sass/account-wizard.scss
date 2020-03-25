@@ -227,6 +227,32 @@
         }
     }
     @include mobile {
+        &--error {
+            margin-top: $MOBILE_HEADER_HEIGHT;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            h1 {
+                font-size: 3.6rem;
+                font-weight: bold;
+                color: var(--brand-red-coral);
+                line-height: 1.5;
+            }
+            p {
+                font-size: 1.4rem;
+                margin: 1.6rem;
+                line-height: 1.4;
+            }
+            .btn {
+                height: 4rem;
+            }
+            .dc-ion {
+                width: calc(100% - 10rem);
+                margin-top: 2rem;
+                height: auto;
+            }
+        }
         &__header {
             &-steps {
                 padding-bottom: 0.8rem;

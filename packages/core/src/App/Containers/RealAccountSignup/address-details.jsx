@@ -11,7 +11,7 @@ import { Formik, Field } from 'formik';
 import React, { Component } from 'react';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import Icon from '@deriv/components/src/components/icon';
 import FormSubmitButton from './form-submit-button.jsx';
 
@@ -46,7 +46,7 @@ const getLocation = (location_list, value, type) => {
 class AddressDetails extends Component {
     constructor(props) {
         super(props);
-        this.state = { has_fetched_states_list: false, state_display_text: null };
+        this.state = { has_fetched_states_list: false };
         this.form = React.createRef();
         // TODO: Find a better solution for handling no-op instead of using is_mounted flags
         this.is_mounted = false;
@@ -68,8 +68,6 @@ class AddressDetails extends Component {
         this.props.onCancel();
     };
 
-    updateStateDisplayText = state_name => this.setState({ state_display_text: state_name });
-
     render() {
         const padding_bottom = window.innerHeight < 930 ? '10rem' : '12rem';
         return (
@@ -83,7 +81,7 @@ class AddressDetails extends Component {
                 }}
                 validate={this.validateAddressDetails}
                 onSubmit={(values, actions) => {
-                    if (values.address_state) {
+                    if (isDesktop() && values.address_state) {
                         values.address_state = this.props.states_list.length
                             ? getLocation(this.props.states_list, values.address_state, 'value')
                             : values.address_state;
@@ -100,6 +98,7 @@ class AddressDetails extends Component {
                             </p>
                             <div className='details-form__elements-container'>
                                 <ThemedScrollbars
+                                    is_native={isMobile()}
                                     autoHide={!(window.innerHeight < 890)}
                                     style={{
                                         height: 'calc(100% - 16px)',
@@ -154,18 +153,23 @@ class AddressDetails extends Component {
                                                                     <div className='dc-input'>
                                                                         <div className='select-native'>
                                                                             <div className='select-native__display'>
-                                                                                {this.state.state_display_text && (
-                                                                                    <span className='select-native__display-text'>
-                                                                                        {this.state.state_display_text}
-                                                                                    </span>
-                                                                                )}
+                                                                                {this.props.states_list &&
+                                                                                    values.address_state && (
+                                                                                        <span className='select-native__display-text'>
+                                                                                            {getLocation(
+                                                                                                this.props.states_list,
+                                                                                                values.address_state,
+                                                                                                'text'
+                                                                                            )}
+                                                                                        </span>
+                                                                                    )}
                                                                             </div>
                                                                             <div
                                                                                 className={classNames(
                                                                                     'select-native__placeholder',
                                                                                     {
-                                                                                        'select-native__placeholder--has-value': this
-                                                                                            .state.state_display_text,
+                                                                                        'select-native__placeholder--has-value':
+                                                                                            values.address_state,
                                                                                     }
                                                                                 )}
                                                                             >
@@ -176,7 +180,7 @@ class AddressDetails extends Component {
                                                                                 className='select-native__arrow'
                                                                             />
                                                                             <select
-                                                                                className={'select-native__picker'}
+                                                                                className='select-native__picker'
                                                                                 name='address_state'
                                                                                 onChange={e => {
                                                                                     setFieldValue(
@@ -184,12 +188,8 @@ class AddressDetails extends Component {
                                                                                         e.target.value,
                                                                                         true
                                                                                     );
-                                                                                    this.updateStateDisplayText(
-                                                                                        e.target.options[
-                                                                                            e.target.selectedIndex
-                                                                                        ].text
-                                                                                    );
                                                                                 }}
+                                                                                value={values.address_state}
                                                                             >
                                                                                 {this.props.states_list.map(
                                                                                     (option, idx) => (

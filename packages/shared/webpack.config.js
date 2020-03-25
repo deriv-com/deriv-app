@@ -60,7 +60,6 @@ module.exports = {
             'babel-polyfill': 'babel-polyfill',
             moment: 'moment',
             '@deriv/components': '@deriv/components',
-            '@deriv/translations': '@deriv/translations',
         },
         /^@deriv\/components\/.+$/,
         /^@deriv\/translations\/.+$/,

@@ -117,7 +117,7 @@ export default connect(({ modules, ui }) => ({
 import { SmartChart } from 'Modules/SmartChart';
 
 // ChartMarkers --------------------------
-const Markers = ({ markers_array, is_dark_theme, granularity, currency }) =>
+const Markers = ({ markers_array, is_dark_theme, granularity, currency, config }) =>
     markers_array.map(marker => {
         const Marker = AllMarkers[marker.type];
         return (
@@ -126,6 +126,7 @@ const Markers = ({ markers_array, is_dark_theme, granularity, currency }) =>
                 is_dark_theme={is_dark_theme}
                 granularity={granularity}
                 currency={currency}
+                config={config}
                 {...marker}
             />
         );
@@ -161,11 +162,9 @@ class ChartTradeClass extends React.Component {
     }
 
     render() {
-        const { show_digits_stats, main_barrier, should_refresh } = this.props;
+        const { show_digits_stats, main_barrier, should_refresh, extra_barriers = [] } = this.props;
 
-        const barriers = main_barrier ? [main_barrier] : [];
-        // smartcharts only way to refresh active-symbols is to reset the connection.
-        // const is_socket_opened = this.props.is_socket_opened && !should_refresh;
+        const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
         // max ticks to display for mobile view for tick chart
         const max_ticks = this.props.granularity === 0 ? 8 : 24;
@@ -199,6 +198,8 @@ class ChartTradeClass extends React.Component {
                 onExportLayout={this.props.exportLayout}
                 shouldFetchTradingTimes={!this.props.end_epoch}
                 refreshActiveSymbols={should_refresh}
+                hasAlternativeSource={this.props.has_alternative_source}
+                refToAddTick={this.props.refToAddTick}
             >
                 <ChartMarkers />
             </SmartChart>
@@ -224,6 +225,7 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     },
     is_trade_enabled: modules.trade.is_trade_enabled,
     main_barrier: modules.trade.main_barrier_flattened,
+    extra_barriers: modules.trade.barriers_flattened,
     show_digits_stats: modules.trade.show_digits_stats,
     contract_type: modules.trade.contract_type,
     symbol: modules.trade.symbol,
@@ -236,4 +238,6 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     wsSubscribe: modules.trade.wsSubscribe,
     should_refresh: modules.trade.should_refresh_active_symbols,
     resetRefresh: modules.trade.resetRefresh,
+    has_alternative_source: modules.trade.has_alternative_source,
+    refToAddTick: modules.trade.refToAddTick,
 }))(ChartTradeClass);

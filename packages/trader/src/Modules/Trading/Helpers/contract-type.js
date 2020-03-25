@@ -15,8 +15,8 @@ export const unsupported_contract_types_list = [
     'lb_call',
     'lb_put',
     'lb_high_low',
-    'multiplier',
     // TODO: Remove the conditional values below once barrier and path dependent contracts are ready for mobile
+    isMobile() ? 'multiplier' : null,
     isMobile() ? 'high_low' : null,
     isMobile() ? 'touch' : null,
 ];

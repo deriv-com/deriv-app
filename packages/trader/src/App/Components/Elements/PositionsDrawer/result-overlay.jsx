@@ -37,7 +37,7 @@ class ResultOverlay extends React.PureComponent {
     };
 
     render() {
-        const { contract_id, is_visible, onClickRemove, result } = this.props;
+        const { contract_id, is_multiplier, is_visible, onClickRemove, result } = this.props;
         const is_contract_won = result === 'won';
         return (
             <React.Fragment>
@@ -56,6 +56,7 @@ class ResultOverlay extends React.PureComponent {
                         className={classNames('positions-drawer-card__result', {
                             'positions-drawer-card__result--won': is_contract_won,
                             'positions-drawer-card__result--lost': !is_contract_won,
+                            'positions-drawer-card__result--lg': is_multiplier,
                         })}
                     >
                         <span

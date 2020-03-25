@@ -41,7 +41,7 @@ const Summary = ({
                     <SummaryTile
                         title={localize('Total stake')}
                         alignment='top'
-                        content={Money({ amount: total_stake, currency })}
+                        content={<Money amount={total_stake} currency={currency} />}
                         tooltip={localize(
                             'Total stake since you last cleared your stats. Refreshing the page will also clear your stats.'
                         )}
@@ -49,7 +49,7 @@ const Summary = ({
                     <SummaryTile
                         title={localize('Total payout')}
                         alignment='top'
-                        content={Money({ amount: total_payout, currency })}
+                        content={<Money amount={total_payout} currency={currency} />}
                         tooltip={localize(
                             'Total payout since you last cleared your stats. Refreshing the page will also clear your stats.'
                         )}
@@ -80,7 +80,7 @@ const Summary = ({
                     />
                     <SummaryTile
                         title={localize('Profit/Loss')}
-                        content={Money({ amount: total_profit, currency, has_sign: true })}
+                        content={<Money amount={total_profit} currency={currency} has_sign={true} />}
                         alignment='bottom'
                         contentClassName={classNames('summary__tile-content', 'summary__amount', {
                             'summary__amount--positive': total_profit > 0,

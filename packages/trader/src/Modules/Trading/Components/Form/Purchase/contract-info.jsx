@@ -5,6 +5,19 @@ import React from 'react';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
 import { localize } from '@deriv/translations';
 
+const CancelDealInfo = ({ amount, currency, error }) => {
+    return (
+        <React.Fragment>
+            <div className='trade-container__price-info-basis'>{localize('Deal cancel. fee')}</div>
+            <div className='trade-container__price-info-value'>
+                {!error && (
+                    <Money amount={amount} className='trade-container__price-info-currency' currency={currency} />
+                )}
+            </div>
+        </React.Fragment>
+    );
+};
+
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased }) => (
     <React.Fragment>
         <div className='trade-container__price-info-value'>
@@ -26,8 +39,19 @@ const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_i
     </React.Fragment>
 );
 
-const ContractInfo = ({ basis, currency, has_increased, is_loading, should_fade, proposal_info, type }) => {
+const ContractInfo = ({
+    basis,
+    currency,
+    has_increased,
+    has_cancellation,
+    is_loading,
+    is_multiplier,
+    should_fade,
+    proposal_info,
+    type,
+}) => {
     const localized_basis = getLocalizedBasis();
+
     const stakeOrPayout = () => {
         switch (basis) {
             case 'stake':
@@ -40,6 +64,13 @@ const ContractInfo = ({ basis, currency, has_increased, is_loading, should_fade,
     };
 
     const has_error_or_not_loaded = proposal_info.has_error || !proposal_info.id;
+
+    const basis_text = has_error_or_not_loaded
+        ? stakeOrPayout()
+        : localize('{{value}}', { value: proposal_info.obj_contract_basis.text });
+
+    const { cancellation, message, obj_contract_basis } = proposal_info;
+
     return (
         <div className='trade-container__price'>
             <div
@@ -50,29 +81,38 @@ const ContractInfo = ({ basis, currency, has_increased, is_loading, should_fade,
                     'trade-container__price-info--fade': is_loading && should_fade,
                 })}
             >
-                <div className='trade-container__price-info-basis'>
-                    {has_error_or_not_loaded
-                        ? stakeOrPayout()
-                        : localize('{{value}}', { value: proposal_info.obj_contract_basis.text })}
-                </div>
-                <DesktopWrapper>
-                    <ValueMovement
-                        has_error_or_not_loaded={has_error_or_not_loaded}
-                        proposal_info={proposal_info}
+                {is_multiplier && has_cancellation && cancellation ? (
+                    <CancelDealInfo
+                        amount={cancellation.ask_price}
                         currency={currency}
-                        has_increased={has_increased}
+                        error={has_error_or_not_loaded}
                     />
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <div className='trade-container__price-info-wrapper'>
-                        <ValueMovement
-                            has_error_or_not_loaded={has_error_or_not_loaded}
-                            proposal_info={proposal_info}
-                            currency={currency}
-                            has_increased={has_increased}
-                        />
-                    </div>
-                </MobileWrapper>
+                ) : (
+                    !is_multiplier &&
+                    obj_contract_basis && (
+                        <React.Fragment>
+                            <div className='trade-container__price-info-basis'>{basis_text}</div>
+                            <DesktopWrapper>
+                                <ValueMovement
+                                    has_error_or_not_loaded={has_error_or_not_loaded}
+                                    proposal_info={proposal_info}
+                                    currency={currency}
+                                    has_increased={has_increased}
+                                />
+                            </DesktopWrapper>
+                            <MobileWrapper>
+                                <div className='trade-container__price-info-wrapper'>
+                                    <ValueMovement
+                                        has_error_or_not_loaded={has_error_or_not_loaded}
+                                        proposal_info={proposal_info}
+                                        currency={currency}
+                                        has_increased={has_increased}
+                                    />
+                                </div>
+                            </MobileWrapper>
+                        </React.Fragment>
+                    )
+                )}
             </div>
             <DesktopWrapper>
                 <Popover
@@ -80,16 +120,19 @@ const ContractInfo = ({ basis, currency, has_increased, is_loading, should_fade,
                     icon='info'
                     id={`dt_purchase_${type.toLowerCase()}_info`}
                     margin={210}
-                    message={has_error_or_not_loaded ? '' : proposal_info.message}
+                    message={has_error_or_not_loaded ? '' : message}
                 />
             </DesktopWrapper>
         </div>
     );
 };
+
 ContractInfo.propTypes = {
     basis: PropTypes.string,
     currency: PropTypes.string,
     has_increased: PropTypes.bool,
+    has_cancellation: PropTypes.bool,
+    is_multiplier: PropTypes.bool,
     is_loading: PropTypes.bool,
     proposal_info: PropTypes.object,
     type: PropTypes.string,

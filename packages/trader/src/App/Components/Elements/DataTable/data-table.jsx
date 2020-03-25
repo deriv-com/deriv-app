@@ -51,14 +51,15 @@ class DataTable extends React.PureComponent {
         });
     }
 
-    rowRenderer({
+    rowRenderer = ({
+        data,
         index, // Index of row
         style, // Style object to be applied to row (to position it);
-    }) {
-        const { data_source, className, getRowAction, columns, preloaderCheck, id } = this.props;
-        const item = data_source[index];
+    }) => {
+        const { className, getRowAction, columns, preloaderCheck, id, getActionColumns } = this.props;
+        const item = data[index];
         const action = getRowAction && getRowAction(item);
-        const contract_id = data_source[index].contract_id || data_source[index].id;
+        const contract_id = data[index].contract_id || data[index].id;
 
         // If row content is complex, consider rendering a light-weight placeholder while scrolling.
         const content = (
@@ -71,14 +72,25 @@ class DataTable extends React.PureComponent {
                 to={typeof action === 'string' ? action : undefined}
                 show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : null}
                 replace={typeof action === 'object' ? action : undefined}
+                getActionColumns={getActionColumns}
             />
         );
 
         return <div style={style}>{content}</div>;
-    }
+    };
 
     render() {
-        const { children, className, columns, data_source, footer, getRowSize, is_empty, onScroll } = this.props;
+        const {
+            children,
+            className,
+            columns,
+            data_source,
+            footer,
+            getActionColumns,
+            getRowSize,
+            is_empty,
+            onScroll,
+        } = this.props;
 
         const TableData = (
             <React.Fragment>
@@ -86,11 +98,12 @@ class DataTable extends React.PureComponent {
                     className={className}
                     height={this.state.height}
                     itemCount={data_source.length}
+                    itemData={data_source}
                     itemSize={getRowSize}
                     width={this.state.width}
                     outerElementType={is_empty ? null : ListScrollbar}
                 >
-                    {this.rowRenderer.bind(this)}
+                    {this.rowRenderer}
                 </List>
                 {children}
             </React.Fragment>
@@ -110,7 +123,7 @@ class DataTable extends React.PureComponent {
                         this.el_table_head = el;
                     }}
                 >
-                    <TableRow className={className} columns={columns} is_header />
+                    <TableRow className={className} columns={columns} is_header getActionColumns={getActionColumns} />
                 </div>
                 <div
                     className='table__body'
@@ -124,7 +137,13 @@ class DataTable extends React.PureComponent {
 
                 {footer && (
                     <div className='table__foot'>
-                        <TableRow className={className} row_obj={footer} columns={columns} is_footer />
+                        <TableRow
+                            className={className}
+                            row_obj={footer}
+                            columns={columns}
+                            is_footer
+                            getActionColumns={getActionColumns}
+                        />
                     </div>
                 )}
             </div>

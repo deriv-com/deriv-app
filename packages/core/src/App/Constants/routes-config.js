@@ -60,7 +60,7 @@ const modules = [
     },
 ];
 
-const lazyLoadComponent = component => {
+const lazyLoadCashierComponent = component => {
     return loadable.Map({
         loader: {
             Cashier: () => import(/* webpackChunkName: "cashier", webpackPrefetch: true */ 'Modules/Cashier'),
@@ -81,45 +81,45 @@ const initRoutesConfig = () => [
     { path: routes.redirect, component: Redirect, title: localize('Redirect') },
     {
         path: routes.cashier,
-        component: lazyLoadComponent('Cashier'),
+        component: lazyLoadCashierComponent('Cashier'),
         is_modal: true,
         is_authenticated: true,
         title: localize('Cashier'),
         routes: [
             {
                 path: routes.cashier_deposit,
-                component: lazyLoadComponent('Deposit'),
+                component: lazyLoadCashierComponent('Deposit'),
                 title: localize('Deposit'),
                 icon_component: 'IcWalletAdd',
                 default: true,
             },
             {
                 path: routes.cashier_withdrawal,
-                component: lazyLoadComponent('Withdrawal'),
+                component: lazyLoadCashierComponent('Withdrawal'),
                 title: localize('Withdrawal'),
                 icon_component: 'IcWalletMinus',
             },
             {
                 path: routes.cashier_pa,
-                component: lazyLoadComponent('PaymentAgent'),
+                component: lazyLoadCashierComponent('PaymentAgent'),
                 title: localize('Payment agents'),
                 icon_component: 'IcPaymentAgent',
             },
             {
                 path: routes.cashier_acc_transfer,
-                component: lazyLoadComponent('AccountTransfer'),
+                component: lazyLoadCashierComponent('AccountTransfer'),
                 title: localize('Transfer'),
                 icon_component: 'IcAccountTransfer',
             },
             {
                 path: routes.cashier_pa_transfer,
-                component: lazyLoadComponent('PaymentAgentTransfer'),
+                component: lazyLoadCashierComponent('PaymentAgentTransfer'),
                 title: localize('Transfer to client'),
                 icon_component: 'IcAccountTransfer',
             },
             {
                 path: routes.cashier_p2p,
-                component: lazyLoadComponent('P2PCashier'),
+                component: lazyLoadCashierComponent('P2PCashier'),
                 title: localize('P2P'),
                 icon_component: 'IcDp2p',
             },

@@ -90,7 +90,7 @@ commands:
     parameters:
       docker_image_tag:
         type: string
-        default: "latest"
+        default: "latest-staging"
     steps:
       - setup_remote_docker
       - run:
@@ -124,16 +124,15 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
-  release_staging:
+  build_staging:
     docker:
       - image: circleci/node:11.15.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
-      - docker:
-          docker_image_tag: latest-staging
-  release_production:
+      - docker
+  build_production:
     docker:
       - image: circleci/node:11.15.0-stretch
     steps:
@@ -143,7 +142,8 @@ jobs:
       - compress
       - upload_artifact  # uploading the built code to s3 to create a backup of key services separate from Kubernetes deployment
       - upload_checksum  # uploading compressed artifact checksum to cross match artifact fingerprint
-      - docker
+      - docker:
+          docker_image_tag: latest
   deploy_staging:
     docker:
       - image: circleci/node:11.15.0-stretch
@@ -163,24 +163,27 @@ workflows:
           filters:
             branches:
               only: /^dev/
-  release_staging:
+  build_deploy_staging:
     jobs:
-      - release_staging:
+      - build_staging:
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^staging.*/
-          context: binary-frontend-artifact-upload  # using context to retrieve shared secret from circle ci
+          #context: binary-frontend-artifact-upload  # using context to retrieve shared secret from circle ci
+          context: binary-frontend-deploy
       - deploy_staging:
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^staging.*/
-  release_production:
+          requires:
+            - build_staging
+  build_deploy_production:
     jobs:
-      - release_production:
+      - build_production:
           filters:
             branches:
               ignore: /.*/
@@ -193,3 +196,5 @@ workflows:
               ignore: /.*/
             tags:
               only: /^production.*/
+          requires:
+            - build_production

@@ -1,7 +1,7 @@
 let all_routes_config = [];
 
 const addRoutesConfig = (routes_config, should_init) => {
-    if (init) all_routes_config = [];
+    if (should_init) all_routes_config = [];
     all_routes_config.push(...routes_config);
 };
 

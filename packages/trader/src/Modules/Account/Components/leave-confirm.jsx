@@ -73,6 +73,7 @@ class TransitionBlocker extends React.Component {
                                     onClick={this.leave}
                                     text={localize('Leave')}
                                     primary
+                                    {...(isMobile() ? { large: true } : {})}
                                 />
                             </div>
                         </IconMessageContent>

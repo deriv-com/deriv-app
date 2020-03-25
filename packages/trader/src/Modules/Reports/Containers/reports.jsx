@@ -38,7 +38,7 @@ class Reports extends React.Component {
         };
 
         const { routes, location } = this.props;
-        const selected_route = isMobile() && getSelectedRoute({ routes, pathname: location.pathname });
+        const selected_route = isMobile() ? getSelectedRoute({ routes, pathname: location.pathname }) : null;
 
         return (
             <FadeWrapper
@@ -62,7 +62,9 @@ class Reports extends React.Component {
                         </DesktopWrapper>
                         <MobileWrapper>
                             <div className='reports__mobile-wrapper'>
-                                <selected_route.component component_icon={selected_route.icon_component} />
+                                {selected_route && (
+                                    <selected_route.component component_icon={selected_route.icon_component} />
+                                )}
                             </div>
                         </MobileWrapper>
                     </PageOverlay>

@@ -106,8 +106,9 @@ class Account extends React.Component {
             });
         }
 
-        const selected_route =
-            isMobile() && getSelectedRoute({ routes: subroutes, pathname: this.props.location.pathname });
+        const selected_route = isMobile()
+            ? getSelectedRoute({ routes: subroutes, pathname: this.props.location.pathname })
+            : null;
 
         return (
             <FadeWrapper
@@ -134,7 +135,9 @@ class Account extends React.Component {
                             />
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <selected_route.component component_icon={selected_route.icon_component} />
+                            {selected_route && (
+                                <selected_route.component component_icon={selected_route.icon_component} />
+                            )}
                         </MobileWrapper>
                     </PageOverlay>
                 </div>

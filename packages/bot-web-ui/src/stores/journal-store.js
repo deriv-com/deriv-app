@@ -1,13 +1,16 @@
 import { observable, action, computed } from 'mobx';
 import { localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared/utils/date';
-import { message_types } from '@deriv/bot-skeleton';
+import { observer, message_types } from '@deriv/bot-skeleton';
+
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
+import { messageWithButton } from '../components/notify-item.jsx';
 
 export default class JournalStore {
     constructor(root_store) {
         this.root_store = root_store;
+        this.dbot = this.root_store.dbot;
     }
 
     getServerTime() {
@@ -36,18 +39,26 @@ export default class JournalStore {
 
     @action.bound
     onNotify(data) {
-        const { message, className } = data;
+        const { message, className, blockid, sound } = data;
         let message_string = message;
 
-        if (data.message === undefined) {
+        if (message === undefined) {
+            observer.emit('ui.log.notify', {
+                className: 'journal__text--warn',
+                blockid,
+                sound: 'silent',
+                message: messageWithButton(blockid, localize('The value to notify is undefined'), () => {
+                    this.dbot.centerAndHighlightBlock(blockid);
+                }),
+            });
             return;
         }
+
         if (typeof message === 'boolean') {
             message_string = message.toString();
         }
         this.pushMessage(message_string, message_types.NOTIFY, className);
 
-        const { sound } = data;
         if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
             const audio = document.getElementById(sound);
             audio.play();

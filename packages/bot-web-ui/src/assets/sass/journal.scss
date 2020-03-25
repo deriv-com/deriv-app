@@ -41,11 +41,8 @@
         }
     }
     &__item {
-        padding: 20px;
+        padding: 16px;
 
-        &-list {
-            width: 350px;
-        }
         &-content {
             > * {
                 width: 100%;
@@ -64,7 +61,7 @@
 
             &-filter {
                 display: flex;
-                justify-content: space-between;
+                justify-content: space-around;
                 width: 85%;
             }
             &-download {

@@ -8,14 +8,14 @@
         justify-content: space-around;
 
         &__container {
-            -webkit-box-flex: 1;
+            box-flex: 1;
             flex-grow: 1;
             display: -webkit-box;
             display: flex;
             flex-direction: column;
-            -webkit-box-align: center;
+            box-align: center;
             align-items: center;
-            -webkit-box-pack: center;
+            box-pack: center;
             width: 345px;
             margin-top: 50%;
         }

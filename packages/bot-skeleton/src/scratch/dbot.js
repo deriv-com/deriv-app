@@ -1,5 +1,5 @@
-import { localize } from '@deriv/translations';
 import './blockly';
+import { localize } from '@deriv/translations';
 import { hasAllRequiredBlocks, updateDisabledBlocks } from './utils';
 import main_xml from './xml/main.xml';
 import toolbox_xml from './xml/toolbox.xml';
@@ -11,6 +11,7 @@ import { save_types } from '../constants/save-type';
 import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
 import { observer as globalObserver } from '../utils/observer';
+import { message_types } from '../constants/messages';
 
 class DBot {
     constructor() {
@@ -245,6 +246,21 @@ class DBot {
         });
 
         return false;
+    }
+
+    centerAndHighlightBlock(block_id) {
+        const block_to_highlight = this.workspace.getBlockById(block_id);
+
+        if (!block_to_highlight) {
+            return;
+        }
+
+        const all_blocks = this.workspace.getAllBlocks();
+
+        all_blocks.forEach(block => block.setErrorHighlighted(false));
+        block_to_highlight.setErrorHighlighted(true);
+
+        this.workspace.centerOnBlock(block_to_highlight.id);
     }
 
     /**

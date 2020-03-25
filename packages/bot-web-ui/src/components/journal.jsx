@@ -2,13 +2,13 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { Checkbox, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { message_types } from '@deriv/bot-skeleton';
+import { contract_stages } from '../constants/contract-stage';
 import { connect } from '../stores/connect';
 import '../assets/sass/journal.scss';
-import { contract_stages } from '../constants/contract-stage';
 
 const DateItem = ({ date, time }) => {
     return (
@@ -95,14 +95,12 @@ const getJournalItemContent = (message, type, className) => {
         case message_types.SUCCESS: {
             return <FormatMessage message={message} />;
         }
-        case message_types.NOTIFY: {
+        case message_types.NOTIFY:
+        case message_types.COMPONENT: {
             return <div className={classnames('journal__text', className)}>{message}</div>;
         }
         case message_types.ERROR: {
             return <div className='journal__text--error journal__text'>{message}</div>;
-        }
-        case message_types.COMPONENT: {
-            return <>{message}</>;
         }
         default:
             return <></>;

@@ -2,8 +2,9 @@
 import React from 'react';
 import { Formik, Field } from 'formik';
 import classNames from 'classnames';
-import { Autocomplete, Checkbox, Button, Input } from '@deriv/components';
+import { Autocomplete, Checkbox, Button, Input, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import DatePicker from 'App/Components/Form/DatePicker';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import {
@@ -270,37 +271,73 @@ class PersonalDetailsForm extends React.Component {
                     <>
                         <LeaveConfirm onDirty={this.showForm} />
                         {show_form && (
-                            <form noValidate className='account-form' onSubmit={handleSubmit}>
+                            <form
+                                noValidate
+                                className='account-form account-form__personal-details'
+                                onSubmit={handleSubmit}
+                            >
                                 <FormBody scroll_offset='80px'>
                                     <FormSubHeader title={localize('Details')} />
                                     {!this.props.is_virtual && (
                                         <React.Fragment>
-                                            <InputGroup className='account-form__fieldset--2-cols'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    type='text'
-                                                    name='first_name'
-                                                    label={localize('First name')}
-                                                    value={values.first_name}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    required
-                                                    disabled={this.isChangeableField('first_name')}
-                                                    error={touched.first_name && errors.first_name}
-                                                />
-                                                <Input
-                                                    data-lpignore='true'
-                                                    type='text'
-                                                    name='last_name'
-                                                    label={localize('Last name')}
-                                                    value={values.last_name}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    required
-                                                    disabled={this.isChangeableField('last_name')}
-                                                    error={touched.last_name && errors.last_name}
-                                                />
-                                            </InputGroup>
+                                            <DesktopWrapper>
+                                                <InputGroup className='account-form__fieldset--2-cols'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        name='first_name'
+                                                        label={localize('First name')}
+                                                        value={values.first_name}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={this.isChangeableField('first_name')}
+                                                        error={touched.first_name && errors.first_name}
+                                                    />
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        name='last_name'
+                                                        label={localize('Last name')}
+                                                        value={values.last_name}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={this.isChangeableField('last_name')}
+                                                        error={touched.last_name && errors.last_name}
+                                                    />
+                                                </InputGroup>
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        name='first_name'
+                                                        label={localize('First name')}
+                                                        value={values.first_name}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={this.isChangeableField('first_name')}
+                                                        error={touched.first_name && errors.first_name}
+                                                    />
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        name='last_name'
+                                                        label={localize('Last name')}
+                                                        value={values.last_name}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={this.isChangeableField('last_name')}
+                                                        error={touched.last_name && errors.last_name}
+                                                    />
+                                                </fieldset>
+                                            </MobileWrapper>
                                             <fieldset className='account-form__fieldset'>
                                                 <Field name='place_of_birth'>
                                                     {({ field }) => (
@@ -325,12 +362,28 @@ class PersonalDetailsForm extends React.Component {
                                                 </Field>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                <DateOfBirth
-                                                    name='date_of_birth'
-                                                    label={localize('Date of birth')}
-                                                    value={values.date_of_birth}
-                                                    disabled={is_fully_authenticated}
-                                                />
+                                                <DesktopWrapper>
+                                                    <DateOfBirth
+                                                        name='date_of_birth'
+                                                        label={localize('Date of birth')}
+                                                        value={values.date_of_birth}
+                                                        disabled={is_fully_authenticated}
+                                                    />
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <DatePicker
+                                                        name='date_of_birth'
+                                                        is_nativepicker={true}
+                                                        placeholder={localize('Date of birth')}
+                                                        value={
+                                                            values.date_of_birth
+                                                                ? toMoment(values.date_of_birth).format('DD MMM YYYY')
+                                                                : ''
+                                                        }
+                                                        onChange={handleChange}
+                                                        disabled={is_fully_authenticated}
+                                                    />
+                                                </MobileWrapper>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <Field name='citizen'>

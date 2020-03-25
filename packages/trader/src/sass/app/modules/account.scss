@@ -153,12 +153,22 @@ $MIN_HEIGHT_FLOATING: calc(
                 line-height: 1.5;
                 text-align: right;
                 width: 27.6rem;
+                @include mobile {
+                    width: auto;
+                    text-align: center;
+                }
             }
             &-btn {
                 height: 4rem;
                 margin-top: 0;
                 margin-bottom: 0;
                 margin-left: 1.6rem;
+            }
+            @include mobile {
+                padding: 16px 0px;
+                flex-direction: column;
+                height: auto;
+                align-items: initial;
             }
         }
     }
@@ -230,6 +240,17 @@ $MIN_HEIGHT_FLOATING: calc(
 
         &--space-between {
             justify-content: space-between;
+        }
+    }
+    .account-management-leave-confirm {
+        .btn:first-child {
+            @include mobile {
+                margin-bottom: 1.6rem;
+            }
+        }
+        @include mobile {
+            flex-direction: column;
+            width: 100%;
         }
     }
     .account__text_container {
@@ -313,6 +334,15 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
+    }
+    &-page-wrapper {
+        @include mobile {
+            height: 100%;
+        }
+    }
+
+    @include mobile {
+        height: 100%;
     }
 }
 
@@ -405,6 +435,13 @@ $MIN_HEIGHT_FLOATING: calc(
 
             .account-form__fieldset {
                 margin-bottom: 3em;
+            }
+        }
+    }
+    &__personal-details {
+        @include mobile {
+            .account-form__footer-note {
+                font-size: 1rem;
             }
         }
     }

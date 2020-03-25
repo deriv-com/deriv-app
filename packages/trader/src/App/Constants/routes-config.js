@@ -1,16 +1,8 @@
-import { lazy } from 'react';
+import React, { lazy } from 'react';
+import loadable from 'react-loadable';
 import { localize } from '@deriv/translations';
 import { routes } from 'Constants';
 import Trade from 'Modules/Trading';
-import Account, {
-    PersonalDetails,
-    FinancialAssessment,
-    ProofOfAddress,
-    ProofOfIdentity,
-    DerivPassword,
-    AccountLimits,
-} from 'Modules/Account';
-import Reports, { OpenPositions, ProfitTable, Statement } from 'Modules/Reports';
 
 const ContractDetails = lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));
 
@@ -20,32 +12,47 @@ const MT5 = lazy(() => import(/* webpackChunkName: "mt5", webpackPrefetch: true 
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
+const makeLazyLoader = importFn => component_name =>
+    loadable.Map({
+        loader: {
+            ComponentModule: importFn,
+        },
+        render(loaded, props) {
+            const ComponentLazy = loaded.ComponentModule.default[component_name];
+            return <ComponentLazy {...props} />;
+        },
+        loading: () => null,
+    });
+
+const lazyLoadReportComponent = makeLazyLoader(() => import(/* webpackChunkName: "reports" */ 'Modules/Reports'));
+const lazyLoadAccountComponent = makeLazyLoader(() => import(/* webpackChunkName: "account" */ 'Modules/Account'));
+
 // Order matters
 const initRoutesConfig = () => [
     { path: routes.contract, component: ContractDetails, title: localize('Contract Details'), is_authenticated: true },
     { path: routes.mt5, component: MT5, title: localize('MT5'), is_authenticated: true },
     {
         path: routes.reports,
-        component: Reports,
+        component: lazyLoadReportComponent('Reports'),
         is_authenticated: true,
         title: localize('Reports'),
         routes: [
             {
                 path: routes.positions,
-                component: OpenPositions,
+                component: lazyLoadReportComponent('OpenPositions'),
                 title: localize('Open Positions'),
                 icon_component: 'IcOpenPositions',
                 default: true,
             },
             {
                 path: routes.profit,
-                component: ProfitTable,
+                component: lazyLoadReportComponent('ProfitTable'),
                 title: localize('Profit Table'),
                 icon_component: 'IcProfitTable',
             },
             {
                 path: routes.statement,
-                component: Statement,
+                component: lazyLoadReportComponent('Statement'),
                 title: localize('Statement'),
                 icon_component: 'IcStatement',
             },
@@ -53,7 +60,7 @@ const initRoutesConfig = () => [
     },
     {
         path: routes.account,
-        component: Account,
+        component: lazyLoadAccountComponent('Account'),
         is_authenticated: true,
         title: localize('Accounts management'),
         routes: [
@@ -63,13 +70,13 @@ const initRoutesConfig = () => [
                 subroutes: [
                     {
                         path: routes.personal_details,
-                        component: PersonalDetails,
+                        component: lazyLoadAccountComponent('PersonalDetails'),
                         title: localize('Personal details'),
                         default: true,
                     },
                     {
                         path: routes.financial_assessment,
-                        component: FinancialAssessment,
+                        component: lazyLoadAccountComponent('FinancialAssessment'),
                         title: localize('Financial assessment'),
                     },
                 ],
@@ -80,18 +87,30 @@ const initRoutesConfig = () => [
                 subroutes: [
                     {
                         path: routes.proof_of_identity,
-                        component: ProofOfIdentity,
+                        component: lazyLoadAccountComponent('ProofOfIdentity'),
                         title: localize('Proof of identity'),
                     },
-                    { path: routes.proof_of_address, component: ProofOfAddress, title: localize('Proof of address') },
+                    {
+                        path: routes.proof_of_address,
+                        component: lazyLoadAccountComponent('ProofOfAddress'),
+                        title: localize('Proof of address'),
+                    },
                 ],
             },
             {
                 title: localize('Security and safety'),
                 icon: 'IcSecurity',
                 subroutes: [
-                    { path: routes.deriv_password, component: DerivPassword, title: localize('Deriv password') },
-                    { path: routes.account_limits, component: AccountLimits, title: localize('Account limits') },
+                    {
+                        path: routes.deriv_password,
+                        component: lazyLoadAccountComponent('DerivPassword'),
+                        title: localize('Deriv password'),
+                    },
+                    {
+                        path: routes.account_limits,
+                        component: lazyLoadAccountComponent('AccountLimits'),
+                        title: localize('Account limits'),
+                    },
                 ],
             },
         ],

@@ -1,5 +1,6 @@
-import { lazy } from 'react';
+import React, { lazy } from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
+import loadable from 'react-loadable';
 import { LocalStore } from '_common/storage';
 import { Redirect } from 'App/Containers/Redirect';
 import { localize } from '@deriv/translations';
@@ -7,14 +8,6 @@ import { routes } from 'Constants';
 import { routing_control_key } from 'Constants/routes';
 import { isBot } from 'Utils/PlatformSwitcher';
 import { getUrlBase } from '_common/url';
-import Cashier, {
-    Deposit,
-    Withdrawal,
-    PaymentAgent,
-    AccountTransfer,
-    PaymentAgentTransfer,
-    P2PCashier,
-} from 'Modules/Cashier';
 import Endpoint from 'Modules/Endpoint';
 
 export const interceptAcrossBot = (route_to, action) => {
@@ -67,6 +60,19 @@ const modules = [
     },
 ];
 
+const lazyLoadComponent = component => {
+    return loadable.Map({
+        loader: {
+            Cashier: () => import(/* webpackChunkName: "cashier", webpackPrefetch: true */ 'Modules/Cashier'),
+        },
+        render(loaded, props) {
+            const CashierLazy = loaded.Cashier.default[component];
+            return <CashierLazy {...props} />;
+        },
+        loading: () => null,
+    });
+};
+
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
 const initRoutesConfig = () => [
@@ -75,43 +81,48 @@ const initRoutesConfig = () => [
     { path: routes.redirect, component: Redirect, title: localize('Redirect') },
     {
         path: routes.cashier,
-        component: Cashier,
+        component: lazyLoadComponent('Cashier'),
         is_modal: true,
         is_authenticated: true,
         title: localize('Cashier'),
         routes: [
             {
                 path: routes.cashier_deposit,
-                component: Deposit,
+                component: lazyLoadComponent('Deposit'),
                 title: localize('Deposit'),
                 icon_component: 'IcWalletAdd',
                 default: true,
             },
             {
                 path: routes.cashier_withdrawal,
-                component: Withdrawal,
+                component: lazyLoadComponent('Withdrawal'),
                 title: localize('Withdrawal'),
                 icon_component: 'IcWalletMinus',
             },
             {
                 path: routes.cashier_pa,
-                component: PaymentAgent,
+                component: lazyLoadComponent('PaymentAgent'),
                 title: localize('Payment agents'),
                 icon_component: 'IcPaymentAgent',
             },
             {
                 path: routes.cashier_acc_transfer,
-                component: AccountTransfer,
+                component: lazyLoadComponent('AccountTransfer'),
                 title: localize('Transfer'),
                 icon_component: 'IcAccountTransfer',
             },
             {
                 path: routes.cashier_pa_transfer,
-                component: PaymentAgentTransfer,
+                component: lazyLoadComponent('PaymentAgentTransfer'),
                 title: localize('Transfer to client'),
                 icon_component: 'IcAccountTransfer',
             },
-            { path: routes.cashier_p2p, component: P2PCashier, title: localize('P2P'), icon_component: 'IcDp2p' },
+            {
+                path: routes.cashier_p2p,
+                component: lazyLoadComponent('P2PCashier'),
+                title: localize('P2P'),
+                icon_component: 'IcDp2p',
+            },
         ],
     },
     ...modules,

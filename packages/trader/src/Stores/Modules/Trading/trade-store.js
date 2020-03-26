@@ -856,6 +856,7 @@ export default class TradeStore extends BaseStore {
         // TODO: remove this, once multiplier is avaible for real accounts
         if (this.is_multiplier && this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
             this.processNewValuesAsync({ contract_type: 'rise_fall' }, false, {}, false);
+            if (!this.is_symbol_in_active_symbols) this.setActiveSymbols();
         }
         this.setContractTypes();
         return this.processNewValuesAsync(

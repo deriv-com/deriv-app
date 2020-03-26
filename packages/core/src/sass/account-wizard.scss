@@ -253,7 +253,8 @@
                 height: 4rem;
             }
             .dc-ion {
-                width: calc(100% - 10rem);
+                width: 100%;
+                max-width: 96px;
                 margin-top: 2rem;
                 height: auto;
             }

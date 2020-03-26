@@ -1,10 +1,8 @@
 image: node:11.15.0
-​
 stages:
   - setup
   - test
   - deploy
-​
 setup:
   stage: setup
   only:
@@ -16,7 +14,6 @@ setup:
       - node_modules/
       - packages/*/node_modules
     expire_in: 1 day
-​
 test_all:
   stage: test
   only:
@@ -29,7 +26,6 @@ test_all:
     - setup
   variables:
     NODE_ENV: staging
-​
 pages:
   stage: deploy
   only:

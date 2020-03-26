@@ -1,37 +1,27 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Loadable from 'react-loadable';
 import { Icon, Modal, VerticalTab } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import UILoader from 'App/Components/Elements/ui-loader.jsx';
-import Lazy from 'App/Containers/Lazy';
 import 'Sass/app/modules/settings.scss';
 
-const ThemeSetting = () => (
-    <Lazy
-        ctor={() =>
-            import(
-                /* webpackChunkName: "settings-theme", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-theme.jsx'
-            )
-        }
-        should_load={true}
-        has_progress={true}
-    />
-);
-const LanguageSettingContainer = () => (
-    <Lazy
-        ctor={() =>
-            import(
-                /* webpackChunkName: "settings-language", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-language.jsx'
-            )
-        }
-        should_load={true}
-        has_progress={true}
-    />
-);
+const ThemeSetting = Loadable({
+    loader: () =>
+        import(
+            /* webpackChunkName: "settings-theme", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-theme.jsx'
+        ),
+    loading: UILoader,
+});
 
-LanguageSettingContainer.displayName = 'LanguageSettingContainer';
-ThemeSetting.displayName = 'ThemeSettingContainer';
+const LanguageSettingContainer = Loadable({
+    loader: () =>
+        import(
+            /* webpackChunkName: "settings-language", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-language.jsx'
+        ),
+    loading: UILoader,
+});
 
 const ModalContent = ({ settings_extension }) => {
     const content = [
@@ -61,21 +51,19 @@ const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSett
             <a id='dt_settings_toggle' onClick={toggleSettings} className={toggle_settings_class}>
                 <Icon icon='IcGear' className='footer__icon ic-settings__icon' />
             </a>
-            <React.Suspense fallback={<UILoader />}>
-                <Modal
-                    id='dt_settings_modal'
-                    className='modal-settings'
-                    enableApp={enableApp}
-                    is_open={is_settings_visible}
-                    disableApp={disableApp}
-                    title={localize('Platform settings')}
-                    toggleModal={toggleSettings}
-                    height='616px'
-                    width='736px'
-                >
-                    <ModalContent settings_extension={settings_extension} />
-                </Modal>
-            </React.Suspense>
+            <Modal
+                id='dt_settings_modal'
+                className='modal-settings'
+                enableApp={enableApp}
+                is_open={is_settings_visible}
+                disableApp={disableApp}
+                title={localize('Platform settings')}
+                toggleModal={toggleSettings}
+                height='616px'
+                width='736px'
+            >
+                <ModalContent settings_extension={settings_extension} />
+            </Modal>
         </React.Fragment>
     );
 };

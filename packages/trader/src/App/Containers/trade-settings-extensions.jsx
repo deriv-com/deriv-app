@@ -1,27 +1,23 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Loadable from 'react-loadable';
 import { localize } from '@deriv/translations';
+import UILoader from 'App/Components/Elements/ui-loader.jsx';
 import { connect } from 'Stores/connect';
-import Lazy from 'App/Containers/Lazy';
 
-const ChartSettingContainer = () => (
-    <Lazy
-        ctor={() =>
-            import(
-                /* webpackChunkName: "settings-chart", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-chart.jsx'
-            )
-        }
-    />
-);
+const ChartSettingContainer = Loadable({
+    loader: () =>
+        import(
+            /* webpackChunkName: "settings-chart", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-chart.jsx'
+        ),
+    loading: UILoader,
+});
 
-// const PurchaseSettings = () => (
-//     <Lazy
-//         ctor={() => import(/* webpackChunkName: "settings-chart", webpackPrefetch: true */'App/Containers/SettingsModal/settings-purchase.jsx')}
-//     />
-// );
-
-ChartSettingContainer.displayName = 'ChartSettingContainer';
-// PurchaseSettings.displayName = 'PurchaseSettings';
+// const PurchaseSettings = Loadable({
+//     loader: () =>
+//     import(/* webpackChunkName: "settings-chart", webpackPrefetch: true */'App/Containers/SettingsModal/settings-purchase.jsx'),
+//     loading: UILoader,
+// });
 
 class TradeSettingsExtensions extends React.Component {
     populateSettings = () => {

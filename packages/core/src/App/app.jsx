@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Prompt } from 'react-router';
 import { BrowserRouter as Router } from 'react-router-dom';
+import Loadable from 'react-loadable';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { DesktopWrapper } from '@deriv/components';
@@ -18,13 +19,17 @@ import Footer from './Containers/Layout/footer.jsx';
 import Header from './Containers/Layout/header.jsx';
 import NotificationMessages from './Containers/notification-messages.jsx';
 import AppModals from './Containers/Modals';
-import Lazy from './Containers/Lazy';
 import Routes from './Containers/Routes/routes.jsx';
 import { interceptAcrossBot } from './Constants/routes-config';
 // eslint-disable-next-line import/extensions
 import initStore from './app.js';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
+
+const Notifications = Loadable({
+    loader: () => import(/* webpackChunkName: "push-notification" */ './Containers/push-notification.jsx'),
+    loading: () => null,
+});
 
 const App = ({ root_store }) => {
     const l = window.location;
@@ -97,15 +102,7 @@ const App = ({ root_store }) => {
                             {/* TODO: [trader-remove-client-base] */}
                             <Routes passthrough={platform_passthrough} />
                             <Prompt when={true} message={interceptAcrossBot} />
-                            <Lazy
-                                ctor={() =>
-                                    import(
-                                        /* webpackChunkName: "push-notification" */ './Containers/push-notification.jsx'
-                                    )
-                                }
-                                should_load={!root_store.ui.is_loading}
-                                has_progress={false}
-                            />
+                            <Notifications />
                         </AppContents>
                     </ErrorBoundary>
                     <DesktopWrapper>

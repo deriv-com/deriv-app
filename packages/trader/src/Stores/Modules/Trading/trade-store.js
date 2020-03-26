@@ -1015,10 +1015,15 @@ export default class TradeStore extends BaseStore {
 
     wsSendRequest = req => {
         if (req.time) {
-            return ServerTime.timePromise().then(server_time => ({
-                msg_type: 'time',
-                time: server_time.unix(),
-            }));
+            return ServerTime.timePromise().then(server_time => {
+                if (server_time) {
+                    return {
+                        msg_type: 'time',
+                        time: server_time.unix(),
+                    };
+                }
+                return WS.time();
+            });
         }
         if (req.active_symbols) {
             return this.should_refresh_active_symbols ? WS.activeSymbols('brief') : WS.wait('active_symbols');

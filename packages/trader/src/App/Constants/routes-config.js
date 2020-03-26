@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 import Loadable from 'react-loadable';
+import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import UILoader from 'App/Components/Elements/ui-loader.jsx';
 import { routes } from 'Constants';
 import Trade from 'Modules/Trading';
 
@@ -13,10 +13,10 @@ const MT5 = lazy(() => import(/* webpackChunkName: "mt5", webpackPrefetch: true 
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
-function Loading(props) {
+function handleLoading(props) {
     // 200ms default
     if (props.pastDelay) {
-        return <UILoader />;
+        return <Loading />;
     }
     return null;
 }
@@ -30,7 +30,7 @@ const makeLazyLoader = importFn => component_name =>
             const ComponentLazy = loaded.ComponentModule.default[component_name];
             return <ComponentLazy {...props} />;
         },
-        loading: Loading,
+        loading: handleLoading,
     });
 
 const lazyLoadReportComponent = makeLazyLoader(() => import(/* webpackChunkName: "reports" */ 'Modules/Reports'));

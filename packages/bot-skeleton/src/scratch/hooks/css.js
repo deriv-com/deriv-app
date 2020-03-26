@@ -2,9 +2,25 @@
  * Array making up the CSS content for Blockly.
  */
 Blockly.Css.CONTENT = [
+    '@keyframes blinkEffect {',
+    '0% {',
+    'opacity: 1;',
+    '}',
+    '50% {',
+    'opacity: 0;',
+    '}',
+    '100% {',
+    'opacity: 1;',
+    '}',
+    '}',
+
     '.block--error-highlighted > .blocklyPath {',
     'stroke: var(--status-danger);',
-    'stroke-width: 3px;',
+    'stroke-width: 5px;',
+    '}',
+
+    '.block--blink {',
+    'animation: blinkEffect 1s infinite;',
     '}',
 
     '.blocklySvg {',

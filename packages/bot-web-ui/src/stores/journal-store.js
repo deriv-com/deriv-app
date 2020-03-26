@@ -39,17 +39,21 @@ export default class JournalStore {
 
     @action.bound
     onNotify(data) {
-        const { message, className, blockid, sound } = data;
+        const { message, className, sound, block_id, variable_name } = data;
         let message_string = message;
 
         if (message === undefined) {
             observer.emit('ui.log.notify', {
                 className: 'journal__text--warn',
-                blockid,
+                block_id,
                 sound: 'silent',
-                message: messageWithButton(blockid, localize('The value to notify is undefined'), () => {
-                    this.dbot.centerAndHighlightBlock(blockid);
-                }),
+                message: messageWithButton(
+                    block_id,
+                    localize(`Please set a value for variable <${variable_name}>.`),
+                    () => {
+                        this.dbot.centerAndHighlightBlock(block_id, true);
+                    }
+                ),
             });
             return;
         }

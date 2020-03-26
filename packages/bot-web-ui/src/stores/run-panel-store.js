@@ -47,6 +47,7 @@ export default class RunPanelStore {
         const { core, contract_card } = this.root_store;
         const { client, ui } = core;
 
+        this.dbot.unHighlightAllBlocks();
         if (!client.is_logged_in) {
             this.showLoginDialog();
             return;

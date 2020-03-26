@@ -188,6 +188,19 @@ Blockly.BlockSvg.prototype.setErrorHighlighted = function(
 };
 
 /**
+ * Set block animation (Blink)
+ */
+
+Blockly.BlockSvg.prototype.blink = function() {
+    const blink_class = 'block--blink';
+    Blockly.utils.addClass(this.svgGroup_, blink_class);
+
+    setTimeout(() => {
+        Blockly.utils.removeClass(this.svgGroup_, blink_class);
+    }, 3000);
+};
+
+/**
  * Set whether the block is collapsed or not.
  * @param {boolean} collapsed True if collapsed.
  */

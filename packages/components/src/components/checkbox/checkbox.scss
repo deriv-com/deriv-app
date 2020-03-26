@@ -27,6 +27,10 @@
         border: none;
         background-color: var(--brand-red-coral);
     }
+    &--disabled {
+        opacity: 0.5;
+        cursor: not-allowed !important;
+    }
     &__label {
         color: var(--text-general);
         font-size: var(--text-size-xs);

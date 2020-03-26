@@ -16,3 +16,18 @@ export const contractSold = (currency, sold_for) => ({
     should_hide_close_btn: true,
     is_auto_close: true,
 });
+
+export const contractCancelled = () => ({
+    key: 'contract_sold',
+    header: localize('Contract cancelled'),
+    message: (
+        <Localize
+            i18n_default_text='Contract was cancelled.'
+            // components={[ <Money key={sold_for} amount={sold_for} currency={currency} /> ]}
+        />
+    ),
+    type: 'contract_sold',
+    size: 'small',
+    should_hide_close_btn: true,
+    is_auto_close: true,
+});

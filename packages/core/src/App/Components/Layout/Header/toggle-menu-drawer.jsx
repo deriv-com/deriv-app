@@ -8,10 +8,14 @@ import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 
-const MenuLink = ({ link_to, icon, suffix_icon, text, onClickLink }) => (
+const MenuLink = ({ link_to, icon, is_disabled, suffix_icon, text, onClickLink }) => (
     <React.Fragment>
         {!link_to ? (
-            <div className='header__menu-mobile-link'>
+            <div
+                className={classNames('header__menu-mobile-link', {
+                    'header__menu-mobile-link--disabled': is_disabled,
+                })}
+            >
                 <Icon className='header__menu-mobile-link-icon' icon={icon} />
                 <span className='header__menu-mobile-link-text'>{text}</span>
                 {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
@@ -19,7 +23,9 @@ const MenuLink = ({ link_to, icon, suffix_icon, text, onClickLink }) => (
         ) : (
             <BinaryLink
                 to={link_to}
-                className='header__menu-mobile-link'
+                className={classNames('header__menu-mobile-link', {
+                    'header__menu-mobile-link--disabled': is_disabled,
+                })}
                 active_class='header__menu-mobile-link--active'
                 onClick={onClickLink}
             >
@@ -31,7 +37,7 @@ const MenuLink = ({ link_to, icon, suffix_icon, text, onClickLink }) => (
     </React.Fragment>
 );
 
-class ToggleMenuDrawer extends React.PureComponent {
+class ToggleMenuDrawer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -76,6 +82,7 @@ class ToggleMenuDrawer extends React.PureComponent {
                             {route.subroutes.map(subroute => (
                                 <MenuLink
                                     key={subroute.title}
+                                    is_disabled={subroute.is_disabled}
                                     link_to={subroute.path}
                                     text={subroute.title}
                                     onClickLink={this.toggleDrawer}

@@ -127,7 +127,9 @@ export const load = ({
 
         // Dispatch resize event for comments.
         window.dispatchEvent(new Event('resize'));
-        globalObserver.emit('ui.log.success', localize('Blocks are loaded successfully'));
+        if (workspace === Blockly.derivWorkspace) {
+            globalObserver.emit('ui.log.success', localize('Blocks are loaded successfully'));
+        }
     } catch (e) {
         console.log(e); // eslint-disable-line
         return showInvalidStrategyError();

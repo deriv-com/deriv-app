@@ -1,7 +1,8 @@
 import React, { lazy } from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
-import loadable from 'react-loadable';
+import Loadable from 'react-loadable';
 import { LocalStore } from '_common/storage';
+import UILoader from 'App/Components/Elements/ui-loader.jsx';
 import { Redirect } from 'App/Containers/Redirect';
 import { localize } from '@deriv/translations';
 import { routes } from 'Constants';
@@ -60,8 +61,16 @@ const modules = [
     },
 ];
 
+function Loading(props) {
+    // 200ms default
+    if (props.pastDelay) {
+        return <UILoader />;
+    }
+    return null;
+}
+
 const lazyLoadCashierComponent = component => {
-    return loadable.Map({
+    return Loadable.Map({
         loader: {
             Cashier: () => import(/* webpackChunkName: "cashier" */ 'Modules/Cashier'),
         },
@@ -69,7 +78,7 @@ const lazyLoadCashierComponent = component => {
             const CashierLazy = loaded.Cashier.default[component];
             return <CashierLazy {...props} />;
         },
-        loading: () => null,
+        loading: Loading,
     });
 };
 

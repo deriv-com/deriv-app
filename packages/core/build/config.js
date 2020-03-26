@@ -107,6 +107,13 @@ const htmlInjectConfig = () => ({
                 rel: 'icon',
             },
         },
+        {
+            path: 'public/fonts/binary_symbols.woff',
+            attributes: {
+                rel: 'preload',
+                as: 'font',
+            },
+        },
         // {
         //     path: 'pushwoosh-web-notifications.js',
         //     attributes: {
@@ -127,6 +134,15 @@ const htmlInjectConfig = () => ({
     append: false,
 });
 
+const htmlPreloadConfig = () => ({
+    rel: 'preload',
+    as(entry) {
+        if (/\.css$/.test(entry)) return 'style';
+        if (/\.woff$/.test(entry)) return 'font';
+        return 'script';
+    },
+});
+
 const cssConfig = () => ({ filename: 'css/core.main.css', chunkFilename: 'css/core.[name].[contenthash].css' });
 
 const stylelintConfig = () => ({
@@ -140,6 +156,7 @@ module.exports = {
     copyConfig,
     htmlOutputConfig,
     htmlInjectConfig,
+    htmlPreloadConfig,
     cssConfig,
     stylelintConfig,
     generateSWConfig,

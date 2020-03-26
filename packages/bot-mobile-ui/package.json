@@ -10,11 +10,10 @@
     "test:eslint": "eslint ."
   },
   "dependencies": {
-    "@deriv/bot-skeleton": "^1.0.0",
-    "react": "16.9.0",
-    "react-dom": "^16.12.0",
-    "react-native": "0.61.5",
-    "react-native-webview": "^8.0.6"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-native": "^0.61.5",
+    "react-native-webview": "^8.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
@@ -24,6 +23,7 @@
     "babel-jest": "^24.9.0",
     "eslint": "^6.5.1",
     "jest": "^24.9.0",
+    "metro": "^0.59.0",
     "metro-react-native-babel-preset": "^0.56.0",
     "metro-with-symlinks": "^1.4.0",
     "react-test-renderer": "16.9.0"

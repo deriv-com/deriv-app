@@ -7,6 +7,23 @@
     form {
         flex-direction: column;
     }
+    @include mobile {
+        flex-direction: column;
+        flex-wrap: unset;
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        & .account-wizard__btn-area {
+            & .btn,
+            & .btn:last-child {
+                min-width: unset;
+                margin: 0 1.6rem;
+            }
+        }
+        & .change-currency {
+            margin-bottom: 1.6rem;
+        }
+    }
 }
 
 .success-change {

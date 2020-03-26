@@ -44,7 +44,7 @@ export default class JournalStore {
 
         if (message === undefined) {
             observer.emit('ui.log.notify', {
-                className: 'journal__text--warn',
+                className: 'journal__text--danger',
                 block_id,
                 sound: 'silent',
                 message: messageWithButton(

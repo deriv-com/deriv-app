@@ -197,7 +197,7 @@ Blockly.BlockSvg.prototype.blink = function() {
 
     setTimeout(() => {
         Blockly.utils.removeClass(this.svgGroup_, blink_class);
-    }, 3000);
+    }, 2000);
 };
 
 /**

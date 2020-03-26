@@ -4,13 +4,16 @@
 Blockly.Css.CONTENT = [
     '@keyframes blinkEffect {',
     '0% {',
-    'opacity: 1;',
+    'stroke: var(--status-danger);',
+    'stroke-width: 5px;',
     '}',
     '50% {',
-    'opacity: 0;',
+    'stroke: var(--status-warning);',
+    'stroke-width: 8px;',
     '}',
     '100% {',
-    'opacity: 1;',
+    'stroke: var(--status-danger);',
+    'stroke-width: 5px;',
     '}',
     '}',
 
@@ -19,7 +22,7 @@ Blockly.Css.CONTENT = [
     'stroke-width: 5px;',
     '}',
 
-    '.block--blink {',
+    '.block--blink > .blocklyPath {',
     'animation: blinkEffect 1s infinite;',
     '}',
 

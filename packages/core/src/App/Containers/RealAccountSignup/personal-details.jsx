@@ -150,12 +150,19 @@ export class DateOfBirth extends React.Component {
                                     name={name}
                                     className='datepicker__native'
                                     type='date'
-                                    max_date={this.state.max_date}
-                                    min_date={this.state.min_date}
+                                    max={this.state.max_date}
+                                    min={this.state.min_date}
                                     onBlur={handleBlur}
                                     defaultValue={toMoment(this.state.max_date).format('YYYY-MM-DD')}
                                     error={touched[name] && errors[name]}
                                     required
+                                    onFocus={e => {
+                                        setFieldValue(
+                                            name,
+                                            e.target.value ? toMoment(e.target.value).format('YYYY-MM-DD') : null,
+                                            true
+                                        );
+                                    }}
                                     onChange={e => {
                                         // fix for ios issue: clear button doesn't work
                                         // https://github.com/facebook/react/issues/8938
@@ -164,7 +171,11 @@ export class DateOfBirth extends React.Component {
                                             target.defaultValue = '';
                                         }
                                         window.setTimeout(iosClearDefault, 0);
-                                        setFieldValue(name, toMoment(e.target.value).format('YYYY-MM-DD'), true);
+                                        setFieldValue(
+                                            name,
+                                            e.target.value ? toMoment(e.target.value).format('YYYY-MM-DD') : null,
+                                            true
+                                        );
                                     }}
                                 />
                                 {touched[name] && errors[name] && (

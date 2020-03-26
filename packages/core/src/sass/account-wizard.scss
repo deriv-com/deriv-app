@@ -107,7 +107,7 @@
             padding: 0 2.4rem 3.2rem;
         }
         @include mobile {
-            height: calc(100vh - #{$MOBILE_HEADER_HEIGHT});
+            height: inherit;
             overflow: hidden;
             position: relative;
             max-height: inherit;
@@ -167,7 +167,7 @@
         @include mobile {
             background-color: var(--general-section-2);
             top: unset;
-            bottom: 78px;
+            bottom: 0;
 
             .btn {
                 height: 40px;

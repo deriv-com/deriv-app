@@ -17,9 +17,9 @@ const getIcon = type => {
 
 export const messageWithButton = ({ unique_id, type, message, btn_text, onClick }) => (
     <>
-        <div className='notify__item-container'>
-            <Icon icon={getIcon(type)} size='22' />
-            <div key={`${unique_id}_message`} className='notify__item-message'>
+        <div key={`${unique_id}_message`} className='notify__item-container'>
+            <Icon key={`${unique_id}_icon`} icon={getIcon(type)} size='22' />
+            <div key={`${unique_id}_text`} className='notify__item-message'>
                 {message}
             </div>
         </div>

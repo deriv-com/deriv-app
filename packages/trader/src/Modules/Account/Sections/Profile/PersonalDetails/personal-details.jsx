@@ -216,7 +216,7 @@ class PersonalDetailsForm extends React.Component {
 
     render() {
         const {
-            form_initial_values: { ...form_initial_values },
+            form_initial_values,
             api_error,
             is_loading,
             is_state_loading,
@@ -247,13 +247,11 @@ class PersonalDetailsForm extends React.Component {
         } else {
             form_initial_values.address_state = '';
         }
-
         // if (!form_initial_values.tax_identification_number) form_initial_values tax_identification_number = '';
         return (
             <Formik
-                initialValues={{
-                    ...form_initial_values,
-                }}
+                initialValues={form_initial_values}
+                enableReinitialize={true}
                 onSubmit={this.onSubmit}
                 validate={this.validateFields}
             >
@@ -690,7 +688,16 @@ class PersonalDetailsForm extends React.Component {
                 });
             });
         }
+        this.initializeFormValues();
+    }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.account_settings !== prevProps.account_settings) {
+            this.initializeFormValues();
+        }
+    }
+
+    initializeFormValues() {
         WS.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
             const { getChangeableFields, is_virtual, account_settings } = this.props;
 

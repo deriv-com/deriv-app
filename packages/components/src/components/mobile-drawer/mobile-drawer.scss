@@ -149,6 +149,10 @@
             .header__menu-mobile-link {
                 padding-top: 1.6rem;
             }
+            .header__menu-mobile-link--disabled {
+                opacity: 0.32;
+                pointer-events: none;
+            }
         }
     }
     &__body {

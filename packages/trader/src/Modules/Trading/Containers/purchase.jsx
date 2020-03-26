@@ -10,7 +10,9 @@ const Purchase = ({
     basis,
     contract_type,
     currency,
+    has_cancellation,
     is_client_allowed_to_visit,
+    is_multiplier,
     is_mobile,
     // is_purchase_confirm_on,
     purchased_states_arr,
@@ -42,7 +44,7 @@ const Purchase = ({
         };
         const info = proposal_info[type] || {};
         const is_disabled = !is_trade_enabled || !info.id || !is_client_allowed_to_visit;
-        const is_proposal_error = info.has_error;
+        const is_proposal_error = is_multiplier ? info.has_error && !info.has_error_details : info.has_error;
         const purchase_fieldset = (
             <PurchaseFieldset
                 basis={basis}
@@ -51,10 +53,12 @@ const Purchase = ({
                 info={info}
                 key={index}
                 index={getSortedIndex(index, type)}
+                has_cancellation={has_cancellation}
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={isLoading(info)}
                 is_mobile={is_mobile}
+                is_multiplier={is_multiplier}
                 // is_purchase_confirm_on={is_purchase_confirm_on}
                 is_proposal_empty={is_proposal_empty}
                 is_proposal_error={is_proposal_error}
@@ -91,7 +95,9 @@ const Purchase = ({
 Purchase.propTypes = {
     basis: PropTypes.string,
     currency: PropTypes.string,
+    has_cancellation: PropTypes.bool,
     is_client_allowed_to_visit: PropTypes.bool,
+    is_multiplier: PropTypes.bool,
     is_mobile: PropTypes.bool,
     // is_purchase_confirm_on    : PropTypes.bool,
     is_purchase_locked: PropTypes.bool,
@@ -113,8 +119,10 @@ export default connect(({ client, modules, ui, gtm }) => ({
     is_client_allowed_to_visit: client.is_client_allowed_to_visit,
     basis: modules.trade.basis,
     contract_type: modules.trade.contract_type,
+    has_cancellation: modules.trade.has_cancellation,
     pushLoadPerformance: gtm.pushLoadPerformance,
     is_trade_enabled: modules.trade.is_trade_enabled,
+    is_multiplier: modules.trade.is_multiplier,
     onClickPurchase: modules.trade.onPurchase,
     onHoverPurchase: modules.trade.onHoverPurchase,
     proposal_info: modules.trade.proposal_info,

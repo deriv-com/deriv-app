@@ -39,21 +39,26 @@ export default class JournalStore {
 
     @action.bound
     onNotify(data) {
-        const { message, className, sound, block_id, variable_name } = data;
+        const { message, className, message_type, sound, block_id, variable_name } = data;
         let message_string = message;
 
         if (message === undefined) {
             observer.emit('ui.log.notify', {
-                className: 'journal__text--danger',
+                className: 'journal__text--error',
                 block_id,
                 sound: 'silent',
-                message: messageWithButton(
-                    block_id,
-                    localize(`Please set a value for variable <${variable_name}>.`),
-                    () => {
+                message_type: message_types.COMPONENT,
+                message: messageWithButton({
+                    unique_id: block_id,
+                    type: 'error',
+                    message: localize(
+                        `Variable '${variable_name}' has no value. Please set a value for variable '${variable_name}' to notify.`
+                    ),
+                    btn_text: localize('Go to block'),
+                    onClick: () => {
                         this.dbot.centerAndHighlightBlock(block_id, true);
-                    }
-                ),
+                    },
+                }),
             });
             return;
         }
@@ -61,7 +66,7 @@ export default class JournalStore {
         if (typeof message === 'boolean') {
             message_string = message.toString();
         }
-        this.pushMessage(message_string, message_types.NOTIFY, className);
+        this.pushMessage(message_string, message_type || message_types.NOTIFY, className);
 
         if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
             const audio = document.getElementById(sound);

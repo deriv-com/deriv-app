@@ -1,17 +1,32 @@
 import React from 'react';
-import { Button } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Button, Icon } from '@deriv/components';
 import '../assets/sass/notify-item.scss';
 
-export const messageWithButton = (unique_id, message, onClick) => (
+const getIcon = type => {
+    switch (type) {
+        case 'error':
+            return 'IcAlertDanger';
+        case 'warn':
+            return 'IcAlertWarning';
+        case 'info':
+            return 'IcAlertInfo';
+        default:
+            return 'IcAlertWarning';
+    }
+};
+
+export const messageWithButton = ({ unique_id, type, message, btn_text, onClick }) => (
     <>
-        <div key={`${unique_id}_message`} className='notify__item-message'>
-            {message}
+        <div className='notify__item-container'>
+            <Icon icon={getIcon(type)} size='22' />
+            <div key={`${unique_id}_message`} className='notify__item-message'>
+                {message}
+            </div>
         </div>
         <Button
             key={`${unique_id}_btn`}
             className='notify__item-button'
-            text={localize('Show me')}
+            text={btn_text}
             onClick={onClick}
             has_effect
             secondary

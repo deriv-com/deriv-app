@@ -95,12 +95,14 @@ const getJournalItemContent = (message, type, className) => {
         case message_types.SUCCESS: {
             return <FormatMessage message={message} />;
         }
-        case message_types.NOTIFY:
-        case message_types.COMPONENT: {
+        case message_types.NOTIFY: {
             return <div className={classnames('journal__text', className)}>{message}</div>;
         }
         case message_types.ERROR: {
             return <div className='journal__text--error journal__text'>{message}</div>;
+        }
+        case message_types.COMPONENT: {
+            return <div className={classnames('journal__text-row', className)}>{message}</div>;
         }
         default:
             return <></>;

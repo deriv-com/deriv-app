@@ -202,32 +202,27 @@ class PersonalDetails extends React.Component {
                                         className='details-form__elements'
                                         style={{ paddingBottom: this.state.paddingBottom }}
                                     >
-                                        <div
-                                            className='details-form__elements'
-                                            style={{ paddingBottom: this.state.paddingBottom }}
-                                        >
-                                            <FormInputField
-                                                name='first_name'
-                                                label={localize('First name*')}
-                                                placeholder={localize('John')}
-                                            />
-                                            <FormInputField
-                                                name='last_name'
-                                                label={localize('Last name*')}
-                                                placeholder={localize('Doe')}
-                                            />
-                                            <DateOfBirth
-                                                name='date_of_birth'
-                                                label={localize('Date of birth*')}
-                                                placeholder={localize('01-07-1999')}
-                                                onFocus={this.onFocus}
-                                            />
-                                            <FormInputField
-                                                name='phone'
-                                                label={localize('Phone number*')}
-                                                placeholder={localize('Phone number')}
-                                            />
-                                        </div>
+                                        <FormInputField
+                                            name='first_name'
+                                            label={localize('First name*')}
+                                            placeholder={localize('John')}
+                                        />
+                                        <FormInputField
+                                            name='last_name'
+                                            label={localize('Last name*')}
+                                            placeholder={localize('Doe')}
+                                        />
+                                        <DateOfBirth
+                                            name='date_of_birth'
+                                            label={localize('Date of birth*')}
+                                            placeholder={localize('01-07-1999')}
+                                            onFocus={this.onFocus}
+                                        />
+                                        <FormInputField
+                                            name='phone'
+                                            label={localize('Phone number*')}
+                                            placeholder={localize('Phone number')}
+                                        />
                                     </div>
                                 </ThemedScrollbars>
                             </div>

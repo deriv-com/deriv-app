@@ -140,6 +140,8 @@ const ContractType = (() => {
             start_date,
         } = store;
 
+        if (!contract_type) return {};
+
         const form_components = getComponents(contract_type);
         const obj_basis = getBasis(contract_type, basis);
         const obj_trade_types = getTradeTypes(contract_type);

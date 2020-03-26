@@ -1,4 +1,5 @@
 import { action, observable } from 'mobx';
+import { toMoment } from '@deriv/shared/utils/date';
 import ServerTime from '_common/base/server_time';
 import { LocalStore } from '_common/storage';
 import AppRoutes, { routing_control_key } from 'Constants/routes';
@@ -24,7 +25,7 @@ export default class CommonStore extends BaseStore {
         }
     }
 
-    @observable server_time = ServerTime.get();
+    @observable server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
     @observable current_language = currentLanguage;
     @observable has_error = false;
 

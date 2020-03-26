@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import InputField from 'App/Components/Form/InputField/input-field.jsx';
 import Lazy from 'App/Containers/Lazy';
 import { daysFromTodayTo, epochToMoment, toMoment } from 'Utils/Date';
+import CompositeCalendarMobile from './composite-calendar-mobile.jsx';
 import SideList from './side-list.jsx';
 
 class CompositeCalendar extends React.PureComponent {
@@ -14,11 +15,36 @@ class CompositeCalendar extends React.PureComponent {
             show_to: false,
             show_from: false,
             list: [
-                { children: localize('All time'), onClick: () => this.selectDateRange(0), duration: 0 },
-                { children: localize('Last 7 days'), onClick: () => this.selectDateRange(7), duration: 7 },
-                { children: localize('Last 30 days'), onClick: () => this.selectDateRange(30), duration: 30 },
-                { children: localize('Last 60 days'), onClick: () => this.selectDateRange(60), duration: 60 },
-                { children: localize('Last quarter'), onClick: () => this.selectDateRange(90), duration: 90 },
+                {
+                    value: 'all_time',
+                    label: localize('All time'),
+                    onClick: () => this.selectDateRange(),
+                    duration: 0,
+                },
+                {
+                    value: 'last_7_days',
+                    label: localize('Last 7 days'),
+                    onClick: () => this.selectDateRange(7),
+                    duration: 7,
+                },
+                {
+                    value: 'last_30_days',
+                    label: localize('Last 30 days'),
+                    onClick: () => this.selectDateRange(30),
+                    duration: 30,
+                },
+                {
+                    value: 'last_60_days',
+                    label: localize('Last 60 days'),
+                    onClick: () => this.selectDateRange(60),
+                    duration: 60,
+                },
+                {
+                    value: 'last_quarter',
+                    label: localize('Last quarter'),
+                    onClick: () => this.selectDateRange(90),
+                    duration: 90,
+                },
             ],
         };
 
@@ -128,56 +154,61 @@ class CompositeCalendar extends React.PureComponent {
 
     render() {
         const { show_from, show_to, list } = this.state;
-
         const { to, from } = this.props;
+
         return (
             // eslint-disable-next-line react/no-children-prop
-            <React.Fragment>
-                <div id='dt_composite_calendar_inputs' className='composite-calendar__input-fields'>
-                    <InputField
-                        id='dt_calendar_input_from'
-                        is_read_only={true}
-                        placeholder={localize('Date from')}
-                        icon={() => <Icon icon='IcCalendarDatefrom' className='inline-icon' />}
-                        onClick={this.showCalendar.bind(this, 'from')}
-                        value={this.from_date_label}
-                    />
-                    <InputField
-                        id='dt_calendar_input_to'
-                        is_read_only={true}
-                        placeholder={localize('Date to')}
-                        icon={() => <Icon icon='IcCalendarDateto' className='inline-icon' />}
-                        onClick={this.showCalendar.bind(this, 'to')}
-                        value={this.to_date_label}
-                    />
-                </div>
-                {show_to && (
-                    <div className='composite-calendar' ref={this.setWrapperRef}>
-                        <SideList from={from} to={to} items={list} />
-                        <Lazy
-                            ctor={() => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx')}
-                            should_load={true}
-                            has_progress={false}
-                            value={to}
-                            onChange={this.setToDate.bind(this)}
-                            isPeriodDisabled={this.isPeriodDisabledTo.bind(this)}
+            <>
+                <DesktopWrapper>
+                    <div id='dt_composite_calendar_inputs' className='composite-calendar__input-fields'>
+                        <InputField
+                            id='dt_calendar_input_from'
+                            is_read_only={true}
+                            placeholder={localize('Date from')}
+                            icon={() => <Icon icon='IcCalendarDatefrom' className='inline-icon' />}
+                            onClick={this.showCalendar.bind(this, 'from')}
+                            value={this.from_date_label}
+                        />
+                        <InputField
+                            id='dt_calendar_input_to'
+                            is_read_only={true}
+                            placeholder={localize('Date to')}
+                            icon={() => <Icon icon='IcCalendarDateto' className='inline-icon' />}
+                            onClick={this.showCalendar.bind(this, 'to')}
+                            value={this.to_date_label}
                         />
                     </div>
-                )}
-                {show_from && (
-                    <div className='composite-calendar' ref={this.setWrapperRef}>
-                        <SideList from={from} to={to} items={list} />
-                        <Lazy
-                            ctor={() => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx')}
-                            should_load={true}
-                            has_progress={false}
-                            value={from}
-                            onChange={this.setFromDate.bind(this)}
-                            isPeriodDisabled={this.isPeriodDisabledFrom.bind(this)}
-                        />
-                    </div>
-                )}
-            </React.Fragment>
+                    {show_to && (
+                        <div className='composite-calendar' ref={this.setWrapperRef}>
+                            <SideList from={from} to={to} items={list} />
+                            <Lazy
+                                ctor={() => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx')}
+                                should_load={true}
+                                has_progress={false}
+                                value={to}
+                                onChange={this.setToDate.bind(this)}
+                                isPeriodDisabled={this.isPeriodDisabledTo.bind(this)}
+                            />
+                        </div>
+                    )}
+                    {show_from && (
+                        <div className='composite-calendar' ref={this.setWrapperRef}>
+                            <SideList from={from} to={to} items={list} />
+                            <Lazy
+                                ctor={() => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx')}
+                                should_load={true}
+                                has_progress={false}
+                                value={from}
+                                onChange={this.setFromDate.bind(this)}
+                                isPeriodDisabled={this.isPeriodDisabledFrom.bind(this)}
+                            />
+                        </div>
+                    )}
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <CompositeCalendarMobile duration_list={this.state.list} {...this.props} />
+                </MobileWrapper>
+            </>
         );
     }
 }

@@ -7,6 +7,27 @@ import { Icon } from '@deriv/components';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { localize } from '@deriv/translations';
 
+export const ResultStatusIcon = ({ is_contract_won }) => (
+    <span
+        className={classNames('result__caption', {
+            'result__caption--won': is_contract_won,
+            'result__caption--lost': !is_contract_won,
+        })}
+    >
+        {is_contract_won ? (
+            <React.Fragment>
+                {localize('won')}
+                <Icon icon='IcCheckmarkCircle' className='result__icon' color='green' />
+            </React.Fragment>
+        ) : (
+            <React.Fragment>
+                {localize('lost')}
+                <Icon icon='IcCrossCircle' className='result__icon' color='red' />
+            </React.Fragment>
+        )}
+    </span>
+);
+
 class ResultOverlay extends React.PureComponent {
     handleClick = e => {
         if (this.props.is_unsupported) {
@@ -47,24 +68,7 @@ class ResultOverlay extends React.PureComponent {
                             to={getContractPath(contract_id)}
                             onClick={this.handleClick}
                         >
-                            <span
-                                className={classNames('result__caption', {
-                                    'result__caption--won': is_contract_won,
-                                    'result__caption--lost': !is_contract_won,
-                                })}
-                            >
-                                {is_contract_won ? (
-                                    <React.Fragment>
-                                        {localize('won')}
-                                        <Icon icon='IcCheckmarkCircle' className='result__icon' color='green' />
-                                    </React.Fragment>
-                                ) : (
-                                    <React.Fragment>
-                                        {localize('lost')}
-                                        <Icon icon='IcCrossCircle' className='result__icon' color='red' />
-                                    </React.Fragment>
-                                )}
-                            </span>
+                            <ResultStatusIcon is_contract_won={is_contract_won} />
                         </NavLink>
                     </div>
                 </CSSTransition>

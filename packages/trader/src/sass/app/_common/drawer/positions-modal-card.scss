@@ -267,5 +267,8 @@
 /** @define remaining-time; */
 .remaining-time {
     display: inline;
-    font-size: 0.9rem;
+
+    @include mobile {
+        font-size: 0.9rem;
+    }
 }

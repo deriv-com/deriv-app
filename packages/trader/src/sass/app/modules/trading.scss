@@ -70,9 +70,22 @@
             margin-bottom: 0.8rem;
         }
 
+        /* postcss-bem-linter: ignore */
+        > div:first-child {
+            margin-top: 0;
+        }
         &-header {
             height: 1.5rem;
             position: relative;
+
+            &--inline {
+                /* postcss-bem-linter: ignore */
+                .dc-popover {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                }
+            }
         }
         &-info {
             @include typeface(--paragraph-left-normal-black);
@@ -86,6 +99,18 @@
             &--disabled {
                 opacity: 0.32;
             }
+        }
+        &-tooltip-text,
+        &-text {
+            margin-top: 0.8rem;
+            font-size: 1.2rem;
+            text-align: right;
+        }
+        &-tooltip-text {
+            border-bottom: 1px dotted var(--text-general);
+            text-decoration: none;
+            width: fit-content;
+            margin-left: auto;
         }
     }
     &__input {
@@ -134,7 +159,7 @@
         background: transparent;
         border-color: transparent;
         z-index: 2;
-        color: var(--text-general);
+        color: inherit;
 
         &--symbol {
             font-size: 1.4em;
@@ -145,7 +170,8 @@
             color: inherit;
         }
     }
-    &__price {
+    &__price,
+    &__order-input {
         line-height: 0.9rem;
         border: 0;
         width: 100%;
@@ -303,6 +329,42 @@
     &__amount .trade-container__input {
         padding: 0 30px;
         border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
+    }
+    &__multiplier {
+        display: flex;
+        flex-direction: column;
+
+        &-dropdown {
+            /* postcss-bem-linter: ignore */
+            .dc-dropdown__display-text {
+                padding-right: unset;
+                padding-left: 1em;
+            }
+            /* postcss-bem-linter: ignore */
+            .dc-dropdown__display-text,
+            .dc-list__item-text {
+                text-transform: unset;
+            }
+        }
+        /* postcss-bem-linter: ignore */
+        .dc-popover {
+            align-self: flex-end;
+        }
+    }
+    &__popover {
+        /* postcss-bem-linter: ignore */
+        .dc-checkbox {
+            margin-top: 0.8rem;
+
+            /* postcss-bem-linter: ignore */
+            &__label {
+                font-size: inherit;
+            }
+        }
+    }
+    /* postcss-bem-linter: ignore */
+    .symbols.disabled {
+        color: var(--text-disabled);
     }
 }
 

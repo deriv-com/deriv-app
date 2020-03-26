@@ -21,9 +21,7 @@ const MT5AccountCard = ({
     onPasswordManager,
 }) => {
     const IconComponent = icon || (() => null);
-    const cta_label = button_label || (
-        <Localize i18n_default_text={type.category === 'real' ? 'Add real account' : 'Add demo account'} />
-    );
+    const cta_label = button_label || <Localize i18n_default_text='Create account' />;
 
     return (
         <div className='mt5-account-card'>

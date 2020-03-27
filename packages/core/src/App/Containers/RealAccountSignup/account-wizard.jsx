@@ -265,18 +265,20 @@ class AccountWizard extends React.Component {
                             </MobileWrapper>
                         </>
                     )}
-                    {this.props.has_real_account && (
-                        <div className='account-wizard__set-currency'>
-                            {!this.props.has_currency && (
-                                <p>
-                                    <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
-                                </p>
-                            )}
-                            <h2>
-                                <Localize i18n_default_text='Please choose your currency' />
-                            </h2>
-                        </div>
-                    )}
+                    <DesktopWrapper>
+                        {this.props.has_real_account && (
+                            <div className='account-wizard__set-currency'>
+                                {!this.props.has_currency && (
+                                    <p>
+                                        <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
+                                    </p>
+                                )}
+                                <h2>
+                                    <Localize i18n_default_text='Please choose your currency' />
+                                </h2>
+                            </div>
+                        )}
+                    </DesktopWrapper>
                     <Div100vhContainer className='account-wizard__body' is_disabled={isDesktop()} height_offset='40px'>
                         <BodyComponent
                             value={this.getCurrent('form_value')}

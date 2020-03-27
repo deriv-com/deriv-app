@@ -101,6 +101,14 @@
             }
         }
     }
+    @include mobile {
+        &__balance {
+            &--no-currency {
+                white-space: nowrap;
+                font-size: 1.4rem;
+            }
+        }
+    }
 
     &--is-virtual {
         .acc-info__balance {

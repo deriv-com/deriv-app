@@ -1,11 +1,11 @@
 import classNames from 'classnames';
-import { Div100vhContainer, Icon, ThemedScrollbars } from '@deriv/components';
+import { Div100vhContainer, MobileWrapper, Icon, ThemedScrollbars } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik } from 'formik';
 import { isMobile, isDesktop } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import FormSubmitButton from './form-submit-button.jsx';
 import 'Sass/currency-select-radio.scss';
 
@@ -108,6 +108,7 @@ class CurrencySelector extends React.Component {
     };
 
     render() {
+        const { has_currency, has_real_account } = this.props;
         return (
             <Formik
                 initialValues={{
@@ -128,10 +129,32 @@ class CurrencySelector extends React.Component {
                 }) => (
                     <form onSubmit={handleSubmit} className='currency-selector'>
                         <Div100vhContainer
-                            className='currency-selector__container'
-                            height_offset='199px'
+                            className={classNames('currency-selector__container', {
+                                'currency-selector__container--no-top-margin':
+                                    !has_currency && has_real_account && isMobile(),
+                            })}
+                            height_offset={!has_currency && has_real_account ? '129px' : '199px'}
                             is_disabled={isDesktop()}
                         >
+                            <MobileWrapper>
+                                {has_real_account && (
+                                    <div className='account-wizard__set-currency'>
+                                        {!has_currency && (
+                                            <>
+                                                <p>
+                                                    <Localize i18n_default_text='You have an account that do not have currency assigned.' />
+                                                </p>
+                                                <p>
+                                                    <Localize i18n_default_text='Please choose a currency to trade with this account.' />
+                                                </p>
+                                            </>
+                                        )}
+                                        <h2>
+                                            <Localize i18n_default_text='Please choose your currency' />
+                                        </h2>
+                                    </div>
+                                )}
+                            </MobileWrapper>
                             <ThemedScrollbars
                                 is_native={isMobile()}
                                 autohide
@@ -197,6 +220,8 @@ class CurrencySelector extends React.Component {
 
 CurrencySelector.propTypes = {
     controls: PropTypes.object,
+    has_currency: PropTypes.bool,
+    has_real_account: PropTypes.bool,
     index: PropTypes.number,
     onSubmit: PropTypes.func,
     value: PropTypes.any,
@@ -204,6 +229,8 @@ CurrencySelector.propTypes = {
 
 export default connect(({ client }) => ({
     currencies: client.currencies_list,
+    has_currency: !!client.currency,
+    has_real_account: client.has_active_real_account,
     legal_allowed_currencies: client.upgradeable_currencies,
     selectable_currencies: client.selectable_currencies,
 }))(CurrencySelector);

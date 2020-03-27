@@ -115,6 +115,13 @@ const htmlInjectConfig = () => ({
                 crossorigin: 'crossorigin',
             },
         },
+        {
+            path: 'css/trader.main.css',
+            attributes: {
+                rel: 'preload',
+                as: 'style',
+            },
+        },
         // {
         //     path: 'pushwoosh-web-notifications.js',
         //     attributes: {
@@ -142,6 +149,7 @@ const htmlPreloadConfig = () => ({
         if (/\.woff$/.test(entry)) return 'font';
         return 'script';
     },
+    fileWhitelist: [/\.css$/],
 });
 
 const cssConfig = () => ({ filename: 'css/core.main.css', chunkFilename: 'css/core.[name].[contenthash].css' });

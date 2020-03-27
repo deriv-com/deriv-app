@@ -1,0 +1,55 @@
+/** @define positions-drawer-dialog; weak */
+.positions-drawer-dialog {
+    position: fixed;
+    display: grid;
+    grid-gap: 0.8rem;
+    background: var(--general-main-2);
+    border-radius: $BORDER_RADIUS;
+    box-shadow: 0 4px 8px 2px var(--shadow-menu);
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
+    padding: 0.8rem;
+    width: 240px;
+    z-index: 99;
+
+    &--enter-done {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+    &--enter,
+    &--exit {
+        opacity: 0;
+        transform: translate3d(-20px, 0, 0);
+    }
+    &__input {
+        .input-wrapper__input {
+            border: 1px solid var(--border-normal);
+        }
+    }
+    &__button {
+        margin-top: 0.8rem;
+
+        .dc-btn {
+            width: 100%;
+        }
+    }
+}
+
+/** @define positions-drawer-dialog-toggle; */
+.positions-drawer-dialog-toggle {
+    position: absolute;
+    width: 108px;
+    height: 80px;
+    right: 8px;
+    bottom: 54px;
+    border: 1px solid var(--general-section-1);
+    border-radius: 4px;
+
+    &__icon {
+        float: right;
+        margin: 3px;
+    }
+    &:hover {
+        cursor: pointer;
+        border-color: var(--button-secondary-default);
+    }
+}

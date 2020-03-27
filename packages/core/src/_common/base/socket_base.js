@@ -15,7 +15,7 @@ const getSocketURL = require('../../config').getSocketURL;
  * reopen the closed connection and process the buffered requests
  */
 const BinarySocketBase = (() => {
-    let deriv_api, binary_socket, middleware;
+    let deriv_api, binary_socket;
 
     let config = {};
     let wrong_app_id = 0;
@@ -45,7 +45,6 @@ const BinarySocketBase = (() => {
         }
         if (typeof options === 'object' && config !== options) {
             config = options;
-            middleware = new APIMiddleware(config);
         }
         clearTimeouts();
         config.wsEvent('init');
@@ -56,7 +55,7 @@ const BinarySocketBase = (() => {
             deriv_api = new DerivAPIBasic({
                 connection: binary_socket,
                 storage: SocketCache,
-                middleware,
+                middleware: new APIMiddleware(config),
             });
         }
 
@@ -148,7 +147,7 @@ const BinarySocketBase = (() => {
         });
     };
 
-    const buy = ({ proposal_id, price, passthrough }) => deriv_api.send({ buy: proposal_id, price, passthrough });
+    const buy = ({ proposal_id, price }) => deriv_api.send({ buy: proposal_id, price });
 
     const sell = (contract_id, bid_price) => deriv_api.send({ sell: contract_id, price: bid_price });
 
@@ -241,6 +240,21 @@ const BinarySocketBase = (() => {
 
     const tncApproval = () => deriv_api.send({ tnc_approval: '1' });
 
+    const contractUpdate = (contract_id, limit_order) =>
+        deriv_api.send({
+            contract_update: 1,
+            contract_id,
+            limit_order,
+        });
+
+    const contractUpdateHistory = contract_id =>
+        deriv_api.send({
+            contract_update_history: 1,
+            contract_id,
+        });
+
+    const cancelContract = contract_id => deriv_api.send({ cancel: contract_id });
+
     const p2pAdvertiserInfo = () => deriv_api.send({ p2p_advertiser_info: 1 });
 
     // subscribe method export for P2P use only
@@ -276,6 +290,9 @@ const BinarySocketBase = (() => {
         buyAndSubscribe,
         sell,
         cashier,
+        cancelContract,
+        contractUpdate,
+        contractUpdateHistory,
         mt5NewAccount,
         mt5PasswordChange,
         newAccountVirtual,

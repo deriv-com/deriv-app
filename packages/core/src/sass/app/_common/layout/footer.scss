@@ -1,4 +1,4 @@
-/** @define footer */
+/** @define footer; weak */
 .footer {
     position: fixed;
     bottom: 0;
@@ -61,53 +61,6 @@
     }
 }
 
-/** @define ic-positions */
-.ic-positions {
-    position: relative;
-
-    &__icon {
-        margin-bottom: 0.5em;
-    }
-    &:before {
-        content: '';
-        width: 0.2em;
-        height: 0.2em;
-        border-radius: 50%;
-        position: absolute;
-        margin-top: 1em;
-        right: 1.5em;
-        display: block;
-        transition: transform 0.25s ease;
-        transform: translate3d(0, 0, 0);
-        background-color: var(--text-prominent);
-    }
-    &--active {
-        background: none !important;
-
-        .ic-positions__icon {
-            margin-bottom: 0;
-        }
-        &:before {
-            transform: translate3d(0, 50px, 0);
-        }
-    }
-    &--has-count:not(&--active):after {
-        content: attr(data-count);
-        width: 14px;
-        height: 14px;
-        font-size: 1em;
-        border-radius: 50%;
-        position: absolute;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        top: 2px;
-        right: 0;
-        background-color: var(--brand-red-coral);
-        color: $color-white;
-    }
-}
-
 @keyframes blinking-network-status {
     40% {
         opacity: 1;
@@ -117,11 +70,17 @@
     }
 }
 
-/** @define network-status */
+/** @define network-status  */
 .network-status {
     &__wrapper {
         height: 1.4em;
         position: relative;
+
+        &--is-mobile {
+            .network-status__circle {
+                margin: 0.2em 0 0.2em -0.2em;
+            }
+        }
     }
     &__tooltip {
         left: unset;
@@ -155,6 +114,11 @@
     padding: 0 1em;
     @include typeface(--small-left-normal-black);
     color: var(--text-general);
+
+    &--is-mobile {
+        padding: 0 1em 0 0;
+        margin-right: 0;
+    }
 }
 
 /** @define ic-settings */

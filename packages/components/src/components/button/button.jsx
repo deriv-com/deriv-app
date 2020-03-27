@@ -4,7 +4,7 @@ import React from 'react';
 import ButtonLoading from './button_loading.jsx';
 import Icon from '../icon';
 
-const ButtonGroup = ({ children }) => <div className='btn__group'>{children}</div>;
+const ButtonGroup = ({ children }) => <div className='dc-btn__group'>{children}</div>;
 
 const Button = ({
     children,
@@ -20,6 +20,7 @@ const Button = ({
     large,
     medium,
     onClick,
+    rounded,
     tabIndex,
     text,
     wrapperClassName,
@@ -28,18 +29,20 @@ const Button = ({
     secondary,
     small,
     tertiary,
+    ...props
 }) => {
     const classes = classNames(
-        'btn',
+        'dc-btn',
         {
-            btn__effect: has_effect,
-            'btn--primary': primary,
-            'btn--secondary': secondary,
-            'btn--tertiary': tertiary,
-            'btn--green': green,
-            btn__large: large,
-            btn__medium: medium,
-            btn__small: small,
+            'dc-btn__effect': has_effect,
+            'dc-btn--primary': primary,
+            'dc-btn--secondary': secondary,
+            'dc-btn--tertiary': tertiary,
+            'dc-btn--green': green,
+            'dc-btn__rounded': rounded,
+            'dc-btn__large': large,
+            'dc-btn__medium': medium,
+            'dc-btn__small': small,
         },
         className
     );
@@ -51,14 +54,17 @@ const Button = ({
             disabled={is_disabled}
             tabIndex={tabIndex || '0'}
             type={is_submit_success ? 'button' : type || 'submit'}
+            {...props}
         >
-            {icon && <div className='btn__icon'>{icon}</div>}
+            {icon && <div className='dc-btn__icon'>{icon}</div>}
             {text && !(is_loading || is_submit_success) && (
-                <span className={classNames('btn__text', classNameSpan)}>{text[0].toUpperCase() + text.substr(1)}</span>
+                <span className={classNames('dc-btn__text', classNameSpan)}>
+                    {text[0].toUpperCase() + text.substr(1)}
+                </span>
             )}
             {is_loading && <ButtonLoading />}
             {is_submit_success && <Icon icon='IcCheckmark' color='active' size={24} />}
-            {!text && children && <span className={classNames('btn__text', classNameSpan)}>{children}</span>}
+            {!text && children && <span className={classNames('dc-btn__text', classNameSpan)}>{children}</span>}
         </button>
     );
     const wrapper = <div className={wrapperClassName}>{button}</div>;
@@ -81,6 +87,7 @@ Button.propTypes = {
     medium: PropTypes.bool,
     onClick: PropTypes.func,
     primary: PropTypes.bool,
+    rounded: PropTypes.bool,
     secondary: PropTypes.bool,
     small: PropTypes.bool,
     tertiary: PropTypes.bool,

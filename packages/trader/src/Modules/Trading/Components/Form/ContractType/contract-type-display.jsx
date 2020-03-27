@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { Icon, DesktopWrapper } from '@deriv/components';
 import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories.jsx';
 import { findContractCategory } from '../../../Helpers/contract-type';
 
@@ -20,10 +20,15 @@ const Display = ({ is_open, list, name, onClick, value }) => {
             <span name={name} value={value}>
                 {getDisplayText()}
             </span>
-            <Icon
-                icon='IcChevronDown'
-                className={classNames('contract-type-widget__select-arrow', 'contract-type-widget__select-arrow--left')}
-            />
+            <DesktopWrapper>
+                <Icon
+                    icon='IcChevronDown'
+                    className={classNames(
+                        'contract-type-widget__select-arrow',
+                        'contract-type-widget__select-arrow--left'
+                    )}
+                />
+            </DesktopWrapper>
         </div>
     );
 };

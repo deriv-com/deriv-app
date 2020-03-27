@@ -21,8 +21,7 @@
 @import 'app/_common/layout/multistep';
 @import 'app/_common/layout/send-email-template';
 
-// Drawer
-@import 'app/_common/drawer/drawer';
+// Drawers
 @import 'app/_common/drawer/contract-drawer';
 @import 'app/_common/drawer/positions-drawer';
 @import 'app/_common/drawer/positions-drawer-card';
@@ -55,9 +54,7 @@
 //@import 'app/_common/components/toggle-button';
 //@import 'app/_common/components/select';
 //@import 'app/_common/components/switch-button';
-@import 'app/_common/components/ui-loader';
 @import 'app/_common/components/wallet-information';
-@import 'app/_common/mobile-dialog';
 
 // Modules
 @import 'app/modules/reset-password';

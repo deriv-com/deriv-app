@@ -32,6 +32,18 @@
             left: -140px;
             width: 140px;
         }
+        @include mobile {
+            width: 216px;
+            height: 40px;
+            top: -3px;
+
+            &:before {
+                display: none;
+            }
+            &--is-crypto {
+                width: 100%;
+            }
+        }
     }
     &__container {
         align-items: center;
@@ -46,6 +58,9 @@
         justify-content: center;
         position: relative;
         margin-right: 0.8rem;
+        user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
     }
     &__id {
         pointer-events: none;
@@ -64,7 +79,6 @@
     &__balance {
         @include typeface(--title-center-bold-green, default);
         padding: 0.5em;
-        color: var(--text-profit-success);
         pointer-events: none;
     }
     &__select-arrow {
@@ -78,13 +92,16 @@
             transform: rotate(180deg);
         }
     }
-    &:hover:not(.show):not(&--is-disabled) {
-        background: var(--state-hover);
+    @include desktop {
+        &:hover:not(.show):not(&--is-disabled) {
+            background: var(--state-hover);
 
-        .symbols {
-            background: transparent;
+            .symbols {
+                background: transparent;
+            }
         }
     }
+
     &--is-virtual {
         .acc-info__balance {
             color: var(--text-profit-success);
@@ -107,10 +124,13 @@
         &:not(:last-child) {
             margin-right: 1em;
         }
+        @include mobile {
+            height: 2.8rem !important;
+        }
     }
 }
 
-/** @define acc-switcher; weak */
+/* @define acc-switcher; weak */
 .acc-switcher {
     cursor: pointer;
     display: flex;
@@ -151,6 +171,16 @@
             margin: 0.2rem 0.8rem 0.8rem;
             height: 4rem;
         }
+        @include mobile {
+            position: relative;
+            top: unset;
+            left: unset;
+            right: unset;
+            width: 100%;
+            box-shadow: none;
+            height: 100%;
+            border-radius: 0;
+        }
     }
     &__new-account {
         background-color: transparent;
@@ -167,7 +197,7 @@
             height: 4rem;
             align-items: center;
 
-            & .btn {
+            & .dc-btn {
                 background-color: transparent;
                 padding: 0;
 
@@ -179,11 +209,11 @@
         &:hover {
             background-color: rgba(255, 68, 79, 0.08) !important;
         }
-        .btn__text {
+        .dc-btn__text {
             font-weight: normal;
             color: var(--brand-red-coral);
         }
-        .btn {
+        .dc-btn {
             align-items: center;
             background-color: transparent;
             display: flex;
@@ -207,7 +237,12 @@
             flex: 1;
         }
         &-wrapper {
-            padding: 0.4em 0.8em 0;
+            padding: 0.4rem 0.8rem 0;
+        }
+        &-container {
+            height: auto;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
     }
     &__accounts {
@@ -359,6 +394,9 @@
         &--no-padding {
             margin: 0 -8px;
         }
+        &--auto-margin {
+            margin-top: auto;
+        }
     }
     &__total {
         height: 2.6rem;
@@ -392,9 +430,13 @@
 .set-currency {
     margin-right: 8px;
 
-    & .btn {
+    & .dc-btn {
         display: flex;
         align-items: center;
+
+        @include mobile {
+            height: 2.8rem !important;
+        }
     }
 }
 

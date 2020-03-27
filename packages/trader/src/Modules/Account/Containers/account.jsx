@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
-import { PageOverlay, VerticalTab } from '@deriv/components';
+import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { isMobile } from '@deriv/shared/utils/screen';
+import { getSelectedRoute } from '@deriv/shared/utils/route';
 import { FadeWrapper } from 'App/Components/Animations';
 import { localize } from '@deriv/translations';
 import AppRoutes from 'Constants/routes';
@@ -104,6 +106,10 @@ class Account extends React.Component {
             });
         }
 
+        const selected_route = isMobile()
+            ? getSelectedRoute({ routes: subroutes, pathname: this.props.location.pathname })
+            : null;
+
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}
@@ -111,17 +117,28 @@ class Account extends React.Component {
                 keyname='account-page-wrapper'
             >
                 <div className='account'>
-                    <PageOverlay has_side_note header={localize('Settings')} onClickClose={this.onClickClose}>
-                        <VerticalTab
-                            alignment='center'
-                            is_floating
-                            classNameHeader='account__inset_header'
-                            current_path={this.props.location.pathname}
-                            is_routed
-                            is_full_width
-                            list={subroutes}
-                            list_groups={list_groups}
-                        />
+                    <PageOverlay
+                        has_side_note
+                        header={isMobile() ? selected_route.title : localize('Settings')}
+                        onClickClose={this.onClickClose}
+                    >
+                        <DesktopWrapper>
+                            <VerticalTab
+                                alignment='center'
+                                is_floating
+                                classNameHeader='account__inset_header'
+                                current_path={this.props.location.pathname}
+                                is_routed
+                                is_full_width
+                                list={subroutes}
+                                list_groups={list_groups}
+                            />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            {selected_route && (
+                                <selected_route.component component_icon={selected_route.icon_component} />
+                            )}
+                        </MobileWrapper>
                     </PageOverlay>
                 </div>
             </FadeWrapper>

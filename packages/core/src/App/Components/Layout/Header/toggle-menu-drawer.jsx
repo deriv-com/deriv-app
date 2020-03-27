@@ -1,16 +1,21 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
+import { getAllRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 
-const MenuLink = ({ link_to, icon, suffix_icon, text, onClickLink }) => (
+const MenuLink = ({ link_to, icon, is_disabled, suffix_icon, text, onClickLink }) => (
     <React.Fragment>
         {!link_to ? (
-            <div className='header__menu-mobile-link'>
+            <div
+                className={classNames('header__menu-mobile-link', {
+                    'header__menu-mobile-link--disabled': is_disabled,
+                })}
+            >
                 <Icon className='header__menu-mobile-link-icon' icon={icon} />
                 <span className='header__menu-mobile-link-text'>{text}</span>
                 {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
@@ -18,7 +23,9 @@ const MenuLink = ({ link_to, icon, suffix_icon, text, onClickLink }) => (
         ) : (
             <BinaryLink
                 to={link_to}
-                className='header__menu-mobile-link'
+                className={classNames('header__menu-mobile-link', {
+                    'header__menu-mobile-link--disabled': is_disabled,
+                })}
                 active_class='header__menu-mobile-link--active'
                 onClick={onClickLink}
             >
@@ -30,7 +37,7 @@ const MenuLink = ({ link_to, icon, suffix_icon, text, onClickLink }) => (
     </React.Fragment>
 );
 
-class ToggleMenuDrawer extends React.PureComponent {
+class ToggleMenuDrawer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -42,7 +49,57 @@ class ToggleMenuDrawer extends React.PureComponent {
         this.setState({ is_open: !this.state.is_open });
     };
 
+    getRoutesWithSubMenu = route_config => {
+        const has_access = route_config.is_authenticated ? this.props.is_logged_in : true;
+        if (!has_access || !route_config.routes) return null;
+        const has_subroutes = route_config.routes.some(route => route.subroutes);
+        return (
+            <MobileDrawer.SubMenu
+                key={route_config.title}
+                has_subheader
+                submenu_icon={route_config.icon_component}
+                submenu_title={route_config.title}
+                submenu_suffix_icon='IcChevronRight'
+            >
+                {!has_subroutes &&
+                    route_config.routes.map(route => (
+                        <MobileDrawer.Item key={route.title}>
+                            <MenuLink
+                                link_to={route.path}
+                                icon={route.icon_component}
+                                text={route.title}
+                                onClickLink={this.toggleDrawer}
+                            />
+                        </MobileDrawer.Item>
+                    ))}
+                {has_subroutes &&
+                    route_config.routes.map(route => (
+                        <MobileDrawer.SubMenuSection
+                            key={route.title}
+                            section_icon={route.icon}
+                            section_title={route.title}
+                        >
+                            {route.subroutes.map(subroute => (
+                                <MenuLink
+                                    key={subroute.title}
+                                    is_disabled={subroute.is_disabled}
+                                    link_to={subroute.path}
+                                    text={subroute.title}
+                                    onClickLink={this.toggleDrawer}
+                                />
+                            ))}
+                        </MobileDrawer.SubMenuSection>
+                    ))}
+            </MobileDrawer.SubMenu>
+        );
+    };
+
     render() {
+        const all_routes_config = getAllRoutesConfig();
+        const allowed_routes = [routes.reports, routes.account];
+        const routes_config = allowed_routes
+            .map(path => all_routes_config.find(r => r.path === path))
+            .filter(route => route);
         return (
             <React.Fragment>
                 <a id='dt_mobile_drawer_toggle' onClick={this.toggleDrawer} className='header__mobile-drawer-toggle'>
@@ -72,39 +129,7 @@ class ToggleMenuDrawer extends React.PureComponent {
                                     onClickLink={this.toggleDrawer}
                                 />
                             </MobileDrawer.Item>
-                            {this.props.is_logged_in && (
-                                <MobileDrawer.SubMenu
-                                    has_subheader
-                                    submenu_icon='IcReports'
-                                    submenu_title={localize('Reports')}
-                                    submenu_suffix_icon='IcChevronRight'
-                                >
-                                    <MobileDrawer.Item>
-                                        <MenuLink
-                                            link_to={routes.positions}
-                                            icon='IcPortfolio'
-                                            text={localize('Open positions')}
-                                            onClickLink={this.toggleDrawer}
-                                        />
-                                    </MobileDrawer.Item>
-                                    <MobileDrawer.Item>
-                                        <MenuLink
-                                            link_to={routes.profit}
-                                            icon='IcProfitTable'
-                                            text={localize('Profit table')}
-                                            onClickLink={this.toggleDrawer}
-                                        />
-                                    </MobileDrawer.Item>
-                                    <MobileDrawer.Item>
-                                        <MenuLink
-                                            link_to={routes.statement}
-                                            icon='IcStatement'
-                                            text={localize('Statements')}
-                                            onClickLink={this.toggleDrawer}
-                                        />
-                                    </MobileDrawer.Item>
-                                </MobileDrawer.SubMenu>
-                            )}
+                            {routes_config.map(route_config => this.getRoutesWithSubMenu(route_config))}
                             <MobileDrawer.Item
                                 onClick={e => {
                                     e.preventDefault();

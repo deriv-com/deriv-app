@@ -116,6 +116,8 @@ export default class TradeStore extends BaseStore {
 
     proposal_req_id = {};
 
+    @observable should_skip_prepost_lifecycle = false;
+
     @action.bound
     init = async () => {
         // To be sure that the website_status response has been received before processing trading page.
@@ -198,6 +200,18 @@ export default class TradeStore extends BaseStore {
         return this.active_symbols.some(
             symbol_info => symbol_info.symbol === this.symbol && symbol_info.exchange_is_open === 1
         );
+    }
+
+    @action.bound
+    setSkipPrePostLifecycle(should_skip) {
+        if (!!should_skip !== !!this.should_skip_prepost_lifecycle) {
+            // to skip assignment if no change is made
+            this.should_skip_prepost_lifecycle = should_skip;
+
+            if (!should_skip) {
+                this.onUnmount();
+            }
+        }
     }
 
     @action.bound
@@ -911,6 +925,10 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onMount() {
+        if (this.should_skip_prepost_lifecycle) {
+            return;
+        }
+
         performance.mark('trade-engine-started');
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
@@ -952,6 +970,10 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onUnmount() {
+        if (this.should_skip_prepost_lifecycle) {
+            return;
+        }
+
         this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
         this.disposeLogout();

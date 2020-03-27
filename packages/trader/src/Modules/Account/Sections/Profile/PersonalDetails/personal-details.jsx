@@ -216,7 +216,7 @@ class PersonalDetailsForm extends React.Component {
 
     render() {
         const {
-            form_initial_values,
+            form_initial_values: { ...form_initial_values },
             api_error,
             is_loading,
             is_state_loading,
@@ -284,7 +284,7 @@ class PersonalDetailsForm extends React.Component {
                                                         data-lpignore='true'
                                                         type='text'
                                                         name='first_name'
-                                                        label={localize('First name')}
+                                                        label={localize('First name*')}
                                                         value={values.first_name}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
@@ -296,7 +296,7 @@ class PersonalDetailsForm extends React.Component {
                                                         data-lpignore='true'
                                                         type='text'
                                                         name='last_name'
-                                                        label={localize('Last name')}
+                                                        label={localize('Last name*')}
                                                         value={values.last_name}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
@@ -312,7 +312,7 @@ class PersonalDetailsForm extends React.Component {
                                                         data-lpignore='true'
                                                         type='text'
                                                         name='first_name'
-                                                        label={localize('First name')}
+                                                        label={localize('First name*')}
                                                         value={values.first_name}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
@@ -326,7 +326,7 @@ class PersonalDetailsForm extends React.Component {
                                                         data-lpignore='true'
                                                         type='text'
                                                         name='last_name'
-                                                        label={localize('Last name')}
+                                                        label={localize('Last name*')}
                                                         value={values.last_name}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
@@ -344,7 +344,7 @@ class PersonalDetailsForm extends React.Component {
                                                             data-lpignore='true'
                                                             autoComplete='new-password' // prevent chrome autocomplete
                                                             type='text'
-                                                            label={localize('Place of birth')}
+                                                            label={localize('Place of birth*')}
                                                             error={touched.place_of_birth && errors.place_of_birth}
                                                             required
                                                             disabled={
@@ -372,12 +372,18 @@ class PersonalDetailsForm extends React.Component {
                                                     <DatePicker
                                                         name='date_of_birth'
                                                         is_nativepicker={true}
-                                                        placeholder={localize('Date of birth')}
+                                                        label={localize('Date of birth')}
                                                         value={
                                                             values.date_of_birth
                                                                 ? toMoment(values.date_of_birth).format('DD MMM YYYY')
                                                                 : ''
                                                         }
+                                                        max_date={toMoment()
+                                                            .subtract(18, 'years')
+                                                            .format('YYYY-MM-DD')}
+                                                        min_date={toMoment()
+                                                            .subtract(100, 'years')
+                                                            .format('YYYY-MM-DD')}
                                                         onChange={handleChange}
                                                         disabled={is_fully_authenticated}
                                                     />
@@ -391,7 +397,7 @@ class PersonalDetailsForm extends React.Component {
                                                             data-lpignore='true'
                                                             autoComplete='new-password' // prevent chrome autocomplete
                                                             type='text'
-                                                            label={localize('Citizenship')}
+                                                            label={localize('Citizenship*')}
                                                             error={touched.citizen && errors.citizen}
                                                             disabled={
                                                                 form_initial_values.citizen && is_fully_authenticated
@@ -412,7 +418,7 @@ class PersonalDetailsForm extends React.Component {
                                             data-lpignore='true'
                                             type='text'
                                             name='residence'
-                                            label={localize('Country of residence')}
+                                            label={localize('Country of residence*')}
                                             value={values.residence}
                                             required
                                             disabled={this.isChangeableField('residence')}
@@ -424,7 +430,7 @@ class PersonalDetailsForm extends React.Component {
                                             data-lpignore='true'
                                             type='text'
                                             name='email'
-                                            label={localize('Email address')}
+                                            label={localize('Email address*')}
                                             value={values.email}
                                             required
                                             disabled={this.isChangeableField('email')}
@@ -438,7 +444,7 @@ class PersonalDetailsForm extends React.Component {
                                                     data-lpignore='true'
                                                     type='text'
                                                     name='phone'
-                                                    label={localize('Phone number')}
+                                                    label={localize('Phone number*')}
                                                     value={values.phone}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
@@ -519,7 +525,7 @@ class PersonalDetailsForm extends React.Component {
                                                         type='text'
                                                         maxLength={70}
                                                         name='address_line_1'
-                                                        label={localize('First line of address')}
+                                                        label={localize('First line of address*')}
                                                         value={values.address_line_1}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
@@ -548,7 +554,7 @@ class PersonalDetailsForm extends React.Component {
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
                                                         name='address_city'
-                                                        label={localize('Town/City')}
+                                                        label={localize('Town/City*')}
                                                         value={values.address_city}
                                                         error={touched.address_city && errors.address_city}
                                                         onChange={handleChange}
@@ -600,7 +606,7 @@ class PersonalDetailsForm extends React.Component {
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
                                                         name='address_postcode'
-                                                        label={localize('Postal/ZIP Code')}
+                                                        label={localize('Postal/ZIP Code*')}
                                                         value={values.address_postcode}
                                                         error={touched.address_postcode && errors.address_postcode}
                                                         onChange={handleChange}
@@ -611,7 +617,7 @@ class PersonalDetailsForm extends React.Component {
                                             </div>
                                         </React.Fragment>
                                     )}
-                                    <FormSubHeader title={localize('Email Preference')} />
+                                    <FormSubHeader title={localize('Email preference')} />
                                     <fieldset className='account-form__fieldset'>
                                         <Checkbox
                                             name='email_consent'
@@ -624,7 +630,7 @@ class PersonalDetailsForm extends React.Component {
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                    {!(isSubmitting || (status && status.msg)) && (
+                                    {!(isSubmitting || is_submit_success || (status && status.msg)) && (
                                         <div className='account-form__footer-note'>
                                             {localize(
                                                 'Please make sure your information is correct or it may affect your trading experience.'
@@ -633,7 +639,7 @@ class PersonalDetailsForm extends React.Component {
                                     )}
                                     <Button
                                         className={classNames('account-form__footer-btn', {
-                                            'btn--primary--green': is_submit_success,
+                                            'btn--green': is_submit_success,
                                         })}
                                         type='submit'
                                         is_disabled={

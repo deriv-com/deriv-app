@@ -1,13 +1,16 @@
 import React from 'react';
+import classNames from 'classnames';
 
-const IconMessageContent = ({ children, icon, icon_row, message, text }) => (
-    <div className='account-management__message-content'>
-        {icon && <div className='account-management__message-icon'>{icon}</div>}
+const IconMessageContent = ({ className, children, icon, icon_row, message, text }) => (
+    <div className={classNames('account-management__message-content', `${className}__message-content'`)}>
+        {icon && (
+            <div className={classNames('account-management__message-icon', `${className}__message-icon`)}>{icon}</div>
+        )}
         {icon_row && <div>{icon_row}</div>}
-        <div className='account-management__message'>{message}</div>
+        <div className={classNames('account-management__message', `${className}__message`)}>{message}</div>
         {text && (
             <div className='account-management__text-container'>
-                <p className='account-management__text'>{text}</p>
+                <p className={classNames('account-management__text', `${className}__text`)}>{text}</p>
             </div>
         )}
         {children}

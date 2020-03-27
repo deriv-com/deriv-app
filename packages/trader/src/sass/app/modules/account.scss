@@ -40,8 +40,6 @@ $MIN_HEIGHT_FLOATING: calc(
         height: 100%;
         padding-top: 24px;
         padding-bottom: 64px; // allow empty space when scroll below
-        padding-left: 16px;
-        padding-right: 16px;
 
         &--grid-layout {
             display: grid;
@@ -58,6 +56,11 @@ $MIN_HEIGHT_FLOATING: calc(
                     text-transform: unset;
                 }
             }
+        }
+
+        @include desktop {
+            padding-left: 16px;
+            padding-right: 16px;
         }
     }
     &-form {
@@ -162,7 +165,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 height: 4rem;
                 margin-top: 0;
                 margin-bottom: 0;
-                margin-left: 1.6rem;
+                @include desktop {
+                    margin-left: 1.6rem;
+                }
             }
             @include mobile {
                 padding: 16px 0px;
@@ -251,6 +256,7 @@ $MIN_HEIGHT_FLOATING: calc(
         @include mobile {
             flex-direction: column;
             width: 100%;
+            margin-top: 1.2rem;
         }
     }
     .account__text_container {
@@ -322,6 +328,18 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         * {
             padding-left: 8px;
+        }
+    }
+    .leave-confirm {
+        &__message-icon {
+            width: 93px;
+            height: 93px;
+        }
+        &__message {
+            color: var(--text-prominent);
+        }
+        &__text {
+            padding: 0 1.9rem;
         }
     }
     &-address {

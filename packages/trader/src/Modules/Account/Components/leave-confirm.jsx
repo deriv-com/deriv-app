@@ -49,11 +49,12 @@ class TransitionBlocker extends React.Component {
                 {show && (
                     <>
                         <IconMessageContent
+                            className='leave-confirm'
                             message={localize('Unsaved changes')}
                             text={localize(
                                 'You have unsaved changes. Are you sure you want to discard changes and leave this page?'
                             )}
-                            icon={<Icon icon='IcUnsavedChanges' size={128} />}
+                            icon={<Icon icon='IcUnsavedChanges' size={isMobile() ? 93 : 128} />}
                         >
                             <div className='account-management-flex-wrapper account-management-leave-confirm'>
                                 <Button

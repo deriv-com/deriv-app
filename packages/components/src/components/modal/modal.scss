@@ -65,7 +65,6 @@
         @include desktop {
             min-width: 400px;
             max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
-            max-width: 90vw;
         }
         @include mobile {
             max-width: calc(100vw - 3.2rem) !important;

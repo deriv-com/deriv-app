@@ -176,6 +176,15 @@ $MIN_HEIGHT_FLOATING: calc(
                 align-items: initial;
             }
         }
+        &__personal-details {
+            @include mobile {
+                .account-form__footer-note {
+                    font-size: 1rem;
+                    height: auto;
+                    margin-bottom: 1.6rem;
+                }
+            }
+        }
     }
     &__intial-loader {
         height: calc(100vh - 240px);
@@ -453,13 +462,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
             .account-form__fieldset {
                 margin-bottom: 3em;
-            }
-        }
-    }
-    &__personal-details {
-        @include mobile {
-            .account-form__footer-note {
-                font-size: 1rem;
             }
         }
     }

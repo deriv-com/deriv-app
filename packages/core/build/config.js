@@ -112,6 +112,7 @@ const htmlInjectConfig = () => ({
             attributes: {
                 rel: 'preload',
                 as: 'font',
+                crossorigin: 'crossorigin',
             },
         },
         // {

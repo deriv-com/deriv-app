@@ -17,6 +17,7 @@ import MT5WelcomeMessage from './mt5-welcome-message.jsx';
 import Mt5AdvancedPendingDialog from '../Components/mt5-advanced-pending-dialog.jsx';
 import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
 import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
+import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
 class MT5Dashboard extends React.Component {
     state = {
@@ -29,10 +30,8 @@ class MT5Dashboard extends React.Component {
     };
 
     componentDidMount() {
-        import('Sass/app/modules/mt5/mt5-dashboard.scss').then(() => {
-            this.updateActiveIndex();
-            this.props.onMount();
-        });
+        this.updateActiveIndex();
+        this.props.onMount();
     }
 
     componentWillUnmount() {

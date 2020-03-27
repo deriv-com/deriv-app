@@ -1,5 +1,6 @@
 import { action, observable } from 'mobx';
-import moment from 'moment';
+import { toMoment } from '@deriv/shared/utils/date';
+import ServerTime from '_common/base/server_time';
 import { LocalStore } from '_common/storage';
 import AppRoutes, { routing_control_key } from 'Constants/routes';
 import { currentLanguage } from 'Utils/Language/index';
@@ -24,7 +25,7 @@ export default class CommonStore extends BaseStore {
         }
     }
 
-    @observable server_time = moment.utc();
+    @observable server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
     @observable current_language = currentLanguage;
     @observable has_error = false;
 
@@ -45,6 +46,11 @@ export default class CommonStore extends BaseStore {
 
     @observable app_routing_history = [];
     @observable app_router = { history: null };
+
+    @action.bound
+    setServerTime(server_time) {
+        this.server_time = server_time;
+    }
 
     @action.bound
     setIsSocketOpened(is_socket_opened) {
@@ -113,6 +119,11 @@ export default class CommonStore extends BaseStore {
     @action.bound
     setWithdrawURL(withdraw_url) {
         this.withdraw_url = withdraw_url;
+    }
+
+    @action.bound
+    setServicesError(error) {
+        this.services_error = error;
     }
 
     @action.bound

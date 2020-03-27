@@ -28,13 +28,28 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
 
             &-icon {
                 @extend %inline-icon;
-                margin-right: 1.6em;
-                padding: 0.4em;
+                margin-right: 1.6rem;
+                padding: 0.4rem;
+
+                @include mobile {
+                    margin-right: 0.8rem;
+                }
             }
             &-text {
                 @include typeface(--paragraph-left-normal-black, unset);
                 color: var(--text-general);
                 max-width: 360px;
+
+                @include mobile {
+                    max-width: 175px;
+                    line-height: 1.4;
+                    letter-spacing: normal;
+                    font-size: 1rem;
+                    /* iPhone SE screen height fixes due to UI space restrictions */
+                    @media only screen and (max-height: 480px) {
+                        font-size: 0.8rem;
+                    }
+                }
             }
             &:before {
                 position: absolute;
@@ -113,7 +128,7 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                 margin-left: $CONTRACT_INFO_BOX_PADDING;
                 padding: $CONTRACT_INFO_BOX_PADDING;
 
-                .tooltip {
+                .dc-tooltip {
                     position: absolute;
                     bottom: 0.5em;
                     right: 0.5em;
@@ -125,6 +140,11 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                     }
                 }
             }
+        }
+        @include mobile {
+            background: var(--general-main-2);
+            padding: 0.8rem;
+            margin-left: 0.8rem;
         }
     }
     .message {
@@ -152,5 +172,8 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
         z-index: 11;
         right: 0;
         top: 0;
+    }
+    @include mobile {
+        left: 0;
     }
 }

@@ -21,6 +21,13 @@
         display: flex;
         border-radius: $BORDER_RADIUS;
 
+        &--fill {
+            width: 100%;
+
+            & > .input-field {
+                width: 100%;
+            }
+        }
         & > .input-field {
             margin: 0;
             @include colorIcon(var(--text-prominent));
@@ -29,6 +36,7 @@
                 height: 32px;
                 background-color: var(--fill-normal);
                 border: 1px solid var(--border-normal);
+                appearance: none;
 
                 &:hover {
                     border-color: var(--border-hover);
@@ -72,6 +80,87 @@
 
             &:hover:not(.composite-calendar__prepopulated-list--is-active) {
                 background: var(--state-hover);
+            }
+        }
+    }
+}
+
+/* @define composite-calendar-modal; weak; */
+.composite-calendar-modal {
+    @include mobile {
+        &__actions {
+            display: flex;
+            padding: 16px;
+            border-top: 2px solid var(--border-disabled);
+
+            > * {
+                flex: 1;
+                margin: 8px;
+            }
+            &-today {
+                width: 100%;
+            }
+        }
+        &__radio-group {
+            padding: 16px 16px 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 2px solid var(--border-disabled);
+        }
+        &__radio {
+            display: flex;
+            align-items: center;
+            padding: 7px 8px;
+            border: 1px solid;
+            border-color: var(--border-normal);
+            border-radius: 4px;
+            margin: 8px;
+            font-size: 1.4rem;
+
+            &-input {
+                display: none;
+            }
+            &-circle {
+                border: 2px solid var(--text-general);
+                border-radius: 50%;
+                box-shadow: 0 0 1px 0 var(--shadow-menu);
+                width: 16px;
+                height: 16px;
+                transition: all 0.3s ease-in-out;
+                margin-right: 8px;
+                align-self: center;
+
+                &--selected {
+                    border-width: 4px;
+                    border-color: var(--brand-red-coral);
+                    background: $color-white;
+                }
+            }
+            &-label {
+                color: var(--text-prominent);
+            }
+            &--selected {
+                border-color: var(--brand-secondary);
+                font-weight: bold;
+            }
+        }
+        &__custom {
+            padding: 16px;
+
+            &-radio {
+                display: inline-flex;
+            }
+            &-date-range {
+                margin: 8px;
+                display: flex;
+                flex-direction: column;
+
+                &-start-date {
+                    margin: 16px 0px;
+                }
+                &-end-date {
+                    margin-bottom: 8px;
+                }
             }
         }
     }

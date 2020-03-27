@@ -1,0 +1,94 @@
+/** @define dc-mobile-dialog; weak */
+.dc-mobile-dialog {
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    overflow: auto;
+    transition: opacity 0.2s;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--general-section-2);
+    // transform here would break fixed header
+
+    &--enter,
+    &--exit {
+        opacity: 0;
+        pointer-events: none;
+
+        & .dc-mobile-dialog__content {
+            transform: scale(0);
+        }
+        & .dc-mobile-dialog__header {
+            transform: translateY(-100%);
+        }
+    }
+    &--enter-done {
+        opacity: 1;
+        pointer-events: auto;
+
+        & .dc-mobile-dialog__content {
+            transform: scale(1);
+        }
+        & .dc-mobile-dialog__header {
+            transform: translateY(0);
+        }
+    }
+    &__container {
+        &--has-scroll {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+    }
+    &__content {
+        margin-top: 0.4rem;
+        box-sizing: border-box;
+        position: relative;
+        padding-top: 3.6rem;
+        z-index: 1;
+        background: var(--general-section-2);
+        transition: all 0.2s ease-out;
+
+        > div {
+            height: 100%;
+        }
+    }
+    &__header {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        padding: 1rem;
+        height: $MOBILE_HEADER_HEIGHT;
+        z-index: 4;
+        background: var(--general-section-2);
+        transition: all 0.2s ease-out;
+        transition-delay: 0.2s;
+        border-bottom: 1px solid var(--border-disabled);
+    }
+    &__footer {
+        position: fixed;
+        width: 100%;
+        bottom: 0px;
+        z-index: 4;
+    }
+    &__title {
+        padding: 1.2rem 1.2rem 1.2rem 0.4rem;
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: var(--text-prominent);
+        margin: 0;
+    }
+    &__close-btn-icon {
+        margin: 1.2rem 0.4rem;
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+}

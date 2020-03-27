@@ -3,14 +3,15 @@ import React from 'react';
 import { connect } from 'Stores/connect';
 import { formatDuration, getDiffDuration } from 'Utils/Date';
 
-const RemainingTime = ({ end_time = null, start_time }) => {
+const RemainingTime = ({ end_time = null, start_time, format }) => {
     if (!+end_time || start_time.unix() > +end_time) {
         return '';
     }
 
-    const remaining_time = formatDuration(getDiffDuration(start_time.unix(), end_time));
+    const remaining_time = formatDuration(getDiffDuration(start_time.unix(), end_time), format);
+    const is_zeroes = /^00:00$/.test(remaining_time);
 
-    return <div className='remaining-time'>{remaining_time}</div>;
+    return !is_zeroes && <div className='remaining-time'>{remaining_time}</div>;
 };
 
 RemainingTime.propTypes = {

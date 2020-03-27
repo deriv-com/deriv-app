@@ -23,6 +23,7 @@ export default class ClientStore extends BaseStore {
     @observable accounts = {};
     @observable pre_switch_broadcast = false;
     @observable switched = '';
+    @observable is_switching = false;
     @observable switch_broadcast = false;
     @observable initialized_broadcast = false;
     @observable currencies_list = {};
@@ -57,6 +58,7 @@ export default class ClientStore extends BaseStore {
         payment_withdraw: '',
         payment_agent_withdraw: '',
     };
+    @observable account_limits = {};
 
     @observable local_currency_config = {
         currency: '',
@@ -379,6 +381,23 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    getLimits() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getLimits().then(data => {
+                runInAction(() => {
+                    if (data.error) {
+                        this.account_limits = { api_initial_load_error: data.error.message };
+                        resolve(data);
+                    } else {
+                        this.account_limits = { ...data.get_limits, is_loading: false };
+                        resolve(data);
+                    }
+                });
+            });
+        });
+    }
+
+    @action.bound
     responsePayoutCurrencies(response) {
         const list = response.payout_currencies || response;
         this.currencies_list = buildCurrenciesList(list);
@@ -645,7 +664,9 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            WS.authorized.storage.mt5LoginList().then(this.responseMt5LoginList);
+            // mt5 will get called on response of authorize so we should just wait for the response here
+            // we can't use .storage here because if mt5 response takes longer to return we will send the request twice
+            BinarySocket.wait('mt5_login_list').then(this.responseMt5LoginList);
             WS.authorized.storage.landingCompany(this.residence).then(this.responseLandingCompany);
             this.responseStatement(
                 await BinarySocket.send({
@@ -805,6 +826,7 @@ export default class ClientStore extends BaseStore {
             return;
         }
 
+        runInAction(() => (this.is_switching = true));
         sessionStorage.setItem('active_tab', '1');
         // set local storage
         this.root_store.gtm.setLoginFlag();
@@ -814,6 +836,8 @@ export default class ClientStore extends BaseStore {
         await BinarySocket.authorize(this.getToken());
         await this.init();
         this.broadcastAccountChange();
+        this.getLimits();
+        runInAction(() => (this.is_switching = false));
     }
 
     @action.bound
@@ -824,7 +848,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setBalance(obj_balance) {
-        if (this.accounts[obj_balance.loginid]) {
+        if (this.accounts[obj_balance?.loginid]) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
             if (obj_balance.total) {
                 const total_real = ObjectUtils.getPropertyValue(obj_balance, ['total', 'real']);

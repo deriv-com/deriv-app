@@ -1,5 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { flatten } from 'Modules/Account/Helpers/flatten';
 
 export const unsupported_contract_types_list = [
@@ -14,7 +15,10 @@ export const unsupported_contract_types_list = [
     'lb_call',
     'lb_put',
     'lb_high_low',
-    'multiplier',
+    // TODO: Remove the conditional values below once barrier and path dependent contracts are ready for mobile
+    isMobile() ? 'multiplier' : null,
+    isMobile() ? 'high_low' : null,
+    isMobile() ? 'touch' : null,
 ];
 
 export const contract_category_icon = {
@@ -117,7 +121,7 @@ export const getContractsList = list =>
     );
 
 export const findContractCategory = (list, item) =>
-    list.find(list_item => list_item.contract_types.some(i => i.value === item.value));
+    list.find(list_item => list_item.contract_types.some(i => i.value === item.value)) || {};
 
 export const getContractCategoryLabel = (list, item) => findContractCategory(list, item).label;
 

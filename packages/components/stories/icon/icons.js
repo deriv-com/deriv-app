@@ -1,7 +1,7 @@
 // auto-generated file. DO NOT MODIFY.
 
 export const icons = {
-    brand: ['IcBrandDbot', 'IcBrandDeriv', 'IcBrandDmt5', 'IcBrandDtrader', 'IcGoogleDrive'],
+    brand: ['IcBrandDbot', 'IcBrandDeriv', 'IcBrandDmt5', 'IcBrandDtrader', 'IcBrandSmarttrader', 'IcGoogleDrive'],
     cashier: [
         'IcCashierAuthenticate',
         'IcCashierDeposit',
@@ -51,6 +51,7 @@ export const icons = {
         'IcChevronLeft',
         'IcChevronRight',
         'IcChevronUpBold',
+        'IcChevronUp',
         'IcCircle',
         'IcClipboard',
         'IcClockOutline',
@@ -159,6 +160,7 @@ export const icons = {
     contract: [
         'IcContractBarrier',
         'IcContractBuyPrice',
+        'IcContractCommission',
         'IcContractDuration',
         'IcContractEntrySpot',
         'IcContractExitSpot',
@@ -166,6 +168,7 @@ export const icons = {
         'IcContractExitTime',
         'IcContractFlag',
         'IcContractId',
+        'IcContractSafeguard',
         'IcContractStartTimeCircle',
         'IcContractStartTime',
         'IcContractTarget',

@@ -4,7 +4,8 @@
 
     //TODO send the tab count from outside
     @for $i from 1 through 5 {
-        .dc-tabs__item:nth-child(#{$i}).dc-tabs__active ~ .dc-tabs__active-line {
+        .dc-tabs__item:nth-child(#{$i}).dc-tabs__active:not(.dc-tabs__item--header-fit-content)
+            ~ .dc-tabs__active-line {
             left: calc(var(--tab-width) * #{$i} - var(--tab-width));
         }
     }
@@ -13,6 +14,10 @@
         width: 100%;
         line-height: 35px;
         display: flex;
+        position: relative;
+        @include mobile {
+            justify-content: center;
+        }
 
         &--top {
             order: 0;
@@ -22,22 +27,38 @@
             order: 1;
             border-top: 1px solid var(--general-section-1);
         }
+        &--fit-content {
+            @include mobile {
+                width: fit-content;
+            }
+        }
+        &:not(&--header-fit-content) {
+            justify-content: center;
+        }
     }
     &__item {
         list-style: none;
         font-size: 14px;
         text-align: center;
         white-space: nowrap;
-        width: var(--tab-width);
         color: var(--text-general);
 
         &__counter {
             margin-left: 1rem;
             vertical-align: middle;
         }
+        &--header-fit-content {
+            padding: 0px 24px;
+        }
+        &--is-hidden {
+            display: none;
+        }
         &:not(.dc-tabs__active) {
             cursor: pointer;
             color: var(--text-general);
+        }
+        &:not(&--header-fit-content) {
+            width: var(--tab-width);
         }
     }
     &__active {
@@ -48,16 +69,26 @@
         display: block;
         position: absolute;
         left: 0;
-        width: var(--tab-width);
         height: 2px;
         background: var(--brand-red-coral);
         transition: all ease-in-out 0.3s;
 
         &--top {
-            top: 34px;
+            bottom: 0;
         }
         &--bottom {
-            bottom: 34px;
+            bottom: 0;
+        }
+        &--is-hidden {
+            display: none;
+        }
+        &--fit-content {
+            @include mobile {
+                width: 120px;
+            }
+        }
+        &:not(&--header-fit-content) {
+            width: var(--tab-width);
         }
     }
 }

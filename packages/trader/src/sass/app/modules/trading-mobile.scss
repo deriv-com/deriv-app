@@ -1,0 +1,168 @@
+@include mobile {
+    /** @define allow-equals; weak */
+    .allow-equals {
+        &__subtitle {
+            font-size: 1rem;
+            font-weight: normal;
+        }
+        .dc-checkbox__label {
+            font-weight: bold;
+            color: var(--text-prominent);
+            margin-right: 0.8rem;
+        }
+    }
+    /** @define dc-modal; weak */
+    .dc-modal {
+        &__container_trade-params {
+            border-radius: 2px;
+            box-shadow: 0 16px 16px 0 var(--shadow-menu-2), 0 0 16px 0 var(--shadow-menu-2);
+
+            /* postcss-bem-linter: ignore */
+            .dc-relative-datepicker {
+                margin-top: -0.8rem;
+                max-width: 110px;
+                margin-left: auto;
+                margin-right: auto;
+
+                /* iPhone SE screen height fixes due to UI space restrictions */
+                @media only screen and (max-height: 480px) {
+                    margin-top: -4.6rem;
+                }
+            }
+            /* iPhone SE screen height fixes due to UI space restrictions */
+            @media only screen and (max-height: 480px) {
+                top: 0.4rem;
+            }
+        }
+        &-header {
+            /* postcss-bem-linter: ignore */
+            &--trade-params {
+                line-height: 1.4;
+                border-bottom-width: 1px;
+
+                /* postcss-bem-linter: ignore */
+                .dc-modal-header__close {
+                    padding: 0.8rem 0.8rem 0;
+                    margin: 0.4rem 0.4rem 0.2rem;
+                }
+            }
+        }
+    }
+    /** @define trade-params; weak */
+    .trade-params {
+        &__error-popup {
+            top: 12rem !important;
+            opacity: 0.8;
+            z-index: 2 !important;
+
+            &--has-numpad {
+                z-index: 9999 !important;
+                top: 0.8rem !important;
+            }
+        }
+        &__duration {
+            &-tickpicker {
+                height: 328px;
+
+                .dc-tick-picker {
+                    max-width: 100%;
+                    height: 100%;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+        }
+        &__amount {
+            &-keypad {
+                width: 100%;
+                padding: 1.6rem;
+                height: auto;
+                margin-top: 0.8rem;
+                margin-bottom: 0.8rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .dc-numpad--is-currency,
+                .dc-numpad--is-regular {
+                    max-width: 100%;
+                    grid-template-columns: repeat(4, 1fr);
+                    grid-gap: 16px;
+                }
+                .dc-numpad__increment,
+                .dc-numpad__decrement {
+                    height: 48px !important;
+
+                    .dc-btn__text {
+                        font-size: 3rem;
+                        font-weight: normal;
+                    }
+                    &[disabled] {
+                        .dc-btn__text {
+                            color: var(--text-disabled);
+                        }
+                    }
+                }
+                .dc-numpad__number {
+                    border-radius: 2.4rem;
+                    background-color: var(--general-section-2);
+                    width: 48px;
+                    height: 48px !important;
+                    font-weight: 700;
+                    text-transform: none;
+                    line-height: 1.75;
+                    color: var(--text-prominent);
+                    text-align: left !important;
+
+                    .dc-btn__text {
+                        font-size: 1.8rem;
+                    }
+                    &--is-left-aligned {
+                        padding: 0 0 0 0.2rem;
+                    }
+                }
+                .dc-numpad__bkspace,
+                .dc-numpad__ok {
+                    .dc-numpad__number {
+                        height: 100% !important;
+                    }
+                }
+                .dc-numpad__bkspace {
+                    .dc-numpad__number {
+                        &[disabled] {
+                            background-color: var(--general-disabled);
+
+                            .dc-btn__text {
+                                color: var(--text-disabled);
+                            }
+                        }
+                    }
+                }
+                /* iPhone SE screen height fixes due to UI space restrictions */
+                @media only screen and (max-height: 480px) {
+                    transform: scale(1, 0.9);
+                    transform-origin: top;
+                    margin-top: -0.4rem;
+                }
+            }
+        }
+        &__header {
+            @include mobile {
+                padding: 0.5rem 0;
+
+                &-label {
+                    line-height: 2rem;
+                }
+                &-value {
+                    line-height: 1.8rem;
+                    font-size: 1.2rem;
+
+                    &--has-error {
+                        color: var(--status-danger);
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+}

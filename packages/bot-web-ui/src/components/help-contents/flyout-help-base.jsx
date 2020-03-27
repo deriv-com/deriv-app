@@ -27,7 +27,7 @@ const HelpBase = ({
     return (
         <React.Fragment>
             <div className='flyout__help-header'>
-                <button className='btn flyout__button-back' onClick={onBackClick}>
+                <button className='dc-btn flyout__button-back' onClick={onBackClick}>
                     <Icon icon='IcArrowLeft' />
                 </button>
                 <span className='flyout__help-title'>{title}</span>

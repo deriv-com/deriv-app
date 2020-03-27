@@ -80,6 +80,7 @@
         @include typeface(--title-center-bold-black);
         @include mobile {
             margin-top: 0.8rem;
+            font-size: 1.2rem;
         }
     }
     h3 {
@@ -131,18 +132,19 @@
 
             @include mobile {
                 font-size: 1.2rem;
-                margin-top: 0;
+                margin: 2.4rem auto 0 2.4rem;
                 text-align: left;
-                margin-left: 2.4rem;
-
-                &:first-child {
-                    margin-top: 2.4rem;
-                }
             }
         }
         h2 {
             @include typeface(--title-center-bold-black);
             color: var(--text-prominent);
+
+            @include mobile {
+                font-size: 1.2rem;
+                text-align: left;
+                margin-left: 2.4rem;
+            }
         }
     }
     &__btn-area {

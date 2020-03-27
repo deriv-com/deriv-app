@@ -1,6 +1,14 @@
-import { Button, Popover, Modal, DesktopWrapper, MobileDialog, MobileWrapper, Table } from '@deriv/components';
+import {
+    Button,
+    Popover,
+    Modal,
+    DesktopWrapper,
+    MobileDialog,
+    MobileWrapper,
+    Table,
+    UILoader,
+} from '@deriv/components';
 import React, { useState } from 'react';
-import UILoader from 'App/Components/Elements/ui-loader.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 

@@ -371,6 +371,7 @@ class PersonalDetailsForm extends React.Component {
                                                 <MobileWrapper>
                                                     <DatePicker
                                                         name='date_of_birth'
+                                                        className='date-of-birth-datepicker'
                                                         is_nativepicker={true}
                                                         label={localize('Date of birth')}
                                                         value={

@@ -184,6 +184,12 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-bottom: 1.6rem;
                 }
             }
+
+            .date-of-birth-datepicker {
+                .datepicker-native__input {
+                    height: 3.8rem;
+                }
+            }
         }
     }
     &__intial-loader {

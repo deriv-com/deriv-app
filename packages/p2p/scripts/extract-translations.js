@@ -27,7 +27,8 @@ const getKeyHash = (string) => crc32(string);
     try {
         const file_paths = [];
         const messages = [];
-        const i18n_marker = new RegExp(/i18n_default_text={?\s*(?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])\s*}?|localize\(\s*(?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])\s*\)?/g);
+        // const i18n_marker = new RegExp(/i18n_default_text={?\s*(?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])\s*}?|localize\(\s*(?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])\s*\)?/g);
+        const i18n_marker = new RegExp(/i18n_default_text=(['"])(.*?)\1|localize\(\s*?(['"])\s*(.*?)\s*\3/gs);
         const messages_json = {};
 
         for (let j = 0; j < globs.length; j++) {
@@ -45,7 +46,7 @@ const getKeyHash = (string) => crc32(string);
                 const file = fs.readFileSync(file_paths[i], 'utf8');
                 let result = i18n_marker.exec(file);
                 while (result != null) {
-                    const extracted = result[1] || result[2]; // If it's index `1`, then it's the first capturing group, otherwise it's the 2nd, referring to `localize()` call
+                    const extracted = result[2] || result[4]; // If it's index `1`, then it's the first capturing group, otherwise it's the 2nd, referring to `localize()` call
                     messages.push(extracted.replace(/\\/g, ''));
                     result = i18n_marker.exec(file);
                 }

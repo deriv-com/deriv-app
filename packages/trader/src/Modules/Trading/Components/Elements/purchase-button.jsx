@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getContractTypeDisplay } from 'Constants/contract';
 import IconTradeType from 'Assets/Trading/Types/icon-trade-types.jsx';
@@ -29,6 +29,7 @@ const PurchaseButton = ({
     is_disabled,
     is_high_low,
     is_loading,
+    is_multiplier,
     is_proposal_empty,
     purchased_states_arr,
     setPurchaseState,
@@ -82,7 +83,15 @@ const PurchaseButton = ({
                 <div className='btn-purchase__effect-detail--arrow' />
                 <div className='btn-purchase__info btn-purchase__info--right'>
                     <div className='btn-purchase__text_wrapper'>
-                        <span className='btn-purchase__text'>{!(is_loading || is_disabled) ? info.returns : ''}</span>
+                        {is_multiplier ? (
+                            <span className='btn-purchase__text'>
+                                <Money amount={info.stake} currency={currency} />
+                            </span>
+                        ) : (
+                            <span className='btn-purchase__text'>
+                                {!(is_loading || is_disabled) ? info.returns : ''}
+                            </span>
+                        )}
                     </div>
                 </div>
             </DesktopWrapper>
@@ -120,6 +129,7 @@ PurchaseButton.propTypes = {
     is_disabled: PropTypes.bool,
     is_high_low: PropTypes.bool,
     is_loading: PropTypes.bool,
+    is_multiplier: PropTypes.bool,
     is_proposal_empty: PropTypes.bool,
     onClickPurchase: PropTypes.func,
     purchased_states_arr: PropTypes.array,

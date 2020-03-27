@@ -1,4 +1,4 @@
-import { action, flow } from 'mobx';
+import { flow } from 'mobx';
 import ObjectUtils from '@deriv/shared/utils/object';
 import Login from '_common/base/login';
 import ServerTime from '_common/base/server_time';
@@ -25,11 +25,7 @@ const BinarySocketGeneral = (() => {
                 }
                 WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
             }
-            ServerTime.init(
-                action('setTime', () => {
-                    common_store.server_time = ServerTime.get();
-                })
-            );
+            ServerTime.init(() => common_store.setServerTime(ServerTime.get()));
             common_store.setIsSocketOpened(true);
         }
     };

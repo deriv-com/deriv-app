@@ -133,7 +133,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                                             id='real_mt5_citizenship'
                                                             data-lpignore='true'
                                                             autoComplete='off'
-                                                            type='search'
+                                                            type='text'
                                                             label={localize('Citizenship')}
                                                             error={touched.citizen && errors.citizen}
                                                             disabled={value.citizen && is_fully_authenticated}
@@ -157,7 +157,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                                         <Autocomplete
                                                             id='real_mt5_tax_residence'
                                                             data-lpignore='true'
-                                                            type='search'
+                                                            type='text'
                                                             autoComplete='off'
                                                             label={localize('Tax residence')}
                                                             error={touched.tax_residence && errors.tax_residence}

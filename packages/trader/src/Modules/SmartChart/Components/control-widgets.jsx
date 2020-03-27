@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper } from '@deriv/components';
-import { ChartMode, Comparison, DrawTools, Share, StudyLegend, Views } from 'Modules/SmartChart';
+import { ChartMode, DrawTools, Share, StudyLegend, Views } from 'Modules/SmartChart';
 
 const ControlWidgets = ({ updateChartType, updateGranularity }) => (
     <React.Fragment>

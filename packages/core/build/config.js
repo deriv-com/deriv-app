@@ -115,13 +115,6 @@ const htmlInjectConfig = () => ({
                 crossorigin: 'crossorigin',
             },
         },
-        {
-            path: 'css/trader.main.css',
-            attributes: {
-                rel: 'preload',
-                as: 'style',
-            },
-        },
         // {
         //     path: 'pushwoosh-web-notifications.js',
         //     attributes: {

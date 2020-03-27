@@ -31,7 +31,7 @@ const MT5RealAccountDisplay = ({
                         type='button'
                         primary
                     >
-                        <span className='btn__text'>
+                        <span className='dc-btn__text'>
                             <Localize i18n_default_text='Create a Deriv account' />
                         </span>
                     </Button>

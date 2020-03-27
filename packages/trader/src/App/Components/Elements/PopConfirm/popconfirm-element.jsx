@@ -27,13 +27,13 @@
 //             </div>
 //             <div className='popconfirm__button-wrapper'>
 //                 <div
-//                     className='popconfirm__button btn btn--flat effect'
+//                     className='popconfirm__button dc-btn dc-btn--flat effect'
 //                     onClick={onClose}
 //                 >
 //                     <span className='popconfirm__button-text'>{cancel_text}</span>
 //                 </div>
 //                 <div
-//                     className='popconfirm__button btn btn--flat effect'
+//                     className='popconfirm__button dc-btn dc-btn--flat effect'
 //                     onClick={onConfirm}
 //                 >
 //                     <span className='popconfirm__button-text'>{confirm_text}</span>

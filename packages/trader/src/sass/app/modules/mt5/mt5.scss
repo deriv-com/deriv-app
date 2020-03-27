@@ -108,7 +108,7 @@
         padding: 0;
         margin: 1.6rem;
 
-        .btn {
+        .dc-btn {
             @include typeface(--paragraph-center-bold-black, none);
             background-color: var(--brand-red-coral);
             color: var(--text-colored-background);

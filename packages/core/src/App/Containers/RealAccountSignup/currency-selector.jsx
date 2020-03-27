@@ -208,8 +208,8 @@ class CurrencySelector extends React.Component {
                         <FormSubmitButton
                             is_absolute
                             is_disabled={isSubmitting || !values.currency}
-                            is_center={!this.props.has_currency || isMobile()}
-                            label={!this.props.currency && !isMobile() ? localize('Set currency') : localize('Next')}
+                            is_center={!has_currency || isMobile()}
+                            label={!has_real_account && isMobile() ? localize('Next') : localize('Set currency')}
                         />
                     </form>
                 )}

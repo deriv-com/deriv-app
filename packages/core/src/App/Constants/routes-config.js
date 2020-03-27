@@ -39,9 +39,8 @@ const Trader = lazy(() => {
     const el_head = document.querySelector('head');
     const el_main_css = document.createElement('link');
     el_main_css.href = getUrlBase('/css/trader.main.css');
-    el_main_css.as = 'stylesheet';
+    el_main_css.rel = 'stylesheet';
     el_main_css.type = 'text/css';
-    el_main_css.rel = 'preload';
     el_head.appendChild(el_main_css);
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "trader" */ '@deriv/trader');

@@ -108,9 +108,8 @@ export default class StatementStore extends BaseStore {
     @action.bound
     handleDateChange(date_values, { date_range } = {}) {
         this.filtered_date_range = date_range;
-        Object.keys(date_values).forEach(key => {
-            this[`date_${key}`] = date_values[key];
-        });
+        this.date_from = date_values?.from ?? (date_values.is_batch ? null : this.date_from);
+        this.date_to = date_values?.to ?? this.date_to;
         this.clearTable();
         this.fetchNextBatch();
     }

@@ -25,11 +25,11 @@ const ErrorModal = ({ message, code, openPersonalDetails }) => {
                 <a
                     href='https://www.deriv.com/help-centre/'
                     type='button'
-                    className='btn btn--primary btn__medium'
+                    className='dc-btn dc-btn--primary dc-btn__medium'
                     target='_blank'
                     rel='noopener noreferrer'
                 >
-                    <span className='btn__text'>
+                    <span className='dc-btn__text'>
                         <Localize i18n_default_text='Go To Help Centre' />
                     </span>
                 </a>

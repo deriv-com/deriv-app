@@ -87,10 +87,10 @@ class TogglePositionsMobile extends React.Component {
                         <div className='positions-modal__footer'>
                             <BinaryLink
                                 onClick={this.props.togglePositionsDrawer}
-                                className='btn btn--secondary btn__large positions-modal__footer-btn'
+                                className='dc-btn dc-btn--secondary dc-btn__large positions-modal__footer-btn'
                                 to={routes.positions}
                             >
-                                <span className='btn__text'>{localize('View more')}</span>
+                                <span className='dc-btn__text'>{localize('View more')}</span>
                             </BinaryLink>
                         </div>
                     </Div100vhContainer>

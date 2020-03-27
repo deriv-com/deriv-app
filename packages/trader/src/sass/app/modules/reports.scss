@@ -541,11 +541,11 @@ $side-padding: 1.2em;
             .remaining-time {
                 margin-left: 0.4rem;
             }
-            .btn {
+            .dc-btn {
                 height: 2.4rem;
                 padding: 0 8px;
 
-                & + .btn {
+                & + .dc-btn {
                     margin-left: 8px;
                 }
             }
@@ -646,7 +646,7 @@ $side-padding: 1.2em;
         line-height: 20px;
         color: var(--text-disabled);
     }
-    .btn {
+    .dc-btn {
         width: 100%;
         height: 40px;
         border: 1px solid var(--button-secondary-default);

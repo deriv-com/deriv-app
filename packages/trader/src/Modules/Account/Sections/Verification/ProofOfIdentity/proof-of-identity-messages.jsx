@@ -6,19 +6,19 @@ import IconMessageContent from '../../../Components/icon-message-content.jsx';
 
 const ContinueTradingButton = () => (
     <ButtonLink to='/'>
-        <p className='btn__text'>{localize('Continue trading')}</p>
+        <p className='dc-btn__text'>{localize('Continue trading')}</p>
     </ButtonLink>
 );
 
 const PoaButton = () => (
     <ButtonLink to='/account/proof-of-address'>
-        <p className='btn__text'>{localize('Submit proof of address')}</p>
+        <p className='dc-btn__text'>{localize('Submit proof of address')}</p>
     </ButtonLink>
 );
 
 const GoToPersonalDetailsButton = () => (
     <ButtonLink to='/account/personal-details'>
-        <p className='btn__text'>{localize('Go to personal details')}</p>
+        <p className='dc-btn__text'>{localize('Go to personal details')}</p>
     </ButtonLink>
 );
 

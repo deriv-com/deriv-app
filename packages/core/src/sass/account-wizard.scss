@@ -151,10 +151,10 @@
         padding-top: 2.4rem;
         width: 100%;
 
-        .btn:not(:last-child) {
+        .dc-btn:not(:last-child) {
             margin: 0 1rem;
         }
-        .btn:last-child {
+        .dc-btn:last-child {
             margin: 0;
         }
         &--absolute {
@@ -168,7 +168,7 @@
             justify-content: center;
             width: 100%;
 
-            & .btn {
+            & .dc-btn {
                 min-width: 9rem;
             }
         }
@@ -182,7 +182,7 @@
             top: unset;
             bottom: 0;
 
-            .btn {
+            .dc-btn {
                 height: 40px;
                 width: 100%;
             }
@@ -262,7 +262,7 @@
                 line-height: 1.4;
                 color: var(--text-general);
             }
-            .btn {
+            .dc-btn {
                 height: 4rem;
             }
             .dc-ion {

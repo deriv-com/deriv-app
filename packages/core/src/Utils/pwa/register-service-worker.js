@@ -1,6 +1,7 @@
 import { getUrlBase } from '_common/url';
 
 const EVERY_HOUR = 3600000; // 1000 * 60 * 60
+
 let interval_id;
 
 function refreshOnUpdate() {
@@ -11,7 +12,6 @@ function refreshOnUpdate() {
                 if (updatingWorker.state === 'installed' && navigator.serviceWorker.controller) {
                     // eslint-disable-next-line no-console
                     console.log('New version is found, refreshing the page...');
-                    clearInterval(interval_id);
                 }
             };
         };
@@ -41,6 +41,8 @@ export default function register() {
                                     // It's the perfect time to display a "New content is
                                     // available; please refresh." message in your web app.
                                     console.log('New content is available; please refresh.'); // eslint-disable-line no-console
+                                    const new_version_received = new Event('UpdateAvailable');
+                                    document.dispatchEvent(new_version_received);
                                 } else {
                                     // At this point, everything has been precached.
                                     // It's the perfect time to display a

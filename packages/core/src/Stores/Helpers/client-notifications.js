@@ -299,6 +299,18 @@ export const clientNotifications = (ui = {}) => {
             message: localize('Your proof of identity document has expired. Please submit a new one.'),
             type: 'danger',
         },
+        new_version_available: {
+            action: {
+                onClick: () => location.reload(),
+                text: localize('Get the update'),
+            },
+            key: 'new_version_available',
+            header: localize('New version is available to install!'),
+            message: localize(
+                'You are using an older version of the website, update now to get more features and performance.'
+            ),
+            type: 'warning',
+        },
     };
     return notifications;
 };

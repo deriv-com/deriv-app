@@ -403,7 +403,7 @@ OpenPositions.propTypes = {
 export default connect(({ modules, client, common, ui }) => ({
     currency: client.currency,
     is_virtual: client.is_virtual,
-    active_positions: modules.portfolio.active_positions,
+    active_positions: modules.portfolio.active_positions_filtered,
     error: modules.portfolio.error,
     getPositionById: modules.portfolio.getPositionById,
     is_loading: modules.portfolio.is_loading,

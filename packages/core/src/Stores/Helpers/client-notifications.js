@@ -311,7 +311,7 @@ export const clientNotifications = (ui = {}) => {
             ),
             type: 'warning',
             should_hide_close_btn: true,
-            timeout: 60000,
+            timeout: 360000,
         },
     };
     return notifications;

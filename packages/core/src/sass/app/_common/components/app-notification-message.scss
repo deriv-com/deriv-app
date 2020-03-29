@@ -110,6 +110,11 @@
     &:not(:last-child) {
         margin-bottom: 16px;
     }
+    &__timeout {
+        position: absolute;
+        left: 0.5rem;
+        bottom: 0.5rem;
+    }
     @include mobile {
         max-width: unset;
 

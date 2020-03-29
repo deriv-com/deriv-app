@@ -6,6 +6,7 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
 import { default_delay, types } from './constants';
+import TimeoutCircularProgress from './timeout-circular-progress.jsx';
 import { BinaryLink } from '../../Routes';
 
 const Notification = ({ data, removeNotificationMessage }) => {
@@ -37,6 +38,13 @@ const Notification = ({ data, removeNotificationMessage }) => {
             </div>
             <div className='notification__text-container'>
                 <h4 className='notification__header'>{data.header}</h4>
+                {data.timeout && (
+                    <TimeoutCircularProgress
+                        className='notification__timeout'
+                        timeout={data.timeout}
+                        action={data.action.onClick}
+                    />
+                )}
                 <p className='notification__text-body'>{data.message}</p>
                 {!ObjectUtils.isEmptyObject(data.action) && (
                     <React.Fragment>
@@ -58,11 +66,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     </React.Fragment>
                 )}
             </div>
-            {data.should_hide_close_btn ? (
-                undefined
-            ) : (
-                <CloseButton className='notification__close-button' onClick={onClick} />
-            )}
+            {!data.should_hide_close_btn && <CloseButton className='notification__close-button' onClick={onClick} />}
         </div>
     );
 };

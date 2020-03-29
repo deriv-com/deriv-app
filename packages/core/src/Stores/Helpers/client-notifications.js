@@ -310,6 +310,8 @@ export const clientNotifications = (ui = {}) => {
                 'You are using an older version of the website, update now to get more features and performance.'
             ),
             type: 'warning',
+            should_hide_close_btn: true,
+            timeout: 60000,
         },
     };
     return notifications;
@@ -439,6 +441,7 @@ export const excluded_notifications = [
     'contract_sold',
     'maintenance',
     'bot_switch_account',
+    'new_version_available',
 ];
 
 export const handleClientNotifications = (

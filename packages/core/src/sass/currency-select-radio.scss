@@ -9,6 +9,10 @@
     &__items {
         display: flex;
         justify-content: space-around;
+        @include mobile {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
     }
     &__item {
         align-items: center;
@@ -52,11 +56,22 @@
             height: 48px;
             width: 48px;
             margin-bottom: 1em;
+            @include mobile {
+                height: 64px;
+                width: 64px;
+                margin-bottom: 0.8rem;
+            }
         }
         p {
             text-align: center;
             @include typeface(--paragraph-center-normal-black);
             color: var(--text-general);
+        }
+        @include mobile {
+            width: unset;
+            height: unset;
+            margin: 1.6rem 2rem 0.8rem;
+            padding: 0.8rem 0;
         }
     }
     &__radio-button {
@@ -69,6 +84,13 @@
     margin: 1.6rem 0 0;
     width: 100%;
     border-top: 1px solid var(--general-section-2);
+
+    @include mobile {
+        border-top-width: 2px;
+        border-color: var(--border-disabled);
+        margin-left: -2.4rem;
+        width: calc(100% + 2.4rem);
+    }
 }
 
 .currency-selector {

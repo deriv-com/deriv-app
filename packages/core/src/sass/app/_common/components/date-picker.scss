@@ -133,6 +133,17 @@
 
     &__input {
         opacity: 0;
+
+        &:not(.datepicker-native__input--empty) {
+            outline: none;
+
+            & ~ .datepicker-native__label {
+                transform: translate(0, -1.8rem) scale(0.75);
+                padding: 0 4px;
+                top: 1.2rem;
+                left: 1rem;
+            }
+        }
     }
     &__overlay {
         position: absolute;
@@ -151,5 +162,16 @@
             margin-left: 8px;
             font-size: 1.4rem;
         }
+    }
+    &__label {
+        top: 0.9rem;
+        color: var(--text-less-prominent);
+        font-size: var(--text-size-xs);
+        background-color: var(--fill-normal);
+        position: absolute;
+        pointer-events: none;
+        left: 3rem;
+        transition: 0.25s ease all;
+        transform-origin: top left;
     }
 }

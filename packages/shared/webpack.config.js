@@ -9,9 +9,10 @@ module.exports = {
     entry: {
         config: path.resolve(__dirname, 'src', 'utils/config/index.js'),
         currency: path.resolve(__dirname, 'src', 'utils/currency/index.js'),
-        object  : path.resolve(__dirname, 'src', 'utils/object/index.js'),
-        screen  : path.resolve(__dirname, 'src', 'utils/screen/index.js'),
-        os      : path.resolve(__dirname, 'src', 'utils/os/index.js'),
+        object: path.resolve(__dirname, 'src', 'utils/object/index.js'),
+        screen: path.resolve(__dirname, 'src', 'utils/screen/index.js'),
+        os: path.resolve(__dirname, 'src', 'utils/os/index.js'),
+        route: path.resolve(__dirname, 'src', 'utils/route/index.js'),
         date: path.resolve(__dirname, 'src', 'utils/date/index.js'),
         platform: path.resolve(__dirname, 'src', 'utils/platform/index.js'),
         url: path.resolve(__dirname, 'src', 'utils/url/index.js'),
@@ -45,7 +46,6 @@ module.exports = {
                 loader: 'babel-loader',
             },
         ],
-        strictExportPresence: true
     },
     plugins: [
         new CopyWebpackPlugin([
@@ -62,6 +62,5 @@ module.exports = {
             '@deriv/components': '@deriv/components',
         },
         /^@deriv\/components\/.+$/,
-        /^@deriv\/translations\/.+$/,
     ],
 };

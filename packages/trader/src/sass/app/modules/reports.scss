@@ -23,8 +23,9 @@ $side-padding: 1.2em;
             &--paragraph {
                 @include typeface(--paragraph-left-normal-black, none);
                 color: var(--text-general);
+
                 @include mobile {
-                    padding: 16px;
+                    padding: 0.8rem 0 1.6rem;
                 }
             }
             @include mobile {
@@ -42,6 +43,11 @@ $side-padding: 1.2em;
 
         @include mobile {
             flex-direction: column;
+            padding-bottom: 0;
+
+            &-filter {
+                padding-bottom: 1.6rem;
+            }
         }
     }
     &__mobile-wrapper {
@@ -306,6 +312,9 @@ $side-padding: 1.2em;
                 font-size: 1.2rem;
                 color: var(--text-prominent);
             }
+            .data-list__row {
+                padding: 0;
+            }
         }
     }
 
@@ -421,7 +430,7 @@ $side-padding: 1.2em;
 
         &__data-list-body {
             height: calc(100% - 95px);
-            padding: 1.2rem 2.4rem 0rem;
+            padding: 0 2.4rem;
 
             .dc-progress-bar__container {
                 max-width: 120px;

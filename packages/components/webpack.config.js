@@ -14,6 +14,7 @@ module.exports = {
         autocomplete                    : 'Components/autocomplete',
         button                          : 'Components/button',
         'button-toggle'                 : 'Components/button-toggle',
+        calendar                        : 'Components/calendar',
         checkbox                        : 'Components/checkbox',
         'circular-progress'             : 'Components/circular-progress',
         collapsible                     : 'Components/collapsible',

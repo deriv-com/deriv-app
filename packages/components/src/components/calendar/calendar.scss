@@ -1,0 +1,256 @@
+/** @define dc-calendar */
+.dc-calendar {
+    position: absolute;
+    top: 0;
+    outline: 0;
+    border-radius: 5px;
+    z-index: 999;
+    box-sizing: border-box;
+    font-size: 1rem;
+    background: var(--general-main-2);
+    box-shadow: 0 2px 8px 0 var(--shadow-menu);
+
+    &__header,
+    &__footer {
+        position: relative;
+        display: flex;
+        align-items: center;
+        height: 5rem;
+        border-radius: 5px;
+        padding: 1.6rem;
+        box-sizing: border-box;
+    }
+    &__header {
+        justify-content: center;
+    }
+    &__footer {
+        :last-child:not(:only-child),
+        .dc-calendar__btn--today {
+            margin-left: auto;
+        }
+    }
+    &__body {
+        border-top: 0.1rem solid var(--general-section-2);
+        border-bottom: 0.1rem solid var(--general-section-2);
+
+        &--date,
+        &--month,
+        &--year,
+        &--decade {
+            display: grid;
+            grid-gap: 1.2rem;
+            padding: 0.8rem 2rem;
+
+            .dc-calendar__cell {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 5px;
+            }
+        }
+        &--date {
+            grid-template-columns: repeat(7, 2.4rem);
+            grid-auto-rows: 2.4rem;
+
+            .dc-calendar__cell {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        &--month,
+        &--year,
+        &--decade {
+            grid-template-columns: repeat(3, minmax(7.2rem, 1fr));
+            grid-auto-rows: minmax(4.2rem, auto);
+
+            .dc-calendar__cell {
+                width: 5.6rem;
+                height: 3.2rem;
+            }
+        }
+        &--decade {
+            .dc-calendar__cell {
+                width: 100%;
+            }
+        }
+    }
+    &__icon {
+        cursor: pointer;
+        right: 5%;
+
+        &--today:hover {
+            cursor: pointer;
+        }
+    }
+    &__btn {
+        text-align: center;
+        padding: 0rem 0.2rem;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        background: none;
+
+        &--disabled {
+            cursor: default;
+            transition: none;
+
+            .dc-calendar__icon {
+                cursor: default;
+            }
+        }
+        &--select {
+            @include typeface(--paragraph-left-bold-black);
+            color: var(--text-prominent);
+        }
+        &--prev-year,
+        &--next-year,
+        &--prev-month,
+        &--next-month {
+            position: absolute;
+            padding: 0 0.5em;
+            height: 1.4em;
+        }
+        &--prev-year {
+            left: 7%;
+        }
+        &--next-year {
+            right: 7%;
+        }
+        &--prev-month {
+            left: 14%;
+        }
+        &--next-month {
+            right: 14%;
+        }
+    }
+    &__text {
+        @include typeface(--small-center-normal-black, unset);
+        color: var(--text-general);
+
+        &--bold {
+            font-weight: bold;
+        }
+    }
+    &__cell {
+        @include typeface(--small-left-normal-black);
+        align-self: center;
+        justify-self: center;
+        position: relative;
+        cursor: pointer;
+        color: var(--text-general);
+        box-sizing: border-box;
+
+        &:hover:not(.dc-calendar__cell--disabled) {
+            color: var(--text-general);
+            background: var(--state-hover);
+        }
+        &:nth-child(7n) {
+            &:before {
+                padding: 0;
+                border-radius: $BORDER_RADIUS;
+            }
+        }
+        &:nth-child(7n + 1) {
+            &:before {
+                left: 0;
+                border-radius: $BORDER_RADIUS;
+            }
+            &:after {
+                content: none;
+            }
+        }
+        &--bold {
+            @include typeface(--paragraph-left-bold-black);
+            color: var(--text-prominent);
+        }
+        &--disabled:hover {
+            cursor: default;
+        }
+        &--disabled:not(.dc-calendar__cell--today),
+        &--other:not(.dc-calendar__cell--today) {
+            color: var(--text-disabled);
+            transition: none;
+        }
+        &--is-hidden {
+            opacity: 0;
+            cursor: initial;
+        }
+        &--today {
+            font-weight: 400;
+            border: 1px solid var(--text-general);
+
+            &-duration {
+                background: var(--state-active);
+            }
+        }
+        &--active {
+            font-weight: bold;
+            color: var(--text-prominent);
+            background: var(--state-active);
+
+            &:hover {
+                background: var(--state-active);
+            }
+            &-duration {
+                background: var(--state-active);
+
+                &:after {
+                    position: absolute;
+                    content: '';
+                    width: 100%;
+                    top: 0;
+                    right: 50%;
+                    z-index: -1;
+                    height: 100%;
+                    padding-left: 1rem;
+                    background: var(--state-active);
+                }
+            }
+        }
+        &--between {
+            font-weight: bold;
+            color: var(--text-prominent);
+            background: var(--state-active);
+
+            &-hover {
+                &:before {
+                    position: absolute;
+                    content: '';
+                    width: 100%;
+                    z-index: -2;
+                    height: 100%;
+                    padding-left: 3.2rem;
+                    background: var(--state-hover);
+                }
+            }
+            &:hover {
+                background: var(--state-active);
+            }
+            &:before {
+                position: absolute;
+                content: '';
+                width: 100%;
+                z-index: -1;
+                height: 100%;
+                padding-left: 3.2rem;
+                background: var(--state-active);
+            }
+        }
+        &-tooltip {
+            position: absolute;
+            display: inline-grid;
+            cursor: default;
+            height: 0;
+            top: 0;
+            left: 0;
+            justify-content: center;
+            width: 100%;
+
+            &-icon {
+                margin-top: 0.1rem;
+                display: inherit;
+            }
+        }
+    }
+}

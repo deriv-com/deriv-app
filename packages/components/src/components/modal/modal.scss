@@ -65,7 +65,6 @@
         @include desktop {
             min-width: 400px;
             max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
-            max-width: 90vw;
         }
         @include mobile {
             max-width: calc(100vw - 3.2rem) !important;
@@ -88,8 +87,10 @@
             display: flex;
             align-items: center;
             height: 100%;
+
             @include mobile {
-                padding: 2.4rem;
+                font-size: 1.4rem;
+                padding: 1.6rem;
                 line-height: 1;
             }
         }
@@ -104,12 +105,12 @@
             display: block;
             cursor: pointer;
             padding: 0.6rem 0.8rem;
-            @extend %inline-icon.white;
             height: 30px;
             width: 32px;
             margin: 1.2rem 1.6rem 1.2rem auto;
+
             @include mobile {
-                margin: 1.8rem;
+                margin: 0.8rem;
             }
         }
     }
@@ -119,6 +120,11 @@
         font-size: 1.4rem;
         line-height: 1.43;
         color: var(--text-prominent);
+
+        @include mobile {
+            font-size: 1.2rem;
+            padding: 0.8rem 1.6rem;
+        }
     }
     /** @define dc-modal-footer; weak */
     &-footer {
@@ -126,7 +132,7 @@
         justify-content: flex-end;
         padding: 1.6rem;
 
-        .btn:nth-child(2) {
+        .dc-btn:nth-child(2) {
             margin-left: 0.8rem;
         }
     }

@@ -10,6 +10,7 @@ const TradeModals = ({
     is_unsupported_contract_modal_visible,
     is_market_unavailable_visible,
     is_services_error_visible,
+    is_virtual,
     toggleUnsupportedContractModal,
     setHasOnlyForwardingContracts,
     resetPreviousSymbol,
@@ -60,15 +61,17 @@ const TradeModals = ({
                 onConfirm={servicesErrorModalOnConfirm}
                 services_error={services_error}
                 is_visible={is_services_error_visible}
+                is_virtual={is_virtual}
             />
         </React.Fragment>
     );
 };
 
-export default connect(({ ui, modules, common }) => ({
+export default connect(({ ui, modules, common, client }) => ({
     is_market_unavailable_visible: ui.has_only_forward_starting_contracts,
     is_services_error_visible: ui.is_services_error_visible,
     is_unsupported_contract_modal_visible: ui.is_unsupported_contract_modal_visible,
+    is_virtual: client.is_virtual,
     proposal_info: modules.trade.proposal_info,
     purchase_info: modules.trade.purchase_info,
     resetPreviousSymbol: modules.trade.resetPreviousSymbol,

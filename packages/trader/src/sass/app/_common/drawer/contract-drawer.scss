@@ -251,7 +251,7 @@ $header-height: 4em;
         &--has-cancel-btn {
             justify-content: space-between;
 
-            .btn--cancel {
+            .dc-btn--cancel {
                 margin-left: 0.8rem;
             }
         }
@@ -262,7 +262,7 @@ $header-height: 4em;
             margin-left: 0.8rem;
             padding-top: 0.2rem;
         }
-        .btn--sell {
+        .dc-btn--sell {
             height: 32px;
 
             @include mobile {

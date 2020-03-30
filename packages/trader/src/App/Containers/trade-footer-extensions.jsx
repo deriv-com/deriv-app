@@ -17,7 +17,7 @@ class TradeFooterExtensions extends React.Component {
             populateFooterExtensions,
         } = this.props;
 
-        const show_positions_toggle = location.pathname === getUrlBase(AppRoutes.trade);
+        const show_positions_toggle = location.pathname === AppRoutes.trade;
 
         const footer_items = is_logged_in && show_positions_toggle && (
             <TogglePositions

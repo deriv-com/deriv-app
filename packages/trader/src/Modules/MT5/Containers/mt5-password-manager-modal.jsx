@@ -8,12 +8,12 @@ import {
     MobileWrapper,
     PageOverlay,
     ThemedScrollbars,
+    UILoader,
 } from '@deriv/components';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { urlFor } from '@deriv/shared/utils/url';
-import UILoader from 'App/Components/Elements/ui-loader.jsx';
 import MultiStep from 'Modules/Account/Components/multistep.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';

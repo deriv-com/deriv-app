@@ -76,7 +76,7 @@
             display: flex;
 
             &:disabled {
-                .btn__text {
+                .dc-btn__text {
                     color: var(--text-disabled);
                 }
             }

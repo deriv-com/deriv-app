@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React from 'react';
 import { Popover } from '@deriv/components';
 import { Icon } from '@deriv/components';

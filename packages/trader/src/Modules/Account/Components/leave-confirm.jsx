@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { FormikConsumer } from 'formik';
 import { Button, Icon } from '@deriv/components';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import IconMessageContent from './icon-message-content.jsx';
 
@@ -48,17 +49,20 @@ class TransitionBlocker extends React.Component {
                 {show && (
                     <>
                         <IconMessageContent
-                            message={localize('You have unsaved changes')}
-                            text={localize('Are you sure you want to discard changes and leave this page?')}
-                            icon={<Icon icon='IcUnsavedChanges' size={128} />}
+                            className='leave-confirm'
+                            message={localize('Unsaved changes')}
+                            text={localize(
+                                'You have unsaved changes. Are you sure you want to discard changes and leave this page?'
+                            )}
+                            icon={<Icon icon='IcUnsavedChanges' size={isMobile() ? 93 : 128} />}
                         >
-                            <div className='account-management-flex-wrapper'>
+                            <div className='account-management-flex-wrapper account-management-leave-confirm'>
                                 <Button
                                     type='button'
                                     has_effect
                                     onClick={this.back}
                                     text={localize('Cancel')}
-                                    tertiary
+                                    {...(isMobile() ? { secondary: true, large: true } : { tertiary: true })}
                                 />
                                 <Button
                                     type='button'
@@ -66,6 +70,7 @@ class TransitionBlocker extends React.Component {
                                     onClick={this.leave}
                                     text={localize('Leave')}
                                     primary
+                                    {...(isMobile() ? { large: true } : {})}
                                 />
                             </div>
                         </IconMessageContent>

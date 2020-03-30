@@ -101,7 +101,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 display: none;
             }
             @include mobile {
-                height: fit-content;
+                height: auto;
                 border-bottom-right-radius: $BORDER_RADIUS;
                 border-top-right-radius: $BORDER_RADIUS;
                 width: calc(100% - 1.6rem);

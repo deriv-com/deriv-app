@@ -4,7 +4,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ButtonLink = ({ children, className, to, onClick }) => (
-    <Link className={classNames('btn btn--primary btn__medium', className, 'effect')} to={to} onClick={onClick}>
+    <Link
+        className={classNames('dc-btn dc-btn--primary dc-btn__medium', className, 'effect')}
+        to={to}
+        onClick={onClick}
+    >
         {children}
     </Link>
 );

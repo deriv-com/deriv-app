@@ -42,10 +42,10 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     <React.Fragment>
                         {data.action.route ? (
                             <BinaryLink
-                                className={classNames('btn', 'btn--secondary', 'notification__cta-button')}
+                                className={classNames('dc-btn', 'dc-btn--secondary', 'notification__cta-button')}
                                 to={data.action.route}
                             >
-                                <span className='btn__text'>{data.action.text}</span>
+                                <span className='dc-btn__text'>{data.action.text}</span>
                             </BinaryLink>
                         ) : (
                             <Button

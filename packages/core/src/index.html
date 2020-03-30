@@ -1,243 +1,366 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <script>
-        try {
-            performance.mark('started');
-            const observer = new PerformanceObserver(function(list) {
-                const perfEntries = list.getEntries();
-                for (let i = 0; i < perfEntries.length; i++) {
-                    const time = Math.round(perfEntries[i].startTime + perfEntries[i].duration);
-                    dataLayer.push({
-                        event: perfEntries[i].name,
-                        duration: time
-                    })
-                }
-            });
-            // register observer for paint timing notifications
-            observer.observe({ entryTypes: ['paint'] });
-        } catch (error) {
-            // ignore error to pervent showing on console
-        }
-    </script>
-    <!-- Set skeleton theme color properties -->
-    <style>
-        :root {
-            --logo-loading-color: rgba(0, 0, 0, 0.8);
-            --header-footer-bg-color: rgba(0, 0, 0, 0.04);
-            --content-bg-color: #fff;
-            --general-main-1: #ffffff;
-            --general-section-1: #f2f3f4;
-            --text-prominent: #333333;
-            font-size: 62.5%;
-            --app-shell-platform-logo: url('/public/images/app/header/dtrader-logo.svg');
-            --app-shell-platform-name: 'DTrader';
-        }
-
-        #platform_name:after {
-            content: var(--app-shell-platform-name);
-            margin-left: 8px;
-        }
-
-        .deriv-app > .header__loading {
-            background-color: var(--general-main-1);
-            border-bottom: var(--general-main-1);
-        }
-        .deriv-app > .app-contents__loading {
-            background-color: var(--general-main-1);
-        }
-        .deriv-app > .footer__loading {
-            background-color: var(--general-main-1);
-            border-bottom: var(--general-main-1);
-        }
-        .initial-loader__loading {
-            background-color: var(--general-main-1);
-        }
-        .logo__loading--fill {
-            fill: var(--logo-loading-color);
-        }
-    </style>
-    <script type="text/javascript">
-        var ui_store = localStorage.getItem('ui_store');
-        var l = window.location;
-        var is_bot = /^\/bot/.test(l.pathname) || (/^\/(br_)/.test(l.pathname) && l.pathname.split('/')[2] === 'bot');
-        var is_mt5 = /^\/mt5/.test(l.pathname) || (/^\/(br_)/.test(l.pathname) && l.pathname.split('/')[2] === 'mt5');
-
-        if (ui_store && (ui_store.length > 0)) {
-            var is_dark_theme = false;
-            if (is_bot) { // TODO: [disable-dark-bot] Re-enable dark theme when Bot is ready
-                is_dark_theme = false;
-            } else {
-                is_dark_theme = JSON.parse(ui_store).is_dark_mode_on || false;
-            }
-
-            if (is_dark_theme) {
-                // if dark theme, change the property colors for dark theme
-                document.documentElement.style.setProperty('--header-footer-bg-color', '#0b0e18');
-                document.documentElement.style.setProperty('--content-bg-color', '#101320');
-                document.documentElement.style.setProperty('--logo-loading-color', '#fff');
-                document.documentElement.style.setProperty('--general-main-1', '#0e0e0e');
-                document.documentElement.style.setProperty('--general-section-1', '#151717');
-                document.documentElement.style.setProperty('--text-prominent', '#ffffff');
-            }
-        }
-
-        if (is_bot) {
-            document.documentElement.style.setProperty('--app-shell-platform-logo', 'url(\'/public/images/app/header/dbot-logo.svg\')');
-            document.documentElement.style.setProperty('--app-shell-platform-name', '\'DBot\'');
-        } else if (is_mt5) {
-            document.documentElement.style.setProperty('--app-shell-platform-logo', 'url(\'/public/images/app/header/dmt5-logo.svg\')');
-            document.documentElement.style.setProperty('--app-shell-platform-name', '\'DMT5\'');
-        }
-    </script>
-    <!-- End theme styles -->
-    <!-- Start Anti-Clickjack -->
-    <style id="antiClickjack">body{display:none !important;}</style>
-    <script type="text/javascript">
-        if (self === top) {
-            var antiClickjack = document.getElementById("antiClickjack");
-            antiClickjack.parentNode.removeChild(antiClickjack);
-        } else {
-            top.location = self.location;
-        }
-    </script>
-    <!-- End Anti-Clickjack -->
-
-    <noscript>Your browser does not support JavaScript!</noscript>
-
-    <!-- Start Segment Script -->
-    <script type="text/javascript">
-        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src="https://cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(n,a);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
-            /* IMPORTANT: upon development, make sure to use the Development Token */
-            // analytics.load("KD5463ad4XabNttNNaAC0zMLie7g9GIM"); // Development Token
-            analytics.load("TSvHCi93nNiBjfezt24XMMDa2YOwUoqS"); // Production Token
-        }}();
-    </script>
-    <!-- End Segment Script -->
-
-    <!-- Start GTM Script -->
-    <script>
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-NF7884S');
-    </script>
-    <!-- End GTM Script -->
-
-    <!-- Start GTM Script -->
-    <style>.async-hide { opacity: 0 !important}</style>
-    <script>
-        (function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;
-            h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
-            (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);
-        })(window,document.documentElement,'async-hide','dataLayer',4000,{'GTM-NF7884S':true});
-    </script>
-    <!-- End GTM Script -->
-
-    <!-- Start URL Handler -->
-    <script type="text/javascript">
-        (function (l) {
-            if (l.search) {
-                var q = {};
-                l.search.slice(1).split('&').forEach(function (v) {
-                    var a = v.split('=');
-                    q[a[0]] = a.slice(1).join('=').replace(/~and~/g, '&');
+    <head>
+        <script src="https://www.datadoghq-browser-agent.com/datadog-rum-us.js" type="text/javascript"></script>
+        <script>
+            (window.location.hostname === 'www.deriv.app' || window.location.hostname === 'deriv.app') &&
+                window.DD_RUM &&
+                window.DD_RUM.init({
+                    clientToken: 'pub6f67be9c67c8693a214336c89a1623fd',
+                    applicationId: '34461589-53a5-4f9f-aa85-5d0e994ee1a4',
                 });
-                if (q.p !== undefined) {
-                    window.history.replaceState(null, null,
-                        l.pathname.slice(0, -1) + (q.p || '') +
-                        (q.q ? ('?' + q.q) : '') +
-                        l.hash
-                    );
+        </script>
+        <script>
+            try {
+                performance.mark('started');
+                const observer = new PerformanceObserver(function(list) {
+                    const perfEntries = list.getEntries();
+                    for (let i = 0; i < perfEntries.length; i++) {
+                        const time = Math.round(perfEntries[i].startTime + perfEntries[i].duration);
+                        dataLayer.push({
+                            event: perfEntries[i].name,
+                            duration: time,
+                        });
+                    }
+                });
+                // register observer for paint timing notifications
+                observer.observe({ entryTypes: ['paint'] });
+            } catch (error) {
+                // ignore error to pervent showing on console
+            }
+        </script>
+        <!-- Set skeleton theme color properties -->
+        <style>
+            :root {
+                --logo-loading-color: rgba(0, 0, 0, 0.8);
+                --header-footer-bg-color: rgba(0, 0, 0, 0.04);
+                --content-bg-color: #fff;
+                --general-main-1: #ffffff;
+                --general-section-1: #f2f3f4;
+                --text-prominent: #333333;
+                font-size: 62.5%;
+                --app-shell-platform-logo: url('/public/images/app/header/dtrader-logo.svg');
+                --app-shell-platform-name: 'DTrader';
+            }
+
+            #platform_name:after {
+                content: var(--app-shell-platform-name);
+                margin-left: 8px;
+            }
+
+            .deriv-app > .header__loading {
+                background-color: var(--general-main-1);
+                border-bottom: var(--general-main-1);
+            }
+            .deriv-app > .app-contents__loading {
+                background-color: var(--general-main-1);
+            }
+            .deriv-app > .footer__loading {
+                background-color: var(--general-main-1);
+                border-bottom: var(--general-main-1);
+            }
+            .initial-loader__loading {
+                background-color: var(--general-main-1);
+            }
+            .logo__loading--fill {
+                fill: var(--logo-loading-color);
+            }
+        </style>
+        <script type="text/javascript">
+            var ui_store = localStorage.getItem('ui_store');
+            var l = window.location;
+            var is_bot =
+                /^\/bot/.test(l.pathname) || (/^\/(br_)/.test(l.pathname) && l.pathname.split('/')[2] === 'bot');
+            var is_mt5 =
+                /^\/mt5/.test(l.pathname) || (/^\/(br_)/.test(l.pathname) && l.pathname.split('/')[2] === 'mt5');
+
+            if (ui_store && ui_store.length > 0) {
+                var is_dark_theme = false;
+                if (is_bot) {
+                    // TODO: [disable-dark-bot] Re-enable dark theme when Bot is ready
+                    is_dark_theme = false;
+                } else {
+                    is_dark_theme = JSON.parse(ui_store).is_dark_mode_on || false;
+                }
+
+                if (is_dark_theme) {
+                    // if dark theme, change the property colors for dark theme
+                    document.documentElement.style.setProperty('--header-footer-bg-color', '#0b0e18');
+                    document.documentElement.style.setProperty('--content-bg-color', '#101320');
+                    document.documentElement.style.setProperty('--logo-loading-color', '#fff');
+                    document.documentElement.style.setProperty('--general-main-1', '#0e0e0e');
+                    document.documentElement.style.setProperty('--general-section-1', '#151717');
+                    document.documentElement.style.setProperty('--text-prominent', '#ffffff');
                 }
             }
-        }(window.location))
-    </script>
-    <!-- End URL Handler -->
 
-    <meta name="description" content=" Deriv gives everyone an easy way to participate in the financial markets. Trade with as little as $1 USD on major currencies, stocks, indices, and commodities." />
-    <meta name="keywords" content=" digital options, forex, forex trading, online trading, financial trading, binary trading, index trading, trading indices, forex trades, trading commodities, digital options strategy, binary broker, binary bet, digital options trading platform, binary strategy, finance, stocks, investment, trading" />
-    <meta name="author" content="Deriv" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="theme-color" content="#2a3052" />
-    <meta name="dcterms.rightsHolder" content="Deriv" />
-    <meta name="dcterms.rights" content="Deriv" />
-    <meta name="google-site-verification" content="g5u3TyEdmYJ_HKZ6EmpW1nlKwD4XPVeLMhN9leeMfuw" />
-    <meta property="og:title" content="Deriv" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="/images/common/og_image.gif" />
-    <meta name="google" content="notranslate" />
-    <meta name='referrer' content='origin' />
+            if (is_bot) {
+                document.documentElement.style.setProperty(
+                    '--app-shell-platform-logo',
+                    "url('/public/images/app/header/dbot-logo.svg')"
+                );
+                document.documentElement.style.setProperty('--app-shell-platform-name', "'DBot'");
+            } else if (is_mt5) {
+                document.documentElement.style.setProperty(
+                    '--app-shell-platform-logo',
+                    "url('/public/images/app/header/dmt5-logo.svg')"
+                );
+                document.documentElement.style.setProperty('--app-shell-platform-name', "'DMT5'");
+            }
+        </script>
+        <!-- End theme styles -->
+        <!-- Start Anti-Clickjack -->
+        <style id="antiClickjack">
+            body {
+                display: none !important;
+            }
+        </style>
+        <script type="text/javascript">
+            if (self === top) {
+                var antiClickjack = document.getElementById('antiClickjack');
+                antiClickjack.parentNode.removeChild(antiClickjack);
+            } else {
+                top.location = self.location;
+            }
+        </script>
+        <!-- End Anti-Clickjack -->
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link rel="preconnect" href="https://www.googletagmanager.com" />
-    <link rel="preconnect" href="https://browser-update.org" />
+        <noscript>Your browser does not support JavaScript!</noscript>
 
-    <title>Deriv App | Deriv</title>
-    <meta charset="UTF-8">
-    <meta name="google-site-verification" content="g5u3TyEdmYJ_HKZ6EmpW1nlKwD4XPVeLMhN9leeMfuw" />
-</head>
-<body class="body theme">
-<!-- Start GTM NoScript -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NF7884S"
-            height="0" width="0" style="display: none; visibility: hidden;"></iframe></noscript>
-<!-- End GTM NoScript -->
+        <!-- Start Segment Script -->
+        <script type="text/javascript">
+            !(function() {
+                var analytics = (window.analytics = window.analytics || []);
+                if (!analytics.initialize)
+                    if (analytics.invoked)
+                        window.console && console.error && console.error('Segment snippet included twice.');
+                    else {
+                        analytics.invoked = !0;
+                        analytics.methods = [
+                            'trackSubmit',
+                            'trackClick',
+                            'trackLink',
+                            'trackForm',
+                            'pageview',
+                            'identify',
+                            'reset',
+                            'group',
+                            'track',
+                            'ready',
+                            'alias',
+                            'debug',
+                            'page',
+                            'once',
+                            'off',
+                            'on',
+                        ];
+                        analytics.factory = function(t) {
+                            return function() {
+                                var e = Array.prototype.slice.call(arguments);
+                                e.unshift(t);
+                                analytics.push(e);
+                                return analytics;
+                            };
+                        };
+                        for (var t = 0; t < analytics.methods.length; t++) {
+                            var e = analytics.methods[t];
+                            analytics[e] = analytics.factory(e);
+                        }
+                        analytics.load = function(t, e) {
+                            var n = document.createElement('script');
+                            n.type = 'text/javascript';
+                            n.async = !0;
+                            n.src = 'https://cdn.segment.com/analytics.js/v1/' + t + '/analytics.min.js';
+                            var a = document.getElementsByTagName('script')[0];
+                            a.parentNode.insertBefore(n, a);
+                            analytics._loadOptions = e;
+                        };
+                        analytics.SNIPPET_VERSION = '4.1.0';
+                        /* IMPORTANT: upon development, make sure to use the Development Token */
+                        // analytics.load("KD5463ad4XabNttNNaAC0zMLie7g9GIM"); // Development Token
+                        analytics.load('TSvHCi93nNiBjfezt24XMMDa2YOwUoqS'); // Production Token
+                    }
+            })();
+        </script>
+        <!-- End Segment Script -->
 
-<!-- TODO: Display shell platform icon and text based on route -->
+        <!-- Start GTM Script -->
+        <script>
+            (function(w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s),
+                    dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-NF7884S');
+        </script>
+        <!-- End GTM Script -->
 
-<div id="deriv_app" class="deriv-app">
-    <header class="header__loading" style="background: var(--general-main-1); border-bottom: 1px solid var(--general-section-1); position: fixed; z-index: 99; box-sizing: border-box; height: 48px; width: 100%; top: 0;">
-        <div class="icon_loading" style="height: 100%; padding: 0 1.6em; position: relative; display: inline-flex; align-items: center;">
+        <!-- Start GTM Script -->
+        <style>
+            .async-hide {
+                opacity: 0 !important;
+            }
+        </style>
+        <script>
+            (function(a, s, y, n, c, h, i, d, e) {
+                s.className += ' ' + y;
+                h.end = i = function() {
+                    s.className = s.className.replace(RegExp(' ?' + y), '');
+                };
+                (a[n] = a[n] || []).hide = h;
+                setTimeout(function() {
+                    i();
+                    h.end = null;
+                }, c);
+            })(window, document.documentElement, 'async-hide', 'dataLayer', 4000, { 'GTM-NF7884S': true });
+        </script>
+        <!-- End GTM Script -->
 
-            <!-- Start Platform Logo -->
-            <div style="width: 32px; height: 32px; background: var(--app-shell-platform-logo);"></div>
-            <!-- Start Platform Logo -->
+        <!-- Start URL Handler -->
+        <script type="text/javascript">
+            (function(l) {
+                if (l.search) {
+                    var q = {};
+                    l.search
+                        .slice(1)
+                        .split('&')
+                        .forEach(function(v) {
+                            var a = v.split('=');
+                            q[a[0]] = a
+                                .slice(1)
+                                .join('=')
+                                .replace(/~and~/g, '&');
+                        });
+                    if (q.p !== undefined) {
+                        window.history.replaceState(
+                            null,
+                            null,
+                            l.pathname.slice(0, -1) + (q.p || '') + (q.q ? '?' + q.q : '') + l.hash
+                        );
+                    }
+                }
+            })(window.location);
+        </script>
+        <!-- End URL Handler -->
 
-            <!-- Start Platform Name -->
-            <div class="header__title" style="display: inline-block; font-weight: bold; font-size: 1.6rem; color: var(--text-prominent);">
-                <span id="platform_name"></span>
-                <span class="header__logo" style="color: #fff; background-color: #85acb0; border-radius: 10px; display: inline-block; font-size: 1.4rem; font-weight: normal; height: 20px; line-height: 1.43; text-align: center; width: 50px; margin-left: 8px;">
-                    BETA
-                </span>
+        <meta
+            name="description"
+            content=" Deriv gives everyone an easy way to participate in the financial markets. Trade with as little as $1 USD on major currencies, stocks, indices, and commodities."
+        />
+        <meta
+            name="keywords"
+            content=" digital options, forex, forex trading, online trading, financial trading, binary trading, index trading, trading indices, forex trades, trading commodities, digital options strategy, binary broker, binary bet, digital options trading platform, binary strategy, finance, stocks, investment, trading"
+        />
+        <meta name="author" content="Deriv" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="theme-color" content="#2a3052" />
+        <meta name="dcterms.rightsHolder" content="Deriv" />
+        <meta name="dcterms.rights" content="Deriv" />
+        <meta name="google-site-verification" content="g5u3TyEdmYJ_HKZ6EmpW1nlKwD4XPVeLMhN9leeMfuw" />
+        <meta property="og:title" content="Deriv" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="/images/common/og_image.gif" />
+        <meta name="google" content="notranslate" />
+        <meta name="referrer" content="origin" />
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://browser-update.org" />
+
+        <title>Deriv App | Deriv</title>
+        <meta charset="UTF-8" />
+        <meta name="google-site-verification" content="g5u3TyEdmYJ_HKZ6EmpW1nlKwD4XPVeLMhN9leeMfuw" />
+    </head>
+    <body class="body theme">
+        <!-- Start GTM NoScript -->
+        <noscript
+            ><iframe
+                src="https://www.googletagmanager.com/ns.html?id=GTM-NF7884S"
+                height="0"
+                width="0"
+                style="display: none; visibility: hidden;"
+            ></iframe
+        ></noscript>
+        <!-- End GTM NoScript -->
+
+        <!-- TODO: Display shell platform icon and text based on route -->
+
+        <div id="deriv_app" class="deriv-app">
+            <header
+                class="header__loading"
+                style="background: var(--general-main-1); border-bottom: 1px solid var(--general-section-1); position: fixed; z-index: 99; box-sizing: border-box; height: 48px; width: 100%; top: 0;"
+            >
+                <div
+                    class="icon_loading"
+                    style="height: 100%; padding: 0 1.6em; position: relative; display: inline-flex; align-items: center;"
+                >
+                    <!-- Start Platform Logo -->
+                    <div style="width: 32px; height: 32px; background: var(--app-shell-platform-logo);"></div>
+                    <!-- Start Platform Logo -->
+
+                    <!-- Start Platform Name -->
+                    <div
+                        class="header__title"
+                        style="display: inline-block; font-weight: bold; font-size: 1.6rem; color: var(--text-prominent);"
+                    >
+                        <span id="platform_name"></span>
+                        <span
+                            class="header__logo"
+                            style="color: #fff; background-color: #85acb0; border-radius: 10px; display: inline-block; font-size: 1.4rem; font-weight: normal; height: 20px; line-height: 1.43; text-align: center; width: 50px; margin-left: 8px;"
+                        >
+                            BETA
+                        </span>
+                    </div>
+                    <!-- End Platform Name -->
+                </div>
+            </header>
+            <div class="app-contents app-contents__loading" style="margin-bottom: 0; overflow: hidden;">
+                <div class="initial-loader initial-loader__loading">
+                    <div class="initial-loader__barspinner barspinner barspinner-light">
+                        <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--1 rect1"></div>
+                        <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--2 rect2"></div>
+                        <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--3 rect3"></div>
+                        <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--4 rect4"></div>
+                        <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--5 rect5"></div>
+                    </div>
+                </div>
             </div>
-            <!-- End Platform Name -->
+            <footer
+                class="footer__loading"
+                style="background: var(--general-main-1); border-top: 1px solid var(--general-section-1); position: fixed; bottom: 0; width: 100%; height: 37px; z-index: 3;"
+            ></footer>
         </div>
-    </header>
-    <div class="app-contents app-contents__loading" style="margin-bottom: 0; overflow: hidden;">
-        <div class="initial-loader initial-loader__loading">
-            <div class="initial-loader__barspinner barspinner barspinner-light">
-                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--1 rect1"></div>
-                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--2 rect2"></div>
-                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--3 rect3"></div>
-                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--4 rect4"></div>
-                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--5 rect5"></div>
+        <div id="modal_root" class="modal-root"></div>
+        <!-- Temporary Mobile Landscape UI Blocker -->
+        <div id="landscape_blocker" class="landscape-blocker">
+            <div class="landscape-blocker__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="59" height="64" viewBox="0 0 59 64">
+                    <g fill="none">
+                        <path
+                            fill="#FF444F"
+                            d="M40.416 10.212c2.445 3.44 3.509 7.63 2.973 11.924-.112.904.995 1.047 1.472 1.108.218.028.42.038.582.038.886 0 1.076-.47 1.13-.886.617-4.953-.646-9.938-3.556-14.037-1.543-2.169-3.468-3.974-5.717-5.364C34.148 1.035 30.52 0 26.814 0c-4.941 0-9.675 1.816-13.33 5.11-.17.15-.494.172-.657.05l-1.35-1.046c-.614-.472-1.302-.447-1.7.003-.166.192-.351.545-.274 1.128l.556 4.326c.119.931.914 1.633 1.85 1.633l4.563-.571c.874-.106 1.109-.637 1.17-.86.06-.224.126-.799-.567-1.328l-1.22-.947-.03-.206c3.037-2.645 6.94-4.103 10.987-4.103 3.113 0 6.16.87 8.807 2.51 1.892 1.178 3.506 2.696 4.797 4.513z"
+                        />
+                        <path
+                            fill="#85ACB0"
+                            d="M58.063 57.177v-21.65c0-1.78-1.442-3.217-3.22-3.217H30.025v4.343h21.839c.49 0 .884.397.884.886v17.625c0 .49-.395.886-.884.886H30.025v4.346h24.816c1.78 0 3.222-1.441 3.222-3.219zM3.237 63.944h21.65c1.777 0 3.22-1.442 3.22-3.22V19.425c0-1.778-1.444-3.22-3.22-3.22H3.238c-1.78 0-3.219 1.442-3.219 3.22v41.299c.002 1.778 1.44 3.22 3.219 3.22zm10.772-1.967c-1.122 0-2.028-.906-2.028-2.026 0-1.12.906-2.027 2.028-2.027 1.118 0 2.026.907 2.026 2.027s-.908 2.026-2.026 2.026zM4.363 22.403c0-.49.397-.885.886-.885h17.625c.49 0 .886.396.886.885v31.795c0 .49-.397.885-.886.885H5.25c-.489 0-.886-.395-.886-.885V22.403z"
+                        />
+                    </g>
+                </svg>
+            </div>
+            <!-- Since its temporary blocker and landscape will be designed with multilingual support, we can ignore localization for text below -->
+            <div class="landscape-blocker__message">
+                Landscape view is currently not supported.
+                <br />
+                Please rotate your device to portrait view.
             </div>
         </div>
-    </div>
-    <footer class="footer__loading" style="background: var(--general-main-1); border-top: 1px solid var(--general-section-1); position: fixed; bottom: 0; width: 100%; height: 37px; z-index: 3;"></footer>
-</div>
-<div id="modal_root" class="modal-root"></div>
-<!-- Temporary Mobile Landscape UI Blocker -->
-<div id="landscape_blocker" class="landscape-blocker">
-    <div class="landscape-blocker__icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="59" height="64" viewBox="0 0 59 64">
-            <g fill="none">
-                <path fill="#FF444F" d="M40.416 10.212c2.445 3.44 3.509 7.63 2.973 11.924-.112.904.995 1.047 1.472 1.108.218.028.42.038.582.038.886 0 1.076-.47 1.13-.886.617-4.953-.646-9.938-3.556-14.037-1.543-2.169-3.468-3.974-5.717-5.364C34.148 1.035 30.52 0 26.814 0c-4.941 0-9.675 1.816-13.33 5.11-.17.15-.494.172-.657.05l-1.35-1.046c-.614-.472-1.302-.447-1.7.003-.166.192-.351.545-.274 1.128l.556 4.326c.119.931.914 1.633 1.85 1.633l4.563-.571c.874-.106 1.109-.637 1.17-.86.06-.224.126-.799-.567-1.328l-1.22-.947-.03-.206c3.037-2.645 6.94-4.103 10.987-4.103 3.113 0 6.16.87 8.807 2.51 1.892 1.178 3.506 2.696 4.797 4.513z"/>
-                <path fill="#85ACB0" d="M58.063 57.177v-21.65c0-1.78-1.442-3.217-3.22-3.217H30.025v4.343h21.839c.49 0 .884.397.884.886v17.625c0 .49-.395.886-.884.886H30.025v4.346h24.816c1.78 0 3.222-1.441 3.222-3.219zM3.237 63.944h21.65c1.777 0 3.22-1.442 3.22-3.22V19.425c0-1.778-1.444-3.22-3.22-3.22H3.238c-1.78 0-3.219 1.442-3.219 3.22v41.299c.002 1.778 1.44 3.22 3.219 3.22zm10.772-1.967c-1.122 0-2.028-.906-2.028-2.026 0-1.12.906-2.027 2.028-2.027 1.118 0 2.026.907 2.026 2.027s-.908 2.026-2.026 2.026zM4.363 22.403c0-.49.397-.885.886-.885h17.625c.49 0 .886.396.886.885v31.795c0 .49-.397.885-.886.885H5.25c-.489 0-.886-.395-.886-.885V22.403z"/>
-            </g>
-        </svg>
-    </div>
-    <!-- Since its temporary blocker and landscape will be designed with multilingual support, we can ignore localization for text below -->
-    <div class="landscape-blocker__message">
-        Landscape view is currently not supported.
-        <br />
-        Please rotate your device to portrait view.
-    </div>
-</div>
-<!-- End Temporary Mobile Landscape UI Blocker -->
-<script>
-    performance.mark('first-contentful-paint');
-</script>
-</body>
+        <!-- End Temporary Mobile Landscape UI Blocker -->
+        <script>
+            performance.mark('first-contentful-paint');
+        </script>
+    </body>
 </html>

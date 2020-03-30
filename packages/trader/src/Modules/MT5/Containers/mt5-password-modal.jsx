@@ -76,7 +76,9 @@ const MT5PasswordModal = ({
     const closeOpenSuccess = () => {
         disableMt5PasswordModal();
         closeDialogs();
-        history.push(routes.cashier_acc_transfer);
+        if (account_type.category === 'real') {
+            history.push(routes.cashier_acc_transfer);
+        }
     };
 
     const IconType = () => getIconFromType(account_type.type);

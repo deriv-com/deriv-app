@@ -87,6 +87,9 @@ class ProofOfIdentityContainer extends React.Component {
                 const { onfido_unsupported } = this.state;
                 const status = getIdentityStatus(identity, onfido_unsupported);
                 const unwelcome = get_account_status.status.some(account_status => account_status === 'unwelcome');
+                const allow_document_upload = get_account_status.status.some(
+                    account_status => account_status === 'allow_document_upload'
+                );
                 const documents_supported = identity.services.onfido.documents_supported;
                 if (this.is_mounted) {
                     this.setState({
@@ -97,6 +100,7 @@ class ProofOfIdentityContainer extends React.Component {
                         onfido_service_token,
                         unwelcome,
                         documents_supported,
+                        allow_document_upload,
                     });
                     this.props.refreshNotifications();
                     if (this.props.onStateChange) this.props.onStateChange({ status });
@@ -118,6 +122,7 @@ class ProofOfIdentityContainer extends React.Component {
             has_poa,
             api_error,
             unwelcome,
+            allow_document_upload,
         } = this.state;
 
         if (api_error)
@@ -127,7 +132,7 @@ class ProofOfIdentityContainer extends React.Component {
                 />
             );
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
-        if (unwelcome) return <Unverified />; // CS manually mark the account as unwelcome / suspends the account
+        if (unwelcome && !allow_document_upload) return <Unverified />; // CS manually mark the account as unwelcome / suspends the account
 
         return (
             <Onfido

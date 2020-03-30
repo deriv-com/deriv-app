@@ -116,6 +116,8 @@ export default class TradeStore extends BaseStore {
 
     proposal_req_id = {};
 
+    @observable should_skip_prepost_lifecycle = false;
+
     @action.bound
     init = async () => {
         // To be sure that the website_status response has been received before processing trading page.
@@ -201,6 +203,18 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    setSkipPrePostLifecycle(should_skip) {
+        if (!!should_skip !== !!this.should_skip_prepost_lifecycle) {
+            // to skip assignment if no change is made
+            this.should_skip_prepost_lifecycle = should_skip;
+
+            if (!should_skip) {
+                this.onUnmount();
+            }
+        }
+    }
+
+    @action.bound
     setTradeStatus(status) {
         this.is_trade_enabled = status;
     }
@@ -248,10 +262,6 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async setContractTypes() {
-        // TODO: remove this, once multiplier is avaible for real account & logged-out
-        if (this.is_multiplier && this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
-            await this.processNewValuesAsync({ contract_type: 'rise_fall' }, false, {}, false);
-        }
         if (this.symbol && this.is_symbol_in_active_symbols) {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
@@ -276,7 +286,7 @@ export default class TradeStore extends BaseStore {
         await WS.wait('authorize');
         await this.setActiveSymbols();
         runInAction(async () => {
-            await WS.contractsFor(this.symbol).then(async r => {
+            await WS.storage.contractsFor(this.symbol).then(async r => {
                 if (r.error && r.error.code === 'InvalidSymbol') {
                     await this.resetRefresh();
                     await this.setActiveSymbols();
@@ -600,7 +610,10 @@ export default class TradeStore extends BaseStore {
         }
         // Sets the default value to Amount when Currency has changed from Fiat to Crypto and vice versa.
         // The source of default values is the website_status response.
-        if (should_forget_first) WS.forgetAll('proposal');
+        if (should_forget_first) {
+            WS.forgetAll('proposal');
+            this.proposal_requests = {};
+        }
         if (is_changed_by_user && /\bcurrency\b/.test(Object.keys(obj_new_values))) {
             const prev_currency =
                 obj_old_values && !ObjectUtils.isEmptyObject(obj_old_values) && obj_old_values.currency
@@ -857,6 +870,11 @@ export default class TradeStore extends BaseStore {
     @action.bound
     accountSwitcherListener() {
         this.resetErrorServices();
+        // TODO: remove this, once multiplier is avaible for real accounts
+        if (this.is_multiplier && this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
+            this.processNewValuesAsync({ contract_type: 'rise_fall' }, false, {}, false);
+            if (!this.is_symbol_in_active_symbols) this.setActiveSymbols();
+        }
         this.setContractTypes();
         return this.processNewValuesAsync(
             { currency: this.root_store.client.currency },
@@ -910,6 +928,10 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onMount() {
+        if (this.should_skip_prepost_lifecycle) {
+            return;
+        }
+
         performance.mark('trade-engine-started');
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
@@ -951,6 +973,10 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onUnmount() {
+        if (this.should_skip_prepost_lifecycle) {
+            return;
+        }
+
         this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
         this.disposeLogout();

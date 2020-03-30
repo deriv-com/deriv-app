@@ -20,6 +20,7 @@
         font-weight: normal;
         line-height: 1.43;
         color: var(--text-general);
+        padding: 0px 18px;
     }
     &__tab-content {
         height: calc(100vh - 330px);
@@ -31,6 +32,7 @@
             display: flex;
             justify-content: space-between;
             margin: 25px 0;
+            padding: 0px 18px;
 
             &:first-child {
                 margin-top: 0;
@@ -56,6 +58,7 @@
         }
         &-footer {
             text-align: right;
+            padding: 0px 18px;
         }
         .dc-input {
             margin-bottom: 0;

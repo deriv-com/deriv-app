@@ -66,12 +66,15 @@
         padding-left: 1.6rem;
 
         &--heading {
-            @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
-            line-height: 1.5em;
+            line-height: 1.5rem;
+            @include typeface(--title-left-bold-black, none);
+            @include mobile {
+                font-size: 1.2rem;
+            }
         }
         &--button {
-            height: 4em;
+            height: 4rem;
         }
         @include mobile {
             flex-direction: column;

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import Loadable from 'react-loadable';
+import { UILoader } from '@deriv/components';
 import BinaryRoutes from 'App/Components/Routes';
-import UILoader from 'App/Components/Elements/ui-loader.jsx';
 import { connect } from 'Stores/connect';
 
 const Error = Loadable({

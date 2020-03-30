@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Loadable from 'react-loadable';
+import { UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import UILoader from 'App/Components/Elements/ui-loader.jsx';
 import { connect } from 'Stores/connect';
 
 const ChartSettingContainer = Loadable({

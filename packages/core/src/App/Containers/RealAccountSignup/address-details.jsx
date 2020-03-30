@@ -1,8 +1,18 @@
-import { Autocomplete, Input, ThemedScrollbars } from '@deriv/components';
+import classNames from 'classnames';
+import {
+    Autocomplete,
+    DesktopWrapper,
+    Div100vhContainer,
+    Input,
+    MobileWrapper,
+    ThemedScrollbars,
+} from '@deriv/components';
 import { Formik, Field } from 'formik';
 import React, { Component } from 'react';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import Icon from '@deriv/components/src/components/icon';
 import FormSubmitButton from './form-submit-button.jsx';
 
 const InputField = props => {
@@ -59,6 +69,7 @@ class AddressDetails extends Component {
     };
 
     render() {
+        const padding_bottom = window.innerHeight < 930 ? '10rem' : '12rem';
         return (
             <Formik
                 initialValues={{
@@ -70,7 +81,7 @@ class AddressDetails extends Component {
                 }}
                 validate={this.validateAddressDetails}
                 onSubmit={(values, actions) => {
-                    if (values.address_state) {
+                    if (isDesktop() && values.address_state) {
                         values.address_state = this.props.states_list.length
                             ? getLocation(this.props.states_list, values.address_state, 'value')
                             : values.address_state;
@@ -81,12 +92,16 @@ class AddressDetails extends Component {
             >
                 {({ handleSubmit, isSubmitting, errors, values, setFieldValue }) => (
                     <form onSubmit={handleSubmit}>
-                        <div className='details-form'>
+                        <Div100vhContainer className='details-form' height_offset='199px' is_disabled={isDesktop()}>
                             <p className='details-form__description'>
                                 <Localize i18n_default_text='Please ensure that this address is the same as in your proof of address' />
                             </p>
-                            <div className='details-form__elements-container'>
+                            <div
+                                className='details-form__elements-container'
+                                style={{ height: isMobile() ? 'calc(100% + 3.2rem)' : null }}
+                            >
                                 <ThemedScrollbars
+                                    is_native={isMobile()}
                                     autoHide={!(window.innerHeight < 890)}
                                     style={{
                                         height: 'calc(100% - 16px)',
@@ -94,7 +109,7 @@ class AddressDetails extends Component {
                                 >
                                     <div
                                         className='details-form__elements'
-                                        style={{ paddingBottom: window.innerHeight < 930 ? '10rem' : '12rem' }}
+                                        style={{ paddingBottom: isDesktop() ? padding_bottom : null }}
                                     >
                                         <InputField
                                             name='address_line_1'
@@ -118,22 +133,83 @@ class AddressDetails extends Component {
                                                 {this.props.states_list.length > 0 ? (
                                                     <Field name='address_state'>
                                                         {({ field }) => (
-                                                            <Autocomplete
-                                                                {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='new-password' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('State/Province')}
-                                                                list_items={this.props.states_list}
-                                                                onItemSelection={({ value, text }) =>
-                                                                    setFieldValue(
-                                                                        'address_state',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    )
-                                                                }
-                                                            />
+                                                            <>
+                                                                <DesktopWrapper>
+                                                                    <Autocomplete
+                                                                        {...field}
+                                                                        data-lpignore='true'
+                                                                        autoComplete='new-password' // prevent chrome autocomplete
+                                                                        dropdown_offset='3.2rem'
+                                                                        type='text'
+                                                                        label={localize('State/Province')}
+                                                                        list_items={this.props.states_list}
+                                                                        onItemSelection={({ value, text }) =>
+                                                                            setFieldValue(
+                                                                                'address_state',
+                                                                                value ? text : '',
+                                                                                true
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                </DesktopWrapper>
+                                                                <MobileWrapper>
+                                                                    {/* TODO: Move native select to deriv components */}
+                                                                    <div className='dc-input'>
+                                                                        <div className='select-native'>
+                                                                            <div className='select-native__display'>
+                                                                                {this.props.states_list &&
+                                                                                    values.address_state && (
+                                                                                        <span className='select-native__display-text'>
+                                                                                            {getLocation(
+                                                                                                this.props.states_list,
+                                                                                                values.address_state,
+                                                                                                'text'
+                                                                                            )}
+                                                                                        </span>
+                                                                                    )}
+                                                                            </div>
+                                                                            <div
+                                                                                className={classNames(
+                                                                                    'select-native__placeholder',
+                                                                                    {
+                                                                                        'select-native__placeholder--has-value':
+                                                                                            values.address_state,
+                                                                                    }
+                                                                                )}
+                                                                            >
+                                                                                {localize('State/Province')}
+                                                                            </div>
+                                                                            <Icon
+                                                                                icon='IcChevronDown'
+                                                                                className='select-native__arrow'
+                                                                            />
+                                                                            <select
+                                                                                className='select-native__picker'
+                                                                                name='address_state'
+                                                                                onChange={e => {
+                                                                                    setFieldValue(
+                                                                                        'address_state',
+                                                                                        e.target.value,
+                                                                                        true
+                                                                                    );
+                                                                                }}
+                                                                                value={values.address_state}
+                                                                            >
+                                                                                {this.props.states_list.map(
+                                                                                    (option, idx) => (
+                                                                                        <option
+                                                                                            key={idx}
+                                                                                            value={option.value}
+                                                                                        >
+                                                                                            {option.text}
+                                                                                        </option>
+                                                                                    )
+                                                                                )}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </MobileWrapper>
+                                                            </>
                                                         )}
                                                     </Field>
                                                 ) : (
@@ -154,7 +230,7 @@ class AddressDetails extends Component {
                                     </div>
                                 </ThemedScrollbars>
                             </div>
-                        </div>
+                        </Div100vhContainer>
                         <FormSubmitButton
                             is_absolute
                             is_disabled={

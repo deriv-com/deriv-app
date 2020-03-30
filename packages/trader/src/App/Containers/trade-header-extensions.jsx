@@ -68,7 +68,7 @@ TradeHeaderExtensions.propTypes = {
 export default connect(({ client, modules, ui }) => ({
     positions_currency: client.currency,
     is_logged_in: client.is_logged_in,
-    positions: modules.portfolio.all_positions,
+    positions: modules.portfolio.active_positions_filtered,
     positions_error: modules.portfolio.error,
     is_positions_empty: modules.portfolio.is_empty,
     onPositionsSell: modules.portfolio.onClickSell,

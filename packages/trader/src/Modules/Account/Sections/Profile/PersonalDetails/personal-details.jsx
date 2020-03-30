@@ -582,7 +582,7 @@ class PersonalDetailsForm extends React.Component {
                                     )}
                                     <Button
                                         className={classNames('account-form__footer-btn', {
-                                            'btn--primary--green': is_submit_success,
+                                            'dc-btn--primary--green': is_submit_success,
                                         })}
                                         type='submit'
                                         is_disabled={

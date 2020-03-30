@@ -150,6 +150,7 @@ class AddressDetails extends Component {
                                                                     />
                                                                 </DesktopWrapper>
                                                                 <MobileWrapper>
+                                                                    {/* TODO: Move native select to deriv components */}
                                                                     <div className='dc-input'>
                                                                         <div className='select-native'>
                                                                             <div className='select-native__display'>

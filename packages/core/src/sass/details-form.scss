@@ -28,6 +28,68 @@
                 color: var(--text-prominent);
             }
         }
+        @include mobile {
+            &__native {
+                opacity: 0;
+                width: 100%;
+                min-width: calc(100% - 1rem);
+                position: absolute;
+                height: 38px;
+            }
+            &__display {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                padding-left: 1rem;
+                height: 38px;
+                position: relative;
+
+                &-text {
+                    font-size: 1.4rem;
+                    color: var(--text-prominent);
+                    background-color: var(--general-section-2);
+                    padding-top: 0.2rem;
+
+                    &--has-error {
+                        padding-top: unset;
+                        color: var(--brand-red-coral);
+                    }
+                }
+            }
+            &__calendar {
+                pointer-events: none;
+
+                &-icon {
+                    --fill-color1: var(--text-less-prominent);
+                    position: absolute;
+                    right: 1rem;
+                }
+            }
+            &__placeholder {
+                color: var(--text-less-prominent);
+                transform: none;
+                transition: transform 0.25s linear;
+                position: absolute;
+                font-size: 1.4rem;
+                left: 1.2rem;
+
+                &--has-value {
+                    transform: translate3d(-14px, -20px, 0px) scale(0.7);
+                    color: var(--text-general);
+                }
+                &--has-error {
+                    color: var(--brand-red-coral);
+                }
+            }
+            &__error {
+                display: flex;
+                font-size: 1.2rem;
+                color: var(--brand-red-coral);
+                position: absolute;
+                top: 4.4rem;
+                left: 1.2rem;
+            }
+        }
     }
     &__elements {
         flex-grow: 1;
@@ -37,11 +99,22 @@
         &-container {
             height: calc(100% - 76px);
             overflow: hidden;
+
+            @include mobile {
+                height: auto;
+                width: calc(100% - 3.2rem);
+                overflow: unset;
+                margin: 1.6rem auto;
+            }
         }
         .dc-input {
             label {
                 top: 1.2rem;
                 background-color: var(--general-main-2);
+
+                @include mobile {
+                    background-color: var(--general-section-2);
+                }
             }
         }
         .dc-dropdown__display {
@@ -51,11 +124,27 @@
                 background-color: var(--general-main-2);
             }
         }
+        @include mobile {
+            width: 100%;
+            margin: 0;
+        }
     }
     &__description {
         text-align: center;
         font-size: var(--text-size-xxs);
         margin: 1.6rem 0;
         color: var(--text-general);
+
+        @include mobile {
+            text-align: left;
+            margin: 0 2.4rem;
+            line-height: 20px;
+            color: var(--text-less-prominent);
+        }
+    }
+    @include mobile {
+        margin-top: 70px;
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 }

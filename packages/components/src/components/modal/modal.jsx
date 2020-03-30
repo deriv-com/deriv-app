@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
+import Icon from 'Components/icon/icon.jsx';
 import Body from './modal-body.jsx';
 import Footer from './modal-footer.jsx';
-import Icon from '../icon';
 
 class ModalElement extends React.PureComponent {
     constructor(props) {
@@ -45,7 +45,20 @@ class ModalElement extends React.PureComponent {
     };
 
     render() {
-        const { id, title, className, header, children, has_close_icon, height, toggleModal, width } = this.props;
+        const {
+            id,
+            title,
+            className,
+            is_vertical_centered,
+            is_vertical_bottom,
+            is_vertical_top,
+            header,
+            children,
+            has_close_icon,
+            height,
+            toggleModal,
+            width,
+        } = this.props;
 
         return ReactDOM.createPortal(
             <div
@@ -54,41 +67,46 @@ class ModalElement extends React.PureComponent {
                 className={classNames('dc-modal__container', {
                     [`dc-modal__container_${className}`]: className,
                     'dc-modal__container--small': this.props.small,
+                    'dc-modal__container--is-vertical-centered': is_vertical_centered,
+                    'dc-modal__container--is-vertical-bottom': is_vertical_bottom,
+                    'dc-modal__container--is-vertical-top': is_vertical_top,
                 })}
                 style={{
                     height: height || 'auto',
                     width: width || 'auto',
                 }}
             >
-                <div
-                    className={classNames('dc-modal-header', {
-                        [`dc-modal-header--${className}`]: className,
-                    })}
-                >
-                    {title && (
-                        <h3
-                            className={classNames('dc-modal-header__title', {
-                                [`dc-modal-header__title--${className}`]: className,
-                            })}
-                        >
-                            {title}
-                        </h3>
-                    )}
-                    {header && (
-                        <div
-                            className={classNames('dc-modal-header__section', {
-                                [`dc-modal-header__section--${className}`]: className,
-                            })}
-                        >
-                            {header}
-                        </div>
-                    )}
-                    {has_close_icon && (
-                        <div onClick={toggleModal} className='dc-modal-header__close'>
-                            <Icon icon='IcCross' />
-                        </div>
-                    )}
-                </div>
+                {(header || title) && (
+                    <div
+                        className={classNames('dc-modal-header', {
+                            [`dc-modal-header--${className}`]: className,
+                        })}
+                    >
+                        {title && (
+                            <h3
+                                className={classNames('dc-modal-header__title', {
+                                    [`dc-modal-header__title--${className}`]: className,
+                                })}
+                            >
+                                {title}
+                            </h3>
+                        )}
+                        {header && (
+                            <div
+                                className={classNames('dc-modal-header__section', {
+                                    [`dc-modal-header__section--${className}`]: className,
+                                })}
+                            >
+                                {header}
+                            </div>
+                        )}
+                        {has_close_icon && (
+                            <div onClick={toggleModal} className='dc-modal-header__close'>
+                                <Icon icon='IcCross' />
+                            </div>
+                        )}
+                    </div>
+                )}
                 {children}
             </div>,
             this.el
@@ -129,6 +147,9 @@ const Modal = ({
     onMount,
     onUnmount,
     small,
+    is_vertical_bottom,
+    is_vertical_centered,
+    is_vertical_top,
     title,
     toggleModal,
     width,
@@ -150,6 +171,9 @@ const Modal = ({
             header={header}
             id={id}
             is_open={is_open}
+            is_vertical_bottom={is_vertical_bottom}
+            is_vertical_centered={is_vertical_centered}
+            is_vertical_top={is_vertical_top}
             title={title}
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}
@@ -179,6 +203,9 @@ Modal.propTypes = {
     height: PropTypes.string,
     id: PropTypes.string,
     is_open: PropTypes.bool,
+    is_vertical_bottom: PropTypes.bool,
+    is_vertical_centered: PropTypes.bool,
+    is_vertical_top: PropTypes.bool,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     small: PropTypes.bool,

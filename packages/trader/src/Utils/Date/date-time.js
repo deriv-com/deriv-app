@@ -63,8 +63,9 @@ export const toGMTFormat = time =>
         .utc()
         .format('YYYY-MM-DD HH:mm:ss [GMT]');
 
-export const formatDate = (date, date_format = 'YYYY-MM-DD') => toMoment(date).format(date_format);
+export const formatDate = (epoch, date_format = 'YYYY-MM-DD') => toMoment(epoch).format(date_format);
 
+export const formatTime = (epoch, time_format = 'HH:mm:ss [GMT]') => toMoment(epoch).format(time_format);
 /**
  * return the number of days from today to date specified
  * @param  {String} date   the date to calculate number of days from today
@@ -95,11 +96,20 @@ export const getDiffDuration = (start_time, end_time) =>
  * @param  {moment.duration} moment duration object
  * @return {String} formatted display string
  */
-export const formatDuration = duration => {
+export const formatDuration = (duration, format) => {
     const d = Math.floor(duration.asDays()); // duration.days() does not include months/years
     const h = duration.hours();
     const m = duration.minutes();
     const s = duration.seconds();
+
+    if (format) {
+        return moment(0)
+            .hour(h)
+            .minute(m)
+            .seconds(s)
+            .format(format);
+    }
+
     let formatted_str = moment(0)
         .hour(h)
         .minute(m)

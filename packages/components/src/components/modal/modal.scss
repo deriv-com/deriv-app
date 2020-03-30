@@ -1,21 +1,46 @@
-/**
- * @define dc-modal
- */
+/** @define dc-modal; weak */
 .dc-modal {
     &__container {
         display: flex;
         flex-direction: column;
-        min-width: 400px;
         position: relative;
         overflow: hidden;
         border-radius: 8px;
         transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
         background-color: var(--general-main-2);
         box-shadow: 0 4px 6px 0 var(--shadow-menu);
-        max-height: calc(100vh - 48px - 36px);
-        max-width: 90vw;
-        opacity: 0;
 
+        &--is-vertical-centered {
+            position: absolute;
+            top: 50vh;
+            transform: translateY(-50%) !important;
+
+            .dc-modal__container {
+                min-width: unset;
+                top: 2rem;
+            }
+            @include mobile {
+                left: 2.4rem;
+                width: calc(100vw - 4.8rem) !important;
+            }
+        }
+        &--is-vertical-top {
+            top: $HEADER_HEIGHT;
+            position: absolute;
+            @include mobile {
+                top: $MOBILE_HEADER_HEIGHT;
+                left: 1.6rem;
+                width: calc(100vw - 3.2rem) !important;
+            }
+        }
+        &--is-vertical-bottom {
+            bottom: $FOOTER_HEIGHT;
+            position: absolute;
+            @include mobile {
+                left: 1.6rem;
+                width: calc(100vw - 3.2rem) !important;
+            }
+        }
         &--hide {
             display: none;
         }
@@ -33,15 +58,19 @@
         &--small {
             max-width: 440px;
 
-            /* postcss-bem-linter: ignore */
             .dc-modal-header {
                 border-bottom: none;
             }
         }
+        @include desktop {
+            min-width: 400px;
+            max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+        }
+        @include mobile {
+            max-width: calc(100vw - 3.2rem) !important;
+        }
     }
-    /**
-     * @define dc-modal-header
-     */
+    /** @define dc-modal-header */
     &-header {
         display: flex;
         justify-content: space-between;
@@ -58,6 +87,12 @@
             display: flex;
             align-items: center;
             height: 100%;
+
+            @include mobile {
+                font-size: 1.4rem;
+                padding: 1.6rem;
+                line-height: 1;
+            }
         }
         &__section {
             flex-grow: 1;
@@ -70,31 +105,34 @@
             display: block;
             cursor: pointer;
             padding: 0.6rem 0.8rem;
-            @extend %inline-icon.white;
             height: 30px;
             width: 32px;
             margin: 1.2rem 1.6rem 1.2rem auto;
+
+            @include mobile {
+                margin: 0.8rem;
+            }
         }
     }
-    /**
-     * @define dc-modal-body
-     */
+    /** @define dc-modal-body */
     &-body {
         padding: 2.4rem;
         font-size: 1.4rem;
         line-height: 1.43;
         color: var(--text-prominent);
+
+        @include mobile {
+            font-size: 1.2rem;
+            padding: 0.8rem 1.6rem;
+        }
     }
-    /**
-     * @define dc-modal-footer
-     */
+    /** @define dc-modal-footer; weak */
     &-footer {
         display: flex;
         justify-content: flex-end;
         padding: 1.6rem;
 
-        /* postcss-bem-linter: ignore */
-        .btn:nth-child(2) {
+        .dc-btn:nth-child(2) {
             margin-left: 0.8rem;
         }
     }

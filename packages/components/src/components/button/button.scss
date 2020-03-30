@@ -1,5 +1,4 @@
-/** @define btn */
-.btn {
+.dc-btn {
     vertical-align: middle;
     align-items: center;
     justify-content: center;
@@ -15,9 +14,12 @@
     outline: 0;
     position: relative;
     text-decoration: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
     /*
      * Text will be transformed to sentence case in JS
-     * text-transform is declared in .btn instead of .btn__text
+     * text-transform is declared in .dc-btn instead of .dc-btn__text
      * to ensure consistency (even for children) as per styleguide
      */
     text-transform: none !important;
@@ -27,12 +29,17 @@
         @include typeface(--paragraph-center-bold-black, unset);
         color: var(--text-general);
         display: flex;
+        pointer-events: none;
     }
     &__icon {
         padding-right: 0.8rem;
+        pointer-events: none;
     }
     &:not([disabled]):hover {
         text-decoration: none;
+    }
+    &__rounded {
+        border-radius: 24px;
     }
     &--primary {
         background: var(--button-primary-default);
@@ -49,8 +56,8 @@
             opacity: 0.32;
             cursor: not-allowed !important;
         }
-        .btn__text,
-        .btn__icon {
+        .dc-btn__text,
+        .dc-btn__icon {
             color: var(--text-colored-background);
         }
     }
@@ -69,8 +76,8 @@
             opacity: 0.32;
             cursor: not-allowed !important;
         }
-        .btn__text,
-        .btn__icon {
+        .dc-btn__text,
+        .dc-btn__icon {
             color: var(--text-prominent);
         }
     }
@@ -83,8 +90,8 @@
         &:active:not([disabled]) {
             background: var(--button-tertiary-default);
         }
-        .btn__text,
-        .btn__icon {
+        .dc-btn__text,
+        .dc-btn__icon {
             color: var(--brand-red-coral);
         }
         &:disabled,
@@ -103,8 +110,8 @@
         &:active:not([disabled]) {
             background: var(--status-success);
         }
-        .btn__text,
-        .btn__icon {
+        .dc-btn__text,
+        .dc-btn__icon {
             color: var(--text-colored-background);
         }
     }
@@ -112,7 +119,7 @@
         height: 2.4rem;
         border-width: 1px;
 
-        .btn__text {
+        .dc-btn__text {
             font-size: 1.2rem;
         }
     }
@@ -120,7 +127,7 @@
         height: 3.2rem;
         border-width: 1px;
 
-        .btn__text {
+        .dc-btn__text {
             font-size: 1.4rem;
         }
     }
@@ -128,7 +135,7 @@
         height: 4rem;
         border-width: 2px;
 
-        .btn__text {
+        .dc-btn__text {
             font-size: 1.4rem;
         }
     }
@@ -147,7 +154,7 @@
         display: block;
     }
     &__group {
-        .btn + .btn {
+        .dc-btn + .dc-btn {
             margin-left: 8px;
         }
     }

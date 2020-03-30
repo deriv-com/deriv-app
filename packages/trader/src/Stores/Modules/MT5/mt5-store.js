@@ -56,11 +56,13 @@ export default class MT5Store extends BaseStore {
     @action.bound
     onMount() {
         this.onRealAccountSignupEnd(this.realAccountSignupEndListener);
+        this.root_store.ui.is_mt5_page = true;
     }
 
     @action.bound
     onUnmount() {
         this.disposeRealAccountSignupEnd();
+        this.root_store.ui.is_mt5_page = false;
     }
 
     @action.bound
@@ -239,11 +241,14 @@ export default class MT5Store extends BaseStore {
             to_mt5: this.current_account.login,
         });
         if (!response.error) {
-            WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
+            await WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
+            const new_balance = this.root_store.client.mt5_login_list.find(
+                item => item.login === this.current_account.login
+            ).balance;
             runInAction(() => {
                 // Get new current account
                 this.root_store.ui.is_top_up_virtual_open = false;
-                this.current_account.balance += 10000;
+                this.current_account.balance = new_balance;
             });
             setTimeout(() => {
                 runInAction(() => {

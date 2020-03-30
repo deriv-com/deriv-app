@@ -25,7 +25,7 @@
     "prettify": "prettier --write \"./src/**/*.{js,jsx,scss}\"",
     "precommit": "lint-staged",
     "test": "npm run test:eslint && npm run test:stylelint && npm run test:mocha",
-    "test:mocha": "",
+    "test:mocha": "echo \"No test:mocha specified\"",
     "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
     "test:stylelint": "stylelint \"./src/**/*.s?(a|c)ss\"",
     "deploy": "echo \"No deploy specified\"",
@@ -117,6 +117,6 @@
     "react-dom": "~16.8.6",
     "react-render-html": "^0.6.0",
     "react-transition-group": "^4.0.1",
-    "smartcharts-beta": "^0.6.2"
+    "smartcharts-beta": "^0.8.0-betam.10"
   }
 }

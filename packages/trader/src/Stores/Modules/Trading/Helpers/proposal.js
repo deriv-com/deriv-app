@@ -26,7 +26,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     const stake = proposal.display_value;
     const basis_list = store.basis_list;
 
-    const contract_basis = basis_list.find(o => o.value !== store.basis);
+    const contract_basis = basis_list.find(o => o.value !== store.basis) || {};
     const is_stake = contract_basis.text === 'Stake';
     const price = is_stake ? stake : proposal[contract_basis.value];
     let has_increased = price > obj_prev_contract_basis.value;
@@ -40,11 +40,17 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         value: price || '',
     };
 
+    const commission = proposal.commission;
+    const cancellation = proposal.cancellation;
+
     return {
+        commission,
+        cancellation,
         id: proposal.id || '',
         has_error: !!response.error,
         has_error_details: !!getProposalErrorField(response),
         has_increased,
+        limit_order: proposal.limit_order,
         message: proposal.longcode || response.error.message,
         obj_contract_basis,
         payout: proposal.payout,
@@ -59,20 +65,39 @@ export const createProposalRequests = store => {
 
     Object.keys(store.trade_types).forEach(type => {
         const new_req = createProposalRequestForContract(store, type);
-        const current_req = store.proposal_requests[type];
-        if (!ObjectUtils.isDeepEqual(new_req, current_req)) {
-            requests[type] = new_req;
-        }
+        requests[type] = new_req;
     });
 
     return requests;
 };
 
+const setProposalMultiplier = (store, obj_multiplier) => {
+    obj_multiplier.multiplier = store.multiplier;
+    // TODO: add support for different cancellation time once API is ready
+    obj_multiplier.cancellation = store.has_cancellation ? '1h' : 0;
+
+    obj_multiplier.limit_order = {};
+
+    if (store.has_take_profit) {
+        obj_multiplier.limit_order.take_profit = +store.take_profit; // send positive take_profit to API
+    }
+
+    if (store.has_stop_loss) {
+        obj_multiplier.limit_order.stop_loss = +store.stop_loss; // send positive stop_loss to API
+    }
+};
+
 const createProposalRequestForContract = (store, type_of_contract) => {
     const obj_expiry = {};
+    const obj_multiplier = {};
+
     if (store.expiry_type === 'endtime') {
         const expiry_date = toMoment(store.expiry_date);
         obj_expiry.date_expiry = convertToUnix(expiry_date.unix(), store.expiry_time);
+    }
+
+    if (store.is_multiplier) {
+        setProposalMultiplier(store, obj_multiplier);
     }
 
     return {
@@ -94,5 +119,6 @@ const createProposalRequestForContract = (store, type_of_contract) => {
             barrier: store.barrier_1 || store.last_digit,
         }),
         ...(store.barrier_count === 2 && { barrier2: store.barrier_2 }),
+        ...obj_multiplier,
     };
 };

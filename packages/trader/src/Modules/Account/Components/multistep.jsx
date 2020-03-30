@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -44,10 +45,10 @@ class MultiStep extends React.Component {
 
     render() {
         return (
-            <>
+            <div className={classNames('multistep', this.props.className)}>
                 {this.prevButton()}
                 <div className='multistep__component'>{this.state.component}</div>
-            </>
+            </div>
         );
     }
 }

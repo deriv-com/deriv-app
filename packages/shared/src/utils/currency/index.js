@@ -1,4 +1,5 @@
 import {
+    AMOUNT_MAX_LENGTH,
     formatMoney,
     formatCurrency,
     addComma,
@@ -18,6 +19,7 @@ import {
 } from './currency';
 
 export default {
+    AMOUNT_MAX_LENGTH,
     formatMoney,
     formatCurrency,
     addComma,

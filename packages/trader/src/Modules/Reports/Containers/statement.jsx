@@ -2,9 +2,11 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { urlFor } from '_common/url';
 import DataTable from 'App/Components/Elements/DataTable';
+import DataList from 'App/Components/Elements/DataList';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { website_name } from 'App/Constants/app-config';
@@ -24,6 +26,29 @@ class Statement extends React.Component {
     componentWillUnmount() {
         this.props.onUnmount();
     }
+
+    mobileRowRenderer = ({ row }) => {
+        return (
+            <>
+                <div className='data-list__row'>
+                    <DataList.Cell row={row} column={this.columns_map.icon} />
+                    <DataList.Cell row={row} column={this.columns_map.action_type} />
+                </div>
+                <div className='data-list__row'>
+                    <DataList.Cell row={row} column={this.columns_map.refid} />
+                    <DataList.Cell
+                        className='data-list__row-cell--amount'
+                        row={row}
+                        column={this.columns_map.balance}
+                    />
+                </div>
+                <div className='data-list__row'>
+                    <DataList.Cell row={row} column={this.columns_map.date} />
+                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.amount} />
+                </div>
+            </>
+        );
+    };
 
     getRowAction = row_obj => {
         let action;
@@ -71,6 +96,7 @@ class Statement extends React.Component {
             is_empty,
             is_loading,
             error,
+            filtered_date_range,
             handleScroll,
             handleDateChange,
             has_selected_date,
@@ -78,12 +104,23 @@ class Statement extends React.Component {
 
         if (error) return <p>{error}</p>;
 
-        const columns = getStatementTableColumnsTemplate(currency);
         const filter_component = (
             <React.Fragment>
-                <CompositeCalendar onChange={handleDateChange} from={date_from} to={date_to} />
+                <CompositeCalendar
+                    input_date_range={filtered_date_range}
+                    onChange={handleDateChange}
+                    from={date_from}
+                    to={date_to}
+                />
             </React.Fragment>
         );
+
+        this.columns = getStatementTableColumnsTemplate(currency);
+        this.columns_map = this.columns.reduce((map, item) => {
+            map[item.col_index] = item;
+            return map;
+        }, {});
+
         return (
             <React.Fragment>
                 <ReportsMeta
@@ -93,7 +130,7 @@ class Statement extends React.Component {
                     )}
                     filter_component={filter_component}
                 />
-                {(is_loading && data.length === 0) || is_empty ? (
+                {is_loading || data.length === 0 || is_empty ? (
                     <PlaceholderComponent
                         is_loading={is_loading}
                         has_selected_date={has_selected_date}
@@ -104,18 +141,35 @@ class Statement extends React.Component {
                         localized_period_message={localize('You have no transactions for this period.')}
                     />
                 ) : (
-                    <DataTable
-                        className='statement'
-                        data_source={data}
-                        columns={columns}
-                        onScroll={handleScroll}
-                        getRowAction={row => this.getRowAction(row)}
-                        is_empty={is_empty}
-                        custom_width={'100%'}
-                        getRowSize={() => 63}
-                    >
-                        <PlaceholderComponent is_loading={is_loading} />
-                    </DataTable>
+                    <>
+                        <DesktopWrapper>
+                            <DataTable
+                                className='statement'
+                                data_source={data}
+                                columns={this.columns}
+                                onScroll={handleScroll}
+                                getRowAction={row => this.getRowAction(row)}
+                                is_empty={is_empty}
+                                custom_width={'100%'}
+                                getRowSize={() => 63}
+                            >
+                                <PlaceholderComponent is_loading={is_loading} />
+                            </DataTable>
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <DataList
+                                className='statement'
+                                data_source={data}
+                                rowRenderer={this.mobileRowRenderer}
+                                getRowAction={this.getRowAction}
+                                onScroll={handleScroll}
+                                custom_width={'100%'}
+                                getRowSize={() => 162}
+                            >
+                                <PlaceholderComponent is_loading={is_loading} />
+                            </DataList>
+                        </MobileWrapper>
+                    </>
                 )}
             </React.Fragment>
         );
@@ -128,6 +182,7 @@ Statement.propTypes = {
     date_from: PropTypes.number,
     date_to: PropTypes.number,
     error: PropTypes.string,
+    filtered_date_range: PropTypes.object,
     handleScroll: PropTypes.func,
     has_selected_date: PropTypes.bool,
     history: PropTypes.object,
@@ -141,8 +196,9 @@ export default connect(({ modules, client }) => ({
     currency: client.currency,
     date_from: modules.statement.date_from,
     date_to: modules.statement.date_to,
-    data: modules.statement.data,
+    data: modules.statement.data_source,
     error: modules.statement.error,
+    filtered_date_range: modules.statement.filtered_date_range,
     handleScroll: modules.statement.handleScroll,
     handleDateChange: modules.statement.handleDateChange,
     has_selected_date: modules.statement.has_selected_date,

@@ -8,6 +8,7 @@ import ButtonToggleMenu from 'App/Components/Form/ButtonToggleMenu';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import InputField from 'App/Components/Form/InputField';
 import { connect } from 'Stores/connect';
+import { localize } from '@deriv/translations';
 import AllowEquals from './allow-equals.jsx';
 
 const Amount = ({
@@ -23,6 +24,7 @@ const Amount = ({
     expiry_type,
     is_equal,
     is_minimized,
+    is_multiplier,
     is_nativepicker,
     is_single_currency,
     onChange,
@@ -47,13 +49,15 @@ const Amount = ({
         );
     }
 
+    const error_messages = validation_errors.amount;
+
     const Input = () => (
         <InputField
             className='trade-container__amount'
             classNameInlinePrefix='trade-container__currency'
             classNameInput='trade-container__input'
             currency={currency}
-            error_messages={validation_errors.amount}
+            error_messages={error_messages}
             fractional_digits={CurrencyUtils.getDecimalPlaces(currency)}
             id='dt_amount_input'
             inline_prefix={is_single_currency ? currency : null}
@@ -63,7 +67,7 @@ const Amount = ({
             is_incrementable
             is_nativepicker={is_nativepicker}
             is_negative_disabled
-            max_length={10}
+            max_length={CurrencyUtils.AMOUNT_MAX_LENGTH}
             name='amount'
             onChange={onChange}
             type='tel'
@@ -72,16 +76,29 @@ const Amount = ({
     );
 
     return (
-        <Fieldset className='trade-container__fieldset'>
-            <ButtonToggleMenu
-                id='dt_amount_toggle'
-                buttons_arr={basis_list}
-                className='dropdown--no-margin'
-                is_animated={true}
-                name='basis'
-                onChange={onChange}
-                value={basis}
-            />
+        <Fieldset
+            className='trade-container__fieldset center-text'
+            header={is_multiplier ? localize('Stake') : undefined}
+            header_tooltip={
+                is_multiplier
+                    ? localize(
+                          'To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to {{amount}}.',
+                          { amount }
+                      )
+                    : undefined
+            }
+        >
+            {basis_list.length > 1 && (
+                <ButtonToggleMenu
+                    id='dt_amount_toggle'
+                    buttons_arr={basis_list}
+                    className='dropdown--no-margin'
+                    is_animated={true}
+                    name='basis'
+                    onChange={onChange}
+                    value={basis}
+                />
+            )}
             {!is_single_currency ? (
                 <div className='trade-container__currency-options'>
                     <Dropdown
@@ -127,6 +144,7 @@ Amount.propTypes = {
     expiry_type: PropTypes.string,
     is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     is_minimized: PropTypes.bool,
+    is_multiplier: PropTypes.bool,
     is_nativepicker: PropTypes.bool,
     is_single_currency: PropTypes.bool,
     onChange: PropTypes.func,
@@ -146,6 +164,7 @@ export default connect(({ modules, client }) => ({
     expiry_type: modules.trade.expiry_type,
     is_equal: modules.trade.is_equal,
     is_single_currency: client.is_single_currency,
+    is_multiplier: modules.trade.is_multiplier,
     onChange: modules.trade.onChange,
     validation_errors: modules.trade.validation_errors,
 }))(Amount);

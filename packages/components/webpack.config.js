@@ -19,6 +19,7 @@ module.exports = {
         'circular-progress'             : 'Components/circular-progress',
         collapsible                     : 'Components/collapsible',
         counter                         : 'Components/counter',
+        'date-picker'                   : 'Components/date-picker',
         'desktop-wrapper'               : 'Components/desktop-wrapper',
         dialog                          : 'Components/dialog',
         'div100vh-container'            : 'Components/div100vh-container',

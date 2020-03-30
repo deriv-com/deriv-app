@@ -158,11 +158,19 @@ class Calendar extends React.PureComponent {
     };
 
     render() {
-        const { date_format, footer, has_today_btn, has_range_selection, holidays, start_date, weekends } = this.props;
+        const {
+            date_format,
+            footer,
+            has_today_btn,
+            has_range_selection,
+            holidays,
+            start_date,
+            disable_days,
+        } = this.props;
         const { calendar_date, calendar_view, selected_date } = this.state;
 
         return (
-            <div className='dc-calendar' data-value={selected_date}>
+            <div ref={this.props.forward_ref} className='dc-calendar' data-value={selected_date}>
                 <Header
                     calendar_date={calendar_date}
                     calendar_view={calendar_view}
@@ -174,6 +182,7 @@ class Calendar extends React.PureComponent {
                     calendar_date={calendar_date}
                     calendar_view={calendar_view}
                     date_format={date_format}
+                    disable_days={disable_days}
                     isPeriodDisabled={this.isPeriodDisabled}
                     start_date={start_date}
                     selected_date={selected_date}
@@ -181,7 +190,6 @@ class Calendar extends React.PureComponent {
                     holidays={holidays}
                     has_range_selection={has_range_selection}
                     hovered_date={this.state.hovered_date}
-                    weekends={weekends}
                     onMouseOver={this.onMouseOver}
                     onMouseLeave={this.onMouseLeave}
                 />
@@ -215,7 +223,7 @@ Calendar.propTypes = {
     onSelect: PropTypes.func,
     start_date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     value: PropTypes.string,
-    weekends: PropTypes.arrayOf(PropTypes.number),
+    disable_days: PropTypes.arrayOf(PropTypes.number),
 };
 
 export default Calendar;

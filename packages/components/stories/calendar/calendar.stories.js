@@ -35,4 +35,26 @@ stories
         <Theme is_dark={boolean('Theme', false)}>
             <Calendar max_date={toMoment().add(1, 'month')} />
         </Theme>
+    ))
+    .add('disable weekends', () => (
+        <Theme is_dark={boolean('Theme', false)}>
+            <Calendar max_date={toMoment().add(1, 'month')} disabled_days={[6, 0]} />
+        </Theme>
+    ))
+    .add('events', () => (
+        <Theme is_dark={boolean('Theme', false)}>
+            <Calendar
+                max_date={toMoment().add(1, 'month')}
+                holidays={[
+                    {
+                        dates: ['2020-04-01', '2020-04-02'],
+                        descrip: "Oh, it's Christmas!",
+                    },
+                    {
+                        dates: ['Fridays'],
+                        descrip: 'Closes early (at 20:55)',
+                    },
+                ]}
+            />
+        </Theme>
     ));

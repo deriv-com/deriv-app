@@ -26,7 +26,7 @@ const getDays = ({
     start_date,
     selected_date,
     updateSelected,
-    weekends,
+    disabled_days,
     onMouseOver,
     onMouseLeave,
 }) => {
@@ -96,7 +96,7 @@ const getDays = ({
             // for forward starting accounts, only show same day as start date and the day after
             (start_date && moment_date.isBefore(moment_start_date)) ||
             // check if weekends are disabled
-            weekends.some(day => toMoment(date).day() === day) ||
+            disabled_days.some(day => toMoment(date).day() === day) ||
             // check if date falls on holidays, and doesn't close early or opens late
             (has_events && !is_closes_early);
 
@@ -157,7 +157,7 @@ const Days = props => {
 
 Days.defaultProps = {
     holidays: [],
-    weekends: [],
+    disabled_days: [],
 };
 
 Days.propTypes = {
@@ -174,7 +174,7 @@ Days.propTypes = {
     onMouseLeave: PropTypes.func,
     onMouseOver: PropTypes.func,
     start_date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    weekends: PropTypes.arrayOf(PropTypes.number),
+    disabled_days: PropTypes.arrayOf(PropTypes.number),
 };
 
 export default Days;

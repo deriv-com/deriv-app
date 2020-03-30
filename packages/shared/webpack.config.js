@@ -11,6 +11,7 @@ module.exports = {
         currency: path.resolve(__dirname, 'src', 'utils/currency/index.js'),
         object  : path.resolve(__dirname, 'src', 'utils/object/index.js'),
         screen  : path.resolve(__dirname, 'src', 'utils/screen/index.js'),
+        string  : path.resolve(__dirname, 'src', 'utils/string/index.js'),
         os      : path.resolve(__dirname, 'src', 'utils/os/index.js'),
     },
     output: {

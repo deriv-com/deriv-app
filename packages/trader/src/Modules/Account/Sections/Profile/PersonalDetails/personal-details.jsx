@@ -2,8 +2,9 @@
 import React from 'react';
 import { Formik, Field } from 'formik';
 import classNames from 'classnames';
-import { Autocomplete, Checkbox, Button, Input } from '@deriv/components';
+import { Autocomplete, Checkbox, Button, Input, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import DatePicker from 'App/Components/Form/DatePicker';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import {
@@ -246,13 +247,11 @@ class PersonalDetailsForm extends React.Component {
         } else {
             form_initial_values.address_state = '';
         }
-
         // if (!form_initial_values.tax_identification_number) form_initial_values tax_identification_number = '';
         return (
             <Formik
-                initialValues={{
-                    ...form_initial_values,
-                }}
+                initialValues={form_initial_values}
+                enableReinitialize={true}
                 onSubmit={this.onSubmit}
                 validate={this.validateFields}
             >
@@ -270,89 +269,192 @@ class PersonalDetailsForm extends React.Component {
                     <>
                         <LeaveConfirm onDirty={this.showForm} />
                         {show_form && (
-                            <form noValidate className='account-form' onSubmit={handleSubmit}>
+                            <form
+                                noValidate
+                                className='account-form account-form__personal-details'
+                                onSubmit={handleSubmit}
+                            >
                                 <FormBody scroll_offset='80px'>
                                     <FormSubHeader title={localize('Details')} />
                                     {!this.props.is_virtual && (
                                         <React.Fragment>
-                                            <InputGroup className='account-form__fieldset--2-cols'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    type='text'
-                                                    name='first_name'
-                                                    label={localize('First name')}
-                                                    value={values.first_name}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    required
-                                                    disabled={this.isChangeableField('first_name')}
-                                                    error={touched.first_name && errors.first_name}
-                                                />
-                                                <Input
-                                                    data-lpignore='true'
-                                                    type='text'
-                                                    name='last_name'
-                                                    label={localize('Last name')}
-                                                    value={values.last_name}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    required
-                                                    disabled={this.isChangeableField('last_name')}
-                                                    error={touched.last_name && errors.last_name}
-                                                />
-                                            </InputGroup>
+                                            <DesktopWrapper>
+                                                <InputGroup className='account-form__fieldset--2-cols'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        name='first_name'
+                                                        label={localize('First name*')}
+                                                        value={values.first_name}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={this.isChangeableField('first_name')}
+                                                        error={touched.first_name && errors.first_name}
+                                                    />
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        name='last_name'
+                                                        label={localize('Last name*')}
+                                                        value={values.last_name}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={this.isChangeableField('last_name')}
+                                                        error={touched.last_name && errors.last_name}
+                                                    />
+                                                </InputGroup>
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        name='first_name'
+                                                        label={localize('First name*')}
+                                                        value={values.first_name}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={this.isChangeableField('first_name')}
+                                                        error={touched.first_name && errors.first_name}
+                                                    />
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        name='last_name'
+                                                        label={localize('Last name*')}
+                                                        value={values.last_name}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={this.isChangeableField('last_name')}
+                                                        error={touched.last_name && errors.last_name}
+                                                    />
+                                                </fieldset>
+                                            </MobileWrapper>
                                             <fieldset className='account-form__fieldset'>
-                                                <Field name='place_of_birth'>
-                                                    {({ field }) => (
-                                                        <Autocomplete
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            autoComplete='new-password' // prevent chrome autocomplete
-                                                            type='text'
-                                                            label={localize('Place of birth')}
-                                                            error={touched.place_of_birth && errors.place_of_birth}
+                                                <DesktopWrapper>
+                                                    <Field name='place_of_birth'>
+                                                        {({ field }) => (
+                                                            <Autocomplete
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                autoComplete='new-password' // prevent chrome autocomplete
+                                                                type='text'
+                                                                label={localize('Place of birth*')}
+                                                                error={touched.place_of_birth && errors.place_of_birth}
+                                                                required
+                                                                disabled={
+                                                                    form_initial_values.place_of_birth &&
+                                                                    this.isChangeableField('place_of_birth')
+                                                                }
+                                                                list_items={this.props.residence_list}
+                                                                onItemSelection={({ value, text }) =>
+                                                                    setFieldValue(
+                                                                        'place_of_birth',
+                                                                        value ? text : '',
+                                                                        true
+                                                                    )
+                                                                }
+                                                            />
+                                                        )}
+                                                    </Field>
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <SelectNative
+                                                        label={localize('Place of birth*')}
+                                                        required
+                                                        disabled={
+                                                            form_initial_values.place_of_birth &&
+                                                            this.isChangeableField('place_of_birth')
+                                                        }
+                                                        value={values.place_of_birth}
+                                                        list_items={this.props.residence_list}
+                                                        use_text={true}
+                                                        error={touched.place_of_birth && errors.place_of_birth}
+                                                        onChange={e =>
+                                                            setFieldValue('place_of_birth', e.target.value, true)
+                                                        }
+                                                    />
+                                                </MobileWrapper>
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <DesktopWrapper>
+                                                    <DateOfBirth
+                                                        name='date_of_birth'
+                                                        label={localize('Date of birth*')}
+                                                        value={values.date_of_birth}
+                                                        disabled={is_fully_authenticated}
+                                                    />
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <DatePicker
+                                                        name='date_of_birth'
+                                                        className='date-of-birth-datepicker'
+                                                        is_nativepicker={true}
+                                                        label={localize('Date of birth*')}
+                                                        value={
+                                                            values.date_of_birth
+                                                                ? toMoment(values.date_of_birth).format('DD MMM YYYY')
+                                                                : ''
+                                                        }
+                                                        max_date={toMoment()
+                                                            .subtract(18, 'years')
+                                                            .format('YYYY-MM-DD')}
+                                                        min_date={toMoment()
+                                                            .subtract(100, 'years')
+                                                            .format('YYYY-MM-DD')}
+                                                        onChange={handleChange}
+                                                        disabled={is_fully_authenticated}
+                                                    />
+                                                </MobileWrapper>
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <DesktopWrapper>
+                                                    <Field name='citizen'>
+                                                        {({ field }) => (
+                                                            <Autocomplete
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                autoComplete='new-password' // prevent chrome autocomplete
+                                                                type='text'
+                                                                label={localize('Citizenship*')}
+                                                                error={touched.citizen && errors.citizen}
+                                                                disabled={
+                                                                    form_initial_values.citizen &&
+                                                                    is_fully_authenticated
+                                                                }
+                                                                list_items={this.props.residence_list}
+                                                                onItemSelection={({ value, text }) =>
+                                                                    setFieldValue('citizen', value ? text : '', true)
+                                                                }
+                                                                required
+                                                            />
+                                                        )}
+                                                    </Field>
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            label={localize('Citizenship*')}
                                                             required
-                                                            disabled={
-                                                                form_initial_values.place_of_birth &&
-                                                                this.isChangeableField('place_of_birth')
-                                                            }
-                                                            list_items={this.props.residence_list}
-                                                            onItemSelection={({ value, text }) =>
-                                                                setFieldValue('place_of_birth', value ? text : '', true)
-                                                            }
-                                                        />
-                                                    )}
-                                                </Field>
-                                            </fieldset>
-                                            <fieldset className='account-form__fieldset'>
-                                                <DateOfBirth
-                                                    name='date_of_birth'
-                                                    label={localize('Date of birth')}
-                                                    value={values.date_of_birth}
-                                                    disabled={is_fully_authenticated}
-                                                />
-                                            </fieldset>
-                                            <fieldset className='account-form__fieldset'>
-                                                <Field name='citizen'>
-                                                    {({ field }) => (
-                                                        <Autocomplete
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            autoComplete='new-password' // prevent chrome autocomplete
-                                                            type='text'
-                                                            label={localize('Citizenship')}
-                                                            error={touched.citizen && errors.citizen}
                                                             disabled={
                                                                 form_initial_values.citizen && is_fully_authenticated
                                                             }
+                                                            value={values.citizen}
                                                             list_items={this.props.residence_list}
-                                                            onItemSelection={({ value, text }) =>
-                                                                setFieldValue('citizen', value ? text : '', true)
+                                                            error={touched.citizen && errors.citizen}
+                                                            use_text={true}
+                                                            onChange={e =>
+                                                                setFieldValue('citizen', e.target.value, true)
                                                             }
-                                                            required
                                                         />
-                                                    )}
-                                                </Field>
+                                                    </MobileWrapper>
+                                                </MobileWrapper>
                                             </fieldset>
                                         </React.Fragment>
                                     )}
@@ -361,7 +463,7 @@ class PersonalDetailsForm extends React.Component {
                                             data-lpignore='true'
                                             type='text'
                                             name='residence'
-                                            label={localize('Country of residence')}
+                                            label={localize('Country of residence*')}
                                             value={values.residence}
                                             required
                                             disabled={this.isChangeableField('residence')}
@@ -373,7 +475,7 @@ class PersonalDetailsForm extends React.Component {
                                             data-lpignore='true'
                                             type='text'
                                             name='email'
-                                            label={localize('Email address')}
+                                            label={localize('Email address*')}
                                             value={values.email}
                                             required
                                             disabled={this.isChangeableField('email')}
@@ -387,7 +489,7 @@ class PersonalDetailsForm extends React.Component {
                                                     data-lpignore='true'
                                                     type='text'
                                                     name='phone'
-                                                    label={localize('Phone number')}
+                                                    label={localize('Phone number*')}
                                                     value={values.phone}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
@@ -468,7 +570,7 @@ class PersonalDetailsForm extends React.Component {
                                                         type='text'
                                                         maxLength={70}
                                                         name='address_line_1'
-                                                        label={localize('First line of address')}
+                                                        label={localize('First line of address*')}
                                                         value={values.address_line_1}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
@@ -497,7 +599,7 @@ class PersonalDetailsForm extends React.Component {
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
                                                         name='address_city'
-                                                        label={localize('Town/City')}
+                                                        label={localize('Town/City*')}
                                                         value={values.address_city}
                                                         error={touched.address_city && errors.address_city}
                                                         onChange={handleChange}
@@ -507,28 +609,53 @@ class PersonalDetailsForm extends React.Component {
                                                 </fieldset>
                                                 <fieldset className='account-form__fieldset'>
                                                     {this.props.states_list.length ? (
-                                                        <Field name='address_state'>
-                                                            {({ field }) => (
-                                                                <Autocomplete
-                                                                    {...field}
-                                                                    data-lpignore='true'
-                                                                    autoComplete='new-password' // prevent chrome autocomplete
-                                                                    type='text'
+                                                        <>
+                                                            <DesktopWrapper>
+                                                                <Field name='address_state'>
+                                                                    {({ field }) => (
+                                                                        <Autocomplete
+                                                                            {...field}
+                                                                            data-lpignore='true'
+                                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                                            type='text'
+                                                                            label={localize(
+                                                                                'State/Province (optional)'
+                                                                            )}
+                                                                            error={
+                                                                                touched.address_state &&
+                                                                                errors.address_state
+                                                                            }
+                                                                            list_items={this.props.states_list}
+                                                                            onItemSelection={({ value, text }) =>
+                                                                                setFieldValue(
+                                                                                    'address_state',
+                                                                                    value ? text : '',
+                                                                                    true
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                    )}
+                                                                </Field>
+                                                            </DesktopWrapper>
+                                                            <MobileWrapper>
+                                                                <SelectNative
                                                                     label={localize('State/Province (optional)')}
+                                                                    value={values.address_state}
+                                                                    list_items={this.props.states_list}
                                                                     error={
                                                                         touched.address_state && errors.address_state
                                                                     }
-                                                                    list_items={this.props.states_list}
-                                                                    onItemSelection={({ value, text }) =>
+                                                                    use_text={true}
+                                                                    onChange={e =>
                                                                         setFieldValue(
                                                                             'address_state',
-                                                                            value ? text : '',
+                                                                            e.target.value,
                                                                             true
                                                                         )
                                                                     }
                                                                 />
-                                                            )}
-                                                        </Field>
+                                                            </MobileWrapper>
+                                                        </>
                                                     ) : (
                                                         <Input
                                                             data-lpignore='true'
@@ -549,7 +676,7 @@ class PersonalDetailsForm extends React.Component {
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
                                                         name='address_postcode'
-                                                        label={localize('Postal/ZIP Code')}
+                                                        label={localize('Postal/ZIP Code*')}
                                                         value={values.address_postcode}
                                                         error={touched.address_postcode && errors.address_postcode}
                                                         onChange={handleChange}
@@ -560,7 +687,7 @@ class PersonalDetailsForm extends React.Component {
                                             </div>
                                         </React.Fragment>
                                     )}
-                                    <FormSubHeader title={localize('Email Preference')} />
+                                    <FormSubHeader title={localize('Email preference')} />
                                     <fieldset className='account-form__fieldset'>
                                         <Checkbox
                                             name='email_consent'
@@ -573,7 +700,7 @@ class PersonalDetailsForm extends React.Component {
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                    {!(isSubmitting || (status && status.msg)) && (
+                                    {!(isSubmitting || is_submit_success || (status && status.msg)) && (
                                         <div className='account-form__footer-note'>
                                             {localize(
                                                 'Please make sure your information is correct or it may affect your trading experience.'
@@ -582,7 +709,7 @@ class PersonalDetailsForm extends React.Component {
                                     )}
                                     <Button
                                         className={classNames('account-form__footer-btn', {
-                                            'dc-btn--primary--green': is_submit_success,
+                                            'dc-btn--green': is_submit_success,
                                         })}
                                         type='submit'
                                         is_disabled={
@@ -637,7 +764,16 @@ class PersonalDetailsForm extends React.Component {
                 });
             });
         }
+        this.initializeFormValues();
+    }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.account_settings !== prevProps.account_settings) {
+            this.initializeFormValues();
+        }
+    }
+
+    initializeFormValues() {
         WS.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
             const { getChangeableFields, is_virtual, account_settings } = this.props;
 

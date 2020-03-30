@@ -31,7 +31,7 @@ const Shortcode = (() => {
     const isMultiplier = ({ shortcode = '', shortcode_info = '' }) => {
         const info_from_shortcode = shortcode ? extractInfoFromShortcode(shortcode) : shortcode_info;
         return info_from_shortcode && info_from_shortcode.category
-            ? /^mult(up||down)$/.test(info_from_shortcode.category)
+            ? /^mult(up|down)$/.test(info_from_shortcode.category)
             : false;
     };
 

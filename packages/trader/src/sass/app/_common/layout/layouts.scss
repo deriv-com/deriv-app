@@ -441,11 +441,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
             background-color: var(--overlay-outside-dialog);
         }
         &--market-closed {
-            & .tooltip--with-label {
+            & .dc-tooltip--with-label {
                 display: none;
             }
-            & .tooltip--with-label:before,
-            .tooltip--with-label:after {
+            & .dc-tooltip--with-label:before,
+            .dc-tooltip--with-label:after {
                 display: none;
             }
         }
@@ -493,7 +493,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 &__item {
                     /* postcss-bem-linter: ignore */
                     .sc-tooltip,
-                    .tooltip {
+                    .dc-tooltip {
                         display: none;
                     }
                 }
@@ -521,7 +521,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
                             /* postcss-bem-linter: ignore */
                             .sc-tooltip,
-                            .tooltip {
+                            .dc-tooltip {
                                 display: none;
                             }
                         }

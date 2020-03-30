@@ -103,9 +103,9 @@ class Flyout extends React.PureComponent {
                                             <button
                                                 key={`${cb_key}${index}`}
                                                 className={classNames(
-                                                    'btn',
-                                                    'btn-effect',
-                                                    'btn--primary',
+                                                    'dc-btn',
+                                                    'dc-btn-effect',
+                                                    'dc-btn--primary',
                                                     'flyout__button-new'
                                                 )}
                                                 onClick={button => {

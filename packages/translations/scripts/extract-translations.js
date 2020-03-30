@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 /* eslint-disable no-console */
-const path           = require('path');
-const program        = require('commander');
-const crc32          = require('crc-32').str;
-const fs             = require('fs');
-const glob           = require('glob');
+const path = require('path');
+const program = require('commander');
+const crc32 = require('crc-32').str;
+const fs = require('fs');
+const glob = require('glob');
 const static_strings = require('./app-static-strings');
 
 program
@@ -20,7 +20,7 @@ program
 
 const packages_with_translations = ['bot-skeleton', 'bot-web-ui', 'trader', 'core'];
 const globs = ['**/*.js', '**/*.jsx'];
-const getKeyHash = (string) => crc32(string);
+const getKeyHash = string => crc32(string);
 
 /** **********************************************
  * Compile
@@ -29,7 +29,7 @@ const getKeyHash = (string) => crc32(string);
     try {
         const file_paths = [];
         const messages = [];
-        const i18n_marker = new RegExp(/i18n_default_text={?\s*(?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])\s*}?|localize\(\s*(?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])\s*\)?/g);
+        const i18n_marker = new RegExp(/i18n_default_text=(['"])(.*?)\1|localize\(\s*?(['"])\s*(.*?)\s*\3/gs);
         const messages_json = {};
         // Bot: Find all file types listed in `globs`
         for (let i = 0; i < packages_with_translations.length; i++) {
@@ -49,7 +49,7 @@ const getKeyHash = (string) => crc32(string);
                 const file = fs.readFileSync(file_paths[i], 'utf8');
                 let result = i18n_marker.exec(file);
                 while (result != null) {
-                    const extracted = result[1] || result[2]; // If it's index `1`, then it's the first capturing group, otherwise it's the 2nd, referring to `localize()` call
+                    const extracted = result[2] || result[4]; // If it captures `text=` then it will be index 2, else its index 4 which captures `localize`
                     messages.push(extracted.replace(/\\/g, ''));
                     result = i18n_marker.exec(file);
                 }
@@ -71,7 +71,7 @@ const getKeyHash = (string) => crc32(string);
             path.resolve(__dirname, '../crowdin/messages.json'),
             JSON.stringify(messages_json),
             'utf8',
-            (err) => console.log(err)
+            err => console.log(err)
         );
     } catch (e) {
         console.error(e);

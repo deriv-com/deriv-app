@@ -6,7 +6,7 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
 import { default_delay, types } from './constants';
-import TimeoutCircularProgress from './timeout-circular-progress.jsx';
+import TimeoutBorderBottom from './timeout-border-bottom.jsx';
 import { BinaryLink } from '../../Routes';
 
 const Notification = ({ data, removeNotificationMessage }) => {
@@ -39,7 +39,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
             <div className='notification__text-container'>
                 <h4 className='notification__header'>{data.header}</h4>
                 {data.timeout && (
-                    <TimeoutCircularProgress
+                    <TimeoutBorderBottom
                         className='notification__timeout'
                         timeout={data.timeout}
                         action={data.action.onClick}

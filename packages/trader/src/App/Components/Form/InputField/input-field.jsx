@@ -211,7 +211,7 @@ class InputField extends React.Component {
 
         const input_tooltip = (
             <Tooltip
-                className={classNames('', { 'tooltip--with-label': label })}
+                className={classNames('', { 'dc-tooltip--with-label': label })}
                 alignment='left'
                 message={has_error ? error_messages[0] : null}
                 has_error={has_error}

@@ -26,6 +26,7 @@
         }
         @include mobile {
             border-radius: $BORDER_RADIUS;
+            padding: 0.4rem 0;
         }
     }
     &__row {

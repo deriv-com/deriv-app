@@ -98,7 +98,7 @@ const MT5AccountCard = ({
                 )}
                 {existing_data && (
                     <a
-                        className='btn mt5-account-card__account-selection mt5-account-card__account-selection--primary'
+                        className='dc-btn mt5-account-card__account-selection mt5-account-card__account-selection--primary'
                         type='button'
                         href={getMT5WebTerminalLink(type.category)}
                         target='_blank'

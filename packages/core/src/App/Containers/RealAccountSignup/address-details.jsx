@@ -6,6 +6,7 @@ import {
     Input,
     MobileWrapper,
     ThemedScrollbars,
+    SelectNative,
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import React, { Component } from 'react';
@@ -150,60 +151,19 @@ class AddressDetails extends Component {
                                                                     />
                                                                 </DesktopWrapper>
                                                                 <MobileWrapper>
-                                                                    <div className='dc-input'>
-                                                                        <div className='select-native'>
-                                                                            <div className='select-native__display'>
-                                                                                {this.props.states_list &&
-                                                                                    values.address_state && (
-                                                                                        <span className='select-native__display-text'>
-                                                                                            {getLocation(
-                                                                                                this.props.states_list,
-                                                                                                values.address_state,
-                                                                                                'text'
-                                                                                            )}
-                                                                                        </span>
-                                                                                    )}
-                                                                            </div>
-                                                                            <div
-                                                                                className={classNames(
-                                                                                    'select-native__placeholder',
-                                                                                    {
-                                                                                        'select-native__placeholder--has-value':
-                                                                                            values.address_state,
-                                                                                    }
-                                                                                )}
-                                                                            >
-                                                                                {localize('State/Province')}
-                                                                            </div>
-                                                                            <Icon
-                                                                                icon='IcChevronDown'
-                                                                                className='select-native__arrow'
-                                                                            />
-                                                                            <select
-                                                                                className='select-native__picker'
-                                                                                name='address_state'
-                                                                                onChange={e => {
-                                                                                    setFieldValue(
-                                                                                        'address_state',
-                                                                                        e.target.value,
-                                                                                        true
-                                                                                    );
-                                                                                }}
-                                                                                value={values.address_state}
-                                                                            >
-                                                                                {this.props.states_list.map(
-                                                                                    (option, idx) => (
-                                                                                        <option
-                                                                                            key={idx}
-                                                                                            value={option.value}
-                                                                                        >
-                                                                                            {option.text}
-                                                                                        </option>
-                                                                                    )
-                                                                                )}
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
+                                                                    <SelectNative
+                                                                        label={localize('State/Province')}
+                                                                        value={values.address_state}
+                                                                        list_items={this.props.states_list}
+                                                                        use_text={true}
+                                                                        onChange={e =>
+                                                                            setFieldValue(
+                                                                                'address_state',
+                                                                                e.target.value,
+                                                                                true
+                                                                            )
+                                                                        }
+                                                                    />
                                                                 </MobileWrapper>
                                                             </>
                                                         )}

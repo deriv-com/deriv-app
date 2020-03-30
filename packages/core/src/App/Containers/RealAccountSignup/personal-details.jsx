@@ -123,6 +123,7 @@ export class DateOfBirth extends React.Component {
                             </CSSTransition>
                         </DesktopWrapper>
                         <MobileWrapper>
+                            {/* TODO: Move native date-picker to deriv components */}
                             <div
                                 className={classNames('dc-input', {
                                     'dc-input--error': touched[name] && errors[name],

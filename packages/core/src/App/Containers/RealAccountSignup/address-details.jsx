@@ -95,7 +95,10 @@ class AddressDetails extends Component {
                             <p className='details-form__description'>
                                 <Localize i18n_default_text='Please ensure that this address is the same as in your proof of address' />
                             </p>
-                            <div className='details-form__elements-container' style={{ height: 'calc(100% + 3.2rem)' }}>
+                            <div
+                                className='details-form__elements-container'
+                                style={{ height: isMobile() ? 'calc(100% + 3.2rem)' : null }}
+                            >
                                 <ThemedScrollbars
                                     is_native={isMobile()}
                                     autoHide={!(window.innerHeight < 890)}

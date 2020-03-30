@@ -93,12 +93,12 @@
                 .dc-numpad__decrement {
                     height: 48px !important;
 
-                    .btn__text {
+                    .dc-btn__text {
                         font-size: 3rem;
                         font-weight: normal;
                     }
                     &[disabled] {
-                        .btn__text {
+                        .dc-btn__text {
                             color: var(--text-disabled);
                         }
                     }
@@ -114,7 +114,7 @@
                     color: var(--text-prominent);
                     text-align: left !important;
 
-                    .btn__text {
+                    .dc-btn__text {
                         font-size: 1.8rem;
                     }
                     &--is-left-aligned {
@@ -132,7 +132,7 @@
                         &[disabled] {
                             background-color: var(--general-disabled);
 
-                            .btn__text {
+                            .dc-btn__text {
                                 color: var(--text-disabled);
                             }
                         }

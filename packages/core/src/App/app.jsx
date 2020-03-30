@@ -81,7 +81,7 @@ const App = ({ root_store }) => {
             return () => {
                 document.removeEventListener('focus', onFocus);
                 document.removeEventListener('focusout', onFocusOut);
-                document.addEventListener('touchstart', onTouchStart);
+                document.removeEventListener('touchstart', onTouchStart);
             };
         }, []);
     }

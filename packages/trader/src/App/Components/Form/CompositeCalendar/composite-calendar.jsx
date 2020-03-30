@@ -74,6 +74,7 @@ class CompositeCalendar extends React.PureComponent {
             to: toMoment()
                 .endOf('day')
                 .unix(),
+            is_batch: true,
         });
     }
 

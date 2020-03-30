@@ -205,11 +205,11 @@
             background-color: var(--overlay-outside-dialog);
         }
         &--market-closed {
-            & .tooltip--with-label {
+            & .dc-tooltip--with-label {
                 display: none;
             }
-            & .tooltip--with-label:before,
-            .tooltip--with-label:after {
+            & .dc-tooltip--with-label:before,
+            .dc-tooltip--with-label:after {
                 display: none;
             }
         }

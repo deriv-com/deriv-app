@@ -2,9 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Loadable from 'react-loadable';
-import { Icon, Modal, VerticalTab } from '@deriv/components';
+import { Icon, Modal, VerticalTab, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import UILoader from 'App/Components/Elements/ui-loader.jsx';
 import 'Sass/app/modules/settings.scss';
 
 const ThemeSetting = Loadable({

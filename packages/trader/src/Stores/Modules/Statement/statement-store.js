@@ -1,5 +1,7 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable } from 'mobx';
+import { isDesktop } from '@deriv/shared/utils/screen';
+import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { WS } from 'Services/ws-methods';
 import { toMoment } from 'Utils/Date';
 import { formatStatementTransaction } from './Helpers/format-response';
@@ -34,6 +36,12 @@ export default class StatementStore extends BaseStore {
     @computed
     get has_selected_date() {
         return !!(this.date_from || this.date_to);
+    }
+
+    @computed
+    get data_source() {
+        // TODO: remove this getter once Multiplier is supported in mobile
+        return isDesktop() ? this.data : this.data.filter(row => !Shortcode.isMultiplier({ shortcode: row.shortcode }));
     }
 
     @action.bound

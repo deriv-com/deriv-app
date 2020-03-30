@@ -201,16 +201,19 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__personal-details {
-            .date-of-birth-datepicker {
-                .datepicker-native__input {
-                    height: 3.8rem;
-                }
-            }
             @include mobile {
                 .account-form__footer-note {
                     font-size: 1rem;
                     height: auto;
                     margin-bottom: 1.6rem;
+                }
+                .dc-checkbox__label {
+                    font-size: 1.2rem;
+                }
+                .date-of-birth-datepicker {
+                    .datepicker-native__input {
+                        height: 3.8rem;
+                    }
                 }
             }
         }
@@ -531,6 +534,10 @@ $MIN_HEIGHT_FLOATING: calc(
 
     p {
         padding-left: 16px;
+    }
+
+    @include mobile {
+        padding: 0 1.6rem 1rem;
     }
 }
 

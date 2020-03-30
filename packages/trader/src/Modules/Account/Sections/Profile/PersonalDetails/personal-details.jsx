@@ -363,7 +363,7 @@ class PersonalDetailsForm extends React.Component {
                                                 <DesktopWrapper>
                                                     <DateOfBirth
                                                         name='date_of_birth'
-                                                        label={localize('Date of birth')}
+                                                        label={localize('Date of birth*')}
                                                         value={values.date_of_birth}
                                                         disabled={is_fully_authenticated}
                                                     />
@@ -373,7 +373,7 @@ class PersonalDetailsForm extends React.Component {
                                                         name='date_of_birth'
                                                         className='date-of-birth-datepicker'
                                                         is_nativepicker={true}
-                                                        label={localize('Date of birth')}
+                                                        label={localize('Date of birth*')}
                                                         value={
                                                             values.date_of_birth
                                                                 ? toMoment(values.date_of_birth).format('DD MMM YYYY')

@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import {
     Autocomplete,
     DesktopWrapper,
@@ -13,7 +12,6 @@ import React, { Component } from 'react';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
-import Icon from '@deriv/components/src/components/icon';
 import FormSubmitButton from './form-submit-button.jsx';
 
 const InputField = props => {

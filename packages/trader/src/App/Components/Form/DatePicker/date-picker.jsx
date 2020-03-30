@@ -239,6 +239,7 @@ class DatePicker extends React.Component {
 
                             this.onSelectCalendarNative(e.target.value);
                         }}
+                        disabled={this.props.disabled}
                     />
                     {this.props.label && (
                         <label className='datepicker-native__label' htmlFor={this.props.name}>

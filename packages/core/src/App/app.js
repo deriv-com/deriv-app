@@ -11,6 +11,7 @@ const initStore = notification_messages => {
     Client.init();
 
     const root_store = new RootStore();
+    console.log('Hello World!');
 
     setStorageEvents();
 

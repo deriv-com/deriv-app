@@ -1,7 +1,8 @@
-import { ThemedScrollbars } from '@deriv/components';
+import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
 import { Field, Formik } from 'formik';
 import React from 'react';
 import { getDerivComLink } from '_common/url';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { Hr } from './currency-selector.jsx';
@@ -28,12 +29,13 @@ class TermsOfUse extends React.Component {
                 }) => (
                     <form onSubmit={handleSubmit}>
                         <ThemedScrollbars
+                            is_native={isMobile()}
                             autohide
                             style={{
                                 height: 'calc(100% - 50px)',
                             }}
                         >
-                            <div className='terms-of-use'>
+                            <Div100vhContainer className='terms-of-use' height_offset='199px' is_disabled={isDesktop()}>
                                 <h4>
                                     <Localize i18n_default_text={'Jurisdiction and choice of law'} />
                                 </h4>
@@ -99,7 +101,7 @@ class TermsOfUse extends React.Component {
                                         />
                                     }
                                 />
-                            </div>
+                            </Div100vhContainer>
                         </ThemedScrollbars>
                         <FormSubmitButton
                             is_absolute

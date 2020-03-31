@@ -112,6 +112,15 @@
             width: fit-content;
             margin-left: auto;
         }
+        /* postcss-bem-linter: ignore */
+        .dc-datepicker {
+            margin-top: 0.8rem;
+
+            /* postcss-bem-linter: ignore */
+            .dc-input {
+                border: 1px solid var(--fill-normal);
+            }
+        }
     }
     &__input {
         align-self: center;

@@ -44,10 +44,16 @@ class Calendar extends React.PureComponent {
             !target.classList.contains('dc-calendar__cell--hover')
         ) {
             target.className += ' dc-calendar__cell--hover';
-            this.setState({
-                hovered_date: target.getAttribute('data-date'),
-                duration_date: target.getAttribute('data-duration'),
-            });
+            this.setState(
+                {
+                    hovered_date: target.getAttribute('data-date'),
+                },
+                () => {
+                    if (this.props.onSelect) {
+                        this.props.onSelect(this.state.hovered_date);
+                    }
+                }
+            );
         }
     };
 
@@ -57,10 +63,16 @@ class Calendar extends React.PureComponent {
         if (target.classList.contains('dc-calendar__cell--hover')) {
             target.classList.remove('dc-calendar__cell--hover');
 
-            this.setState({
-                hovered_date: null,
-                duration_date: null,
-            });
+            this.setState(
+                {
+                    hovered_date: null,
+                },
+                () => {
+                    if (this.props.onSelect) {
+                        this.props.onSelect(this.state.selected_date);
+                    }
+                }
+            );
         }
     };
 
@@ -163,9 +175,9 @@ class Calendar extends React.PureComponent {
             footer,
             has_today_btn,
             has_range_selection,
-            holidays,
+            events,
             start_date,
-            disable_days,
+            disabled_days,
         } = this.props;
         const { calendar_date, calendar_view, selected_date } = this.state;
 
@@ -182,12 +194,12 @@ class Calendar extends React.PureComponent {
                     calendar_date={calendar_date}
                     calendar_view={calendar_view}
                     date_format={date_format}
-                    disable_days={disable_days}
+                    disabled_days={disabled_days}
                     isPeriodDisabled={this.isPeriodDisabled}
                     start_date={start_date}
                     selected_date={selected_date}
                     updateSelected={this.updateSelected}
-                    holidays={holidays}
+                    events={events}
                     has_range_selection={has_range_selection}
                     hovered_date={this.state.hovered_date}
                     onMouseOver={this.onMouseOver}

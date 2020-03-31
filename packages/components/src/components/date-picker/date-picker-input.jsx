@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import Icon from 'Components/icon';
 import Input from 'Components/input';
 
+const DatePickerIcon = ({ icon, ...props }) => <Icon className='dc-datepicker__icon' icon={icon} {...props} />;
+
 const DatePickerInput = ({
     className,
     id,
@@ -31,9 +33,9 @@ const DatePickerInput = ({
 
     const trailing_icon =
         is_clearable && is_clear_btn_visible ? (
-            <Icon icon='IcCloseCircle' onClick={onClickClear} color='secondary' />
+            <DatePickerIcon icon='IcCloseCircle' onClick={onClickClear} color='secondary' />
         ) : (
-            <Icon icon='IcCalendar' />
+            <DatePickerIcon icon='IcCalendar' />
         );
 
     return (
@@ -43,7 +45,7 @@ const DatePickerInput = ({
             })}
             data-lpignore='true'
             error_messages={error_messages}
-            id={id}
+            id={id ? `${id}_input` : undefined}
             is_autocomplete_disabled='true'
             is_hj_whitelisted='true'
             label={label}
@@ -52,7 +54,7 @@ const DatePickerInput = ({
             onClick={onClick}
             placeholder={!value ? placeholder : undefined}
             readOnly
-            leading_icon={show_leading_icon ? <Icon icon='IcCalendar' /> : undefined}
+            leading_icon={show_leading_icon ? <DatePickerIcon icon='IcCalendar' /> : undefined}
             trailing_icon={show_leading_icon ? undefined : trailing_icon}
             type='text'
             value={value}
@@ -64,7 +66,7 @@ const DatePickerInput = ({
 
 DatePickerInput.propTypes = {
     className: PropTypes.string,
-    error_messages: PropTypes.string,
+    error_messages: PropTypes.array,
     placeholder: PropTypes.string,
     id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     is_clearable: PropTypes.bool,

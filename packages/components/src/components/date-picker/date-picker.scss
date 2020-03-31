@@ -1,4 +1,4 @@
-/** @define dc-datepicker */
+/** @define dc-datepicker; weak */
 .dc-datepicker {
     position: relative;
     display: inline-block;
@@ -11,30 +11,37 @@
 
     &__input {
         margin-bottom: 0;
+        border: 1px solid var(--border-normal);
 
-        .dc-input__field:hover {
-            cursor: pointer;
-        }
-        .dc-input__field:focus {
-            outline: none;
+        .dc-input__field {
+            height: inherit;
+            background: var(--fill-normal);
+            border-radius: 4px;
+            height: 3.2rem;
+            box-sizing: border-box;
+            padding: 0;
+
+            &:hover {
+                cursor: pointer;
+                border-color: var(--border-hover);
+            }
+            &:focus {
+                outline: none;
+            }
+            &:active {
+                border-color: var(--border-active);
+            }
+            &::-ms-clear {
+                // Edge: hide clear icon for increment input
+                display: none;
+            }
         }
         &--has-leading-icon .dc-input__field {
             text-align: center;
         }
     }
-    &__icon {
-        opacity: 1;
-        transition: opacity 0.1s;
-
-        &:hover {
-            cursor: pointer;
-        }
-        &--is-hidden {
-            opacity: 0;
-        }
-        &--with-label {
-            top: 35px !important;
-        }
+    .dc-icon {
+        top: 25%;
     }
     // TODO: update datepicker UI in mobile
     // &__native-overlay {
@@ -124,6 +131,17 @@
 
     &__input {
         opacity: 0;
+
+        &:not(.datepicker-native__input--empty) {
+            outline: none;
+
+            & ~ .datepicker-native__label {
+                transform: translate(0, -1.8rem) scale(0.75);
+                padding: 0 4px;
+                top: 1.2rem;
+                left: 1rem;
+            }
+        }
     }
     &__overlay {
         position: absolute;
@@ -142,5 +160,16 @@
             margin-left: 8px;
             font-size: 1.4rem;
         }
+    }
+    &__label {
+        top: 0.9rem;
+        color: var(--text-less-prominent);
+        font-size: var(--text-size-xs);
+        background-color: var(--fill-normal);
+        position: absolute;
+        pointer-events: none;
+        left: 3rem;
+        transition: 0.25s ease all;
+        transform-origin: top left;
     }
 }

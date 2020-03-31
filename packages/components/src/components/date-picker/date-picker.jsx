@@ -20,6 +20,12 @@ class DatePicker extends React.PureComponent {
 
     componentDidMount() {
         document.addEventListener('click', this.onClickOutside, true);
+        if (this.props.mode === 'duration') {
+            this.setState({
+                date: formatDate(addDays(toMoment(), this.props.value || 1), this.props.display_format),
+                duration: daysFromTodayTo(this.props.value) || 1,
+            });
+        }
         if (this.props.disable_trading_events) {
             this.onChangeCalendarMonth(getStartOfMonth(this.state.value));
         }
@@ -57,6 +63,10 @@ class DatePicker extends React.PureComponent {
                     this.props.onChange({
                         date,
                         duration,
+                        target: {
+                            name: this.props.name,
+                            value: this.input_value,
+                        },
                     });
                 }
             }
@@ -76,6 +86,9 @@ class DatePicker extends React.PureComponent {
         );
     };
 
+    /**
+     * TODO: handle input change
+     */
     // onChangeInput = e => {
     //     const value = e.target.value;
     //     const formatted_value = formatDate(addDays(toMoment(), value), this.props.display_format);
@@ -127,7 +140,12 @@ class DatePicker extends React.PureComponent {
                     </div>
                 </MobileWrapper>
                 <DesktopWrapper>
-                    <div id={this.props.id} ref={this.datepicker} className='dc-datepicker'>
+                    <div
+                        id={this.props.id}
+                        ref={this.datepicker}
+                        className='dc-datepicker'
+                        data-value={this.input_value}
+                    >
                         <Input
                             onClick={this.handleVisibility}
                             onClickClear={this.clearDatePickerInput}

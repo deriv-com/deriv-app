@@ -20,7 +20,7 @@ const getDays = ({
     date_format,
     has_range_selection,
     hide_others,
-    holidays,
+    events,
     hovered_date,
     isPeriodDisabled,
     start_date,
@@ -79,13 +79,13 @@ const getDays = ({
         const is_active = selected_date && moment_date.isSame(moment_selected);
         const is_today = moment_date.isSame(moment_today, 'day');
 
-        const events = holidays.filter(event =>
+        const calendar_events = events.filter(event =>
             // filter by date or day of the week
             event.dates.find(d => d === date || getDaysOfTheWeek(d) === toMoment(date).day())
         );
-        const has_events = !!events.length;
-        const is_closes_early = events.map(event => !!event.descrip.match(/Closes early|Opens late/))[0];
-        const message = events.map(event => event.descrip)[0] || '';
+        const has_events = !!calendar_events.length;
+        const is_closes_early = calendar_events.map(event => !!event.descrip.match(/Closes early|Opens late/))[0];
+        const message = calendar_events.map(event => event.descrip)[0] || '';
         const duration_from_today = daysFromTodayTo(date);
         const is_between = moment_date.isBetween(moment_today, moment_selected);
         const is_between_hover = moment_date.isBetween(moment_today, moment_hovered);
@@ -156,7 +156,7 @@ const Days = props => {
 };
 
 Days.defaultProps = {
-    holidays: [],
+    events: [],
     disabled_days: [],
 };
 
@@ -164,7 +164,7 @@ Days.propTypes = {
     ...CommonPropTypes,
     date_format: PropTypes.string,
     has_range_selection: PropTypes.bool,
-    holidays: PropTypes.arrayOf(
+    events: PropTypes.arrayOf(
         PropTypes.shape({
             dates: PropTypes.array,
             descrip: PropTypes.string,

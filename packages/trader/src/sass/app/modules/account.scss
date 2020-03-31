@@ -193,11 +193,19 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin: 0 1.6rem;
                 }
             }
+            &-all-fields-required {
+                color: var(--text-general);
+                text-align: center;
+                padding-bottom: 2.4rem;
+                padding-top: 0.8rem;
+                font-size: 1.2rem;
+            }
             @include mobile {
                 padding: 16px 0px;
                 flex-direction: column;
                 height: auto;
                 align-items: initial;
+                border-top: 2px solid var(--general-section-1);
             }
         }
         &__personal-details {
@@ -288,7 +296,8 @@ $MIN_HEIGHT_FLOATING: calc(
             justify-content: space-between;
         }
     }
-    .account-management-leave-confirm {
+    .account-management-leave-confirm,
+    .account-management-submit-success {
         @include mobile {
             flex-direction: column;
             width: 100%;
@@ -382,6 +391,23 @@ $MIN_HEIGHT_FLOATING: calc(
             padding: 0 1.9rem;
         }
     }
+    .submit-success {
+        margin-top: 100px;
+
+        &__message-icon {
+            width: 96px;
+            height: 90px;
+        }
+        &__message {
+            font-size: 1.4rem;
+            text-align: center;
+            margin-top: 1.6rem;
+        }
+        &__text {
+            padding: 0 1.9rem;
+            font-size: 1rem;
+        }
+    }
     &-address {
         &__details {
             &-section {
@@ -396,6 +422,38 @@ $MIN_HEIGHT_FLOATING: calc(
     &-page-wrapper {
         @include mobile {
             height: 100%;
+        }
+    }
+    &__confirmation-page {
+        padding: 2.4rem 1.6rem 0;
+
+        &-title {
+            color: var(--brand-red-coral);
+            height: 20px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 0.8rem;
+        }
+        &-content {
+            margin-top: 0.8rem;
+            color: var(--text-general);
+            line-height: 1.4rem;
+        }
+        &-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 1.6rem;
+            z-index: 4;
+            border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
+            border-top: 2px solid var(--general-section-1);
+
+            .dc-btn:first-child {
+                margin-bottom: 1.6rem;
+            }
         }
     }
     @include mobile {
@@ -580,3 +638,16 @@ $MIN_HEIGHT_FLOATING: calc(
 .onfido-container {
     margin-top: 24px;
 }
+
+/* stylelint-disable */
+.dc-modal {
+    &__container {
+        &_financial-assessment-confirmation {
+            width: 440px;
+            .dc-modal-body {
+                padding-top: 1.2rem;
+            }
+        }
+    }
+}
+/* stylelint-enable */

@@ -66,6 +66,10 @@
             .dc-calendar__cell {
                 width: 5.6rem;
                 height: 3.2rem;
+
+                &--active {
+                    background: unset;
+                }
             }
         }
         &--decade {

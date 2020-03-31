@@ -211,6 +211,10 @@ class Calendar extends React.PureComponent {
     }
 }
 
+Calendar.Body = Body;
+Calendar.Header = Header;
+Calendar.Footer = Footer;
+
 Calendar.defaultProps = {
     date_format: 'YYYY-MM-DD',
     min_date: '1970-01-01', // by default, min_date is set to Unix Epoch (January 1st 1970)

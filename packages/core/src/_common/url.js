@@ -123,7 +123,7 @@ const Url = (() => {
         const lang = getLanguage().toLowerCase();
         const link_lang = lang === 'en' ? '' : `/${lang}`;
 
-        return `${host}${link_lang}${path}`;
+        return `${host}${link_lang}/${normalizePath(path)}`;
     };
 
     return {

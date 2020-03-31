@@ -80,6 +80,9 @@ export default class ContractReplayStore extends BaseStore {
         this.contract_info = {};
         this.indicative_status = null;
         this.prev_indicative = 0;
+        // @shayan: for forcing chart to call scale 1:1 each time,
+        // we should let SmartChart notify when its ready
+        this.is_chart_ready = false;
         this.root_store.ui.toggleHistoryTab(false);
         WS.removeOnReconnect();
     }

@@ -326,6 +326,6 @@ export default class MT5Store extends BaseStore {
     static async changePassword({ login, old_password, new_password, password_type }) {
         const { error } = await WS.authorized.mt5PasswordChange(login, old_password, new_password, password_type);
 
-        return error ? error.message : undefined;
+        return error?.message;
     }
 }

@@ -98,7 +98,7 @@ const MT5AccountCard = ({
                     <a
                         className='dc-btn mt5-account-card__account-selection mt5-account-card__account-selection--primary'
                         type='button'
-                        href={getMT5WebTerminalLink(type.category)}
+                        href={getMT5WebTerminalLink({ category: type.category, loginid: existing_data.display_login })}
                         target='_blank'
                         rel='noopener noreferrer'
                     >

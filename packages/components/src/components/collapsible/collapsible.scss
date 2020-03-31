@@ -1,0 +1,82 @@
+/** Slideout Animation */
+@keyframes SlideIn {
+    from {
+        opacity: 0;
+        max-height: 0;
+    }
+    to {
+        opacity: 1;
+        height: auto;
+        max-height: 100vh;
+    }
+}
+
+@keyframes SlideOut {
+    from {
+        opacity: 1;
+        max-height: 100vh;
+    }
+    to {
+        opacity: 0;
+        max-height: 0;
+    }
+}
+
+.dc-collapsible {
+    padding: 0.8rem;
+    border-radius: 0.4rem;
+    background-color: var(--general-section-1);
+
+    &--has-collapsible-btn {
+        padding-top: 0;
+    }
+    &--has-title {
+        padding-bottom: 0;
+    }
+    &__button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 32px;
+    }
+    &__icon {
+        transition: transform 0.3s ease-in-out;
+
+        &--top {
+            transform: rotate(180deg);
+
+            &.dc-collapsible__icon--is-open {
+                transform: rotate(0deg);
+            }
+        }
+        &--bottom {
+            &.dc-collapsible__icon--is-open {
+                transform: rotate(180deg);
+            }
+        }
+    }
+    &__item {
+        //animation-name: SlideIn;
+        //animation-duration: 0.3s;
+
+        &--collapsed {
+            //animation-name: SlideOut;
+            //animation-duration: 0.3s;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            margin: initial !important;
+            padding: initial !important;
+        }
+    }
+    &__title {
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: var(--text-prominent);
+        margin-left: 0;
+        margin-right: auto;
+    }
+    //&__content {
+    //    transition: all 0.3s ease;
+    //}
+}

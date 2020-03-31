@@ -39,6 +39,7 @@
             @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
             line-height: 1.5em;
+            margin-bottom: 0.8rem;
         }
         &--paragraph {
             @include typeface(--paragraph-left-normal-black, none);
@@ -62,15 +63,29 @@
         align-items: center;
         padding-left: 1.6rem;
         background-color: var(--general-section-1);
-        margin: 2.4em 0;
+        margin: 2.4rem 0;
 
         &--heading {
-            @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
-            line-height: 1.5em;
+            line-height: 1.5rem;
+            @include typeface(--title-left-bold-black, none);
+            @include mobile {
+                font-size: 1.2rem;
+            }
         }
         &--button {
-            height: 4em;
+            height: 4rem;
+        }
+        @include mobile {
+            flex-direction: column;
+            padding: 0.8rem;
+
+            &--heading {
+                margin-bottom: 0.8rem;
+            }
+            &--button {
+                width: 27rem;
+            }
         }
     }
     &__accounts-display {
@@ -133,6 +148,9 @@
                     display: flex;
                     justify-content: space-between;
                 }
+                @include mobile {
+                    margin-right: unset;
+                }
             }
         }
         &--heading {
@@ -150,6 +168,10 @@
     .notification-messages {
         top: calc(-4.8rem + 16px);
     }
+    @include mobile {
+        margin-top: 2.4rem;
+        padding: 0 1.6rem;
+    }
 }
 
 .mt5-attribute-describer {
@@ -157,32 +179,39 @@
     font-size: 14px;
     font-weight: bold;
     color: var(--text-general);
+
+    .counter {
+        color: var(--brand-red-coral);
+        font-size: 1rem;
+        font-weight: bold;
+        line-height: 1.43;
+        vertical-align: top;
+    }
 }
 
 .mt5-compare-accounts {
     display: flex;
     flex-flow: column nowrap;
     flex-grow: 1;
+    background: inherit;
 
-    &__data {
-        //height: 50vh;
+    .dc-table {
+        padding: 0 30px;
+        height: calc(100% - 100px);
 
-        &__table {
-            //height: 50vh;
-            flex: 1;
-            padding: 0px 30px;
-        }
         &__row {
-            /*                     attribute   standard advanced synthetic */
-            grid-template-columns: 1.7fr 1fr 1fr 1fr;
+            padding: 0 16px;
         }
-        .attribute,
-        .standard,
-        .advanced,
-        .synthetic {
-            justify-content: flex-start;
-            align-items: flex-start;
-            text-align: left;
+        &__cell,
+        &__head {
+            padding: 0.8rem;
+
+            &--fixed {
+                padding-left: 1.6rem;
+            }
+        }
+        &__cell {
+            border-bottom: none;
         }
     }
     &-modal {
@@ -192,13 +221,37 @@
             justify-content: center;
         }
     }
+    @include mobile {
+        background: var(--general-section-1);
+        height: 100%;
 
-    .mt5-compare-account--hint {
-        color: var(--text-less-prominent);
-        font-size: 12px;
-        line-height: 1.5em;
-        width: 100%;
-        padding: 1.6em 6.4em 2.4em 6.4em;
+        .dc-table {
+            padding: 0;
+            height: inherit;
+
+            &__row {
+                padding: 0;
+            }
+            &__head {
+                border-bottom: 2px solid var(--border-disabled);
+            }
+            &__header,
+            &__row {
+                width: 150vw;
+            }
+        }
+    }
+}
+
+.mt5-compare-account--hint {
+    color: var(--text-less-prominent);
+    font-size: 12px;
+    line-height: 1.5em;
+    width: 100%;
+    padding: 1.6em 6.4em 2.4em 6.4em;
+
+    @include mobile {
+        padding: 1.6rem;
     }
 }
 
@@ -207,6 +260,10 @@
     margin-top: 2.4em;
     display: flex;
     justify-content: space-around;
+
+    @include mobile {
+        flex-direction: column;
+    }
 }
 
 .mt5-account-card {
@@ -335,7 +392,7 @@
         display: flex;
         justify-content: space-between;
 
-        .btn {
+        .dc-btn {
             @include typeface(--small-center-bold-black, none);
             margin: 0 1em;
             width: 122px;
@@ -343,15 +400,24 @@
             color: var(--text-prominent);
         }
     }
+    @include mobile {
+        width: calc(100vw - 3.2rem);
+
+        &:not(:last-child) {
+            margin-bottom: 2.4rem;
+        }
+    }
 }
 
 .mt5-password-manager {
     margin: 5.6rem auto 0;
-    width: 400px;
+    max-width: 400px;
+    width: 100%;
 
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
+        margin-bottom: 2.4rem;
     }
     &--error-message {
         @include typeface(--paragraph-left-normal-black, none);
@@ -359,14 +425,20 @@
         margin-bottom: 1em;
     }
     &--hint {
-        //@include typeface(--xsmall-left-normal-black, none);
-        font-size: 12px;
+        @include typeface(--small-left-normal-black, none);
         color: var(--text-less-prominent);
-        padding: 1.333em 0;
+
+        @include mobile {
+            padding: 1.6rem 0 0.8rem 0;
+        }
     }
     &__main-form,
     &__investor-wrapper {
         margin-top: 2.4rem;
+
+        @include mobile {
+            padding-bottom: 12rem;
+        }
     }
     &__investor-wrapper {
         .mt5-password-manager--paragraph:first-child {
@@ -374,8 +446,13 @@
         }
     }
     &__investor-form {
-        width: 300px;
+        width: 100%;
+        max-width: 300px;
         margin: 2.4em auto 0;
+
+        @include mobile {
+            max-width: unset;
+        }
     }
     &__actions {
         display: flex;
@@ -384,6 +461,21 @@
     }
     &--button {
         margin-top: 1.6rem;
+
+        @include mobile {
+            width: 100%;
+            margin-top: 0.8rem;
+        }
+    }
+    @include mobile {
+        padding: 0 1.6rem;
+        margin-top: 2.4rem;
+    }
+    .multistep__header {
+        margin: 0 0 2.4rem 0;
+    }
+    .multistep__component {
+        text-align: center;
     }
 }
 

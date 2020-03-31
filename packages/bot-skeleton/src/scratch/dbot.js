@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
-import './blocks';
-import './hooks';
+import './blockly';
 import { hasAllRequiredBlocks, updateDisabledBlocks } from './utils';
 import main_xml from './xml/main.xml';
 import toolbox_xml from './xml/toolbox.xml';

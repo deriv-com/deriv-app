@@ -1,3 +1,90 @@
+@include mobile {
+    /** disabling pull to refresh on iOS / Android browsers */
+    /* postcss-bem-linter: ignore */
+    body,
+    .deriv-app,
+    .modal-root,
+    .dc-mobile-drawer__wrapper {
+        /* Break the flow */
+        position: absolute !important;
+        top: 0 !important;
+
+        /* Give them all the available space */
+        width: 100%;
+        height: 100%;
+
+        /* Remove the margins if any */
+        margin: 0;
+
+        /* Allow them to scroll down the document */
+        overflow-y: hidden !important;
+
+        /* -webkit-touch-callout only is supported on iOS webkit engine, thus it should apply iOS only styles */
+        @supports (-webkit-touch-callout: none) {
+            position: fixed !important;
+        }
+    }
+    .body {
+        /* Sending body at the bottom of the stack */
+        z-index: 1;
+    }
+    .deriv-app {
+        /* Making the wrapper stack above the body */
+        overscroll-behavior: none;
+        z-index: 2;
+    }
+    .modal-root {
+        height: 100% !important;
+    }
+    .deriv-app,
+    .modal-root {
+        .dc-toast-error {
+            top: 4.8rem;
+            z-index: 3;
+            width: fit-content;
+            margin: auto;
+        }
+    }
+}
+
+/** @define landscape-blocker; weak */
+.landscape-blocker {
+    display: none;
+
+    /* enable temporary landscape blocker UI in landscape */
+    @include mobile-landscape {
+        position: fixed;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        background: var(--general-main-1);
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        color: var(--text-prominent);
+        font-size: 1.6rem;
+        z-index: 9999;
+        font-weight: bold;
+
+        &--keyboard-visible {
+            display: none !important;
+        }
+        &__icon {
+            width: 59px;
+            height: 64px;
+        }
+        &__message {
+            padding: 1.6rem 11rem;
+            line-height: 1.4;
+        }
+        @include touch-device {
+            display: flex;
+        }
+    }
+}
+
 /** @define app-contents; weak */
 .app-contents {
     margin: $HEADER_HEIGHT 0 $FOOTER_HEIGHT;
@@ -13,298 +100,77 @@
     &--is-route-modal {
         background-color: var(--overlay-outside-dialog);
     }
-    &--show-positions-drawer {
-        .trade-container {
-            .chart-container {
-                width: 100%;
-
-                .cq-top-ui-widgets {
-                    transform: translate3d(248px, 0, 0);
-                }
-                .cq-chart-controls {
-                    transform: translate3d(130px, 0, 0) !important;
-                }
-                .cq-bottom-ui-widgets {
-                    .digits__container {
-                        transform: translate3d(130px, 0, 0) !important;
-                    }
-                }
-                .cq-chart-control-left {
-                    .cq-chart-controls {
-                        transform: translate3d(248px, 0, 0) !important;
-                    }
-                    .cq-bottom-ui-widgets {
-                        .digits__container {
-                            transform: translate3d(170px, 40px, 0) !important;
-                        }
-                    }
-                }
-                &__loader {
-                    .barspinner {
-                        transform: translate3d(130px, 0, 0) !important;
-                    }
-                }
-            }
-        }
-    }
-    @media screen and (max-width: 768px) {
+    @include mobile {
         // no footer:
         margin-bottom: 0;
-        height: calc(100vh - #{$HEADER_HEIGHT});
-    }
-}
+        height: calc(100% - #{$MOBILE_HEADER_HEIGHT});
+        position: relative;
+        margin-top: $MOBILE_HEADER_HEIGHT;
 
-$FLOATING_HEADER_HEIGHT: 41px;
-/** @define trade-container; weak */
-.trade-container {
-    position: relative;
-    padding: 0.8em 1.2em 0;
-    display: flex;
-    min-height: calc(100vh - 83px);
-    transition: transform 0.25s ease;
-    will-change: transform;
-    overflow: hidden;
+        &--is-scrollable {
+            overflow-y: auto;
+        }
+        .ciq-menu {
+            top: 0;
+            margin: 0.8rem;
+            z-index: 2;
+        }
+        .cq-symbol-select-btn {
+            padding: 0.3rem 0.9rem;
 
-    &__replay {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        height: calc(100vh - 108px - #{$FLOATING_HEADER_HEIGHT});
-        padding-bottom: 2.4rem;
-
-        .contract-drawer {
-            height: calc(
-                100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - (#{$POSITIONS_DRAWER_MARGIN} *
-                            6)
-            );
-            border-bottom-right-radius: 0;
-            border-top-right-radius: 0;
+            .cq-symbol-dropdown {
+                transform: scale(1);
+                margin-left: auto;
+            }
+            .cq-symbol {
+                font-size: 1.2rem;
+            }
+            .cq-chart-price {
+                display: none;
+            }
+            .cq-symbol-info {
+                margin: 0 0.8rem;
+            }
+            .ic-icon:not(.cq-symbol-dropdown) > svg {
+                padding: 0.4rem;
+            }
+        }
+        .chart-container__loader {
+            width: 100%;
+            height: 100%;
             z-index: 1;
-            overflow: hidden;
-            min-width: 240px;
-
-            &-wrapper {
-                z-index: 4;
-            }
-            .contract-card__sell-button--exit {
-                display: none;
-            }
+            top: 0;
         }
-        .replay-chart__container {
-            width: 100%;
+        .contract-details-wrapper {
+            height: inherit;
             position: relative;
-            margin-left: 24px;
-
-            .smartcharts {
-                left: 0;
-                border-radius: $BORDER_RADIUS;
-
-                .ciq-chart {
-                    .cq-top-ui-widgets,
-                    & .info-box {
-                        transition: transform 0.25s ease;
-
-                        .cq-symbols-display {
-                            z-index: 1;
-
-                            &.ciq-disabled {
-                                display: none;
-                            }
-                        }
-                        .info-box-container {
-                            transform: none;
-                            opacity: 1;
-                            left: 1px;
-
-                            .chart-close-btn {
-                                display: none;
-                            }
-                        }
-                    }
-                    .ciq-asset-information {
-                        top: 75px;
-                    }
-                    .stx_jump_today.home > svg {
-                        top: 6px;
-                        left: 8px;
-                        padding: 0;
-                        position: absolute;
-                    }
-                    .cq-bottom-ui-widgets {
-                        bottom: 30px !important;
-
-                        .digits {
-                            margin-right: 0;
-
-                            &__container {
-                                transition: transform 0.25s ease;
-                            }
-                        }
-                    }
-                }
-            }
         }
-    }
-    @media (max-width: 768px) {
-        flex-direction: column;
-    }
-}
+        .contract-audit-card {
+            position: absolute;
+            transform: translate3d(0, 15%, 0);
+            opacity: 0;
+            width: calc(100vw - 16px);
+            height: calc(100vh - #{$MOBILE_HEADER_HEIGHT} - 202px);
+            background-color: var(--general-section-1);
+            z-index: 999;
+            margin: 0.8rem;
+            border-radius: 4px;
+            transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s;
 
-/** @define chart-container; weak */
-.chart-container {
-    width: 100%;
-    position: relative;
-    z-index: 1;
-
-    &__loader {
-        position: absolute;
-        height: calc(100% - 68px);
-        width: calc(100% - 12px);
-        top: 54px;
-        left: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: $BORDER_RADIUS;
-        background-color: var(--general-main-1);
-
-        .initial-loader {
-            pointer-events: none;
-        }
-        .barspinner {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-            width: 100%;
-            height: 18px;
-        }
-        & + .smartcharts {
-            visibility: hidden;
-            pointer-events: none;
-
-            .chart-marker-line__wrapper,
-            .cq-chart-controls,
-            .cq-symbols-display,
-            .cq-bottom-ui-widgets,
-            .cq-inchart-subholder {
-                display: none;
-            }
-        }
-    }
-    // smartchart library style fixes
-    .cq-context {
-        top: 0;
-        left: 0;
-        z-index: 0;
-
-        div.ciq-chart {
-            height: calc(100% - 5em);
-            box-shadow: none;
-
-            div.cq-last-digits {
-                bottom: 15px;
-                left: calc(45% - 150px);
-            }
-            div.cq-chart-controls {
-                box-shadow: none;
-            }
-            // TODO: enable asset information
-            // div.ciq-asset-information {
-            //     z-index: 0;
-            //     top: 0;
-            //     left: 0;
-            // }
-            div.stx_jump_today.home > svg {
-                top: 6px;
-                left: 8px;
-                padding: 0;
-                position: absolute;
-            }
-            div.stx-marker {
-                z-index: 2;
-
-                &:not(.chart-marker-line) {
-                    animation: fadeIn 0.2s;
-                }
-            }
-        }
-        div.cq-chart-control-left {
-            .cq-top-ui-widgets {
-                width: calc(100% - 9em);
-            }
-        }
-    }
-    div.debug-text {
-        display: none;
-    }
-    .cq-chart-control-left {
-        .cq-chart-controls {
-            transform: translate3d(0, 0, 0);
-            transition: transform 0.25s ease;
-        }
-        .cq-top-ui-widgets {
-            left: 9em;
-
-            .info-box {
-                transform: translate3d(0, 0, 0);
-            }
-        }
-    }
-    .ciq-chart {
-        .cq-top-ui-widgets,
-        & .info-box {
-            transition: transform 0.25s ease;
-
-            .cq-symbols-display {
-                z-index: 1;
-
-                &.ciq-disabled {
-                    display: none;
-                }
-            }
-        }
-        .cq-chart-controls {
-            transition: max-width 0.25s ease, transform 0.25s ease;
-        }
-    }
-    .chartContainer {
-        background: transparent;
-        min-height: 100%;
-    }
-    @media (max-width: 768px) {
-        height: 400px;
-        // smartchart library style fixes
-        .cq-context {
-            div.cq-chart-controls {
-                border: 1px solid $COLOR_LIGHT_BLACK_4;
-            }
-        }
-        .cq-modal-dropdown {
-            &.stxMenuActive {
-                position: fixed;
+            .contract-audit__wrapper {
+                margin: 0.8rem;
                 height: 100%;
-                width: 100%;
-                top: 4.7em;
-                left: -0.1em;
+                max-height: calc(100% - 16px);
             }
-            .cq-categorical-display {
-                .ic-icon.icon-close-menu {
-                    svg {
-                        width: 2.4em;
-                        height: 2.4em;
-                    }
-                }
-                .cq-lookup-filters.scroll-down {
-                    max-height: unset;
-                }
-                .scrollbar-container.cq-scroll-panel {
-                    left: -0.1em;
-                }
+            &--enter,
+            &--exit {
+                transform: translate3d(0, 15%, 0);
+                opacity: 0;
             }
-        }
-        .smartcharts-mobile .cq-modal-dropdown .cq-menu-overlay .cq-menu-dropdown {
-            bottom: 4.8em;
+            &--enterDone {
+                transform: translate3d(0, 0, 0);
+                opacity: 1;
+            }
         }
     }
 }
@@ -339,11 +205,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
             background-color: var(--overlay-outside-dialog);
         }
         &--market-closed {
-            & .tooltip--with-label {
+            & .dc-tooltip--with-label {
                 display: none;
             }
-            & .tooltip--with-label:before,
-            .tooltip--with-label:after {
+            & .dc-tooltip--with-label:before,
+            .dc-tooltip--with-label:after {
                 display: none;
             }
         }

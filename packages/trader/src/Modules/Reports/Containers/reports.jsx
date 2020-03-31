@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { PageOverlay, VerticalTab } from '@deriv/components';
+import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { isMobile } from '@deriv/shared/utils/screen';
+import { getSelectedRoute } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
 import { FadeWrapper } from 'App/Components/Animations';
 import { connect } from 'Stores/connect';
@@ -35,6 +37,9 @@ class Reports extends React.Component {
             return options;
         };
 
+        const { routes, location } = this.props;
+        const selected_route = isMobile() ? getSelectedRoute({ routes, pathname: location.pathname }) : null;
+
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}
@@ -43,16 +48,25 @@ class Reports extends React.Component {
             >
                 <div className='reports'>
                     <PageOverlay header={localize('Reports')} onClickClose={this.onClickClose}>
-                        <VerticalTab
-                            alignment='center'
-                            id='report'
-                            is_floating
-                            classNameHeader='reports__tab-header'
-                            current_path={this.props.location.pathname}
-                            is_routed={true}
-                            is_full_width={true}
-                            list={menu_options()}
-                        />
+                        <DesktopWrapper>
+                            <VerticalTab
+                                alignment='center'
+                                id='report'
+                                is_floating
+                                classNameHeader='reports__tab-header'
+                                current_path={this.props.location.pathname}
+                                is_routed={true}
+                                is_full_width={true}
+                                list={menu_options()}
+                            />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <div className='reports__mobile-wrapper'>
+                                {selected_route && (
+                                    <selected_route.component component_icon={selected_route.icon_component} />
+                                )}
+                            </div>
+                        </MobileWrapper>
                     </PageOverlay>
                 </div>
             </FadeWrapper>

@@ -51,6 +51,7 @@ export const icons = {
         'IcChevronLeft',
         'IcChevronRight',
         'IcChevronUpBold',
+        'IcChevronUp',
         'IcCircle',
         'IcClipboard',
         'IcClockOutline',
@@ -159,6 +160,7 @@ export const icons = {
     contract: [
         'IcContractBarrier',
         'IcContractBuyPrice',
+        'IcContractCommission',
         'IcContractDuration',
         'IcContractEntrySpot',
         'IcContractExitSpot',
@@ -166,6 +168,7 @@ export const icons = {
         'IcContractExitTime',
         'IcContractFlag',
         'IcContractId',
+        'IcContractSafeguard',
         'IcContractStartTimeCircle',
         'IcContractStartTime',
         'IcContractTarget',

@@ -40,8 +40,6 @@ $MIN_HEIGHT_FLOATING: calc(
         height: 100%;
         padding-top: 24px;
         padding-bottom: 64px; // allow empty space when scroll below
-        padding-left: 16px;
-        padding-right: 16px;
 
         &--grid-layout {
             display: grid;
@@ -58,6 +56,17 @@ $MIN_HEIGHT_FLOATING: calc(
                     text-transform: unset;
                 }
             }
+            @include mobile {
+                padding: 0 1.6rem;
+                overflow-x: hidden;
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+            }
+        }
+        @include desktop {
+            padding-left: 16px;
+            padding-right: 16px;
         }
     }
     &-form {
@@ -82,6 +91,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: 100%;
                 height: 100%;
                 border-top: 1px solid var(--general-section-1);
+            }
+            @include mobile {
+                margin-top: 1.6rem;
             }
         }
         &__title {
@@ -129,6 +141,18 @@ $MIN_HEIGHT_FLOATING: calc(
             .dc-input__label {
                 top: 1.2rem;
             }
+            @include mobile {
+                .dc-checkbox {
+                    &__box,
+                    & .dc-icon {
+                        width: 2.4rem;
+                        height: 2.4rem;
+                    }
+                }
+                .dc-field-error {
+                    top: 4.2rem;
+                }
+            }
         }
         &__footer {
             height: 80px;
@@ -153,12 +177,44 @@ $MIN_HEIGHT_FLOATING: calc(
                 line-height: 1.5;
                 text-align: right;
                 width: 27.6rem;
+                @include mobile {
+                    width: auto;
+                    text-align: center;
+                }
             }
             &-btn {
                 height: 4rem;
                 margin-top: 0;
                 margin-bottom: 0;
-                margin-left: 1.6rem;
+                @include desktop {
+                    margin-left: 1.6rem;
+                }
+                @include mobile {
+                    margin: 0 1.6rem;
+                }
+            }
+            @include mobile {
+                padding: 16px 0px;
+                flex-direction: column;
+                height: auto;
+                align-items: initial;
+            }
+        }
+        &__personal-details {
+            @include mobile {
+                .account-form__footer-note {
+                    font-size: 1rem;
+                    height: auto;
+                    margin-bottom: 1.6rem;
+                }
+                .dc-checkbox__label {
+                    font-size: 1.2rem;
+                }
+                .date-of-birth-datepicker {
+                    .datepicker-native__input {
+                        height: 3.8rem;
+                    }
+                }
             }
         }
     }
@@ -193,7 +249,7 @@ $MIN_HEIGHT_FLOATING: calc(
             align-items: center;
             flex-direction: column;
 
-            .btn--link {
+            .dc-btn--link {
                 height: 40px;
                 margin-top: 32px;
             }
@@ -230,6 +286,17 @@ $MIN_HEIGHT_FLOATING: calc(
 
         &--space-between {
             justify-content: space-between;
+        }
+    }
+    .account-management-leave-confirm {
+        @include mobile {
+            flex-direction: column;
+            width: 100%;
+            margin-top: 1.2rem;
+
+            .dc-btn:first-child {
+                margin-bottom: 1.6rem;
+            }
         }
     }
     .account__text_container {
@@ -303,6 +370,18 @@ $MIN_HEIGHT_FLOATING: calc(
             padding-left: 8px;
         }
     }
+    .leave-confirm {
+        &__message-icon {
+            width: 93px;
+            height: 93px;
+        }
+        &__message {
+            color: var(--text-prominent);
+        }
+        &__text {
+            padding: 0 1.9rem;
+        }
+    }
     &-address {
         &__details {
             &-section {
@@ -313,6 +392,15 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
+    }
+    &-page-wrapper {
+        @include mobile {
+            height: 100%;
+        }
+    }
+    @include mobile {
+        height: 100%;
+        margin: 0;
     }
 }
 
@@ -446,6 +534,10 @@ $MIN_HEIGHT_FLOATING: calc(
 
     p {
         padding-left: 16px;
+    }
+
+    @include mobile {
+        padding: 0 1.6rem 1rem;
     }
 }
 

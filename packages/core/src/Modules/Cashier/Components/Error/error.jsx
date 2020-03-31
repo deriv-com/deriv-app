@@ -13,7 +13,7 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
         {message && <p className='cashier__paragraph'>{message}</p>}
         {button_link && (
             <ButtonLink className='cashier-error__button' to={button_link} onClick={onClickButton} primary large>
-                <span className='btn__text'>{button_text}</span>
+                <span className='dc-btn__text'>{button_text}</span>
             </ButtonLink>
         )}
         {!button_link && button_text && (

@@ -7,6 +7,7 @@ import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
 import { default_title } from 'App/Constants/app-config';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
+import { removeBranchName } from '_common/url';
 
 const RouteWithSubRoutes = route => {
     const renderFactory = props => {
@@ -25,11 +26,10 @@ const RouteWithSubRoutes = route => {
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !ObjectUtils.isEmptyObject(default_subroute);
+            const pathname = removeBranchName(location.pathname);
             result = (
                 <React.Fragment>
-                    {has_default_subroute && location.pathname === route.path && (
-                        <Redirect to={default_subroute.path} />
-                    )}
+                    {has_default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
                     <route.component {...props} routes={route.routes} passthrough={route.passthrough} />
                 </React.Fragment>
             );

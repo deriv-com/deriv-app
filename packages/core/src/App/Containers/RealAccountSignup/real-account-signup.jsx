@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Icon, Button, Modal, Loading } from '@deriv/components';
+import { Icon, Button, Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
@@ -24,11 +24,11 @@ const ErrorModal = ({ message, code, openPersonalDetails }) => {
                 <a
                     href='https://www.deriv.com/help-centre/'
                     type='button'
-                    className='btn btn--primary btn__medium'
+                    className='dc-btn dc-btn--primary dc-btn__medium'
                     target='_blank'
                     rel='noopener noreferrer'
                 >
-                    <span className='btn__text'>
+                    <span className='dc-btn__text'>
                         <Localize i18n_default_text='Go To Help Centre' />
                     </span>
                 </a>
@@ -235,22 +235,37 @@ class RealAccountSignup extends Component {
         const Body = this.state.modal_content[this.active_modal_index].value;
 
         return (
-            <Modal
-                id='real_account_signup_modal'
-                className={classNames('real-account-signup-modal', {
-                    'dc-modal__container_real-account-signup-modal--error': this.active_modal_index === 5,
-                    'dc-modal__container_real-account-signup-modal--success':
-                        this.active_modal_index >= 2 && this.active_modal_index < 5,
-                })}
-                is_open={is_real_acc_signup_on}
-                has_close_icon={this.active_modal_index < 2 || this.active_modal_index === 5}
-                title={title}
-                toggleModal={this.closeModal}
-                height={this.modal_height}
-                width='904px'
-            >
-                <Body />
-            </Modal>
+            <>
+                <DesktopWrapper>
+                    <Modal
+                        id='real_account_signup_modal'
+                        className={classNames('real-account-signup-modal', {
+                            'dc-modal__container_real-account-signup-modal--error': this.active_modal_index === 5,
+                            'dc-modal__container_real-account-signup-modal--success':
+                                this.active_modal_index >= 2 && this.active_modal_index < 5,
+                        })}
+                        is_open={is_real_acc_signup_on}
+                        has_close_icon={this.active_modal_index < 2 || this.active_modal_index === 5}
+                        title={title}
+                        toggleModal={this.closeModal}
+                        height={this.modal_height}
+                        width='904px'
+                    >
+                        <Body />
+                    </Modal>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <MobileDialog
+                        portal_element_id='modal_root'
+                        title={title}
+                        wrapper_classname='account-signup-mobile-dialog'
+                        visible={is_real_acc_signup_on}
+                        onClose={this.closeModal}
+                    >
+                        <Body />
+                    </MobileDialog>
+                </MobileWrapper>
+            </>
         );
     }
 }

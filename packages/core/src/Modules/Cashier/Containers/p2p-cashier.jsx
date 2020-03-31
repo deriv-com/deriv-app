@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { WS } from 'Services';
 import P2P from '@deriv/p2p';
 import { getLanguage } from '@deriv/translations';
+import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';
 

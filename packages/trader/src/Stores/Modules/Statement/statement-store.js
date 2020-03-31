@@ -1,5 +1,7 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable } from 'mobx';
+import { isDesktop } from '@deriv/shared/utils/screen';
+import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { WS } from 'Services/ws-methods';
 import { toMoment } from 'Utils/Date';
 import { formatStatementTransaction } from './Helpers/format-response';
@@ -20,6 +22,7 @@ export default class StatementStore extends BaseStore {
         .subtract(1, 's')
         .unix();
     @observable error = '';
+    @observable filtered_date_range;
 
     // `client_loginid` is only used to detect if this is in sync with the client-store, don't rely on
     // this for calculations. Use the client.currency instead.
@@ -33,6 +36,12 @@ export default class StatementStore extends BaseStore {
     @computed
     get has_selected_date() {
         return !!(this.date_from || this.date_to);
+    }
+
+    @computed
+    get data_source() {
+        // TODO: remove this getter once Multiplier is supported in mobile
+        return isDesktop() ? this.data : this.data.filter(row => !Shortcode.isMultiplier({ shortcode: row.shortcode }));
     }
 
     @action.bound
@@ -105,12 +114,10 @@ export default class StatementStore extends BaseStore {
     }
 
     @action.bound
-    handleDateChange(date_values) {
-        Object.keys(date_values).forEach(key => {
-            if (date_values[key]) {
-                this[`date_${key}`] = date_values[key];
-            }
-        });
+    handleDateChange(date_values, { date_range } = {}) {
+        this.filtered_date_range = date_range;
+        this.date_from = date_values?.from ?? (date_values.is_batch ? null : this.date_from);
+        this.date_to = date_values?.to ?? this.date_to;
         this.clearTable();
         this.fetchNextBatch();
     }
@@ -139,6 +146,11 @@ export default class StatementStore extends BaseStore {
     }
 
     @action.bound
+    networkStatusChangeListener(is_online) {
+        this.is_loading = !is_online;
+    }
+
+    @action.bound
     async onMount() {
         this.assertHasValidCache(
             this.client_loginid,
@@ -148,6 +160,7 @@ export default class StatementStore extends BaseStore {
         );
         this.client_loginid = this.root_store.client.loginid;
         this.onSwitchAccount(this.accountSwitcherListener);
+        this.onNetworkStatusChange(this.networkStatusChangeListener);
         await WS.wait('authorize');
         this.fetchNextBatch(true);
     }

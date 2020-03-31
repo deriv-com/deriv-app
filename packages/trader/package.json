@@ -119,6 +119,7 @@
     "i18next": "^17.0.3",
     "js-cookie": "^2.2.0",
     "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
     "mobx": "^5.0.3",
     "mobx-react": "^5.4.2",
     "mobx-utils": "^5.4.0",
@@ -136,7 +137,7 @@
     "react-router-dom": "^5.0.1",
     "react-transition-group": "^2.5.0",
     "react-window": "^1.8.4",
-    "smartcharts-beta": "^0.6.2",
+    "smartcharts-beta": "^0.8.0-betam.10",
     "url-polyfill": "^1.1.5",
     "web-push-notifications": "^3.2.15",
     "workbox-webpack-plugin": "^4.3.1"

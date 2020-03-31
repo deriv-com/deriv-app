@@ -1,0 +1,57 @@
+@import '../_common/base/index';
+
+/* @define account-types */
+.account-types {
+    .account-card {
+        border: 1px solid var(--border-normal);
+        border-radius: 0.6rem;
+        padding: 1.6rem;
+
+        &__title {
+            color: var(--text-general);
+            font-size: 1.6rem;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+
+        &__subtitle {
+            color: var(--text-profit-success);
+            font-size: 1.2rem;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+
+        &__items {
+            width: 100%;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        &__item {
+            &__label {
+                color: var(--text-less-prominent);
+                display: inline-block;
+                font-size: 1.2rem;
+                white-space: nowrap;
+                width: 10.3rem;
+            }
+
+            &__value {
+                color: var(--text-general);
+                display: inline-block;
+                font-size: 1.2rem;
+                white-space: nowrap;
+                width: 8rem;
+            }
+        }
+
+        &__help {
+            vertical-align: middle;
+            cursor: pointer;
+        }
+
+        &__button {
+            width: 100%;
+        }
+    }
+}

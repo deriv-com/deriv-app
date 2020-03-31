@@ -1,8 +1,8 @@
-// import PropTypes           from 'prop-types';
 import React from 'react';
 import { Button, Input } from '@deriv/components';
 import { Formik } from 'formik';
 import { localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import { validAddress, validPostCode, validLetterSymbol } from 'Utils/Validator/declarative-validation-rules';
@@ -207,6 +207,7 @@ class ProofOfAddressForm extends React.Component {
             return <LoadErrorMessage error_message={api_initial_load_error} />;
         }
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        const mobile_scroll_offset = status && status.msg ? '200px' : '154px';
 
         return (
             <Formik
@@ -225,7 +226,7 @@ class ProofOfAddressForm extends React.Component {
                         <LeaveConfirm onDirty={this.showForm} />
                         {show_form && (
                             <form noValidate className='account-form' onSubmit={handleSubmit}>
-                                <FormBody scroll_offset='80px'>
+                                <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
                                     <FormSubHeader title={localize('Details')} />
                                     <div className='account-poa__details-section'>
                                         <div className='account-poa__details-description'>

@@ -249,9 +249,14 @@ $MIN_HEIGHT_FLOATING: calc(
             align-items: center;
             flex-direction: column;
 
-            .dc-btn--link {
-                height: 40px;
-                margin-top: 32px;
+            .dc-btn {
+                height: 4rem;
+                margin-top: 3.2rem;
+
+                @include mobile {
+                    margin-top: 1.6rem;
+                    width: 100%;
+                }
             }
         }
         &-icon {
@@ -268,6 +273,9 @@ $MIN_HEIGHT_FLOATING: calc(
             font-weight: 400;
             text-align: center;
             line-height: 1.5;
+        }
+        @include mobile {
+            line-height: 20px;
         }
     }
     .account-management__text {
@@ -429,6 +437,9 @@ $MIN_HEIGHT_FLOATING: calc(
             .dc-file-dropzone {
                 max-width: 400px;
             }
+            @include mobile {
+                margin-bottom: 2.4rem;
+            }
         }
         &-remove-btn {
             position: absolute;
@@ -494,6 +505,9 @@ $MIN_HEIGHT_FLOATING: calc(
             .account-form__fieldset {
                 margin-bottom: 3em;
             }
+            @include mobile {
+                min-width: 100%;
+            }
         }
     }
 }
@@ -534,6 +548,10 @@ $MIN_HEIGHT_FLOATING: calc(
 
     p {
         padding-left: 16px;
+
+        @include mobile {
+            line-height: 20px;
+        }
     }
 
     @include mobile {

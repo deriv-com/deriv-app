@@ -62,7 +62,7 @@ const MT5DashboardContainer = () => (
             </div>
         </div>
         <p className='mt5-dashboard__download-center--hint'>
-            <Localize i18n_default_text='The DMT5 platform is not supported by macOS Catalina, Windows XP, Windows 2003, and Windows Vista.' />
+            <Localize i18n_default_text='The DMT5 desktop app is not supported by macOS, Windows XP, Windows 2003, and Windows Vista.' />
         </p>
     </div>
 );

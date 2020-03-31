@@ -30,13 +30,6 @@ const MT5DashboardContainer = () => (
                         <Icon icon='IcInstallationWindows' width={138} height={40} />
                     </a>
                     <a
-                        href='https://deriv.s3-ap-southeast-1.amazonaws.com/deriv-mt5.dmg'
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        <Icon icon='IcInstallationMac' width={125} height={40} />
-                    </a>
-                    <a
                         href='https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux'
                         target='_blank'
                         rel='noopener noreferrer'

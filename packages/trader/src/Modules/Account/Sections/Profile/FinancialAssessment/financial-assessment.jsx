@@ -103,7 +103,6 @@ class FinancialAssessment extends React.Component {
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_virtual) return <DemoMessage />;
-        const mobile_scroll_offset = status && status.msg ? '200px' : '154px';
 
         return (
             <Formik
@@ -136,7 +135,7 @@ class FinancialAssessment extends React.Component {
                         <LeaveConfirm onDirty={this.showForm} />
                         {show_form && (
                             <form className='account-form' onSubmit={handleSubmit}>
-                                <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
+                                <FormBody scroll_offset={isMobile() ? '200px' : '80px'}>
                                     <FormSubHeader
                                         title={localize('Financial information')}
                                         subtitle={`(${localize('All fields are required')})`}

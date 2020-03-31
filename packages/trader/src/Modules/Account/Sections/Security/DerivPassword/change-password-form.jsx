@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
 import { Button, PasswordInput, PasswordMeter } from '@deriv/components';
@@ -131,7 +131,9 @@ class ChangePasswordForm extends React.Component {
                             <FormFooter>
                                 {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                 <Button
-                                    className='account-form__footer-btn'
+                                    className={classNames('account-form__footer-btn', {
+                                        'account-form__footer-btn--has-bottom-margin': isMobile(),
+                                    })}
                                     type='button'
                                     onClick={this.props.onClickSendEmail}
                                     text={localize('Forgot your password?')}

@@ -5,6 +5,7 @@ import { Popover } from '@deriv/components';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
+import { getDerivComLink } from '_common/url';
 import Loading from '../../../../../templates/app/components/loading.jsx';
 import { ScrollbarsContainer, TextContainer, Text } from '../../../Components/layout-components.jsx';
 import DemoMessage from '../../ErrorMessages/DemoMessage';
@@ -94,7 +95,7 @@ class AccountLimits extends React.Component {
                                     className='link link--orange'
                                     rel='noopener noreferrer'
                                     target='_blank'
-                                    href='https://www.deriv.com/help-centre/'
+                                    href={getDerivComLink('help-centre')}
                                 />,
                             ]}
                         />

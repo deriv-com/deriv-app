@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { getUrlBase } from '@deriv/shared/utils/url';
 import TogglePositions from 'App/Components/Elements/TogglePositions';
 import AppRoutes from 'Constants/routes';
 import { connect } from 'Stores/connect';

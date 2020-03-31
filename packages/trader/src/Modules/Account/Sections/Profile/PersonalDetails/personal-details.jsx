@@ -2,9 +2,17 @@
 import React from 'react';
 import { Formik, Field } from 'formik';
 import classNames from 'classnames';
-import { Autocomplete, Checkbox, Button, Input, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
+import {
+    Autocomplete,
+    Checkbox,
+    Button,
+    Input,
+    DesktopWrapper,
+    MobileWrapper,
+    SelectNative,
+    DatePicker,
+} from '@deriv/components';
 import { localize } from '@deriv/translations';
-import DatePicker from 'App/Components/Form/DatePicker';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import {

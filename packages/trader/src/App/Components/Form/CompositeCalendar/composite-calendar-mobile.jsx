@@ -1,9 +1,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, MobileDialog, Button } from '@deriv/components';
+import { Icon, MobileDialog, Button, DatePicker } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import DatePicker from 'App/Components/Form/DatePicker';
 import InputField from 'App/Components/Form/InputField/input-field.jsx';
 import { toMoment } from 'Utils/Date';
 

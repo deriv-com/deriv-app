@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import CalendarHeader from 'App/Components/Elements/Calendar/calendar-header.jsx';
-import CalendarBody from 'App/Components/Elements/Calendar/calendar-body.jsx';
-import { toMoment } from 'Utils/Date';
+import { Calendar } from '@deriv/components';
+import { toMoment } from '@deriv/shared/utils/date';
 
 class DatePickerCalendar extends Component {
     constructor(props) {
@@ -61,7 +60,7 @@ class DatePickerCalendar extends Component {
     render() {
         return (
             <div className='calendar'>
-                <CalendarHeader
+                <Calendar.Header
                     calendar_date={this.state.date}
                     calendar_view={this.state.view}
                     navigateTo={this.navigateTo}
@@ -69,7 +68,7 @@ class DatePickerCalendar extends Component {
                     hide_disabled_periods={true}
                     switchView={this.switchView}
                 />
-                <CalendarBody
+                <Calendar.Body
                     calendar_view={this.state.view}
                     calendar_date={this.state.date}
                     selected_date={this.props.value}

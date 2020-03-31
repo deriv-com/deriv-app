@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import React from 'react';
-import CalendarBody from 'App/Components/Elements/Calendar/calendar-body.jsx';
-import CalendarHeader from 'App/Components/Elements/Calendar/calendar-header.jsx';
-import CalendarFooter from 'App/Components/Elements/Calendar/calendar-footer.jsx';
+import { Calendar } from '@deriv/components';
 import { addMonths, diffInMonths, epochToMoment, subMonths, toMoment } from 'Utils/Date';
 
 class TwoMonthPicker extends React.PureComponent {
@@ -85,7 +83,7 @@ class TwoMonthPicker extends React.PureComponent {
         return (
             <React.Fragment>
                 <div className='first-month'>
-                    <CalendarHeader
+                    <Calendar.Header
                         calendar_date={left_pane_date}
                         calendar_view='date'
                         navigateTo={this.navigateFrom.bind(this)}
@@ -93,7 +91,7 @@ class TwoMonthPicker extends React.PureComponent {
                         hide_disabled_periods={true}
                         switchView={() => ({})}
                     />
-                    <CalendarBody
+                    <Calendar.Body
                         calendar_view='date'
                         calendar_date={left_pane_date}
                         selected_date={this.props.value}
@@ -104,7 +102,7 @@ class TwoMonthPicker extends React.PureComponent {
                     />
                 </div>
                 <div className='second-month'>
-                    <CalendarHeader
+                    <Calendar.Header
                         calendar_date={right_pane_date}
                         calendar_view='date'
                         isPeriodDisabled={this.validateToArrows.bind(this)}
@@ -112,7 +110,7 @@ class TwoMonthPicker extends React.PureComponent {
                         hide_disabled_periods={true}
                         switchView={() => ({})}
                     />
-                    <CalendarBody
+                    <Calendar.Body
                         calendar_view='date'
                         calendar_date={right_pane_date}
                         selected_date={this.props.value}
@@ -121,7 +119,7 @@ class TwoMonthPicker extends React.PureComponent {
                         hide_others={true}
                         updateSelected={this.updateSelectedDate.bind(this)}
                     />
-                    <CalendarFooter
+                    <Calendar.Footer
                         use_icon='IcCalendarForwardToday'
                         has_today_btn={true}
                         onClick={this.jumpToCurrentMonth.bind(this)}

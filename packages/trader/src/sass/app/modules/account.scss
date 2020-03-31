@@ -278,9 +278,13 @@ $MIN_HEIGHT_FLOATING: calc(
             height: 128px;
             margin-top: 80px;
 
-            /* iPhone SE screen height fixes due to UI space restrictions */
-            @media only screen and (max-height: 480px) {
-                margin-top: 3.2rem;
+            @include mobile {
+                margin-top: 4rem;
+
+                /* iPhone SE screen height fixes due to UI space restrictions */
+                @media only screen and (max-height: 480px) {
+                    margin-top: 3.2rem;
+                }
             }
         }
         &-title {
@@ -521,11 +525,19 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 100%;
             margin-right: 0.5em;
             flex: 1;
+
+            @include mobile {
+                margin-bottom: 2.4rem;
+            }
         }
         &-text {
             font-size: var(--text-size-xs);
             line-height: 1.5;
             color: var(--text-general);
+
+            @include mobile {
+                font-size: 1.2rem;
+            }
         }
         &-fields {
             width: 100%;

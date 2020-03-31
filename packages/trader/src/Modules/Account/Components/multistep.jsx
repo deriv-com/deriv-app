@@ -1,7 +1,5 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Div100vhContainer, Icon } from '@deriv/components';
-import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 
 class MultiStep extends React.Component {

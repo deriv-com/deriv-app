@@ -4,24 +4,22 @@ import { withInfo } from '@storybook/addon-info';
 import React, { useState } from 'react';
 import { toMoment } from '@deriv/shared/utils/date';
 import DatePicker from 'Components/date-picker';
-import { Text } from '../button/shared-style';
 import Theme from '../shared/theme';
 
 const stories = storiesOf('DatePicker', module);
 
-const FlexWrapper = ({ children }) => (
+const FlexWrapper = ({ children, justifyContent = 'center' }) => (
     <div
         style={{
-            display: 'grid',
-            gridGap: '24px',
-            justifyContent: 'center',
-            padding: '16px',
-            height: '50vh',
+            display: 'flex',
+            padding: '36px',
+            justifyContent,
         }}
     >
         {children}
     </div>
 );
+
 stories.addDecorator(withKnobs).addDecorator(withInfo);
 
 stories
@@ -32,32 +30,31 @@ stories
             </FlexWrapper>
         </Theme>
     ))
+    .add('label', () => (
+        <Theme is_dark={boolean('Theme', false)}>
+            <FlexWrapper>
+                <DatePicker label='DatePicker Label' />
+            </FlexWrapper>
+        </Theme>
+    ))
     .add('alignment', () => (
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
-                <div>
-                    <Text size='1.6rem'>default</Text>
-                    <DatePicker />
-                </div>
-
-                <div>
-                    <Text size='1.6rem'>left</Text>
-                    <DatePicker alignment='left' />
-                </div>
+                <DatePicker label='Left align' alignment='left' />
             </FlexWrapper>
         </Theme>
     ))
     .add('display format', () => (
         <Theme is_dark={boolean('Theme', false)}>
-            <FlexWrapper>
-                <DatePicker />
-                <DatePicker display_format='DD-MM-YYYY' />
-                <DatePicker display_format='DD/MM/YYYY' />
-                <DatePicker display_format='DD MMM YYYY' />
+            <FlexWrapper justifyContent='space-between'>
+                <DatePicker label='Default' />
+                <DatePicker label='DD-MM-YYY' display_format='DD-MM-YYYY' />
+                <DatePicker label='DD/MM/YYYY' display_format='DD/MM/YYYY' />
+                <DatePicker label='DD MMM YYYY' display_format='DD MMM YYYY' />
             </FlexWrapper>
         </Theme>
     ))
-    .add('show leading icon', () => (
+    .add('leading icon', () => (
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
                 <DatePicker show_leading_icon />
@@ -71,14 +68,16 @@ stories
             </FlexWrapper>
         </Theme>
     ))
-    .add('with placeholder', () => (
-        <Theme is_dark={boolean('Theme', false)}>
-            <FlexWrapper>
-                <DatePicker placeholder='I am placeholder' value='' />
-            </FlexWrapper>
-        </Theme>
-    ))
-    .add('with footer', () => (
+    .add('placeholder', () => {
+        return (
+            <Theme is_dark={boolean('Theme', false)}>
+                <FlexWrapper>
+                    <DatePicker placeholder='I am placeholder' />
+                </FlexWrapper>
+            </Theme>
+        );
+    })
+    .add('footer', () => (
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
                 <DatePicker footer='Abracadabra!' has_today_btn />
@@ -87,33 +86,23 @@ stories
     ))
     .add('mode', () => {
         const [footer, setFooterText] = useState('');
+
         const onChange = e => {
             setFooterText(`Duration: ${e.duration} ${e.duration === 1 ? 'day' : 'days'}`);
         };
+
         return (
             <Theme is_dark={boolean('Theme', false)}>
-                <FlexWrapper>
-                    <div>
-                        <Text size='1.6rem'>default</Text>
-                        <DatePicker
-                            leading_icon
-                            min_date={toMoment()}
-                            onChange={onChange}
-                            has_today_btn
-                            has_range_selection
-                        />
-                    </div>
-                    <div>
-                        <Text size='1.6rem'>duration</Text>
-                        <DatePicker
-                            footer={footer}
-                            leading_icon
-                            mode='duration'
-                            min_date={toMoment()}
-                            onChange={onChange}
-                            has_range_selection
-                        />
-                    </div>
+                <FlexWrapper justifyContent='space-around'>
+                    <DatePicker label='Default' min_date={toMoment()} onChange={onChange} has_today_btn />
+                    <DatePicker
+                        label='Duration DatePicker'
+                        footer={footer}
+                        mode='duration'
+                        min_date={toMoment()}
+                        onChange={onChange}
+                        has_range_selection
+                    />
                 </FlexWrapper>
             </Theme>
         );

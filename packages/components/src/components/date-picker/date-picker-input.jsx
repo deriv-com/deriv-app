@@ -52,7 +52,7 @@ const DatePickerInput = ({
             name={name}
             // onChange={onChange}
             onClick={onClick}
-            placeholder={!value ? placeholder : undefined}
+            placeholder={value ? undefined : placeholder}
             readOnly
             leading_icon={show_leading_icon ? <DatePickerIcon icon='IcCalendar' /> : undefined}
             trailing_icon={show_leading_icon ? undefined : trailing_icon}

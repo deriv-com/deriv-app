@@ -1,4 +1,4 @@
-import { epochToMoment, toMoment } from 'Utils/Date';
+import { epochToMoment, toMoment } from '@deriv/shared/utils/date';
 
 const getDateTo = (partial_fetch_time, date_to) => {
     const today = toMoment()

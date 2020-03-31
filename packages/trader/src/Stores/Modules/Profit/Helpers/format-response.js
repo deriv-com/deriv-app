@@ -1,5 +1,5 @@
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 import { getMarketInformation } from '../../../../Modules/Reports/Helpers/market-underlying';
 import { getSymbolDisplayName } from '../../Trading/Helpers/active-symbols';
 

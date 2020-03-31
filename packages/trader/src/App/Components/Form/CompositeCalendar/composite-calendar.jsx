@@ -4,7 +4,7 @@ import { Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import InputField from 'App/Components/Form/InputField/input-field.jsx';
 import Lazy from 'App/Containers/Lazy';
-import { daysFromTodayTo, epochToMoment, toMoment } from 'Utils/Date';
+import { daysFromTodayTo, epochToMoment, toMoment } from '@deriv/shared/utils/date';
 import CompositeCalendarMobile from './composite-calendar-mobile.jsx';
 import SideList from './side-list.jsx';
 

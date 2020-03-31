@@ -93,21 +93,21 @@ export const getDiffDuration = (start_time, end_time) =>
  * @param  {moment.duration} moment duration object
  * @return {String} formatted display string
  */
-export const formatDuration = duration => {
+export const formatDuration = (duration, format) => {
     const d = Math.floor(duration.asDays()); // duration.days() does not include months/years
     const h = duration.hours();
     const m = duration.minutes();
     const s = duration.seconds();
-    let formatted_str = moment(0)
+    const formatted_str = moment(0)
         .hour(h)
         .minute(m)
         .seconds(s)
-        .format('HH:mm:ss');
-    if (d > 0) {
-        // TODO add translations for days and day
-        formatted_str = `${d} ${d > 1 ? 'days' : 'day'} ${formatted_str}`;
-    }
-    return formatted_str;
+        .format(format || 'HH:mm:ss');
+
+    return {
+        days: d,
+        timestamp: formatted_str,
+    };
 };
 
 /**

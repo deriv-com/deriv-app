@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import React from 'react';
 import { Calendar } from '@deriv/components';
-import { addMonths, diffInMonths, epochToMoment, subMonths, toMoment } from 'Utils/Date';
+import { addMonths, diffInMonths, epochToMoment, subMonths, toMoment } from '@deriv/shared/utils/date';
 
 class TwoMonthPicker extends React.PureComponent {
     constructor(props) {

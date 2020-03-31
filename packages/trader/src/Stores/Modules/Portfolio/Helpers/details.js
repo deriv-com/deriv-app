@@ -1,6 +1,6 @@
 import ObjectUtils from '@deriv/shared/utils/object';
 import { localize } from '@deriv/translations';
-import { epochToMoment, formatMiliseconds, getDiffDuration } from 'Utils/Date';
+import { epochToMoment, formatMiliseconds, getDiffDuration } from '@deriv/shared/utils/date';
 import { isDigitContract } from '../../Contract/Helpers/digits';
 
 export const getCurrentTick = contract_info => {

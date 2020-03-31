@@ -2,7 +2,7 @@ import CurrencyUtils from '@deriv/shared/utils/currency';
 import { toTitleCase } from '@deriv/shared/utils/string';
 import { localize } from '@deriv/translations';
 import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 import { getSymbolDisplayName } from '../../Trading/Helpers/active-symbols';
 
 export const formatStatementTransaction = (transaction, currency, active_symbols = []) => {

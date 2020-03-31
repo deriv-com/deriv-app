@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Money, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { epochToMoment, toGMTFormat } from 'Utils/Date';
+import { epochToMoment, toGMTFormat } from '@deriv/shared/utils/date';
 import { getBarrierLabel, getBarrierValue, isDigitType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import {
     getCancellationPrice,

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 import ListItem from './list-item.jsx';
 
 const isActive = (from, to, flag) => {

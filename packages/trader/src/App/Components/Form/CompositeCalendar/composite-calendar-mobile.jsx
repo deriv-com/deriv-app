@@ -4,7 +4,7 @@ import React from 'react';
 import { Icon, MobileDialog, Button, DatePicker } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import InputField from 'App/Components/Form/InputField/input-field.jsx';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 
 export const RadioButton = ({ id, className, selected_value, value, label, onChange }) => {
     return (

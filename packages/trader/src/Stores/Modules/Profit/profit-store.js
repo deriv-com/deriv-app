@@ -3,7 +3,7 @@ import { action, computed, observable } from 'mobx';
 import { isDesktop } from '@deriv/shared/utils/screen';
 import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { WS } from 'Services/ws-methods';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 import getDateBoundaries from './Helpers/format-request';
 import { formatProfitTableTransactions } from './Helpers/format-response';
 import BaseStore from '../../base-store';

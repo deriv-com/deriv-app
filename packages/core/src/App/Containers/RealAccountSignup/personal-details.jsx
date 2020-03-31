@@ -5,7 +5,7 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 import FormSubmitButton from './form-submit-button.jsx';
 import DatePickerCalendar from './date-picker-calendar.jsx';
 import 'Sass/details-form.scss';

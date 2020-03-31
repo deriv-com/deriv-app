@@ -3,7 +3,7 @@ import React from 'react';
 import { Icon, Input } from '@deriv/components';
 import { Field } from 'formik';
 import { CSSTransition } from 'react-transition-group';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 import DatePickerCalendar from './date-of-birth-calendar.jsx';
 
 const InputField = props => {

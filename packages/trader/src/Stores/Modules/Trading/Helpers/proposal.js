@@ -1,7 +1,7 @@
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { isVisible } from '_common/common_functions';
-import { convertToUnix, toMoment } from 'Utils/Date';
+import { convertToUnix, toMoment } from '@deriv/shared/utils/date';
 
 const map_error_field = {
     barrier: 'barrier_1',

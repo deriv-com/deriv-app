@@ -7,13 +7,13 @@ import ClientBase from '_common/base/client_base';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
+import { toMoment } from '@deriv/shared/utils/date';
 import { LocalStore, State } from '_common/storage';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
 import { getClientAccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
-import { toMoment } from '../Utils/Date';
 
 const storage_key = 'client.accounts';
 export default class ClientStore extends BaseStore {

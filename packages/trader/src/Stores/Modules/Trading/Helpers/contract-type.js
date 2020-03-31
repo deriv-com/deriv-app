@@ -2,7 +2,7 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
-import { isTimeValid, minDate, toMoment } from 'Utils/Date';
+import { isTimeValid, minDate, toMoment } from '@deriv/shared/utils/date';
 import { buildBarriersConfig } from './barrier';
 import { buildDurationConfig, hasIntradayDurationUnit } from './duration';
 import { buildForwardStartingConfig, isSessionAvailable } from './start-date';

@@ -65,6 +65,7 @@
     flex-direction: column;
     flex: 1 1 0; /* fix for Safari */
     width: 100%;
+    position: relative;
 
     h1 {
         @include typeface(--title-center-bold-black);
@@ -73,10 +74,14 @@
         margin-top: 3rem;
     }
     h2 {
-        @include typeface(--title-center-bold-black);
         text-transform: none;
         margin-top: 2.4rem;
         color: var(--text-less-prominent);
+        @include typeface(--title-center-bold-black);
+        @include mobile {
+            margin-top: 0.8rem;
+            font-size: 1.2rem;
+        }
     }
     h3 {
         @include typeface(--small-center-normal-black);
@@ -88,7 +93,30 @@
         display: flex;
         flex: 1 1 0; /* fix for Safari */
         width: 100%;
-        padding: 0 2.4rem 3.2rem;
+
+        .currency-selector {
+            &__container {
+                width: 100%;
+                @include mobile {
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                    margin-top: 70px;
+
+                    &--no-top-margin {
+                        margin-top: 0;
+                    }
+                }
+            }
+        }
+        @include desktop {
+            padding: 0 2.4rem 3.2rem;
+        }
+        @include mobile {
+            height: inherit;
+            overflow: hidden;
+            position: relative;
+            max-height: inherit;
+        }
     }
     &__body {
         display: flex;
@@ -101,10 +129,22 @@
             @include typeface(--paragraph-center-normal-black);
             text-transform: initial;
             color: var(--text-prominent);
+
+            @include mobile {
+                font-size: 1.2rem;
+                margin: 2.4rem auto 0 2.4rem;
+                text-align: left;
+            }
         }
         h2 {
             @include typeface(--title-center-bold-black);
             color: var(--text-prominent);
+
+            @include mobile {
+                font-size: 1.2rem;
+                text-align: left;
+                margin-left: 2.4rem;
+            }
         }
     }
     &__btn-area {
@@ -112,11 +152,11 @@
         align-items: center;
         justify-content: flex-end;
         align-self: flex-end;
-        padding-top: 2.4em;
+        padding-top: 2.4rem;
         width: 100%;
 
         .dc-btn:not(:last-child) {
-            margin: 0 1em;
+            margin: 0 1rem;
         }
         .dc-btn:last-child {
             margin: 0;
@@ -125,21 +165,31 @@
             bottom: 0;
             position: absolute;
             left: 0;
-            padding: 2.4em;
-            border-top: 1px solid var(--general-section-1);
+            padding: 2.4rem;
+            border-top: 1px solid var(--border-disabled);
         }
         &--center {
             justify-content: center;
             width: 100%;
 
             & .dc-btn {
-                min-width: 9em;
+                min-width: 9rem;
             }
         }
         &--error {
             @include typeface(--paragraph-left-normal-black);
             text-transform: none;
             color: var(--brand-red-coral) !important;
+        }
+        @include mobile {
+            background-color: var(--general-section-2);
+            top: unset;
+            bottom: 0;
+
+            .dc-btn {
+                height: 40px;
+                width: 100%;
+            }
         }
     }
     .checkbox {
@@ -194,6 +244,60 @@
                 line-height: 1.5;
                 width: 78%;
                 text-align: center;
+            }
+        }
+    }
+    @include mobile {
+        &--error {
+            margin-top: $MOBILE_HEADER_HEIGHT;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            h1 {
+                font-size: 3.6rem;
+                font-weight: bold;
+                color: var(--brand-red-coral);
+                line-height: 1.5;
+            }
+            p {
+                font-size: 1.4rem;
+                margin: 1.6rem;
+                line-height: 1.4;
+                color: var(--text-general);
+            }
+            .dc-btn {
+                height: 4rem;
+            }
+            .dc-ion {
+                width: 100%;
+                max-width: 96px;
+                margin-top: 2rem;
+                height: auto;
+            }
+        }
+        &__header {
+            &-steps {
+                padding-bottom: 0.8rem;
+                position: absolute;
+                top: 0;
+                width: 100%;
+                background: var(--general-section-2);
+
+                &-title {
+                    color: var(--brand-red-coral);
+                    font-size: 1.4rem;
+                    font-weight: bold;
+                    line-height: 20px;
+                    padding: 1.6rem 2.4rem 0.8rem;
+                }
+                &-subtitle {
+                    color: var(--text-prominent);
+                    line-height: 18px;
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    padding: 0 2.4rem;
+                }
             }
         }
     }

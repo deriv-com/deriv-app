@@ -28,4 +28,20 @@
     input {
         display: none;
     }
+    @include mobile {
+        overflow-x: hidden;
+        margin: 70px 0 0;
+        padding: 0 2.4rem 2.4rem;
+        overflow-y: auto;
+
+        & .dc-checkbox__box {
+            width: 2.4rem;
+            height: 2.4rem;
+
+            .dc-icon {
+                width: 2.4rem;
+                height: 2.4rem;
+            }
+        }
+    }
 }

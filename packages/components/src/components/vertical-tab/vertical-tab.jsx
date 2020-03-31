@@ -18,7 +18,12 @@ class VerticalTab extends React.Component {
     setSelectedIndex = ({ list, selected_index, is_routed, current_path }) => {
         let index;
         if (typeof selected_index === 'undefined') {
-            index = is_routed ? list.indexOf(list.find(item => item.path === (current_path || item.default))) || 0 : 0;
+            index = is_routed
+                ? Math.max(
+                      list.indexOf(list.find(item => item.path === current_path) || list.find(item => item.default)),
+                      0
+                  )
+                : 0;
         } else {
             index = typeof selected_index === 'object' ? list.indexOf(selected_index) : selected_index;
         }

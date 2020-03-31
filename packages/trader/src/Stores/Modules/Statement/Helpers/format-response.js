@@ -1,5 +1,5 @@
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import { toTitleCase } from '_common/string_util';
+import { toTitleCase } from '@deriv/shared/utils/string';
 import { localize } from '@deriv/translations';
 import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
 import { toMoment } from 'Utils/Date';

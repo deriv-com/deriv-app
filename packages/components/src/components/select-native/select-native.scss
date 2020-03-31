@@ -1,0 +1,63 @@
+.dc-select-native {
+    height: 38px;
+    width: 100%;
+    position: relative;
+
+    &__arrow {
+        position: absolute;
+        right: 1.2rem;
+        top: 1.2rem;
+        --fill-color1: var(--text-less-prominent);
+    }
+    &__display {
+        height: 38px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding-left: 1.2rem;
+
+        &-text {
+            color: var(--text-prominent);
+            font-size: 1.4rem;
+        }
+    }
+    &__placeholder {
+        position: absolute;
+        left: 0.8rem;
+        top: 1.2rem;
+        pointer-events: none;
+        transition: transform 0.25s linear;
+        padding: 0 0.4rem;
+        font-size: 1.4rem;
+        transform: none;
+        background-color: var(--fill-normal);
+        color: var(--text-less-prominent);
+
+        &--has-value {
+            transform: translate3d(-1.2rem, -2rem, 0px) scale(0.8);
+            color: var(--text-general);
+        }
+    }
+    &__picker {
+        opacity: 0;
+        width: 100%;
+        height: 38px;
+        left: 0;
+        top: 0;
+        position: absolute;
+    }
+    &--disabled {
+        .dc-select-native__display-text {
+            color: var(--text-disabled);
+        }
+        .dc-select-native__placeholder:not(.dc-select-native__placeholder--has-value) {
+            color: var(--text-disabled);
+        }
+    }
+    &--error {
+        .dc-select-native__placeholder {
+            color: var(--brand-red-coral);
+        }
+    }
+}

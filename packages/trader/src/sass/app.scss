@@ -1,22 +1,8 @@
-// Base
-@import 'app/_common/base/index';
-
-// Fonts
-@import '@deriv/shared/src/styles/google-fonts.scss';
-
-// Shared
-@import '@deriv/shared/src/styles/reset.scss';
-@import '@deriv/shared/src/styles/themes.scss';
-
 // General
-@import '@deriv/shared/src/styles/symbols.scss';
 @import 'app/_common/tooltip';
-@import 'app/_common/loading';
 
 // Layout
-@import 'app/_common/layout/layouts';
-// @import 'app/_common/layout/header'; Moved to core
-// @import 'app/_common/layout/footer'; Moved to core
+@import 'app/_common/layout/trader-layouts';
 @import 'app/_common/layout/multistep';
 @import 'app/_common/layout/send-email-template';
 
@@ -35,7 +21,6 @@
 @import 'app/_common/form/time-picker';
 
 // Components
-@import 'app/_common/components/account-settings-toggle';
 @import 'app/_common/components/amount';
 @import 'app/_common/components/allow-equals';
 //@import 'app/_common/components/calendar'; // TODO: [move-to-components] Calendar component should be moved
@@ -47,11 +32,8 @@
 @import 'app/_common/components/contract-type-list';
 @import 'app/_common/components/contract-type-info';
 //@import 'app/_common/components/date-picker'; // TODO: [move-to-components] Datepicker component should be moved
-@import 'app/_common/components/error-boundary';
-@import 'app/_common/components/login-prompt';
 @import 'app/_common/components/market-is-closed-overlay';
 @import 'app/_common/components/market-symbol-icon';
-@import 'app/_common/components/media-item';
 @import 'app/_common/components/number-selector';
 @import 'app/_common/components/popconfirm';
 @import 'app/_common/components/purchase-button';
@@ -59,15 +41,10 @@
 @import 'app/_common/components/toggle-button';
 @import 'app/_common/components/select';
 @import 'app/_common/components/switch-button';
-@import 'app/_common/components/wallet-information';
 
 // Modules
-@import 'app/modules/reset-password';
-// moved to core
-//@import 'app/modules/cashier';
 @import 'app/modules/contract';
 @import 'app/modules/contract/bottom-widgets';
-@import 'app/modules/error-pages';
 @import 'app/modules/portfolio';
 @import 'app/modules/smart-chart';
 @import 'app/modules/trading';

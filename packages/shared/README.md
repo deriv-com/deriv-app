@@ -41,12 +41,12 @@ Run `npm i sass-resources-loader --save-dev` and add the following in your webpa
 
 #### Browser css reset:
 ```scss
-@import @deriv/shared/src/styles/reset.scss
+@import @deriv/shared/utils/styles/reset.scss
 ```
 
 #### Google fonts:
 ```scss
-@import @deriv/shared/src/styles/google-fonts.scss
+@import @deriv/shared/utils/styles/google-fonts.scss
 ```
 
 ### Utility functions

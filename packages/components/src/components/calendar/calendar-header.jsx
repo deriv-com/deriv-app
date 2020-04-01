@@ -61,13 +61,14 @@ const Header = ({
                 className='dc-calendar__btn--prev-year'
                 icon='IcChevronDoubleLeft'
                 is_disabled={is_prev_year_disabled}
+                is_hidden={should_hide_prev_year}
                 onClick={onClickPrevYear}
             />
             <Button
                 className='dc-calendar__btn--prev-month'
                 icon='IcChevronLeft'
                 is_disabled={is_prev_month_disabled}
-                is_hidden={!is_date_view}
+                is_hidden={!is_date_view || should_hide_prev_month}
                 onClick={onClickPrevMonth}
             />
 
@@ -104,13 +105,14 @@ const Header = ({
                 className='dc-calendar__btn--next-month'
                 icon='IcChevronRight'
                 is_disabled={is_next_month_disabled}
-                is_hidden={!is_date_view}
+                is_hidden={!is_date_view || should_hide_next_month}
                 onClick={onClickNextMonth}
             />
             <Button
                 className='dc-calendar__btn--next-year'
                 icon='IcChevronDoubleRight'
                 is_disabled={is_next_year_disabled}
+                is_hidden={should_hide_next_year}
                 onClick={onClickNextYear}
             />
         </div>

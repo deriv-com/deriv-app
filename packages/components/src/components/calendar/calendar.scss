@@ -99,6 +99,10 @@
                 cursor: default;
             }
         }
+        &--is-hidden {
+            opacity: 0;
+            cursor: initial;
+        }
         &--select {
             @include typeface(--paragraph-left-bold-black);
             color: var(--text-prominent);

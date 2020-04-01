@@ -9,6 +9,7 @@ const Button = ({ children, className, is_disabled, is_hidden, icon, label, onCl
             <span
                 className={classNames('dc-calendar__btn', className, {
                     'dc-calendar__btn--disabled': is_disabled,
+                    'dc-calendar__btn--is-hidden': is_hidden,
                 })}
                 onClick={onClick}
             >

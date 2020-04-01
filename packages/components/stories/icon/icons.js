@@ -79,6 +79,7 @@ export const icons = {
         'IcFullScreen',
         'IcGear',
         'IcHamburger',
+        'IcHelpCentre',
         'IcHighsLows',
         'IcIdentityCard',
         'IcInfoBlue',

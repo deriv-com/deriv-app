@@ -2,7 +2,13 @@ import classNames from 'classnames';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { EndpointNote, NetworkStatus, ToggleFullScreen, ToggleSettings } from 'App/Components/Layout/Footer';
+import {
+    EndpointNote,
+    NetworkStatus,
+    ToggleFullScreen,
+    ToggleSettings,
+    HelpCentre,
+} from 'App/Components/Layout/Footer';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
 
@@ -25,7 +31,9 @@ const Footer = ({
         <EndpointNote />
         <NetworkStatus />
         <ServerTime />
+
         <div className='footer__links'>
+            <HelpCentre />
             <ToggleSettings
                 is_settings_visible={is_settings_modal_on}
                 toggleSettings={toggleSettingsModal}

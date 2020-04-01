@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
+import { getDerivComLink } from '_common/url';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
@@ -22,7 +23,7 @@ const ErrorModal = ({ message, code, openPersonalDetails }) => {
             <p>{localize(message)}</p>
             {code !== 'InvalidPhone' && (
                 <a
-                    href='https://www.deriv.com/help-centre/'
+                    href={getDerivComLink('help-centre')}
                     type='button'
                     className='dc-btn dc-btn--primary dc-btn__medium'
                     target='_blank'

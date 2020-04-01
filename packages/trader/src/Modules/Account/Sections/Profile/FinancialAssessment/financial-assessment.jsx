@@ -1,4 +1,4 @@
-// import PropTypes        from 'prop-types';
+import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
 import { withRouter } from 'react-router';
@@ -316,6 +316,7 @@ class FinancialAssessment extends React.Component {
                                         </fieldset>
                                         <fieldset className='account-form__fieldset'>
                                             <Dropdown
+                                                className='account-form__occupation'
                                                 placeholder={localize('Occupation')}
                                                 is_align_text_left
                                                 name='occupation'
@@ -404,7 +405,9 @@ class FinancialAssessment extends React.Component {
                                         )}
                                         <Button
                                             type='button'
-                                            className='account-form__footer-btn'
+                                            className={classNames('account-form__footer-btn', {
+                                                'dc-btn--green': is_submit_success,
+                                            })}
                                             onClick={() => this.toggleConfirmationModal(true)}
                                             is_disabled={
                                                 isSubmitting ||

@@ -225,6 +225,13 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
+        &__occupation {
+            .dc-native-select__select,
+            .dc-dropdown__display-text {
+                line-height: 1.6rem;
+                text-align: left;
+            }
+        }
     }
     &__intial-loader {
         height: calc(100vh - 240px);
@@ -298,6 +305,12 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     .account-management-leave-confirm,
     .account-management-submit-success {
+        @include desktop {
+            .dc-btn--primary {
+                width: 130px;
+                margin-left: 0.8rem;
+            }
+        }
         @include mobile {
             flex-direction: column;
             width: 100%;
@@ -380,32 +393,35 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
     .leave-confirm {
-        &__message-icon {
-            width: 93px;
-            height: 93px;
-        }
-        &__message {
-            color: var(--text-prominent);
-        }
-        &__text {
-            padding: 0 1.9rem;
+        @include mobile {
+            &__message-icon {
+                width: 93px;
+                height: 93px;
+            }
+            &__message {
+                color: var(--text-prominent);
+            }
+            &__text {
+                padding: 0 1.9rem;
+            }
         }
     }
     .submit-success {
         margin-top: 100px;
-
-        &__message-icon {
-            width: 96px;
-            height: 90px;
-        }
-        &__message {
-            font-size: 1.4rem;
-            text-align: center;
-            margin-top: 1.6rem;
-        }
-        &__text {
-            padding: 0 1.9rem;
-            font-size: 1rem;
+        @include mobile {
+            &__message-icon {
+                width: 96px;
+                height: 90px;
+            }
+            &__message {
+                font-size: 1.4rem;
+                text-align: center;
+                margin-top: 1.6rem;
+            }
+            &__text {
+                padding: 0 1.9rem;
+                font-size: 1rem;
+            }
         }
     }
     &-address {

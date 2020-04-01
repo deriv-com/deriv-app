@@ -1,13 +1,14 @@
 // import PropTypes      from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
-import { Popover } from '@deriv/components';
+import { Popover, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { getDerivComLink } from '_common/url';
 import Loading from '../../../../../templates/app/components/loading.jsx';
-import { ScrollbarsContainer, TextContainer, Text } from '../../../Components/layout-components.jsx';
+import { FormBody, TextContainer, Text } from '../../../Components/layout-components.jsx';
 import DemoMessage from '../../ErrorMessages/DemoMessage';
 import LoadErrorMessage from '../../ErrorMessages/LoadErrorMessage';
 
@@ -30,9 +31,7 @@ const TableHeader = ({ children, is_flex }) => (
     <th className={classNames({ 'account-management-flex-wrapper': is_flex })}>{children}</th>
 );
 
-const Row = ({ children }) => (
-    <tr className='account-management-flex-wrapper account-management-flex-wrapper--space-between'>{children}</tr>
-);
+const Row = ({ children }) => <tr>{children}</tr>;
 
 const Td = ({ children, is_flex }) => (
     <td
@@ -42,6 +41,24 @@ const Td = ({ children, is_flex }) => (
     >
         {children}
     </td>
+);
+
+const ExtraInfo = ({ message, ...props }) => (
+    <>
+        <DesktopWrapper>
+            <Popover
+                alignment='top'
+                classNameTargetIcon='account-limit-popover'
+                classNameTarget='account-limit-popover-target'
+                icon='info'
+                message={message}
+                {...props}
+            />
+        </DesktopWrapper>
+        <MobileWrapper>
+            <div className='account-limit-container__extra-info'>{message}</div>
+        </MobileWrapper>
+    </>
 );
 
 class AccountLimits extends React.Component {
@@ -85,7 +102,7 @@ class AccountLimits extends React.Component {
 
         return (
             <section className='account-limit-container'>
-                <ScrollbarsContainer>
+                <FormBody scroll_offset={isMobile() && '90px'}>
                     <Text className='account-limit-container__main-text'>
                         <Localize
                             i18n_default_text='These are default limits that we apply to your accounts. To learn more about trading limits and how they apply, please go to the <0>Help Centre</0>.'
@@ -106,53 +123,44 @@ class AccountLimits extends React.Component {
                                 <TableHeader>{localize('Trading limits - Item')}</TableHeader>
                                 <TableHeader>{localize('Limit')}</TableHeader>
                             </Row>
-                            <tr className='account-management-table__divider'>
-                                <th />
-                            </tr>
                         </thead>
                         <tbody>
                             <Row>
-                                <Td is_flex>
-                                    {localize('Maximum number of open positions')}
-                                    <Popover
-                                        alignment='top'
-                                        classNameTargetIcon='account-limit-popover'
-                                        classNameTarget='account-limit-popover-target'
-                                        icon='info'
-                                        message={localize(
-                                            'Represents the maximum number of outstanding contracts in your portfolio. Each line in your portfolio counts for one open position. Once the maximum is reached, you will not be able to open new positions without closing an existing position first.'
-                                        )}
-                                    />
+                                <Td>
+                                    <div className='account-management-flex-wrapper'>
+                                        <span>{localize('Maximum number of open positions*')}</span>
+                                        <ExtraInfo
+                                            message={localize(
+                                                'Represents the maximum number of outstanding contracts in your portfolio. Each line in your portfolio counts for one open position. Once the maximum is reached, you will not be able to open new positions without closing an existing position first.'
+                                            )}
+                                        />
+                                    </div>
                                 </Td>
                                 <Td>{open_positions}</Td>
                             </Row>
                             <Row>
-                                <Td is_flex>
-                                    {localize('Maximum account cash balance')}
-                                    <Popover
-                                        alignment='top'
-                                        classNameTargetIcon='account-limit-popover'
-                                        classNameTarget='account-limit-popover-target'
-                                        icon='info'
-                                        message={localize(
-                                            'Represents the maximum amount of cash that you may hold in your account.  If the maximum is reached, you will be asked to withdraw funds.'
-                                        )}
-                                    />
+                                <Td>
+                                    <div className='account-management-flex-wrapper'>
+                                        {localize('Maximum account cash balance*')}
+                                        <ExtraInfo
+                                            message={localize(
+                                                'Represents the maximum amount of cash that you may hold in your account.  If the maximum is reached, you will be asked to withdraw funds.'
+                                            )}
+                                        />
+                                    </div>
                                 </Td>
                                 <Td>{CurrencyUtils.formatMoney(currency, account_balance, true)}</Td>
                             </Row>
                             <Row>
-                                <Td is_flex>
-                                    {localize('Maximum aggregate payouts on open positions')}
-                                    <Popover
-                                        alignment='top'
-                                        classNameTargetIcon='account-limit-popover'
-                                        classNameTarget='account-limit-popover-target'
-                                        icon='info'
-                                        message={localize(
-                                            'Represents the maximum aggregate payouts on outstanding contracts in your portfolio. If the maximum is attained, you may not purchase additional contracts without first closing out existing positions.'
-                                        )}
-                                    />
+                                <Td>
+                                    <div className='account-management-flex-wrapper'>
+                                        {localize('Maximum aggregate payouts on open positions')}
+                                        <ExtraInfo
+                                            message={localize(
+                                                'Represents the maximum aggregate payouts on outstanding contracts in your portfolio. If the maximum is attained, you may not purchase additional contracts without first closing out existing positions.'
+                                            )}
+                                        />
+                                    </div>
                                 </Td>
                                 <Td>{CurrencyUtils.formatMoney(currency, payout, true)}</Td>
                             </Row>
@@ -168,24 +176,21 @@ class AccountLimits extends React.Component {
                     <table className='account-management-table'>
                         <thead>
                             <Row>
-                                <TableHeader is_flex>
-                                    {localize('Trading limits - Maximum daily turnover')}
-                                    <Popover
-                                        alignment='top'
-                                        classNameTargetIcon='account-limit-popover'
-                                        classNameTarget='account-limit-popover-target'
-                                        icon='info'
-                                        message={localize(
-                                            'Represents the maximum volume of contracts that you may purchase in any given trading day.'
-                                        )}
-                                        margin={0}
-                                    />
+                                <TableHeader>
+                                    <div className='account-management-flex-wrapper'>
+                                        <span className='account-limit-container-title'>
+                                            {localize('Trading limits - Maximum daily turnover')}
+                                        </span>
+                                        <ExtraInfo
+                                            message={localize(
+                                                'Represents the maximum volume of contracts that you may purchase in any given trading day.'
+                                            )}
+                                            margin={0}
+                                        />
+                                    </div>
                                 </TableHeader>
                                 <TableHeader>{localize('Limit')}</TableHeader>
                             </Row>
-                            <tr className='account-management-table__divider'>
-                                <th />
-                            </tr>
                         </thead>
                         <tbody>
                             {makeTurnoverLimitRow(currency, commodities)}
@@ -194,15 +199,12 @@ class AccountLimits extends React.Component {
                             {makeTurnoverLimitRow(currency, synthetic_index)}
                         </tbody>
                     </table>
-                    <table className='account-management-table account-management-table--last'>
+                    <table className='account-management-table'>
                         <thead>
                             <Row>
                                 <TableHeader>{localize('Withdrawal limits')}</TableHeader>
                                 {!is_fully_authenticated && <TableHeader>{localize('Limit')}</TableHeader>}
                             </Row>
-                            <tr className='account-management-table__divider'>
-                                <th />
-                            </tr>
                         </thead>
                         {!is_fully_authenticated && (
                             <tbody>
@@ -238,7 +240,7 @@ class AccountLimits extends React.Component {
                             </Text>
                         </TextContainer>
                     )}
-                </ScrollbarsContainer>
+                </FormBody>
             </section>
         );
     }

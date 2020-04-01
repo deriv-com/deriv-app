@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
+import { DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { toMoment } from 'Utils/Date';
@@ -58,7 +60,7 @@ class AccountWizard extends React.Component {
                 },
                 {
                     header: {
-                        active_title: localize('Terms of use'),
+                        active_title: isDesktop() ? localize('Terms of use') : null,
                         title: localize('Terms of use'),
                     },
                     body: TermsOfUse,
@@ -240,21 +242,46 @@ class AccountWizard extends React.Component {
             return (
                 <div className='account-wizard'>
                     {!this.props.has_real_account && (
-                        <FormProgress steps={this.state.items} current_step={this.state.step} />
+                        <>
+                            <DesktopWrapper>
+                                <FormProgress steps={this.state.items} current_step={this.state.step} />
+                            </DesktopWrapper>
+                            <MobileWrapper>
+                                <div className='account-wizard__header-steps'>
+                                    <h4 className='account-wizard__header-steps-title'>
+                                        <Localize
+                                            i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
+                                            values={{
+                                                step: this.state.step + 1,
+                                                steps: this.state.items.length,
+                                                step_title: this.state.items[this.state.step].header.title,
+                                            }}
+                                        />
+                                    </h4>
+                                    {this.state.items[this.state.step].header.active_title && (
+                                        <h4 className='account-wizard__header-steps-subtitle'>
+                                            {this.state.items[this.state.step].header.active_title}
+                                        </h4>
+                                    )}
+                                </div>
+                            </MobileWrapper>
+                        </>
                     )}
-                    {this.props.has_real_account && (
-                        <div className='account-wizard__set-currency'>
-                            {!this.props.has_currency && (
-                                <p>
-                                    <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
-                                </p>
-                            )}
-                            <h2>
-                                <Localize i18n_default_text='Please choose your currency' />
-                            </h2>
-                        </div>
-                    )}
-                    <div className='account-wizard__body'>
+                    <DesktopWrapper>
+                        {this.props.has_real_account && (
+                            <div className='account-wizard__set-currency'>
+                                {!this.props.has_currency && (
+                                    <p>
+                                        <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
+                                    </p>
+                                )}
+                                <h2>
+                                    <Localize i18n_default_text='Please choose your currency' />
+                                </h2>
+                            </div>
+                        )}
+                    </DesktopWrapper>
+                    <Div100vhContainer className='account-wizard__body' is_disabled={isDesktop()} height_offset='40px'>
                         <BodyComponent
                             value={this.getCurrent('form_value')}
                             index={this.state_index}
@@ -265,7 +292,7 @@ class AccountWizard extends React.Component {
                             form_error={this.state.form_error}
                             {...passthrough}
                         />
-                    </div>
+                    </Div100vhContainer>
                 </div>
             );
         }

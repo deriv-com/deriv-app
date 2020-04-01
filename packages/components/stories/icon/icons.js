@@ -79,6 +79,7 @@ export const icons = {
         'IcFullScreen',
         'IcGear',
         'IcHamburger',
+        'IcHelpCentre',
         'IcHighsLows',
         'IcIdentityCard',
         'IcInfoBlue',
@@ -160,6 +161,7 @@ export const icons = {
     contract: [
         'IcContractBarrier',
         'IcContractBuyPrice',
+        'IcContractCommission',
         'IcContractDuration',
         'IcContractEntrySpot',
         'IcContractExitSpot',
@@ -167,6 +169,7 @@ export const icons = {
         'IcContractExitTime',
         'IcContractFlag',
         'IcContractId',
+        'IcContractSafeguard',
         'IcContractStartTimeCircle',
         'IcContractStartTime',
         'IcContractTarget',

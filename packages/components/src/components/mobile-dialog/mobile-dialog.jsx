@@ -73,7 +73,7 @@ const MobileDialog = props => {
                 >
                     <div className='dc-mobile-dialog__header'>
                         <h2 className='dc-mobile-dialog__title'>{title}</h2>
-                        <div className='icons btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
+                        <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
                             <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
                         </div>
                     </div>

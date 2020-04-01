@@ -6,12 +6,12 @@ import IconMessageContent from '../../../Components/icon-message-content.jsx';
 
 const ContinueTradingButton = () => (
     <ButtonLink to='/'>
-        <p className='btn__text'>{localize('Continue trading')}</p>
+        <p className='dc-btn__text'>{localize('Continue trading')}</p>
     </ButtonLink>
 );
 const PoiButton = () => (
     <ButtonLink to='/account/proof-of-identity'>
-        <p className='btn__text'>{localize('Submit proof of identity')}</p>
+        <p className='dc-btn__text'>{localize('Submit proof of identity')}</p>
     </ButtonLink>
 );
 
@@ -22,7 +22,7 @@ export const Expired = ({ onClick }) => (
         icon={<Icon icon='IcPoaUpload' size={128} />}
     >
         <Button onClick={onClick} has_effect primary>
-            <p className='btn__text'>{localize('Resubmit')}</p>
+            <p className='dc-btn__text'>{localize('Resubmit')}</p>
         </Button>
     </IconMessageContent>
 );

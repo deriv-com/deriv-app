@@ -309,7 +309,7 @@ class FormAds extends Component {
     validateFormAds = values => {
         // TODO: uncomment this when we have available_price
         // const available_price = ;
-        const textValidator = v => /^[a-zA-Z0-9\-\+\.\,\'\#\@\(\)\:\; ]*$/.test(v);
+        const textValidator = v => /^[\p{L}\p{Nd}\s'.,:;()@#+/-]*$/u.test(v);
         const lengthValidator = v => v.length >= 1 && v.length <= 300;
 
         const validations = {

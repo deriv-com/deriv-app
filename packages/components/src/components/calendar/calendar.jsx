@@ -49,8 +49,8 @@ class Calendar extends React.PureComponent {
                     hovered_date: target.getAttribute('data-date'),
                 },
                 () => {
-                    if (this.props.onSelect) {
-                        this.props.onSelect(this.state.hovered_date);
+                    if (this.props.onHover) {
+                        this.props.onHover(this.state.hovered_date);
                     }
                 }
             );
@@ -68,8 +68,8 @@ class Calendar extends React.PureComponent {
                     hovered_date: null,
                 },
                 () => {
-                    if (this.props.onSelect) {
-                        this.props.onSelect(this.state.selected_date);
+                    if (this.props.onHover) {
+                        this.props.onHover(this.state.hovered_date);
                     }
                 }
             );

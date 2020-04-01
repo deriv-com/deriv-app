@@ -45,6 +45,22 @@ class DatePicker extends React.PureComponent {
         }
     };
 
+    onHover = hovered_date => {
+        const date = toMoment(hovered_date).format(this.props.display_format);
+        const duration = this.props.mode === 'duration' ? daysFromTodayTo(hovered_date) : null;
+
+        if (this.props.onChange) {
+            this.props.onChange({
+                date,
+                duration,
+                target: {
+                    name: this.props.name,
+                    value: this.input_value,
+                },
+            });
+        }
+    };
+
     onSelectCalendar = (selected_date, is_datepicker_visible = true) => {
         const date = toMoment(selected_date).format(this.props.display_format);
         const duration = this.props.mode === 'duration' ? daysFromTodayTo(selected_date) : null;
@@ -155,6 +171,8 @@ class DatePicker extends React.PureComponent {
                             ref={this.calendar}
                             is_datepicker_visible={this.state.is_datepicker_visible}
                             value={value}
+                            onMouseOver={this.onHover}
+                            onMouseLeave={this.onHover}
                             onSelect={this.onSelectCalendar}
                             {...props}
                         />

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { addDays, daysFromTodayTo, formatDate, getStartOfMonth, isDateValid, toMoment } from '@deriv/shared/utils/date';
+import { addDays, daysFromTodayTo, formatDate, isDateValid, toMoment } from '@deriv/shared/utils/date';
 import Icon from 'Components/icon';
 import DesktopWrapper from 'Components/desktop-wrapper';
 import MobileWrapper from 'Components/mobile-wrapper';

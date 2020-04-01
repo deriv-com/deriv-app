@@ -82,9 +82,7 @@ class FormAds extends Component {
                         validate={this.validateFormAds}
                     >
                         {({ isSubmitting, errors, handleChange, touched, isValid, values }) => {
-                            const is_buy_ad = values.type === 'buy';
-                            const is_sell_ad = !is_buy_ad;
-
+                            const is_sell_ad = values.type === 'sell';
                             return (
                                 <div className='p2p-my-ads__form'>
                                     <Form noValidate>
@@ -436,7 +434,6 @@ class FormAds extends Component {
             }
         });
 
-        console.log({ errors });
         return errors;
     };
 }

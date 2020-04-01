@@ -29,22 +29,16 @@ export default class QuickStrategyStore {
     @computed
     get initial_values() {
         return {
-            'quick-strategy__symbol':
-                (this.qs_cache && this.qs_cache.selected_symbol && this.qs_cache.selected_symbol.text) ||
-                (this.selected_symbol && this.selected_symbol.text),
+            'quick-strategy__symbol': this.qs_cache?.selected_symbol?.text || this.selected_symbol?.text || '',
             'quick-strategy__trade-type':
-                (this.qs_cache && this.qs_cache.selected_trade_type && this.qs_cache.selected_trade_type.text) ||
-                (this.selected_trade_type && this.selected_trade_type.text),
+                this.qs_cache?.selected_trade_type?.text || this.selected_trade_type?.text || '',
             'quick-strategy__duration-unit':
-                (this.qs_cache && this.qs_cache.selected_duration_unit && this.qs_cache.selected_duration_unit.text) ||
-                (this.selected_duration_unit && this.selected_duration_unit.text),
-            'quick-strategy__duration-value': this.qs_cache.input_duration_value
-                ? this.qs_cache.input_duration_value
-                : this.input_duration_value,
-            'quick-strategy__stake': this.qs_cache.input_stake ? this.qs_cache.input_stake : this.input_stake,
-            'quick-strategy__size': this.qs_cache.input_size ? this.qs_cache.input_size : this.input_size,
-            'quick-strategy__loss': this.qs_cache.input_loss ? this.qs_cache.input_loss : this.input_loss,
-            'quick-strategy__profit': this.qs_cache.input_profit ? this.qs_cache.input_profit : this.input_profit,
+                this.qs_cache?.selected_duration_unit?.text || this.selected_duration_unit?.text || '',
+            'quick-strategy__duration-value': this.qs_cache?.input_duration_value || this.input_duration_value,
+            'quick-strategy__stake': this.qs_cache?.input_stake || this.input_stake,
+            'quick-strategy__size': this.qs_cache?.input_size || this.input_size,
+            'quick-strategy__loss': this.qs_cache?.input_loss || this.input_loss,
+            'quick-strategy__profit': this.qs_cache?.input_profit || this.input_profit,
         };
     }
 
@@ -76,13 +70,15 @@ export default class QuickStrategyStore {
 
     @action.bound
     setSelectedDurationUnit(duration_unit) {
-        this.qs_cache.selected_duration_unit = this.selected_duration_unit = duration_unit;
+        this.qs_cache.selected_duration_unit = duration_unit;
+        this.selected_duration_unit = duration_unit;
         storeSetting('quick_strategy', this.qs_cache);
     }
 
     @action.bound
     setSelectedSymbol(symbol) {
-        this.qs_cache.selected_symbol = this.selected_symbol = symbol;
+        this.qs_cache.selected_symbol = symbol;
+        this.selected_symbol = symbol;
         delete this.qs_cache.selected_duration_unit;
         delete this.qs_cache.duration_value;
         delete this.qs_cache.selected_trade_type;
@@ -91,7 +87,8 @@ export default class QuickStrategyStore {
 
     @action.bound
     setSelectedTradeType(trade_type) {
-        this.qs_cache.selected_trade_type = this.selected_trade_type = trade_type;
+        this.qs_cache.selected_trade_type = trade_type;
+        this.selected_trade_type = trade_type;
         delete this.qs_cache.selected_duration_unit;
         delete this.qs_cache.duration_value;
         storeSetting('quick_strategy', this.qs_cache);
@@ -142,7 +139,8 @@ export default class QuickStrategyStore {
 
     @action.bound
     onChangeInputValue(field, event) {
-        this.qs_cache[field] = this[field] = event.currentTarget.value;
+        this.qs_cache[field] = event.currentTarget.value;
+        this[field] = event.currentTarget.value;
         storeSetting('quick_strategy', this.qs_cache);
     }
 

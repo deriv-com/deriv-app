@@ -20,51 +20,80 @@ const FlexWrapper = ({ children, justifyContent = 'center' }) => (
     </div>
 );
 
+const DatePickerWrapper = ({ children }) => (
+    <div
+        style={{
+            margin: '0 4px',
+            width: '280px',
+        }}
+    >
+        {children}
+    </div>
+);
+
 stories.addDecorator(withKnobs).addDecorator(withInfo);
 
 stories
     .add('basic', () => (
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
-                <DatePicker />
+                <DatePickerWrapper>
+                    <DatePicker />
+                </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
     ))
     .add('label', () => (
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
-                <DatePicker label='DatePicker Label' />
+                <DatePickerWrapper>
+                    <DatePicker label='DatePicker Label' />
+                </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
     ))
     .add('alignment', () => (
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
-                <DatePicker label='Left align' alignment='left' />
+                <DatePickerWrapper>
+                    <DatePicker label='Left align' alignment='left' />
+                </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
     ))
     .add('display format', () => (
         <Theme is_dark={boolean('Theme', false)}>
-            <FlexWrapper justifyContent='space-between'>
-                <DatePicker label='Default' />
-                <DatePicker label='DD-MM-YYY' display_format='DD-MM-YYYY' />
-                <DatePicker label='DD/MM/YYYY' display_format='DD/MM/YYYY' />
-                <DatePicker label='DD MMM YYYY' display_format='DD MMM YYYY' />
+            <FlexWrapper>
+                <DatePickerWrapper>
+                    <DatePicker label='Default' />
+                </DatePickerWrapper>
+                <DatePickerWrapper>
+                    <DatePicker label='DD-MM-YYY' display_format='DD-MM-YYYY' />
+                </DatePickerWrapper>
+                <DatePickerWrapper>
+                    <DatePicker label='DD/MM/YYYY' display_format='DD/MM/YYYY' />
+                </DatePickerWrapper>
+                <DatePickerWrapper>
+                    <DatePicker label='DD MMM YYYY' display_format='DD MMM YYYY' />
+                </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
     ))
     .add('leading icon', () => (
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
-                <DatePicker show_leading_icon />
+                <DatePickerWrapper>
+                    <DatePicker show_leading_icon />
+                </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
     ))
     .add('is clearable', () => (
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
-                <DatePicker is_clearable />
+                <DatePickerWrapper>
+                    <DatePicker is_clearable />
+                </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
     ))
@@ -72,7 +101,9 @@ stories
         return (
             <Theme is_dark={boolean('Theme', false)}>
                 <FlexWrapper>
-                    <DatePicker placeholder='I am placeholder' />
+                    <DatePickerWrapper>
+                        <DatePicker placeholder='I am placeholder' />
+                    </DatePickerWrapper>
                 </FlexWrapper>
             </Theme>
         );
@@ -80,7 +111,9 @@ stories
     .add('footer', () => (
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
-                <DatePicker footer='Abracadabra!' has_today_btn />
+                <DatePickerWrapper>
+                    <DatePicker footer='Abracadabra!' has_today_btn />
+                </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
     ))
@@ -93,16 +126,20 @@ stories
 
         return (
             <Theme is_dark={boolean('Theme', false)}>
-                <FlexWrapper justifyContent='space-around'>
-                    <DatePicker label='Default' min_date={toMoment()} onChange={onChange} has_today_btn />
-                    <DatePicker
-                        label='Duration DatePicker'
-                        footer={footer}
-                        mode='duration'
-                        min_date={toMoment()}
-                        onChange={onChange}
-                        has_range_selection
-                    />
+                <FlexWrapper>
+                    <DatePickerWrapper>
+                        <DatePicker label='Default' min_date={toMoment()} onChange={onChange} has_today_btn />
+                    </DatePickerWrapper>
+                    <DatePickerWrapper>
+                        <DatePicker
+                            label='Duration DatePicker'
+                            footer={footer}
+                            mode='duration'
+                            min_date={toMoment()}
+                            onChange={onChange}
+                            has_range_selection
+                        />
+                    </DatePickerWrapper>
                 </FlexWrapper>
             </Theme>
         );
@@ -110,17 +147,27 @@ stories
     .add('value', () => (
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
-                <DatePicker value='2000-01-04' has_today_btn />
+                <DatePickerWrapper>
+                    <DatePicker value='2000-01-04' has_today_btn />
+                </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
     ))
     .add('view', () => (
         <Theme is_dark={boolean('Theme', false)}>
-            <FlexWrapper justifyContent='space-between'>
-                <DatePicker label='Default' />
-                <DatePicker label='Month' calendar_view='month' />
-                <DatePicker label='Year' calendar_view='year' />
-                <DatePicker label='Decade' calendar_view='decade' />
+            <FlexWrapper>
+                <DatePickerWrapper>
+                    <DatePicker label='Default' />
+                </DatePickerWrapper>
+                <DatePickerWrapper>
+                    <DatePicker label='Month' calendar_view='month' />
+                </DatePickerWrapper>
+                <DatePickerWrapper>
+                    <DatePicker label='Year' calendar_view='year' />
+                </DatePickerWrapper>
+                <DatePickerWrapper>
+                    <DatePicker label='Decade' calendar_view='decade' />
+                </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
     ));

@@ -57,33 +57,6 @@ class App extends Component {
         return true;
     };
 
-    setP2pOrderList(order_response) {
-        // check if there is any error
-        if (!order_response.error) {
-            if (order_response.p2p_order_list) {
-                // it's an array of orders from p2p_order_list
-                this.setState({ orders: getModifiedP2POrderList(order_response.p2p_order_list.list) });
-                this.handleNotifications(order_response.p2p_order_list.list);
-            } else {
-                // it's a single order from p2p_order_info
-                const idx_order_to_update = this.state.orders.findIndex(
-                    order => order.id === order_response.p2p_order_info.id
-                );
-                const updated_orders = [...this.state.orders];
-                // if it's a new order, add it to the top of the list
-                if (idx_order_to_update < 0) {
-                    updated_orders.unshift(order_response.p2p_order_info);
-                } else {
-                    // otherwise, update the correct order
-                    updated_orders[idx_order_to_update] = order_response.p2p_order_info;
-                }
-                // trigger re-rendering by setting orders again
-                this.setState({ orders: getModifiedP2POrderList(updated_orders) });
-                this.handleNotifications(updated_orders);
-            }
-        }
-    }
-
     handleNotifications = orders => {
         let p2p_notification_count = 0;
 
@@ -103,23 +76,43 @@ class App extends Component {
         this.props.setNotificationCount(p2p_notification_count);
     };
 
+    setP2pOrderList = order_response => {
+        // check if there is any error
+        if (!order_response.error) {
+            if (order_response.p2p_order_list) {
+                // it's an array of orders from p2p_order_list
+                this.setState({ orders: getModifiedP2POrderList(order_response.p2p_order_list.list) });
+                this.handleNotifications(order_response.p2p_order_list.list);
+            } else {
+                // it's a single order from p2p_order_info
+                const idx_order_to_update = this.state.orders.findIndex(order => order.id === order_response.id);
+                const updated_orders = [...this.state.orders];
+                // if it's a new order, add it to the top of the list
+                if (idx_order_to_update < 0) {
+                    updated_orders.unshift(order_response);
+                } else {
+                    // otherwise, update the correct order
+                    updated_orders[idx_order_to_update] = order_response;
+                }
+                // trigger re-rendering by setting orders again
+                this.setState({ orders: updated_orders });
+                this.handleNotifications(updated_orders);
+            }
+        }
+    };
+
     componentDidMount() {
         this.setIsAdvertiser();
 
         subscribeWS({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);
-
-        if (this.props.p2p_order_list.length) {
-            this.setState({ orders: getModifiedP2POrderList(this.props.p2p_order_list) });
-        }
     }
 
     render() {
-        const { active_index, orders, parameters } = this.state;
+        const { active_index, orders, parameters, notification_count } = this.state;
         const {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
             custom_strings,
-            notification_count,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone

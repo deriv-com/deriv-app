@@ -1,12 +1,10 @@
 import React from 'react';
-import { expect } from 'chai';
-import { shallow } from 'enzyme';
-import DatePicker from '../index';
+import { render } from '@testing-library/react';
+import DatePicker from '../date-picker.jsx';
 
 // TODO: add tests
-describe('<DatePicker />', () => {
-    it('should render one <DatePicker /> component', () => {
-        const wrapper = shallow(<DatePicker />);
-        expect(wrapper).to.have.length(1);
+describe('DatePicker', () => {
+    it('renders without crashing', () => {
+        render(<DatePicker />);
     });
 });

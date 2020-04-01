@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Autocomplete, Button, Icon, Input, Modal, Popover, Tabs } from '@deriv/components';
+import { Autocomplete, Button, Icon, Input, Modal, Popover, Tabs, IconTradeTypes } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { Formik, Form, Field } from 'formik';
 import { config } from '@deriv/bot-skeleton';
-import IconTradeType from './icon-trade-types.jsx';
 import { popover_zindex } from '../constants/z-indexes';
 import { connect } from '../stores/connect';
 import '../assets/sass/quick-strategy.scss';
@@ -290,8 +289,8 @@ const MarketOption = ({ symbol }) => (
 
 const TradeTypeOption = ({ trade_type }) => (
     <div key={trade_type.value} className='quick-strategy__option'>
-        <IconTradeType type={trade_type.icon[0]} className='quick-strategy__icon' />
-        <IconTradeType type={trade_type.icon[1]} className='quick-strategy__icon' />
+        <IconTradeTypes type={trade_type.icon[0]} className='quick-strategy__icon' />
+        <IconTradeTypes type={trade_type.icon[1]} className='quick-strategy__icon' />
         <span className='quick-strategy__symbol'>{trade_type.text}</span>
     </div>
 );

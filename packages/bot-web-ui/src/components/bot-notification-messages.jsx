@@ -2,9 +2,9 @@ import classNames from 'classnames';
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from '../stores/connect';
-import '../assets/sass/notification-messages.scss';
+import '../assets/sass/bot-notification-messages.scss';
 
-const NotificationMessages = ({ is_drawer_open, Notifications }) => (
+const BotNotificationMessages = ({ is_drawer_open, Notifications }) => (
     <div
         className={classNames('notifications-container', {
             'notifications-container--is-panel-open': is_drawer_open,
@@ -14,7 +14,7 @@ const NotificationMessages = ({ is_drawer_open, Notifications }) => (
     </div>
 );
 
-NotificationMessages.propTypes = {
+BotNotificationMessages.propTypes = {
     is_drawer_open: PropTypes.bool,
     // Notifications       : PropTypes.node,
     notifications_length: PropTypes.number,
@@ -23,4 +23,4 @@ NotificationMessages.propTypes = {
 export default connect(({ core, run_panel }) => ({
     is_drawer_open: run_panel.is_drawer_open,
     Notifications: core.ui.notification_messages_ui,
-}))(NotificationMessages);
+}))(BotNotificationMessages);

@@ -1,7 +1,6 @@
-import { Icon, Popover } from '@deriv/components';
+import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
-import IconTradeType from 'Assets/Trading/Types/icon-trade-types.jsx';
 import { getMarketName, getTradeTypeName } from '../Helpers/market-underlying';
 import Shortcode from '../Helpers/shortcode';
 
@@ -40,7 +39,7 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         message={getTradeTypeName(info_from_shortcode.category)}
                         disable_target_icon
                     >
-                        <IconTradeType
+                        <IconTradeTypes
                             type={
                                 Shortcode.isHighLow({ shortcode_info: info_from_shortcode })
                                     ? `${info_from_shortcode.category.toLowerCase()}_barrier`

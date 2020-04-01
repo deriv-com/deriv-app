@@ -7,9 +7,11 @@
         padding: 1.6em;
     }
     &__icon {
-        @extend .absolute-center-v;
-        @extend .icon--centered;
         @extend %inline-icon;
+        position: absolute;
+        bottom: 0;
+        top: 0.8em;
+        left: 5%;
         z-index: 1;
         margin: unset;
         /* postcss-bem-linter: ignore */

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ButtonLink from 'App/Components/Routes/button-link.jsx';
+import ButtonLink from 'Components/button-link/button-link.jsx';
 
 const PageError = ({ buttonOnClick, error_code_message, messages, header, redirect_label, redirect_url }) => (
     <div className='dc-page-error__container'>

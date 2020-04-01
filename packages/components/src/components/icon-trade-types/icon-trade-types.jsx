@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon } from '@deriv/components';
+import Icon from 'Components/icon/icon.jsx';
 
-const IconTradeType = ({ type, className, ...props }) => {
+const IconTradeTypes = ({ type, className, ...props }) => {
     switch (type.toLowerCase()) {
         case 'asiand':
             return <Icon icon='IcTradetypeAsiand' className={className} color='brand' {...props} />;
@@ -76,8 +76,8 @@ const IconTradeType = ({ type, className, ...props }) => {
     }
 };
 
-IconTradeType.propTypes = {
+IconTradeTypes.propTypes = {
     type: PropTypes.string,
 };
 
-export default IconTradeType;
+export default IconTradeTypes;

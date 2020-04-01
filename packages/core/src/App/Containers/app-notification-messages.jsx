@@ -6,9 +6,9 @@ import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
 import Notification, { max_display_notifications } from '../Components/Elements/NotificationMessage';
-import 'Sass/app/_common/components/notification-message.scss';
+import 'Sass/app/_common/components/app-notification-message.scss';
 
-class NotificationMessages extends React.Component {
+class AppNotificationMessages extends React.Component {
     state = {};
     setRef = el => {
         if (el && el.parentElement) {
@@ -72,7 +72,7 @@ class NotificationMessages extends React.Component {
     }
 }
 
-NotificationMessages.propTypes = {
+AppNotificationMessages.propTypes = {
     notification_messages: PropTypes.arrayOf(
         PropTypes.shape({
             closeOnClick: PropTypes.func,
@@ -91,4 +91,4 @@ export default connect(({ ui }) => ({
     marked_notifications: ui.marked_notifications,
     notification_messages: ui.notification_messages,
     removeNotificationMessage: ui.removeNotificationMessage,
-}))(NotificationMessages);
+}))(AppNotificationMessages);

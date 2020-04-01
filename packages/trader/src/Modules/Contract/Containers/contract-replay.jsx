@@ -1,11 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { DesktopWrapper, Div100vhContainer, MobileWrapper, PageOverlay, SwipeableWrapper } from '@deriv/components';
+import {
+    DesktopWrapper,
+    Div100vhContainer,
+    MobileWrapper,
+    PageOverlay,
+    SwipeableWrapper,
+    FadeWrapper,
+} from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
-import { FadeWrapper } from 'App/Components/Animations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import { SmartChart } from 'Modules/SmartChart';

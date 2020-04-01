@@ -16,7 +16,7 @@ import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
 import Footer from './Containers/Layout/footer.jsx';
 import Header from './Containers/Layout/header.jsx';
-import NotificationMessages from './Containers/notification-messages.jsx';
+import AppNotificationMessages from './Containers/app-notification-messages.jsx';
 import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
 import { interceptAcrossBot } from './Constants/routes-config';
@@ -115,7 +115,7 @@ App.propTypes = {
 
 export default App;
 
-const root_store = initStore(NotificationMessages);
+const root_store = initStore(AppNotificationMessages);
 
 const wrapper = document.getElementById('deriv_app');
 // eslint-disable-next-line no-unused-expressions

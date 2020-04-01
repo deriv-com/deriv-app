@@ -1,11 +1,10 @@
 import classNames from 'classnames';
-import { Icon, Money, Popover } from '@deriv/components';
+import { Icon, Money, Popover, IconTradeTypes } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import PropTypes from 'prop-types';
 import { getContractTypeName } from '@deriv/bot-skeleton';
-import IconTradeType from './icon-trade-types.jsx';
 import { connect } from '../stores/connect';
 import { popover_zindex } from '../constants/z-indexes';
 
@@ -127,7 +126,7 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
         </div> */}
             <div className='transactions__cell transactions__trade-type'>
                 <TransactionIconWithText
-                    icon={<IconTradeType type={contract.contract_type} />}
+                    icon={<IconTradeTypes type={contract.contract_type} />}
                     title={getContractTypeName(contract)}
                 />
             </div>

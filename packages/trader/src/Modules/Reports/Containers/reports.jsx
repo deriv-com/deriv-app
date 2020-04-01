@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper, FadeWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { getSelectedRoute } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
-import { FadeWrapper } from 'App/Components/Animations';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/reports.scss';
 

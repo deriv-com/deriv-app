@@ -41,6 +41,10 @@ $MIN_HEIGHT_FLOATING: calc(
         padding-top: 24px;
         padding-bottom: 64px; // allow empty space when scroll below
 
+        &-wrapper {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
         &--grid-layout {
             display: grid;
             grid-gap: 4px;
@@ -67,6 +71,11 @@ $MIN_HEIGHT_FLOATING: calc(
         @include desktop {
             padding-left: 16px;
             padding-right: 16px;
+        }
+        @include mobile {
+            height: unset;
+            padding-top: unset;
+            padding-bottom: unset;
         }
     }
     &-form {
@@ -191,6 +200,10 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
                 @include mobile {
                     margin: 0 1.6rem;
+
+                    &--has-bottom-margin {
+                        margin-bottom: 1.6rem;
+                    }
                 }
             }
             &-all-fields-required {

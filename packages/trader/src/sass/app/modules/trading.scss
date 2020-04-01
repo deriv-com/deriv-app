@@ -119,6 +119,10 @@
             /* postcss-bem-linter: ignore */
             .dc-input {
                 border: 1px solid var(--fill-normal);
+
+                &__field {
+                    height: 3.2rem;
+                }
             }
         }
     }

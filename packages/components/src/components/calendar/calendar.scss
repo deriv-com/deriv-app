@@ -66,10 +66,6 @@
             .dc-calendar__cell {
                 width: 5.6rem;
                 height: 3.2rem;
-
-                &--active {
-                    background: unset;
-                }
             }
         }
         &--decade {
@@ -172,7 +168,7 @@
             cursor: default;
         }
         &--disabled:not(.dc-calendar__cell--today),
-        &--other:not(.dc-calendar__cell--today) {
+        &--other:not(.dc-calendar__cell--today):not(.dc-calendar__cell--active) {
             color: var(--text-disabled);
             transition: none;
         }

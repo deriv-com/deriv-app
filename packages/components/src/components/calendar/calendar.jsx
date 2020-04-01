@@ -13,7 +13,7 @@ class Calendar extends React.PureComponent {
         this.state = {
             calendar_date: current_date, // calendar date reference
             selected_date: value, // selected date
-            calendar_view: 'date',
+            calendar_view: this.props.calendar_view || 'date',
             hovered_date: '',
         };
     }
@@ -94,7 +94,7 @@ class Calendar extends React.PureComponent {
         });
 
         if (onSelect) {
-            onSelect(formatted_date);
+            onSelect(formatted_date, false);
         }
     };
 
@@ -238,7 +238,7 @@ Calendar.propTypes = {
     onChangeCalendarMonth: PropTypes.func,
     onSelect: PropTypes.func,
     start_date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     disable_days: PropTypes.arrayOf(PropTypes.number),
 };
 

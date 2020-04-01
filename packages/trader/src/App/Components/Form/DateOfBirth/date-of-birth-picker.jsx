@@ -17,6 +17,7 @@ const InputField = props => {
                         autoComplete='off'
                         maxLength='30'
                         error={touched[field.name] && errors[field.name]}
+                        trailing_icon={<Icon icon='IcCalendar' className='icon-datepicker' />}
                         {...field}
                         {...props}
                     />
@@ -100,7 +101,7 @@ class DateOfBirth extends React.Component {
                 id={this.props.id}
                 name={this.props.name}
                 render={({ field: { name, value }, form: { setFieldValue, handleBlur } }) => (
-                    <div className='datepicker'>
+                    <div className='dc-datepicker'>
                         <InputField
                             {...this.props}
                             onFocus={this.handleFocus}
@@ -111,18 +112,17 @@ class DateOfBirth extends React.Component {
                             value={value ? toMoment(value).format('DD-MM-YYYY') : ''}
                             readOnly
                         />
-                        <Icon icon='IcCalendar' className='icon-datepicker' />
                         <CSSTransition
                             in={this.state.should_show_calendar}
                             timeout={100}
                             classNames={{
-                                enter: 'datepicker__picker--enter datepicker__picker--bottom-enter',
-                                enterDone: 'datepicker__picker--enter-done datepicker__picker--bottom-enter-done',
-                                exit: 'datepicker__picker--exit datepicker__picker--bottom-exit',
+                                enter: 'dc-datepicker__picker--enter dc-datepicker__picker--bottom-enter',
+                                enterDone: 'dc-datepicker__picker--enter-done dc-datepicker__picker--bottom-enter-done',
+                                exit: 'dc-datepicker__picker--exit dc0datepicker__picker--bottom-exit',
                             }}
                             unmountOnExit
                         >
-                            <div className='datepicker__picker' ref={this.reference}>
+                            <div className='dc-datepicker__picker' ref={this.reference}>
                                 <DatePickerCalendar
                                     max_date={this.state.max_date}
                                     min_date={this.state.min_date}

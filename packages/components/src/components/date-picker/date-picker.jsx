@@ -13,7 +13,7 @@ class DatePicker extends React.PureComponent {
     calendar = React.createRef();
 
     state = {
-        date: this.props.value || toMoment().format(this.props.display_format),
+        date: toMoment(this.props.value).format(this.props.display_format),
         duration: 0,
         is_datepicker_visible: false,
     };
@@ -25,9 +25,6 @@ class DatePicker extends React.PureComponent {
                 date: formatDate(addDays(toMoment(), this.props.value || 1), this.props.display_format),
                 duration: daysFromTodayTo(this.props.value) || 1,
             });
-        }
-        if (this.props.disable_trading_events) {
-            this.onChangeCalendarMonth(getStartOfMonth(this.state.value));
         }
     }
 
@@ -108,6 +105,8 @@ class DatePicker extends React.PureComponent {
     }
 
     render() {
+        const { id, value, ...props } = this.props;
+
         return (
             <>
                 <MobileWrapper>
@@ -131,7 +130,7 @@ class DatePicker extends React.PureComponent {
                                 this.onSelectCalendarNative(e.target.value);
                             }}
                         />
-                        <label className='dc0datepicker-native__overlay' htmlFor={this.props.name}>
+                        <label className='dc-natepicker-native__overlay' htmlFor={this.props.name}>
                             <Icon icon='IcCalendarDatefrom' className='dc-datepicker__arrowhead' />
                             <span className='dc-datepicker-native__overlay-text'>
                                 {this.state.value || this.props.placeholder}
@@ -150,14 +149,14 @@ class DatePicker extends React.PureComponent {
                             onClick={this.handleVisibility}
                             onClickClear={this.clearDatePickerInput}
                             value={this.input_value}
-                            {...this.props}
+                            {...props}
                         />
                         <Calendar
                             ref={this.calendar}
                             is_datepicker_visible={this.state.is_datepicker_visible}
-                            value={this.state.date}
+                            value={value}
                             onSelect={this.onSelectCalendar}
-                            {...this.props}
+                            {...props}
                         />
                     </div>
                 </DesktopWrapper>

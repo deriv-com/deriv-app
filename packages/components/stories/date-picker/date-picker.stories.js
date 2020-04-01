@@ -106,4 +106,21 @@ stories
                 </FlexWrapper>
             </Theme>
         );
-    });
+    })
+    .add('value', () => (
+        <Theme is_dark={boolean('Theme', false)}>
+            <FlexWrapper>
+                <DatePicker value='2000-01-04' has_today_btn />
+            </FlexWrapper>
+        </Theme>
+    ))
+    .add('view', () => (
+        <Theme is_dark={boolean('Theme', false)}>
+            <FlexWrapper justifyContent='space-between'>
+                <DatePicker label='Default' />
+                <DatePicker label='Month' calendar_view='month' />
+                <DatePicker label='Year' calendar_view='year' />
+                <DatePicker label='Decade' calendar_view='decade' />
+            </FlexWrapper>
+        </Theme>
+    ));

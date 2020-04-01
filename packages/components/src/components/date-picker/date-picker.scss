@@ -3,7 +3,6 @@
     position: relative;
     display: inline-block;
     width: 100%;
-    max-width: 280px;
 
     @include mobile {
         max-width: unset;
@@ -14,7 +13,6 @@
         border: 1px solid var(--border-normal);
 
         .dc-input__field {
-            height: 3.2rem;
             width: 100%;
             background: var(--fill-normal);
             border-radius: $BORDER_RADIUS;

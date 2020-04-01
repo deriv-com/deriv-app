@@ -345,7 +345,9 @@ $MIN_HEIGHT_FLOATING: calc(
         width: 100%;
 
         &-title {
-            padding-bottom: 0.8rem;
+            @include mobile {
+                padding-bottom: 0.8rem;
+            }
         }
         .account-management-table {
             tr th:nth-child(2),

@@ -218,3 +218,12 @@ export const getStartOfMonth = date =>
  * @param {String} str_format formatting using moment e.g - YYYY-MM-DD HH:mm
  */
 export const formatMiliseconds = (miliseconds, str_format) => moment.utc(miliseconds).format(str_format);
+
+/**
+ * returns a new date string
+ * @param {moment|string|epoch} date parameter
+ * @param {String} from_date_format initial date format
+ * @param {String} to_date_format to date format
+ */
+export const convertDateFormat = (date, from_date_format, to_date_format) =>
+    moment(date, from_date_format).format(to_date_format);

@@ -1,7 +1,14 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { addDays, daysFromTodayTo, formatDate, isDateValid, toMoment } from '@deriv/shared/utils/date';
+import {
+    addDays,
+    daysFromTodayTo,
+    formatDate,
+    isDateValid,
+    toMoment,
+    convertDateFormat,
+} from '@deriv/shared/utils/date';
 import Icon from 'Components/icon';
 import DesktopWrapper from 'Components/desktop-wrapper';
 import MobileWrapper from 'Components/mobile-wrapper';
@@ -100,24 +107,21 @@ class DatePicker extends React.PureComponent {
     };
 
     /**
-     * TODO: handle input change
+     * TODO: handle datepicker input change
      */
-    // onChangeInput = e => {
-    //     const value = e.target.value;
-    //     const formatted_value = formatDate(addDays(toMoment(), value), this.props.display_format);
-    //     this.updateDatePickerValue(formatted_value);
-    //     this.props.onChange(e);
-    // };
+    // onChangeInput = e => {};
 
-    // clearDatePickerInput = () => {
-    //     this.setState({ date: null, duration: null });
-    //     if (this.calendar.current) {
-    //         this.calendar.current.resetCalendar();
-    //     }
-    // };
+    /**
+     * TODO: handle datepicker input clear
+     */
+    // onClickClear = () => {};
 
     get input_value() {
         return this.props.mode === 'duration' ? this.state.duration : this.state.date;
+    }
+
+    get calendar_value() {
+        return convertDateFormat(this.state.date, this.props.display_format, this.props.date_format);
     }
 
     render() {
@@ -163,14 +167,15 @@ class DatePicker extends React.PureComponent {
                     >
                         <Input
                             onClick={this.handleVisibility}
-                            onClickClear={this.clearDatePickerInput}
+                            // onChange={this.onChangeInput}
+                            // onClickClear={this.onClickClear}
                             value={this.input_value}
                             {...props}
                         />
                         <Calendar
                             ref={this.calendar}
                             is_datepicker_visible={this.state.is_datepicker_visible}
-                            value={value}
+                            value={this.calendar_value}
                             onMouseOver={this.onHover}
                             onMouseLeave={this.onHover}
                             onSelect={this.onSelectCalendar}

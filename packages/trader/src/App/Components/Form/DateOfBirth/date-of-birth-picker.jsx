@@ -106,7 +106,7 @@ class DateOfBirth extends React.Component {
                             {...this.props}
                             onFocus={this.handleFocus}
                             className={classNames(this.props.className, {
-                                'datepicker--active-label': !!value,
+                                'dc-datepicker--active-label': !!value,
                             })}
                             onBlur={handleBlur}
                             value={value ? toMoment(value).format('DD-MM-YYYY') : ''}
@@ -118,7 +118,7 @@ class DateOfBirth extends React.Component {
                             classNames={{
                                 enter: 'dc-datepicker__picker--enter dc-datepicker__picker--bottom-enter',
                                 enterDone: 'dc-datepicker__picker--enter-done dc-datepicker__picker--bottom-enter-done',
-                                exit: 'dc-datepicker__picker--exit dc0datepicker__picker--bottom-exit',
+                                exit: 'dc-datepicker__picker--exit dc-datepicker__picker--bottom-exit',
                             }}
                             unmountOnExit
                         >

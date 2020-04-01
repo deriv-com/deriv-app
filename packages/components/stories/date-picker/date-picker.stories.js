@@ -132,7 +132,7 @@ stories
                     </DatePickerWrapper>
                     <DatePickerWrapper>
                         <DatePicker
-                            label='Duration DatePicker'
+                            label='Range picker'
                             footer={footer}
                             mode='duration'
                             min_date={toMoment()}

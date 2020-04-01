@@ -3,6 +3,7 @@ import React from 'react';
 import { Button, Icon } from '@deriv/components';
 import ButtonLink from 'App/Components/Routes/button-link.jsx';
 import { localize, Localize } from '@deriv/translations';
+import { getDerivComLink } from '_common/url';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 
@@ -78,7 +79,7 @@ class Error extends React.Component {
                                         className='link'
                                         target='_blank'
                                         rel='noopener noreferrer'
-                                        href='https://www.deriv.com/terms-and-conditions/#general'
+                                        href={getDerivComLink('terms-and-conditions/#general')}
                                     />,
                                 ]}
                             />
@@ -127,7 +128,7 @@ class Error extends React.Component {
                                         className='link'
                                         target='_blank'
                                         rel='noopener noreferrer'
-                                        href='https://www.deriv.com/help-centre/'
+                                        href={getDerivComLink('help-centre')}
                                     />,
                                 ]}
                             />

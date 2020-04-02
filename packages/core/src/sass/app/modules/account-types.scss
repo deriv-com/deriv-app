@@ -5,53 +5,119 @@
     .account-card {
         border: 1px solid var(--border-normal);
         border-radius: 0.6rem;
-        padding: 1.6rem;
+        overflow: hidden;
+        position: relative;
+        width: 22.7rem;
 
-        &__title {
-            color: var(--text-general);
-            font-size: 1.6rem;
-            font-weight: bold;
-            line-height: 1.5;
-        }
+        &__wrapper {
+            display: flex;
+            flex: 1;
+            position: relative;
+            transition: all 0.3s ease;
 
-        &__subtitle {
-            color: var(--text-profit-success);
-            font-size: 1.2rem;
-            font-weight: bold;
-            line-height: 1.5;
-        }
-
-        &__items {
-            width: 100%;
-            border-spacing: 0;
-            border-collapse: collapse;
-        }
-
-        &__item {
-            &__label {
-                color: var(--text-less-prominent);
-                display: inline-block;
-                font-size: 1.2rem;
-                white-space: nowrap;
-                width: 10.3rem;
+            &--show-description {
+                transform: translateX(-100%);
             }
+        }
 
-            &__value {
+        &__main {
+            min-width: 100%;
+            padding: 1.6rem;
+
+            &__title {
                 color: var(--text-general);
-                display: inline-block;
+                font-size: 1.6rem;
+                font-weight: bold;
+                line-height: 1.5;
+                margin-bottom: 0.4rem;
+            }
+
+            &__subtitle {
+                color: var(--text-profit-success);
                 font-size: 1.2rem;
-                white-space: nowrap;
-                width: 8rem;
+                font-weight: bold;
+                line-height: 1.5;
+                margin-bottom: 0.8rem;
+            }
+
+            &__items {
+                width: 100%;
+                border-spacing: 0;
+                border-collapse: collapse;
+                margin-bottom: 1.6rem;
+            }
+
+            &__item {
+                &__label {
+                    color: var(--text-less-prominent);
+                    display: inline-block;
+                    font-size: 1.2rem;
+                    white-space: nowrap;
+                    width: 10.3rem;
+                }
+
+                &__value {
+                    color: var(--text-general);
+                    display: inline-block;
+                    font-size: 1.2rem;
+                    white-space: nowrap;
+                    width: 8rem;
+                }
+            }
+
+            &__help {
+                cursor: pointer;
+                vertical-align: middle;
+                margin-left: 0.4rem;
+            }
+
+            &__button {
+                width: 100%;
             }
         }
 
-        &__help {
-            vertical-align: middle;
-            cursor: pointer;
-        }
+        &__description {
+            color: var(--text-general);
+            font-size: 1.2rem;
+            line-height: 1.8;
+            min-width: 100%;
+            padding: 0.8rem 1.6rem 1.6rem 1.6rem;
 
-        &__button {
-            width: 100%;
+            &__title {
+                color: var(--text-profit-success);
+                font-size: 1.2rem;
+                font-weight: bold;
+                line-height: 1.5;
+                padding-bottom: 0.8rem;
+            }
+
+            &__title-text {
+                padding-left: 0.8rem;
+            }
+
+            &__back {
+                cursor: pointer;
+                vertical-align: middle;
+            }
+
+            &__learn-more {
+                color: var(--text-less-prominent);
+                font-size: 1rem;
+                line-height: 1.4;
+                margin-top: 0.8rem;
+            }
+
+            &__items {
+                background-color: var(--brand-red-coral);
+                border-radius: 10px;
+                color: var(--text-colored-background);
+                font-size: 1rem;
+                font-weight: bold;
+                line-height: 1.4;
+                margin-right: 0.4rem;
+                padding: 0.1rem 0.4rem;
+                text-decoration: none;
+            }
         }
     }
 }

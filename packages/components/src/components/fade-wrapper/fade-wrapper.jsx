@@ -86,4 +86,4 @@ FadeWrapper.propTypes = {
     type: PropTypes.string,
 };
 
-export { FadeWrapper };
+export default FadeWrapper;

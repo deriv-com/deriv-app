@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper } from '@deriv/components';
-import { ChartMode, Comparison, DrawTools, Share, StudyLegend, Views } from 'Modules/SmartChart';
+import { ChartMode, DrawTools, Share, StudyLegend, Views } from 'Modules/SmartChart';
 
 const ControlWidgets = ({ updateChartType, updateGranularity }) => (
     <React.Fragment>
@@ -11,10 +11,9 @@ const ControlWidgets = ({ updateChartType, updateGranularity }) => (
                 onChartType={type => updateChartType(type)}
                 onGranularity={granularity => updateGranularity(granularity)}
             />
-            <StudyLegend searchInputClassName='data-hj-whitelist' />
-            <Comparison searchInputClassName='data-hj-whitelist' />
-            <DrawTools />
-            <Views searchInputClassName='data-hj-whitelist' />
+            <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
+            <DrawTools portalNodeId='modal_root' />
+            <Views portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
             <Share portalNodeId='modal_root' />
         </DesktopWrapper>
     </React.Fragment>

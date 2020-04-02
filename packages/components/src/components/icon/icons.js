@@ -80,6 +80,7 @@ import './common/ic-folder-open.svg';
 import './common/ic-full-screen.svg';
 import './common/ic-gear.svg';
 import './common/ic-hamburger.svg';
+import './common/ic-help-centre.svg';
 import './common/ic-highs-lows.svg';
 import './common/ic-identity-card.svg';
 import './common/ic-info-blue.svg';

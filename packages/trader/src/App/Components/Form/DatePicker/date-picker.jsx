@@ -222,7 +222,9 @@ class DatePicker extends React.Component {
                     <input
                         id={this.props.name}
                         name={this.props.name}
-                        className='input datepicker-native__input'
+                        className={classNames('input datepicker-native__input', {
+                            'input datepicker-native__input--empty': !this.state.value,
+                        })}
                         type='date'
                         min={this.props.min_date}
                         max={this.props.max_date}
@@ -237,7 +239,13 @@ class DatePicker extends React.Component {
 
                             this.onSelectCalendarNative(e.target.value);
                         }}
+                        disabled={this.props.disabled}
                     />
+                    {this.props.label && (
+                        <label className='datepicker-native__label' htmlFor={this.props.name}>
+                            {this.props.label}
+                        </label>
+                    )}
                     <label className='datepicker-native__overlay' htmlFor={this.props.name}>
                         <Icon icon='IcCalendarDatefrom' className='datepicker__arrowhead' />
                         <span className='datepicker-native__overlay-text'>

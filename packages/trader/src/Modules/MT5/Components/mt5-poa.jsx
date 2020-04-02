@@ -76,23 +76,30 @@ class MT5POA extends Component {
             document_file: localize('Document file'),
         };
 
-        const required_messages = ['{{field_name}} is required', '{{field_name}} is not in a proper format.'];
-
-        const optional_messages = ['{{field_name}} is not in a proper format.'];
+        const validation_errors = {
+            address_line_1: [
+                localize('First line of address is required'),
+                localize('First line of address is not in a proper format.'),
+            ],
+            address_line_2: [localize('Second line of address is not in a proper format.')],
+            address_city: [localize('Town/City is required'), localize('Town/City is not in a proper format.')],
+            address_state: [
+                localize('State/Province is required'),
+                localize('State/Province is not in a proper format.'),
+            ],
+            address_postcode: [
+                localize('Postal/Zip Code is required'),
+                localize('Postal/Zip Code is not in a proper format.'),
+            ],
+            document_file: [localize('Document file is not in a proper format.')],
+        };
 
         const errors = {};
 
         Object.entries(validations).forEach(([key, rules]) => {
             const error_index = rules.findIndex(v => !v(values[key]));
             if (error_index !== -1) {
-                switch (key) {
-                    case 'address_line_2':
-                    case 'document_file':
-                        errors[key] = localize(optional_messages[error_index], { field_name: mappedKey[key] });
-                        break;
-                    default:
-                        errors[key] = localize(required_messages[error_index], { field_name: mappedKey[key] });
-                }
+                errors[key] = validation_errors[key][error_index];
             }
         });
 

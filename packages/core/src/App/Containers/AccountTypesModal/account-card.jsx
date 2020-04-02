@@ -22,14 +22,18 @@ const Description = ({ title, children, learnMore, setShowDescription }) => {
                 <span className='account-card__description__title-text'>{title}</span>
             </h4>
             {children}
-            {learnMore.length && <h6 className='account-card__description__learn-more'>{localize('Learn more:')}</h6>}
-            {learnMore.map((item, index) => {
-                return (
-                    <a key={index} className='account-card__description__items' href='#'>
-                        {item}
-                    </a>
-                );
-            })}
+            <div className='account-card__description__learn'>
+                {learnMore.length && (
+                    <h6 className='account-card__description__learn-title'>{localize('Learn more:')}</h6>
+                )}
+                {learnMore.map((item, index) => {
+                    return (
+                        <a key={index} className='account-card__description__learn-items' href='#'>
+                            {item}
+                        </a>
+                    );
+                })}
+            </div>
         </div>
     );
 };

@@ -100,14 +100,17 @@
                 vertical-align: middle;
             }
 
-            &__learn-more {
-                color: var(--text-less-prominent);
-                font-size: 1rem;
-                line-height: 1.4;
+            &__learn {
                 margin-top: 0.8rem;
             }
 
-            &__items {
+            &__learn-title {
+                color: var(--text-less-prominent);
+                font-size: 1rem;
+                line-height: 1.4;
+            }
+
+            &__learn-items {
                 background-color: var(--brand-red-coral);
                 border-radius: 10px;
                 color: var(--text-colored-background);

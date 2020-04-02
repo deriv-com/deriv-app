@@ -26,18 +26,25 @@ class FormAds extends Component {
     handleSubmit = (values, { setSubmitting }) => {
         this.setState({ error_message: '' });
 
-        requestWS({
+        const request_payload = {
             p2p_advert_create: 1,
-            contact_info: values.contact_info || undefined,
-            description: values.default_advert_description,
             type: values.type,
             amount: values.offer_amount,
             max_order_amount: values.max_transaction,
             min_order_amount: values.min_transaction,
             payment_method: values.payment_method,
-            payment_info: values.payment_info || undefined,
             rate: values.price_rate,
-        }).then(response => {
+        };
+        if (values.contact_info) {
+            request_payload.contact_info = values.contact_info;
+        }
+        if (values.payment_info) {
+            request_payload.payment_info = values.payment_info;
+        }
+        if (values.default_advert_description) {
+            request_payload.default_advert_description;
+        }
+        requestWS(request_payload).then(response => {
             // If we get an error we should let the user submit the form again else we just go back to the list of ads
             if (response.error) {
                 this.setState({ error_message: response.error.message });

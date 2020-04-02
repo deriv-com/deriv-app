@@ -13,7 +13,7 @@ export const InputField = ({ name, optional = false, ...props }) => (
                 type='text'
                 required={!optional}
                 name={name}
-                autoComplete='off'
+                autoComplete='no'
                 maxLength='30'
                 error={touched[field.name] && errors[field.name]}
                 {...field}

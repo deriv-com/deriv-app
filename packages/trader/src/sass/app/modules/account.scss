@@ -301,6 +301,7 @@ $MIN_HEIGHT_FLOATING: calc(
         &-wrapper {
             display: flex;
             justify-content: center;
+            width: 100%;
 
             @include mobile {
                 overflow-x: hidden;
@@ -644,6 +645,12 @@ $MIN_HEIGHT_FLOATING: calc(
         .onfido-sdk-ui-PageTitle {
             &-titleWrapper {
                 margin: 0 1.5em 0.4em;
+            }
+            &-title {
+                text-align: left;
+            }
+            &-subTitle {
+                text-align: left;
             }
         }
     }

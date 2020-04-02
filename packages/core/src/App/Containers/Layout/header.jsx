@@ -17,7 +17,6 @@ import routes from 'Constants/routes';
 
 class Header extends React.Component {
     toggle_menu_drawer_ref = React.createRef();
-
     onClickDeposit = () => {
         this.props.history.push(routes.cashier_deposit);
     };

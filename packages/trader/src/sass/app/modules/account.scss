@@ -634,6 +634,24 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 8px;
             font-weight: bold;
         }
+        @include mobile {
+            &:not(:first-child):not(:last-child) {
+                margin: 0;
+            }
+            & .dc-icon {
+                width: 8.8rem;
+                height: auto;
+            }
+            p {
+                line-height: 20px;
+            }
+        }
+    }
+    @include mobile {
+        display: grid;
+        grid-gap: 2.4rem;
+        grid-template-columns: 1fr 1fr 1fr;
+        margin-top: 4rem;
     }
 }
 

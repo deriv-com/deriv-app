@@ -1,9 +1,9 @@
-// import PropTypes        from 'prop-types';
 import React from 'react';
 import { Formik } from 'formik';
 import { Button, Dropdown } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared/utils';
 import { WS } from 'Services/ws-methods';
 import {
     account_turnover_list,
@@ -135,7 +135,7 @@ class FinancialAssessment extends React.Component {
                         <LeaveConfirm onDirty={this.showForm} />
                         {show_form && (
                             <form className='account-form' onSubmit={handleSubmit}>
-                                <FormBody scroll_offset='80px'>
+                                <FormBody scroll_offset={isMobile() ? '200px' : '80px'}>
                                     <FormSubHeader
                                         title={localize('Financial information')}
                                         subtitle={`(${localize('All fields are required')})`}

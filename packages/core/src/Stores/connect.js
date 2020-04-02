@@ -1,8 +1,17 @@
-import { inject, Provider, observer } from 'mobx-react';
+import { Provider, observer, useObserver, MobXProviderContext } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 const SPECIAL_REACT_KEYS = { children: true, key: true, ref: true };
+
+function inject(selector, baseComponent) {
+    const component = ownProps => {
+        const store = React.useContext(MobXProviderContext);
+        return useObserver(() => baseComponent(selector({ store, ownProps })));
+    };
+    component.displayName = baseComponent.name;
+    return component;
+}
 
 export class MobxProvider extends Provider {
     getChildContext() {

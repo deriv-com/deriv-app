@@ -23,6 +23,7 @@ class Header extends React.Component {
 
     render() {
         const {
+            account_status,
             acc_switcher_disabled_message,
             app_routing_history,
             balance,
@@ -35,6 +36,7 @@ class Header extends React.Component {
             is_acc_switcher_disabled,
             is_app_disabled,
             is_dark_mode,
+            is_high_risk,
             is_logged_in,
             is_logging_in,
             is_mt5_allowed,
@@ -74,10 +76,12 @@ class Header extends React.Component {
                         <MobileWrapper>
                             <ToggleMenuDrawer
                                 ref={this.toggle_menu_drawer_ref}
+                                account_status={account_status}
                                 enableApp={enableApp}
                                 disableApp={disableApp}
                                 logoutClient={logoutClient}
                                 is_dark_mode={is_dark_mode}
+                                is_high_risk={is_high_risk}
                                 is_logged_in={is_logged_in}
                                 toggleTheme={setDarkMode}
                                 platform_switcher={
@@ -141,6 +145,7 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
+    account_status: PropTypes.object,
     acc_switcher_disabled_message: PropTypes.string,
     app_routing_history: PropTypes.array,
     balance: PropTypes.string,
@@ -153,6 +158,7 @@ Header.propTypes = {
     is_acc_switcher_on: PropTypes.bool,
     is_app_disabled: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
+    is_high_risk: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
@@ -167,6 +173,7 @@ Header.propTypes = {
 
 export default connect(({ client, common, ui }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
+    account_status: client.account_status,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
     can_upgrade: client.can_upgrade,
@@ -182,6 +189,7 @@ export default connect(({ client, common, ui }) => ({
     is_acc_switcher_on: ui.is_accounts_switcher_on,
     is_dark_mode: ui.is_dark_mode_on,
     is_app_disabled: ui.is_app_disabled,
+    is_high_risk: client.is_high_risk,
     is_loading: ui.is_loading,
     is_mt5_allowed: client.is_mt5_allowed,
     notifications_count: ui.notifications.length,

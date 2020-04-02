@@ -17,7 +17,7 @@ import './order-details.scss';
 const OrderDetails = ({ order_details }) => {
     const {
         advertiser_name,
-        advertiser_notes,
+        advertiser_instructions,
         display_offer_amount,
         display_price_rate,
         display_transaction_amount,
@@ -55,7 +55,10 @@ const OrderDetails = ({ order_details }) => {
                     </div>
                     <div className='deriv-p2p__separator' />
                     <div className='order-details__info'>
-                        <OrderInfoBlock label={localize('Advertiser notes')} value={advertiser_notes} />
+                        <OrderInfoBlock
+                            label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
+                            value={advertiser_instructions}
+                        />
                         <div className='order-details__info-columns'>
                             <div className='order-details__info--left'>
                                 <OrderInfoBlock

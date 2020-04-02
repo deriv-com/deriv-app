@@ -5,7 +5,7 @@ export default class OrderInfo {
     status;
     type = '';
     advertiser_name = '';
-    advertiser_notes = '';
+    advertiser_instructions = '';
     order_purchase_datetime = '';
     price_rate = 0;
     display_price_rate = '';

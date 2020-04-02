@@ -9,11 +9,12 @@ import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
 import { LocalStore, State } from '_common/storage';
 import BinarySocketGeneral from 'Services/socket-general';
+import { toMoment } from 'Utils/Date';
+import { getAllowedLocalStorageOrigin } from 'Utils/Events/storage';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
 import { getClientAccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
-import { toMoment } from '../Utils/Date';
 
 const storage_key = 'client.accounts';
 export default class ClientStore extends BaseStore {
@@ -1217,22 +1218,24 @@ export default class ClientStore extends BaseStore {
     syncWithSmartTrader(active_loginid, client_accounts) {
         const iframe_window = document.getElementById('localstorage-sync');
         if (iframe_window) {
-            let origin;
-
-            if (/^staging\.deriv\.app$/i.test(window.location.hostname)) {
-                origin = 'https://smarttrader-staging.deriv.app';
-            } else if (/^deriv\.app$/i.test(window.location.hostname)) {
-                origin = 'https://smarttrader.deriv.app';
-            } else {
-                return;
+            const origin = getAllowedLocalStorageOrigin();
+            if (origin) {
+                // Keep client.accounts in sync (in case user wasn't logged in).
+                iframe_window.contentWindow.postMessage(
+                    {
+                        key: 'client.accounts',
+                        value: JSON.stringify(client_accounts),
+                    },
+                    origin
+                );
+                iframe_window.contentWindow.postMessage(
+                    {
+                        key: 'active_loginid',
+                        value: active_loginid,
+                    },
+                    origin
+                );
             }
-
-            // Keep client.accounts in sync (in case user wasn't logged in).
-            iframe_window.contentWindow.postMessage(
-                { key: 'client.accounts', value: JSON.stringify(client_accounts) },
-                origin
-            );
-            iframe_window.contentWindow.postMessage({ key: 'active_loginid', value: active_loginid }, origin);
         }
     }
 

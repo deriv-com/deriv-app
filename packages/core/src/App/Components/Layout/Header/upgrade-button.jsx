@@ -7,7 +7,7 @@ import { localize } from '@deriv/translations';
 const UpgradeButton = ({ className, onClick }) => (
     <Button
         id='acc-balance-btn'
-        className={classNames(className, 'btn--primary--default')}
+        className={classNames(className, 'dc-btn--primary--default')}
         has_effect
         text={localize('Upgrade')}
         onClick={onClick}

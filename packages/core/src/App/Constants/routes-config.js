@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
+import { addRoutesConfig } from '@deriv/shared/utils/route';
 import { LocalStore } from '_common/storage';
 import { Redirect } from 'App/Containers/Redirect';
 import { localize } from '@deriv/translations';
@@ -126,6 +127,7 @@ const getRoutesConfig = () => {
     if (!routesConfig) {
         routesConfig = initRoutesConfig();
         routesConfig.push(route_default);
+        addRoutesConfig(routesConfig, true);
     }
     return routesConfig;
 };

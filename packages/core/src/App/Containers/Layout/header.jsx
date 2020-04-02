@@ -25,6 +25,7 @@ class Header extends React.Component {
     render() {
         const {
             acc_switcher_disabled_message,
+            app_routing_history,
             balance,
             can_upgrade,
             can_upgrade_to,
@@ -66,7 +67,10 @@ class Header extends React.Component {
                 <div className='header__menu-items'>
                     <div className='header__menu-left'>
                         <DesktopWrapper>
-                            <PlatformSwitcher platform_config={filterPlatformsForClients(platform_config)} />
+                            <PlatformSwitcher
+                                app_routing_history={app_routing_history}
+                                platform_config={filterPlatformsForClients(platform_config)}
+                            />
                         </DesktopWrapper>
                         <MobileWrapper>
                             <ToggleMenuDrawer
@@ -79,6 +83,7 @@ class Header extends React.Component {
                                 toggleTheme={setDarkMode}
                                 platform_switcher={
                                     <PlatformSwitcher
+                                        app_routing_history={app_routing_history}
                                         is_mobile
                                         platform_config={filterPlatformsForClients(platform_config)}
                                         toggleDrawer={this.toggle_menu_drawer_ref.current?.toggleDrawer}
@@ -138,6 +143,7 @@ class Header extends React.Component {
 
 Header.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
+    app_routing_history: PropTypes.array,
     balance: PropTypes.string,
     can_upgrade: PropTypes.bool,
     can_upgrade_to: PropTypes.string,
@@ -160,8 +166,9 @@ Header.propTypes = {
     toggleNotifications: PropTypes.func,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, common, ui }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
+    app_routing_history: common.app_routing_history,
     balance: client.balance,
     can_upgrade: client.can_upgrade,
     can_upgrade_to: client.can_upgrade_to,

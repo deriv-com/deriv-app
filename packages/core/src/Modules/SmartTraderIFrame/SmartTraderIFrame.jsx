@@ -1,20 +1,16 @@
 import React from 'react';
+import { getAllowedLocalStorageOrigin } from 'Utils/Events/storage';
 
 const SmartTraderIFrame = () => {
-    let url;
-
-    if (/^staging\.deriv\.app$/i.test(window.location.hostname)) {
-        url = 'https://smarttrader-staging.deriv.app/localstorage-sync.html';
-    } else if (/^deriv\.app$/i.test(window.location.hostname)) {
-        url = 'https://smarttrader.deriv.app/localstorage-sync.html';
-    } else {
+    const url = getAllowedLocalStorageOrigin();
+    if (!url) {
         return null;
     }
 
     return (
         <iframe
             id='localstorage-sync'
-            src={url}
+            src={`${url}/localstorage-sync.html`}
             style={{ display: 'none', visibility: 'hidden' }}
             sandbox='allow-same-origin allow-scripts'
         />

@@ -4,6 +4,7 @@ export default class OrderInfo {
     id = '';
     status;
     type = '';
+    advertiser_id = '';
     advertiser_name = '';
     advertiser_instructions = '';
     contact_info = '';

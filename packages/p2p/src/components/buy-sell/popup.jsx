@@ -59,8 +59,6 @@ class Popup extends Component {
 
     render() {
         const { ad, handleClose } = this.props;
-        console.log({ renderAd: ad, props: this.props });
-
         return (
             <Fragment>
                 <div className='buy-sell__popup'>
@@ -80,7 +78,6 @@ class Popup extends Component {
                         onSubmit={this.handleSubmit}
                     >
                         {({ errors, isSubmitting, isValid, handleChange, status, touched }) => {
-                            console.log({ errors, touched });
                             const is_buyer = ad.type === 'buy';
                             return (
                                 <Form noValidate>

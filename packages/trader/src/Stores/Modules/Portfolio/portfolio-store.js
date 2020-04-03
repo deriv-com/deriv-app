@@ -2,6 +2,7 @@ import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction } from 'mobx';
 import { createTransformer } from 'mobx-utils';
 import { WS } from 'Services/ws-methods';
+import { isMobile } from '@deriv/shared/utils/screen';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractCancelled, contractSold } from './Helpers/portfolio-notifications';
@@ -437,11 +438,17 @@ export default class PortfolioStore extends BaseStore {
 
     @computed
     get active_positions_count() {
-        return this.active_positions.length || 0;
+        return this.active_positions_filtered.length || 0;
     }
 
     @computed
     get is_empty() {
         return !this.is_loading && this.all_positions.length === 0;
+    }
+
+    @computed
+    get active_positions_filtered() {
+        // TODO: remove this once Multiplier is supported in Mobile
+        return this.active_positions.filter(p => !(isMultiplierContract(p.contract_info.contract_type) && isMobile()));
     }
 }

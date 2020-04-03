@@ -33,7 +33,7 @@ const CardFooter = ({ contract_info, is_multiplier, is_sell_requested, onClickCa
                     })}
                 >
                     <MultiplierCloseActions
-                        className='btn--sell'
+                        className='dc-btn--sell'
                         contract_info={contract_info}
                         is_sell_requested={is_sell_requested}
                         onClickCancel={onClickCancel}
@@ -47,8 +47,8 @@ const CardFooter = ({ contract_info, is_multiplier, is_sell_requested, onClickCa
                 <div className='positions-drawer-card__sell-button'>
                     <Button
                         id={`dt_drawer_card_${contract_info.contract_id}_button`}
-                        className={classNames('btn--sell', {
-                            'btn--loading': is_sell_requested,
+                        className={classNames('dc-btn--sell', {
+                            'dc-btn--loading': is_sell_requested,
                         })}
                         is_disabled={!is_valid_to_sell || is_sell_requested}
                         text={localize('Sell contract')}

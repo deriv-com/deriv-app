@@ -1,6 +1,14 @@
-import { Button, Popover, Modal, DesktopWrapper, MobileDialog, MobileWrapper, Table } from '@deriv/components';
+import {
+    Button,
+    Popover,
+    Modal,
+    DesktopWrapper,
+    MobileDialog,
+    MobileWrapper,
+    Table,
+    UILoader,
+} from '@deriv/components';
 import React, { useState } from 'react';
-import UILoader from 'App/Components/Elements/ui-loader.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -26,7 +34,7 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
                 </MobileWrapper>
             </p>
             <DesktopWrapper>
-                <Popover alignment='right' icon='counter' counter={counter} message={tooltip} />
+                <Popover alignment='right' icon='counter' counter={counter} message={tooltip} zIndex={9999} />
             </DesktopWrapper>
             <MobileWrapper>
                 <MT5AttributeDescriberModal toggleModal={toggleModal} is_visible={is_visible} message={tooltip} />
@@ -171,7 +179,7 @@ const ModalContent = () => (
         <Table fixed>
             <Table.Header>
                 <Table.Row>
-                    <Table.Head fixed>{localize('')}</Table.Head>
+                    <Table.Head fixed />
                     <Table.Head>{localize('Standard')}</Table.Head>
                     <Table.Head>{localize('Advanced')}</Table.Head>
                     <Table.Head>{localize('Synthetic Indices')}</Table.Head>

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Button, Dialog, PasswordInput } from '@deriv/components';
+import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -40,6 +40,11 @@ const validateSignup = (values, residence_list) => {
 class AccountSignup extends React.Component {
     state = {
         has_valid_residence: false,
+        pw_input: '',
+    };
+
+    updatePassword = string => {
+        this.setState({ pw_input: string });
     };
 
     onResidenceSelection = () => {
@@ -78,7 +83,16 @@ class AccountSignup extends React.Component {
                     validate={validateSignupPassthrough}
                     onSubmit={onSignupPassthrough}
                 >
-                    {({ isSubmitting, errors, values, setFieldValue, touched }) => (
+                    {({
+                        isSubmitting,
+                        handleBlur,
+                        errors,
+                        handleChange,
+                        values,
+                        setFieldValue,
+                        setFieldTouched,
+                        touched,
+                    }) => (
                         <Form>
                             <React.Fragment>
                                 {!this.state.has_valid_residence ? (
@@ -87,6 +101,7 @@ class AccountSignup extends React.Component {
                                         class_prefix='account-signup'
                                         errors={errors}
                                         touched={touched}
+                                        setFieldTouched={setFieldTouched}
                                         setFieldValue={setFieldValue}
                                         residence_list={residence_list}
                                     >
@@ -108,13 +123,26 @@ class AccountSignup extends React.Component {
                                         </p>
                                         <Field name='password'>
                                             {({ field }) => (
-                                                <PasswordInput
-                                                    {...field}
-                                                    className='account-signup__password-field'
-                                                    label={localize('Create a password')}
+                                                <PasswordMeter
+                                                    input={this.state.pw_input}
                                                     error={touched.password && errors.password}
-                                                    required
-                                                />
+                                                >
+                                                    <PasswordInput
+                                                        {...field}
+                                                        className='account-signup__password-field'
+                                                        label={localize('Create a password')}
+                                                        error={touched.password && errors.password}
+                                                        required
+                                                        value={values.password}
+                                                        onBlur={handleBlur}
+                                                        onChange={e => {
+                                                            const input = e.target;
+                                                            setFieldTouched('password', true);
+                                                            if (input) this.updatePassword(input.value);
+                                                            handleChange(e);
+                                                        }}
+                                                    />
+                                                </PasswordMeter>
                                             )}
                                         </Field>
                                         <p className='account-signup__subtext'>
@@ -162,6 +190,7 @@ const AccountSignupModal = ({
             disableApp={disableApp}
             enableApp={enableApp}
             is_loading={is_loading || !residence_list.length}
+            is_mobile_full_width={false}
             is_content_centered
         >
             <AccountSignup

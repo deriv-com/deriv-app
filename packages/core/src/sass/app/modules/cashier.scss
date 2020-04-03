@@ -1,5 +1,21 @@
 /** @define cashier; weak */
 .cashier {
+    &-page-wrapper {
+        @include mobile {
+            & .dc-page-overlay__header {
+                position: fixed;
+                top: 4rem;
+                width: 100%;
+                height: 4rem;
+            }
+            & .dc-accordion:not(&--open) {
+                &__item {
+                    height: 3rem;
+                    font-size: 1.2rem;
+                }
+            }
+        }
+    }
     &__counter {
         position: absolute;
         top: 0.4rem;
@@ -31,8 +47,8 @@
         }
         &--is-mobile {
             @include mobile {
-                padding: 1.6rem;
                 width: 100vw;
+                margin-top: 4rem;
 
                 .dc-collapsible {
                     position: relative;
@@ -63,6 +79,10 @@
         font-weight: bold;
         margin-bottom: 16px;
         color: var(--text-prominent);
+
+        @include mobile {
+            font-size: 1.4rem;
+        }
     }
     &__form {
         &-submit {
@@ -198,6 +218,14 @@
         font-size: 1.4rem;
         align-self: center;
         line-height: 1.43;
+
+        @include mobile {
+            padding-left: 1.6rem;
+
+            &:first-child {
+                margin-top: 2.4rem;
+            }
+        }
     }
     &__text {
         font-size: 1.4rem;
@@ -351,14 +379,57 @@
                 margin-bottom: 8px;
                 text-align: center;
             }
-            &:not(:first-child) {
-                margin-left: 24px;
-                margin-left: 1.6rem;
+            @include desktop {
+                &:not(:first-child) {
+                    margin-left: 24px;
+                    margin-left: 1.6rem;
+                }
+            }
+            @include mobile {
+                display: flex;
+
+                &:first-child {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                &:last-child {
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+
+                    & h2 {
+                        margin-bottom: unset;
+                    }
+                    & .dc-btn {
+                        margin: 0 0 0 auto;
+                        padding: 0.3rem 0.8rem;
+                        height: 3rem;
+
+                        /* iPhone SE screen height fixes due to UI space restrictions */
+                        @media only screen and (max-height: 480px) {
+                            height: 4.8rem;
+
+                            &__text {
+                                width: 14rem;
+                                white-space: normal;
+                            }
+                        }
+                    }
+                }
+                & .cashier__paragraph {
+                    padding-left: 0;
+                }
             }
         }
         &-button {
             display: block;
             margin: auto;
+        }
+        @include mobile {
+            display: grid;
+            margin: 1.6rem;
+            grid-template-columns: 1fr;
+            grid-gap: 0.8rem;
         }
     }
     &__list {
@@ -379,6 +450,24 @@
             width: 80%;
             margin-left: 20%;
             top: -25px;
+        }
+        @include mobile {
+            &-header {
+                padding-left: 1.6rem;
+                position: relative;
+                z-index: 1;
+            }
+            &-selector {
+                margin: 0 1.6rem 0.8rem;
+
+                & .dc-input {
+                    max-width: 16rem;
+                }
+                & .dc-select-native__placeholder {
+                    top: 0.9rem;
+                    left: 1.2rem;
+                }
+            }
         }
     }
     &__drop-down {
@@ -474,6 +563,11 @@
     }
     &__paragraph {
         align-self: flex-start;
+    }
+    @include mobile {
+        &__accordion {
+            margin: 0 1.6rem;
+        }
     }
 }
 

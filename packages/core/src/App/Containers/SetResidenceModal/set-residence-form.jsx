@@ -41,7 +41,7 @@ const SetResidenceForm = ({
                             list_items={residence_list}
                             error={touched.residence && errors.residence}
                             required
-                            use_text={true}
+                            use_text
                             onChange={e => {
                                 setFieldTouched('residence', true);
                                 setFieldValue('residence', e.target.value, true);

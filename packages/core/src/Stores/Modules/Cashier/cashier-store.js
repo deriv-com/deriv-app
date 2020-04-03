@@ -532,8 +532,9 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     onChangePaymentMethod({ target }) {
-        this.config.payment_agent.selected_bank = target.value;
-        this.filterPaymentAgentList(target.value);
+        const value = target.value === '0' ? parseInt(target.value) : target.value;
+        this.config.payment_agent.selected_bank = value;
+        this.filterPaymentAgentList(value);
     }
 
     @action.bound

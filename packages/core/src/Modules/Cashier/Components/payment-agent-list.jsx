@@ -1,7 +1,7 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Accordion, Button, Dropdown } from '@deriv/components';
+import { Accordion, Button, DesktopWrapper, Dropdown, MobileWrapper, SelectNative } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { website_name } from 'App/Constants/app-config';
@@ -67,17 +67,36 @@ class PaymentAgentList extends React.Component {
                     <React.Fragment>
                         {this.props.supported_banks.length > 1 && (
                             <div className='payment-agent__list-selector'>
-                                <Dropdown
-                                    id='payment_methods'
-                                    className='payment-agent__drop-down payment-agent__filter'
-                                    classNameDisplay='cashier__drop-down-display payment-agent__filter-display'
-                                    classNameDisplaySpan='cashier__drop-down-display-span'
-                                    classNameItems='cashier__drop-down-items'
-                                    list={this.props.supported_banks}
-                                    name='payment_methods'
-                                    value={this.props.selected_bank}
-                                    onChange={this.props.onChangePaymentMethod}
-                                />
+                                <DesktopWrapper>
+                                    <Dropdown
+                                        id='payment_methods'
+                                        className='payment-agent__drop-down payment-agent__filter'
+                                        classNameDisplay='cashier__drop-down-display payment-agent__filter-display'
+                                        classNameDisplaySpan='cashier__drop-down-display-span'
+                                        classNameItems='cashier__drop-down-items'
+                                        list={this.props.supported_banks}
+                                        name='payment_methods'
+                                        value={this.props.selected_bank}
+                                        onChange={this.props.onChangePaymentMethod}
+                                    />
+                                </DesktopWrapper>
+                                <MobileWrapper>
+                                    <SelectNative
+                                        name='payment_methods'
+                                        list_items={this.props.supported_banks}
+                                        value={this.props.selected_bank}
+                                        label={localize('Type')}
+                                        onChange={e =>
+                                            this.props.onChangePaymentMethod({
+                                                target: {
+                                                    name: 'payment_methods',
+                                                    value: e.target.value.toLowerCase(),
+                                                },
+                                            })
+                                        }
+                                        use_text={false}
+                                    />
+                                </MobileWrapper>
                             </div>
                         )}
                         <Accordion

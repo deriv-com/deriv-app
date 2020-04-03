@@ -359,8 +359,9 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 100%;
             margin-top: 1.2rem;
 
-            .dc-btn:first-child {
-                margin-bottom: 1.6rem;
+            .dc-btn {
+                padding: 0rem;
+                margin-bottom: 0rem;
             }
         }
     }

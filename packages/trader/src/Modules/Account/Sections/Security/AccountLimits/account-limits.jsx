@@ -112,7 +112,7 @@ class AccountLimits extends React.Component {
                                     className='link link--orange'
                                     rel='noopener noreferrer'
                                     target='_blank'
-                                    href={getDerivComLink('help-centre')}
+                                    href={getDerivComLink('/help-centre')}
                                 />,
                             ]}
                         />

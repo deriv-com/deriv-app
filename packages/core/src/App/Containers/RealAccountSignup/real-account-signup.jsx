@@ -9,6 +9,7 @@ import AccountSignupUnavailableModal from './account-signup-unavailable-modal.js
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
+import ModalLoginPrompt from './modal-login-prompt.jsx';
 import SuccessDialog from '../Modals/success-dialog.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
@@ -231,9 +232,11 @@ class RealAccountSignup extends Component {
     };
 
     render() {
-        const { is_real_acc_signup_on } = this.props;
+        const { is_real_acc_signup_on, is_logged_in } = this.props;
         const title = this.labels[this.active_modal_index];
-        const Body = this.state.modal_content[this.active_modal_index].value;
+        const Body = is_logged_in
+            ? this.state.modal_content[this.active_modal_index].value
+            : () => <ModalLoginPrompt />;
 
         return (
             <>
@@ -270,6 +273,7 @@ export default connect(({ ui, client }) => ({
     has_real_account: client.has_active_real_account,
     currency: client.currency,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
+    is_logged_in: client.is_logged_in,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     setParams: ui.setRealAccountSignupParams,
     state_value: ui.real_account_signup,

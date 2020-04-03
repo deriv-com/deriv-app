@@ -21,26 +21,25 @@ export const connect = (user_id, token) => {
             console.error(error);
             return;
         }
-        // console.log(user);
-        getChannelList();
     });
 };
 
-const getChannelList = action => {
-    if (!channel_list_query) {
-        channel_list_query = sendbird.GroupChannel.createMyGroupChannelListQuery();
-        channel_list_query.includeEmpty = true;
-        channel_list_query.limit = 20;
-    }
-    if (channel_list_query.hasNext && !channel_list_query.isLoading) {
-        channel_list_query.next(function(channelList, error) {
-            if (error) {
-                console.error(error);
-                return;
-            }
-            console.log(channelList);
-        });
-    }
-};
+export const getChannelList = () =>
+    Promise((resolve, reject) => {
+        if (!channel_list_query) {
+            channel_list_query = sendbird.GroupChannel.createMyGroupChannelListQuery();
+            channel_list_query.includeEmpty = true;
+            channel_list_query.limit = 20;
+        }
+        if (channel_list_query.hasNext && !channel_list_query.isLoading) {
+            channel_list_query.next(function(channelList, error) {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                resolve(channelList);
+            });
+        }
+    });
 
 export const requestSendbird = () => sendbird;

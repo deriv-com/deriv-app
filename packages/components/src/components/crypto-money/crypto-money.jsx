@@ -1,21 +1,21 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import Popover from '../popover';
+import Popover from 'Components/popover/popover.jsx';
 
-const CryptoMoney = ({ realValue, toggleValue }) => {
-    const [cryptoToggleView, setCryptoToggleView] = useState(false);
+const CryptoMoney = ({ real_value, toggled_value }) => {
+    const [crypto_toggle_view, setCryptoToggleView] = useState(false);
 
     return (
         <>
             <Popover
                 alignment='top'
                 className='crypto-popover'
-                message={realValue}
-                is_open={cryptoToggleView}
+                message={real_value}
+                is_open={crypto_toggle_view}
                 disable_target_icon
             >
                 <span onMouseEnter={() => setCryptoToggleView(true)} onMouseLeave={() => setCryptoToggleView(false)}>
-                    {toggleValue}
+                    {toggled_value}
                 </span>
             </Popover>
         </>
@@ -23,8 +23,8 @@ const CryptoMoney = ({ realValue, toggleValue }) => {
 };
 
 CryptoMoney.propTypes = {
-    realValue: PropTypes.string,
-    toggleValue: PropTypes.string,
+    real_value: PropTypes.string,
+    toggled_value: PropTypes.string,
 };
 
 export default CryptoMoney;

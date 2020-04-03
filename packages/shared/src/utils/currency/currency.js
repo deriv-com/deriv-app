@@ -82,19 +82,27 @@ export const isCryptocurrency = currency => {
 
 // transform crypto values to represent their appropriate precisions
 export const getCryptoFormat = value => {
-    let [integerPart, decimalPart] = ('' + value).split('.');
-    if (decimalPart) {
-        integerPart = integerPart.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-        const decimalPartLength = decimalPart.length;
-        if (decimalPartLength > 8) {
-            const startingThreeDigits = decimalPart.substr(0, 3);
-            const endingThreeDigits = decimalPart.substr(decimalPartLength - 3);
+    // eslint-disable-next-line prefer-template
+    const [integer_part, decimal_part] = ('' + value).split('.');
+
+    if (decimal_part) {
+        const integer_part_with_comma = addComma(integer_part);
+        const decimal_part_length = decimal_part.length;
+
+        if (decimal_part_length > 8) {
+            const startingThreeDigits = decimal_part.substr(0, 3);
+            const endingThreeDigits = decimal_part.substr(decimal_part_length - 3);
             return {
-                realValue: `${integerPart.toLocaleString()}.${decimalPart}`,
-                toggleValue: `${integerPart}.${startingThreeDigits}...${endingThreeDigits}`,
+                real_value: `${integer_part_with_comma}.${decimal_part}`,
+                toggled_value: `${integer_part_with_comma}.${startingThreeDigits}...${endingThreeDigits}`,
             };
         }
     }
+
+    return {
+        real_value: '',
+        toggled_value: '',
+    };
 };
 
 export const CryptoConfig = (() => {

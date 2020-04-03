@@ -207,7 +207,7 @@ class RealAccountSignup extends Component {
         this.props.closeRealAccountSignup();
 
         if (isNavigationFromPlatform(this.props.routing_history, routes.smarttrader)) {
-            window.location = smarttrader;
+            window.location = routes.smarttrader;
         }
     };
 

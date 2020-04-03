@@ -255,8 +255,6 @@ const BinarySocketBase = (() => {
 
     const cancelContract = contract_id => deriv_api.send({ cancel: contract_id });
 
-    const p2pAdvertiserInfo = () => deriv_api.send({ p2p_advertiser_info: 1 });
-
     // subscribe method export for P2P use only
     // so that subscribe remains private
     const p2pSubscribe = (request, cb) => subscribe(request, cb);

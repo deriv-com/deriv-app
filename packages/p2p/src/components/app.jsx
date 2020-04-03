@@ -5,7 +5,8 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import { Tabs } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
-import { init, requestWS, getModifiedP2POrderList } from 'Utils/websocket';
+import { init as WebsocketInit, requestWS, getModifiedP2POrderList } from 'Utils/websocket';
+import { init as SendbirdInit } from 'Utils/sendbird';
 import { localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
@@ -27,7 +28,8 @@ class App extends Component {
         super(props);
 
         setLanguage(this.props.lang);
-        init(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
+        WebsocketInit(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
+        SendbirdInit();
         ServerTime.init(this.props.server_time);
 
         this.state = {

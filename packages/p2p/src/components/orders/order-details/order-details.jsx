@@ -16,6 +16,7 @@ import './order-details.scss';
 
 const OrderDetails = ({ order_details }) => {
     const {
+        advertiser_id,
         advertiser_name,
         advertiser_instructions,
         contact_info,
@@ -33,9 +34,10 @@ const OrderDetails = ({ order_details }) => {
     const [show_popup, setShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
 
-    const { email_domain } = React.useContext(Dp2pContext);
-    const onCancelClick = () => setShowPopup(false);
+    const { email_domain, advertiser_id: client_advertiser_id } = React.useContext(Dp2pContext);
+    const is_my_ad = advertiser_id === client_advertiser_id;
 
+    const onCancelClick = () => setShowPopup(false);
     const handleShowPopup = options => {
         setPopupOptions(options);
         setShowPopup(true);
@@ -50,33 +52,56 @@ const OrderDetails = ({ order_details }) => {
                         <span>
                             <OrderDetailsStatusBlock order_details={order_details} />
                             <OrderDetailsAmountBlock order_details={order_details} />
-                            <h1 className='order-details__header-method'>{order_details.display_payment_method}</h1>
-                            {is_buyer && order_details.payment_info && (
-                                <div className='order-details__header-payment-info'>{order_details.payment_info}</div>
+                            {!is_expired && (
+                                <React.Fragment>
+                                    <h1 className='order-details__header-method'>
+                                        {order_details.display_payment_method}
+                                    </h1>
+                                    {order_details.payment_info && (
+                                        <div className='order-details__header-payment-info'>
+                                            {order_details.payment_info}
+                                        </div>
+                                    )}
+                                </React.Fragment>
                             )}
                         </span>
                         <OrderDetailsTimerBlock order_details={order_details} />
                     </div>
                     <div className='deriv-p2p__separator' />
                     <div className='order-details__info'>
-                        {advertiser_instructions && (
+                        <div className='order-details__info-columns'>
+                            {!is_my_ad && (
+                                <div className='order-details__info--left'>
+                                    <OrderInfoBlock
+                                        label={is_buyer ? localize('Seller') : localize('Buyer')}
+                                        value={advertiser_name}
+                                    />
+                                </div>
+                            )}
+                            <div className='order-details__info--right'>
+                                <OrderInfoBlock
+                                    label={localize('Rate ({{display_offer_amount}} {{offer_currency}})', {
+                                        display_offer_amount,
+                                        offer_currency,
+                                    })}
+                                    value={`${display_price_rate} ${transaction_currency}`}
+                                />
+                            </div>
+                        </div>
+                        {!is_my_ad && (
                             <OrderInfoBlock
                                 label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
-                                value={advertiser_instructions}
+                                value={advertiser_instructions || '-'}
                             />
                         )}
-                        {is_buyer && contact_info && (
-                            <OrderInfoBlock label={localize('Buyer contact details')} value={contact_info} />
+                        {is_buyer && (
+                            <OrderInfoBlock label={localize('Seller contact details')} value={contact_info || '-'} />
                         )}
                         <div className='order-details__info-columns'>
                             <div className='order-details__info--left'>
                                 <OrderInfoBlock
                                     label={is_buyer ? localize('Send') : localize('Receive')}
                                     value={`${display_transaction_amount} ${transaction_currency}`}
-                                />
-                                <OrderInfoBlock
-                                    label={localize('Price')}
-                                    value={`${display_price_rate} ${transaction_currency}`}
                                 />
                                 <OrderInfoBlock label={localize('Order ID')} value={id} />
                             </div>
@@ -85,7 +110,6 @@ const OrderDetails = ({ order_details }) => {
                                     label={is_buyer ? localize('Receive') : localize('Send')}
                                     value={`${display_offer_amount} ${offer_currency}`}
                                 />
-                                {is_buyer && <OrderInfoBlock label={localize('Seller')} value={advertiser_name} />}
                                 <OrderInfoBlock label={localize('Time')} value={order_purchase_datetime} />
                             </div>
                         </div>

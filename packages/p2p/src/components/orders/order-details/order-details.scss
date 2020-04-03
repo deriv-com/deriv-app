@@ -40,6 +40,13 @@
             font-size: 1.6rem;
             font-weight: bold;
             line-height: 1.5;
+
+            &--expired {
+                color: var(--text-less-prominent);
+            }
+            &--wait-for-payment {
+                color: var(--status-warning);
+            }
         }
         &-amount {
             line-height: 1.5;
@@ -75,9 +82,8 @@
     }
     &__info {
         &-block {
-            &:not(:last-child) {
-                margin-bottom: 1.6rem;
-            }
+            margin-bottom: 1.6rem;
+
             &-label {
                 font-size: 1.2rem;
                 line-height: 1.5;

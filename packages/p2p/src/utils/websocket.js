@@ -92,6 +92,7 @@ const getModifiedP2PAdvertList = (response, is_original) => {
 };
 
 const getModifiedP2POrder = response => {
+    const { contact_info, payment_info } = response;
     const offer_currency = response.account_currency;
     const transaction_currency = response.local_currency;
 
@@ -102,8 +103,10 @@ const getModifiedP2POrder = response => {
     // const payment_method = response.payment_method;
 
     return {
+        contact_info,
         offer_amount,
         offer_currency,
+        payment_info,
         price_rate,
         transaction_amount,
         transaction_currency,

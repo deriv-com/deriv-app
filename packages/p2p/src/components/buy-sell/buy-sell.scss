@@ -73,6 +73,13 @@
                 margin-bottom: 1.6rem;
                 align-items: center;
             }
+            &--textarea {
+                margin-top: 4.3rem;
+
+                .dc-input__hint {
+                    top: 9.7rem;
+                }
+            }
             &--icon {
                 width: 3.66rem;
                 margin: 0 1.6rem;

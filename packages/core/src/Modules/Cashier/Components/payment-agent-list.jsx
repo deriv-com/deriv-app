@@ -85,7 +85,11 @@ class PaymentAgentList extends React.Component {
                                         name='payment_methods'
                                         list_items={this.props.supported_banks}
                                         value={this.props.selected_bank}
-                                        label={localize('Type')}
+                                        label={
+                                            this.props.selected_bank === 0
+                                                ? localize('All payment methods')
+                                                : localize('Type')
+                                        }
                                         onChange={e =>
                                             this.props.onChangePaymentMethod({
                                                 target: {

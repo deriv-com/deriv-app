@@ -2,6 +2,7 @@
 .cashier {
     &-page-wrapper {
         @include mobile {
+            /* postcss-bem-linter: ignore */
             & .dc-page-overlay__header {
                 position: fixed;
                 top: 4rem;
@@ -9,6 +10,7 @@
                 height: 4rem;
             }
             & .dc-accordion:not(&--open) {
+                /* postcss-bem-linter: ignore */
                 &__item {
                     height: 3rem;
                     font-size: 1.2rem;
@@ -393,6 +395,7 @@
                     flex-direction: column;
                     align-items: flex-start;
                 }
+                /* postcss-bem-linter: ignore */
                 &:last-child {
                     flex-direction: row;
                     justify-content: center;
@@ -417,6 +420,7 @@
                         }
                     }
                 }
+                /* postcss-bem-linter: ignore */
                 & .cashier__paragraph {
                     padding-left: 0;
                 }
@@ -461,9 +465,11 @@
             &-selector {
                 margin: 0 1.6rem 0.8rem;
 
+                /* postcss-bem-linter: ignore */
                 & .dc-input {
                     max-width: 20rem;
                 }
+                /* postcss-bem-linter: ignore */
                 & .dc-select-native__placeholder {
                     top: 0.9rem;
                     left: 1.2rem;

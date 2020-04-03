@@ -1,7 +1,8 @@
 import { action, observable } from 'mobx';
-import moment from 'moment';
-import { LocalStore } from '_common/storage';
-import AppRoutes, { routing_control_key } from 'Constants/routes';
+import { toMoment } from '@deriv/shared/utils/date';
+import ServerTime from '_common/base/server_time';
+import AppRoutes from 'Constants/routes';
+import { getAllowedLocalStorageOrigin } from 'Utils/Events/storage';
 import { currentLanguage } from 'Utils/Language/index';
 import BaseStore from './base-store';
 import { clientNotifications } from './Helpers/client-notifications';
@@ -9,22 +10,9 @@ import { clientNotifications } from './Helpers/client-notifications';
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
         super({ root_store });
-        // Since we refresh the page on routing across bot, we need to identify
-        // if launch was from bot so we can redirect back to bot as platform
-        const routing_control_raw = LocalStore.get(routing_control_key);
-
-        if (routing_control_raw) {
-            const route_control = JSON.parse(routing_control_raw);
-
-            if (route_control.is_from_bot) {
-                this.addRouteHistoryItem({ pathname: AppRoutes.bot, action: 'PUSH' });
-                delete route_control.is_from_bot;
-                LocalStore.setObject(routing_control_key, route_control);
-            }
-        }
     }
 
-    @observable server_time = moment.utc();
+    @observable server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
     @observable current_language = currentLanguage;
     @observable has_error = false;
 
@@ -45,6 +33,27 @@ export default class CommonStore extends BaseStore {
 
     @observable app_routing_history = [];
     @observable app_router = { history: null };
+
+    setInitialRouteHistoryItem(location) {
+        if (window.location.href.indexOf('?ext_platform_url=') !== -1) {
+            const ext_url = decodeURI(new URL(window.location.href).searchParams.get('ext_platform_url'));
+
+            if (ext_url?.indexOf(getAllowedLocalStorageOrigin()) === 0) {
+                this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
+            } else {
+                this.addRouteHistoryItem({ ...location, action: 'PUSH' });
+            }
+
+            window.history.replaceState({}, document.title, window.location.pathname);
+        } else {
+            this.addRouteHistoryItem({ ...location, action: 'PUSH' });
+        }
+    }
+
+    @action.bound
+    setServerTime(server_time) {
+        this.server_time = server_time;
+    }
 
     @action.bound
     setIsSocketOpened(is_socket_opened) {
@@ -116,6 +125,11 @@ export default class CommonStore extends BaseStore {
     }
 
     @action.bound
+    setServicesError(error) {
+        this.services_error = error;
+    }
+
+    @action.bound
     setAppRouterHistory(history) {
         this.app_router.history = history;
     }
@@ -140,20 +154,34 @@ export default class CommonStore extends BaseStore {
     routeBackInApp(history) {
         let route_to_item_idx = -1;
         const route_to_item = this.app_routing_history.find((history_item, idx) => {
-            const parent_path = history_item.pathname.split('/')[1];
-            const platform_parent_paths = [AppRoutes.mt5, AppRoutes.bot, AppRoutes.trade].map(i => i.split('/')[1]); // map full path to just base path (`/mt5/abc` -> `mt5`)
-            if (history_item.action === 'PUSH' && platform_parent_paths.includes(parent_path)) {
-                route_to_item_idx = idx;
-                return true;
+            if (history_item.action === 'PUSH') {
+                if (history_item.is_external) {
+                    return true;
+                }
+
+                const parent_path = history_item.pathname.split('/')[1];
+                const platform_parent_paths = [AppRoutes.mt5, AppRoutes.bot, AppRoutes.trade].map(i => i.split('/')[1]); // map full path to just base path (`/mt5/abc` -> `mt5`)
+
+                if (platform_parent_paths.includes(parent_path)) {
+                    route_to_item_idx = idx;
+                    return true;
+                }
             }
+
             return false;
         });
 
-        if (route_to_item && route_to_item_idx > -1) {
-            this.app_routing_history.splice(0, route_to_item_idx + 1);
-            history.push(route_to_item.pathname);
-        } else {
-            history.push(AppRoutes.trade);
+        if (route_to_item) {
+            if (route_to_item.is_external) {
+                window.location.href = route_to_item.pathname;
+                return;
+            } else if (route_to_item_idx > -1) {
+                this.app_routing_history.splice(0, route_to_item_idx + 1);
+                history.push(route_to_item.pathname);
+                return;
+            }
         }
+
+        history.push(AppRoutes.trade);
     }
 }

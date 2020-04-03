@@ -70,6 +70,15 @@
     &__icon {
         @extend %inline-icon;
     }
+    &--disabled {
+        pointer-events: none;
+        color: var(--text-disabled);
+    }
+    &--inline {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 }
 
 /** @define input */
@@ -165,5 +174,8 @@
     &--error {
         color: $COLOR_RED;
         border: 1px solid $COLOR_RED !important;
+    }
+    &:disabled {
+        color: var(--text-disabled);
     }
 }

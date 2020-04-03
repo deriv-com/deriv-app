@@ -62,7 +62,8 @@ class TransitionBlocker extends React.Component {
                                     has_effect
                                     onClick={this.back}
                                     text={localize('Cancel')}
-                                    {...(isMobile() ? { secondary: true, large: true } : { tertiary: true })}
+                                    secondary
+                                    {...(isMobile() ? { large: true } : {})}
                                 />
                                 <Button
                                     type='button'

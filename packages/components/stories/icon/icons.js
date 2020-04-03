@@ -140,6 +140,7 @@ export const icons = {
         'IcStage3',
         'IcStage4',
         'IcStatement',
+        'IcSuccess',
         'IcTheme',
         'IcTrade',
         'IcUndo',

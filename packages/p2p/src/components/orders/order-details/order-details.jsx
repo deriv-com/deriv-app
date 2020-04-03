@@ -80,10 +80,7 @@ const OrderDetails = ({ order_details }) => {
                             )}
                             <div className='order-details__info--right'>
                                 <OrderInfoBlock
-                                    label={localize('Rate ({{display_offer_amount}} {{offer_currency}})', {
-                                        display_offer_amount,
-                                        offer_currency,
-                                    })}
+                                    label={localize('Rate (1 {{offer_currency}})', { offer_currency })}
                                     value={`${display_price_rate} ${transaction_currency}`}
                                 />
                             </div>

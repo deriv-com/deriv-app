@@ -43,7 +43,7 @@ class FormAds extends Component {
             request_payload.payment_info = values.payment_info;
         }
         if (values.default_advert_description) {
-            request_payload.default_advert_description;
+            request_payload.description = values.default_advert_description;
         }
         requestWS(request_payload).then(response => {
             // If we get an error we should let the user submit the form again else we just go back to the list of ads

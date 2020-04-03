@@ -185,13 +185,12 @@ jobs:
     docker:
       - image: circleci/node:11.15.0-stretch
     steps:
-      - k8s_deploy      
+      - k8s_deploy_staging      
   deploy_production:
     docker:
       - image: circleci/node:11.15.0-stretch
     steps:
-      - k8s_deploy:
-          k8s_svc_name: "production-deriv-app"
+      - k8s_deploy_production
 
 workflows:
   build_and_push_dev:
@@ -202,7 +201,14 @@ workflows:
               only: /^dev/
   build_deploy_staging:
     jobs:
-      - release_staging:
+      - build_staging:
+          context: deriv-app-artifact-upload
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^staging.*/
+      - deploy_staging:
           context: deriv-app-artifact-upload
           filters:
             branches:
@@ -213,7 +219,7 @@ workflows:
             - build_staging
   build_deploy_production:
     jobs:
-      - release_production:
+      - build_production:
           context: deriv-app-artifact-upload
           filters:
             branches:
@@ -221,6 +227,7 @@ workflows:
             tags:
               only: /^production.*/
       - deploy_production:
+          context: deriv-app-artifact-upload  # using context to retrieve shared secret from circle ci
           filters:
             branches:
               ignore: /.*/
@@ -228,4 +235,3 @@ workflows:
               only: /^production.*/
           requires:
             - build_production
-            context: deriv-app-artifact-upload  # using context to retrieve shared secret from circle ci

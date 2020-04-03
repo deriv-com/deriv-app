@@ -421,11 +421,8 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: 2.4rem;
                 font-size: 1.2rem;
             }
-            .account-management-table,
-            .account__text_container {
-                margin-right: 0.8rem;
-                margin-left: 0.8rem;
-                width: auto;
+            &__content {
+                padding: 0 0.8rem;
             }
             .account__text {
                 font-size: 1rem;

@@ -3,6 +3,7 @@ import React from 'react';
 import { Formik, Field } from 'formik';
 import classNames from 'classnames';
 import { Autocomplete, Checkbox, Button, Input, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import DatePicker from 'App/Components/Form/DatePicker';
 import { WS } from 'Services/ws-methods';
@@ -274,7 +275,7 @@ class PersonalDetailsForm extends React.Component {
                                 className='account-form account-form__personal-details'
                                 onSubmit={handleSubmit}
                             >
-                                <FormBody scroll_offset='80px'>
+                                <FormBody scroll_offset={isMobile() ? '200px' : '80px'}>
                                     <FormSubHeader title={localize('Details')} />
                                     {!this.props.is_virtual && (
                                         <React.Fragment>

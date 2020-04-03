@@ -368,6 +368,10 @@ $MIN_HEIGHT_FLOATING: calc(
                 border-bottom: 1px solid var(--general-section-1);
             }
         }
+
+        @include desktop {
+            max-width: 546px;
+        }
     }
     .account-limit-container {
         height: 100%;

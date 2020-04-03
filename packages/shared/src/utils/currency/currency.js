@@ -61,6 +61,13 @@ export const getDecimalPlaces = currency =>
         ? ObjectUtils.getPropertyValue(currencies_config, [currency, 'fractional_digits'])
         : calcDecimalPlaces(currency);
 
+export const getDecimalPart = value => {
+    // eslint-disable-next-line prefer-template
+    const modded_value = '' + value;
+    const decimal_part = modded_value.split('.')[1];
+    return decimal_part || undefined;
+};
+
 export const setCurrencies = website_status => {
     currencies_config = website_status.currencies_config;
 };
@@ -71,6 +78,23 @@ export const isCryptocurrency = currency => {
         /crypto/i.test(ObjectUtils.getPropertyValue(currencies_config, [currency, 'type'])) ||
         currency in CryptoConfig.get()
     );
+};
+
+// transform crypto values to represent their appropriate precisions
+export const getCryptoFormat = value => {
+    let [integerPart, decimalPart] = ('' + value).split('.');
+    if (decimalPart) {
+        integerPart = integerPart.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        const decimalPartLength = decimalPart.length;
+        if (decimalPartLength > 8) {
+            const startingThreeDigits = decimalPart.substr(0, 3);
+            const endingThreeDigits = decimalPart.substr(decimalPartLength - 3);
+            return {
+                realValue: `${integerPart.toLocaleString()}.${decimalPart}`,
+                toggleValue: `${integerPart}.${startingThreeDigits}...${endingThreeDigits}`,
+            };
+        }
+    }
 };
 
 export const CryptoConfig = (() => {

@@ -26,6 +26,7 @@ const path = {
 class App extends Component {
     constructor(props) {
         super(props);
+        console.log('hi');
 
         setLanguage(this.props.lang);
         WebsocketInit(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
@@ -54,7 +55,8 @@ class App extends Component {
 
         /* if there is no error means it's an advertiser else it's a client */
         if (!advertiser_info.error) {
-            await this.setState({ advertiser_id: advertiser_info.p2p_advertiser_info.id, is_advertiser: true });
+            const advertiser_id = advertiser_info.p2p_advertiser_info && advertiser_info.p2p_advertiser_info.id;
+            await this.setState({ advertiser_id, is_advertiser: true });
         }
         return true;
     };

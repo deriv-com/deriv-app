@@ -40,7 +40,7 @@
     "react-i18next": "^11.0.0",
     "react-window": "^1.8.5",
     "react-window-infinite-loader": "^1.0.5",
-    "sendbird": "^3.0.119"
+    "sendbird": "^3.0.118"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",

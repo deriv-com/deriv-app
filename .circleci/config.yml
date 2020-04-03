@@ -203,7 +203,7 @@ workflows:
   build_deploy_staging:
     jobs:
       - release_staging:
-          context: binary-frontend-artifact-upload
+          context: deriv-app-artifact-upload
           filters:
             branches:
               ignore: /.*/
@@ -214,13 +214,12 @@ workflows:
   build_deploy_production:
     jobs:
       - release_production:
-          context: binary-frontend-artifact-upload
+          context: deriv-app-artifact-upload
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^production.*/
-          context: binary-frontend-artifact-upload  # using context to retrieve shared secret from circle ci
       - deploy_production:
           filters:
             branches:
@@ -229,3 +228,4 @@ workflows:
               only: /^production.*/
           requires:
             - build_production
+            context: deriv-app-artifact-upload  # using context to retrieve shared secret from circle ci

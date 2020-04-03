@@ -6,6 +6,7 @@ import CurrencyUtils from '@deriv/shared/utils/currency';
 import IconClose from 'Assets/icon-close.jsx';
 import { localize, Localize } from 'Components/i18next';
 import { countDecimalPlaces } from 'Utils/string';
+import { textValidator, lengthValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
 import FormError from '../form/error.jsx';
 
@@ -22,11 +23,17 @@ class Popup extends Component {
         const { ad } = this.props;
         setStatus({ error_message: '' });
 
-        const order = await requestWS({
+        const request_payload = {
             p2p_order_create: 1,
             advert_id: ad.id,
             amount: values.amount,
-        });
+        };
+        if (ad.type === 'sell') {
+            request_payload.contact_info = values.contact_info;
+            request_payload.payment_info = values.payment_info;
+        }
+
+        const order = await requestWS(request_payload);
 
         if (!order.error) {
             const order_info = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
@@ -52,6 +59,7 @@ class Popup extends Component {
 
     render() {
         const { ad, handleClose } = this.props;
+        console.log({ renderAd: ad, props: this.props });
 
         return (
             <Fragment>
@@ -64,10 +72,15 @@ class Popup extends Component {
                     </div>
                     <Formik
                         validate={this.validatePopup}
-                        initialValues={{ amount: ad.min_available }}
+                        initialValues={{
+                            amount: ad.min_available,
+                            contact_info: ad.contact_info,
+                            payment_info: ad.payment_info,
+                        }}
                         onSubmit={this.handleSubmit}
                     >
-                        {({ errors, isSubmitting, handleChange, status }) => {
+                        {({ errors, isSubmitting, isValid, handleChange, status, touched }) => {
+                            console.log({ errors, touched });
                             const is_buyer = ad.type === 'buy';
                             return (
                                 <Form noValidate>
@@ -160,6 +173,41 @@ class Popup extends Component {
                                                     </p>
                                                 </div>
                                             </div>
+                                            {!is_buyer && (
+                                                <React.Fragment>
+                                                    <div className='buy-sell__popup-field--textarea'>
+                                                        <Field name='payment_info'>
+                                                            {({ field }) => (
+                                                                <Input
+                                                                    {...field}
+                                                                    data-lpignore='true'
+                                                                    type='textarea'
+                                                                    error={touched.payment_info && errors.payment_info}
+                                                                    hint={localize(
+                                                                        'Bank name, account number, beneficiary name'
+                                                                    )}
+                                                                    label={localize('Your bank details')}
+                                                                    required
+                                                                />
+                                                            )}
+                                                        </Field>
+                                                    </div>
+                                                    <div className='buy-sell__popup-field--textarea'>
+                                                        <Field name='contact_info'>
+                                                            {({ field }) => (
+                                                                <Input
+                                                                    {...field}
+                                                                    data-lpignore='true'
+                                                                    type='textarea'
+                                                                    error={touched.contact_info && errors.contact_info}
+                                                                    label={localize('Your contact details')}
+                                                                    required
+                                                                />
+                                                            )}
+                                                        </Field>
+                                                    </div>
+                                                </React.Fragment>
+                                            )}
                                         </div>
                                     </ThemedScrollbars>
                                     <div className='buy-sell__popup-footer'>
@@ -167,7 +215,7 @@ class Popup extends Component {
                                         <Button secondary type='button' onClick={handleClose}>
                                             {localize('Cancel')}
                                         </Button>
-                                        <Button is_disabled={!!(isSubmitting || errors.amount)} primary>
+                                        <Button is_disabled={!!(isSubmitting || !isValid)} primary>
                                             {localize('Confirm')}
                                         </Button>
                                     </div>
@@ -191,6 +239,10 @@ class Popup extends Component {
                 v => countDecimalPlaces(v) <= ad.offer_currency_decimals,
             ],
         };
+        if (ad.type === 'sell') {
+            validations.contact_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
+            validations.payment_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
+        }
 
         const display_initial_amount = CurrencyUtils.formatMoney(
             ad.offer_currency,
@@ -216,6 +268,20 @@ class Popup extends Component {
             localize('Enter a valid amount'),
         ];
 
+        const info_messages = field_name => [
+            localize('{{field_name}} is required', { field_name }),
+            localize(
+                "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
+                { field_name }
+            ),
+            localize('{{field_name}} has exceeded maximum length', { field_name }),
+        ];
+
+        const mapped_key = {
+            contact_info: localize('Contact details'),
+            payment_info: localize('Bank details'),
+        };
+
         const errors = {};
 
         Object.entries(validations).forEach(([key, rules]) => {
@@ -225,6 +291,11 @@ class Popup extends Component {
 
             if (error_index !== -1) {
                 switch (key) {
+                    case 'contact_info':
+                    case 'payment_info': {
+                        errors[key] = info_messages(mapped_key[key])[error_index];
+                        break;
+                    }
                     default: {
                         errors[key] = common_messages[error_index];
                         break;

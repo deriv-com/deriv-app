@@ -8,6 +8,7 @@ import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { countDecimalPlaces } from 'Utils/string';
+import { textValidator, lengthValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
 import AdSummary from './my-ads-summary.jsx';
 
@@ -316,9 +317,6 @@ class FormAds extends Component {
     validateFormAds = values => {
         // TODO: uncomment this when we have available_price
         // const available_price = ;
-        const textValidator = v => /^[\p{L}\p{Nd}\s'.,:;()@#+/-]*$/u.test(v);
-        const lengthValidator = v => v.length >= 1 && v.length <= 300;
-
         const validations = {
             default_advert_description: [v => !v || lengthValidator(v), v => !v || textValidator(v)],
             max_transaction: [

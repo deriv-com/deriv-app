@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
+import { isNavigationFromPlatform } from 'Utils/PlatformSwitcher';
 import { connect } from 'Stores/connect';
 import { getDerivComLink } from '_common/url';
 import AccountWizard from './account-wizard.jsx';
@@ -204,6 +205,10 @@ class RealAccountSignup extends Component {
             localStorage.removeItem('real_account_signup_wizard');
         }
         this.props.closeRealAccountSignup();
+
+        if (isNavigationFromPlatform(this.props.routing_history, routes.smarttrader)) {
+            window.location = smarttrader;
+        }
     };
 
     openPersonalDetails = () => {
@@ -274,7 +279,7 @@ class RealAccountSignup extends Component {
     }
 }
 
-export default connect(({ ui, client }) => ({
+export default connect(({ ui, client, common }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,
     has_real_account: client.has_active_real_account,
@@ -284,4 +289,5 @@ export default connect(({ ui, client }) => ({
     closeRealAccountSignup: ui.closeRealAccountSignup,
     setParams: ui.setRealAccountSignupParams,
     state_value: ui.real_account_signup,
+    routing_history: common.app_routing_history,
 }))(withRouter(RealAccountSignup));

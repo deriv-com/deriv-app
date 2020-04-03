@@ -35,7 +35,7 @@ class TermsOfUse extends React.Component {
                                 height: 'calc(100% - 50px)',
                             }}
                         >
-                            <Div100vhContainer className='terms-of-use' height_offset='199px' is_disabled={isDesktop()}>
+                            <Div100vhContainer className='terms-of-use' height_offset='169px' is_disabled={isDesktop()}>
                                 <h4>
                                     <Localize i18n_default_text={'Jurisdiction and choice of law'} />
                                 </h4>

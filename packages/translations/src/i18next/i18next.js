@@ -68,7 +68,7 @@ const getInitialLanguage = () => {
 };
 
 const loadLanguageJson = async lang => {
-    if (!i18n.hasResourceBundle(lang, 'translations') && lang !== DEFAULT_LANGUAGE) {
+    if (!i18n.hasResourceBundle(lang, 'translations') && lang.toUpperCase() !== DEFAULT_LANGUAGE) {
         const response = await fetch(getUrlBase(`/public/i18n/${lang.toLowerCase()}.json`));
         const lang_json = await response.text();
 
@@ -125,7 +125,7 @@ const localize = (string, values) => {
 };
 
 const loadIncontextTranslation = () => {
-    const is_ach = getLanguage() === 'ACH';
+    const is_ach = getLanguage().toUpperCase() === 'ACH';
     if (is_ach) {
         const jipt = document.createElement('script');
         jipt.type = 'text/javascript';

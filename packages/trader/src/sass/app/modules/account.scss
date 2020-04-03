@@ -258,18 +258,34 @@ $MIN_HEIGHT_FLOATING: calc(
             display: flex;
             width: 100%;
             height: 100%;
-            margin: 80px 16px 0;
+            margin: 0 16px;
             align-items: center;
             flex-direction: column;
 
-            .dc-btn--link {
-                height: 40px;
-                margin-top: 32px;
+            .dc-btn {
+                height: 4rem;
+                margin-top: 3.2rem;
+
+                @include mobile {
+                    margin: 1.6rem 0;
+                    padding: 1.6rem;
+                    width: 100%;
+                }
             }
         }
         &-icon {
             width: 128px;
             height: 128px;
+            margin-top: 80px;
+
+            @include mobile {
+                margin-top: 4rem;
+
+                /* iPhone SE screen height fixes due to UI space restrictions */
+                @media only screen and (max-height: 480px) {
+                    margin-top: 3.2rem;
+                }
+            }
         }
         &-title {
             font-size: var(--text-size-xs);
@@ -281,6 +297,20 @@ $MIN_HEIGHT_FLOATING: calc(
             font-weight: 400;
             text-align: center;
             line-height: 1.5;
+        }
+        &-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+
+            @include mobile {
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+        }
+        @include mobile {
+            line-height: 20px;
+            text-align: center;
         }
     }
     .account-management__text {
@@ -478,6 +508,9 @@ $MIN_HEIGHT_FLOATING: calc(
             .dc-file-dropzone {
                 max-width: 400px;
             }
+            @include mobile {
+                margin-bottom: 2.4rem;
+            }
         }
         &-remove-btn {
             position: absolute;
@@ -529,11 +562,19 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 100%;
             margin-right: 0.5em;
             flex: 1;
+
+            @include mobile {
+                margin-bottom: 2.4rem;
+            }
         }
         &-text {
             font-size: var(--text-size-xs);
             line-height: 1.5;
             color: var(--text-general);
+
+            @include mobile {
+                font-size: 1.2rem;
+            }
         }
         &-fields {
             width: 100%;
@@ -542,6 +583,9 @@ $MIN_HEIGHT_FLOATING: calc(
 
             .account-form__fieldset {
                 margin-bottom: 3em;
+            }
+            @include mobile {
+                min-width: 100%;
             }
         }
     }
@@ -583,6 +627,10 @@ $MIN_HEIGHT_FLOATING: calc(
 
     p {
         padding-left: 16px;
+
+        @include mobile {
+            line-height: 20px;
+        }
     }
 
     @include mobile {
@@ -622,10 +670,42 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 8px;
             font-weight: bold;
         }
+        @include mobile {
+            &:not(:first-child):not(:last-child) {
+                margin: 0;
+            }
+            & .dc-icon {
+                width: 8.8rem;
+                height: auto;
+            }
+            p {
+                line-height: 20px;
+            }
+        }
+    }
+    @include mobile {
+        display: grid;
+        grid-gap: 2.4rem;
+        grid-template-columns: 1fr 1fr 1fr;
+        margin-top: 4rem;
     }
 }
 
 /** @define onfido-container; weak */
 .onfido-container {
     margin-top: 24px;
+
+    @include mobile {
+        .onfido-sdk-ui-PageTitle {
+            &-titleWrapper {
+                margin: 0 1.5em 0.4em;
+            }
+            &-title {
+                text-align: left;
+            }
+            &-subTitle {
+                text-align: left;
+            }
+        }
+    }
 }

@@ -1,9 +1,10 @@
-// import PropTypes        from 'prop-types';
 import React from 'react';
 import { Formik } from 'formik';
 import { Button, Dropdown } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared/utils';
+import { isEmptyObject } from '@deriv/shared/src/utils/object/object';
 import { WS } from 'Services/ws-methods';
 import {
     account_turnover_list,
@@ -47,6 +48,11 @@ class FinancialAssessment extends React.Component {
                 if (data.error) {
                     this.setState({ api_initial_load_error: data.error.message });
                     return;
+                } else if (isEmptyObject(data.get_financial_assessment)) {
+                    // Additional layer of error handling if user somehow manages to reach FA page, need to define error to prevent app crash
+                    this.setState({
+                        api_initial_load_error: localize('Error: Could not load financial assessment information'),
+                    });
                 }
                 this.setState({ ...data.get_financial_assessment, is_loading: false });
             });
@@ -135,7 +141,7 @@ class FinancialAssessment extends React.Component {
                         <LeaveConfirm onDirty={this.showForm} />
                         {show_form && (
                             <form className='account-form' onSubmit={handleSubmit}>
-                                <FormBody scroll_offset='80px'>
+                                <FormBody scroll_offset={isMobile() ? '200px' : '80px'}>
                                     <FormSubHeader
                                         title={localize('Financial information')}
                                         subtitle={`(${localize('All fields are required')})`}

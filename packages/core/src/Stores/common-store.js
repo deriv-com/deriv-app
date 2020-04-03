@@ -1,8 +1,7 @@
 import { action, observable } from 'mobx';
 import { toMoment } from '@deriv/shared/utils/date';
 import ServerTime from '_common/base/server_time';
-import { LocalStore } from '_common/storage';
-import AppRoutes, { routing_control_key } from 'Constants/routes';
+import AppRoutes from 'Constants/routes';
 import { getAllowedLocalStorageOrigin } from 'Utils/Events/storage';
 import { currentLanguage } from 'Utils/Language/index';
 import BaseStore from './base-store';
@@ -47,18 +46,7 @@ export default class CommonStore extends BaseStore {
 
             window.history.replaceState({}, document.title, window.location.pathname);
         } else {
-            // Since we refresh the page on routing across bot, we need to identify
-            // if launch was from bot so we can redirect back to bot as platform
-            const routing_control_raw = LocalStore.get(routing_control_key) || '{}';
-            const route_control = JSON.parse(routing_control_raw);
-
-            if (route_control.is_from_bot) {
-                this.addRouteHistoryItem({ pathname: AppRoutes.bot, action: 'PUSH' });
-                delete route_control.is_from_bot;
-                LocalStore.setObject(routing_control_key, route_control);
-            } else {
-                this.addRouteHistoryItem({ ...location, action: 'PUSH' });
-            }
+            this.addRouteHistoryItem({ ...location, action: 'PUSH' });
         }
     }
 

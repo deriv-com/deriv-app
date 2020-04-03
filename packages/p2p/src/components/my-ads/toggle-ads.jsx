@@ -7,12 +7,12 @@ import { requestWS } from 'Utils/websocket';
 import './my-ads.scss';
 
 const ToggleMessage = ({ is_enabled, className, error }) => {
-    return (
-        <p className={className}>
-            {/* eslint-disable-next-line no-unneeded-ternary */}
-            {error ? error : is_enabled ? localize('Your ads are running') : localize('Your ads are paused')}
-        </p>
-    );
+    const getMessage = () => {
+        if (error) return error;
+        if (is_enabled) return localize('Your ads are running');
+        return localize('Your ads are paused');
+    };
+    return <p className={className}>{getMessage()}</p>;
 };
 
 ToggleMessage.propTypes = {

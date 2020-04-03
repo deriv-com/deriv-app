@@ -1,8 +1,7 @@
 import * as SendBird from 'sendbird';
 import { requestWS } from './websocket';
 
-let sendbird;
-let channel_list_query;
+let sendbird, channel_list_query;
 
 const init = async () => {
     sendbird = new SendBird({ appId: '447BEDB9-241A-47A5-A199-EC1604D6AD26' }); // sendbird app id
@@ -45,7 +44,7 @@ const getChannelList = () =>
 
 const disconnect = () => {
     // check if its connected
-    if (!!sendbird.currentUser) {
+    if (sendbird.currentUser) {
         sendbird.disconnect();
     }
 };
@@ -62,7 +61,7 @@ const getChannel = channel_url =>
 
 const chatCreate = order_id =>
     Promise(async (resolve, reject) => {
-        const chat_create_response = requestWs({ p2p_chat_create: 1, order_id });
+        const chat_create_response = requestWS({ p2p_chat_create: 1, order_id });
         if (chat_create_response.error) {
             reject(chat_create_response.error.code);
         }
@@ -76,7 +75,8 @@ const getMessageList = channel =>
             channel.query = channel.channel.createPreviousMessageListQuery();
         }
         if (channel.query.hasMore && !channel.query.isLoading) {
-            channel.query.load(GET_MESSAGE_LIMIT, false, (messageList, error) => {
+            channel.query.load(50, false, (messageList, error) => {
+                // limit is 50 per frame
                 if (error) {
                     reject(error);
                 }
@@ -90,8 +90,8 @@ const markAsRead = channel => {
 };
 
 const sendUserMessage = ({ channel, message, callback }) => {
-    return channel.sendUserMessage(message, (message, error) => {
-        if (callback) callback(message, error);
+    return channel.sendUserMessage(message, (message_res, error) => {
+        if (callback) callback(message_res, error);
     });
 };
 
@@ -108,9 +108,7 @@ const sendFileMessage = ({ channel, file, thumbnailSizes, callback }) => {
 const deleteMessage = ({ channel, message }) => {
     return new Promise((resolve, reject) => {
         if (!this.isCurrentUser(message.sender)) {
-            reject({
-                message: 'You have not ownership in this message.',
-            });
+            reject(Error('You have not ownership in this message.'));
         }
         channel.deleteMessage(message, (response, error) => {
             if (error) {
@@ -149,5 +147,3 @@ export {
     sendFileMessage,
     sendUserMessage,
 };
-
-export const requestSendbird = () => sendbird;

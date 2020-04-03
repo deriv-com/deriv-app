@@ -146,8 +146,6 @@ const getModifiedResponse = response => {
         );
     } else if (response.p2p_order_info) {
         modified_response = getModifiedP2POrder(response.p2p_order_info);
-    } else if (response.p2p_advertiser_info) {
-        modified_response = response.p2p_advertiser_info;
     }
 
     return modified_response;

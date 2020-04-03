@@ -66,6 +66,12 @@
                 padding: 0.4rem 0.8rem;
             }
         }
+        &-payment-info {
+            margin-top: 0.8rem;
+            font-size: 1.4rem;
+            line-height: 1.4;
+            color: var(--text-general);
+        }
     }
     &__info {
         &-block {

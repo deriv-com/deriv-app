@@ -18,6 +18,7 @@ const OrderDetails = ({ order_details }) => {
     const {
         advertiser_name,
         advertiser_instructions,
+        contact_info,
         display_offer_amount,
         display_price_rate,
         display_transaction_amount,
@@ -50,15 +51,23 @@ const OrderDetails = ({ order_details }) => {
                             <OrderDetailsStatusBlock order_details={order_details} />
                             <OrderDetailsAmountBlock order_details={order_details} />
                             <h1 className='order-details__header-method'>{order_details.display_payment_method}</h1>
+                            {is_buyer && order_details.payment_info && (
+                                <div className='order-details__header-payment-info'>{order_details.payment_info}</div>
+                            )}
                         </span>
                         <OrderDetailsTimerBlock order_details={order_details} />
                     </div>
                     <div className='deriv-p2p__separator' />
                     <div className='order-details__info'>
-                        <OrderInfoBlock
-                            label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
-                            value={advertiser_instructions}
-                        />
+                        {advertiser_instructions && (
+                            <OrderInfoBlock
+                                label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
+                                value={advertiser_instructions}
+                            />
+                        )}
+                        {is_buyer && contact_info && (
+                            <OrderInfoBlock label={localize('Buyer contact details')} value={contact_info} />
+                        )}
                         <div className='order-details__info-columns'>
                             <div className='order-details__info--left'>
                                 <OrderInfoBlock

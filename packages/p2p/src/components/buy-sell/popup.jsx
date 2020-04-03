@@ -95,18 +95,20 @@ class Popup extends Component {
                                                     </p>
                                                 </div>
                                             </div>
-                                            <div className='buy-sell__popup-info buy-sell__popup-info_notes'>
-                                                <span className='buy-sell__popup-info--title'>
-                                                    {is_buyer
-                                                        ? localize('Seller instructions')
-                                                        : localize('Buyer instructions')}
-                                                </span>
-                                                {ad.advertiser_instructions.split('\n').map((text, idx) => (
-                                                    <p className='buy-sell__popup-info--text' key={idx}>
-                                                        {text}
-                                                    </p>
-                                                ))}
-                                            </div>
+                                            {ad.advertiser_instructions && (
+                                                <div className='buy-sell__popup-info buy-sell__popup-info_notes'>
+                                                    <span className='buy-sell__popup-info--title'>
+                                                        {is_buyer
+                                                            ? localize('Seller instructions')
+                                                            : localize('Buyer instructions')}
+                                                    </span>
+                                                    {ad.advertiser_instructions.split('\n').map((text, idx) => (
+                                                        <p className='buy-sell__popup-info--text' key={idx}>
+                                                            {text}
+                                                        </p>
+                                                    ))}
+                                                </div>
+                                            )}
                                             <div className='buy-sell__popup-field_wrapper'>
                                                 <Field name='amount'>
                                                     {({ field }) => (

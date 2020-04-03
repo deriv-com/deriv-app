@@ -60,6 +60,7 @@ const getModifiedP2PAdvertList = (response, is_original) => {
 
         modified_response[i] = {
             available_amount,
+            contact_info: filtered_list[i].contact_info,
             min_available,
             max_available,
             max_transaction,
@@ -67,6 +68,7 @@ const getModifiedP2PAdvertList = (response, is_original) => {
             offer_amount,
             offer_currency,
             offer_currency_decimals,
+            payment_info: filtered_list[i].payment_info,
             payment_method,
             price_rate,
             transaction_currency,

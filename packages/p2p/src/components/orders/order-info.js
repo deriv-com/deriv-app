@@ -6,6 +6,8 @@ export default class OrderInfo {
     type = '';
     advertiser_name = '';
     advertiser_instructions = '';
+    contact_info = '';
+    payment_info = '';
     order_purchase_datetime = '';
     price_rate = 0;
     display_price_rate = '';

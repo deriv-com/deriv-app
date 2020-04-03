@@ -40,6 +40,15 @@
     &__arrow .color1-fill {
         fill: var(--text-general);
     }
+    &__preloader {
+        margin-top: 4px;
+        align-self: center;
+        width: 146px;
+
+        &--is-mobile {
+            width: 162px;
+        }
+    }
     &--active &__arrow {
         transform: rotate(180deg);
     }

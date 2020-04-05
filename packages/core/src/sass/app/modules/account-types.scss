@@ -1,6 +1,6 @@
 @import '../_common/base/index';
 
-/* @define account-types */
+/* @define account-types; weak */
 .account-types {
     .account-card {
         border: 1px solid var(--border-normal);
@@ -19,7 +19,6 @@
                 transform: translateX(-100%);
             }
         }
-
         &__main {
             min-width: 100%;
             padding: 1.6rem;
@@ -31,7 +30,6 @@
                 line-height: 1.5;
                 margin-bottom: 0.4rem;
             }
-
             &__subtitle {
                 color: var(--text-profit-success);
                 font-size: 1.2rem;
@@ -39,14 +37,12 @@
                 line-height: 1.5;
                 margin-bottom: 0.8rem;
             }
-
             &__items {
                 width: 100%;
                 border-spacing: 0;
                 border-collapse: collapse;
                 margin-bottom: 1.6rem;
             }
-
             &__item {
                 &__label {
                     color: var(--text-less-prominent);
@@ -55,7 +51,6 @@
                     white-space: nowrap;
                     width: 10.3rem;
                 }
-
                 &__value {
                     color: var(--text-general);
                     display: inline-block;
@@ -64,24 +59,21 @@
                     width: 8rem;
                 }
             }
-
             &__help {
                 cursor: pointer;
                 vertical-align: middle;
                 margin-left: 0.4rem;
             }
-
             &__button {
                 width: 100%;
             }
         }
-
         &__description {
             color: var(--text-general);
             font-size: 1.2rem;
             line-height: 1.8;
             min-width: 100%;
-            padding: 0.8rem 1.6rem 1.6rem 1.6rem;
+            padding: 0.8rem 1.6rem 1.6rem;
 
             &__title {
                 color: var(--text-profit-success);
@@ -90,26 +82,21 @@
                 line-height: 1.5;
                 padding-bottom: 0.8rem;
             }
-
             &__title-text {
                 padding-left: 0.8rem;
             }
-
             &__back {
                 cursor: pointer;
                 vertical-align: middle;
             }
-
             &__learn {
                 margin-top: 0.8rem;
             }
-
             &__learn-title {
                 color: var(--text-less-prominent);
                 font-size: 1rem;
                 line-height: 1.4;
             }
-
             &__learn-items {
                 background-color: var(--brand-red-coral);
                 border-radius: 10px;

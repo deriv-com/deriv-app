@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button } from '@deriv/components';
+import { Button, LinearProgress } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 import ObjectUtils from '@deriv/shared/utils/object';
 import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
 import { default_delay, types } from './constants';
-import TimeoutBorderBottom from './timeout-border-bottom.jsx';
 import { BinaryLink } from '../../Routes';
 
 const Notification = ({ data, removeNotificationMessage }) => {
@@ -39,10 +39,16 @@ const Notification = ({ data, removeNotificationMessage }) => {
             <div className='notification__text-container'>
                 <h4 className='notification__header'>{data.header}</h4>
                 {data.timeout && (
-                    <TimeoutBorderBottom
+                    <LinearProgress
                         className='notification__timeout'
                         timeout={data.timeout}
                         action={data.action.onClick}
+                        render={remaining => (
+                            <Localize
+                                i18n_default_text='Auto update in {{ remaining }} seconds'
+                                values={{ remaining }}
+                            />
+                        )}
                     />
                 )}
                 <p className='notification__text-body'>{data.message}</p>

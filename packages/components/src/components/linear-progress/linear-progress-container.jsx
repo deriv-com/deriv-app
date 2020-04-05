@@ -1,15 +1,8 @@
-import classNames from 'classnames';
+import React from 'react';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { Localize } from '@deriv/translations';
+import { LinearProgress } from 'Components/linear-progress/linear-progress.jsx';
 
-const LinearProgress = ({ progress }) => (
-    <div className={classNames('dc-linear-progress')}>
-        <div className={classNames('dc-linear-progress__bar')} style={{ width: `${progress}%` }} />
-    </div>
-);
-
-class TimeoutBorderBottom extends Component {
+class LinearProgressContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -58,23 +51,17 @@ class TimeoutBorderBottom extends Component {
         // return null;
         return (
             <div className='notification__timeout-container'>
-                <div className='notification__timeout-countdown'>
-                    <Localize
-                        i18n_default_text='Auto update in {{ remaining }} seconds'
-                        values={{
-                            remaining: this.remaining,
-                        }}
-                    />
-                </div>
+                <div className='notification__timeout-countdown'>{this.props.render(this.remaining)}</div>
                 <LinearProgress className={className} progress={this.progress} height={4} />
             </div>
         );
     }
 }
 
-TimeoutBorderBottom.propTypes = {
+LinearProgressContainer.propTypes = {
     timeout: PropTypes.number,
     action: PropTypes.func,
+    render: PropTypes.func,
 };
 
-export default TimeoutBorderBottom;
+export default LinearProgressContainer;

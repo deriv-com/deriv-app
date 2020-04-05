@@ -136,8 +136,9 @@ const App = ({ root_store }) => {
                                     >
                                         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque similique
                                         doloribus cumque hic <br />
+                                        <br />
                                         supported platforms: <br />
-                                        Naghi ans Taghi
+                                        Dtrader and Dbot
                                     </AccountCard>
                                 </div>
                             </Dialog>

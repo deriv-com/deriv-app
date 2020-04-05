@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { ThemedScrollbars, FormSubmitButton } from '@deriv/components';
+import { FormSubmitButton } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import ProofOfIdentityContainer from 'Modules/Account/Sections/Verification/ProofOfIdentity/proof-of-identity-container.jsx';
 
@@ -80,6 +80,7 @@ MT5POI.propTypes = {
     onSave: PropTypes.func,
     onSubmit: PropTypes.func,
     refreshNotifications: PropTypes.func,
+    addNotificationByKey: PropTypes.func,
     removeNotificationMessage: PropTypes.func,
     value: PropTypes.object,
 };

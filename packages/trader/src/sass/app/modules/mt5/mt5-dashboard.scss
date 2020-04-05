@@ -645,9 +645,7 @@
             width: 25px;
         }
         &-section {
-            margin-top: 1em;
-            display: flex;
-            flex-wrap: wrap;
+            margin-top: 0em;
         }
         &-list {
             width: 100%;
@@ -708,16 +706,9 @@
 
 .mt5-proof-of-address {
     &__file-area {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    &__description {
-        width: 50%;
-    }
-    &__file-upload {
-        width: 50%;
-        position: relative;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 1rem;
     }
     &__field-area {
         padding: 0 0 20rem 0;

@@ -78,7 +78,11 @@ class Transactions extends React.PureComponent {
                                     ref={ref => (this.list_ref = ref)}
                                     height={height}
                                     rowCount={elements.length}
-                                    rowHeight={index => (this.props.elements[index].data ? 50 : 0)}
+                                    rowHeight={element =>
+                                        this.props.elements[element.index].type === transaction_elements.DIVIDER
+                                            ? 20
+                                            : 50
+                                    }
                                     rowRenderer={this.renderRow}
                                     width={width}
                                 />

@@ -98,30 +98,47 @@ const App = ({ root_store }) => {
                                 <div className='account-types'>
                                     <AccountCard
                                         title='Trade on Deriv'
-                                        subtitle='lorem ipsum'
+                                        subtitle='Just for demonstration'
                                         items={[
                                             {
-                                                label: 'one',
-                                                value: 'yek',
+                                                label: 'item one',
+                                                value: 'lorem',
                                             },
                                             {
-                                                label: 'two',
-                                                value: 'so',
+                                                label: 'item two',
+                                                value: 'lorem',
                                             },
                                             {
-                                                label: 'two',
-                                                value: 'so',
+                                                label: 'item three',
+                                                value: 'lorem',
                                             },
                                             {
-                                                label: 'two',
-                                                value: 'so',
+                                                label: 'item four',
+                                                value: 'lorem',
                                             },
                                             {
-                                                label: 'two',
-                                                value: 'so',
+                                                label: 'item five',
+                                                value: 'lorem',
                                             },
                                         ]}
-                                    />
+                                        learn_more={[
+                                            {
+                                                text: 'one',
+                                                path: '/home',
+                                            },
+                                            {
+                                                text: 'two',
+                                                path: '/about',
+                                            },
+                                        ]}
+                                        button_text='OK'
+                                        buttonOnClick={() => console.log('button clicked!')}
+                                    >
+                                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque similique
+                                        doloribus cumque hic <br />
+                                        supported platforms: <br />
+                                        Naghi ans Taghi
+                                    </AccountCard>
                                 </div>
                             </Dialog>
                             {/* TODO: [trader-remove-client-base] */}

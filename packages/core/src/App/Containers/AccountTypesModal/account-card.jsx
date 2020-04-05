@@ -1,14 +1,13 @@
 import classNames from 'classnames';
 import { Button, Icon } from '@deriv/components';
-// import { Field, Formik, Form } from 'formik';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { localize } from '@deriv/translations';
-// import { connect } from 'Stores/connect';
 
 import 'Sass/app/modules/account-types.scss';
 
-const Description = ({ title, children, learnMore, setShowDescription }) => {
+const Description = ({ children, learn_more, setShowDescription, title }) => {
     return (
         <div className='account-card__description'>
             <h4 className='account-card__description__title'>
@@ -23,14 +22,14 @@ const Description = ({ title, children, learnMore, setShowDescription }) => {
             </h4>
             {children}
             <div className='account-card__description__learn'>
-                {learnMore.length && (
+                {learn_more.length && (
                     <h6 className='account-card__description__learn-title'>{localize('Learn more:')}</h6>
                 )}
-                {learnMore.map((item, index) => {
+                {learn_more.map((item, index) => {
                     return (
-                        <a key={index} className='account-card__description__learn-items' href='#'>
-                            {item}
-                        </a>
+                        <Link key={index} className='account-card__description__learn-items' to={item.path}>
+                            {item.text}
+                        </Link>
                     );
                 })}
             </div>
@@ -38,7 +37,7 @@ const Description = ({ title, children, learnMore, setShowDescription }) => {
     );
 };
 
-const MainCard = ({ title, subtitle, items, setShowDescription }) => {
+const MainCard = ({ button_text, buttonOnClick, items, setShowDescription, subtitle, title }) => {
     return (
         <div className='account-card__main'>
             <h3 className='account-card__main__title'>{title}</h3>
@@ -68,10 +67,8 @@ const MainCard = ({ title, subtitle, items, setShowDescription }) => {
             )}
             <Button
                 className='account-card__main__button'
-                text={localize('Ok')}
-                onClick={() => {
-                    console.log('clicked!');
-                }}
+                text={button_text}
+                onClick={buttonOnClick}
                 has_effect
                 primary
             />
@@ -79,9 +76,7 @@ const MainCard = ({ title, subtitle, items, setShowDescription }) => {
     );
 };
 
-Description.propTypes = {};
-
-const AccountCard = ({ title, subtitle, items }) => {
+const AccountCard = ({ button_text, buttonOnClick, children, items, learn_more, subtitle, title }) => {
     const [descriptionShown, setShowDescription] = useState(false);
 
     return (
@@ -91,18 +86,29 @@ const AccountCard = ({ title, subtitle, items }) => {
                     'account-card__wrapper--show-description': descriptionShown,
                 })}
             >
-                <MainCard items={items} subtitle={subtitle} title={title} setShowDescription={setShowDescription} />
-                <Description learnMore={['baghali', 'polo']} title={subtitle} setShowDescription={setShowDescription}>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque similique doloribus cumque hic{' '}
-                    <br />
-                    supported platforms: <br />
-                    Naghi ans Taghi
+                <MainCard
+                    items={items}
+                    subtitle={subtitle}
+                    title={title}
+                    setShowDescription={setShowDescription}
+                    button_text={button_text}
+                    buttonOnClick={buttonOnClick}
+                />
+                <Description learn_more={learn_more} setShowDescription={setShowDescription} title={subtitle}>
+                    {children}
                 </Description>
             </div>
         </div>
     );
 };
 
-AccountCard.propTypes = {};
+AccountCard.propTypes = {
+    button_text: PropTypes.string,
+    buttonOnClick: PropTypes.func,
+    items: PropTypes.arrayOf(PropTypes.object),
+    learn_more: PropTypes.arrayOf(PropTypes.object),
+    subtitle: PropTypes.string,
+    title: PropTypes.string,
+};
 
 export default AccountCard;

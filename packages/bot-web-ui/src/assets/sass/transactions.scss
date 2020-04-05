@@ -62,7 +62,7 @@
     }
 
     &__divider {
-        border-top: 1px solid var(--general-section-1);
+        border-top: none;
         margin: 0 16px;
         padding: 8px 0;
 
@@ -71,10 +71,7 @@
             background-color: var(--general-section-1);
         }
     }
-    &__item-wrapper + &__divider {
-        border-top: none;
-    }
-    &__divider + &__item-wrapper {
+    div > &__divider + div > &__item-wrapper {
         border-top: none;
     }
     &__loader {

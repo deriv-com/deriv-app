@@ -76,12 +76,13 @@ class Transactions extends React.PureComponent {
                                         overflowY: false,
                                     }}
                                     ref={ref => (this.list_ref = ref)}
+                                    className='transactions__windowing'
                                     height={height}
                                     rowCount={elements.length}
                                     rowHeight={element =>
                                         this.props.elements[element.index].type === transaction_elements.DIVIDER
                                             ? 20
-                                            : 50
+                                            : 55
                                     }
                                     rowRenderer={this.renderRow}
                                     width={width}

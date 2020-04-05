@@ -1,7 +1,6 @@
 import { getUrlBase } from '_common/url';
 
-// const EVERY_HOUR = 3600000; // 1000 * 60 * 60
-const EVERY_HOUR = 60000; // TODO Remove this before pushing to production
+const EVERY_HOUR = 3600000; // 1000 * 60 * 60
 let interval_id;
 
 function refreshOnUpdate() {

@@ -14,7 +14,7 @@ const OnfidoContainer = () => (
         is_native={isMobile()}
         autoHide
         style={{
-            height: '420px',
+            minHeight: '420px',
         }}
     >
         <div className='onfido-container'>
@@ -80,9 +80,9 @@ class Onfido extends React.Component {
     }
 
     render() {
-        const { status, has_poa, is_description_enabled } = this.props;
+        const { status, has_poa, is_description_enabled, height } = this.props;
 
-        if (status === onfido_status_codes.onfido) return <OnfidoContainer />;
+        if (status === onfido_status_codes.onfido) return <OnfidoContainer height={height} />;
 
         switch (status) {
             case onfido_status_codes.unsupported:

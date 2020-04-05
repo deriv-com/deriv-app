@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
-import { DesktopWrapper, Dialog } from '@deriv/components';
+import { DesktopWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { initializeTranslations } from '@deriv/translations';
 import Client from '_common/base/client_base';
@@ -23,8 +23,6 @@ import Routes from './Containers/Routes/routes.jsx';
 import initStore from './app.js';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
-
-import AccountCard from './../App/Containers/AccountTypesModal/account-card.jsx';
 
 const App = ({ root_store }) => {
     const l = window.location;
@@ -94,54 +92,6 @@ const App = ({ root_store }) => {
                     <Header />
                     <ErrorBoundary>
                         <AppContents>
-                            <Dialog is_visible={true} is_loading={false} is_content_centered>
-                                <div className='account-types'>
-                                    <AccountCard
-                                        title='Trade on Deriv'
-                                        subtitle='Just for demonstration'
-                                        items={[
-                                            {
-                                                label: 'item one',
-                                                value: 'lorem',
-                                            },
-                                            {
-                                                label: 'item two',
-                                                value: 'lorem',
-                                            },
-                                            {
-                                                label: 'item three',
-                                                value: 'lorem',
-                                            },
-                                            {
-                                                label: 'item four',
-                                                value: 'lorem',
-                                            },
-                                            {
-                                                label: 'item five',
-                                                value: 'lorem',
-                                            },
-                                        ]}
-                                        learn_more={[
-                                            {
-                                                text: 'one',
-                                                path: '/home',
-                                            },
-                                            {
-                                                text: 'two',
-                                                path: '/about',
-                                            },
-                                        ]}
-                                        button_text='OK'
-                                        buttonOnClick={() => console.log('button clicked!')}
-                                    >
-                                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque similique
-                                        doloribus cumque hic <br />
-                                        <br />
-                                        supported platforms: <br />
-                                        Dtrader and Dbot
-                                    </AccountCard>
-                                </div>
-                            </Dialog>
                             {/* TODO: [trader-remove-client-base] */}
                             <Routes passthrough={platform_passthrough} />
                             <Lazy

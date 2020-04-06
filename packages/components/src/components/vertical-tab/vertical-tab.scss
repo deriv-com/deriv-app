@@ -92,7 +92,7 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     &__header-title {
         @include typeface(--title-center-bold-black, none);
-        color: var(--text-general);
+        color: var(--text-prominent);
         padding: 1.6rem;
         display: flex;
         align-items: center;
@@ -175,7 +175,7 @@ $MIN_HEIGHT_FLOATING: calc(
             padding: 0 0.4rem;
             margin: 0 0.4rem;
             background-color: var(--text-loss-danger);
-            color: var(--general-main-1);
+            color: $COLOR_WHITE;
             border-radius: 8px;
         }
         &--floating {

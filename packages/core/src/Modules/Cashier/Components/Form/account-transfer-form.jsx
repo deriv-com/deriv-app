@@ -196,6 +196,10 @@ class AccountTransferForm extends React.Component {
                                         />
                                         <DesktopWrapper>
                                             <Icon
+                                                className='cashier__transferred-icon account-transfer__transfer-icon account-transfer__transfer-icon--first'
+                                                icon='IcInfoOutline'
+                                            />
+                                            <Icon
                                                 className='cashier__transferred-icon account-transfer__transfer-icon'
                                                 icon='IcArrowLeftBold'
                                             />

@@ -493,19 +493,20 @@
     &__bullet {
         background-color: var(--text-general);
         border-radius: 100%;
-        margin-right: 1.3rem;
-        width: 0.6rem;
-        height: 0.6rem;
+        margin-right: 0.8rem;
+        width: 0.4rem;
+        height: 0.4rem;
         flex: none;
-        margin-top: 0.6rem;
+        margin-top: 0.8rem;
 
         &-wrapper {
             display: flex;
             margin-bottom: 0.4rem;
+            font-size: var(--text-size-xs);
         }
     }
     &__drop-down {
-        min-width: calc(calc(100% - calc(16px + 1.6rem)) / 2);
+        min-width: calc(calc(100% - calc(32px + 4rem)) / 2);
         width: auto;
         margin-bottom: 3.4rem;
 
@@ -540,7 +541,11 @@
     &__transfer {
         &-icon {
             vertical-align: initial;
-            margin: 0 0.8rem;
+            margin: 0 1.6rem 0 0;
+
+            &--first {
+                margin-left: 0.8rem;
+            }
         }
         &-details {
             &-from,

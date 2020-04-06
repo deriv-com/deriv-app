@@ -35,7 +35,7 @@
             width: 48px;
             height: 48px;
 
-            .btn__text {
+            .dc-btn__text {
                 transform: scale(2);
             }
         }
@@ -57,10 +57,10 @@
         &--is-disabled {
             pointer-events: none;
 
-            .btn {
+            .dc-btn {
                 background-color: var(--general-disabled);
 
-                .btn__text {
+                .dc-btn__text {
                     color: var(--text-disabled);
                 }
             }

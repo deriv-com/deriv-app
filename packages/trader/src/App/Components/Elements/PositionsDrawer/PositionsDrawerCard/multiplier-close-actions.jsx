@@ -16,7 +16,7 @@ const MultiplierCloseActions = ({ className, onClickCancel, onClickSell, contrac
             <Button
                 id={`dt_drawer_card_${contract_id}_button`}
                 className={classNames(className, {
-                    'btn--loading': is_sell_requested,
+                    'dc-btn--loading': is_sell_requested,
                 })}
                 is_disabled={is_sell_requested || (+profit < 0 && is_valid_to_cancel)}
                 text={localize('Close')}
@@ -26,7 +26,7 @@ const MultiplierCloseActions = ({ className, onClickCancel, onClickSell, contrac
             {is_valid_to_cancel && (
                 <Button
                     id={`dt_drawer_card_${contract_id}_cancel_button`}
-                    className='btn--cancel'
+                    className='dc-btn--cancel'
                     is_disabled={+profit >= 0}
                     onClick={() => onClickCancel(contract_id, true)}
                     secondary

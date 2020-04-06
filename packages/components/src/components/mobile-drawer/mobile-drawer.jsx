@@ -8,6 +8,7 @@ import Footer from './mobile-drawer-footer.jsx';
 import SubHeader from './mobile-drawer-subheader.jsx';
 import Item from './mobile-drawer-item.jsx';
 import SubMenu from './mobile-drawer-submenu.jsx';
+import SubMenuSection from './mobile-drawer-submenu-section.jsx';
 
 const MobileDrawer = ({ className, id, height, width, alignment, is_open, title, toggle, children }) => (
     <Drawer
@@ -60,6 +61,7 @@ MobileDrawer.Footer = Footer;
 MobileDrawer.Item = Item;
 MobileDrawer.SubHeader = SubHeader;
 MobileDrawer.SubMenu = SubMenu;
+MobileDrawer.SubMenuSection = SubMenuSection;
 
 MobileDrawer.propTypes = {
     alignment: PropTypes.oneOf(['left', 'right']),

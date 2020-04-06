@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FieldError from 'Components/field-error';
-import Icon from '../icon';
+import Icon from 'Components/icon/icon.jsx';
 
 class SelectNative extends Component {
     getDisplayText = value => {

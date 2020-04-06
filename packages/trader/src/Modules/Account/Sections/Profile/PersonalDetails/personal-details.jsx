@@ -12,6 +12,7 @@ import {
     SelectNative,
     DatePicker,
 } from '@deriv/components';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -282,7 +283,7 @@ class PersonalDetailsForm extends React.Component {
                                 className='account-form account-form__personal-details'
                                 onSubmit={handleSubmit}
                             >
-                                <FormBody scroll_offset='80px'>
+                                <FormBody scroll_offset={isMobile() ? '200px' : '80px'}>
                                     <FormSubHeader title={localize('Details')} />
                                     {!this.props.is_virtual && (
                                         <React.Fragment>

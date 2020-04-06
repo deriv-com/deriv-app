@@ -86,16 +86,21 @@ class ToggleMenuDrawer extends React.Component {
                 submenu_suffix_icon='IcChevronRight'
             >
                 {!has_subroutes &&
-                    route_config.routes.map(route => (
-                        <MobileDrawer.Item key={route.title}>
-                            <MenuLink
-                                link_to={route.path}
-                                icon={route.icon_component}
-                                text={route.title}
-                                onClickLink={this.toggleDrawer}
-                            />
-                        </MobileDrawer.Item>
-                    ))}
+                    route_config.routes.map(route => {
+                        // TODO: Remove path checks below once the cashier routes below are ready to be enabled on mobile
+                        if (route.path === '/cashier/p2p' || route.path === '/cashier/payment-agent-transfer')
+                            return undefined;
+                        return (
+                            <MobileDrawer.Item key={route.title}>
+                                <MenuLink
+                                    link_to={route.path}
+                                    icon={route.icon_component}
+                                    text={route.title}
+                                    onClickLink={this.toggleDrawer}
+                                />
+                            </MobileDrawer.Item>
+                        );
+                    })}
                 {has_subroutes &&
                     route_config.routes.map(route => (
                         <MobileDrawer.SubMenuSection
@@ -127,7 +132,7 @@ class ToggleMenuDrawer extends React.Component {
 
     render() {
         const all_routes_config = getAllRoutesConfig();
-        const allowed_routes = [routes.reports, routes.account];
+        const allowed_routes = [routes.reports, routes.account, routes.cashier];
         const routes_config = allowed_routes
             .map(path => all_routes_config.find(r => r.path === path))
             .filter(route => route);

@@ -262,6 +262,19 @@
         &-button {
             margin: 3.2rem auto;
         }
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+
+            &-button {
+                width: calc(100% - 3.2rem);
+            }
+            &-icon {
+                margin-top: 3.2rem;
+            }
+        }
     }
     &__account-switch-icon {
         background-image: url('~Images/app/cashier/account_switcher.png');
@@ -345,6 +358,10 @@
             }
             &-text {
                 color: var(--text-general);
+            }
+            @include mobile {
+                width: 100%;
+                padding: 1.6rem;
             }
         }
         &-resend,

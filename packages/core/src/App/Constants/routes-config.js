@@ -62,6 +62,7 @@ const initRoutesConfig = () => [
         is_modal: true,
         is_authenticated: true,
         title: localize('Cashier'),
+        icon_component: 'IcCashier',
         routes: [
             {
                 path: routes.cashier_deposit,

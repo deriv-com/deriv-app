@@ -79,11 +79,11 @@ const setProposalMultiplier = (store, obj_multiplier) => {
     obj_multiplier.limit_order = {};
 
     if (store.has_take_profit) {
-        obj_multiplier.limit_order.take_profit = +store.take_profit; // send positive take_profit to API
+        obj_multiplier.limit_order.take_profit = +store.take_profit || 0; // send positive take_profit to API
     }
 
     if (store.has_stop_loss) {
-        obj_multiplier.limit_order.stop_loss = +store.stop_loss; // send positive stop_loss to API
+        obj_multiplier.limit_order.stop_loss = +store.stop_loss || 0; // send positive stop_loss to API
     }
 };
 

@@ -1,4 +1,3 @@
-import { localize } from '@deriv/translations';
 import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
 import { contractStatus, info, log } from '../utils/broadcast';

@@ -6,6 +6,7 @@ import { observer as globalObserver } from '../../utils/observer';
 import { removeLimitedBlocks } from '../../utils/workspace';
 import DBotStore from '../dbot-store';
 import { saveWorkspaceToRecent } from '../../utils/local-storage';
+import { log_types } from '../../constants/messages';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 

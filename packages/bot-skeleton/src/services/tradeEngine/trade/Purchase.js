@@ -3,6 +3,7 @@ import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
 import { contractStatus, info, log } from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
+import { log_types } from '../../../constants/messages';
 
 let delayIndex = 0;
 
@@ -28,7 +29,8 @@ export default Engine =>
                 this.store.dispatch(purchaseSuccessful());
                 this.renewProposalsOnPurchase();
                 delayIndex = 0;
-                log(`${localize('Bought')}: ${buy.longcode} (${localize('ID')}: ${buy.transaction_id})`);
+                log(log_types.PURCHASE, { longcode: buy.longcode, transaction_id: buy.transaction_id });
+                // log(`${localize('Bought')}: ${buy.longcode} (${localize('ID')}: ${buy.transaction_id})`);
                 info({
                     accountID: this.accountInfo.loginid,
                     totalRuns: this.updateAndReturnTotalRuns(),

@@ -210,6 +210,7 @@ export default class RunPanelStore {
         observer.register('ui.log.error', this.onError);
         observer.register('Error', e => this.onError(e.message));
         observer.register('ui.log.notify', journal.onNotify);
+        observer.register('ui.log.success', journal.onLogSuccess);
     }
 
     @action.bound
@@ -355,12 +356,6 @@ export default class RunPanelStore {
     @action.bound
     setContractStage(value) {
         this.contract_stage = value;
-    }
-
-    @action.bound
-    onMount() {
-        const { journal } = this.root_store;
-        observer.register('ui.log.success', journal.onLogSuccess);
     }
 
     @action.bound

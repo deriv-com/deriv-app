@@ -45,7 +45,7 @@ class Drawer extends React.PureComponent {
     };
 
     render() {
-        const { children, className, footer, header, footerHeight, headerHeight } = this.props;
+        const { children, className, footer, header, footerHeight, headerHeight, contentClassName } = this.props;
         const contentHeight = `calc(100% - ${headerHeight} - ${footerHeight})`;
 
         return (
@@ -60,7 +60,10 @@ class Drawer extends React.PureComponent {
                             {header}
                         </div>
                     )}
-                    <div className='dc-drawer__content' style={{ height: contentHeight }}>
+                    <div
+                        className={classNames('dc-drawer__content', contentClassName)}
+                        style={{ height: contentHeight }}
+                    >
                         {children}
                     </div>
                     {footer && (

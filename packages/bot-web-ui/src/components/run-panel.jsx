@@ -102,10 +102,6 @@ const drawerFooter = ({
 };
 
 class RunPanel extends React.PureComponent {
-    componentDidMount() {
-        this.props.onMount();
-    }
-
     componentWillUnmount() {
         this.props.onUnmount();
     }
@@ -120,6 +116,7 @@ class RunPanel extends React.PureComponent {
                 className='run-panel'
                 is_open={this.props.is_drawer_open}
                 toggleDrawer={this.props.toggleDrawer}
+                contentClassName='run-panel__content'
                 footer={footer}
                 footerHeight='156px'
             >

@@ -28,8 +28,8 @@ export default class JournalStore {
 
     @action.bound
     onLogSuccess(message) {
-        const message_string = typeof message === 'object' ? message.message : message;
-        this.pushMessage(message_string, message_types.SUCCESS);
+        const { log_type, extra } = message;
+        this.pushMessage(log_type, message_types.SUCCESS, '', extra);
     }
 
     @action.bound
@@ -42,7 +42,8 @@ export default class JournalStore {
         const { message, className, message_type, sound, block_id, variable_name } = data;
         let message_string = message;
 
-        if (message === undefined) {
+        // when notify undefined variable block
+        if (message === undefined && variable_name != null) {
             observer.emit('ui.log.notify', {
                 className: 'journal__text--error',
                 block_id,
@@ -75,12 +76,12 @@ export default class JournalStore {
     }
 
     @action.bound
-    pushMessage(message, message_type, className) {
+    pushMessage(message, message_type, className, extra = {}) {
         const date = formatDate(this.getServerTime());
         const time = formatDate(this.getServerTime(), 'HH:mm:ss [GMT]');
         const unique_id = Blockly.utils.genUid();
 
-        this.unfiltered_messages.unshift({ date, time, message, message_type, className, unique_id });
+        this.unfiltered_messages.unshift({ date, time, message, message_type, className, unique_id, extra });
     }
 
     @computed

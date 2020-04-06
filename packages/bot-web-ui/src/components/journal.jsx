@@ -4,8 +4,9 @@ import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { Checkbox, Icon, ThemedScrollbars } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { message_types } from '@deriv/bot-skeleton';
+import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
 import { contract_stages } from '../constants/contract-stage';
 import { connect } from '../stores/connect';
 import '../assets/sass/journal.scss';
@@ -18,55 +19,61 @@ const DateItem = ({ date, time }) => {
     );
 };
 
-const FormatMessage = ({ message }) => {
-    if (typeof message !== 'string' || !message.includes(':')) {
-        return <div className='journal__text'>{message}</div>;
-    }
-
-    const messages = message.split(':');
-
-    const title = messages[0];
-    const value = messages.slice(1).join(':');
-
-    let title_color, value_color;
-
-    switch (title) {
-        case 'Bought': {
-            title_color = 'info';
-            break;
+const FormatMessage = ({ logType, className, extra }) => {
+    const getLogMessage = () => {
+        switch (logType) {
+            case log_types.LOAD_BLOCK: {
+                return localize('Blocks are loaded successfully');
+            }
+            case log_types.NOT_OFFERED: {
+                return localize('Resale of this contract is not offered.');
+            }
+            case log_types.PURCHASE: {
+                const { longcode, transaction_id } = extra;
+                return (
+                    <Localize
+                        i18n_default_text='<0>Bought</0> : {{longcode}} (ID:{{transaction_id}})'
+                        values={{ longcode, transaction_id }}
+                        components={[<span key={0} className='journal__text--info' />]}
+                    />
+                );
+            }
+            case log_types.SELL: {
+                const { sold_for } = extra;
+                return (
+                    <Localize
+                        i18n_default_text='<0>Sold for</0> : {{sold_for}}'
+                        values={{ sold_for }}
+                        components={[<span key={0} className='journal__text--warn' />]}
+                    />
+                );
+            }
+            case log_types.PROFIT: {
+                const { profit } = extra;
+                return (
+                    <Localize
+                        i18n_default_text='Profit amount : <0>{{profit}}</0>'
+                        values={{ profit }}
+                        components={[<span key={0} className='journal__text--success' />]}
+                    />
+                );
+            }
+            case log_types.LOST: {
+                const { profit } = extra;
+                return (
+                    <Localize
+                        i18n_default_text='Loss amount : <0>{{profit}}</0>'
+                        values={{ profit }}
+                        components={[<span key={0} className='journal__text--error' />]}
+                    />
+                );
+            }
+            default:
+                return <></>;
         }
-        case 'Sold': {
-            title_color = 'error';
-            break;
-        }
-        case 'Profit amount': {
-            value_color = 'success';
-            break;
-        }
-        case 'Loss amount': {
-            value_color = 'error';
-            break;
-        }
-        default: {
-            title_color = value_color = undefined;
-        }
-    }
+    };
 
-    return (
-        <div className='journal__text-row'>
-            <div
-                className={classnames('journal__text', {
-                    [`journal__text--bold journal__text--${title_color}`]: title_color,
-                })}
-            >
-                {title}
-            </div>
-            <span>:</span>
-            <div className={classnames('journal__text', { [`journal__text--${value_color}`]: value_color })}>
-                {value}
-            </div>
-        </div>
-    );
+    return <div className={classnames('journal__text', className)}>{getLogMessage()}</div>;
 };
 
 const Tools = ({ checked_filters, filters, filterMessage }) => (
@@ -90,10 +97,10 @@ const Tools = ({ checked_filters, filters, filterMessage }) => (
     </div>
 );
 
-const getJournalItemContent = (message, type, className) => {
+const getJournalItemContent = (message, type, className, extra) => {
     switch (type) {
         case message_types.SUCCESS: {
-            return <FormatMessage message={message} />;
+            return <FormatMessage logType={message} extra={extra} className={className} />;
         }
         case message_types.NOTIFY: {
             return <div className={classnames('journal__text', className)}>{message}</div>;
@@ -132,14 +139,14 @@ const Journal = ({ filtered_messages, contract_stage, ...props }) => {
                     {filtered_messages.length ? (
                         <TransitionGroup>
                             {filtered_messages.map(item => {
-                                const { date, time, message, message_type, className, unique_id } = item;
+                                const { date, time, message, message_type, className, unique_id, extra } = item;
                                 const date_el = DateItem({ date, time });
 
                                 return (
                                     <CSSTransition key={unique_id} timeout={500} classNames='list__animation'>
                                         <div className='journal__item'>
                                             <div className='journal__item-content'>
-                                                {getJournalItemContent(message, message_type, className)}
+                                                {getJournalItemContent(message, message_type, className, extra)}
                                             </div>
                                             <div className='journal__text-datetime'>{date_el}</div>
                                         </div>

@@ -128,7 +128,7 @@ export const load = ({
         // Dispatch resize event for comments.
         window.dispatchEvent(new Event('resize'));
         if (workspace === Blockly.derivWorkspace) {
-            globalObserver.emit('ui.log.success', localize('Blocks are loaded successfully'));
+            globalObserver.emit('ui.log.success', { log_type: log_types.LOAD_BLOCK });
         }
     } catch (e) {
         console.log(e); // eslint-disable-line

@@ -11,4 +11,11 @@ export const setStorageEvents = () => {
     });
 };
 
-export const getAllowedLocalStorageOrigin = () => 'https://brandon-binary.github.io/binary-static/';
+export const getAllowedLocalStorageOrigin = () => {
+    if (/^staging\.deriv\.app$/i.test(window.location.hostname)) {
+        return 'https://smarttrader-staging.deriv.app';
+    } else if (/^deriv\.app$/i.test(window.location.hostname)) {
+        return 'https://smarttrader.deriv.app';
+    }
+    return false;
+};

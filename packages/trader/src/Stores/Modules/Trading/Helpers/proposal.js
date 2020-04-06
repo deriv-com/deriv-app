@@ -103,7 +103,7 @@ const createProposalRequestForContract = (store, type_of_contract) => {
     return {
         proposal: 1,
         subscribe: 1,
-        amount: parseFloat(store.amount),
+        amount: parseFloat(store.amount) || 0,
         basis: store.basis,
         contract_type: type_of_contract,
         currency: store.root_store.client.currency,

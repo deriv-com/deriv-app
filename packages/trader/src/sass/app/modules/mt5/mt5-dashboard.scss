@@ -10,9 +10,10 @@
 /* stylelint-disable */
 /** @define mt5-dashboard; */
 .mt5-dashboard {
-    margin: 4.8em auto;
+    padding: 4.8em 0;
     max-width: 960px;
-    position: relative;
+    height: 100vh;
+    margin: 0 auto;
 
     &--hint {
         //@include typeface(--xsmall-left-normal-black, none);
@@ -705,14 +706,15 @@
 }
 
 .mt5-proof-of-address {
-    &__file-area {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 1rem;
+    &__file-upload {
         position: relative;
 
+        li {
+            margin: 0 0 1.5rem 0;
+        }
         .dc-field-error {
-            top: 1rem;
+            top: 0;
+            right: 5%;
         }
     }
     &__field-area {
@@ -728,23 +730,6 @@
         .dc-dropdown-container {
             margin-top: 0;
         }
-    }
-    p:not(.dc-field-error),
-    li {
-        @include typeface(--paragraph-left-normal-black);
-        color: var(--text-prominent);
-        margin: 0 0 1em;
-
-        strong {
-            font-weight: bold;
-        }
-    }
-    ul {
-        list-style: initial;
-        margin: 0 0 1em;
-    }
-    li {
-        margin: 0 0 0 1.6em;
     }
 }
 

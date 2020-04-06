@@ -307,27 +307,21 @@ class MT5POA extends Component {
                                                         placeholder={localize('Postal/ZIP Code')}
                                                     />
                                                 </div>
-                                                <div className='mt5-proof-of-address__file-area'>
-                                                    <div className='mt5-proof-of-address__description'>
-                                                        <Description />
-                                                    </div>
-                                                    <div className='mt5-proof-of-address__file-upload'>
-                                                        <FileUploaderContainer
-                                                            onRef={ref => this.setFileUploadRef(ref)}
-                                                            is_description_disabled
-                                                            onFileDrop={({ document_file: df, file_error_message }) =>
-                                                                this.onFileDrop(
-                                                                    df,
-                                                                    file_error_message,
-                                                                    setFieldTouched,
-                                                                    setFieldValue
-                                                                )
-                                                            }
-                                                        />
-                                                        {errors.document_file && touched.document_file && (
-                                                            <p className='dc-field-error'>{errors.document_file}</p>
-                                                        )}
-                                                    </div>
+                                                <div className='mt5-proof-of-address__file-upload'>
+                                                    <FileUploaderContainer
+                                                        onRef={ref => this.setFileUploadRef(ref)}
+                                                        onFileDrop={({ document_file: df, file_error_message }) =>
+                                                            this.onFileDrop(
+                                                                df,
+                                                                file_error_message,
+                                                                setFieldTouched,
+                                                                setFieldValue
+                                                            )
+                                                        }
+                                                    />
+                                                    {errors.document_file && touched.document_file && (
+                                                        <p className='dc-field-error'>{errors.document_file}</p>
+                                                    )}
                                                 </div>
                                             </div>
                                         </ThemedScrollbars>

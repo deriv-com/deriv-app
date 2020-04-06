@@ -13,7 +13,7 @@ export const InputField = ({ name, optional = false, ...props }) => (
                 type='text'
                 required={!optional}
                 name={name}
-                autoComplete='no'
+                autoComplete='new-password'
                 maxLength='30'
                 error={touched[field.name] && errors[field.name]}
                 {...field}
@@ -132,7 +132,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                                             {...field}
                                                             id='real_mt5_citizenship'
                                                             data-lpignore='true'
-                                                            autoComplete='off'
+                                                            autoComplete='new-password'
                                                             type='text'
                                                             label={localize('Citizenship')}
                                                             error={touched.citizen && errors.citizen}
@@ -158,7 +158,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                                             id='real_mt5_tax_residence'
                                                             data-lpignore='true'
                                                             type='text'
-                                                            autoComplete='off'
+                                                            autoComplete='new-password'
                                                             label={localize('Tax residence')}
                                                             error={touched.tax_residence && errors.tax_residence}
                                                             disabled={value.tax_residence && is_fully_authenticated}

@@ -26,12 +26,19 @@ class Account extends React.Component {
         this.is_mounted = true;
         WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
-                const { authentication } = this.props.account_status;
+                const { authentication, status } = this.props.account_status;
                 const is_high_risk_client = this.props.is_high_risk;
                 const needs_verification =
                     authentication.needs_verification.includes('identity') ||
                     authentication.needs_verification.includes('document');
-                if (this.is_mounted) this.setState({ is_high_risk_client, is_loading: false, needs_verification });
+                const allow_document_upload = status.includes('allow_document_upload');
+                if (this.is_mounted)
+                    this.setState({
+                        is_high_risk_client,
+                        is_loading: false,
+                        needs_verification,
+                        allow_document_upload,
+                    });
             }
         });
         this.props.toggleAccount(true);
@@ -45,7 +52,7 @@ class Account extends React.Component {
     onClickClose = () => this.props.routeBackInApp(this.props.history);
 
     render() {
-        const { is_high_risk_client, is_loading, needs_verification } = this.state;
+        const { is_high_risk_client, is_loading, needs_verification, allow_document_upload } = this.state;
 
         const subroutes = flatten(this.props.routes.map(i => i.subroutes));
         let list_groups = [...this.props.routes];
@@ -60,12 +67,8 @@ class Account extends React.Component {
             selected_content = subroutes[0];
             this.props.history.push(AppRoutes.personal_details);
         }
-        if (
-            !is_loading &&
-            !needs_verification &&
-            !is_high_risk_client &&
-            /proof-of-identity|proof-of-address|financial-assessment/.test(selected_content.path)
-        )
+
+        if (!is_loading && !is_high_risk_client && /financial-assessment/.test(selected_content.path))
             return <Redirect to='/' />;
 
         // TODO: modify account route to support disabled
@@ -80,9 +83,9 @@ class Account extends React.Component {
 
                 if (
                     !needs_verification &&
-                    !is_high_risk_client &&
+                    !allow_document_upload &&
                     !is_loading &&
-                    /proof-of-identity|proof-of-address|financial-assessment/.test(route.path)
+                    /proof-of-identity|proof-of-address/.test(route.path)
                 ) {
                     route.is_disabled = true;
                 }

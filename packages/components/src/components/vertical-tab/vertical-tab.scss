@@ -175,7 +175,7 @@ $MIN_HEIGHT_FLOATING: calc(
             padding: 0 0.4rem;
             margin: 0 0.4rem;
             background-color: var(--text-loss-danger);
-            color: $COLOR_WHITE;
+            color: var(--status-colored-background);
             border-radius: 8px;
         }
         &--floating {

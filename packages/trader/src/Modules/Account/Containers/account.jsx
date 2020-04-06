@@ -26,17 +26,13 @@ class Account extends React.Component {
         this.is_mounted = true;
         WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
-                const { authentication, status } = this.props.account_status;
+                const { status } = this.props.account_status;
                 const is_high_risk_client = this.props.is_high_risk;
-                const needs_verification =
-                    authentication.needs_verification.includes('identity') ||
-                    authentication.needs_verification.includes('document');
                 const allow_document_upload = status.includes('allow_document_upload');
                 if (this.is_mounted)
                     this.setState({
                         is_high_risk_client,
                         is_loading: false,
-                        needs_verification,
                         allow_document_upload,
                     });
             }
@@ -52,7 +48,7 @@ class Account extends React.Component {
     onClickClose = () => this.props.routeBackInApp(this.props.history);
 
     render() {
-        const { is_high_risk_client, is_loading, needs_verification, allow_document_upload } = this.state;
+        const { is_high_risk_client, is_loading, allow_document_upload } = this.state;
 
         const subroutes = flatten(this.props.routes.map(i => i.subroutes));
         let list_groups = [...this.props.routes];
@@ -73,20 +69,12 @@ class Account extends React.Component {
 
         // TODO: modify account route to support disabled
         this.props.routes.forEach(menu_item => {
-            if (menu_item.title === 'Verification') {
-                menu_item.is_hidden = !needs_verification;
-            }
             menu_item.subroutes.forEach(route => {
                 if (route.path === AppRoutes.financial_assessment) {
                     route.is_disabled = !is_high_risk_client;
                 }
 
-                if (
-                    !needs_verification &&
-                    !allow_document_upload &&
-                    !is_loading &&
-                    /proof-of-identity|proof-of-address/.test(route.path)
-                ) {
+                if (!allow_document_upload && !is_loading && /proof-of-identity|proof-of-address/.test(route.path)) {
                     route.is_disabled = true;
                 }
             });

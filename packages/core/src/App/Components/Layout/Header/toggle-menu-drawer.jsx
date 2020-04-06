@@ -75,7 +75,21 @@ class ToggleMenuDrawer extends React.Component {
     getRoutesWithSubMenu = route_config => {
         const { is_high_risk_client, needs_verification } = this.state;
         const has_access = route_config.is_authenticated ? this.props.is_logged_in : true;
-        if (!has_access || !route_config.routes) return null;
+        if (!has_access) return null;
+
+        if (!route_config.routes) {
+            return (
+                <MobileDrawer.Item key={route_config.title}>
+                    <MenuLink
+                        link_to={route_config.path}
+                        icon={route_config.icon_component}
+                        text={route_config.title}
+                        onClickLink={this.toggleDrawer}
+                    />
+                </MobileDrawer.Item>
+            );
+        }
+
         const has_subroutes = route_config.routes.some(route => route.subroutes);
         return (
             <MobileDrawer.SubMenu
@@ -127,9 +141,10 @@ class ToggleMenuDrawer extends React.Component {
 
     render() {
         const all_routes_config = getAllRoutesConfig();
-        const allowed_routes = [routes.reports, routes.account];
+        const subroutes_config = [].concat(...all_routes_config.map(i => i.routes || []));
+        const allowed_routes = [routes.reports, routes.account, routes.cashier];
         const routes_config = allowed_routes
-            .map(path => all_routes_config.find(r => r.path === path))
+            .map(path => all_routes_config.find(r => r.path === path) || subroutes_config.find(r => r.path === path))
             .filter(route => route);
         return (
             <React.Fragment>

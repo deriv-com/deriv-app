@@ -3,6 +3,8 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared/utils/screen';
+import { getSelectedRoute } from '@deriv/shared/utils/route';
 import { FadeWrapper } from 'App/Components/Animations';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
@@ -19,16 +21,6 @@ class Cashier extends React.Component {
     }
 
     onClickClose = () => this.props.routeBackInApp(this.props.history);
-
-    getRoutedCashier() {
-        const route =
-            this.props.routes.find(r => r.path === this.props.location.pathname || r.path === r.default) ||
-            this.props.routes[0];
-        if (!route) return null;
-
-        const Content = route.component;
-        return <Content component_icon={route.icon_component} />;
-    }
 
     render() {
         const menu_options = () => {
@@ -57,6 +49,11 @@ class Cashier extends React.Component {
             return options;
         };
 
+        const { routes: routes_config, location } = this.props;
+        const selected_route = isMobile()
+            ? getSelectedRoute({ routes: routes_config, pathname: location.pathname })
+            : null;
+
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}
@@ -79,7 +76,9 @@ class Cashier extends React.Component {
                         </DesktopWrapper>
                         <MobileWrapper>
                             <Div100vhContainer className='cashier__wrapper--is-mobile' height_offset='80px'>
-                                {this.getRoutedCashier()}
+                                {selected_route && (
+                                    <selected_route.component component_icon={selected_route.icon_component} />
+                                )}
                             </Div100vhContainer>
                         </MobileWrapper>
                     </PageOverlay>

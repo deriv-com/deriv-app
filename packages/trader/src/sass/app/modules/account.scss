@@ -365,6 +365,18 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
+    .account-management-leave-confirm {
+        @include desktop {
+            .dc-btn {
+                margin-top: 0;
+            }
+        }
+    }
+    .leave-confirm__message {
+        @include desktop {
+            margin-top: 2rem;
+        }
+    }
     .account__text_container {
         margin-top: 12px;
     }

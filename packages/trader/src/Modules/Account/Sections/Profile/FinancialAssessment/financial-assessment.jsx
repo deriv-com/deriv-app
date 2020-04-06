@@ -145,6 +145,7 @@ class FinancialAssessment extends React.Component {
             this.setState({ is_loading: false });
         } else {
             WS.authorized.storage.getFinancialAssessment().then(data => {
+                console.log('data:', data);
                 if (data.error) {
                     this.setState({ api_initial_load_error: data.error.message });
                     return;

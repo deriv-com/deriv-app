@@ -709,6 +709,11 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 1rem;
+        position: relative;
+
+        .dc-field-error {
+            top: 1rem;
+        }
     }
     &__field-area {
         padding: 0 0 20rem 0;

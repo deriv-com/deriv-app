@@ -298,7 +298,8 @@
     }
     &__email {
         &-sent {
-            width: 40rem;
+            max-width: 40rem;
+            width: 100%;
             margin: auto;
 
             &-title {

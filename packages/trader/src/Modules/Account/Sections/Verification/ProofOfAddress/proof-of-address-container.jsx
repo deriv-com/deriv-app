@@ -35,7 +35,7 @@ class ProofOfAddressContainer extends React.Component {
                     status: document.status,
                     needs_poi,
                     is_loading: false,
-                    submitted_poa: needs_verification.length && needs_verification.includes('document'),
+                    submitted_poa: document.status === poa_status_codes.pending,
                 });
                 this.props.refreshNotifications();
             }

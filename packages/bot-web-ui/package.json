@@ -94,8 +94,7 @@
     "trackjs": "^2.10.2",
     "webpack": "^4.34.0",
     "webpack-bundle-analyzer": "^3.6.0",
-    "webpack-cli": "^3.3.4",
-    "webpack-merge-and-include-globally": "^2.1.16"
+    "webpack-cli": "^3.3.4"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
@@ -117,6 +116,6 @@
     "react-dom": "~16.8.6",
     "react-render-html": "^0.6.0",
     "react-transition-group": "^4.0.1",
-    "smartcharts-beta": "^0.6.2"
+    "smartcharts-beta": "^0.8.0-betam.10"
   }
 }

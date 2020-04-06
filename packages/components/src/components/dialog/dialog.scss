@@ -80,6 +80,9 @@
         justify-content: flex-end;
         align-items: center;
         width: 100%;
+        @include mobile {
+            flex-wrap: wrap;
+        }
     }
     &__button {
         margin: 0.4em;
@@ -91,6 +94,12 @@
         &__dialog {
             width: 100vw;
             height: 100vh;
+            min-width: 100vw;
+
+            &--has-margin {
+                min-width: unset;
+                width: calc(100vw - 3.2rem);
+            }
         }
     }
 }

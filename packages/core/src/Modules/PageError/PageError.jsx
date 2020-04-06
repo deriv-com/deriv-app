@@ -28,7 +28,7 @@ const PageError = ({ buttonOnClick, error_code, messages, header, redirect_label
             </div>
             {redirect_label && (
                 <ButtonLink className='page-error__btn' to={redirect_url} onClick={buttonOnClick}>
-                    <span className='page-error__btn-text btn__text'>{redirect_label}</span>
+                    <span className='page-error__btn-text dc-btn__text'>{redirect_label}</span>
                 </ButtonLink>
             )}
         </div>

@@ -70,6 +70,21 @@ class ConfigAccountTransfer {
     @observable selected_to = {};
     @observable transfer_fee = null;
     @observable transfer_limit = {};
+
+    @action.bound
+    setBalanceByLoginId(loginid, balance) {
+        this.accounts_list.find(acc => loginid === acc.value).balance = balance;
+    }
+
+    @action.bound
+    setBalanceSelectedFrom(balance) {
+        this.selected_from.balance = balance;
+    }
+
+    @action.bound
+    setBalanceSelectedTo(balance) {
+        this.selected_to.balance = balance;
+    }
 }
 
 class ConfigVerification {
@@ -85,7 +100,6 @@ export default class CashierStore extends BaseStore {
     @observable is_loading = false;
     @observable is_p2p_visible = false;
     @observable p2p_notification_count = 0;
-    @observable p2p_order_list = [];
     @observable is_p2p_advertiser = false;
 
     @observable config = {
@@ -137,7 +151,6 @@ export default class CashierStore extends BaseStore {
 
             this.is_p2p_advertiser = !advertiser_error;
             this.setIsP2pVisible(true);
-            WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);
         }
     }
 
@@ -174,52 +187,9 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setP2pOrderList(order_response) {
-        // check if there is any error
-        if (!order_response.error) {
-            if (order_response.p2p_order_list) {
-                // it's an array of orders from p2p_order_list
-                this.p2p_order_list = order_response.p2p_order_list.list;
-                this.handleNotifications(this.p2p_order_list);
-            } else {
-                // it's a single order from p2p_order_info
-                const idx_order_to_update = this.p2p_order_list.findIndex(
-                    order => order.id === order_response.p2p_order_info.id
-                );
-                const updated_orders = [...this.p2p_order_list];
-                // if it's a new order, add it to the top of the list
-                if (idx_order_to_update < 0) {
-                    updated_orders.unshift(order_response.p2p_order_info);
-                } else {
-                    // otherwise, update the correct order
-                    updated_orders[idx_order_to_update] = order_response.p2p_order_info;
-                }
-                // trigger re-rendering by setting orders again
-                this.p2p_order_list = updated_orders;
-                this.handleNotifications(updated_orders);
-            }
-        }
+    setNotificationCount(notification_count) {
+        this.p2p_notification_count = notification_count;
     }
-
-    @action.bound
-    handleNotifications = orders => {
-        let p2p_notification_count = 0;
-
-        orders.forEach(order => {
-            const type = order.is_incoming
-                ? ObjectUtils.getPropertyValue(order, ['advert_details', 'type'])
-                : order.type;
-
-            // show notifications for:
-            // 1. buy orders that are pending buyer payment, or
-            // 2. sell orders that are pending seller confirmation
-            if (type === 'buy' ? order.status === 'pending' : order.status === 'buyer-confirmed') {
-                p2p_notification_count++;
-            }
-        });
-
-        this.p2p_notification_count = p2p_notification_count;
-    };
 
     @action.bound
     setIsP2pVisible(is_p2p_visible) {
@@ -902,12 +872,11 @@ export default class CashierStore extends BaseStore {
         } else {
             this.setReceiptTransfer({ amount: CurrencyUtils.formatMoney(currency, amount, true) });
             transfer_between_accounts.accounts.forEach(account => {
-                this.config.account_transfer.accounts_list.find(acc => account.loginid === acc.value).balance =
-                    account.balance;
+                this.config.account_transfer.setBalanceByLoginId(account.loginid, account.balance);
                 if (account.loginid === this.config.account_transfer.selected_from.value) {
-                    this.config.account_transfer.selected_from.balance = account.balance;
+                    this.config.account_transfer.setBalanceSelectedFrom(account.balance);
                 } else if (account.loginid === this.config.account_transfer.selected_to.value) {
-                    this.config.account_transfer.selected_to.balance = account.balance;
+                    this.config.account_transfer.setBalanceSelectedTo(account.balance);
                 }
                 // if one of the accounts was mt5
                 if (account.mt5_group) {

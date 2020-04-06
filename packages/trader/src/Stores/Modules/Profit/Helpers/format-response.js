@@ -11,17 +11,14 @@ export const formatProfitTableTransactions = (transaction, currency, active_symb
     const sell_price = parseFloat(transaction.sell_price);
     const buy_price = parseFloat(transaction.buy_price);
     const profit_loss = CurrencyUtils.formatMoney(currency, Number(sell_price - buy_price), true);
-    const should_exclude_currency = true;
     const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(transaction.shortcode).underlying);
 
     return {
         ...transaction,
         ...{
-            payout: isNaN(payout) ? '-' : CurrencyUtils.formatMoney(currency, payout, should_exclude_currency),
-            sell_price: isNaN(sell_price)
-                ? '-'
-                : CurrencyUtils.formatMoney(currency, sell_price, should_exclude_currency),
-            buy_price: isNaN(buy_price) ? '-' : CurrencyUtils.formatMoney(currency, buy_price, should_exclude_currency),
+            payout,
+            sell_price,
+            buy_price,
             profit_loss,
             sell_time,
             purchase_time,

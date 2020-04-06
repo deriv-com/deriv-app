@@ -1,0 +1,45 @@
+import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
+import { toMoment, daysFromTodayTo } from '@deriv/shared/utils/date';
+
+const RelativeDatepicker = ({ onChange, min_date, max_date, title }) => {
+    const hidden_input_ref = useRef();
+
+    const clickHandler = () => {
+        hidden_input_ref.current.click();
+    };
+    const onChangeHandler = e => {
+        onChange(daysFromTodayTo(e.target.value));
+    };
+
+    const min_date_moment = toMoment()
+        .add(min_date || 0, 'd')
+        .format('YYYY-MM-DD');
+    const max_date_moment = max_date
+        ? toMoment()
+              .add(max_date, 'd')
+              .format('YYYY-MM-DD')
+        : null;
+    return (
+        <div className='dc-relative-datepicker' onClick={clickHandler}>
+            <span className='dc-relative-datepicker__span'>{title}</span>
+            <input
+                type='date'
+                ref={hidden_input_ref}
+                onChange={onChangeHandler}
+                min={min_date_moment}
+                max={max_date_moment}
+                className='dc-relative-datepicker__input'
+            />
+        </div>
+    );
+};
+
+RelativeDatepicker.propTypes = {
+    max_date: PropTypes.string,
+    min_date: PropTypes.string,
+    onChange: PropTypes.func,
+    title: PropTypes.string,
+};
+
+export default RelativeDatepicker;

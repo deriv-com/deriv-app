@@ -1,13 +1,19 @@
 import { action, computed, observable, toJS } from 'mobx';
 import { LocalStore } from '_common/storage';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import { switch_to_tick_chart } from './Helpers/chart-notifications';
 import ContractStore from './contract-store';
+import getValidationRules from './Constants/validation-rules';
+import { isEnded } from './Helpers/logic';
+import { isMultiplierContract } from './Helpers/multiplier';
+import { isCallPut } from './Helpers/contract-type';
 import BaseStore from '../../base-store';
 import { getContractTypesConfig } from '../Trading/Constants/contract';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
-    @observable contracts = [];
+    @observable.shallow contracts = [];
+    contracts_map = {};
     @observable has_error = false;
     @observable error_message = '';
 
@@ -15,8 +21,14 @@ export default class ContractTradeStore extends BaseStore {
     @observable granularity = +LocalStore.get('contract_trade.granularity') || 0;
     @observable chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
 
+    @observable contract_update_stop_loss;
+    @observable contract_update_take_profit;
+
     constructor({ root_store }) {
-        super({ root_store });
+        super({
+            root_store,
+            validation_rules: getValidationRules(),
+        });
 
         this.onSwitchAccount(this.accountSwitchListener);
     }
@@ -54,13 +66,20 @@ export default class ContractTradeStore extends BaseStore {
             return [];
         }
         let { trade_types } = getContractTypesConfig()[trade_type];
-        const is_call_put = trade_type === 'rise_fall' || trade_type === 'rise_fall_equal' || trade_type === 'high_low';
+        const is_call_put = isCallPut(trade_type);
         if (is_call_put) {
             // treat CALLE/PUTE and CALL/PUT the same
             trade_types = ['CALLE', 'PUTE', 'CALL', 'PUT'];
         }
         return this.contracts
             .filter(c => c.contract_info.underlying === underlying)
+            .filter(c => {
+                const info = c.contract_info;
+                const has_multiplier_contract_ended =
+                    isMultiplierContract(info.contract_type) && isEnded(c.contract_info);
+                // filter multiplier contract which has ended
+                return !has_multiplier_contract_ended;
+            })
             .filter(c => {
                 const info = c.contract_info;
 
@@ -90,10 +109,36 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     @action.bound
-    addContract({ barrier, contract_id, contract_type, start_time, longcode, underlying, is_tick_contract }) {
-        const contract_exists = this.contracts.filter(c => c.contract_id === contract_id).length;
+    addContract({
+        barrier,
+        contract_id,
+        contract_type,
+        start_time,
+        longcode,
+        underlying,
+        is_tick_contract,
+        limit_order = {},
+    }) {
+        const contract_exists = this.contracts_map[contract_id];
         if (contract_exists) {
-            return; /* do nothing */
+            // buy response doesn't have limit_order info so here we update contract limit_order
+            // on the first poc response right after buy response, if any
+            const has_limit_order = Object.keys(limit_order).length;
+            if (has_limit_order) {
+                const contract = this.contracts_map[contract_id];
+                contract.populateConfig(
+                    {
+                        date_start: start_time,
+                        barrier,
+                        contract_type,
+                        longcode,
+                        underlying,
+                        limit_order,
+                    },
+                    true
+                );
+            }
+            return;
         }
 
         const contract = new ContractStore(this.root_store, { contract_id });
@@ -103,10 +148,13 @@ export default class ContractTradeStore extends BaseStore {
             contract_type,
             longcode,
             underlying,
+            limit_order,
         });
-        this.contracts.push(contract);
 
-        if (is_tick_contract && this.granularity !== 0) {
+        this.contracts.push(contract);
+        this.contracts_map[contract_id] = contract;
+
+        if (is_tick_contract && this.granularity !== 0 && isDesktop()) {
             this.root_store.ui.addNotificationMessage(switch_to_tick_chart);
         }
     }
@@ -114,6 +162,7 @@ export default class ContractTradeStore extends BaseStore {
     @action.bound
     removeContract({ contract_id }) {
         this.contracts = this.contracts.filter(c => c.contract_id !== contract_id);
+        delete this.contracts_map[contract_id];
     }
 
     @action.bound
@@ -142,14 +191,11 @@ export default class ContractTradeStore extends BaseStore {
         // Update the contract-store corresponding to this POC
         if (response.proposal_open_contract) {
             const contract_id = +response.proposal_open_contract.contract_id;
-            this.contracts.forEach(contract => {
-                if (contract.contract_id === contract_id) {
-                    contract.populateConfig(response.proposal_open_contract);
-                    if (response.proposal_open_contract.is_sold) {
-                        this.root_store.ui.removeNotificationMessage(switch_to_tick_chart);
-                    }
-                }
-            });
+            const contract = this.contracts_map[contract_id];
+            contract.populateConfig(response.proposal_open_contract);
+            if (response.proposal_open_contract.is_sold) {
+                this.root_store.ui.removeNotificationMessage(switch_to_tick_chart);
+            }
         }
     }
 
@@ -164,5 +210,10 @@ export default class ContractTradeStore extends BaseStore {
     clearError() {
         this.error_message = '';
         this.has_error = false;
+    }
+
+    @action.bound
+    getContractById(contract_id) {
+        return this.contracts_map[contract_id];
     }
 }

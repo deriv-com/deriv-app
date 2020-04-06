@@ -15,7 +15,8 @@ class Routes extends React.Component {
             this.initial_route = this.props.location.pathname;
         }
 
-        this.props.addRouteHistoryItem({ ...this.props.history.location, action: 'PUSH' });
+        this.props.setInitialRouteHistoryItem(this.props.history.location);
+
         this.unlisten_to_change = this.props.history.listen((route_to, action) => {
             if (action === 'PUSH') this.props.addRouteHistoryItem({ ...route_to, action });
         });
@@ -65,5 +66,6 @@ export default withRouter(
         has_error: common.has_error,
         setAppRouterHistory: common.setAppRouterHistory,
         addRouteHistoryItem: common.addRouteHistoryItem,
+        setInitialRouteHistoryItem: common.setInitialRouteHistoryItem,
     }))(Routes)
 );

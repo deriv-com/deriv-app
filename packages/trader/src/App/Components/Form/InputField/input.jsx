@@ -63,7 +63,8 @@ const Input = ({
                         className={classNames(
                             classNameInlinePrefix ? `${classNameInlinePrefix}--symbol` : '',
                             'symbols',
-                            `symbols--${inline_prefix.toLowerCase()}`
+                            `symbols--${inline_prefix.toLowerCase()}`,
+                            { disabled: !!is_disabled }
                         )}
                     />
                 </div>

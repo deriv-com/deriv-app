@@ -10,8 +10,8 @@ const ModalLoginPrompt = () => (
         <p>{localize('If you have an active account, please log in to continue. Otherwise, please sign up.')}</p>
 
         <div>
-            <Button secondary={true} text={localize('Log In')} onClick={redirectToLogin} />
-            <Button primary={true} text={localize('Sign Up')} onClick={redirectToSignUp} />
+            <Button secondary text={localize('Log In')} onClick={redirectToLogin} />
+            <Button primary text={localize('Sign Up')} onClick={redirectToSignUp} />
         </div>
     </div>
 );

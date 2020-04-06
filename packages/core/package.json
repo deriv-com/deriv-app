@@ -125,7 +125,7 @@
     "lodash.debounce": "^4.0.8",
     "mobx": "^5.15.4",
     "mobx-react": "^6.1.8",
-    "mobx-utils": "^5.4.0",
+    "mobx-utils": "^5.5.5",
     "moment": "^2.24.0",
     "null-loader": "^3.0.0",
     "object.fromentries": "^2.0.0",

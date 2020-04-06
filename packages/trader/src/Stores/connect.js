@@ -1,80 +1,33 @@
-import { inject, Provider, observer } from 'mobx-react';
-import PropTypes from 'prop-types';
+import { useObserver } from 'mobx-react';
 import React from 'react';
 
-const SPECIAL_REACT_KEYS = { children: true, key: true, ref: true };
-
-export class MobxProvider extends Provider {
-    getChildContext() {
-        const stores = {};
-
-        // inherit stores
-        const baseStores = this.context.mobxStores;
-        if (baseStores) {
-            // eslint-disable-next-line guard-for-in,no-restricted-syntax
-            for (const key in baseStores) {
-                // eslint-disable-line
-                stores[key] = baseStores[key];
-            }
-        }
-
-        // add own stores
-        // eslint-disable-next-line no-restricted-syntax
-        for (const key in this.props.store) {
-            // eslint-disable-line
-            if (!SPECIAL_REACT_KEYS[key]) {
-                stores[key] = this.props.store[key];
-            }
-        }
-
-        return {
-            mobxStores: stores,
-            ...stores,
-        };
-    }
-
-    static childContextTypes = {
-        mobxStores: PropTypes.object,
-        client: PropTypes.object,
-        common: PropTypes.object,
-        gtm: PropTypes.object,
-        segment: PropTypes.object,
-        modules: PropTypes.object,
-        ui: PropTypes.object,
-    };
+function isClassComponent(Component) {
+    return !!(typeof Component === 'function' && Component.prototype && Component.prototype.isReactComponent);
 }
 
-const connect_global_store = mapper => Component => inject(mapper)(observer(Component));
+export const MobxContent = React.createContext(null);
 
-export const connect = (StoreClass, mapper) => Component => {
-    if (!mapper) {
-        return connect_global_store(StoreClass)(Component);
-    }
+function injectCustom(selector, BaseComponent) {
+    const component = ownProps => {
+        const store = React.useContext(MobxContent);
+        const storeProps = selector(store);
 
-    const observed = observer(Component);
-
-    class StoredComponent extends Component {
-        store = new StoreClass();
-
-        render() {
-            return React.createElement(
-                observed,
-                {
-                    ...this.props,
-                    store: this.store,
-                },
-                this.props.children
-            );
+        if (!isClassComponent(BaseComponent)) {
+            return useObserver(() => BaseComponent({ ...ownProps, ...selector(store, ownProps) }));
         }
 
-        propTypes = {
-            children: PropTypes.object,
-        };
-    }
+        const NewComponent = props => <BaseComponent {...props} />;
+        return useObserver(() => NewComponent({ ...ownProps, ...selector(store, ownProps) }));
+    };
 
-    const wrappedDisplayName =
-        Component.displayName || Component.name || (Component.constructor && Component.constructor.name) || 'Unknown';
-    StoredComponent.displayName = `store-${wrappedDisplayName}`;
+    component.displayName = BaseComponent.name;
+    return component;
+}
 
-    return inject(mapper)(StoredComponent);
+export const MobxContentProvider = ({ store, children }) => {
+    return <MobxContent.Provider value={{ ...store, mobxStores: store }}>{children}</MobxContent.Provider>;
+};
+
+export const connect = (StoreClass, mapper) => Component => {
+    return injectCustom(StoreClass, Component);
 };

@@ -19,6 +19,8 @@ class AppNotificationMessages extends React.Component {
     };
 
     render() {
+        const allowed_on_mobile = ['mf_retail', 'unwelcome'];
+
         const { marked_notifications, notification_messages, removeNotificationMessage } = this.props;
         const { bounds } = this.state;
         const style = isMobile()
@@ -28,7 +30,11 @@ class AppNotificationMessages extends React.Component {
             : null;
 
         const notifications = notification_messages
-            .filter(message => !marked_notifications.includes(message.key))
+            .filter(
+                message =>
+                    !marked_notifications.includes(message.key) &&
+                    (isMobile() ? allowed_on_mobile.includes(message.key) : true)
+            )
             .slice(0, max_display_notifications);
 
         if (notifications.length === 0) return null;

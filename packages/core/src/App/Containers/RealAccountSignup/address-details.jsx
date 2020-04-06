@@ -71,14 +71,8 @@ class AddressDetails extends Component {
         const padding_bottom = window.innerHeight < 930 ? '10rem' : '12rem';
         return (
             <Formik
-                initialValues={{
-                    address_line_1: this.props.value.address_line_1,
-                    address_line_2: this.props.value.address_line_2,
-                    address_city: this.props.value.address_city,
-                    address_state: this.props.value.address_state,
-                    address_postcode: this.props.value.address_postcode,
-                }}
-                validate={this.validateAddressDetails}
+                initialValues={this.props.value}
+                validate={this.props.validate}
                 onSubmit={(values, actions) => {
                     if (isDesktop() && values.address_state) {
                         values.address_state = this.props.states_list.length
@@ -201,62 +195,6 @@ class AddressDetails extends Component {
             </Formik>
         );
     }
-
-    validateAddressDetails = values => {
-        const validations = {
-            address_line_1: [v => !!v, v => /^[\w\W\s\/-]{1,70}$/gu.exec(v) !== null],
-            address_line_2: [v => !v || /^[\w\W\s\/-]{0,70}$/gu.exec(v) !== null],
-            address_city: [v => !!v, v => /^[a-zA-Z\s\W'.-]{1,35}$/gu.exec(v) !== null],
-            address_state: [v => /^[a-zA-Z\s\W'.-]{0,35}$/gu.exec(v) !== null],
-            address_postcode: [v => !!v, v => /^[^+]{0,20}$/gu.exec(v) !== null],
-        };
-
-        const mappedKey = {
-            address_line_1: localize('First line of address'),
-            address_line_2: localize('Second line of address'),
-            address_city: `${localize('Town/City')}`,
-            address_state: `${localize('State/Province')}`,
-            address_postcode: `${localize('Postal/ZIP Code')}`,
-        };
-
-        const required_messages = ['{{field_name}} is required', '{{field_name}} is not in a proper format.'];
-
-        const optional_messages = ['{{field_name}} is not in a proper format.'];
-
-        const errors = {};
-
-        Object.entries(validations).forEach(([key, rules]) => {
-            const error_index = rules.findIndex(v => !v(values[key]));
-            if (error_index !== -1) {
-                switch (key) {
-                    case 'address_state':
-                    case 'address_line_2':
-                        errors[key] = (
-                            <Localize
-                                i18n_default_text={optional_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                                options={{ interpolation: { escapeValue: false } }}
-                            />
-                        );
-                        break;
-                    default:
-                        errors[key] = (
-                            <Localize
-                                i18n_default_text={required_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                                options={{ interpolation: { escapeValue: false } }}
-                            />
-                        );
-                }
-            }
-        });
-
-        return errors;
-    };
 }
 
 export default connect(({ client }) => ({

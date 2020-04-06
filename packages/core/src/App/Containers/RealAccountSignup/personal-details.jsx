@@ -1,5 +1,13 @@
 import classNames from 'classnames';
-import { Div100vhContainer, Icon, Input, ThemedScrollbars, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import {
+    Autocomplete,
+    Div100vhContainer,
+    Icon,
+    Input,
+    ThemedScrollbars,
+    DesktopWrapper,
+    MobileWrapper,
+} from '@deriv/components';
 import { Formik, Field } from 'formik';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
@@ -238,19 +246,14 @@ class PersonalDetails extends React.Component {
     render() {
         return (
             <Formik
-                initialValues={{
-                    first_name: this.props.value.first_name,
-                    last_name: this.props.value.last_name,
-                    date_of_birth: this.props.value.date_of_birth,
-                    phone: this.props.value.phone,
-                }}
-                validate={this.validatePersonalDetails}
+                initialValues={{ ...this.props.value }}
+                validate={this.props.validate}
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
                 ref={this.form}
             >
-                {({ handleSubmit, isSubmitting, errors, values }) => (
+                {({ handleSubmit, isSubmitting, errors, setFieldValue, touched, values }) => (
                     <form onSubmit={handleSubmit}>
                         <Div100vhContainer className='details-form' height_offset='199px' is_disabled={isDesktop()}>
                             <p className='details-form__description'>
@@ -288,6 +291,49 @@ class PersonalDetails extends React.Component {
                                             placeholder={localize('01-07-1999')}
                                             onFocus={this.onFocus}
                                         />
+                                        {'place_of_birth' in this.props.value && (
+                                            <Field name='place_of_birth'>
+                                                {({ field }) => (
+                                                    <Autocomplete
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        autoComplete='new-password' // prevent chrome autocomplete
+                                                        type='text'
+                                                        label={localize('Place of birth*')}
+                                                        error={touched.place_of_birth && errors.place_of_birth}
+                                                        // disabled={this.props.value.place_of_birth}
+                                                        list_items={this.props.residence_list}
+                                                        onItemSelection={({ value, text }) =>
+                                                            setFieldValue('place_of_birth', value ? text : '', true)
+                                                        }
+                                                        required
+                                                    />
+                                                )}
+                                            </Field>
+                                        )}
+                                        {'citizen' in this.props.value && (
+                                            <Field name='citizen'>
+                                                {({ field }) => (
+                                                    <Autocomplete
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        autoComplete='new-password' // prevent chrome autocomplete
+                                                        type='text'
+                                                        label={localize('Citizenship*')}
+                                                        error={touched.citizen && errors.citizen}
+                                                        disabled={
+                                                            this.props.value.citizen &&
+                                                            this.props.is_fully_authenticated
+                                                        }
+                                                        list_items={this.props.residence_list}
+                                                        onItemSelection={({ value, text }) =>
+                                                            setFieldValue('citizen', value ? text : '', true)
+                                                        }
+                                                        required
+                                                    />
+                                                )}
+                                            </Field>
+                                        )}
                                         <InputField
                                             name='phone'
                                             label={localize('Phone number*')}
@@ -314,73 +360,7 @@ class PersonalDetails extends React.Component {
         );
     }
 
-    validatePersonalDetails = values => {
-        const max_date = toMoment().subtract(18, 'days');
-        const validations = {
-            first_name: [
-                v => !!v,
-                v => v.length > 2,
-                v => v.length < 30,
-                v => /^[a-zA-Z\s\W'.-]{2,50}$/gu.exec(v) !== null,
-            ],
-            last_name: [
-                v => !!v,
-                v => v.length >= 2,
-                v => v.length <= 50,
-                v => /^[a-zA-Z\s\W'.-]{2,50}$/gu.exec(v) !== null,
-            ],
-            date_of_birth: [v => !!v, v => toMoment(v).isValid() && toMoment(v).isBefore(max_date)],
-            phone: [v => !!v, v => /^\+?((-|\s)*[0-9]){8,35}$/.exec(v) !== null],
-        };
-
-        const mappedKey = {
-            first_name: localize('First name'),
-            last_name: localize('Last name'),
-            date_of_birth: localize('Date of birth'),
-            phone: localize('Phone'),
-        };
-
-        const common_messages = [
-            '{{field_name}} is required',
-            '{{field_name}} is too short',
-            '{{field_name}} is too long',
-            '{{field_name}} is not in a proper format.',
-        ];
-
-        const alt_messages = ['{{field_name}} is required', '{{field_name}} is not in a proper format.'];
-
-        const errors = {};
-
-        Object.entries(validations).forEach(([key, rules]) => {
-            const error_index = rules.findIndex(v => !v(values[key]));
-            if (error_index !== -1) {
-                switch (key) {
-                    case 'date_of_birth':
-                    case 'phone':
-                        errors[key] = errors[key] = (
-                            <Localize
-                                i18n_default_text={alt_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                            />
-                        );
-                        break;
-                    default:
-                        errors[key] = errors[key] = (
-                            <Localize
-                                i18n_default_text={common_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                            />
-                        );
-                }
-            }
-        });
-
-        return errors;
-    };
+    validatePersonalDetails = landing_company => this.props.validate;
 }
 
 export default PersonalDetails;

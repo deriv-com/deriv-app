@@ -475,6 +475,19 @@ export default class ClientStore extends BaseStore {
     realAccountSignup(form_values) {
         return new Promise(async (resolve, reject) => {
             form_values.residence = this.residence;
+            if (form_values.citizen) {
+                form_values.citizen = this.residence_list.reduce(
+                    (res, item) => (item.text === form_values.citizen ? item.value : res),
+                    ''
+                );
+            }
+            if (form_values.place_of_birth) {
+                form_values.place_of_birth = this.residence_list.reduce(
+                    (res, item) => (item.text === form_values.place_of_birth ? item.value : res),
+                    ''
+                );
+            }
+
             const response = await WS.newAccountReal(form_values);
             if (!response.error) {
                 await this.accountRealReaction(response);

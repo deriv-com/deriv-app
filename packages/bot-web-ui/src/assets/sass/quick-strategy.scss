@@ -2,10 +2,15 @@
     $strategy-modal: 'modal--strategy';
 
     &__container {
+        .modal__scrollbar {
+            max-height: 516px;
+            margin-bottom: 75px;
+        }
         &_#{$strategy-modal} {
             .modal__content {
                 padding: 24px;
                 height: calc(100% - 200px);
+                max-height: 636px;
             }
         }
     }
@@ -56,6 +61,9 @@
         }
         &-footer {
             text-align: right;
+            position: fixed;
+            right: 20px;
+            bottom: 15px;
         }
         .dc-input {
             margin-bottom: 0;

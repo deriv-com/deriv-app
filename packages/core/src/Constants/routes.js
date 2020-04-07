@@ -41,6 +41,4 @@ const routes = {
     endpoint: '/endpoint',
 };
 
-export const routing_control_key = 'routing_control';
-
 export default routes;

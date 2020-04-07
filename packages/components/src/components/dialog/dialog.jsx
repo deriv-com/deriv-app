@@ -39,6 +39,7 @@ class Dialog extends React.Component {
             onCancel,
             is_loading,
             is_visible,
+            is_mobile_full_width = true,
             is_content_centered,
             title,
         } = this.props;
@@ -62,7 +63,11 @@ class Dialog extends React.Component {
                     unmountOnExit
                 >
                     <div className='dc-dialog__wrapper'>
-                        <div className='dc-dialog__dialog'>
+                        <div
+                            className={classNames('dc-dialog__dialog', {
+                                'dc-dialog__dialog--has-margin': !is_mobile_full_width,
+                            })}
+                        >
                             {!!title && <h1 className='dc-dialog__header'>{title}</h1>}
                             {typeof children === 'string' ? (
                                 <p className={content_classes}>{children}</p>

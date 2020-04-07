@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Autocomplete, Button, Icon, Input, Modal, Popover, Tabs } from '@deriv/components';
+import { Autocomplete, Button, Icon, Input, Modal, Popover, Tabs, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { Formik, Form, Field } from 'formik';
 import { config } from '@deriv/bot-skeleton';
@@ -337,39 +337,47 @@ const QuickStrategy = props => {
             toggleModal={toggleStrategyModal}
             width={'460px'}
         >
-            <div className='modal__content'>
-                <div className='quick-strategy__tabs'>
-                    <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
-                        {Object.keys(strategies).map(key => {
-                            const { index, label, description } = strategies[key];
-                            return (
-                                <div key={index} label={label}>
-                                    <div className='quick-strategy__tab-content'>
-                                        <div className='quick-strategy__description'>{description}</div>
-                                        <QuickStrategyForm
-                                            active_index={active_index}
-                                            createStrategy={createStrategy}
-                                            duration_unit_dropdown={duration_unit_dropdown}
-                                            getSizeDesc={getSizeDesc}
-                                            getSizeText={getSizeText}
-                                            initial_errors={initial_errors}
-                                            initial_values={initial_values}
-                                            is_stop_button_visible={is_stop_button_visible}
-                                            onChangeDropdownItem={onChangeDropdownItem}
-                                            onChangeInputValue={onChangeInputValue}
-                                            onHideDropdownList={onHideDropdownList}
-                                            onScrollStopDropdownList={onScrollStopDropdownList}
-                                            validateQuickStrategy={validateQuickStrategy}
-                                            symbol_dropdown={symbol_dropdown_options}
-                                            trade_type_dropdown={trade_type_dropdown_options}
-                                        />
+            <ThemedScrollbars
+                className='modal__scrollbar'
+                autohide
+                style={{
+                    height: 'calc(100vh - 250px)',
+                }}
+            >
+                <div className='modal__content'>
+                    <div className='quick-strategy__tabs'>
+                        <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
+                            {Object.keys(strategies).map(key => {
+                                const { index, label, description } = strategies[key];
+                                return (
+                                    <div key={index} label={label}>
+                                        <div className='strategy__tab'>
+                                            <div className='quick-strategy__description'>{description}</div>
+                                            <QuickStrategyForm
+                                                active_index={active_index}
+                                                createStrategy={createStrategy}
+                                                duration_unit_dropdown={duration_unit_dropdown}
+                                                getSizeDesc={getSizeDesc}
+                                                getSizeText={getSizeText}
+                                                initial_errors={initial_errors}
+                                                initial_values={initial_values}
+                                                is_stop_button_visible={is_stop_button_visible}
+                                                onChangeDropdownItem={onChangeDropdownItem}
+                                                onChangeInputValue={onChangeInputValue}
+                                                onHideDropdownList={onHideDropdownList}
+                                                onScrollStopDropdownList={onScrollStopDropdownList}
+                                                validateQuickStrategy={validateQuickStrategy}
+                                                symbol_dropdown={symbol_dropdown_options}
+                                                trade_type_dropdown={trade_type_dropdown_options}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                            );
-                        })}
-                    </Tabs>
+                                );
+                            })}
+                        </Tabs>
+                    </div>
                 </div>
-            </div>
+            </ThemedScrollbars>
         </Modal>
     );
 };

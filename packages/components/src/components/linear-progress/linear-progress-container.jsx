@@ -50,8 +50,8 @@ class LinearProgressContainer extends React.Component {
         if (!timeout) return null;
         // return null;
         return (
-            <div className='notification__timeout-container'>
-                <div className='notification__timeout-countdown'>{this.props.render(this.remaining)}</div>
+            <div className='dc-linear-progress-container'>
+                <div className='dc-linear-progress__countdown'>{this.props.render(this.remaining)}</div>
                 <LinearProgress className={className} progress={this.progress} height={4} />
             </div>
         );
@@ -61,7 +61,7 @@ class LinearProgressContainer extends React.Component {
 LinearProgressContainer.propTypes = {
     timeout: PropTypes.number,
     action: PropTypes.func,
-    render: PropTypes.func,
+    render: PropTypes.func.isRequired,
 };
 
 export default LinearProgressContainer;

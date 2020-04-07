@@ -312,6 +312,7 @@ export const clientNotifications = (ui = {}) => {
             type: 'warning',
             should_hide_close_btn: true,
             timeout: 360000,
+            timeoutMessage: remaining => localize('Auto update in {{ remaining }} seconds', { remaining }),
         },
     };
     return notifications;

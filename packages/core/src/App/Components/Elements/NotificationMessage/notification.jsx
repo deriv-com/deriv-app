@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, LinearProgress } from '@deriv/components';
-import { Localize } from '@deriv/translations';
 import ObjectUtils from '@deriv/shared/utils/object';
 import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
@@ -43,12 +42,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                         className='notification__timeout'
                         timeout={data.timeout}
                         action={data.action.onClick}
-                        render={remaining => (
-                            <Localize
-                                i18n_default_text='Auto update in {{ remaining }} seconds'
-                                values={{ remaining }}
-                            />
-                        )}
+                        render={data.timeoutMessage}
                     />
                 )}
                 <p className='notification__text-body'>{data.message}</p>

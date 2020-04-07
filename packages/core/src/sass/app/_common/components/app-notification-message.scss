@@ -110,14 +110,6 @@
     &:not(:last-child) {
         margin-bottom: 16px;
     }
-    &__timeout-countdown {
-        position: absolute;
-        left: 1rem;
-        bottom: 1rem;
-        font-size: 12px;
-        color: var(--brand-red-coral);
-        font-weight: bold;
-    }
     @include mobile {
         max-width: unset;
 

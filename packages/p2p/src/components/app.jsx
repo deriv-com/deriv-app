@@ -51,24 +51,13 @@ class App extends Component {
         this.setState({ active_index: idx, parameters: null });
     };
 
-    setIsAdvertiser = async () => {
-        const advertiser_info = await requestWS({ p2p_advertiser_info: 1 });
-
+    setIsAdvertiser = advertiser_info => {
         /* if there is no error means it's an advertiser else it's a client */
         if (!advertiser_info.error) {
-            const advertiser_id = ObjectUtils.getPropertyValue(advertiser_info, [
-                'advertiser_info',
-                'p2p_advertiser_info',
-                'id',
-            ]);
-            const advertiser_name = ObjectUtils.getPropertyValue(advertiser_info, [
-                'advertiser_info',
-                'p2p_advertiser_info',
-                'nickname',
-            ]);
-            await this.setState({ advertiser_id, advertiser_name, is_advertiser: true });
+            const advertiser_id = ObjectUtils.getPropertyValue(advertiser_info, ['p2p_advertiser_info', 'id']);
+            const advertiser_name = ObjectUtils.getPropertyValue(advertiser_info, ['p2p_advertiser_info', 'name']);
+            this.setState({ advertiser_id, advertiser_name, is_advertiser: true });
         }
-        return true;
     };
 
     handleNotifications = orders => {
@@ -120,7 +109,7 @@ class App extends Component {
     };
 
     componentDidMount() {
-        this.setIsAdvertiser();
+        subscribeWS({ p2p_advertiser_info: 1, subscribe: 1 }, this.setIsAdvertiser);
 
         subscribeWS({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);
     }
@@ -150,7 +139,6 @@ class App extends Component {
                     residence,
                     advertiser_id: this.state.advertiser_id,
                     advertiser_name: this.state.advertiser_name,
-                    setAdvertiserName: this.setAdvertiserName,
                     is_advertiser: this.state.is_advertiser,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                 }}

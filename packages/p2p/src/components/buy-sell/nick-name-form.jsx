@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Input, Button, ThemedScrollbars, Icon } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { requestWS } from 'Utils/websocket';
 import IconClose from 'Assets/icon-close.jsx';
 import FormError from '../form/error.jsx';
 
 const NickNameForm = ({ handleClose, setNicknameTrue }) => {
-    const { setAdvertiserName } = React.useContext(Dp2pContext);
     const handleSubmit = async (values, { setStatus, setSubmitting }) => {
         const advertiser_create = await requestWS({ p2p_advertiser_create: 1, name: values.nickname });
         if (advertiser_create.error) {
@@ -17,7 +15,6 @@ const NickNameForm = ({ handleClose, setNicknameTrue }) => {
             setSubmitting(false);
             return;
         }
-        setAdvertiserName(advertiser_create.p2p_advertiser_create.name);
         setNicknameTrue();
         setSubmitting(false);
     };

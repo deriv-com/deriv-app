@@ -81,7 +81,7 @@ commands:
                 echo $CA_CRT | base64 --decode > ca.crt
                 kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/staging-deriv-app staging-deriv-app=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
                 fi
-              done  
+              done
 
   k8s_deploy_production:
     description: "Deploy to k8s cluster"
@@ -104,7 +104,7 @@ commands:
                 echo $CA_CRT | base64 --decode > ca.crt
                 kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/production-deriv-app production-deriv-app=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
               fi
-            done  
+            done
 
 
 jobs:
@@ -139,9 +139,7 @@ workflows:
           context: binary-frontend-artifact-upload
           filters:
             branches:
-              ignore: /.*/
-            tags:
-              only: /^staging.*/
+              only: /^dev$/
   release_production:
     jobs:
       - release_production:

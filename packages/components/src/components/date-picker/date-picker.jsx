@@ -130,7 +130,7 @@ class DatePicker extends React.PureComponent {
                         <input
                             id={this.props.name}
                             name={this.props.name}
-                            className='input dc-datepicker-native__input'
+                            className='dc-datepicker-native__input'
                             type='date'
                             min={this.props.min_date}
                             max={this.props.max_date}
@@ -146,8 +146,8 @@ class DatePicker extends React.PureComponent {
                                 this.onSelectCalendarNative(e.target.value);
                             }}
                         />
-                        <label className='dc-natepicker-native__overlay' htmlFor={this.props.name}>
-                            <Icon icon='IcCalendarDatefrom' className='dc-datepicker__arrowhead' />
+                        <label className='dc-datepicker-native__overlay' htmlFor={this.props.name}>
+                            <Icon icon='IcCalendar' className='dc-datepicker__arrowhead' />
                             <span className='dc-datepicker-native__overlay-text'>
                                 {this.state.value || this.props.placeholder}
                             </span>

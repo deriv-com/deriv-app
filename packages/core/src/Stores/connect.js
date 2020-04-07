@@ -10,7 +10,6 @@ export const MobxContent = React.createContext(null);
 function injectCustom(selector, BaseComponent) {
     const component = ownProps => {
         const store = React.useContext(MobxContent);
-        const storeProps = selector(store);
 
         if (!isClassComponent(BaseComponent)) {
             return useObserver(() => BaseComponent({ ...ownProps, ...selector(store, ownProps) }));

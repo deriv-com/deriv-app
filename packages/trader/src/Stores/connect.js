@@ -10,7 +10,6 @@ export const MobxContent = React.createContext(null);
 function injectCustom(selector, BaseComponent) {
     const component = ownProps => {
         const store = React.useContext(MobxContent);
-        const storeProps = selector(store);
 
         if (!isClassComponent(BaseComponent)) {
             return useObserver(() => BaseComponent({ ...ownProps, ...selector(store, ownProps) }));
@@ -28,6 +27,6 @@ export const MobxContentProvider = ({ store, children }) => {
     return <MobxContent.Provider value={{ ...store, mobxStores: store }}>{children}</MobxContent.Provider>;
 };
 
-export const connect = (StoreClass, mapper) => Component => {
+export const connect = StoreClass => Component => {
     return injectCustom(StoreClass, Component);
 };

@@ -26,7 +26,7 @@
         /* postcss-bem-linter: ignore */
         span {
             @include typeface(--paragraph-left-normal-black, unset);
-            color: var(--text-general);
+            color: var(--text-less-prominent);
         }
         &--active {
             cursor: initial;
@@ -43,7 +43,7 @@
         position: relative;
         border-radius: $BORDER_RADIUS;
         width: 100%;
-        background-color: var(--state-normal);
+        background-color: var(--state-disable);
         display: flex;
 
         .dc-button-menu {
@@ -68,6 +68,6 @@
         z-index: 0;
         transition: transform 0.25s ease;
         pointer-events: none;
-        background-color: var(--state-active) !important;
+        background-color: var(--state-normal) !important;
     }
 }

@@ -301,7 +301,7 @@ export const clientNotifications = (ui = {}) => {
         },
         new_version_available: {
             action: {
-                onClick: () => location.reload(),
+                onClick: () => window.location.reload(),
                 text: localize('Get the update'),
             },
             key: 'new_version_available',

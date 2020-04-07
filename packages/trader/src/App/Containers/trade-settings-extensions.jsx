@@ -4,13 +4,14 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import Lazy from 'App/Containers/Lazy';
 
-const ChartSettingContainer = () => (
+const ChartSettingContainer = ({ ...props }) => (
     <Lazy
         ctor={() =>
             import(
                 /* webpackChunkName: "settings-chart", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-chart.jsx'
             )
         }
+        {...props}
     />
 );
 

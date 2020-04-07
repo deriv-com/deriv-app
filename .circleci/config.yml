@@ -127,8 +127,7 @@ commands:
                 echo $CA_CRT | base64 --decode > ca.crt
                 kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/staging-deriv-app staging-deriv-app=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
                 fi
-              done  
-
+              done
   k8s_deploy_production:
     description: "Deploy to k8s cluster"
     steps:
@@ -150,9 +149,7 @@ commands:
                 echo $CA_CRT | base64 --decode > ca.crt
                 kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/production-deriv-app production-deriv-app=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
               fi
-            done  
-
-
+            done
 jobs:
   test:
     docker:
@@ -191,7 +188,6 @@ jobs:
       - image: circleci/node:11.15.0-stretch
     steps:
       - k8s_deploy_production
-
 workflows:
   build_and_push_dev:
     jobs:
@@ -202,14 +198,14 @@ workflows:
   build_deploy_staging:
     jobs:
       - build_staging:
-          context: deriv-app-artifact-upload
+          context: binary-frontend-artifact-upload
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^staging.*/
       - deploy_staging:
-          context: deriv-app-artifact-upload
+          context: binary-frontend-artifact-upload
           filters:
             branches:
               ignore: /.*/
@@ -220,14 +216,14 @@ workflows:
   build_deploy_production:
     jobs:
       - build_production:
-          context: deriv-app-artifact-upload
+          context: binary-frontend-artifact-upload
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^production.*/
       - deploy_production:
-          context: deriv-app-artifact-upload  # using context to retrieve shared secret from circle ci
+          context: binary-frontend-artifact-upload
           filters:
             branches:
               ignore: /.*/

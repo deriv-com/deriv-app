@@ -1,7 +1,76 @@
 @import '../_common/base/index';
 
+.dc-tabs--account-types__tabs {
+    ul {
+        width: fit-content;
+        margin: 0 auto;
+    }
+}
 /* @define account-types; weak */
 .account-types {
+    overflow-y: auto;
+    height: 63.5rem;
+
+    &__intro {
+        color: var(--text-general);
+        font-size: 1.4rem;
+        line-height: 1.43;
+        margin: 2.4rem 6.2rem 2.4rem 4.8rem;
+
+        &__icon {
+            height: 2.2rem;
+            vertical-align: middle;
+            width: 2.2rem;
+        }
+    }
+    &__box {
+        display: grid;
+        grid-template-columns: auto 1fr 1fr;
+        grid-column-gap: 2.4rem;
+        width: 80.8rem;
+        height: 30.2rem;
+        border-radius: 0.4rem;
+        box-shadow: 0 8px 8px 0 var(--shadow-menu), 0 0 8px 0 var(--shadow-menu);
+        margin: 0 auto 4rem auto;
+        padding: 2.4rem;
+
+        &:first-of-type {
+            margin-top: 1.6rem;
+        }
+
+        &__left {
+            width: 25rem;
+        }
+        &__title {
+            color: var(--brand-red-coral);
+            font-size: 1.6rem;
+            font-weight: bold;
+            line-height: 1.5;
+            margin-bottom: 0.8rem;
+        }
+        &__description {
+            color: var(--text-general);
+            font-size: 1.4rem;
+            line-height: 1.43;
+            margin-bottom: 0.8rem;
+        }
+        &__footer {
+            color: var(--text-general);
+            font-size: 1.2rem;
+            font-weight: bold;
+            line-height: 1.5;
+            margin-bottom: 0.8rem;
+        }
+        &__icons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 0.8rem 1.6rem;
+        }
+        &__icon {
+            height: 4.8rem;
+            width: 4.8rem;
+        }
+    }
     .account-card {
         border: 1px solid var(--border-normal);
         border-radius: 0.6rem;
@@ -20,6 +89,7 @@
             }
         }
         &__main {
+            height: 25.2rem;
             min-width: 100%;
             padding: 1.6rem;
 
@@ -40,10 +110,13 @@
             &__items {
                 width: 100%;
                 border-spacing: 0;
-                border-collapse: collapse;
+                border-collapse: separate;
+                border-spacing: 0 0.8rem;
                 margin-bottom: 1.6rem;
             }
             &__item {
+                margin-bottom: 0.8rem;
+
                 &__label {
                     color: var(--text-less-prominent);
                     display: inline-block;
@@ -65,13 +138,16 @@
                 margin-left: 0.4rem;
             }
             &__button {
-                width: 100%;
+                width: calc(100% - 32px);
+                box-sizing: border-box;
+                position: absolute;
+                bottom: 2.2rem;
             }
         }
         &__description {
             color: var(--text-general);
             font-size: 1.2rem;
-            line-height: 1.8;
+            line-height: 1.5;
             min-width: 100%;
             padding: 0.8rem 1.6rem 1.6rem;
 

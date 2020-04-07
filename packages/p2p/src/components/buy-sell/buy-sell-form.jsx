@@ -6,6 +6,7 @@ import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from 'Components/i18next';
 import { countDecimalPlaces } from 'Utils/string';
 import { requestWS } from 'Utils/websocket';
+import IconClose from 'Assets/icon-close.jsx';
 import FormError from '../form/error.jsx';
 
 const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
@@ -96,100 +97,110 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
     };
 
     return (
-        <Formik validate={validatePopup} initialValues={{ amount: ad.min_available }} onSubmit={handleSubmit}>
-            {({ errors, isSubmitting, handleChange, status }) => (
-                <Form noValidate>
-                    <ThemedScrollbars autoHide style={{ height: '307px' }}>
-                        <div className='buy-sell__popup-content'>
-                            <div className='buy-sell__popup-info'>
-                                <span className='buy-sell__popup-info--title'>{localize('Price')}</span>
-                                <p className='buy-sell__popup-info--text'>
-                                    {ad.display_price_rate} {ad.transaction_currency}
-                                </p>
-                            </div>
-                            <div className='buy-sell__popup-field_wrapper'>
-                                <div className='buy-sell__popup-field'>
-                                    <span className='buy-sell__popup-info--title'>
-                                        {ad.type === 'buy' ? localize('Seller') : localize('Buyer')}
-                                    </span>
-                                    <p className='buy-sell__popup-info--text'>{ad.advertiser_name}</p>
-                                </div>
-                                <div className='buy-sell__popup-field'>
-                                    <span className='buy-sell__popup-info--title'>{localize('Payment method')}</span>
-                                    <p className='buy-sell__popup-info--text'>{ad.display_payment_method}</p>
-                                </div>
-                            </div>
-                            <div className='buy-sell__popup-info buy-sell__popup-info_notes'>
-                                <span className='buy-sell__popup-info--title'>{localize('Advertiser notes')}</span>
-                                {ad.advertiser_notes.split('\n').map((text, idx) => (
-                                    <p className='buy-sell__popup-info--text' key={idx}>
-                                        {text}
+        <>
+            <div className='buy-sell__popup-header'>
+                <div className='buy-sell__popup-header_wrapper'>
+                    <h2 className='buy-sell__popup-header--title'>{`${ad.type} ${ad.offer_currency}`}</h2>
+                    <IconClose className='buy-sell__popup-close_icon' onClick={handleClose} />
+                </div>
+            </div>
+            <Formik validate={validatePopup} initialValues={{ amount: ad.min_available }} onSubmit={handleSubmit}>
+                {({ errors, isSubmitting, handleChange, status }) => (
+                    <Form noValidate>
+                        <ThemedScrollbars autoHide style={{ height: '307px' }}>
+                            <div className='buy-sell__popup-content'>
+                                <div className='buy-sell__popup-info'>
+                                    <span className='buy-sell__popup-info--title'>{localize('Price')}</span>
+                                    <p className='buy-sell__popup-info--text'>
+                                        {ad.display_price_rate} {ad.transaction_currency}
                                     </p>
-                                ))}
-                            </div>
-                            <div className='buy-sell__popup-field_wrapper'>
-                                <Field name='amount'>
-                                    {({ field }) => (
-                                        <Input
-                                            {...field}
-                                            data-lpignore='true'
-                                            type='number'
-                                            error={errors.amount}
-                                            label={localize('Amount')}
-                                            hint={
-                                                <Localize
-                                                    i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
-                                                    values={{
-                                                        min: ad.display_min_available,
-                                                        max: ad.display_max_available,
-                                                        currency: ad.offer_currency,
-                                                    }}
-                                                />
-                                            }
-                                            className='buy-sell__popup-field'
-                                            trailing_icon={
-                                                <span className='buy-sell__popup-field--trailing'>
-                                                    {ad.offer_currency}
-                                                </span>
-                                            }
-                                            onChange={e => {
-                                                // typing more than 15 characters will break the layout
-                                                // max doesn't disable typing, so we will use this to restrict length
-                                                if (e.target.value.length > 15) {
-                                                    e.target.value = e.target.value.slice(0, 15);
-                                                    return;
+                                </div>
+                                <div className='buy-sell__popup-field_wrapper'>
+                                    <div className='buy-sell__popup-field'>
+                                        <span className='buy-sell__popup-info--title'>
+                                            {ad.type === 'buy' ? localize('Seller') : localize('Buyer')}
+                                        </span>
+                                        <p className='buy-sell__popup-info--text'>{ad.advertiser_name}</p>
+                                    </div>
+                                    <div className='buy-sell__popup-field'>
+                                        <span className='buy-sell__popup-info--title'>
+                                            {localize('Payment method')}
+                                        </span>
+                                        <p className='buy-sell__popup-info--text'>{ad.display_payment_method}</p>
+                                    </div>
+                                </div>
+                                <div className='buy-sell__popup-info buy-sell__popup-info_notes'>
+                                    <span className='buy-sell__popup-info--title'>{localize('Advertiser notes')}</span>
+                                    {ad.advertiser_notes.split('\n').map((text, idx) => (
+                                        <p className='buy-sell__popup-info--text' key={idx}>
+                                            {text}
+                                        </p>
+                                    ))}
+                                </div>
+                                <div className='buy-sell__popup-field_wrapper'>
+                                    <Field name='amount'>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                data-lpignore='true'
+                                                type='number'
+                                                error={errors.amount}
+                                                label={localize('Amount')}
+                                                hint={
+                                                    <Localize
+                                                        i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
+                                                        values={{
+                                                            min: ad.display_min_available,
+                                                            max: ad.display_max_available,
+                                                            currency: ad.offer_currency,
+                                                        }}
+                                                    />
                                                 }
-                                                const amount = isNaN(e.target.value) ? 0 : e.target.value;
-                                                calculateTotalAmount(amount);
-                                                handleChange(e);
-                                            }}
-                                            required
-                                        />
-                                    )}
-                                </Field>
-                                <div className='buy-sell__popup-field'>
-                                    <span className='buy-sell__popup-info--title'>
-                                        {ad.type === 'buy' ? localize('You send') : localize('You receive')}
-                                    </span>
-                                    <p className='buy-sell__popup-info--text buy-sell__popup-info--strong'>
-                                        {total_amount} {ad.transaction_currency}
-                                    </p>
+                                                className='buy-sell__popup-field'
+                                                trailing_icon={
+                                                    <span className='buy-sell__popup-field--trailing'>
+                                                        {ad.offer_currency}
+                                                    </span>
+                                                }
+                                                onChange={e => {
+                                                    // typing more than 15 characters will break the layout
+                                                    // max doesn't disable typing, so we will use this to restrict length
+                                                    if (e.target.value.length > 15) {
+                                                        e.target.value = e.target.value.slice(0, 15);
+                                                        return;
+                                                    }
+                                                    const amount = isNaN(e.target.value) ? 0 : e.target.value;
+                                                    calculateTotalAmount(amount);
+                                                    handleChange(e);
+                                                }}
+                                                required
+                                            />
+                                        )}
+                                    </Field>
+                                    <div className='buy-sell__popup-field'>
+                                        <span className='buy-sell__popup-info--title'>
+                                            {ad.type === 'buy' ? localize('You send') : localize('You receive')}
+                                        </span>
+                                        <p className='buy-sell__popup-info--text buy-sell__popup-info--strong'>
+                                            {total_amount} {ad.transaction_currency}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
+                        </ThemedScrollbars>
+                        <div className='buy-sell__popup-footer'>
+                            {status && status.error_message && <FormError message={status.error_message} />}
+                            <Button secondary type='button' onClick={handleClose}>
+                                {localize('Cancel')}
+                            </Button>
+                            <Button is_disabled={!!(isSubmitting || errors.amount)} primary>
+                                {localize('Confirm')}
+                            </Button>
                         </div>
-                    </ThemedScrollbars>
-                    <div className='buy-sell__popup-footer'>
-                        {status && status.error_message && <FormError message={status.error_message} />}
-                        <Button secondary type='button' onClick={handleClose}>
-                            {localize('Cancel')}
-                        </Button>
-                        <Button is_disabled={!!(isSubmitting || errors.amount)} primary>
-                            {localize('Confirm')}
-                        </Button>
-                    </div>
-                </Form>
-            )}
-        </Formik>
+                    </Form>
+                )}
+            </Formik>
+        </>
     );
 };
 

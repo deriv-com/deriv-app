@@ -29,12 +29,12 @@
             height: auto;
             padding: 0;
             max-height: initial;
-            min-width: 50rem;
+            min-width: 44rem;
         }
         & .dc-dialog__content {
             margin-bottom: 0;
             width: 100%;
-            max-width: 50rem;
+            max-width: 44rem;
         }
     }
     &__popup {
@@ -49,6 +49,10 @@
                 justify-content: space-between;
                 box-sizing: border-box;
             }
+            &_right {
+                justify-content: flex-end;
+                padding: 2.8rem 2.4rem 0;
+            }
             &--title {
                 font-weight: bold;
                 color: var(--text-prominent);
@@ -57,9 +61,20 @@
                     text-transform: uppercase;
                 }
             }
+            &--no-border {
+                border: none;
+            }
         }
         &-content {
             padding: 2.4rem;
+
+            &_centre {
+                padding: 0 8rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
         }
         &-field {
             margin-bottom: 0 !important;

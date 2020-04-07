@@ -153,6 +153,10 @@
         &-wrapper {
             display: flex;
 
+            .dc-select-native__placeholder {
+                background-color: var(--general-main-1);
+            }
+
             @include mobile {
                 flex-direction: column;
             }

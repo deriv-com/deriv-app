@@ -3,6 +3,13 @@
     width: 100%;
     position: relative;
 
+    &-wrapper {
+        margin-bottom: 3.2rem;
+
+        .dc-input {
+            margin-bottom: 0px;
+        }
+    }
     &__arrow {
         position: absolute;
         right: 1.2rem;
@@ -24,7 +31,7 @@
     }
     &__placeholder {
         position: absolute;
-        left: 0.8rem;
+        left: 1rem;
         top: 1.2rem;
         pointer-events: none;
         transition: transform 0.25s linear;
@@ -33,9 +40,11 @@
         transform: none;
         background-color: var(--general-section-2);
         color: var(--text-less-prominent);
+        transform-origin: top left;
+        line-height: 1.4rem;
 
         &--has-value {
-            transform: translate3d(-1.2rem, -2rem, 0px) scale(0.8);
+            transform: translate(0, -1.8rem) scale(0.75);
             color: var(--text-general);
         }
     }
@@ -59,5 +68,10 @@
         .dc-select-native__placeholder {
             color: var(--brand-red-coral);
         }
+    }
+    &__hint {
+        color: var(--text-less-prominent);
+        font-size: 1.2rem;
+        margin-left: 1.2rem;
     }
 }

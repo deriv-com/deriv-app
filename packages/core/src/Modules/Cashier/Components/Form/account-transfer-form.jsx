@@ -1,10 +1,9 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { Field, Formik, Form } from 'formik';
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import { isMobile } from '@deriv/shared/utils/screen';
 import { website_name } from 'App/Constants/app-config';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -146,6 +145,18 @@ class AccountTransferForm extends React.Component {
             this.props.selected_to &&
             mt_accounts_to.find(account => account.value === this.props.selected_to.value);
 
+        const transfer_to_hint = account_limits?.daily_transfers && (
+            <Localize
+                i18n_default_text='Remaining {{type}} transfers for today: {{remaining}}'
+                values={{
+                    remaining: is_transfer_to_mt5
+                        ? account_limits.daily_transfers.mt5?.available
+                        : account_limits.daily_transfers.internal?.available,
+                    type: is_transfer_to_mt5 ? 'MT5' : '',
+                }}
+            />
+        );
+
         return (
             <div className='cashier__wrapper--align-left'>
                 <React.Fragment>
@@ -167,64 +178,68 @@ class AccountTransferForm extends React.Component {
                                 ) : (
                                     <Form>
                                         <div className='cashier__drop-down-wrapper'>
-                                            <Dropdown
-                                                id='transfer_from'
-                                                className='cashier__drop-down account-transfer__drop-down'
-                                                classNameDisplay='cashier__drop-down-display'
-                                                classNameDisplaySpan='cashier__drop-down-display-span'
-                                                classNameItems='cashier__drop-down-items'
-                                                classNameLabel='cashier__drop-down-label'
-                                                label={localize('From')}
-                                                list={from_accounts}
-                                                name='transfer_from'
-                                                value={this.props.selected_from.value}
-                                                onChange={e => {
-                                                    this.props.onChangeTransferFrom(e);
-                                                    handleChange(e);
-                                                    validateField('amount');
-                                                }}
-                                                is_nativepicker={isMobile()}
-                                                is_nativepicker_visible={
-                                                    isMobile() ? this.props.is_nativepicker_visible : undefined
-                                                }
-                                            />
+                                            <DesktopWrapper>
+                                                <Dropdown
+                                                    id='transfer_from'
+                                                    className='cashier__drop-down account-transfer__drop-down'
+                                                    classNameDisplay='cashier__drop-down-display'
+                                                    classNameDisplaySpan='cashier__drop-down-display-span'
+                                                    classNameItems='cashier__drop-down-items'
+                                                    classNameLabel='cashier__drop-down-label'
+                                                    label={localize('From')}
+                                                    list={from_accounts}
+                                                    name='transfer_from'
+                                                    value={this.props.selected_from.value}
+                                                    onChange={e => {
+                                                        this.props.onChangeTransferFrom(e);
+                                                        handleChange(e);
+                                                        validateField('amount');
+                                                    }}
+                                                />
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    label={localize('From')}
+                                                    value={this.props.selected_from.value}
+                                                    list_items={from_accounts}
+                                                    onChange={e => {
+                                                        this.props.onChangeTransferFrom(e);
+                                                        handleChange(e);
+                                                        validateField('amount');
+                                                    }}
+                                                />
+                                            </MobileWrapper>
                                             <DesktopWrapper>
                                                 <Icon
                                                     className='cashier__transferred-icon account-transfer__transfer-icon'
                                                     icon='IcArrowLeftBold'
                                                 />
                                             </DesktopWrapper>
-                                            <Dropdown
-                                                id='transfer_to'
-                                                className='cashier__drop-down account-transfer__drop-down'
-                                                classNameDisplay='cashier__drop-down-display'
-                                                classNameDisplaySpan='cashier__drop-down-display-span'
-                                                classNameItems='cashier__drop-down-items'
-                                                classNameLabel='cashier__drop-down-label'
-                                                label={localize('To')}
-                                                list={to_accounts}
-                                                name='transfer_to'
-                                                value={this.props.selected_to.value}
-                                                onChange={this.props.onChangeTransferTo}
-                                                is_nativepicker={isMobile()}
-                                                is_nativepicker_visible={
-                                                    isMobile() ? this.props.is_nativepicker_visible : undefined
-                                                }
-                                                hint={
-                                                    account_limits?.daily_transfers && (
-                                                        <Localize
-                                                            i18n_default_text='Remaining {{type}} transfers for today: {{remaining}}'
-                                                            values={{
-                                                                remaining: is_transfer_to_mt5
-                                                                    ? account_limits.daily_transfers.mt5?.available
-                                                                    : account_limits.daily_transfers.internal
-                                                                          ?.available,
-                                                                type: is_transfer_to_mt5 ? 'MT5' : '',
-                                                            }}
-                                                        />
-                                                    )
-                                                }
-                                            />
+                                            <DesktopWrapper>
+                                                <Dropdown
+                                                    id='transfer_to'
+                                                    className='cashier__drop-down account-transfer__drop-down'
+                                                    classNameDisplay='cashier__drop-down-display'
+                                                    classNameDisplaySpan='cashier__drop-down-display-span'
+                                                    classNameItems='cashier__drop-down-items'
+                                                    classNameLabel='cashier__drop-down-label'
+                                                    label={localize('To')}
+                                                    list={to_accounts}
+                                                    name='transfer_to'
+                                                    value={this.props.selected_to.value}
+                                                    onChange={this.props.onChangeTransferTo}
+                                                    hint={transfer_to_hint}
+                                                />
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    label={localize('To')}
+                                                    value={this.props.selected_to.value}
+                                                    list_items={to_accounts}
+                                                    onChange={this.props.onChangeTransferTo}
+                                                    hint={transfer_to_hint}
+                                                />
+                                            </MobileWrapper>
                                         </div>
                                         <Field name='amount' validate={this.validateAmount}>
                                             {({ field }) => (
@@ -358,7 +373,7 @@ AccountTransferForm.propTypes = {
     transfer_limit: PropTypes.object,
 };
 
-export default connect(({ modules, ui, client }) => ({
+export default connect(({ modules, client }) => ({
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
     minimum_fee: modules.cashier.config.account_transfer.minimum_fee,
     onChangeTransferFrom: modules.cashier.onChangeTransferFrom,
@@ -369,7 +384,6 @@ export default connect(({ modules, ui, client }) => ({
     setErrorMessage: modules.cashier.setErrorMessage,
     transfer_fee: modules.cashier.config.account_transfer.transfer_fee,
     transfer_limit: modules.cashier.config.account_transfer.transfer_limit,
-    is_nativepicker_visible: ui.is_nativepicker_visible,
     account_limits: client.account_limits,
     onMount: client.getLimits,
 }))(AccountTransferForm);

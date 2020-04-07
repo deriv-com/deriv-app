@@ -32,7 +32,7 @@ const FormatMessage = ({ logType, className, extra }) => {
                 const { longcode, transaction_id } = extra;
                 return (
                     <Localize
-                        i18n_default_text='<0>Bought</0> : {{longcode}} (ID:{{transaction_id}})'
+                        i18n_default_text='<0>Bought</0>: {{longcode}} (ID:{{transaction_id}})'
                         values={{ longcode, transaction_id }}
                         components={[<span key={0} className='journal__text--info' />]}
                     />
@@ -52,7 +52,7 @@ const FormatMessage = ({ logType, className, extra }) => {
                 const { profit } = extra;
                 return (
                     <Localize
-                        i18n_default_text='Profit amount : <0>{{profit}}</0>'
+                        i18n_default_text='Profit amount: <0>{{profit}}</0>'
                         values={{ profit }}
                         components={[<span key={0} className='journal__text--success' />]}
                     />
@@ -62,7 +62,7 @@ const FormatMessage = ({ logType, className, extra }) => {
                 const { profit } = extra;
                 return (
                     <Localize
-                        i18n_default_text='Loss amount : <0>{{profit}}</0>'
+                        i18n_default_text='Loss amount: <0>{{profit}}</0>'
                         values={{ profit }}
                         components={[<span key={0} className='journal__text--error' />]}
                     />

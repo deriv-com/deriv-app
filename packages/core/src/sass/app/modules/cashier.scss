@@ -101,6 +101,14 @@
                 margin: 0;
                 flex-flow: column;
                 height: unset;
+
+                &--align-end {
+                    align-items: flex-end;
+
+                    .cashier__form-submit-button {
+                        width: unset;
+                    }
+                }
             }
             &-submit-button {
                 margin: 0;
@@ -142,6 +150,13 @@
         margin: 0 0 16px;
         line-height: 1.43;
 
+        &-wrapper {
+            display: flex;
+
+            @include mobile {
+                flex-direction: column;
+            }
+        }
         &-display {
             justify-content: left;
             min-height: 4rem;
@@ -180,7 +195,13 @@
             text-align: left;
             line-height: 1.43;
             max-width: 20rem;
+            display: flex;
+            flex-direction: column;
+            margin-right: 0.8rem;
 
+            &-from {
+                align-items: flex-end;
+            }
             &-wrapper {
                 display: flex;
                 justify-content: center;
@@ -488,7 +509,7 @@
 
         @include mobile {
             margin: 0;
-            padding: 1.6rem 0.8rem;
+            padding: 2.4rem 0 1.6rem;
         }
     }
     &__bullet {
@@ -541,7 +562,7 @@
     &__transfer {
         &-icon {
             vertical-align: initial;
-            margin: 0 0.8rem;
+            margin: 1rem 0.8rem 0;
         }
         &-details {
             &-from,
@@ -551,11 +572,13 @@
             }
         }
     }
-    &__button-done {
-        margin: 3.2rem auto 0;
+    &__actions {
+        display: flex;
+        margin-top: 2.4rem;
+        justify-content: center;
 
-        @include mobile {
-            margin: 2.4rem auto 0;
+        &-statement {
+            margin-right: 0.8rem;
         }
     }
     &__native-select {

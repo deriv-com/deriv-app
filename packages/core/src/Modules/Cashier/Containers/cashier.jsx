@@ -61,7 +61,11 @@ class Cashier extends React.Component {
                 keyname='cashier-page-wrapper'
             >
                 <div className='cashier'>
-                    <PageOverlay header={localize('Cashier')} onClickClose={this.onClickClose} has_side_note>
+                    <PageOverlay
+                        header={isMobile() ? selected_route.title : localize('Cashier')}
+                        onClickClose={this.onClickClose}
+                        has_side_note
+                    >
                         <DesktopWrapper>
                             <VerticalTab
                                 alignment='center'

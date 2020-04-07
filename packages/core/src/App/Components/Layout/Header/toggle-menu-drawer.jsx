@@ -3,6 +3,7 @@ import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import { getAllRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
+import { WS } from 'Services';
 import routes from 'Constants/routes';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
@@ -40,9 +41,31 @@ const MenuLink = ({ link_to, icon, is_disabled, suffix_icon, text, onClickLink }
 class ToggleMenuDrawer extends React.Component {
     constructor(props) {
         super(props);
+        // TODO: find better fix for no-op issue
+        this.is_mounted = false;
         this.state = {
+            is_high_risk_client: false,
             is_open: false,
+            needs_verification: false,
         };
+    }
+
+    componentDidMount() {
+        this.is_mounted = true;
+        WS.wait('authorize', 'get_account_status').then(() => {
+            if (this.props.account_status) {
+                const { authentication } = this.props.account_status;
+                const is_high_risk_client = this.props.is_high_risk;
+                const needs_verification =
+                    authentication.needs_verification.includes('identity') ||
+                    authentication.needs_verification.includes('document');
+                if (this.is_mounted) this.setState({ is_high_risk_client, needs_verification });
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        this.is_mounted = false;
     }
 
     toggleDrawer = () => {
@@ -50,6 +73,7 @@ class ToggleMenuDrawer extends React.Component {
     };
 
     getRoutesWithSubMenu = route_config => {
+        const { is_high_risk_client, needs_verification } = this.state;
         const has_access = route_config.is_authenticated ? this.props.is_logged_in : true;
         if (!has_access || !route_config.routes) return null;
         const has_subroutes = route_config.routes.some(route => route.subroutes);
@@ -82,7 +106,14 @@ class ToggleMenuDrawer extends React.Component {
                             {route.subroutes.map(subroute => (
                                 <MenuLink
                                     key={subroute.title}
-                                    is_disabled={subroute.is_disabled}
+                                    is_disabled={
+                                        (!needs_verification &&
+                                            !is_high_risk_client &&
+                                            /proof-of-identity|proof-of-address|financial-assessment/.test(
+                                                subroute.path
+                                            )) ||
+                                        subroute.is_disabled
+                                    }
                                     link_to={subroute.path}
                                     text={subroute.title}
                                     onClickLink={this.toggleDrawer}

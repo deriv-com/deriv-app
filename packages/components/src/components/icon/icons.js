@@ -141,6 +141,7 @@ import './common/ic-stage2.svg';
 import './common/ic-stage3.svg';
 import './common/ic-stage4.svg';
 import './common/ic-statement.svg';
+import './common/ic-success.svg';
 import './common/ic-theme.svg';
 import './common/ic-trade.svg';
 import './common/ic-undo.svg';

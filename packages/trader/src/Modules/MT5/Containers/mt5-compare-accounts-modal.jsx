@@ -179,7 +179,7 @@ const ModalContent = () => (
         <Table fixed>
             <Table.Header>
                 <Table.Row>
-                    <Table.Head fixed>{localize('')}</Table.Head>
+                    <Table.Head fixed />
                     <Table.Head>{localize('Standard')}</Table.Head>
                     <Table.Head>{localize('Advanced')}</Table.Head>
                     <Table.Head>{localize('Synthetic Indices')}</Table.Head>

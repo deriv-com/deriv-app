@@ -45,6 +45,7 @@ commands:
           key: node-{{ checksum "package-lock.json" }}
           paths:
             - "node_modules"
+            - "packages/*/node_modules"
   build:
     description: "Build"
     steps:
@@ -96,7 +97,7 @@ commands:
       - run:
           name: Building docker image
           command: |
-            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG} -t ${DOCKHUB_ORGANISATION}/deriv-app:latest .
+            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG} -t ${DOCKHUB_ORGANISATION}/deriv-app:<< parameters.docker_image_tag >> .
       - run:
           name: Pushing Image to docker hub
           command: |
@@ -198,14 +199,14 @@ workflows:
   build_deploy_staging:
     jobs:
       - build_staging:
-          context: binary-frontend-artifact-upload
+          context: binary-frontend-deploy
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^staging.*/
       - deploy_staging:
-          context: binary-frontend-artifact-upload
+          context: binary-frontend-deploy
           filters:
             branches:
               ignore: /.*/
@@ -216,14 +217,14 @@ workflows:
   build_deploy_production:
     jobs:
       - build_production:
-          context: binary-frontend-artifact-upload
+          context: binary-frontend-deploy
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^production.*/
       - deploy_production:
-          context: binary-frontend-artifact-upload
+          context: binary-frontend-deploy
           filters:
             branches:
               ignore: /.*/

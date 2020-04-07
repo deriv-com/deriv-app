@@ -89,7 +89,7 @@ export class DateOfBirth extends React.Component {
                                 {...this.props}
                                 onFocus={this.handleFocus}
                                 className={classNames(this.props.className, {
-                                    'datepicker--active-label': !!value,
+                                    'dc-datepicker--active-label': !!value,
                                 })}
                                 onBlur={handleBlur}
                                 value={value ? toMoment(value).format('DD-MM-YYYY') : ''}
@@ -100,13 +100,14 @@ export class DateOfBirth extends React.Component {
                                 in={this.state.should_show_calendar}
                                 timeout={100}
                                 classNames={{
-                                    enter: 'datepicker__picker--enter datepicker__picker--bottom-enter',
-                                    enterDone: 'datepicker__picker--enter-done datepicker__picker--bottom-enter-done',
-                                    exit: 'datepicker__picker--exit datepicker__picker--bottom-exit',
+                                    enter: 'dc-datepicker__picker--enter dc-datepicker__picker--bottom-enter',
+                                    enterDone:
+                                        'dc-datepicker__picker--enter-done dc-datepicker__picker--bottom-enter-done',
+                                    exit: 'dc-datepicker__picker--exit dc-datepicker__picker--bottom-exit',
                                 }}
                                 unmountOnExit
                             >
-                                <div className='datepicker__picker' ref={this.reference}>
+                                <div className='dc-datepicker__picker' ref={this.reference}>
                                     <DatePickerCalendar
                                         max_date={this.state.max_date}
                                         min_date={this.state.min_date}

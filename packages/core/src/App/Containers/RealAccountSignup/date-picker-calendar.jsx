@@ -59,7 +59,7 @@ class DatePickerCalendar extends Component {
 
     render() {
         return (
-            <div className='calendar'>
+            <div className='dc-calendar'>
                 <Calendar.Header
                     calendar_date={this.state.date}
                     calendar_view={this.state.view}

@@ -1,22 +1,21 @@
 import { useObserver } from 'mobx-react';
 import React from 'react';
 
-function isClassComponent(Component) {
-    return !!(typeof Component === 'function' && Component.prototype && Component.prototype.isReactComponent);
-}
+const isClassComponent = Component =>
+    !!(typeof Component === 'function' && Component.prototype && Component.prototype.isReactComponent);
 
 export const MobxContent = React.createContext(null);
 
-function injectCustom(selector, BaseComponent) {
-    const component = ownProps => {
+function injectStorePropsToComponent(propsToSelectFn, BaseComponent) {
+    const component = own_props => {
         const store = React.useContext(MobxContent);
 
         if (!isClassComponent(BaseComponent)) {
-            return useObserver(() => BaseComponent({ ...ownProps, ...selector(store, ownProps) }));
+            return useObserver(() => BaseComponent({ ...own_props, ...propsToSelectFn(store, own_props) }));
         }
 
-        const NewComponent = props => <BaseComponent {...props} />;
-        return useObserver(() => NewComponent({ ...ownProps, ...selector(store, ownProps) }));
+        const FunctionalWrapperComponent = props => <BaseComponent {...props} />;
+        return useObserver(() => FunctionalWrapperComponent({ ...own_props, ...propsToSelectFn(store, own_props) }));
     };
 
     component.displayName = BaseComponent.name;
@@ -27,6 +26,4 @@ export const MobxContentProvider = ({ store, children }) => {
     return <MobxContent.Provider value={{ ...store, mobxStores: store }}>{children}</MobxContent.Provider>;
 };
 
-export const connect = StoreClass => Component => {
-    return injectCustom(StoreClass, Component);
-};
+export const connect = propsToSelectFn => Component => injectStorePropsToComponent(propsToSelectFn, Component);

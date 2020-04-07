@@ -38,6 +38,8 @@ class App extends Component {
             notification_count: 0,
             parameters: null,
             is_advertiser: false,
+            advertiser_id: null,
+            advertiser_name: null,
         };
     }
 
@@ -54,8 +56,13 @@ class App extends Component {
 
         /* if there is no error means it's an advertiser else it's a client */
         if (!advertiser_info.error) {
-            const advertiser_id = advertiser_info.p2p_advertiser_info && advertiser_info.p2p_advertiser_info.id;
-            await this.setState({ advertiser_id, is_advertiser: true });
+            const advertiser_id = ObjectUtils.getPropertyValue(order, ['advertiser_info', 'p2p_advertiser_info', 'id']);
+            const advertiser_name = ObjectUtils.getPropertyValue(order, [
+                'advertiser_info',
+                'p2p_advertiser_info',
+                'nickname',
+            ]);
+            await this.setState({ advertiser_id, advertiser_name, is_advertiser: true });
         }
         return true;
     };
@@ -134,6 +141,7 @@ class App extends Component {
                     local_currency_config,
                     residence,
                     advertiser_id: this.state.advertiser_id,
+                    advertiser_name: this.state.advertiser_name,
                     is_advertiser: this.state.is_advertiser,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                 }}

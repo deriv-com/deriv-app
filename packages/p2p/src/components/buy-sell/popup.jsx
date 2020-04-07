@@ -60,7 +60,9 @@ class Popup extends Component {
     render() {
         const { ad, handleClose } = this.props;
         const initial_values = { amount: ad.min_available };
-        if (ad.type === 'sell') {
+        const is_buyer = ad.type === 'buy';
+
+        if (!is_buyer) {
             initial_values.contact_info = ad.contact_info;
             initial_values.payment_info = ad.payment_info;
         }
@@ -75,8 +77,9 @@ class Popup extends Component {
                         </div>
                     </div>
                     <Formik validate={this.validatePopup} initialValues={initial_values} onSubmit={this.handleSubmit}>
-                        {({ errors, isSubmitting, handleChange, status, touched }) => {
-                            const is_buyer = ad.type === 'buy';
+                        {({ errors, isSubmitting, isValid, handleChange, status, touched }) => {
+                            // Use custom is_valid value as isValid doesn't work.
+                            const is_valid = is_buyer ? Object.keys(errors).length === 0 : isValid;
                             return (
                                 <Form noValidate>
                                     <ThemedScrollbars autoHide style={{ height: '307px' }}>
@@ -210,7 +213,7 @@ class Popup extends Component {
                                         <Button secondary type='button' onClick={handleClose}>
                                             {localize('Cancel')}
                                         </Button>
-                                        <Button is_disabled={isSubmitting || Object.keys(errors).length > 0} primary>
+                                        <Button is_disabled={isSubmitting || !is_valid} primary>
                                             {localize('Confirm')}
                                         </Button>
                                     </div>

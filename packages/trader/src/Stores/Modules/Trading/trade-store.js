@@ -668,13 +668,13 @@ export default class TradeStore extends BaseStore {
             }
 
             // [Multiplier validation rules]
-            if (obj_new_values.contract_type && obj_old_values.contract_type === 'multiplier') {
+            if (obj_new_values?.contract_type !== 'multiplier' && obj_old_values?.contract_type === 'multiplier') {
                 // we need to remove these two validation rules on contract_type change
                 // to be able to remove any existing Stop loss / Take profit validation errors
                 delete this.validation_rules.stop_loss;
                 delete this.validation_rules.take_profit;
             }
-            if (obj_new_values.contract_type === 'multiplier' && obj_old_values.contract_type !== 'multiplier') {
+            if (obj_new_values?.contract_type === 'multiplier' && obj_old_values?.contract_type !== 'multiplier') {
                 // when switching back to Multiplier contract, re-apply Stop loss / Take profit validation rules
                 Object.assign(this.validation_rules, getMultiplierValidationRules());
             }

@@ -155,7 +155,7 @@ export const getMultiplierValidationRules = () => ({
             [
                 'req',
                 {
-                    condition: store => store.has_stop_loss && store.stop_loss === '',
+                    condition: store => store.has_stop_loss && !store.stop_loss,
                     message: localize('Please enter a stop loss amount.'),
                 },
             ],
@@ -166,7 +166,7 @@ export const getMultiplierValidationRules = () => ({
             [
                 'req',
                 {
-                    condition: store => store.has_take_profit && store.take_profit === '',
+                    condition: store => store.has_take_profit && !store.take_profit,
                     message: localize('Please enter a take profit amount.'),
                 },
             ],

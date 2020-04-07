@@ -270,7 +270,7 @@ class FormAds extends Component {
         const validations = {
             advertiser_notes: [
                 v => !!v,
-                v => v.length < 400,
+                v => v.length < 300,
                 v => /^[\p{L}\p{Nd}\s'.,:;()@#+/-]{1,300}$/u.exec(v) !== null,
             ],
             max_transaction: [

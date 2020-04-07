@@ -94,7 +94,7 @@ class Calendar extends React.PureComponent {
         });
 
         if (onSelect) {
-            onSelect(formatted_date, false);
+            onSelect(formatted_date, this.props.keep_open);
         }
     };
 

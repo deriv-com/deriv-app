@@ -143,6 +143,7 @@ class TradingDatePicker extends React.Component {
                 footer={this.footer}
                 events={this.state.market_events}
                 disabled_days={this.state.disabled_days}
+                keep_open={true}
             />
         );
     }

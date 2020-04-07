@@ -60,10 +60,6 @@ class DatePicker extends React.PureComponent {
             this.props.onChange({
                 date,
                 duration,
-                target: {
-                    name: this.props.name,
-                    value: this.input_value,
-                },
             });
         }
     };
@@ -176,8 +172,7 @@ class DatePicker extends React.PureComponent {
                             ref={this.calendar}
                             is_datepicker_visible={this.state.is_datepicker_visible}
                             value={this.calendar_value}
-                            onMouseOver={this.onHover}
-                            onMouseLeave={this.onHover}
+                            onHover={this.onHover}
                             onSelect={this.onSelectCalendar}
                             {...props}
                         />

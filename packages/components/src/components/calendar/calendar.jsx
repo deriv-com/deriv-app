@@ -69,7 +69,7 @@ class Calendar extends React.PureComponent {
                 },
                 () => {
                     if (this.props.onHover) {
-                        this.props.onHover(this.state.hovered_date);
+                        this.props.onHover(this.state.selected_date);
                     }
                 }
             );

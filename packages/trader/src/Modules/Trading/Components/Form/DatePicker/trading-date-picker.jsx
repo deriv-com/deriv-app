@@ -92,7 +92,7 @@ class TradingDatePicker extends React.Component {
             });
         }
 
-        if (this.props.onChange) {
+        if (this.props.onChange && e.target) {
             this.props.onChange(e);
         }
     };

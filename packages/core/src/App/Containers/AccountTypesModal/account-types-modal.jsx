@@ -1,8 +1,6 @@
-import classNames from 'classnames';
 import { Icon, Modal, Tabs } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
 import AccountCard from './account-card.jsx';
 
@@ -11,13 +9,13 @@ import 'Sass/app/modules/account-types.scss';
 const Box = ({ title, description, footer_text, icons, cards }) => {
     return (
         <div className='account-types__box'>
-            <div className='account-types__box__left'>
-                <h2 className='account-types__box__title'>{title}</h2>
-                <p className='account-types__box__description'>{description}</p>
-                {footer_text && <p className='account-types__box__footer'>{footer_text}</p>}
-                <div className='account-types__box__icons'>
+            <div className='account-types__box-left'>
+                <h2 className='account-types__box-title'>{title}</h2>
+                <p className='account-types__box-description'>{description}</p>
+                {footer_text && <p className='account-types__box-footer'>{footer_text}</p>}
+                <div className='account-types__box-icons'>
                     {icons.map((icon, index) => {
-                        return <Icon className='account-types__box__icon' icon={icon} key={index} />;
+                        return <Icon className='account-types__box-icon' icon={icon} key={index} />;
                     })}
                 </div>
             </div>
@@ -34,7 +32,7 @@ Box.propTypes = {
     cards: PropTypes.array,
 };
 
-const Financial = ({ is_demo = false }) => {
+const FinancialBox = ({ is_demo = false }) => {
     return (
         <Box
             title={localize('Financial account ({{type}})', { type: is_demo ? localize('Demo') : localize('Real') })}
@@ -49,9 +47,7 @@ const Financial = ({ is_demo = false }) => {
                     title={localize('Trade on Deriv')}
                     subtitle={localize('Option trading account')}
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
-                    buttonOnClick={() => {
-                        console.log('clicked');
-                    }}
+                    buttonOnClick={() => {}}
                     items={[
                         {
                             label: localize('Multiplier'),
@@ -101,9 +97,7 @@ const Financial = ({ is_demo = false }) => {
                     title={localize('Trade on MT5')}
                     subtitle={localize('Margin trading account')}
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
-                    buttonOnClick={() => {
-                        console.log('clicked');
-                    }}
+                    buttonOnClick={() => {}}
                     items={[
                         {
                             label: localize('Leverage'),
@@ -145,7 +139,7 @@ const Financial = ({ is_demo = false }) => {
     );
 };
 
-const Gaming = ({ is_demo = false }) => {
+const GamingBox = ({ is_demo = false }) => {
     return (
         <Box
             title={localize('Gaming account ({{type}})', { type: is_demo ? localize('Demo') : localize('Real') })}
@@ -167,9 +161,7 @@ const Gaming = ({ is_demo = false }) => {
                     title={localize('Trade on Deriv')}
                     subtitle={localize('Option trading account')}
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
-                    buttonOnClick={() => {
-                        console.log('clicked');
-                    }}
+                    buttonOnClick={() => {}}
                     items={[
                         {
                             label: localize('Trade type'),
@@ -219,9 +211,7 @@ const Gaming = ({ is_demo = false }) => {
                     title={localize('Trade on MT5')}
                     subtitle={localize('Margin trading account')}
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
-                    buttonOnClick={() => {
-                        console.log('clicked');
-                    }}
+                    buttonOnClick={() => {}}
                     items={[
                         {
                             label: localize('Leverage'),
@@ -263,13 +253,14 @@ const Gaming = ({ is_demo = false }) => {
     );
 };
 
-const AccountTypesModal = ({ nothing }) => {
+const AccountTypesModal = () => {
     const [account_type_tab_index, setAccountTypeTabIndex] = useState(0);
     return (
         <Modal
             title={localize('Account types')}
             width='904px'
             is_open={true}
+            // TODO: Add these with logic implementation
             // toggleModal={toggleLoadModal}
             // onMount={onMount}
             // onUnmount={onUnmount}
@@ -278,23 +269,23 @@ const AccountTypesModal = ({ nothing }) => {
                 <p className='account-types__intro'>
                     <Localize
                         i18n_default_text='Deriv offer various accounts based on 2 account types that suites different need. You can have all of them whenever you want. To view this page again, simply press any of the <0/> icon in Account Swithcer.'
-                        components={[<Icon key={0} className='account-types__intro__icon' icon='IcInfoOutline' />]}
+                        components={[<Icon key={0} className='account-types__text-icon' icon='IcInfoOutline' />]}
                     />
                 </p>
                 <Tabs
-                    className='account-types__tabs'
                     active_index={account_type_tab_index}
+                    className='account-types__tabs'
+                    fit_content
                     onTabItemClick={setAccountTypeTabIndex}
                     top
-                    header_fit_content
                 >
                     <div label={localize('Real accounts')}>
-                        <Financial />
-                        <Gaming />
+                        <FinancialBox />
+                        <GamingBox />
                     </div>
                     <div label={localize('Demo accounts')}>
-                        <Financial is_demo />
-                        <Gaming is_demo />
+                        <FinancialBox is_demo />
+                        <GamingBox is_demo />
                     </div>
                 </Tabs>
             </div>

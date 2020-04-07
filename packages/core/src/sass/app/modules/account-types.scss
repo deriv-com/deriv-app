@@ -16,12 +16,11 @@
         font-size: 1.4rem;
         line-height: 1.43;
         margin: 2.4rem 6.2rem 2.4rem 4.8rem;
-
-        &__icon {
-            height: 2.2rem;
-            vertical-align: middle;
-            width: 2.2rem;
-        }
+    }
+    &__text-icon {
+        height: 2.2rem;
+        vertical-align: middle;
+        width: 2.2rem;
     }
     &__box {
         display: grid;
@@ -31,45 +30,44 @@
         height: 30.2rem;
         border-radius: 0.4rem;
         box-shadow: 0 8px 8px 0 var(--shadow-menu), 0 0 8px 0 var(--shadow-menu);
-        margin: 0 auto 4rem auto;
+        margin: 0 auto 4rem;
         padding: 2.4rem;
 
         &:first-of-type {
             margin-top: 1.6rem;
         }
-
-        &__left {
-            width: 25rem;
-        }
-        &__title {
-            color: var(--brand-red-coral);
-            font-size: 1.6rem;
-            font-weight: bold;
-            line-height: 1.5;
-            margin-bottom: 0.8rem;
-        }
-        &__description {
-            color: var(--text-general);
-            font-size: 1.4rem;
-            line-height: 1.43;
-            margin-bottom: 0.8rem;
-        }
-        &__footer {
-            color: var(--text-general);
-            font-size: 1.2rem;
-            font-weight: bold;
-            line-height: 1.5;
-            margin-bottom: 0.8rem;
-        }
-        &__icons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-gap: 0.8rem 1.6rem;
-        }
-        &__icon {
-            height: 4.8rem;
-            width: 4.8rem;
-        }
+    }
+    &__box-side {
+        width: 25rem;
+    }
+    &__box-title {
+        color: var(--brand-red-coral);
+        font-size: 1.6rem;
+        font-weight: bold;
+        line-height: 1.5;
+        margin-bottom: 0.8rem;
+    }
+    &__box-description {
+        color: var(--text-general);
+        font-size: 1.4rem;
+        line-height: 1.43;
+        margin-bottom: 0.8rem;
+    }
+    &__box-footer {
+        color: var(--text-general);
+        font-size: 1.2rem;
+        font-weight: bold;
+        line-height: 1.5;
+        margin-bottom: 0.8rem;
+    }
+    &__box-icons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 0.8rem 1.6rem;
+    }
+    &__box-icon {
+        height: 4.8rem;
+        width: 4.8rem;
     }
     .account-card {
         border: 1px solid var(--border-normal);
@@ -109,7 +107,6 @@
             }
             &__items {
                 width: 100%;
-                border-spacing: 0;
                 border-collapse: separate;
                 border-spacing: 0 0.8rem;
                 margin-bottom: 1.6rem;

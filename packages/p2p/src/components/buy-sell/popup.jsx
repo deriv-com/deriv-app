@@ -59,6 +59,12 @@ class Popup extends Component {
 
     render() {
         const { ad, handleClose } = this.props;
+        const initial_values = { amount: ad.min_available };
+        if (ad.type === 'sell') {
+            initial_values.contact_info = ad.contact_info;
+            initial_values.payment_info = ad.payment_info;
+        }
+
         return (
             <Fragment>
                 <div className='buy-sell__popup'>
@@ -68,16 +74,8 @@ class Popup extends Component {
                             <IconClose className='buy-sell__popup-close_icon' onClick={handleClose} />
                         </div>
                     </div>
-                    <Formik
-                        validate={this.validatePopup}
-                        initialValues={{
-                            amount: ad.min_available,
-                            contact_info: ad.contact_info,
-                            payment_info: ad.payment_info,
-                        }}
-                        onSubmit={this.handleSubmit}
-                    >
-                        {({ errors, isSubmitting, isValid, handleChange, status, touched }) => {
+                    <Formik validate={this.validatePopup} initialValues={initial_values} onSubmit={this.handleSubmit}>
+                        {({ errors, isSubmitting, handleChange, status, touched }) => {
                             const is_buyer = ad.type === 'buy';
                             return (
                                 <Form noValidate>
@@ -212,7 +210,7 @@ class Popup extends Component {
                                         <Button secondary type='button' onClick={handleClose}>
                                             {localize('Cancel')}
                                         </Button>
-                                        <Button is_disabled={!!(isSubmitting || !isValid)} primary>
+                                        <Button is_disabled={isSubmitting || Object.keys(errors).length > 0} primary>
                                             {localize('Confirm')}
                                         </Button>
                                     </div>

@@ -672,8 +672,13 @@
                 &__explanation {
                     padding-left: 0;
                 }
-                &__transferred-contact-wrapper {
-                    margin: 0.8rem;
+                &__transferred-contact {
+                    &-wrapper {
+                        margin: 0.8rem;
+                    }
+                    .payment-agent__contact {
+                        padding-left: 0;
+                    }
                 }
                 &__paragraph {
                     padding-left: 0;

@@ -1,5 +1,4 @@
 import { reaction } from 'mobx';
-import { Provider } from 'mobx-react';
 import React from 'react';
 import { runIrreversibleEvents, ApiHelpers, DBot, ServerTime } from '@deriv/bot-skeleton';
 import './public-path'; // Leave this here! OK boss!
@@ -10,6 +9,7 @@ import NotificationMessages from './components/notification-messages.jsx';
 import QuickStrategy from './components/quick-strategy.jsx';
 import RunPanel from './components/run-panel.jsx';
 import Toolbar from './components/toolbar.jsx';
+import { MobxContentProvider } from './stores/connect';
 import RootStore from './stores';
 import GTM from './utils/gtm';
 import './assets/sass/app.scss';
@@ -166,7 +166,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <Provider {...this.root_store}>
+            <MobxContentProvider store={this.root_store}>
                 <div className='bot'>
                     <NotificationMessages />
                     <Toolbar />
@@ -176,7 +176,7 @@ class App extends React.Component {
                     <FooterExtension />
                     <Audio />
                 </div>
-            </Provider>
+            </MobxContentProvider>
         );
     }
 }

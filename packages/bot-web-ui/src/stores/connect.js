@@ -1,67 +1,32 @@
-import { inject } from 'mobx-react';
-import React, { Component } from 'react';
+import { useObserver } from 'mobx-react';
+import React from 'react';
 
-function connectMainStore(mapperFunction) {
-    // Combine both stores and props, with props taking precedence
-    const mapStoresAndProps = (root_store, props /* , context */) => ({
-        ...mapperFunction(root_store),
-        ...props,
-    });
-
-    return WrappedComponent => inject(mapStoresAndProps)(WrappedComponent);
+function isClassComponent(Component) {
+    return !!(typeof Component === 'function' && Component.prototype && Component.prototype.isReactComponent);
 }
 
-function connectCustomStore(mapperFunction, CustomStore) {
-    return WrappedComponent => {
-        class StoredComponent extends Component {
-            constructor(props) {
-                super(props);
-                const { root_store } = this.props;
-                this.store = new CustomStore(root_store);
-                const mapStoresAndProps = (_rootStore, nextProps) => ({
-                    ...mapperFunction(this.store),
-                    ...nextProps,
-                });
-                if (this.store.updateProps) {
-                    this.store.updateProps(props);
-                }
-                this.injectedComponent = inject(mapStoresAndProps)(WrappedComponent);
-            }
+export const MobxContent = React.createContext(null);
 
-            getDerivedStateFromProps(nextProps) {
-                if (this.store.updateProps) {
-                    this.store.updateProps(nextProps);
-                }
-            }
+function injectCustom(selector, BaseComponent) {
+    const component = ownProps => {
+        const store = React.useContext(MobxContent);
 
-            componentWillUnmount() {
-                if (this.store.destructor) {
-                    this.store.destructor();
-                }
-            }
-
-            render() {
-                return React.createElement(this.injectedComponent);
-            }
+        if (!isClassComponent(BaseComponent)) {
+            return useObserver(() => BaseComponent({ ...ownProps, ...selector(store, ownProps) }));
         }
 
-        // make some nice names that will show up in the React Devtools
-        const wrappedDisplayName =
-            WrappedComponent.displayName ||
-            WrappedComponent.name ||
-            (WrappedComponent.constructor && WrappedComponent.constructor.name) ||
-            'Unknown';
-        StoredComponent.displayName = `unbox-${wrappedDisplayName}`;
-
-        return inject(root_store => ({ root_store }))(StoredComponent);
+        const NewComponent = props => <BaseComponent {...props} />;
+        return useObserver(() => NewComponent({ ...ownProps, ...selector(store, ownProps) }));
     };
+
+    component.displayName = BaseComponent.name;
+    return component;
 }
 
-// if store is not defined, root store is used
-export function connect(mapperFunction, CustomStore) {
-    if (CustomStore === undefined) {
-        return connectMainStore(mapperFunction);
-    }
+export const MobxContentProvider = ({ store, children }) => {
+    return <MobxContent.Provider value={{ ...store, ...store.core }}>{children}</MobxContent.Provider>;
+};
 
-    return connectCustomStore(mapperFunction, CustomStore);
-}
+export const connect = StoreClass => Component => {
+    return injectCustom(StoreClass, Component);
+};

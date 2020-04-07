@@ -24,7 +24,7 @@ class Popup extends Component {
     };
 
     render() {
-        const { ad, handleClose, handleConfirm, setNicknameTrue } = this.props;
+        const { ad, handleClose, handleConfirm } = this.props;
         const { has_nickname } = this.state;
 
         return (
@@ -33,7 +33,7 @@ class Popup extends Component {
                     {has_nickname ? (
                         <BuySellForm ad={ad} handleClose={handleClose} handleConfirm={handleConfirm} />
                     ) : (
-                        <NickNameForm ad={ad} handleClose={handleClose} setNicknameTrue={setNicknameTrue} />
+                        <NickNameForm ad={ad} handleClose={handleClose} setNicknameTrue={this.setNicknameTrue} />
                     )}
                 </div>
             </Fragment>

@@ -10,15 +10,17 @@ import FormError from '../form/error.jsx';
 import IconClose from 'Assets/icon-close.jsx';
 
 const NickNameForm = ({ handleClose, setNicknameTrue }) => {
-    const handleSubmit = async (values, { setStatus, setSubmitting }) => {
+    const handleSubmit = (values, { setStatus, setSubmitting }) => {
+        console.log(values);
         setStatus({ error_message: '' });
         setNicknameTrue();
+        setSubmitting(false);
     };
 
     const validatePopup = values => {
         const max_char = 100;
         const validations = {
-            amount: [v => !!v, v => v.length >= max_char],
+            nickname: [v => !!v, v => v.length <= max_char],
         };
 
         const common_messages = [localize('Nickname is required'), localize('Nickname is too long')];
@@ -39,6 +41,7 @@ const NickNameForm = ({ handleClose, setNicknameTrue }) => {
                 }
             }
         });
+        console.log(errors);
 
         return errors;
     };
@@ -56,13 +59,17 @@ const NickNameForm = ({ handleClose, setNicknameTrue }) => {
                         <ThemedScrollbars autoHide style={{ height: '289px' }}>
                             <div className='buy-sell__popup-content buy-sell__popup-content_centre'>
                                 <Icon icon='IcCashierP2pUser' width='128' height='128' />
+                                <h5 className='buy-sell__popup-content--title'>{localize('Choose a nickname')}</h5>
+                                <p className='buy-sell__popup-content--text'>
+                                    {localize('This is how you will appear to other users')}
+                                </p>
                                 <div className='buy-sell__popup-field_wrapper'>
                                     <Field name='nickname'>
                                         {({ field }) => (
                                             <Input
                                                 {...field}
                                                 data-lpignore='true'
-                                                error={errors.amount}
+                                                error={errors.nickname}
                                                 label={localize('Your nickname')}
                                                 className='buy-sell__popup-field'
                                                 onChange={handleChange}
@@ -78,7 +85,7 @@ const NickNameForm = ({ handleClose, setNicknameTrue }) => {
                             <Button secondary type='button' onClick={handleClose}>
                                 {localize('Cancel')}
                             </Button>
-                            <Button is_disabled={!!(isSubmitting || errors.amount)} primary>
+                            <Button type='submit' is_disabled={!!(isSubmitting || errors.amount)} primary>
                                 {localize('Confirm')}
                             </Button>
                         </div>

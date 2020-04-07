@@ -75,6 +75,17 @@
                 justify-content: center;
                 align-items: center;
             }
+            &--title {
+                color: var(--text-general);
+                font-size: var(--text-size-s);
+                font-weight: bold;
+                margin: 1.4rem 0 0.8rem;
+            }
+            &--text {
+                color: var(--text-general);
+                font-size: var(--text-size-xs);
+                margin-bottom: 1.6rem;
+            }
         }
         &-field {
             margin-bottom: 0 !important;

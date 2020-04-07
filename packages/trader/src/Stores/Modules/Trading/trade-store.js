@@ -10,7 +10,7 @@ import ServerTime from '_common/base/server_time';
 import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { processPurchase } from './Actions/purchase';
 import * as Symbol from './Actions/symbol';
-import getValidationRules from './Constants/validation-rules';
+import getValidationRules, { getMultiplierValidationRules } from './Constants/validation-rules';
 import { pickDefaultSymbol, showUnavailableLocationError, isMarketClosed } from './Helpers/active-symbols';
 import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
@@ -188,9 +188,14 @@ export default class TradeStore extends BaseStore {
             }
         );
         reaction(
-            () => [this.has_cancellation, this.has_stop_loss, this.has_take_profit],
+            () => [this.has_stop_loss, this.has_take_profit],
             () => {
-                this.validation_errors = {};
+                if (!this.has_stop_loss) {
+                    this.validation_errors.stop_loss = [];
+                }
+                if (!this.has_take_profit) {
+                    this.validation_errors.take_profit = [];
+                }
             }
         );
     }
@@ -308,18 +313,19 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    onChangeMultiple(values) {
+    async onChangeMultiple(values) {
         Object.keys(values).forEach(name => {
             if (!(name in this)) {
                 throw new Error(`Invalid Argument: ${name}`);
             }
         });
 
-        this.processNewValuesAsync({ ...values }, true);
+        await this.processNewValuesAsync({ ...values }, true); // wait for store to be updated
+        this.validateAllProperties(); // then run validation before sending proposal
     }
 
     @action.bound
-    onChange(e) {
+    async onChange(e) {
         const { name, value } = e.target;
 
         if (name === 'symbol' && value) {
@@ -341,16 +347,13 @@ export default class TradeStore extends BaseStore {
             throw new Error(`Invalid Argument: ${name}`);
         }
 
-        this.validateAllProperties();
-
-        if (name === 'has_take_profit' && value && this.take_profit === undefined) {
-            this.take_profit = 0;
-        }
-        if (name === 'has_stop_loss' && value && this.stop_loss === undefined) {
-            this.stop_loss = 0;
-        }
-
-        this.processNewValuesAsync({ [name]: value }, true, {}, true);
+        await this.processNewValuesAsync(
+            { [name]: value },
+            true,
+            name === 'contract_type' ? { contract_type: this.contract_type } : {}, // refer to [Multiplier validation rules] below
+            true
+        ); // wait for store to be updated
+        this.validateAllProperties(); // then run validation before sending proposal
     }
 
     @action.bound
@@ -664,6 +667,18 @@ export default class TradeStore extends BaseStore {
                 }
             }
 
+            // [Multiplier validation rules]
+            if (obj_new_values.contract_type && obj_old_values.contract_type === 'multiplier') {
+                // we need to remove these two validation rules on contract_type change
+                // to be able to remove any existing Stop loss / Take profit validation errors
+                delete this.validation_rules.stop_loss;
+                delete this.validation_rules.take_profit;
+            }
+            if (obj_new_values.contract_type === 'multiplier' && obj_old_values.contract_type !== 'multiplier') {
+                // when switching back to Multiplier contract, re-apply Stop loss / Take profit validation rules
+                Object.assign(this.validation_rules, getMultiplierValidationRules());
+            }
+
             // TODO: handle barrier updates on proposal api
             // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
 
@@ -739,6 +754,7 @@ export default class TradeStore extends BaseStore {
             this.proposal_info = {};
             this.purchase_info = {};
             WS.forgetAll('proposal');
+            return;
         }
 
         if (!ObjectUtils.isEmptyObject(requests)) {
@@ -848,6 +864,8 @@ export default class TradeStore extends BaseStore {
             this.validation_errors.duration = [];
             return;
         }
+
+        if (!this.validation_rules.duration) return;
 
         const index = this.validation_rules.duration.rules.findIndex(item => item[0] === 'number');
         const limits = this.duration_min_max[this.contract_expiry_type] || false;

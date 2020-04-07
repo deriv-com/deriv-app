@@ -164,7 +164,7 @@ class AccountWizard extends React.Component {
             this.setAccountCurrency()
                 .then(response => {
                     setSubmitting(false);
-                    this.props.onSuccessAddCurrency(response.echo_req.set_account_currency.toLowerCase());
+                    this.props.onFinishSuccess(response.echo_req.set_account_currency.toLowerCase());
                 })
                 .catch(error_message => {
                     this.setState(
@@ -178,7 +178,7 @@ class AccountWizard extends React.Component {
             this.submitForm()
                 .then(response => {
                     setSubmitting(false);
-                    this.props.onSuccessAddCurrency(response.new_account_real.currency.toLowerCase());
+                    this.props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 })
                 .catch(error => {
                     this.props.onError(error, this.state.items);
@@ -272,7 +272,7 @@ AccountWizard.propTypes = {
     has_real_account: PropTypes.bool,
     onError: PropTypes.func,
     onLoading: PropTypes.func,
-    onSuccessAddCurrency: PropTypes.func,
+    onFinishSuccess: PropTypes.func,
     realAccountSignup: PropTypes.func,
     residence: PropTypes.string,
     residence_list: PropTypes.array,

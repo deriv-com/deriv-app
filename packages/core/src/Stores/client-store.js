@@ -249,6 +249,11 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_age_verified() {
+        if (!this.account_status.status) return false;
+        return 'age_verification' in this.account_status.status;
+    }
+    @computed
     get is_fully_authenticated() {
         if (!this.account_status.status) return false;
         return this.account_status.status.some(status => status === 'authenticated');

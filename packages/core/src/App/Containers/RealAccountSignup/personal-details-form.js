@@ -2,6 +2,7 @@ import React from 'react';
 import { toMoment } from '@deriv/trader/src/Utils/Date';
 import { localize } from '@deriv/translations';
 import PersonalDetails from 'App/Containers/RealAccountSignup/personal-details.jsx';
+import { getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
 import { generateValidationFunction, getDefaultFields } from './form-validations';
 
 const personal_details_config = {
@@ -20,6 +21,7 @@ const personal_details_config = {
         default_value: '',
         rules: [
             ['req', localize('First Name is required')],
+            ['letter_symbol', getPreBuildDVRs().letter_symbol.message],
             ['length', localize('First name should be between 2 and 30 characters.'), { min: 2, max: 30 }],
         ],
     },
@@ -28,6 +30,7 @@ const personal_details_config = {
         default_value: '',
         rules: [
             ['req', localize('Last Name is required')],
+            ['letter_symbol', getPreBuildDVRs().letter_symbol.message],
             ['length', localize('Last name should be between 2 and 30 characters.'), { min: 2, max: 30 }],
         ],
     },
@@ -72,8 +75,42 @@ export const personalDetailsConfig = ({ can_upgrade_to }) => {
         form_value: getDefaultFields(can_upgrade_to, personal_details_config),
         props: {
             validate: generateValidationFunction(can_upgrade_to, personal_details_config),
-            account_opening_reason_list: [localize('Income earning'), localize('Speculative'), localize('Hedging')],
-            salutation_list: [localize('Mr'), localize('Ms'), localize('Mrs'), localize('Miss')],
+            account_opening_reason_list: [
+                {
+                    text: localize('Hedging'),
+                    value: 'Hedging',
+                },
+                {
+                    text: localize('Income Earning'),
+                    value: 'Income Earning',
+                },
+                {
+                    text: localize('Speculative'),
+                    value: 'Speculative',
+                },
+                {
+                    text: localize('Peer-to-peer exchange'),
+                    value: 'Peer-to-peer exchange',
+                },
+            ],
+            salutation_list: [
+                {
+                    text: localize('Mr'),
+                    value: 'Mr',
+                },
+                {
+                    text: localize('Ms'),
+                    value: 'Ms',
+                },
+                {
+                    text: localize('Mrs'),
+                    value: 'Mrs',
+                },
+                {
+                    text: localize('Miss'),
+                    value: 'Miss',
+                },
+            ],
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
     };

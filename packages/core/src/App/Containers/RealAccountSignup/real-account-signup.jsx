@@ -9,7 +9,7 @@ import { getDerivComLink } from '_common/url';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
-import SuccessDialog from '../Modals/success-dialog.jsx';
+import StatusDialogContainer from './status-dialog-container.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
@@ -68,7 +68,7 @@ class RealAccountSignup extends Component {
                 {
                     body: () => (
                         <AccountWizard
-                            onSuccessAddCurrency={this.showAddCurrencySuccess}
+                            onFinishSuccess={this.showStatusDialog}
                             onLoading={this.showLoadingModal}
                             onError={this.showErrorModal}
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
@@ -80,7 +80,7 @@ class RealAccountSignup extends Component {
                     body: () => (
                         <AddOrManageAccounts
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
-                            onSuccessAddCurrency={this.showAddCurrencySuccess}
+                            onSuccessAddCurrency={this.showStatusDialog}
                             onLoading={this.showLoadingModal}
                             onError={this.showErrorModal}
                         />
@@ -96,30 +96,12 @@ class RealAccountSignup extends Component {
                             onSubmit={this.closeModalThenOpenCashier}
                         />
                     ),
-                    title: () => localize('Set a currency for your Real Account'),
                 },
                 {
-                    body: () => (
-                        <SuccessDialog
-                            has_cancel
-                            onCancel={this.closeModalWithHooks}
-                            onSubmit={this.closeModalThenOpenCashier}
-                            message={this.props.state_value.success_message}
-                            icon={
-                                <Icon
-                                    icon={`IcCurrency-${this.props.state_value.current_currency.toLowerCase()}`}
-                                    size={120}
-                                />
-                            }
-                            text_submit={localize('Deposit now')}
-                            text_cancel={RealAccountSignup.text_cancel()}
-                        />
-                    ),
-                    title: () => null,
+                    body: () => <StatusDialogContainer />,
                 },
                 {
                     body: () => <LoadingModal />,
-                    title: () => null,
                 },
                 {
                     body: () => (
@@ -142,6 +124,12 @@ class RealAccountSignup extends Component {
         return '740px'; // Account wizard modal
     }
 
+    showStatusDialog = () => {
+        this.props.setParams({
+            active_modal_index: 3,
+        });
+    };
+
     closeModalThenOpenCashier = () => {
         this.props.closeRealAccountSignup();
         this.props.history.push(routes.cashier_deposit);
@@ -153,26 +141,6 @@ class RealAccountSignup extends Component {
             current_currency,
             active_modal_index: 2,
         });
-    };
-
-    showAddCurrencySuccess = currency => {
-        this.props.setParams({
-            current_currency: currency,
-            active_modal_index: 3,
-            success_message: (
-                <Localize
-                    i18n_default_text='<0>You have added a Deriv {{currency}} account.</0><0>Make a deposit now to start trading.</0>'
-                    values={{
-                        currency: currency.toUpperCase(),
-                    }}
-                    components={[<p key={currency} />]}
-                />
-            ),
-        });
-    };
-
-    closeModalWithHooks = () => {
-        this.closeModal();
     };
 
     showLoadingModal = () => {
@@ -266,7 +234,7 @@ class RealAccountSignup extends Component {
                         height={this.modal_height}
                         width='904px'
                     >
-                        <ModalContent />
+                        <ModalContent passthrough={this.props.state_index} />
                     </Modal>
                 </DesktopWrapper>
                 <MobileWrapper>

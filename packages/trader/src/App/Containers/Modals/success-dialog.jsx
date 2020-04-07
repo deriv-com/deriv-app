@@ -23,17 +23,17 @@ const SuccessDialog = ({
     );
 
     return (
-        <div className='success-change'>
+        <div className='status-dialog'>
             <div
-                className={classNames('success-change__icon-area', {
-                    'success-change__icon-area--large': icon_size === 'large',
-                    'success-change__icon-area--xlarge': icon_size === 'xlarge',
+                className={classNames('status-dialog__icon-area', {
+                    'status-dialog__icon-area--large': icon_size === 'large',
+                    'status-dialog__icon-area--xlarge': icon_size === 'xlarge',
                 })}
             >
                 <MainIcon />
                 <Checkmark className='bottom-right-overlay' />
             </div>
-            <div className='success-change__body-area'>
+            <div className='status-dialog__body-area'>
                 {!heading && (
                     <h2>
                         <Localize i18n_default_text='Success!' />
@@ -43,7 +43,7 @@ const SuccessDialog = ({
                 {React.isValidElement(message) && message}
                 {!React.isValidElement(message) && <p>{message}</p>}
             </div>
-            <div className='success-change__btn-area'>
+            <div className='status-dialog__btn-area'>
                 {has_cancel && (
                     <Button onClick={onCancel} has_effect text={text_cancel || localize('Maybe later')} secondary />
                 )}

@@ -275,7 +275,7 @@ class PersonalDetails extends React.Component {
                                         className='details-form__elements'
                                         style={{ paddingBottom: this.state.paddingBottom }}
                                     >
-                                        {/* Remmove account opening reason once api is optional */}
+                                        {/* TODO: [deriv-eu] Remove account opening reason once api is optional */}
                                         {'account_opening_reason' in this.props.value && (
                                             <Field name='account_opening_reason'>
                                                 {({ field }) => (
@@ -291,15 +291,19 @@ class PersonalDetails extends React.Component {
                                                         }
                                                         // disabled={this.props.value.account_opening_reason}
                                                         list_items={this.props.account_opening_reason_list}
-                                                        onItemSelection={value =>
-                                                            setFieldValue('account_opening_reason', value, true)
+                                                        onItemSelection={({ value, text }) =>
+                                                            setFieldValue(
+                                                                'account_opening_reason',
+                                                                value ? text : '',
+                                                                true
+                                                            )
                                                         }
                                                         required
                                                     />
                                                 )}
                                             </Field>
                                         )}
-                                        {/* Remove salutation once api is optional */}
+                                        {/* TODO: [deriv-eu] Remove salutation once api is optional */}
                                         {'salutation' in this.props.value && (
                                             <Field name='salutation'>
                                                 {({ field }) => (
@@ -312,8 +316,8 @@ class PersonalDetails extends React.Component {
                                                         error={touched.salutation && errors.salutation}
                                                         // disabled={this.props.value.salutation}
                                                         list_items={this.props.salutation_list}
-                                                        onItemSelection={value =>
-                                                            setFieldValue('salutation', value, true)
+                                                        onItemSelection={({ value, text }) =>
+                                                            setFieldValue('salutation', value ? text : '', true)
                                                         }
                                                         required
                                                     />

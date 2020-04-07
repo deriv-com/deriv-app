@@ -125,6 +125,7 @@ const SubmittedPage = withRouter(({ history }) => {
 });
 
 class FinancialAssessment extends React.Component {
+    is_mounted = false;
     state = {
         is_loading: true,
         is_confirmation_visible: false,
@@ -141,22 +142,30 @@ class FinancialAssessment extends React.Component {
     };
 
     componentDidMount() {
+        this.is_mounted = true;
         if (this.props.is_virtual) {
             this.setState({ is_loading: false });
         } else {
             WS.authorized.storage.getFinancialAssessment().then(data => {
-                if (data.error) {
-                    this.setState({ api_initial_load_error: data.error.message });
-                    return;
-                } else if (isEmptyObject(data.get_financial_assessment)) {
-                    // Additional layer of error handling if user somehow manages to reach FA page, need to define error to prevent app crash
-                    this.setState({
-                        api_initial_load_error: localize('Error: Could not load financial assessment information'),
-                    });
+                // TODO: Find a better solution for handling no-op instead of using is_mounted flags
+                if (this.is_mounted) {
+                    if (data.error) {
+                        this.setState({ api_initial_load_error: data.error.message });
+                        return;
+                    } else if (isEmptyObject(data.get_financial_assessment)) {
+                        // Additional layer of error handling if user somehow manages to reach FA page, need to define error to prevent app crash
+                        this.setState({
+                            api_initial_load_error: localize('Error: Could not load financial assessment information'),
+                        });
+                    }
+                    this.setState({ ...data.get_financial_assessment, is_loading: false });
                 }
-                this.setState({ ...data.get_financial_assessment, is_loading: false });
             });
         }
+    }
+
+    componentWillUnmount() {
+        this.is_mounted = false;
     }
 
     onSubmit = (values, { setSubmitting, setStatus }) => {

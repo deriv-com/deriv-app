@@ -95,6 +95,11 @@
             width: 100vw;
             height: 100vh;
             min-width: 100vw;
+
+            &--has-margin {
+                min-width: unset;
+                width: calc(100vw - 3.2rem);
+            }
         }
     }
 }

@@ -42,7 +42,7 @@ const FormatMessage = ({ logType, className, extra }) => {
                 const { sold_for } = extra;
                 return (
                     <Localize
-                        i18n_default_text='<0>Sold for</0> : {{sold_for}}'
+                        i18n_default_text='<0>Sold for</0>: {{sold_for}}'
                         values={{ sold_for }}
                         components={[<span key={0} className='journal__text--warn' />]}
                     />

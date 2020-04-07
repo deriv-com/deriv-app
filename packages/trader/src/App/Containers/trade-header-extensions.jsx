@@ -41,7 +41,10 @@ class TradeHeaderExtensions extends React.Component {
     };
 
     componentDidMount() {
-        if (isMobile()) this.props.onMountPositions();
+        if (isMobile()) {
+            this.props.onMountPositions();
+            this.props.onMountCashier();
+        }
         this.populateHeader();
     }
 
@@ -73,6 +76,7 @@ export default connect(({ client, modules, ui }) => ({
     is_positions_empty: modules.portfolio.is_empty,
     onPositionsSell: modules.portfolio.onClickSell,
     onPositionsRemove: modules.portfolio.removePositionById,
+    onMountCashier: modules.cashier.onMountCommon,
     onMountPositions: modules.portfolio.onMount,
     onUnmountPositions: modules.portfolio.onUnmount,
     active_positions_count: modules.portfolio.active_positions_count,

@@ -2,17 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Input, Button, ThemedScrollbars, Icon } from '@deriv/components';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import { localize, Localize } from 'Components/i18next';
-import { countDecimalPlaces } from 'Utils/string';
+import { localize } from 'Components/i18next';
+import Dp2pContext from 'Components/context/dp2p-context';
 import { requestWS } from 'Utils/websocket';
 import FormError from '../form/error.jsx';
 import IconClose from 'Assets/icon-close.jsx';
 
 const NickNameForm = ({ handleClose, setNicknameTrue }) => {
-    const handleSubmit = (values, { setStatus, setSubmitting }) => {
-        console.log(values);
-        setStatus({ error_message: '' });
+    const { setAdvertiserName } = React.useContext(Dp2pContext);
+    const handleSubmit = async (values, { setStatus, setSubmitting }) => {
+        const advertiser_create = await requestWS({ p2p_advertiser_create: 1, name: values.nickname });
+        if (advertiser_create.error) {
+            setStatus({ error_message: advertiser_create.error.message });
+            setSubmitting(false);
+            return;
+        }
+        setAdvertiserName(advertiser_create.p2p_advertiser_create.name);
         setNicknameTrue();
         setSubmitting(false);
     };
@@ -41,7 +46,6 @@ const NickNameForm = ({ handleClose, setNicknameTrue }) => {
                 }
             }
         });
-        console.log(errors);
 
         return errors;
     };

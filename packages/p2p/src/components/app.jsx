@@ -111,6 +111,10 @@ class App extends Component {
         }
     };
 
+    setAdvertiserName = advertiser_name => {
+        this.setState({ advertiser_name });
+    };
+
     componentDidMount() {
         this.setIsAdvertiser();
 
@@ -142,6 +146,7 @@ class App extends Component {
                     residence,
                     advertiser_id: this.state.advertiser_id,
                     advertiser_name: this.state.advertiser_name,
+                    setAdvertiserName: this.setAdvertiserName,
                     is_advertiser: this.state.is_advertiser,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                 }}

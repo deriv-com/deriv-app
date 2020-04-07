@@ -1,5 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
+import Dp2pContext from 'Components/context/dp2p-context';
 import BuySellForm from './buy-sell-form.jsx';
 import NickNameForm from './nick-name-form.jsx';
 
@@ -47,4 +48,5 @@ Popup.propTypes = {
     handleConfirm: PropTypes.func,
 };
 
+Popup.contextType = Dp2pContext;
 export default Popup;

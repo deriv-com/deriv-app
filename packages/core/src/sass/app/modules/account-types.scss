@@ -155,6 +155,18 @@
                 line-height: 1.5;
                 padding-bottom: 0.8rem;
             }
+            &__text {
+                color: var(--text-general);
+                font-size: 1.2rem;
+                line-height: 1.5;
+                margin-bottom: 0.8rem;
+
+                &--small {
+                    color: var(--text-general);
+                    font-size: 1rem;
+                    line-height: 1.4;
+                }
+            }
             &__title-text {
                 padding-left: 0.8rem;
             }
@@ -163,7 +175,9 @@
                 vertical-align: middle;
             }
             &__learn {
-                margin-top: 0.8rem;
+                position: absolute;
+                bottom: 1.6rem;
+                width: fit-content;
             }
             &__learn-title {
                 color: var(--text-less-prominent);

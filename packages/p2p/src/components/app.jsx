@@ -56,8 +56,12 @@ class App extends Component {
 
         /* if there is no error means it's an advertiser else it's a client */
         if (!advertiser_info.error) {
-            const advertiser_id = ObjectUtils.getPropertyValue(order, ['advertiser_info', 'p2p_advertiser_info', 'id']);
-            const advertiser_name = ObjectUtils.getPropertyValue(order, [
+            const advertiser_id = ObjectUtils.getPropertyValue(advertiser_info, [
+                'advertiser_info',
+                'p2p_advertiser_info',
+                'id',
+            ]);
+            const advertiser_name = ObjectUtils.getPropertyValue(advertiser_info, [
                 'advertiser_info',
                 'p2p_advertiser_info',
                 'nickname',

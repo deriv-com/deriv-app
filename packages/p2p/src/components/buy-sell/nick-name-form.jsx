@@ -5,8 +5,8 @@ import { Input, Button, ThemedScrollbars, Icon } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { requestWS } from 'Utils/websocket';
-import FormError from '../form/error.jsx';
 import IconClose from 'Assets/icon-close.jsx';
+import FormError from '../form/error.jsx';
 
 const NickNameForm = ({ handleClose, setNicknameTrue }) => {
     const { setAdvertiserName } = React.useContext(Dp2pContext);

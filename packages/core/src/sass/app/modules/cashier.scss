@@ -72,6 +72,9 @@
                         padding-top: 2.4rem;
                     }
                 }
+                .barspinner {
+                    margin-top: 6rem;
+                }
             }
         }
     }
@@ -374,6 +377,10 @@
     &__resend {
         &-button {
             margin: 4rem auto 0;
+
+            @include mobile {
+                width: 100%;
+            }
         }
     }
     &__email {

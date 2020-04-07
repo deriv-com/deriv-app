@@ -87,19 +87,25 @@ class ToggleMenuDrawer extends React.Component {
             >
                 {!has_subroutes &&
                     route_config.routes.map(route => {
-                        // TODO: Remove path checks below once the cashier routes below are ready to be enabled on mobile
-                        if (route.path === '/cashier/p2p' || route.path === '/cashier/payment-agent-transfer')
-                            return undefined;
-                        return (
-                            <MobileDrawer.Item key={route.title}>
-                                <MenuLink
-                                    link_to={route.path}
-                                    icon={route.icon_component}
-                                    text={route.title}
-                                    onClickLink={this.toggleDrawer}
-                                />
-                            </MobileDrawer.Item>
-                        );
+                        if (
+                            (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
+                            (route.path !== routes.cashier_pa_transfer ||
+                                this.props.is_payment_agent_transfer_visible) &&
+                            (route.path !== routes.cashier_p2p ||
+                                (this.props.is_p2p_visible && /show_p2p/.test(this.props.location.hash)))
+                        ) {
+                            return (
+                                <MobileDrawer.Item key={route.title}>
+                                    <MenuLink
+                                        link_to={route.path}
+                                        icon={route.icon_component}
+                                        text={route.title}
+                                        onClickLink={this.toggleDrawer}
+                                    />
+                                </MobileDrawer.Item>
+                            );
+                        }
+                        return undefined;
                     })}
                 {has_subroutes &&
                     route_config.routes.map(route => (

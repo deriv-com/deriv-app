@@ -679,8 +679,9 @@ export default class ClientStore extends BaseStore {
                 await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
+            this.getLimits();
         }
-        this.responseWebsiteStatus(await WS.storage.websiteStatus());
+        this.responseWebsiteStatus(await BinarySocket.wait('website_status'));
 
         this.registerReactions();
         this.setIsLoggingIn(false);
@@ -1185,10 +1186,12 @@ export default class ClientStore extends BaseStore {
         }, 60000);
 
         if (!response.error) {
-            this.mt5_login_list = response.mt5_login_list.map(account => ({
-                ...account,
-                display_login: account.login.replace(/^(MT[DR]?)/i, ''),
-            }));
+            this.mt5_login_list = response.mt5_login_list
+                .filter(account => !/inactive/.test(account.group)) // remove disabled mt5 accounts
+                .map(account => ({
+                    ...account,
+                    display_login: account.login.replace(/^(MT[DR]?)/i, ''),
+                }));
         }
     }
 

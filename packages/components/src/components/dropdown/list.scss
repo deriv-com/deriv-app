@@ -1,7 +1,7 @@
 .dc-list {
     position: absolute;
     width: 100%;
-    max-height: 200px;
+    max-height: 404px;
     overflow-y: auto;
     z-index: 2;
     border-radius: $BORDER_RADIUS;
@@ -21,11 +21,11 @@
         }
     }
     &__label {
-        padding: 0.6rem;
+        padding: 1.6rem 0.8rem 0.8rem;
         font-size: 1.4rem;
         font-weight: bold;
-        color: var(--brand-red-coral);
-        height: 3.6rem;
+        color: var(--text-prominent);
+        height: 4rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -40,19 +40,34 @@
             line-height: 1.43;
             color: var(--text-general);
             display: flex;
-            width: 100%;
+            width: calc(100% - 1.6rem);
             justify-content: center;
             pointer-events: none;
             vertical-align: middle;
-            padding: 0.6rem 1.6rem;
+            padding: 1rem 1.6rem;
+            margin: 0 0.8rem;
+        }
+        &:last-child {
+            margin-bottom: 1.6rem;
         }
         &-text--left {
             justify-content: flex-start;
             padding-left: 1em;
         }
-        &:not(&--disabled):hover {
+        &:not(&--disabled):not(&--selected):hover {
             background-color: var(--state-hover);
             color: var(--text-general);
+            border-radius: $BORDER_RADIUS;
+            width: calc(100% - 1.6rem);
+            margin-left: 0.8rem;
+            margin-right: 0.8rem;
+
+            .dc-list__item-text,
+            .dc-list__item--symbol {
+                width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+            }
         }
         &--selected .dc-list__item-text,
         &--selected .dc-list__item-symbol,
@@ -61,6 +76,7 @@
             line-height: 1.43;
             color: var(--text-prominent);
             background: var(--state-active);
+            border-radius: $BORDER_RADIUS;
         }
         &--highlighted:not(&--disabled) {
             background-color: var(--state-hover);
@@ -84,9 +100,9 @@
     }
     &__separator {
         display: flex;
-        width: calc(100% - 3.2rem);
-        border-bottom: 1px solid var(--border-normal);
-        margin: 1.6rem;
+        width: 100%;
+        border-bottom: 4px solid var(--general-section-1);
+        margin: 1.6rem 0 0;
     }
 
     // fix for safari bug with overflow-x not working in dropdown

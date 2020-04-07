@@ -288,6 +288,7 @@ class Dropdown extends React.Component {
                         />
                     )}
                     {this.props.error && <p className='dc-field-error'>{this.props.error}</p>}
+                    {!this.props.error && this.props.hint && <p className='dc-dropdown__hint'>{this.props.hint}</p>}
                     {this.props.is_nativepicker ? (
                         <NativeSelect
                             ref={this.native_select_ref}
@@ -313,7 +314,7 @@ class Dropdown extends React.Component {
                                     <ThemedScrollbars
                                         autoHeight
                                         autoHide
-                                        autoHeightMax={200}
+                                        autoHeightMax={404}
                                         renderTrackHorizontal={props => <div {...props} style={{ display: 'none' }} />}
                                         renderThumbHorizontal={props => <div {...props} style={{ display: 'none' }} />}
                                     >

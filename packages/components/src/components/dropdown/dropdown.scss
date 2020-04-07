@@ -131,6 +131,13 @@
             height: 0.53em; // center content glyph
         }
     }
+    &__hint {
+        color: var(--text-less-prominent);
+        font-size: var(--text-size-xxs);
+        margin-left: 0.8rem;
+        position: absolute;
+        top: 4rem;
+    }
     &:active,
     &:focus,
     &--show {

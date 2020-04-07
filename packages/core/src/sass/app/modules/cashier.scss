@@ -8,6 +8,11 @@
     &__content {
         width: 100%;
         background: var(--status-default);
+
+        &-header {
+            text-align: center;
+            margin-bottom: 3.2rem;
+        }
     }
     &__wrapper {
         text-align: center;
@@ -61,18 +66,17 @@
         font-size: 1.6rem;
         line-height: 1.5;
         font-weight: bold;
-        margin-bottom: 16px;
         color: var(--text-prominent);
+
+        &:not(.cashier__content-header) {
+            margin-bottom: 1.6rem;
+        }
     }
     &__form {
         &-submit {
             display: flex;
             justify-content: flex-end;
             width: 100%;
-            margin-left: -2.4rem;
-            bottom: 0;
-            height: 8rem;
-            overflow: hidden;
         }
         &-error {
             flex: 1;
@@ -94,7 +98,7 @@
             }
         }
         &-submit-button {
-            margin: 1.6rem 2.4rem 2.4rem;
+            margin: 3.2rem 0 2.4rem 2.4rem;
         }
         @include mobile {
             &-submit {
@@ -123,7 +127,7 @@
     }
     &__input {
         display: inline-block !important;
-        margin-bottom: 0;
+        margin-bottom: 0 !important;
 
         &--short {
             width: 29rem;
@@ -157,24 +161,35 @@
                 display: flex;
                 align-items: center;
             }
+            .cashier__drop-down-display-brackets {
+                &:before {
+                    content: '(';
+                }
+                &:after {
+                    content: ')';
+                }
+            }
         }
         &-items,
         &-label {
             justify-content: left;
         }
         &-label {
-            margin-left: 1.6rem;
+            margin: 0 1.6rem;
         }
     }
     &__transferred {
         &-amount {
             color: var(--text-profit-success);
             font-size: 3.2rem;
-            line-height: 0.75;
-            margin-bottom: 1.6rem;
+            font-weight: bold;
+            line-height: 1.25;
+            margin-top: 2.4rem;
+            margin-bottom: 2.8rem;
         }
         &-details {
             margin-left: 8px;
+            margin-right: 8px;
             vertical-align: super;
             font-size: 1.4rem;
             text-align: left;
@@ -208,6 +223,12 @@
 
         &--bold {
             font-weight: bold;
+        }
+        &--right {
+            text-align: right;
+        }
+        &--faint {
+            color: var(--text-less-prominent);
         }
     }
     &__modal-tab {
@@ -384,7 +405,7 @@
     &__drop-down {
         margin-left: 8px;
         width: auto;
-        margin-bottom: 0;
+        margin-bottom: 0 !important;
     }
     &__filter {
         min-width: 22.8rem;
@@ -481,7 +502,7 @@
 .account-transfer {
     &__notes {
         color: var(--text-general);
-        margin-top: calc(3.2rem + 1.7rem); // + height of hint/error
+        margin-top: (4rem + 1.8rem); // + height of hint/error
         font-size: 1.2rem;
         line-height: 1.5;
 
@@ -501,12 +522,12 @@
 
         &-wrapper {
             display: flex;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.8rem;
             font-size: var(--text-size-xs);
         }
     }
     &__drop-down {
-        min-width: calc(calc(100% - calc(32px + 4rem)) / 2);
+        min-width: calc(calc(100% - calc(16px + 3.2rem)) / 2);
         width: auto;
         margin-bottom: 3.4rem;
 
@@ -527,25 +548,12 @@
         }
     }
     &__balance {
-        color: var(--text-less-prominent);
-    }
-    &__receipt {
-        &-icon {
-            margin: 5.6rem 0 1.6rem;
-
-            @include mobile {
-                margin: 1.6rem 0;
-            }
-        }
+        margin-left: auto;
     }
     &__transfer {
         &-icon {
             vertical-align: initial;
-            margin: 0 1.6rem 0 0;
-
-            &--first {
-                margin-left: 0.8rem;
-            }
+            margin: 0 1.6rem;
         }
         &-details {
             &-from,
@@ -555,8 +563,8 @@
             }
         }
     }
-    &__button-done {
-        margin: 3.2rem auto 0;
+    &__button {
+        margin: 4rem auto 0 0.8rem;
 
         @include mobile {
             margin: 2.4rem auto 0;

@@ -54,7 +54,8 @@ commands:
       - run:
           name: Building docker image
           command: |
-            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG} -t ${DOCKHUB_ORGANISATION}/deriv-app:latest .
+            TAG=${CIRCLE_TAG:-$CIRCLE_SHA1}
+            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:${TAG} -t ${DOCKHUB_ORGANISATION}/deriv-app:latest .
       - run:
           name: Pushing Image to docker hub
           command: |
@@ -79,7 +80,7 @@ commands:
                 KUBE_SERVER="${!KUBE_SERVER_REF}"
                 SERVICEACCOUNT_TOKEN="${!SERVICEACCOUNT_TOKEN_REF}"
                 echo $CA_CRT | base64 --decode > ca.crt
-                kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/staging-deriv-app staging-deriv-app=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
+                kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/staging-deriv-app staging-deriv-app=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_SHA1}
                 fi
               done
 

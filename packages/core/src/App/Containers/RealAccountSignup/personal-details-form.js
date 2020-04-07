@@ -5,6 +5,16 @@ import PersonalDetails from 'App/Containers/RealAccountSignup/personal-details.j
 import { generateValidationFunction, getDefaultFields } from './form-validations';
 
 const personal_details_config = {
+    account_opening_reason: {
+        supported_in: ['iom'],
+        default_value: '',
+        rules: [['req', localize('Account opening reason is required')]],
+    },
+    salutation: {
+        supported_in: ['iom'],
+        default_value: '',
+        rules: [['req', localize('Salutation is required')]],
+    },
     first_name: {
         supported_in: ['svg', 'iom'],
         default_value: '',
@@ -62,6 +72,8 @@ export const personalDetailsConfig = ({ can_upgrade_to }) => {
         form_value: getDefaultFields(can_upgrade_to, personal_details_config),
         props: {
             validate: generateValidationFunction(can_upgrade_to, personal_details_config),
+            account_opening_reason_list: [localize('Income earning'), localize('Speculative'), localize('Hedging')],
+            salutation_list: [localize('Mr'), localize('Ms'), localize('Mrs'), localize('Miss')],
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
     };

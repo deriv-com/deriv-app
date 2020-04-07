@@ -45,13 +45,28 @@ const ErrorModal = ({ message, code, openPersonalDetails }) => {
 
 const LoadingModal = () => <Loading is_fullscreen={false} />;
 
+const WizardHeading = ({ can_upgrade_to, currency }) => {
+    if (!currency) {
+        return localize('Set a currency for your Real Account');
+    }
+    switch (can_upgrade_to) {
+        case 'malta':
+        case 'iom':
+            return <Localize i18n_default_text='Add a Real Gaming account' />;
+        case 'maltainvest':
+            return <Localize i18n_default_text='Add a Real Financial Account' />;
+        default:
+            return <Localize i18n_default_text='Add a Real Account' />;
+    }
+};
+
 class RealAccountSignup extends Component {
     constructor(props) {
         super(props);
         this.state = {
             modal_content: [
                 {
-                    value: () => (
+                    body: () => (
                         <AccountWizard
                             onSuccessAddCurrency={this.showAddCurrencySuccess}
                             onLoading={this.showLoadingModal}
@@ -59,9 +74,10 @@ class RealAccountSignup extends Component {
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                         />
                     ),
+                    title: WizardHeading,
                 },
                 {
-                    value: () => (
+                    body: () => (
                         <AddOrManageAccounts
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                             onSuccessAddCurrency={this.showAddCurrencySuccess}
@@ -69,9 +85,10 @@ class RealAccountSignup extends Component {
                             onError={this.showErrorModal}
                         />
                     ),
+                    title: () => localize('Add or manage account'),
                 },
                 {
-                    value: () => (
+                    body: () => (
                         <FinishedSetCurrency
                             prev={this.props.state_value.previous_currency}
                             current={this.props.state_value.current_currency}
@@ -79,9 +96,10 @@ class RealAccountSignup extends Component {
                             onSubmit={this.closeModalThenOpenCashier}
                         />
                     ),
+                    title: () => localize('Set a currency for your Real Account'),
                 },
                 {
-                    value: () => (
+                    body: () => (
                         <SuccessDialog
                             has_cancel
                             onCancel={this.closeModalWithHooks}
@@ -97,18 +115,21 @@ class RealAccountSignup extends Component {
                             text_cancel={RealAccountSignup.text_cancel()}
                         />
                     ),
+                    title: () => null,
                 },
                 {
-                    value: () => <LoadingModal />,
+                    body: () => <LoadingModal />,
+                    title: () => null,
                 },
                 {
-                    value: () => (
+                    body: () => (
                         <ErrorModal
                             message={this.props.state_value.error_message}
                             code={this.props.state_value.error_code}
                             openPersonalDetails={this.openPersonalDetails}
                         />
                     ),
+                    title: () => localize('Add a real account'),
                 },
             ],
         };
@@ -119,17 +140,6 @@ class RealAccountSignup extends Component {
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) return '702px'; // Add or manage account modal
         return '740px'; // Account wizard modal
-    }
-
-    get labels() {
-        return [
-            this.props.currency ? localize('Add a real account') : localize('Set a currency for your Real Account'),
-            localize('Add or manage account'),
-            null,
-            null,
-            null,
-            localize('Add a real account'),
-        ];
     }
 
     closeModalThenOpenCashier = () => {
@@ -232,8 +242,7 @@ class RealAccountSignup extends Component {
 
     render() {
         const { is_real_acc_signup_on } = this.props;
-        const title = this.labels[this.active_modal_index];
-        const Body = this.state.modal_content[this.active_modal_index].value;
+        const { title: Title, body: ModalContent } = this.state.modal_content[this.active_modal_index];
 
         return (
             <>
@@ -247,23 +256,28 @@ class RealAccountSignup extends Component {
                         })}
                         is_open={is_real_acc_signup_on}
                         has_close_icon={this.active_modal_index < 2 || this.active_modal_index === 5}
-                        title={title}
+                        renderTitle={() => {
+                            if (Title) {
+                                return <Title {...this.props} />;
+                            }
+                            return null;
+                        }}
                         toggleModal={this.closeModal}
                         height={this.modal_height}
                         width='904px'
                     >
-                        <Body />
+                        <ModalContent />
                     </Modal>
                 </DesktopWrapper>
                 <MobileWrapper>
                     <MobileDialog
                         portal_element_id='modal_root'
-                        title={title}
                         wrapper_classname='account-signup-mobile-dialog'
                         visible={is_real_acc_signup_on}
                         onClose={this.closeModal}
+                        renderTitle={() => <Title {...this.props} />}
                     >
-                        <Body />
+                        <ModalContent />
                     </MobileDialog>
                 </MobileWrapper>
             </>
@@ -274,6 +288,7 @@ class RealAccountSignup extends Component {
 export default connect(({ ui, client }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,
+    can_upgrade_to: client.can_upgrade_to,
     has_real_account: client.has_active_real_account,
     currency: client.currency,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,

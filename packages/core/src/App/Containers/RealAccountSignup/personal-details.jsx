@@ -275,6 +275,51 @@ class PersonalDetails extends React.Component {
                                         className='details-form__elements'
                                         style={{ paddingBottom: this.state.paddingBottom }}
                                     >
+                                        {/* Remmove account opening reason once api is optional */}
+                                        {'account_opening_reason' in this.props.value && (
+                                            <Field name='account_opening_reason'>
+                                                {({ field }) => (
+                                                    <Autocomplete
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        autoComplete='new-password' // prevent chrome autocomplete
+                                                        type='text'
+                                                        label={localize('Account opening reason*')}
+                                                        error={
+                                                            touched.account_opening_reason &&
+                                                            errors.account_opening_reason
+                                                        }
+                                                        // disabled={this.props.value.account_opening_reason}
+                                                        list_items={this.props.account_opening_reason_list}
+                                                        onItemSelection={value =>
+                                                            setFieldValue('account_opening_reason', value, true)
+                                                        }
+                                                        required
+                                                    />
+                                                )}
+                                            </Field>
+                                        )}
+                                        {/* Remove salutation once api is optional */}
+                                        {'salutation' in this.props.value && (
+                                            <Field name='salutation'>
+                                                {({ field }) => (
+                                                    <Autocomplete
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        autoComplete='new-password' // prevent chrome autocomplete
+                                                        type='text'
+                                                        label={localize('Title*')}
+                                                        error={touched.salutation && errors.salutation}
+                                                        // disabled={this.props.value.salutation}
+                                                        list_items={this.props.salutation_list}
+                                                        onItemSelection={value =>
+                                                            setFieldValue('salutation', value, true)
+                                                        }
+                                                        required
+                                                    />
+                                                )}
+                                            </Field>
+                                        )}
                                         <InputField
                                             name='first_name'
                                             label={localize('First name*')}

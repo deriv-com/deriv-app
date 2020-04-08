@@ -6,7 +6,10 @@ import Icon from 'Components/icon/icon.jsx';
 
 class SelectNative extends Component {
     getDisplayText = value => {
-        const list_obj = this.props.list_items.find(item => item.value.toLowerCase() === value.toLowerCase());
+        const list_obj = this.props.list_items.find(item => {
+            if (typeof item.value !== 'string') return item.value === value;
+            return item.value.toLowerCase() === value.toLowerCase();
+        });
 
         if (list_obj) return list_obj.text;
         return '';

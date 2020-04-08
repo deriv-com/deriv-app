@@ -152,8 +152,8 @@ class FinancialAssessment extends React.Component {
                     if (data.error) {
                         this.setState({ api_initial_load_error: data.error.message });
                         return;
-                    } else if (!this.props.is_high_risk_client && isEmptyObject(data.get_financial_assessment)) {
-                        // Additional layer of error handling if user somehow manages to reach FA page, need to define error to prevent app crash
+                    } else if (!this.props.is_high_risk && isEmptyObject(data.get_financial_assessment)) {
+                        // Additional layer of error handling if non high risk user somehow manages to reach FA page, need to define error to prevent app crash
                         this.setState({
                             api_initial_load_error: localize('Error: Could not load financial assessment information'),
                         });
@@ -468,7 +468,7 @@ class FinancialAssessment extends React.Component {
 // FinancialAssessment.propTypes = {};
 export default connect(({ client, ui }) => ({
     is_virtual: client.is_virtual,
-    is_high_risk_client: client.is_high_risk,
+    is_high_risk: client.is_high_risk,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,
 }))(FinancialAssessment);

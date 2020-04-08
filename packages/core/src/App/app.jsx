@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Prompt } from 'react-router';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
@@ -20,7 +19,6 @@ import NotificationMessages from './Containers/notification-messages.jsx';
 import AppModals from './Containers/Modals';
 import Lazy from './Containers/Lazy';
 import Routes from './Containers/Routes/routes.jsx';
-import { interceptAcrossBot } from './Constants/routes-config';
 // eslint-disable-next-line import/extensions
 import initStore from './app.js';
 // eslint-disable-next-line import/no-unresolved
@@ -96,7 +94,6 @@ const App = ({ root_store }) => {
                         <AppContents>
                             {/* TODO: [trader-remove-client-base] */}
                             <Routes passthrough={platform_passthrough} />
-                            <Prompt when={true} message={interceptAcrossBot} />
                             <Lazy
                                 ctor={() =>
                                     import(

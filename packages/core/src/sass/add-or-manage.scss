@@ -7,6 +7,23 @@
     form {
         flex-direction: column;
     }
+    @include mobile {
+        flex-direction: column;
+        flex-wrap: unset;
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        & .account-wizard__btn-area {
+            & .dc-btn,
+            & .dc-btn:last-child {
+                min-width: unset;
+                margin: 0 1.6rem;
+            }
+        }
+        & .change-currency {
+            margin-bottom: 1.6rem;
+        }
+    }
 }
 
 .success-change {
@@ -14,6 +31,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    position: relative;
     flex-grow: 1;
 
     &__icon-area {
@@ -37,6 +55,11 @@
         }
         svg {
             display: block;
+
+            @include mobile {
+                max-width: 96px;
+                height: auto;
+            }
         }
         &--xlarge,
         &--large {
@@ -68,6 +91,11 @@
             @include typeface(--title-center-bold-black);
             margin-top: 2rem;
             color: var(--text-general);
+
+            @include mobile {
+                line-height: 24px;
+                margin: 1.6rem 0 0.8rem;
+            }
         }
         p {
             @include typeface(--paragraph-left-normal-black);
@@ -75,6 +103,13 @@
             text-align: center;
             text-transform: none;
             color: var(--text-general);
+
+            @include mobile {
+                padding: 0 1rem;
+            }
+        }
+        @include mobile {
+            flex-grow: unset;
         }
     }
     &__btn-area {
@@ -86,6 +121,24 @@
         & .dc-btn {
             margin: 0 2rem;
             height: 4rem;
+
+            @include mobile {
+                width: 100%;
+                margin: 0 0.8rem;
+            }
         }
+        @include mobile {
+            position: absolute;
+            bottom: 0;
+            margin: 0;
+            height: 88px;
+            align-items: center;
+            width: calc(100% - 1.6rem);
+            border-top: 1px solid var(--border-disabled);
+        }
+    }
+    @include mobile {
+        justify-content: flex-start;
+        flex-grow: unset;
     }
 }

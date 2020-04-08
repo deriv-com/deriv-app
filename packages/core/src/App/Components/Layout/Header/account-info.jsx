@@ -40,14 +40,29 @@ const AccountInfo = ({
                 onClick={is_disabled ? undefined : toggleDialog}
             >
                 <span className='acc-info__id'>
-                    <Icon
-                        icon={`IcCurrency-${is_virtual ? 'virtual' : currency || 'Unknown'}`}
-                        className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
-                        size={24}
-                    />
+                    <DesktopWrapper>
+                        <Icon
+                            icon={`IcCurrency-${is_virtual ? 'virtual' : currency || 'Unknown'}`}
+                            className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
+                            size={24}
+                        />
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        {(is_virtual || currency) && (
+                            <Icon
+                                icon={`IcCurrency-${is_virtual ? 'virtual' : currency}`}
+                                className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
+                                size={24}
+                            />
+                        )}
+                    </MobileWrapper>
                 </span>
                 {typeof balance !== 'undefined' && (
-                    <p className='acc-info__balance'>
+                    <p
+                        className={classNames('acc-info__balance', {
+                            'acc-info__balance--no-currency': !currency && !is_virtual,
+                        })}
+                    >
                         <span
                             className={classNames('symbols', {
                                 [`symbols--${(currency || '').toLowerCase()}`]: currency,

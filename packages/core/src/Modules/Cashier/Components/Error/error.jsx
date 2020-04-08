@@ -3,11 +3,12 @@ import React from 'react';
 import { Button, Icon } from '@deriv/components';
 import ButtonLink from 'App/Components/Routes/button-link.jsx';
 import { localize, Localize } from '@deriv/translations';
+import { getDerivComLink } from '_common/url';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (
-    <div className='cashier__wrapper'>
+    <div className='cashier__wrapper cashier__wrapper-error'>
         <Icon icon='IcCashierError' className='cashier-error__icon' />
         {header && <h2 className='cashier-error__header'>{header}</h2>}
         {message && <p className='cashier__paragraph'>{message}</p>}
@@ -78,7 +79,7 @@ class Error extends React.Component {
                                         className='link'
                                         target='_blank'
                                         rel='noopener noreferrer'
-                                        href='https://www.deriv.com/terms-and-conditions/#general'
+                                        href={getDerivComLink('terms-and-conditions/#general')}
                                     />,
                                 ]}
                             />
@@ -127,7 +128,7 @@ class Error extends React.Component {
                                         className='link'
                                         target='_blank'
                                         rel='noopener noreferrer'
-                                        href='https://www.deriv.com/help-centre/'
+                                        href={getDerivComLink('help-centre')}
                                     />,
                                 ]}
                             />

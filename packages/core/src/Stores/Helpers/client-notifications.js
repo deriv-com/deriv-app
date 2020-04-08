@@ -9,12 +9,11 @@ import { BinaryLink } from 'App/Components/Routes';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import { LocalStore, State } from '_common/storage';
-import { urlFor } from '_common/url';
+import { urlFor, getDerivComLink } from '_common/url';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
 export const clientNotifications = (ui = {}) => {
-    const mobile = ['mf_retail', 'unwelcome'];
     const notifications = {
         currency: {
             action: {
@@ -223,7 +222,7 @@ export const clientNotifications = (ui = {}) => {
                             className='link'
                             rel='noopener'
                             target='_blank'
-                            href='https://www.deriv.com/terms-and-conditions/'
+                            href={getDerivComLink('terms-and-conditions')}
                         />,
                     ]}
                 />
@@ -301,13 +300,7 @@ export const clientNotifications = (ui = {}) => {
             type: 'danger',
         },
     };
-    const allowed_notifications = Object.keys(notifications)
-        .filter(key => (isMobile() ? mobile.includes(key) : true))
-        .reduce((obj, key) => {
-            obj[key] = notifications[key];
-            return obj;
-        }, {});
-    return allowed_notifications;
+    return notifications;
 };
 
 const hasMissingRequiredField = (account_settings, client) => {

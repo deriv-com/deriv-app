@@ -1,11 +1,11 @@
 import classNames from 'classnames';
-import { Icon, Button, Modal, Loading, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { Icon, Button, Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
-import AccountSignupUnavailableModal from './account-signup-unavailable-modal.jsx';
+import { getDerivComLink } from '_common/url';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
@@ -23,7 +23,7 @@ const ErrorModal = ({ message, code, openPersonalDetails }) => {
             <p>{localize(message)}</p>
             {code !== 'InvalidPhone' && (
                 <a
-                    href='https://www.deriv.com/help-centre/'
+                    href={getDerivComLink('help-centre')}
                     type='button'
                     className='dc-btn dc-btn--primary dc-btn__medium'
                     target='_blank'
@@ -256,8 +256,15 @@ class RealAccountSignup extends Component {
                     </Modal>
                 </DesktopWrapper>
                 <MobileWrapper>
-                    {/* TODO: remove this modal once real account signup is ready for mobile  */}
-                    <AccountSignupUnavailableModal is_visible={is_real_acc_signup_on} toggleModal={this.closeModal} />
+                    <MobileDialog
+                        portal_element_id='modal_root'
+                        title={title}
+                        wrapper_classname='account-signup-mobile-dialog'
+                        visible={is_real_acc_signup_on}
+                        onClose={this.closeModal}
+                    >
+                        <Body />
+                    </MobileDialog>
                 </MobileWrapper>
             </>
         );

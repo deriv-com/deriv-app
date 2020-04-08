@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { isMobile } from '@deriv/shared/utils/screen';
+import { getSelectedRoute } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
 import { FadeWrapper } from 'App/Components/Animations';
 import { connect } from 'Stores/connect';
@@ -17,15 +19,6 @@ class Reports extends React.Component {
     }
 
     onClickClose = () => this.props.routeBackInApp(this.props.history);
-
-    getRoutedReport() {
-        const { routes } = this.props;
-        const route = routes.find(r => r.path === this.props.location.pathname || r.path === r.default) || routes[0];
-        if (!route) return null;
-
-        const Content = route.component;
-        return <Content component_icon={route.icon_component} />;
-    }
 
     render() {
         const menu_options = () => {
@@ -43,6 +36,9 @@ class Reports extends React.Component {
 
             return options;
         };
+
+        const { routes, location } = this.props;
+        const selected_route = isMobile() ? getSelectedRoute({ routes, pathname: location.pathname }) : null;
 
         return (
             <FadeWrapper
@@ -65,7 +61,11 @@ class Reports extends React.Component {
                             />
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <div className='reports__mobile-wrapper'>{this.getRoutedReport()}</div>
+                            <div className='reports__mobile-wrapper'>
+                                {selected_route && (
+                                    <selected_route.component component_icon={selected_route.icon_component} />
+                                )}
+                            </div>
                         </MobileWrapper>
                     </PageOverlay>
                 </div>

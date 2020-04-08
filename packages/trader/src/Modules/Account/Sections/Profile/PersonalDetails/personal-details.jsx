@@ -2,16 +2,7 @@
 import React from 'react';
 import { Formik, Field } from 'formik';
 import classNames from 'classnames';
-import {
-    Autocomplete,
-    Checkbox,
-    Button,
-    Input,
-    DesktopWrapper,
-    MobileWrapper,
-    SelectNative,
-    DatePicker,
-} from '@deriv/components';
+import { Autocomplete, Checkbox, Button, Input, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
@@ -25,7 +16,6 @@ import {
     validLetterSymbol,
     validLength,
 } from 'Utils/Validator/declarative-validation-rules';
-import { toMoment } from '@deriv/shared/utils/date';
 import DateOfBirth from 'App/Components/Form/DateOfBirth';
 // import { account_opening_reason_list }         from './constants';
 import Loading from '../../../../../templates/app/components/loading.jsx';
@@ -101,7 +91,6 @@ class PersonalDetailsForm extends React.Component {
         request.first_name = request.first_name.trim();
         request.last_name = request.last_name.trim();
         // request.tax_identification_number = request.tax_identification_number ? request.tax_identification_number.trim() : '';
-        request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
         request.citizen = request.citizen ? getLocation(this.props.residence_list, request.citizen, 'value') : '';
         request.place_of_birth = request.place_of_birth
             ? getLocation(this.props.residence_list, request.place_of_birth, 'value')
@@ -392,31 +381,13 @@ class PersonalDetailsForm extends React.Component {
                                                 </MobileWrapper>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
-                                                    <DateOfBirth
-                                                        name='date_of_birth'
-                                                        label={localize('Date of birth*')}
-                                                        value={values.date_of_birth}
-                                                        disabled={is_fully_authenticated}
-                                                    />
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
-                                                    <DatePicker
-                                                        name='date_of_birth'
-                                                        className='date-of-birth-datepicker'
-                                                        label={localize('Date of birth*')}
-                                                        value={values.date_of_birth}
-                                                        display_format='DD-MM-YYYY'
-                                                        max_date={toMoment()
-                                                            .subtract(18, 'years')
-                                                            .format('YYYY-MM-DD')}
-                                                        min_date={toMoment()
-                                                            .subtract(100, 'years')
-                                                            .format('YYYY-MM-DD')}
-                                                        onChange={handleChange}
-                                                        disabled={is_fully_authenticated}
-                                                    />
-                                                </MobileWrapper>
+                                                <DateOfBirth
+                                                    name='date_of_birth'
+                                                    label={localize('Date of birth*')}
+                                                    value={values.date_of_birth}
+                                                    disabled={is_fully_authenticated}
+                                                    onChange={val => setFieldValue('date_of_birth', val, true)} // DOB picker returns val in 'YYYY-MM-DD'
+                                                />
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>

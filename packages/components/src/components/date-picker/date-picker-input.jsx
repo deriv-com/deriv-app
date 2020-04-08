@@ -8,10 +8,11 @@ const DatePickerIcon = ({ icon, ...props }) => <Icon className='dc-datepicker__i
 
 const DatePickerInput = ({
     className,
+    disabled,
+    error,
     id,
     name,
     label,
-    error_messages,
     show_leading_icon,
     placeholder,
     is_clearable,
@@ -44,7 +45,8 @@ const DatePickerInput = ({
                 'dc-datepicker__input--has-leading-icon': show_leading_icon,
             })}
             data-lpignore='true'
-            error_messages={error_messages}
+            disabled={disabled}
+            error={error}
             id={id ? `${id}_input` : undefined}
             is_autocomplete_disabled='true'
             is_hj_whitelisted='true'

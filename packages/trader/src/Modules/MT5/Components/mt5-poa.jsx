@@ -2,7 +2,7 @@ import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FormSubmitButton, ThemedScrollbars, Dropdown, Loading } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { FormSubHeader } from 'Modules/Account/Components/layout-components.jsx';
 import FileUploaderContainer from 'Modules/Account/Sections/Verification/ProofOfAddress/file-uploader-container.jsx';
@@ -18,27 +18,6 @@ import { validAddress, validLength, validPostCode } from 'Utils/Validator/declar
 import { InputField } from './mt5-personal-details-form.jsx';
 
 const form = React.createRef();
-
-const Description = () => (
-    <React.Fragment>
-        <p>
-            <Localize i18n_default_text='Please ensure that this address is the same as in your proof of address' />
-        </p>
-        <p>
-            <strong>
-                <Localize i18n_default_text='Please upload one of the following:' />
-            </strong>
-        </p>
-        <ul>
-            <li>
-                <Localize i18n_default_text='A recent utility bill (e.g. electricity, water, gas, phone or internet)' />
-            </li>
-            <li>
-                <Localize i18n_default_text='A recent bank statement or government-issued letter with your name and address' />
-            </li>
-        </ul>
-    </React.Fragment>
-);
 
 class MT5POA extends Component {
     file_uploader_ref = undefined;
@@ -65,15 +44,6 @@ class MT5POA extends Component {
             address_state: [v => !!v, v => !v || validLength(v, { min: 1, max: 35 })],
             address_postcode: [v => !!v, v => validPostCode(v)],
             document_file: [v => !!v, ([file]) => !!file.name],
-        };
-
-        const mappedKey = {
-            address_line_1: localize('First line of address'),
-            address_line_2: localize('Second line of address'),
-            address_city: localize('Town/City'),
-            address_state: localize('State/Province'),
-            address_postcode: localize('Postal/ZIP Code'),
-            document_file: localize('Document file'),
         };
 
         const validation_errors = {

@@ -1,5 +1,3 @@
-import { localize } from '@deriv/translations';
-
 /**
  * ENUM for categories.
  * @const

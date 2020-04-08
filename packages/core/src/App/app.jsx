@@ -22,8 +22,6 @@ import Routes from './Containers/Routes/routes.jsx';
 // eslint-disable-next-line import/extensions
 import initStore from './app.js';
 // eslint-disable-next-line import/no-unresolved
-import AccountTypesModal from './Containers/AccountTypesModal/account-types-modal.jsx';
-
 import 'Sass/app.scss';
 
 const App = ({ root_store }) => {
@@ -94,7 +92,6 @@ const App = ({ root_store }) => {
                     <Header />
                     <ErrorBoundary>
                         <AppContents>
-                            <AccountTypesModal />
                             {/* TODO: [trader-remove-client-base] */}
                             <Routes passthrough={platform_passthrough} />
                             <Lazy

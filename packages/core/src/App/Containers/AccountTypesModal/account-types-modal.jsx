@@ -47,6 +47,7 @@ const FinancialBox = ({ is_demo = false }) => {
                     title={localize('Trade on Deriv')}
                     subtitle={localize('Option trading account')}
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
+                    // TODO: Add click handler
                     buttonOnClick={() => {}}
                     items={[
                         {
@@ -98,6 +99,7 @@ const FinancialBox = ({ is_demo = false }) => {
                     title={localize('Trade on MT5')}
                     subtitle={localize('Margin trading account')}
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
+                    // TODO: Add click handler
                     buttonOnClick={() => {}}
                     items={[
                         {
@@ -165,6 +167,7 @@ const GamingBox = ({ is_demo = false }) => {
                     title={localize('Trade on Deriv')}
                     subtitle={localize('Option trading account')}
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
+                    // TODO: Add click handler
                     buttonOnClick={() => {}}
                     items={[
                         {
@@ -216,6 +219,7 @@ const GamingBox = ({ is_demo = false }) => {
                     title={localize('Trade on MT5')}
                     subtitle={localize('Margin trading account')}
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
+                    // TODO: Add click handler
                     buttonOnClick={() => {}}
                     items={[
                         {

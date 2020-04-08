@@ -22,7 +22,7 @@ class TradingDatePicker extends React.Component {
         this.onChangeCalendarMonth();
     }
 
-    componentWillMount() {
+    componentWillUnmount() {
         this.is_mounted = false;
     }
 

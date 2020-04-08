@@ -2,14 +2,14 @@
 
 .dc-tabs--account-types__tabs {
     ul {
-        width: fit-content;
         margin: 0 auto;
+        width: fit-content;
     }
 }
 /* @define account-types; weak */
 .account-types {
-    overflow-y: auto;
     height: 63.5rem;
+    overflow-y: auto;
 
     &__intro {
         color: var(--text-general);
@@ -23,15 +23,17 @@
         width: 2.2rem;
     }
     &__box {
-        display: grid;
-        grid-template-columns: auto 1fr 1fr;
-        grid-column-gap: 2.4rem;
-        width: 80.8rem;
-        height: 30.2rem;
         border-radius: 0.4rem;
         box-shadow: 0 8px 8px 0 var(--shadow-menu), 0 0 8px 0 var(--shadow-menu);
+        display: grid;
+        grid-auto-columns: 1fr;
+        grid-auto-flow: column;
+        grid-column-gap: 2.4rem;
+        grid-template-columns: auto 1fr;
+        height: 30.2rem;
         margin: 0 auto 4rem;
         padding: 2.4rem;
+        width: 80.8rem;
 
         &:first-of-type {
             margin-top: 1.6rem;

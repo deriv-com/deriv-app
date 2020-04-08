@@ -259,7 +259,7 @@ const GamingBox = ({ is_demo = false }) => {
     );
 };
 
-const AccountTypesModal = () => {
+const AccountTypesModal = ({ has_demo = true }) => {
     const [account_type_tab_index, setAccountTypeTabIndex] = useState(0);
     return (
         <Modal
@@ -278,27 +278,36 @@ const AccountTypesModal = () => {
                         components={[<Icon key={0} className='account-types__text-icon' icon='IcInfoOutline' />]}
                     />
                 </p>
-                <Tabs
-                    active_index={account_type_tab_index}
-                    className='account-types__tabs'
-                    fit_content
-                    onTabItemClick={setAccountTypeTabIndex}
-                    top
-                >
-                    <div label={localize('Real accounts')}>
+                {has_demo ? (
+                    <Tabs
+                        active_index={account_type_tab_index}
+                        className='account-types__tabs'
+                        fit_content
+                        onTabItemClick={setAccountTypeTabIndex}
+                        top
+                    >
+                        <div label={localize('Real accounts')}>
+                            <FinancialBox />
+                            <GamingBox />
+                        </div>
+                        <div label={localize('Demo accounts')}>
+                            <FinancialBox is_demo />
+                            <GamingBox is_demo />
+                        </div>
+                    </Tabs>
+                ) : (
+                    <div>
                         <FinancialBox />
                         <GamingBox />
                     </div>
-                    <div label={localize('Demo accounts')}>
-                        <FinancialBox is_demo />
-                        <GamingBox is_demo />
-                    </div>
-                </Tabs>
+                )}
             </div>
         </Modal>
     );
 };
 
-AccountTypesModal.propTypes = {};
+AccountTypesModal.propTypes = {
+    has_demo: PropTypes.bool,
+};
 
 export default AccountTypesModal;

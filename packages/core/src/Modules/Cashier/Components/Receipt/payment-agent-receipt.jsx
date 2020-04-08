@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Button, Icon } from '@deriv/components';
+import { Button, DesktopWrapper, Icon, MobileWrapper } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
@@ -25,14 +25,19 @@ class PaymentAgentReceipt extends React.Component {
         const currency_lowercase = currency.toLowerCase();
 
         return (
-            <div className='cashier__wrapper--align-left'>
+            <div className='cashier__wrapper--align-left payment-agent__receipt '>
                 <div className='cashier__success'>
                     <h2 className='cashier__header'>
-                        <Localize
-                            i18n_default_text='Your funds have been transferred to {{payment_agent}}.'
-                            values={{ payment_agent }}
-                            options={{ interpolation: { escapeValue: false } }}
-                        />
+                        <DesktopWrapper>
+                            <Localize
+                                i18n_default_text='Your funds have been transferred to {{payment_agent}}.'
+                                values={{ payment_agent }}
+                                options={{ interpolation: { escapeValue: false } }}
+                            />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <Localize i18n_default_text='Your funds have been transferred.' />
+                        </MobileWrapper>
                     </h2>
                     <div className='cashier__transferred-amount cashier__text--bold'>
                         <span className={classNames('symbols', `symbols--${currency_lowercase}`)} />

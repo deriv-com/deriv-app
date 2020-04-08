@@ -1,12 +1,11 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { addDays, daysFromTodayTo, formatDate, toMoment, convertDateFormat } from '@deriv/shared/utils/date';
-import Icon from 'Components/icon';
 import DesktopWrapper from 'Components/desktop-wrapper';
 import MobileWrapper from 'Components/mobile-wrapper';
 import Input from './date-picker-input.jsx';
 import Calendar from './date-picker-calendar.jsx';
+import Native from './date-picker-native.jsx';
 
 class DatePicker extends React.PureComponent {
     datepicker = React.createRef();
@@ -38,20 +37,19 @@ class DatePicker extends React.PureComponent {
     };
 
     onClickOutside = e => {
-        if (/purchase_/gi.test(e.target.id)) {
-            return;
-        }
-        if (!this.datepicker.current.contains(e.target) && this.state.is_datepicker_visible) {
+        if (this.datepicker && !this.datepicker.current?.contains(e.target) && this.state.is_datepicker_visible) {
             this.setState({ is_datepicker_visible: false });
         }
     };
 
     onHover = hovered_date => {
-        const date = toMoment(hovered_date).format(this.props.display_format);
-        const duration = this.props.mode === 'duration' ? daysFromTodayTo(hovered_date) : null;
+        const { display_format, mode, onChange } = this.props;
 
-        if (this.props.onChange) {
-            this.props.onChange({
+        const date = toMoment(hovered_date).format(display_format);
+        const duration = mode === 'duration' ? daysFromTodayTo(hovered_date) : null;
+
+        if (typeof onChange === 'function') {
+            onChange({
                 date,
                 duration,
             });
@@ -59,8 +57,10 @@ class DatePicker extends React.PureComponent {
     };
 
     onSelectCalendar = (selected_date, is_datepicker_visible = true) => {
-        const date = toMoment(selected_date).format(this.props.display_format);
-        const duration = this.props.mode === 'duration' ? daysFromTodayTo(selected_date) : null;
+        const { display_format, mode, name, onChange } = this.props;
+
+        const date = toMoment(selected_date).format(display_format);
+        const duration = mode === 'duration' ? daysFromTodayTo(selected_date) : null;
 
         this.setState(
             {
@@ -70,13 +70,13 @@ class DatePicker extends React.PureComponent {
                 is_placeholder_visible: false,
             },
             () => {
-                if (this.props.onChange) {
-                    this.props.onChange({
+                if (typeof onChange === 'function') {
+                    onChange({
                         date,
                         duration,
                         target: {
-                            name: this.props.name,
-                            value: new Date(selected_date),
+                            name,
+                            value: this.target_value,
                         },
                     });
                 }
@@ -85,18 +85,20 @@ class DatePicker extends React.PureComponent {
     };
 
     onSelectCalendarNative = selected_date => {
-        const date = toMoment(selected_date).format(this.props.display_format);
+        const { display_format, name, onChange } = this.props;
+
+        const date = toMoment(selected_date).format(display_format);
 
         this.setState(
             {
                 date,
             },
             () => {
-                if (this.props.onChange) {
-                    this.props.onChange({
+                if (typeof onChange === 'function') {
+                    onChange({
                         target: {
-                            name: this.props.name,
-                            value: date,
+                            name,
+                            value: this.target_value,
                         },
                     });
                 }
@@ -114,6 +116,10 @@ class DatePicker extends React.PureComponent {
      */
     // onClickClear = () => {};
 
+    get target_value() {
+        return this.props.mode === 'duration' ? this.state.duration : new Date(this.calendar_value);
+    }
+
     get input_value() {
         return this.props.mode === 'duration' ? this.state.duration : this.state.date;
     }
@@ -124,67 +130,44 @@ class DatePicker extends React.PureComponent {
     }
 
     render() {
-        const { id, name, value, onBlur, required, ...props } = this.props;
+        const { id, name, value, onBlur, onFocus, required, ...props } = this.props;
 
         return (
             <>
                 <MobileWrapper>
-                    <div ref={this.datepicker} className={classNames('dc-datepicker-native', this.props.className)}>
-                        <input
-                            id={name}
-                            name={name}
-                            className='dc-datepicker-native__input'
-                            type='date'
-                            min={this.props.min_date}
-                            max={this.props.max_date}
-                            onChange={e => {
-                                // fix for ios issue: clear button doesn't work
-                                // https://github.com/facebook/react/issues/8938
-                                const target = e.nativeEvent.target;
-                                function iosClearDefault() {
-                                    target.defaultValue = '';
-                                }
-                                window.setTimeout(iosClearDefault, 0);
-
-                                this.onSelectCalendarNative(e.target.value);
-                            }}
-                            value={this.calendar_value} // native input accepts date format 'YYYY-MM-DD'
-                        />
-                        <label className='dc-datepicker-native__label' htmlFor={this.props.name}>
-                            {this.props.label}
-                        </label>
-                        <label className='dc-datepicker-native__overlay' htmlFor={this.props.name}>
-                            <span className='dc-datepicker-native__overlay-text'>
-                                {this.input_value || this.props.placeholder}
-                            </span>
-                            <Icon icon='IcCalendar' className='dc-datepicker__icon' />
-                        </label>
-                    </div>
+                    <Native
+                        id={id}
+                        name={name}
+                        display_format={this.props.display_format}
+                        error={this.props.error}
+                        label={this.props.label}
+                        max_date={this.props.max_date}
+                        min_date={this.props.min_date}
+                        onBlur={onBlur}
+                        onFocus={onFocus}
+                        onSelect={this.onSelectCalendarNative}
+                        value={this.calendar_value} // native picker accepts date format yyyy-mm-dd
+                    />
                 </MobileWrapper>
                 <DesktopWrapper>
-                    <div
-                        id={this.props.id}
-                        ref={this.datepicker}
-                        className='dc-datepicker'
-                        data-value={this.input_value}
-                    >
+                    <div id={id} ref={this.datepicker} className='dc-datepicker' data-value={this.input_value}>
                         <Input
                             name={name}
                             onClick={this.handleVisibility}
                             // onChange={this.onChangeInput}
                             // onClickClear={this.onClickClear}
                             is_placeholder_visible={this.state.is_placeholder_visible}
-                            value={this.input_value}
                             onBlur={onBlur}
                             required={required}
+                            value={this.input_value}
                             {...props}
                         />
                         <Calendar
                             ref={this.calendar}
                             is_datepicker_visible={this.state.is_datepicker_visible}
-                            value={this.calendar_value}
                             onHover={this.props.has_range_selection ? this.onHover : undefined}
                             onSelect={this.onSelectCalendar}
+                            value={this.calendar_value} // Calendar accepts date format yyyy-mm-dd
                             {...props}
                         />
                     </div>

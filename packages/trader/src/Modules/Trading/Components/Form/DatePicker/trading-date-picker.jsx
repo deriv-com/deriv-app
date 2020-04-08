@@ -15,6 +15,7 @@ class TradingDatePicker extends React.Component {
         disabled_days: [],
         market_events: [],
         duration: 1,
+        value: this.props.value || toMoment(),
     };
 
     componentDidMount() {
@@ -85,15 +86,21 @@ class TradingDatePicker extends React.Component {
             : localize('Duration: {{duration}} days', { duration });
     }
 
-    onChange = ({ duration, ...e }) => {
+    onChange = e => {
         if (this.has_range_selection && this.is_mounted) {
             this.setState({
-                duration,
+                duration: e.duration,
             });
         }
 
-        if (this.props.onChange && e.target) {
-            this.props.onChange(e);
+        const { onChange } = this.props;
+        if (typeof onChange === 'function' && e.target) {
+            onChange({
+                target: {
+                    name: e.target.name,
+                    value: this.has_range_selection ? e.target.value : toMoment(e.target.value).format('YYYY-MM-DD'),
+                },
+            });
         }
     };
 
@@ -131,7 +138,7 @@ class TradingDatePicker extends React.Component {
                 alignment='left'
                 display_format='DD MMM YYYY'
                 show_leading_icon
-                error_messages={validation_errors.error_messages ? validation_errors.error_messages[name] : []}
+                error={validation_errors.error_messages ? validation_errors.error_messages[name] : undefined}
                 mode={mode}
                 max_date={this.max_date_duration}
                 min_date={this.min_date_expiry}
@@ -144,6 +151,7 @@ class TradingDatePicker extends React.Component {
                 events={this.state.market_events}
                 disabled_days={this.state.disabled_days}
                 keep_open={true}
+                value={this.state.value}
             />
         );
     }
@@ -153,7 +161,6 @@ TradingDatePicker.propTypes = {
     duration: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     duration_min_max: PropTypes.object,
     duration_units_list: MobxPropTypes.arrayOrObservableArray,
-    expiry_date: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     expiry_type: PropTypes.string,
     is_24_hours_contract: PropTypes.bool,
     mode: PropTypes.string,
@@ -168,7 +175,6 @@ TradingDatePicker.propTypes = {
 export default connect(({ modules, common }) => ({
     duration_min_max: modules.trade.duration_min_max,
     duration_units_list: modules.trade.duration_units_list,
-    expiry_date: modules.trade.expiry_date,
     expiry_type: modules.trade.expiry_type,
     onChange: modules.trade.onChange,
     server_time: common.server_time,

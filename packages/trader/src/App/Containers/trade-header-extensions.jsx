@@ -41,7 +41,7 @@ class TradeHeaderExtensions extends React.Component {
     };
 
     componentDidMount() {
-        if (isMobile()) {
+        if (isMobile() && this.props.is_logged_in) {
             this.props.onMountPositions();
             this.props.onMountCashier();
         }

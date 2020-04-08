@@ -77,7 +77,6 @@
 #  binary-com/deriv-core
 # ==============================================================
 #  Used for approving all relevant changes to Core
-#
 #   - aaron-binary
 #   - mahdipourziaei-binary
 
@@ -98,6 +97,7 @@
 # ==============================================================
 #  Used for approving all relevant changes to Shared/Components
 #
+#   - balakrishna-binary 
 #   - aaron-binary
 #   - oskar-binary
 #   - reza-fs
@@ -109,6 +109,7 @@
 # ==============================================================
 #  Used for approving all relevant changes to Trader
 #
+#   - balakrishna-binary 
 #   - kelly-binary
 #   - mahdiaryayi-fs
 #   - mahdipourziaei-binary

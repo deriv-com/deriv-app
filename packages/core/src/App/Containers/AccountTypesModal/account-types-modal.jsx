@@ -1,4 +1,4 @@
-import { Icon, Modal, Tabs } from '@deriv/components';
+import { Icon, Modal, Tabs, ThemedScrollbars } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { localize, Localize } from '@deriv/translations';
@@ -271,37 +271,39 @@ const AccountTypesModal = ({ has_demo = true }) => {
             // onMount={onMount}
             // onUnmount={onUnmount}
         >
-            <div className='account-types'>
-                <p className='account-types__intro'>
-                    <Localize
-                        i18n_default_text='Deriv offer various accounts based on 2 account types that suites different need. You can have all of them whenever you want. To view this page again, simply press any of the <0/> icon in Account Swithcer.'
-                        components={[<Icon key={0} className='account-types__text-icon' icon='IcInfoOutline' />]}
-                    />
-                </p>
-                {has_demo ? (
-                    <Tabs
-                        active_index={account_type_tab_index}
-                        className='account-types__tabs'
-                        fit_content
-                        onTabItemClick={setAccountTypeTabIndex}
-                        top
-                    >
-                        <div label={localize('Real accounts')}>
+            <ThemedScrollbars autoHide style={{ height: '63.5rem' }}>
+                <div className='account-types'>
+                    <p className='account-types__intro'>
+                        <Localize
+                            i18n_default_text='Deriv offer various accounts based on 2 account types that suites different need. You can have all of them whenever you want. To view this page again, simply press any of the <0/> icon in Account Swithcer.'
+                            components={[<Icon key={0} className='account-types__text-icon' icon='IcInfoOutline' />]}
+                        />
+                    </p>
+                    {has_demo ? (
+                        <Tabs
+                            active_index={account_type_tab_index}
+                            className='account-types__tabs'
+                            fit_content
+                            onTabItemClick={setAccountTypeTabIndex}
+                            top
+                        >
+                            <div label={localize('Real accounts')}>
+                                <FinancialBox />
+                                <GamingBox />
+                            </div>
+                            <div label={localize('Demo accounts')}>
+                                <FinancialBox is_demo />
+                                <GamingBox is_demo />
+                            </div>
+                        </Tabs>
+                    ) : (
+                        <div>
                             <FinancialBox />
                             <GamingBox />
                         </div>
-                        <div label={localize('Demo accounts')}>
-                            <FinancialBox is_demo />
-                            <GamingBox is_demo />
-                        </div>
-                    </Tabs>
-                ) : (
-                    <div>
-                        <FinancialBox />
-                        <GamingBox />
-                    </div>
-                )}
-            </div>
+                    )}
+                </div>
+            </ThemedScrollbars>
         </Modal>
     );
 };

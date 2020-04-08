@@ -92,37 +92,37 @@
             min-width: 100%;
             padding: 1.6rem;
 
-            &__title {
+            &-title {
                 color: var(--text-general);
                 font-size: 1.6rem;
                 font-weight: bold;
                 line-height: 1.5;
                 margin-bottom: 0.4rem;
             }
-            &__subtitle {
+            &-subtitle {
                 color: var(--text-profit-success);
                 font-size: 1.2rem;
                 font-weight: bold;
                 line-height: 1.5;
                 margin-bottom: 0.8rem;
             }
-            &__items {
+            &-items {
                 width: 100%;
                 border-collapse: separate;
                 border-spacing: 0 0.8rem;
                 margin-bottom: 1.6rem;
             }
-            &__item {
+            &-item {
                 margin-bottom: 0.8rem;
 
-                &__label {
+                &-label {
                     color: var(--text-less-prominent);
                     display: inline-block;
                     font-size: 1.2rem;
                     white-space: nowrap;
                     width: 10.3rem;
                 }
-                &__value {
+                &-value {
                     color: var(--text-general);
                     display: inline-block;
                     font-size: 1.2rem;
@@ -130,12 +130,12 @@
                     width: 8rem;
                 }
             }
-            &__help {
+            &-help {
                 cursor: pointer;
                 vertical-align: middle;
                 margin-left: 0.4rem;
             }
-            &__button {
+            &-button {
                 width: calc(100% - 32px);
                 box-sizing: border-box;
                 position: absolute;
@@ -149,14 +149,14 @@
             min-width: 100%;
             padding: 0.8rem 1.6rem 1.6rem;
 
-            &__title {
+            &-title {
                 color: var(--text-profit-success);
                 font-size: 1.2rem;
                 font-weight: bold;
                 line-height: 1.5;
                 padding-bottom: 0.8rem;
             }
-            &__text {
+            &-text {
                 color: var(--text-general);
                 font-size: 1.2rem;
                 line-height: 1.5;
@@ -168,24 +168,24 @@
                     line-height: 1.4;
                 }
             }
-            &__title-text {
+            &-title-text {
                 padding-left: 0.8rem;
             }
-            &__back {
+            &-back {
                 cursor: pointer;
                 vertical-align: middle;
             }
-            &__learn {
+            &-learn {
                 position: absolute;
                 bottom: 1.6rem;
                 width: fit-content;
             }
-            &__learn-title {
+            &-learn-title {
                 color: var(--text-less-prominent);
                 font-size: 1rem;
                 line-height: 1.4;
             }
-            &__learn-items {
+            &-learn-items {
                 background-color: var(--brand-red-coral);
                 border-radius: 10px;
                 color: var(--text-colored-background);

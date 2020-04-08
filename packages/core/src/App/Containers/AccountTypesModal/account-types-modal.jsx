@@ -86,13 +86,13 @@ const FinancialBox = ({ is_demo = false }) => {
                         },
                     ]}
                 >
-                    <p className='account-card__description__text'>
+                    <p className='account-card__description-text'>
                         {localize(
                             'Options are contracts that give the owner the right to buy or sell an asset at a fixed price for a specific period of time. That period could be as short as a day or as long as a couple of years, depending on the type of option contract.'
                         )}
                     </p>
-                    <p className='account-card__description__text--small'>{localize('Supported platform:')}</p>
-                    <p className='account-card__description__text--small'>{localize('DTrader and Dbot')}</p>
+                    <p className='account-card__description-text--small'>{localize('Supported platform:')}</p>
+                    <p className='account-card__description-text--small'>{localize('DTrader and Dbot')}</p>
                 </AccountCard>,
                 <AccountCard
                     key={1}
@@ -130,13 +130,13 @@ const FinancialBox = ({ is_demo = false }) => {
                         },
                     ]}
                 >
-                    <p className='account-card__description__text'>
+                    <p className='account-card__description-text'>
                         {localize(
                             'Margin trading is a method of trading assets using funds provided by Deriv.com. It allow you to access greater sums of capital to leverage your positions and realize larger profits on successful trades.'
                         )}
                     </p>
-                    <p className='account-card__description__text--small'>{localize('Supported platform:')} </p>
-                    <p className='account-card__description__text--small'>
+                    <p className='account-card__description-text--small'>{localize('Supported platform:')} </p>
+                    <p className='account-card__description-text--small'>
                         {localize('DMT5')} <br />
                     </p>
                 </AccountCard>,
@@ -206,13 +206,13 @@ const GamingBox = ({ is_demo = false }) => {
                         },
                     ]}
                 >
-                    <p className='account-card__description__text'>
+                    <p className='account-card__description-text'>
                         {localize(
                             'Options are contracts that give the owner the right to buy or sell an asset at a fixed price for a specific period of time. That period could be as short as a day or as long as a couple of years, depending on the type of option contract.'
                         )}
                     </p>
-                    <p className='account-card__description__text--small'>{localize('Supported platform:')}</p>
-                    <p className='account-card__description__text--small'>{localize('DTrader and Dbot')}</p>
+                    <p className='account-card__description-text--small'>{localize('Supported platform:')}</p>
+                    <p className='account-card__description-text--small'>{localize('DTrader and Dbot')}</p>
                 </AccountCard>,
                 <AccountCard
                     key={1}
@@ -250,13 +250,13 @@ const GamingBox = ({ is_demo = false }) => {
                         },
                     ]}
                 >
-                    <p className='account-card__description__text'>
+                    <p className='account-card__description-text'>
                         {localize(
                             'Margin trading is a method of trading assets using funds provided by Deriv.com. It allow you to access greater sums of capital to leverage your positions and realize larger profits on successful trades.'
                         )}
                     </p>
-                    <p className='account-card__description__text--small'>{localize('Supported platform:')}</p>
-                    <p className='account-card__description__text--small'>{localize('DMT5')}</p>
+                    <p className='account-card__description-text--small'>{localize('Supported platform:')}</p>
+                    <p className='account-card__description-text--small'>{localize('DMT5')}</p>
                 </AccountCard>,
             ]}
         />

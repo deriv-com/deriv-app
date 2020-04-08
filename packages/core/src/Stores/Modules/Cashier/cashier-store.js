@@ -754,7 +754,7 @@ export default class CashierStore extends BaseStore {
         // remove disabled mt5 accounts
         const accounts = transfer_between_accounts.accounts.filter(account => !/inactive/.test(account.mt5_group));
         // sort accounts as follows:
-        // for MT5, synthetic indices, standard, advanced
+        // for MT5, synthetic, financial, financial stp
         // for non-MT5, fiat, crypto (alphabetically by currency)
         accounts.sort((a, b) => {
             const a_is_mt = a.account_type === 'mt5';
@@ -782,7 +782,9 @@ export default class CashierStore extends BaseStore {
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
         accounts.forEach(account => {
             const obj_values = {
-                text: account.mt5_group ? getMT5AccountDisplay(account.mt5_group) : account.currency.toUpperCase(),
+                text: account.mt5_group
+                    ? `${localize('DMT5')} ${getMT5AccountDisplay(account.mt5_group)}`
+                    : account.currency.toUpperCase(),
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,

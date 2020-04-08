@@ -146,7 +146,7 @@ class AccountSwitcher extends React.Component {
     }
 
     get sorted_mt5_list() {
-        // for MT5, synthetic indices, standard, advanced
+        // for MT5, synthetic, financial, financial stp
         return this.props.mt5_login_list.slice().sort((a, b) => {
             if (/demo/.test(a.group) && !/demo/.test(b.group)) {
                 return 1;
@@ -166,20 +166,14 @@ class AccountSwitcher extends React.Component {
 
     get has_real_mt5_upgrade_button() {
         if (!this.props.mt5_login_list) return false;
-        // TODO: Remove real account advanced string match when Real Account Advanced is enabled
-        const real_mt5_accounts = this.props.mt5_login_list.filter(account =>
-            /^real((?!advanced).)*$/.test(account.group)
-        );
-        return real_mt5_accounts.length < 2;
+        const real_mt5_accounts = this.props.mt5_login_list.filter(account => /^real/.test(account.group));
+        return real_mt5_accounts.length < 3;
     }
 
     get has_demo_mt5_upgrade_button() {
         if (!this.props.mt5_login_list) return false;
-        // TODO: Remove demo account advanced string match when Demo Account Advanced is enabled
-        const demo_mt5_accounts = this.props.mt5_login_list.filter(account =>
-            /^demo((?!advanced).)*$/.test(account.group)
-        );
-        return demo_mt5_accounts.length < 2;
+        const demo_mt5_accounts = this.props.mt5_login_list.filter(account => /^demo/.test(account.group));
+        return demo_mt5_accounts.length < 3;
     }
 
     get has_set_currency() {

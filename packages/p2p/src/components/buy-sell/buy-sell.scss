@@ -103,6 +103,7 @@
             &--text {
                 color: var(--text-general);
                 font-size: var(--text-size-xs);
+                word-break: break-word;
             }
             &--strong {
                 font-weight: bold;

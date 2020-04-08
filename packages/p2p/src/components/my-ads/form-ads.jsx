@@ -345,10 +345,25 @@ class FormAds extends Component {
             ),
         ];
 
+        const parseValue = key => {
+            switch (key) {
+                case 'advertiser_notes':
+                    return values[key];
+                case 'offer_amount':
+                case 'max_transaction':
+                case 'min_transaction':
+                case 'price_rate':
+                    return parseFloat(values[key]);
+                default:
+                    return values[key];
+            }
+        };
+
         const errors = {};
 
         Object.entries(validations).forEach(([key, rules]) => {
-            const error_index = rules.findIndex(v => !v(values[key]));
+            const value = parseValue(key);
+            const error_index = rules.findIndex(v => !v(value));
 
             if (error_index !== -1) {
                 switch (key) {

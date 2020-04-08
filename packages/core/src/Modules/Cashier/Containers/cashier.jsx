@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile, isTouchDevice } from '@deriv/shared/utils/screen';
+import { getAllRoutesConfig } from '@deriv/shared/utils/route';
 import { FadeWrapper } from 'App/Components/Animations';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
@@ -87,6 +88,17 @@ class Cashier extends React.Component {
             return options;
         };
 
+        const getHeaderTitle = () => {
+            if (!isMobile()) return localize('Cashier');
+            const cashier_routes = getAllRoutesConfig()
+                .filter(p => p.path === routes.cashier)
+                .map(x => x.routes);
+            const header_title = cashier_routes[0]
+                .filter(p => p.path === this.props.location.pathname)
+                .map(x => x.title);
+            return header_title || localize('Cashier');
+        };
+
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}
@@ -94,7 +106,7 @@ class Cashier extends React.Component {
                 keyname='cashier-page-wrapper'
             >
                 <div className='cashier'>
-                    <PageOverlay header={localize('Cashier')} onClickClose={this.onClickClose} has_side_note>
+                    <PageOverlay header={getHeaderTitle()} onClickClose={this.onClickClose} has_side_note>
                         <DesktopWrapper>
                             <VerticalTab
                                 alignment='center'

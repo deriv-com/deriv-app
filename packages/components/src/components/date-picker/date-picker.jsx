@@ -1,14 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-    addDays,
-    daysFromTodayTo,
-    formatDate,
-    isDateValid,
-    toMoment,
-    convertDateFormat,
-} from '@deriv/shared/utils/date';
+import { addDays, daysFromTodayTo, formatDate, toMoment, convertDateFormat } from '@deriv/shared/utils/date';
 import Icon from 'Components/icon';
 import DesktopWrapper from 'Components/desktop-wrapper';
 import MobileWrapper from 'Components/mobile-wrapper';
@@ -90,15 +83,22 @@ class DatePicker extends React.PureComponent {
     };
 
     onSelectCalendarNative = selected_date => {
-        let value = selected_date;
-        if (!isDateValid(value)) {
-            value = '';
-        }
+        const date = toMoment(selected_date).format(this.props.display_format);
+
         this.setState(
             {
-                value: value ? formatDate(value, this.props.display_format) : value,
+                date,
             },
-            this.updateStore
+            () => {
+                if (this.props.onChange) {
+                    this.props.onChange({
+                        target: {
+                            name: this.props.name,
+                            value: date,
+                        },
+                    });
+                }
+            }
         );
     };
 
@@ -145,12 +145,16 @@ class DatePicker extends React.PureComponent {
 
                                 this.onSelectCalendarNative(e.target.value);
                             }}
+                            value={this.calendar_value} // native input accepts date format 'YYYY-MM-DD'
                         />
+                        <label className='dc-datepicker-native__label' htmlFor={this.props.name}>
+                            {this.props.label}
+                        </label>
                         <label className='dc-datepicker-native__overlay' htmlFor={this.props.name}>
-                            <Icon icon='IcCalendar' className='dc-datepicker__arrowhead' />
                             <span className='dc-datepicker-native__overlay-text'>
-                                {this.state.value || this.props.placeholder}
+                                {this.input_value || this.props.placeholder}
                             </span>
+                            <Icon icon='IcCalendar' className='dc-datepicker__icon' />
                         </label>
                     </div>
                 </MobileWrapper>

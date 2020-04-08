@@ -4,10 +4,6 @@
     display: inline-block;
     width: 100%;
 
-    @include mobile {
-        max-width: unset;
-    }
-
     &__input {
         margin-bottom: 0;
         border: 1px solid var(--border-normal);
@@ -94,6 +90,8 @@
         opacity: 0;
         width: 100%;
         height: 100%;
+        -webkit-appearance: none;
+        -moz-appearance: none;
 
         &:not(.dc-datepicker-native__input--empty) {
             outline: none;
@@ -116,12 +114,12 @@
         touch-action: none;
         display: flex;
         align-items: center;
-        margin-left: 8px;
+        padding: 0 1.2rem;
 
         &-text {
             color: var(--text-general);
-            margin-left: 8px;
             font-size: 1.4rem;
+            margin-right: auto;
         }
     }
     &__label {

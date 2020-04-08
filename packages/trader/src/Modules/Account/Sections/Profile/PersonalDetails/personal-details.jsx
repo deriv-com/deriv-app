@@ -404,13 +404,9 @@ class PersonalDetailsForm extends React.Component {
                                                     <DatePicker
                                                         name='date_of_birth'
                                                         className='date-of-birth-datepicker'
-                                                        is_nativepicker={true}
                                                         label={localize('Date of birth*')}
-                                                        value={
-                                                            values.date_of_birth
-                                                                ? toMoment(values.date_of_birth).format('DD MMM YYYY')
-                                                                : ''
-                                                        }
+                                                        value={values.date_of_birth}
+                                                        display_format='DD-MM-YYYY'
                                                         max_date={toMoment()
                                                             .subtract(18, 'years')
                                                             .format('YYYY-MM-DD')}

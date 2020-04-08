@@ -66,6 +66,10 @@
             .dc-calendar__cell {
                 width: 5.6rem;
                 height: 3.2rem;
+
+                &--other:not(.dc-calendar__cell--today):not(.dc-calendar__cell--active):not(.dc-calendar__cell--disabled) {
+                    color: var(--text-general);
+                }
             }
         }
         &--decade {
@@ -100,8 +104,7 @@
             }
         }
         &--is-hidden {
-            opacity: 0;
-            cursor: initial;
+            display: none;
         }
         &--select {
             @include typeface(--paragraph-left-bold-black);
@@ -177,8 +180,7 @@
             transition: none;
         }
         &--is-hidden {
-            opacity: 0;
-            cursor: initial;
+            display: none;
         }
         &--today {
             font-weight: 400;

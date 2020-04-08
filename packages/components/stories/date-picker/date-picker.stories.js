@@ -38,7 +38,7 @@ stories
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
                 <DatePickerWrapper>
-                    <DatePicker />
+                    <DatePicker value={toMoment()} />
                 </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
@@ -47,7 +47,7 @@ stories
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
                 <DatePickerWrapper>
-                    <DatePicker label='DatePicker Label' />
+                    <DatePicker value={toMoment()} label='DatePicker Label' />
                 </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
@@ -56,7 +56,7 @@ stories
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
                 <DatePickerWrapper>
-                    <DatePicker label='Left align' alignment='left' />
+                    <DatePicker value={toMoment()} label='Left align' alignment='left' />
                 </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
@@ -65,16 +65,16 @@ stories
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
                 <DatePickerWrapper>
-                    <DatePicker label='Default' />
+                    <DatePicker value={toMoment()} label='Default' />
                 </DatePickerWrapper>
                 <DatePickerWrapper>
-                    <DatePicker label='DD-MM-YYY' display_format='DD-MM-YYYY' />
+                    <DatePicker value={toMoment()} label='DD-MM-YYY' display_format='DD-MM-YYYY' />
                 </DatePickerWrapper>
                 <DatePickerWrapper>
-                    <DatePicker label='DD/MM/YYYY' display_format='DD/MM/YYYY' />
+                    <DatePicker value={toMoment()} label='DD/MM/YYYY' display_format='DD/MM/YYYY' />
                 </DatePickerWrapper>
                 <DatePickerWrapper>
-                    <DatePicker label='DD MMM YYYY' display_format='DD MMM YYYY' />
+                    <DatePicker value={toMoment()} label='DD MMM YYYY' display_format='DD MMM YYYY' />
                 </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
@@ -83,7 +83,7 @@ stories
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
                 <DatePickerWrapper>
-                    <DatePicker show_leading_icon />
+                    <DatePicker value={toMoment()} show_leading_icon />
                 </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
@@ -92,7 +92,7 @@ stories
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
                 <DatePickerWrapper>
-                    <DatePicker is_clearable />
+                    <DatePicker value={toMoment()} is_clearable />
                 </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
@@ -102,7 +102,7 @@ stories
             <Theme is_dark={boolean('Theme', false)}>
                 <FlexWrapper>
                     <DatePickerWrapper>
-                        <DatePicker placeholder='I am placeholder' />
+                        <DatePicker value={toMoment()} placeholder='I am placeholder' />
                     </DatePickerWrapper>
                 </FlexWrapper>
             </Theme>
@@ -112,7 +112,7 @@ stories
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
                 <DatePickerWrapper>
-                    <DatePicker footer='Abracadabra!' has_today_btn />
+                    <DatePicker value={toMoment()} footer='Abracadabra!' has_today_btn />
                 </DatePickerWrapper>
             </FlexWrapper>
         </Theme>
@@ -128,7 +128,13 @@ stories
             <Theme is_dark={boolean('Theme', false)}>
                 <FlexWrapper>
                     <DatePickerWrapper>
-                        <DatePicker label='Default' min_date={toMoment()} onChange={onChange} has_today_btn />
+                        <DatePicker
+                            value={toMoment()}
+                            label='Default'
+                            min_date={toMoment()}
+                            onChange={onChange}
+                            has_today_btn
+                        />
                     </DatePickerWrapper>
                     <DatePickerWrapper>
                         <DatePicker
@@ -138,35 +144,27 @@ stories
                             min_date={toMoment()}
                             onChange={onChange}
                             has_range_selection
+                            value={toMoment()}
                         />
                     </DatePickerWrapper>
                 </FlexWrapper>
             </Theme>
         );
     })
-    .add('value', () => (
-        <Theme is_dark={boolean('Theme', false)}>
-            <FlexWrapper>
-                <DatePickerWrapper>
-                    <DatePicker value='2000-01-04' has_today_btn />
-                </DatePickerWrapper>
-            </FlexWrapper>
-        </Theme>
-    ))
     .add('view', () => (
         <Theme is_dark={boolean('Theme', false)}>
             <FlexWrapper>
                 <DatePickerWrapper>
-                    <DatePicker label='Default' />
+                    <DatePicker value={toMoment()} label='Default' />
                 </DatePickerWrapper>
                 <DatePickerWrapper>
-                    <DatePicker label='Month' calendar_view='month' />
+                    <DatePicker value={toMoment()} label='Month' calendar_view='month' />
                 </DatePickerWrapper>
                 <DatePickerWrapper>
-                    <DatePicker label='Year' calendar_view='year' />
+                    <DatePicker value={toMoment()} label='Year' calendar_view='year' />
                 </DatePickerWrapper>
                 <DatePickerWrapper>
-                    <DatePicker label='Decade' calendar_view='decade' />
+                    <DatePicker value={toMoment()} label='Decade' calendar_view='decade' />
                 </DatePickerWrapper>
             </FlexWrapper>
         </Theme>

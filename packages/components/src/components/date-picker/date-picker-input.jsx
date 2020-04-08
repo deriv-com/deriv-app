@@ -11,6 +11,7 @@ const DatePickerInput = ({
     disabled,
     error,
     id,
+    is_placeholder_visible,
     name,
     label,
     show_leading_icon,
@@ -18,7 +19,9 @@ const DatePickerInput = ({
     is_clearable,
     onClickClear,
     onClick,
+    onBlur,
     value,
+    required,
 }) => {
     const [is_clear_btn_visible, setIsClearBtnVisible] = useState(false);
 
@@ -54,14 +57,16 @@ const DatePickerInput = ({
             name={name}
             // onChange={onChange}
             onClick={onClick}
-            placeholder={value ? undefined : placeholder}
+            placeholder={placeholder}
             readOnly
             leading_icon={show_leading_icon ? <DatePickerIcon icon='IcCalendar' /> : undefined}
             trailing_icon={show_leading_icon ? undefined : trailing_icon}
             type='text'
-            value={value}
+            value={is_placeholder_visible || !value ? '' : value}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            onBlur={onBlur}
+            required={required}
         />
     );
 };

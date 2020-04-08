@@ -2,7 +2,17 @@
 import React from 'react';
 import { Formik, Field } from 'formik';
 import classNames from 'classnames';
-import { Autocomplete, Checkbox, Button, Input, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
+import {
+    Autocomplete,
+    Checkbox,
+    Button,
+    Input,
+    DesktopWrapper,
+    MobileWrapper,
+    SelectNative,
+    DateOfBirthPicker,
+} from '@deriv/components';
+import { toMoment } from '@deriv/shared/utils/date';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
@@ -16,7 +26,6 @@ import {
     validLetterSymbol,
     validLength,
 } from 'Utils/Validator/declarative-validation-rules';
-import DateOfBirth from 'App/Components/Form/DateOfBirth';
 // import { account_opening_reason_list }         from './constants';
 import Loading from '../../../../../templates/app/components/loading.jsx';
 import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
@@ -90,6 +99,7 @@ class PersonalDetailsForm extends React.Component {
         request.email_consent = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
         request.first_name = request.first_name.trim();
         request.last_name = request.last_name.trim();
+        request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
         // request.tax_identification_number = request.tax_identification_number ? request.tax_identification_number.trim() : '';
         request.citizen = request.citizen ? getLocation(this.props.residence_list, request.citizen, 'value') : '';
         request.place_of_birth = request.place_of_birth
@@ -263,6 +273,7 @@ class PersonalDetailsForm extends React.Component {
                     handleSubmit,
                     isSubmitting,
                     setFieldValue,
+                    setTouched,
                 }) => (
                     <>
                         <LeaveConfirm onDirty={this.showForm} />
@@ -381,12 +392,15 @@ class PersonalDetailsForm extends React.Component {
                                                 </MobileWrapper>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                <DateOfBirth
+                                                <DateOfBirthPicker
                                                     name='date_of_birth'
                                                     label={localize('Date of birth*')}
+                                                    error={touched.date_of_birth && errors.date_of_birth}
+                                                    onBlur={() => setTouched({ date_of_birth: true })}
+                                                    onChange={e =>
+                                                        setFieldValue('date_of_birth', e.target?.value, true)
+                                                    }
                                                     value={values.date_of_birth}
-                                                    disabled={is_fully_authenticated}
-                                                    onChange={val => setFieldValue('date_of_birth', val, true)} // DOB picker returns val in 'YYYY-MM-DD'
                                                 />
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>

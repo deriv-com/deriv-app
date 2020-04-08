@@ -13,9 +13,10 @@ class DatePicker extends React.PureComponent {
     calendar = React.createRef();
 
     state = {
-        date: toMoment(this.props.value).format(this.props.display_format),
+        date: this.props.value ? toMoment(this.props.value).format(this.props.display_format) : '',
         duration: 0,
         is_datepicker_visible: false,
+        is_placeholder_visible: this.props.placeholder,
     };
 
     componentDidMount() {
@@ -66,6 +67,7 @@ class DatePicker extends React.PureComponent {
                 date,
                 duration,
                 is_datepicker_visible,
+                is_placeholder_visible: false,
             },
             () => {
                 if (this.props.onChange) {
@@ -74,7 +76,7 @@ class DatePicker extends React.PureComponent {
                         duration,
                         target: {
                             name: this.props.name,
-                            value: this.input_value,
+                            value: new Date(selected_date),
                         },
                     });
                 }
@@ -117,19 +119,20 @@ class DatePicker extends React.PureComponent {
     }
 
     get calendar_value() {
+        if (!this.state.date) return toMoment(this.props.max_date).format(this.props.date_format);
         return convertDateFormat(this.state.date, this.props.display_format, this.props.date_format);
     }
 
     render() {
-        const { id, value, ...props } = this.props;
+        const { id, name, value, onBlur, required, ...props } = this.props;
 
         return (
             <>
                 <MobileWrapper>
                     <div ref={this.datepicker} className={classNames('dc-datepicker-native', this.props.className)}>
                         <input
-                            id={this.props.name}
-                            name={this.props.name}
+                            id={name}
+                            name={name}
                             className='dc-datepicker-native__input'
                             type='date'
                             min={this.props.min_date}
@@ -166,17 +169,21 @@ class DatePicker extends React.PureComponent {
                         data-value={this.input_value}
                     >
                         <Input
+                            name={name}
                             onClick={this.handleVisibility}
                             // onChange={this.onChangeInput}
                             // onClickClear={this.onClickClear}
+                            is_placeholder_visible={this.state.is_placeholder_visible}
                             value={this.input_value}
+                            onBlur={onBlur}
+                            required={required}
                             {...props}
                         />
                         <Calendar
                             ref={this.calendar}
                             is_datepicker_visible={this.state.is_datepicker_visible}
                             value={this.calendar_value}
-                            onHover={this.onHover}
+                            onHover={this.props.has_range_selection ? this.onHover : undefined}
                             onSelect={this.onSelectCalendar}
                             {...props}
                         />

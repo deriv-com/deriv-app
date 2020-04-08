@@ -20,6 +20,7 @@ module.exports = {
         collapsible: 'Components/collapsible',
         counter: 'Components/counter',
         'date-picker': 'Components/date-picker',
+        'date-of-birth-picker': 'Components/date-of-birth-picker',
         'desktop-wrapper': 'Components/desktop-wrapper',
         dialog: 'Components/dialog',
         'div100vh-container': 'Components/div100vh-container',

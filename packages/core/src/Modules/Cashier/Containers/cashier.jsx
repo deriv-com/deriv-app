@@ -3,20 +3,50 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { isMobile, isTouchDevice } from '@deriv/shared/utils/screen';
 import { FadeWrapper } from 'App/Components/Animations';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 
+const el_landscape_blocker = document.getElementById('landscape_blocker');
+
 class Cashier extends React.Component {
+    state = { device_height: window.innerHeight };
+
     componentDidMount() {
         this.props.toggleCashier();
         // we still need to populate the tabs shown on cashier
         this.props.onMount();
-    }
 
+        // TODO: Remove L21, L31, and L38 code blocks once landscape design is ready
+        // doughflow iframe inconjunction with android's virtual keyboard causes issues with css screen height calculation (thus falsely triggering landscape blocker in Android)
+        // this is due to the onscreen virtual keyboard resizing the innerHeight of the window and ignoring the actual height of content within the iframe
+        if (isMobile() && isTouchDevice()) {
+            window.addEventListener('resize', this.handleOnScreenKeyboard);
+        }
+    }
     componentWillUnmount() {
         this.props.toggleCashier();
+
+        // cleanup onscreen keyboard class suffix and eventlistener for landscape blocker upon unMount
+        if (isMobile() && isTouchDevice()) {
+            window.removeEventListener('resize', this.handleOnScreenKeyboard);
+            if (el_landscape_blocker) el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
+        }
     }
+
+    handleOnScreenKeyboard = () => {
+        // We are listening to resize window resize events on mobile,
+        // and comparing the android device's height onMount and the height after the keyboard causes the resize event
+        const is_android_keyboard = this.state.device_height !== window.innerHeight;
+        if (el_landscape_blocker) {
+            if (is_android_keyboard) {
+                el_landscape_blocker.classList.add('landscape-blocker--keyboard-visible');
+            } else {
+                el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
+            }
+        }
+    };
 
     onClickClose = () => this.props.routeBackInApp(this.props.history);
 

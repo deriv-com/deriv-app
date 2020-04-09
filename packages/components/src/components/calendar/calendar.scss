@@ -174,8 +174,8 @@
         &--disabled:hover {
             cursor: default;
         }
-        &--disabled:not(.dc-calendar__cell--today),
-        &--other:not(.dc-calendar__cell--today):not(.dc-calendar__cell--active) {
+        &--disabled:not(.dc-calendar__cell--today):not(.dc-calendar__cell--between-hover):not(.dc-calendar__cell--between),
+        &--other:not(.dc-calendar__cell--today):not(.dc-calendar__cell--active):not(.dc-calendar__cell--between-hover):not(.dc-calendar__cell--between) {
             color: var(--text-disabled);
             transition: none;
         }
@@ -184,7 +184,7 @@
         }
         &--today {
             font-weight: 400;
-            border: 1px solid var(--text-general);
+            border: 1px solid var(--state-active);
 
             &-duration {
                 background: var(--state-active);

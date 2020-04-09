@@ -87,7 +87,8 @@
         font-size: 1.6rem;
         line-height: 1.5;
         font-weight: bold;
-        margin-bottom: 16px;
+        margin-bottom: 1.6rem;
+        margin-top: 1.6rem;
         color: var(--text-prominent);
 
         @include mobile {
@@ -131,6 +132,14 @@
                 margin: 0;
                 flex-flow: column;
                 height: unset;
+
+                &--align-end {
+                    align-items: flex-end;
+
+                    .cashier__form-submit-button {
+                        width: unset;
+                    }
+                }
             }
             &-submit-button {
                 margin: 0;
@@ -172,6 +181,17 @@
         margin: 0 0 16px;
         line-height: 1.43;
 
+        &-wrapper {
+            display: flex;
+
+            .dc-select-native__placeholder {
+                background-color: var(--general-main-1);
+            }
+
+            @include mobile {
+                flex-direction: column;
+            }
+        }
         &-display {
             justify-content: left;
             min-height: 4rem;
@@ -210,7 +230,13 @@
             text-align: left;
             line-height: 1.43;
             max-width: 20rem;
+            display: flex;
+            flex-direction: column;
+            margin-right: 0.8rem;
 
+            &-from {
+                align-items: flex-end;
+            }
             &-wrapper {
                 display: flex;
                 justify-content: center;
@@ -378,7 +404,8 @@
     }
     &__email {
         &-sent {
-            width: 40rem;
+            max-width: 40rem;
+            width: 100%;
             margin: auto;
 
             &-title {
@@ -602,6 +629,10 @@
     &__contact {
         text-decoration: none;
         color: var(--brand-red-coral);
+
+        @include mobile {
+            padding-left: 0;
+        }
     }
     &__explanation {
         margin-top: -0.8rem;
@@ -784,7 +815,7 @@
 
         @include mobile {
             margin: 0;
-            padding: 1.6rem 0.8rem;
+            padding: 2.4rem 0 1.6rem;
         }
     }
     &__bullet {
@@ -822,9 +853,6 @@
             align-self: center;
         }
     }
-    &__balance {
-        color: var(--text-less-prominent);
-    }
     &__receipt {
         &-icon {
             margin: 5.6rem 0 1.6rem;
@@ -837,7 +865,7 @@
     &__transfer {
         &-icon {
             vertical-align: initial;
-            margin: 0 0.8rem;
+            margin: 1rem 0.8rem 0;
         }
         &-details {
             &-from,
@@ -847,11 +875,32 @@
             }
         }
     }
-    &__button-done {
-        margin: 3.2rem auto 0;
+    &__transfer-info {
+        font-size: 1.2rem;
+        margin-bottom: 1.8rem;
 
-        @include mobile {
-            margin: 2.4rem auto 0;
+        .dc-btn {
+            padding: 0px;
+            height: 1.5rem;
+        }
+        .dc-btn__text {
+            line-height: 1.2rem;
+        }
+    }
+    &__transfer-from {
+        margin-bottom: 1.8rem;
+        margin-top: 2.5rem;
+    }
+    &__transfer-to {
+        margin-bottom: 3.2rem;
+    }
+    &__actions {
+        display: flex;
+        margin-top: 2.4rem;
+        justify-content: center;
+
+        &-statement {
+            margin-right: 0.8rem;
         }
     }
     &__native-select {

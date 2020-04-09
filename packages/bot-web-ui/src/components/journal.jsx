@@ -134,7 +134,12 @@ const Journal = ({ filtered_messages, contract_stage, ...props }) => {
     return (
         <div className='journal run-panel-tab__content'>
             <Tools {...props} />
-            <ThemedScrollbars autoHide style={{ height: 'calc(100% - 42px)' }}>
+            <ThemedScrollbars
+                autoHide
+                className='journal__scrollbars'
+                style={{ height: 'calc(100% - 42px)' }}
+                hideHorizontal={true}
+            >
                 <div className='journal__item-list'>
                     {filtered_messages.length ? (
                         <TransitionGroup>

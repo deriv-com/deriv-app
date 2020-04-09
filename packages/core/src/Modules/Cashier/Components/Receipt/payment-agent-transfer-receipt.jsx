@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Button, Icon } from '@deriv/components';
+import { Button, DesktopWrapper, Icon, MobileWrapper } from '@deriv/components';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
@@ -16,13 +16,18 @@ class PaymentAgentTransferReceipt extends React.Component {
 
     render() {
         return (
-            <div className='cashier__wrapper'>
+            <div className='cashier__wrapper payment-agent-transfer__wrapper'>
                 <div className='cashier__success'>
                     <h2 className='cashier__header'>
-                        <Localize
-                            i18n_default_text='Your funds have been transferred to {{name}}.'
-                            values={{ name: this.props.receipt.client_name }}
-                        />
+                        <DesktopWrapper>
+                            <Localize
+                                i18n_default_text='Your funds have been transferred to {{name}}.'
+                                values={{ name: this.props.receipt.client_name }}
+                            />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <Localize i18n_default_text='Your funds have been transferred.' />
+                        </MobileWrapper>
                     </h2>
                     <div className='cashier__transferred-amount cashier__text--bold'>
                         <span className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)} />
@@ -32,16 +37,18 @@ class PaymentAgentTransferReceipt extends React.Component {
                         <span className='account-transfer__transfer-details-from'>
                             <Icon icon={`IcCurrency-${this.props.currency.toLowerCase()}`} />
                             <span className='cashier__transferred-details'>
-                                <span className='cashier__text--bold'>{this.props.currency.toUpperCase()}</span>&nbsp;(
-                                {this.props.loginid})
+                                <span className='cashier__text--bold'>{this.props.currency.toUpperCase()}</span>
+                                <DesktopWrapper>&nbsp;({this.props.loginid})</DesktopWrapper>
+                                <MobileWrapper>{this.props.loginid}</MobileWrapper>
                             </span>
                         </span>
                         <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
                         <span className='account-transfer__transfer-details-to'>
                             <Icon icon='IcUserOutline' />
                             <span className='cashier__transferred-details'>
-                                <span className='cashier__text--bold'>{this.props.receipt.client_name}</span>&nbsp;(
-                                {this.props.receipt.client_id})
+                                <span className='cashier__text--bold'>{this.props.receipt.client_name}</span>
+                                <DesktopWrapper>&nbsp;()</DesktopWrapper>
+                                <MobileWrapper>{this.props.receipt.client_id}</MobileWrapper>
                             </span>
                         </span>
                     </div>

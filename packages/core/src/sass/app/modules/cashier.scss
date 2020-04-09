@@ -954,17 +954,88 @@ div.payment-agent-transfer {
         }
     }
     @include mobile {
+        &__wrapper {
+            padding-top: 1.6rem;
+
+            & .cashier {
+                &__header {
+                    margin-top: 0.4rem;
+                }
+                &__success {
+                    width: 100%;
+                    background-color: var(--general-section-2);
+                    padding: 0.4rem 0.4rem 0.8rem;
+                    margin-bottom: 1.6rem;
+                }
+                &__form-submit {
+                    flex-flow: row;
+
+                    &-button {
+                        margin: 0;
+                        width: 100%;
+
+                        &:first-child {
+                            margin-right: 0.4rem;
+                        }
+                        &:last-child {
+                            margin-left: 0.4rem;
+                        }
+                    }
+                }
+                &__transferred-details {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    max-width: 100%;
+                    padding: 0;
+                    margin: 0.8rem 0 0;
+
+                    &-wrapper {
+                        & .cashier__text--bold {
+                            color: var(--text-prominent);
+                        }
+                        & .account-transfer__transfer-details-from {
+                            flex-direction: column;
+                            padding-right: 1.6rem;
+                        }
+                        & .account-transfer__transfer-details-to {
+                            flex-direction: column;
+                            padding-left: 1.6rem;
+
+                            & > .cashier__transferred-details {
+                                align-items: flex-start;
+                            }
+                        }
+                        & .dc-icon {
+                            width: 3.2rem;
+                            height: 3.2rem;
+                        }
+                    }
+                }
+                &__transferred-icon {
+                    width: 1.6rem !important;
+                    height: 1.6rem !important;
+                    margin: 0;
+                }
+            }
+        }
         &__container {
             width: calc(100% - 3.2rem);
             margin: 0 1.6rem;
             padding-top: 2.4rem;
+
+            & .dc-input__field[type='textarea'] {
+                height: 11.9rem;
+            }
         }
         &__input {
             width: 100%;
-            margin: 0 0 3.2rem 0;
+            margin: 0 0 4.3rem 0;
 
             &:not(:first-child) {
                 margin-left: unset;
+                margin-bottom: 5.3rem;
             }
         }
     }

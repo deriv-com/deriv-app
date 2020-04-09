@@ -1,4 +1,3 @@
-import React from 'react';
 import { localize } from '@deriv/translations';
 import AddressDetails from 'App/Containers/RealAccountSignup/address-details.jsx';
 

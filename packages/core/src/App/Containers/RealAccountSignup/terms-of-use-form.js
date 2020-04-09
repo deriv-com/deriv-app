@@ -1,4 +1,3 @@
-import React from 'react';
 import { isDesktop } from '@deriv/shared/utils/os';
 import { localize } from '@deriv/translations';
 import { getDefaultFields } from './form-validations';

@@ -408,8 +408,6 @@ class PersonalDetails extends React.Component {
             </Formik>
         );
     }
-
-    validatePersonalDetails = landing_company => this.props.validate;
 }
 
 export default PersonalDetails;

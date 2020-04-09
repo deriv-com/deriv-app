@@ -1,4 +1,3 @@
-import React from 'react';
 import { toMoment } from '@deriv/trader/src/Utils/Date';
 import { localize } from '@deriv/translations';
 import PersonalDetails from 'App/Containers/RealAccountSignup/personal-details.jsx';

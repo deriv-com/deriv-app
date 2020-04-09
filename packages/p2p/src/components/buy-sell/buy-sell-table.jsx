@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import { BuyTable } from './buy-table.jsx';
-import { SellTable } from './sell-table.jsx';
+import { BuySellTableContent } from './buy-table-content.jsx';
 
 export const BuySellTable = ({ setSelectedAd, table_type }) => {
     const is_buy = table_type === 'buy';
@@ -21,7 +20,7 @@ export const BuySellTable = ({ setSelectedAd, table_type }) => {
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {is_buy ? <BuyTable setSelectedAd={setSelectedAd} /> : <SellTable setSelectedAd={setSelectedAd} />}
+                <BuySellTableContent key={is_buy.toString()} is_buy={is_buy} setSelectedAd={setSelectedAd} />
             </Table.Body>
         </Table>
     );

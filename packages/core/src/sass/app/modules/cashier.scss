@@ -953,5 +953,20 @@ div.payment-agent-transfer {
             margin-left: 2.4rem;
         }
     }
+    @include mobile {
+        &__container {
+            width: calc(100% - 3.2rem);
+            margin: 0 1.6rem;
+            padding-top: 2.4rem;
+        }
+        &__input {
+            width: 100%;
+            margin: 0 0 3.2rem 0;
+
+            &:not(:first-child) {
+                margin-left: unset;
+            }
+        }
+    }
 }
 /* stylelint-enable plugin/selector-bem-pattern */

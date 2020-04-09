@@ -48,7 +48,7 @@ export default class JournalStore {
                 className: 'journal__text--error',
                 block_id,
                 sound: 'silent',
-                message_type: message_types.COMPONENT,
+                message_type: message_types.ERROR,
                 message: messageWithButton({
                     unique_id: block_id,
                     type: 'error',

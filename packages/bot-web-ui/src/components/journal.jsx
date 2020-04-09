@@ -108,9 +108,6 @@ const getJournalItemContent = (message, type, className, extra) => {
         case message_types.ERROR: {
             return <div className='journal__text--error journal__text'>{message}</div>;
         }
-        case message_types.COMPONENT: {
-            return <div className={classnames('journal__text-row', className)}>{message}</div>;
-        }
         default:
             return null;
     }

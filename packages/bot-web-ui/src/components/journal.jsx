@@ -14,7 +14,7 @@ import '../assets/sass/journal.scss';
 const DateItem = ({ date, time }) => {
     return (
         <>
-            <span className='journal__text-date'> {date} </span> | <span className='journal__text-time'> {time} </span>
+            <span className='journal__text-date'>{date}</span> | <span className='journal__text-time'>{time}</span>
         </>
     );
 };
@@ -69,7 +69,7 @@ const FormatMessage = ({ logType, className, extra }) => {
                 );
             }
             default:
-                return <></>;
+                return null;
         }
     };
 
@@ -112,7 +112,7 @@ const getJournalItemContent = (message, type, className, extra) => {
             return <div className={classnames('journal__text-row', className)}>{message}</div>;
         }
         default:
-            return <></>;
+            return null;
     }
 };
 

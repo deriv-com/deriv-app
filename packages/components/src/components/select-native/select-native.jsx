@@ -34,9 +34,9 @@ class SelectNative extends Component {
                     >
                         <div className='dc-select-native__display'>
                             {list_items && value && (
-                                <span className='dc-select-native__display-text'>
+                                <div className='dc-select-native__display-text'>
                                     {use_text ? value : this.getDisplayText(value)}
-                                </span>
+                                </div>
                             )}
                         </div>
                         <div

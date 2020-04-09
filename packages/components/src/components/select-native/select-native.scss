@@ -30,6 +30,7 @@
             overflow: hidden;
             max-width: calc(100% - 4rem);
             text-overflow: ellipsis;
+            display: flex;
         }
     }
     &__placeholder {

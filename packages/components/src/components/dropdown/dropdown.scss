@@ -107,6 +107,14 @@
         height: 0;
         width: 0;
     }
+    &__container {
+        position: relative;
+    }
+    &__hint {
+        color: var(--text-less-prominent);
+        font-size: 1.2rem;
+        margin-left: 1.2rem;
+    }
     &--no-margin .dc-dropdown__display {
         margin: 0;
     }

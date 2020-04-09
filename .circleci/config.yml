@@ -36,13 +36,15 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - node-{{ checksum "./packages/*/package-lock.json" }}
             - node-
       - run:
           name: Install npm packages
           command: npm run bootstrap
+      - run: |
+          echo $(find ./packages/ -name package-lock.json -type f -exec md5sum {} \; | md5sum | cut -d' ' -f1) >> CACHE_KEY1
+          cat CACHE_KEY1
       - save_cache:
-          key: node-{{ checksum "./packages/*/package-lock.json" }}
+          key: node-{{ checksum "CACHE_KEY1" }}
           paths:
             - "node_modules"
             - "packages/*/node_modules"

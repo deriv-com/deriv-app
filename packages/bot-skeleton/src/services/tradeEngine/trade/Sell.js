@@ -26,7 +26,6 @@ export default Engine =>
                 delay_index = 0;
                 contractStatus('purchase.sold');
                 log(log_types.SELL, { sold_for });
-                // log(`${localize('Sold for')}: ${sold_for}`);
                 return this.waitForAfter();
             };
 

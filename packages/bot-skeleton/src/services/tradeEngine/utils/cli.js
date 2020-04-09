@@ -30,8 +30,6 @@ const interpreter = createInterpreter();
 
 globalObserver.register('Error', e => log(e));
 
-// globalObserver.register('ui.log.success', ({ className, message }) => log(`${className.toUpperCase()}: ${message}`));
-
 lineReader
     .on('line', line => {
         code += `${line}\n`;

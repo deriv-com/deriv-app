@@ -67,7 +67,6 @@ export default Engine =>
             });
 
             log(win ? log_types.PROFIT : log_types.LOST, { profit });
-            // log(`${localize('Profit amount')}: ${profit}`);
         }
 
         updateAndReturnTotalRuns() {

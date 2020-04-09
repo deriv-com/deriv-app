@@ -29,7 +29,6 @@ export default Engine =>
                 this.renewProposalsOnPurchase();
                 delayIndex = 0;
                 log(log_types.PURCHASE, { longcode: buy.longcode, transaction_id: buy.transaction_id });
-                // log(`${localize('Bought')}: ${buy.longcode} (${localize('ID')}: ${buy.transaction_id})`);
                 info({
                     accountID: this.accountInfo.loginid,
                     totalRuns: this.updateAndReturnTotalRuns(),

@@ -179,12 +179,12 @@ workflows:
   build_deploy_staging:
     jobs:
       - build_staging:
-          context: binary-frontend-artifact-upload
+          context: binary-frontend-deploy
           filters:
             branches:
               only: /^dev$/
       - deploy_staging:
-          context: binary-frontend-artifact-upload
+          context: binary-frontend-deploy
           filters:
             branches:
               only: /^dev$/
@@ -193,14 +193,14 @@ workflows:
   build_deploy_production:
     jobs:
       - build_production:
-          context: binary-frontend-artifact-upload
+          context: binary-frontend-deploy
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^production.*/
       - deploy_production:
-          context: binary-frontend-artifact-upload
+          context: binary-frontend-deploy
           filters:
             branches:
               ignore: /.*/

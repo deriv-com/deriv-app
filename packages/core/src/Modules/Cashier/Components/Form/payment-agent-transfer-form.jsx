@@ -61,7 +61,7 @@ class PaymentAgentTransferForm extends React.Component {
 
     render() {
         return (
-            <div className='cashier__wrapper--align-left'>
+            <div className='cashier__wrapper--align-left payment-agent-transfer__container'>
                 <h2 className='cashier__header payment-agent-transfer__header'>
                     <Localize i18n_default_text='Transfer to client' />
                 </h2>

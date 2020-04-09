@@ -8,8 +8,8 @@ import { requestWS } from 'Utils/websocket';
 import { RowComponent, BuySellRowLoader } from './row.jsx';
 
 const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
-    let offset = 0;
-    const limit = 50;
+    let item_offset = 0;
+    const item_limit = 50;
     const [is_mounted, setIsMounted] = useState(false);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
     const [api_error_message, setApiErrorMessage] = useState('');
@@ -22,7 +22,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
     }, []);
 
     useEffect(() => {
-        loadMoreItems(offset, limit);
+        loadMoreItems(item_offset, item_limit);
     }, [is_mounted]);
 
     const loadMoreItems = (start_idx, end_idx) => {
@@ -35,11 +35,10 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
             }).then(response => {
                 if (is_mounted) {
                     if (!response.error) {
-                        setHasMoreItemsToLoad(response.length >= limit);
+                        setHasMoreItemsToLoad(response.length >= item_limit);
                         setIsLoading(false);
                         setItems(items.concat(response));
-
-                        offset += limit;
+                        item_offset += item_limit;
                     } else {
                         setApiErrorMessage(response.api_error_message);
                     }

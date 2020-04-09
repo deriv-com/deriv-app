@@ -40,9 +40,9 @@ commands:
       - run:
           name: Install npm packages
           command: npm run bootstrap
-      - run: |
-          echo $(find ./packages/ -name package-lock.json -type f -exec md5sum {} \; | md5sum | cut -d' ' -f1) >> CACHE_KEY1
-          cat CACHE_KEY1
+      - run:
+          name: "create cache key"
+          command: echo $(find ./packages/ -name package-lock.json -type f -exec md5sum {} \; | md5sum | cut -d' ' -f1) >> CACHE_KEY1
       - save_cache:
           key: node-{{ checksum "CACHE_KEY1" }}
           paths:

@@ -1,10 +1,9 @@
 .dc-select-native {
-    height: 38px;
     width: 100%;
     position: relative;
 
-    &-wrapper {
-        margin-bottom: 3.2rem;
+    &__wrapper {
+        height: 38px;
 
         .dc-input {
             margin-bottom: 0px;
@@ -51,6 +50,9 @@
             transform: translate(0, -1.8rem) scale(0.75);
             color: var(--text-general);
         }
+        &--disabled {
+            color: var(--text-disabled);
+        }
     }
     &__picker {
         opacity: 0;
@@ -67,6 +69,9 @@
         .dc-select-native__placeholder:not(.dc-select-native__placeholder--has-value) {
             color: var(--text-disabled);
         }
+        .dc-icon {
+            --fill-color1: var(--text-disabled);
+        }
     }
     &--error {
         .dc-select-native__placeholder {
@@ -77,5 +82,6 @@
         color: var(--text-less-prominent);
         font-size: 1.2rem;
         margin-left: 1.2rem;
+        line-height: 1.8rem;
     }
 }

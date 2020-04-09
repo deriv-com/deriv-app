@@ -17,18 +17,19 @@ class SelectNative extends Component {
         return '';
     };
     render() {
-        const { className, list_items, value, label, use_text, error, hint, ...props } = this.props;
+        const { className, list_items, value, label, use_text, error, hint, disabled, ...props } = this.props;
         return (
-            <div className='dc-select-native-wrapper'>
-                <div
-                    className={classNames('dc-input', {
-                        'dc-input--error': this.props.error,
-                    })}
-                >
+            <div
+                className={classNames(className, 'dc-select-native', {
+                    'dc-select-native--disabled': disabled,
+                    'dc-select-native--error': error,
+                })}
+            >
+                <div className='dc-select-native__wrapper'>
                     <div
-                        className={classNames(className, 'dc-select-native', {
-                            'dc-select-native--disabled': this.props.disabled,
-                            'dc-select-native--error': this.props.error,
+                        className={classNames('dc-input', {
+                            'dc-input__disabled': disabled,
+                            'dc-input--error': error,
                         })}
                     >
                         <div className='dc-select-native__display'>
@@ -41,12 +42,13 @@ class SelectNative extends Component {
                         <div
                             className={classNames('dc-select-native__placeholder', {
                                 'dc-select-native__placeholder--has-value': value,
+                                'dc-select-native__placeholder--disabled': disabled,
                             })}
                         >
                             {label}
                         </div>
                         <Icon icon='IcChevronDown' className='dc-select-native__arrow' />
-                        <select className='dc-select-native__picker' value={value} {...props}>
+                        <select className='dc-select-native__picker' value={value} disabled={disabled} {...props}>
                             {Array.isArray(list_items)
                                 ? list_items.map((option, idx) => (
                                       <option key={idx} value={use_text ? option.text : option.value}>
@@ -67,8 +69,8 @@ class SelectNative extends Component {
                                       </optgroup>
                                   ))}
                         </select>
+                        {error && <FieldError message={error} />}
                     </div>
-                    {error && <FieldError message={error} />}
                 </div>
                 {!error && hint && <p className='dc-select-native__hint'>{hint}</p>}
             </div>

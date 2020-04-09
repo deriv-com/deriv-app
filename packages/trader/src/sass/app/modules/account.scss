@@ -49,8 +49,7 @@ $MIN_HEIGHT_FLOATING: calc(
             display: grid;
             grid-gap: 4px;
 
-            .dc-input,
-            .dc-select-native-wrapper {
+            .dc-input {
                 margin-bottom: 0;
             }
             .dc-dropdown-container {

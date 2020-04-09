@@ -158,11 +158,8 @@ class AccountTransferForm extends React.Component {
         );
 
         return (
-            <div className='cashier__wrapper--align-left'>
+            <div className='cashier__wrapper cashier__wrapper--align-left'>
                 <React.Fragment>
-                    <MobileWrapper>
-                        <p className='cashier__header'>{localize('Transfer between your accounts in Deriv')}</p>
-                    </MobileWrapper>
                     <Formik
                         initialValues={{
                             amount: '',
@@ -195,10 +192,12 @@ class AccountTransferForm extends React.Component {
                                                         handleChange(e);
                                                         validateField('amount');
                                                     }}
+                                                    disabled
                                                 />
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    className='account-transfer__transfer-from'
                                                     label={localize('From')}
                                                     value={this.props.selected_from.value}
                                                     list_items={from_accounts}
@@ -207,7 +206,24 @@ class AccountTransferForm extends React.Component {
                                                         handleChange(e);
                                                         validateField('amount');
                                                     }}
+                                                    disabled
                                                 />
+                                                <p className='account-transfer__transfer-info'>
+                                                    <Localize
+                                                        i18n_default_text='To transfer from another account, please go to <0/> and change to your preferred account.'
+                                                        components={[
+                                                            <Button
+                                                                type='button'
+                                                                key={0}
+                                                                text={localize('Account Switcher')}
+                                                                onClick={this.props.toggleAccountsDialog}
+                                                                has_effect
+                                                                tertiary
+                                                                small
+                                                            />,
+                                                        ]}
+                                                    />
+                                                </p>
                                             </MobileWrapper>
                                             <DesktopWrapper>
                                                 <Icon
@@ -233,6 +249,7 @@ class AccountTransferForm extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    className='account-transfer__transfer-to'
                                                     label={localize('To')}
                                                     value={this.props.selected_to.value}
                                                     list_items={to_accounts}
@@ -373,7 +390,7 @@ AccountTransferForm.propTypes = {
     transfer_limit: PropTypes.object,
 };
 
-export default connect(({ modules, client }) => ({
+export default connect(({ modules, client, ui }) => ({
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
     minimum_fee: modules.cashier.config.account_transfer.minimum_fee,
     onChangeTransferFrom: modules.cashier.onChangeTransferFrom,
@@ -386,4 +403,5 @@ export default connect(({ modules, client }) => ({
     transfer_limit: modules.cashier.config.account_transfer.transfer_limit,
     account_limits: client.account_limits,
     onMount: client.getLimits,
+    toggleAccountsDialog: ui.toggleAccountsDialog,
 }))(AccountTransferForm);

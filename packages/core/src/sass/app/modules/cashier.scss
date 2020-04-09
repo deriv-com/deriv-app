@@ -87,7 +87,8 @@
         font-size: 1.6rem;
         line-height: 1.5;
         font-weight: bold;
-        margin-bottom: 16px;
+        margin-bottom: 1.6rem;
+        margin-top: 1.6rem;
         color: var(--text-prominent);
 
         @include mobile {
@@ -848,9 +849,6 @@
             align-self: center;
         }
     }
-    &__balance {
-        color: var(--text-less-prominent);
-    }
     &__receipt {
         &-icon {
             margin: 5.6rem 0 1.6rem;
@@ -872,6 +870,25 @@
                 align-items: center;
             }
         }
+    }
+    &__transfer-info {
+        font-size: 1.2rem;
+        margin-bottom: 1.8rem;
+
+        .dc-btn {
+            padding: 0px;
+            height: 1.5rem;
+        }
+        .dc-btn__text {
+            line-height: 1.2rem;
+        }
+    }
+    &__transfer-from {
+        margin-bottom: 1.8rem;
+        margin-top: 2.5rem;
+    }
+    &__transfer-to {
+        margin-bottom: 3.2rem;
     }
     &__actions {
         display: flex;

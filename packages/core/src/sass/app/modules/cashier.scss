@@ -629,6 +629,10 @@
     &__contact {
         text-decoration: none;
         color: var(--brand-red-coral);
+
+        @include mobile {
+            padding-left: 0;
+        }
     }
     &__explanation {
         margin-top: -0.8rem;

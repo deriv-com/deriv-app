@@ -24,6 +24,14 @@ const DatePickerCalendar = React.forwardRef(({ alignment, is_datepicker_visible,
                 className={classNames('dc-datepicker__picker', {
                     'dc-datepicker__picker--left': alignment === 'left',
                 })}
+                style={
+                    portal_id
+                        ? {
+                              top: props.top,
+                              left: props.left,
+                          }
+                        : undefined
+                }
             >
                 <Calendar forward_ref={ref} {...props} />
             </div>

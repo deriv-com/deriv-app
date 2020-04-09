@@ -117,10 +117,10 @@
 
             .dc-input {
                 border: 1px solid var(--fill-normal);
+                margin-bottom: 0;
 
                 &__field {
                     height: 3.2rem;
-                    margin-bottom: 0;
                 }
             }
         }

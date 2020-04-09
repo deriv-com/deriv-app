@@ -28,16 +28,46 @@ class DatePicker extends React.PureComponent {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.value && nextProps.value !== this.props.value) {
+            this.setState({
+                date: toMoment(nextProps.value).format(this.props.display_format),
+            });
+        }
+    }
+
     componentWillUnmount() {
         document.removeEventListener('click', this.onClickOutside, true);
     }
 
     handleVisibility = () => {
-        this.setState(state => ({ is_datepicker_visible: !state.is_datepicker_visible }));
+        this.setState(
+            state => ({ is_datepicker_visible: !state.is_datepicker_visible }),
+            () => {
+                if (
+                    this.state.is_datepicker_visible &&
+                    this.datepicker &&
+                    this.datepicker.current &&
+                    this.props.portal_id
+                ) {
+                    const { top, left } = this.datepicker.current.getBoundingClientRect();
+                    this.setState({
+                        top,
+                        left,
+                    });
+                }
+            }
+        );
     };
 
     onClickOutside = e => {
-        if (this.datepicker && !this.datepicker.current?.contains(e.target) && this.state.is_datepicker_visible) {
+        if (
+            this.state.is_datepicker_visible &&
+            this.calendar?.current &&
+            !this.calendar.current.contains(e.target) &&
+            this.datepicker &&
+            !this.datepicker?.current.contains(e.target)
+        ) {
             this.setState({ is_datepicker_visible: false });
         }
     };
@@ -168,6 +198,8 @@ class DatePicker extends React.PureComponent {
                             onHover={this.props.has_range_selection ? this.onHover : undefined}
                             onSelect={this.onSelectCalendar}
                             value={this.calendar_value} // Calendar accepts date format yyyy-mm-dd
+                            top={this.state.top}
+                            left={this.state.left}
                             {...props}
                         />
                     </div>

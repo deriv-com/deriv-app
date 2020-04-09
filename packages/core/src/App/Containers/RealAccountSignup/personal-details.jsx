@@ -18,6 +18,7 @@ const DateOfBirthField = props => {
                         setFieldValue('date_of_birth', target ? toMoment(target.value).format('YYYY-MM-DD') : '', true)
                     }
                     value={value}
+                    portal_id='modal_root'
                     {...props}
                 />
             )}

@@ -14,8 +14,7 @@ class TradingDatePicker extends React.Component {
     state = {
         disabled_days: [],
         market_events: [],
-        duration: 1,
-        value: this.props.value || toMoment(),
+        duration: 1, // minimum duration is 1 day
     };
 
     componentDidMount() {
@@ -151,7 +150,7 @@ class TradingDatePicker extends React.Component {
                 events={this.state.market_events}
                 disabled_days={this.state.disabled_days}
                 keep_open={true}
-                value={this.state.value}
+                value={this.min_date_expiry}
             />
         );
     }

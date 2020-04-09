@@ -20,6 +20,10 @@
         &-text {
             color: var(--text-prominent);
             font-size: 1.4rem;
+            white-space: nowrap;
+            overflow: hidden;
+            max-width: calc(100% - 4rem);
+            text-overflow: ellipsis;
         }
     }
     &__placeholder {

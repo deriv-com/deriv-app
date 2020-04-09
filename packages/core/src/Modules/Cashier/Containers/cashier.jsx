@@ -1,10 +1,16 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
+import {
+    PageOverlay,
+    VerticalTab,
+    DesktopWrapper,
+    MobileWrapper,
+    Div100vhContainer,
+    FadeWrapper,
+} from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile, isTouchDevice } from '@deriv/shared/utils/screen';
-import { FadeWrapper } from 'App/Components/Animations';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 
@@ -25,6 +31,7 @@ class Cashier extends React.Component {
             window.addEventListener('resize', this.handleOnScreenKeyboard);
         }
     }
+
     componentWillUnmount() {
         this.props.toggleCashier();
 

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon } from '@deriv/components';
-import ButtonLink from 'App/Components/Routes/button-link.jsx';
+import { Button, Icon, ButtonLink } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getDerivComLink } from '_common/url';
 import { WS } from 'Services';

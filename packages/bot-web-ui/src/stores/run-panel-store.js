@@ -208,7 +208,7 @@ export default class RunPanelStore {
         observer.register('bot.contract', contract_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
         observer.register('ui.log.error', this.onError);
-        observer.register('Error', e => this.onError(e.message));
+        observer.register('Error', this.onError);
         observer.register('ui.log.notify', journal.onNotify);
         observer.register('ui.log.success', journal.onLogSuccess);
     }
@@ -293,7 +293,7 @@ export default class RunPanelStore {
             this.error_type = error_types.RECOVERABLE_ERRORS;
         }
 
-        this.showErrorMessage(data);
+        this.showErrorMessage(data.message);
     }
 
     @action.bound

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import { BuySellTableContent } from './buy-table-content.jsx';
+import BuySellTableContent from './buy-table-content.jsx';
 
 export const BuySellTable = ({ setSelectedAd, table_type }) => {
     const is_buy = table_type === 'buy';

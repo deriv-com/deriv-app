@@ -273,7 +273,7 @@ class FinancialAssessment extends React.Component {
                                     onSubmit={handleSubmit}
                                 />
                             )}
-                            <LeaveConfirm onDirty={this.showForm} />
+                            <LeaveConfirm onDirty={isMobile() ? this.showForm : null} />
                             {show_form && (
                                 <form className='account-form' onSubmit={handleSubmit}>
                                     <FormBody scroll_offset={isMobile() ? '200px' : '80px'}>

@@ -365,13 +365,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
-    .account-management-leave-confirm {
-        @include desktop {
-            .dc-btn {
-                margin-top: 0;
-            }
-        }
-    }
     .leave-confirm__message {
         @include desktop {
             margin-top: 2rem;
@@ -804,6 +797,29 @@ $MIN_HEIGHT_FLOATING: calc(
             .dc-modal-body {
                 padding-top: 1.2rem;
             }
+        }
+    }
+    .leave-confirm {
+        &__message-content {
+            text-align: center;
+        }
+        &__message-icon {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2.4rem;
+        }
+        &__message {
+            margin-bottom: 0.8rem;
+            font-weight: bold;
+        }
+    }
+    .account-management-leave-confirm {
+        display: flex;
+        justify-content: center;
+        margin-top: 2.4rem;
+
+        :first-child {
+            margin-right: 0.8rem;
         }
     }
 }

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Button, DesktopWrapper, Icon, MobileWrapper } from '@deriv/components';
+import { Button, Icon } from '@deriv/components';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
@@ -30,8 +30,7 @@ class PaymentAgentTransferReceipt extends React.Component {
                             <Icon icon={`IcCurrency-${this.props.currency.toLowerCase()}`} />
                             <span className='cashier__transferred-details'>
                                 <span className='cashier__text--bold'>{this.props.currency.toUpperCase()}</span>
-                                <DesktopWrapper>&nbsp;({this.props.loginid})</DesktopWrapper>
-                                <MobileWrapper>{this.props.loginid}</MobileWrapper>
+                                this.props.loginid
                             </span>
                         </span>
                         <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
@@ -39,8 +38,7 @@ class PaymentAgentTransferReceipt extends React.Component {
                             <Icon icon='IcUserOutline' />
                             <span className='cashier__transferred-details'>
                                 <span className='cashier__text--bold'>{this.props.receipt.client_name}</span>
-                                <DesktopWrapper>&nbsp;()</DesktopWrapper>
-                                <MobileWrapper>{this.props.receipt.client_id}</MobileWrapper>
+                                &nbsp;{this.props.receipt.client_id}
                             </span>
                         </span>
                     </div>

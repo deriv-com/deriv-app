@@ -291,7 +291,7 @@
     }
     &__success {
         text-align: center;
-        background-color: var(--general-section-1);
+        background-color: var(--general-main-1);
         padding: 2.4rem;
         width: 50.4rem;
         margin: 0 auto 3.2rem;
@@ -764,7 +764,7 @@
                 &__success {
                     width: 100%;
                     margin: 0 auto 3.2rem;
-                    background-color: var(--general-section-2);
+                    background-color: var(--general-main-1);
                 }
             }
             .payment-agent {
@@ -957,7 +957,7 @@ div.payment-agent-transfer {
                 }
                 &__success {
                     width: 100%;
-                    background-color: var(--general-section-2);
+                    background-color: var(--general-main-1);
                     padding: 0.4rem 0.4rem 0.8rem;
                     margin-bottom: 1.6rem;
                 }

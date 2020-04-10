@@ -21,7 +21,6 @@ class PaymentAgentReceipt extends React.Component {
     render() {
         const { currency, loginid, receipt, resetPaymentAgent } = this.props;
 
-        const payment_agent = receipt.payment_agent_name || receipt.payment_agent_id;
         const currency_lowercase = currency.toLowerCase();
 
         return (

@@ -681,7 +681,7 @@ export default class ClientStore extends BaseStore {
             }
             this.getLimits();
         }
-        this.responseWebsiteStatus(await BinarySocket.wait('website_status'));
+        this.responseWebsiteStatus(await WS.wait('website_status'));
 
         this.registerReactions();
         this.setIsLoggingIn(false);

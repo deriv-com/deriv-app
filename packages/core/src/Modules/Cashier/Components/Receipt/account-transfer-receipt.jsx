@@ -17,6 +17,10 @@ class AccountTransferReceipt extends React.Component {
         this.props.resetAccountTransfer();
     }
 
+    navigateToStatement = () => {
+        this.props.history.push(routes.statement);
+    };
+
     render() {
         const { receipt, selected_from, selected_to } = this.props;
 

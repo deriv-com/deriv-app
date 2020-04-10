@@ -132,7 +132,6 @@ const MyAdsTable = () => {
     }
 
     if (ads.length) {
-        console.log({ ads });
         return (
             <div ref={table_container_Ref}>
                 <Table>

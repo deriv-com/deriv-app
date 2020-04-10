@@ -2,15 +2,15 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
+import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS } from 'Utils/websocket';
-import OrderInfo from '../order-info';
-import { getModifiedP2POrderList } from '../../../utils/websocket.js';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { BuySellRowLoader } from 'Components/buy-sell/row.jsx';
 import BuyOrderRowComponent from './order-table-buy-row.jsx';
 import SellOrderRowComponent from './order-table-sell-row.jsx';
+import OrderInfo from '../order-info';
+import { getModifiedP2POrderList } from '../../../utils/websocket.js';
 
 const OrderTableContent = ({ showDetails }) => {
     const { list_item_limit, order_offset, orders, setOrders, setOrderOffset } = useContext(Dp2pContext);

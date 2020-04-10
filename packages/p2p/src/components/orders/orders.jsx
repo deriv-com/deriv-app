@@ -8,27 +8,42 @@ import './orders.scss';
 
 const Orders = ({ orders, params }) => {
     const [order_details, setDetails] = React.useState(null);
-    const showDetails = setDetails;
+    const [order_id, setOrderId] = React.useState('');
     const hideDetails = () => setDetails(null);
+
+    const setQueryDetails = input_order => {
+        // Changing query params
+        const new_url = `${window.location.protocol}//${window.location.host}${window.location.pathname}?order=${input_order.id}${window.location.hash}`;
+        window.history.pushState({ path: new_url }, '', new_url);
+
+        setDetails(input_order);
+    };
 
     React.useEffect(() => {
         if (params && params.order_info) {
             const order_info = new OrderInfo(params.order_info);
-            setDetails(order_info);
+            setQueryDetails(order_info);
+        }
+        if (params && params.order_id) {
+            setOrderId(params.order_id);
         }
 
         // Clear details when unmounting
         return () => {
-            setDetails(null);
+            hideDetails();
         };
     }, []);
 
     React.useEffect(() => {
+        if (orders.length && order_id) {
+            const order_payload = orders.find(order => order.id === order_id);
+            setQueryDetails(order_payload);
+        }
         if (order_details) {
             const updated_order = orders.find(order => order.id === order_details.id);
             if (updated_order.status !== order_details.status) {
                 const updated_order_info = new OrderInfo(updated_order);
-                setDetails(updated_order_info);
+                setQueryDetails(updated_order_info);
             }
         }
     }, [orders]);
@@ -52,7 +67,7 @@ const Orders = ({ orders, params }) => {
                     <OrderDetails order_details={order_details} />
                 </React.Fragment>
             )}
-            {!order_details && <OrderTable orders={orders} showDetails={showDetails} />}
+            {!order_details && <OrderTable orders={orders} showDetails={setQueryDetails} />}
         </div>
     );
 };

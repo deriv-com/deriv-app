@@ -1,12 +1,12 @@
 import React from 'react';
+import { PageError } from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
 import { routes } from 'Constants/index';
-import { localize } from '@deriv/translations';
-import PageError from 'Modules/PageError';
 
 const Page404 = () => (
     <PageError
         header={localize('Oops, page not available.')}
-        error_code={404}
+        error_code_message={<Localize i18n_default_text={'Error Code: {{error_code}}'} values={404} />}
         messages={[
             localize(
                 'The page you requested could not be found. Either it no longer exists or the address is wrong. Please check for any typos.'

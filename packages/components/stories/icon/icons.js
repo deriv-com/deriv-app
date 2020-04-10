@@ -104,6 +104,7 @@ export const icons = {
         'IcMoneyTransfer',
         'IcMultiplier',
         'IcNewFile',
+        'IcNoAd',
         'IcOpenPositions',
         'IcPassport',
         'IcPasswordEyeHide',

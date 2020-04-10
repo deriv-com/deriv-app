@@ -4,6 +4,7 @@ import { Button, Dialog, Loading, Table } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
+import { TableError } from 'Components/table/table-error.jsx';
 import { requestWS } from 'Utils/websocket';
 import { MyAdsLoader } from './my-ads-loader.jsx';
 import Popup from '../orders/popup.jsx';

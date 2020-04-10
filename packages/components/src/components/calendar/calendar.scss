@@ -183,7 +183,8 @@
             display: none;
         }
         &--today {
-            font-weight: 400;
+            font-weight: bold;
+            color: var(--text-prominent);
             border: 1px solid var(--state-active);
 
             &-duration {

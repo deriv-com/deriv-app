@@ -4,6 +4,7 @@ import React from 'react';
 import { DatePicker } from '@deriv/components';
 import { isTimeValid, setTime, toMoment } from '@deriv/shared/utils/date';
 import { localize } from '@deriv/translations';
+import Tooltip from 'App/Components/Elements/tooltip.jsx';
 import { connect } from 'Stores/connect';
 import ContractType from 'Stores/Modules/Trading/Helpers/contract-type';
 import { hasIntradayDurationUnit } from 'Stores/Modules/Trading/Helpers/duration';
@@ -14,7 +15,7 @@ class TradingDatePicker extends React.Component {
     state = {
         disabled_days: [],
         market_events: [],
-        duration: 1, // minimum duration is 1 day
+        duration: this.props.duration,
     };
 
     componentDidMount() {
@@ -80,9 +81,18 @@ class TradingDatePicker extends React.Component {
         if (!this.has_range_selection) return null;
 
         const { duration } = this.state;
-        return duration === 1
-            ? localize('Duration: {{duration}} day', { duration })
-            : localize('Duration: {{duration}} days', { duration });
+
+        if (!duration) return localize('Minimum duration is 1 day');
+        if (+duration === 1) return localize('Duration: {{duration}} day', { duration });
+        return localize('Duration: {{duration}} days', { duration });
+    }
+
+    get datepicker_value() {
+        return this.has_range_selection
+            ? toMoment()
+                  .add(this.state.duration, 'days')
+                  .format('YYYY-MM-DD')
+            : this.min_date_expiry;
     }
 
     onChange = e => {
@@ -132,26 +142,35 @@ class TradingDatePicker extends React.Component {
         const { id, mode, name, validation_errors } = this.props;
 
         return (
-            <DatePicker
-                id={id}
-                alignment='left'
-                display_format='DD MMM YYYY'
-                show_leading_icon
-                error={validation_errors.error_messages ? validation_errors.error_messages[name] : undefined}
-                mode={mode}
-                max_date={this.max_date_duration}
-                min_date={this.min_date_expiry}
-                name={name}
-                onChange={this.onChange}
-                onChangeCalendarMonth={this.onChangeCalendarMonth}
-                has_range_selection={this.has_range_selection || undefined}
-                has_today_btn={this.has_range_selection ? undefined : true}
-                footer={this.footer}
-                events={this.state.market_events}
-                disabled_days={this.state.disabled_days}
-                keep_open={true}
-                value={this.min_date_expiry}
-            />
+            <div className='input-field'>
+                <Tooltip
+                    alignment='left'
+                    message={validation_errors[name][0]}
+                    has_error={!!validation_errors[name].length}
+                >
+                    <DatePicker
+                        id={id}
+                        alignment='left'
+                        display_format='DD MMM YYYY'
+                        show_leading_icon
+                        error={validation_errors[name].length ? '' : undefined}
+                        mode={mode}
+                        max_date={this.max_date_duration}
+                        min_date={this.min_date_expiry}
+                        name={name}
+                        onChange={this.onChange}
+                        onChangeCalendarMonth={this.onChangeCalendarMonth}
+                        has_range_selection={this.has_range_selection || undefined}
+                        has_today_btn={this.has_range_selection ? undefined : true}
+                        footer={this.footer}
+                        events={this.state.market_events}
+                        disabled_days={this.state.disabled_days}
+                        keep_open={true}
+                        readOnly={!this.has_range_selection}
+                        value={this.datepicker_value}
+                    />
+                </Tooltip>
+            </div>
         );
     }
 }
@@ -172,6 +191,7 @@ TradingDatePicker.propTypes = {
 };
 
 export default connect(({ modules, common }) => ({
+    duration: modules.trade.duration,
     duration_min_max: modules.trade.duration_min_max,
     duration_units_list: modules.trade.duration_units_list,
     expiry_type: modules.trade.expiry_type,

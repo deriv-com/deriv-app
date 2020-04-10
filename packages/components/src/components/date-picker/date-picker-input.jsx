@@ -17,9 +17,11 @@ const DatePickerInput = ({
     show_leading_icon,
     placeholder,
     is_clearable,
+    onChangeInput,
     onClickClear,
     onClick,
     onBlur,
+    readOnly,
     value,
     required,
 }) => {
@@ -55,13 +57,13 @@ const DatePickerInput = ({
             is_hj_whitelisted='true'
             label={label}
             name={name}
-            // onChange={onChange}
+            onChange={onChangeInput}
             onClick={onClick}
             placeholder={placeholder}
-            readOnly
+            readOnly={readOnly}
             leading_icon={show_leading_icon ? <DatePickerIcon icon='IcCalendar' /> : undefined}
             trailing_icon={show_leading_icon ? undefined : trailing_icon}
-            type='text'
+            type='number'
             value={is_placeholder_visible || !value ? '' : value}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}

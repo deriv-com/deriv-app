@@ -18,6 +18,18 @@ class Calendar extends React.PureComponent {
         };
     }
 
+    componentDidMount() {
+        if (typeof this.props.onRef === 'function') {
+            this.props.onRef(this);
+        }
+    }
+
+    componentWillUnmount() {
+        if (typeof this.props.onRef === 'function') {
+            this.props.onRef(undefined);
+        }
+    }
+
     switchView = view => {
         this.setState({ calendar_view: view });
     };
@@ -129,6 +141,15 @@ class Calendar extends React.PureComponent {
                 }
             }
         );
+    };
+
+    setSelectedDate = date => {
+        const moment_date = toMoment(date).startOf('day');
+        const formatted_date = moment_date.format(this.props.date_format);
+        this.setState({
+            calendar_date: formatted_date,
+            selected_date: formatted_date,
+        });
     };
 
     resetCalendar = () => {

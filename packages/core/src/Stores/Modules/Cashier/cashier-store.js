@@ -5,7 +5,6 @@ import BinarySocket from '_common/base/socket_base';
 import { localize } from '@deriv/translations';
 import AppRoutes from 'Constants/routes';
 import { WS } from 'Services';
-import { LocalStore } from '_common/storage';
 import BaseStore from '../../base-store';
 import { getMT5AccountDisplay } from '../../Helpers/client';
 

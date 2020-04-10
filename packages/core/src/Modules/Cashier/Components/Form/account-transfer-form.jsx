@@ -142,12 +142,12 @@ class AccountTransferForm extends React.Component {
 
         const from_accounts = {
             ...(mt_accounts_from.length && { [localize('DMT5 accounts')]: mt_accounts_from }),
-            [localize('Deriv accounts')]: accounts_from,
+            ...(accounts_from.length && { [localize('Deriv accounts')]: accounts_from }),
         };
 
         const to_accounts = {
             ...(mt_accounts_to.length && { [localize('DMT5 accounts')]: mt_accounts_to }),
-            [localize('Deriv accounts')]: accounts_to,
+            ...(accounts_to.length && { [localize('Deriv accounts')]: accounts_to }),
         };
 
         const { daily_transfers } = this.props.account_limits;
@@ -156,8 +156,10 @@ class AccountTransferForm extends React.Component {
         const mt5_total_transfers = daily_transfers?.mt5?.allowed;
         const internal_total_transfers = daily_transfers?.internal?.allowed;
 
+        const is_mt_transfer = this.props.selected_to.is_mt || this.props.selected_from.is_mt;
+
         const transfer_to_hint = localize('You have {{number}} transfers remaining for today.', {
-            number: this.props.selected_to.is_mt ? mt5_remaining_transfers : internal_remaining_transfers,
+            number: is_mt_transfer ? mt5_remaining_transfers : internal_remaining_transfers,
         });
 
         return (

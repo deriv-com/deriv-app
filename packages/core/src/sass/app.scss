@@ -2,31 +2,20 @@
 @import 'app/_common/base/index';
 
 // Fonts
-@import '@deriv/shared/src/styles/google-fonts.scss';
+@import '@deriv/shared/utils/styles/google-fonts.scss';
 
 // Shared
-@import '@deriv/shared/src/styles/reset.scss';
-@import '@deriv/shared/src/styles/themes.scss';
+@import '@deriv/shared/utils/styles/reset.scss';
+@import '@deriv/shared/utils/styles/themes.scss';
 
 // General
-@import '@deriv/shared/src/styles/symbols.scss';
-@import 'app/_common/tooltip';
-@import 'app/_common/loading';
+@import '@deriv/shared/utils/styles/symbols.scss';
 
 // Layout
-@import 'app/_common/layout/layouts';
+@import 'app/_common/layout/app-layouts';
 @import 'app/_common/layout/header';
 @import 'app/_common/layout/footer';
 @import 'app/_common/layout/modal-root';
-@import 'app/_common/layout/multistep';
-@import 'app/_common/layout/send-email-template';
-
-// Drawers
-@import 'app/_common/drawer/contract-drawer';
-@import 'app/_common/drawer/positions-drawer';
-@import 'app/_common/drawer/positions-drawer-card';
-@import 'app/_common/drawer/positions-drawer-card-overlay';
-@import 'app/_common/drawer/positions-progress-slider';
 
 // Components
 @import 'app/_common/components/account-settings-toggle';
@@ -54,11 +43,9 @@
 //@import 'app/_common/components/toggle-button';
 //@import 'app/_common/components/select';
 //@import 'app/_common/components/switch-button';
-@import 'app/_common/components/wallet-information';
 
 // Modules
 @import 'app/modules/reset-password';
 @import 'app/modules/cashier';
 //@import 'app/modules/contract';
 //@import 'app/modules/contract/bottom-widgets';
-@import 'app/modules/error-pages';

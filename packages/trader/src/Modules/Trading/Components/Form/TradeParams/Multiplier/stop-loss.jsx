@@ -47,7 +47,6 @@ const StopLoss = ({
     return (
         <Fieldset className='trade-container__fieldset'>
             <InputWithCheckbox
-                className='trade-container__amount'
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput='trade-container__input'
                 currency={currency}

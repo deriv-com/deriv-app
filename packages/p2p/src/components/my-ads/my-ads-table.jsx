@@ -114,7 +114,7 @@ const MyAdsTable = () => {
     const onClickConfirm = showError => {
         requestWS({ p2p_advert_update: 1, id: selected_ad_id, is_active: 0 }).then(response => {
             if (response.error) {
-                showError({ error_message: response.error_message });
+                showError({ error_message: response.error.message });
             } else {
                 // remove the deleted ad from the list of items
                 const updated_items = ads.filter(ad => ad.id !== response.p2p_advert_update.id);

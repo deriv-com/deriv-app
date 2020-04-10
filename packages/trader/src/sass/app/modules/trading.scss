@@ -383,6 +383,11 @@
     .input-wrapper__icon {
         top: 6px;
     }
+    &--has-error {
+        .dc-input {
+            border: 1px solid $COLOR_RED !important;
+        }
+    }
 }
 
 /** @define purchase-container; weak */

@@ -63,7 +63,7 @@ const DatePickerInput = ({
             readOnly={readOnly}
             leading_icon={show_leading_icon ? <DatePickerIcon icon='IcCalendar' /> : undefined}
             trailing_icon={show_leading_icon ? undefined : trailing_icon}
-            type='number'
+            type={readOnly ? 'text' : 'number'}
             value={is_placeholder_visible || !value ? '' : value}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}

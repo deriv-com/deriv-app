@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
@@ -141,12 +142,18 @@ class TradingDatePicker extends React.Component {
     render() {
         const { id, mode, name, validation_errors } = this.props;
 
+        const has_error = !!validation_errors[name].length;
+
         return (
-            <div className='input-field'>
+            <div
+                className={classNames('input-field', {
+                    'input-field--has-error': has_error,
+                })}
+            >
                 <Tooltip
                     alignment='left'
-                    message={validation_errors[name][0]}
-                    has_error={!!validation_errors[name].length}
+                    message={has_error ? validation_errors[name][0] : undefined}
+                    has_error={has_error}
                 >
                     <DatePicker
                         id={id}

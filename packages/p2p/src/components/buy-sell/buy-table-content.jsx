@@ -9,7 +9,7 @@ import { RowComponent, BuySellRowLoader } from './row.jsx';
 
 const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
     let item_offset = 0;
-    const item_limit = 50;
+    const item_limit = 20;
     const [is_mounted, setIsMounted] = useState(false);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
     const [api_error_message, setApiErrorMessage] = useState('');
@@ -38,7 +38,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
                         setHasMoreItemsToLoad(response.length >= item_limit);
                         setIsLoading(false);
                         setItems(items.concat(response));
-                        item_offset += item_limit;
+                        item_offset += response.length;
                     } else {
                         setApiErrorMessage(response.api_error_message);
                     }

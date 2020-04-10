@@ -148,8 +148,8 @@ class App extends Component {
                     list_item_limit: this.list_item_limit,
                     order_offset,
                     orders,
-                    setOrders: orders => this.setState({ orders }),
-                    setOrderOffset: order_offset => this.setState({ order_offset }),
+                    setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
+                    setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                 }}
             >
                 <main className={classNames('deriv-p2p', className)}>

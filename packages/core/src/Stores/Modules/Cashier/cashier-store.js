@@ -5,7 +5,6 @@ import BinarySocket from '_common/base/socket_base';
 import { localize } from '@deriv/translations';
 import AppRoutes from 'Constants/routes';
 import { WS } from 'Services';
-import { LocalStore } from '_common/storage';
 import BaseStore from '../../base-store';
 import { getMT5AccountDisplay } from '../../Helpers/client';
 
@@ -752,10 +751,11 @@ export default class CashierStore extends BaseStore {
                 return;
             }
         }
-        const accounts = transfer_between_accounts.accounts;
+        // remove disabled mt5 accounts
+        const accounts = transfer_between_accounts.accounts.filter(account => !/inactive/.test(account.mt5_group));
         // sort accounts as follows:
-        // for non-MT5, top is fiat, then crypto, alphabetically by currency
-        // for MT5, standard, advanced, then synthetic indices
+        // for MT5, synthetic indices, standard, advanced
+        // for non-MT5, fiat, crypto (alphabetically by currency)
         accounts.sort((a, b) => {
             const a_is_mt = a.account_type === 'mt5';
             const b_is_mt = b.account_type === 'mt5';
@@ -765,21 +765,20 @@ export default class CashierStore extends BaseStore {
             const b_is_fiat = !b_is_mt && !b_is_crypto;
             if (a_is_mt && b_is_mt) {
                 if (/vanuatu/.test(a.mt5_group)) {
-                    return -1;
-                }
-                if (/svg/.test(a.mt5_group)) {
                     return 1;
                 }
-                return -1;
+                if (/svg/.test(a.mt5_group)) {
+                    return -1;
+                }
+                return 1;
             } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
                 return a.currency < b.currency ? -1 : 1;
             } else if ((a_is_crypto && b_is_mt) || (a_is_fiat && b_is_crypto) || (a_is_fiat && b_is_mt)) {
                 return -1;
             }
-            return 1;
+            return a_is_mt ? -1 : 1;
         });
         const arr_accounts = [];
-        let is_transfer_to_set = false;
         accounts.forEach(account => {
             const obj_values = {
                 text: account.mt5_group ? getMT5AccountDisplay(account.mt5_group) : account.currency.toUpperCase(),
@@ -790,10 +789,11 @@ export default class CashierStore extends BaseStore {
                 is_mt: account.account_type === 'mt5',
                 ...(account.mt5_group && { mt_icon: getMT5AccountDisplay(account.mt5_group) }),
             };
-            if (account.loginid === LocalStore.get('active_loginid')) {
+            // set current logged in client as the default transfer from account
+            if (account.loginid === this.root_store.client.loginid) {
                 this.setSelectedFrom(obj_values);
-            } else if (!is_transfer_to_set && account.loginid !== LocalStore.get('active_loginid')) {
-                is_transfer_to_set = true;
+            } else if (ObjectUtils.isEmptyObject(this.config.account_transfer.selected_to)) {
+                // set the first available account as the default transfer to account
                 this.setSelectedTo(obj_values);
             }
             arr_accounts.push(obj_values);
@@ -898,7 +898,10 @@ export default class CashierStore extends BaseStore {
     };
 
     @action.bound
-    resetAccountTransfer = () => {
+    resetAccountTransfer = async () => {
+        // force get limits send to update remaining daily transfers number
+        await WS.getLimits();
+        this.root_store.client.getLimits(); // update client.account_limits
         this.setIsTransferSuccessful(false);
     };
 

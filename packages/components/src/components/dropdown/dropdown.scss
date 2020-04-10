@@ -112,8 +112,8 @@
     }
     &__hint {
         color: var(--text-less-prominent);
-        font-size: 1.2rem;
-        margin-left: 1.2rem;
+        font-size: var(--text-size-xxs);
+        margin-left: 0.8rem;
     }
     &--no-margin .dc-dropdown__display {
         margin: 0;
@@ -151,7 +151,7 @@
     }
     &__list {
         left: 0;
-        bottom: -0.8rem;
+        bottom: -0.4rem;
         height: 0;
         width: 100%;
         position: absolute;

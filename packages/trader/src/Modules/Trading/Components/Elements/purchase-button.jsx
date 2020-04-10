@@ -1,10 +1,9 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Money } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getContractTypeDisplay } from 'Constants/contract';
-import IconTradeType from 'Assets/Trading/Types/icon-trade-types.jsx';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
 // TODO [lazy-loading-required] Responsive related components
@@ -46,7 +45,7 @@ const PurchaseButton = ({
 
     const IconComponentWrapper = () => (
         <div className='btn-purchase__icon_wrapper'>
-            <IconTradeType type={getIconType()} className='btn-purchase__icon' color='active' />
+            <IconTradeTypes type={getIconType()} className='btn-purchase__icon' color='active' />
         </div>
     );
 

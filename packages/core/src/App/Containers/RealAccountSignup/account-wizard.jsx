@@ -60,7 +60,7 @@ class AccountWizard extends React.Component {
                 },
                 {
                     header: {
-                        active_title: localize('Terms of use'),
+                        active_title: isDesktop() ? localize('Terms of use') : null,
                         title: localize('Terms of use'),
                     },
                     body: TermsOfUse,
@@ -258,9 +258,11 @@ class AccountWizard extends React.Component {
                                             }}
                                         />
                                     </h4>
-                                    <h4 className='account-wizard__header-steps-subtitle'>
-                                        {this.state.items[this.state.step].header.active_title}
-                                    </h4>
+                                    {this.state.items[this.state.step].header.active_title && (
+                                        <h4 className='account-wizard__header-steps-subtitle'>
+                                            {this.state.items[this.state.step].header.active_title}
+                                        </h4>
+                                    )}
                                 </div>
                             </MobileWrapper>
                         </>

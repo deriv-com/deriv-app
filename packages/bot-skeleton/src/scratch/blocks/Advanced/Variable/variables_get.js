@@ -27,7 +27,7 @@ Blockly.Blocks.variables_get = {
     meta() {
         return {
             display_name: localize('User-defined variable'),
-            description: localize(''),
+            description: '',
         };
     },
 };

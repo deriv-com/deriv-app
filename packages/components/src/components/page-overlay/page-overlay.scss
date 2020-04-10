@@ -38,7 +38,6 @@
             font-weight: bold;
 
             @include mobile {
-                color: var(--text-general);
                 font-size: 1.6rem;
             }
         }
@@ -48,6 +47,9 @@
             position: absolute;
             right: 0;
 
+            & .dc-icon {
+                --fill-color1: var(--text-prominent);
+            }
             @include mobile {
                 right: 1.2rem;
             }

@@ -20,7 +20,10 @@ export const FormBody = ({ children, scroll_offset }) => (
             </ScrollbarsContainer>
         </DesktopWrapper>
         <MobileWrapper>
-            <Div100vhContainer className='account__scrollbars_container--grid-layout' height_offset='200px'>
+            <Div100vhContainer
+                className='account__scrollbars_container--grid-layout'
+                height_offset={scroll_offset || '200px'}
+            >
                 {children}
             </Div100vhContainer>
         </MobileWrapper>

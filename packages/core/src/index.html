@@ -39,8 +39,6 @@
                 --general-section-1: #f2f3f4;
                 --text-prominent: #333333;
                 font-size: 62.5%;
-                --app-shell-platform-logo: url('/public/images/app/header/dtrader-logo.svg');
-                --app-shell-platform-name: 'DTrader';
             }
 
             #platform_name:after {
@@ -62,17 +60,12 @@
             .initial-loader__loading {
                 background-color: var(--general-main-1);
             }
-            .logo__loading--fill {
-                fill: var(--logo-loading-color);
-            }
         </style>
         <script type="text/javascript">
             var ui_store = localStorage.getItem('ui_store');
             var l = window.location;
             var is_bot =
                 /^\/bot/.test(l.pathname) || (/^\/(br_)/.test(l.pathname) && l.pathname.split('/')[2] === 'bot');
-            var is_mt5 =
-                /^\/mt5/.test(l.pathname) || (/^\/(br_)/.test(l.pathname) && l.pathname.split('/')[2] === 'mt5');
 
             if (ui_store && ui_store.length > 0) {
                 var is_dark_theme = false;
@@ -92,20 +85,6 @@
                     document.documentElement.style.setProperty('--general-section-1', '#151717');
                     document.documentElement.style.setProperty('--text-prominent', '#ffffff');
                 }
-            }
-
-            if (is_bot) {
-                document.documentElement.style.setProperty(
-                    '--app-shell-platform-logo',
-                    "url('/public/images/app/header/dbot-logo.svg')"
-                );
-                document.documentElement.style.setProperty('--app-shell-platform-name', "'DBot'");
-            } else if (is_mt5) {
-                document.documentElement.style.setProperty(
-                    '--app-shell-platform-logo',
-                    "url('/public/images/app/header/dmt5-logo.svg')"
-                );
-                document.documentElement.style.setProperty('--app-shell-platform-name', "'DMT5'");
             }
         </script>
         <!-- End theme styles -->
@@ -294,29 +273,6 @@
                 class="header__loading"
                 style="background: var(--general-main-1); border-bottom: 1px solid var(--general-section-1); position: fixed; z-index: 99; box-sizing: border-box; height: 48px; width: 100%; top: 0;"
             >
-                <div
-                    class="icon_loading"
-                    style="height: 100%; padding: 0 1.6em; position: relative; display: inline-flex; align-items: center;"
-                >
-                    <!-- Start Platform Logo -->
-                    <div style="width: 32px; height: 32px; background: var(--app-shell-platform-logo);"></div>
-                    <!-- Start Platform Logo -->
-
-                    <!-- Start Platform Name -->
-                    <div
-                        class="header__title"
-                        style="display: inline-block; font-weight: bold; font-size: 1.6rem; color: var(--text-prominent);"
-                    >
-                        <span id="platform_name"></span>
-                        <span
-                            class="header__logo"
-                            style="color: #fff; background-color: #85acb0; border-radius: 10px; display: inline-block; font-size: 1.4rem; font-weight: normal; height: 20px; line-height: 1.43; text-align: center; width: 50px; margin-left: 8px;"
-                        >
-                            BETA
-                        </span>
-                    </div>
-                    <!-- End Platform Name -->
-                </div>
             </header>
             <div class="app-contents app-contents__loading" style="margin-bottom: 0; overflow: hidden;">
                 <div class="initial-loader initial-loader__loading">

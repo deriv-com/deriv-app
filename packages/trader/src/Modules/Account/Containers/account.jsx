@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
-import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper, FadeWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { getSelectedRoute } from '@deriv/shared/utils/route';
-import { FadeWrapper } from 'App/Components/Animations';
 import { localize } from '@deriv/translations';
 import AppRoutes from 'Constants/routes';
 import { connect } from 'Stores/connect';
@@ -26,12 +25,15 @@ class Account extends React.Component {
         this.is_mounted = true;
         WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
-                const { authentication } = this.props.account_status;
+                const { status } = this.props.account_status;
                 const is_high_risk_client = this.props.is_high_risk;
-                const needs_verification =
-                    authentication.needs_verification.includes('identity') ||
-                    authentication.needs_verification.includes('document');
-                if (this.is_mounted) this.setState({ is_high_risk_client, is_loading: false, needs_verification });
+                const allow_document_upload = status.includes('allow_document_upload');
+                if (this.is_mounted)
+                    this.setState({
+                        is_high_risk_client,
+                        is_loading: false,
+                        allow_document_upload,
+                    });
             }
         });
         this.props.toggleAccount(true);
@@ -45,7 +47,7 @@ class Account extends React.Component {
     onClickClose = () => this.props.routeBackInApp(this.props.history);
 
     render() {
-        const { is_high_risk_client, is_loading, needs_verification } = this.state;
+        const { is_high_risk_client, is_loading, allow_document_upload } = this.state;
 
         const subroutes = flatten(this.props.routes.map(i => i.subroutes));
         let list_groups = [...this.props.routes];
@@ -60,30 +62,18 @@ class Account extends React.Component {
             selected_content = subroutes[0];
             this.props.history.push(AppRoutes.personal_details);
         }
-        if (
-            !is_loading &&
-            !needs_verification &&
-            !is_high_risk_client &&
-            /proof-of-identity|proof-of-address|financial-assessment/.test(selected_content.path)
-        )
+
+        if (!is_loading && !is_high_risk_client && /financial-assessment/.test(selected_content.path))
             return <Redirect to='/' />;
 
         // TODO: modify account route to support disabled
         this.props.routes.forEach(menu_item => {
-            if (menu_item.title === 'Verification') {
-                menu_item.is_hidden = !needs_verification;
-            }
             menu_item.subroutes.forEach(route => {
                 if (route.path === AppRoutes.financial_assessment) {
                     route.is_disabled = !is_high_risk_client;
                 }
 
-                if (
-                    !needs_verification &&
-                    !is_high_risk_client &&
-                    !is_loading &&
-                    /proof-of-identity|proof-of-address|financial-assessment/.test(route.path)
-                ) {
+                if (!allow_document_upload && !is_loading && /proof-of-identity|proof-of-address/.test(route.path)) {
                     route.is_disabled = true;
                 }
             });

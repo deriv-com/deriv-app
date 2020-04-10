@@ -19,9 +19,9 @@ const MenuLinks = ({ is_logged_in, items }) => (
                         >
                             <React.Fragment>
                                 {item.text && (
-                                    <span title={item.text} className='header__menu-link-text'>
+                                    <span title={item.text()} className='header__menu-link-text'>
                                         {item.icon}
-                                        {item.text}
+                                        {item.text()}
                                         {item.logo}
                                     </span>
                                 )}
@@ -48,7 +48,7 @@ MenuLinks.propTypes = {
             }),
             is_logged_in: PropTypes.bool,
             link_to: PropTypes.string,
-            text: PropTypes.string,
+            text: PropTypes.function,
         })
     ),
 };

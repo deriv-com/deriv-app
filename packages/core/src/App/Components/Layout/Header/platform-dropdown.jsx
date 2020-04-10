@@ -13,8 +13,8 @@ const PlatformBox = ({ platform: { icon, title, description } }) => (
         <Icon className='platform-dropdown__list-platform-icon' icon={icon} size={32} />
 
         <div className='platform-dropdown__list-platform-details'>
-            <p className='platform-dropdown__list-platform-title'>{title}</p>
-            <p className='platform-dropdown__list-platform-description'>{description}</p>
+            <p className='platform-dropdown__list-platform-title'>{title()}</p>
+            <p className='platform-dropdown__list-platform-description'>{description()}</p>
         </div>
     </>
 );

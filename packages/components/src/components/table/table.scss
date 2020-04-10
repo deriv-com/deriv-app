@@ -2,9 +2,6 @@
     color: var(--text-general);
     background: inherit;
 
-    * {
-        background: inherit;
-    }
     &__row {
         display: grid;
         height: 100%;

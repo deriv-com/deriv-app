@@ -1,7 +1,8 @@
-import { ThemedScrollbars } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { ThemedScrollbars } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { getLanguage } from '@deriv/translations';
 import { Expired, OnfidoFailed, Verified, UploadComplete, Unsupported } from './proof-of-identity-messages.jsx';
 import { onfido_status_codes } from './proof-of-identity';
@@ -9,6 +10,7 @@ import { onfido_status_codes } from './proof-of-identity';
 const onfido_container_id = 'onfido';
 const OnfidoContainer = () => (
     <ThemedScrollbars
+        is_native={isMobile()}
         autoHide
         style={{
             height: '100%',

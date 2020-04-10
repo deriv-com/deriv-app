@@ -3,29 +3,11 @@ import { Redirect as RouterRedirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
 import { addRoutesConfig } from '@deriv/shared/utils/route';
-import { LocalStore } from '_common/storage';
 import { Redirect } from 'App/Containers/Redirect';
 import { localize } from '@deriv/translations';
 import { routes } from 'Constants';
-import { routing_control_key } from 'Constants/routes';
-import { isBot } from 'Utils/PlatformSwitcher';
 import { getUrlBase } from '_common/url';
 import Endpoint from 'Modules/Endpoint';
-
-export const interceptAcrossBot = (route_to, action) => {
-    const is_routing_to_bot = route_to.pathname.startsWith(routes.bot);
-
-    if (action === 'PUSH' && ((!isBot() && is_routing_to_bot) || (isBot() && !is_routing_to_bot))) {
-        if (isBot() && !is_routing_to_bot) {
-            LocalStore.setObject(routing_control_key, { is_from_bot: true });
-        }
-        window.location.href = getUrlBase(route_to.pathname); // If url base exists, use pathname with base
-
-        return false;
-    }
-
-    return true;
-};
 
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
@@ -54,8 +36,20 @@ const modules = [
         title: localize('Trader'),
         routes: [
             { path: routes.mt5, component: Trader, title: localize('MT5'), is_authenticated: true },
-            { path: routes.reports, component: Trader, title: localize('Reports'), is_authenticated: true },
-            { path: routes.account, component: Trader, title: localize('Accounts management'), is_authenticated: true },
+            {
+                path: routes.reports,
+                component: Trader,
+                title: localize('Reports'),
+                icon_component: 'IcReports',
+                is_authenticated: true,
+            },
+            {
+                path: routes.account,
+                component: Trader,
+                title: localize('Accounts Settings'),
+                icon_component: 'IcUserOutline',
+                is_authenticated: true,
+            },
             { path: routes.contract, component: Trader, title: localize('Contract Details'), is_authenticated: true },
             { path: routes.error404, component: Trader, title: localize('Error 404') },
         ],
@@ -95,6 +89,7 @@ const initRoutesConfig = () => [
         is_modal: true,
         is_authenticated: true,
         title: localize('Cashier'),
+        icon_component: 'IcCashier',
         routes: [
             {
                 path: routes.cashier_deposit,

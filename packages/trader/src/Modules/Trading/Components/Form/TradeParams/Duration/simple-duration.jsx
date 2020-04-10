@@ -1,7 +1,7 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import ButtonToggleMenu from 'App/Components/Form/ButtonToggleMenu';
+import { ButtonToggle } from '@deriv/components';
 import InputField from 'App/Components/Form/InputField';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { connect } from 'Stores/connect';
@@ -29,7 +29,7 @@ const SimpleDuration = ({
     return (
         <Fragment>
             {duration_units_list.length > 1 && (
-                <ButtonToggleMenu
+                <ButtonToggle
                     id='dt_simple_duration_toggle'
                     buttons_arr={filterMinutesAndTicks(duration_units_list)}
                     is_animated={true}

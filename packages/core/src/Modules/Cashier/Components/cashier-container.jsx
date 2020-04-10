@@ -5,7 +5,7 @@ import Loading from '../../../templates/_common/components/loading.jsx';
 class CashierContainer extends React.Component {
     render() {
         return (
-            <React.Fragment>
+            <div className='cashier__wrapper'>
                 {this.props.is_loading && <Loading />}
                 {this.props.iframe_url && (
                     <iframe
@@ -16,7 +16,7 @@ class CashierContainer extends React.Component {
                         scrolling='auto'
                     />
                 )}
-            </React.Fragment>
+            </div>
         );
     }
 }

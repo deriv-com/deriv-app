@@ -25,13 +25,13 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
         loadMoreItems(item_offset, item_limit);
     }, [is_mounted]);
 
-    const loadMoreItems = (start_idx, end_idx) => {
+    const loadMoreItems = start_idx => {
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
                 counterparty_type: is_buy ? 'buy' : 'sell',
                 offset: start_idx,
-                limit: end_idx,
+                limit: item_limit,
             }).then(response => {
                 if (is_mounted) {
                     if (!response.error) {

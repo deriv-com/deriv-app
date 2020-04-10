@@ -85,8 +85,8 @@ const OrderTableContent = ({ showDetails }) => {
     return <div className='deriv-p2p__empty'>{localize(`You haven't made or received any orders yet.`)}</div>;
 };
 
-// OrderTableContent.propTypes = {
-//     setSelectedAd: PropTypes.func,
-// };
+OrderTableContent.propTypes = {
+    showDetails: PropTypes.func,
+};
 
 export default OrderTableContent;

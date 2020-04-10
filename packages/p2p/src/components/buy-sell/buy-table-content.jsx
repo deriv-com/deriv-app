@@ -79,6 +79,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
 };
 
 BuySellTableContent.propTypes = {
+    is_buy: PropTypes.bool,
     setSelectedAd: PropTypes.func,
 };
 

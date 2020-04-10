@@ -19,15 +19,7 @@ class PaymentAgentTransferReceipt extends React.Component {
             <div className='cashier__wrapper payment-agent-transfer__wrapper'>
                 <div className='cashier__success'>
                     <h2 className='cashier__header'>
-                        <DesktopWrapper>
-                            <Localize
-                                i18n_default_text='Your funds have been transferred to {{name}}.'
-                                values={{ name: this.props.receipt.client_name }}
-                            />
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <Localize i18n_default_text='Your funds have been transferred.' />
-                        </MobileWrapper>
+                        <Localize i18n_default_text='Your funds have been transferred' />
                     </h2>
                     <div className='cashier__transferred-amount cashier__text--bold'>
                         <span className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)} />

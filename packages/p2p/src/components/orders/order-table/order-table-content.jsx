@@ -13,7 +13,7 @@ import BuyOrderRowComponent from './order-table-buy-row.jsx';
 import SellOrderRowComponent from './order-table-sell-row.jsx';
 
 const OrderTableContent = ({ showDetails }) => {
-    const { order_limit, order_offset, orders, setOrders, setOrderOffset } = useContext(Dp2pContext);
+    const { list_item_limit, order_offset, orders, setOrders, setOrderOffset } = useContext(Dp2pContext);
     const [is_mounted, setIsMounted] = useState(false);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
     const [api_error_message, setApiErrorMessage] = useState('');
@@ -33,12 +33,12 @@ const OrderTableContent = ({ showDetails }) => {
             requestWS({
                 p2p_order_list: 1,
                 offset: start_idx,
-                limit: order_limit,
+                limit: list_item_limit,
             }).then(response => {
                 if (is_mounted) {
                     if (!response.error) {
                         const { list } = response.p2p_order_list;
-                        setHasMoreItemsToLoad(list.length >= order_limit);
+                        setHasMoreItemsToLoad(list.length >= list_item_limit);
                         setIsLoading(false);
                         setOrders(orders.concat(getModifiedP2POrderList(list)));
                         setOrderOffset(order_offset + list.length);

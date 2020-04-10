@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Dialog, Loading, Table } from '@deriv/components';
 import { localize } from 'Components/i18next';
+import Dp2pContext from 'Components/context/dp2p-context';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS } from 'Utils/websocket';
 import { MyAdsLoader } from './my-ads-loader.jsx';
@@ -56,58 +57,84 @@ RowComponent.propTypes = {
 };
 RowComponent.displayName = 'RowComponent';
 
-export class MyAdsTable extends React.Component {
-    // TODO: Find a better solution for handling no-op instead of using is_mounted flags
-    is_mounted = false;
+const MyAdsTable = () => {
+    let item_offset = 0;
 
-    state = {
-        is_loading: true,
-        items: [],
-        selected_ad_id: '',
-        show_popup: false,
-    };
+    const { list_item_limit } = useContext(Dp2pContext);
+    const [is_mounted, setIsMounted] = useState(false);
+    const [is_loading, setIsLoading] = useState(true);
+    const [api_error_message, setApiErrorMessage] = useState('');
+    const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
+    const [selected_ad_id, setSelectedAdId] = useState('');
+    const [show_popup, setShowPopup] = useState(false);
+    const [ads, setAds] = useState([]);
+    const table_container_Ref = React.createRef();
 
-    table_container_ref = React.createRef();
+    useEffect(() => {
+        setIsMounted(true);
+        return () => setIsMounted(false);
+    }, []);
 
-    componentDidMount() {
-        this.is_mounted = true;
+    useEffect(() => {
+        loadMoreAds(item_offset);
+    }, [is_mounted]);
 
-        requestWS({ p2p_advertiser_adverts: 1 }).then(response => {
-            if (this.is_mounted) {
-                this.setState({ items: response, is_loading: false });
-            }
+    const loadMoreAds = start_idx => {
+        return new Promise(resolve => {
+            requestWS({
+                p2p_advertiser_adverts: 1,
+                offset: start_idx,
+                limit: list_item_limit,
+            }).then(response => {
+                if (is_mounted) {
+                    if (!response.error) {
+                        setHasMoreItemsToLoad(response.length >= list_item_limit);
+                        setAds(ads.concat(response));
+                        setIsLoading(false);
+                        item_offset += response.length;
+                    } else {
+                        setApiErrorMessage(response.api_error_message);
+                    }
+                    resolve();
+                }
+            });
         });
-    }
-
-    componentWillUnmount() {
-        this.is_mounted = false;
-    }
-
-    onClickDelete = id => {
-        this.setState({ selected_ad_id: id, show_popup: true });
     };
 
-    onClickCancel = () => {
-        this.setState({ selected_ad_id: '', show_popup: false });
+    const onClickDelete = id => {
+        setSelectedAdId(id);
+        setShowPopup(true);
     };
 
-    onClickConfirm = showError => {
-        requestWS({ p2p_advert_update: 1, id: this.state.selected_ad_id, is_active: 0 }).then(response => {
+    const onClickCancel = () => {
+        setSelectedAdId('');
+        setShowPopup(false);
+    };
+
+    const onClickConfirm = showError => {
+        requestWS({ p2p_advert_update: 1, id: selected_ad_id, is_active: 0 }).then(response => {
             if (response.error) {
-                showError({ error_message: response.error.message });
+                showError({ error_message: response.error_message });
             } else {
                 // remove the deleted ad from the list of items
-                const updated_items = this.state.items.filter(ad => ad.id !== response.p2p_advert_update.id);
-                this.setState({ items: updated_items, show_popup: false });
+                const updated_items = ads.filter(ad => ad.id !== response.p2p_advert_update.id);
+                setAds(updated_items);
+                setShowPopup(false);
             }
         });
     };
 
-    render() {
-        const { items } = this.state;
+    if (is_loading) {
+        return <Loading is_fullscreen={false} />;
+    }
+    if (api_error_message) {
+        return <TableError message={api_error_message} />;
+    }
 
+    if (ads.length) {
+        console.log({ ads });
         return (
-            <div ref={this.table_container_ref}>
+            <div ref={table_container_Ref}>
                 <Table>
                     <Table.Header>
                         <Table.Row>
@@ -116,39 +143,33 @@ export class MyAdsTable extends React.Component {
                             ))}
                         </Table.Row>
                     </Table.Header>
-                    {this.state.is_loading ? (
-                        <Loading is_fullscreen={false} />
-                    ) : (
-                        <Table.Body>
-                            {items.length ? (
-                                <InfiniteLoaderList
-                                    // screen size - header size - footer size - page overlay header - page overlay content padding -
-                                    // tabs height - padding of tab content - toggle height - toggle margin - table header height
-                                    initial_height={
-                                        'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 2.4rem - 50px - 1.6rem - 52px)'
-                                    }
-                                    items={items}
-                                    row_actions={{ onClickDelete: this.onClickDelete }}
-                                    RenderComponent={RowComponent}
-                                    RowLoader={MyAdsLoader}
-                                />
-                            ) : (
-                                <div className='deriv-p2p__empty'>{localize("You haven't posted any ads yet.")}</div>
-                            )}
-                        </Table.Body>
-                    )}
+                    <Table.Body>
+                        <InfiniteLoaderList
+                            // screen size - header size - footer size - page overlay header - page overlay content padding -
+                            // tabs height - padding of tab content - toggle height - toggle margin - table header height
+                            initial_height={
+                                'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 2.4rem - 50px - 1.6rem - 52px)'
+                            }
+                            items={ads}
+                            row_actions={{ onClickDelete }}
+                            RenderComponent={RowComponent}
+                            RowLoader={MyAdsLoader}
+                            has_more_items_to_load={has_more_items_to_load}
+                            loadMore={loadMoreAds}
+                        />
+                    </Table.Body>
                 </Table>
-                {this.state.show_popup && (
+                {show_popup && (
                     <div className='orders__dialog'>
-                        <Dialog is_visible={!!this.state.show_popup}>
+                        <Dialog is_visible={!!show_popup}>
                             <Popup
                                 has_cancel
                                 title={localize('Delete this ad')}
-                                message={localize("You won't be able to restore it later.")}
+                                message={localize(`You won't be able to restore it later.`)}
                                 cancel_text={localize('Cancel')}
                                 confirm_text={localize('Delete')}
-                                onCancel={this.onClickCancel}
-                                onClickConfirm={this.onClickConfirm}
+                                onCancel={onClickCancel}
+                                onClickConfirm={onClickConfirm}
                             />
                         </Dialog>
                     </div>
@@ -156,4 +177,8 @@ export class MyAdsTable extends React.Component {
             </div>
         );
     }
-}
+
+    return <div className='deriv-p2p__empty'>{localize(`You haven't posted any ads yet.`)}</div>;
+};
+
+export default MyAdsTable;

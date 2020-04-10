@@ -30,7 +30,7 @@ class App extends Component {
         init(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
         ServerTime.init(this.props.server_time);
 
-        this.order_limit = 20;
+        this.list_item_limit = 20;
         this.state = {
             active_index: 0,
             order_offset: 0,
@@ -113,7 +113,7 @@ class App extends Component {
                 p2p_order_list: 1,
                 subscribe: 1,
                 offset: 0,
-                limit: this.order_limit,
+                limit: this.list_item_limit,
             },
             this.setP2pOrderList
         );
@@ -145,7 +145,7 @@ class App extends Component {
                     advertiser_id: this.state.advertiser_id,
                     is_advertiser: this.state.is_advertiser,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
-                    order_limit: this.order_limit,
+                    list_item_limit: this.list_item_limit,
                     order_offset,
                     orders,
                     setOrders: orders => this.setState({ orders }),

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
 import { localize } from 'Components/i18next';
+import Dp2pContext from 'Components/context/dp2p-context';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { requestWS } from 'Utils/websocket';
@@ -9,7 +10,7 @@ import { RowComponent, BuySellRowLoader } from './row.jsx';
 
 const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
     let item_offset = 0;
-    const item_limit = 20;
+    const { list_item_limit } = useContext(Dp2pContext);
     const [is_mounted, setIsMounted] = useState(false);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
     const [api_error_message, setApiErrorMessage] = useState('');
@@ -22,7 +23,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
     }, []);
 
     useEffect(() => {
-        loadMoreItems(item_offset, item_limit);
+        loadMoreItems(item_offset, list_item_limit);
     }, [is_mounted]);
 
     const loadMoreItems = start_idx => {
@@ -31,11 +32,11 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
                 p2p_advert_list: 1,
                 counterparty_type: is_buy ? 'buy' : 'sell',
                 offset: start_idx,
-                limit: item_limit,
+                limit: list_item_limit,
             }).then(response => {
                 if (is_mounted) {
                     if (!response.error) {
-                        setHasMoreItemsToLoad(response.length >= item_limit);
+                        setHasMoreItemsToLoad(response.length >= list_item_limit);
                         setIsLoading(false);
                         setItems(items.concat(response));
                         item_offset += response.length;

@@ -143,7 +143,7 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
             <div className='transactions__cell transactions__trade-type'>
                 {contract ? (
                     <TransactionIconWithText
-                        icon={<IconTradeType type={contract.contract_type} />}
+                        icon={<IconTradeTypes type={contract.contract_type} />}
                         title={getContractTypeName(contract)}
                     />
                 ) : (

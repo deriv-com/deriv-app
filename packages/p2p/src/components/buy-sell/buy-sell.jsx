@@ -62,7 +62,6 @@ class BuySell extends Component {
                 ) : (
                     <SellTable setSelectedAd={this.setSelectedAd} />
                 )}
-                {/* <BuySellTable table_type={table_type} setSelectedAd={this.setSelectedAd} /> */}
                 {show_popup && (
                     <div className='buy-sell__dialog'>
                         <Dialog is_visible={show_popup}>

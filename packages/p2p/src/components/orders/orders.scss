@@ -5,11 +5,12 @@
         margin: 0 1.6rem;
     }
     &__dialog {
-        position: absolute;
-        height: 100%;
-        width: 100%;
+        position: fixed;
+        height: 100vh;
+        width: 100vw;
         top: 0;
         left: 0;
+        z-index: 99;
         background: var(--shadow-menu);
 
         & .dc-dialog__dialog {

@@ -136,7 +136,7 @@ class App extends Component {
                 }}
             >
                 <main className={classNames('deriv-p2p', className)}>
-                    <Tabs onTabItemClick={this.handleTabClick} active_index={active_index} top>
+                    <Tabs onTabItemClick={this.handleTabClick} active_index={active_index} top header_fit_content>
                         <div label={localize('Buy/Sell')}>
                             <BuySell navigate={this.redirectTo} params={parameters} />
                         </div>

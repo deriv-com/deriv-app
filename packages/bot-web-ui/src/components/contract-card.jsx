@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Icon, Money } from '@deriv/components';
+import { Icon, Money, IconTradeTypes } from '@deriv/components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import CurrencyUtils from '@deriv/shared/utils/currency';
@@ -7,7 +7,6 @@ import { localize } from '@deriv/translations';
 import { getIndicativePrice, isEnded, getContractTypeName } from '@deriv/bot-skeleton';
 import ContractCardLoader from './contract-card-loading.jsx';
 import ContractResultOverlay from './contract-result-overlay.jsx';
-import IconTradeType from './icon-trade-types.jsx';
 import { connect } from '../stores/connect';
 import '../assets/sass/contract-card.scss';
 
@@ -46,7 +45,7 @@ const ContractCard = ({
                         <div className='db-contract-card__underlying-type'>
                             <div className='db-contract-card__underlying-type-wrapper'>
                                 <div className='db-contract-card__underlying-type-icon'>
-                                    <IconTradeType type={contract.contract_type} />
+                                    <IconTradeTypes type={contract.contract_type} />
                                 </div>
                             </div>
                             <span className='db-contract-card__underlying-type-label'>

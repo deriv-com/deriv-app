@@ -223,7 +223,7 @@ class ProofOfAddressForm extends React.Component {
             >
                 {({ values, errors, status, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
                     <>
-                        <LeaveConfirm onDirty={this.showForm} />
+                        <LeaveConfirm onDirty={isMobile() ? this.showForm : null} />
                         {show_form && (
                             <form noValidate className='account-form' onSubmit={handleSubmit}>
                                 <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>

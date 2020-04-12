@@ -302,13 +302,11 @@ export const clientNotifications = (ui = {}) => {
         new_version_available: {
             action: {
                 onClick: () => window.location.reload(),
-                text: localize('Get the update'),
+                text: localize('Refresh now'),
             },
             key: 'new_version_available',
-            header: localize('New version is available to install!'),
-            message: localize(
-                'You are using an older version of the website, update now to get more features and performance.'
-            ),
+            header: localize('A new version of Deriv is available'),
+            message: localize('This page will automatically refresh in 5 minutes to load the latest version.'),
             type: 'warning',
             should_hide_close_btn: true,
             timeout: 360000,

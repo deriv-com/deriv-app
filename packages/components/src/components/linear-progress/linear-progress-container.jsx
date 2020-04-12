@@ -48,7 +48,7 @@ class LinearProgressContainer extends React.Component {
     render() {
         const { timeout, className } = this.props;
         if (!timeout) return null;
-        // return null;
+
         return (
             <div className='dc-linear-progress-container'>
                 <div className='dc-linear-progress__countdown'>{this.props.render(this.remaining)}</div>

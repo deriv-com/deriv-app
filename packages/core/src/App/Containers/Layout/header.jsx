@@ -41,6 +41,9 @@ class Header extends React.Component {
             is_logging_in,
             is_mt5_allowed,
             is_notifications_visible,
+            is_p2p_visible,
+            is_payment_agent_visible,
+            is_payment_agent_transfer_visible,
             is_route_modal_on,
             is_virtual,
             disableApp,
@@ -79,10 +82,14 @@ class Header extends React.Component {
                                 account_status={account_status}
                                 enableApp={enableApp}
                                 disableApp={disableApp}
+                                location={this.props.location}
                                 logoutClient={logoutClient}
                                 is_dark_mode={is_dark_mode}
                                 is_high_risk={is_high_risk}
                                 is_logged_in={is_logged_in}
+                                is_p2p_visible={is_p2p_visible}
+                                is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
+                                is_payment_agent_visible={is_payment_agent_visible}
                                 toggleTheme={setDarkMode}
                                 platform_switcher={
                                     <PlatformSwitcher
@@ -162,6 +169,9 @@ Header.propTypes = {
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
+    is_payment_agent_visible: PropTypes.bool,
+    is_payment_agent_transfer_visible: PropTypes.bool,
+    is_p2p_visible: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
     logoutClient: PropTypes.func,
@@ -171,10 +181,13 @@ Header.propTypes = {
     toggleNotifications: PropTypes.func,
 };
 
-export default connect(({ client, common, ui }) => ({
+export default connect(({ client, common, ui, modules }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
+    is_p2p_visible: modules.cashier.is_p2p_visible,
+    is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
+    is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     balance: client.balance,
     can_upgrade: client.can_upgrade,
     can_upgrade_to: client.can_upgrade_to,

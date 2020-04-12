@@ -6,7 +6,7 @@ import './public-path'; // Leave this here! OK boss!
 import Audio from './components/audio.jsx';
 import FooterExtension from './components/footer-extension.jsx';
 import MainContent from './components/main-content.jsx';
-import NotificationMessages from './components/notification-messages.jsx';
+import BotNotificationMessages from './components/bot-notification-messages.jsx';
 import QuickStrategy from './components/quick-strategy.jsx';
 import RunPanel from './components/run-panel.jsx';
 import Toolbar from './components/toolbar.jsx';
@@ -168,7 +168,7 @@ class App extends React.Component {
         return (
             <Provider {...this.root_store}>
                 <div className='bot'>
-                    <NotificationMessages />
+                    <BotNotificationMessages />
                     <Toolbar />
                     <MainContent />
                     <RunPanel />

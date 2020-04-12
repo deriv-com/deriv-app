@@ -14,6 +14,7 @@ const Purchase = ({
     is_client_allowed_to_visit,
     is_multiplier,
     is_mobile,
+    is_purchase_enabled,
     // is_purchase_confirm_on,
     purchased_states_arr,
     // is_purchase_locked,
@@ -43,7 +44,7 @@ const Purchase = ({
             return index;
         };
         const info = proposal_info[type] || {};
-        const is_disabled = !is_trade_enabled || !info.id || !is_client_allowed_to_visit;
+        const is_disabled = !is_trade_enabled || !info.id || !is_client_allowed_to_visit || !is_purchase_enabled;
         const is_proposal_error = is_multiplier ? info.has_error && !info.has_error_details : info.has_error;
         const purchase_fieldset = (
             <PurchaseFieldset
@@ -121,6 +122,7 @@ export default connect(({ client, modules, ui, gtm }) => ({
     contract_type: modules.trade.contract_type,
     has_cancellation: modules.trade.has_cancellation,
     pushLoadPerformance: gtm.pushLoadPerformance,
+    is_purchase_enabled: modules.trade.is_purchase_enabled,
     is_trade_enabled: modules.trade.is_trade_enabled,
     is_multiplier: modules.trade.is_multiplier,
     onClickPurchase: modules.trade.onPurchase,

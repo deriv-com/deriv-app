@@ -549,9 +549,16 @@ export default class TradeStore extends BaseStore {
                     }
                     WS.forgetAll('proposal');
                     this.purchase_info = response;
-                    this.is_purchase_enabled = true;
+                    this.enablePurchase();
                 })
             );
+        }
+    }
+
+    @action.bound
+    enablePurchase() {
+        if (!this.root_store.client.is_unwelcome) {
+            this.is_purchase_enabled = true;
         }
     }
 
@@ -833,7 +840,7 @@ export default class TradeStore extends BaseStore {
             this.validateAllProperties();
         }
 
-        this.is_purchase_enabled = true;
+        this.enablePurchase();
         performance.mark('purchase-enabled');
     }
 

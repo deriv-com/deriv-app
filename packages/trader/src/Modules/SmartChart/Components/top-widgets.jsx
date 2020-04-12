@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { AssetInformation, ChartTitle } from 'Modules/SmartChart';
+import { ChartTitle } from 'Modules/SmartChart';
 import { isEnded } from 'Stores/Modules/Contract/Helpers/logic';
 import { isDigitContract } from 'Stores/Modules/Contract/Helpers/digits';
 
@@ -68,7 +68,6 @@ const TopWidgets = ({
             {InfoBox}
             <MobileWrapper>{portal}</MobileWrapper>
             <DesktopWrapper>{ChartTitleLocal}</DesktopWrapper>
-            <AssetInformation />
         </React.Fragment>
     );
 };

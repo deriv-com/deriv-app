@@ -207,3 +207,54 @@
         border-left-style: dashed;
     }
 }
+
+/** @define sc-toolbar-widget; weak */
+.sc-toolbar-widget {
+    .ciq-menu {
+        margin: 0px !important;
+    }
+}
+
+/** @define cq-chart-controls; weak */
+.cq-chart-controls {
+    .ciq-menu .cq-menu-btn {
+        align-items: center;
+    }
+    .ciq-views__menu {
+        .ic-icon {
+            width: 24px !important;
+            height: 24px !important;
+            top: 0px;
+
+            svg {
+                width: 24px !important;
+                height: 24px !important;
+            }
+        }
+    }
+    .sc-chart-mode__menu__timeperiod {
+        top: -6px;
+        left: -3px;
+    }
+    .sc-chart-mode__menu {
+        .ic-icon {
+            width: 20px !important;
+            height: 20px !important;
+            top: 2px;
+
+            svg {
+                width: 20px !important;
+                height: 20px !important;
+            }
+        }
+    }
+}
+
+/** @define smartcharts-mobile */
+.smartcharts-mobile {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}

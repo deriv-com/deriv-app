@@ -10,24 +10,24 @@ import 'Sass/app/modules/account-types.scss';
 const Description = ({ children, learn_more, setShowDescription, title }) => {
     return (
         <div className='account-card__description'>
-            <h4 className='account-card__description__title'>
+            <h4 className='account-card__description-title'>
                 <Icon
-                    className='account-card__description__back'
+                    className='account-card__description-back'
                     icon='IcArrowLeftBold'
                     onClick={() => {
                         setShowDescription(false);
                     }}
                 />
-                <span className='account-card__description__title-text'>{title}</span>
+                <span className='account-card__description-title-text'>{title}</span>
             </h4>
             {children}
-            <div className='account-card__description__learn'>
+            <div className='account-card__description-learn'>
                 {learn_more.length && (
-                    <h6 className='account-card__description__learn-title'>{localize('Learn more:')}</h6>
+                    <h6 className='account-card__description-learn-title'>{localize('Learn more:')}</h6>
                 )}
                 {learn_more.map((item, index) => {
                     return (
-                        <Link key={index} className='account-card__description__learn-items' to={item.path}>
+                        <Link key={index} className='account-card__description-learn-items' to={item.path}>
                             {item.text}
                         </Link>
                     );
@@ -40,11 +40,11 @@ const Description = ({ children, learn_more, setShowDescription, title }) => {
 const MainCard = ({ button_text, buttonOnClick, items, setShowDescription, subtitle, title }) => {
     return (
         <div className='account-card__main'>
-            <h3 className='account-card__main__title'>{title}</h3>
-            <h4 className='account-card__main__subtitle'>
+            <h3 className='account-card__main-title'>{title}</h3>
+            <h4 className='account-card__main-subtitle'>
                 {subtitle}
                 <Icon
-                    className='account-card__main__help'
+                    className='account-card__main-help'
                     icon='IcUnknownOutline'
                     onClick={() => {
                         setShowDescription(true);
@@ -52,13 +52,13 @@ const MainCard = ({ button_text, buttonOnClick, items, setShowDescription, subti
                 />
             </h4>
             {items.length && (
-                <table className='account-card__main__items'>
+                <table className='account-card__main-items'>
                     <tbody>
                         {items.map((item, index) => {
                             return (
-                                <tr key={index} className='account-card__main__item'>
-                                    <td className='account-card__main__item__label'>{item.label}</td>
-                                    <td className='account-card__main__item__value'>{item.value}</td>
+                                <tr key={index} className='account-card__main-item'>
+                                    <td className='account-card__main-item-label'>{item.label}</td>
+                                    <td className='account-card__main-item-value'>{item.value}</td>
                                 </tr>
                             );
                         })}
@@ -66,7 +66,7 @@ const MainCard = ({ button_text, buttonOnClick, items, setShowDescription, subti
                 </table>
             )}
             <Button
-                className='account-card__main__button'
+                className='account-card__main-button'
                 text={button_text}
                 onClick={buttonOnClick}
                 has_effect

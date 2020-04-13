@@ -487,6 +487,9 @@
                 text-decoration: none;
                 cursor: pointer;
             }
+            @include mobile {
+                margin-top: 1.6rem;
+            }
         }
     }
 }

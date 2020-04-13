@@ -207,6 +207,10 @@
                     content: ')';
                 }
             }
+            @include mobile {
+                min-height: auto;
+                min-width: auto;
+            }
         }
         &-items,
         &-label {
@@ -827,13 +831,11 @@
 .account-transfer {
     &__notes {
         color: var(--text-general);
-        margin-top: (4rem + 1.8rem); // + height of hint/error
+        padding: 1.6rem 0;
         font-size: var(--text-size-xs);
         line-height: 1.5;
 
         @include mobile {
-            margin: 0;
-            padding: 2.4rem 0 1.6rem;
             font-size: var(--text-size-xxs);
         }
     }
@@ -854,11 +856,18 @@
     &__drop-down {
         min-width: calc(calc(100% - calc(16px + 3.2rem)) / 2);
         width: auto;
-        margin-bottom: 3.4rem;
+        margin-bottom: 1.7rem;
 
         @include mobile {
             width: 100%;
             margin-bottom: 2.4rem;
+        }
+    }
+    &__input {
+        margin-bottom: -0.8rem !important;
+
+        @include mobile {
+            margin-bottom: 2.6rem !important;
         }
     }
     &__currency,
@@ -888,11 +897,11 @@
             }
         }
         &-from {
-            margin-bottom: 1.8rem;
+            margin-bottom: 3.5rem;
             margin-top: 2.5rem;
         }
         &-to {
-            margin-bottom: 3.2rem;
+            margin-bottom: 1.7rem;
         }
     }
     &__button {

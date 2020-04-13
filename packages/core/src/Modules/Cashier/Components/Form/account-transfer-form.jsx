@@ -157,10 +157,12 @@ class AccountTransferForm extends React.Component {
         const internal_total_transfers = daily_transfers?.internal?.allowed;
 
         const is_mt_transfer = this.props.selected_to.is_mt || this.props.selected_from.is_mt;
+        const remaining_transfers = is_mt_transfer ? mt5_remaining_transfers : internal_remaining_transfers;
 
-        const transfer_to_hint = localize('You have {{number}} transfers remaining for today.', {
-            number: is_mt_transfer ? mt5_remaining_transfers : internal_remaining_transfers,
-        });
+        const transfer_to_hint =
+            +remaining_transfers === 1
+                ? localize('You have {{number}} transfer remaining for today.', { number: remaining_transfers })
+                : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
 
         return (
             <div className='cashier__wrapper cashier__wrapper--align-left'>
@@ -207,6 +209,7 @@ class AccountTransferForm extends React.Component {
                                             <MobileWrapper>
                                                 <SelectNative
                                                     className='account-transfer__transfer-from'
+                                                    classNameDisplay='cashier__drop-down-display'
                                                     label={localize('From')}
                                                     value={this.props.selected_from.value}
                                                     list_items={from_accounts}
@@ -242,6 +245,7 @@ class AccountTransferForm extends React.Component {
                                             <MobileWrapper>
                                                 <SelectNative
                                                     className='account-transfer__transfer-to'
+                                                    classNameDisplay='cashier__drop-down-display'
                                                     label={localize('To')}
                                                     value={this.props.selected_to.value}
                                                     list_items={to_accounts}
@@ -258,7 +262,7 @@ class AccountTransferForm extends React.Component {
                                                         this.props.setErrorMessage('');
                                                         handleChange(e);
                                                     }}
-                                                    className='cashier__input cashier__input--long dc-input--no-placeholder'
+                                                    className='cashier__input cashier__input--long dc-input--no-placeholder account-transfer__input'
                                                     type='text'
                                                     label={localize('Amount')}
                                                     error={touched.amount && errors.amount}
@@ -280,10 +284,15 @@ class AccountTransferForm extends React.Component {
                                                     hint={
                                                         this.props.transfer_limit.max && (
                                                             <Localize
-                                                                i18n_default_text='Max transfer amount: <0 />'
+                                                                i18n_default_text='Transfer limits: <0 /> - <1 />'
                                                                 components={[
                                                                     <Money
                                                                         key={0}
+                                                                        amount={this.props.transfer_limit.min}
+                                                                        currency={this.props.selected_from.currency}
+                                                                    />,
+                                                                    <Money
+                                                                        key={1}
                                                                         amount={this.props.transfer_limit.max}
                                                                         currency={this.props.selected_from.currency}
                                                                     />,
@@ -294,73 +303,33 @@ class AccountTransferForm extends React.Component {
                                                 />
                                             )}
                                         </Field>
-                                        <DesktopWrapper>
-                                            <AccountTransferNote
-                                                mt5_total_transfers={mt5_total_transfers}
-                                                internal_total_transfers={internal_total_transfers}
-                                                transfer_fee={this.props.transfer_fee}
-                                                currency={this.props.selected_from.currency}
-                                                minimum_fee={this.props.minimum_fee}
-                                            />
-                                            <div className='cashier__form-submit'>
-                                                {this.props.error.message && (
-                                                    <React.Fragment>
-                                                        <Icon
-                                                            icon='IcAlertDanger'
-                                                            className='cashier__form-error-icon'
-                                                            size={128}
-                                                        />
-                                                        <Icon
-                                                            icon='IcAlertDanger'
-                                                            className='cashier__form-error-small-icon'
-                                                        />
-                                                        <p className='cashier__form-error'>
-                                                            {this.props.error.message}
-                                                        </p>
-                                                    </React.Fragment>
-                                                )}
-                                                <Button
-                                                    className='cashier__form-submit-button'
-                                                    type='submit'
-                                                    is_disabled={!isValid || isSubmitting}
-                                                    primary
-                                                    large
-                                                >
-                                                    <Localize i18n_default_text='Transfer' />
-                                                </Button>
-                                            </div>
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
-                                            <div className='cashier__form-submit  cashier__form-submit--align-end'>
-                                                {this.props.error.message && (
-                                                    <div className='cashier__form-error-container'>
-                                                        <Icon
-                                                            icon='IcAlertDanger'
-                                                            className='cashier__form-error-small-icon'
-                                                        />
-                                                        <p className='cashier__form-error'>
-                                                            {this.props.error.message}
-                                                        </p>
-                                                    </div>
-                                                )}
-                                                <Button
-                                                    className='cashier__form-submit-button'
-                                                    type='submit'
-                                                    is_disabled={!isValid || isSubmitting}
-                                                    primary
-                                                    large
-                                                >
-                                                    <Localize i18n_default_text='Transfer' />
-                                                </Button>
-                                            </div>
-                                            <AccountTransferNote
-                                                mt5_total_transfers={mt5_total_transfers}
-                                                internal_total_transfers={internal_total_transfers}
-                                                transfer_fee={this.props.transfer_fee}
-                                                currency={this.props.selected_from.currency}
-                                                minimum_fee={this.props.minimum_fee}
-                                            />
-                                        </MobileWrapper>
+                                        <div className='cashier__form-submit  cashier__form-submit--align-end'>
+                                            {this.props.error.message && (
+                                                <div className='cashier__form-error-container'>
+                                                    <Icon
+                                                        icon='IcAlertDanger'
+                                                        className='cashier__form-error-small-icon'
+                                                    />
+                                                    <p className='cashier__form-error'>{this.props.error.message}</p>
+                                                </div>
+                                            )}
+                                            <Button
+                                                className='cashier__form-submit-button'
+                                                type='submit'
+                                                is_disabled={!isValid || isSubmitting}
+                                                primary
+                                                large
+                                            >
+                                                <Localize i18n_default_text='Transfer' />
+                                            </Button>
+                                        </div>
+                                        <AccountTransferNote
+                                            mt5_total_transfers={mt5_total_transfers}
+                                            internal_total_transfers={internal_total_transfers}
+                                            transfer_fee={this.props.transfer_fee}
+                                            currency={this.props.selected_from.currency}
+                                            minimum_fee={this.props.minimum_fee}
+                                        />
                                     </Form>
                                 )}
                             </React.Fragment>

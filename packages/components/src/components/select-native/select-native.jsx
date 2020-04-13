@@ -34,7 +34,7 @@ class SelectNative extends Component {
                     >
                         <div className='dc-select-native__display'>
                             {list_items && value && (
-                                <div className='dc-select-native__display-text'>
+                                <div className={classNames('dc-select-native__display-text', props.classNameDisplay)}>
                                     {use_text ? value : this.getDisplayText(value)}
                                 </div>
                             )}
@@ -80,6 +80,7 @@ class SelectNative extends Component {
 
 SelectNative.props = {
     className: PropTypes.string,
+    classNameDisplay: PropTypes.string,
     list_items: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.string),
         PropTypes.arrayOf(

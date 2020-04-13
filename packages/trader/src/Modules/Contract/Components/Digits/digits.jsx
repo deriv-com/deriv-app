@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { toJS } from 'mobx';
@@ -110,7 +111,9 @@ class Digits extends React.PureComponent {
                 <div className='digits__container'>
                     <Bounce
                         is_visible={!!(is_digit_contract && status && spot && !!contract_info.entry_tick)}
-                        className='digits__digit-spot'
+                        className={classNames('digits__digit-spot', {
+                            'digits__digit-spot--is-trading': is_trade_page,
+                        })}
                         keyname='digits__digit-spot'
                     >
                         {is_trade_page && (
@@ -131,7 +134,6 @@ class Digits extends React.PureComponent {
                         onChangeStatus={this.onChangeStatus}
                         onLastDigitSpot={this.onLastDigitSpot}
                     />
-                    {is_trade_page && <span className='digits__tooltip-text'>{this.popover_message}</span>}
                 </div>
             );
         }

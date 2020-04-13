@@ -3,31 +3,21 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'Stores/connect';
 
-const InfoToastMessage = ({
-    className,
-    portal_id,
-    should_show_toast_error,
-    setToastErrorVisibility,
-    mobile_toast_error,
-    mobile_toast_timeout,
-}) => {
+const InfoToastMessage = ({ portal_id, is_open, setToastErrorVisibility, message, timeout }) => {
     if (!document.getElementById(portal_id)) return null;
     return ReactDOM.createPortal(
         <ToastError
-            className={className}
-            is_open={should_show_toast_error}
+            className='dc-toast-info'
+            is_open={is_open}
             onClose={() => setToastErrorVisibility(false)}
-            timeout={mobile_toast_timeout}
+            timeout={timeout}
         >
-            {mobile_toast_error}
+            {message}
         </ToastError>,
         document.getElementById(portal_id)
     );
 };
 
-connect(({ ui }) => ({
-    should_show_toast_error: ui.should_show_toast_error,
+export default connect(({ ui }) => ({
     setToastErrorVisibility: ui.setToastErrorVisibility,
-    mobile_toast_error: ui.mobile_toast_error,
-    mobile_toast_timeout: ui.mobile_toast_timeout,
 }))(InfoToastMessage);

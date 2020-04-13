@@ -25,6 +25,7 @@
         @media only screen and (max-height: 480px) {
             transform: scale(0.75);
             transform-origin: bottom;
+            padding: 0 0.8rem !important;
         }
     }
     &__tooltip-container {
@@ -225,8 +226,11 @@
                 top: 0;
                 left: 0;
                 right: 0;
-                margin-top: 3.6rem;
+                margin-top: 4.8rem;
 
+                &--is-trading {
+                    margin-top: auto;
+                }
                 &-value,
                 &-last {
                     font-size: 2rem;
@@ -381,7 +385,7 @@
 
         &--trade {
             grid-gap: 2rem 1.6rem;
-            margin: 0.8rem 0 1.6rem;
+            margin: auto 0 4.8rem;
         }
         &__container {
             width: 100%;

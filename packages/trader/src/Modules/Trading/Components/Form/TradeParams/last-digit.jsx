@@ -5,7 +5,6 @@ import { localize } from '@deriv/translations';
 import NumberSelector from 'App/Components/Form/number-selector.jsx';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
-import InfoToastMessage from './toast-info-popup.jsx';
 
 const LastDigit = ({ is_minimized, last_digit, onChange }) => {
     if (is_minimized) {
@@ -13,21 +12,18 @@ const LastDigit = ({ is_minimized, last_digit, onChange }) => {
     }
     const arr_five = [...Array(5).keys()];
     return (
-        <React.Fragment>
-            <InfoToastMessage portal_id='deriv_app' message='Testing' />
-            <Fieldset
-                className='trade-container__fieldset'
-                header={isDesktop() ? localize('Last Digit Prediction') : null}
-                is_center
-            >
-                <NumberSelector
-                    arr_arr_numbers={[arr_five, arr_five.map(i => i + 5)]}
-                    name='last_digit'
-                    onChange={onChange}
-                    selected_number={+last_digit}
-                />
-            </Fieldset>
-        </React.Fragment>
+        <Fieldset
+            className='trade-container__fieldset'
+            header={isDesktop() ? localize('Last Digit Prediction') : null}
+            is_center
+        >
+            <NumberSelector
+                arr_arr_numbers={[arr_five, arr_five.map(i => i + 5)]}
+                name='last_digit'
+                onChange={onChange}
+                selected_number={+last_digit}
+            />
+        </Fieldset>
     );
 };
 

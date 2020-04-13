@@ -14,7 +14,7 @@ class ContractAudit extends React.Component {
 
     static getDerivedStateFromProps({ is_multiplier, contract_update_history }, state) {
         if (!is_multiplier) return state;
-        if (contract_update_history && contract_update_history.length !== state.contract_update_history.length) {
+        if (!!contract_update_history.length && contract_update_history.length > state.contract_update_history.length) {
             return {
                 contract_update_history,
             };
@@ -26,7 +26,6 @@ class ContractAudit extends React.Component {
         this.props.toggleHistoryTab(tab_index);
         if (tab_index) {
             WS.contractUpdateHistory(this.props.contract_info.contract_id).then(response => {
-                console.log('get history', response.contract_update_history);
                 this.setState({
                     contract_update_history: response.contract_update_history,
                 });

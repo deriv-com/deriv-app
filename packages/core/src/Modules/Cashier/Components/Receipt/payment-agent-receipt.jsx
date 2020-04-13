@@ -88,7 +88,7 @@ class PaymentAgentReceipt extends React.Component {
                     <Button
                         className='cashier__form-submit-button cashier__done-button'
                         has_effect
-                        text={localize('Done')}
+                        text={localize('Make a new transfer')}
                         onClick={resetPaymentAgent}
                         primary
                         large

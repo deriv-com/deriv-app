@@ -26,25 +26,22 @@ const DateOfBirthField = props => {
     );
 };
 
-const InputField = props => {
-    return (
-        <Field name={props.name}>
-            {({ field, form: { errors, touched } }) => (
-                <React.Fragment>
-                    <Input
-                        type='text'
-                        required
-                        autoComplete='off'
-                        maxLength='30'
-                        error={touched[field.name] && errors[field.name]}
-                        {...field}
-                        {...props}
-                    />
-                </React.Fragment>
-            )}
-        </Field>
-    );
-};
+const FormInputField = ({ name, optional = false, ...props }) => (
+    <Field name={name}>
+        {({ field, form: { errors, touched } }) => (
+            <Input
+                type='text'
+                required={!optional}
+                name={name}
+                autoComplete='off'
+                maxLength='30'
+                error={touched[field.name] && errors[field.name]}
+                {...field}
+                {...props}
+            />
+        )}
+    </Field>
+);
 
 class PersonalDetails extends React.Component {
     constructor(props) {
@@ -107,12 +104,12 @@ class PersonalDetails extends React.Component {
                                         className='details-form__elements'
                                         style={{ paddingBottom: this.state.paddingBottom }}
                                     >
-                                        <InputField
+                                        <FormInputField
                                             name='first_name'
                                             label={localize('First name*')}
                                             placeholder={localize('John')}
                                         />
-                                        <InputField
+                                        <FormInputField
                                             name='last_name'
                                             label={localize('Last name*')}
                                             placeholder={localize('Doe')}
@@ -122,7 +119,7 @@ class PersonalDetails extends React.Component {
                                             label={localize('Date of birth*')}
                                             placeholder={localize('01-07-1999')}
                                         />
-                                        <InputField
+                                        <FormInputField
                                             name='phone'
                                             label={localize('Phone number*')}
                                             placeholder={localize('Phone number')}

@@ -41,7 +41,9 @@ const SimpleDuration = ({
             {simple_duration_unit === 't' && contract_expiry_type === 'tick' && (
                 <RangeSlider name='duration' value={duration_t} ticks={10} {...shared_input_props} />
             )}
-            {simple_duration_unit === 'd' && <TradingDatePicker alignment='left' mode='duration' name='duration' />}
+            {simple_duration_unit === 'd' && (
+                <TradingDatePicker id='dt_simple_duration_datepicker' mode='duration' name='duration' />
+            )}
             {simple_duration_unit !== 't' && simple_duration_unit !== 'd' && (
                 <InputField
                     id='dt_simple_duration_input'

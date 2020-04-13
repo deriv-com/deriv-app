@@ -1,12 +1,19 @@
 import classNames from 'classnames';
-import { Div100vhContainer, Icon, Input, ThemedScrollbars, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import {
+    Div100vhContainer,
+    FormSubmitButton,
+    Icon,
+    Input,
+    ThemedScrollbars,
+    DesktopWrapper,
+    MobileWrapper,
+} from '@deriv/components';
 import { Formik, Field } from 'formik';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { toMoment } from 'Utils/Date';
-import FormSubmitButton from './form-submit-button.jsx';
 import DatePickerCalendar from './date-picker-calendar.jsx';
 import 'Sass/details-form.scss';
 
@@ -85,7 +92,7 @@ export class DateOfBirth extends React.Component {
                 render={({ field: { name, value }, form: { setFieldValue, handleBlur, errors, touched } }) => (
                     <div className='datepicker'>
                         <DesktopWrapper>
-                            <InputField
+                            <FormInputField
                                 {...this.props}
                                 onFocus={this.handleFocus}
                                 className={classNames(this.props.className, {
@@ -191,25 +198,22 @@ export class DateOfBirth extends React.Component {
     }
 }
 
-const InputField = props => {
-    return (
-        <Field name={props.name}>
-            {({ field, form: { errors, touched } }) => (
-                <React.Fragment>
-                    <Input
-                        type='text'
-                        required
-                        autoComplete='off'
-                        maxLength='30'
-                        error={touched[field.name] && errors[field.name]}
-                        {...field}
-                        {...props}
-                    />
-                </React.Fragment>
-            )}
-        </Field>
-    );
-};
+const FormInputField = ({ name, optional = false, ...props }) => (
+    <Field name={name}>
+        {({ field, form: { errors, touched } }) => (
+            <Input
+                type='text'
+                required={!optional}
+                name={name}
+                autoComplete='off'
+                maxLength='30'
+                error={touched[field.name] && errors[field.name]}
+                {...field}
+                {...props}
+            />
+        )}
+    </Field>
+);
 
 class PersonalDetails extends React.Component {
     constructor(props) {
@@ -272,12 +276,12 @@ class PersonalDetails extends React.Component {
                                         className='details-form__elements'
                                         style={{ paddingBottom: this.state.paddingBottom }}
                                     >
-                                        <InputField
+                                        <FormInputField
                                             name='first_name'
                                             label={localize('First name*')}
                                             placeholder={localize('John')}
                                         />
-                                        <InputField
+                                        <FormInputField
                                             name='last_name'
                                             label={localize('Last name*')}
                                             placeholder={localize('Doe')}
@@ -288,7 +292,7 @@ class PersonalDetails extends React.Component {
                                             placeholder={localize('01-07-1999')}
                                             onFocus={this.onFocus}
                                         />
-                                        <InputField
+                                        <FormInputField
                                             name='phone'
                                             label={localize('Phone number*')}
                                             placeholder={localize('Phone number')}

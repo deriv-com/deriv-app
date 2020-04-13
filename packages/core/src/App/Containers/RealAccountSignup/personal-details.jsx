@@ -1,30 +1,27 @@
-import { Div100vhContainer, Input, ThemedScrollbars, DateOfBirthPicker } from '@deriv/components';
+import { Div100vhContainer, Input, ThemedScrollbars, DateOfBirthPicker, FormSubmitButton } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import React from 'react';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared/utils/date';
-import FormSubmitButton from './form-submit-button.jsx';
 import 'Sass/details-form.scss';
 
-const DateOfBirthField = props => {
-    return (
-        <Field name={props.name}>
-            {({ field: { value }, form: { setFieldValue, errors, touched, setTouched } }) => (
-                <DateOfBirthPicker
-                    error={touched.date_of_birth && errors.date_of_birth}
-                    onBlur={() => setTouched({ date_of_birth: true })}
-                    onChange={({ target }) =>
-                        setFieldValue('date_of_birth', target ? toMoment(target.value).format('YYYY-MM-DD') : '', true)
-                    }
-                    value={value}
-                    portal_id='modal_root'
-                    {...props}
-                />
-            )}
-        </Field>
-    );
-};
+const DateOfBirthField = props => (
+    <Field name={props.name}>
+        {({ field: { value }, form: { setFieldValue, errors, touched, setTouched } }) => (
+            <DateOfBirthPicker
+                error={touched.date_of_birth && errors.date_of_birth}
+                onBlur={() => setTouched({ date_of_birth: true })}
+                onChange={({ target }) =>
+                    setFieldValue('date_of_birth', target ? toMoment(target.value).format('YYYY-MM-DD') : '', true)
+                }
+                value={value}
+                portal_id='modal_root'
+                {...props}
+            />
+        )}
+    </Field>
+);
 
 const FormInputField = ({ name, optional = false, ...props }) => (
     <Field name={name}>

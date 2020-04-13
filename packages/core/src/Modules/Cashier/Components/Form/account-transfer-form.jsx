@@ -316,7 +316,7 @@ class AccountTransferForm extends React.Component {
                                             <Button
                                                 className='cashier__form-submit-button'
                                                 type='submit'
-                                                is_disabled={!isValid || isSubmitting}
+                                                is_disabled={!isValid || isSubmitting || !+remaining_transfers}
                                                 primary
                                                 large
                                             >

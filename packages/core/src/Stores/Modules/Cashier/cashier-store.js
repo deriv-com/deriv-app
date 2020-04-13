@@ -899,9 +899,6 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     resetAccountTransfer = async () => {
-        // force get limits send to update remaining daily transfers number
-        await WS.getLimits();
-        this.root_store.client.getLimits(); // update client.account_limits
         this.setIsTransferSuccessful(false);
     };
 

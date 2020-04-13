@@ -5,7 +5,7 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import { Tabs } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
-import { init as WebsocketInit, requestWS, getModifiedP2POrderList, subscribeWS } from 'Utils/websocket';
+import { init as WebsocketInit, getModifiedP2POrderList, subscribeWS } from 'Utils/websocket';
 import { init as SendbirdInit } from 'Utils/sendbird';
 import { localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';

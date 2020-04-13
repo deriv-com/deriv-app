@@ -4,8 +4,8 @@
 
     //TODO send the tab count from outside
     @for $i from 1 through 5 {
-        .dc-tabs__item:nth-child(#{$i}).dc-tabs__active:not(.dc-tabs__item--header-fit-content)
-            ~ .dc-tabs__active-line {
+        /* prettier-ignore */
+        .dc-tabs__item:nth-child(#{$i}).dc-tabs__active:not(.dc-tabs__item--header-fit-content) ~ .dc-tabs__active-line {
             left: calc(var(--tab-width) * #{$i} - var(--tab-width));
         }
     }

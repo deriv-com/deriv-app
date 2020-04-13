@@ -81,7 +81,6 @@ export default class ContractTradeStore extends BaseStore {
         contract.contract_update_config[name] = value;
 
         this[name] = value; // update respective refs for validations to work
-        // this.validateAllProperties();
         this.validateProperty(name, this[name]);
     }
 

@@ -13,8 +13,12 @@ const ResetPasswordModal = React.lazy(() =>
 const SetResidenceModal = React.lazy(() =>
     import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal')
 );
+const AccountTypesModal = React.lazy(() =>
+    import(/* webpackChunkName: "set-residence-modal"  */ '../AccountTypesModal')
+);
 
 const AppModals = ({
+    is_account_types_modal_on,
     is_denial_of_service_modal_visible,
     is_set_residence_modal_visible,
     url_action_param,
@@ -50,6 +54,8 @@ const AppModals = ({
                 );
             } else if (is_set_residence_modal_visible) {
                 ComponentToLoad = <SetResidenceModal />;
+            } else if (is_account_types_modal_on) {
+                ComponentToLoad = <AccountTypesModal />;
             }
             break;
     }
@@ -58,6 +64,7 @@ const AppModals = ({
 };
 
 export default connect(({ client, ui }) => ({
+    is_account_types_modal_on: ui.is_account_types_modal_on,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_denial_of_service_modal_visible: !client.is_client_allowed_to_visit,
     switchAccount: client.switchAccount,

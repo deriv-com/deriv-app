@@ -8,7 +8,7 @@ import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-order
 
 class ContractUpdateForm extends React.Component {
     componentWillUnmount() {
-        this.props.resetContractUpdate(this.props.contract_id);
+        this.props.clearContractUpdateConfigValues(this.props.contract_id);
     }
 
     get is_valid_contract_update() {
@@ -16,7 +16,12 @@ class ContractUpdateForm extends React.Component {
 
         const {
             contract_info: { is_valid_to_cancel, limit_order },
-            contract_update: { has_stop_loss, has_take_profit, stop_loss, take_profit },
+            contract_update_config: {
+                has_contract_update_stop_loss,
+                has_contract_update_take_profit,
+                contract_update_stop_loss,
+                contract_update_take_profit,
+            },
         } = contract;
 
         const { stop_loss: contract_info_stop_loss, take_profit: contract_info_take_profit } = getLimitOrderAmount(
@@ -25,52 +30,46 @@ class ContractUpdateForm extends React.Component {
 
         const isValid = val => !(val === undefined || val === null);
 
-        const is_take_profit_valid = has_take_profit ? take_profit > 0 : isValid(contract_info_take_profit);
-        const is_stop_loss_valid = has_stop_loss ? stop_loss > 0 : isValid(contract_info_stop_loss);
+        const is_take_profit_valid = has_contract_update_take_profit
+            ? contract_update_take_profit > 0
+            : isValid(contract_info_take_profit);
+        const is_stop_loss_valid = has_contract_update_stop_loss
+            ? contract_update_stop_loss > 0
+            : isValid(contract_info_stop_loss);
 
         return is_valid_to_cancel ? false : !!(is_take_profit_valid || is_stop_loss_valid);
     }
 
+    onChange = e => {
+        const { name, value } = e.target;
+
+        if (typeof this.props.onChange === 'function') {
+            this.props.onChange(
+                {
+                    name,
+                    value,
+                },
+                this.props.contract_id
+            );
+        }
+    };
+
+    onClick = () => {
+        this.props.updateLimitOrder(this.props.contract_id);
+        this.props.toggleDialog();
+    };
+
     render() {
         const {
             contract_info: { buy_price, cancellation: { ask_price: cancellation_price = 0 } = {}, is_valid_to_cancel },
-            contract_update: {
+            contract_update_config: {
                 currency,
-                has_stop_loss,
-                has_take_profit,
-                onClickContractUpdate,
-                onChangeContractUpdate,
-                stop_loss,
-                take_profit,
+                has_contract_update_stop_loss,
+                has_contract_update_take_profit,
+                contract_update_stop_loss,
+                contract_update_take_profit,
             },
         } = this.props.getContractById(this.props.contract_id);
-
-        const onChange = e => {
-            const { name, value } = e.target;
-
-            const contract_update = {};
-            if (name === 'contract_update_take_profit') {
-                contract_update.take_profit = value;
-            }
-            if (name === 'contract_update_stop_loss') {
-                contract_update.stop_loss = value;
-            }
-            if (name === 'has_contract_update_take_profit') {
-                contract_update.has_take_profit = value;
-            }
-            if (name === 'has_contract_update_stop_loss') {
-                contract_update.has_stop_loss = value;
-            }
-
-            if (onChangeContractUpdate) {
-                onChangeContractUpdate(contract_update, this.props.contract_id);
-            }
-        };
-
-        const onClick = () => {
-            onClickContractUpdate();
-            this.props.toggleDialog();
-        };
 
         const {
             contract_update_stop_loss: stop_loss_error_messages,
@@ -78,21 +77,21 @@ class ContractUpdateForm extends React.Component {
         } = this.props.validation_errors;
 
         const has_error =
-            (has_stop_loss && stop_loss_error_messages && stop_loss_error_messages.length) ||
-            (has_take_profit && take_profit_error_messages && take_profit_error_messages.length);
+            (has_contract_update_stop_loss && stop_loss_error_messages && stop_loss_error_messages.length) ||
+            (has_contract_update_take_profit && take_profit_error_messages && take_profit_error_messages.length);
 
         const take_profit_input = (
             <InputWithCheckbox
                 classNameInlinePrefix='trade-container__currency'
                 currency={currency}
-                error_messages={has_take_profit ? take_profit_error_messages : undefined}
+                error_messages={has_contract_update_take_profit ? take_profit_error_messages : undefined}
                 is_single_currency={true}
                 is_negative_disabled={true}
-                defaultChecked={has_take_profit}
+                defaultChecked={has_contract_update_take_profit}
                 label={localize('Take profit')}
                 name='contract_update_take_profit'
-                onChange={onChange}
-                value={take_profit}
+                onChange={this.onChange}
+                value={contract_update_take_profit}
                 is_disabled={!!is_valid_to_cancel}
             />
         );
@@ -101,15 +100,15 @@ class ContractUpdateForm extends React.Component {
             <InputWithCheckbox
                 classNameInlinePrefix='trade-container__currency'
                 currency={currency}
-                defaultChecked={has_stop_loss}
-                error_messages={has_stop_loss ? stop_loss_error_messages : undefined}
+                defaultChecked={has_contract_update_stop_loss}
+                error_messages={has_contract_update_stop_loss ? stop_loss_error_messages : undefined}
                 is_single_currency={true}
                 is_negative_disabled={true}
                 label={localize('Stop loss')}
                 max_value={buy_price - cancellation_price}
                 name='contract_update_stop_loss'
-                onChange={onChange}
-                value={stop_loss}
+                onChange={this.onChange}
+                value={contract_update_stop_loss}
                 is_disabled={!!is_valid_to_cancel}
             />
         );
@@ -149,7 +148,7 @@ class ContractUpdateForm extends React.Component {
                 <div className='positions-drawer-dialog__button'>
                     <Button
                         text={localize('Apply')}
-                        onClick={onClick}
+                        onClick={this.onClick}
                         primary
                         is_disabled={has_error || !this.is_valid_contract_update}
                     />
@@ -168,7 +167,9 @@ ContractUpdateForm.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    getContractById: modules.contract_replay.getContractById,
-    resetContractUpdate: modules.contract_replay.resetContractUpdate,
+    clearContractUpdateConfigValues: modules.contract_trade.clearContractUpdateConfigValues,
+    getContractById: modules.contract_trade.getContractById,
+    onChange: modules.contract_trade.onChange,
+    updateLimitOrder: modules.contract_trade.updateLimitOrder,
     validation_errors: modules.contract_trade.validation_errors,
 }))(ContractUpdateForm);

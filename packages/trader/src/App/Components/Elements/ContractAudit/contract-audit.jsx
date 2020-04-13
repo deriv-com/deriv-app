@@ -26,6 +26,7 @@ class ContractAudit extends React.Component {
         this.props.toggleHistoryTab(tab_index);
         if (tab_index) {
             WS.contractUpdateHistory(this.props.contract_info.contract_id).then(response => {
+                console.log('get history', response.contract_update_history);
                 this.setState({
                     contract_update_history: response.contract_update_history,
                 });

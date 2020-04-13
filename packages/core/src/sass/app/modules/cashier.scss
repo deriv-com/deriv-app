@@ -941,12 +941,54 @@ div.payment-agent-transfer {
         margin-bottom: 2.8rem;
     }
     &__input {
-        width: 29.6rem;
-        display: inline-flex;
         margin-bottom: 3.1rem;
 
-        &:not(:first-child) {
-            margin-left: 2.4rem;
+        &-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 1.6rem;
+        }
+    }
+    &__wrapper {
+        & .cashier {
+            &__transferred-details-wrapper {
+                & .account-transfer__transfer-details-from {
+                    flex-direction: row-reverse;
+
+                    & > .cashier__transferred-details {
+                        text-align: right;
+                    }
+                }
+                & .dc-icon {
+                    width: 3.2rem;
+                    height: 3.2rem;
+                }
+            }
+            &__form-submit {
+                flex-flow: row;
+                justify-content: center;
+
+                &-button {
+                    margin: 0;
+                    width: 100%;
+                    max-width: 18rem;
+
+                    &:first-child {
+                        margin-right: 0.4rem;
+                    }
+
+                    &:last-child {
+                        margin-left: 0.4rem;
+                    }
+                }
+            }
+            &__transferred-icon {
+                width: 1.6rem !important;
+                height: 1.6rem !important;
+            }
+            &__success {
+                margin-bottom: 0.8rem;
+            }
         }
     }
     @include mobile {
@@ -957,26 +999,14 @@ div.payment-agent-transfer {
                 &__header {
                     margin-top: 0.4rem;
                 }
+                &__form-submit-button {
+                    max-width: 100%;
+                }
                 &__success {
                     width: 100%;
                     background-color: var(--general-main-1);
                     padding: 0.4rem 0.4rem 0.8rem;
                     margin-bottom: 1.6rem;
-                }
-                &__form-submit {
-                    flex-flow: row;
-
-                    &-button {
-                        margin: 0;
-                        width: 100%;
-
-                        &:first-child {
-                            margin-right: 0.4rem;
-                        }
-                        &:last-child {
-                            margin-left: 0.4rem;
-                        }
-                    }
                 }
                 &__transferred-details {
                     display: flex;
@@ -1003,15 +1033,9 @@ div.payment-agent-transfer {
                                 align-items: flex-start;
                             }
                         }
-                        & .dc-icon {
-                            width: 3.2rem;
-                            height: 3.2rem;
-                        }
                     }
                 }
                 &__transferred-icon {
-                    width: 1.6rem !important;
-                    height: 1.6rem !important;
                     margin: 0;
                 }
             }
@@ -1026,9 +1050,9 @@ div.payment-agent-transfer {
             }
         }
         &__input {
-            width: 100%;
-            margin: 0 0 4.3rem;
-
+            &-container {
+                grid-template-columns: 1fr;
+            }
             &:not(:first-child) {
                 margin-left: unset;
                 margin-bottom: 5.3rem;

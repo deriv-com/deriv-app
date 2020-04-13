@@ -30,7 +30,7 @@ class PaymentAgentTransferReceipt extends React.Component {
                             <Icon icon={`IcCurrency-${this.props.currency.toLowerCase()}`} />
                             <span className='cashier__transferred-details'>
                                 <span className='cashier__text--bold'>{this.props.currency.toUpperCase()}</span>
-                                this.props.loginid
+                                {this.props.loginid}
                             </span>
                         </span>
                         <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />

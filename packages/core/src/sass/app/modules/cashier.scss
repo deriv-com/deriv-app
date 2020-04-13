@@ -638,7 +638,10 @@
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
-                color: var(--brand-red-coral);
+
+                &:not(:first-child) {
+                    color: var(--brand-red-coral);
+                }
             }
         }
         &-icon {
@@ -865,7 +868,6 @@
                 }
             }
             .dc-select-native__placeholder {
-                top: 0.9rem;
                 background-color: var(--general-main-1);
             }
         }

@@ -5,7 +5,7 @@ import { DesktopWrapper, MobileWrapper, Div100vhContainer, FormProgress } from '
 import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 import AddressDetails from './address-details.jsx';
 import CurrencySelector from './currency-selector.jsx';
 import PersonalDetails from './personal-details.jsx';

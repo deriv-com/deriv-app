@@ -240,8 +240,7 @@ class DBot {
 
         this.workspace.centerOnBlock(error_blocks[0].id);
         error_blocks.forEach(block => {
-            const message = { name: 'BlocksError', message: block.error_message };
-            globalObserver.emit('Error', message);
+            globalObserver.emit('ui.log.error', block.error_message);
         });
 
         return false;

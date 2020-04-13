@@ -1,7 +1,7 @@
 import { observable, action, computed } from 'mobx';
 import { localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared/utils/date';
-import { observer, message_types } from '@deriv/bot-skeleton';
+import { message_types } from '@deriv/bot-skeleton';
 
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
@@ -44,7 +44,7 @@ export default class JournalStore {
 
         // when notify undefined variable block
         if (message === undefined && variable_name != null) {
-            observer.emit('ui.log.notify', {
+            this.onNotify({
                 className: 'journal__text--error',
                 block_id,
                 sound: 'silent',

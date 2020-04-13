@@ -102,6 +102,10 @@ const drawerFooter = ({
 };
 
 class RunPanel extends React.PureComponent {
+    componentDidMount() {
+        this.props.onMount();
+    }
+
     componentWillUnmount() {
         this.props.onUnmount();
     }

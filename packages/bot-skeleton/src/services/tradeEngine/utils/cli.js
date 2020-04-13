@@ -28,7 +28,7 @@ let code = '';
 
 const interpreter = createInterpreter();
 
-globalObserver.register('Error', e => log(e));
+// globalObserver.register('Error', e => log(e));
 
 lineReader
     .on('line', line => {

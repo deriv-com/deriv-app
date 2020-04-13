@@ -6,6 +6,7 @@ import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { getDecimalPlaces } from '@deriv/shared/utils/currency';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
+import AccountTypesModal from 'App/Containers/AccountTypesModal';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
@@ -144,6 +145,7 @@ class Header extends React.Component {
                         </div>
                     </div>
                 </div>
+                <AccountTypesModal />
                 <RealAccountSignup />
                 <SetAccountCurrencyModal />
             </header>

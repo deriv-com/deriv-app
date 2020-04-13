@@ -1,7 +1,8 @@
 import { Icon, Modal, Tabs, ThemedScrollbars } from '@deriv/components';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { localize, Localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import AccountCard from './account-card.jsx';
 
 import 'Sass/app/modules/account-types.scss';
@@ -263,57 +264,78 @@ const GamingBox = ({ is_demo = false }) => {
     );
 };
 
-const AccountTypesModal = ({ has_demo = true }) => {
-    const [account_type_tab_index, setAccountTypeTabIndex] = useState(0);
-    return (
-        <Modal
-            title={localize('Account types')}
-            width='904px'
-            is_open={true}
-            // TODO: Add these with logic implementation
-            // toggleModal={toggleLoadModal}
-            // onMount={onMount}
-            // onUnmount={onUnmount}
-        >
-            <ThemedScrollbars autoHide style={{ height: '63.5rem' }}>
-                <div className='account-types'>
-                    <p className='account-types__intro'>
-                        <Localize
-                            i18n_default_text='Deriv offer various accounts based on 2 account types that suites different need. You can have all of them whenever you want. To view this page again, simply press any of the <0/> icon in Account Swithcer.'
-                            components={[<Icon key={0} className='account-types__text-icon' icon='IcInfoOutline' />]}
-                        />
-                    </p>
-                    {has_demo ? (
-                        <Tabs
-                            active_index={account_type_tab_index}
-                            className='account-types__tabs'
-                            fit_content
-                            onTabItemClick={setAccountTypeTabIndex}
-                            top
-                        >
-                            <div label={localize('Real accounts')}>
+class AccountTypesModal extends Component {
+    state = {
+        account_type_tab_index: 0,
+    };
+
+    setAccountTypeTabIndex = tab_index => {
+        this.setState({
+            account_type_tab_index: tab_index,
+        });
+    };
+
+    closeModal = () => {
+        this.props.toggleAccountTypesModal(false);
+    };
+
+    render() {
+        return (
+            <Modal
+                title={localize('Account types')}
+                width='904px'
+                is_open={this.props.is_account_types_modal_on}
+                toggleModal={this.closeModal}
+            >
+                <ThemedScrollbars autoHide style={{ height: '63.5rem' }}>
+                    <div className='account-types'>
+                        <p className='account-types__intro'>
+                            <Localize
+                                i18n_default_text='Deriv offer various accounts based on 2 account types that suites different need. You can have all of them whenever you want. To view this page again, simply press any of the <0/> icon in Account Swithcer.'
+                                components={[
+                                    <Icon key={0} className='account-types__text-icon' icon='IcInfoOutline' />,
+                                ]}
+                            />
+                        </p>
+                        {this.props.has_demo ? (
+                            <Tabs
+                                active_index={this.state.account_type_tab_index}
+                                className='account-types__tabs'
+                                fit_content
+                                onTabItemClick={this.setAccountTypeTabIndex}
+                                top
+                            >
+                                <div label={localize('Real accounts')}>
+                                    <FinancialBox />
+                                    <GamingBox />
+                                </div>
+                                <div label={localize('Demo accounts')}>
+                                    <FinancialBox is_demo />
+                                    <GamingBox is_demo />
+                                </div>
+                            </Tabs>
+                        ) : (
+                            <div>
                                 <FinancialBox />
                                 <GamingBox />
                             </div>
-                            <div label={localize('Demo accounts')}>
-                                <FinancialBox is_demo />
-                                <GamingBox is_demo />
-                            </div>
-                        </Tabs>
-                    ) : (
-                        <div>
-                            <FinancialBox />
-                            <GamingBox />
-                        </div>
-                    )}
-                </div>
-            </ThemedScrollbars>
-        </Modal>
-    );
-};
+                        )}
+                    </div>
+                </ThemedScrollbars>
+            </Modal>
+        );
+    }
+}
 
 AccountTypesModal.propTypes = {
     has_demo: PropTypes.bool,
+    is_account_types_modal_on: PropTypes.bool,
+    toggleAccountTypesModal: PropTypes.func,
 };
 
-export default AccountTypesModal;
+export default connect(({ ui }) => ({
+    is_account_types_modal_on: ui.is_account_types_modal_on,
+    toggleAccountTypesModal: ui.toggleAccountTypesModal,
+    // TODO: add this later
+    // has_demo: later!
+}))(AccountTypesModal);

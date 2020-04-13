@@ -82,6 +82,9 @@ export default class UIStore extends BaseStore {
     @observable is_real_acc_signup_on = false;
     @observable has_real_account_signup_ended = false;
 
+    // account types modal
+    @observable is_account_types_modal_on = false;
+
     // set currency modal
     @observable is_set_currency_modal_visible = false;
 
@@ -576,5 +579,10 @@ export default class UIStore extends BaseStore {
     @action.bound
     setIsNativepickerVisible(is_nativepicker_visible) {
         this.is_nativepicker_visible = is_nativepicker_visible;
+    }
+
+    @action.bound
+    toggleAccountTypesModal(is_visible) {
+        this.is_account_types_modal_on = is_visible;
     }
 }

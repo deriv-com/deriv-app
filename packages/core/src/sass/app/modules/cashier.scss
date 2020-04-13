@@ -622,6 +622,7 @@
         &-icon {
             vertical-align: middle;
             margin-right: 12px;
+            /* postcss-bem-linter: ignore */
             --fill-color1: var(--text-general);
         }
     }
@@ -976,7 +977,6 @@ div.payment-agent-transfer {
                     &:first-child {
                         margin-right: 0.4rem;
                     }
-
                     &:last-child {
                         margin-left: 0.4rem;
                     }

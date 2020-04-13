@@ -39,10 +39,20 @@ class ModalElement extends React.PureComponent {
 
     handleClickOutside = event => {
         const path = event.path || (event.composedPath && event.composedPath());
-        if (this.props.has_close_icon && this.wrapper_ref && !path.some(el => el === this.wrapper_ref)) {
+
+        if (
+            this.props.has_close_icon &&
+            this.wrapper_ref &&
+            !path.some(el => el === this.wrapper_ref) &&
+            !this.is_datepicker_visible
+        ) {
             this.props.toggleModal();
         }
     };
+
+    get is_datepicker_visible() {
+        return this.state.modal_root.querySelectorAll('.dc-datepicker__picker').length;
+    }
 
     render() {
         const {

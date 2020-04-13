@@ -268,7 +268,7 @@ class PersonalDetailsForm extends React.Component {
                     setFieldValue,
                 }) => (
                     <>
-                        <LeaveConfirm onDirty={this.showForm} />
+                        <LeaveConfirm onDirty={isMobile() ? this.showForm : null} />
                         {show_form && (
                             <form
                                 noValidate

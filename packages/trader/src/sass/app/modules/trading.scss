@@ -169,6 +169,9 @@
             @include typeface(--paragraph-center-normal-black);
             color: inherit;
         }
+        & ~ .trade-container__input {
+            padding: 0 30px;
+        }
     }
     &__price,
     &__order-input {

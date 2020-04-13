@@ -148,11 +148,12 @@ export class DateOfBirth extends React.Component {
                                 <Icon icon='IcCalendar' className='datepicker__calendar-icon' />
                                 <input
                                     id={this.props.id}
+                                    ref={ref => (this.date_of_birth_input = ref)}
                                     name={name}
                                     className='datepicker__native'
                                     type='date'
-                                    max={this.state.max_date}
-                                    min={this.state.min_date}
+                                    max={this.state.max_date.format('YYYY-MM-DD')}
+                                    min={this.state.min_date.format('YYYY-MM-DD')}
                                     onBlur={handleBlur}
                                     defaultValue={toMoment(this.state.max_date).format('YYYY-MM-DD')}
                                     error={touched[name] && errors[name]}
@@ -167,9 +168,10 @@ export class DateOfBirth extends React.Component {
                                     onChange={e => {
                                         // fix for ios issue: clear button doesn't work
                                         // https://github.com/facebook/react/issues/8938
-                                        const target = e.nativeEvent.target;
+                                        const nativeEvent = e.nativeEvent.target;
+                                        this.date_of_birth_input.defaultValue = '';
                                         function iosClearDefault() {
-                                            target.defaultValue = '';
+                                            nativeEvent.defaultValue = '';
                                         }
                                         window.setTimeout(iosClearDefault, 0);
                                         setFieldValue(
@@ -180,7 +182,7 @@ export class DateOfBirth extends React.Component {
                                     }}
                                 />
                                 {touched[name] && errors[name] && (
-                                    <span className='datepicker__error'>{localize('Date of birth is required')}</span>
+                                    <span className='datepicker__error'>{errors[name]}</span>
                                 )}
                             </div>
                         </MobileWrapper>
@@ -315,7 +317,7 @@ class PersonalDetails extends React.Component {
     }
 
     validatePersonalDetails = values => {
-        const max_date = toMoment().subtract(18, 'days');
+        const max_date = toMoment().subtract(18, 'years');
         const validations = {
             first_name: [
                 v => !!v,
@@ -347,7 +349,10 @@ class PersonalDetails extends React.Component {
             '{{field_name}} is not in a proper format.',
         ];
 
-        const alt_messages = ['{{field_name}} is required', '{{field_name}} is not in a proper format.'];
+        const alt_messages = {
+            phone: ['{{field_name}} is required', '{{field_name}} is not in a proper format.'],
+            date_of_birth: ['{{field_name}} is required', '{{field_name}} is invalid.'],
+        };
 
         const errors = {};
 
@@ -359,7 +364,7 @@ class PersonalDetails extends React.Component {
                     case 'phone':
                         errors[key] = errors[key] = (
                             <Localize
-                                i18n_default_text={alt_messages[error_index]}
+                                i18n_default_text={alt_messages[key][error_index]}
                                 values={{
                                     field_name: mappedKey[key],
                                 }}

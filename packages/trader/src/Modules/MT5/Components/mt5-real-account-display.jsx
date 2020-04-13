@@ -1,130 +1,137 @@
 import React from 'react';
-import { Button, Icon } from '@deriv/components';
+import { Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import {
+    real_advanced_specs,
+    real_standard_specs,
+    real_synthetic_specs,
+} from 'Modules/MT5/Constants/mt5-specifications';
 import { MT5AccountCard } from './mt5-account-card.jsx';
-import Loading from '../../../templates/_common/components/loading.jsx';
+
+const getRealAdvancedButtonLabel = (is_fully_authenticated, is_pending_authentication, has_required_credentials) => {
+    if (is_fully_authenticated && has_required_credentials) {
+        return <Localize i18n_default_text='Set your password' />;
+    } else if (is_pending_authentication) {
+        return <Localize i18n_default_text='Pending verification' />;
+    }
+
+    return <Localize i18n_default_text='Create account' />;
+};
 
 const MT5RealAccountDisplay = ({
-    beginRealSignupForMt5,
     has_real_account,
-    is_loading,
+    is_fully_authenticated,
+    is_pending_authentication,
     onSelectAccount,
     openAccountTransfer,
+    openPasswordModal,
     current_list,
     has_mt5_account,
     openPasswordManager,
-}) =>
-    is_loading ? (
-        <div className='mt5-real-accounts-display'>
-            <Loading />
-        </div>
-    ) : (
-        <React.Fragment>
-            {!has_real_account && (
-                <div className='mt5-dashboard__missing-real'>
-                    <h1 className='mt5-dashboard__missing-real--heading'>
-                        <Localize i18n_default_text='You need a real account (fiat currency or cryptocurrency) in Deriv to create a real DMT5 account.' />
-                    </h1>
-                    <Button
-                        className='mt5-dashboard__missing-real--button'
-                        onClick={beginRealSignupForMt5}
-                        type='button'
-                        primary
-                    >
-                        <span className='dc-btn__text'>
-                            <Localize i18n_default_text='Create a Deriv account' />
-                        </span>
-                    </Button>
-                </div>
-            )}
+    account_settings,
+}) => {
+    const has_required_credentials =
+        account_settings.citizen && account_settings.tax_identification_number && account_settings.tax_residence;
 
-            <div className='mt5-real-accounts-display'>
-                <MT5AccountCard
-                    has_mt5_account={has_mt5_account}
-                    icon={() => <Icon icon='IcMt5Standard' size={64} />}
-                    title={localize('Standard')}
-                    type={{
-                        category: 'real',
-                        type: 'standard',
-                    }}
-                    existing_data={current_list['real.standard']}
-                    commission_message={
-                        <Localize
-                            i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
-                            components={[<span key={0} className='mt5-dashboard--hint' />]}
-                        />
-                    }
-                    onSelectAccount={onSelectAccount}
-                    onPasswordManager={openPasswordManager}
-                    onClickFund={() =>
-                        openAccountTransfer(current_list['real.standard'], {
-                            category: 'real',
-                            type: 'standard',
-                        })
-                    }
-                    descriptor={localize('Suitable for both new and experienced traders.')}
-                    specs={{
-                        [localize('Leverage')]: localize('Up to 1:1000'),
-                        [localize('Margin call')]: localize('150%'),
-                        [localize('Stop out level')]: localize('75%'),
-                        [localize('Number of assets')]: localize('50+'),
-                    }}
-                />
-                {/* TODO Bring this back when Real Advanced is implemented */}
-                {/* <MT5AccountCard
-            has_mt5_account={has_mt5_account}
-            icon={() => (<Icon icon='IcMt5Advanced' size={64} />)}
-            title={localize('Advanced')}
-            type={{
-                category: 'real',
-                type    : 'advanced',
-            }}
-            existing_data={current_list['real.advanced']}
-            commission_message={<Localize i18n_default_text='No commission' />}
-            onSelectAccount={onSelectAccount}
-            onPasswordManager={openPasswordManager}
-            onClickFund={() => openAccountTransfer(current_list['real.advanced'], {
-                category: 'real',
-                type    : 'advanced',
-            })}
-            descriptor={localize('Give you more products, tight spreads, and higher ticket size.')}
-            specs={{
-                [localize('Leverage')]        : localize('Up to 1:100'),
-                [localize('Margin call')]     : localize('150%'),
-                [localize('Stop out level')]  : localize('75%'),
-                [localize('Number of assets')]: localize('50+'),
-            }}
-        /> */}
-                <MT5AccountCard
-                    has_mt5_account={has_mt5_account}
-                    icon={() => <Icon icon='IcMt5SyntheticIndices' size={64} />}
-                    title={localize('Synthetic Indices')}
-                    type={{
-                        category: 'real',
-                        type: 'synthetic_indices',
-                    }}
-                    existing_data={current_list['real.synthetic_indices']}
-                    commission_message={<Localize i18n_default_text='No commission' />}
-                    onSelectAccount={onSelectAccount}
-                    onPasswordManager={openPasswordManager}
-                    onClickFund={() =>
-                        openAccountTransfer(current_list['real.synthetic_indices'], {
-                            category: 'real',
-                            type: 'synthetic_indices',
-                        })
-                    }
-                    descriptor={localize(
-                        'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
-                    )}
-                    specs={{
-                        [localize('Leverage')]: localize('Up to 1:1000'),
-                        [localize('Margin call')]: localize('100%'),
-                        [localize('Stop out level')]: localize('50%'),
-                        [localize('Number of assets')]: localize('10+'),
-                    }}
-                />
-            </div>
-        </React.Fragment>
+    const button_label = getRealAdvancedButtonLabel(
+        is_fully_authenticated,
+        is_pending_authentication,
+        has_required_credentials
     );
+
+    const is_real_advanced_disabled = !has_real_account || is_pending_authentication;
+
+    const onSelectRealAdvanced = () => {
+        const account_type = {
+            category: 'real',
+            type: 'advanced',
+        };
+        if (is_fully_authenticated && has_required_credentials) {
+            openPasswordModal(account_type);
+        } else if ((!is_fully_authenticated && !is_real_advanced_disabled) || !has_required_credentials) {
+            onSelectAccount(account_type);
+        }
+    };
+    const onSelectRealStandard = () => onSelectAccount({ type: 'standard', category: 'real' });
+    const onSelectRealSynthetic = () => onSelectAccount({ type: 'synthetic_indices', category: 'real' });
+
+    const onClickFundRealAdvanced = () =>
+        openAccountTransfer(current_list['real.advanced'], {
+            category: 'real',
+            type: 'advanced',
+        });
+    const onClickFundRealSynthetic = () =>
+        openAccountTransfer(current_list['real.synthetic_indices'], {
+            category: 'real',
+            type: 'synthetic_indices',
+        });
+    const onClickFundRealStandard = () =>
+        openAccountTransfer(current_list['real.standard'], {
+            category: 'real',
+            type: 'standard',
+        });
+
+    return (
+        <div className='mt5-real-accounts-display'>
+            <MT5AccountCard
+                has_mt5_account={has_mt5_account}
+                is_disabled={!has_real_account}
+                icon={() => <Icon icon='IcMt5Standard' size={64} />}
+                title={localize('Standard')}
+                type={{
+                    category: 'real',
+                    type: 'standard',
+                }}
+                existing_data={current_list['real.standard']}
+                commission_message={
+                    <Localize
+                        i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
+                        components={[<span key={0} className='mt5-dashboard--hint' />]}
+                    />
+                }
+                onSelectAccount={onSelectRealStandard}
+                onPasswordManager={openPasswordManager}
+                onClickFund={onClickFundRealStandard}
+                descriptor={localize('Suitable for both new and experienced traders.')}
+                specs={real_standard_specs}
+            />
+            <MT5AccountCard
+                has_mt5_account={has_mt5_account}
+                icon={() => <Icon icon='IcMt5Advanced' size={64} />}
+                title={localize('Advanced')}
+                type={{
+                    category: 'real',
+                    type: 'advanced',
+                }}
+                existing_data={current_list['real.advanced']}
+                commission_message={<Localize i18n_default_text='No commission' />}
+                onSelectAccount={onSelectRealAdvanced}
+                button_label={button_label}
+                onPasswordManager={openPasswordManager}
+                onClickFund={onClickFundRealAdvanced}
+                descriptor={localize('Give you more products, tight spreads, and higher ticket size.')}
+                specs={real_advanced_specs}
+                is_disabled={is_real_advanced_disabled}
+            />
+            <MT5AccountCard
+                has_mt5_account={has_mt5_account}
+                icon={() => <Icon icon='IcMt5SyntheticIndices' size={64} />}
+                title={localize('Synthetic Indices')}
+                is_disabled={!has_real_account}
+                type={{
+                    category: 'real',
+                    type: 'synthetic_indices',
+                }}
+                existing_data={current_list['real.synthetic_indices']}
+                commission_message={<Localize i18n_default_text='No commission' />}
+                onSelectAccount={onSelectRealSynthetic}
+                onPasswordManager={openPasswordManager}
+                onClickFund={onClickFundRealSynthetic}
+                descriptor={localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.')}
+                specs={real_synthetic_specs}
+            />
+        </div>
+    );
+};
 
 export { MT5RealAccountDisplay };

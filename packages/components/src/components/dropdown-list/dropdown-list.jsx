@@ -7,7 +7,7 @@ import ThemedScrollbars from 'Components/themed-scrollbars';
 const trackHorizontal = props => <div {...props} style={{ display: 'none' }} />;
 const thumbHorizontal = props => <div {...props} style={{ display: 'none' }} />;
 
-const ListItem = ({ is_active, item, child_ref, onItemSelection, is_object_list }) => {
+const ListItem = ({ is_active, is_disabled, item, child_ref, onItemSelection, is_object_list }) => {
     return (
         <div
             ref={child_ref}
@@ -15,6 +15,7 @@ const ListItem = ({ is_active, item, child_ref, onItemSelection, is_object_list 
             onMouseDown={() => onItemSelection(item)}
             className={classNames('dc-dropdown-list__item', {
                 'dc-dropdown-list__item--active': is_active,
+                'dc-dropdown-list__item--disabled': is_disabled,
             })}
             value={is_object_list ? item.value : null}
         >
@@ -58,6 +59,7 @@ const ListItems = React.forwardRef((props, ref) => {
                                         is_active={item_idx === active_index}
                                         onItemSelection={onItemSelection}
                                         is_object_list={is_object_list}
+                                        is_disabled={item.disabled === 'DISABLED'}
                                         child_ref={item_idx === active_index ? ref : null}
                                     />
                                 );

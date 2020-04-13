@@ -8,12 +8,13 @@ import { Expired, OnfidoFailed, Verified, UploadComplete, Unsupported } from './
 import { onfido_status_codes } from './proof-of-identity';
 
 const onfido_container_id = 'onfido';
+
 const OnfidoContainer = () => (
     <ThemedScrollbars
         is_native={isMobile()}
         autoHide
         style={{
-            height: '100%',
+            minHeight: '420px',
         }}
     >
         <div className='onfido-container'>
@@ -28,10 +29,10 @@ class Onfido extends React.Component {
         onfido_init_error: false,
     };
 
-    initOnfido = () => {
+    initOnfido = async () => {
         try {
             const { documents_supported } = this.props;
-            const onfido = init({
+            const onfido = await init({
                 containerId: onfido_container_id,
                 language: {
                     locale: getLanguage().toLowerCase() || 'en',
@@ -79,23 +80,23 @@ class Onfido extends React.Component {
     }
 
     render() {
-        const { status, has_poa } = this.props;
+        const { status, has_poa, is_description_enabled, height } = this.props;
 
-        if (status === onfido_status_codes.onfido) return <OnfidoContainer />;
+        if (status === onfido_status_codes.onfido) return <OnfidoContainer height={height} />;
 
         switch (status) {
             case onfido_status_codes.unsupported:
-                return <Unsupported />;
+                return <Unsupported is_description_enabled={is_description_enabled} />;
             case onfido_status_codes.pending:
-                return <UploadComplete has_poa={has_poa} />;
+                return <UploadComplete has_poa={has_poa} is_description_enabled={is_description_enabled} />;
             case onfido_status_codes.rejected:
-                return <OnfidoFailed />;
+                return <OnfidoFailed is_description_enabled={is_description_enabled} />;
             case onfido_status_codes.verified:
-                return <Verified has_poa={has_poa} />;
+                return <Verified has_poa={has_poa} is_description_enabled={is_description_enabled} />;
             case onfido_status_codes.expired:
-                return <Expired />;
+                return <Expired is_description_enabled={is_description_enabled} />;
             case onfido_status_codes.suspected:
-                return <OnfidoFailed />;
+                return <OnfidoFailed is_description_enabled={is_description_enabled} />;
             default:
                 return null;
         }

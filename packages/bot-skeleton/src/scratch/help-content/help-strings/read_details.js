@@ -11,7 +11,7 @@ export default {
         localize('- Contract type: the name of the contract type such as Rise, Fall, Touch, No Touch, etс.'),
         localize('- Entry spot: the starting time of the contract'),
         localize('- Entry value: the value of the first tick of the contract'),
-        localize('- Exit spot: the contract expiration time'),
+        localize('- Exit time: the contract expiration time'),
         localize('- Exit value: the value of the last tick of the contract'),
         localize(
             '- Barrier: the barrier value of the contract (applicable to barrier-based trade types such as stays in/out, touch/no touch, etc.)'

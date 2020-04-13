@@ -5,40 +5,72 @@ import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbo
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-orders';
+import { getCancellationPrice } from 'Stores/Modules/Contract/Helpers/logic';
 
 class ContractUpdateForm extends React.Component {
     componentWillUnmount() {
         this.props.clearContractUpdateConfigValues(this.props.contract_id);
     }
 
+    get contract() {
+        return this.props.getContractById(this.props.contract_id);
+    }
+
+    get contract_info() {
+        return this.contract.contract_info;
+    }
+
+    get contract_update_config() {
+        return this.contract.contract_update_config;
+    }
+
+    get limit_order() {
+        const { stop_loss, take_profit } = getLimitOrderAmount(this.contract_info.limit_order);
+
+        return {
+            current_stop_loss: stop_loss,
+            current_take_profit: take_profit,
+        };
+    }
+
     get is_valid_contract_update() {
-        const contract = this.props.getContractById(this.props.contract_id);
-
         const {
-            contract_info: { is_valid_to_cancel, limit_order },
-            contract_update_config: {
-                has_contract_update_stop_loss,
-                has_contract_update_take_profit,
-                contract_update_stop_loss,
-                contract_update_take_profit,
-            },
-        } = contract;
-
-        const { stop_loss: contract_info_stop_loss, take_profit: contract_info_take_profit } = getLimitOrderAmount(
-            limit_order
-        );
-
-        const isValid = val => !(val === undefined || val === null);
+            has_contract_update_take_profit,
+            has_contract_update_stop_loss,
+            contract_update_take_profit,
+            contract_update_stop_loss,
+        } = this.contract_update_config;
+        const { current_take_profit, current_stop_loss } = this.limit_order;
 
         const is_take_profit_valid = has_contract_update_take_profit
             ? contract_update_take_profit > 0
-            : isValid(contract_info_take_profit);
+            : this.isValid(current_take_profit);
         const is_stop_loss_valid = has_contract_update_stop_loss
             ? contract_update_stop_loss > 0
-            : isValid(contract_info_stop_loss);
+            : this.isValid(current_stop_loss);
 
-        return is_valid_to_cancel ? false : !!(is_take_profit_valid || is_stop_loss_valid);
+        return this.contract_info.is_valid_to_cancel ? false : !!(is_take_profit_valid || is_stop_loss_valid);
     }
+
+    get error_messages() {
+        const { has_contract_update_stop_loss, has_contract_update_take_profit } = this.contract_update_config;
+
+        const {
+            contract_update_stop_loss: stop_loss,
+            contract_update_take_profit: take_profit,
+        } = this.props.validation_errors;
+
+        return {
+            take_profit: has_contract_update_take_profit ? take_profit : undefined,
+            stop_loss: has_contract_update_stop_loss ? stop_loss : undefined,
+        };
+    }
+
+    get has_validation_errors() {
+        return Object.keys(this.error_messages).some(field => this.error_messages[field]?.length);
+    }
+
+    isValid = val => !(val === undefined || val === null);
 
     onChange = e => {
         const { name, value } = e.target;
@@ -60,31 +92,21 @@ class ContractUpdateForm extends React.Component {
     };
 
     render() {
+        const { buy_price, is_valid_to_cancel } = this.contract_info;
+        const cancellation_price = getCancellationPrice(this.contract_info);
         const {
-            contract_info: { buy_price, cancellation: { ask_price: cancellation_price = 0 } = {}, is_valid_to_cancel },
-            contract_update_config: {
-                currency,
-                has_contract_update_stop_loss,
-                has_contract_update_take_profit,
-                contract_update_stop_loss,
-                contract_update_take_profit,
-            },
-        } = this.props.getContractById(this.props.contract_id);
-
-        const {
-            contract_update_stop_loss: stop_loss_error_messages,
-            contract_update_take_profit: take_profit_error_messages,
-        } = this.props.validation_errors;
-
-        const has_error =
-            (has_contract_update_stop_loss && stop_loss_error_messages && stop_loss_error_messages.length) ||
-            (has_contract_update_take_profit && take_profit_error_messages && take_profit_error_messages.length);
+            currency,
+            has_contract_update_stop_loss,
+            has_contract_update_take_profit,
+            contract_update_stop_loss,
+            contract_update_take_profit,
+        } = this.contract_update_config;
 
         const take_profit_input = (
             <InputWithCheckbox
                 classNameInlinePrefix='trade-container__currency'
                 currency={currency}
-                error_messages={has_contract_update_take_profit ? take_profit_error_messages : undefined}
+                error_messages={this.error_messages.take_profit}
                 is_single_currency={true}
                 is_negative_disabled={true}
                 defaultChecked={has_contract_update_take_profit}
@@ -101,7 +123,7 @@ class ContractUpdateForm extends React.Component {
                 classNameInlinePrefix='trade-container__currency'
                 currency={currency}
                 defaultChecked={has_contract_update_stop_loss}
-                error_messages={has_contract_update_stop_loss ? stop_loss_error_messages : undefined}
+                error_messages={this.error_messages.stop_loss}
                 is_single_currency={true}
                 is_negative_disabled={true}
                 label={localize('Stop loss')}
@@ -150,7 +172,7 @@ class ContractUpdateForm extends React.Component {
                         text={localize('Apply')}
                         onClick={this.onClick}
                         primary
-                        is_disabled={has_error || !this.is_valid_contract_update}
+                        is_disabled={this.has_validation_errors || !this.is_valid_contract_update}
                     />
                 </div>
             </React.Fragment>

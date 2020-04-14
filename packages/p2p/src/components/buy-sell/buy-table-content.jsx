@@ -23,7 +23,9 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
     }, []);
 
     useEffect(() => {
-        loadMoreItems(item_offset, list_item_limit);
+        if (is_mounted) {
+            loadMoreItems(item_offset, list_item_limit);
+        }
     }, [is_mounted]);
 
     const loadMoreItems = start_idx => {

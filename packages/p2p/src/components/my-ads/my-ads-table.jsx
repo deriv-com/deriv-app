@@ -77,7 +77,9 @@ const MyAdsTable = () => {
     }, []);
 
     useEffect(() => {
-        loadMoreAds(item_offset);
+        if (is_mounted) {
+            loadMoreAds(item_offset);
+        }
     }, [is_mounted]);
 
     const loadMoreAds = start_idx => {

@@ -24,7 +24,9 @@ const OrderTableContent = ({ showDetails }) => {
     }, []);
 
     useEffect(() => {
-        loadMoreOrders(order_offset);
+        if (is_mounted) {
+            loadMoreOrders(order_offset);
+        }
     }, [is_mounted]);
 
     const loadMoreOrders = start_idx => {

@@ -53,7 +53,8 @@ export default class JournalStore {
                     unique_id: block_id,
                     type: 'error',
                     message: localize(
-                        `Variable '${variable_name}' has no value. Please set a value for variable '${variable_name}' to notify.`
+                        `Variable {{variable_name}} has no value. Please set a value for variable {{variable_name}} to notify.`,
+                        { variable_name }
                     ),
                     btn_text: localize('Go to block'),
                     onClick: () => {

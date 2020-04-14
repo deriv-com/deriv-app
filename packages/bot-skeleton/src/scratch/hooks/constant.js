@@ -1,26 +1,24 @@
-import { localize } from '@deriv/translations';
-
 /**
  * ENUM for categories.
  * @const
  */
 Blockly.Categories = {
-    Trade_Definition: localize('trade_parameters'),
-    Before_Purchase: localize('purchase_conditions'),
-    During_Purchase: localize('sell_conditions'),
-    After_Purchase: localize('trade_results'),
-    Mathematical: localize('math'),
-    Logic: localize('logic'),
-    Text: localize('text'),
-    Variables: localize('variables'),
-    Functions: localize('custom_functions'),
-    List: localize('lists'),
-    Indicators: localize('indicators'),
-    Time: localize('time'),
-    Tick_Analysis: localize('technical_analysis'),
-    Candle: localize('candle'),
-    Miscellaneous: localize('miscellaneous'),
-    Loop: localize('loops'),
+    Trade_Definition: 'trade_parameters',
+    Before_Purchase: 'purchase_conditions',
+    During_Purchase: 'sell_conditions',
+    After_Purchase: 'trade_results',
+    Mathematical: 'math',
+    Logic: 'logic',
+    Text: 'text',
+    Variables: 'variables',
+    Functions: 'custom_functions',
+    List: 'lists',
+    Indicators: 'indicators',
+    Time: 'time',
+    Tick_Analysis: 'technical_analysis',
+    Candle: 'candle',
+    Miscellaneous: 'miscellaneous',
+    Loop: 'loops',
 };
 /**
  * Number of pixels the mouse must move before a drag starts.

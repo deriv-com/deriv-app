@@ -22,6 +22,7 @@ import {
     minDate,
     getStartOfMonth,
     formatMiliseconds,
+    convertDateFormat,
 } from './date-time';
 
 export default {
@@ -48,4 +49,5 @@ export default {
     minDate,
     getStartOfMonth,
     formatMiliseconds,
+    convertDateFormat,
 };

@@ -14,6 +14,7 @@ const AccountList = ({
     has_balance,
     is_disabled,
     is_virtual,
+    is_verified,
     loginid,
     onClickAccount,
     setCurrency,
@@ -48,16 +49,21 @@ const AccountList = ({
                             'acc-switcher__balance--virtual': is_virtual,
                         })}
                     >
-                        {currency && (
+                        {is_verified && currency && (
                             <Money
                                 currency={currency}
                                 amount={CurrencyUtils.formatMoney(currency, balance, true)}
                                 should_format={false}
                             />
                         )}
-                        {!currency && (
+                        {is_verified && !currency && (
                             <span className='no-currency'>
                                 <Localize i18n_default_text='No currency selected' />
+                            </span>
+                        )}
+                        {!is_verified && (
+                            <span className='verification-required'>
+                                <Localize i18n_default_text='Verification Required' />
                             </span>
                         )}
                     </span>

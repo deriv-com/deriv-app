@@ -1248,5 +1248,16 @@ export default class ClientStore extends BaseStore {
     get has_residence() {
         return !!this.accounts[this.loginid].residence;
     }
+
+    @computed
+    get is_age_verified() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'age_verification');
+    }
+
+    @computed
+    get is_verification_required() {
+        return this.is_age_verified === false && this.is_fully_authenticated === false;
+    }
 }
 /* eslint-enable */

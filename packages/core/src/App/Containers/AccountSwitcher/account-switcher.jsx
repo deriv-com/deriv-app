@@ -251,6 +251,7 @@ class AccountSwitcher extends React.Component {
                                         is_disabled={account.is_disabled}
                                         is_virtual={account.is_virtual}
                                         loginid={account.loginid}
+                                        is_verified={!this.props.is_verification_required}
                                         onClickAccount={
                                             account.is_disabled ? undefined : this.doSwitch.bind(this, account.loginid)
                                         }
@@ -533,6 +534,7 @@ AccountSwitcher.propTypes = {
     is_upgrade_enabled: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
+    is_verification_required: PropTypes.bool,
     mt5_login_list: PropTypes.array,
     obj_total_balance: PropTypes.object,
     toggleAccountsDialog: PropTypes.func,
@@ -555,6 +557,7 @@ const account_switcher = withRouter(
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,
         is_virtual: client.is_virtual,
+        is_verification_required: client.is_verification_required,
         has_any_real_account: client.has_any_real_account,
         landing_company_shortcode: client.landing_company_shortcode,
         mt5_login_list: client.mt5_login_list,

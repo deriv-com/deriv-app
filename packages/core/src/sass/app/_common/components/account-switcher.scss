@@ -366,6 +366,9 @@
             .no-currency {
                 color: var(--text-prominent);
             }
+            .verification-required {
+                color: var(--text-less-prominent);
+            }
         }
     }
     &__logout {
@@ -450,6 +453,15 @@
 
 /** @define no-currency; weak */
 .no-currency {
+    @include typeface(--xxsmall-center-normal-black);
+    text-transform: none;
+    color: var(--text-less-prominent);
+    line-height: 1.5;
+    text-align: right;
+}
+
+/** @define verification-required; weak */
+.verification-required {
     @include typeface(--xxsmall-center-normal-black);
     text-transform: none;
     color: var(--text-less-prominent);

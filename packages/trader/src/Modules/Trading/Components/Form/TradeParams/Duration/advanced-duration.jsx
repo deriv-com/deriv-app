@@ -7,7 +7,7 @@ import InputField from 'App/Components/Form/InputField';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { connect } from 'Stores/connect';
 import { hasIntradayDurationUnit } from 'Stores/Modules/Trading/Helpers/duration';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 import TradingDatePicker from '../../DatePicker';
 import TradingTimePicker from '../../TimePicker';
 
@@ -83,6 +83,7 @@ const AdvancedDuration = ({
                         )}
                         {advanced_duration_unit === 'd' && (
                             <TradingDatePicker
+                                id='dt_advanced_duration_datepicker'
                                 mode='duration'
                                 name='duration'
                                 is_24_hours_contract={is_24_hours_contract}
@@ -105,7 +106,12 @@ const AdvancedDuration = ({
             ) : (
                 <Fragment>
                     <div className={endtime_container_class}>
-                        <TradingDatePicker name='expiry_date' is_24_hours_contract={is_24_hours_contract} />
+                        <TradingDatePicker
+                            id='dt_advanced_duration_datepicker'
+                            name='expiry_date'
+                            is_24_hours_contract={is_24_hours_contract}
+                            value={expiry_date}
+                        />
                         {is_24_hours_contract && <TradingTimePicker />
                         // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
                         }

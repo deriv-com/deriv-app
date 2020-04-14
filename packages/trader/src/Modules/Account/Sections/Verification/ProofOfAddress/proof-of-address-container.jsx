@@ -5,7 +5,7 @@ import ProofOfAddressForm from './proof-of-address-form.jsx';
 import { Expired, NeedsReview, Submitted, Verified, Unverified } from './proof-of-address-messages.jsx';
 import Loading from '../../../../../templates/app/components/loading.jsx';
 
-const poa_status_codes = {
+export const poa_status_codes = {
     none: 'none',
     pending: 'pending',
     rejected: 'rejected',

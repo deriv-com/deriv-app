@@ -357,7 +357,7 @@ export default class RunPanelStore {
     @action.bound
     onMount() {
         const { journal } = this.root_store;
-        observer.register('ui.log.error', journal.onError);
+        observer.register('ui.log.error', this.showErrorMessage);
         observer.register('ui.log.notify', journal.onNotify);
         observer.register('ui.log.success', journal.onLogSuccess);
     }

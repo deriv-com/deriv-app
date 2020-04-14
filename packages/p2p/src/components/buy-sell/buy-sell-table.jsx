@@ -11,7 +11,7 @@ export const BuySellTable = ({ children }) => {
                 <Table.Row>
                     <Table.Head flex='2fr'>{localize('Advertisers')}</Table.Head>
                     <Table.Head flex='2fr'>{localize('Limits')}</Table.Head>
-                    <Table.Head flex='2fr'>{localize('Price')}</Table.Head>
+                    <Table.Head flex='2fr'>{localize('Rate (1 USD)')}</Table.Head>
                     <Table.Head flex='2fr'>{localize('Payment method')}</Table.Head>
                     <Table.Head flex='1fr'>{''}</Table.Head>
                 </Table.Row>

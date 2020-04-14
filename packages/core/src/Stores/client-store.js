@@ -7,9 +7,9 @@ import ClientBase from '_common/base/client_base';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
+import { toMoment } from '@deriv/shared/utils/date';
 import { LocalStore, State } from '_common/storage';
 import BinarySocketGeneral from 'Services/socket-general';
-import { toMoment } from 'Utils/Date';
 import { getAllowedLocalStorageOrigin } from 'Utils/Events/storage';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
@@ -251,6 +251,12 @@ export default class ClientStore extends BaseStore {
     get is_fully_authenticated() {
         if (!this.account_status.status) return false;
         return this.account_status.status.some(status => status === 'authenticated');
+    }
+
+    @computed
+    get is_pending_authentication() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'document_under_review');
     }
 
     @computed
@@ -1118,6 +1124,16 @@ export default class ClientStore extends BaseStore {
             curr1: currency,
         };
         await this.init(new_user_login);
+    }
+
+    @action.bound
+    fetchAccountSettings() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getSettings().then(response => {
+                this.setAccountSettings(response.get_settings);
+                resolve(response);
+            });
+        });
     }
 
     @action.bound

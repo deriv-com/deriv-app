@@ -1,217 +1,44 @@
-import classNames from 'classnames';
-import { Div100vhContainer, Icon, Input, ThemedScrollbars, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { Div100vhContainer, Input, ThemedScrollbars, DateOfBirthPicker, FormSubmitButton } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import React from 'react';
-import { CSSTransition } from 'react-transition-group';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
-import { toMoment } from 'Utils/Date';
-import FormSubmitButton from './form-submit-button.jsx';
-import DatePickerCalendar from './date-picker-calendar.jsx';
+import { toMoment } from '@deriv/shared/utils/date';
 import 'Sass/details-form.scss';
 
-export class DateOfBirth extends React.Component {
-    state = {
-        should_show_calendar: false,
-        max_date: toMoment().subtract(18, 'years'),
-        min_date: toMoment().subtract(100, 'years'),
-        date: toMoment()
-            .subtract(18, 'years')
-            .unix(),
-    };
-
-    constructor(props) {
-        super(props);
-        this.reference = React.createRef();
-    }
-
-    closeDatePicker = () => {
-        this.setState(
-            {
-                should_show_calendar: false,
-            },
-            () => {
-                if (this.props.onFocus) {
-                    this.props.onFocus(false);
+const DateOfBirthField = props => (
+    <Field name={props.name}>
+        {({ field: { value }, form: { setFieldValue, errors, touched, setTouched } }) => (
+            <DateOfBirthPicker
+                error={touched.date_of_birth && errors.date_of_birth}
+                onBlur={() => setTouched({ date_of_birth: true })}
+                onChange={({ target }) =>
+                    setFieldValue('date_of_birth', target ? toMoment(target.value).format('YYYY-MM-DD') : '', true)
                 }
-            }
-        );
-    };
-
-    componentDidMount() {
-        document.addEventListener('mousedown', this.handleClick, { passive: true });
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('mousedown', this.handleClick);
-    }
-
-    handleClick = e => {
-        if (!this.reference.current) {
-            return;
-        }
-        if (!this.reference.current.contains(e.target)) {
-            this.setState(
-                {
-                    should_show_calendar: false,
-                },
-                () => {
-                    if (this.props.onFocus) {
-                        this.props.onFocus(false);
-                    }
-                }
-            );
-        }
-    };
-
-    handleFocus = () => {
-        this.setState(
-            {
-                should_show_calendar: true,
-            },
-            () => {
-                if (this.props.onFocus) {
-                    this.props.onFocus(true);
-                }
-            }
-        );
-    };
-
-    render() {
-        return (
-            <Field
-                id={this.props.id}
-                name={this.props.name}
-                render={({ field: { name, value }, form: { setFieldValue, handleBlur, errors, touched } }) => (
-                    <div className='datepicker'>
-                        <DesktopWrapper>
-                            <InputField
-                                {...this.props}
-                                onFocus={this.handleFocus}
-                                className={classNames(this.props.className, {
-                                    'datepicker--active-label': !!value,
-                                })}
-                                onBlur={handleBlur}
-                                value={value ? toMoment(value).format('DD-MM-YYYY') : ''}
-                                readOnly
-                            />
-                            <Icon icon='IcCalendar' className='icon-datepicker' />
-                            <CSSTransition
-                                in={this.state.should_show_calendar}
-                                timeout={100}
-                                classNames={{
-                                    enter: 'datepicker__picker--enter datepicker__picker--bottom-enter',
-                                    enterDone: 'datepicker__picker--enter-done datepicker__picker--bottom-enter-done',
-                                    exit: 'datepicker__picker--exit datepicker__picker--bottom-exit',
-                                }}
-                                unmountOnExit
-                            >
-                                <div className='datepicker__picker' ref={this.reference}>
-                                    <DatePickerCalendar
-                                        max_date={this.state.max_date}
-                                        min_date={this.state.min_date}
-                                        date={this.state.date}
-                                        onChange={(val, type) => {
-                                            setFieldValue(name, val, true);
-                                            if (type === 'day') {
-                                                this.closeDatePicker();
-                                            }
-                                        }}
-                                        value={value}
-                                    />
-                                </div>
-                            </CSSTransition>
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            {/* TODO: Move native date-picker to deriv components */}
-                            <div
-                                className={classNames('dc-input', {
-                                    'dc-input--error': touched[name] && errors[name],
-                                })}
-                            >
-                                <div className='datepicker__display'>
-                                    {value && (
-                                        <span className='datepicker__display-text'>
-                                            {toMoment(value).format('DD-MM-YYYY')}
-                                        </span>
-                                    )}
-                                </div>
-                                <label
-                                    className={classNames('datepicker__placeholder', {
-                                        'datepicker__placeholder--has-value': !!value,
-                                        'datepicker__placeholder--has-error': touched[name] && errors[name],
-                                    })}
-                                    htmlFor={this.props.id}
-                                >
-                                    {localize('Date of birth*')}
-                                </label>
-                                <Icon icon='IcCalendar' className='datepicker__calendar-icon' />
-                                <input
-                                    id={this.props.id}
-                                    ref={ref => (this.date_of_birth_input = ref)}
-                                    name={name}
-                                    className='datepicker__native'
-                                    type='date'
-                                    max={this.state.max_date.format('YYYY-MM-DD')}
-                                    min={this.state.min_date.format('YYYY-MM-DD')}
-                                    onBlur={handleBlur}
-                                    defaultValue={toMoment(this.state.max_date).format('YYYY-MM-DD')}
-                                    error={touched[name] && errors[name]}
-                                    required
-                                    onFocus={e => {
-                                        setFieldValue(
-                                            name,
-                                            e.target.value ? toMoment(e.target.value).format('YYYY-MM-DD') : null,
-                                            true
-                                        );
-                                    }}
-                                    onChange={e => {
-                                        // fix for ios issue: clear button doesn't work
-                                        // https://github.com/facebook/react/issues/8938
-                                        const nativeEvent = e.nativeEvent.target;
-                                        this.date_of_birth_input.defaultValue = '';
-                                        function iosClearDefault() {
-                                            nativeEvent.defaultValue = '';
-                                        }
-                                        window.setTimeout(iosClearDefault, 0);
-                                        setFieldValue(
-                                            name,
-                                            e.target.value ? toMoment(e.target.value).format('YYYY-MM-DD') : null,
-                                            true
-                                        );
-                                    }}
-                                />
-                                {touched[name] && errors[name] && (
-                                    <span className='datepicker__error'>{errors[name]}</span>
-                                )}
-                            </div>
-                        </MobileWrapper>
-                    </div>
-                )}
+                value={value}
+                portal_id='modal_root'
+                {...props}
             />
-        );
-    }
-}
+        )}
+    </Field>
+);
 
-const InputField = props => {
-    return (
-        <Field name={props.name}>
-            {({ field, form: { errors, touched } }) => (
-                <React.Fragment>
-                    <Input
-                        type='text'
-                        required
-                        autoComplete='off'
-                        maxLength='30'
-                        error={touched[field.name] && errors[field.name]}
-                        {...field}
-                        {...props}
-                    />
-                </React.Fragment>
-            )}
-        </Field>
-    );
-};
+const FormInputField = ({ name, optional = false, ...props }) => (
+    <Field name={name}>
+        {({ field, form: { errors, touched } }) => (
+            <Input
+                type='text'
+                required={!optional}
+                name={name}
+                autoComplete='off'
+                maxLength='30'
+                error={touched[field.name] && errors[field.name]}
+                {...field}
+                {...props}
+            />
+        )}
+    </Field>
+);
 
 class PersonalDetails extends React.Component {
     constructor(props) {
@@ -274,23 +101,22 @@ class PersonalDetails extends React.Component {
                                         className='details-form__elements'
                                         style={{ paddingBottom: this.state.paddingBottom }}
                                     >
-                                        <InputField
+                                        <FormInputField
                                             name='first_name'
                                             label={localize('First name*')}
                                             placeholder={localize('John')}
                                         />
-                                        <InputField
+                                        <FormInputField
                                             name='last_name'
                                             label={localize('Last name*')}
                                             placeholder={localize('Doe')}
                                         />
-                                        <DateOfBirth
+                                        <DateOfBirthField
                                             name='date_of_birth'
                                             label={localize('Date of birth*')}
                                             placeholder={localize('01-07-1999')}
-                                            onFocus={this.onFocus}
                                         />
-                                        <InputField
+                                        <FormInputField
                                             name='phone'
                                             label={localize('Phone number*')}
                                             placeholder={localize('Phone number')}
@@ -331,7 +157,13 @@ class PersonalDetails extends React.Component {
                 v => v.length <= 50,
                 v => /^[a-zA-Z\s\W'.-]{2,50}$/gu.exec(v) !== null,
             ],
-            date_of_birth: [v => !!v, v => toMoment(v).isValid() && toMoment(v).isBefore(max_date)],
+            date_of_birth: [
+                v => !!v,
+                v =>
+                    toMoment(v)
+                        .clone()
+                        .isValid() && toMoment(v).isBefore(max_date),
+            ],
             phone: [v => !!v, v => /^\+?((-|\s)*[0-9]){8,35}$/.exec(v) !== null],
         };
 

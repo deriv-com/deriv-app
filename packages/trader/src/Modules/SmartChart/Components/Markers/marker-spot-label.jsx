@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 import MarkerSpot from './marker-spot.jsx';
 
 class MarkerSpotLabel extends React.Component {

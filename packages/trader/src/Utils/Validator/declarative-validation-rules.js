@@ -2,7 +2,7 @@ import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { ClientBase } from '_common/base/client_base';
 import { getElementById } from '_common/common_functions';
-import { compareBigUnsignedInt } from '_common/string_util';
+import { compareBigUnsignedInt } from '@deriv/shared/utils/string';
 import { localize } from '@deriv/translations';
 
 // ------------------------------

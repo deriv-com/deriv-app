@@ -10,7 +10,7 @@ const Row = ({ children, className, has_hover }) => {
         if (!React.isValidElement(element)) return;
 
         const { flex } = element.props;
-        columns_flex += `${flex ? flex : '1fr'} `;
+        columns_flex += `${flex || '1fr'} `;
     });
 
     return (

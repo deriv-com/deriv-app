@@ -46,8 +46,6 @@ export class BuyTable extends React.Component {
 
         if (api_error_message) return <TableError message={api_error_message} />;
 
-        console.log(items.length);
-
         return items.length ? (
             <BuySellTable>
                 <InfiniteLoaderList

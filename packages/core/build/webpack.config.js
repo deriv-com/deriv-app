@@ -5,6 +5,7 @@ const { openChromeBasedOnPlatform } = require('./helpers');
 module.exports = function(env, argv) {
     const base = env && env.base && env.base !== true ? '/' + env.base + '/' : '/';
     const sub_path = env && env.open && env.open !== true ? env.open : '';
+    const safe = env && env.safe && env.safe !== true ? env.safe : '';
 
     return {
         context: path.resolve(__dirname, '../src'),
@@ -12,8 +13,8 @@ module.exports = function(env, argv) {
             open: openChromeBasedOnPlatform(process.platform),
             openPage: sub_path,
             host: 'localhost.binary.sx',
-            https: true,
-            port: 443,
+            https: !safe, // In case you want a failproof server, run insecure to not get cert issues; useful in CI env
+            port: safe ? 8080 : 443,
             historyApiFallback: true,
             stats: {
                 colors: true,

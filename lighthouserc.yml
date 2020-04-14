@@ -1,6 +1,6 @@
 ci:
   collect:
-    startServerCommand: npm run serve
+    startServerCommand: npm run serve:safe
     url:
-      - 'https://localhost/'
-      - 'https://localhost/bot'
+      - 'http://localhost:8080/'
+      - 'http://localhost:8080/bot'

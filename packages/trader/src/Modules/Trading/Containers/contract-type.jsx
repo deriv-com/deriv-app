@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { MobileWrapper } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import { localize } from '@deriv/translations';
@@ -17,9 +18,11 @@ const Contract = ({ contract_type, contract_types_list, is_equal, onChange, symb
 
     return (
         <React.Fragment>
-            {isDigitTradeType(contract_type) && (
-                <ToastInfoPopup portal_id='deriv_app' message={digits_message} is_open={true} timeout={5000} />
-            )}
+            <MobileWrapper>
+                {isDigitTradeType(contract_type) && (
+                    <ToastInfoPopup portal_id='deriv_app' message={digits_message} is_open={true} timeout={5000} />
+                )}
+            </MobileWrapper>
             <ContractTypeWidget
                 is_equal={is_equal}
                 list={list}

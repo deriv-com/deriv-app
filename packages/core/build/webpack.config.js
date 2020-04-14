@@ -16,6 +16,10 @@ module.exports = function(env, argv) {
             https: !safe, // In case you want a failproof server, run insecure to not get cert issues; useful in CI env
             port: safe ? 8080 : 443,
             historyApiFallback: true,
+            onListening: function(server) {
+                const port = server.listeningApp.address().port;
+                console.log('Listening and ready on port:', port);
+            },
             stats: {
                 colors: true,
             },

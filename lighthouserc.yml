@@ -4,3 +4,5 @@ ci:
     url:
       - 'http://localhost:8080/'
       - 'http://localhost:8080/bot'
+    settings:
+      emulatedFormFactor: desktop

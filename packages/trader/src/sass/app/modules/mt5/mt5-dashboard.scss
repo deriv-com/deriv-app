@@ -240,14 +240,21 @@
         background: var(--general-section-1);
         height: 100%;
 
+        .mt5-attribute-describer {
+            font-size: 1.2rem;
+        }
         .dc-table {
             padding: 0;
             height: inherit;
 
+            &__cell {
+                font-size: 1.2rem;
+            }
             &__row {
                 padding: 0;
             }
             &__head {
+                font-size: 1.2rem;
                 border-bottom: 2px solid var(--border-disabled);
                 background-color: var(--general-section-2);
             }

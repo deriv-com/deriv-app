@@ -305,13 +305,35 @@ class AccountTransferForm extends React.Component {
                                         </Field>
                                         <div className='cashier__form-submit  cashier__form-submit--align-end'>
                                             {this.props.error.message && (
-                                                <div className='cashier__form-error-container'>
-                                                    <Icon
-                                                        icon='IcAlertDanger'
-                                                        className='cashier__form-error-small-icon'
-                                                    />
-                                                    <p className='cashier__form-error'>{this.props.error.message}</p>
-                                                </div>
+                                                <React.Fragment>
+                                                    <DesktopWrapper>
+                                                        <div className='cashier__form-error-wrapper'>
+                                                            <Icon
+                                                                icon='IcAlertDanger'
+                                                                className='cashier__form-error-icon'
+                                                                size={80}
+                                                            />
+                                                            <Icon
+                                                                icon='IcAlertDanger'
+                                                                className='cashier__form-error-small-icon'
+                                                            />
+                                                            <p className='cashier__form-error'>
+                                                                {this.props.error.message}
+                                                            </p>
+                                                        </div>
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <div className='cashier__form-error-container'>
+                                                            <Icon
+                                                                icon='IcAlertDanger'
+                                                                className='cashier__form-error-small-icon'
+                                                            />
+                                                            <p className='cashier__form-error'>
+                                                                {this.props.error.message}
+                                                            </p>
+                                                        </div>
+                                                    </MobileWrapper>
+                                                </React.Fragment>
                                             )}
                                             <Button
                                                 className='cashier__form-submit-button'

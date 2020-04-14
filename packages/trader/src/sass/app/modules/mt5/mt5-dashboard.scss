@@ -807,18 +807,22 @@
 }
 
 .dc-modal__container_mt5-password-modal {
-    .success-change {
-        width: 400px;
-        height: 379px;
-        margin-bottom: 2.2em;
+    .dc-form-submit-button {
+        background-color: unset;
+
+        .dc-btn:first-child {
+            margin-left: 0;
+        }
     }
 }
 
-.dc-modal__container_mt5-pending-dialog {
-    .dc-modal-header__title {
+.dc-modal__container_mt5-pending-dialog,
+.dc-modal__container_mt5-success-dialog {
+    .dc-modal-header__title--mt5-pending-dialog {
         text-align: center;
         margin: auto;
         padding: 2.4rem;
+        width: fit-content;
     }
     .dc-modal-body {
         text-align: center;
@@ -828,9 +832,35 @@
         justify-content: center;
 
         .dc-btn {
-            width: 90px;
+            min-width: 90px;
             height: 40px;
-            margin: 0;
+
+            &:only-child {
+                margin: 0;
+            }
+            &:first-child {
+                margin-left: 0;
+            }
+        }
+    }
+}
+
+.dc-modal__container_mt5-success-dialog {
+    .success-change__icon-area {
+        width: 120px;
+        margin: 3rem auto 0;
+    }
+    .dc-modal-body {
+        min-width: 400px;
+
+        .dc-modal-header__title {
+            text-align: center;
+            margin: auto;
+            padding: 2.4rem;
+            width: fit-content;
+        }
+        @include mobile {
+            min-width: calc(100vw - 3.2rem);
         }
     }
 }

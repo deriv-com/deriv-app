@@ -39,5 +39,5 @@ export default connect(({ ui, modules }) => ({
     enableApp: ui.enableApp,
     error_message: modules.mt5.error_message,
     has_mt5_error: modules.mt5.has_mt5_error,
-    is_mt5_success_dialog_enabled: true, // modules.mt5.is_mt5_success_dialog_enabled,
+    is_mt5_success_dialog_enabled: modules.mt5.is_mt5_success_dialog_enabled,
 }))(MT5ServerErrorDialog);

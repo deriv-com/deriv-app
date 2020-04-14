@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@deriv/components';
 import { WS } from 'Services';
-import { formatDate } from 'Utils/Date';
+import { formatDate } from '@deriv/shared/utils/date';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
@@ -433,15 +433,17 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     };
 };
 
-export const excluded_notifications = [
-    'you_are_offline',
-    'password_changed',
-    'switch_to_tick_chart',
-    'contract_sold',
-    'maintenance',
-    'bot_switch_account',
-    'new_version_available',
-];
+export const excluded_notifications = isMobile()
+    ? ['contract_sold']
+    : [
+          'you_are_offline',
+          'password_changed',
+          'switch_to_tick_chart',
+          'contract_sold',
+          'maintenance',
+          'bot_switch_account',
+          'new_version_available',
+      ];
 
 export const handleClientNotifications = (
     client,

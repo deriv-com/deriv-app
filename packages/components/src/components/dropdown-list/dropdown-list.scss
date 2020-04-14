@@ -48,6 +48,10 @@
         &-icon {
             margin-right: 8px;
         }
+        &--disabled {
+            color: var(--text-disabled);
+            cursor: not-allowed;
+        }
     }
     &__separator {
         display: flex;

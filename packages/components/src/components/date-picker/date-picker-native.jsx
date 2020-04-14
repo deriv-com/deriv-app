@@ -1,10 +1,15 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { toMoment } from '@deriv/shared/utils/date';
 import Icon from 'Components/icon';
 
 const Native = ({ id, display_format, name, error, label, max_date, min_date, onBlur, onFocus, onSelect, value }) => {
     const [is_focused, setIsFocused] = useState(0);
+    const input_ref = useRef();
+
+    useEffect(() => {
+        if (input_ref.current) input_ref.current.value = value;
+    }, [value]);
 
     const handleFocus = e => {
         setIsFocused(true);
@@ -41,27 +46,20 @@ const Native = ({ id, display_format, name, error, label, max_date, min_date, on
             </label>
             <Icon icon='IcCalendar' className='dc-datepicker__calendar-icon' />
             <input
+                ref={input_ref}
                 id={id}
                 name={name}
                 className='dc-datepicker__native'
                 type='date'
-                max={max_date}
-                min={min_date}
+                max={toMoment(max_date).format('YYYY-MM-DD')}
+                min={toMoment(min_date).format('YYYY-MM-DD')}
                 error={error}
                 required
                 onBlur={handleBlur}
                 onFocus={handleFocus}
                 onChange={e => {
-                    // fix for ios issue: clear button doesn't work
-                    // https://github.com/facebook/react/issues/8938
-                    const target = e.nativeEvent.target;
-                    function iosClearDefault() {
-                        target.defaultValue = '';
-                    }
-                    window.setTimeout(iosClearDefault, 0);
                     onSelect(e.target.value);
                 }}
-                value={value}
             />
             {error && <span className='dc-datepicker__error'>{error}</span>}
         </div>

@@ -104,7 +104,7 @@ class DatePicker extends React.PureComponent {
     onSelectCalendarNative = selected_date => {
         const { display_format, name, onChange } = this.props;
 
-        const date = toMoment(selected_date).format(display_format);
+        const date = selected_date ? toMoment(selected_date).format(display_format) : null;
 
         this.setState(
             {

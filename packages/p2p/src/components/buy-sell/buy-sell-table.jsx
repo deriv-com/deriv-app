@@ -9,11 +9,11 @@ export const BuySellTable = ({ children }) => {
         <Table>
             <Table.Header>
                 <Table.Row>
-                    <Table.Head>{localize('Advertisers')}</Table.Head>
-                    <Table.Head>{localize('Limits')}</Table.Head>
-                    <Table.Head>{localize('Price')}</Table.Head>
-                    <Table.Head>{localize('Payment method')}</Table.Head>
-                    <Table.Head>{''}</Table.Head>
+                    <Table.Head flex='2fr'>{localize('Advertisers')}</Table.Head>
+                    <Table.Head flex='2fr'>{localize('Limits')}</Table.Head>
+                    <Table.Head flex='2fr'>{localize('Price')}</Table.Head>
+                    <Table.Head flex='2fr'>{localize('Payment method')}</Table.Head>
+                    <Table.Head flex='1fr'>{''}</Table.Head>
                 </Table.Row>
             </Table.Header>
             <Table.Body>{children}</Table.Body>

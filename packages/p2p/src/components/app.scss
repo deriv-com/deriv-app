@@ -11,6 +11,18 @@
     }
     & .dc-tabs {
         position: static;
+        &--deriv-p2p {
+            & .dc-tabs__list {
+                &--header-fit-content {
+                    border-bottom: none;
+                }
+            }
+            & .dc-tabs__item {
+                &--header-fit-content {
+                    border-bottom: 1px solid var(--general-section-1);
+                }
+            }
+        }
     }
     &__separator {
         width: 100%;

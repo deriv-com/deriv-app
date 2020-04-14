@@ -386,6 +386,13 @@
         &--trade {
             grid-gap: 2rem 1.6rem;
             margin: auto 0 4.8rem;
+            transform: scale(1.1);
+            transform-origin: bottom;
+
+            @media only screen and (max-height: 580px) {
+                transform: unset;
+                transform-origin: unset;
+            }
         }
         &__container {
             width: 100%;

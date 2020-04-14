@@ -18,7 +18,7 @@ const Contract = ({ contract_type, contract_types_list, is_equal, onChange, symb
     return (
         <React.Fragment>
             {isDigitTradeType(contract_type) && (
-                <ToastInfoPopup portal_id='deriv_app' message={digits_message} is_open={true} timeout={4000} />
+                <ToastInfoPopup portal_id='deriv_app' message={digits_message} is_open={true} timeout={5000} />
             )}
             <ContractTypeWidget
                 is_equal={is_equal}

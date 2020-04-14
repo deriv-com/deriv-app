@@ -1,7 +1,8 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ThemedScrollbars, Autocomplete, Input, Loading, FormSubmitButton } from '@deriv/components';
+import { ThemedScrollbars, Autocomplete, Input, Loading, FormSubmitButton, Div100vhContainer } from '@deriv/components';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import { Localize, localize } from '@deriv/translations';
 import { isDeepEqual } from '@deriv/shared/utils/object';
 import { FormSubHeader } from 'Modules/Account/Components/layout-components.jsx';
@@ -101,7 +102,7 @@ class MT5PersonalDetailsForm extends React.Component {
 
         if (residence_list.length === 0) return <Loading is_fullscreen={false} />;
         return (
-            <div id='real_mt5_personal_details' className='details-form mt5-details-form'>
+            <div id='real_mt5_personal_details'>
                 <Formik
                     initialValues={{
                         citizen: value.citizen,
@@ -120,12 +121,19 @@ class MT5PersonalDetailsForm extends React.Component {
                 >
                     {({ handleSubmit, isSubmitting, errors, touched, values, setFieldValue }) => (
                         <form onSubmit={handleSubmit} autoComplete='off'>
-                            <div className='details-form'>
+                            <Div100vhContainer className='details-form' height_offset='199px' is_disabled={isDesktop()}>
+                                <p className='details-form__description'>
+                                    <Localize
+                                        i18n_default_text={
+                                            'Any information you provide is confidential and will be used for verification purposes only.'
+                                        }
+                                    />
+                                </p>
                                 <div className='details-form__elements-container'>
                                     <ThemedScrollbars autoHide style={{ height: 432 }}>
                                         <div className='details-form__elements mt5-details-form__fields'>
                                             <FormSubHeader title={localize('Details')} />
-                                            <fieldset className='details-form__fieldset'>
+                                            <fieldset className='account-form__fieldset'>
                                                 <Field name='citizen'>
                                                     {({ field }) => (
                                                         <Autocomplete
@@ -176,17 +184,10 @@ class MT5PersonalDetailsForm extends React.Component {
                                                 name='tax_identification_number'
                                                 placeholder={localize('Tax identification number')}
                                             />
-                                            <p className='details-form__description'>
-                                                <Localize
-                                                    i18n_default_text={
-                                                        'Any information you provide is confidential and will be used for verification purposes only.'
-                                                    }
-                                                />
-                                            </p>
                                         </div>
                                     </ThemedScrollbars>
                                 </div>
-                            </div>
+                            </Div100vhContainer>
                             <FormSubmitButton
                                 cancel_label={localize('Previous')}
                                 is_disabled={

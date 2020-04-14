@@ -202,5 +202,18 @@
 .mt5-proof-of-identity {
     &__fields {
         padding-bottom: 7rem;
+
+        @include mobile {
+            height: inherit;
+
+            .onfido-container {
+                margin-top: 0.8rem;
+            }
+            .onfido-container,
+            .onfido-container #onfido,
+            .onfido-container #onfido .onfido-sdk-ui-Modal-inner {
+                height: inherit;
+            }
+        }
     }
 }

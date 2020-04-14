@@ -95,6 +95,11 @@
             width: 40%;
             position: relative;
             left: 30%;
+
+            @include mobile {
+                width: unset;
+                left: unset;
+            }
         }
     }
     &__download-center {
@@ -169,6 +174,9 @@
         &--hint {
             @include typeface(--xsmall-left-normal-black, none);
             margin-left: 7.05em;
+        }
+        @include mobile {
+            margin-bottom: 1.6rem;
         }
     }
     .notification-messages {
@@ -512,6 +520,38 @@
         bottom: 0;
         background-color: var(--content-bg-color);
     }
+    @include mobile {
+        &__heading {
+            padding: unset;
+        }
+        &__header {
+            &-steps {
+                padding-bottom: 0.8rem;
+                position: absolute;
+                top: 3.6rem;
+                width: 100%;
+                background: var(--general-section-2);
+
+                &-title {
+                    color: var(--brand-red-coral);
+                    font-size: 1.4rem;
+                    font-weight: bold;
+                    line-height: 20px;
+                    padding: 1.6rem 2.4rem 0.8rem;
+                }
+                &-subtitle {
+                    color: var(--text-prominent);
+                    line-height: 18px;
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    padding: 0 2.4rem;
+                }
+            }
+        }
+        .dc-form-submit-button {
+            background-color: inherit;
+        }
+    }
 }
 
 .account-management {
@@ -637,6 +677,14 @@
         font-weight: normal;
         padding-left: 8px;
     }
+    @include mobile {
+        &__title {
+            background: inherit;
+        }
+        &__subtitle {
+            font-size: 1.2rem;
+        }
+    }
 }
 
 .account-poa {
@@ -728,6 +776,32 @@
 
         .dc-dropdown-container {
             margin-top: 0;
+        }
+    }
+    @include mobile {
+        .dc-input__label,
+        .dc-dropdown__display,
+        .dc-dropdown__display-placeholder-text {
+            background: var(--general-section-2);
+        }
+        &__field-area {
+            padding: 0 1.6rem;
+            padding-bottom: 3.6rem;
+        }
+        &__inline-fields {
+            display: flex;
+            flex-direction: column;
+
+            .dc-dropdown-container {
+                margin-bottom: 3.2rem;
+            }
+        }
+        &__file-upload {
+            .dc-field-error {
+                top: 50%;
+                left: 0;
+                right: unset;
+            }
         }
     }
 }

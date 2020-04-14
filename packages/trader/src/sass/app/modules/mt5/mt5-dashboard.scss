@@ -92,9 +92,10 @@
         margin-bottom: 2.4em;
 
         .dc-tabs__list--top {
+            position: relative;
+
             @include desktop {
                 width: 40%;
-                position: relative;
                 left: 30%;
             }
         }
@@ -220,6 +221,10 @@
 
             &--fixed {
                 padding-left: 1.6rem;
+
+                @include mobile {
+                    background-color: var(--general-section-2);
+                }
             }
         }
         &__cell {
@@ -236,16 +241,22 @@
     @include mobile {
         background: var(--general-section-1);
         height: 100%;
+        font-size: 1.2rem;
 
         .dc-table {
             padding: 0;
             height: inherit;
 
+            &__cell {
+                font-size: 1.2rem;
+            }
             &__row {
                 padding: 0;
             }
             &__head {
+                font-size: 1.2rem;
                 border-bottom: 2px solid var(--border-disabled);
+                background-color: var(--general-section-2);
             }
             &__header,
             &__row {

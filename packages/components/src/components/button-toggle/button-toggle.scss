@@ -43,7 +43,7 @@
         position: relative;
         border-radius: $BORDER_RADIUS;
         width: 100%;
-        background-color: var(--state-disable);
+        background-color: var(--state-disabled);
         display: flex;
 
         .dc-button-menu {

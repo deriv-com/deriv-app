@@ -6,3 +6,4 @@ ci:
       - 'http://localhost:8080/bot'
     settings:
       emulatedFormFactor: desktop
+      maxWaitForLoad: 50000

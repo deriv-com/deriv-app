@@ -59,12 +59,14 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
     const Row = props => <RowComponent {...props} is_buy={is_buy} setSelectedAd={setSelectedAd} />;
 
     if (items.length) {
+        const item_height = 56;
         return (
             <InfiniteLoaderList
                 // screen size - header size - footer size - page overlay header - page overlay content padding -
                 // tabs height - padding+margin of tab content - toggle height - table header height
                 initial_height={'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 3.2rem - 40px - 52px)'}
                 items={items}
+                item_size={item_height}
                 RenderComponent={Row}
                 RowLoader={BuySellRowLoader}
                 has_more_items_to_load={has_more_items_to_load}

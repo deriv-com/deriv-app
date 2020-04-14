@@ -66,13 +66,14 @@ const OrderTableContent = ({ showDetails }) => {
 
     if (orders.length) {
         const modified_list = orders.map(list => new OrderInfo(list));
+        const item_height = 72;
         return (
             <InfiniteLoaderList
                 // screen size - header size - footer size - page overlay header - page overlay content padding -
                 // tabs height - padding of tab content - table header height
                 initial_height={'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 2.4rem - 52px)'}
                 items={modified_list}
-                item_size={72}
+                item_size={item_height}
                 RenderComponent={Row}
                 RowLoader={BuySellRowLoader}
                 has_more_items_to_load={has_more_items_to_load}

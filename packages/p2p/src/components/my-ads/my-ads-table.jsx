@@ -133,6 +133,7 @@ const MyAdsTable = () => {
     }
 
     if (ads.length) {
+        const item_height = 56;
         return (
             <div ref={table_container_Ref}>
                 <Table>
@@ -151,6 +152,7 @@ const MyAdsTable = () => {
                                 'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 2.4rem - 50px - 1.6rem - 52px)'
                             }
                             items={ads}
+                            item_size={item_height}
                             row_actions={{ onClickDelete }}
                             RenderComponent={RowComponent}
                             RowLoader={MyAdsLoader}

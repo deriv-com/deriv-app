@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@deriv/components';
 import { WS } from 'Services';
-import { formatDate } from 'Utils/Date';
+import { formatDate } from '@deriv/shared/utils/date';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';

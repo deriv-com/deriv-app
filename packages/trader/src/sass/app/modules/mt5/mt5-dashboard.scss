@@ -92,9 +92,11 @@
         margin-bottom: 2.4em;
 
         .dc-tabs__list--top {
-            width: 40%;
             position: relative;
-            left: 30%;
+            @include desktop {
+                left: 30%;
+                width: 40%;
+            }
         }
     }
     &__download-center {
@@ -170,6 +172,9 @@
             @include typeface(--xsmall-left-normal-black, none);
             margin-left: 7.05em;
         }
+        @include mobile {
+            margin-bottom: 1.6rem;
+        }
     }
     .notification-messages {
         top: calc(-4.8rem + 16px);
@@ -215,6 +220,9 @@
 
             &--fixed {
                 padding-left: 1.6rem;
+                @include mobile {
+                    background-color: var(--general-section-2);
+                }
             }
         }
         &__cell {
@@ -241,6 +249,7 @@
             }
             &__head {
                 border-bottom: 2px solid var(--border-disabled);
+                background-color: var(--general-section-2);
             }
             &__header,
             &__row {

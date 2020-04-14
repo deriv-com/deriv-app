@@ -2,6 +2,7 @@ import {
     Autocomplete,
     DesktopWrapper,
     Div100vhContainer,
+    FormSubmitButton,
     Input,
     MobileWrapper,
     ThemedScrollbars,
@@ -9,10 +10,9 @@ import {
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import React, { Component } from 'react';
-import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
-import FormSubmitButton from './form-submit-button.jsx';
+import { connect } from 'Stores/connect';
 
 const InputField = props => {
     return (

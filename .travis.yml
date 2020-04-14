@@ -8,6 +8,8 @@ node_js:
   - "11.15.0"
 notifications:
   email: false
+env:
+  - NODE_ENV=staging
 before_install:
   - npm install -g @lhci/cli@0.3.x
   - npm i -g npm@6.9.0

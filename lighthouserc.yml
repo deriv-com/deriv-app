@@ -1,3 +1,6 @@
 ci:
   collect:
-    staticDistDir: './packages/core/dist'
+    startServerCommand: npm run serve
+    url:
+      - 'https://localhost/'
+      - 'https://localhost/bot'

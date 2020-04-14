@@ -167,11 +167,9 @@ class AccountTransferForm extends React.Component {
         return (
             <div className='cashier__wrapper cashier__wrapper--align-left'>
                 <React.Fragment>
-                    <DesktopWrapper>
-                        <h2 className='cashier__header cashier__content-header'>
-                            {localize('Transfer between your accounts in Deriv')}
-                        </h2>
-                    </DesktopWrapper>
+                    <h2 className='cashier__header cashier__content-header'>
+                        {localize('Transfer between your accounts in Deriv')}
+                    </h2>
                     <Formik
                         initialValues={{
                             amount: '',

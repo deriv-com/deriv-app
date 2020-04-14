@@ -12,6 +12,11 @@
         &-header {
             text-align: center;
             margin-bottom: 3.2rem;
+
+            @include mobile {
+                padding-top: 1.6rem;
+                margin-bottom: 0;
+            }
         }
     }
     &__wrapper {

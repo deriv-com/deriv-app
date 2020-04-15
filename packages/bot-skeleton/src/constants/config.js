@@ -53,7 +53,6 @@ export const config = {
             [localize('Log'), 'log'],
             [localize('Warn'), 'warn'],
             [localize('Error'), 'error'],
-            [localize('Time'), 'time'],
             [localize('Table'), 'table'],
         ],
         CURRENCY: ['USD', 'EUR', 'GBP', 'AUD', ...CRYPTO_CURRENCIES],

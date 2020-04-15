@@ -76,50 +76,52 @@ class PaymentAgentTransferForm extends React.Component {
                 >
                     {({ errors, isSubmitting, isValid, touched, handleChange }) => (
                         <Form noValidate>
-                            <Field name='loginid'>
-                                {({ field }) => (
-                                    <Input
-                                        {...field}
-                                        onChange={e => {
-                                            this.props.setErrorMessage('');
-                                            handleChange(e);
-                                        }}
-                                        className='payment-agent-transfer__input'
-                                        type='text'
-                                        label={localize('Client login ID')}
-                                        error={touched.loginid && errors.loginid}
-                                        required
-                                        autoComplete='off'
-                                        maxLength='20'
-                                    />
-                                )}
-                            </Field>
-                            <Field name='amount'>
-                                {({ field }) => (
-                                    <Input
-                                        {...field}
-                                        onChange={e => {
-                                            this.props.setErrorMessage('');
-                                            handleChange(e);
-                                        }}
-                                        className='payment-agent-transfer__input dc-input--no-placeholder'
-                                        type='text'
-                                        label={localize('Amount')}
-                                        error={touched.amount && errors.amount}
-                                        required
-                                        leading_icon={
-                                            <span
-                                                className={classNames(
-                                                    'symbols',
-                                                    `symbols--${(this.props.currency || '').toLowerCase()}`
-                                                )}
-                                            />
-                                        }
-                                        autoComplete='off'
-                                        maxLength='30'
-                                    />
-                                )}
-                            </Field>
+                            <div className='payment-agent-transfer__input-container'>
+                                <Field name='loginid'>
+                                    {({ field }) => (
+                                        <Input
+                                            {...field}
+                                            onChange={e => {
+                                                this.props.setErrorMessage('');
+                                                handleChange(e);
+                                            }}
+                                            className='payment-agent-transfer__input'
+                                            type='text'
+                                            label={localize('Client login ID')}
+                                            error={touched.loginid && errors.loginid}
+                                            required
+                                            autoComplete='off'
+                                            maxLength='20'
+                                        />
+                                    )}
+                                </Field>
+                                <Field name='amount'>
+                                    {({ field }) => (
+                                        <Input
+                                            {...field}
+                                            onChange={e => {
+                                                this.props.setErrorMessage('');
+                                                handleChange(e);
+                                            }}
+                                            className='payment-agent-transfer__input dc-input--no-placeholder'
+                                            type='text'
+                                            label={localize('Amount')}
+                                            error={touched.amount && errors.amount}
+                                            required
+                                            leading_icon={
+                                                <span
+                                                    className={classNames(
+                                                        'symbols',
+                                                        `symbols--${(this.props.currency || '').toLowerCase()}`
+                                                    )}
+                                                />
+                                            }
+                                            autoComplete='off'
+                                            maxLength='30'
+                                        />
+                                    )}
+                                </Field>
+                            </div>
                             <Field name='description'>
                                 {({ field }) => (
                                     <Input

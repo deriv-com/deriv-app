@@ -145,6 +145,7 @@
                 margin: 0;
                 flex-flow: column;
                 height: unset;
+                margin-bottom: 1.6rem;
 
                 &--align-end {
                     align-items: flex-end;
@@ -316,7 +317,7 @@
     }
     &__success {
         text-align: center;
-        background-color: var(--general-section-1);
+        background-color: var(--general-main-1);
         padding: 2.4rem;
         width: 50.4rem;
         margin: 0 auto 3.2rem;
@@ -486,6 +487,9 @@
                 text-decoration: none;
                 cursor: pointer;
             }
+            @include mobile {
+                margin-top: 1.6rem;
+            }
         }
     }
 }
@@ -500,10 +504,15 @@
             border: 1px solid var(--border-normal);
             flex: 1;
             padding: 1.6rem;
+            border-radius: $BORDER_RADIUS;
 
             .payment-agent__header {
                 margin-bottom: 8px;
                 text-align: center;
+
+                @include mobile {
+                    margin-top: 0;
+                }
             }
             @include desktop {
                 &:not(:first-child) {
@@ -525,13 +534,16 @@
                     align-items: center;
 
                     & h2 {
-                        margin-bottom: unset;
+                        margin: 0;
                     }
                     & .dc-btn {
                         margin: 0 0 0 auto;
                         padding: 0.3rem 0.8rem;
                         height: 3rem;
 
+                        &__text {
+                            font-size: 1.2rem;
+                        }
                         /* iPhone SE screen height fixes due to UI space restrictions */
                         @media only screen and (max-height: 480px) {
                             height: 4.8rem;
@@ -586,16 +598,15 @@
                 z-index: 1;
             }
             &-selector {
-                margin: 0 1.6rem 0.8rem;
+                margin: 0.8rem 1.6rem 3.2rem;
 
                 /* postcss-bem-linter: ignore */
                 & .dc-input {
-                    max-width: 20rem;
+                    max-width: 18rem;
+                    margin-left: auto;
                 }
                 /* postcss-bem-linter: ignore */
                 & .dc-select-native__placeholder {
-                    top: 0.9rem;
-                    left: 1.2rem;
                     background-color: var(--general-main-1);
                 }
             }
@@ -618,10 +629,30 @@
     &__accordion-content {
         &-line {
             margin-bottom: 8px;
+
+            &:first-child {
+                & .payment-agent__contact {
+                    color: var(--text-prominent);
+                }
+            }
+            &:last-child {
+                margin-bottom: 0;
+            }
+            @include mobile {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+                &:not(:first-child) {
+                    color: var(--brand-red-coral);
+                }
+            }
         }
         &-icon {
             vertical-align: middle;
             margin-right: 12px;
+            /* postcss-bem-linter: ignore */
+            --fill-color1: var(--text-general);
         }
     }
     &__disclaimer {
@@ -672,6 +703,7 @@
     &__contact {
         text-decoration: none;
         color: var(--brand-red-coral);
+        font-weight: bold;
 
         @include mobile {
             padding-left: 0;
@@ -765,7 +797,7 @@
                 &__success {
                     width: 100%;
                     margin: 0 auto 3.2rem;
-                    background-color: var(--general-section-2);
+                    background-color: var(--general-main-1);
                 }
             }
             .payment-agent {
@@ -841,7 +873,6 @@
                 }
             }
             .dc-select-native__placeholder {
-                top: 0.9rem;
                 background-color: var(--general-main-1);
             }
         }
@@ -945,12 +976,53 @@ div.payment-agent-transfer {
         margin-bottom: 2.8rem;
     }
     &__input {
-        width: 29.6rem;
-        display: inline-flex;
         margin-bottom: 3.1rem;
 
-        &:not(:first-child) {
-            margin-left: 2.4rem;
+        &-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 1.6rem;
+        }
+    }
+    &__wrapper {
+        & .cashier {
+            &__transferred-details-wrapper {
+                & .account-transfer__transfer-details-from {
+                    flex-direction: row-reverse;
+
+                    & > .cashier__transferred-details {
+                        text-align: right;
+                    }
+                }
+                & .dc-icon {
+                    width: 3.2rem;
+                    height: 3.2rem;
+                }
+            }
+            &__form-submit {
+                flex-flow: row;
+                justify-content: center;
+
+                &-button {
+                    margin: 0;
+                    width: 100%;
+                    max-width: 18rem;
+
+                    &:first-child {
+                        margin-right: 0.4rem;
+                    }
+                    &:last-child {
+                        margin-left: 0.4rem;
+                    }
+                }
+            }
+            &__transferred-icon {
+                width: 1.6rem !important;
+                height: 1.6rem !important;
+            }
+            &__success {
+                margin-bottom: 0.8rem;
+            }
         }
     }
     @include mobile {
@@ -961,26 +1033,14 @@ div.payment-agent-transfer {
                 &__header {
                     margin-top: 0.4rem;
                 }
+                &__form-submit-button {
+                    max-width: 100%;
+                }
                 &__success {
                     width: 100%;
-                    background-color: var(--general-section-2);
+                    background-color: var(--general-main-1);
                     padding: 0.4rem 0.4rem 0.8rem;
                     margin-bottom: 1.6rem;
-                }
-                &__form-submit {
-                    flex-flow: row;
-
-                    &-button {
-                        margin: 0;
-                        width: 100%;
-
-                        &:first-child {
-                            margin-right: 0.4rem;
-                        }
-                        &:last-child {
-                            margin-left: 0.4rem;
-                        }
-                    }
                 }
                 &__transferred-details {
                     display: flex;
@@ -1007,15 +1067,9 @@ div.payment-agent-transfer {
                                 align-items: flex-start;
                             }
                         }
-                        & .dc-icon {
-                            width: 3.2rem;
-                            height: 3.2rem;
-                        }
                     }
                 }
                 &__transferred-icon {
-                    width: 1.6rem !important;
-                    height: 1.6rem !important;
                     margin: 0;
                 }
             }
@@ -1030,9 +1084,9 @@ div.payment-agent-transfer {
             }
         }
         &__input {
-            width: 100%;
-            margin: 0 0 4.3rem;
-
+            &-container {
+                grid-template-columns: 1fr;
+            }
             &:not(:first-child) {
                 margin-left: unset;
                 margin-bottom: 5.3rem;

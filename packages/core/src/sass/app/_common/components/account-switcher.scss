@@ -387,13 +387,9 @@
         }
     }
     &__balance {
-        color: var(--status-success);
+        color: var(--text-prominent);
         margin-left: auto;
         font-weight: normal;
-
-        &--virtual {
-            color: var(--text-prominent);
-        }
     }
     &__separator {
         height: 4px;

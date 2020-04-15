@@ -14,7 +14,7 @@ class ContractAudit extends React.Component {
 
     static getDerivedStateFromProps({ is_multiplier, contract_update_history }, state) {
         if (!is_multiplier) return state;
-        if (contract_update_history && contract_update_history.length !== state.contract_update_history.length) {
+        if (!!contract_update_history.length && contract_update_history.length > state.contract_update_history.length) {
             return {
                 contract_update_history,
             };

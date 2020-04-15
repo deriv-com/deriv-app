@@ -24,7 +24,6 @@ export default class PortfolioStore extends BaseStore {
     responseQueue = [];
 
     @observable.shallow active_positions = [];
-    @observable active_positions_drawer_dialog_id = null;
 
     @action.bound
     initializePortfolio = async () => {
@@ -307,6 +306,15 @@ export default class PortfolioStore extends BaseStore {
             this.updateTradeStore(false, this.positions[i]);
         }
     };
+
+    @action.bound
+    populateContractUpdate({ contract_update }, contract_id) {
+        const position = this.getPositionById(contract_id);
+        if (position) {
+            Object.assign(position.contract_update, contract_update);
+            this.updatePositions();
+        }
+    }
 
     @action.bound
     pushNewPosition(new_pos) {

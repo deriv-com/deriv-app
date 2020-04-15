@@ -24,7 +24,6 @@ Blockly.Blocks.lists_statement = {
             colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
-            tooltip: localize('List Statement Tooltip'),
             category: Blockly.Categories.List,
         };
     },

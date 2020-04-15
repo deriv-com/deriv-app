@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
 import { emptyTextValidator } from '../../../../utils';
-import { config } from '../../../../../constants/config';
 
 Blockly.Blocks.console = {
     init() {

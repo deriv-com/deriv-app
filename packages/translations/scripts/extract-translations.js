@@ -29,7 +29,7 @@ const getKeyHash = string => crc32(string);
     try {
         const file_paths = [];
         const messages = [];
-        const i18n_marker = new RegExp(/i18n_default_text=(['"])(.*?)\1|localize\(\s*?(['"])\s*(.*?)\s*\3/gs);
+        const i18n_marker = new RegExp(/i18n_default_text=(['"])(.*?)\1|localize\(\s*(['"])\s*(.*?)\s*\3\s*\)/gs);
         const messages_json = {};
         // Bot: Find all file types listed in `globs`
         for (let i = 0; i < packages_with_translations.length; i++) {

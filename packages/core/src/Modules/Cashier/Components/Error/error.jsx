@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon } from '@deriv/components';
-import ButtonLink from 'App/Components/Routes/button-link.jsx';
+import { Button, Icon, ButtonLink } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getDerivComLink } from '_common/url';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (
-    <div className='cashier__wrapper'>
+    <div className='cashier__wrapper cashier__wrapper-error'>
         <Icon icon='IcCashierError' className='cashier-error__icon' />
         {header && <h2 className='cashier-error__header'>{header}</h2>}
         {message && <p className='cashier__paragraph'>{message}</p>}

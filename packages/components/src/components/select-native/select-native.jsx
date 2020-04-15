@@ -17,7 +17,18 @@ class SelectNative extends Component {
         return '';
     };
     render() {
-        const { className, list_items, value, label, use_text, error, hint, disabled, ...props } = this.props;
+        const {
+            className,
+            classNameDisplay,
+            list_items,
+            value,
+            label,
+            use_text,
+            error,
+            hint,
+            disabled,
+            ...props
+        } = this.props;
         return (
             <div
                 className={classNames(className, 'dc-select-native', {
@@ -34,7 +45,7 @@ class SelectNative extends Component {
                     >
                         <div className='dc-select-native__display'>
                             {list_items && value && (
-                                <div className={classNames('dc-select-native__display-text', props.classNameDisplay)}>
+                                <div className={classNames('dc-select-native__display-text', classNameDisplay)}>
                                     {use_text ? value : this.getDisplayText(value)}
                                 </div>
                             )}

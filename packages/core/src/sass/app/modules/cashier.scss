@@ -12,6 +12,11 @@
         &-header {
             text-align: center;
             margin-bottom: 3.2rem;
+
+            @include mobile {
+                padding-top: 1.6rem;
+                margin-bottom: 0;
+            }
         }
     }
     &__wrapper {
@@ -114,6 +119,22 @@
             }
             &-small-icon {
                 margin: 2rem 1.6rem 4.4rem 2.4rem;
+            }
+            &-wrapper {
+                display: flex;
+                margin-right: auto;
+
+                .cashier__form-error,
+                .cashier__form-error-small-icon {
+                    margin-top: 5.8rem;
+                    margin-bottom: 0;
+                }
+                .cashier__form-error-small-icon {
+                    margin-left: 0.8rem;
+                }
+                .cashier__form-error-icon {
+                    bottom: 21rem;
+                }
             }
         }
         &-submit-button {
@@ -303,7 +324,7 @@
     }
     &__done-button {
         width: 15.6rem;
-        margin-left: -1.6rem;
+        margin-left: 0.8rem;
     }
     &__no-balance {
         &-icon {

@@ -30,7 +30,7 @@ class AccountTransferReceipt extends React.Component {
                     <Localize i18n_default_text='Your funds have been transferred' />
                 </h2>
                 <div className='cashier__transferred-amount cashier__text--bold'>
-                    <span className={classNames('symbols', `symbols--${selected_from.currency.toLowerCase()}`)} />
+                    <span className={classNames('symbols', `symbols--${selected_from.currency?.toLowerCase()}`)} />
                     {receipt.amount_transferred}
                 </div>
                 <div className='cashier__transferred-details-wrapper'>
@@ -39,13 +39,15 @@ class AccountTransferReceipt extends React.Component {
                             <div className='cashier__text--bold cashier__text--right'>{`${
                                 selected_from.is_mt ? `${localize('DMT5')} ` : ''
                             }${selected_from.text}`}</div>
-                            <div className='cashier__text--faint'>{selected_from.value.replace(/^(MT[DR]?)/i, '')}</div>
+                            <div className='cashier__text--faint'>
+                                {selected_from.value?.replace(/^(MT[DR]?)/i, '')}
+                            </div>
                         </div>
                         <Icon
                             icon={
                                 selected_from.mt_icon
                                     ? `IcMt5-${selected_from.mt_icon}`
-                                    : `IcCurrency-${selected_from.currency.toLowerCase()}`
+                                    : `IcCurrency-${selected_from.currency?.toLowerCase()}`
                             }
                             size={32}
                         />
@@ -56,7 +58,7 @@ class AccountTransferReceipt extends React.Component {
                             icon={
                                 selected_to.mt_icon
                                     ? `IcMt5-${selected_to.mt_icon}`
-                                    : `IcCurrency-${selected_to.currency.toLowerCase()}`
+                                    : `IcCurrency-${selected_to.currency?.toLowerCase()}`
                             }
                             size={32}
                         />
@@ -64,7 +66,7 @@ class AccountTransferReceipt extends React.Component {
                             <div className='cashier__text--bold'>{`${selected_to.is_mt ? `${localize('DMT5')} ` : ''}${
                                 selected_to.text
                             }`}</div>
-                            <div className='cashier__text--faint'>{selected_to.value.replace(/^(MT[DR]?)/i, '')}</div>
+                            <div className='cashier__text--faint'>{selected_to.value?.replace(/^(MT[DR]?)/i, '')}</div>
                         </div>
                     </span>
                 </div>

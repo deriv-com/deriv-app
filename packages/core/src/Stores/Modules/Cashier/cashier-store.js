@@ -779,6 +779,7 @@ export default class CashierStore extends BaseStore {
             return a_is_mt ? -1 : 1;
         });
         const arr_accounts = [];
+        this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
         accounts.forEach(account => {
             const obj_values = {
                 text: account.mt5_group ? getMT5AccountDisplay(account.mt5_group) : account.currency.toUpperCase(),
@@ -841,7 +842,8 @@ export default class CashierStore extends BaseStore {
             this.onChangeTransferTo({ target: { value: this.config.account_transfer.selected_from.value } });
         } else if (selected_from.is_mt && this.config.account_transfer.selected_to.is_mt) {
             // not allowed to transfer from MT to MT
-            this.onChangeTransferTo({ target: { value: this.config.account_transfer.accounts_list[0].value } });
+            const first_non_mt = this.config.account_transfer.accounts_list.find(account => !account.is_mt);
+            this.onChangeTransferTo({ target: { value: first_non_mt.value } });
         } else if (selected_from.is_crypto && this.config.account_transfer.selected_to.is_crypto) {
             // not allowed to transfer crypto to crypto
             const first_fiat = this.config.account_transfer.accounts_list.find(account => !account.is_crypto);

@@ -63,6 +63,8 @@ export const toGMTFormat = time =>
 
 export const formatDate = (date, date_format = 'YYYY-MM-DD') => toMoment(date).format(date_format);
 
+export const formatTime = (epoch, time_format = 'HH:mm:ss [GMT]') => toMoment(epoch).format(time_format);
+
 /**
  * return the number of days from today to date specified
  * @param  {String} date   the date to calculate number of days from today

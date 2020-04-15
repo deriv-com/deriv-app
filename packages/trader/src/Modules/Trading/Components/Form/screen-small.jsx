@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Collapsible } from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals.jsx';
@@ -18,9 +18,15 @@ import 'Sass/app/_common/mobile-widget.scss';
 const CollapsibleTradeParams = ({
     form_components,
     has_allow_equals,
+    contract_type,
+    is_allow_equal,
     is_trade_params_expanded,
     setIsTradeParamsExpanded,
 }) => {
+    useEffect(() => {
+        if (is_allow_equal && has_allow_equals) setIsTradeParamsExpanded(true);
+    }, [contract_type]);
+
     const is_collapsed = !is_trade_params_expanded;
 
     const onClick = e => {

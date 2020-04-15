@@ -58,8 +58,8 @@ const address_details_config = {
 export const addressDetailsConfig = ({ can_upgrade_to, residence }) => {
     return {
         header: {
-            active_title: localize('Complete your personal details'),
-            title: localize('Personal details'),
+            active_title: localize('Complete your address details'),
+            title: localize('Address details'),
         },
         body: AddressDetails,
         form_value: getDefaultFields(can_upgrade_to, address_details_config),

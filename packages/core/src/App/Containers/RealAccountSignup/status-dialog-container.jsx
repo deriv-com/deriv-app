@@ -39,13 +39,25 @@ class StatusDialogContainer extends React.Component {
      * @return {EXPERIAN} status
      */
     get status() {
-        const { landing_company_shortcode, is_fully_authenticated, is_age_verified } = this.props;
+        const { landing_company_shortcode, is_fully_authenticated, is_age_verified, is_im_residence } = this.props;
 
-        return getExperianResult({ landing_company_shortcode, is_fully_authenticated, is_age_verified });
+        return getExperianResult({
+            landing_company_shortcode,
+            is_fully_authenticated,
+            is_age_verified,
+            is_im_residence,
+        });
     }
 
     render() {
-        const { landing_company_shortcode, currency, closeModal, icon_size, switchToVirtual } = this.props;
+        const {
+            landing_company_shortcode,
+            currency,
+            closeModal,
+            icon_size,
+            switchToVirtual,
+            is_im_residence,
+        } = this.props;
 
         return (
             <Div100vhContainer className='status-dialog' is_disabled={isDesktop()} height_offset='40px'>
@@ -66,6 +78,7 @@ class StatusDialogContainer extends React.Component {
                         status={this.status}
                         landing_company_shortcode={landing_company_shortcode}
                         currency={currency}
+                        is_im_residence={is_im_residence}
                     />
                 </div>
                 <DialogButtons
@@ -89,6 +102,7 @@ StatusDialogContainer.propTypes = {
     icon: PropTypes.object,
     icon_size: PropTypes.string,
     icon_type: PropTypes.string,
+    is_im_residence: PropTypes.bool,
     is_real: PropTypes.bool,
     message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     onCancel: PropTypes.func,
@@ -101,6 +115,7 @@ export default connect(({ client, ui }) => ({
     currency: client.currency,
     is_fully_authenticated: client.is_fully_authenticated,
     is_age_verified: client.is_age_verified,
+    is_im_residence: client.residence === 'im',
     closeModal: ui.closeRealAccountSignup,
     switchToVirtual: () => client.switchAccount(client.virtual_account_loginid),
 }))(withRouter(StatusDialogContainer));

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { action, computed, observable, runInAction, when, reaction, toJS, autorun } from 'mobx';
+import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { requestLogout, WS } from 'Services';
@@ -7,9 +7,9 @@ import ClientBase from '_common/base/client_base';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
+import { toMoment } from '@deriv/shared/utils/date';
 import { LocalStore, State } from '_common/storage';
 import BinarySocketGeneral from 'Services/socket-general';
-import { toMoment } from 'Utils/Date';
 import { getAllowedLocalStorageOrigin } from 'Utils/Events/storage';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
@@ -69,23 +69,9 @@ export default class ClientStore extends BaseStore {
     is_mt5_account_list_updated = false;
 
     constructor(root_store) {
-        super({ root_store });
-
-        autorun(
-            /**
-             * Notify EU virtual clients if they are needed to fill in poi/poa
-             */
-            () => {
-                if (this.is_unwelcome && this.is_virtual && this.can_upgrade_to === 'iom') {
-                    root_store.ui.addNotificationMessageByKey('needs_poi');
-                    root_store.ui.addNotificationMessageByKey('needs_poa');
-                }
-            },
-            {
-                delay: 5000,
-                name: 'Unwelcome_EU_clients',
-            }
-        );
+        super({
+            root_store,
+        });
     }
 
     @computed
@@ -265,21 +251,15 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get is_age_verified() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'age_verification');
-    }
-
-    @computed
-    get is_unwelcome() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'unwelcome');
-    }
-
-    @computed
     get is_fully_authenticated() {
         if (!this.account_status.status) return false;
         return this.account_status.status.some(status => status === 'authenticated');
+    }
+
+    @computed
+    get is_pending_authentication() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'document_under_review');
     }
 
     @computed
@@ -416,10 +396,15 @@ export default class ClientStore extends BaseStore {
             WS.authorized.storage.getLimits().then(data => {
                 runInAction(() => {
                     if (data.error) {
-                        this.account_limits = { api_initial_load_error: data.error.message };
+                        this.account_limits = {
+                            api_initial_load_error: data.error.message,
+                        };
                         resolve(data);
                     } else {
-                        this.account_limits = { ...data.get_limits, is_loading: false };
+                        this.account_limits = {
+                            ...data.get_limits,
+                            is_loading: false,
+                        };
                         resolve(data);
                     }
                 });
@@ -503,19 +488,6 @@ export default class ClientStore extends BaseStore {
     realAccountSignup(form_values) {
         return new Promise(async (resolve, reject) => {
             form_values.residence = this.residence;
-            if (form_values.citizen) {
-                form_values.citizen = this.residence_list.reduce(
-                    (res, item) => (item.text === form_values.citizen ? item.value : res),
-                    ''
-                );
-            }
-            if (form_values.place_of_birth) {
-                form_values.place_of_birth = this.residence_list.reduce(
-                    (res, item) => (item.text === form_values.place_of_birth ? item.value : res),
-                    ''
-                );
-            }
-
             const response = await WS.newAccountReal(form_values);
             if (!response.error) {
                 await this.accountRealReaction(response);
@@ -542,8 +514,12 @@ export default class ClientStore extends BaseStore {
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));
                 LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
                 this.selectCurrency(currency);
-                this.root_store.ui.removeNotificationMessage({ key: 'currency' });
-                this.root_store.ui.removeNotificationByKey({ key: 'currency' });
+                this.root_store.ui.removeNotificationMessage({
+                    key: 'currency',
+                });
+                this.root_store.ui.removeNotificationByKey({
+                    key: 'currency',
+                });
                 await this.init();
                 resolve(response);
             } else {
@@ -668,7 +644,9 @@ export default class ClientStore extends BaseStore {
                 // Client comes back from oauth and logs in
                 await this.root_store.segment.identifyEvent();
 
-                this.root_store.gtm.pushDataLayer({ event: 'login' });
+                this.root_store.gtm.pushDataLayer({
+                    event: 'login',
+                });
             } else {
                 // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
@@ -695,9 +673,6 @@ export default class ClientStore extends BaseStore {
                             this.root_store.ui
                         );
                         this.setHasMissingRequiredField(has_missing_required_field);
-                    } else if (!client || client.is_virtual) {
-                        this.root_store.ui.removeNotifications();
-                        this.root_store.ui.removeAllNotificationMessages();
                     }
                 });
             }
@@ -741,7 +716,9 @@ export default class ClientStore extends BaseStore {
                 is_persistent: true,
             });
         } else {
-            this.root_store.ui.removeNotificationMessage({ key: 'maintenance' });
+            this.root_store.ui.removeNotificationMessage({
+                key: 'maintenance',
+            });
         }
     }
 
@@ -886,7 +863,18 @@ export default class ClientStore extends BaseStore {
     @action.bound
     registerReactions() {
         // Switch account reactions.
-        when(() => this.switched, this.switchAccountHandler);
+        when(
+            () => this.switched,
+            () => {
+                // Remove real account notifications upon switching to virtual
+                if (this.accounts[this.switched]?.is_virtual) {
+                    this.root_store.ui.removeNotifications();
+                    this.root_store.ui.removeAllNotificationMessages();
+                }
+
+                this.switchAccountHandler();
+            }
+        );
     }
 
     @action.bound
@@ -941,7 +929,9 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     cleanUp() {
-        this.root_store.gtm.pushDataLayer({ event: 'log_out' });
+        this.root_store.gtm.pushDataLayer({
+            event: 'log_out',
+        });
         this.loginid = null;
         this.user_id = null;
         this.upgrade_info = undefined;
@@ -1106,7 +1096,9 @@ export default class ClientStore extends BaseStore {
     @action.bound
     onSetResidence({ residence }, cb) {
         if (!residence) return;
-        WS.setSettings({ residence }).then(async response => {
+        WS.setSettings({
+            residence,
+        }).then(async response => {
             if (response.error) {
                 cb(response.error.message);
             } else {
@@ -1148,7 +1140,9 @@ export default class ClientStore extends BaseStore {
                 await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
 
                 // GTM Signup event
-                this.root_store.gtm.pushDataLayer({ event: 'signup' });
+                this.root_store.gtm.pushDataLayer({
+                    event: 'signup',
+                });
             }
         });
     }
@@ -1160,6 +1154,16 @@ export default class ClientStore extends BaseStore {
             curr1: currency,
         };
         await this.init(new_user_login);
+    }
+
+    @action.bound
+    fetchAccountSettings() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getSettings().then(response => {
+                this.setAccountSettings(response.get_settings);
+                resolve(response);
+            });
+        });
     }
 
     @action.bound

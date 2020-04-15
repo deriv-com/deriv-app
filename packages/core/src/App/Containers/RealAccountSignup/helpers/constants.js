@@ -2,7 +2,8 @@ import { localize } from '@deriv/translations';
 
 /**
  * Experian result is defined by client's information validity.
- * Defines the possible types of actions needed to take on experian result response
+ * Defines the possible types of actions needed to take on experian result response.
+ *
  * Possible values are:
  *   - Success: Client can trade
  *   - Warn: POI/POA Validity partially failed, trade in demo possible
@@ -22,9 +23,15 @@ export const EXPERIAN = {
  * getAccountTitle('malta') => 'Real Gaming'
  *
  * @param {string} short_code - Landing company shortcode
+ * @param {object} options
  * @return {string} localized title
  */
-export const getAccountTitle = short_code => {
+export const getAccountTitle = (short_code, { is_im_residence = false }) => {
+    // TODO: [deriv-eu] merge if statement and switch together once more residence cases are found.
+    if (is_im_residence) {
+        return localize('Real Synthetic');
+    }
+
     switch (short_code) {
         case 'svg':
             return localize('Real');
@@ -43,17 +50,24 @@ export const getAccountTitle = short_code => {
  * @param {string} landing_company_shortcode
  * @param {boolean} is_fully_authenticated
  * @param {boolean} is_age_verified
+ * @param {boolean} is_im_residence
  *
  * @return {EXPERIAN.WARN|EXPERIAN.SUCCESS|EXPERIAN.DANGER}
  */
-export const getExperianResult = ({ landing_company_shortcode, is_fully_authenticated, is_age_verified }) => {
+export const getExperianResult = ({
+    landing_company_shortcode = '',
+    is_fully_authenticated = false,
+    is_age_verified = false,
+    is_im_residence = false,
+}) => {
     const getIOMStatus = () => {
         if (is_fully_authenticated) return EXPERIAN.SUCCESS;
         if (is_age_verified) return EXPERIAN.WARN;
+
         return EXPERIAN.DANGER;
     };
 
-    if (landing_company_shortcode === 'svg') return EXPERIAN.SUCCESS;
+    if (landing_company_shortcode === 'svg' || is_im_residence) return EXPERIAN.SUCCESS;
     if (landing_company_shortcode === 'iom') return getIOMStatus({ is_fully_authenticated, is_age_verified });
 
     return EXPERIAN.SUCCESS;

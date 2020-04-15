@@ -45,10 +45,15 @@ const ErrorModal = ({ message, code, openPersonalDetails }) => {
 
 const LoadingModal = () => <Loading is_fullscreen={false} />;
 
-const WizardHeading = ({ can_upgrade_to, currency }) => {
+const WizardHeading = ({ can_upgrade_to, currency, is_im_residence }) => {
     if (!currency) {
         return localize('Set a currency for your Real Account');
     }
+
+    if (can_upgrade_to === 'iom' && is_im_residence) {
+        return <Localize i18n_default_text='Add a Real Synthetic account' />;
+    }
+
     switch (can_upgrade_to) {
         case 'malta':
         case 'iom':
@@ -263,5 +268,6 @@ export default connect(({ ui, client }) => ({
     closeRealAccountSignup: ui.closeRealAccountSignup,
     setParams: ui.setRealAccountSignupParams,
     residence: client.residence,
+    is_im_residence: client.residence === 'im',
     state_value: ui.real_account_signup,
 }))(withRouter(RealAccountSignup));

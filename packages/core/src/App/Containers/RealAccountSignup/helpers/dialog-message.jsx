@@ -8,8 +8,9 @@ import { EXPERIAN, getAccountTitle } from './constants';
  * @param {EXPERIAN} status
  * @param {string} landing_company_shortcode
  * @param {string} currency
+ * @param {boolean} is_im_residence
  */
-export const DialogMessage = ({ status, landing_company_shortcode, currency }) => {
+export const DialogMessage = ({ status, landing_company_shortcode, currency, is_im_residence }) => {
     if (landing_company_shortcode === 'svg') {
         return (
             <Localize
@@ -50,13 +51,15 @@ export const DialogMessage = ({ status, landing_company_shortcode, currency }) =
                         i18n_default_text='<0>You have added a <1>account_type</1> {{currency}} account. Make a deposit now and start trading after your account is verified.</0>'
                         values={{
                             currency: currency.toUpperCase(),
-                            account_type: getAccountTitle(landing_company_shortcode),
+                            account_type: getAccountTitle(landing_company_shortcode, is_im_residence),
                         }}
                         components={[<p key={currency} />]}
                     />
                 );
         }
-    } else return null;
+    }
+
+    return null;
 };
 
 DialogMessage.propTypes = {

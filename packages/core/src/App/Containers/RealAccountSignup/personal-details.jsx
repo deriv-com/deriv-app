@@ -254,7 +254,7 @@ class PersonalDetails extends React.Component {
                 ref={this.form}
             >
                 {({ handleSubmit, isSubmitting, errors, setFieldValue, touched, values }) => (
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} autoComplete='off'>
                         <Div100vhContainer className='details-form' height_offset='199px' is_disabled={isDesktop()}>
                             <p className='details-form__description'>
                                 <Localize

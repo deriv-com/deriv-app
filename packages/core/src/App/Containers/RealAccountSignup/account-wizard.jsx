@@ -12,6 +12,16 @@ import { addressDetailsConfig } from './address-details-form';
 import { personalDetailsConfig } from './personal-details-form';
 import { termsOfUseConfig } from './terms-of-use-form';
 
+// TODO: [deriv-eu] remove and merge this with the original function in PersonalDetails
+const getLocation = (location_list, value, type) => {
+    const location_obj = location_list.find(
+        location => location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase()
+    );
+
+    if (location_obj) return location_obj[type];
+    return '';
+};
+
 class AccountWizard extends React.Component {
     constructor(props) {
         super(props);
@@ -75,6 +85,22 @@ class AccountWizard extends React.Component {
                 const values = fromEntries(new Map(Object.entries(item)));
                 if (values.date_of_birth) {
                     values.date_of_birth = toMoment(values.date_of_birth).format('YYYY-MM-DD');
+                }
+                if (values.place_of_birth) {
+                    values.place_of_birth = values.place_of_birth
+                        ? getLocation(this.props.residence_list, values.place_of_birth, 'value')
+                        : '';
+                }
+                if (values.citizen) {
+                    values.citizen = values.citizen
+                        ? getLocation(this.props.residence_list, values.citizen, 'value')
+                        : '';
+                }
+
+                if (values.address_state) {
+                    values.address_state = this.props.states_list.length
+                        ? getLocation(this.props.states_list, values.address_state, 'value')
+                        : values.address_state;
                 }
 
                 return {

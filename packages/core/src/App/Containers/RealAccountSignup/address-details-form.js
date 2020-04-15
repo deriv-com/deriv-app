@@ -55,7 +55,7 @@ const address_details_config = {
     },
 };
 
-export const addressDetailsConfig = ({ can_upgrade_to }) => {
+export const addressDetailsConfig = ({ can_upgrade_to, residence }) => {
     return {
         header: {
             active_title: localize('Complete your personal details'),
@@ -64,8 +64,27 @@ export const addressDetailsConfig = ({ can_upgrade_to }) => {
         body: AddressDetails,
         form_value: getDefaultFields(can_upgrade_to, address_details_config),
         props: {
-            validate: generateValidationFunction(can_upgrade_to, address_details_config),
+            validate: generateValidationFunction(
+                can_upgrade_to,
+                transformForResidence(address_details_config, residence)
+            ),
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
     };
+};
+
+/**
+ * Transform general rules based on residence
+ *
+ * @param {object} rules - Original rules
+ * @param {string} residence - Client's residence
+ * @return {object} rules - Transformed rules
+ */
+const transformForResidence = (rules, residence) => {
+    // IM Clients does not need to fillout state since API states_list is empty.
+    if (residence === 'im') {
+        rules.address_state.rules.shift();
+    }
+
+    return rules;
 };

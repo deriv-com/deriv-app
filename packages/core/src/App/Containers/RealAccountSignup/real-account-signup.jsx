@@ -262,5 +262,6 @@ export default connect(({ ui, client }) => ({
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     setParams: ui.setRealAccountSignupParams,
+    residence: client.residence,
     state_value: ui.real_account_signup,
 }))(withRouter(RealAccountSignup));

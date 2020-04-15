@@ -118,56 +118,42 @@ class AddressDetails extends Component {
                                             label={localize('Town/City*')}
                                             placeholder={localize('Town/City')}
                                         />
-                                        {this.state.has_fetched_states_list && (
-                                            <React.Fragment>
-                                                {this.props.states_list.length > 0 ? (
-                                                    <Field name='address_state'>
-                                                        {({ field }) => (
-                                                            <>
-                                                                <DesktopWrapper>
-                                                                    <Autocomplete
-                                                                        {...field}
-                                                                        data-lpignore='true'
-                                                                        autoComplete='new-password' // prevent chrome autocomplete
-                                                                        dropdown_offset='3.2rem'
-                                                                        type='text'
-                                                                        label={localize('State/Province')}
-                                                                        list_items={this.props.states_list}
-                                                                        onItemSelection={({ value, text }) =>
-                                                                            setFieldValue(
-                                                                                'address_state',
-                                                                                value ? text : '',
-                                                                                true
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                </DesktopWrapper>
-                                                                <MobileWrapper>
-                                                                    <SelectNative
-                                                                        label={localize('State/Province')}
-                                                                        value={values.address_state}
-                                                                        list_items={this.props.states_list}
-                                                                        use_text={true}
-                                                                        onChange={e =>
-                                                                            setFieldValue(
-                                                                                'address_state',
-                                                                                e.target.value,
-                                                                                true
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                </MobileWrapper>
-                                                            </>
-                                                        )}
-                                                    </Field>
-                                                ) : (
-                                                    <InputField
-                                                        name='address_state'
-                                                        label={localize('State/Province')}
-                                                        placeholder={localize('State/Province')}
-                                                    />
+                                        {this.state.has_fetched_states_list && this.props.states_list.length > 0 && (
+                                            <Field name='address_state'>
+                                                {({ field }) => (
+                                                    <>
+                                                        <DesktopWrapper>
+                                                            <Autocomplete
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                autoComplete='new-password' // prevent chrome autocomplete
+                                                                dropdown_offset='3.2rem'
+                                                                type='text'
+                                                                label={localize('State/Province')}
+                                                                list_items={this.props.states_list}
+                                                                onItemSelection={({ value, text }) =>
+                                                                    setFieldValue(
+                                                                        'address_state',
+                                                                        value ? text : '',
+                                                                        true
+                                                                    )
+                                                                }
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                label={localize('State/Province')}
+                                                                value={values.address_state}
+                                                                list_items={this.props.states_list}
+                                                                use_text={true}
+                                                                onChange={e =>
+                                                                    setFieldValue('address_state', e.target.value, true)
+                                                                }
+                                                            />
+                                                        </MobileWrapper>
+                                                    </>
                                                 )}
-                                            </React.Fragment>
+                                            </Field>
                                         )}
                                         <InputField
                                             name='address_postcode'

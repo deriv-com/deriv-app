@@ -23,17 +23,15 @@ class Popup extends Component {
         const { ad } = this.props;
         setStatus({ error_message: '' });
 
-        const request_payload = {
+        const order = await requestWS({
             p2p_order_create: 1,
             advert_id: ad.id,
             amount: values.amount,
-        };
-        if (ad.type === 'sell') {
-            request_payload.contact_info = values.contact_info;
-            request_payload.payment_info = values.payment_info;
-        }
-
-        const order = await requestWS(request_payload);
+            ...(ad.type === 'sell' && {
+                contact_info: values.contact_info,
+                payment_info: values.payment_info,
+            }),
+        });
 
         if (!order.error) {
             const order_info = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
@@ -59,13 +57,14 @@ class Popup extends Component {
 
     render() {
         const { ad, handleClose } = this.props;
-        const initial_values = { amount: ad.min_available };
         const is_buyer = ad.type === 'buy';
-
-        if (!is_buyer) {
-            initial_values.contact_info = ad.contact_info;
-            initial_values.payment_info = ad.payment_info;
-        }
+        const initial_values = {
+            amount: ad.min_available,
+            ...(!is_buyer && {
+                contact_info: ad.contact_info,
+                payment_info: ad.payment_info,
+            }),
+        };
 
         return (
             <Fragment>

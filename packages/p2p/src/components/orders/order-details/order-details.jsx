@@ -34,10 +34,7 @@ const OrderDetails = ({ order_details }) => {
     } = order_details;
     const [show_popup, setShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
-
-    const { email_domain, advertiser_id: client_advertiser_id } = React.useContext(Dp2pContext);
-    const is_my_ad = advertiser_id === client_advertiser_id;
-
+    const { email_domain } = React.useContext(Dp2pContext);
     const onCancelClick = () => setShowPopup(false);
     const handleShowPopup = options => {
         setPopupOptions(options);

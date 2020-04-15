@@ -1,16 +1,5 @@
 /** @define cashier; weak */
 .cashier {
-    &-page-wrapper {
-        @include mobile {
-            /* postcss-bem-linter: ignore */
-            & .dc-page-overlay__header {
-                position: fixed;
-                top: 4rem;
-                width: 100%;
-                height: 4rem;
-            }
-        }
-    }
     &__counter {
         position: absolute;
         top: 0.4rem;
@@ -19,6 +8,16 @@
     &__content {
         width: 100%;
         background: var(--status-default);
+
+        &-header {
+            text-align: center;
+            margin-bottom: 3.2rem;
+
+            @include mobile {
+                padding-top: 1.6rem;
+                margin-bottom: 0;
+            }
+        }
     }
     &__wrapper {
         text-align: center;
@@ -87,10 +86,12 @@
         font-size: 1.6rem;
         line-height: 1.5;
         font-weight: bold;
-        margin-bottom: 1.6rem;
-        margin-top: 1.6rem;
         color: var(--text-prominent);
 
+        &:not(.cashier__content-header) {
+            margin-bottom: 1.6rem;
+            margin-top: 1.6rem;
+        }
         @include mobile {
             font-size: 1.4rem;
         }
@@ -100,10 +101,6 @@
             display: flex;
             justify-content: flex-end;
             width: 100%;
-            margin-left: -2.4rem;
-            bottom: 0;
-            height: 8rem;
-            overflow: hidden;
         }
         &-error {
             flex: 1;
@@ -123,9 +120,25 @@
             &-small-icon {
                 margin: 2rem 1.6rem 4.4rem 2.4rem;
             }
+            &-wrapper {
+                display: flex;
+                margin-right: auto;
+
+                .cashier__form-error,
+                .cashier__form-error-small-icon {
+                    margin-top: 5.8rem;
+                    margin-bottom: 0;
+                }
+                .cashier__form-error-small-icon {
+                    margin-left: 0.8rem;
+                }
+                .cashier__form-error-icon {
+                    bottom: 21rem;
+                }
+            }
         }
         &-submit-button {
-            margin: 1.6rem 2.4rem 2.4rem;
+            margin: 3.2rem 0 2.4rem 2.4rem;
         }
         @include mobile {
             &-submit {
@@ -162,7 +175,7 @@
     }
     &__input {
         display: inline-block !important;
-        margin-bottom: 0;
+        margin-bottom: 0 !important;
 
         &--short {
             width: 29rem;
@@ -171,7 +184,7 @@
             width: 100%;
         }
         @include mobile {
-            margin-bottom: 3.2rem;
+            margin-bottom: 3.2rem !important;
         }
     }
     &__drop-down {
@@ -207,24 +220,39 @@
                 display: flex;
                 align-items: center;
             }
+            .cashier__drop-down-display-brackets {
+                &:before {
+                    content: '(';
+                }
+                &:after {
+                    content: ')';
+                }
+            }
+            @include mobile {
+                min-height: auto;
+                min-width: auto;
+            }
         }
         &-items,
         &-label {
             justify-content: left;
         }
         &-label {
-            margin-left: 1.6rem;
+            margin: 0 1.6rem;
         }
     }
     &__transferred {
         &-amount {
             color: var(--text-profit-success);
             font-size: 3.2rem;
-            line-height: 0.75;
-            margin-bottom: 1.6rem;
+            font-weight: bold;
+            line-height: 1.25;
+            margin-top: 2.4rem;
+            margin-bottom: 2.8rem;
         }
         &-details {
             margin-left: 8px;
+            margin-right: 8px;
             vertical-align: super;
             font-size: 1.4rem;
             text-align: left;
@@ -232,11 +260,7 @@
             max-width: 20rem;
             display: flex;
             flex-direction: column;
-            margin-right: 0.8rem;
 
-            &-from {
-                align-items: flex-end;
-            }
             &-wrapper {
                 display: flex;
                 justify-content: center;
@@ -274,6 +298,12 @@
         &--bold {
             font-weight: bold;
         }
+        &--right {
+            text-align: right;
+        }
+        &--faint {
+            color: var(--text-less-prominent);
+        }
         @include mobile {
             max-width: 100%;
             margin: 0;
@@ -293,7 +323,7 @@
     }
     &__done-button {
         width: 15.6rem;
-        margin-left: -1.6rem;
+        margin-left: 0.8rem;
     }
     &__no-balance {
         &-icon {
@@ -363,6 +393,19 @@
         }
         &__footer {
             font-size: 1.2rem;
+        }
+    }
+}
+
+/** @define cashier-page-wrapper */
+.cashier-page-wrapper {
+    @include mobile {
+        /* postcss-bem-linter: ignore */
+        & .dc-page-overlay__header {
+            position: fixed;
+            top: 4rem;
+            width: 100%;
+            height: 4rem;
         }
     }
 }
@@ -561,7 +604,7 @@
     &__drop-down {
         margin-left: 8px;
         width: auto;
-        margin-bottom: 0;
+        margin-bottom: 0 !important;
     }
     &__filter {
         min-width: 22.8rem;
@@ -809,37 +852,43 @@
 .account-transfer {
     &__notes {
         color: var(--text-general);
-        margin-top: calc(3.2rem + 1.7rem); // + height of hint/error
-        font-size: 1.2rem;
+        padding: 1.6rem 0;
+        font-size: var(--text-size-xs);
         line-height: 1.5;
 
         @include mobile {
-            margin: 0;
-            padding: 2.4rem 0 1.6rem;
+            font-size: var(--text-size-xxs);
         }
     }
     &__bullet {
         background-color: var(--text-general);
         border-radius: 100%;
-        margin-right: 1.3rem;
-        width: 0.6rem;
-        height: 0.6rem;
+        margin-right: 0.8rem;
+        width: 0.4rem;
+        height: 0.4rem;
         flex: none;
-        margin-top: 0.6rem;
+        margin-top: 0.8rem;
 
         &-wrapper {
             display: flex;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.8rem;
         }
     }
     &__drop-down {
-        min-width: calc(calc(100% - calc(16px + 1.6rem)) / 2);
+        min-width: calc(calc(100% - calc(16px + 3.2rem)) / 2);
         width: auto;
-        margin-bottom: 3.4rem;
+        margin-bottom: 1.7rem;
 
         @include mobile {
             width: 100%;
             margin-bottom: 2.4rem;
+        }
+    }
+    &__input {
+        margin-bottom: -0.8rem !important;
+
+        @include mobile {
+            margin-bottom: 2.6rem !important;
         }
     }
     &__currency,
@@ -853,19 +902,13 @@
             align-self: center;
         }
     }
-    &__receipt {
-        &-icon {
-            margin: 5.6rem 0 1.6rem;
-
-            @include mobile {
-                margin: 1.6rem 0;
-            }
-        }
+    &__balance {
+        margin-left: auto;
     }
     &__transfer {
         &-icon {
             vertical-align: initial;
-            margin: 1rem 0.8rem 0;
+            margin: 1rem 1.6rem 0;
         }
         &-details {
             &-from,
@@ -874,30 +917,16 @@
                 align-items: center;
             }
         }
-    }
-    &__transfer-info {
-        font-size: 1.2rem;
-        margin-bottom: 1.8rem;
-
-        .dc-btn {
-            padding: 0px;
-            height: 1.5rem;
+        &-from {
+            margin-bottom: 3.5rem;
+            margin-top: 2.5rem;
         }
-        .dc-btn__text {
-            line-height: 1.2rem;
+        &-to {
+            margin-bottom: 1.7rem;
         }
     }
-    &__transfer-from {
-        margin-bottom: 1.8rem;
-        margin-top: 2.5rem;
-    }
-    &__transfer-to {
-        margin-bottom: 3.2rem;
-    }
-    &__actions {
-        display: flex;
-        margin-top: 2.4rem;
-        justify-content: center;
+    &__button {
+        margin: 4rem auto 0 0.8rem;
 
         &-statement {
             margin-right: 0.8rem;

@@ -2,12 +2,15 @@ import { localize } from '@deriv/translations';
 import { getBuyPrice, getProfit } from 'Stores/Modules/Contract/Helpers/logic';
 
 const getValidationRules = () => ({
+    has_contract_update_stop_loss: {
+        trigger: 'contract_update_stop_loss',
+    },
     contract_update_stop_loss: {
         rules: [
             [
                 'req',
                 {
-                    condition: store => store.contract_update_stop_loss,
+                    condition: store => !store.contract_update_stop_loss,
                     message: localize('Please enter a stop loss amount.'),
                 },
             ],
@@ -33,12 +36,15 @@ const getValidationRules = () => ({
             ],
         ],
     },
+    has_contract_update_take_profit: {
+        trigger: 'contract_update_take_profit',
+    },
     contract_update_take_profit: {
         rules: [
             [
                 'req',
                 {
-                    condition: store => store.contract_update_take_profit,
+                    condition: store => !store.contract_update_take_profit,
                     message: localize('Please enter a take profit amount.'),
                 },
             ],

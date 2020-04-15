@@ -169,7 +169,7 @@ const MyAdsTable = () => {
                             <Popup
                                 has_cancel
                                 title={localize('Delete this ad')}
-                                message={localize(`You won't be able to restore it later.`)}
+                                message={localize("You won't be able to restore it later.")}
                                 cancel_text={localize('Cancel')}
                                 confirm_text={localize('Delete')}
                                 onCancel={onClickCancel}
@@ -182,7 +182,7 @@ const MyAdsTable = () => {
         );
     }
 
-    return <div className='deriv-p2p__empty'>{localize(`You haven't posted any ads yet.`)}</div>;
+    return <div className='deriv-p2p__empty'>{localize("You haven't posted any ads yet.")}</div>;
 };
 
 export default MyAdsTable;

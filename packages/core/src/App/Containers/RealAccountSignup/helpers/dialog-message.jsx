@@ -48,10 +48,10 @@ export const DialogMessage = ({ status, landing_company_shortcode, currency, is_
             default:
                 return (
                     <Localize
-                        i18n_default_text='<0>You have added a <1>account_type</1> {{currency}} account. Make a deposit now and start trading after your account is verified.</0>'
+                        i18n_default_text='<0>You have added a {{account_type}} {{currency}} account. Make a deposit now and start trading after your account is verified.</0>'
                         values={{
                             currency: currency.toUpperCase(),
-                            account_type: getAccountTitle(landing_company_shortcode, is_im_residence),
+                            account_type: getAccountTitle(landing_company_shortcode, { is_im_residence }),
                         }}
                         components={[<p key={currency} />]}
                     />

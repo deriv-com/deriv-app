@@ -49,12 +49,6 @@ export const config = {
             [localize('Error'), 'error'],
             [localize('Severe error'), 'severe-error'],
         ],
-        CONSOLE: [
-            [localize('Log'), 'log'],
-            [localize('Warn'), 'warn'],
-            [localize('Error'), 'error'],
-            [localize('Table'), 'table'],
-        ],
         CURRENCY: ['USD', 'EUR', 'GBP', 'AUD', ...CRYPTO_CURRENCIES],
     },
     opposites: {

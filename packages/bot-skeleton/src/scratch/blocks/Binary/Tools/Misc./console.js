@@ -13,7 +13,12 @@ Blockly.Blocks.console = {
                 {
                     type: 'field_dropdown',
                     name: 'CONSOLE_TYPE',
-                    options: config.lists.CONSOLE,
+                    options: [
+                        [localize('Log'), 'log'],
+                        [localize('Warn'), 'warn'],
+                        [localize('Error'), 'error'],
+                        [localize('Table'), 'table'],
+                    ],
                 },
                 {
                     type: 'input_value',

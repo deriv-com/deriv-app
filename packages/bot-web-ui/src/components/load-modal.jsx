@@ -96,7 +96,9 @@ const Recent = ({
                     })}
                 >
                     <div>
-                        {localize("If you've recently used bots but don't see them in this list. It may because you:")}
+                        {localize(
+                            "If you've recently used bots but don't see them in this list. It may be because you:"
+                        )}
                     </div>
                     <ol className='load-recent__explain-list'>
                         <li>{localize('1. Logged in from a different device')}</li>

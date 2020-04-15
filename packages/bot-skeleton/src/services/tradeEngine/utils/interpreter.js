@@ -155,7 +155,14 @@ export default class Interpreter {
     }
 
     terminateSession() {
-        this.$scope.api.disconnect();
+        const { socket } = this.$scope.api;
+        if (socket.readyState === 0) {
+            socket.addEventListener('open', () => {
+                this.$scope.api.disconnect();
+            });
+        } else if (socket.readyState === 1) {
+            this.$scope.api.disconnect();
+        }
         this.stopped = true;
         globalObserver.emit('bot.stop');
     }

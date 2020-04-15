@@ -314,7 +314,7 @@ class Dropdown extends React.Component {
                                         <ThemedScrollbars
                                             autoHeight
                                             autoHide
-                                            autoHeightMax={200}
+                                            autoHeightMax={404}
                                             renderTrackHorizontal={props => (
                                                 <div {...props} style={{ display: 'none' }} />
                                             )}

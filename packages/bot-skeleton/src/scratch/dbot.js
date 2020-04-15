@@ -69,6 +69,9 @@ class DBot {
                 file_name = latest_file.name;
                 Blockly.derivWorkspace.current_strategy_id = latest_file.id;
             }
+
+            const event_group = `dbot-load${Date.now()}`;
+            Blockly.Events.setGroup(event_group);
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
 
             onBotNameTyped(file_name);

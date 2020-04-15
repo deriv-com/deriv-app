@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import { Collapsible } from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals.jsx';
@@ -15,15 +15,20 @@ import { LastDigitMobile } from '../../Containers/trade-params-mobile.jsx';
 import Purchase from '../../Containers/purchase.jsx';
 import 'Sass/app/_common/mobile-widget.scss';
 
-const CollapsibleTradeParams = ({ form_components, has_allow_equals }) => {
-    const [is_collapsed, setIsCollapsed] = useState(true);
+const CollapsibleTradeParams = ({
+    form_components,
+    has_allow_equals,
+    is_trade_params_expanded,
+    setIsTradeParamsExpanded,
+}) => {
+    const is_collapsed = !is_trade_params_expanded;
 
     const onClick = e => {
-        setIsCollapsed(!e);
+        setIsTradeParamsExpanded(e);
     };
 
     const toggleDigitsWidget = () => {
-        setIsCollapsed(!is_collapsed);
+        setIsTradeParamsExpanded(true);
     };
 
     const isVisible = component => form_components.includes(component);
@@ -77,7 +82,7 @@ ScreenSmall.propTypes = {
     is_trade_enabled: PropTypes.bool,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ modules, ui }) => ({
     is_allow_equal: !!modules.trade.is_equal,
     duration_unit: modules.trade.duration_unit,
     contract_types_list: modules.trade.contract_types_list,
@@ -85,4 +90,6 @@ export default connect(({ modules }) => ({
     expiry_type: modules.trade.expiry_type,
     contract_start_type: modules.trade.contract_start_type,
     form_components: modules.trade.form_components,
+    is_trade_params_expanded: ui.is_trade_params_expanded,
+    setIsTradeParamsExpanded: ui.setIsTradeParamsExpanded,
 }))(ScreenSmall);

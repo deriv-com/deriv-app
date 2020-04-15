@@ -16,7 +16,6 @@ import './order-details.scss';
 
 const OrderDetails = ({ order_details }) => {
     const {
-        advertiser_id,
         advertiser_name,
         advertiser_instructions,
         contact_info,

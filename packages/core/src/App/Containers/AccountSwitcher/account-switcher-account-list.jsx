@@ -43,11 +43,7 @@ const AccountList = ({
                     <div className='acc-switcher__loginid-text'>{loginid}</div>
                 </span>
                 {has_balance && (
-                    <span
-                        className={classNames('acc-switcher__balance', {
-                            'acc-switcher__balance--virtual': is_virtual,
-                        })}
-                    >
+                    <span className='acc-switcher__balance'>
                         {currency && (
                             <Money
                                 currency={currency}

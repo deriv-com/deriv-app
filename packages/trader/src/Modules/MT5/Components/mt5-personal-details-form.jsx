@@ -12,7 +12,7 @@ import {
     MobileWrapper,
     SelectNative,
 } from '@deriv/components';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { Localize, localize } from '@deriv/translations';
 import { isDeepEqual } from '@deriv/shared/utils/object';
 import { FormSubHeader } from 'Modules/Account/Components/layout-components.jsx';
@@ -140,7 +140,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                     />
                                 </p>
                                 <div className='details-form__elements-container'>
-                                    <ThemedScrollbars autoHide style={{ height: 432 }}>
+                                    <ThemedScrollbars autoHide style={{ height: 432 }} is_native={isMobile()}>
                                         <div className='details-form__elements mt5-details-form__fields'>
                                             <FormSubHeader title={localize('Details')} />
                                             <fieldset className='account-form__fieldset'>

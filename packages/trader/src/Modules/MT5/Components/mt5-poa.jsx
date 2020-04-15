@@ -2,7 +2,7 @@ import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FormSubmitButton, ThemedScrollbars, Dropdown, Loading, Div100vhContainer } from '@deriv/components';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { FormSubHeader } from 'Modules/Account/Components/layout-components.jsx';
@@ -234,6 +234,7 @@ class MT5POA extends Component {
                                                 style={{
                                                     height: '420px',
                                                 }}
+                                                is_native={isMobile()}
                                             >
                                                 <div className='mt5-proof-of-address__field-area'>
                                                     <FormSubHeader

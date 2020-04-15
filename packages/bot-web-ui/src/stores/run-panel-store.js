@@ -360,6 +360,9 @@ export default class RunPanelStore {
     onMount() {
         const { journal } = this.root_store;
         observer.register('ui.log.success', journal.onLogSuccess);
+        observer.register('ui.log.console', ({ type, message }) => {
+            console[type](message); // eslint-disable-line no-console
+        });
     }
 
     @action.bound

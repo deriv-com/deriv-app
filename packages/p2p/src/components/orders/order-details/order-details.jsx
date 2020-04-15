@@ -29,6 +29,7 @@ const OrderDetails = ({ order_details }) => {
         offer_currency,
         id,
         order_purchase_datetime,
+        payment_info,
         transaction_currency,
     } = order_details;
     const [show_popup, setShowPopup] = React.useState(false);
@@ -51,17 +52,12 @@ const OrderDetails = ({ order_details }) => {
                     <div className='order-details__header'>
                         <span>
                             <OrderDetailsStatusBlock order_details={order_details} />
-                            <OrderDetailsAmountBlock order_details={order_details} />
                             {!is_expired && (
                                 <React.Fragment>
+                                    <OrderDetailsAmountBlock order_details={order_details} />
                                     <h1 className='order-details__header-method'>
                                         {order_details.display_payment_method}
                                     </h1>
-                                    {order_details.payment_info && (
-                                        <div className='order-details__header-payment-info'>
-                                            {order_details.payment_info}
-                                        </div>
-                                    )}
                                 </React.Fragment>
                             )}
                         </span>
@@ -70,14 +66,12 @@ const OrderDetails = ({ order_details }) => {
                     <div className='deriv-p2p__separator' />
                     <div className='order-details__info'>
                         <div className='order-details__info-columns'>
-                            {!is_my_ad && (
-                                <div className='order-details__info--left'>
-                                    <OrderInfoBlock
-                                        label={is_buyer ? localize('Seller') : localize('Buyer')}
-                                        value={advertiser_name}
-                                    />
-                                </div>
-                            )}
+                            <div className='order-details__info--left'>
+                                <OrderInfoBlock
+                                    label={is_buyer ? localize('Seller') : localize('Buyer')}
+                                    value={advertiser_name}
+                                />
+                            </div>
                             <div className='order-details__info--right'>
                                 <OrderInfoBlock
                                     label={localize('Rate (1 {{offer_currency}})', { offer_currency })}
@@ -85,15 +79,19 @@ const OrderDetails = ({ order_details }) => {
                                 />
                             </div>
                         </div>
-                        {!is_my_ad && (
-                            <OrderInfoBlock
-                                label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
-                                value={advertiser_instructions || '-'}
-                            />
-                        )}
                         {is_buyer && (
-                            <OrderInfoBlock label={localize('Seller contact details')} value={contact_info || '-'} />
+                            <React.Fragment>
+                                <OrderInfoBlock label={localize('Seller bank details')} value={payment_info || '-'} />
+                                <OrderInfoBlock
+                                    label={localize('Seller contact details')}
+                                    value={contact_info || '-'}
+                                />
+                            </React.Fragment>
                         )}
+                        <OrderInfoBlock
+                            label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
+                            value={advertiser_instructions || '-'}
+                        />
                         <div className='order-details__info-columns'>
                             <div className='order-details__info--left'>
                                 <OrderInfoBlock

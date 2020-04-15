@@ -100,7 +100,6 @@ class FormAds extends Component {
                                                 height: 'calc(100% - 2.4rem - 72px - 92px)',
                                                 width: 'calc(100% - 4.8rem)',
                                             }}
-                                            autoHide
                                             autoHeightMax={440}
                                         >
                                             <p className='p2p-my-ads__form-summary'>

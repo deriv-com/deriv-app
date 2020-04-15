@@ -1,7 +1,7 @@
 import { observable, action, computed } from 'mobx';
 import { localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared/utils/date';
-import { message_types } from '@deriv/bot-skeleton';
+import { message_types, observer } from '@deriv/bot-skeleton';
 
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
@@ -39,17 +39,14 @@ export default class JournalStore {
 
     @action.bound
     onNotify(data) {
+        const { run_panel } = this.root_store;
         const { message, className, message_type, sound, block_id, variable_name } = data;
         let message_string = message;
 
         // when notify undefined variable block
         if (message === undefined && variable_name != null) {
-            this.onNotify({
-                className: 'journal__text--error',
-                block_id,
-                sound: 'silent',
-                message_type: message_types.ERROR,
-                message: messageWithButton({
+            run_panel.showErrorMessage(
+                messageWithButton({
                     unique_id: block_id,
                     type: 'error',
                     message: localize(
@@ -60,8 +57,8 @@ export default class JournalStore {
                     onClick: () => {
                         this.dbot.centerAndHighlightBlock(block_id, true);
                     },
-                }),
-            });
+                })
+            );
             return;
         }
 

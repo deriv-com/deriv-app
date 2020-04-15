@@ -18,14 +18,14 @@ import 'Sass/app/_common/mobile-widget.scss';
 const CollapsibleTradeParams = ({
     form_components,
     has_allow_equals,
-    contract_type,
+    previous_symbol,
     is_allow_equal,
     is_trade_params_expanded,
     setIsTradeParamsExpanded,
 }) => {
     useEffect(() => {
-        if (is_allow_equal && has_allow_equals) setIsTradeParamsExpanded(true);
-    }, [contract_type]);
+        if (previous_symbol && is_allow_equal && has_allow_equals) setIsTradeParamsExpanded(true);
+    }, [previous_symbol]);
 
     const is_collapsed = !is_trade_params_expanded;
 
@@ -88,7 +88,7 @@ ScreenSmall.propTypes = {
     is_trade_enabled: PropTypes.bool,
 };
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules }) => ({
     is_allow_equal: !!modules.trade.is_equal,
     duration_unit: modules.trade.duration_unit,
     contract_types_list: modules.trade.contract_types_list,
@@ -96,6 +96,7 @@ export default connect(({ modules, ui }) => ({
     expiry_type: modules.trade.expiry_type,
     contract_start_type: modules.trade.contract_start_type,
     form_components: modules.trade.form_components,
-    is_trade_params_expanded: ui.is_trade_params_expanded,
-    setIsTradeParamsExpanded: ui.setIsTradeParamsExpanded,
+    previous_symbol: modules.trade.previous_symbol,
+    is_trade_params_expanded: modules.trade.is_trade_params_expanded,
+    setIsTradeParamsExpanded: modules.trade.setIsTradeParamsExpanded,
 }))(ScreenSmall);

@@ -110,7 +110,6 @@ export default class UIStore extends BaseStore {
     @observable should_show_toast_error = false;
     @observable mobile_toast_error = '';
     @observable mobile_toast_timeout = 1500;
-    @observable is_trade_params_expanded = true;
 
     @observable is_mt5_page = false;
     @observable is_nativepicker_visible = false;
@@ -135,7 +134,6 @@ export default class UIStore extends BaseStore {
             'is_dark_mode_on',
             'is_positions_drawer_on',
             'is_reports_visible',
-            'is_trade_params_expanded',
             // 'is_purchase_confirm_on',
             // 'is_purchase_lock_on',
             'should_show_stop_loss_warning',
@@ -573,11 +571,6 @@ export default class UIStore extends BaseStore {
     setToastErrorMessage(msg, timeout = 1500) {
         this.mobile_toast_timeout = timeout;
         this.mobile_toast_error = msg;
-    }
-
-    @action.bound
-    setIsTradeParamsExpanded(value) {
-        this.is_trade_params_expanded = value;
     }
 
     @action.bound

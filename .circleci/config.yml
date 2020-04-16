@@ -104,7 +104,7 @@ commands:
           name: Building docker image
           command: |
             TAG=${CIRCLE_TAG:-$CIRCLE_SHA1}
-            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:<< parameters.docker_image_tag >> -t ${DOCKHUB_ORGANISATION}/deriv-app:<< parameters.docker_image_latest_tag >> .
+            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:${TAG} -t ${DOCKHUB_ORGANISATION}/deriv-app:<< parameters.docker_image_latest_tag >> .
       - run:
           name: Pushing Image to docker hub
           command: |
@@ -119,14 +119,12 @@ commands:
       docker_image_latest_tag:
         type: string
         default: "latest-staging"
-      docker_image_tag:
-        type: string
-        default: ${CIRCLE_SHA1}
     steps:
       - k8s/install-kubectl
       - run:
           name: Deploying to k8s cluster for service deriv-app
           command: |
+            TAG=${CIRCLE_TAG:-$CIRCLE_SHA1}
             for SERVER_ID in {1..5}
             do
               KUBE_SERVER_REF="KUBE_SERVER_$SERVER_ID"
@@ -139,7 +137,7 @@ commands:
                 KUBE_SERVER="${!KUBE_SERVER_REF}"
                 SERVICEACCOUNT_TOKEN="${!SERVICEACCOUNT_TOKEN_REF}"
                 echo $CA_CRT | base64 --decode > ca.crt
-                kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/<< parameters.k8s_svc_name >> << parameters.k8s_svc_name >>=${DOCKHUB_ORGANISATION}/deriv-app:<< parameters.docker_image_tag >>
+                kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/<< parameters.k8s_svc_name >> << parameters.k8s_svc_name >>=${DOCKHUB_ORGANISATION}/deriv-app:${TAG}
               fi
             done
 jobs:
@@ -179,7 +177,6 @@ jobs:
     steps:
       - k8s_deploy:
           docker_image_latest_tag: latest
-          docker_image_tag: ${CIRCLE_TAG}
           k8s_svc_name: production-deriv-app
 workflows:
   build_deploy_staging:

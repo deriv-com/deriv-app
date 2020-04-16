@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import {
+    Button,
     DesktopWrapper,
     MobileWrapper,
     Div100vhContainer,
@@ -112,13 +113,6 @@ class AccountSwitcher extends React.Component {
         await this.props.switchAccount(loginid);
     }
 
-    get can_manage_currency() {
-        return (
-            this.props.can_change_currency ||
-            (!this.props.is_virtual && !this.props.has_fiat && this.props.can_upgrade_to)
-        );
-    }
-
     get is_real_account_tab() {
         // Real accounts is always the first tab index based on design
         return this.state.active_tab_index === 0;
@@ -190,8 +184,8 @@ class AccountSwitcher extends React.Component {
         return !!(this.props.is_upgrade_enabled && this.props.is_virtual && this.props.can_upgrade_to);
     }
 
-    get has_add_button() {
-        return this.can_upgrade || this.can_manage_currency;
+    get can_open_multi() {
+        return !!(!this.props.is_virtual && this.props.available_crypto_currencies.length > 0);
     }
 
     get total_demo_assets() {
@@ -325,11 +319,7 @@ class AccountSwitcher extends React.Component {
                             this.toggleVisibility('real_deriv');
                         }}
                     >
-                        <div
-                            className={classNames('acc-switcher__accounts', {
-                                'acc-switcher__accounts--has-add-account': this.has_add_button,
-                            })}
-                        >
+                        <div className='acc-switcher__accounts'>
                             {this.sorted_account_list
                                 .filter(account => !account.is_virtual)
                                 .map(account => (
@@ -354,14 +344,36 @@ class AccountSwitcher extends React.Component {
                                     />
                                 ))}
                         </div>
-                        {this.has_add_button && (
-                            <ButtonAddAccount
-                                has_set_currency={!this.props.has_any_real_account ? true : this.has_set_currency}
-                                onClick={this.can_upgrade ? this.onClickUpgrade : this.props.openRealAccountSignup}
-                                toggleSetCurrency={this.setAccountCurrency}
-                                text={<Localize i18n_default_text='Add Deriv account' />}
-                            />
+                        {this.can_upgrade && (
+                            <div className='acc-switcher__new-account'>
+                                <Icon icon='IcDeriv' size={24} />
+                                <span className='acc-switcher__new-account-text'>{localize('Deriv account')}</span>
+                                <Button
+                                    onClick={this.onClickUpgrade}
+                                    className='acc-switcher__new-account-btn'
+                                    secondary
+                                    small
+                                >
+                                    {localize('Add')}
+                                </Button>
+                            </div>
                         )}
+                        {!this.can_upgrade &&
+                            (this.can_open_multi || this.props.can_change_fiat_currency || !this.has_set_currency) && (
+                                <Button
+                                    className='acc-switcher__btn'
+                                    secondary
+                                    onClick={
+                                        this.has_set_currency
+                                            ? this.props.openRealAccountSignup
+                                            : this.setAccountCurrency
+                                    }
+                                >
+                                    {this.can_open_multi
+                                        ? localize('Add or manage account')
+                                        : localize('Manage account')}
+                                </Button>
+                            )}
                     </AccountWrapper>
                 </>
                 {this.props.is_mt5_allowed && this.props.has_any_real_account && (
@@ -515,6 +527,7 @@ class AccountSwitcher extends React.Component {
 }
 
 AccountSwitcher.propTypes = {
+    available_crypto_currencies: PropTypes.array,
     account_list: PropTypes.array,
     account_loginid: PropTypes.string,
     accounts: PropTypes.object,
@@ -539,10 +552,11 @@ AccountSwitcher.propTypes = {
 
 const account_switcher = withRouter(
     connect(({ client, ui }) => ({
+        available_crypto_currencies: client.available_crypto_currencies,
         account_loginid: client.loginid,
         accounts: client.accounts,
         has_fiat: client.has_fiat,
-        can_change_currency: client.can_change_currency,
+        can_change_fiat_currency: client.can_change_fiat_currency,
         account_list: client.account_list,
         can_upgrade: client.can_upgrade,
         can_upgrade_to: client.can_upgrade_to,

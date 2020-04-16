@@ -121,12 +121,6 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get can_change_currency() {
-        const has_available_crypto_currencies = this.available_crypto_currencies.length > 0;
-        return this.can_change_fiat_currency || (!this.is_virtual && has_available_crypto_currencies);
-    }
-
-    @computed
     get legal_allowed_currencies() {
         if (!this.landing_companies) return [];
         if (this.landing_companies.gaming_company) {

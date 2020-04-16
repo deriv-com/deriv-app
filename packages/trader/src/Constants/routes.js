@@ -6,6 +6,7 @@ const routes = {
     proof_of_identity: '/account/proof-of-identity',
     proof_of_address: '/account/proof-of-address',
     deriv_password: '/account/deriv-password',
+    connected_apps: '/account/connected-apps',
     account_limits: '/account/account-limits',
     account_password: '/settings/account_password',
     apps: '/settings/apps',

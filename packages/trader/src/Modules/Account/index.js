@@ -5,5 +5,6 @@ export { default as ProofOfIdentity } from 'Modules/Account/Sections/Verificatio
 export { default as ProofOfAddress } from 'Modules/Account/Sections/Verification/ProofOfAddress';
 export { default as DerivPassword } from 'Modules/Account/Sections/Security/DerivPassword';
 export { default as AccountLimits } from 'Modules/Account/Sections/Security/AccountLimits';
+export { default as ConnectedApps } from 'Modules/Account/Sections/Security/ConnectedApps';
 
 export default from './Containers/account.jsx';

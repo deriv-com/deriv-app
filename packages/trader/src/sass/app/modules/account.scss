@@ -689,7 +689,55 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 }
+/** @define connected-apps; weak */
+.connected-apps {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
 
+    &__header {
+        p {
+            color: var(--text-prominent);
+            font-size: var(--text-size-s);
+            font-weight: bold;
+        }
+    }
+    &__column {
+        display: flex;
+        margin-top: 16px;
+        border-bottom: 2px solid var(--general-main-2);
+        justify-content: space-between;
+        width: 100%;
+        max-width: 672px;
+
+        div {
+            width: 100%;
+        }
+
+        p {
+            font-size: var(--text-size-xs);
+            color: var(--text-prominent);
+            font-weight: bold;
+            padding: 16px 0;
+        }
+        &__name {
+            max-width: 158px;
+        }
+        &__permission {
+            max-width: 194px;
+        }
+        &__last-login {
+            max-width: 96px;
+        }
+        &__action {
+            max-width: 99px;
+        }
+
+        div:last-child {
+            margin-right: 0;
+        }
+    }
+}
 /** @define form-submit-error-message; weak */
 .form-submit-error-message {
     display: flex;

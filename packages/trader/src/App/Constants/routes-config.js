@@ -9,6 +9,7 @@ import Account, {
     ProofOfAddress,
     ProofOfIdentity,
     DerivPassword,
+    ConnectedApps,
     AccountLimits,
 } from 'Modules/Account';
 import Reports, { OpenPositions, ProfitTable, Statement } from 'Modules/Reports';
@@ -95,6 +96,7 @@ const initRoutesConfig = () => [
                 subroutes: [
                     { path: routes.deriv_password, component: DerivPassword, title: localize('Deriv password') },
                     { path: routes.account_limits, component: AccountLimits, title: localize('Account limits') },
+                    { path: routes.connected_apps, component: ConnectedApps, title: localize('Connected apps') },
                 ],
             },
         ],

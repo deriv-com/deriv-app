@@ -25,7 +25,7 @@ class MT5AdvancedRealAccountSignup extends Component {
 
         this.state = {
             finished: undefined,
-            step: 2,
+            step: 0,
             form_error: '',
             is_loading: false,
             items: [

@@ -1,11 +1,9 @@
-import { action, extendObservable, observable, toJS, runInAction } from 'mobx';
-import { WS } from 'Services/ws-methods';
+import { action, extendObservable, observable, toJS } from 'mobx';
 import { createChartMarkers } from './Helpers/chart-markers';
 import { getDigitInfo, isDigitContract } from './Helpers/digits';
-import { getLimitOrder, setLimitOrderBarriers } from './Helpers/limit-orders';
-import { getChartConfig, getContractUpdate, getDisplayStatus, getEndTime, isEnded } from './Helpers/logic';
+import { setLimitOrderBarriers } from './Helpers/limit-orders';
+import { getChartConfig, getContractUpdateConfig, getDisplayStatus, getEndTime, isEnded } from './Helpers/logic';
 import { isMultiplierContract } from './Helpers/multiplier';
-
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
@@ -34,7 +32,9 @@ export default class ContractStore {
     @observable end_time = null;
 
     // Multiplier contract update config
-    @observable contract_update = observable.object({});
+    @observable contract_update_config = observable.object({});
+    @observable.ref contract_update = observable.object({});
+    @observable.ref contract_update_history = [];
 
     // ---- chart props
     @observable margin;
@@ -70,60 +70,22 @@ export default class ContractStore {
         }
 
         this.is_multiplier_contract = isMultiplierContract(this.contract_info.contract_type);
-        if (this.is_multiplier_contract && !this.contract_update.has_contract_update && has_limit_order) {
-            this.contract_update = getContractUpdate(this.contract_info);
-            this.contract_update.onChangeContractUpdate = this.onChangeContractUpdate;
-            this.contract_update.onClickContractUpdate = this.onClickContractUpdate;
-            this.contract_update.has_contract_update = true;
+        if (this.is_multiplier_contract && !this.contract_update_config.has_contract_update && has_limit_order) {
+            this.populateContractUpdateConfig(this.contract_info);
+            this.contract_update_config.has_contract_update = true;
         }
     }
 
     @action.bound
-    onChangeContractUpdate({ stop_loss, take_profit, has_stop_loss, has_take_profit }) {
-        const contract_trade_store = this.root_store.modules.contract_trade;
-
-        if (stop_loss !== undefined) {
-            this.contract_update.stop_loss = stop_loss;
-            contract_trade_store.contract_update_stop_loss = stop_loss;
-        }
-        if (take_profit !== undefined) {
-            this.contract_update.take_profit = take_profit;
-            contract_trade_store.contract_update_take_profit = take_profit;
-        }
-        if (has_stop_loss !== undefined) {
-            this.contract_update.has_stop_loss = has_stop_loss;
-            if (!has_stop_loss) {
-                contract_trade_store.validation_errors.contract_update_stop_loss = [];
-            }
-        }
-        if (has_take_profit !== undefined) {
-            this.contract_update.has_take_profit = has_take_profit;
-            if (!has_take_profit) {
-                contract_trade_store.validation_errors.contract_update_take_profit = [];
-            }
-        }
+    populateContractUpdateConfig(response) {
+        this.contract_update_config = getContractUpdateConfig(response);
+        this.contract_update = response.contract_update;
+        this.root_store.modules.contract_replay.contract_store.contract_update = response.contract_update;
     }
 
     @action.bound
-    onClickContractUpdate() {
-        const limit_order = getLimitOrder(this.contract_update);
-        WS.contractUpdate(this.contract_id, limit_order).then(response => {
-            if (response.error) {
-                this.root_store.common.setServicesError({
-                    type: response.msg_type,
-                    ...response.error,
-                });
-                this.root_store.ui.toggleServicesErrorModal(true);
-            } else if (this.root_store.ui.is_history_tab_active) {
-                WS.contractUpdateHistory(this.contract_id).then(res => {
-                    runInAction(
-                        () =>
-                            (this.root_store.modules.contract_replay.contract_store.contract_update_history =
-                                res.contract_update_history)
-                    );
-                });
-            }
-        });
+    populateContractUpdateHistory({ contract_update_history }) {
+        this.root_store.modules.contract_replay.contract_store.contract_update_history = contract_update_history;
     }
 
     updateBarriersArray(contract_info, is_dark_mode) {

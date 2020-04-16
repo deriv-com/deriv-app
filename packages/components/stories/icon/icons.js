@@ -8,7 +8,6 @@ export const icons = {
         'IcCashierDp2p',
         'IcCashierError',
         'IcCashierNoBalance',
-        'IcCashierTransferDone',
         'IcCashierWallet',
         'IcCashierWithdrawal',
     ],

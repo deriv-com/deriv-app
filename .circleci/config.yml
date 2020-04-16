@@ -119,6 +119,9 @@ commands:
       docker_image_latest_tag:
         type: string
         default: "latest-staging"
+      docker_image_tag:
+        type: string
+        default: ${CIRCLE_SHA1}
     steps:
       - k8s/install-kubectl
       - run:
@@ -176,6 +179,7 @@ jobs:
     steps:
       - k8s_deploy:
           docker_image_latest_tag: latest
+          docker_image_tag: ${CIRCLE_TAG}
           k8s_svc_name: production-deriv-app
 workflows:
   build_deploy_staging:

@@ -12,6 +12,7 @@ import ResultOverlay from '../result-overlay.jsx';
 const PositionsDrawerCard = ({
     className,
     contract_info,
+    contract_update,
     currency,
     is_sell_requested,
     is_unsupported,
@@ -38,7 +39,13 @@ const PositionsDrawerCard = ({
     const contract_el = (
         <React.Fragment>
             <CardHeader contract_info={contract_info} has_progress_slider={!is_multiplier} />
-            <CardBody contract_info={contract_info} currency={currency} is_multiplier={is_multiplier} status={status} />
+            <CardBody
+                contract_info={contract_info}
+                contract_update={contract_update}
+                currency={currency}
+                is_multiplier={is_multiplier}
+                status={status}
+            />
         </React.Fragment>
     );
     // When scrolling fast in react-window, sometimes card is stuck with enter transition class and it is not removed after timeout making the card to be invisible.

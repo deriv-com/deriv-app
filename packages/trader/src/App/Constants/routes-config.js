@@ -1,7 +1,7 @@
 import { lazy } from 'react';
+import { routes } from '@deriv/shared/routes';
 import { addRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
-import { routes } from 'Constants';
 import Trade from 'Modules/Trading';
 import Account, {
     PersonalDetails,

@@ -1,10 +1,9 @@
 import { action, observable } from 'mobx';
+import { routes } from '@deriv/shared/routes';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
-import AppRoutes from 'Constants/routes';
 import ContractStore from './contract-store';
-import { getContractUpdate } from './Helpers/logic';
 import { contractCancelled, contractSold } from '../Portfolio/Helpers/portfolio-notifications';
 import BaseStore from '../../base-store';
 
@@ -29,6 +28,7 @@ export default class ContractReplayStore extends BaseStore {
     is_ongoing_contract = false;
     prev_indicative = 0;
 
+    @observable.ref contract_update = observable.object({});
     // TODO: you view a contract and then share that link with another person,
     // when the person opens, try to switch account they get the error
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
@@ -80,6 +80,9 @@ export default class ContractReplayStore extends BaseStore {
         this.contract_info = {};
         this.indicative_status = null;
         this.prev_indicative = 0;
+        // @shayan: for forcing chart to call scale 1:1 each time,
+        // we should let SmartChart notify when its ready
+        this.is_chart_ready = false;
         this.root_store.ui.toggleHistoryTab(false);
         WS.removeOnReconnect();
     }
@@ -103,6 +106,7 @@ export default class ContractReplayStore extends BaseStore {
         if (+response.proposal_open_contract.contract_id !== this.contract_id) return;
 
         this.contract_info = response.proposal_open_contract;
+        this.contract_update = response.proposal_open_contract.limit_order;
 
         // Add indicative status for contract
         const prev_indicative = this.prev_indicative;
@@ -222,26 +226,6 @@ export default class ContractReplayStore extends BaseStore {
         this.has_error = false;
     }
 
-    @action.bound
-    getContractById(contract_id) {
-        this.root_store.modules.portfolio.active_positions_drawer_dialog_id = contract_id;
-        return (
-            // get contract from contracts array in contract_trade store
-            this.root_store.modules.contract_trade.getContractById(contract_id || this.contract_id) ||
-            // or get contract from contract_replay contract store when
-            // user is on the contract details page
-            this.root_store.modules.contract_replay.contract_store
-        );
-    }
-
-    @action.bound
-    resetContractUpdate(contract_id) {
-        const contract = this.getContractById(contract_id);
-        contract.contract_update = getContractUpdate(contract.contract_info);
-        this.root_store.modules.contract_trade.validation_errors.contract_update_stop_loss = [];
-        this.root_store.modules.contract_trade.validation_errors.contract_update_take_profit = [];
-    }
-
     setAccountSwitcherListener = (contract_id, history) => {
         this.onSwitchAccount(() => this.accountSwitcherListener(contract_id, history));
     };
@@ -254,7 +238,7 @@ export default class ContractReplayStore extends BaseStore {
             this.removeErrorMessage();
             this.onMount(contract_id);
         } else {
-            history.push(AppRoutes.reports);
+            history.push(routes.reports);
         }
         return Promise.resolve();
     };

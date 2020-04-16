@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { routes } from '@deriv/shared/routes';
 import { isDesktop } from '@deriv/shared/utils/os';
 import { connect } from 'Stores/connect';
-import routes from '../../../Constants/routes';
 
 const Redirect = ({
     server_time,

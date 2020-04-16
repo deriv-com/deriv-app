@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Div100vhContainer, FormProgress } from '@deriv/components';
 import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 import AddressDetails from './address-details.jsx';
 import CurrencySelector from './currency-selector.jsx';
-import FormProgress from './form-progress.jsx';
 import PersonalDetails from './personal-details.jsx';
 import TermsOfUse from './terms-of-use.jsx';
 
@@ -60,7 +59,7 @@ class AccountWizard extends React.Component {
                 },
                 {
                     header: {
-                        active_title: localize('Terms of use'),
+                        active_title: isDesktop() ? localize('Terms of use') : null,
                         title: localize('Terms of use'),
                     },
                     body: TermsOfUse,
@@ -258,9 +257,11 @@ class AccountWizard extends React.Component {
                                             }}
                                         />
                                     </h4>
-                                    <h4 className='account-wizard__header-steps-subtitle'>
-                                        {this.state.items[this.state.step].header.active_title}
-                                    </h4>
+                                    {this.state.items[this.state.step].header.active_title && (
+                                        <h4 className='account-wizard__header-steps-subtitle'>
+                                            {this.state.items[this.state.step].header.active_title}
+                                        </h4>
+                                    )}
                                 </div>
                             </MobileWrapper>
                         </>

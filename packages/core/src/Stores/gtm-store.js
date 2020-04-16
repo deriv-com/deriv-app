@@ -4,7 +4,7 @@ import { getAppId } from '@deriv/shared/utils/config';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
 import { isLoginPages } from '_common/base/login';
-import { toMoment, epochToMoment } from 'Utils/Date';
+import { toMoment, epochToMoment } from '@deriv/shared/utils/date';
 import BaseStore from './base-store';
 import { getMT5AccountType } from './Helpers/client';
 

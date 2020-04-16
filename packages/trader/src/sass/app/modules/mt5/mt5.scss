@@ -1,5 +1,3 @@
-@import '../../_common/base/index';
-
 .dc-modal__container_mt5-password-modal {
     max-width: 424px;
     min-height: 300px;
@@ -158,40 +156,51 @@
     }
 }
 
-.dc-tooltip {
-    position: relative;
-    display: inline-block;
+.mt5-dashboard {
+    &__container {
+        .dc-tooltip {
+            position: relative;
+            display: inline-block;
 
-    &:hover {
-        .dc-tooltiptext {
-            visibility: visible;
+            &:hover {
+                .dc-tooltiptext {
+                    visibility: visible;
+                }
+            }
+            .dc-tooltiptext {
+                @include typeface(--small-left-normal-black);
+                text-transform: none;
+                box-shadow: 0 0 8px 0 rgba(21, 33, 45, 0.32);
+                visibility: hidden;
+                width: 216px;
+                top: 100%;
+                left: 100%;
+                margin-left: -200px;
+                background-color: var(--general-main-1);
+                color: var(--text-prominent);
+                padding: 0.5em;
+                border-radius: 0.3em;
+                position: absolute;
+                z-index: 1;
+
+                &:after {
+                    content: ' ';
+                    position: absolute;
+                    bottom: 100%; /* At the top of the tooltip */
+                    left: 89%;
+                    margin-left: -5px;
+                    border-width: 5px;
+                    border-style: solid;
+                    border-color: transparent transparent var(--general-main-1) transparent;
+                }
+            }
         }
     }
-    .dc-tooltiptext {
-        @include typeface(--small-left-normal-black);
-        text-transform: none;
-        box-shadow: 0 0 8px 0 rgba(21, 33, 45, 0.32);
-        visibility: hidden;
-        width: 216px;
-        top: 100%;
-        left: 100%;
-        margin-left: -200px;
-        background-color: var(--general-main-1);
-        color: var(--text-prominent);
-        padding: 0.5em;
-        border-radius: 0.3em;
-        position: absolute;
-        z-index: 1;
+}
 
-        &:after {
-            content: ' ';
-            position: absolute;
-            bottom: 100%; /* At the top of the tooltip */
-            left: 89%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent transparent var(--general-main-1) transparent;
-        }
+/** @define mt5-proof-of-identity; weak */
+.mt5-proof-of-identity {
+    &__fields {
+        padding-bottom: 7rem;
     }
 }

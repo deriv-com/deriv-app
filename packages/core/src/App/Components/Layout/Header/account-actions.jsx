@@ -1,9 +1,9 @@
 import * as PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Button, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
+import { routes } from '@deriv/shared/routes';
 import { localize } from '@deriv/translations';
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import routes from 'Constants/routes';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
 import ToggleNotifications from './toggle-notifications.jsx';

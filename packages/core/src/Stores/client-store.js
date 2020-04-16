@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
+import { getAllowedLocalStorageOrigin } from '@deriv/shared/events/storage';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { requestLogout, WS } from 'Services';
@@ -7,13 +8,13 @@ import ClientBase from '_common/base/client_base';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
+import { toMoment } from '@deriv/shared/utils/date';
 import { LocalStore, State } from '_common/storage';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
 import { getClientAccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
-import { toMoment } from '../Utils/Date';
 
 const storage_key = 'client.accounts';
 export default class ClientStore extends BaseStore {
@@ -250,6 +251,12 @@ export default class ClientStore extends BaseStore {
     get is_fully_authenticated() {
         if (!this.account_status.status) return false;
         return this.account_status.status.some(status => status === 'authenticated');
+    }
+
+    @computed
+    get is_pending_authentication() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'document_under_review');
     }
 
     @computed
@@ -678,8 +685,9 @@ export default class ClientStore extends BaseStore {
                 await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
+            this.getLimits();
         }
-        this.responseWebsiteStatus(await WS.storage.websiteStatus());
+        this.responseWebsiteStatus(await WS.wait('website_status'));
 
         this.registerReactions();
         this.setIsLoggingIn(false);
@@ -1120,6 +1128,16 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    fetchAccountSettings() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getSettings().then(response => {
+                this.setAccountSettings(response.get_settings);
+                resolve(response);
+            });
+        });
+    }
+
+    @action.bound
     fetchResidenceList() {
         return new Promise(resolve => {
             WS.storage.residenceList().then(response => {
@@ -1184,10 +1202,12 @@ export default class ClientStore extends BaseStore {
         }, 60000);
 
         if (!response.error) {
-            this.mt5_login_list = response.mt5_login_list.map(account => ({
-                ...account,
-                display_login: account.login.replace(/^(MT[DR]?)/i, ''),
-            }));
+            this.mt5_login_list = response.mt5_login_list
+                .filter(account => !/inactive/.test(account.group)) // remove disabled mt5 accounts
+                .map(account => ({
+                    ...account,
+                    display_login: account.login.replace(/^(MT[DR]?)/i, ''),
+                }));
         }
     }
 
@@ -1217,22 +1237,24 @@ export default class ClientStore extends BaseStore {
     syncWithSmartTrader(active_loginid, client_accounts) {
         const iframe_window = document.getElementById('localstorage-sync');
         if (iframe_window) {
-            let origin;
-
-            if (/^staging\.deriv\.app$/i.test(window.location.hostname)) {
-                origin = 'https://smarttrader-staging.deriv.app';
-            } else if (/^deriv\.app$/i.test(window.location.hostname)) {
-                origin = 'https://smarttrader.deriv.app';
-            } else {
-                return;
+            const origin = getAllowedLocalStorageOrigin();
+            if (origin) {
+                // Keep client.accounts in sync (in case user wasn't logged in).
+                iframe_window.contentWindow.postMessage(
+                    {
+                        key: 'client.accounts',
+                        value: JSON.stringify(client_accounts),
+                    },
+                    origin
+                );
+                iframe_window.contentWindow.postMessage(
+                    {
+                        key: 'active_loginid',
+                        value: active_loginid,
+                    },
+                    origin
+                );
             }
-
-            // Keep client.accounts in sync (in case user wasn't logged in).
-            iframe_window.contentWindow.postMessage(
-                { key: 'client.accounts', value: JSON.stringify(client_accounts) },
-                origin
-            );
-            iframe_window.contentWindow.postMessage({ key: 'active_loginid', value: active_loginid }, origin);
         }
     }
 

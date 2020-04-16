@@ -1,20 +1,19 @@
 import React from 'react';
 import { Button } from '@deriv/components';
-import { urlFor } from '@deriv/shared/utils/url';
+import { urlFor, getDerivComLink } from '@deriv/shared/utils/url';
+import { routes } from '@deriv/shared/routes';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
-import { formatDate } from 'Utils/Date';
+import { formatDate } from '@deriv/shared/utils/date';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
-import routes from 'Constants/routes';
 import { LocalStore, State } from '_common/storage';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
 export const clientNotifications = (ui = {}) => {
-    const mobile = ['mf_retail', 'unwelcome'];
     const notifications = {
         currency: {
             action: {
@@ -200,7 +199,7 @@ export const clientNotifications = (ui = {}) => {
                             className='link'
                             rel='noopener'
                             target='_blank'
-                            href='https://www.deriv.com/terms-and-conditions/'
+                            href={getDerivComLink('terms-and-conditions')}
                         />,
                     ]}
                 />
@@ -278,13 +277,7 @@ export const clientNotifications = (ui = {}) => {
             type: 'danger',
         },
     };
-    const allowed_notifications = Object.keys(notifications)
-        .filter(key => (isMobile() ? mobile.includes(key) : true))
-        .reduce((obj, key) => {
-            obj[key] = notifications[key];
-            return obj;
-        }, {});
-    return allowed_notifications;
+    return notifications;
 };
 
 const hasMissingRequiredField = (account_settings, client) => {
@@ -404,14 +397,16 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     };
 };
 
-export const excluded_notifications = [
-    'you_are_offline',
-    'password_changed',
-    'switch_to_tick_chart',
-    'contract_sold',
-    'maintenance',
-    'bot_switch_account',
-];
+export const excluded_notifications = isMobile()
+    ? ['contract_sold']
+    : [
+          'you_are_offline',
+          'password_changed',
+          'switch_to_tick_chart',
+          'contract_sold',
+          'maintenance',
+          'bot_switch_account',
+      ];
 
 export const handleClientNotifications = (
     client,

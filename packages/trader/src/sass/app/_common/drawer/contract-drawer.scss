@@ -205,7 +205,7 @@ $header-height: 4em;
     &__body {
         border-radius: $BORDER_RADIUS;
         width: 100%;
-        padding: 4px 12px 0;
+        padding: 4px 12px 8px;
         color: var(--text-prominent);
         display: flex;
 
@@ -268,6 +268,9 @@ $header-height: 4em;
             @include mobile {
                 width: 100%;
             }
+        }
+        .positions-drawer-dialog-toggle {
+            bottom: 60px;
         }
     }
     &-items-wrapper {

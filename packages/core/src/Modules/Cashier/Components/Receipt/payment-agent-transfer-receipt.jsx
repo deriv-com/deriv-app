@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Icon } from '@deriv/components';
+import { routes } from '@deriv/shared/routes';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
-import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 
 class PaymentAgentTransferReceipt extends React.Component {
@@ -16,13 +16,10 @@ class PaymentAgentTransferReceipt extends React.Component {
 
     render() {
         return (
-            <div className='cashier__wrapper'>
+            <div className='cashier__wrapper payment-agent-transfer__wrapper'>
                 <div className='cashier__success'>
                     <h2 className='cashier__header'>
-                        <Localize
-                            i18n_default_text='Your funds have been transferred to {{name}}.'
-                            values={{ name: this.props.receipt.client_name }}
-                        />
+                        <Localize i18n_default_text='Your funds have been transferred' />
                     </h2>
                     <div className='cashier__transferred-amount cashier__text--bold'>
                         <span className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)} />
@@ -32,16 +29,16 @@ class PaymentAgentTransferReceipt extends React.Component {
                         <span className='account-transfer__transfer-details-from'>
                             <Icon icon={`IcCurrency-${this.props.currency.toLowerCase()}`} />
                             <span className='cashier__transferred-details'>
-                                <span className='cashier__text--bold'>{this.props.currency.toUpperCase()}</span>&nbsp;(
-                                {this.props.loginid})
+                                <span className='cashier__text--bold'>{this.props.currency.toUpperCase()}</span>
+                                {this.props.loginid}
                             </span>
                         </span>
                         <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
                         <span className='account-transfer__transfer-details-to'>
                             <Icon icon='IcUserOutline' />
                             <span className='cashier__transferred-details'>
-                                <span className='cashier__text--bold'>{this.props.receipt.client_name}</span>&nbsp;(
-                                {this.props.receipt.client_id})
+                                <span className='cashier__text--bold'>{this.props.receipt.client_name}</span>
+                                &nbsp;{this.props.receipt.client_id}
                             </span>
                         </span>
                     </div>
@@ -58,7 +55,7 @@ class PaymentAgentTransferReceipt extends React.Component {
                     <Button
                         className='cashier__form-submit-button cashier__done-button'
                         has_effect
-                        text={localize('Done')}
+                        text={localize('Make a new transfer')}
                         onClick={this.props.resetPaymentAgentTransfer}
                         primary
                         large

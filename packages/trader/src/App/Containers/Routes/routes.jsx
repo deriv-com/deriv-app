@@ -2,25 +2,25 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter, matchPath, Prompt } from 'react-router';
+import { routes } from '@deriv/shared/routes';
 import BinaryRoutes from 'App/Components/Routes';
 import Lazy from 'App/Containers/Lazy';
-import AppRoutes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 
 const tradePageMountingMiddleware = (route_to, action, current_pathname, cb) => {
     if (action === 'PUSH' || action === 'POP') {
         // We use matchPath here because on contract route, there will be an ID
         // parameter which matchPath takes into account.
-        const is_routing_to_contract = matchPath(route_to.pathname, { path: AppRoutes.contract, exact: true });
+        const is_routing_to_contract = matchPath(route_to.pathname, { path: routes.contract, exact: true });
         const is_routing_from_contract = matchPath(current_pathname, {
-            path: AppRoutes.contract,
+            path: routes.contract,
             exact: true,
         });
 
         cb(
             !!(
-                (current_pathname === AppRoutes.trade && is_routing_to_contract) ||
-                (route_to.pathname === AppRoutes.trade && is_routing_from_contract)
+                (current_pathname === routes.trade && is_routing_to_contract) ||
+                (route_to.pathname === routes.trade && is_routing_from_contract)
             )
         );
     }

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { removeBranchName } from '@deriv/shared/utils/url';
+import { routes } from '@deriv/shared/routes';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { redirectToLogin, redirectToSignUp } from '_common/base/login';
 import { WS } from 'Services/ws-methods';
 import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
 import { default_title } from 'App/Constants/app-config';
-import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 
 const RouteWithSubRoutes = route => {

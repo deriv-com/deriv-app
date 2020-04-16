@@ -1,12 +1,14 @@
 import { action, computed, observable, toJS } from 'mobx';
 import { isDesktop } from '@deriv/shared/utils/screen';
+import { WS } from 'Services/ws-methods';
 import { LocalStore } from '_common/storage';
 import { switch_to_tick_chart } from './Helpers/chart-notifications';
 import ContractStore from './contract-store';
 import getValidationRules from './Constants/validation-rules';
-import { isEnded } from './Helpers/logic';
+import { isEnded, getContractUpdateConfig } from './Helpers/logic';
 import { isMultiplierContract } from './Helpers/multiplier';
 import { isCallPut } from './Helpers/contract-type';
+import { getLimitOrder } from './Helpers/limit-orders';
 import BaseStore from '../../base-store';
 import { getContractTypesConfig } from '../Trading/Constants/contract';
 
@@ -21,8 +23,11 @@ export default class ContractTradeStore extends BaseStore {
     @observable granularity = +LocalStore.get('contract_trade.granularity') || 0;
     @observable chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
 
-    @observable contract_update_stop_loss;
-    @observable contract_update_take_profit;
+    // Multiplier contract update observable refs
+    @observable.ref has_contract_update_stop_loss;
+    @observable.ref has_contract_update_take_profit;
+    @observable.ref contract_update_stop_loss;
+    @observable.ref contract_update_take_profit;
 
     constructor({ root_store }) {
         super({
@@ -58,6 +63,51 @@ export default class ContractTradeStore extends BaseStore {
         if (this.granularity === 0) {
             this.root_store.ui.removeNotificationMessage(switch_to_tick_chart);
         }
+    }
+
+    @action.bound
+    clearContractUpdateConfigValues(contract_id) {
+        const contract = this.getContractById(contract_id);
+        contract.contract_update_config = getContractUpdateConfig(contract.contract_info);
+        this.validation_errors.contract_update_stop_loss = [];
+        this.validation_errors.contract_update_take_profit = [];
+    }
+
+    @action.bound
+    onChange({ name, value }, contract_id) {
+        this.contract_id = contract_id;
+
+        const contract = this.getContractById(this.contract_id);
+        contract.contract_update_config[name] = value;
+
+        this[name] = value; // update respective refs for validations to work
+        this.validateProperty(name, this[name]);
+    }
+
+    @action.bound
+    updateLimitOrder(contract_id) {
+        const contract = this.getContractById(contract_id);
+        const limit_order = getLimitOrder(contract.contract_update_config);
+
+        WS.contractUpdate(contract_id, limit_order).then(response => {
+            if (response.error) {
+                this.root_store.common.setServicesError({
+                    type: response.msg_type,
+                    ...response.error,
+                });
+                this.root_store.ui.toggleServicesErrorModal(true);
+                return;
+            }
+
+            // Update contract store
+            contract.populateContractUpdateConfig(response);
+            if (this.root_store.ui.is_history_tab_active) {
+                WS.contractUpdateHistory(contract_id).then(contract.populateContractUpdateHistory);
+            }
+
+            // Update portfolio store
+            this.root_store.modules.portfolio.populateContractUpdate(response, contract_id);
+        });
     }
 
     applicable_contracts = () => {
@@ -214,6 +264,10 @@ export default class ContractTradeStore extends BaseStore {
 
     @action.bound
     getContractById(contract_id) {
-        return this.contracts_map[contract_id];
+        return (
+            this.contracts_map[contract_id] ||
+            // or get contract from contract_replay store when user is on the contract details page
+            this.root_store.modules.contract_replay.contract_store
+        );
     }
 }

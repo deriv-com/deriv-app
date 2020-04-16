@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
+import { routes } from '@deriv/shared/routes';
 import { getAllRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
-import routes from 'Constants/routes';
+import { WS } from 'Services';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
@@ -40,9 +41,31 @@ const MenuLink = ({ link_to, icon, is_disabled, suffix_icon, text, onClickLink }
 class ToggleMenuDrawer extends React.Component {
     constructor(props) {
         super(props);
+        // TODO: find better fix for no-op issue
+        this.is_mounted = false;
         this.state = {
+            is_high_risk_client: false,
             is_open: false,
+            needs_verification: false,
         };
+    }
+
+    componentDidMount() {
+        this.is_mounted = true;
+        WS.wait('authorize', 'get_account_status').then(() => {
+            if (this.props.account_status) {
+                const { authentication } = this.props.account_status;
+                const is_high_risk_client = this.props.is_high_risk;
+                const needs_verification =
+                    authentication.needs_verification.includes('identity') ||
+                    authentication.needs_verification.includes('document');
+                if (this.is_mounted) this.setState({ is_high_risk_client, needs_verification });
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        this.is_mounted = false;
     }
 
     toggleDrawer = () => {
@@ -50,8 +73,23 @@ class ToggleMenuDrawer extends React.Component {
     };
 
     getRoutesWithSubMenu = route_config => {
+        const { is_high_risk_client, needs_verification } = this.state;
         const has_access = route_config.is_authenticated ? this.props.is_logged_in : true;
-        if (!has_access || !route_config.routes) return null;
+        if (!has_access) return null;
+
+        if (!route_config.routes) {
+            return (
+                <MobileDrawer.Item key={route_config.title}>
+                    <MenuLink
+                        link_to={route_config.path}
+                        icon={route_config.icon_component}
+                        text={route_config.title}
+                        onClickLink={this.toggleDrawer}
+                    />
+                </MobileDrawer.Item>
+            );
+        }
+
         const has_subroutes = route_config.routes.some(route => route.subroutes);
         return (
             <MobileDrawer.SubMenu
@@ -62,16 +100,27 @@ class ToggleMenuDrawer extends React.Component {
                 submenu_suffix_icon='IcChevronRight'
             >
                 {!has_subroutes &&
-                    route_config.routes.map(route => (
-                        <MobileDrawer.Item key={route.title}>
-                            <MenuLink
-                                link_to={route.path}
-                                icon={route.icon_component}
-                                text={route.title}
-                                onClickLink={this.toggleDrawer}
-                            />
-                        </MobileDrawer.Item>
-                    ))}
+                    route_config.routes.map(route => {
+                        if (
+                            (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
+                            (route.path !== routes.cashier_pa_transfer ||
+                                this.props.is_payment_agent_transfer_visible) &&
+                            (route.path !== routes.cashier_p2p ||
+                                (this.props.is_p2p_visible && /show_p2p/.test(this.props.location.hash)))
+                        ) {
+                            return (
+                                <MobileDrawer.Item key={route.title}>
+                                    <MenuLink
+                                        link_to={route.path}
+                                        icon={route.icon_component}
+                                        text={route.title}
+                                        onClickLink={this.toggleDrawer}
+                                    />
+                                </MobileDrawer.Item>
+                            );
+                        }
+                        return undefined;
+                    })}
                 {has_subroutes &&
                     route_config.routes.map(route => (
                         <MobileDrawer.SubMenuSection
@@ -82,7 +131,14 @@ class ToggleMenuDrawer extends React.Component {
                             {route.subroutes.map(subroute => (
                                 <MenuLink
                                     key={subroute.title}
-                                    is_disabled={subroute.is_disabled}
+                                    is_disabled={
+                                        (!needs_verification &&
+                                            !is_high_risk_client &&
+                                            /proof-of-identity|proof-of-address|financial-assessment/.test(
+                                                subroute.path
+                                            )) ||
+                                        subroute.is_disabled
+                                    }
                                     link_to={subroute.path}
                                     text={subroute.title}
                                     onClickLink={this.toggleDrawer}
@@ -96,9 +152,10 @@ class ToggleMenuDrawer extends React.Component {
 
     render() {
         const all_routes_config = getAllRoutesConfig();
-        const allowed_routes = [routes.reports, routes.account];
+        const subroutes_config = [].concat(...all_routes_config.map(i => i.routes || []));
+        const allowed_routes = [routes.reports, routes.account, routes.cashier];
         const routes_config = allowed_routes
-            .map(path => all_routes_config.find(r => r.path === path))
+            .map(path => all_routes_config.find(r => r.path === path) || subroutes_config.find(r => r.path === path))
             .filter(route => route);
         return (
             <React.Fragment>

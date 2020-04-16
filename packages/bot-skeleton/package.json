@@ -83,8 +83,7 @@
     "trackjs": "^2.10.2",
     "webpack": "^4.34.0",
     "webpack-bundle-analyzer": "^3.6.0",
-    "webpack-cli": "^3.3.4",
-    "webpack-merge-and-include-globally": "^2.1.16"
+    "webpack-cli": "^3.3.4"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",

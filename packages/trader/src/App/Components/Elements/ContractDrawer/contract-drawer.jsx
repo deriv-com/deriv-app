@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import routes from 'Constants/routes';
+import { routes } from '@deriv/shared/routes';
 import ContractAudit from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getDurationPeriod, getDurationTime, getDurationUnitText } from 'Stores/Modules/Portfolio/Helpers/details';
@@ -39,6 +39,7 @@ class ContractDrawer extends Component {
 
         const {
             contract_info,
+            contract_update,
             contract_update_history,
             is_sell_requested,
             is_dark_theme,
@@ -72,6 +73,7 @@ class ContractDrawer extends Component {
             <React.Fragment>
                 <ContractDrawerCard
                     contract_info={contract_info}
+                    contract_update={contract_update}
                     currency={currency}
                     is_multiplier={is_multiplier}
                     is_sell_requested={is_sell_requested}

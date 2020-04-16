@@ -1,7 +1,7 @@
 $MIN_HEIGHT_FULL_SCREEN: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT});
 
 $FLOATING_PADDING: 2.4rem;
-$FLOATING_HEADER_HEIGHT: 41px;
+$FLOATING_HEADER_HEIGHT: 53px;
 $MIN_HEIGHT_FLOATING: calc(
     100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - #{$FLOATING_PADDING}
 );
@@ -92,7 +92,7 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     &__header-title {
         @include typeface(--title-center-bold-black, none);
-        color: var(--text-general);
+        color: var(--text-prominent);
         padding: 1.6rem;
         display: flex;
         align-items: center;
@@ -175,7 +175,7 @@ $MIN_HEIGHT_FLOATING: calc(
             padding: 0 0.4rem;
             margin: 0 0.4rem;
             background-color: var(--text-loss-danger);
-            color: var(--general-main-1);
+            color: var(--status-colored-background);
             border-radius: 8px;
         }
         &--floating {

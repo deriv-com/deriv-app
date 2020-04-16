@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button, Icon } from '@deriv/components';
-import ButtonLink from 'App/Components/Routes/button-link.jsx';
+import { Button, Icon, ButtonLink } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import IconMessageContent from '../../../Components/icon-message-content.jsx';
 
@@ -27,17 +26,17 @@ export const Expired = ({ onClick }) => (
     </IconMessageContent>
 );
 
-export const NeedsReview = () => (
+export const NeedsReview = ({ is_description_disabled = false }) => (
     <IconMessageContent
         message={localize('Your proof of address was submitted successfully')}
         text={localize('Your document is being reviewed, please check back in 1-3 days.')}
         icon={<Icon icon='IcPoaVerified' size={128} />}
     >
-        <ContinueTradingButton />
+        {!is_description_disabled && <ContinueTradingButton />}
     </IconMessageContent>
 );
 
-export const Submitted = ({ needs_poi }) => {
+export const Submitted = ({ needs_poi, is_description_disabled = false }) => {
     const message = localize('Your proof of address was submitted successfully');
     if (needs_poi) {
         return (
@@ -58,12 +57,12 @@ export const Submitted = ({ needs_poi }) => {
             text={localize('Your document is being reviewed, please check back in 1-3 days.')}
             icon={<Icon icon='IcPoaVerified' size={128} />}
         >
-            <ContinueTradingButton />
+            {!is_description_disabled && <ContinueTradingButton />}
         </IconMessageContent>
     );
 };
 
-export const Verified = ({ needs_poi }) => {
+export const Verified = ({ needs_poi, is_description_disabled = false }) => {
     const message = localize('Your proof of address is verified');
     if (needs_poi) {
         return (
@@ -78,7 +77,7 @@ export const Verified = ({ needs_poi }) => {
     }
     return (
         <IconMessageContent message={message} icon={<Icon icon='IcPoaVerified' size={128} />}>
-            <ContinueTradingButton />
+            {!is_description_disabled && <ContinueTradingButton />}
         </IconMessageContent>
     );
 };

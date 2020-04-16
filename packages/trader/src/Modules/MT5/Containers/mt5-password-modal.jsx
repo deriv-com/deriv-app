@@ -1,15 +1,15 @@
-import { Icon, PasswordInput, Modal, PasswordMeter } from '@deriv/components';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
+import { FormSubmitButton, Icon, Modal, PasswordInput, PasswordMeter } from '@deriv/components';
+import { routes } from '@deriv/shared/routes';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
-import routes from 'Constants/routes';
-import { connect } from 'Stores/connect';
-import { validPassword, validLength } from 'Utils/Validator/declarative-validation-rules';
-import FormSubmitButton from '../Components/mt5-form-submit-button.jsx';
 import 'Sass/app/modules/mt5/mt5.scss';
+import { connect } from 'Stores/connect';
+import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
+import AdvancedDescription from './advanced-description.jsx';
 
 const getSubmitText = (account_title, category) => {
     if (category === 'real') {
@@ -84,6 +84,7 @@ const MT5PasswordModal = ({
     const IconType = () => getIconFromType(account_type.type);
     const should_show_password = is_mt5_password_modal_enabled && !has_mt5_error && !is_mt5_success_dialog_enabled;
     const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
+    const is_real_advanced = [account_type.category, account_type.type].join('_') === 'real_advanced';
 
     return (
         <React.Fragment>
@@ -91,6 +92,7 @@ const MT5PasswordModal = ({
                 className='mt5-password-modal'
                 is_open={should_show_password}
                 toggleModal={closeModal}
+                width={is_real_advanced ? '360px' : 'auto'}
                 has_close_icon
             >
                 <Formik
@@ -115,7 +117,7 @@ const MT5PasswordModal = ({
                         <form onSubmit={handleSubmit}>
                             <h2>
                                 <Localize
-                                    i18n_default_text='Choose a password for your DMT5 {{ account_type }}'
+                                    i18n_default_text='Choose a password for your DMT5 {{ account_type }} account'
                                     values={{
                                         account_type: account_title,
                                     }}
@@ -141,11 +143,13 @@ const MT5PasswordModal = ({
                                     <p>
                                         <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters with numbers' />
                                     </p>
+                                    <AdvancedDescription is_real_advanced={is_real_advanced} />
                                 </div>
                             </div>
                             <FormSubmitButton
+                                is_center={is_real_advanced}
                                 is_disabled={isSubmitting || !values.password || Object.keys(errors).length > 0}
-                                has_cancel
+                                has_cancel={!is_real_advanced}
                                 cancel_label={localize('Cancel')}
                                 onCancel={closeModal}
                                 is_loading={isSubmitting}

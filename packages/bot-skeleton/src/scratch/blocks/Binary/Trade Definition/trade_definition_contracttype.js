@@ -29,6 +29,8 @@ Blockly.Blocks.trade_definition_contracttype = {
 
         this.enforceLimitations();
 
+        const is_load_event = /^dbot-load/.test(event.group);
+
         if (Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'TRADETYPE_LIST') {
                 const trade_type = event.newValue;
@@ -47,7 +49,10 @@ Blockly.Blocks.trade_definition_contracttype = {
                     contract_type_options.push(...config.NOT_AVAILABLE_DROPDOWN_OPTIONS);
                 }
 
-                contract_type_list.updateOptions(contract_type_options, { event_group: event.group });
+                contract_type_list.updateOptions(contract_type_options, {
+                    event_group: event.group,
+                    default_value: is_load_event ? contract_type_list.getValue() : undefined,
+                });
             }
         }
     },

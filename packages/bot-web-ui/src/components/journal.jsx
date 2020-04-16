@@ -32,7 +32,7 @@ const FormatMessage = ({ logType, className, extra }) => {
                 const { longcode, transaction_id } = extra;
                 return (
                     <Localize
-                        i18n_default_text='<0>Bought</0>: {{longcode}} (ID: {{transaction_id}})'
+                        i18n_default_text='<0>Bought</0>: {{- longcode}} (ID: {{transaction_id}})'
                         values={{ longcode, transaction_id }}
                         components={[<span key={0} className='journal__text--info' />]}
                     />

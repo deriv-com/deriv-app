@@ -5,9 +5,40 @@
         .sendbird-conversation {
             margin-top: 2.4rem;
             width: 440px;
-            height: inherit;
+            min-height: 555px;
             border-radius: 4px;
+            border: none;
             box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.08), 0 0 8px 0 rgba(0, 0, 0, 0.08);
+
+            .sendbird-chat-header {
+                background-color: var(--general-section-1);
+                border-radius: 4px 4px 0 0;
+                border-bottom: none;
+            }
+            .sendbird-conversation__footer {
+                padding: 16px 24px;
+                border-top: 2px solid var(--general-section-1);
+
+                .sendbird-message-input {
+                    height: 40px;
+
+                    &--textarea {
+                        height: inherit;
+                        padding: 10px 8px 10px 44px;
+                        line-height: normal;
+                        border: 1px solid var(--border-normal);
+                    }
+                    &--placeholder {
+                        top: 10px;
+                        left: 44px;
+                    }
+                }
+                .sendbird-iconbutton {
+                    top: 4px;
+                    left: 4px;
+                    padding: 0;
+                }
+            }
         }
     }
     &__wrapper {
@@ -30,6 +61,7 @@
             border-radius: 4px;
             padding: 0.8rem;
             margin-right: 32px;
+            height: fit-content;
         }
         &--inner {
             background-color: var(--general-main-1);

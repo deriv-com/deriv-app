@@ -97,6 +97,7 @@ const getModifiedP2POrder = response => {
     const price_rate = +response.rate;
     const transaction_amount = +response.price;
     const payment_method = map_payment_method.bank_transfer; // TODO: [p2p-replace-with-api] add payment method to order details once API has it
+    const chat_channel_url = response.chat_channel_url;
     // const payment_method = response.payment_method;
 
     return {
@@ -105,6 +106,7 @@ const getModifiedP2POrder = response => {
         price_rate,
         transaction_amount,
         transaction_currency,
+        chat_channel_url,
         advertiser_name: ObjectUtils.getPropertyValue(response, ['advertiser_details', 'name']),
         advertiser_notes: ObjectUtils.getPropertyValue(response, ['advert_details', 'description']),
         display_offer_amount: formatMoney(offer_currency, offer_amount),
@@ -151,8 +153,8 @@ const getModifiedResponse = response => {
     return modified_response;
 };
 
-export const subscribeWS = (request, cb) => {
+export const subscribeWS = (request, callbacks) => {
     ws.p2pSubscribe(request, response => {
-        cb(getModifiedResponse(response));
+        callbacks.map(callback => callback(getModifiedResponse(response)));
     });
 };

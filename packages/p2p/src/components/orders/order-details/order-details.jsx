@@ -12,13 +12,15 @@ import OrderActionsBlock from './order-actions-block.jsx';
 import OrderDetailsResultMessage from './order-details-result-message.jsx';
 import OrderDetailsChatbox from './order-details-chatbox.jsx';
 import Popup from '../popup.jsx';
+import { chatCreate } from '../../../utils/sendbird';
 
 import './order-details.scss';
 
-const OrderDetails = ({ order_details }) => {
+const OrderDetails = ({ order_details, chat_info }) => {
     const {
         advertiser_name,
         advertiser_notes,
+        chat_channel_url,
         display_offer_amount,
         display_price_rate,
         display_transaction_amount,
@@ -105,7 +107,10 @@ const OrderDetails = ({ order_details }) => {
                     </div>
                 </div>
 
-                <OrderDetailsChatbox />
+                <OrderDetailsChatbox
+                    {...chat_info}
+                    channel_url={chat_channel_url || chatCreate(id).then(val => val).channel_url}
+                />
             </div>
 
             <FooterActions>

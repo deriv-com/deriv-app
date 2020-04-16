@@ -6,7 +6,7 @@ import OrderInfo from './order-info';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
-const Orders = ({ orders, params }) => {
+const Orders = ({ orders, params, chat_info }) => {
     const [order_details, setDetails] = React.useState(null);
     const showDetails = setDetails;
     const hideDetails = () => setDetails(null);
@@ -49,7 +49,7 @@ const Orders = ({ orders, params }) => {
                                   })
                         }
                     />
-                    <OrderDetails order_details={order_details} />
+                    <OrderDetails order_details={order_details} chat_info={chat_info} />
                 </React.Fragment>
             )}
             {!order_details && <OrderTable orders={orders} showDetails={showDetails} />}

@@ -5,8 +5,7 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import { Tabs } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
-import { init as WebsocketInit, getModifiedP2POrderList, subscribeWS } from 'Utils/websocket';
-import { init as SendbirdInit } from 'Utils/sendbird';
+import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
@@ -29,7 +28,6 @@ class App extends Component {
 
         setLanguage(this.props.lang);
         WebsocketInit(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
-        SendbirdInit();
         ServerTime.init(this.props.server_time);
 
         this.state = {
@@ -40,6 +38,11 @@ class App extends Component {
             is_advertiser: false,
             advertiser_id: null,
             advertiser_name: null,
+            chat_info: {
+                app_id: '',
+                user_id: '',
+                token: '',
+            },
         };
     }
 
@@ -57,6 +60,18 @@ class App extends Component {
             const advertiser_id = ObjectUtils.getPropertyValue(advertiser_info, ['p2p_advertiser_info', 'id']);
             const advertiser_name = ObjectUtils.getPropertyValue(advertiser_info, ['p2p_advertiser_info', 'name']);
             this.setState({ advertiser_id, advertiser_name, is_advertiser: true });
+        }
+    };
+
+    setChatInformation = advertiser_info => {
+        if (!advertiser_info.error) {
+            // This is using QA10 SendBird AppId, please change to production's SendBird AppId when we deploy to production.
+            const app_id = '0D7CB7BD-554A-43D0-A34E-945C299B49D4';
+            const user_id = ObjectUtils.getPropertyValue(advertiser_info, ['p2p_advertiser_info', 'chat_user_id']);
+            const token =
+                ObjectUtils.getPropertyValue(advertiser_info, ['p2p_advertiser_info', 'chat_token']) ||
+                requestWS({ service_token: 1, service: 'sendbird' }).then(val => val);
+            this.setState({ chat_info: { app_id, user_id, token } });
         }
     };
 
@@ -109,13 +124,12 @@ class App extends Component {
     };
 
     componentDidMount() {
-        subscribeWS({ p2p_advertiser_info: 1, subscribe: 1 }, this.setIsAdvertiser);
-
-        subscribeWS({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);
+        subscribeWS({ p2p_advertiser_info: 1, subscribe: 1 }, [this.setIsAdvertiser, this.setChatInformation]);
+        subscribeWS({ p2p_order_list: 1, subscribe: 1 }, [this.setP2pOrderList]);
     }
 
     render() {
-        const { active_index, orders, parameters, notification_count } = this.state;
+        const { active_index, orders, parameters, notification_count, chat_info } = this.state;
         const {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
@@ -149,7 +163,12 @@ class App extends Component {
                             <BuySell navigate={this.redirectTo} params={parameters} />
                         </div>
                         <div count={notification_count} label={localize('Orders')}>
-                            <Orders navigate={this.redirectTo} orders={orders} params={parameters} />
+                            <Orders
+                                navigate={this.redirectTo}
+                                orders={orders}
+                                params={parameters}
+                                chat_info={chat_info}
+                            />
                         </div>
                         <div label={localize('My ads')}>
                             <MyAds navigate={this.redirectTo} params={parameters} />

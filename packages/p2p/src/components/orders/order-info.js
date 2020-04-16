@@ -6,6 +6,7 @@ export default class OrderInfo {
     type = '';
     advertiser_name = '';
     advertiser_notes = '';
+    chat_channel_url = '';
     order_purchase_datetime = '';
     price_rate = 0;
     display_price_rate = '';

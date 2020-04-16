@@ -1,12 +1,11 @@
 import classNames from 'classnames';
-import { Div100vhContainer, MobileWrapper, Icon, ThemedScrollbars } from '@deriv/components';
+import { FormSubmitButton, Div100vhContainer, MobileWrapper, Icon, ThemedScrollbars } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik } from 'formik';
 import { isMobile, isDesktop } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
-import FormSubmitButton from './form-submit-button.jsx';
 import 'Sass/currency-select-radio.scss';
 
 // Radio input

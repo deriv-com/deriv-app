@@ -1,47 +1,17 @@
 import classNames from 'classnames';
-import { Icon, Button, Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
+import { Icon, Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
-import { getDerivComLink } from '_common/url';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
+import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
-
-const ErrorModal = ({ message, code, openPersonalDetails }) => {
-    return (
-        <div className='account-wizard--error'>
-            <Icon icon='IcAccountError' size={115} />
-            <h1>
-                <Localize i18n_default_text='Whoops!' />
-            </h1>
-            <p>{localize(message)}</p>
-            {code !== 'InvalidPhone' && (
-                <a
-                    href={getDerivComLink('help-centre')}
-                    type='button'
-                    className='dc-btn dc-btn--primary dc-btn__medium'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                >
-                    <span className='dc-btn__text'>
-                        <Localize i18n_default_text='Go To Help Centre' />
-                    </span>
-                </a>
-            )}
-            {code === 'InvalidPhone' && (
-                <Button primary onClick={openPersonalDetails}>
-                    <Localize i18n_default_text='Try again using a different number' />
-                </Button>
-            )}
-        </div>
-    );
-};
 
 const LoadingModal = () => <Loading is_fullscreen={false} />;
 
@@ -110,10 +80,10 @@ class RealAccountSignup extends Component {
                 },
                 {
                     body: () => (
-                        <ErrorModal
+                        <SignupErrorContent
                             message={this.props.state_value.error_message}
                             code={this.props.state_value.error_code}
-                            openPersonalDetails={this.openPersonalDetails}
+                            onConfirm={this.openPersonalDetails}
                         />
                     ),
                     title: () => localize('Add a real account'),
@@ -266,6 +236,7 @@ export default connect(({ ui, client }) => ({
     currency: client.currency,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     closeRealAccountSignup: ui.closeRealAccountSignup,
+    closeSignupAndOpenCashier: ui.closeSignupAndOpenCashier,
     setParams: ui.setRealAccountSignupParams,
     residence: client.residence,
     is_im_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required

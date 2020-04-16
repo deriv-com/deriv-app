@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Div100vhContainer, FormProgress } from '@deriv/components';
 import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 import CurrencySelector from './currency-selector.jsx';
-import FormProgress from './form-progress.jsx';
 import { addressDetailsConfig } from './address-details-form';
 import { personalDetailsConfig } from './personal-details-form';
 import { termsOfUseConfig } from './terms-of-use-form';

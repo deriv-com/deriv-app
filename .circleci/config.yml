@@ -88,12 +88,9 @@ commands:
           aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
           aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
           aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
-  docker:
+  docker_build_push:
     description: "Build and Push image to docker hub"
     parameters:
-      docker_image_tag:
-        type: string
-        default: ${CIRCLE_SHA1}
       docker_image_latest_tag:
         type: string
         default: "latest-staging"
@@ -148,7 +145,7 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
-      - docker
+      - docker_build_push
     environment:
       NODE_ENV: staging
   build_production:
@@ -161,8 +158,7 @@ jobs:
       - compress
       - upload_artifact
       - upload_checksum
-      - docker:
-          docker_image_tag: ${CIRCLE_TAG}
+      - docker_build_push:
           docker_image_latest_tag: latest
     environment:
       NODE_ENV: staging

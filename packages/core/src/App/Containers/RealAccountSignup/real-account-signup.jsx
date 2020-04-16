@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Icon, Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
+import { Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
@@ -186,6 +186,7 @@ class RealAccountSignup extends Component {
     render() {
         const { is_real_acc_signup_on } = this.props;
         const { title: Title, body: ModalContent } = this.state.modal_content[this.active_modal_index];
+        const has_close_icon = this.active_modal_index < 2 || this.active_modal_index === 5;
 
         return (
             <>
@@ -198,7 +199,7 @@ class RealAccountSignup extends Component {
                                 this.active_modal_index >= 2 && this.active_modal_index < 5,
                         })}
                         is_open={is_real_acc_signup_on}
-                        has_close_icon={this.active_modal_index < 2 || this.active_modal_index === 5}
+                        has_close_icon={has_close_icon}
                         renderTitle={() => {
                             if (Title) {
                                 return <Title {...this.props} />;

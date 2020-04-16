@@ -1,4 +1,4 @@
-import { toMoment } from '@deriv/trader/src/Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 import { localize } from '@deriv/translations';
 import PersonalDetails from 'App/Containers/RealAccountSignup/personal-details.jsx';
 import { getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';

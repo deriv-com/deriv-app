@@ -287,7 +287,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             action: {
                 onClick: async () => {
                     const { switchAccount, first_switchable_real_loginid } = client;
-                    console.log(first_switchable_real_loginid);
+
                     await switchAccount(first_switchable_real_loginid);
                 },
                 text: localize('Verify identity'),

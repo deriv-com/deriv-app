@@ -6,9 +6,7 @@ import MT5FinancialStpRealAccountSignup from 'Modules/MT5/Containers/mt5-financi
 
 class MT5AccountOpeningRealFinancialStpModal extends Component {
     render() {
-        const { disableApp, enableApp, is_mt5_financial_stp_modal_open, setMT5FinancialStpModalState } = this.props;
-
-        const toggleModal = () => setMT5FinancialStpModalState(false);
+        const { disableApp, enableApp, is_mt5_financial_stp_modal_open, disableMt5FinancialStpModal } = this.props;
 
         return (
             <Modal
@@ -20,9 +18,9 @@ class MT5AccountOpeningRealFinancialStpModal extends Component {
                 enableApp={enableApp}
                 is_open={is_mt5_financial_stp_modal_open}
                 has_close_icon={true}
-                toggleModal={toggleModal}
+                toggleModal={disableMt5FinancialStpModal}
             >
-                <MT5FinancialStpRealAccountSignup toggleModal={toggleModal} />
+                <MT5FinancialStpRealAccountSignup toggleModal={disableMt5FinancialStpModal} />
             </Modal>
         );
     }
@@ -31,10 +29,6 @@ class MT5AccountOpeningRealFinancialStpModal extends Component {
 export default connect(({ ui, modules }) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
-    is_real_financial_stp_password_modal_open: ui.is_real_financial_stp_password_modal_open,
+    disableMt5FinancialStpModal: modules.mt5.disableMt5FinancialStpModal,
     is_mt5_financial_stp_modal_open: modules.mt5.is_mt5_financial_stp_modal_open,
-    setMT5FinancialStpModalState: modules.mt5.setMT5FinancialStpModalState,
-    account_type: modules.mt5.account_type,
-    openAccount: modules.mt5.openAccount,
-    setAccountType: modules.mt5.setAccountType,
 }))(MT5AccountOpeningRealFinancialStpModal);

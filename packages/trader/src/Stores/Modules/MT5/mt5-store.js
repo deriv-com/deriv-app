@@ -278,8 +278,8 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
-    setMT5FinancialStpModalState(state = false) {
-        this.is_mt5_financial_stp_modal_open = state;
+    disableMt5FinancialStpModal() {
+        this.is_mt5_financial_stp_modal_open = false;
     }
 
     @action.bound

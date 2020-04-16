@@ -11,6 +11,7 @@ import Input from './input.jsx';
 class InputField extends React.Component {
     render() {
         const {
+            ariaLabel,
             checked,
             className,
             classNameInlinePrefix,
@@ -163,6 +164,7 @@ class InputField extends React.Component {
 
         const input = (
             <Input
+                ariaLabel={ariaLabel}
                 changeValue={changeValue}
                 checked={checked}
                 current_focus={current_focus}
@@ -263,6 +265,7 @@ class InputField extends React.Component {
 // supports more than two different types of 'value' as a prop.
 // Quick Solution - Pass two different props to input field.
 InputField.propTypes = {
+    ariaLabel: PropTypes.string,
     checked: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     className: PropTypes.string,
     classNameInlinePrefix: PropTypes.string,

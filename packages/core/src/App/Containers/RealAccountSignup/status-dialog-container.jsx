@@ -115,7 +115,7 @@ export default connect(({ client, ui }) => ({
     currency: client.currency,
     is_fully_authenticated: client.is_fully_authenticated,
     is_age_verified: client.is_age_verified,
-    is_im_residence: client.residence === 'im',
+    is_im_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
     closeModal: ui.closeRealAccountSignup,
     switchToVirtual: () => client.switchAccount(client.virtual_account_loginid),
 }))(withRouter(StatusDialogContainer));

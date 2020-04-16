@@ -289,7 +289,6 @@ class PersonalDetails extends React.Component {
                                                             touched.account_opening_reason &&
                                                             errors.account_opening_reason
                                                         }
-                                                        // disabled={this.props.value.account_opening_reason}
                                                         list_items={this.props.account_opening_reason_list}
                                                         onItemSelection={({ value, text }) =>
                                                             setFieldValue(
@@ -314,7 +313,6 @@ class PersonalDetails extends React.Component {
                                                         type='text'
                                                         label={localize('Title*')}
                                                         error={touched.salutation && errors.salutation}
-                                                        // disabled={this.props.value.salutation}
                                                         list_items={this.props.salutation_list}
                                                         onItemSelection={({ value, text }) =>
                                                             setFieldValue('salutation', value ? text : '', true)
@@ -350,7 +348,6 @@ class PersonalDetails extends React.Component {
                                                         type='text'
                                                         label={localize('Place of birth*')}
                                                         error={touched.place_of_birth && errors.place_of_birth}
-                                                        // disabled={this.props.value.place_of_birth}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={({ value, text }) =>
                                                             setFieldValue('place_of_birth', value ? text : '', true)

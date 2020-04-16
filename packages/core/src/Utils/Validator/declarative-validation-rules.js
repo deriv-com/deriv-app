@@ -144,7 +144,7 @@ const initPreBuildDVRs = () => ({
         func: validGeneral,
         message: localize('Only letters, numbers, space, hyphen, period, and apostrophe are allowed.'),
     },
-    length: { func: validLength, message: '' },
+    length: { func: validLength, message: '' }, // Message will be set in validLength function on initiation
     letter_symbol: {
         func: validLetterSymbol,
         message: localize('Only letters, space, hyphen, period, and apostrophe are allowed.'),

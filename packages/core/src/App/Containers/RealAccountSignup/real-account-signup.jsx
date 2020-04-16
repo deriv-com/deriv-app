@@ -268,6 +268,6 @@ export default connect(({ ui, client }) => ({
     closeRealAccountSignup: ui.closeRealAccountSignup,
     setParams: ui.setRealAccountSignupParams,
     residence: client.residence,
-    is_im_residence: client.residence === 'im',
+    is_im_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
     state_value: ui.real_account_signup,
 }))(withRouter(RealAccountSignup));

@@ -1,7 +1,16 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { FormSubmitButton, ThemedScrollbars, Dropdown, Loading, Div100vhContainer } from '@deriv/components';
+import {
+    FormSubmitButton,
+    ThemedScrollbars,
+    Dropdown,
+    Loading,
+    Div100vhContainer,
+    SelectNative,
+    DesktopWrapper,
+    MobileWrapper,
+} from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
@@ -261,25 +270,46 @@ class MT5POA extends Component {
                                                             placeholder={localize('Town/City')}
                                                         />
                                                         <fieldset className='address-state__fieldset'>
-                                                            <Field name='address_state'>
-                                                                {({ field }) => (
-                                                                    <Dropdown
-                                                                        is_alignment_top={window.innerHeight < 930}
-                                                                        id='address_state'
-                                                                        required
-                                                                        className='address_state-dropdown'
-                                                                        is_align_text_left
-                                                                        list={states_list}
-                                                                        error={
-                                                                            touched[field.name] && errors[field.name]
-                                                                        }
-                                                                        name='address_state'
-                                                                        value={values.address_state}
-                                                                        onChange={handleChange}
-                                                                        placeholder={localize('State/Province')}
-                                                                    />
-                                                                )}
-                                                            </Field>
+                                                            <DesktopWrapper>
+                                                                <Field name='address_state'>
+                                                                    {({ field }) => (
+                                                                        <Dropdown
+                                                                            is_alignment_top={window.innerHeight < 930}
+                                                                            id='address_state'
+                                                                            required
+                                                                            className='address_state-dropdown'
+                                                                            is_align_text_left
+                                                                            list={states_list}
+                                                                            error={
+                                                                                touched[field.name] &&
+                                                                                errors[field.name]
+                                                                            }
+                                                                            name='address_state'
+                                                                            value={values.address_state}
+                                                                            onChange={handleChange}
+                                                                            placeholder={localize('State/Province')}
+                                                                        />
+                                                                    )}
+                                                                </Field>
+                                                            </DesktopWrapper>
+                                                            <MobileWrapper>
+                                                                <SelectNative
+                                                                    label={localize('State/Province')}
+                                                                    value={values.address_state}
+                                                                    list_items={states_list}
+                                                                    error={
+                                                                        touched.address_state && errors.address_state
+                                                                    }
+                                                                    use_text={true}
+                                                                    onChange={e =>
+                                                                        setFieldValue(
+                                                                            'address_state',
+                                                                            e.target.value,
+                                                                            true
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </MobileWrapper>
                                                         </fieldset>
                                                         <InputField
                                                             name='address_postcode'

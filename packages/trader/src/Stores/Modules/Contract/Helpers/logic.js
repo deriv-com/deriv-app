@@ -124,34 +124,36 @@ export const getEndTime = contract_info => {
 };
 
 export const getProfit = modules_store => {
-    const { contract_replay, portfolio } = modules_store;
-    const contract_id = portfolio.active_positions_drawer_dialog_id;
-    const contract_info = contract_replay.getContractById(contract_id).contract_info;
+    const { contract_trade } = modules_store;
+    const contract_id = contract_trade.contract_id;
+    const contract_info = contract_trade.getContractById(contract_id).contract_info;
 
     return contract_info.profit;
 };
 
 export const getBuyPrice = modules_store => {
-    const { contract_replay, portfolio } = modules_store;
-    const contract_id = portfolio.active_positions_drawer_dialog_id;
-    const contract_info = contract_replay.getContractById(contract_id).contract_info;
+    const { contract_trade } = modules_store;
+    const contract_id = contract_trade.contract_id;
+    const contract_info = contract_trade.getContractById(contract_id).contract_info;
+
     const cancellation_price = getCancellationPrice(contract_info);
 
     return contract_info.buy_price - cancellation_price;
 };
 
 /**
- * Set contract_update initial values
- * @param {object} contract_info - proposal_open_contract response
+ * Set contract update form initial values
+ * @param {object} contract_update - contract_update response
+ * @param {object} limit_order - proposal_open_contract.limit_order response
  */
-export const getContractUpdate = ({ limit_order }) => {
-    const { stop_loss, take_profit } = getLimitOrderAmount(limit_order);
+export const getContractUpdateConfig = ({ contract_update, limit_order }) => {
+    const { stop_loss, take_profit } = getLimitOrderAmount(limit_order || contract_update);
 
     return {
         // convert stop_loss, take_profit value to string for validation to work
-        stop_loss: stop_loss ? Math.abs(stop_loss).toString() : '',
-        take_profit: take_profit ? take_profit.toString() : '',
-        has_stop_loss: !!stop_loss,
-        has_take_profit: !!take_profit,
+        contract_update_stop_loss: stop_loss ? Math.abs(stop_loss).toString() : '',
+        contract_update_take_profit: take_profit ? take_profit.toString() : '',
+        has_contract_update_stop_loss: !!stop_loss,
+        has_contract_update_take_profit: !!take_profit,
     };
 };

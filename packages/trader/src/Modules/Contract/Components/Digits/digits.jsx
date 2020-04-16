@@ -96,7 +96,7 @@ class Digits extends React.PureComponent {
         const { contract_info, is_trade_page, underlying } = this.props;
         const underlying_name = is_trade_page ? underlying : contract_info.underlying;
 
-        return localize(`Last digit stats for latest 1000 ticks for {{underlying_name}}`, {
+        return localize('Last digit stats for latest 1000 ticks for {{underlying_name}}', {
             underlying_name: getMarketNamesMap()[underlying_name.toUpperCase()],
         });
     }

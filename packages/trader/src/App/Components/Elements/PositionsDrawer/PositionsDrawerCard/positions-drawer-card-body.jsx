@@ -7,10 +7,10 @@ import { localize } from '@deriv/translations';
 import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-orders';
 import { getCancellationPrice, getIndicativePrice } from 'Stores/Modules/Contract/Helpers/logic';
 
-const MultiplierCardBody = ({ contract_info, currency, status }) => {
-    const { buy_price, is_sold, profit, multiplier, limit_order } = contract_info;
+const MultiplierCardBody = ({ contract_info, contract_update, currency, status }) => {
+    const { buy_price, is_sold, profit, multiplier } = contract_info;
 
-    const { take_profit, stop_loss } = getLimitOrderAmount(limit_order);
+    const { take_profit, stop_loss } = getLimitOrderAmount(contract_update);
     const cancellation_price = getCancellationPrice(contract_info);
 
     return (
@@ -82,12 +82,19 @@ const MultiplierCardBody = ({ contract_info, currency, status }) => {
     );
 };
 
-const CardBody = ({ contract_info, currency, is_multiplier, status }) => {
+const CardBody = ({ contract_info, contract_update, currency, is_multiplier, status }) => {
     const indicative = getIndicativePrice(contract_info);
     const { is_sold, sell_price, profit } = contract_info;
 
     if (is_multiplier) {
-        return <MultiplierCardBody contract_info={contract_info} currency={currency} status={status} />;
+        return (
+            <MultiplierCardBody
+                contract_info={contract_info}
+                contract_update={contract_update}
+                currency={currency}
+                status={status}
+            />
+        );
     }
 
     return (

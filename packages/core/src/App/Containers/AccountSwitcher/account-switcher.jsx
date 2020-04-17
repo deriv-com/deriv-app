@@ -17,11 +17,10 @@ import { localize, Localize } from '@deriv/translations';
 import { urlFor } from '_common/url';
 import { connect } from 'Stores/connect';
 import routes from 'Constants/routes';
-import { getMT5AccountDisplay } from 'Stores/Helpers/client';
+import { getAllMtAccounts, getMT5AccountDisplay } from 'Stores/Helpers/client';
 import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
-import ButtonAddAccount from './account-switcher-add-account-button.jsx';
 
 class AccountSwitcher extends React.Component {
     constructor(props) {
@@ -158,22 +157,38 @@ class AccountSwitcher extends React.Component {
         });
     }
 
-    get has_real_mt5_upgrade_button() {
-        if (!this.props.mt5_login_list) return false;
-        // TODO: Remove real account advanced string match when Real Account Advanced is enabled
-        const real_mt5_accounts = this.props.mt5_login_list.filter(account =>
-            /^real((?!advanced).)*$/.test(account.group)
-        );
-        return real_mt5_accounts.length < 2;
+    get demo_mt5() {
+        return this.sorted_mt5_list.filter(account => /^demo/.test(account.group));
     }
 
-    get has_demo_mt5_upgrade_button() {
-        if (!this.props.mt5_login_list) return false;
-        // TODO: Remove demo account advanced string match when Demo Account Advanced is enabled
-        const demo_mt5_accounts = this.props.mt5_login_list.filter(account =>
-            /^demo((?!advanced).)*$/.test(account.group)
-        );
-        return demo_mt5_accounts.length < 2;
+    get remaining_demo_mt5() {
+        // TODO: check any disabled add buttons
+        const existing_demo_mt5_groups = Object.keys(this.demo_mt5).map(account => this.demo_mt5[account].group);
+        const mt5_config = getAllMtAccounts();
+        const available = [];
+        Object.keys(mt5_config).forEach(account => {
+            if (!mt5_config[account].account_regex.test(existing_demo_mt5_groups.join(' '))) {
+                available.push(mt5_config[account]);
+            }
+        });
+        return available;
+    }
+
+    get real_mt5() {
+        return this.sorted_mt5_list.filter(account => !/^demo/.test(account.group));
+    }
+
+    get remaining_real_mt5() {
+        // TODO: check any disabled add buttons
+        const existing_real_mt5_groups = Object.keys(this.real_mt5).map(account => this.real_mt5[account].group);
+        const mt5_config = getAllMtAccounts();
+        const available = [];
+        Object.keys(mt5_config).forEach(account => {
+            if (!mt5_config[account].account_regex.test(existing_real_mt5_groups.join(' '))) {
+                available.push(mt5_config[account]);
+            }
+        });
+        return available;
     }
 
     get has_set_currency() {
@@ -270,37 +285,37 @@ class AccountSwitcher extends React.Component {
                                 </div>
                             ) : (
                                 <React.Fragment>
-                                    {this.props.has_mt5_login && (
-                                        <div
-                                            className={classNames('acc-switcher__accounts', {
-                                                'acc-switcher__accounts--has-add-account': this
-                                                    .has_demo_mt5_upgrade_button,
-                                            })}
-                                        >
-                                            {this.sorted_mt5_list
-                                                .filter(account => /^demo/.test(account.group))
-                                                .map(account => (
-                                                    <AccountList
-                                                        key={account.login}
-                                                        account_type={account.group}
-                                                        balance={account.balance}
-                                                        currency={account.currency}
-                                                        currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
-                                                        has_balance={'balance' in account}
-                                                        is_virtual
-                                                        loginid={account.display_login}
-                                                        onClickAccount={this.redirectToMt5Demo}
-                                                    />
-                                                ))}
+                                    {this.demo_mt5.length && (
+                                        <div className='acc-switcher__accounts'>
+                                            {this.demo_mt5.map(account => (
+                                                <AccountList
+                                                    key={account.login}
+                                                    account_type={account.group}
+                                                    balance={account.balance}
+                                                    currency={account.currency}
+                                                    currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
+                                                    has_balance={'balance' in account}
+                                                    is_virtual
+                                                    loginid={account.display_login}
+                                                    onClickAccount={this.redirectToMt5Demo}
+                                                />
+                                            ))}
                                         </div>
                                     )}
-                                    {this.has_demo_mt5_upgrade_button && (
-                                        <ButtonAddAccount
-                                            is_currency_required={false}
-                                            onClick={this.redirectToMt5Demo}
-                                            text={<Localize i18n_default_text='Add DMT5 account' />}
-                                        />
-                                    )}
+                                    {this.remaining_demo_mt5.map(account => (
+                                        <div key={account.title} className='acc-switcher__new-account'>
+                                            <Icon icon={`IcMt5-${account.icon}`} size={24} />
+                                            <span className='acc-switcher__new-account-text'>{account.title}</span>
+                                            <Button
+                                                onClick={this.redirectToMt5Demo} // TODO: open the corresponding account sign up modal instead
+                                                className='acc-switcher__new-account-btn'
+                                                secondary
+                                                small
+                                            >
+                                                {localize('Add')}
+                                            </Button>
+                                        </div>
+                                    ))}
                                 </React.Fragment>
                             )}
                         </AccountWrapper>
@@ -392,37 +407,36 @@ class AccountSwitcher extends React.Component {
                                 </div>
                             ) : (
                                 <React.Fragment>
-                                    {this.props.has_mt5_login && (
-                                        <div
-                                            className={classNames('acc-switcher__accounts', {
-                                                'acc-switcher__accounts--has-add-account': this
-                                                    .has_real_mt5_upgrade_button,
-                                            })}
-                                        >
-                                            {this.sorted_mt5_list
-                                                .filter(account => !/^demo/.test(account.group))
-                                                .map(account => (
-                                                    <AccountList
-                                                        key={account.login}
-                                                        account_type={account.group}
-                                                        balance={account.balance}
-                                                        currency={account.currency}
-                                                        currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
-                                                        has_balance={'balance' in account}
-                                                        loginid={account.display_login}
-                                                        onClickAccount={this.redirectToMt5Real}
-                                                    />
-                                                ))}
+                                    {this.real_mt5.length && (
+                                        <div className='acc-switcher__accounts'>
+                                            {this.real_mt5.map(account => (
+                                                <AccountList
+                                                    key={account.login}
+                                                    account_type={account.group}
+                                                    balance={account.balance}
+                                                    currency={account.currency}
+                                                    currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
+                                                    has_balance={'balance' in account}
+                                                    loginid={account.display_login}
+                                                    onClickAccount={this.redirectToMt5Real}
+                                                />
+                                            ))}
                                         </div>
                                     )}
-                                    {this.has_real_mt5_upgrade_button && (
-                                        <ButtonAddAccount
-                                            has_set_currency={this.has_set_currency}
-                                            toggleSetCurrency={this.setAccountCurrency}
-                                            onClick={this.redirectToMt5Real}
-                                            text={<Localize i18n_default_text='Add DMT5 account' />}
-                                        />
-                                    )}
+                                    {this.remaining_real_mt5.map(account => (
+                                        <div key={account.title} className='acc-switcher__new-account'>
+                                            <Icon icon={`IcMt5-${account.icon}`} size={24} />
+                                            <span className='acc-switcher__new-account-text'>{account.title}</span>
+                                            <Button
+                                                onClick={this.redirectToMt5Real} // TODO: open the corresponding account sign up modal instead
+                                                className='acc-switcher__new-account-btn'
+                                                secondary
+                                                small
+                                            >
+                                                {localize('Add')}
+                                            </Button>
+                                        </div>
+                                    ))}
                                 </React.Fragment>
                             )}
                         </AccountWrapper>
@@ -531,10 +545,9 @@ AccountSwitcher.propTypes = {
     account_list: PropTypes.array,
     account_loginid: PropTypes.string,
     accounts: PropTypes.object,
-    display: PropTypes.string,
+    can_change_fiat_currency: PropTypes.bool,
+    can_upgrade_to: PropTypes.string,
     has_any_real_account: PropTypes.bool,
-    has_fiat: PropTypes.bool,
-    has_mt5_login: PropTypes.bool,
     is_loading_mt5: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
@@ -542,8 +555,11 @@ AccountSwitcher.propTypes = {
     is_upgrade_enabled: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
+    logoutClient: PropTypes.func,
     mt5_login_list: PropTypes.array,
     obj_total_balance: PropTypes.object,
+    openRealAccountSignup: PropTypes.func,
+    switchAccount: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     togglePositionsDrawer: PropTypes.func,
     toggleSetCurrencyModal: PropTypes.func,
@@ -555,18 +571,14 @@ const account_switcher = withRouter(
         available_crypto_currencies: client.available_crypto_currencies,
         account_loginid: client.loginid,
         accounts: client.accounts,
-        has_fiat: client.has_fiat,
         can_change_fiat_currency: client.can_change_fiat_currency,
         account_list: client.account_list,
-        can_upgrade: client.can_upgrade,
         can_upgrade_to: client.can_upgrade_to,
-        has_mt5_login: client.has_mt5_login,
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,
         is_virtual: client.is_virtual,
         has_any_real_account: client.has_any_real_account,
-        landing_company_shortcode: client.landing_company_shortcode,
         mt5_login_list: client.mt5_login_list,
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,

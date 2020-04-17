@@ -27,3 +27,24 @@ export const getMT5AccountDisplay = group => {
 
     return display_text;
 };
+
+export const getAllMtAccounts = () => ({
+    synthetic: {
+        account_regex: /svg/,
+        icon: 'Synthetic indices',
+        title: localize('Synthetic'),
+        type: 'synthetic_indices',
+    },
+    financial: {
+        account_regex: /vanuatu|svg_standard/,
+        icon: 'Standard',
+        title: localize('Financial'),
+        type: 'standard',
+    },
+    financial_stp: {
+        account_regex: /labuan/,
+        icon: 'Advanced',
+        title: localize('Financial STP'),
+        type: 'advanced',
+    },
+});

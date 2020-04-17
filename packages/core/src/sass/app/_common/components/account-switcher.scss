@@ -396,7 +396,8 @@
         font-size: 0.8rem;
     }
     &__btn {
-        margin-bottom: 8px;
+        width: calc(100% - 32px);
+        margin: 0 16px 8px;
     }
 }
 

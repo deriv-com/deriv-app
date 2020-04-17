@@ -145,20 +145,21 @@ export default class UIStore extends BaseStore {
         super({ root_store, local_storage_properties, store_name });
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
-            const platform = getPlatformHeader(this.root_store.common.app_routing_history);
             // TODO: [disable-dark-bot] Delete this condition when Bot is ready
+            const new_app_routing_history = this.root_store.common.app_routing_history.slice();
+            const platform = getPlatformHeader(new_app_routing_history);
             if (platform === 'DBot') {
                 document.body.classList.remove('theme--dark');
                 document.body.classList.add('theme--light');
                 return;
-            } else if (platform === 'DTrader') {
-                if (this.is_dark_mode_on) {
-                    document.body.classList.remove('theme--light');
-                    document.body.classList.add('theme--dark');
-                } else {
-                    document.body.classList.remove('theme--dark');
-                    document.body.classList.add('theme--light');
-                }
+            }
+
+            if (this.is_dark_mode_on) {
+                document.body.classList.remove('theme--light');
+                document.body.classList.add('theme--dark');
+            } else {
+                document.body.classList.remove('theme--dark');
+                document.body.classList.add('theme--light');
             }
         });
     }

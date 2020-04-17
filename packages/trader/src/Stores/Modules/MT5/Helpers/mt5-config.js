@@ -123,11 +123,11 @@ export const getAccountTypeFields = ({ category, type }) => {
             },
             financial: {
                 account_type: 'financial',
-                mt5_account_type: 'financial',
+                mt5_account_type: 'standard', // API still calls it standard
             },
             financial_stp: {
                 account_type: 'financial',
-                mt5_account_type: 'financial_stp',
+                mt5_account_type: 'advanced', // API still calls it advanced
             },
         },
         demo: {
@@ -136,11 +136,11 @@ export const getAccountTypeFields = ({ category, type }) => {
             },
             financial: {
                 account_type: 'demo',
-                mt5_account_type: 'financial',
+                mt5_account_type: 'standard', // API still calls it standard
             },
             financial_stp: {
                 account_type: 'demo',
-                mt5_account_type: 'financial_stp',
+                mt5_account_type: 'advanced', // API still calls it advanced
             },
         },
     };

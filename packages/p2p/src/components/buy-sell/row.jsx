@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
 import { Table, Button } from '@deriv/components';
@@ -27,17 +27,22 @@ BuySellRowLoader.propTypes = {
 };
 
 export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) => {
+    const [color] = useState(() => {
+        const colors = ['#f43f83', '#85acb0', '#9ed178', '#ff6444'];
+        const random_color = colors[Math.floor(Math.random() * colors.length)];
+
+        return random_color;
+    });
+
     const { advertiser_id } = React.useContext(Dp2pContext);
     const is_own_ad = data.advertiser_id === advertiser_id;
     const short_name = data.advertiser_name.substr(0, 2).toUpperCase();
-    const colors = ['#f43f83', '#85acb0', '#9ed178', '#ff6444'];
-    const random_color = colors[Math.floor(Math.random() * colors.length)];
 
     return (
         <div style={style}>
             <Table.Row>
                 <Table.Cell flex='2fr'>
-                    <div className='buy-sell__icon' style={{ backgroundColor: random_color }}>
+                    <div className='buy-sell__icon' style={{ backgroundColor: color }}>
                         {short_name}
                     </div>
                     {data.advertiser_name}

@@ -8,7 +8,7 @@ class Detail extends React.Component {
         const { action, icon, is_last_child, value, ...rest } = this.props;
 
         return (
-            <div className={classNames({ 'payment-agent__accordion-content-line': !is_last_child })}>
+            <div className='payment-agent__accordion-content-line'>
                 <Icon icon={`Ic${icon}`} className='payment-agent__accordion-content-icon' color='secondary' />
                 <a
                     className='payment-agent__contact cashier__paragraph'

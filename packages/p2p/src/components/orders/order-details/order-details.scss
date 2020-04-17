@@ -5,15 +5,39 @@
         .sendbird-conversation {
             margin-top: 2.4rem;
             width: 440px;
-            min-height: 555px;
+            min-height: 400px;
             border-radius: 4px;
             border: none;
             box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.08), 0 0 8px 0 rgba(0, 0, 0, 0.08);
 
+            .sendbird-user-message__tooltip {
+                background-color: var(--brand-secondary);
+                border-bottom-right-radius: 4px;
+                padding: 8px 16px;
+
+                &__text {
+                    color: var(--text-colored-background);
+                    font-size: 14px;
+                    font-family: $FONT_STACK;
+                }
+            }
+            .icon-more_svg__fill {
+                fill: var(--brand-secondary);
+            }
+            .sendbird-user-message--outgoing:hover .sendbird-user-message__tooltip {
+                background-color: var(--brand-secondary);
+            }
             .sendbird-chat-header {
                 background-color: var(--general-section-1);
                 border-radius: 4px 4px 0 0;
                 border-bottom: none;
+
+                &__title {
+                    font-size: 16px;
+                }
+                &__right {
+                    display: none;
+                }
             }
             .sendbird-conversation__footer {
                 padding: 16px 24px;
@@ -24,19 +48,18 @@
 
                     &--textarea {
                         height: inherit;
-                        padding: 10px 8px 10px 44px;
+                        padding: 10px 44px 10px 8px;
                         line-height: normal;
                         border: 1px solid var(--border-normal);
                     }
                     &--placeholder {
                         top: 10px;
-                        left: 44px;
+                        left: 8px;
                     }
                 }
                 .sendbird-iconbutton {
                     top: 4px;
-                    left: 4px;
-                    padding: 0;
+                    right: 8px;
                 }
             }
         }

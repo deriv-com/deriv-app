@@ -110,6 +110,7 @@ const OrderDetails = ({ order_details, chat_info }) => {
                 <OrderDetailsChatbox
                     {...chat_info}
                     channel_url={chat_channel_url || chatCreate(id).then(val => val).channel_url}
+                    advertiser_name={advertiser_name}
                 />
             </div>
 

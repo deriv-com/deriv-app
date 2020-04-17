@@ -1,7 +1,7 @@
 @import '~@deriv/shared/utils/styles/reset.scss';
 @import '~@deriv/shared/utils/styles/themes.scss';
 
-.deriv-p2p {
+.p2p-cashier {
     background: transparent;
     height: 100%;
     width: 100%;
@@ -11,7 +11,7 @@
     }
     & .dc-tabs {
         position: static;
-        &--deriv-p2p {
+        &--p2p-cashier {
             & .dc-tabs__list {
                 &--header-fit-content {
                     border-bottom: none;

@@ -46,7 +46,7 @@ const OrderTable = ({ orders, showDetails }) => {
                         RowLoader={BuySellRowLoader}
                     />
                 ) : (
-                    <div className='deriv-p2p__empty'>{localize("You haven't made or received any orders yet.")}</div>
+                    <div className='p2p-cashier__empty'>{localize("You haven't made or received any orders yet.")}</div>
                 )}
             </Table.Body>
         </Table>

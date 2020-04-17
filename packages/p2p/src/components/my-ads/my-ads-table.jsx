@@ -39,7 +39,7 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
             <Table.Cell>{data.display_payment_method}</Table.Cell>
             <Table.Cell>
                 <Button
-                    className='deriv-p2p__button--right-aligned'
+                    className='p2p-cashier__button--right-aligned'
                     secondary
                     small
                     onClick={() => row_actions.onClickDelete(data.id)}
@@ -133,7 +133,7 @@ export class MyAdsTable extends React.Component {
                                     RowLoader={MyAdsLoader}
                                 />
                             ) : (
-                                <div className='deriv-p2p__empty'>{localize("You haven't posted any ads yet.")}</div>
+                                <div className='p2p-cashier__empty'>{localize("You haven't posted any ads yet.")}</div>
                             )}
                         </Table.Body>
                     )}

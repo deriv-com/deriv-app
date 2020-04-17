@@ -60,10 +60,10 @@ export class SellTable extends React.Component {
                 />
             </BuySellTable>
         ) : (
-            <div className='deriv-p2p__empty'>
-                <div className='deriv-p2p__empty-item'>
+            <div className='p2p-cashier__empty'>
+                <div className='p2p-cashier__empty-item'>
                     <Icon icon='IcNoAd' size={128} />
-                    <div className='deriv-p2p__empty-text'>{localize('No ads found')}</div>
+                    <div className='p2p-cashier__empty-text'>{localize('No ads found')}</div>
                 </div>
             </div>
         );

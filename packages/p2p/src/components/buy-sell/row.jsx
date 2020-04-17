@@ -54,7 +54,7 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
                 ) : (
                     <Table.Cell flex='1fr'>
                         <Button
-                            className='deriv-p2p__button--right-aligned'
+                            className='p2p-cashier__button--right-aligned'
                             primary
                             small
                             onClick={() => setSelectedAd(data)}

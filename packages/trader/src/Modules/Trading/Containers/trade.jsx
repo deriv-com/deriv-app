@@ -47,6 +47,11 @@ class Trade extends React.Component {
     };
 
     onChangeSwipeableIndex = index => {
+        if (index === 0) {
+            this.props.setMobileDigitView(true);
+        } else {
+            this.props.setMobileDigitView(false);
+        }
         this.setState({
             is_digits_widget_active: index === 0,
         });
@@ -128,6 +133,7 @@ export default connect(({ modules, ui }) => ({
     is_market_closed: modules.trade.is_market_closed,
     show_digits_stats: modules.trade.show_digits_stats,
     is_trade_enabled: modules.trade.is_trade_enabled,
+    setMobileDigitView: modules.trade.setMobileDigitView,
     symbol: modules.trade.symbol,
     onMount: modules.trade.onMount,
     onUnmount: modules.trade.onUnmount,

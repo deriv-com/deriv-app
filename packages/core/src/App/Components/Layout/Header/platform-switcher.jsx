@@ -64,7 +64,11 @@ class PlatformSwitcher extends React.PureComponent {
                     timeout={!isMobile() && this.state.is_open ? 0 : 250}
                     unmountOnExit
                 >
-                    <PlatformDropdown platform_config={this.props.platform_config} closeDrawer={this.closeDrawer} />
+                    <PlatformDropdown
+                        is_dark_mode={this.props.is_dark_mode}
+                        platform_config={this.props.platform_config}
+                        closeDrawer={this.closeDrawer}
+                    />
                 </CSSTransition>
             </React.Fragment>
         );

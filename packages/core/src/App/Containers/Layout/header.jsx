@@ -73,6 +73,7 @@ class Header extends React.Component {
                         <DesktopWrapper>
                             <PlatformSwitcher
                                 app_routing_history={app_routing_history}
+                                is_dark_mode={is_dark_mode}
                                 platform_config={filterPlatformsForClients(platform_config)}
                             />
                         </DesktopWrapper>

@@ -35,14 +35,28 @@ class PlatformDropdown extends React.PureComponent {
         if (isDesktop()) document.removeEventListener('click', this.handleClickOutside);
     }
 
+    handleOnClick = platform => {
+        // TODO: Find better way of sharing states between Bot and Trader without refresh
+        if (platform.link_to === routes.bot) {
+            document.body.classList.remove('theme--dark');
+            document.body.classList.add('theme--light');
+        } else if (platform.link_to === routes.trade) {
+            if (this.props.is_dark_mode) {
+                document.body.classList.remove('theme--light');
+                document.body.classList.add('theme--dark');
+            }
+        }
+        this.props.closeDrawer();
+    };
+
     render() {
-        const { platform_config, closeDrawer } = this.props;
+        const { platform_config } = this.props;
 
         const platform_dropdown = (
             <div className='platform-dropdown'>
                 <Div100vhContainer className='platform-dropdown__list' height_offset='151px' is_disabled={isDesktop()}>
                     {platform_config.map((platform, idx) => (
-                        <div key={idx} onClick={closeDrawer}>
+                        <div key={idx} onClick={() => this.handleOnClick(platform)}>
                             {platform.link_to !== undefined ? (
                                 <BinaryLink
                                     to={platform.link_to}
@@ -72,6 +86,7 @@ class PlatformDropdown extends React.PureComponent {
 
 PlatformDropdown.propTypes = {
     platform_configs: PropTypes.array,
+    is_dark_mode: PropTypes.bool,
 };
 
 export { PlatformDropdown };

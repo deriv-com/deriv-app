@@ -36,12 +36,12 @@ class PlatformDropdown extends React.PureComponent {
     }
 
     handleOnClick = platform => {
-        // TODO: Find better way of sharing states between Bot and Trader without refresh
+        // TODO: Find better way of sharing states between Bot and Trader/MT5 without refresh
         const body_el = document.body;
         if (platform.link_to === routes.bot) {
             body_el.classList.remove('theme--dark');
             body_el.classList.add('theme--light');
-        } else if (platform.link_to === routes.trade) {
+        } else if (platform.link_to === routes.trade || platform.link_to === routes.mt5) {
             if (this.props.is_dark_mode) {
                 body_el.classList.remove('theme--light');
                 body_el.classList.add('theme--dark');

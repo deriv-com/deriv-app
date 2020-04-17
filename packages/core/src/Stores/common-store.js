@@ -148,6 +148,7 @@ export default class CommonStore extends BaseStore {
             this.app_routing_history.splice(check_existing, 1);
         }
         this.app_routing_history.unshift(router_action);
+        this.app_routing_history = this.app_routing_history.slice();
     }
 
     @action.bound

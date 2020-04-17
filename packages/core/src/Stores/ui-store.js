@@ -6,6 +6,7 @@ import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import { isBot } from 'Utils/PlatformSwitcher';
 import { clientNotifications, excluded_notifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
+import { getPlatformHeader } from '../Utils/PlatformSwitcher/platform-switcher';
 
 const store_name = 'ui_store';
 
@@ -144,16 +145,20 @@ export default class UIStore extends BaseStore {
         super({ root_store, local_storage_properties, store_name });
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
+            const platform = getPlatformHeader(this.root_store.common.app_routing_history);
             // TODO: [disable-dark-bot] Delete this condition when Bot is ready
-            if (isBot()) {
+            if (platform === 'DBot') {
                 document.body.classList.remove('theme--dark');
                 document.body.classList.add('theme--light');
-            } else if (this.is_dark_mode_on) {
-                document.body.classList.remove('theme--light');
-                document.body.classList.add('theme--dark');
-            } else {
-                document.body.classList.remove('theme--dark');
-                document.body.classList.add('theme--light');
+                return;
+            } else if (platform === 'DTrader') {
+                if (this.is_dark_mode_on) {
+                    document.body.classList.remove('theme--light');
+                    document.body.classList.add('theme--dark');
+                } else {
+                    document.body.classList.remove('theme--dark');
+                    document.body.classList.add('theme--light');
+                }
             }
         });
     }

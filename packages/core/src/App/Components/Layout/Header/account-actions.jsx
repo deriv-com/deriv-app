@@ -19,7 +19,6 @@ export class AccountActions extends Component {
         return (
             nextProps.is_acc_switcher_disabled !== this.props.is_acc_switcher_disabled ||
             nextProps.balance !== this.props.balance ||
-            nextProps.can_upgrade !== this.props.can_upgrade ||
             nextProps.can_upgrade_to !== this.props.can_upgrade_to ||
             nextProps.currency !== this.props.currency ||
             nextProps.is_acc_switcher_on !== this.props.is_acc_switcher_on ||

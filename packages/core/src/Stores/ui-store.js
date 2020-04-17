@@ -3,7 +3,6 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import { LocalStore } from '_common/storage';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
-import { isBot } from 'Utils/PlatformSwitcher';
 import { clientNotifications, excluded_notifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
 import { getPlatformHeader } from '../Utils/PlatformSwitcher/platform-switcher';

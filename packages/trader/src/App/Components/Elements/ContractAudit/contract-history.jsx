@@ -24,7 +24,7 @@ const ContractHistory = ({ currency, history = [] }) => {
                     key={key}
                     id={`dt_history_label_${key}`}
                     label={item.display_name}
-                    timestamp={item.order_date}
+                    timestamp={+item.order_date}
                     value={
                         Math.abs(+item.order_amount) !== 0 ? (
                             <React.Fragment>

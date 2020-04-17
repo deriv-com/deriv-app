@@ -4,7 +4,7 @@ import Dp2pContext from 'Components/context/dp2p-context';
 import { localize, Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import FormAds from './form-ads.jsx';
-import { MyAdsTable } from './my-ads-table.jsx';
+import MyAdsTable from './my-ads-table.jsx';
 import ToggleAds from './toggle-ads.jsx';
 import './my-ads.scss';
 

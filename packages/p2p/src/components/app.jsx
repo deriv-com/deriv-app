@@ -135,11 +135,11 @@ class App extends Component {
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                 }}
             >
-                <main className={classNames('deriv-p2p', className)}>
+                <main className={classNames('p2p-cashier', className)}>
                     <Tabs
                         onTabItemClick={this.handleTabClick}
                         active_index={active_index}
-                        className='deriv-p2p'
+                        className='p2p-cashier'
                         top
                         header_fit_content
                     >

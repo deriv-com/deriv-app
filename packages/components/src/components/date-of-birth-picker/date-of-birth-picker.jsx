@@ -19,6 +19,7 @@ class DateOfBirthPicker extends React.Component {
                 max_date={this.state.max_date}
                 min_date={this.state.min_date}
                 value={this.state.value}
+                readOnly
                 {...props}
             />
         );

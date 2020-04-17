@@ -3,7 +3,20 @@ import React, { useState, useRef, useEffect } from 'react';
 import { toMoment } from '@deriv/shared/utils/date';
 import Icon from 'Components/icon';
 
-const Native = ({ id, display_format, name, error, label, max_date, min_date, onBlur, onFocus, onSelect, value }) => {
+const Native = ({
+    id,
+    display_format,
+    name,
+    error,
+    label,
+    max_date,
+    min_date,
+    placeholder,
+    onBlur,
+    onFocus,
+    onSelect,
+    value,
+}) => {
     const [is_focused, setIsFocused] = useState(0);
     const input_ref = useRef();
 
@@ -42,7 +55,7 @@ const Native = ({ id, display_format, name, error, label, max_date, min_date, on
                 })}
                 htmlFor={id}
             >
-                {label}
+                {label || (!value && placeholder)}
             </label>
             <Icon icon='IcCalendar' className='dc-datepicker__calendar-icon' />
             <input
@@ -51,8 +64,8 @@ const Native = ({ id, display_format, name, error, label, max_date, min_date, on
                 name={name}
                 className='dc-datepicker__native'
                 type='date'
-                max={toMoment(max_date).format('YYYY-MM-DD')}
-                min={toMoment(min_date).format('YYYY-MM-DD')}
+                max={max_date && toMoment(max_date).format('YYYY-MM-DD')}
+                min={min_date && toMoment(min_date).format('YYYY-MM-DD')}
                 error={error}
                 required
                 onBlur={handleBlur}

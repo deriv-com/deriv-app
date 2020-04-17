@@ -13,7 +13,11 @@ const DateOfBirthField = props => (
                 error={touched.date_of_birth && errors.date_of_birth}
                 onBlur={() => setTouched({ date_of_birth: true })}
                 onChange={({ target }) =>
-                    setFieldValue('date_of_birth', target ? toMoment(target.value).format('YYYY-MM-DD') : '', true)
+                    setFieldValue(
+                        'date_of_birth',
+                        target?.value ? toMoment(target.value).format('YYYY-MM-DD') : '',
+                        true
+                    )
                 }
                 value={value}
                 portal_id='modal_root'
@@ -183,7 +187,7 @@ class PersonalDetails extends React.Component {
 
         const alt_messages = {
             phone: ['{{field_name}} is required', '{{field_name}} is not in a proper format.'],
-            date_of_birth: ['{{field_name}} is required', '{{field_name}} is invalid.'],
+            date_of_birth: ['{{field_name}} is required', 'You must be 18 years old and above.'],
         };
 
         const errors = {};

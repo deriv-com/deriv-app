@@ -37,13 +37,14 @@ class PlatformDropdown extends React.PureComponent {
 
     handleOnClick = platform => {
         // TODO: Find better way of sharing states between Bot and Trader without refresh
+        const body_el = document.body;
         if (platform.link_to === routes.bot) {
-            document.body.classList.remove('theme--dark');
-            document.body.classList.add('theme--light');
+            body_el.classList.remove('theme--dark');
+            body_el.classList.add('theme--light');
         } else if (platform.link_to === routes.trade) {
             if (this.props.is_dark_mode) {
-                document.body.classList.remove('theme--light');
-                document.body.classList.add('theme--dark');
+                body_el.classList.remove('theme--light');
+                body_el.classList.add('theme--dark');
             }
         }
         this.props.closeDrawer();

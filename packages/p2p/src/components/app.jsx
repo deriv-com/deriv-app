@@ -102,12 +102,12 @@ class App extends Component {
     };
 
     componentDidMount() {
+        const { order_id } = this.props;
         this.setIsAdvertiser();
 
         subscribeWS({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);
+        console.log(order_id);
 
-        const url_params = new URLSearchParams(window.location.search);
-        const order_id = url_params.get('order');
         if (order_id) {
             this.redirectTo('orders', { order_id });
         }

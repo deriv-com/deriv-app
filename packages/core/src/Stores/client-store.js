@@ -299,6 +299,18 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_europe() {
+        const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
+        const eu_excluded_regex = new RegExp('^mt$');
+        const { gaming_company, financial_company } = this.landing_companies;
+        const financial_shortcode = financial_company?.shortcode;
+        const gaming_shortcode = gaming_company?.shortcode;
+        return financial_shortcode || gaming_shortcode
+            ? eu_shortcode_regex.test(financial_shortcode) || eu_shortcode_regex.test(gaming_shortcode)
+            : eu_excluded_regex.test(this.residence);
+    }
+
+    @computed
     get can_upgrade() {
         return this.upgrade_info && (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
     }
@@ -1113,6 +1125,11 @@ export default class ClientStore extends BaseStore {
 
                 // GTM Signup event
                 this.root_store.gtm.pushDataLayer({ event: 'signup' });
+
+                // Show Accounts popup to European users
+                if (this.is_europe) {
+                    this.root_store.ui.toggleAccountTypesModal(true);
+                }
             }
         });
     }

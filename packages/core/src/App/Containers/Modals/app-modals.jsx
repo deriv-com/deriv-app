@@ -54,10 +54,11 @@ const AppModals = ({
                 );
             } else if (is_set_residence_modal_visible) {
                 ComponentToLoad = <SetResidenceModal />;
-            } else if (is_account_types_modal_on) {
-                ComponentToLoad = <AccountTypesModal />;
             }
             break;
+    }
+    if (is_account_types_modal_on) {
+        ComponentToLoad = <AccountTypesModal />;
     }
 
     return ComponentToLoad ? <React.Suspense fallback={<div />}>{ComponentToLoad}</React.Suspense> : null;

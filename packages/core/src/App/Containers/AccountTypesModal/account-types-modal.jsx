@@ -333,9 +333,12 @@ AccountTypesModal.propTypes = {
     toggleAccountTypesModal: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
+export default connect(({ ui, client }) => ({
     is_account_types_modal_on: ui.is_account_types_modal_on,
     toggleAccountTypesModal: ui.toggleAccountTypesModal,
+    client: client,
+    upgradeable_landing_companies: client.upgradeable_landing_companies,
+    landing_company_shortcode: client.landing_company_shortcode,
     // TODO: add this later
     // has_demo: later!
 }))(AccountTypesModal);

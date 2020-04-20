@@ -92,7 +92,7 @@ const MyAdsTable = () => {
                 if (is_mounted) {
                     if (!response.error) {
                         setHasMoreItemsToLoad(response.length >= list_item_limit);
-                        setAds(ads.concat(response));
+                        setAds([]);
                         setIsLoading(false);
                         item_offset += response.length;
                     } else {
@@ -146,26 +146,22 @@ const MyAdsTable = () => {
                             ))}
                         </Table.Row>
                     </Table.Header>
-                    {is_loading ? (
-                        <Loading is_fullscreen={false} />
-                    ) : (
-                        <Table.Body>
-                            <InfiniteLoaderList
-                                // screen size - header size - footer size - page overlay header - page overlay content padding -
-                                // tabs height - padding of tab content - toggle height - toggle margin - table header height
-                                initial_height={
-                                    'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 2.4rem - 50px - 1.6rem - 52px)'
-                                }
-                                items={ads}
-                                item_size={item_height}
-                                row_actions={{ onClickDelete }}
-                                RenderComponent={RowComponent}
-                                RowLoader={MyAdsLoader}
-                                has_more_items_to_load={has_more_items_to_load}
-                                loadMore={loadMoreAds}
-                            />
-                        </Table.Body>
-                    )}
+                    <Table.Body>
+                        <InfiniteLoaderList
+                            // screen size - header size - footer size - page overlay header - page overlay content padding -
+                            // tabs height - padding of tab content - toggle height - toggle margin - table header height
+                            initial_height={
+                                'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 2.4rem - 50px - 1.6rem - 52px)'
+                            }
+                            items={ads}
+                            item_size={item_height}
+                            row_actions={{ onClickDelete }}
+                            RenderComponent={RowComponent}
+                            RowLoader={MyAdsLoader}
+                            has_more_items_to_load={has_more_items_to_load}
+                            loadMore={loadMoreAds}
+                        />
+                    </Table.Body>
                 </Table>
                 {show_popup && (
                     <div className='orders__dialog'>
@@ -186,7 +182,7 @@ const MyAdsTable = () => {
         );
     }
 
-    return <div className='deriv-p2p__empty'>{localize("You haven't posted any ads yet.")}</div>;
+    return <div className='cashier-p2p__empty'>{localize("You haven't posted any ads yet.")}</div>;
 };
 
 export default MyAdsTable;

@@ -1,7 +1,7 @@
 import { getRoundedNumber } from '@deriv/shared/utils/currency';
 import { localize } from '@deriv/translations';
-import { log } from './broadcast';
 import { formatTime } from '@deriv/shared/utils/date';
+import { log } from './broadcast';
 
 export const noop = () => {};
 

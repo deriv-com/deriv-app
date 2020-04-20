@@ -289,6 +289,7 @@ export default connect(({ ui, client }) => ({
     client: client,
     upgradeable_landing_companies: client.upgradeable_landing_companies,
     landing_company_shortcode: client.landing_company_shortcode,
+    standpoint: client.standpoint,
     // TODO: add this later
     // has_demo: later!
 }))(AccountTypesModal);

@@ -310,6 +310,29 @@ export default class ClientStore extends BaseStore {
             : eu_excluded_regex.test(this.residence);
     }
 
+    // Shows all possible landing companies of user between all
+    @computed
+    get standpoint() {
+        let result = {
+            iom: false,
+            svg: false,
+            malta: false,
+            maltainvest: false,
+        };
+        const { gaming_company, financial_company } = this.landing_companies;
+        if (gaming_company) {
+            Object.assign(result, {
+                [gaming_company.shortcode]: !!gaming_company?.shortcode,
+            });
+        }
+        if (financial_company) {
+            Object.assign(result, {
+                [financial_company.shortcode]: !!financial_company?.shortcode,
+            });
+        }
+        return result;
+    }
+
     @computed
     get can_upgrade() {
         return this.upgrade_info && (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);

@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Checkbox from 'Components/checkbox/checkbox.jsx';
 
-const container_ref = React.createRef();
-
 const CompositeCheckbox = ({ name, value, onChange, className, label, id, description }) => {
     const onClickContainer = e => {
         e.stopPropagation();
@@ -17,7 +15,12 @@ const CompositeCheckbox = ({ name, value, onChange, className, label, id, descri
     };
 
     return (
-        <div ref={container_ref} className={classNames('composite-checkbox', className)} onClick={onClickContainer}>
+        <div
+            className={classNames('composite-checkbox', className, {
+                'composite-checkbox--active': !!value,
+            })}
+            onClick={onClickContainer}
+        >
             <Checkbox id={id} label={label} name={name} value={value} onChange={onChange} />
             <p className={classNames('composite-checkbox__description', `${className}__description`)}>{description}</p>
         </div>

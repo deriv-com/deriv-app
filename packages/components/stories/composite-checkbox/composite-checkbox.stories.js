@@ -33,6 +33,8 @@ stories
             <Theme is_dark={boolean('Theme', false)}>
                 <CompositeCheckbox
                     name='test'
+                    label='Label'
+                    description='Description'
                     value={value}
                     onChange={v => {
                         action(`Value is set to ${v.target.value}`);
@@ -46,6 +48,7 @@ stories
         const [value, setValue] = useState(false);
         const [value2, setValue2] = useState(false);
         const [value3, setValue3] = useState(false);
+        const [value4, setValue4] = useState(false);
 
         return (
             <Theme is_dark={boolean('Theme', false)}>
@@ -70,6 +73,13 @@ stories
                         label='Rick'
                         description="Rick Sanchez is the titular anti-heroic main protagonist of the series. He is a genius scientist whose alcoholism and reckless, nihilistic behavior are a source of concern for his daughter's family, as well as the safety of their son, Morty. He is voiced by Justin Roiland. He is later revealed to be Morty's cousin in an interview with Roiland himself."
                         onChange={v => setValue3(v.target.value)}
+                    />
+                    <CompositeCheckbox
+                        name='test4'
+                        value={value4}
+                        label='Jerry Smith'
+                        description='Jerry Smith is the pentagonist of Rick and Morty. Jerry is the husband of Beth Smith, the father of Summer Smith and Morty Smith, and the son-in-law of Rick Sanchez.'
+                        onChange={v => setValue4(v.target.value)}
                     />
                 </Grid>
             </Theme>

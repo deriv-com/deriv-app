@@ -10,13 +10,7 @@ import { onfido_status_codes } from './proof-of-identity';
 const onfido_container_id = 'onfido';
 
 const OnfidoContainer = () => (
-    <ThemedScrollbars
-        is_native={isMobile()}
-        autoHide
-        style={{
-            minHeight: '420px',
-        }}
-    >
+    <ThemedScrollbars is_native={isMobile()} autoHide autoHeight>
         <div className='onfido-container'>
             <div id={onfido_container_id} />
         </div>

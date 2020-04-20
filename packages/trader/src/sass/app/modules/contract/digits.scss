@@ -25,6 +25,7 @@
         @media only screen and (max-height: 480px) {
             transform: scale(0.75);
             transform-origin: bottom;
+            padding: 0 0.8rem !important;
         }
     }
     &__tooltip-container {
@@ -221,11 +222,13 @@
                 }
             }
             @include mobile {
-                position: relative;
-                top: 0;
+                display: flex;
+                justify-content: center;
+                top: 1.2rem;
                 left: 0;
                 right: 0;
-                margin-top: 3.6rem;
+                margin-top: 4.8rem;
+                pointer-events: none;
 
                 &-value,
                 &-last {
@@ -233,6 +236,15 @@
                 }
                 &-last {
                     padding: 0 8px;
+                }
+                /* iPhone SE screen height fixes due to UI space restrictions */
+                @media only screen and (max-height: 480px) {
+                    position: relative;
+                    top: 0;
+
+                    &--is-trading {
+                        margin-top: auto;
+                    }
                 }
             }
         }
@@ -381,7 +393,17 @@
 
         &--trade {
             grid-gap: 2rem 1.6rem;
-            margin: 0.8rem 0 1.6rem;
+            margin: auto 0;
+            transform: scale(1.1);
+            transform-origin: bottom;
+
+            @media only screen and (max-height: 580px) {
+                transform: unset;
+                transform-origin: unset;
+            }
+            @media only screen and (max-height: 480px) {
+                margin: auto 0 4.8rem;
+            }
         }
         &__container {
             width: 100%;

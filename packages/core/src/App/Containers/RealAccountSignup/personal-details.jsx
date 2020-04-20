@@ -178,17 +178,23 @@ class PersonalDetails extends React.Component {
             phone: localize('Phone'),
         };
 
-        const common_messages = [
-            '{{field_name}} is required',
-            '{{field_name}} is too short',
-            '{{field_name}} is too long',
-            '{{field_name}} is not in a proper format.',
+        const common_messages = field_name => [
+            localize('{{field_name}} is required', { field_name }),
+            localize('{{field_name}} is too short', { field_name }),
+            localize('{{field_name}} is too long', { field_name }),
+            localize('{{field_name}} is not in a proper format.', { field_name }),
         ];
 
-        const alt_messages = {
-            phone: ['{{field_name}} is required', '{{field_name}} is not in a proper format.'],
-            date_of_birth: ['{{field_name}} is required', 'You must be 18 years old and above.'],
-        };
+        const alt_messages = field_name => ({
+            phone: [
+                localize('{{field_name}} is required', { field_name }),
+                localize('{{field_name}} is not in a proper format.', { field_name }),
+            ],
+            date_of_birth: [
+                localize('{{field_name}} is required', { field_name }),
+                localize('You must be 18 years old and above.', { field_name }),
+            ],
+        });
 
         const errors = {};
 
@@ -198,24 +204,10 @@ class PersonalDetails extends React.Component {
                 switch (key) {
                     case 'date_of_birth':
                     case 'phone':
-                        errors[key] = errors[key] = (
-                            <Localize
-                                i18n_default_text={alt_messages[key][error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                            />
-                        );
+                        errors[key] = errors[key] = alt_messages(mappedKey[key])[key][error_index];
                         break;
                     default:
-                        errors[key] = errors[key] = (
-                            <Localize
-                                i18n_default_text={common_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                            />
-                        );
+                        errors[key] = errors[key] = common_messages(mappedKey[key])[error_index];
                 }
             }
         });

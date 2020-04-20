@@ -151,7 +151,7 @@ class AccountSwitcher extends React.Component {
     }
 
     get sorted_mt5_list() {
-        // for MT5, standard, advanced, then synthetic indices
+        // for MT5, synthetic indices, standard, advanced
         return this.props.mt5_login_list.slice().sort((a, b) => {
             if (/demo/.test(a.group) && !/demo/.test(b.group)) {
                 return 1;
@@ -160,12 +160,12 @@ class AccountSwitcher extends React.Component {
                 return -1;
             }
             if (/vanuatu/.test(a.group)) {
-                return -1;
-            }
-            if (/svg/.test(a.group)) {
                 return 1;
             }
-            return -1;
+            if (/svg/.test(a.group)) {
+                return -1;
+            }
+            return 1;
         });
     }
 
@@ -321,7 +321,7 @@ class AccountSwitcher extends React.Component {
                                                         currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
                                                         has_balance={'balance' in account}
                                                         is_virtual
-                                                        loginid={account.login}
+                                                        loginid={account.display_login}
                                                         onClickAccount={this.redirectToMt5Demo}
                                                     />
                                                 ))}
@@ -446,7 +446,7 @@ class AccountSwitcher extends React.Component {
                                                         currency={account.currency}
                                                         currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
                                                         has_balance={'balance' in account}
-                                                        loginid={account.login}
+                                                        loginid={account.display_login}
                                                         onClickAccount={this.redirectToMt5Real}
                                                     />
                                                 ))}
@@ -532,11 +532,7 @@ class AccountSwitcher extends React.Component {
                     <span>
                         <Localize i18n_default_text='Total assets' />
                     </span>
-                    <span
-                        className={classNames('acc-switcher__balance', {
-                            'acc-switcher__balance--virtual': !this.is_real_account_tab,
-                        })}
-                    >
+                    <span className='acc-switcher__balance'>
                         <Money
                             currency={this.is_real_account_tab ? this.props.obj_total_balance.currency : 'USD'}
                             amount={CurrencyUtils.formatMoney(

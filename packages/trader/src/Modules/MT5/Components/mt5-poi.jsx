@@ -52,7 +52,6 @@ class MT5POI extends PureComponent {
                                     <input type='hidden' name='poi_state' value={this.state.poi_state} readOnly />
                                     <div className='mt5-proof-of-identity__fields'>
                                         <ProofOfIdentityContainer
-                                            height={420}
                                             {...this.props}
                                             onStateChange={this.onStateChange}
                                             is_trading_button_enabled={false}
@@ -79,7 +78,6 @@ class MT5POI extends PureComponent {
 
 MT5POI.propTypes = {
     form_error: PropTypes.string,
-    height: PropTypes.string,
     index: PropTypes.number,
     onCancel: PropTypes.func,
     onSave: PropTypes.func,

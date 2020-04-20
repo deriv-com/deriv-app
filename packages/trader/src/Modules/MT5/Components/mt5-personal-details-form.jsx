@@ -139,105 +139,107 @@ class MT5PersonalDetailsForm extends React.Component {
                                         }
                                     />
                                 </p>
-                                <div className='details-form__elements-container'>
-                                    <ThemedScrollbars autoHide style={{ height: 432 }} is_native={isMobile()}>
-                                        <div className='details-form__elements mt5-details-form__fields'>
-                                            <FormSubHeader title={localize('Details')} />
-                                            <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
-                                                    <Field name='citizen'>
-                                                        {({ field }) => (
-                                                            <Autocomplete
-                                                                {...field}
-                                                                id='real_mt5_citizenship'
-                                                                data-lpignore='true'
-                                                                autoComplete='new-password'
-                                                                type='text'
-                                                                label={localize('Citizenship')}
-                                                                error={touched.citizen && errors.citizen}
-                                                                disabled={value.citizen && is_fully_authenticated}
-                                                                list_items={residence_list}
-                                                                onItemSelection={item =>
-                                                                    setFieldValue(
-                                                                        'citizen',
-                                                                        item.value ? item.text : '',
-                                                                        true
-                                                                    )
-                                                                }
-                                                                required
-                                                            />
-                                                        )}
-                                                    </Field>
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
-                                                    <SelectNative
-                                                        label={localize('Citizenship')}
-                                                        value={values.citizen}
-                                                        list_items={residence_list}
-                                                        error={touched.citizen && errors.citizen}
-                                                        disabled={value.citizen && is_fully_authenticated}
-                                                        use_text={true}
-                                                        onChange={e => setFieldValue('citizen', e.target.value, true)}
-                                                        required
-                                                    />
-                                                </MobileWrapper>
-                                            </fieldset>
-                                            <FormSubHeader title={localize('Tax information')} />
-                                            <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
-                                                    <Field name='tax_residence'>
-                                                        {({ field }) => (
-                                                            <Autocomplete
-                                                                id='real_mt5_tax_residence'
-                                                                data-lpignore='true'
-                                                                type='text'
-                                                                autoComplete='new-password'
-                                                                label={localize('Tax residence')}
-                                                                error={touched.tax_residence && errors.tax_residence}
-                                                                disabled={value.tax_residence && is_fully_authenticated}
-                                                                list_items={residence_list}
-                                                                onItemSelection={({ value: v, text }) =>
-                                                                    setFieldValue('tax_residence', v ? text : '', true)
-                                                                }
-                                                                {...field}
-                                                            />
-                                                        )}
-                                                    </Field>
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
-                                                    <SelectNative
-                                                        label={localize('Tax residence')}
-                                                        value={values.tax_residence}
-                                                        error={touched.tax_residence && errors.tax_residence}
-                                                        disabled={value.tax_residence && is_fully_authenticated}
-                                                        list_items={residence_list}
-                                                        use_text={true}
-                                                        onChange={e =>
-                                                            setFieldValue('tax_residence', e.target.value, true)
-                                                        }
-                                                        required
-                                                    />
-                                                </MobileWrapper>
-                                            </fieldset>
-                                            <InputField
-                                                id='real_mt5_tax_identification_number'
-                                                name='tax_identification_number'
-                                                placeholder={localize('Tax identification number')}
-                                            />
-                                        </div>
-                                    </ThemedScrollbars>
-                                </div>
+                                <ThemedScrollbars
+                                    autoHide
+                                    autoHeight
+                                    autoHeightMin={100}
+                                    autoHeightMax={320}
+                                    is_native={isMobile()}
+                                >
+                                    <div className='details-form__elements mt5-details-form__fields'>
+                                        <FormSubHeader title={localize('Details')} />
+                                        <fieldset className='account-form__fieldset'>
+                                            <DesktopWrapper>
+                                                <Field name='citizen'>
+                                                    {({ field }) => (
+                                                        <Autocomplete
+                                                            {...field}
+                                                            id='real_mt5_citizenship'
+                                                            data-lpignore='true'
+                                                            autoComplete='new-password'
+                                                            type='text'
+                                                            label={localize('Citizenship')}
+                                                            error={touched.citizen && errors.citizen}
+                                                            disabled={value.citizen && is_fully_authenticated}
+                                                            list_items={residence_list}
+                                                            onItemSelection={item =>
+                                                                setFieldValue(
+                                                                    'citizen',
+                                                                    item.value ? item.text : '',
+                                                                    true
+                                                                )
+                                                            }
+                                                            required
+                                                        />
+                                                    )}
+                                                </Field>
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    label={localize('Citizenship')}
+                                                    value={values.citizen}
+                                                    list_items={residence_list}
+                                                    error={touched.citizen && errors.citizen}
+                                                    disabled={value.citizen && is_fully_authenticated}
+                                                    use_text={true}
+                                                    onChange={e => setFieldValue('citizen', e.target.value, true)}
+                                                    required
+                                                />
+                                            </MobileWrapper>
+                                        </fieldset>
+                                        <FormSubHeader title={localize('Tax information')} />
+                                        <fieldset className='account-form__fieldset'>
+                                            <DesktopWrapper>
+                                                <Field name='tax_residence'>
+                                                    {({ field }) => (
+                                                        <Autocomplete
+                                                            id='real_mt5_tax_residence'
+                                                            data-lpignore='true'
+                                                            type='text'
+                                                            autoComplete='new-password'
+                                                            label={localize('Tax residence')}
+                                                            error={touched.tax_residence && errors.tax_residence}
+                                                            disabled={value.tax_residence && is_fully_authenticated}
+                                                            list_items={residence_list}
+                                                            onItemSelection={({ value: v, text }) =>
+                                                                setFieldValue('tax_residence', v ? text : '', true)
+                                                            }
+                                                            {...field}
+                                                        />
+                                                    )}
+                                                </Field>
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    label={localize('Tax residence')}
+                                                    value={values.tax_residence}
+                                                    error={touched.tax_residence && errors.tax_residence}
+                                                    disabled={value.tax_residence && is_fully_authenticated}
+                                                    list_items={residence_list}
+                                                    use_text={true}
+                                                    onChange={e => setFieldValue('tax_residence', e.target.value, true)}
+                                                    required
+                                                />
+                                            </MobileWrapper>
+                                        </fieldset>
+                                        <InputField
+                                            id='real_mt5_tax_identification_number'
+                                            name='tax_identification_number'
+                                            placeholder={localize('Tax identification number')}
+                                        />
+                                    </div>
+                                </ThemedScrollbars>
+                                <FormSubmitButton
+                                    cancel_label={localize('Previous')}
+                                    is_disabled={
+                                        isSubmitting ||
+                                        (Object.keys(touched).length === 0 && !this.is_initial_valid) ||
+                                        (Object.keys(touched).length > 0 && Object.keys(errors).length > 0)
+                                    }
+                                    label={localize('Next')}
+                                    onCancel={() => this.handleCancel(values)}
+                                />
                             </Div100vhContainer>
-                            <FormSubmitButton
-                                cancel_label={localize('Previous')}
-                                is_disabled={
-                                    isSubmitting ||
-                                    (Object.keys(touched).length === 0 && !this.is_initial_valid) ||
-                                    (Object.keys(touched).length > 0 && Object.keys(errors).length > 0)
-                                }
-                                label={localize('Next')}
-                                onCancel={() => this.handleCancel(values)}
-                            />
                         </form>
                     )}
                 </Formik>

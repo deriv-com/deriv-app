@@ -21,6 +21,7 @@
     }
     &__container {
         position: relative;
+        overflow-y: auto;
 
         .notification-messages {
             position: fixed;
@@ -639,8 +640,11 @@
 .mt5-details-form {
     &__fields {
         padding: 0;
+        margin-bottom: 7rem;
+        @include mobile {
+            padding: 0 1.6rem;
+        }
     }
-
     & .mt5-tax-identification-number {
         margin-top: 1em;
     }

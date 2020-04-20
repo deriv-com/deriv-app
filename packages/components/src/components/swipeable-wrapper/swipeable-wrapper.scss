@@ -13,6 +13,13 @@
         position: relative;
         display: inline-flex;
         width: 100vw;
+
+        &--is-disabled {
+            & .dc-swipeable__view {
+                transform: translateX(-100vw);
+                transition: none;
+            }
+        }
     }
     &__nav {
         position: absolute;

@@ -226,10 +226,10 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     refresh() {
+        this.forgetAllProposal();
         this.proposal_info = {};
         this.purchase_info = {};
         this.proposal_requests = {};
-        WS.forgetAll('proposal');
     }
 
     @action.bound
@@ -526,7 +526,7 @@ export default class TradeStore extends BaseStore {
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
                             if (isDesktop()) this.root_store.ui.openPositionsDrawer();
                             this.proposal_info = {};
-                            WS.forgetAll('proposal');
+                            this.forgetAllProposal();
                             this.purchase_info = response;
                             this.proposal_requests = {};
                             this.debouncedProposal();
@@ -547,7 +547,7 @@ export default class TradeStore extends BaseStore {
                             this.root_store.ui.toggleServicesErrorModal(true);
                         }
                     }
-                    WS.forgetAll('proposal');
+                    this.forgetAllProposal();
                     this.purchase_info = response;
                     this.enablePurchase();
                 })
@@ -621,7 +621,7 @@ export default class TradeStore extends BaseStore {
         // Sets the default value to Amount when Currency has changed from Fiat to Crypto and vice versa.
         // The source of default values is the website_status response.
         if (should_forget_first) {
-            WS.forgetAll('proposal');
+            this.forgetAllProposal();
             this.proposal_requests = {};
         }
         if (is_changed_by_user && /\bcurrency\b/.test(Object.keys(obj_new_values))) {
@@ -701,7 +701,6 @@ export default class TradeStore extends BaseStore {
             if (/\bcontract_type\b/.test(Object.keys(new_state))) {
                 this.validateAllProperties();
             }
-
             this.debouncedProposal();
         }
     }
@@ -760,7 +759,7 @@ export default class TradeStore extends BaseStore {
         if (Object.values(this.validation_errors).some(e => e.length)) {
             this.proposal_info = {};
             this.purchase_info = {};
-            WS.forgetAll('proposal');
+            this.forgetAllProposal();
             return;
         }
 
@@ -776,6 +775,12 @@ export default class TradeStore extends BaseStore {
             });
         }
         this.root_store.ui.resetPurchaseStates();
+    }
+
+    @action.bound
+    forgetAllProposal() {
+        const length = Object.keys(this.proposal_requests).length;
+        if (length > 0) WS.forgetAll('proposal');
     }
 
     @action.bound
@@ -979,6 +984,8 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async initAccountCurrency(new_currency) {
+        if (this.currency === new_currency) return;
+
         await this.processNewValuesAsync({ currency: new_currency }, true, { currency: this.currency }, false);
         this.refresh();
         WS.forgetAll('balance').then(() => {

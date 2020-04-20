@@ -88,12 +88,9 @@ commands:
           aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
           aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
           aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
-  docker:
+  docker_build_push:
     description: "Build and Push image to docker hub"
     parameters:
-      docker_image_tag:
-        type: string
-        default: ${CIRCLE_SHA1}
       docker_image_latest_tag:
         type: string
         default: "latest-staging"
@@ -104,7 +101,7 @@ commands:
           name: Building docker image
           command: |
             TAG=${CIRCLE_TAG:-$CIRCLE_SHA1}
-            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:<< parameters.docker_image_tag >> -t ${DOCKHUB_ORGANISATION}/deriv-app:<< parameters.docker_image_latest_tag >> .
+            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:${TAG} -t ${DOCKHUB_ORGANISATION}/deriv-app:<< parameters.docker_image_latest_tag >> .
       - run:
           name: Pushing Image to docker hub
           command: |
@@ -116,14 +113,12 @@ commands:
       k8s_svc_name:
         type: string
         default: "staging-deriv-app"
-      docker_image_latest_tag:
-        type: string
-        default: "latest-staging"
     steps:
       - k8s/install-kubectl
       - run:
           name: Deploying to k8s cluster for service deriv-app
           command: |
+            TAG=${CIRCLE_TAG:-$CIRCLE_SHA1}
             for SERVER_ID in {1..5}
             do
               KUBE_SERVER_REF="KUBE_SERVER_$SERVER_ID"
@@ -136,7 +131,7 @@ commands:
                 KUBE_SERVER="${!KUBE_SERVER_REF}"
                 SERVICEACCOUNT_TOKEN="${!SERVICEACCOUNT_TOKEN_REF}"
                 echo $CA_CRT | base64 --decode > ca.crt
-                kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/<< parameters.k8s_svc_name >> << parameters.k8s_svc_name >>=${DOCKHUB_ORGANISATION}/deriv-app:<< parameters.docker_image_latest_tag >>
+                kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/<< parameters.k8s_svc_name >> << parameters.k8s_svc_name >>=${DOCKHUB_ORGANISATION}/deriv-app:${TAG}
               fi
             done
 jobs:
@@ -147,7 +142,7 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
-      - docker
+      - docker_build_push
     environment:
       NODE_ENV: staging
   build_production:
@@ -160,8 +155,7 @@ jobs:
       - compress
       - upload_artifact
       - upload_checksum
-      - docker:
-          docker_image_tag: ${CIRCLE_TAG}
+      - docker_build_push:
           docker_image_latest_tag: latest
     environment:
       NODE_ENV: staging
@@ -175,7 +169,6 @@ jobs:
       - image: circleci/node:11.15.0-stretch
     steps:
       - k8s_deploy:
-          docker_image_latest_tag: latest
           k8s_svc_name: production-deriv-app
 workflows:
   build_deploy_staging:

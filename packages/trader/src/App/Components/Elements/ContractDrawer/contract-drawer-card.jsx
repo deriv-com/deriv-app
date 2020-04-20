@@ -9,6 +9,7 @@ import { SwipeableContractDrawer } from './swipeable-components.jsx';
 
 const ContractDrawerCard = ({
     contract_info,
+    contract_update,
     currency,
     is_multiplier,
     is_sell_requested,
@@ -23,7 +24,13 @@ const ContractDrawerCard = ({
     const { is_sold, profit } = contract_info;
 
     const card_body = (
-        <CardBody contract_info={contract_info} currency={currency} is_multiplier={is_multiplier} status={status} />
+        <CardBody
+            contract_info={contract_info}
+            contract_update={contract_update}
+            currency={currency}
+            is_multiplier={is_multiplier}
+            status={status}
+        />
     );
 
     const card_body_wrapper = (

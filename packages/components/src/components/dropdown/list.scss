@@ -33,13 +33,11 @@
             &:not(&--disabled):not(&--selected):hover {
                 border-radius: $BORDER_RADIUS;
                 width: calc(100% - 1.6rem);
-                margin-left: 0.8rem;
-                margin-right: 0.8rem;
+                margin: 0 0.8rem;
 
                 .dc-list__item-text {
                     width: 100%;
-                    margin-left: 0;
-                    margin-right: 0;
+                    margin: 0;
                 }
             }
         }

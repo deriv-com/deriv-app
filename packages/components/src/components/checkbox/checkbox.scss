@@ -19,6 +19,7 @@
         margin: 2px 8px 0 0;
         border-radius: 2px;
         align-self: center;
+        box-sizing: border-box;
         border: 2px solid var(--text-less-prominent);
 
         &--active {

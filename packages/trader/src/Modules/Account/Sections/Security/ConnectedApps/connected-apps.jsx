@@ -1,28 +1,37 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 
-const ConnectedApps = () => {
-    return (
-        <section className='connected-apps'>
-            <div className='connected-apps__header'>
-                <p>{localize('Authorised applications')}</p>
-            </div>
-            <div className='connected-apps__column'>
-                <div className='connected-apps__column__name'>
-                    <p>{localize('Name')}</p>
+class ConnectedApps extends React.Component {
+    state = {
+        is_loading: true,
+    };
+    componentDidMount() {
+        let apps_list = this.props.fetchConnectedApps();
+        apps_list.then(
+            result => {
+                this.props.setConnectedApps(result);
+                this.setState({ is_loading: false });
+            },
+            error => {
+                this.setState({ is_loading: true });
+            }
+        );
+    }
+    render() {
+        return (
+            <section className='connected-apps'>
+                <div className='connected-apps__title'>
+                    <p>{localize('Authorised applications')}</p>
+                    <div>{this.state.is_loading ? 'waiting...' : this.props.connected_apps.map(v => v.name)}</div>
                 </div>
-                <div className='connected-apps__column__permission'>
-                    <p>{localize('Permission')}</p>
-                </div>
-                <div className='connected-apps__column__last-login'>
-                    <p>{localize('Last login')}</p>
-                </div>
-                <div className='connected-apps__column__action'>
-                    <p>{localize('Action')}</p>
-                </div>
-            </div>
-        </section>
-    );
-};
+            </section>
+        );
+    }
+}
 
-export default ConnectedApps;
+export default connect(({ client }) => ({
+    connected_apps: client.connected_apps,
+    fetchConnectedApps: client.fetchConnectedApps,
+    setConnectedApps: client.setConnectedApps,
+}))(ConnectedApps);

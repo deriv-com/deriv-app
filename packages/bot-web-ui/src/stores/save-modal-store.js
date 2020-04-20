@@ -20,10 +20,20 @@ export default class SaveModalStore {
     }
 
     @action.bound
-    async onConfirmSave({ is_local, save_as_collection }) {
+    validateBotName(values) {
+        const errors = {};
+
+        if (values.botname === '') {
+            errors.botname = 'Field name cannot be empty';
+        }
+
+        return errors;
+    }
+
+    @action.bound
+    async onConfirmSave({ is_local, save_as_collection, botname }) {
         this.setButtonStatus(button_status.LOADING);
 
-        const { file_name } = this.root_store.toolbar;
         const { saveFile } = this.root_store.google_drive;
         const xml = Blockly.Xml.workspaceToDom(Blockly.derivWorkspace);
 
@@ -31,10 +41,10 @@ export default class SaveModalStore {
         xml.setAttribute('collection', save_as_collection ? 'true' : 'false');
 
         if (is_local) {
-            save(file_name, save_as_collection, xml);
+            save(botname, save_as_collection, xml);
         } else {
             await saveFile({
-                name: file_name,
+                name: botname,
                 content: Blockly.Xml.domToPrettyText(xml),
                 mimeType: 'application/xml',
             });

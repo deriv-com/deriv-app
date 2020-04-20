@@ -1,14 +1,15 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Checkbox, Icon, Modal, RadioGroup } from '@deriv/components';
+import { Button, Checkbox, Icon, Modal, RadioGroup, Input } from '@deriv/components';
 import { Formik, Form, Field } from 'formik';
 import { localize } from '@deriv/translations';
+import { config } from '@deriv/bot-skeleton';
 import { connect } from '../stores/connect';
 import '../assets/sass/google-drive.scss';
 import '../assets/sass/save-modal.scss';
 
-const initial_option = { is_local: true, save_as_collection: false };
+const initial_option = { is_local: true, save_as_collection: false, botname: config.default_file_name };
 
 const SaveModal = ({
     button_status,
@@ -17,6 +18,7 @@ const SaveModal = ({
     onConfirmSave,
     onDriveConnect,
     toggleSaveModal,
+    validateBotName,
 }) => (
     <Modal
         title={'Save Strategy'}
@@ -25,10 +27,23 @@ const SaveModal = ({
         is_open={is_save_modal_open}
         toggleModal={toggleSaveModal}
     >
-        <Formik initialValues={initial_option} onSubmit={onConfirmSave}>
-            {({ values: { is_local, save_as_collection }, setFieldValue }) => (
+        <Formik initialValues={initial_option} validate={validateBotName} onSubmit={onConfirmSave}>
+            {({ values: { is_local, save_as_collection, botname }, setFieldValue }) => (
                 <Form>
                     <div className='modal__content'>
+                        <div className='modal__content-row'>
+                            <Field name='botname'>
+                                {({ field }) => (
+                                    <Input
+                                        {...field}
+                                        className='save-type__input'
+                                        type='text'
+                                        label={localize('Bot name')}
+                                        trailing_icon={<Icon icon='IcEdit' />}
+                                    />
+                                )}
+                            </Field>
+                        </div>
                         <div className='modal__content-row'>
                             <RadioGroup
                                 className='radio-group__save-type'
@@ -71,7 +86,6 @@ const SaveModal = ({
                                 onToggle={() => setFieldValue('is_local', !is_local)}
                             />
                         </div>
-
                         <>
                             <Field name='save_as_collection'>
                                 {({ field }) => (
@@ -164,4 +178,5 @@ export default connect(({ save_modal, google_drive }) => ({
     onConfirmSave: save_modal.onConfirmSave,
     onDriveConnect: save_modal.onDriveConnect,
     toggleSaveModal: save_modal.toggleSaveModal,
+    validateBotName: save_modal.validateBotName,
 }))(SaveModal);

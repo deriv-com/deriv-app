@@ -52,39 +52,6 @@ const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, o
     </div>
 );
 
-const BotNameBox = ({ onBotNameTyped, file_name }) => (
-    <div className='toolbar__form'>
-        <Formik
-            enableReinitialize={true}
-            initialValues={{ botname: file_name }}
-            onSubmit={({ botname }) => onBotNameTyped(botname)}
-        >
-            {({ submitForm, setFieldValue }) => {
-                return (
-                    <Form>
-                        <Field name='botname'>
-                            {({ field }) => (
-                                <Input
-                                    {...field}
-                                    className='toolbar__form-field'
-                                    type='text'
-                                    onKeyUp={({ target: { value } }) => {
-                                        setFieldValue('botname', value, false);
-                                        submitForm();
-                                    }}
-                                    label={localize('Bot name')}
-                                    placeholder={config.default_file_name}
-                                    trailing_icon={<Icon icon='IcEdit' />}
-                                />
-                            )}
-                        </Field>
-                    </Form>
-                );
-            }}
-        </Formik>
-    </div>
-);
-
 const WorkspaceGroup = ({
     has_redo_stack,
     has_undo_stack,
@@ -186,7 +153,6 @@ const Toolbar = props => {
                     </Button>
                 </Popover>
                 {active_tab === tabs_title.WORKSPACE && <SearchBox {...props} />}
-                <BotNameBox {...props} />
                 {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...props} />}
             </div>
             {!is_drawer_open && (

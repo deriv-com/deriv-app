@@ -229,3 +229,32 @@ export const formatMiliseconds = (miliseconds, str_format) => moment.utc(milisec
  */
 export const convertDateFormat = (date, from_date_format, to_date_format) =>
     moment(date, from_date_format).format(to_date_format);
+
+/**
+ * returns duration in seconds
+ * @param {String} duration formatted duration string
+ */
+export const durationToSecond = duration => {
+    const parsed_duration = duration.match(/^([0-9]+)([stmhd])$/);
+    if (!parsed_duration) {
+        return 0;
+    }
+    const duration_value = parseFloat(parsed_duration[1]);
+    const duration_type = parsed_duration[2];
+    if (duration_type === 's') {
+        return duration_value;
+    }
+    if (duration_type === 't') {
+        return duration_value * 2;
+    }
+    if (duration_type === 'm') {
+        return duration_value * 60;
+    }
+    if (duration_type === 'h') {
+        return duration_value * 60 * 60;
+    }
+    if (duration_type === 'd') {
+        return duration_value * 60 * 60 * 24;
+    }
+    return 0;
+};

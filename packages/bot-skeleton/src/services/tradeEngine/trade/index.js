@@ -2,6 +2,7 @@ import { Map } from 'immutable';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { localize } from '@deriv/translations';
+import { durationToSecond } from '@deriv/shared/utils/date';
 import Balance from './Balance';
 import OpenContract from './OpenContract';
 import Proposal from './Proposal';
@@ -15,7 +16,6 @@ import Total from './Total';
 import { doUntilDone } from '../utils/helpers';
 import { expectInitArg, expectTradeOptions } from '../utils/sanitize';
 import { createError } from '../../../utils/error';
-import { durationToSecond } from '../../../utils/date-time-helper';
 import { observer as globalObserver } from '../../../utils/observer';
 
 const watchBefore = store =>

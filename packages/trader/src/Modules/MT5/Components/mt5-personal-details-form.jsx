@@ -120,73 +120,65 @@ class MT5PersonalDetailsForm extends React.Component {
                 >
                     {({ handleSubmit, isSubmitting, errors, touched, values, setFieldValue }) => (
                         <form onSubmit={handleSubmit} autoComplete='off'>
-                            <div className='details-form'>
-                                <div className='details-form__elements-container'>
-                                    <ThemedScrollbars autoHide style={{ height: 432 }}>
-                                        <div className='details-form__elements mt5-details-form__fields'>
-                                            <FormSubHeader title={localize('Details')} />
-                                            <fieldset className='details-form__fieldset'>
-                                                <Field name='citizen'>
-                                                    {({ field }) => (
-                                                        <Autocomplete
-                                                            {...field}
-                                                            id='real_mt5_citizenship'
-                                                            data-lpignore='true'
-                                                            autoComplete='new-password'
-                                                            type='text'
-                                                            label={localize('Citizenship')}
-                                                            error={touched.citizen && errors.citizen}
-                                                            disabled={value.citizen && is_fully_authenticated}
-                                                            list_items={residence_list}
-                                                            onItemSelection={item =>
-                                                                setFieldValue(
-                                                                    'citizen',
-                                                                    item.value ? item.text : '',
-                                                                    true
-                                                                )
-                                                            }
-                                                            required
-                                                        />
-                                                    )}
-                                                </Field>
-                                            </fieldset>
-                                            <FormSubHeader title={localize('Tax information')} />
-                                            <fieldset className='account-form__fieldset'>
-                                                <Field name='tax_residence'>
-                                                    {({ field }) => (
-                                                        <Autocomplete
-                                                            id='real_mt5_tax_residence'
-                                                            data-lpignore='true'
-                                                            type='text'
-                                                            autoComplete='new-password'
-                                                            label={localize('Tax residence')}
-                                                            error={touched.tax_residence && errors.tax_residence}
-                                                            disabled={value.tax_residence && is_fully_authenticated}
-                                                            list_items={residence_list}
-                                                            onItemSelection={({ value: v, text }) =>
-                                                                setFieldValue('tax_residence', v ? text : '', true)
-                                                            }
-                                                            {...field}
-                                                        />
-                                                    )}
-                                                </Field>
-                                            </fieldset>
-                                            <InputField
-                                                id='real_mt5_tax_identification_number'
-                                                name='tax_identification_number'
-                                                placeholder={localize('Tax identification number')}
-                                            />
-                                            <p className='details-form__description'>
-                                                <Localize
-                                                    i18n_default_text={
-                                                        'Any information you provide is confidential and will be used for verification purposes only.'
+                            <ThemedScrollbars autoHide autoHeight autoHeightMin={100} autoHeightMax={320}>
+                                <div className='details-form__elements mt5-details-form__fields'>
+                                    <FormSubHeader title={localize('Details')} />
+                                    <fieldset className='details-form__fieldset'>
+                                        <Field name='citizen'>
+                                            {({ field }) => (
+                                                <Autocomplete
+                                                    {...field}
+                                                    id='real_mt5_citizenship'
+                                                    data-lpignore='true'
+                                                    autoComplete='new-password'
+                                                    type='text'
+                                                    label={localize('Citizenship')}
+                                                    error={touched.citizen && errors.citizen}
+                                                    disabled={value.citizen && is_fully_authenticated}
+                                                    list_items={residence_list}
+                                                    onItemSelection={item =>
+                                                        setFieldValue('citizen', item.value ? item.text : '', true)
                                                     }
+                                                    required
                                                 />
-                                            </p>
-                                        </div>
-                                    </ThemedScrollbars>
+                                            )}
+                                        </Field>
+                                    </fieldset>
+                                    <FormSubHeader title={localize('Tax information')} />
+                                    <fieldset className='account-form__fieldset'>
+                                        <Field name='tax_residence'>
+                                            {({ field }) => (
+                                                <Autocomplete
+                                                    id='real_mt5_tax_residence'
+                                                    data-lpignore='true'
+                                                    type='text'
+                                                    autoComplete='new-password'
+                                                    label={localize('Tax residence')}
+                                                    error={touched.tax_residence && errors.tax_residence}
+                                                    disabled={value.tax_residence && is_fully_authenticated}
+                                                    list_items={residence_list}
+                                                    onItemSelection={({ value: v, text }) =>
+                                                        setFieldValue('tax_residence', v ? text : '', true)
+                                                    }
+                                                    {...field}
+                                                />
+                                            )}
+                                        </Field>
+                                    </fieldset>
+                                    <InputField
+                                        id='real_mt5_tax_identification_number'
+                                        name='tax_identification_number'
+                                        placeholder={localize('Tax identification number')}
+                                    />
+                                    <p className='details-form__description'>
+                                        <Localize
+                                            i18n_default_text={
+                                                'Any information you provide is confidential and will be used for verification purposes only.'
+                                            }
+                                        />
+                                    </p>
                                 </div>
-                            </div>
+                            </ThemedScrollbars>
                             <FormSubmitButton
                                 cancel_label={localize('Previous')}
                                 is_disabled={

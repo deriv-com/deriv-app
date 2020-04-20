@@ -1,10 +1,10 @@
 import classNames from 'classnames';
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import FieldError from 'Components/field-error';
 import Icon from 'Components/icon/icon.jsx';
 
-class SelectNative extends Component {
+class SelectNative extends React.Component {
     getDisplayText = value => {
         const { list_items } = this.props;
         const dropdown_items = Array.isArray(list_items) ? list_items : [].concat(...Object.values(list_items));

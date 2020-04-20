@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Icon from 'Components/icon/icon.jsx';
@@ -9,9 +9,9 @@ import Div100vhContainer from '../div100vh-container';
 const MobileDialog = props => {
     const { title, visible, children, portal_element_id, wrapper_classname, footer } = props;
 
-    const footer_ref = useRef(false);
-    const [footer_height, setHeight] = useState(0);
-    useEffect(() => {
+    const footer_ref = React.useRef(false);
+    const [footer_height, setHeight] = React.useState(0);
+    React.useEffect(() => {
         if (footer_ref.current && !footer_height) {
             setHeight(footer_ref.current.offsetHeight);
         } else {

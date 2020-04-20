@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { Icon, Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import routes from '@deriv/shared/utils/routes';
 import { isNavigationFromPlatform } from '@deriv/shared/utils/platform';
@@ -16,7 +16,7 @@ import SuccessDialog from '../Modals/success-dialog.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
-class RealAccountSignup extends Component {
+class RealAccountSignup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

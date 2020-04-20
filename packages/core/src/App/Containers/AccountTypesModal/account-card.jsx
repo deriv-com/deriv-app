@@ -51,14 +51,14 @@ const MainCard = ({ button_text, buttonOnClick, items, setShowDescription, subti
                     }}
                 />
             </h4>
-            {items.length && (
+            {Object.keys(items).length && (
                 <table className='account-card__main-items'>
                     <tbody>
-                        {items.map((item, index) => {
+                        {Object.entries(items).map(([label, value], index) => {
                             return (
                                 <tr key={index} className='account-card__main-item'>
-                                    <td className='account-card__main-item-label'>{item.label}</td>
-                                    <td className='account-card__main-item-value'>{item.value}</td>
+                                    <td className='account-card__main-item-label'>{label}</td>
+                                    <td className='account-card__main-item-value'>{value}</td>
                                 </tr>
                             );
                         })}
@@ -105,7 +105,7 @@ const AccountCard = ({ button_text, buttonOnClick, children, items, learn_more, 
 AccountCard.propTypes = {
     button_text: PropTypes.string,
     buttonOnClick: PropTypes.func,
-    items: PropTypes.arrayOf(PropTypes.object),
+    items: PropTypes.object,
     learn_more: PropTypes.arrayOf(PropTypes.object),
     subtitle: PropTypes.string,
     title: PropTypes.string,

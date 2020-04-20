@@ -50,28 +50,14 @@ const FinancialBox = ({ is_demo = false }) => {
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
                     // TODO: Add click handler
                     buttonOnClick={() => {}}
-                    items={[
-                        {
-                            label: localize('Multiplier'),
-                            value: localize('Up to X1000'),
-                        },
-                        {
-                            label: localize('Stop loss'),
-                            value: localize('Flexible'),
-                        },
-                        {
-                            label: localize('Take profit'),
-                            value: localize('Flexible'),
-                        },
-                        {
-                            label: localize('Cancel Trade'),
-                            value: localize('Allow'),
-                        },
-                        {
-                            label: localize('Currency'),
-                            value: localize('USD/GBP/EUR'),
-                        },
-                    ]}
+                    items={{
+                        [localize('Multiplier')]: localize('Up to X1000'),
+                        [localize('Stop loss')]: localize('Flexible'),
+                        [localize('Take profit')]: localize('Flexible'),
+                        [localize('Cancel Trade')]: localize('Allow'),
+                        [localize('Currency')]: localize('USD/GBP/EUR'),
+                    }}
+                    // TODO: Update paths
                     learn_more={[
                         {
                             text: localize('Option Trading'),
@@ -102,24 +88,13 @@ const FinancialBox = ({ is_demo = false }) => {
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
                     // TODO: Add click handler
                     buttonOnClick={() => {}}
-                    items={[
-                        {
-                            label: localize('Leverage'),
-                            value: localize('Up to 1:1000'),
-                        },
-                        {
-                            label: localize('Margin call'),
-                            value: localize('150%'),
-                        },
-                        {
-                            label: localize('Stop out level'),
-                            value: localize('75%'),
-                        },
-                        {
-                            label: localize('Currency'),
-                            value: localize('USD'),
-                        },
-                    ]}
+                    items={{
+                        [localize('Leverage')]: localize('Up to 1:1000'),
+                        [localize('Margin call')]: localize('150%'),
+                        [localize('Stop out level')]: localize('75%'),
+                        [localize('Currency')]: localize('USD'),
+                    }}
+                    // TODO: Update paths
                     learn_more={[
                         {
                             text: localize('Margin Trading'),
@@ -170,28 +145,14 @@ const GamingBox = ({ is_demo = false }) => {
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
                     // TODO: Add click handler
                     buttonOnClick={() => {}}
-                    items={[
-                        {
-                            label: localize('Trade type'),
-                            value: localize('10+'),
-                        },
-                        {
-                            label: localize('Min duration'),
-                            value: localize('1 tick'),
-                        },
-                        {
-                            label: localize('Max duration'),
-                            value: localize('365 days'),
-                        },
-                        {
-                            label: localize('Availability'),
-                            value: localize('24/7'),
-                        },
-                        {
-                            label: localize('Currency'),
-                            value: localize('USD/GBP/EUR'),
-                        },
-                    ]}
+                    items={{
+                        [localize('Trade type')]: localize('10+'),
+                        [localize('Min duration')]: localize('1 tick'),
+                        [localize('Max duration')]: localize('365 days'),
+                        [localize('Availability')]: localize('24/7'),
+                        [localize('Currency')]: localize('USD/GBP/EUR'),
+                    }}
+                    // TODO: Update paths
                     learn_more={[
                         {
                             text: localize('Option Trading'),
@@ -222,24 +183,13 @@ const GamingBox = ({ is_demo = false }) => {
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
                     // TODO: Add click handler
                     buttonOnClick={() => {}}
-                    items={[
-                        {
-                            label: localize('Leverage'),
-                            value: localize('Up to 1:1000'),
-                        },
-                        {
-                            label: localize('Margin call'),
-                            value: localize('100%'),
-                        },
-                        {
-                            label: localize('Stop out level'),
-                            value: localize('50%'),
-                        },
-                        {
-                            label: localize('Currency'),
-                            value: localize('USD'),
-                        },
-                    ]}
+                    items={{
+                        [localize('Leverage')]: localize('Up to 1:1000'),
+                        [localize('Margin call')]: localize('100%'),
+                        [localize('Stop out level')]: localize('50%'),
+                        [localize('Currency')]: localize('USD'),
+                    }}
+                    // TODO: Update paths
                     learn_more={[
                         {
                             text: localize('Margin Trading'),

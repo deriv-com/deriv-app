@@ -92,7 +92,7 @@ const MyAdsTable = () => {
                 if (is_mounted) {
                     if (!response.error) {
                         setHasMoreItemsToLoad(response.length >= list_item_limit);
-                        setAds([]);
+                        setAds(ads.concat(response));
                         setIsLoading(false);
                         item_offset += response.length;
                     } else {

@@ -80,6 +80,7 @@ class VerticalTab extends React.Component {
                         is_floating={this.props.is_floating}
                         is_routed={this.props.is_routed}
                         header_title={this.props.header_title}
+                        tab_headers_note={this.props.tab_headers_note}
                     />
                 )}
                 <VerticalTabContentContainer
@@ -132,6 +133,7 @@ VerticalTab.propTypes = {
             subitems: PropTypes.arrayOf(PropTypes.number),
         })
     ),
+    tab_headers_note: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     selected_index: PropTypes.number,
     setVerticalTabIndex: PropTypes.func,
     vertical_tab_index: PropTypes.number,

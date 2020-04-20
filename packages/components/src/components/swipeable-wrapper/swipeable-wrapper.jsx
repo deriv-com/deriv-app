@@ -16,6 +16,7 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }) => {
     }, [active_index]);
 
     const swipedLeft = () => {
+        if (props.is_disabled) return;
         const is_reached_end = active_index + 1 === React.Children.toArray(children).length;
         if (!is_reached_end) {
             setActiveIndex(active_index + 1);
@@ -23,6 +24,7 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }) => {
     };
 
     const swipedRight = () => {
+        if (props.is_disabled) return;
         if (active_index > 0) {
             setActiveIndex(active_index - 1);
         }
@@ -36,7 +38,7 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }) => {
         <div className='dc-swipeable'>
             <Swipeable
                 style={{
-                    transform: `translateX(${active_index * -100}vw)`,
+                    transform: `translateX(${props.is_disabled ? -100 : active_index * -100}vw)`,
                 }}
                 className={classNames('dc-swipeable__view', className)}
                 onSwipedLeft={swipedLeft}
@@ -45,22 +47,28 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }) => {
             >
                 {childrenWithWrapperDiv}
             </Swipeable>
-            <nav className='dc-swipeable__nav'>
-                <Icon
-                    className='dc-swipeable__nav__item'
-                    icon='IcChevronDoubleLeft'
-                    size={24}
-                    onClick={swipedRight}
-                    color={active_index === 0 ? 'disabled' : ''}
-                />
-                <Icon
-                    className='dc-swipeable__nav__item'
-                    icon='IcChevronDoubleRight'
-                    size={24}
-                    onClick={swipedLeft}
-                    color={active_index + 1 === React.Children.toArray(children).length ? 'disabled' : ''}
-                />
-            </nav>
+            {!props.is_disabled && (
+                <nav className='dc-swipeable__nav'>
+                    <Icon
+                        className='dc-swipeable__nav__item'
+                        icon='IcChevronDoubleLeft'
+                        size={24}
+                        onClick={swipedRight}
+                        color={active_index === 0 || props.is_disabled ? 'disabled' : ''}
+                    />
+                    <Icon
+                        className='dc-swipeable__nav__item'
+                        icon='IcChevronDoubleRight'
+                        size={24}
+                        onClick={swipedLeft}
+                        color={
+                            active_index + 1 === React.Children.toArray(children).length || props.is_disabled
+                                ? 'disabled'
+                                : ''
+                        }
+                    />
+                </nav>
+            )}
         </div>
     );
 };

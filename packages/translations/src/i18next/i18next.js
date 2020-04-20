@@ -73,6 +73,7 @@ const loadLanguageJson = async lang => {
         const lang_json = await response.text();
 
         i18n.addResourceBundle(lang, 'translations', JSON.parse(lang_json));
+        document.documentElement.setAttribute('lang', lang);
     }
 };
 

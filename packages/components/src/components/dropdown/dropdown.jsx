@@ -80,6 +80,7 @@ class Dropdown extends React.Component {
     get list_class_names() {
         return classNames('dc-list', {
             'dc-list--left': this.props.is_alignment_left,
+            'dc-list--has-label': !Array.isArray(this.props.list),
         });
     }
 
@@ -314,7 +315,7 @@ class Dropdown extends React.Component {
                                         <ThemedScrollbars
                                             autoHeight
                                             autoHide
-                                            autoHeightMax={200}
+                                            autoHeightMax={404}
                                             renderTrackHorizontal={props => (
                                                 <div {...props} style={{ display: 'none' }} />
                                             )}

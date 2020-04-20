@@ -234,7 +234,7 @@ class AccountTypesModal extends Component {
             <Modal
                 title={localize('Account types')}
                 width='904px'
-                is_open={this.props.is_account_types_modal_on}
+                is_open={this.props.is_account_types_modal_visible}
                 toggleModal={this.closeModal}
             >
                 <ThemedScrollbars autoHide style={{ height: '63.5rem' }}>
@@ -279,12 +279,12 @@ class AccountTypesModal extends Component {
 
 AccountTypesModal.propTypes = {
     has_demo: PropTypes.bool,
-    is_account_types_modal_on: PropTypes.bool,
+    is_account_types_modal_visible: PropTypes.bool,
     toggleAccountTypesModal: PropTypes.func,
 };
 
 export default connect(({ ui, client }) => ({
-    is_account_types_modal_on: ui.is_account_types_modal_on,
+    is_account_types_modal_visible: ui.is_account_types_modal_visible,
     toggleAccountTypesModal: ui.toggleAccountTypesModal,
     client: client,
     upgradeable_landing_companies: client.upgradeable_landing_companies,

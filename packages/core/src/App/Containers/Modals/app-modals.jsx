@@ -18,7 +18,7 @@ const AccountTypesModal = React.lazy(() =>
 );
 
 const AppModals = ({
-    is_account_types_modal_on,
+    is_account_types_modal_visible,
     is_denial_of_service_modal_visible,
     is_set_residence_modal_visible,
     url_action_param,
@@ -57,7 +57,7 @@ const AppModals = ({
             }
             break;
     }
-    if (is_account_types_modal_on) {
+    if (is_account_types_modal_visible) {
         ComponentToLoad = <AccountTypesModal />;
     }
 
@@ -65,7 +65,7 @@ const AppModals = ({
 };
 
 export default connect(({ client, ui }) => ({
-    is_account_types_modal_on: ui.is_account_types_modal_on,
+    is_account_types_modal_visible: ui.is_account_types_modal_visible,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_denial_of_service_modal_visible: !client.is_client_allowed_to_visit,
     switchAccount: client.switchAccount,

@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
 import AddressDetails from 'App/Containers/RealAccountSignup/address-details.jsx';
-
 import { generateValidationFunction, getDefaultFields } from './form-validations';
 
 const address_details_config = {

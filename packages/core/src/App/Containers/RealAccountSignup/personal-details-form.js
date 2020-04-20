@@ -19,7 +19,7 @@ const personal_details_config = {
         supported_in: ['svg', 'iom'],
         default_value: '',
         rules: [
-            ['req', localize('First Name is required')],
+            ['req', localize('First name is required')],
             ['letter_symbol', getPreBuildDVRs().letter_symbol.message],
             ['length', localize('First name should be between 2 and 30 characters.'), { min: 2, max: 30 }],
         ],
@@ -28,7 +28,7 @@ const personal_details_config = {
         supported_in: ['svg', 'iom'],
         default_value: '',
         rules: [
-            ['req', localize('Last Name is required')],
+            ['req', localize('Last name is required')],
             ['letter_symbol', getPreBuildDVRs().letter_symbol.message],
             ['length', localize('Last name should be between 2 and 30 characters.'), { min: 2, max: 30 }],
         ],

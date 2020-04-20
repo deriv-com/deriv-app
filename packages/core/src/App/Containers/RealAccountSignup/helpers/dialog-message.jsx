@@ -63,7 +63,8 @@ export const DialogMessage = ({ status, landing_company_shortcode, currency, is_
 };
 
 DialogMessage.propTypes = {
-    status: PropTypes.number,
-    landing_company_shortcode: PropTypes.string,
     currency: PropTypes.string,
+    is_im_residence: PropTypes.bool,
+    landing_company_shortcode: PropTypes.string,
+    status: PropTypes.number,
 };

@@ -17,7 +17,7 @@ const LoadingModal = () => <Loading is_fullscreen={false} />;
 
 const WizardHeading = ({ can_upgrade_to, currency, is_im_residence }) => {
     if (!currency) {
-        return localize('Set a currency for your Real Account');
+        return <Localize i18n_default_text='Set a currency for your Real Account' />;
     }
 
     if (can_upgrade_to === 'iom' && is_im_residence) {

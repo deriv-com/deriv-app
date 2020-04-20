@@ -11,7 +11,7 @@ import { EXPERIAN } from './constants';
 const IOMHeading = ({ status }) => (
     <h2>
         {status === EXPERIAN.SUCCESS && <Localize i18n_default_text='Success!' />}
-        {[EXPERIAN.WARN, EXPERIAN.DANGER].includes(status) && <Localize i18n_default_text='Verification Failed!' />}
+        {[EXPERIAN.WARN, EXPERIAN.DANGER].includes(status) && <Localize i18n_default_text='Verification failed!' />}
     </h2>
 );
 

@@ -71,6 +71,7 @@ const Amount = ({
             onChange={onChange}
             type='tel'
             value={amount}
+            ariaLabel={localize('Amount')}
         />
     );
 

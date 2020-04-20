@@ -46,6 +46,7 @@ class ContractReplay extends React.Component {
     render() {
         const {
             contract_info,
+            contract_update,
             contract_update_history,
             is_chart_loading,
             is_dark_theme,
@@ -82,6 +83,7 @@ class ContractReplay extends React.Component {
                     >
                         <ContractDrawer
                             contract_info={contract_info}
+                            contract_update={contract_update}
                             contract_update_history={contract_update_history}
                             is_dark_theme={is_dark_theme}
                             is_sell_requested={is_sell_requested}
@@ -141,6 +143,7 @@ export default withRouter(
         return {
             routeBackInApp: common.routeBackInApp,
             contract_info: contract_store.contract_info,
+            contract_update: contract_store.contract_update,
             contract_update_history: contract_store.contract_update_history,
             is_digit_contract: contract_store.is_digit_contract,
             is_sell_requested: contract_replay.is_sell_requested,

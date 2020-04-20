@@ -119,9 +119,13 @@
     }
     &__icon {
         border-radius: 50%;
-        padding: 5px 6px;
+        padding: 4px;
         color: var(--text-colored-background);
         margin-right: 8px;
         font-size: 12px;
+        line-height: 1.33;
+        width: 24px;
+        height: 24px;
+        white-space: nowrap;
     }
 }

@@ -17,7 +17,7 @@ class EmailSent extends React.Component {
                     <Localize i18n_default_text={"We've sent you an email."} />
                 </p>
                 <p className='withdraw__email-sent-text'>
-                    <Localize i18n_default_text='Please click on the link in the email to access withdrawal.' />
+                    <Localize i18n_default_text='Please check your email for the verification link to complete the process.' />
                 </p>
                 <div className='withdraw__email-resend'>
                     {this.props.is_resend_clicked ? (

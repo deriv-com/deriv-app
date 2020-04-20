@@ -4,8 +4,7 @@ import { Dialog, ButtonToggle } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import Popup from './popup.jsx';
 import './buy-sell.scss';
-import { SellTable } from './sell-table.jsx';
-import { BuyTable } from './buy-table.jsx';
+import { BuySellTable } from './buy-sell-table.jsx';
 
 const buy_sell_filters = [
     {
@@ -56,11 +55,7 @@ class BuySell extends Component {
                         value={table_type}
                     />
                 </div>
-                {table_type === 'buy' ? (
-                    <BuyTable setSelectedAd={this.setSelectedAd} />
-                ) : (
-                    <SellTable setSelectedAd={this.setSelectedAd} />
-                )}
+                <BuySellTable table_type={table_type} setSelectedAd={this.setSelectedAd} />
                 {show_popup && (
                     <div className='buy-sell__dialog'>
                         <Dialog is_visible={show_popup}>

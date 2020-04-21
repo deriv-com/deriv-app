@@ -87,6 +87,7 @@ export default class TradeStore extends BaseStore {
 
     // Last Digit
     @observable last_digit = 5;
+    @observable is_mobile_digit_view_selected = false;
 
     // Purchase
     @observable.ref proposal_info = {};
@@ -708,6 +709,11 @@ export default class TradeStore extends BaseStore {
     @computed
     get show_digits_stats() {
         return isDigitTradeType(this.contract_type);
+    }
+
+    @action.bound
+    setMobileDigitView(bool) {
+        this.is_mobile_digit_view_selected = bool;
     }
 
     @action.bound

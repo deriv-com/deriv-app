@@ -20,7 +20,11 @@ const DateOfBirthField = props => (
                 error={touched.date_of_birth && errors.date_of_birth}
                 onBlur={() => setTouched({ date_of_birth: true })}
                 onChange={({ target }) =>
-                    setFieldValue('date_of_birth', target ? toMoment(target.value).format('YYYY-MM-DD') : '', true)
+                    setFieldValue(
+                        'date_of_birth',
+                        target?.value ? toMoment(target.value).format('YYYY-MM-DD') : '',
+                        true
+                    )
                 }
                 value={value}
                 portal_id='modal_root'

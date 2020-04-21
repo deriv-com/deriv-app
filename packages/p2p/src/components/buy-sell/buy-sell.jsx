@@ -4,7 +4,6 @@ import { Dialog, ButtonToggle } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import Popup from './popup.jsx';
 import './buy-sell.scss';
-import { BuySellTable } from './buy-sell-table.jsx';
 import BuySellTableContent from './buy-sell-table-content.jsx';
 
 const buy_sell_filters = [

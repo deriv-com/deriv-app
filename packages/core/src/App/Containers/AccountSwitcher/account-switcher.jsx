@@ -103,6 +103,21 @@ class AccountSwitcher extends React.Component {
         }
     };
 
+    isDemo = account => /^demo/.test(account.group);
+
+    isReal = account => !this.isDemo(account);
+
+    getRemainingAccounts = existing_mt5_groups => {
+        const mt5_config = getAllMtAccounts();
+        const available = [];
+        Object.keys(mt5_config).forEach(account => {
+            if (!mt5_config[account].account_regex.test(existing_mt5_groups.join(' '))) {
+                available.push(mt5_config[account]);
+            }
+        });
+        return available;
+    };
+
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
         this.props.updateMt5LoginList();
@@ -164,35 +179,21 @@ class AccountSwitcher extends React.Component {
     }
 
     get demo_mt5() {
-        return this.sorted_mt5_list.filter(account => /^demo/.test(account.group));
+        return this.sorted_mt5_list.filter(this.isDemo);
     }
 
     get remaining_demo_mt5() {
         const existing_demo_mt5_groups = Object.keys(this.demo_mt5).map(account => this.demo_mt5[account].group);
-        const mt5_config = getAllMtAccounts();
-        const available = [];
-        Object.keys(mt5_config).forEach(account => {
-            if (!mt5_config[account].account_regex.test(existing_demo_mt5_groups.join(' '))) {
-                available.push(mt5_config[account]);
-            }
-        });
-        return available;
+        return this.getRemainingAccounts(existing_demo_mt5_groups);
     }
 
     get real_mt5() {
-        return this.sorted_mt5_list.filter(account => !/^demo/.test(account.group));
+        return this.sorted_mt5_list.filter(this.isReal);
     }
 
     get remaining_real_mt5() {
         const existing_real_mt5_groups = Object.keys(this.real_mt5).map(account => this.real_mt5[account].group);
-        const mt5_config = getAllMtAccounts();
-        const available = [];
-        Object.keys(mt5_config).forEach(account => {
-            if (!mt5_config[account].account_regex.test(existing_real_mt5_groups.join(' '))) {
-                available.push(mt5_config[account]);
-            }
-        });
-        return available;
+        return this.getRemainingAccounts(existing_real_mt5_groups);
     }
 
     get has_set_currency() {

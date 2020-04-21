@@ -55,9 +55,9 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
                 </Table.Cell>
                 <Table.Cell flex='2fr'>{data.display_payment_method}</Table.Cell>
                 {is_own_ad ? (
-                    <Table.Cell flex='1fr' />
+                    <Table.Cell flex='100px' />
                 ) : (
-                    <Table.Cell flex='1fr'>
+                    <Table.Cell flex='100px'>
                         <Button
                             className='p2p-cashier__button--right-aligned'
                             primary

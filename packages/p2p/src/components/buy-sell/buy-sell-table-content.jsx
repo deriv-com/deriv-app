@@ -48,7 +48,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
                     if (!response.error) {
                         setHasMoreItemsToLoad(response.length >= list_item_limit);
                         setIsLoading(false);
-                        setItems([]);
+                        setItems(items.concat(response));
                         item_offset += response.length;
                     } else {
                         setApiErrorMessage(response.api_error_message);

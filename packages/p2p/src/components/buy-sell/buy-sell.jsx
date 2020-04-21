@@ -37,7 +37,8 @@ class BuySell extends Component {
     };
 
     onConfirmClick = order_info => {
-        this.props.navigate('orders', { order_info });
+        const nav = { location: 'buy_sell', index: 0 };
+        this.props.navigate('orders', { order_info, nav });
     };
 
     render() {

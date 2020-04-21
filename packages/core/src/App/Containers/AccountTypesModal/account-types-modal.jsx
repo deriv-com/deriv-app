@@ -7,6 +7,131 @@ import AccountCard from './account-card.jsx';
 
 import 'Sass/app/modules/account-types.scss';
 
+const boxGenerator = (standpoint, has_demo, state, setAccountTypeTabIndex) => {
+    // MLT/MF
+    if (standpoint.malta && standpoint.maltainvest) {
+        return has_demo ? (
+            <Tabs
+                active_index={state.account_type_tab_index}
+                className='account-types__tabs'
+                fit_content
+                onTabItemClick={setAccountTypeTabIndex}
+                top
+            >
+                <div label={localize('Real accounts')}>
+                    <FinancialBox />
+                    <GamingBox />
+                </div>
+                <div label={localize('Demo accounts')}>
+                    <FinancialBox is_demo />
+                    <GamingBox is_demo />
+                </div>
+            </Tabs>
+        ) : (
+            <div>
+                <FinancialBox />
+                <GamingBox />
+            </div>
+        );
+    } // MX/MF
+    else if (standpoint.iom && standpoint.maltainvest) {
+        return has_demo ? (
+            <Tabs
+                active_index={state.account_type_tab_index}
+                className='account-types__tabs'
+                fit_content
+                onTabItemClick={setAccountTypeTabIndex}
+                top
+            >
+                <div label={localize('Real accounts')}>
+                    <FinancialBox />
+                    <GamingBox no_mt5 />
+                </div>
+                <div label={localize('Demo accounts')}>
+                    <FinancialBox is_demo />
+                    <GamingBox is_demo no_mt5 />
+                </div>
+            </Tabs>
+        ) : (
+            <div>
+                <FinancialBox />
+                <GamingBox no_mt5 />
+            </div>
+        );
+    } // Only MLT
+    else if (standpoint.malta) {
+        return has_demo ? (
+            <Tabs
+                active_index={state.account_type_tab_index}
+                className='account-types__tabs'
+                fit_content
+                onTabItemClick={setAccountTypeTabIndex}
+                top
+            >
+                <div label={localize('Real accounts')}>
+                    <SyntheticBox />
+                </div>
+                <div label={localize('Demo accounts')}>
+                    <SyntheticBox is_demo />
+                </div>
+            </Tabs>
+        ) : (
+            <div>
+                <SyntheticBox />
+            </div>
+        );
+    } // Only MX
+    else if (standpoint.iom) {
+        return has_demo ? (
+            <Tabs
+                active_index={state.account_type_tab_index}
+                className='account-types__tabs'
+                fit_content
+                onTabItemClick={setAccountTypeTabIndex}
+                top
+            >
+                <div label={localize('Real accounts')}>
+                    <FinancialBox />
+                    <GamingBox no_mt5 />
+                </div>
+                <div label={localize('Demo accounts')}>
+                    <FinancialBox is_demo />
+                    <GamingBox is_demo no_mt5 />
+                </div>
+            </Tabs>
+        ) : (
+            <div>
+                <FinancialBox />
+                <GamingBox no_mt5 />
+            </div>
+        );
+    } //only MF
+    else if (standpoint.maltainvest) {
+        return has_demo ? (
+            <Tabs
+                active_index={state.account_type_tab_index}
+                className='account-types__tabs'
+                fit_content
+                onTabItemClick={setAccountTypeTabIndex}
+                top
+            >
+                <div label={localize('Real accounts')}>
+                    <FinancialBox />
+                </div>
+                <div label={localize('Demo accounts')}>
+                    <FinancialBox is_demo />
+                </div>
+            </Tabs>
+        ) : (
+            <div>
+                <FinancialBox />
+            </div>
+        );
+    } else {
+        throw new Error('Unknown standpoint');
+    }
+};
+
 const Box = ({ title, description, footer_text, icons, cards }) => {
     return (
         <div className='account-types__box'>
@@ -121,13 +246,110 @@ const FinancialBox = ({ is_demo = false }) => {
     );
 };
 
-const GamingBox = ({ is_demo = false }) => {
+const GamingBox = ({ is_demo = false, no_mt5 = false }) => {
+    const cards = [
+        <AccountCard
+            key={0}
+            title={localize('Trade on Deriv')}
+            subtitle={localize('Option trading account')}
+            button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
+            // TODO: Add click handler
+            buttonOnClick={() => {}}
+            items={{
+                [localize('Trade type')]: localize('10+'),
+                [localize('Min duration')]: localize('1 tick'),
+                [localize('Max duration')]: localize('365 days'),
+                [localize('Availability')]: localize('24/7'),
+                [localize('Currency')]: localize('USD/GBP/EUR'),
+            }}
+            // TODO: Update paths
+            learn_more={[
+                {
+                    text: localize('Option Trading'),
+                    path: '/0',
+                },
+                {
+                    text: localize('Dtrader'),
+                    path: '/1',
+                },
+                {
+                    text: localize('DBot'),
+                    path: '/2',
+                },
+            ]}
+        >
+            <p className='account-card__description-text'>
+                {localize(
+                    'Options are contracts that give the owner the right to buy or sell an asset at a fixed price for a specific period of time. That period could be as short as a day or as long as a couple of years, depending on the type of option contract.'
+                )}
+            </p>
+            <p className='account-card__description-text--small'>{localize('Supported platform:')}</p>
+            <p className='account-card__description-text--small'>{localize('DTrader and Dbot')}</p>
+        </AccountCard>,
+        <AccountCard
+            key={1}
+            title={localize('Trade on MT5')}
+            subtitle={localize('Margin trading account')}
+            button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
+            // TODO: Add click handler
+            buttonOnClick={() => {}}
+            items={{
+                [localize('Leverage')]: localize('Up to 1:1000'),
+                [localize('Margin call')]: localize('100%'),
+                [localize('Stop out level')]: localize('50%'),
+                [localize('Currency')]: localize('USD'),
+            }}
+            // TODO: Update paths
+            learn_more={[
+                {
+                    text: localize('Margin Trading'),
+                    path: '/3',
+                },
+                {
+                    text: localize('DMT5'),
+                    path: '/4',
+                },
+            ]}
+        >
+            <p className='account-card__description-text'>
+                {localize(
+                    'Margin trading is a method of trading assets using funds provided by Deriv.com. It allow you to access greater sums of capital to leverage your positions and realize larger profits on successful trades.'
+                )}
+            </p>
+            <p className='account-card__description-text--small'>{localize('Supported platform:')}</p>
+            <p className='account-card__description-text--small'>{localize('DMT5')}</p>
+        </AccountCard>,
+    ];
+
+    if (no_mt5) {
+        cards.pop();
+    }
     return (
         <Box
             title={localize('Gaming account ({{type}})', { type: is_demo ? localize('Demo') : localize('Real') })}
             description={localize(
                 'Gaming account offers you to trade Gaming assets like synthetic indices that simulates simulated markets with constant volatilities of 10%, 25%, 50%,75% and 100%.'
             )}
+            icons={[
+                'IcUnderlying1HZ10V',
+                'IcUnderlying1HZ100V',
+                'IcUnderlyingR_10',
+                'IcUnderlyingR_25',
+                'IcUnderlyingR_50',
+                'IcUnderlyingR_75',
+                'IcUnderlyingR_100',
+            ]}
+            cards={cards}
+        />
+    );
+};
+
+const SyntheticBox = ({ is_demo = false }) => {
+    return (
+        <Box
+            title={localize('Synthetic account')}
+            description={localize('ADD LATER')}
+            footer_text={localize('ADD LATER')}
             icons={[
                 'IcUnderlying1HZ10V',
                 'IcUnderlying1HZ100V',
@@ -147,7 +369,7 @@ const GamingBox = ({ is_demo = false }) => {
                     buttonOnClick={() => {}}
                     items={{
                         [localize('Trade type')]: localize('10+'),
-                        [localize('Min duration')]: localize('1 tick'),
+                        [localize('Min duration')]: localize('1 Tick'),
                         [localize('Max duration')]: localize('365 days'),
                         [localize('Availability')]: localize('24/7'),
                         [localize('Currency')]: localize('USD/GBP/EUR'),
@@ -206,8 +428,10 @@ const GamingBox = ({ is_demo = false }) => {
                             'Margin trading is a method of trading assets using funds provided by Deriv.com. It allow you to access greater sums of capital to leverage your positions and realize larger profits on successful trades.'
                         )}
                     </p>
-                    <p className='account-card__description-text--small'>{localize('Supported platform:')}</p>
-                    <p className='account-card__description-text--small'>{localize('DMT5')}</p>
+                    <p className='account-card__description-text--small'>{localize('Supported platform:')} </p>
+                    <p className='account-card__description-text--small'>
+                        {localize('DMT5')} <br />
+                    </p>
                 </AccountCard>,
             ]}
         />
@@ -236,6 +460,7 @@ class AccountTypesModal extends Component {
                 width='904px'
                 is_open={this.props.is_account_types_modal_visible}
                 toggleModal={this.closeModal}
+                // has_close_icon={false}
             >
                 <ThemedScrollbars autoHide style={{ height: '63.5rem' }}>
                     <div className='account-types'>
@@ -247,28 +472,11 @@ class AccountTypesModal extends Component {
                                 ]}
                             />
                         </p>
-                        {this.props.has_demo ? (
-                            <Tabs
-                                active_index={this.state.account_type_tab_index}
-                                className='account-types__tabs'
-                                fit_content
-                                onTabItemClick={this.setAccountTypeTabIndex}
-                                top
-                            >
-                                <div label={localize('Real accounts')}>
-                                    <FinancialBox />
-                                    <GamingBox />
-                                </div>
-                                <div label={localize('Demo accounts')}>
-                                    <FinancialBox is_demo />
-                                    <GamingBox is_demo />
-                                </div>
-                            </Tabs>
-                        ) : (
-                            <div>
-                                <FinancialBox />
-                                <GamingBox />
-                            </div>
+                        {boxGenerator(
+                            this.props.standpoint,
+                            this.props.has_demo,
+                            this.state,
+                            this.setAccountTypeTabIndex
                         )}
                     </div>
                 </ThemedScrollbars>
@@ -291,5 +499,5 @@ export default connect(({ ui, client }) => ({
     landing_company_shortcode: client.landing_company_shortcode,
     standpoint: client.standpoint,
     // TODO: add this later
-    // has_demo: later!
+    has_demo: (client.standpoint.malta || client.standpoint.maltainvest) && !client.standpoint.iom,
 }))(AccountTypesModal);

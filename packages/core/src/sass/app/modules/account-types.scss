@@ -63,6 +63,7 @@
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         grid-gap: 0.8rem 1.6rem;
+        width: fit-content;
     }
     &__box-icon {
         height: 4.8rem;

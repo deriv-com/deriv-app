@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import BuySellTableContent from './buy-sell-table-content.jsx';
 
 export const BuySellTable = ({ children }) => {
     return (

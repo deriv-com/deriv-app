@@ -51,62 +51,57 @@ class VerticalTabHeaders extends React.PureComponent {
 
     render() {
         return (
-            <div className='dc-vertical-tab__meta-wrapper'>
-                <VerticalTabWrapper
-                    wrapper_ref={this.ref}
-                    className={classNames(this.props.className, {
-                        'dc-vertical-tab__tab--floating': this.props.is_floating,
-                    })}
-                >
-                    {!this.props.is_floating && this.props.header_title && (
-                        <VerticalTabHeaderTitle header_title={this.props.header_title} />
-                    )}
-                    {Array.isArray(this.props.item_groups)
-                        ? this.props.item_groups.map((group, idx) => (
-                              <VerticalTabHeaderGroup
-                                  onToggle={this.repositionActiveHighlighter}
-                                  selected={group.subitems.includes(
-                                      // See if the index of the currently selected item is in the subitems of this group
-                                      this.props.items.findIndex(i => i === this.props.selected)
-                                  )}
-                                  items={this.props.items}
-                                  group={group}
-                                  key={idx}
-                              >
-                                  {group.subitems.map((item_idx, header_idx) => (
-                                      <VerticalTabHeader
-                                          item={this.props.items[item_idx]}
-                                          onChange={this.onTabChange}
-                                          is_floating={this.props.is_floating}
-                                          is_routed={this.props.is_routed}
-                                          selected={this.props.selected}
-                                          key={header_idx}
-                                      />
-                                  ))}
-                              </VerticalTabHeaderGroup>
-                          ))
-                        : this.props.items.map((item, idx) => (
-                              <VerticalTabHeader
-                                  item={item}
-                                  onChange={this.onTabChange}
-                                  is_floating={this.props.is_floating}
-                                  is_routed={this.props.is_routed}
-                                  selected={this.props.selected}
-                                  key={idx}
-                              />
-                          ))}
-                    <span
-                        style={{
-                            transition: this.state.should_skip_animation ? 'unset' : 'transform 0.25s ease',
-                            transform: `translate3d(0, ${this.state.top}px, 0)`,
-                        }}
-                        className='dc-vertical-tab__header--highlight'
-                    />
-                </VerticalTabWrapper>
-                {this.props.is_floating && this.props.tab_headers_note && (
-                    <div className='dc-vertical-tab__tab-headers-note'>{this.props.tab_headers_note}</div>
+            <VerticalTabWrapper
+                wrapper_ref={this.ref}
+                className={classNames(this.props.className, {
+                    'dc-vertical-tab__tab--floating': this.props.is_floating,
+                })}
+            >
+                {!this.props.is_floating && this.props.header_title && (
+                    <VerticalTabHeaderTitle header_title={this.props.header_title} />
                 )}
-            </div>
+                {Array.isArray(this.props.item_groups)
+                    ? this.props.item_groups.map((group, idx) => (
+                          <VerticalTabHeaderGroup
+                              onToggle={this.repositionActiveHighlighter}
+                              selected={group.subitems.includes(
+                                  // See if the index of the currently selected item is in the subitems of this group
+                                  this.props.items.findIndex(i => i === this.props.selected)
+                              )}
+                              items={this.props.items}
+                              group={group}
+                              key={idx}
+                          >
+                              {group.subitems.map((item_idx, header_idx) => (
+                                  <VerticalTabHeader
+                                      item={this.props.items[item_idx]}
+                                      onChange={this.onTabChange}
+                                      is_floating={this.props.is_floating}
+                                      is_routed={this.props.is_routed}
+                                      selected={this.props.selected}
+                                      key={header_idx}
+                                  />
+                              ))}
+                          </VerticalTabHeaderGroup>
+                      ))
+                    : this.props.items.map((item, idx) => (
+                          <VerticalTabHeader
+                              item={item}
+                              onChange={this.onTabChange}
+                              is_floating={this.props.is_floating}
+                              is_routed={this.props.is_routed}
+                              selected={this.props.selected}
+                              key={idx}
+                          />
+                      ))}
+                <span
+                    style={{
+                        transition: this.state.should_skip_animation ? 'unset' : 'transform 0.25s ease',
+                        transform: `translate3d(0, ${this.state.top}px, 0)`,
+                    }}
+                    className='dc-vertical-tab__header--highlight'
+                />
+            </VerticalTabWrapper>
         );
     }
 }

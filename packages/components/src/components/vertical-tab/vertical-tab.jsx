@@ -61,16 +61,9 @@ class VerticalTab extends React.Component {
 
     render() {
         const selected = this.props.list[this.state.vertical_tab_index] || this.props.list[0];
-
-        return (
-            <div
-                className={classNames('dc-vertical-tab', {
-                    'dc-vertical-tab--floating': this.props.is_floating, // This is currently only configured for use in PageOverlay
-                    'dc-vertical-tab--full-screen': this.props.is_full_width,
-                    'dc-vertical-tab--grouped': Array.isArray(this.props.list_groups),
-                })}
-            >
-                {this.props.is_sidebar_enabled && (
+        const vertical_tab_headers =
+            this.props.is_floating && this.props.tab_headers_note ? (
+                <div className='dc-vertical-tab__tab-meta-wrapper'>
                     <VerticalTabHeaders
                         className={this.props.header_classname}
                         items={this.props.list}
@@ -82,7 +75,31 @@ class VerticalTab extends React.Component {
                         header_title={this.props.header_title}
                         tab_headers_note={this.props.tab_headers_note}
                     />
-                )}
+                    <div className='dc-vertical-tab__tab-bottom-note'>{this.props.tab_headers_note}</div>
+                </div>
+            ) : (
+                <VerticalTabHeaders
+                    className={this.props.header_classname}
+                    items={this.props.list}
+                    item_groups={this.props.list_groups}
+                    onChange={this.changeSelected}
+                    selected={selected}
+                    is_floating={this.props.is_floating}
+                    is_routed={this.props.is_routed}
+                    header_title={this.props.header_title}
+                    tab_headers_note={this.props.tab_headers_note}
+                />
+            );
+
+        return (
+            <div
+                className={classNames('dc-vertical-tab', {
+                    'dc-vertical-tab--floating': this.props.is_floating, // This is currently only configured for use in PageOverlay
+                    'dc-vertical-tab--full-screen': this.props.is_full_width,
+                    'dc-vertical-tab--grouped': Array.isArray(this.props.list_groups),
+                })}
+            >
+                {this.props.is_sidebar_enabled && vertical_tab_headers}
                 <VerticalTabContentContainer
                     action_bar={this.props.action_bar}
                     action_bar_classname={this.props.action_bar_classname}

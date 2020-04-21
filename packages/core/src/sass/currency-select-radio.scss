@@ -82,6 +82,11 @@
         left: 4.8rem;
         top: -4.8rem;
         margin-top: -16px;
+
+        @include mobile {
+            left: 7.8rem;
+            top: -5.8rem;
+        }
     }
 }
 

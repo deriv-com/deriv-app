@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Dialog, Loading, Table } from '@deriv/components';
+import { Button, Dialog, Icon, Loading, Table } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
@@ -40,14 +40,7 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
             </Table.Cell>
             <Table.Cell>{data.display_payment_method}</Table.Cell>
             <Table.Cell>
-                <Button
-                    className='deriv-p2p__button--right-aligned'
-                    secondary
-                    small
-                    onClick={() => row_actions.onClickDelete(data.id)}
-                >
-                    {localize('Delete')}
-                </Button>
+                <Icon icon='IcDelete' size={16} onClick={() => row_actions.onClickDelete(data.id)} />
             </Table.Cell>
         </Table.Row>
     </div>

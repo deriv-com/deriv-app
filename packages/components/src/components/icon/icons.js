@@ -60,6 +60,7 @@ import './common/ic-close-circle.svg';
 import './common/ic-cloud-upload.svg';
 import './common/ic-cross-circle.svg';
 import './common/ic-cross.svg';
+import './common/ic-delete.svg';
 import './common/ic-demo.svg';
 import './common/ic-desktop.svg';
 import './common/ic-digits.svg';

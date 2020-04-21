@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import BuySellTableContent from './buy-table-content.jsx';
+import BuySellTableContent from './buy-sell-table-content.jsx';
 
-export const BuySellTable = ({ setSelectedAd, table_type }) => {
-    const is_buy = table_type === 'buy';
-    // last column has an empty header
+export const BuySellTable = ({ children }) => {
     return (
         <Table>
             <Table.Header>
@@ -18,9 +16,7 @@ export const BuySellTable = ({ setSelectedAd, table_type }) => {
                     <Table.Head flex='1fr'>{''}</Table.Head>
                 </Table.Row>
             </Table.Header>
-            <Table.Body>
-                <BuySellTableContent key={is_buy.toString()} is_buy={is_buy} setSelectedAd={setSelectedAd} />
-            </Table.Body>
+            <Table.Body>{children}</Table.Body>
         </Table>
     );
 };

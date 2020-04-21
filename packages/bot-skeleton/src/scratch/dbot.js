@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import './blockly';
-import { hasAllRequiredBlocks, updateDisabledBlocks } from './utils';
+import { hasAllRequiredBlocks, updateDisabledBlocks, updateWorkspaceName } from './utils';
 import main_xml from './xml/main.xml';
 import toolbox_xml from './xml/toolbox.xml';
 import DBotStore from './dbot-store';
@@ -30,7 +30,7 @@ class DBot {
             const window_width = window.innerWidth;
             let workspaceScale = 0.9;
 
-            const { handleFileChange, onBotNameTyped } = DBotStore.instance;
+            const { handleFileChange } = DBotStore.instance;
             if (window_width < 1640) {
                 const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
                 const zoom_scale = scratch_div_width / window_width;
@@ -73,8 +73,8 @@ class DBot {
             const event_group = `dbot-load${Date.now()}`;
             Blockly.Events.setGroup(event_group);
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
+            updateWorkspaceName(file_name);
 
-            onBotNameTyped(file_name);
             this.workspace.cleanUp();
             this.workspace.clearUndo();
 

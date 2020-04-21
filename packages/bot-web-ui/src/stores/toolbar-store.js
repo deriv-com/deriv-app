@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import { scrollWorkspace, runGroupedEvents, load, config } from '@deriv/bot-skeleton';
+import { scrollWorkspace, runGroupedEvents, load, config, updateWorkspaceName } from '@deriv/bot-skeleton';
 import { tabs_title } from '../constants/bot-contents';
 
 export default class ToolbarStore {
@@ -79,11 +79,6 @@ export default class ToolbarStore {
     };
 
     @action.bound
-    onBotNameTyped(bot_name) {
-        this.file_name = bot_name;
-    }
-
-    @action.bound
     onResetClick() {
         this.is_dialog_open = true;
     }
@@ -110,7 +105,7 @@ export default class ToolbarStore {
             'reset'
         );
 
-        this.file_name = config.default_file_name;
+        updateWorkspaceName(config.default_file_name);
         this.is_dialog_open = false;
     }
 

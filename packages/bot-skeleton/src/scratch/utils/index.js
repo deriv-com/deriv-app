@@ -4,8 +4,18 @@ import BlockConversion from '../backward-compatibility';
 import { config } from '../../constants/config';
 import { observer as globalObserver } from '../../utils/observer';
 import { removeLimitedBlocks } from '../../utils/workspace';
-import DBotStore from '../dbot-store';
 import { saveWorkspaceToRecent } from '../../utils/local-storage';
+
+export const updateWorkspaceName = file_name => {
+    if (document.title.indexOf('-') > -1) {
+        const string_to_replace = document.title.split('-')[1];
+        const new_document_title = document.title.replace(string_to_replace, ` ${file_name}`);
+
+        document.title = new_document_title;
+    } else {
+        document.title += ` - ${file_name}`;
+    }
+};
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 
@@ -108,8 +118,7 @@ export const load = ({
 
             const is_main_workspace = workspace === Blockly.derivWorkspace;
             if (is_main_workspace) {
-                const { onBotNameTyped } = DBotStore.instance;
-                onBotNameTyped(file_name);
+                updateWorkspaceName(file_name);
 
                 workspace.clearUndo();
                 workspace.current_strategy_id = strategy_id || Blockly.utils.genUid();

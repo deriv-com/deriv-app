@@ -28,7 +28,7 @@ const SaveModal = ({
         toggleModal={toggleSaveModal}
     >
         <Formik initialValues={initial_option} validate={validateBotName} onSubmit={onConfirmSave}>
-            {({ values: { is_local, save_as_collection, botname }, setFieldValue }) => (
+            {({ values: { is_local, save_as_collection }, setFieldValue, touched, errors }) => (
                 <Form>
                     <div className='modal__content'>
                         <div className='modal__content-row'>
@@ -38,6 +38,7 @@ const SaveModal = ({
                                         {...field}
                                         className='save-type__input'
                                         type='text'
+                                        error={touched[field.name] && errors[field.name]}
                                         label={localize('Bot name')}
                                         trailing_icon={<Icon icon='IcEdit' />}
                                     />

@@ -19,7 +19,7 @@ export default class SaveModalStore {
         this.is_save_modal_open = !this.is_save_modal_open;
     }
 
-    @action.bound
+    // eslint-disable-next-line class-methods-use-this
     validateBotName(values) {
         const errors = {};
 

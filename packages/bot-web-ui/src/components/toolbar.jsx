@@ -3,7 +3,6 @@ import { localize } from '@deriv/translations';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { config } from '@deriv/bot-skeleton';
 import Dialog from './dialog.jsx';
 import LoadModal from './load-modal.jsx';
 import SaveModal from './save-modal.jsx';
@@ -206,7 +205,6 @@ Toolbar.propTypes = {
     is_search_loading: PropTypes.bool,
     is_stop_button_disabled: PropTypes.bool,
     is_stop_button_visible: PropTypes.bool,
-    onBotNameTyped: PropTypes.func,
     onCancelButtonClick: PropTypes.func,
     onGoogleDriveClick: PropTypes.func,
     onOkButtonClick: PropTypes.func,
@@ -234,7 +232,6 @@ export default connect(({ main_content, run_panel, save_modal, load_modal, toolb
     is_search_loading: toolbar.is_search_loading,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     is_stop_button_visible: run_panel.is_stop_button_visible,
-    onBotNameTyped: toolbar.onBotNameTyped,
     onCancelButtonClick: toolbar.onResetCancelButtonClick,
     onGoogleDriveClick: toolbar.onGoogleDriveClick,
     onOkButtonClick: toolbar.onResetOkButtonClick,

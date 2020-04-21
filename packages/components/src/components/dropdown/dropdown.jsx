@@ -80,7 +80,7 @@ class Dropdown extends React.Component {
     get list_class_names() {
         return classNames('dc-list', {
             'dc-list--left': this.props.is_alignment_left,
-            'dc-list--has-label': !Array.isArray(this.props.list),
+            'dc-list--large': this.props.is_large,
         });
     }
 
@@ -381,6 +381,7 @@ Dropdown.propTypes = {
     disabled: PropTypes.bool,
     has_symbol: PropTypes.bool,
     is_alignment_left: PropTypes.bool,
+    is_large: PropTypes.bool,
     is_nativepicker: PropTypes.bool,
     is_nativepicker_visible: PropTypes.bool,
     label: PropTypes.string,

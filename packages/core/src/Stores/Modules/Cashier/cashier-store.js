@@ -764,10 +764,10 @@ export default class CashierStore extends BaseStore {
             const a_is_fiat = !a_is_mt && !a_is_crypto;
             const b_is_fiat = !b_is_mt && !b_is_crypto;
             if (a_is_mt && b_is_mt) {
-                if (/vanuatu/.test(a.mt5_group)) {
+                if (/vanuatu|svg_standard/.test(a.mt5_group)) {
                     return 1;
                 }
-                if (/svg/.test(a.mt5_group)) {
+                if (/svg$/.test(a.mt5_group)) {
                     return -1;
                 }
                 return 1;

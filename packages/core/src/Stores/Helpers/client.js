@@ -22,7 +22,7 @@ export const getMT5AccountDisplay = group => {
     } else if (/vanuatu/.test(value) || /svg_standard/.test(value)) {
         display_text = localize('Financial');
     } else if (/labuan/.test(value)) {
-        display_text = localize('Financial Pro');
+        display_text = localize('Financial STP');
     }
 
     return display_text;

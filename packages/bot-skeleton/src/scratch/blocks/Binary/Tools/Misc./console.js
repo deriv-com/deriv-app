@@ -30,14 +30,14 @@ Blockly.Blocks.console = {
             colourTertiary: Blockly.Colours.Special3.colourTertiary,
             previousStatement: null,
             nextStatement: null,
-            tooltip: localize('Displays a message in conosle developer tool'),
+            tooltip: localize('Display messages in the developer’s console.'),
             category: Blockly.Categories.Miscellaneous,
         };
     },
     meta() {
         return {
             display_name: localize('Console'),
-            description: localize('This block console a message. You can see the message in console developer tool .'),
+            description: localize('This block console a message. You can see the message in console developer tool.'),
         };
     },
     getRequiredValueInputs() {

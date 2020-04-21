@@ -123,7 +123,7 @@ class CompositeCalendarMobile extends React.PureComponent {
     selectDate = (e, key) => {
         this.setState({
             selected_date_range: { value: CUSTOM_KEY },
-            [key]: e.target.value,
+            [key]: e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '',
         });
     };
 

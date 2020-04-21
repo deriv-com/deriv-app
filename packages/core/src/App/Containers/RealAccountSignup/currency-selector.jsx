@@ -39,14 +39,14 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
                             alignment='top'
                             icon='info'
                             disable_message_icon
+                            zIndex='9999'
                             className='currency-list__popover'
-                            classNamePopover='currency-list__popover-container'
                             message={localize(
                                 'Deriv currently supports Tether (USDT). Please deposit USDT from your Omni Layer-enabled wallet into your Deriv account.'
                             )}
                         />
                     )}
-                    <div className='label text'>
+                    <div className='label currency-list__item-text'>
                         {label}
                         <br />({CurrencyUtils.getCurrencyDisplayCode(id)})
                     </div>
@@ -152,7 +152,7 @@ class CurrencySelector extends React.Component {
                                 {has_real_account && (
                                     <div className='account-wizard__set-currency'>
                                         {!has_currency && (
-                                            <p className='text'>
+                                            <p className='currency-list__item-text'>
                                                 <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
                                             </p>
                                         )}

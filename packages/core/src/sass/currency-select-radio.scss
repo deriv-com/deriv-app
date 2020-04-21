@@ -62,7 +62,7 @@
                 margin-bottom: 0.8rem;
             }
         }
-        .text {
+        &-text {
             text-align: center;
             @include typeface(--paragraph-center-normal-black);
             color: var(--text-general);
@@ -82,9 +82,6 @@
         left: 4.8rem;
         top: -4.8rem;
         margin-top: -16px;
-    }
-    &__popover-container {
-        z-index: 9999 !important;
     }
 }
 

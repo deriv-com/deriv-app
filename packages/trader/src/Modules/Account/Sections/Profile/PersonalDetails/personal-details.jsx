@@ -266,6 +266,7 @@ class PersonalDetailsForm extends React.Component {
                 {({
                     values,
                     errors,
+                    dirty,
                     status,
                     touched,
                     handleChange,
@@ -709,6 +710,7 @@ class PersonalDetailsForm extends React.Component {
                                         })}
                                         type='submit'
                                         is_disabled={
+                                            !dirty ||
                                             isSubmitting ||
                                             (this.props.is_virtual
                                                 ? false

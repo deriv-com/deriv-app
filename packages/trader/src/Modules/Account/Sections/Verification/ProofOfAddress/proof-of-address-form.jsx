@@ -221,7 +221,7 @@ class ProofOfAddressForm extends React.Component {
                 onSubmit={this.onSubmit}
                 validate={this.validateFields}
             >
-                {({ values, errors, status, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+                {({ values, errors, status, dirty, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
                     <>
                         <LeaveConfirm onDirty={isMobile() ? this.showForm : null} />
                         {show_form && (
@@ -323,6 +323,7 @@ class ProofOfAddressForm extends React.Component {
                                         className='account-form__footer-btn'
                                         type='submit'
                                         is_disabled={
+                                            !dirty ||
                                             isSubmitting ||
                                             !!(
                                                 errors.address_line_1 ||

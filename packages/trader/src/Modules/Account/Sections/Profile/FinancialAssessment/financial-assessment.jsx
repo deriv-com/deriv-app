@@ -264,6 +264,7 @@ class FinancialAssessment extends React.Component {
                         values,
                         errors,
                         status,
+                        dirty,
                         touched,
                         handleChange,
                         handleBlur,
@@ -425,6 +426,7 @@ class FinancialAssessment extends React.Component {
                                             })}
                                             onClick={() => this.toggleConfirmationModal(true)}
                                             is_disabled={
+                                                !dirty ||
                                                 isSubmitting ||
                                                 !!(
                                                     errors.income_source ||

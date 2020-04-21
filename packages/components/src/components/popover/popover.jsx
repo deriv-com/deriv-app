@@ -50,6 +50,7 @@ class Popover extends React.PureComponent {
             children,
             className,
             classNameBubble,
+            classNamePopover,
             classNameTarget,
             classNameTargetIcon,
             counter,
@@ -68,6 +69,7 @@ class Popover extends React.PureComponent {
         const icon_class_name = classNames(classNameTargetIcon, icon);
         return (
             <TinyPopover
+                containerClassName={classNamePopover}
                 isOpen={has_external_open_state ? is_open : this.state.is_open}
                 position={alignment}
                 transitionDuration={0.25}
@@ -139,6 +141,7 @@ Popover.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     classNameBubble: PropTypes.string,
+    classNamePopover: PropTypes.string,
     classNameTarget: PropTypes.string,
     classNameTargetIcon: PropTypes.string,
     counter: PropTypes.number,

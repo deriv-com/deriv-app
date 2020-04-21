@@ -1,8 +1,9 @@
 import classNames from 'classnames';
-import { FormSubmitButton, Div100vhContainer, MobileWrapper, Icon, ThemedScrollbars } from '@deriv/components';
+import { FormSubmitButton, Div100vhContainer, MobileWrapper, Popover, Icon, ThemedScrollbars } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik } from 'formik';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import { isMobile, isDesktop } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
@@ -32,11 +33,23 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
                 })}
             >
                 <div>
-                    <Icon icon={`IcCurrency-${id.toLowerCase()}`} />
-                    <p className='label'>
+                    <Icon className='currency-list__icon' icon={`IcCurrency-${id.toLowerCase()}`} />
+                    {/^UST$/i.test(id) && (
+                        <Popover
+                            alignment='top'
+                            icon='info'
+                            disable_message_icon
+                            className='currency-list__popover'
+                            classNamePopover='currency-list__popover-container'
+                            message={localize(
+                                'Deriv currently supports Tether (USDT). Please deposit USDT from your Omni Layer-enabled wallet into your Deriv account.'
+                            )}
+                        />
+                    )}
+                    <div className='label text'>
                         {label}
-                        <br />({id})
-                    </p>
+                        <br />({CurrencyUtils.getCurrencyDisplayCode(id)})
+                    </div>
                 </div>
             </label>
         </React.Fragment>
@@ -139,7 +152,7 @@ class CurrencySelector extends React.Component {
                                 {has_real_account && (
                                     <div className='account-wizard__set-currency'>
                                         {!has_currency && (
-                                            <p>
+                                            <p className='text'>
                                                 <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
                                             </p>
                                         )}

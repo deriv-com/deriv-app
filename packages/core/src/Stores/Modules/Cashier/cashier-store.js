@@ -101,6 +101,7 @@ export default class CashierStore extends BaseStore {
     @observable is_p2p_visible = false;
     @observable p2p_notification_count = 0;
     @observable is_p2p_advertiser = false;
+    @observable cashier_route_tab_index = 0;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -186,6 +187,10 @@ export default class CashierStore extends BaseStore {
         }
     }
 
+    @action.bound
+    setCashierTabIndex(index) {
+        this.cashier_route_tab_index = index;
+    }
     @action.bound
     setNotificationCount(notification_count) {
         this.p2p_notification_count = notification_count;

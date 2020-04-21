@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { addDays, daysFromTodayTo, toMoment, convertDateFormat } from '@deriv/shared/utils/date';
+import { isMobile } from '@deriv/shared/utils/screen';
 import DesktopWrapper from 'Components/desktop-wrapper';
 import MobileWrapper from 'Components/mobile-wrapper';
 import Input from './date-picker-input.jsx';
@@ -9,6 +10,7 @@ import Native from './date-picker-native.jsx';
 
 class DatePicker extends React.PureComponent {
     datepicker = React.createRef();
+    calendar_portal = React.createRef();
 
     state = {
         date: this.props.value ? toMoment(this.props.value).format(this.props.display_format) : '',
@@ -41,12 +43,22 @@ class DatePicker extends React.PureComponent {
                     this.state.is_datepicker_visible &&
                     this.datepicker &&
                     this.datepicker.current &&
+                    this.calendar_portal.current &&
                     this.props.portal_id
                 ) {
-                    const { top, left } = this.datepicker.current.getBoundingClientRect();
+                    const date_picker_rect = this.datepicker.current.getBoundingClientRect();
+                    const calendar_rect = this.calendar_portal.current.getBoundingClientRect();
+                    const body_rect = document.body.getBoundingClientRect();
+                    let calendar_top = date_picker_rect.top;
+
+                    if (date_picker_rect.top + date_picker_rect.height + calendar_rect.height > body_rect.height) {
+                        const diff =
+                            date_picker_rect.top + date_picker_rect.height + calendar_rect.height - body_rect.height;
+                        calendar_top -= diff;
+                    }
                     this.setState({
-                        top,
-                        left,
+                        top: calendar_top,
+                        left: date_picker_rect.left,
                     });
                 }
             }
@@ -54,7 +66,10 @@ class DatePicker extends React.PureComponent {
     };
 
     onClickOutside = e => {
-        if (this.state.is_datepicker_visible && this.datepicker && !this.datepicker?.current.contains(e.target)) {
+        const is_click_outside =
+            !this.datepicker?.current?.contains(e.target) && !this.calendar_portal?.current?.contains(e.target);
+
+        if (this.state.is_datepicker_visible && is_click_outside) {
             this.setState({ is_datepicker_visible: false });
         }
     };
@@ -104,7 +119,7 @@ class DatePicker extends React.PureComponent {
     onSelectCalendarNative = selected_date => {
         const { display_format, name, onChange } = this.props;
 
-        const date = toMoment(selected_date).format(display_format);
+        const date = selected_date ? toMoment(selected_date).format(display_format) : null;
 
         this.setState(
             {
@@ -163,7 +178,8 @@ class DatePicker extends React.PureComponent {
     // onClickClear = () => {};
 
     get target_value() {
-        return this.props.mode === 'duration' ? this.state.duration : new Date(this.calendar_value);
+        const calendar_value = this.calendar_value && toMoment(this.calendar_value);
+        return this.props.mode === 'duration' ? this.state.duration : calendar_value;
     }
 
     get input_value() {
@@ -171,13 +187,12 @@ class DatePicker extends React.PureComponent {
     }
 
     get calendar_value() {
-        if (!this.state.date) return toMoment(this.props.max_date).format(this.props.date_format);
+        if (!this.state.date) return isMobile() ? null : toMoment(this.props.max_date).format(this.props.date_format);
         return convertDateFormat(this.state.date, this.props.display_format, this.props.date_format);
     }
 
     render() {
         const { id, name, value, onBlur, onFocus, required, ...props } = this.props;
-
         return (
             <>
                 <MobileWrapper>
@@ -192,6 +207,7 @@ class DatePicker extends React.PureComponent {
                         onBlur={onBlur}
                         onFocus={onFocus}
                         onSelect={this.onSelectCalendarNative}
+                        placeholder={this.props.placeholder}
                         value={this.calendar_value} // native picker accepts date format yyyy-mm-dd
                     />
                 </MobileWrapper>
@@ -209,6 +225,7 @@ class DatePicker extends React.PureComponent {
                             {...props}
                         />
                         <Calendar
+                            ref={this.calendar_portal}
                             onRef={ref => (this.calendar = ref)}
                             is_datepicker_visible={this.state.is_datepicker_visible}
                             onHover={this.props.has_range_selection ? this.onHover : undefined}

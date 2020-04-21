@@ -72,7 +72,10 @@ class AccountSwitcher extends React.Component {
         this.props.history.push(`${routes.mt5}#${account_type}`);
     };
 
-    redirectToMt5Real = () => {
+    redirectToMt5Real = account_type => {
+        if (account_type) {
+            sessionStorage.setItem('open_mt5_account_type', `real.${account_type}`);
+        }
         if (!this.props.is_logged_in || this.props.is_mt5_allowed) {
             this.redirectToMt5('real');
         } else {
@@ -80,7 +83,10 @@ class AccountSwitcher extends React.Component {
         }
     };
 
-    redirectToMt5Demo = () => {
+    redirectToMt5Demo = account_type => {
+        if (account_type) {
+            sessionStorage.setItem('open_mt5_account_type', `demo.${account_type}`);
+        }
         this.redirectToMt5('demo');
     };
 
@@ -162,7 +168,6 @@ class AccountSwitcher extends React.Component {
     }
 
     get remaining_demo_mt5() {
-        // TODO: check any disabled add buttons
         const existing_demo_mt5_groups = Object.keys(this.demo_mt5).map(account => this.demo_mt5[account].group);
         const mt5_config = getAllMtAccounts();
         const available = [];
@@ -179,7 +184,6 @@ class AccountSwitcher extends React.Component {
     }
 
     get remaining_real_mt5() {
-        // TODO: check any disabled add buttons
         const existing_real_mt5_groups = Object.keys(this.real_mt5).map(account => this.real_mt5[account].group);
         const mt5_config = getAllMtAccounts();
         const available = [];
@@ -307,7 +311,7 @@ class AccountSwitcher extends React.Component {
                                             <Icon icon={`IcMt5-${account.icon}`} size={24} />
                                             <span className='acc-switcher__new-account-text'>{account.title}</span>
                                             <Button
-                                                onClick={this.redirectToMt5Demo} // TODO: open the corresponding account sign up modal instead
+                                                onClick={() => this.redirectToMt5Demo(account.type)}
                                                 className='acc-switcher__new-account-btn'
                                                 secondary
                                                 small
@@ -428,10 +432,15 @@ class AccountSwitcher extends React.Component {
                                             <Icon icon={`IcMt5-${account.icon}`} size={24} />
                                             <span className='acc-switcher__new-account-text'>{account.title}</span>
                                             <Button
-                                                onClick={this.redirectToMt5Real} // TODO: open the corresponding account sign up modal instead
+                                                onClick={() => this.redirectToMt5Real(account.type)}
                                                 className='acc-switcher__new-account-btn'
                                                 secondary
                                                 small
+                                                is_disabled={
+                                                    !this.props.has_any_real_account ||
+                                                    (account.type === 'advanced' &&
+                                                        this.props.is_pending_authentication)
+                                                }
                                             >
                                                 {localize('Add')}
                                             </Button>
@@ -551,6 +560,7 @@ AccountSwitcher.propTypes = {
     is_loading_mt5: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
+    is_pending_authentication: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_upgrade_enabled: PropTypes.bool,
     is_virtual: PropTypes.bool,
@@ -577,6 +587,7 @@ const account_switcher = withRouter(
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,
+        is_pending_authentication: client.is_pending_authentication,
         is_virtual: client.is_virtual,
         has_any_real_account: client.has_any_real_account,
         mt5_login_list: client.mt5_login_list,

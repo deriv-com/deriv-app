@@ -11,6 +11,24 @@
             margin-right: 0.8rem;
         }
     }
+    /** @define dc-toast-info; weak */
+    .dc-toast-info {
+        max-width: calc(100% - 1.6rem);
+        left: 0;
+        width: calc(100% - 3.6rem) !important;
+        top: 11rem !important;
+
+        .dc-toast-error__message {
+            background: var(--status-info);
+            font-size: 1.2rem;
+            width: 100%;
+
+            /* iPhone SE screen height fixes due to UI space restrictions */
+            @media only screen and (max-height: 580px) {
+                font-size: 1rem;
+            }
+        }
+    }
     /** @define dc-modal; weak */
     .dc-modal {
         &__container_trade-params {

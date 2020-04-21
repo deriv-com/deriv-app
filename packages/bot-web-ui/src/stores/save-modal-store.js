@@ -1,4 +1,5 @@
 import { observable, action } from 'mobx';
+import { localize } from '@deriv/translations';
 import { saveWorkspaceToRecent, save_types, save } from '@deriv/bot-skeleton';
 import { button_status } from '../constants/button-status';
 
@@ -19,16 +20,15 @@ export default class SaveModalStore {
         this.is_save_modal_open = !this.is_save_modal_open;
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    validateBotName(values) {
+    validateBotName = values => {
         const errors = {};
 
         if (values.botname === '') {
-            errors.botname = 'Field name cannot be empty';
+            errors.botname = localize('Field name cannot be empty');
         }
 
         return errors;
-    }
+    };
 
     @action.bound
     async onConfirmSave({ is_local, save_as_collection, botname }) {

@@ -70,22 +70,24 @@ class AccountTransferReceipt extends React.Component {
                         </div>
                     </span>
                 </div>
-                <Button
-                    className='account-transfer__button'
-                    has_effect
-                    text={localize('View in statement')}
-                    onClick={this.openStatement}
-                    secondary
-                    large
-                />
-                <Button
-                    className='account-transfer__button'
-                    has_effect
-                    text={localize('Make a new transfer')}
-                    onClick={this.props.resetAccountTransfer}
-                    primary
-                    large
-                />
+                <div className='account-transfer__form-submit'>
+                    <Button
+                        className='account-transfer__button'
+                        has_effect
+                        text={localize('View in statement')}
+                        onClick={this.openStatement}
+                        secondary
+                        large
+                    />
+                    <Button
+                        className='account-transfer__button'
+                        has_effect
+                        text={localize('Make a new transfer')}
+                        onClick={this.props.resetAccountTransfer}
+                        primary
+                        large
+                    />
+                </div>
             </div>
         );
     }

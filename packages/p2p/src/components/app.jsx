@@ -160,7 +160,7 @@ class App extends Component {
                         top
                         header_fit_content
                     >
-                        <div label={localize('Buy/Sell')}>
+                        <div label={localize('Buy / Sell')}>
                             <BuySell navigate={this.redirectTo} params={parameters} />
                         </div>
                         <div count={notification_count} label={localize('Orders')}>

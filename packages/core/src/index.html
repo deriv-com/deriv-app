@@ -148,7 +148,7 @@
                         analytics.load = function(t, e) {
                             var n = document.createElement('script');
                             n.type = 'text/javascript';
-                            n.async = !0;
+                            n.defer = !0;
                             n.src = 'https://cdn.segment.com/analytics.js/v1/' + t + '/analytics.min.js';
                             var a = document.getElementsByTagName('script')[0];
                             a.parentNode.insertBefore(n, a);
@@ -171,7 +171,7 @@
                 var f = d.getElementsByTagName(s)[0],
                     j = d.createElement(s),
                     dl = l != 'dataLayer' ? '&l=' + l : '';
-                j.async = true;
+                j.defer = true;
                 j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
                 f.parentNode.insertBefore(j, f);
             })(window, document, 'script', 'dataLayer', 'GTM-NF7884S');

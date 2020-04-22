@@ -194,4 +194,8 @@ const MyAdsTable = ({ is_enabled }) => {
     return <div className='deriv-p2p__empty'>{localize("You haven't posted any ads yet.")}</div>;
 };
 
+MyAdsTable.propTypes = {
+    is_enabled: PropTypes.bool,
+};
+
 export default MyAdsTable;

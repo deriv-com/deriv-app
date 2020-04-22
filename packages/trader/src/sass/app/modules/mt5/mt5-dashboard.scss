@@ -93,9 +93,12 @@
         margin-bottom: 2.4em;
 
         .dc-tabs__list--top {
-            width: 40%;
             position: relative;
-            left: 30%;
+
+            @include desktop {
+                width: 40%;
+                left: 30%;
+            }
         }
     }
     &__download-center {
@@ -171,6 +174,9 @@
             @include typeface(--xsmall-left-normal-black, none);
             margin-left: 7.05em;
         }
+        @include mobile {
+            margin-bottom: 1.6rem;
+        }
     }
     .notification-messages {
         top: calc(-4.8rem + 16px);
@@ -216,6 +222,10 @@
 
             &--fixed {
                 padding-left: 1.6rem;
+
+                @include mobile {
+                    background-color: var(--general-section-2);
+                }
             }
         }
         &__cell {
@@ -232,16 +242,22 @@
     @include mobile {
         background: var(--general-section-1);
         height: 100%;
+        font-size: 1.2rem;
 
         .dc-table {
             padding: 0;
             height: inherit;
 
+            &__cell {
+                font-size: 1.2rem;
+            }
             &__row {
                 padding: 0;
             }
             &__head {
+                font-size: 1.2rem;
                 border-bottom: 2px solid var(--border-disabled);
+                background-color: var(--general-section-2);
             }
             &__header,
             &__row {
@@ -513,6 +529,38 @@
         bottom: 0;
         background-color: var(--content-bg-color);
     }
+    @include mobile {
+        &__heading {
+            padding: unset;
+        }
+        &__header {
+            &-steps {
+                padding-bottom: 0.8rem;
+                position: absolute;
+                top: 3.6rem;
+                width: 100%;
+                background: var(--general-section-2);
+
+                &-title {
+                    color: var(--brand-red-coral);
+                    font-size: 1.4rem;
+                    font-weight: bold;
+                    line-height: 20px;
+                    padding: 1.6rem 2.4rem 0.8rem;
+                }
+                &-subtitle {
+                    color: var(--text-prominent);
+                    line-height: 18px;
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    padding: 0 2.4rem;
+                }
+            }
+        }
+        .dc-form-submit-button {
+            background-color: inherit;
+        }
+    }
 }
 
 .account-management {
@@ -593,6 +641,9 @@
     &__fields {
         padding: 0;
         margin-bottom: 7rem;
+        @include mobile {
+            padding: 0 1.6rem;
+        }
     }
     & .mt5-tax-identification-number {
         margin-top: 1em;
@@ -637,6 +688,16 @@
         color: var(--text-prominent);
         font-weight: normal;
         padding-left: 8px;
+    }
+    @include mobile {
+        overflow: auto;
+
+        &__title {
+            background: inherit;
+        }
+        &__subtitle {
+            font-size: 1.2rem;
+        }
     }
 }
 
@@ -731,37 +792,90 @@
             margin-top: 0;
         }
     }
+    @include mobile {
+        .dc-input__label {
+            background: var(--general-section-2);
+        }
+        &__field-area {
+            padding: 0 1.6rem;
+        }
+        &__inline-fields {
+            display: flex;
+            flex-direction: column;
+
+            .dc-select-native {
+                margin-bottom: 3.2rem;
+            }
+        }
+        &__file-upload {
+            .dc-field-error {
+                top: 50%;
+                left: 0;
+                right: unset;
+            }
+            .account-poa__upload-section {
+                flex-direction: column;
+            }
+        }
+    }
 }
 
 .dc-modal__container_mt5-password-modal {
-    .success-change {
-        width: 400px;
-        height: 379px;
-        margin-bottom: 2.2em;
+    .dc-form-submit-button {
+        background-color: unset;
+
+        .dc-btn:first-child {
+            margin-left: 0;
+        }
     }
 }
 
-.mt5-pending-dialog {
-    .dc-dialog__header {
-        width: 100%;
+.dc-modal__container_mt5-pending-dialog,
+.dc-modal__container_mt5-success-dialog {
+    .dc-modal-header__title--mt5-pending-dialog {
         text-align: center;
+        margin: auto;
+        padding: 2.4rem;
+        width: fit-content;
     }
-    .dc-dialog__dialog {
-        padding: 3.2em;
-        box-sizing: border-box;
-        min-width: 384px;
-        width: 384px;
-    }
-    .dc-dialog__content {
+    .dc-modal-body {
         text-align: center;
+        padding-top: 0;
     }
-    .dc-dialog__footer {
+    .dc-modal-footer {
         justify-content: center;
+
+        .dc-btn {
+            min-width: 90px;
+            height: 40px;
+
+            &:only-child {
+                margin: 0;
+            }
+            &:first-child {
+                margin-left: 0;
+            }
+        }
     }
-    .dc-dialog__button {
-        width: 90px;
-        height: 40px;
-        margin: 0;
+}
+
+.dc-modal__container_mt5-success-dialog {
+    .success-change__icon-area {
+        width: 120px;
+        margin: 3rem auto 0;
+    }
+    .dc-modal-body {
+        min-width: 400px;
+
+        .dc-modal-header__title {
+            text-align: center;
+            margin: auto;
+            padding: 2.4rem;
+            width: fit-content;
+        }
+        @include mobile {
+            min-width: calc(100vw - 3.2rem);
+        }
     }
 }
 /* stylelint-enable */

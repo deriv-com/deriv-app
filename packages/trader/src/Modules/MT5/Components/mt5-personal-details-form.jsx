@@ -1,7 +1,18 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ThemedScrollbars, Autocomplete, Input, Loading, FormSubmitButton } from '@deriv/components';
+import {
+    ThemedScrollbars,
+    Autocomplete,
+    Input,
+    Loading,
+    FormSubmitButton,
+    Div100vhContainer,
+    DesktopWrapper,
+    MobileWrapper,
+    SelectNative,
+} from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { Localize, localize } from '@deriv/translations';
 import { isDeepEqual } from '@deriv/shared/utils/object';
 import { FormSubHeader } from 'Modules/Account/Components/layout-components.jsx';
@@ -101,7 +112,7 @@ class MT5PersonalDetailsForm extends React.Component {
 
         if (residence_list.length === 0) return <Loading is_fullscreen={false} />;
         return (
-            <div id='real_mt5_personal_details' className='details-form mt5-details-form'>
+            <div id='real_mt5_personal_details'>
                 <Formik
                     initialValues={{
                         citizen: value.citizen,
@@ -120,12 +131,25 @@ class MT5PersonalDetailsForm extends React.Component {
                 >
                     {({ handleSubmit, isSubmitting, errors, touched, values, setFieldValue }) => (
                         <form onSubmit={handleSubmit} autoComplete='off'>
-                            <div className='details-form'>
-                                <div className='details-form__elements-container'>
-                                    <ThemedScrollbars autoHide style={{ height: 432 }}>
-                                        <div className='details-form__elements mt5-details-form__fields'>
-                                            <FormSubHeader title={localize('Details')} />
-                                            <fieldset className='details-form__fieldset'>
+                            <Div100vhContainer className='details-form' height_offset='199px' is_disabled={isDesktop()}>
+                                <p className='details-form__description'>
+                                    <Localize
+                                        i18n_default_text={
+                                            'Any information you provide is confidential and will be used for verification purposes only.'
+                                        }
+                                    />
+                                </p>
+                                <ThemedScrollbars
+                                    autoHide
+                                    autoHeight
+                                    autoHeightMin={100}
+                                    autoHeightMax={320}
+                                    is_native={isMobile()}
+                                >
+                                    <div className='details-form__elements mt5-details-form__fields'>
+                                        <FormSubHeader title={localize('Details')} />
+                                        <fieldset className='account-form__fieldset'>
+                                            <DesktopWrapper>
                                                 <Field name='citizen'>
                                                     {({ field }) => (
                                                         <Autocomplete
@@ -149,9 +173,23 @@ class MT5PersonalDetailsForm extends React.Component {
                                                         />
                                                     )}
                                                 </Field>
-                                            </fieldset>
-                                            <FormSubHeader title={localize('Tax information')} />
-                                            <fieldset className='account-form__fieldset'>
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    label={localize('Citizenship')}
+                                                    value={values.citizen}
+                                                    list_items={residence_list}
+                                                    error={touched.citizen && errors.citizen}
+                                                    disabled={value.citizen && is_fully_authenticated}
+                                                    use_text={true}
+                                                    onChange={e => setFieldValue('citizen', e.target.value, true)}
+                                                    required
+                                                />
+                                            </MobileWrapper>
+                                        </fieldset>
+                                        <FormSubHeader title={localize('Tax information')} />
+                                        <fieldset className='account-form__fieldset'>
+                                            <DesktopWrapper>
                                                 <Field name='tax_residence'>
                                                     {({ field }) => (
                                                         <Autocomplete
@@ -170,33 +208,38 @@ class MT5PersonalDetailsForm extends React.Component {
                                                         />
                                                     )}
                                                 </Field>
-                                            </fieldset>
-                                            <InputField
-                                                id='real_mt5_tax_identification_number'
-                                                name='tax_identification_number'
-                                                placeholder={localize('Tax identification number')}
-                                            />
-                                            <p className='details-form__description'>
-                                                <Localize
-                                                    i18n_default_text={
-                                                        'Any information you provide is confidential and will be used for verification purposes only.'
-                                                    }
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    label={localize('Tax residence')}
+                                                    value={values.tax_residence}
+                                                    error={touched.tax_residence && errors.tax_residence}
+                                                    disabled={value.tax_residence && is_fully_authenticated}
+                                                    list_items={residence_list}
+                                                    use_text={true}
+                                                    onChange={e => setFieldValue('tax_residence', e.target.value, true)}
+                                                    required
                                                 />
-                                            </p>
-                                        </div>
-                                    </ThemedScrollbars>
-                                </div>
-                            </div>
-                            <FormSubmitButton
-                                cancel_label={localize('Previous')}
-                                is_disabled={
-                                    isSubmitting ||
-                                    (Object.keys(touched).length === 0 && !this.is_initial_valid) ||
-                                    (Object.keys(touched).length > 0 && Object.keys(errors).length > 0)
-                                }
-                                label={localize('Next')}
-                                onCancel={() => this.handleCancel(values)}
-                            />
+                                            </MobileWrapper>
+                                        </fieldset>
+                                        <InputField
+                                            id='real_mt5_tax_identification_number'
+                                            name='tax_identification_number'
+                                            placeholder={localize('Tax identification number')}
+                                        />
+                                    </div>
+                                </ThemedScrollbars>
+                                <FormSubmitButton
+                                    cancel_label={localize('Previous')}
+                                    is_disabled={
+                                        isSubmitting ||
+                                        (Object.keys(touched).length === 0 && !this.is_initial_valid) ||
+                                        (Object.keys(touched).length > 0 && Object.keys(errors).length > 0)
+                                    }
+                                    label={localize('Next')}
+                                    onCancel={() => this.handleCancel(values)}
+                                />
+                            </Div100vhContainer>
                         </form>
                     )}
                 </Formik>

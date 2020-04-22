@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const Input = ({
+    ariaLabel,
     changeValue,
     checked,
     className,
@@ -92,12 +93,14 @@ const Input = ({
                 required={required || undefined}
                 type={type === 'number' ? 'text' : type}
                 value={display_value || ''}
+                aria-label={ariaLabel}
             />
         </React.Fragment>
     );
 };
 
 Input.propTypes = {
+    ariaLabel: PropTypes.string,
     changeValue: PropTypes.func,
     checked: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     className: PropTypes.string,

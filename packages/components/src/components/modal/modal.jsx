@@ -39,11 +39,10 @@ class ModalElement extends React.PureComponent {
 
     handleClickOutside = event => {
         const path = event.path || (event.composedPath && event.composedPath());
-
         if (
             this.props.has_close_icon &&
             this.wrapper_ref &&
-            !path.some(el => el === this.wrapper_ref) &&
+            !path.some(el => el === this.wrapper_ref || el === this.is_blockly_injection_div[0]) &&
             !this.is_datepicker_visible
         ) {
             this.props.toggleModal();
@@ -52,6 +51,10 @@ class ModalElement extends React.PureComponent {
 
     get is_datepicker_visible() {
         return this.state.modal_root.querySelectorAll('.dc-datepicker__picker').length;
+    }
+
+    get is_blockly_injection_div() {
+        return document.querySelectorAll('.injectionDiv');
     }
 
     render() {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal } from '@deriv/components';
+import { Modal, MobileDialog, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import MT5AdvancedRealAccountSignup from 'Modules/MT5/Containers/mt5-advanced-real-account-signup.jsx';
@@ -11,19 +11,34 @@ class MT5AccountOpeningRealAdvancedModal extends Component {
         const toggleModal = () => setMT5AdvancedModalState(false);
 
         return (
-            <Modal
-                id='mt5_advanced_signup_modal'
-                className='mt5-advanced-signup-modal'
-                disableApp={disableApp}
-                width='904px'
-                title={localize('Create a DMT5 real Advanced account')}
-                enableApp={enableApp}
-                is_open={is_mt5_advanced_modal_open}
-                has_close_icon={true}
-                toggleModal={toggleModal}
-            >
-                <MT5AdvancedRealAccountSignup toggleModal={toggleModal} />
-            </Modal>
+            <>
+                <DesktopWrapper>
+                    <Modal
+                        id='mt5_advanced_signup_modal'
+                        className='mt5-advanced-signup-modal'
+                        disableApp={disableApp}
+                        width='904px'
+                        title={localize('Create a DMT5 real Advanced account')}
+                        enableApp={enableApp}
+                        is_open={is_mt5_advanced_modal_open}
+                        has_close_icon={true}
+                        toggleModal={toggleModal}
+                    >
+                        <MT5AdvancedRealAccountSignup toggleModal={toggleModal} />
+                    </Modal>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <MobileDialog
+                        portal_element_id='modal_root'
+                        title={localize('Create a DMT5 real Advanced account')}
+                        wrapper_classname='mt5-advanced-signup-modal'
+                        visible={is_mt5_advanced_modal_open}
+                        onClose={toggleModal}
+                    >
+                        <MT5AdvancedRealAccountSignup toggleModal={toggleModal} />
+                    </MobileDialog>
+                </MobileWrapper>
+            </>
         );
     }
 }

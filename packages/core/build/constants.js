@@ -3,6 +3,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
+const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const IgnorePlugin = require('webpack').IgnorePlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -18,6 +19,7 @@ const {
     cssConfig,
     htmlInjectConfig,
     htmlOutputConfig,
+    htmlPreloadConfig,
     stylelintConfig,
     generateSWConfig,
 } = require('./config');
@@ -133,6 +135,7 @@ const plugins = (base, is_test_env, is_mocha_only) => [
     new CopyPlugin(copyConfig(base)),
     new HtmlWebPackPlugin(htmlOutputConfig()),
     new HtmlWebpackTagsPlugin(htmlInjectConfig()),
+    new PreloadWebpackPlugin(htmlPreloadConfig()),
     new IgnorePlugin(/^\.\/locale$/, /moment$/),
     new MiniCssExtractPlugin(cssConfig()),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),

@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 import { localize } from '@deriv/translations';
-import { saveWorkspaceToRecent, save_types, save } from '@deriv/bot-skeleton';
+import { saveWorkspaceToRecent, save_types, save, updateWorkspaceName } from '@deriv/bot-skeleton';
 import { button_status } from '../constants/button-status';
 
 export default class SaveModalStore {
@@ -51,6 +51,8 @@ export default class SaveModalStore {
 
             this.setButtonStatus(button_status.COMPLETED);
         }
+
+        updateWorkspaceName(botname);
         saveWorkspaceToRecent(is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
         this.toggleSaveModal();
     }

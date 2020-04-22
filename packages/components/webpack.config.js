@@ -50,6 +50,7 @@ module.exports = {
         'password-meter': 'Components/password-meter',
         popover: 'Components/popover',
         'progress-bar': 'Components/progress-bar',
+        'progress-indicator': 'Components/progress-indicator',
         'radio-group': 'Components/radio-group',
         'select-native': 'Components/select-native',
         'swipeable-wrapper': 'Components/swipeable-wrapper',

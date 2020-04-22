@@ -12,7 +12,6 @@ import Popup from '../orders/popup.jsx';
 const headers = [
     { text: localize('Ad ID') },
     { text: localize('Available') },
-    { text: localize('Limits') },
     { text: localize('Price') },
     { text: localize('Payment method') },
     { text: '' }, // empty header
@@ -31,9 +30,6 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
             </Table.Cell>
             <Table.Cell>
                 {data.display_available_amount} {data.offer_currency}
-            </Table.Cell>
-            <Table.Cell>
-                {data.display_min_available}-{data.display_max_available} {data.offer_currency}
             </Table.Cell>
             <Table.Cell className='p2p-my-ads__table-price'>
                 {data.display_price_rate} {data.transaction_currency}

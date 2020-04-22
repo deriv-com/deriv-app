@@ -104,11 +104,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <React.Fragment key={0}>
                             <br />
-                            <a
-                                className='link link--right'
-                                target='_blank'
-                                href={urlFor('contact', undefined, undefined, true)}
-                            >
+                            <a className='link link--right' target='_blank' href={getDerivComLink('contact-us')}>
                                 <Button secondary medium text={localize('Contact Us')} />
                             </a>
                         </React.Fragment>,
@@ -117,14 +113,7 @@ export const clientNotifications = (ui = {}) => {
             ) : (
                 <Localize
                     i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            target='_blank'
-                            href={urlFor('contact', undefined, undefined, true)}
-                        />,
-                    ]}
+                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
                 />
             ),
             type: 'danger',
@@ -138,11 +127,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <React.Fragment key={0}>
                             <br />
-                            <a
-                                className='link link--right'
-                                target='_blank'
-                                href={urlFor('contact', undefined, undefined, true)}
-                            >
+                            <a className='link link--right' target='_blank' href={getDerivComLink('contact-us')}>
                                 <Button secondary medium text={localize('Contact Us')} />
                             </a>
                         </React.Fragment>,
@@ -151,14 +136,7 @@ export const clientNotifications = (ui = {}) => {
             ) : (
                 <Localize
                     i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            target='_blank'
-                            href={urlFor('contact', undefined, undefined, true)}
-                        />,
-                    ]}
+                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
                 />
             ),
             type: 'danger',
@@ -299,6 +277,19 @@ export const clientNotifications = (ui = {}) => {
             message: localize('Your proof of identity document has expired. Please submit a new one.'),
             type: 'danger',
         },
+        new_version_available: {
+            action: {
+                onClick: () => window.location.reload(),
+                text: localize('Refresh now'),
+            },
+            key: 'new_version_available',
+            header: localize('A new version of Deriv is available'),
+            message: localize('This page will automatically refresh in 5 minutes to load the latest version.'),
+            type: 'warning',
+            should_hide_close_btn: true,
+            timeout: 300000,
+            timeoutMessage: remaining => localize('Auto update in {{ remaining }} seconds', { remaining }),
+        },
     };
     return notifications;
 };
@@ -429,6 +420,7 @@ export const excluded_notifications = isMobile()
           'contract_sold',
           'maintenance',
           'bot_switch_account',
+          'new_version_available',
       ];
 
 export const handleClientNotifications = (

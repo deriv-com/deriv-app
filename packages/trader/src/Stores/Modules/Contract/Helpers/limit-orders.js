@@ -84,15 +84,20 @@ export const getLimitOrderAmount = limit_order => {
  * @param {object} contract_update - contract_update input & checkbox values
  */
 export const getLimitOrder = contract_update => {
-    const { has_stop_loss, has_take_profit, stop_loss, take_profit } = contract_update;
+    const {
+        has_contract_update_stop_loss,
+        has_contract_update_take_profit,
+        contract_update_stop_loss,
+        contract_update_take_profit,
+    } = contract_update;
 
     const limit_order = {};
 
     // send positive take_profit to update or null cancel
-    limit_order.take_profit = has_take_profit ? +take_profit : null;
+    limit_order.take_profit = has_contract_update_take_profit ? +contract_update_take_profit : null;
 
     // send positive stop_loss to update or null to cancel
-    limit_order.stop_loss = has_stop_loss ? +stop_loss : null;
+    limit_order.stop_loss = has_contract_update_stop_loss ? +contract_update_stop_loss : null;
 
     return limit_order;
 };

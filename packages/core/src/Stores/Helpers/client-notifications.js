@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@deriv/components';
 import { WS } from 'Services';
-import { formatDate } from 'Utils/Date';
+import { formatDate } from '@deriv/shared/utils/date';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
@@ -104,11 +104,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <React.Fragment key={0}>
                             <br />
-                            <a
-                                className='link link--right'
-                                target='_blank'
-                                href={urlFor('contact', undefined, undefined, true)}
-                            >
+                            <a className='link link--right' target='_blank' href={getDerivComLink('contact-us')}>
                                 <Button secondary medium text={localize('Contact Us')} />
                             </a>
                         </React.Fragment>,
@@ -117,14 +113,7 @@ export const clientNotifications = (ui = {}) => {
             ) : (
                 <Localize
                     i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            target='_blank'
-                            href={urlFor('contact', undefined, undefined, true)}
-                        />,
-                    ]}
+                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
                 />
             ),
             type: 'danger',
@@ -138,11 +127,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <React.Fragment key={0}>
                             <br />
-                            <a
-                                className='link link--right'
-                                target='_blank'
-                                href={urlFor('contact', undefined, undefined, true)}
-                            >
+                            <a className='link link--right' target='_blank' href={getDerivComLink('contact-us')}>
                                 <Button secondary medium text={localize('Contact Us')} />
                             </a>
                         </React.Fragment>,
@@ -151,14 +136,7 @@ export const clientNotifications = (ui = {}) => {
             ) : (
                 <Localize
                     i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            target='_blank'
-                            href={urlFor('contact', undefined, undefined, true)}
-                        />,
-                    ]}
+                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
                 />
             ),
             type: 'danger',
@@ -299,6 +277,19 @@ export const clientNotifications = (ui = {}) => {
             message: localize('Your proof of identity document has expired. Please submit a new one.'),
             type: 'danger',
         },
+        new_version_available: {
+            action: {
+                onClick: () => window.location.reload(),
+                text: localize('Refresh now'),
+            },
+            key: 'new_version_available',
+            header: localize('A new version of Deriv is available'),
+            message: localize('This page will automatically refresh in 5 minutes to load the latest version.'),
+            type: 'warning',
+            should_hide_close_btn: true,
+            timeout: 300000,
+            timeoutMessage: remaining => localize('Auto update in {{ remaining }} seconds', { remaining }),
+        },
     };
     return notifications;
 };
@@ -420,14 +411,17 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     };
 };
 
-export const excluded_notifications = [
-    'you_are_offline',
-    'password_changed',
-    'switch_to_tick_chart',
-    'contract_sold',
-    'maintenance',
-    'bot_switch_account',
-];
+export const excluded_notifications = isMobile()
+    ? ['contract_sold']
+    : [
+          'you_are_offline',
+          'password_changed',
+          'switch_to_tick_chart',
+          'contract_sold',
+          'maintenance',
+          'bot_switch_account',
+          'new_version_available',
+      ];
 
 export const handleClientNotifications = (
     client,

@@ -1,10 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import {
+    PageOverlay,
+    VerticalTab,
+    DesktopWrapper,
+    MobileWrapper,
+    Div100vhContainer,
+    FadeWrapper,
+} from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
+import { getSelectedRoute } from '@deriv/shared/utils/route';
 import { isMobile, isTouchDevice } from '@deriv/shared/utils/screen';
-import { FadeWrapper } from 'App/Components/Animations';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 
@@ -25,6 +32,7 @@ class Cashier extends React.Component {
             window.addEventListener('resize', this.handleOnScreenKeyboard);
         }
     }
+
     componentWillUnmount() {
         this.props.toggleCashier();
 
@@ -49,16 +57,6 @@ class Cashier extends React.Component {
     };
 
     onClickClose = () => this.props.routeBackInApp(this.props.history);
-
-    getRoutedCashier() {
-        const route =
-            this.props.routes.find(r => r.path === this.props.location.pathname || r.path === r.default) ||
-            this.props.routes[0];
-        if (!route) return null;
-
-        const Content = route.component;
-        return <Content component_icon={route.icon_component} />;
-    }
 
     render() {
         const menu_options = () => {
@@ -87,6 +85,15 @@ class Cashier extends React.Component {
             return options;
         };
 
+        const { routes: routes_config, location } = this.props;
+        const selected_route = isMobile()
+            ? getSelectedRoute({ routes: routes_config, pathname: location.pathname })
+            : null;
+        const should_show_tab_headers_note =
+            !this.props.is_virtual &&
+            (location.pathname.startsWith(routes.cashier_deposit) ||
+                location.pathname.startsWith(routes.cashier_withdrawal));
+
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}
@@ -94,7 +101,11 @@ class Cashier extends React.Component {
                 keyname='cashier-page-wrapper'
             >
                 <div className='cashier'>
-                    <PageOverlay header={localize('Cashier')} onClickClose={this.onClickClose} has_side_note>
+                    <PageOverlay
+                        header={isMobile() ? selected_route.title : localize('Cashier')}
+                        onClickClose={this.onClickClose}
+                        has_side_note
+                    >
                         <DesktopWrapper>
                             <VerticalTab
                                 alignment='center'
@@ -102,14 +113,38 @@ class Cashier extends React.Component {
                                 classNameHeader='cashier__tab-header'
                                 current_path={this.props.location.pathname}
                                 is_floating
+                                setVerticalTabIndex={this.props.setTabIndex}
+                                vertical_tab_index={this.props.tab_index}
                                 is_full_width
                                 is_routed
                                 list={menu_options()}
+                                tab_headers_note={
+                                    should_show_tab_headers_note ? (
+                                        <p className='cashier__tab-header-note'>
+                                            <Localize
+                                                i18n_default_text='Want to exchange between e-wallet currencies? Try <0>bestchange.com</0>'
+                                                components={[
+                                                    <a
+                                                        key={0}
+                                                        href='https://www.bestchange.com/?p=1095016'
+                                                        rel='noopener noreferrer'
+                                                        target='_blank'
+                                                        className='link'
+                                                    />,
+                                                ]}
+                                            />
+                                        </p>
+                                    ) : (
+                                        undefined
+                                    )
+                                }
                             />
                         </DesktopWrapper>
                         <MobileWrapper>
                             <Div100vhContainer className='cashier__wrapper--is-mobile' height_offset='80px'>
-                                {this.getRoutedCashier()}
+                                {selected_route && (
+                                    <selected_route.component component_icon={selected_route.icon_component} />
+                                )}
                             </Div100vhContainer>
                         </MobileWrapper>
                     </PageOverlay>
@@ -128,13 +163,18 @@ Cashier.propTypes = {
     location: PropTypes.object,
     onMount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
+    setTabIndex: PropTypes.func,
+    tab_index: PropTypes.number,
     routes: PropTypes.arrayOf(PropTypes.object),
     toggleCashier: PropTypes.func,
 };
 
-export default connect(({ common, modules, ui }) => ({
+export default connect(({ client, common, modules, ui }) => ({
     routeBackInApp: common.routeBackInApp,
+    tab_index: modules.cashier.cashier_route_tab_index,
+    setTabIndex: modules.cashier.setCashierTabIndex,
     is_p2p_visible: modules.cashier.is_p2p_visible,
+    is_virtual: client.is_virtual,
     is_visible: ui.is_cashier_visible,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,

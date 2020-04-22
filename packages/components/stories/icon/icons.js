@@ -9,7 +9,6 @@ export const icons = {
         'IcCashierError',
         'IcCashierNoBalance',
         'IcCashierP2pUser',
-        'IcCashierTransferDone',
         'IcCashierWallet',
         'IcCashierWithdrawal',
     ],

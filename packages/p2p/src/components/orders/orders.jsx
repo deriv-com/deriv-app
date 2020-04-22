@@ -1,12 +1,14 @@
 import React from 'react';
 import { localize } from 'Components/i18next';
+import Dp2pContext from 'Components/context/dp2p-context';
 import PageReturn from 'Components/page-return/page-return.jsx';
-import OrderDetails from './order-details/order-details.jsx';
 import OrderInfo from './order-info';
+import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
-const Orders = ({ orders, params, chat_info }) => {
+const Orders = ({ params, chat_info }) => {
+    const { orders } = React.useContext(Dp2pContext);
     const [order_details, setDetails] = React.useState(null);
     const showDetails = setDetails;
     const hideDetails = () => setDetails(null);
@@ -52,7 +54,7 @@ const Orders = ({ orders, params, chat_info }) => {
                     <OrderDetails order_details={order_details} chat_info={chat_info} />
                 </React.Fragment>
             )}
-            {!order_details && <OrderTable orders={orders} showDetails={showDetails} />}
+            {!order_details && <OrderTable showDetails={showDetails} />}
         </div>
     );
 };

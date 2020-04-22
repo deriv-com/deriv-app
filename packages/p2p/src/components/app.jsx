@@ -30,8 +30,10 @@ class App extends Component {
         WebsocketInit(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
         ServerTime.init(this.props.server_time);
 
+        this.list_item_limit = 20;
         this.state = {
             active_index: 0,
+            order_offset: 0,
             orders: [],
             notification_count: 0,
             parameters: null,
@@ -54,16 +56,19 @@ class App extends Component {
         this.setState({ active_index: idx, parameters: null });
     };
 
-    setIsAdvertiser = advertiser_info => {
+    setIsAdvertiser = async () => {
+        const advertiser_info = await requestWS({ p2p_advertiser_info: 1 });
+
         /* if there is no error means it's an advertiser else it's a client */
         if (!advertiser_info.error) {
-            const advertiser_id = ObjectUtils.getPropertyValue(advertiser_info, ['p2p_advertiser_info', 'id']);
-            const advertiser_name = ObjectUtils.getPropertyValue(advertiser_info, ['p2p_advertiser_info', 'name']);
-            this.setState({ advertiser_id, advertiser_name, is_advertiser: true });
+            await this.setState({ advertiser_id: advertiser_info.p2p_advertiser_info.id, is_advertiser: true });
         }
+        return true;
     };
 
-    setChatInformation = advertiser_info => {
+    setChatInformation = async () => {
+        const advertiser_info = await requestWS({ p2p_advertiser_info: 1 });
+
         if (!advertiser_info.error) {
             // This is using QA10 SendBird AppId, please change to production's SendBird AppId when we deploy to production.
             const app_id = '0D7CB7BD-554A-43D0-A34E-945C299B49D4';
@@ -97,10 +102,13 @@ class App extends Component {
     setP2pOrderList = order_response => {
         // check if there is any error
         if (!order_response.error) {
-            if (order_response.p2p_order_list) {
+            const { p2p_order_list } = order_response;
+
+            if (p2p_order_list) {
+                const { list } = p2p_order_list;
                 // it's an array of orders from p2p_order_list
-                this.setState({ orders: getModifiedP2POrderList(order_response.p2p_order_list.list) });
-                this.handleNotifications(order_response.p2p_order_list.list);
+                this.setState({ order_offset: list.length, orders: getModifiedP2POrderList(list) });
+                this.handleNotifications(list);
             } else {
                 // it's a single order from p2p_order_info
                 const idx_order_to_update = this.state.orders.findIndex(order => order.id === order_response.id);
@@ -113,7 +121,7 @@ class App extends Component {
                     updated_orders[idx_order_to_update] = order_response;
                 }
                 // trigger re-rendering by setting orders again
-                this.setState({ orders: updated_orders });
+                this.setState({ order_offset: updated_orders.length, orders: updated_orders });
                 this.handleNotifications(updated_orders);
             }
         }
@@ -124,12 +132,22 @@ class App extends Component {
     };
 
     componentDidMount() {
-        subscribeWS({ p2p_advertiser_info: 1, subscribe: 1 }, [this.setIsAdvertiser, this.setChatInformation]);
-        subscribeWS({ p2p_order_list: 1, subscribe: 1 }, [this.setP2pOrderList]);
+        this.setIsAdvertiser();
+        this.setChatInformation();
+
+        subscribeWS(
+            {
+                p2p_order_list: 1,
+                subscribe: 1,
+                offset: 0,
+                limit: this.list_item_limit,
+            },
+            [this.setP2pOrderList]
+        );
     }
 
     render() {
-        const { active_index, orders, parameters, notification_count, chat_info } = this.state;
+        const { active_index, order_offset, orders, parameters, notification_count, chat_info } = this.state;
         const {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
@@ -155,6 +173,11 @@ class App extends Component {
                     advertiser_name: this.state.advertiser_name,
                     is_advertiser: this.state.is_advertiser,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
+                    list_item_limit: this.list_item_limit,
+                    order_offset,
+                    orders,
+                    setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
+                    setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                 }}
             >
                 <main className={classNames('deriv-p2p', className)}>
@@ -163,12 +186,7 @@ class App extends Component {
                             <BuySell navigate={this.redirectTo} params={parameters} />
                         </div>
                         <div count={notification_count} label={localize('Orders')}>
-                            <Orders
-                                navigate={this.redirectTo}
-                                orders={orders}
-                                params={parameters}
-                                chat_info={chat_info}
-                            />
+                            <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
                         </div>
                         <div label={localize('My ads')}>
                             <MyAds navigate={this.redirectTo} params={parameters} />

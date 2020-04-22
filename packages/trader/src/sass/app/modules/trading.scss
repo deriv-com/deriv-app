@@ -54,7 +54,7 @@
     }
 }
 
-/** @define trade-container */
+/** @define trade-container; weak */
 .trade-container {
     background: var(--general-main-1);
 
@@ -112,6 +112,16 @@
             width: fit-content;
             margin-left: auto;
         }
+        .dc-datepicker {
+            .dc-input {
+                border: 1px solid var(--fill-normal);
+                margin-bottom: 0;
+
+                &__field {
+                    height: 3.2rem;
+                }
+            }
+        }
     }
     &__input {
         align-self: center;
@@ -168,6 +178,9 @@
         &:before {
             @include typeface(--paragraph-center-normal-black);
             color: inherit;
+        }
+        & ~ .trade-container__input {
+            padding: 0 30px;
         }
     }
     &__price,
@@ -372,6 +385,11 @@
 .input-field {
     .input-wrapper__icon {
         top: 6px;
+    }
+    &--has-error {
+        .dc-input {
+            border: 1px solid $COLOR_RED !important;
+        }
     }
 }
 

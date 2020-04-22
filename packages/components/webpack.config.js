@@ -20,6 +20,7 @@ module.exports = {
         'circular-progress': 'Components/circular-progress',
         collapsible: 'Components/collapsible',
         counter: 'Components/counter',
+        'composite-checkbox': 'Components/composite-checkbox',
         'date-picker': 'Components/date-picker',
         'date-of-birth-picker': 'Components/date-of-birth-picker',
         'desktop-wrapper': 'Components/desktop-wrapper',

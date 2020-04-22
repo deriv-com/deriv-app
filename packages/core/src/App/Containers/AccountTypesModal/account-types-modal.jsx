@@ -7,6 +7,7 @@ import AccountCard from './account-card.jsx';
 
 import 'Sass/app/modules/account-types.scss';
 
+// TODO: this function is needed to be updated after end of all landing companies design
 const boxGenerator = (standpoint, has_demo, state, setAccountTypeTabIndex) => {
     // MLT/MF
     if (standpoint.malta && standpoint.maltainvest) {
@@ -344,6 +345,7 @@ const GamingBox = ({ is_demo = false, no_mt5 = false }) => {
     );
 };
 
+// TODO: Update content later
 const SyntheticBox = ({ is_demo = false }) => {
     return (
         <Box
@@ -460,7 +462,7 @@ class AccountTypesModal extends Component {
                 width='904px'
                 is_open={this.props.is_account_types_modal_visible}
                 toggleModal={this.closeModal}
-                // has_close_icon={false}
+                has_close_icon={this.props.is_dismissible}
             >
                 <ThemedScrollbars autoHide style={{ height: '63.5rem' }}>
                     <div className='account-types'>
@@ -486,18 +488,23 @@ class AccountTypesModal extends Component {
 }
 
 AccountTypesModal.propTypes = {
+    has_any_real_account: PropTypes.bool,
     has_demo: PropTypes.bool,
     is_account_types_modal_visible: PropTypes.bool,
+    is_dismissible: PropTypes.bool,
+    residence: PropTypes.string,
+    standpoint: PropTypes.object,
     toggleAccountTypesModal: PropTypes.func,
 };
 
 export default connect(({ ui, client }) => ({
-    is_account_types_modal_visible: ui.is_account_types_modal_visible,
-    toggleAccountTypesModal: ui.toggleAccountTypesModal,
-    client: client,
-    upgradeable_landing_companies: client.upgradeable_landing_companies,
-    landing_company_shortcode: client.landing_company_shortcode,
-    standpoint: client.standpoint,
-    // TODO: add this later
+    has_any_real_account: client.has_any_real_account,
+    // TODO: Change this later
     has_demo: (client.standpoint.malta || client.standpoint.maltainvest) && !client.standpoint.iom,
+    is_account_types_modal_visible: ui.is_account_types_modal_visible,
+    is_dismissible: !client.is_forced_to_have_real_account,
+    client: client,
+    residence: client.residence,
+    standpoint: client.standpoint,
+    toggleAccountTypesModal: ui.toggleAccountTypesModal,
 }))(AccountTypesModal);

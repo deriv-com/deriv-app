@@ -310,6 +310,11 @@ export default class ClientStore extends BaseStore {
             : eu_excluded_regex.test(this.residence);
     }
 
+    @computed
+    get is_forced_to_have_real_account() {
+        return this.standpoint.iom && !this.has_any_real_account && this.residence === 'gb';
+    }
+
     // Shows all possible landing companies of user between all
     @computed
     get standpoint() {

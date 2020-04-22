@@ -20,9 +20,11 @@ const AccountTypesModal = React.lazy(() =>
 const AppModals = ({
     is_account_types_modal_visible,
     is_denial_of_service_modal_visible,
+    is_forced_to_have_real_account,
     is_set_residence_modal_visible,
     url_action_param,
     switchAccount,
+    toggleAccountTypesModal,
     virtual_account_loginid,
 }) => {
     let ComponentToLoad = null;
@@ -57,6 +59,10 @@ const AppModals = ({
             }
             break;
     }
+    // Account Types modal
+    if (is_forced_to_have_real_account) {
+        toggleAccountTypesModal(true);
+    }
     if (is_account_types_modal_visible) {
         ComponentToLoad = <AccountTypesModal />;
     }
@@ -68,6 +74,8 @@ export default connect(({ client, ui }) => ({
     is_account_types_modal_visible: ui.is_account_types_modal_visible,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_denial_of_service_modal_visible: !client.is_client_allowed_to_visit,
+    is_forced_to_have_real_account: client.is_forced_to_have_real_account,
     switchAccount: client.switchAccount,
+    toggleAccountTypesModal: ui.toggleAccountTypesModal,
     virtual_account_loginid: client.virtual_account_loginid,
 }))(AppModals);

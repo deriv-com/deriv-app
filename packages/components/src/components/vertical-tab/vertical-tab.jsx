@@ -61,35 +61,6 @@ class VerticalTab extends React.Component {
 
     render() {
         const selected = this.props.list[this.state.vertical_tab_index] || this.props.list[0];
-        const vertical_tab_headers =
-            this.props.is_floating && this.props.tab_headers_note ? (
-                <div className='dc-vertical-tab__tab-meta-wrapper'>
-                    <VerticalTabHeaders
-                        className={this.props.header_classname}
-                        items={this.props.list}
-                        item_groups={this.props.list_groups}
-                        onChange={this.changeSelected}
-                        selected={selected}
-                        is_floating={this.props.is_floating}
-                        is_routed={this.props.is_routed}
-                        header_title={this.props.header_title}
-                        tab_headers_note={this.props.tab_headers_note}
-                    />
-                    <div className='dc-vertical-tab__tab-bottom-note'>{this.props.tab_headers_note}</div>
-                </div>
-            ) : (
-                <VerticalTabHeaders
-                    className={this.props.header_classname}
-                    items={this.props.list}
-                    item_groups={this.props.list_groups}
-                    onChange={this.changeSelected}
-                    selected={selected}
-                    is_floating={this.props.is_floating}
-                    is_routed={this.props.is_routed}
-                    header_title={this.props.header_title}
-                    tab_headers_note={this.props.tab_headers_note}
-                />
-            );
 
         return (
             <div
@@ -99,7 +70,24 @@ class VerticalTab extends React.Component {
                     'dc-vertical-tab--grouped': Array.isArray(this.props.list_groups),
                 })}
             >
-                {this.props.is_sidebar_enabled && vertical_tab_headers}
+                {this.props.is_sidebar_enabled && (
+                    <div className='dc-vertical-tab__tab-meta-wrapper'>
+                        <VerticalTabHeaders
+                            className={this.props.header_classname}
+                            items={this.props.list}
+                            item_groups={this.props.list_groups}
+                            onChange={this.changeSelected}
+                            selected={selected}
+                            is_floating={this.props.is_floating}
+                            is_routed={this.props.is_routed}
+                            header_title={this.props.header_title}
+                            tab_headers_note={this.props.tab_headers_note}
+                        />
+                        {this.props.is_floating && this.props.tab_headers_note && (
+                            <div className='dc-vertical-tab__tab-bottom-note'>{this.props.tab_headers_note}</div>
+                        )}
+                    </div>
+                )}
                 <VerticalTabContentContainer
                     action_bar={this.props.action_bar}
                     action_bar_classname={this.props.action_bar_classname}

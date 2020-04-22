@@ -36,7 +36,7 @@ const DigitContract = RawMarkerMaker(
         const canvas_height = ctx.canvas.height / window.devicePixelRatio;
 
         const foreground_color = getColor('fg', is_dark_theme).concat(opacity);
-        const background_color = getColor('bg', is_dark_theme).concat(opacity);
+        const background_color = getColor('bg', is_dark_theme);
         const status_color = getColor(status, is_dark_theme, profit);
         const status_color_with_opacity = status_color.concat(opacity);
 

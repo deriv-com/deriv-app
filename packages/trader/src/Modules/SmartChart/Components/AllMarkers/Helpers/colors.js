@@ -29,6 +29,6 @@ export const getColor = (status, is_dark_theme, profit) => {
 };
 
 export const getOpacity = should_highlight_contract => {
-    if (should_highlight_contract) return '';
+    if (should_highlight_contract) return calculateHexOpacity(1);
     return calculateHexOpacity(0.4);
 };

@@ -85,25 +85,23 @@ export default class ContractTradeStore extends BaseStore {
             .map(m => toJS(m));
 
         // The following contains logic to should highlight on chart.
+        const is_hover_index = markers.findIndex(marker => marker.contract_info.is_hover);
+        const is_not_sold_index = markers.findIndex(marker => !marker.contract_info.is_sold);
+
         if (markers.length) {
-            let should_highlight_contract_index;
+            markers.map(marker => (marker.should_highlight_contract = false));
 
-            for (let index = markers.length - 1; index >= 0; index--) {
-                if (!markers[index].contract_info.is_sold) {
-                    should_highlight_contract_index = index;
-                    break;
-                } else {
-                    should_highlight_contract_index = markers.length - 1;
-                }
+            if (is_hover_index !== -1) {
+                markers[is_hover_index].should_highlight_contract = true;
+                markers.sort((a, b) => a.should_highlight_contract - b.should_highlight_contract);
+                markers.map(marker => (marker.should_redraw = true));
+            } else if (is_not_sold_index !== -1) {
+                markers[is_not_sold_index].should_highlight_contract = true;
+                markers[is_not_sold_index].should_redraw = true;
+            } else {
+                markers[markers.length - 1].should_highlight_contract = true;
+                markers.map(marker => (marker.should_redraw = true));
             }
-
-            markers.map((marker, index) => {
-                if (marker.contract_info.is_hover) {
-                    should_highlight_contract_index = index;
-                }
-            });
-
-            markers[should_highlight_contract_index].should_highlight_contract = true;
         }
 
         return markers;

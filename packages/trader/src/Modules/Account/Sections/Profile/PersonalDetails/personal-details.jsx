@@ -397,8 +397,14 @@ class PersonalDetailsForm extends React.Component {
                                                     label={localize('Date of birth*')}
                                                     error={touched.date_of_birth && errors.date_of_birth}
                                                     onBlur={() => setTouched({ date_of_birth: true })}
-                                                    onChange={e =>
-                                                        setFieldValue('date_of_birth', e.target?.value, true)
+                                                    onChange={({ target }) =>
+                                                        setFieldValue(
+                                                            'date_of_birth',
+                                                            target?.value
+                                                                ? toMoment(target.value).format('YYYY-MM-DD')
+                                                                : '',
+                                                            true
+                                                        )
                                                     }
                                                     value={values.date_of_birth}
                                                 />

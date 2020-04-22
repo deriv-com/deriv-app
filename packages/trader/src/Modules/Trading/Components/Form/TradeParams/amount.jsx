@@ -1,10 +1,9 @@
 import classNames from 'classnames';
-import { Dropdown } from '@deriv/components';
+import { Dropdown, ButtonToggle } from '@deriv/components';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import ButtonToggleMenu from 'App/Components/Form/ButtonToggleMenu';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import InputField from 'App/Components/Form/InputField';
 import { connect } from 'Stores/connect';
@@ -72,6 +71,7 @@ const Amount = ({
             onChange={onChange}
             type='tel'
             value={amount}
+            ariaLabel={localize('Amount')}
         />
     );
 
@@ -89,7 +89,7 @@ const Amount = ({
             }
         >
             {basis_list.length > 1 && (
-                <ButtonToggleMenu
+                <ButtonToggle
                     id='dt_amount_toggle'
                     buttons_arr={basis_list}
                     className='dropdown--no-margin'

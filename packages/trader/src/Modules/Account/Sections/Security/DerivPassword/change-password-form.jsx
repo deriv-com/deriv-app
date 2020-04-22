@@ -93,7 +93,7 @@ class ChangePasswordForm extends React.Component {
                                     <Loading is_fullscreen={false} className='account___intial-loader' />;
                                 </FormBody>
                             ) : (
-                                <FormBody scroll_offset='55px'>
+                                <FormBody scroll_offset={isMobile() ? '200px' : '55px'}>
                                     <FormSubHeader title={localize('Change your Deriv password')} />
                                     <fieldset className='account-form__fieldset'>
                                         <PasswordInput

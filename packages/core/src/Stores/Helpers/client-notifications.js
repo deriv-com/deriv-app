@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@deriv/components';
 import { WS } from 'Services';
-import { formatDate } from 'Utils/Date';
+import { formatDate } from '@deriv/shared/utils/date';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
@@ -14,7 +14,6 @@ import { urlFor, getDerivComLink } from '_common/url';
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
 export const clientNotifications = (ui = {}) => {
-    const mobile = ['mf_retail', 'unwelcome'];
     const notifications = {
         currency: {
             action: {
@@ -300,14 +299,21 @@ export const clientNotifications = (ui = {}) => {
             message: localize('Your proof of identity document has expired. Please submit a new one.'),
             type: 'danger',
         },
+        new_version_available: {
+            action: {
+                onClick: () => window.location.reload(),
+                text: localize('Refresh now'),
+            },
+            key: 'new_version_available',
+            header: localize('A new version of Deriv is available'),
+            message: localize('This page will automatically refresh in 5 minutes to load the latest version.'),
+            type: 'warning',
+            should_hide_close_btn: true,
+            timeout: 300000,
+            timeoutMessage: remaining => localize('Auto update in {{ remaining }} seconds', { remaining }),
+        },
     };
-    const allowed_notifications = Object.keys(notifications)
-        .filter(key => (isMobile() ? mobile.includes(key) : true))
-        .reduce((obj, key) => {
-            obj[key] = notifications[key];
-            return obj;
-        }, {});
-    return allowed_notifications;
+    return notifications;
 };
 
 const hasMissingRequiredField = (account_settings, client) => {
@@ -427,14 +433,17 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     };
 };
 
-export const excluded_notifications = [
-    'you_are_offline',
-    'password_changed',
-    'switch_to_tick_chart',
-    'contract_sold',
-    'maintenance',
-    'bot_switch_account',
-];
+export const excluded_notifications = isMobile()
+    ? ['contract_sold']
+    : [
+          'you_are_offline',
+          'password_changed',
+          'switch_to_tick_chart',
+          'contract_sold',
+          'maintenance',
+          'bot_switch_account',
+          'new_version_available',
+      ];
 
 export const handleClientNotifications = (
     client,

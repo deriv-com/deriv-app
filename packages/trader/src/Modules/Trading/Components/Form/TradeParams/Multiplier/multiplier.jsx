@@ -11,7 +11,9 @@ const Multiplier = ({ amount, commission, currency, multiplier, multiplier_range
         className='trade-container__fieldset trade-container__fieldset__multiplier'
         is_center
         header={localize('Multiplier')}
-        header_tooltip={localize('Your profit and loss are multiplied by this amount.')}
+        header_tooltip={localize(
+            'Your profit is the percentage change in market price times your stake and the multiplier chosen here.'
+        )}
     >
         <Dropdown
             id='multiplier'

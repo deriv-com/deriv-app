@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-const Row = ({ children, className, has_hover }) => {
+const Row = ({ children, className, has_hover, style }) => {
     const columns_in_row = React.Children.toArray(children).length; // toArray doesn't count null as a child
 
     return (
@@ -13,6 +13,7 @@ const Row = ({ children, className, has_hover }) => {
             })}
             style={{
                 gridTemplateColumns: `repeat(${columns_in_row}, 1fr)`,
+                ...(style ?? {}),
             }}
         >
             {children}

@@ -56,6 +56,19 @@ export default class OrderInfo {
         return this.type === 'buy';
     }
 
+    get is_active() {
+        return this.status === 'pending' || this.status === 'buyer-confirmed';
+    }
+
+    get is_inactive() {
+        return (
+            this.status === 'cancelled' ||
+            this.status === 'timed-out' ||
+            this.status === 'refunded' ||
+            this.status === 'completed'
+        );
+    }
+
     get is_pending() {
         return this.status === 'pending';
     }

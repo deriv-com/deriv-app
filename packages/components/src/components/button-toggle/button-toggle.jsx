@@ -20,6 +20,7 @@ const ButtonToggle = ({ buttons_arr, className, id, is_animated, name, onChange,
                 text={`${val.text.charAt(0).toUpperCase()}${val.text.slice(1)}`}
                 onClick={() => changeValue(val.value)}
                 className={menuClassNames}
+                is_button_toggle
             />
         );
     });

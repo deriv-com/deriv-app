@@ -299,6 +299,19 @@ export const clientNotifications = (ui = {}) => {
             message: localize('Your proof of identity document has expired. Please submit a new one.'),
             type: 'danger',
         },
+        new_version_available: {
+            action: {
+                onClick: () => window.location.reload(),
+                text: localize('Refresh now'),
+            },
+            key: 'new_version_available',
+            header: localize('A new version of Deriv is available'),
+            message: localize('This page will automatically refresh in 5 minutes to load the latest version.'),
+            type: 'warning',
+            should_hide_close_btn: true,
+            timeout: 300000,
+            timeoutMessage: remaining => localize('Auto update in {{ remaining }} seconds', { remaining }),
+        },
     };
     return notifications;
 };
@@ -429,6 +442,7 @@ export const excluded_notifications = isMobile()
           'contract_sold',
           'maintenance',
           'bot_switch_account',
+          'new_version_available',
       ];
 
 export const handleClientNotifications = (

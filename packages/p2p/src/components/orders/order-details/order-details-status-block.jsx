@@ -28,8 +28,8 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
         <h2 className={'order-details__header-status order-details__header-status--' + status_type()}>
             {is_pending && is_buyer && localize('Pay now')}
             {is_pending && !is_buyer && localize('Wait for payment')}
-            {is_buyer_cancelled && is_buyer && localize('You have cancelled this order')}
-            {is_buyer_cancelled && !is_buyer && localize('Buyer has cancelled this order')}
+            {is_buyer_cancelled && is_buyer && localize('Cancelled')}
+            {is_buyer_cancelled && !is_buyer && localize('Cancelled')}
             {is_refunded && is_buyer && localize('You have been refunded')}
             {is_refunded && !is_buyer && localize('Buyer has been refunded')}
             {is_buyer_confirmed && is_buyer && localize('Wait for release')}

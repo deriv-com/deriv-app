@@ -1,6 +1,7 @@
+import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Dialog, Icon, Loading, Table } from '@deriv/components';
+import { Dialog, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
@@ -9,13 +10,13 @@ import { requestWS } from 'Utils/websocket';
 import { MyAdsLoader } from './my-ads-loader.jsx';
 import Popup from '../orders/popup.jsx';
 
-const headers = [
+const getHeaders = offered_currency => [
     { text: localize('Ad ID') },
-    { text: localize('Available') },
     { text: localize('Limits') },
-    { text: localize('Price') },
+    { text: localize('Rate (1 {{ offered_currency }})', { offered_currency }) },
     { text: localize('Payment method') },
-    { text: '' }, // empty header
+    { text: localize('Available amount') },
+    { text: '' }, // empty header for delete icon
 ];
 
 const type = {
@@ -23,14 +24,15 @@ const type = {
     sell: localize('Sell'),
 };
 
+const row_style = {
+    gridTemplateColumns: '1fr 2fr 2fr 2fr 2fr 1fr',
+};
+
 const RowComponent = React.memo(({ data, row_actions, style }) => (
     <div style={style}>
-        <Table.Row>
+        <Table.Row style={row_style}>
             <Table.Cell>
                 {type[data.type]} {data.id}
-            </Table.Cell>
-            <Table.Cell>
-                {data.display_available_amount} {data.offer_currency}
             </Table.Cell>
             <Table.Cell>
                 {data.display_min_available}-{data.display_max_available} {data.offer_currency}
@@ -39,7 +41,17 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
                 {data.display_price_rate} {data.transaction_currency}
             </Table.Cell>
             <Table.Cell>{data.display_payment_method}</Table.Cell>
-            <Table.Cell>
+            <Table.Cell className='p2p-my-ads__table-available'>
+                <ProgressIndicator
+                    className={'p2p-my-ads__table-available-progress'}
+                    value={data.available_amount}
+                    total={data.offer_amount}
+                />
+                <div className='p2p-my-ads__table-available-value'>
+                    {data.display_available_amount}/{data.display_offer_amount} {data.offer_currency}
+                </div>
+            </Table.Cell>
+            <Table.Cell className='p2p-my-ads__table-delete'>
                 <Icon icon='IcDelete' size={16} onClick={() => row_actions.onClickDelete(data.id)} />
             </Table.Cell>
         </Table.Row>
@@ -51,10 +63,10 @@ RowComponent.propTypes = {
 };
 RowComponent.displayName = 'RowComponent';
 
-const MyAdsTable = () => {
+const MyAdsTable = ({ is_enabled }) => {
     let item_offset = 0;
 
-    const { list_item_limit } = useContext(Dp2pContext);
+    const { currency, list_item_limit } = useContext(Dp2pContext);
     const [is_mounted, setIsMounted] = useState(false);
     const [is_loading, setIsLoading] = useState(true);
     const [api_error_message, setApiErrorMessage] = useState('');
@@ -131,10 +143,14 @@ const MyAdsTable = () => {
         const item_height = 56;
         return (
             <div ref={table_container_Ref}>
-                <Table>
+                <Table
+                    className={classNames('p2p-my-ads__table', {
+                        'p2p-my-ads__table--disabled': !is_enabled,
+                    })}
+                >
                     <Table.Header>
-                        <Table.Row>
-                            {headers.map(header => (
+                        <Table.Row style={row_style}>
+                            {getHeaders(currency).map(header => (
                                 <Table.Head key={header.text}>{header.text}</Table.Head>
                             ))}
                         </Table.Row>

@@ -71,7 +71,7 @@ class AddressDetails extends Component {
         const padding_bottom = window.innerHeight < 930 ? '10rem' : '12rem';
         return (
             <Formik
-                initialValues={this.props.value}
+                initialValues={{ ...this.props.value }}
                 validate={this.props.validate}
                 onSubmit={(values, actions) => {
                     if (isDesktop() && values.address_state) {

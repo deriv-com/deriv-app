@@ -93,7 +93,8 @@ export default class ClientStore extends BaseStore {
             !this.is_logged_in ||
             this.is_virtual ||
             this.accounts[this.loginid].landing_company_shortcode === 'svg' ||
-            this.accounts[this.loginid].landing_company_shortcode === 'iom'
+            this.accounts[this.loginid].landing_company_shortcode === 'iom' ||
+            this.accounts[this.loginid].landing_company_shortcode === 'malta'
         );
     }
 
@@ -1185,18 +1186,20 @@ export default class ClientStore extends BaseStore {
     @action.bound
     fetchStatesList() {
         return new Promise((resolve, reject) => {
-            WS.statesList({
-                states_list: this.accounts[this.loginid].residence,
-            }).then(response => {
-                if (response.error) {
-                    reject(response.error);
-                } else {
-                    runInAction(() => {
-                        this.states_list = response.states_list || [];
-                    });
-                }
-                resolve(response);
-            });
+            WS.storage
+                .statesList({
+                    states_list: this.accounts[this.loginid].residence,
+                })
+                .then(response => {
+                    if (response.error) {
+                        reject(response.error);
+                    } else {
+                        runInAction(() => {
+                            this.states_list = response.states_list || [];
+                        });
+                    }
+                    resolve(response);
+                });
         });
     }
 

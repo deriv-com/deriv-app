@@ -48,6 +48,7 @@ class AccountWizard extends React.Component {
 
     componentDidMount() {
         this.fetchFromStorage();
+        this.props.fetchStatesList();
         if (!this.residence_list?.length) {
             const items = this.state.items.slice(0);
             this.getCountryCode().then(phone_idd => {
@@ -313,5 +314,7 @@ export default connect(({ client }) => ({
     can_upgrade_to: client.can_upgrade_to,
     residence: client.residence,
     residence_list: client.residence_list,
+    states_list: client.states_list,
+    fetchStatesList: client.fetchStatesList,
     fetchResidenceList: client.fetchResidenceList,
 }))(AccountWizard);

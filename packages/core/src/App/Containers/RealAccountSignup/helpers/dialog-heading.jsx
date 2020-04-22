@@ -26,6 +26,7 @@ const IOMHeading = ({ status }) => (
  */
 export const DialogHeading = ({ status, landing_company_shortcode }) => {
     switch (landing_company_shortcode) {
+        case 'malta':
         case 'svg':
             return (
                 <h2>

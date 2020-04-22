@@ -6,17 +6,17 @@ import { generateValidationFunction, getDefaultFields } from './form-validations
 
 const personal_details_config = {
     account_opening_reason: {
-        supported_in: ['iom'],
+        supported_in: ['iom', 'malta'],
         default_value: '',
         rules: [['req', localize('Account opening reason is required')]],
     },
     salutation: {
-        supported_in: ['iom'],
+        supported_in: ['iom', 'malta'],
         default_value: '',
         rules: [['req', localize('Salutation is required')]],
     },
     first_name: {
-        supported_in: ['svg', 'iom'],
+        supported_in: ['svg', 'iom', 'malta'],
         default_value: '',
         rules: [
             ['req', localize('First name is required')],
@@ -25,7 +25,7 @@ const personal_details_config = {
         ],
     },
     last_name: {
-        supported_in: ['svg', 'iom'],
+        supported_in: ['svg', 'iom', 'malta'],
         default_value: '',
         rules: [
             ['req', localize('Last name is required')],
@@ -34,7 +34,7 @@ const personal_details_config = {
         ],
     },
     date_of_birth: {
-        supported_in: ['svg', 'iom'],
+        supported_in: ['svg', 'iom', 'malta'],
         default_value: '',
         rules: [
             ['req', localize('Date of birth is required')],
@@ -45,17 +45,17 @@ const personal_details_config = {
         ],
     },
     place_of_birth: {
-        supported_in: ['iom'],
+        supported_in: ['iom', 'malta'],
         default_value: '',
         rules: [['req', localize('Place of birth is required')]],
     },
     citizen: {
-        supported_in: ['iom'],
+        supported_in: ['iom', 'malta'],
         default_value: '',
         rules: [['req', localize('Citizenship is required')]],
     },
     phone: {
-        supported_in: ['svg', 'iom'],
+        supported_in: ['svg', 'iom', 'malta'],
         default_value: '',
         rules: [
             ['req', localize('Phone is required')],

@@ -90,7 +90,7 @@ class AccountSwitcher extends React.Component {
     };
 
     onClickUpgrade = () => {
-        if (['svg', 'iom'].includes(this.props.can_upgrade_to)) {
+        if (['malta', 'svg', 'iom'].includes(this.props.can_upgrade_to)) {
             this.props.openRealAccountSignup();
         } else {
             window.open(urlFor('new_account/maltainvestws', undefined, undefined, true));

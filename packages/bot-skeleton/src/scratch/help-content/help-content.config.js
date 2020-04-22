@@ -201,6 +201,7 @@ export const help_content_config = public_path => {
             { type: IMAGE, url: `${__webpack_public_path__}media/notify_telegram.png` },
         ],
         // =============== Misc blocks ============
+        console: [{ type: TEXT }, { type: TEXT }, { type: TEXT }, { type: TEXT }, { type: TEXT }, { type: TEXT }],
         balance: [
             { type: TEXT },
             { type: BLOCK },

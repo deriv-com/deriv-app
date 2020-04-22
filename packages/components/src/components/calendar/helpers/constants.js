@@ -50,12 +50,14 @@ export const getDaysOfTheWeek = day => {
     return days_of_the_week[day];
 };
 
-export const getDecade = moment_date =>
-    `${toMoment(moment_date).year()}-${toMoment(moment_date)
-        .add(9, 'years')
-        .year()}`;
+export const getDecade = moment_date => {
+    const year = toMoment(moment_date).year();
+    const decade_start_year = year - (year % 10) + 1;
+    return `${decade_start_year}-${decade_start_year + 9}`;
+};
 
-export const getCentury = moment_date =>
-    `${toMoment(moment_date).year()}-${toMoment(moment_date)
-        .add(99, 'years')
-        .year()}`;
+export const getCentury = moment_date => {
+    const year = toMoment(moment_date).year();
+    const decade_start_year = year - (year % 10) + 1;
+    return `${decade_start_year}-${decade_start_year + 99}`;
+};

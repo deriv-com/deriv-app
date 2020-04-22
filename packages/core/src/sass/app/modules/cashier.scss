@@ -983,6 +983,12 @@
             }
             &-details-to {
                 flex-flow: column;
+
+                & .cashier {
+                    &__transferred-details {
+                        text-align: center;
+                    }
+                }
             }
         }
         &__receipt {
@@ -1006,9 +1012,10 @@
         &__form-submit {
             display: flex;
             flex-flow: row;
+            justify-content: center;
 
             .account-transfer__button {
-                margin: 1.6rem 0.8rem 0 0;
+                margin: 1.6rem 0.4rem 0;
 
                 @media only screen and (max-width: 340px) {
                     & .dc-btn__text {

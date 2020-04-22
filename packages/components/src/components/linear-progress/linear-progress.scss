@@ -1,0 +1,26 @@
+/** @define dc-linear-progress; weak */
+.dc-linear-progress {
+    display: flex;
+    height: 4px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+
+    &__bar {
+        height: 100%;
+        transition: width 0.5s cubic-bezier(0.62, 0.01, 0.51, 0.95);
+        background-color: var(--brand-red-coral);
+    }
+    &__countdown {
+        position: absolute;
+        left: 1rem;
+        bottom: 1rem;
+        font-size: 12px;
+        color: var(--brand-red-coral);
+        font-weight: bold;
+    }
+}

@@ -358,7 +358,7 @@
         @include mobile {
             width: 100%;
             margin: 2.4rem 0 0;
-            height: 280px;
+            height: 320px;
         }
     }
     &__virtual {
@@ -965,6 +965,65 @@
     }
     &__native-select {
         margin-bottom: 2.4rem;
+    }
+    &__receipt {
+        & .cashier {
+            &__text--bold {
+                color: var(--text-prominent);
+            }
+            &__transferred-amount {
+                color: var(--text-profit-success);
+            }
+        }
+    }
+    @include mobile {
+        &__transfer {
+            &-details-from {
+                flex-flow: column-reverse;
+            }
+            &-details-to {
+                flex-flow: column;
+
+                & .cashier {
+                    &__transferred-details {
+                        text-align: center;
+                    }
+                }
+            }
+        }
+        &__receipt {
+            & .cashier {
+                &__header {
+                    padding-top: 1.6rem;
+                    margin-top: 0;
+                }
+                &__transferred-details {
+                    margin-top: 0.8rem;
+                }
+                &__transferred-amount {
+                    margin-bottom: 1.6rem;
+                    margin-top: 0;
+                }
+                &__text--right {
+                    text-align: center;
+                }
+            }
+        }
+        &__form-submit {
+            display: flex;
+            flex-flow: row;
+            justify-content: center;
+
+            .account-transfer__button {
+                margin: 1.6rem 0.4rem 0;
+
+                @media only screen and (max-width: 340px) {
+                    & .dc-btn__text {
+                        font-size: 1.2rem;
+                    }
+                }
+            }
+        }
     }
 }
 

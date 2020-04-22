@@ -23,6 +23,11 @@
             background-color: var(--general-main-1);
             border-radius: 4px;
             width: 100%;
+            .footer-actions {
+                position: relative;
+                height: unset;
+                padding: 1.6rem;
+            }
         }
     }
     &__header,

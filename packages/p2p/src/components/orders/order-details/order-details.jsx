@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Dialog } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
-import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import OrderDetailsStatusBlock from './order-details-status-block.jsx';
 import OrderInfoBlock from './order-info-block.jsx';
 import OrderDetailsAmountBlock from './order-details-amount-block.jsx';
@@ -113,6 +112,7 @@ const OrderDetails = ({ order_details }) => {
                             </div>
                         </div>
                     </div>
+                    <div className='deriv-p2p__separator' />
                     {(is_buyer_confirmed || (is_expired && is_buyer)) && (
                         <React.Fragment>
                             <div className='p2p-cashier__separator' />
@@ -135,16 +135,14 @@ const OrderDetails = ({ order_details }) => {
                             </div>
                         </React.Fragment>
                     )}
+                    <OrderActionsBlock
+                        cancelPopup={onCancelClick}
+                        showPopup={handleShowPopup}
+                        order_details={order_details}
+                    />
                 </div>
             </div>
 
-            <FooterActions>
-                <OrderActionsBlock
-                    cancelPopup={onCancelClick}
-                    showPopup={handleShowPopup}
-                    order_details={order_details}
-                />
-            </FooterActions>
             {show_popup && (
                 <div className='orders__dialog'>
                     <Dialog is_visible={show_popup}>

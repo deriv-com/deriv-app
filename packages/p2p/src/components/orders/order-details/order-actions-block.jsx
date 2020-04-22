@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
+import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 
 const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     const {
@@ -110,12 +111,14 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     if (is_pending && is_buyer) {
         buttons_to_render = (
             <React.Fragment>
-                <Button className='order-details__actions-button' large secondary onClick={cancelOrder}>
-                    {localize('Cancel order')}
-                </Button>
-                <Button className='order-details__actions-button' large primary onClick={paidOrder}>
-                    {localize("I've paid")}
-                </Button>
+                <FooterActions>
+                    <Button className='order-details__actions-button' large secondary onClick={cancelOrder}>
+                        {localize('Cancel order')}
+                    </Button>
+                    <Button className='order-details__actions-button' large primary onClick={paidOrder}>
+                        {localize("I've paid")}
+                    </Button>
+                </FooterActions>
             </React.Fragment>
         );
     }

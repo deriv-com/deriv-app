@@ -35,11 +35,19 @@
         display: flex;
         justify-content: space-between;
         color: var(--text-general);
+        position: relative;
 
         &-status {
             font-size: 1.6rem;
             font-weight: bold;
             line-height: 1.5;
+
+            &--expired {
+                color: var(--text-less-prominent);
+            }
+            &--wait-for-payment {
+                color: var(--status-warning);
+            }
         }
         &-amount {
             line-height: 1.5;
@@ -58,6 +66,9 @@
             font-size: 1.2rem;
             line-height: 1.5;
             text-align: center;
+            position: absolute;
+            top: 1.6rem;
+            right: 1.6rem;
 
             &-counter {
                 margin-top: 0.4rem;
@@ -66,12 +77,18 @@
                 padding: 0.4rem 0.8rem;
             }
         }
+        &-payment-info {
+            margin-top: 0.8rem;
+            font-size: 1.4rem;
+            line-height: 1.4;
+            color: var(--text-general);
+            word-break: break-word;
+        }
     }
     &__info {
         &-block {
-            &:not(:last-child) {
-                margin-bottom: 1.6rem;
-            }
+            margin-bottom: 1.6rem;
+
             &-label {
                 font-size: 1.2rem;
                 line-height: 1.5;
@@ -81,6 +98,7 @@
                 font-size: 1.4rem;
                 line-height: 1.43;
                 color: var(--text-general);
+                word-break: break-word;
             }
         }
         &-columns {

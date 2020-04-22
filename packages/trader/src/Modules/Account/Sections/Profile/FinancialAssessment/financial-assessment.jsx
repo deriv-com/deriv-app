@@ -308,6 +308,7 @@ class FinancialAssessment extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     name='income_source'
                                                     label={localize('Source of income')}
                                                     list_items={income_source_list}
@@ -333,6 +334,7 @@ class FinancialAssessment extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     name='employment_status'
                                                     label={localize('Employment status')}
                                                     list_items={employment_status_list}
@@ -358,6 +360,7 @@ class FinancialAssessment extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     name='employment_industry'
                                                     label={localize('Industry of employment')}
                                                     list_items={employment_industry_list}
@@ -384,6 +387,7 @@ class FinancialAssessment extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     name='occupation'
                                                     label={localize('Occupation')}
                                                     list_items={occupation_list}
@@ -409,6 +413,7 @@ class FinancialAssessment extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     name='source_of_wealth'
                                                     label={localize('Source of wealth')}
                                                     list_items={source_of_wealth_list}
@@ -434,6 +439,7 @@ class FinancialAssessment extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     name='education_level'
                                                     label={localize('Level of education')}
                                                     list_items={education_level_list}
@@ -459,6 +465,7 @@ class FinancialAssessment extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     name='net_income'
                                                     label={localize('Net annual income')}
                                                     list_items={net_income_list}
@@ -485,6 +492,7 @@ class FinancialAssessment extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     name='estimated_worth'
                                                     label={localize('Estimated net worth')}
                                                     list_items={estimated_worth_list}
@@ -511,6 +519,7 @@ class FinancialAssessment extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     name='account_turnover'
                                                     label={localize('Anticipated account turnover')}
                                                     list_items={account_turnover_list}

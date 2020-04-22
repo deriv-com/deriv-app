@@ -23,6 +23,7 @@ class SelectNative extends Component {
             list_items,
             value,
             label,
+            placeholder,
             use_text,
             error,
             hint,
@@ -65,7 +66,7 @@ class SelectNative extends Component {
                                     {/* In native select, first option is selected by default. 
                                         Added an empty option to avoid it from selecting first item 
                                         from list_items provided */}
-                                    <option value='' />
+                                    <option value=''>{placeholder}</option>
                                     {list_items.map((option, idx) => (
                                         <option key={idx} value={use_text ? option.text : option.value}>
                                             {option.nativepicker_text || option.text}

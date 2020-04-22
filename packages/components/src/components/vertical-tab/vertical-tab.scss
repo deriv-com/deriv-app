@@ -90,6 +90,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 border-radius: $BORDER_RADIUS;
             }
         }
+        &-bottom-note {
+            margin-top: 1.6rem;
+        }
     }
     &__header-title {
         @include typeface(--title-center-bold-black, none);

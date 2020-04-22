@@ -38,6 +38,10 @@ class MyAds extends Component {
         this.setState({ show_form: true });
     };
 
+    setEnabled = is_enabled => {
+        this.setState({ is_enabled });
+    };
+
     render() {
         if (this.context.is_advertiser) {
             return (
@@ -47,12 +51,14 @@ class MyAds extends Component {
                     ) : (
                         <Fragment>
                             <div className='p2p-my-ads__header'>
-                                {!this.state.is_loading && <ToggleAds is_enabled={this.state.is_enabled} />}
-                                <Button primary onClick={this.onClickCreate}>
-                                    {localize('Create ad')}
+                                <Button primary large onClick={this.onClickCreate}>
+                                    {localize('Create new ad')}
                                 </Button>
+                                {!this.state.is_loading && (
+                                    <ToggleAds is_enabled={this.state.is_enabled} onToggle={this.setEnabled} />
+                                )}
                             </div>
-                            <MyAdsTable />
+                            <MyAdsTable is_enabled={this.state.is_enabled} />
                         </Fragment>
                     )}
                 </div>

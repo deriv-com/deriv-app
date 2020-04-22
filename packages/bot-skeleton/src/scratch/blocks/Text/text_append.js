@@ -24,7 +24,7 @@ Blockly.Blocks.text_append = {
             colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
-            tooltip: localize('Appends a given text to a varialbe'),
+            tooltip: localize('Appends a given text to a variable'),
             category: Blockly.Categories.Text,
         };
     },

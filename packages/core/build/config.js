@@ -71,7 +71,7 @@ const copyConfig = base => [
 
 const generateSWConfig = () => ({
     cleanupOutdatedCaches: true,
-    exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^localstorage-sync\.html$/],
+    exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^localstorage-sync\.html$/, /\.map$/],
     skipWaiting: true,
     clientsClaim: true,
 });

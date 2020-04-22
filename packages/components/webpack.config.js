@@ -37,6 +37,7 @@ module.exports = {
         'icon/js/icons': 'Components/icon/icons.js',
         input: 'Components/input',
         label: 'Components/label',
+        'linear-progress': 'Components/linear-progress',
         loading: 'Components/loading',
         'mobile-dialog': 'Components/mobile-dialog',
         'mobile-drawer': 'Components/mobile-drawer',

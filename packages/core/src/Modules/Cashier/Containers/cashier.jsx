@@ -109,6 +109,8 @@ class Cashier extends React.Component {
                                 classNameHeader='cashier__tab-header'
                                 current_path={this.props.location.pathname}
                                 is_floating
+                                setVerticalTabIndex={this.props.setTabIndex}
+                                vertical_tab_index={this.props.tab_index}
                                 is_full_width
                                 is_routed
                                 list={menu_options()}
@@ -137,12 +139,16 @@ Cashier.propTypes = {
     location: PropTypes.object,
     onMount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
+    setTabIndex: PropTypes.func,
+    tab_index: PropTypes.number,
     routes: PropTypes.arrayOf(PropTypes.object),
     toggleCashier: PropTypes.func,
 };
 
 export default connect(({ common, modules, ui }) => ({
     routeBackInApp: common.routeBackInApp,
+    tab_index: modules.cashier.cashier_route_tab_index,
+    setTabIndex: modules.cashier.setCashierTabIndex,
     is_p2p_visible: modules.cashier.is_p2p_visible,
     is_visible: ui.is_cashier_visible,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,

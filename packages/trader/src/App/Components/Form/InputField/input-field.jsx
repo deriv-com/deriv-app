@@ -11,6 +11,7 @@ import Input from './input.jsx';
 class InputField extends React.Component {
     render() {
         const {
+            ariaLabel,
             checked,
             className,
             classNameInlinePrefix,
@@ -41,6 +42,7 @@ class InputField extends React.Component {
             name,
             onChange,
             onClick,
+            onClickInputWrapper,
             placeholder,
             prefix,
             required,
@@ -116,11 +118,12 @@ class InputField extends React.Component {
             const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
             if (is_crypto || (!currency && is_float)) {
-                const new_value = parseFloat(+value) + parseFloat(1 * 10 ** (0 - decimal_places));
+                const new_value = parseFloat(+(value || 0)) + parseFloat(1 * 10 ** (0 - decimal_places));
                 increment_value = parseFloat(new_value).toFixed(decimal_places);
             } else {
-                increment_value = parseFloat(+value + 1).toFixed(decimal_places);
+                increment_value = parseFloat(+(value || 0) + 1).toFixed(decimal_places);
             }
+
             onChange({ target: { value: increment_value, name } });
         };
 
@@ -131,10 +134,10 @@ class InputField extends React.Component {
             const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
             if (is_crypto || (!currency && is_float)) {
-                const new_value = parseFloat(+value) - parseFloat(1 * 10 ** (0 - decimal_places));
+                const new_value = parseFloat(+(value || 0)) - parseFloat(1 * 10 ** (0 - decimal_places));
                 decrement_value = parseFloat(new_value).toFixed(decimal_places);
             } else {
-                decrement_value = parseFloat(+value - 1).toFixed(decimal_places);
+                decrement_value = parseFloat(+(value || 0) - 1).toFixed(decimal_places);
             }
             return decrement_value;
         };
@@ -161,6 +164,7 @@ class InputField extends React.Component {
 
         const input = (
             <Input
+                ariaLabel={ariaLabel}
                 changeValue={changeValue}
                 checked={checked}
                 current_focus={current_focus}
@@ -198,16 +202,18 @@ class InputField extends React.Component {
         const increment_buttons = (
             <IncrementButtons
                 id={id}
-                max_is_disabled={max_is_disabled}
+                max_is_disabled={max_is_disabled || !!is_disabled}
                 incrementValue={incrementValue}
-                min_is_disabled={min_is_disabled || (is_negative_disabled && calculateDecrementedValue() < 0)}
+                min_is_disabled={
+                    min_is_disabled || (is_negative_disabled && calculateDecrementedValue() < 0) || !!is_disabled
+                }
                 decrementValue={decrementValue}
             />
         );
 
         const input_tooltip = (
             <Tooltip
-                className={classNames('', { 'tooltip--with-label': label })}
+                className={classNames('', { 'dc-tooltip--with-label': label })}
                 alignment='left'
                 message={has_error ? error_messages[0] : null}
                 has_error={has_error}
@@ -219,7 +225,11 @@ class InputField extends React.Component {
                 )}
                 {!!helper && <span className='input-field__helper'>{helper}</span>}
                 {is_increment_input ? (
-                    <div className='input-wrapper'>
+                    <div
+                        className={classNames('input-wrapper', {
+                            'input-wrapper--disabled': !!is_disabled,
+                        })}
+                    >
                         {increment_buttons}
                         {input}
                     </div>
@@ -242,7 +252,7 @@ class InputField extends React.Component {
                         />
                     </div>
                 )}
-                <div className={classNames('input-field', className)}>
+                <div className={classNames('input-field', className)} onClick={onClickInputWrapper}>
                     {this.props.icon && <Icon onClick={onClick} />}
                     {input_tooltip}
                 </div>
@@ -255,6 +265,7 @@ class InputField extends React.Component {
 // supports more than two different types of 'value' as a prop.
 // Quick Solution - Pass two different props to input field.
 InputField.propTypes = {
+    ariaLabel: PropTypes.string,
     checked: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     className: PropTypes.string,
     classNameInlinePrefix: PropTypes.string,
@@ -282,6 +293,7 @@ InputField.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func,
     onClick: PropTypes.func,
+    onClickInputWrapper: PropTypes.func,
     placeholder: PropTypes.string,
     prefix: PropTypes.string,
     required: PropTypes.bool,

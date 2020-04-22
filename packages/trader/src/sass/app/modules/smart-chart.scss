@@ -28,6 +28,11 @@
         &--lost {
             color: $COLOR_WHITE;
         }
+        @include mobile {
+            bottom: -9.5px;
+            margin-left: -8px;
+            font-size: 0.8rem;
+        }
     }
     &__icon {
         border-radius: 50%;
@@ -45,6 +50,17 @@
         }
         &--lost:hover {
             box-shadow: 0 0 0 2px rgba(236, 63, 63, 0.24);
+        }
+    }
+    &__spot,
+    &__entry {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+
+        @include mobile {
+            width: 16px;
+            height: 16px;
         }
     }
     &__sell {
@@ -100,6 +116,9 @@
             .chart-spot-label__time-container {
                 margin-bottom: 2px;
             }
+            @include mobile {
+                bottom: 9.5px;
+            }
         }
         &--bottom {
             top: 8px;
@@ -107,6 +126,9 @@
 
             .chart-spot-label__time-container {
                 margin-top: 2px;
+            }
+            @include mobile {
+                top: 7.5px;
             }
         }
     }
@@ -132,8 +154,8 @@
         margin-right: 2px;
     }
     &__value-container {
-        background: var(--general-active);
-        font-size: 14px;
+        background: var(--text-less-prominent);
+        font-size: 1.4rem;
         padding: 4px 8px;
         border-radius: 11px;
         margin-top: 2px;
@@ -155,6 +177,13 @@
             p {
                 color: var(--text-colored-background);
             }
+        }
+        @include mobile {
+            font-size: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.2rem;
         }
     }
 }
@@ -214,6 +243,12 @@
             circle {
                 fill: var(--text-loss-danger);
             }
+        }
+        @include mobile {
+            bottom: -15px;
+            left: -7px;
+            width: 16px;
+            height: 16px;
         }
     }
     &--solid {

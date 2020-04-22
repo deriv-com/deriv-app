@@ -1,0 +1,104 @@
+.dc-page-overlay {
+    &-portal {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: $HEADER_HEIGHT;
+        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+        background-color: var(--general-main-2);
+
+        @include mobile {
+            top: $MOBILE_HEADER_HEIGHT;
+        }
+    }
+    &--enter,
+    &--exit {
+        transform: translateY(50px);
+        opacity: 0;
+        pointer-events: none;
+    }
+    &--enter-done {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+    &__header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background-color: var(--general-main-1);
+        padding: 0.8rem 2.4rem;
+        border-bottom: 1px solid var(--general-section-1);
+
+        &-title {
+            flex: 1;
+            text-align: center;
+            font-size: var(--text-size-m);
+            color: var(--text-prominent);
+            font-weight: bold;
+            line-height: 1.5;
+
+            @include mobile {
+                font-size: 1.6rem;
+            }
+        }
+        &-close {
+            cursor: pointer;
+            height: 16px;
+            position: absolute;
+            right: 0;
+
+            & .dc-icon {
+                --fill-color1: var(--text-prominent);
+            }
+            @include mobile {
+                right: 1.2rem;
+            }
+        }
+        &-wrapper {
+            width: 100%;
+            display: flex;
+            align-items: center;
+
+            @include mobile {
+                height: 100%;
+                padding: 0;
+            }
+        }
+        @include mobile {
+            height: 4rem;
+            z-index: 3;
+            padding: 0;
+            margin: 0;
+        }
+    }
+    &__content {
+        padding: 2.4rem 0 0;
+        display: flex;
+        background-color: var(--general-main-1);
+
+        &-side-note {
+            min-width: 256px;
+            margin-left: 2.4rem;
+        }
+        @include mobile {
+            flex: 1;
+            padding: 0;
+        }
+    }
+    &__header-wrapper,
+    &__content {
+        max-width: 1232px;
+        margin: auto;
+        position: relative;
+
+        @include mobile {
+            width: 100%;
+        }
+    }
+    @include mobile {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+}

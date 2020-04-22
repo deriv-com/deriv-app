@@ -46,14 +46,14 @@
 }
 
 /* postcss-bem-linter: ignore */
-.vertical-tab__tab .vertical-tab__header {
+.dc-vertical-tab__tab .dc-vertical-tab__header {
     /* postcss-bem-linter: ignore */
-    .vertical-tab__header__link {
+    .dc-vertical-tab__header__link {
         margin-left: 4px;
     }
     &--active {
         /* postcss-bem-linter: ignore */
-        .vertical-tab__header__link {
+        .dc-vertical-tab__header__link {
             margin-left: 0;
         }
     }

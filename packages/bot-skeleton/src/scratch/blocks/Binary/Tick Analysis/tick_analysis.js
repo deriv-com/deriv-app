@@ -1,5 +1,4 @@
 import { localize } from '@deriv/translations';
-import { setBlockTextColor } from '../../../utils';
 
 Blockly.Blocks.tick_analysis = {
     init() {
@@ -7,8 +6,13 @@ Blockly.Blocks.tick_analysis = {
     },
     definition() {
         return {
-            message0: localize('The content of this block is called on every tick %1 %2'),
+            message0: '%1 %2 %3',
             args0: [
+                {
+                    type: 'field_label',
+                    text: localize('The content of this block is called on every tick'),
+                    class: 'blocklyTextRootBlockHeader',
+                },
                 {
                     type: 'input_dummy',
                 },
@@ -32,9 +36,6 @@ Blockly.Blocks.tick_analysis = {
                 'The content of this block is called on every tick. Place this block outside of any root block.'
             ),
         };
-    },
-    onchange(event) {
-        setBlockTextColor(this, event);
     },
 };
 

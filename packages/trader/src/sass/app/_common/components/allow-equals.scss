@@ -16,4 +16,9 @@
     &__tooltip {
         margin-top: 1em;
     }
+    @include mobile {
+        &__subtitle {
+            color: var(--text-less-prominent);
+        }
+    }
 }

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const TickSteps = ({ hover_value, max_value, min_value, onClick, onMouseEnter, onMouseLeave, value }) => {
+    if (!max_value || !min_value) return null;
+
     const arr_ticks = [...Array(max_value - min_value + 1).keys()];
 
     const isActive = idx => idx + min_value === value;

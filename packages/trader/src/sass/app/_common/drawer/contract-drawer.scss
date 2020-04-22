@@ -4,12 +4,8 @@ $header-height: 4em;
     width: $POSITIONS_DRAWER_WIDTH;
     // removing 2px below for borders
     height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - 2px - (#{$POSITIONS_DRAWER_MARGIN} * 4));
-    margin-top: #{$POSITIONS_DRAWER_MARGIN * 2};
-    position: absolute;
     z-index: 2;
     padding: 8px;
-    top: 0;
-    left: 4px;
     box-sizing: border-box;
     will-change: transform, opacity;
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -66,9 +62,12 @@ $header-height: 4em;
     &__icon {
         margin-right: 16px;
     }
+    &__body {
+        height: calc(100% - 200px);
+    }
 }
 
-/** @define .contract-card */
+/** @define .contract-card; weak */
 .contract-card {
     box-sizing: border-box;
     display: flex;
@@ -82,7 +81,7 @@ $header-height: 4em;
 
     .progress-slider,
     .progress-slider--completed {
-        margin: 0;
+        margin: 0.8rem 0 0;
         border-bottom: 1px solid var(--general-section-1);
     }
     &:before {
@@ -103,6 +102,7 @@ $header-height: 4em;
     &__grid {
         display: grid;
         grid-template-rows: 1fr auto;
+        grid-gap: 4px;
 
         &-underlying-trade {
             grid-template-columns: 1.5fr 1fr;
@@ -115,6 +115,20 @@ $header-height: 4em;
             margin-left: -4px;
             margin-right: -4px;
             background: var(--general-hover);
+        }
+        &-label {
+            font-size: 1rem;
+            align-self: flex-start;
+            text-transform: none;
+            line-height: 1.5;
+            color: var(--text-general);
+            white-space: nowrap;
+        }
+        &-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            align-self: flex-start;
+            line-height: 1.5;
         }
     }
     .purchase-price,
@@ -131,6 +145,7 @@ $header-height: 4em;
             text-transform: none;
             margin-bottom: 4px;
             color: var(--text-general);
+            white-space: nowrap;
         }
         &__value {
             font-size: 1em;
@@ -177,20 +192,35 @@ $header-height: 4em;
         }
     }
     &__symbol {
-        margin-left: 0.5rem;
-        font-size: 1em;
-        line-height: 1.5;
+        margin-left: 0.8rem;
+        font-size: 1.2rem;
+        line-height: normal;
     }
     &__header {
         display: flex;
         justify-content: space-evenly;
+        flex-direction: column;
         margin: 0.5em 0.2em;
+
+        @include mobile {
+            margin: 0 8px;
+        }
     }
     &__body {
         border-radius: $BORDER_RADIUS;
         width: 100%;
-        padding: 8px 12px 0;
+        padding: 4px 12px 8px;
         color: var(--text-prominent);
+        display: flex;
+
+        @include mobile {
+            padding: 0 8px;
+
+            &-wrapper {
+                display: flex;
+                padding-top: 0.8rem;
+            }
+        }
     }
     &__footer {
         margin-bottom: 0.5em;
@@ -208,9 +238,9 @@ $header-height: 4em;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 100%;
-        margin: 8px 0 -4px;
         transition: transform 0.25s ease, opacity 0.25s linear;
+        padding-top: 8px;
+        padding-bottom: 4px;
         border-top: 1px solid var(--general-section-1);
 
         &--enter-done {
@@ -222,8 +252,88 @@ $header-height: 4em;
             opacity: 0;
             transform: translateY(-8px);
         }
-        .btn--sell {
+        &--has-cancel-btn {
+            justify-content: space-between;
+
+            .dc-btn--cancel {
+                margin-left: 0.8rem;
+            }
+        }
+        .remaining-time {
+            border-radius: 0.4rem;
+            color: var(--text-loss-danger);
+            font-size: 1.2rem;
+            margin-left: 0.8rem;
+            padding-top: 0.2rem;
+        }
+        .dc-btn--sell {
             height: 32px;
+
+            @include mobile {
+                width: 100%;
+            }
+        }
+        .positions-drawer-dialog-toggle {
+            bottom: 60px;
+        }
+    }
+    &-items-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 0.8rem 0.4rem;
+        flex: 1;
+    }
+    &-item {
+        &__header {
+            line-height: 1.4;
+        }
+        &__body {
+            @include typeface(--small-left-bold-black);
+            display: flex;
+            align-self: flex-start;
+            color: var(--text-prominent);
+            line-height: 1.5;
+
+            &--is-crypto {
+                margin-left: -6px;
+            }
+        }
+        &__body--loss {
+            color: var(--text-loss-danger) !important;
+
+            &:before {
+                content: '-';
+            }
+        }
+        &__body--profit {
+            color: var(--text-profit-success) !important;
+
+            &:before {
+                content: '+';
+            }
+        }
+    }
+    &__indicative--movement {
+        margin-left: 2px;
+        width: 16px;
+        height: 16px;
+
+        &-complete,
+        &-complete:after {
+            display: none;
+        }
+        &:after {
+            content: '';
+            width: 16px;
+        }
+    }
+    &__status {
+        min-width: 25%;
+        text-align: center;
+        margin-right: 0.4rem;
+
+        .result-icon {
+            margin-left: 0.4rem;
         }
     }
     .contract-audit {
@@ -246,5 +356,9 @@ $header-height: 4em;
             font-size: 1em;
             text-align: left;
         }
+    }
+    .contract-type__type-wrapper {
+        width: unset;
+        height: unset;
     }
 }

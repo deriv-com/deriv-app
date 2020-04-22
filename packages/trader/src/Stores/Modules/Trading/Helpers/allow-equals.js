@@ -3,7 +3,7 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import ContractType from './contract-type';
 
 export const hasCallPutEqual = contract_type_list => {
-    if (!contract_type_list) return false;
+    if (ObjectUtils.isEmptyObject(contract_type_list)) return false;
 
     return ObjectUtils.getPropertyValue(contract_type_list, localize('Ups & Downs')).some(
         contract => contract.value === 'rise_fall_equal'

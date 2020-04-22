@@ -1,10 +1,11 @@
 const { getLanguage } = require('@deriv/translations');
+const isMobile = require('@deriv/shared/utils/os').isMobile;
 const website_name = require('App/Constants/app-config').website_name;
 const getElementById = require('../common_functions').getElementById;
-const isMobile = require('../os_detect').isMobile;
 const isStorageSupported = require('../storage').isStorageSupported;
 const LocalStore = require('../storage').LocalStore;
 const urlForCurrentDomain = require('../url').urlForCurrentDomain;
+const getDerivComLink = require('../url').getDerivComLink;
 const domain_app_ids = require('../../config').domain_app_ids;
 const getAppId = require('../../config').getAppId;
 
@@ -18,7 +19,7 @@ const Login = (() => {
     };
 
     const redirectToSignUp = () => {
-        window.open('https://deriv.com/signup/');
+        window.open(getDerivComLink('/signup/'));
     };
 
     const loginUrl = () => {

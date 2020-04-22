@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon } from '@deriv/components';
+import { localize } from '@deriv/translations';
 
 const IncrementButtons = ({ decrementValue, id, incrementValue, max_is_disabled, min_is_disabled }) => (
     <React.Fragment>
@@ -10,11 +11,12 @@ const IncrementButtons = ({ decrementValue, id, incrementValue, max_is_disabled,
             is_disabled={max_is_disabled}
             onClick={incrementValue}
             tabIndex='-1'
+            aria-label={localize('Increment value')}
         >
             <Icon
                 icon='IcAdd'
                 className={'input-wrapper__icon input-wrapper__icon--plus'}
-                is_disabled={max_is_disabled}
+                color={max_is_disabled ? 'disabled' : undefined}
             />
         </Button>
         <Button
@@ -23,11 +25,12 @@ const IncrementButtons = ({ decrementValue, id, incrementValue, max_is_disabled,
             is_disabled={min_is_disabled}
             onClick={decrementValue}
             tabIndex='-1'
+            aria-label={localize('Decrement value')}
         >
             <Icon
                 icon='IcMinus'
                 className={'input-wrapper__icon input-wrapper__icon--minus'}
-                is_disabled={min_is_disabled}
+                color={min_is_disabled ? 'disabled' : undefined}
             />
         </Button>
     </React.Fragment>

@@ -1,11 +1,12 @@
 /** @define multistep; weak */
 .multistep {
+    width: inherit;
+    height: inherit;
+
     &__header {
         display: flex;
         align-items: center;
-        padding-top: 24px;
-        padding-left: 16px;
-        padding-right: 16px;
+        margin: 2.4rem 1.6rem;
     }
     &__btn {
         display: flex;

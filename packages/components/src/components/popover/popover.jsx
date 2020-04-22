@@ -7,16 +7,42 @@ import Icon from '../icon';
 class Popover extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.state = { is_open: false };
+        this.state = {
+            is_open: false,
+            is_bubble_open: false,
+        };
     }
 
     componentDidMount() {
         this.setState({ is_open: this.props.has_error });
     }
 
-    toggleOpen = () => this.setState({ is_open: Boolean(this.props.message) });
+    toggleOpen = () => {
+        this.setState({ is_open: Boolean(this.props.message) });
+    };
 
-    toggleClose = () => this.setState({ is_open: false });
+    toggleClose = () => {
+        if (this.props.is_bubble_hover_enabled) {
+            this.toggleIsOpenOnHoverPopoverBubble();
+        } else {
+            this.setState({ is_open: false });
+        }
+    };
+
+    onMouseEnter = () => {
+        this.setState({ is_bubble_open: true });
+    };
+
+    onMouseLeave = () => {
+        this.setState({ is_bubble_open: false, is_open: false });
+    };
+
+    toggleIsOpenOnHoverPopoverBubble = () => {
+        setTimeout(() => {
+            // add delay to check if mouse is hovered on popover bubble
+            this.setState({ is_open: this.props.is_bubble_hover_enabled ? this.state.is_bubble_open : false });
+        }, 50);
+    };
 
     render() {
         const {
@@ -60,6 +86,8 @@ class Popover extends React.PureComponent {
                             className={classNames(classNameBubble, 'dc-popover__bubble', {
                                 'dc-popover__bubble--error': has_error,
                             })}
+                            onMouseEnter={this.onMouseEnter}
+                            onMouseLeave={this.onMouseLeave}
                         >
                             {!disable_message_icon && icon === 'info' && (
                                 <i className='dc-popover__bubble__icon'>
@@ -119,9 +147,10 @@ Popover.propTypes = {
     has_error: PropTypes.bool,
     icon: PropTypes.oneOf(['info', 'question', 'dot', 'counter']),
     id: PropTypes.string,
+    is_bubble_hover_enabled: PropTypes.bool,
     is_open: PropTypes.bool,
     margin: PropTypes.number,
-    message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    message: PropTypes.oneOfType([PropTypes.node, PropTypes.object, PropTypes.string]),
     portal_container: PropTypes.string,
     zIndex: PropTypes.number,
 };

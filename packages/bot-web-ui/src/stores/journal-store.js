@@ -35,6 +35,9 @@ export default class JournalStore {
 
     @action.bound
     onNotify(data) {
+        if (data.message === undefined) {
+            return;
+        }
         this.pushMessage(data, message_types.NOTIFY);
 
         const { sound } = data;

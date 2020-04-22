@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
 import { purchase } from '../../images';
-import { setBlockTextColor } from '../../../utils';
 
 Blockly.Blocks.before_purchase = {
     init() {
@@ -8,7 +7,7 @@ Blockly.Blocks.before_purchase = {
     },
     definition() {
         return {
-            message0: localize('%1 2. Purchase conditions %2'),
+            message0: '%1 %2 %3',
             message1: '%1',
             args0: [
                 {
@@ -17,6 +16,11 @@ Blockly.Blocks.before_purchase = {
                     width: 25,
                     height: 25,
                     alt: 'P',
+                },
+                {
+                    type: 'field_label',
+                    text: localize('2. Purchase conditions'),
+                    class: 'blocklyTextRootBlockHeader',
                 },
                 {
                     type: 'input_dummy',
@@ -43,9 +47,6 @@ Blockly.Blocks.before_purchase = {
                 'This block is mandatory. Only one copy of this block is allowed. You can place the Purchase block (see below) here as well as conditional blocks to define your purchase conditions.'
             ),
         };
-    },
-    onchange(event) {
-        setBlockTextColor(this, event);
     },
 };
 

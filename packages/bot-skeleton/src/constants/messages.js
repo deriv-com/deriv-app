@@ -12,6 +12,8 @@ export const unrecoverable_errors = [
     'IncorrectPayoutDecimals',
     'IncorrectStakeDecimals',
     'NoMFProfessionalClient',
+    'AuthorizationRequired',
+    'InvalidToken',
 ];
 
 export const message_types = Object.freeze({

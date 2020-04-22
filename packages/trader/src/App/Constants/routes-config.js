@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+import { addRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
 import { routes } from 'Constants';
 import Trade from 'Modules/Trading';
@@ -29,6 +30,7 @@ const initRoutesConfig = () => [
         component: Reports,
         is_authenticated: true,
         title: localize('Reports'),
+        icon_component: 'IcReports',
         routes: [
             {
                 path: routes.positions,
@@ -55,7 +57,8 @@ const initRoutesConfig = () => [
         path: routes.account,
         component: Account,
         is_authenticated: true,
-        title: localize('Accounts management'),
+        title: localize('Account Settings'),
+        icon_component: 'IcUserOutline',
         routes: [
             {
                 title: localize('Profile'),
@@ -107,8 +110,9 @@ const route_default = { component: Page404, title: localize('Error 404') };
 const getRoutesConfig = () => {
     if (!routesConfig) {
         routesConfig = initRoutesConfig();
+        routesConfig.push(route_default);
+        addRoutesConfig(routesConfig);
     }
-    routesConfig.push(route_default);
     return routesConfig;
 };
 

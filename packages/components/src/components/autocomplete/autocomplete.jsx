@@ -200,6 +200,7 @@ class Autocomplete extends React.PureComponent {
             list_items,
             autoComplete,
             onHideDropdownList,
+            onScrollStop,
             ...otherProps
         } = this.props;
 
@@ -211,8 +212,10 @@ class Autocomplete extends React.PureComponent {
                         className='dc-autocomplete__field'
                         autoComplete={autoComplete}
                         onKeyDown={this.onKeyPressed}
-                        onFocus={e => this.showDropdownList(e)}
-                        onClick={e => this.showDropdownList(e)}
+                        onClick={() => {
+                            if (this.state.should_show_list) this.hideDropdownList();
+                            else this.showDropdownList();
+                        }}
                         onInput={this.filterList}
                         // Field's onBlur still needs to run to perform form functions such as validation
                         onBlur={this.onBlur}
@@ -248,6 +251,7 @@ class Autocomplete extends React.PureComponent {
                     list_items={this.state.filtered_items}
                     // Autocomplete must use the `text` property and not the `value`, however DropdownList provides access to both
                     onItemSelection={this.onItemSelection}
+                    onScrollStop={onScrollStop}
                     not_found_text={this.props.not_found_text}
                 />
             </div>

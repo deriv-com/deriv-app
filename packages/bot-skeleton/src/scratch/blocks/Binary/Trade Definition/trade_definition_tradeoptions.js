@@ -209,11 +209,13 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             const duration_input = this.getInput('DURATION');
             const duration_options = durations.map(duration => [duration.display, duration.unit]);
 
-            duration_field_dropdown.updateOptions(duration_options, {
-                default_value: should_use_default_unit ? undefined : duration_field_dropdown.getValue(),
-            });
+            if (duration_field_dropdown) {
+                duration_field_dropdown.updateOptions(duration_options, {
+                    default_value: should_use_default_unit ? undefined : duration_field_dropdown.getValue(),
+                });
+            }
 
-            if (should_update_value && duration_input.connection) {
+            if (should_update_value && duration_input && duration_input.connection) {
                 const target_block = duration_input.connection.targetBlock();
 
                 if (target_block && target_block.isShadow()) {
@@ -361,7 +363,11 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {
         return {
-            AMOUNT: null,
+            AMOUNT: input => {
+                const input_number = Number(input);
+                this.error_message = localize('Amount must be a positive number.');
+                return !isNaN(input_number) && input_number <= 0;
+            },
             DURATION: input => {
                 const input_number = Number(input);
 

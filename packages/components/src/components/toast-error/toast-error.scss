@@ -1,0 +1,44 @@
+.dc-toast-error {
+    position: absolute;
+    left: 1rem;
+    right: 0;
+    top: $MOBILE_HEADER_HEIGHT;
+    width: calc(100vw - 2rem);
+    transition: transform 0.25s ease, opacity 0.25s linear;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__message {
+        background-color: var(--status-danger);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 34px;
+        padding: 0.4rem 0.8rem;
+        @include typeface(--paragraph-center-normal-black);
+        color: var(--text-colored-background);
+        border-radius: 4px;
+    }
+    &--enter,
+    &--exit {
+        transform: scale(1, 0);
+        opacity: 0;
+    }
+    &--enter-done {
+        transform: scale(1, 1);
+        opacity: 1;
+    }
+    &--blinker {
+        animation: blinking 0.4s alternate infinite;
+    }
+}
+
+@keyframes blinking {
+    40% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

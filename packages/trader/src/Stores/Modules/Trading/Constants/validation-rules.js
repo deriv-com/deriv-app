@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { isSessionAvailable } from 'Stores/Modules/Trading/Helpers/start-date';
-import { isHourValid, isMinuteValid, isTimeValid, toMoment } from 'Utils/Date';
+import { isHourValid, isMinuteValid, isTimeValid, toMoment } from '@deriv/shared/utils/date';
 
 const getValidationRules = () => ({
     amount: {
@@ -142,6 +142,32 @@ const getValidationRules = () => ({
                         return isSessionAvailable(store.sessions, start_moment_clone.hour(h).minute(m), start_moment);
                     },
                     message: localize('Expiry time cannot be in the past.'),
+                },
+            ],
+        ],
+    },
+    ...getMultiplierValidationRules(),
+});
+
+export const getMultiplierValidationRules = () => ({
+    stop_loss: {
+        rules: [
+            [
+                'req',
+                {
+                    condition: store => store.has_stop_loss && !store.stop_loss,
+                    message: localize('Please enter a stop loss amount.'),
+                },
+            ],
+        ],
+    },
+    take_profit: {
+        rules: [
+            [
+                'req',
+                {
+                    condition: store => store.has_take_profit && !store.take_profit,
+                    message: localize('Please enter a take profit amount.'),
                 },
             ],
         ],

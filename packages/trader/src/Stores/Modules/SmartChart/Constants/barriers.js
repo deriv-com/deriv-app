@@ -13,6 +13,8 @@ export const CONTRACT_SHADES = {
     NOTOUCH: 'NONE_SINGLE', // no shade
     ASIANU: 'ABOVE',
     ASIAND: 'BELOW',
+    MULTUP: 'ABOVE',
+    MULTDOWN: 'BELOW',
 };
 
 // Default non-shade according to number of barriers
@@ -22,8 +24,9 @@ export const DEFAULT_SHADES = {
 };
 
 export const BARRIER_COLORS = {
-    GREEN: '#39b19d',
-    RED: 'red',
+    GREEN: '#4bb4b3',
+    RED: '#ec3f3f',
+    ORANGE: '#ff6444',
     GRAY: '#999999',
     DARK_GRAY: '#6E6E6E',
 };

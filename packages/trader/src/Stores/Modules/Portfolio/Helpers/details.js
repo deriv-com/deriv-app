@@ -1,5 +1,5 @@
 import ObjectUtils from '@deriv/shared/utils/object';
-import { epochToMoment, formatMiliseconds, getDiffDuration } from 'Utils/Date';
+import { epochToMoment, formatMiliseconds, getDiffDuration } from '@deriv/shared/utils/date';
 import { getDurationMaps } from 'Stores/Modules/Trading/Helpers/duration';
 import { isDigitContract } from '../../Contract/Helpers/digits';
 

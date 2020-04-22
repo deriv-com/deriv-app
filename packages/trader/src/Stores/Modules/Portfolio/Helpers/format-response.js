@@ -22,5 +22,6 @@ export const formatPortfolioPosition = (portfolio_pos, active_symbols = [], indi
         type: portfolio_pos.contract_type,
         is_unsupported: !!getUnsupportedContracts()[portfolio_pos.contract_type],
         is_waiting: isContractWaiting(portfolio_pos),
+        contract_update: portfolio_pos.limit_order,
     };
 };

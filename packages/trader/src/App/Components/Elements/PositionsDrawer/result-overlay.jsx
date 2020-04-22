@@ -7,6 +7,51 @@ import { Icon } from '@deriv/components';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { localize } from '@deriv/translations';
 
+export const ResultStatusIcon = ({ result }) => {
+    let contract_caption_text_and_icon;
+
+    switch (result) {
+        case 'won':
+            contract_caption_text_and_icon = (
+                <React.Fragment>
+                    {localize('won')}
+                    <Icon icon='IcCheckmarkCircle' className='result__icon' color='green' />
+                </React.Fragment>
+            );
+            break;
+        case 'lost':
+            contract_caption_text_and_icon = (
+                <React.Fragment>
+                    {localize('lost')}
+                    <Icon icon='IcCrossCircle' className='result__icon' color='red' />
+                </React.Fragment>
+            );
+            break;
+        case 'waiting':
+            contract_caption_text_and_icon = (
+                <React.Fragment>
+                    {localize('waiting for exit spot')}
+                    <Icon icon='IcMoreCircle' className='result__icon' color='yellow' />
+                </React.Fragment>
+            );
+            break;
+        default:
+            break;
+    }
+
+    return (
+        <span
+            className={classNames('result__caption', {
+                'result__caption--won': result === 'won',
+                'result__caption--lost': result === 'lost',
+                'result__caption--waiting': result === 'waiting',
+            })}
+        >
+            {contract_caption_text_and_icon}
+        </span>
+    );
+};
+
 class ResultOverlay extends React.PureComponent {
     handleClick = e => {
         if (this.props.is_unsupported) {
@@ -16,38 +61,9 @@ class ResultOverlay extends React.PureComponent {
     };
 
     render() {
-        const { contract_id, is_visible, is_waiting, onClickRemove } = this.props;
+        const { contract_id, is_multiplier, is_visible, is_waiting, onClickRemove } = this.props;
         const result = is_waiting ? 'waiting' : this.props.result;
 
-        let contract_caption_text_and_icon;
-        switch (result) {
-            case 'won':
-                contract_caption_text_and_icon = (
-                    <React.Fragment>
-                        {localize('won')}
-                        <Icon icon='IcCheckmarkCircle' className='result__icon' color='green' />
-                    </React.Fragment>
-                );
-                break;
-            case 'lost':
-                contract_caption_text_and_icon = (
-                    <React.Fragment>
-                        {localize('lost')}
-                        <Icon icon='IcCrossCircle' className='result__icon' color='red' />
-                    </React.Fragment>
-                );
-                break;
-            case 'waiting':
-                contract_caption_text_and_icon = (
-                    <React.Fragment>
-                        {localize('waiting for exit spot')}
-                        <Icon icon='IcMoreCircle' className='result__icon' color='yellow' />
-                    </React.Fragment>
-                );
-                break;
-            default:
-                break;
-        }
         return (
             <React.Fragment>
                 <CSSTransition
@@ -66,6 +82,7 @@ class ResultOverlay extends React.PureComponent {
                             'positions-drawer-card__result--won': result === 'won',
                             'positions-drawer-card__result--lost': result === 'lost',
                             'positions-drawer-card__result--waiting': result === 'waiting',
+                            'positions-drawer-card__result--lg': is_multiplier,
                         })}
                     >
                         <span
@@ -78,15 +95,7 @@ class ResultOverlay extends React.PureComponent {
                             to={getContractPath(contract_id)}
                             onClick={this.handleClick}
                         >
-                            <span
-                                className={classNames('result__caption', {
-                                    'result__caption--won': result === 'won',
-                                    'result__caption--lost': result === 'lost',
-                                    'result__caption--waiting': result === 'waiting',
-                                })}
-                            >
-                                {contract_caption_text_and_icon}
-                            </span>
+                            <ResultStatusIcon result={result} />
                         </NavLink>
                     </div>
                 </CSSTransition>

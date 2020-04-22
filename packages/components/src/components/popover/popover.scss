@@ -48,6 +48,9 @@
             flex-grow: 2;
             text-align: left;
 
+            .bold {
+                font-weight: bold;
+            }
             &--error {
                 color: var(--text-colored-background);
             }

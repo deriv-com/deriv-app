@@ -27,3 +27,10 @@ export const getBarrierShade = ({ barrier, contract_type, current_spot, sell_spo
 
     return 'BELOW';
 };
+
+export const removeBarrier = (barriers, key) => {
+    const index = barriers.findIndex(b => b.key === key);
+    if (index > -1) {
+        barriers.splice(index, 1);
+    }
+};

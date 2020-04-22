@@ -3,6 +3,7 @@ import { Scrollbars } from 'tt-react-custom-scrollbars';
 
 class ThemedScrollbars extends React.Component {
     render() {
+        if (this.props.is_native) return this.props.children;
         return (
             <Scrollbars
                 ref={this.props.list_ref}

@@ -114,20 +114,33 @@ const Url = (() => {
         return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
     };
 
-    return {
-        getUrlBase,
-        reset,
-        paramsHash,
-        urlFor,
-        urlForCurrentDomain,
-        urlForStatic,
+    const removeBranchName = (path = '') => {
+        return path.replace(/^\/br_.*?\//, '/');
+    };
 
-        param: name => paramsHash()[name],
-        websiteUrl: () => `${location.protocol}//${location.hostname}/`,
+    const getDerivComLink = (path = '') => {
+        const host = 'https://deriv.com';
+        const lang = getLanguage().toLowerCase();
+        const link_lang = lang === 'en' ? '' : `/${lang}`;
+
+        return `${host}${link_lang}/${normalizePath(path)}`;
+    };
+
+    return {
+        getDerivComLink,
         getHostMap: () => host_map,
+        getUrlBase,
+        param: name => paramsHash()[name],
+        paramsHash,
+        removeBranchName,
+        reset,
         resetStaticHost: () => {
             static_host = undefined;
         },
+        urlFor,
+        urlForCurrentDomain,
+        urlForStatic,
+        websiteUrl: () => `${location.protocol}//${location.hostname}/`,
     };
 })();
 

@@ -27,7 +27,7 @@ const HelpBase = ({
     return (
         <React.Fragment>
             <div className='flyout__help-header'>
-                <button className='btn flyout__button-back' onClick={onBackClick}>
+                <button className='dc-btn flyout__button-back' onClick={onBackClick}>
                     <Icon icon='IcArrowLeft' />
                 </button>
                 <span className='flyout__help-title'>{title}</span>
@@ -73,7 +73,7 @@ const HelpBase = ({
                 <div className='flyout__help-footer'>
                     <Button
                         className='flyout__button-previous'
-                        has_effect
+                        secondary
                         onClick={() => onSequenceClick(false)}
                         text={localize('Previous')}
                         type='button'
@@ -81,7 +81,7 @@ const HelpBase = ({
                     />
                     <Button
                         className='flyout__button-next'
-                        has_effect
+                        secondary
                         onClick={() => onSequenceClick(true)}
                         text={localize('Next')}
                         type='button'

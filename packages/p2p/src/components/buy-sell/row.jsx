@@ -27,8 +27,8 @@ BuySellRowLoader.propTypes = {
 };
 
 export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) => {
-    const { is_agent } = React.useContext(Dp2pContext);
-
+    const { advertiser_id } = React.useContext(Dp2pContext);
+    const is_own_ad = data.advertiser_id === advertiser_id;
     return (
         <div style={style}>
             <Table.Row>
@@ -40,13 +40,20 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
                     {data.display_price_rate} {data.transaction_currency}
                 </Table.Cell>
                 <Table.Cell>{data.display_payment_method}</Table.Cell>
-                {!is_agent ? (
+                {is_own_ad ? (
+                    <Table.Cell />
+                ) : (
                     <Table.Cell>
-                        <Button primary small onClick={() => setSelectedAd(data)}>
+                        <Button
+                            className='deriv-p2p__button--right-aligned'
+                            primary
+                            small
+                            onClick={() => setSelectedAd(data)}
+                        >
                             {is_buy ? localize('Buy') : localize('Sell')} {data.offer_currency}
                         </Button>
                     </Table.Cell>
-                ) : null}
+                )}
             </Table.Row>
         </div>
     );

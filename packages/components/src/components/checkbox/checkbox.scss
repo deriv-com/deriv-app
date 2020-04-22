@@ -3,6 +3,9 @@
     justify-content: flex-start;
     cursor: pointer;
     align-items: center;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
 
     &__input {
         display: none;
@@ -26,6 +29,10 @@
     &--active {
         border: none;
         background-color: var(--brand-red-coral);
+    }
+    &--disabled {
+        opacity: 0.5;
+        cursor: not-allowed !important;
     }
     &__label {
         color: var(--text-general);

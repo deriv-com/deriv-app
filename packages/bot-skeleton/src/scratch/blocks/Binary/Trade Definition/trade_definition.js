@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { defineContract } from '../../images';
 import DBotStore from '../../../dbot-store';
-import { setBlockTextColor, runIrreversibleEvents } from '../../../utils';
+import { runIrreversibleEvents } from '../../../utils';
 import { config } from '../../../../constants/config';
 
 Blockly.Blocks.trade_definition = {
@@ -10,11 +10,11 @@ Blockly.Blocks.trade_definition = {
     },
     definition() {
         return {
-            message0: localize('%1 1. Trade parameters %2'),
+            message0: '%1 %2 %3',
             message1: '%1',
-            message2: localize('%1Run once at start: %2'),
+            message2: '%1 %2 %3',
             message3: '%1',
-            message4: localize('%1Trade options: %2'),
+            message4: '%1 %2 %3',
             message5: '%1',
             args0: [
                 {
@@ -23,6 +23,11 @@ Blockly.Blocks.trade_definition = {
                     width: 25,
                     height: 25,
                     alt: 'T',
+                },
+                {
+                    type: 'field_label',
+                    text: localize('1. Trade parameters'),
+                    class: 'blocklyTextRootBlockHeader',
                 },
                 {
                     type: 'input_dummy',
@@ -42,6 +47,11 @@ Blockly.Blocks.trade_definition = {
                     height: 25,
                 },
                 {
+                    type: 'field_label',
+                    text: localize('Run once at start:'),
+                    class: 'blocklyTextRootBlockHeader',
+                },
+                {
                     type: 'input_dummy',
                 },
             ],
@@ -58,6 +68,11 @@ Blockly.Blocks.trade_definition = {
                     src: '', // this is here to add extra padding
                     width: 4,
                     height: 25,
+                },
+                {
+                    type: 'field_label',
+                    text: localize('Trade options:'),
+                    class: 'blocklyTextRootBlockHeader',
                 },
                 {
                     type: 'input_dummy',
@@ -83,10 +98,6 @@ Blockly.Blocks.trade_definition = {
         };
     },
     onchange(event) {
-        setBlockTextColor(this, event);
-
-        // We don't add "this.workspace.isDragging()" condition here as we want to immediately remove
-        // other instances of this block when dragged out of the workspace.
         if (!this.workspace || this.workspace.isDragging() || this.isInFlyout) {
             return;
         }

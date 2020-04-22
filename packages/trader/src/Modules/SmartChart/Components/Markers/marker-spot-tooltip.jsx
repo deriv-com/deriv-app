@@ -5,7 +5,7 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Icon } from '@deriv/components';
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 
 class MarkerSpotTooltip extends React.Component {
     state = {};

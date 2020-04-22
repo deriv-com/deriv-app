@@ -1,7 +1,7 @@
 import { localize } from 'Components/i18next';
 
 export default class OrderInfo {
-    order_id = '';
+    id = '';
     status;
     type = '';
     advertiser_name = '';
@@ -25,9 +25,17 @@ export default class OrderInfo {
         }
     }
 
-    static status_map = {
-        pending: localize('Unpaid'),
-        'buyer-confirmed': localize('Paid'),
+    static status_map_buyer = {
+        pending: localize('Please pay'),
+        'buyer-confirmed': localize('Wait for release'),
+    };
+
+    static status_map_seller = {
+        pending: localize('Wait for payment'),
+        'buyer-confirmed': localize('Confirm payment'),
+    };
+
+    static status_map_common = {
         cancelled: localize('Cancelled'),
         'timed-out': localize('Cancelled'),
         refunded: localize('Refunded'),
@@ -35,7 +43,13 @@ export default class OrderInfo {
     };
 
     get display_status() {
-        return OrderInfo.status_map[this.status];
+        if (this.is_buyer && this.status in OrderInfo.status_map_buyer) {
+            return OrderInfo.status_map_buyer[this.status];
+        }
+        if (!this.is_buyer && this.status in OrderInfo.status_map_seller) {
+            return OrderInfo.status_map_seller[this.status];
+        }
+        return OrderInfo.status_map_common[this.status];
     }
 
     get is_buyer() {

@@ -2,6 +2,8 @@ import ObjectUtils from '../object';
 
 let currencies_config = {};
 
+export const AMOUNT_MAX_LENGTH = 10;
+
 export const getRoundedNumber = (number, currency) => {
     return Number(Number(number).toFixed(getDecimalPlaces(currency)));
 };

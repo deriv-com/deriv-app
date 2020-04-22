@@ -15,7 +15,7 @@
         position: absolute;
         top: 8px;
         left: 8px;
-        z-index: 99;
+        z-index: 1;
         cursor: pointer;
     }
     &__helper {
@@ -69,6 +69,15 @@
     }
     &__icon {
         @extend %inline-icon;
+    }
+    &--disabled {
+        pointer-events: none;
+        color: var(--text-disabled);
+    }
+    &--inline {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 }
 
@@ -165,5 +174,8 @@
     &--error {
         color: $COLOR_RED;
         border: 1px solid $COLOR_RED !important;
+    }
+    &:disabled {
+        color: var(--text-disabled);
     }
 }

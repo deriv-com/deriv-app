@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
-import React, { lazy } from 'react';
+import React from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
-import SideMenu from 'App/Components/Elements/SideMenu';
-import { FadeWrapper } from 'App/Components/Animations';
+import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper, FadeWrapper } from '@deriv/components';
+import { isMobile } from '@deriv/shared/utils/screen';
+import { getSelectedRoute } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
 import AppRoutes from 'Constants/routes';
 import { connect } from 'Stores/connect';
@@ -10,16 +11,6 @@ import { WS } from 'Services/ws-methods';
 import { flatten } from '../Helpers/flatten';
 import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import 'Sass/app/modules/account.scss';
-
-const DemoMessage = lazy(() =>
-    import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage')
-);
-
-const fallback_content = {
-    path: AppRoutes.personal_details,
-    component: DemoMessage,
-    title: localize('Personal details'),
-};
 
 class Account extends React.Component {
     // TODO: find better fix for no-op issue
@@ -30,74 +21,62 @@ class Account extends React.Component {
         needs_verification: false,
     };
 
-    setWrapperRef = node => {
-        this.wrapper_ref = node;
-    };
-
-    handleClickOutside = event => {
-        if (
-            this.wrapper_ref &&
-            !this.wrapper_ref.contains(event.target) &&
-            !event.target.classList.contains('dc-dropdown-list__item')
-        ) {
-            this.props.history.push(AppRoutes.trade);
-        }
-    };
-
     componentDidMount() {
         this.is_mounted = true;
         WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
-                const { authentication } = this.props.account_status;
+                const { status } = this.props.account_status;
                 const is_high_risk_client = this.props.is_high_risk;
-                const needs_verification =
-                    authentication.needs_verification.includes('identity') ||
-                    authentication.needs_verification.includes('document');
-                if (this.is_mounted) this.setState({ is_high_risk_client, is_loading: false, needs_verification });
+                const allow_document_upload = status.includes('allow_document_upload');
+                if (this.is_mounted)
+                    this.setState({
+                        is_high_risk_client,
+                        is_loading: false,
+                        allow_document_upload,
+                    });
             }
         });
-        this.props.enableRouteMode();
-        document.addEventListener('mousedown', this.handleClickOutside);
         this.props.toggleAccount(true);
     }
 
     componentWillUnmount() {
         this.is_mounted = false;
         this.props.toggleAccount(false);
-        this.props.disableRouteMode();
-        document.removeEventListener('mousedown', this.handleClickOutside);
     }
 
+    onClickClose = () => this.props.routeBackInApp(this.props.history);
+
     render() {
-        const { is_high_risk_client, is_loading, needs_verification } = this.state;
+        const { is_high_risk_client, is_loading, allow_document_upload } = this.state;
 
         const subroutes = flatten(this.props.routes.map(i => i.subroutes));
+        let list_groups = [...this.props.routes];
+        list_groups = list_groups.map(route_group => ({
+            icon: route_group.icon,
+            label: route_group.title,
+            subitems: route_group.subroutes.map(sub => subroutes.indexOf(sub)),
+        }));
         let selected_content = subroutes.filter(route => route.path === this.props.location.pathname)[0];
         if (!selected_content) {
             // fallback
             selected_content = subroutes[0];
             this.props.history.push(AppRoutes.personal_details);
         }
-        if (
-            !is_loading &&
-            !needs_verification &&
-            !is_high_risk_client &&
-            /proof-of-identity|proof-of-address|financial-assessment/.test(selected_content.path)
-        )
+
+        if (!is_loading && !is_high_risk_client && /financial-assessment/.test(selected_content.path))
             return <Redirect to='/' />;
 
         // TODO: modify account route to support disabled
         this.props.routes.forEach(menu_item => {
-            if (menu_item.title === 'Verification') {
-                menu_item.is_hidden = !needs_verification;
-            }
-            if (menu_item.title === 'Profile') {
-                menu_item.subroutes.forEach(route => {
-                    if (route.path === AppRoutes.financial_assessment) {
-                        route.is_disabled = !is_high_risk_client;
-                    }
-                });
-            }
+            menu_item.subroutes.forEach(route => {
+                if (route.path === AppRoutes.financial_assessment) {
+                    route.is_disabled = !is_high_risk_client;
+                }
+
+                if (!allow_document_upload && !is_loading && /proof-of-identity|proof-of-address/.test(route.path)) {
+                    route.is_disabled = true;
+                }
+            });
         });
 
         const action_bar_items = [
@@ -117,9 +96,9 @@ class Account extends React.Component {
             });
         }
 
-        const { title: active_title } = this.props.routes.find(route =>
-            route.subroutes.find(sub_route => sub_route.title === selected_content.title)
-        );
+        const selected_route = isMobile()
+            ? getSelectedRoute({ routes: subroutes, pathname: this.props.location.pathname })
+            : null;
 
         return (
             <FadeWrapper
@@ -127,22 +106,30 @@ class Account extends React.Component {
                 className='account-page-wrapper'
                 keyname='account-page-wrapper'
             >
-                <div className='account' ref={this.setWrapperRef}>
-                    <SideMenu
-                        active_title={active_title}
-                        action_bar={action_bar_items}
-                        action_bar_classname='account__inset_header'
-                        alignment='center'
-                        fallback_content={fallback_content}
-                        header_title={localize('Settings')}
-                        is_routed={true}
-                        is_full_width={true}
-                        is_loading={is_loading}
-                        list={this.props.routes}
-                        selected_content={selected_content}
-                        sub_list={subroutes}
-                        tab_container_classname='account__tab_container'
-                    />
+                <div className='account'>
+                    <PageOverlay
+                        has_side_note
+                        header={isMobile() ? selected_route.title : localize('Settings')}
+                        onClickClose={this.onClickClose}
+                    >
+                        <DesktopWrapper>
+                            <VerticalTab
+                                alignment='center'
+                                is_floating
+                                classNameHeader='account__inset_header'
+                                current_path={this.props.location.pathname}
+                                is_routed
+                                is_full_width
+                                list={subroutes}
+                                list_groups={list_groups}
+                            />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            {selected_route && (
+                                <selected_route.component component_icon={selected_route.icon_component} />
+                            )}
+                        </MobileWrapper>
+                    </PageOverlay>
                 </div>
             </FadeWrapper>
         );
@@ -150,23 +137,23 @@ class Account extends React.Component {
 }
 
 Account.propTypes = {
-    disableRouteMode: PropTypes.func,
-    enableRouteMode: PropTypes.func,
+    account_status: PropTypes.object,
+    currency: PropTypes.string,
     history: PropTypes.object,
+    is_high_risk: PropTypes.bool,
+    is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
     routes: PropTypes.arrayOf(PropTypes.object),
     toggleAccount: PropTypes.func,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, common, ui }) => ({
+    routeBackInApp: common.routeBackInApp,
     account_status: client.account_status,
     currency: client.currency,
     is_high_risk: client.is_high_risk,
     is_virtual: client.is_virtual,
-    getRiskAssessment: client.getRiskAssessment,
-    disableRouteMode: ui.disableRouteModal,
-    enableRouteMode: ui.setRouteModal,
     is_visible: ui.is_account_settings_visible,
     toggleAccount: ui.toggleAccountSettings,
 }))(withRouter(Account));

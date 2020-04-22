@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
 import { finishSign } from '../../images';
-import { setBlockTextColor } from '../../../utils';
 
 Blockly.Blocks.after_purchase = {
     init() {
@@ -8,7 +7,7 @@ Blockly.Blocks.after_purchase = {
     },
     definition() {
         return {
-            message0: localize('%1 4. Restart trading conditions %2'),
+            message0: '%1 %2 %3',
             message1: '%1',
             args0: [
                 {
@@ -17,6 +16,11 @@ Blockly.Blocks.after_purchase = {
                     width: 25,
                     height: 25,
                     alt: 'F',
+                },
+                {
+                    type: 'field_label',
+                    text: localize('4. Restart trading conditions'),
+                    class: 'blocklyTextRootBlockHeader',
                 },
                 {
                     type: 'input_dummy',
@@ -41,9 +45,6 @@ Blockly.Blocks.after_purchase = {
             display_name: localize('Restart trading conditions'),
             description: localize('Here is where you can decide if your bot should continue trading.'),
         };
-    },
-    onchange(event) {
-        setBlockTextColor(this, event);
     },
 };
 

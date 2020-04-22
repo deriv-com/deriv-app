@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
 import { sellContract } from '../../images';
-import { setBlockTextColor } from '../../../utils';
 
 Blockly.Blocks.during_purchase = {
     init() {
@@ -8,7 +7,7 @@ Blockly.Blocks.during_purchase = {
     },
     definition() {
         return {
-            message0: localize('%1 3. Sell conditions %2'),
+            message0: '%1 %2 %3',
             message1: '%1',
             args0: [
                 {
@@ -17,6 +16,11 @@ Blockly.Blocks.during_purchase = {
                     width: 25,
                     height: 25,
                     alt: 'S',
+                },
+                {
+                    type: 'field_label',
+                    text: localize('3. Sell conditions'),
+                    class: 'blocklyTextRootBlockHeader',
                 },
                 {
                     type: 'input_dummy',
@@ -43,9 +47,6 @@ Blockly.Blocks.during_purchase = {
                 'Here is where you can decide to sell your contract before it expires. Only one copy of this block is allowed.'
             ),
         };
-    },
-    onchange(event) {
-        setBlockTextColor(this, event);
     },
 };
 

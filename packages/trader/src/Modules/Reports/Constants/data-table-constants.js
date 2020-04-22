@@ -30,7 +30,7 @@ export const getStatementTableColumnsTemplate = currency => [
     {
         key: 'icon',
         title: '',
-        col_index: 'action_type',
+        col_index: 'icon',
         renderCellContent: ({ cell_value, row_obj }) => (
             <MarketSymbolIconRow action={cell_value} key={row_obj.transaction_id} payload={row_obj} />
         ),
@@ -98,6 +98,14 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
     {
         title: localize('Sell time'),
         col_index: 'sell_time',
+        renderHeader: ({ title }) => {
+            return (
+                <>
+                    <span>{title}</span>
+                    <Icon icon='IcContractFlag' />
+                </>
+            );
+        },
     },
     {
         title: localize('Sell price'),
@@ -147,8 +155,8 @@ export const getOpenPositionsColumnsTemplate = currency => [
         title: localize('Potential profit/loss'),
         col_index: 'profit',
         renderCellContent: ({ row_obj }) => {
-            if (!row_obj.contract_info || !row_obj.contract_info.profit) return;
-            const profit = row_obj.contract_info.profit;
+            if (!row_obj.profit_loss && (!row_obj.contract_info || !row_obj.contract_info.profit)) return;
+            const profit = row_obj.profit_loss || row_obj.contract_info.profit;
             // eslint-disable-next-line consistent-return
             return (
                 <div
@@ -179,7 +187,119 @@ export const getOpenPositionsColumnsTemplate = currency => [
     {
         title: localize('Remaining time'),
         col_index: 'id',
-        renderCellContent: ({ cell_value }) => <ProgressSliderStream id={cell_value} />,
+        renderCellContent: ({ row_obj }) => <ProgressSliderStream contract_info={row_obj.contract_info} />,
+    },
+];
+
+export const getMultiplierOpenPositionsColumnsTemplate = currency => [
+    {
+        title: '',
+        col_index: 'type',
+        renderCellContent: ({ cell_value, row_obj, is_footer }) => {
+            if (is_footer) return localize('Total');
+
+            return <MarketSymbolIconRow action={cell_value} key={row_obj.id} payload={row_obj.contract_info} />;
+        },
+    },
+    {
+        title: localize('Stake'),
+        col_index: 'buy_price',
+        renderCellContent: ({ cell_value, row_obj, is_footer }) => {
+            if (is_footer) {
+                return <Money amount={cell_value} currency={currency} />;
+            }
+            if (row_obj.contract_info) {
+                const { ask_price: cancellation_price = 0 } = row_obj.contract_info.cancellation || {};
+                return <Money amount={row_obj.contract_info.buy_price - cancellation_price} currency={currency} />;
+            }
+            return '';
+        },
+    },
+    {
+        title: localize('Multiplier'),
+        col_index: 'multiplier',
+        renderCellContent: ({ row_obj }) =>
+            row_obj.contract_info && row_obj.contract_info.multiplier ? `x${row_obj.contract_info.multiplier}` : '',
+    },
+    {
+        title: localize('Deal cancellation'),
+        col_index: 'cancellation',
+        renderCellContent: ({ row_obj }) => {
+            if (row_obj.contract_info && row_obj.contract_info.cancellation) {
+                return <Money amount={row_obj.contract_info.cancellation.ask_price} currency={currency} />;
+            }
+            return '-';
+        },
+    },
+    {
+        title: localize('Take profit'),
+        col_index: 'take_profit',
+        renderCellContent: ({ row_obj, is_footer }) => {
+            if (is_footer) {
+                return '';
+            }
+
+            if (
+                row_obj.contract_info &&
+                row_obj.contract_info.limit_order &&
+                row_obj.contract_info.limit_order.take_profit
+            ) {
+                return (
+                    <Money
+                        has_sign
+                        amount={row_obj.contract_info.limit_order.take_profit.order_amount}
+                        currency={currency}
+                    />
+                );
+            }
+            return '-';
+        },
+    },
+    {
+        title: localize('Stop loss'),
+        col_index: 'stop_loss',
+        renderCellContent: ({ row_obj, is_footer }) => {
+            if (is_footer) {
+                return '';
+            }
+
+            if (
+                row_obj.contract_info &&
+                row_obj.contract_info.limit_order &&
+                row_obj.contract_info.limit_order.stop_loss
+            ) {
+                return (
+                    <Money
+                        has_sign
+                        amount={row_obj.contract_info.limit_order.stop_loss.order_amount}
+                        currency={currency}
+                    />
+                );
+            }
+            return '-';
+        },
+    },
+    {
+        title: localize('Potential profit/loss'),
+        col_index: 'profit',
+        renderCellContent: ({ row_obj }) => {
+            if (!row_obj.contract_info || !row_obj.contract_info.profit) return;
+            const profit = row_obj.contract_info.profit;
+            // eslint-disable-next-line consistent-return
+            return (
+                <div
+                    className={classNames('open-positions__profit-loss', {
+                        'open-positions__profit-loss--negative': profit < 0,
+                        'open-positions__profit-loss--positive': profit > 0,
+                    })}
+                >
+                    <Money amount={Math.abs(profit)} currency={currency} />
+                    <div className='open-positions__profit-loss--movement'>
+                        {profit > 0 ? <Icon icon='IcProfit' /> : <Icon icon='IcLoss' />}
+                    </div>
+                </div>
+            );
+        },
     },
 ];
 /* eslint-enable react/display-name, react/prop-types */

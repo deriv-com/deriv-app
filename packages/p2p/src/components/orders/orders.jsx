@@ -1,12 +1,14 @@
 import React from 'react';
 import { localize } from 'Components/i18next';
+import Dp2pContext from 'Components/context/dp2p-context';
 import PageReturn from 'Components/page-return/page-return.jsx';
-import OrderDetails from './order-details/order-details.jsx';
 import OrderInfo from './order-info';
+import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
-const Orders = ({ orders, params }) => {
+const Orders = ({ params }) => {
+    const { orders } = React.useContext(Dp2pContext);
     const [order_details, setDetails] = React.useState(null);
     const showDetails = setDetails;
     const hideDetails = () => setDetails(null);
@@ -25,7 +27,7 @@ const Orders = ({ orders, params }) => {
 
     React.useEffect(() => {
         if (order_details) {
-            const updated_order = orders.find(order => order.order_id === order_details.order_id);
+            const updated_order = orders.find(order => order.id === order_details.id);
             if (updated_order.status !== order_details.status) {
                 const updated_order_info = new OrderInfo(updated_order);
                 setDetails(updated_order_info);
@@ -52,7 +54,7 @@ const Orders = ({ orders, params }) => {
                     <OrderDetails order_details={order_details} />
                 </React.Fragment>
             )}
-            {!order_details && <OrderTable orders={orders} showDetails={showDetails} />}
+            {!order_details && <OrderTable showDetails={showDetails} />}
         </div>
     );
 };

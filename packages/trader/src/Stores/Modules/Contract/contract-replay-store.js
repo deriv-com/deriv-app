@@ -1,9 +1,10 @@
 import { action, observable } from 'mobx';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { WS } from 'Services/ws-methods';
 import { localize } from '@deriv/translations';
+import { WS } from 'Services/ws-methods';
+import AppRoutes from 'Constants/routes';
 import ContractStore from './contract-store';
-import { contractSold } from '../Portfolio/Helpers/portfolio-notifications';
+import { contractCancelled, contractSold } from '../Portfolio/Helpers/portfolio-notifications';
 import BaseStore from '../../base-store';
 
 export default class ContractReplayStore extends BaseStore {
@@ -20,13 +21,14 @@ export default class ContractReplayStore extends BaseStore {
     // ---- Replay Contract Config ----
     @observable contract_id;
     @observable indicative_status;
-    @observable contract_info = observable.object({});
+    @observable.ref contract_info = observable.object({});
     @observable is_static_chart = false;
 
     // ---- Normal properties ---
     is_ongoing_contract = false;
     prev_indicative = 0;
 
+    @observable.ref contract_update = observable.object({});
     // TODO: you view a contract and then share that link with another person,
     // when the person opens, try to switch account they get the error
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
@@ -51,15 +53,20 @@ export default class ContractReplayStore extends BaseStore {
         }
     };
 
+    subscribeProposalOpenContract = () => {
+        WS.wait('authorize').then(() => {
+            this.handleSubscribeProposalOpenContract(this.contract_id, this.populateConfig);
+        });
+    };
+
     @action.bound
     onMount(contract_id) {
         if (contract_id) {
             this.contract_id = contract_id;
             this.contract_store = new ContractStore(this.root_store, { contract_id });
-            WS.wait('authorize').then(() => {
-                this.handleSubscribeProposalOpenContract(this.contract_id, this.populateConfig);
-            });
+            this.subscribeProposalOpenContract();
             WS.storage.activeSymbols('brief');
+            WS.setOnReconnect(this.subscribeProposalOpenContract);
         }
     }
 
@@ -73,6 +80,11 @@ export default class ContractReplayStore extends BaseStore {
         this.contract_info = {};
         this.indicative_status = null;
         this.prev_indicative = 0;
+        // @shayan: for forcing chart to call scale 1:1 each time,
+        // we should let SmartChart notify when its ready
+        this.is_chart_ready = false;
+        this.root_store.ui.toggleHistoryTab(false);
+        WS.removeOnReconnect();
     }
 
     @action.bound
@@ -94,6 +106,7 @@ export default class ContractReplayStore extends BaseStore {
         if (+response.proposal_open_contract.contract_id !== this.contract_id) return;
 
         this.contract_info = response.proposal_open_contract;
+        this.contract_update = response.proposal_open_contract.limit_order;
 
         // Add indicative status for contract
         const prev_indicative = this.prev_indicative;
@@ -108,7 +121,7 @@ export default class ContractReplayStore extends BaseStore {
         this.prev_indicative = new_indicative;
 
         // update the contract_store here passing contract_info
-        this.contract_store.populateConfig(this.contract_info);
+        this.contract_store.populateConfig(this.contract_info, true);
 
         const end_time = this.contract_store.end_time;
 
@@ -148,8 +161,27 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     @action.bound
-    onClickSell(contract_id) {
+    onClickCancel(contract_id, remove_position_after_sell = false) {
+        this.root_store.modules.portfolio.remove_position_after_sell = remove_position_after_sell;
+        if (contract_id) {
+            WS.cancelContract(contract_id).then(response => {
+                if (response.error) {
+                    this.root_store.common.setServicesError({
+                        type: response.msg_type,
+                        ...response.error,
+                    });
+                    this.root_store.ui.toggleServicesErrorModal(true);
+                } else {
+                    this.root_store.ui.addNotificationMessage(contractCancelled());
+                }
+            });
+        }
+    }
+
+    @action.bound
+    onClickSell(contract_id, remove_position_after_sell = false) {
         const { bid_price } = this.contract_info;
+        this.root_store.modules.portfolio.remove_position_after_sell = remove_position_after_sell;
         if (contract_id && bid_price) {
             this.is_sell_requested = true;
             WS.sell(contract_id, bid_price).then(this.handleSell);
@@ -176,6 +208,9 @@ export default class ContractReplayStore extends BaseStore {
             this.root_store.ui.addNotificationMessage(
                 contractSold(this.root_store.client.currency, response.sell.sold_for)
             );
+            if (this.remove_position_after_sell) {
+                this.root_store.modules.portfolio.removePositionById(response.sell.contract_id);
+            }
         }
     }
 
@@ -190,4 +225,25 @@ export default class ContractReplayStore extends BaseStore {
         this.error_message = '';
         this.has_error = false;
     }
+
+    setAccountSwitcherListener = (contract_id, history) => {
+        this.onSwitchAccount(() => this.accountSwitcherListener(contract_id, history));
+    };
+
+    accountSwitcherListener = (contract_id, history) => {
+        // if contract had an error on the previous account
+        // try fetching it again for the new account
+        // in case it belongs to this account
+        if (this.has_error) {
+            this.removeErrorMessage();
+            this.onMount(contract_id);
+        } else {
+            history.push(AppRoutes.reports);
+        }
+        return Promise.resolve();
+    };
+
+    removeAccountSwitcherListener = () => {
+        this.disposeSwitchAccount();
+    };
 }

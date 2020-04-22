@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 
 export const getDurationMaps = () => ({
     t: { order: 1, display_singular: localize('Tick'), display_plural: localize('Ticks') },
@@ -135,3 +135,11 @@ export const hasIntradayDurationUnit = duration_units_list =>
  */
 export const resetEndTimeOnVolatilityIndices = (symbol, expiry_type) =>
     /^R_/.test(symbol) && expiry_type === 'endtime' ? toMoment(null).format('DD MMM YYYY') : null;
+
+export const getDurationMinMaxValues = (duration_min_max, contract_expiry_type, duration_unit) => {
+    if (!duration_min_max[contract_expiry_type]) return [];
+    const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, duration_unit);
+    const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, duration_unit);
+
+    return [min_value, max_value];
+};

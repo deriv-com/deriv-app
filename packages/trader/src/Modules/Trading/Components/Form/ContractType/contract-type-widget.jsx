@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { isMobile } from '@deriv/shared/utils/screen';
 import ContractType from './contract-type.jsx';
 import { findContractCategory } from '../../../Helpers/contract-type';
 
@@ -58,6 +59,7 @@ class ContractTypeWidget extends React.PureComponent {
     };
 
     handleClickOutside = event => {
+        if (isMobile()) return;
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target)) {
             this.setState({
                 is_dialog_open: false,
@@ -103,9 +105,8 @@ class ContractTypeWidget extends React.PureComponent {
     }
 
     render() {
-        const { is_equal, is_mobile, name, value } = this.props;
+        const { is_equal, name, value } = this.props;
         const { is_dialog_open, is_info_dialog_open, item, list } = this.state;
-
         return (
             <div
                 id='dt_contract_dropdown'
@@ -115,7 +116,6 @@ class ContractTypeWidget extends React.PureComponent {
             >
                 <ContractType.Dialog
                     is_info_dialog_open={is_info_dialog_open}
-                    is_mobile={is_mobile}
                     is_open={is_dialog_open}
                     item={item || { value }}
                     list={this.props.list}
@@ -155,7 +155,6 @@ class ContractTypeWidget extends React.PureComponent {
 
 ContractTypeWidget.propTypes = {
     is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    is_mobile: PropTypes.bool,
     list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     name: PropTypes.string,
     onChange: PropTypes.func,

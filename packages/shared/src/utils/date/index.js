@@ -5,6 +5,7 @@ import {
     convertToUnix,
     toGMTFormat,
     formatDate,
+    formatTime,
     daysFromTodayTo,
     diffInMonths,
     getDiffDuration,
@@ -22,6 +23,7 @@ import {
     minDate,
     getStartOfMonth,
     formatMiliseconds,
+    convertDateFormat,
 } from './date-time';
 
 export default {
@@ -31,6 +33,7 @@ export default {
     convertToUnix,
     toGMTFormat,
     formatDate,
+    formatTime,
     daysFromTodayTo,
     diffInMonths,
     getDiffDuration,
@@ -48,4 +51,5 @@ export default {
     minDate,
     getStartOfMonth,
     formatMiliseconds,
+    convertDateFormat,
 };

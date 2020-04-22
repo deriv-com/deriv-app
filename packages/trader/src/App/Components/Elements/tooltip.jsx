@@ -30,7 +30,7 @@ class Tooltip extends React.PureComponent {
         const icon_class = classNames(classNameIcon, icon);
         return (
             <span
-                className={classNames(className, 'tooltip', { 'tooltip--error': has_error })}
+                className={classNames(className, 'dc-tooltip', { 'dc-tooltip--error': has_error })}
                 data-tooltip={message || undefined}
                 data-tooltip-pos={alignment}
             >
@@ -44,8 +44,8 @@ class Tooltip extends React.PureComponent {
                         />
                         <Icon
                             icon='IcInfoBlue'
-                            className={classNames(`${classNameIcon}-balloon-icon`, 'tooltip__balloon-icon', {
-                                'tooltip__balloon-icon--show': this.state.show_tooltip_balloon_icon,
+                            className={classNames(`${classNameIcon}-balloon-icon`, 'dc-tooltip__balloon-icon', {
+                                'dc-tooltip__balloon-icon--show': this.state.show_tooltip_balloon_icon,
                             })}
                         />
                     </React.Fragment>

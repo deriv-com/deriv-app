@@ -20,17 +20,13 @@ Blockly.BlockSvg.prototype.addSelect = function() {
  * @param {boolean} disabled True if disabled.
  * @deriv/bot: Call updateDisabled() when setDisabled is called.
  */
-Blockly.BlockSvg.prototype.setDisabled = function(disabled, is_user_action = false) {
+Blockly.BlockSvg.prototype.setDisabled = function(disabled) {
     if (this.disabled !== disabled) {
         Blockly.BlockSvg.superClass_.setDisabled.call(this, disabled);
 
         if (this.rendered) {
             this.updateDisabled();
         }
-
-        // Distinguish user + code disabled states. i.e. when user disabled a block, we
-        // shouldn't enable it through code, only enable when user re-enables it.
-        this.is_user_disabled_state = is_user_action;
     }
 };
 
@@ -106,7 +102,8 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
         const disable_option = {
             text: this.disabled ? localize('Enable Block') : localize('Disable Block'),
             enabled:
-                !this.getInheritedDisabled() &&
+                !this.disabled ||
+                restricted_parents.length === 0 ||
                 restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent)),
             callback: () => {
                 const group = Blockly.Events.getGroup();
@@ -114,7 +111,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
                     Blockly.Events.setGroup(true);
                 }
 
-                block.setDisabled(!block.disabled, true);
+                block.setDisabled(!block.disabled);
 
                 if (!group) {
                     Blockly.Events.setGroup(false);
@@ -210,8 +207,27 @@ Blockly.BlockSvg.prototype.setCollapsed = function(collapsed) {
         icons.forEach(icon => icon.setVisible(false));
 
         const text = this.toString(Blockly.COLLAPSE_CHARS);
+
+        // Ensure class persists through collapse. Falls back to first
+        // field that has a class. Doesn't work when multiple
+        // field_labels on a block have different classes. So far we
+        // don't have a situation like that, so it works. 👍
+        let field_class = null;
+
+        this.inputList.some(input =>
+            input.fieldRow.some(field => {
+                if (field.class_) {
+                    field_class = field.class_;
+                    return true;
+                }
+                return false;
+            })
+        );
+
+        const field_label = new Blockly.FieldLabel(text, field_class);
+
         this.appendDummyInput(COLLAPSED_INPUT_NAME)
-            .appendField(text)
+            .appendField(field_label)
             .init();
     } else {
         this.removeInput(COLLAPSED_INPUT_NAME);

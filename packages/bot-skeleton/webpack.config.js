@@ -1,7 +1,6 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
-const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
@@ -55,21 +54,6 @@ module.exports = function(env, argv) {
                 { from: './src/assets/images', to: 'media' },
                 { from: './src/scratch/sounds', to: 'media' },
             ]),
-            new MergeIntoSingleFilePlugin({
-                files: {
-                    'scratch.min.js': [
-                        'node_modules/scratch-blocks/blockly_compressed_vertical.js',
-                        'node_modules/scratch-blocks/msg/messages.js',
-                        'node_modules/blockly/generators/javascript.js',
-                    ],
-                },
-                transform: {
-                    'scratch.min.js': code => {
-                        const uglifyjs = require('uglify-js');
-                        return uglifyjs.minify(code).code;
-                    },
-                },
-            }),
         ],
         externals: [
             {

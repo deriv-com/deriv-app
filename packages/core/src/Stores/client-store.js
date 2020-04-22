@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { action, computed, observable, runInAction, when, reaction } from 'mobx';
+import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { requestLogout, WS } from 'Services';
@@ -7,13 +7,14 @@ import ClientBase from '_common/base/client_base';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
+import { toMoment } from '@deriv/shared/utils/date';
 import { LocalStore, State } from '_common/storage';
 import BinarySocketGeneral from 'Services/socket-general';
+import { getAllowedLocalStorageOrigin } from 'Utils/Events/storage';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
 import { getClientAccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
-import { toMoment } from '../Utils/Date';
 
 const storage_key = 'client.accounts';
 export default class ClientStore extends BaseStore {
@@ -23,6 +24,7 @@ export default class ClientStore extends BaseStore {
     @observable accounts = {};
     @observable pre_switch_broadcast = false;
     @observable switched = '';
+    @observable is_switching = false;
     @observable switch_broadcast = false;
     @observable initialized_broadcast = false;
     @observable currencies_list = {};
@@ -57,10 +59,11 @@ export default class ClientStore extends BaseStore {
         payment_withdraw: '',
         payment_agent_withdraw: '',
     };
+    @observable account_limits = {};
 
     @observable local_currency_config = {
         currency: '',
-        decimal_places: '',
+        decimal_places: undefined,
     };
 
     is_mt5_account_list_updated = false;
@@ -251,6 +254,12 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_pending_authentication() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'document_under_review');
+    }
+
+    @computed
     get landing_company_shortcode() {
         if (this.accounts[this.loginid]) {
             return this.accounts[this.loginid].landing_company_shortcode;
@@ -346,6 +355,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
         LocalStore.set('active_loginid', loginid);
+        this.syncWithSmartTrader(loginid, toJS(this.accounts));
         this.loginid = loginid;
     }
 
@@ -375,6 +385,23 @@ export default class ClientStore extends BaseStore {
             can_upgrade_to,
             can_open_multi,
         };
+    }
+
+    @action.bound
+    getLimits() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getLimits().then(data => {
+                runInAction(() => {
+                    if (data.error) {
+                        this.account_limits = { api_initial_load_error: data.error.message };
+                        resolve(data);
+                    } else {
+                        this.account_limits = { ...data.get_limits, is_loading: false };
+                        resolve(data);
+                    }
+                });
+            });
+        });
     }
 
     @action.bound
@@ -514,7 +541,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get residence() {
         // TODO Instead of return residence from each individual loginid, set in once in login, this is bound by user.
-        return this.accounts[this.loginid].residence;
+        return this.accounts[this.loginid]?.residence ?? '';
     }
 
     @computed
@@ -644,7 +671,9 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            WS.authorized.storage.mt5LoginList().then(this.responseMt5LoginList);
+            // mt5 will get called on response of authorize so we should just wait for the response here
+            // we can't use .storage here because if mt5 response takes longer to return we will send the request twice
+            BinarySocket.wait('mt5_login_list').then(this.responseMt5LoginList);
             WS.authorized.storage.landingCompany(this.residence).then(this.responseLandingCompany);
             this.responseStatement(
                 await BinarySocket.send({
@@ -656,8 +685,9 @@ export default class ClientStore extends BaseStore {
                 await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
+            this.getLimits();
         }
-        this.responseWebsiteStatus(await WS.storage.websiteStatus());
+        this.responseWebsiteStatus(await WS.wait('website_status'));
 
         this.registerReactions();
         this.setIsLoggingIn(false);
@@ -804,6 +834,7 @@ export default class ClientStore extends BaseStore {
             return;
         }
 
+        runInAction(() => (this.is_switching = true));
         sessionStorage.setItem('active_tab', '1');
         // set local storage
         this.root_store.gtm.setLoginFlag();
@@ -813,6 +844,8 @@ export default class ClientStore extends BaseStore {
         await BinarySocket.authorize(this.getToken());
         await this.init();
         this.broadcastAccountChange();
+        this.getLimits();
+        runInAction(() => (this.is_switching = false));
     }
 
     @action.bound
@@ -823,7 +856,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setBalance(obj_balance) {
-        if (this.accounts[obj_balance.loginid]) {
+        if (this.accounts[obj_balance?.loginid]) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
             if (obj_balance.total) {
                 const total_real = ObjectUtils.getPropertyValue(obj_balance, ['total', 'real']);
@@ -882,6 +915,7 @@ export default class ClientStore extends BaseStore {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
         this.root_store.ui.removeAllNotificationMessages();
+        this.syncWithSmartTrader(this.loginid, this.accounts);
     }
 
     @action.bound
@@ -1094,6 +1128,16 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    fetchAccountSettings() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getSettings().then(response => {
+                this.setAccountSettings(response.get_settings);
+                resolve(response);
+            });
+        });
+    }
+
+    @action.bound
     fetchResidenceList() {
         return new Promise(resolve => {
             WS.storage.residenceList().then(response => {
@@ -1158,10 +1202,12 @@ export default class ClientStore extends BaseStore {
         }, 60000);
 
         if (!response.error) {
-            this.mt5_login_list = response.mt5_login_list.map(account => ({
-                ...account,
-                display_login: account.login.replace(/^(MT[DR]?)/i, ''),
-            }));
+            this.mt5_login_list = response.mt5_login_list
+                .filter(account => !/inactive/.test(account.group)) // remove disabled mt5 accounts
+                .map(account => ({
+                    ...account,
+                    display_login: account.login.replace(/^(MT[DR]?)/i, ''),
+                }));
         }
     }
 
@@ -1185,6 +1231,31 @@ export default class ClientStore extends BaseStore {
             return changeable_fields;
         }
         return [];
+    }
+
+    @action.bound
+    syncWithSmartTrader(active_loginid, client_accounts) {
+        const iframe_window = document.getElementById('localstorage-sync');
+        if (iframe_window) {
+            const origin = getAllowedLocalStorageOrigin();
+            if (origin) {
+                // Keep client.accounts in sync (in case user wasn't logged in).
+                iframe_window.contentWindow.postMessage(
+                    {
+                        key: 'client.accounts',
+                        value: JSON.stringify(client_accounts),
+                    },
+                    origin
+                );
+                iframe_window.contentWindow.postMessage(
+                    {
+                        key: 'active_loginid',
+                        value: active_loginid,
+                    },
+                    origin
+                );
+            }
+        }
     }
 
     @computed

@@ -187,7 +187,7 @@ export const getPaWithdrawalLimit = (currency, limit) => {
     return limit === 'max' ? 2000 : 10; // limits for fiat currency
 };
 
-export const getCurrencyDisplayCode = currency => {
+export const getCurrencyDisplayCode = (currency = '') => {
     return ObjectUtils.getPropertyValue(CryptoConfig.get(), [currency.toUpperCase(), 'display_code']) || currency;
 };
 

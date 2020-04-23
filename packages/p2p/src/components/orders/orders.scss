@@ -1,6 +1,18 @@
 .orders {
     padding-top: 2.4rem;
 
+    &__empty {
+        width: fit-content;
+        margin: 0 auto;
+        transform: translate(-100%, 20%);
+        text-align: center;
+
+        &-text {
+            margin: 24px 0;
+            font-weight: 700;
+            font-size: var(--text-size-s);
+        }
+    }
     &__header {
         background: var(--general-section-1);
         padding: 0.4rem;

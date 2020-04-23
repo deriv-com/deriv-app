@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
-import { Loading } from '@deriv/components';
+import { Loading, Icon, Button } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
@@ -26,6 +26,14 @@ const OrderRowLoader = () => (
         <rect x='536' y='20' rx='5' ry='5' width='90' height='10' />
         <rect x='720' y='20' rx='5' ry='5' width='90' height='10' />
     </ContentLoader>
+);
+
+const OrderEmptyStates = () => (
+    <div className='orders__empty'>
+        <Icon icon='IcNoOrder' size={128} />
+        <div className='orders__empty-text'>{localize('You have no orders')}</div>
+        <Button primary text={localize('Buy/Sell')} type='button' />
+    </div>
 );
 
 const OrderTableContent = ({ showDetails, is_active }) => {
@@ -108,10 +116,10 @@ const OrderTableContent = ({ showDetails, is_active }) => {
             );
         }
 
-        return <div className='deriv-p2p__empty'>{localize("You haven't made or received any orders yet.")}</div>;
+        return <OrderEmptyStates />;
     }
 
-    return <div className='deriv-p2p__empty'>{localize("You haven't made or received any orders yet.")}</div>;
+    return <OrderEmptyStates />;
 };
 
 OrderTableContent.propTypes = {

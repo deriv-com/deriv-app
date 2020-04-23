@@ -18,7 +18,6 @@ export const InfiniteLoaderList = ({
     RowLoader,
 }) => {
     const RowRenderer = ({ index, style }) => {
-        console.log(index);
         const is_loading = index === items.length;
 
         if (is_loading) {

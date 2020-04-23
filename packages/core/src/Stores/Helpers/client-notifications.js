@@ -13,7 +13,7 @@ import { urlFor, getDerivComLink } from '_common/url';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
-export const clientNotifications = (ui = {}) => {
+export const clientNotifications = (ui = {}, client = {}) => {
     const notifications = {
         currency: {
             action: {
@@ -271,6 +271,34 @@ export const clientNotifications = (ui = {}) => {
             message: localize('Please submit your proof of address.'),
             type: 'warning',
         },
+        needs_poa_virtual: {
+            action: {
+                route: routes.proof_of_address,
+                text: localize('Verify address'),
+            },
+            key: 'needs_poa_virtual',
+            header: localize('Please Verify your address'),
+            message: localize(
+                'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your address.'
+            ),
+            type: 'danger',
+        },
+        needs_poi_virtual: {
+            action: {
+                onClick: async () => {
+                    const { switchAccount, first_switchable_real_loginid } = client;
+
+                    await switchAccount(first_switchable_real_loginid);
+                },
+                text: localize('Verify identity'),
+            },
+            key: 'needs_poi_virtual',
+            header: localize('Please Verify your identity'),
+            message: localize(
+                'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your identity.'
+            ),
+            type: 'danger',
+        },
         poa_expired: {
             action: {
                 route: routes.proof_of_address,
@@ -309,6 +337,7 @@ const hasMissingRequiredField = (account_settings, client) => {
     const { landing_company_shortcode } = client;
     const is_svg = landing_company_shortcode === 'svg' || landing_company_shortcode === 'costarica';
 
+    // TODO: [deriv-eu] refactor into its own function once more exceptions are added.
     let required_fields;
     if (is_svg) {
         required_fields = getSVGRequiredFields();

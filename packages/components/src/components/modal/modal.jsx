@@ -64,6 +64,7 @@ class ModalElement extends React.PureComponent {
             is_vertical_top,
             header,
             children,
+            renderTitle,
             has_close_icon,
             height,
             toggleModal,
@@ -86,12 +87,21 @@ class ModalElement extends React.PureComponent {
                     width: width || 'auto',
                 }}
             >
-                {(header || title) && (
+                {(header || title || renderTitle) && (
                     <div
                         className={classNames('dc-modal-header', {
                             [`dc-modal-header--${className}`]: className,
                         })}
                     >
+                        {renderTitle && (
+                            <h3
+                                className={classNames('dc-modal-header__title', {
+                                    [`dc-modal-header__title--${className}`]: className,
+                                })}
+                            >
+                                {renderTitle()}
+                            </h3>
+                        )}
                         {title && (
                             <h3
                                 className={classNames('dc-modal-header__title', {
@@ -142,6 +152,7 @@ ModalElement.propTypes = {
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     small: PropTypes.bool,
+    renderTitle: PropTypes.func,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     toggleModal: PropTypes.func,
 };
@@ -160,6 +171,7 @@ const Modal = ({
     is_vertical_bottom,
     is_vertical_centered,
     is_vertical_top,
+    renderTitle,
     title,
     toggleModal,
     width,
@@ -190,6 +202,7 @@ const Modal = ({
             height={height}
             onMount={onMount}
             onUnmount={onUnmount}
+            renderTitle={renderTitle}
             small={small}
             width={width}
         >
@@ -219,6 +232,7 @@ Modal.propTypes = {
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     small: PropTypes.bool,
+    renderTitle: PropTypes.func,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     toggleModal: PropTypes.func,
     width: PropTypes.string,

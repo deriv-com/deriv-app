@@ -187,15 +187,15 @@ const FinancialBox = ({ is_demo = false }) => {
                     learn_more={[
                         {
                             text: localize('Option Trading'),
-                            path: '/0',
+                            path: '/#',
                         },
                         {
                             text: localize('Dtrader'),
-                            path: '/1',
+                            path: '/#',
                         },
                         {
                             text: localize('DBot'),
-                            path: '/2',
+                            path: '/#',
                         },
                     ]}
                 >
@@ -224,11 +224,11 @@ const FinancialBox = ({ is_demo = false }) => {
                     learn_more={[
                         {
                             text: localize('Margin Trading'),
-                            path: '/3',
+                            path: '/#',
                         },
                         {
                             text: localize('DMT5'),
-                            path: '/4',
+                            path: '/#',
                         },
                     ]}
                 >
@@ -267,15 +267,15 @@ const GamingBox = ({ is_demo = false, no_mt5 = false }) => {
             learn_more={[
                 {
                     text: localize('Option Trading'),
-                    path: '/0',
+                    path: '/#',
                 },
                 {
                     text: localize('Dtrader'),
-                    path: '/1',
+                    path: '/#',
                 },
                 {
                     text: localize('DBot'),
-                    path: '/2',
+                    path: '/#',
                 },
             ]}
         >
@@ -304,11 +304,11 @@ const GamingBox = ({ is_demo = false, no_mt5 = false }) => {
             learn_more={[
                 {
                     text: localize('Margin Trading'),
-                    path: '/3',
+                    path: '/#',
                 },
                 {
                     text: localize('DMT5'),
-                    path: '/4',
+                    path: '/#',
                 },
             ]}
         >
@@ -380,15 +380,15 @@ const SyntheticBox = ({ is_demo = false }) => {
                     learn_more={[
                         {
                             text: localize('Option Trading'),
-                            path: '/0',
+                            path: '/#',
                         },
                         {
                             text: localize('Dtrader'),
-                            path: '/1',
+                            path: '/#',
                         },
                         {
                             text: localize('DBot'),
-                            path: '/2',
+                            path: '/#',
                         },
                     ]}
                 >
@@ -417,11 +417,11 @@ const SyntheticBox = ({ is_demo = false }) => {
                     learn_more={[
                         {
                             text: localize('Margin Trading'),
-                            path: '/3',
+                            path: '/#',
                         },
                         {
                             text: localize('DMT5'),
-                            path: '/4',
+                            path: '/#',
                         },
                     ]}
                 >

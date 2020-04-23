@@ -193,6 +193,7 @@ class AccountTransferForm extends React.Component {
                                                     classNameDisplaySpan='cashier__drop-down-display-span'
                                                     classNameItems='cashier__drop-down-items'
                                                     classNameLabel='cashier__drop-down-label'
+                                                    is_large
                                                     label={localize('From')}
                                                     list={from_accounts}
                                                     name='transfer_from'
@@ -233,6 +234,7 @@ class AccountTransferForm extends React.Component {
                                                     classNameDisplaySpan='cashier__drop-down-display-span'
                                                     classNameItems='cashier__drop-down-items'
                                                     classNameLabel='cashier__drop-down-label'
+                                                    is_large
                                                     label={localize('To')}
                                                     list={to_accounts}
                                                     name='transfer_to'

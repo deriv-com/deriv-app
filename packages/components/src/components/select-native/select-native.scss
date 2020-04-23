@@ -31,6 +31,8 @@
             max-width: calc(100% - 4rem);
             text-overflow: ellipsis;
             display: flex;
+            height: 100%;
+            align-items: center;
         }
     }
     &__placeholder {

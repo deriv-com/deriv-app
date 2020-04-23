@@ -53,6 +53,7 @@ const DatePickerInput = ({
             disabled={disabled}
             error={error}
             id={id ? `${id}_input` : undefined}
+            autoComplete='off'
             is_autocomplete_disabled='true'
             is_hj_whitelisted='true'
             label={label}

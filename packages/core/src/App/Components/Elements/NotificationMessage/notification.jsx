@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button } from '@deriv/components';
+import { Button, LinearProgress } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
 import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
@@ -37,6 +37,14 @@ const Notification = ({ data, removeNotificationMessage }) => {
             </div>
             <div className='notification__text-container'>
                 <h4 className='notification__header'>{data.header}</h4>
+                {data.timeout && (
+                    <LinearProgress
+                        className='notification__timeout'
+                        timeout={data.timeout}
+                        action={data.action.onClick}
+                        render={data.timeoutMessage}
+                    />
+                )}
                 <p className='notification__text-body'>{data.message}</p>
                 {!ObjectUtils.isEmptyObject(data.action) && (
                     <React.Fragment>
@@ -58,11 +66,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     </React.Fragment>
                 )}
             </div>
-            {data.should_hide_close_btn ? (
-                undefined
-            ) : (
-                <CloseButton className='notification__close-button' onClick={onClick} />
-            )}
+            {!data.should_hide_close_btn && <CloseButton className='notification__close-button' onClick={onClick} />}
         </div>
     );
 };

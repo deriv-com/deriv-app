@@ -46,9 +46,6 @@
             background: var(--general-section-2);
         }
     }
-    .success-change {
-        margin-top: 3em;
-    }
     & .dc-password-meter__container {
         flex-grow: 0;
         max-width: 300px;
@@ -119,16 +116,6 @@
             }
         }
     }
-    .success-change {
-        margin-top: 2em;
-
-        &__body-area {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            flex-grow: 1;
-        }
-    }
 }
 
 .dc-modal-header__section {
@@ -145,6 +132,7 @@
         color: var(--text-prominent);
         text-transform: none;
         margin-top: 2em;
+        margin-bottom: 1.6rem;
         padding: 0 1.6em;
     }
     &__description {
@@ -202,5 +190,18 @@
 .mt5-proof-of-identity {
     &__fields {
         padding-bottom: 7rem;
+
+        @include mobile {
+            height: inherit;
+
+            .onfido-container {
+                margin-top: 0.8rem;
+            }
+            .onfido-container,
+            .onfido-container #onfido,
+            .onfido-container #onfido .onfido-sdk-ui-Modal-inner {
+                height: inherit;
+            }
+        }
     }
 }

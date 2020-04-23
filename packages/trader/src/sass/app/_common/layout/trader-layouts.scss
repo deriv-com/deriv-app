@@ -64,6 +64,11 @@
                 -webkit-tap-highlight-color: transparent;
             }
         }
+        & .contract-details-wrapper + .smartcharts-undefined {
+            & .cq-symbols-display {
+                display: none;
+            }
+        }
     }
 }
 

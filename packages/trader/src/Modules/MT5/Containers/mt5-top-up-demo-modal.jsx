@@ -63,43 +63,39 @@ class Mt5TopUpDemoModal extends React.Component {
                         </div>
                     </div>
                 </Modal>
-                <Modal
-                    className='top-up-virtual'
+                <SuccessDialog
                     is_open={this.props.is_top_up_virtual_success}
                     toggleModal={this.closeSuccess}
                     has_close_icon
                     title={localize('Top up success')}
-                >
-                    <SuccessDialog
-                        icon={<Icon icon='IcCashierWallet' size={115} />}
-                        heading={
-                            <h3 className='mt5-success-topup__heading'>
-                                <Localize
-                                    i18n_default_text='Your DMT5 {{title}} account has been topped up with USD 10,000 in virtual funds.'
-                                    values={{
-                                        title: title[0].toLowerCase() + title.slice(1),
-                                    }}
+                    icon={<Icon icon='IcCashierWallet' size={115} />}
+                    heading={
+                        <h3 className='mt5-success-topup__heading'>
+                            <Localize
+                                i18n_default_text='Your DMT5 {{title}} account has been topped up with USD 10,000 in virtual funds.'
+                                values={{
+                                    title: title[0].toLowerCase() + title.slice(1),
+                                }}
+                            />
+                        </h3>
+                    }
+                    message={
+                        <div className='mt5-success-topup__description'>
+                            <p>
+                                <Localize i18n_default_text='New current balance' />
+                            </p>
+                            <div className='dc-modal__container_top-up-virtual--balance'>
+                                <Money
+                                    amount={this.props.current_account.balance}
+                                    currency={this.props.current_account.currency}
                                 />
-                            </h3>
-                        }
-                        message={
-                            <div className='mt5-success-topup__description'>
-                                <p>
-                                    <Localize i18n_default_text='New current balance' />
-                                </p>
-                                <div className='dc-modal__container_top-up-virtual--balance'>
-                                    <Money
-                                        amount={this.props.current_account.balance}
-                                        currency={this.props.current_account.currency}
-                                    />
-                                </div>
                             </div>
-                        }
-                        icon_size='xlarge'
-                        has_cancel={false}
-                        has_submit={false}
-                    />
-                </Modal>
+                        </div>
+                    }
+                    icon_size='xlarge'
+                    has_cancel={false}
+                    has_submit={false}
+                />
             </React.Fragment>
         );
     }

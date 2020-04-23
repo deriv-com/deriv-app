@@ -231,6 +231,11 @@
         &__cell {
             border-bottom: none;
         }
+        @include desktop {
+            &__header {
+                background-color: var(--general-main-2);
+            }
+        }
     }
     &-modal {
         &__wrapper {

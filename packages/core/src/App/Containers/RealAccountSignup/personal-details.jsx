@@ -13,7 +13,11 @@ const DateOfBirthField = props => (
                 error={touched.date_of_birth && errors.date_of_birth}
                 onBlur={() => setTouched({ date_of_birth: true })}
                 onChange={({ target }) =>
-                    setFieldValue('date_of_birth', target ? toMoment(target.value).format('YYYY-MM-DD') : '', true)
+                    setFieldValue(
+                        'date_of_birth',
+                        target?.value ? toMoment(target.value).format('YYYY-MM-DD') : '',
+                        true
+                    )
                 }
                 value={value}
                 portal_id='modal_root'
@@ -143,7 +147,7 @@ class PersonalDetails extends React.Component {
     }
 
     validatePersonalDetails = values => {
-        const max_date = toMoment().subtract(18, 'days');
+        const max_date = toMoment().subtract(18, 'years');
         const validations = {
             first_name: [
                 v => !!v,
@@ -174,14 +178,23 @@ class PersonalDetails extends React.Component {
             phone: localize('Phone'),
         };
 
-        const common_messages = [
-            '{{field_name}} is required',
-            '{{field_name}} is too short',
-            '{{field_name}} is too long',
-            '{{field_name}} is not in a proper format.',
+        const common_messages = field_name => [
+            localize('{{field_name}} is required', { field_name }),
+            localize('{{field_name}} is too short', { field_name }),
+            localize('{{field_name}} is too long', { field_name }),
+            localize('{{field_name}} is not in a proper format.', { field_name }),
         ];
 
-        const alt_messages = ['{{field_name}} is required', '{{field_name}} is not in a proper format.'];
+        const alt_messages = field_name => ({
+            phone: [
+                localize('{{field_name}} is required', { field_name }),
+                localize('{{field_name}} is not in a proper format.', { field_name }),
+            ],
+            date_of_birth: [
+                localize('{{field_name}} is required', { field_name }),
+                localize('You must be 18 years old and above.', { field_name }),
+            ],
+        });
 
         const errors = {};
 
@@ -191,24 +204,10 @@ class PersonalDetails extends React.Component {
                 switch (key) {
                     case 'date_of_birth':
                     case 'phone':
-                        errors[key] = errors[key] = (
-                            <Localize
-                                i18n_default_text={alt_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                            />
-                        );
+                        errors[key] = errors[key] = alt_messages(mappedKey[key])[key][error_index];
                         break;
                     default:
-                        errors[key] = errors[key] = (
-                            <Localize
-                                i18n_default_text={common_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                            />
-                        );
+                        errors[key] = errors[key] = common_messages(mappedKey[key])[error_index];
                 }
             }
         });

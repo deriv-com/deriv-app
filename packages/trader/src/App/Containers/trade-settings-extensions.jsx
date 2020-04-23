@@ -4,14 +4,13 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import Lazy from 'App/Containers/Lazy';
 
-const ChartSettingContainer = ({ ...props }) => (
+const ChartSettingContainer = () => (
     <Lazy
         ctor={() =>
             import(
                 /* webpackChunkName: "settings-chart", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-chart.jsx'
             )
         }
-        {...props}
     />
 );
 
@@ -26,29 +25,13 @@ ChartSettingContainer.displayName = 'ChartSettingContainer';
 
 class TradeSettingsExtensions extends React.Component {
     populateSettings = () => {
-        const {
-            populateSettingsExtensions,
-            is_countdown_visible,
-            is_dark_mode,
-            is_layout_default,
-            setCountdown,
-            setChartLayout,
-        } = this.props;
+        const { populateSettingsExtensions } = this.props;
 
         const menu_items = [
             {
                 icon: 'IcChart',
                 label: localize('Charts'),
-                value: ({ ...props }) => (
-                    <ChartSettingContainer
-                        is_countdown_visible={is_countdown_visible}
-                        is_dark_mode={is_dark_mode}
-                        is_layout_default={is_layout_default}
-                        setCountdown={setCountdown}
-                        setChartLayout={setChartLayout}
-                        {...props}
-                    />
-                ),
+                value: ChartSettingContainer,
                 // uncomment below lines to bring back purchase lock and purchase confirmation}
                 // }, {
                 //     icon : IconPurchase,
@@ -84,11 +67,4 @@ TradeSettingsExtensions.propTypes = {
 
 export default connect(({ ui }) => ({
     populateSettingsExtensions: ui.populateSettingsExtensions,
-    is_asset_visible: ui.is_chart_asset_info_visible,
-    is_countdown_visible: ui.is_chart_countdown_visible,
-    is_dark_mode: ui.is_dark_mode_on,
-    is_layout_default: ui.is_chart_layout_default,
-    setAsset: ui.setChartAssetInfo,
-    setCountdown: ui.setChartCountdown,
-    setChartLayout: ui.setChartLayout,
 }))(TradeSettingsExtensions);

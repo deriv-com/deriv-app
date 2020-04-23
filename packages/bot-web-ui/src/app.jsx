@@ -65,6 +65,7 @@ class App extends React.Component {
         }
 
         this.disposeReactions();
+        DBot.terminateBot();
 
         // Ensure account switch is re-enabled.
         const { ui } = this.root_store.core;

@@ -664,10 +664,10 @@ export default class CashierStore extends BaseStore {
             this.setHasNoAccountsBalance(false);
         }
 
-        const transfer_between_accounts =
-            !this.config.account_transfer.accounts_list.length || has_updated_account_balance
-                ? await WS.transferBetweenAccounts()
-                : await WS.authorized.cache.transferBetweenAccounts({ accounts: 'all' }); // load from cache to get the latest updates
+        // various issues happen when loading from cache
+        // e.g. new account may have been created, transfer may have been done elsewhere, etc
+        // so on load of this page just call it again
+        const transfer_between_accounts = await WS.transferBetweenAccounts();
 
         if (transfer_between_accounts.error) {
             this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
@@ -692,11 +692,15 @@ export default class CashierStore extends BaseStore {
         if (!accounts.find(account => +account.balance > 0)) {
             can_transfer = false;
             this.setHasNoAccountsBalance(true);
+        } else {
+            this.setHasNoAccountsBalance(false);
         }
         // should have at least two real-money accounts
         if (accounts.length <= 1) {
             can_transfer = false;
             this.setHasNoAccount(true);
+        } else {
+            this.setHasNoAccount(false);
         }
         if (!can_transfer) {
             this.setLoading(false);

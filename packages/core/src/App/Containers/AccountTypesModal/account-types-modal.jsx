@@ -345,13 +345,13 @@ const GamingBox = ({ is_demo = false, no_mt5 = false }) => {
     );
 };
 
-// TODO: Update content later
 const SyntheticBox = ({ is_demo = false }) => {
     return (
         <Box
             title={localize('Synthetic account')}
-            description={localize('ADD LATER')}
-            footer_text={localize('ADD LATER')}
+            description={localize(
+                'Synthetic account offers you to trade Synthetic assets like synthetic indices that simulates simulated markets with constant volatilities of 10%, 25%, 50%,75% and 100%.'
+            )}
             icons={[
                 'IcUnderlying1HZ10V',
                 'IcUnderlying1HZ100V',
@@ -499,11 +499,10 @@ AccountTypesModal.propTypes = {
 
 export default connect(({ ui, client }) => ({
     has_any_real_account: client.has_any_real_account,
-    // TODO: Change this later
+    // TODO: Change this later and make it a separate computed
     has_demo: (client.standpoint.malta || client.standpoint.maltainvest) && !client.standpoint.iom,
     is_account_types_modal_visible: ui.is_account_types_modal_visible,
     is_dismissible: !client.is_forced_to_have_real_account,
-    client: client,
     residence: client.residence,
     standpoint: client.standpoint,
     toggleAccountTypesModal: ui.toggleAccountTypesModal,

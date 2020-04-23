@@ -206,7 +206,7 @@
                 flex-direction: column;
             }
         }
-        .cashier__drop-down-display {
+        &-display {
             justify-content: left;
             min-height: 4rem;
             min-width: 20.3rem;
@@ -236,7 +236,7 @@
         }
         &-items,
         &-label {
-            justify-content: left !important;
+            justify-content: left;
         }
         &-label {
             margin: 0 1.6rem;
@@ -620,17 +620,16 @@
     }
     &__drop-down {
         margin-left: 8px;
-        width: auto !important;
+        width: auto;
         margin-bottom: 0 !important;
     }
     &__filter {
-        min-width: 22.8rem !important;
-        margin-top: 0 !important;
+        min-width: 22.8rem;
+        margin-top: 0;
 
-        .payment-agent__filter-display {
+        &-display {
             min-height: 3.2rem;
             min-width: 22.8rem;
-            justify-content: left;
         }
     }
     &__accordion-content {

@@ -791,7 +791,9 @@ export default class CashierStore extends BaseStore {
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
         accounts.forEach(account => {
             const obj_values = {
-                text: account.mt5_group ? getMT5AccountDisplay(account.mt5_group) : account.currency.toUpperCase(),
+                text: account.mt5_group
+                    ? getMT5AccountDisplay(account.mt5_group)
+                    : CurrencyUtils.getCurrencyDisplayCode(account.currency),
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,

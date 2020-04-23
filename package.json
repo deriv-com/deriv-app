@@ -29,9 +29,5 @@
       "post-merge": "bash ./hooks/post-merge.sh",
       "pre-commit": "lerna exec --concurrency 1 --stream -- npm run precommit"
     }
-  },
-  "dependencies": {
-    "node": "^10.20.1",
-    "node-sass": "^4.13.1"
   }
 }

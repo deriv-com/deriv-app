@@ -66,11 +66,11 @@ const onClick = () => {
     document.querySelector('.cq-symbol-select-btn').click();
     requestAnimationFrame(() => {
         const left_panel = document.querySelector('.cq-lookup-filters');
-        left_panel.querySelector('.ic-synthetic_index').click();
-        requestAnimationFrame(() => {
+        setTimeout(() => {
+            left_panel.querySelector('.ic-synthetic_index').click();
             const node = document.querySelector('.category-synthetic_index').querySelector('.category-content');
             setTimeout(startAnimation.bind(this, node), 600);
-        });
+        }, 300)
     });
 };
 

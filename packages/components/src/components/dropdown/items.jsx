@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import Popover from 'Components/popover';
 
 const Items = ({ className, index, handleSelect, has_symbol, items, name, is_align_text_left, value }) =>
@@ -22,7 +23,7 @@ const Items = ({ className, index, handleSelect, has_symbol, items, name, is_ali
                 key={idx}
             >
                 {!!has_symbol && item.has_tooltip && (
-                    <Popover alignment='left' message={item.text}>
+                    <Popover alignment='left' message={CurrencyUtils.getCurrencyDisplayCode(item.text)}>
                         <span className={classNames('symbols', 'dc-list__item-symbol', symbol_type_class_name)} />
                     </Popover>
                 )}

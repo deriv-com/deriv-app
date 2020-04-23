@@ -2,6 +2,7 @@ import React from 'react';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
+import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import { connect } from 'Stores/connect';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
@@ -30,6 +31,12 @@ class Trade extends React.Component {
         this.props.onUnmount();
     }
 
+    componentDidUpdate(prevProps) {
+        if (isMobile() && prevProps.symbol !== this.props.symbol) {
+            this.setState({ digits: [] });
+        }
+    }
+
     bottomWidgets = ({ digits, tick }) => {
         this.setState({
             digits,
@@ -40,6 +47,11 @@ class Trade extends React.Component {
     };
 
     onChangeSwipeableIndex = index => {
+        if (index === 0) {
+            this.props.setMobileDigitView(true);
+        } else {
+            this.props.setMobileDigitView(false);
+        }
         this.setState({
             is_digits_widget_active: index === 0,
         });
@@ -65,25 +77,40 @@ class Trade extends React.Component {
                 >
                     <NotificationMessages />
                     <React.Suspense
-                        fallback={<ChartLoader is_dark={this.props.is_dark_theme} is_visible={!this.props.symbol} />}
+                        fallback={
+                            <ChartLoader
+                                is_dark={this.props.is_dark_theme}
+                                is_visible={!this.props.symbol || this.props.is_chart_loading}
+                            />
+                        }
                     >
                         <DesktopWrapper>
                             <ChartLoader is_visible={this.props.is_chart_loading} />
                             <ChartTrade />
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ChartLoader is_visible={this.props.is_chart_loading || !is_trade_enabled} />
-                            {this.props.show_digits_stats && is_trade_enabled ? (
-                                <SwipeableWrapper onChange={this.onChangeSwipeableIndex}>
+                            <ChartLoader
+                                is_visible={
+                                    this.props.is_chart_loading ||
+                                    (isDigitTradeType(this.props.contract_type) && !this.state.digits[0])
+                                }
+                            />
+                            <SwipeableWrapper
+                                onChange={this.onChangeSwipeableIndex}
+                                is_disabled={
+                                    !this.props.show_digits_stats || !is_trade_enabled || this.props.is_chart_loading
+                                }
+                            >
+                                {this.props.show_digits_stats && (
                                     <DigitsWidget digits={this.state.digits} tick={this.state.tick} />
-                                    <ChartTrade
-                                        bottomWidgets={this.bottomWidgets}
-                                        is_digits_widget_active={this.state.is_digits_widget_active}
-                                    />
-                                </SwipeableWrapper>
-                            ) : (
-                                <ChartTrade />
-                            )}
+                                )}
+                                <ChartTrade
+                                    bottomWidgets={this.props.show_digits_stats ? this.bottomWidgets : undefined}
+                                    is_digits_widget_active={
+                                        this.props.show_digits_stats ? this.state.is_digits_widget_active : undefined
+                                    }
+                                />
+                            </SwipeableWrapper>
                         </MobileWrapper>
                     </React.Suspense>
 
@@ -100,11 +127,14 @@ class Trade extends React.Component {
 }
 
 export default connect(({ modules, ui }) => ({
+    contract_type: modules.trade.contract_type,
     form_components: modules.trade.form_components,
     is_chart_loading: modules.trade.is_chart_loading,
     is_market_closed: modules.trade.is_market_closed,
     show_digits_stats: modules.trade.show_digits_stats,
     is_trade_enabled: modules.trade.is_trade_enabled,
+    setMobileDigitView: modules.trade.setMobileDigitView,
+    symbol: modules.trade.symbol,
     onMount: modules.trade.onMount,
     onUnmount: modules.trade.onUnmount,
     purchase_info: modules.trade.purchase_info,

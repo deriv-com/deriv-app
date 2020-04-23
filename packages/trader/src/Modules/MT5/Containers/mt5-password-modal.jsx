@@ -160,23 +160,18 @@ const MT5PasswordModal = ({
                     )}
                 />
             </Modal>
-            <Modal
-                className='mt5-password-modal'
+            <SuccessDialog
                 is_open={should_show_success}
                 toggleModal={closeModal}
-                has_close_icon={false}
-            >
-                <SuccessDialog
-                    onCancel={closeModal}
-                    onSubmit={closeOpenSuccess}
-                    message={getSubmitText(account_title, account_type.category)}
-                    // message={error_message}
-                    icon={<IconType />}
-                    icon_size='xlarge'
-                    text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('OK')}
-                    has_cancel={account_type.category === 'real'}
-                />
-            </Modal>
+                onCancel={closeModal}
+                onSubmit={closeOpenSuccess}
+                message={getSubmitText(account_title, account_type.category)}
+                // message={error_message}
+                icon={<IconType />}
+                icon_size='xlarge'
+                text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('OK')}
+                has_cancel={account_type.category === 'real'}
+            />
         </React.Fragment>
     );
 };

@@ -232,6 +232,7 @@ const LoadModal = ({
         toggleModal={toggleLoadModal}
         onMount={onMount}
         onUnmount={onUnmount}
+        dom_to_ignore={document.querySelectorAll('.injectionDiv')[0]}
     >
         <div className='load__container'>
             <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top fit_content>

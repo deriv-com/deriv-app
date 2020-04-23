@@ -39,11 +39,10 @@ class ModalElement extends React.PureComponent {
 
     handleClickOutside = event => {
         const path = event.path || (event.composedPath && event.composedPath());
-        const [blockly_injection_div] = document.querySelectorAll('.injectionDiv');
         if (
             this.props.has_close_icon &&
             this.wrapper_ref &&
-            !path.some(el => el === this.wrapper_ref || el === blockly_injection_div) &&
+            !path.some(el => el === this.wrapper_ref || el === this.props.dom_to_ignore) &&
             !this.is_datepicker_visible
         ) {
             this.props.toggleModal();
@@ -144,6 +143,7 @@ ModalElement.propTypes = {
     small: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     toggleModal: PropTypes.func,
+    dom_to_ignore: PropTypes.object,
 };
 
 const Modal = ({
@@ -163,6 +163,7 @@ const Modal = ({
     title,
     toggleModal,
     width,
+    dom_to_ignore,
 }) => (
     <CSSTransition
         appear
@@ -192,6 +193,7 @@ const Modal = ({
             onUnmount={onUnmount}
             small={small}
             width={width}
+            dom_to_ignore={dom_to_ignore}
         >
             {children}
         </ModalElement>
@@ -222,6 +224,7 @@ Modal.propTypes = {
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     toggleModal: PropTypes.func,
     width: PropTypes.string,
+    dom_to_ignore: PropTypes.object,
 };
 
 export default Modal;

@@ -692,11 +692,15 @@ export default class CashierStore extends BaseStore {
         if (!accounts.find(account => +account.balance > 0)) {
             can_transfer = false;
             this.setHasNoAccountsBalance(true);
+        } else {
+            this.setHasNoAccountsBalance(false);
         }
         // should have at least two real-money accounts
         if (accounts.length <= 1) {
             can_transfer = false;
             this.setHasNoAccount(true);
+        } else {
+            this.setHasNoAccount(false);
         }
         if (!can_transfer) {
             this.setLoading(false);

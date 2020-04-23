@@ -899,6 +899,7 @@ export default class CashierStore extends BaseStore {
                     });
                 }
             });
+            await WS.transferBetweenAccounts(); // update cache
             this.setIsTransferSuccessful(true);
         }
         return transfer_between_accounts;

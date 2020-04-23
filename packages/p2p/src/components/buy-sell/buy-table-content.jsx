@@ -77,9 +77,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
         );
     }
 
-    return (
-        <div className='deriv-p2p__empty'>{localize("No ads yet. If someone posts an ad, you'll see it here.")}</div>
-    );
+    return <div className='deriv-p2p__empty'>{localize("We don't have any ads for you at the moment.")}</div>;
 };
 
 BuySellTableContent.propTypes = {

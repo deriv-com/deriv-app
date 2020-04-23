@@ -113,6 +113,8 @@ module.exports = function(env, argv) {
                 '@deriv/translations': '@deriv/translations',
                 formik: 'formik',
                 react: 'react',
+                mobx: 'mobx',
+                'mobx-react': 'mobx-react',
                 'react-dom': 'react-dom',
                 'smartcharts-beta': 'smartcharts-beta',
             },

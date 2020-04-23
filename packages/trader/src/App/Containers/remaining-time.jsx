@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { formatDuration, getDiffDuration } from '@deriv/shared/utils/date';
 
 const RemainingTime = ({ end_time = null, start_time, format }) => {
@@ -24,6 +23,4 @@ RemainingTime.propTypes = {
     start_time: PropTypes.object,
 };
 
-export default connect(({ common }) => ({
-    start_time: common.server_time,
-}))(RemainingTime);
+export default RemainingTime;

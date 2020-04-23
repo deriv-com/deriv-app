@@ -12,6 +12,7 @@ class TradeHeaderExtensions extends React.Component {
             disableApp,
             enableApp,
             is_logged_in,
+            is_positions_drawer_on,
             is_positions_empty,
             onPositionsRemove,
             onPositionsSell,
@@ -19,6 +20,8 @@ class TradeHeaderExtensions extends React.Component {
             positions_currency,
             positions_error,
             populateHeaderExtensions,
+            server_time,
+            togglePositionsDrawer,
         } = this.props;
 
         const header_items = is_logged_in && (
@@ -33,6 +36,9 @@ class TradeHeaderExtensions extends React.Component {
                     error={positions_error}
                     onClickSell={onPositionsSell}
                     onClickRemove={onPositionsRemove}
+                    togglePositionsDrawer={togglePositionsDrawer}
+                    is_positions_drawer_on={is_positions_drawer_on}
+                    server_time={server_time}
                 />
             </MobileWrapper>
         );
@@ -68,7 +74,7 @@ TradeHeaderExtensions.propTypes = {
     populateHeaderExtensions: PropTypes.func,
 };
 
-export default connect(({ client, modules, ui }) => ({
+export default connect(({ client, common, modules, ui }) => ({
     positions_currency: client.currency,
     is_logged_in: client.is_logged_in,
     positions: modules.portfolio.active_positions_filtered,
@@ -84,4 +90,7 @@ export default connect(({ client, modules, ui }) => ({
     enableApp: ui.enableApp,
     populateHeaderExtensions: ui.populateHeaderExtensions,
     toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
+    togglePositionsDrawer: ui.togglePositionsDrawer,
+    is_positions_drawer_on: ui.is_positions_drawer_on,
+    server_time: common.server_time,
 }))(TradeHeaderExtensions);

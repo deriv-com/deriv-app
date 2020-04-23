@@ -4,9 +4,17 @@ import React from 'react';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import RemainingTime from 'App/Containers/remaining-time.jsx';
+import { connect } from 'Stores/connect';
 import { isValidToCancel } from 'Stores/Modules/Contract/Helpers/logic';
 
-const MultiplierCloseActions = ({ className, onClickCancel, onClickSell, contract_info, is_sell_requested }) => {
+const MultiplierCloseActions = ({
+    className,
+    onClickCancel,
+    onClickSell,
+    contract_info,
+    is_sell_requested,
+    server_time,
+}) => {
     const { contract_id, cancellation: { date_expiry: cancellation_date_expiry } = {}, profit } = contract_info;
 
     const is_valid_to_cancel = isValidToCancel(contract_info);
@@ -32,7 +40,9 @@ const MultiplierCloseActions = ({ className, onClickCancel, onClickSell, contrac
                     secondary
                 >
                     {localize('Cancel')}
-                    {cancellation_date_expiry && <RemainingTime end_time={cancellation_date_expiry} format='mm:ss' />}
+                    {cancellation_date_expiry && (
+                        <RemainingTime start_time={server_time} end_time={cancellation_date_expiry} format='mm:ss' />
+                    )}
                 </Button>
             )}
         </React.Fragment>
@@ -46,4 +56,6 @@ MultiplierCloseActions.propTypes = {
     onClickSell: PropTypes.func,
 };
 
-export default MultiplierCloseActions;
+export default connect(({ common }) => ({
+    server_time: common.server_time,
+}))(MultiplierCloseActions);

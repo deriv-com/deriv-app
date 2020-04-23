@@ -29,6 +29,7 @@ const PositionsModalCard = ({
     onClickRemove,
     result,
     sell_price,
+    server_time,
     status,
     togglePositions,
     toggleUnsupportedContractModal,
@@ -163,6 +164,7 @@ const PositionsModalCard = ({
                         expiry_time={contract_info.date_expiry}
                         current_tick={current_tick}
                         ticks_count={contract_info.tick_count}
+                        server_time={server_time}
                     />
                 )}
             </div>

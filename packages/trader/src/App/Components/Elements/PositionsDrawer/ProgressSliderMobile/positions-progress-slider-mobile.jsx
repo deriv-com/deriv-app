@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CircularProgress } from '@deriv/components';
-import { connect } from 'Stores/connect';
 import ProgressTicksMobile from './progress-ticks-mobile.jsx';
 import { getTimePercentage } from '../helpers';
 import RemainingTime from '../../../../Containers/remaining-time.jsx';
@@ -24,7 +23,7 @@ const ProgressSliderMobile = ({
             ) : (
                 <React.Fragment>
                     <span className='positions-modal-card__remaining-time'>
-                        <RemainingTime end_time={expiry_time} />
+                        <RemainingTime start_time={server_time} end_time={expiry_time} />
                     </span>
                     {is_loading || percentage < 1 ? (
                         // TODO: Change this behavior in mobile
@@ -56,6 +55,4 @@ ProgressSliderMobile.propTypes = {
     ticks_count: PropTypes.number,
 };
 
-export default connect(({ common }) => ({
-    server_time: common.server_time,
-}))(ProgressSliderMobile);
+export default ProgressSliderMobile;

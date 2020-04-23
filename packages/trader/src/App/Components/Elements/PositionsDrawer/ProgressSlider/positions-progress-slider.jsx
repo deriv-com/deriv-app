@@ -8,6 +8,7 @@ import RemainingTime from '../../../../Containers/remaining-time.jsx';
 
 const ProgressSlider = ({ className, current_tick, is_loading, start_time, expiry_time, server_time, ticks_count }) => {
     const percentage = getTimePercentage(server_time, start_time, expiry_time);
+
     return (
         <div className={classNames('progress-slider', className)}>
             {ticks_count ? (
@@ -15,7 +16,7 @@ const ProgressSlider = ({ className, current_tick, is_loading, start_time, expir
             ) : (
                 <React.Fragment>
                     <span className='positions-drawer-card__remaining-time'>
-                        <RemainingTime end_time={expiry_time} />
+                        <RemainingTime start_time={server_time} end_time={expiry_time} />
                     </span>
                     {is_loading || percentage < 1 ? (
                         <div className='progress-slider__infinite-loader'>

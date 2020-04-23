@@ -31,8 +31,8 @@
                 display: none;
             }
             &::-moz-placeholder {
-                /* Hide value placeholder for datepicker for Firefox 19+ */
-                color: transparent;
+                /* Fix value placeholder for datepicker for Firefox 19+ */
+                line-height: 4rem;
             }
         }
         &--has-leading-icon .dc-input__field {

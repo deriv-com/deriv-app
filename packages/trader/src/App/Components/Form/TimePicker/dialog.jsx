@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 
 const Dialog = ({ preClass, selected_time, end_time, start_time, onChange, className }) => {
     const start_time_moment = start_time ? toMoment(start_time) : toMoment();

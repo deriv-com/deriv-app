@@ -87,6 +87,7 @@ export default class TradeStore extends BaseStore {
 
     // Last Digit
     @observable last_digit = 5;
+    @observable is_mobile_digit_view_selected = false;
 
     // Purchase
     @observable.ref proposal_info = {};
@@ -106,6 +107,9 @@ export default class TradeStore extends BaseStore {
     @observable commission = 0;
     @observable cancellation_price = 0;
     @observable hovered_contract_type;
+
+    // Mobile
+    @observable is_trade_params_expanded = true;
 
     addTickByProposal = () => null;
     debouncedProposal = debounce(this.requestProposal, 500);
@@ -151,6 +155,7 @@ export default class TradeStore extends BaseStore {
             'symbol',
             'stop_loss',
             'take_profit',
+            'is_trade_params_expanded',
         ];
         super({
             root_store,
@@ -226,10 +231,10 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     refresh() {
+        this.forgetAllProposal();
         this.proposal_info = {};
         this.purchase_info = {};
         this.proposal_requests = {};
-        WS.forgetAll('proposal');
     }
 
     @action.bound
@@ -364,6 +369,11 @@ export default class TradeStore extends BaseStore {
     @action.bound
     setAllowEqual(is_equal) {
         this.is_equal = is_equal;
+    }
+
+    @action.bound
+    setIsTradeParamsExpanded(value) {
+        this.is_trade_params_expanded = value;
     }
 
     @action.bound
@@ -526,7 +536,7 @@ export default class TradeStore extends BaseStore {
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
                             if (isDesktop()) this.root_store.ui.openPositionsDrawer();
                             this.proposal_info = {};
-                            WS.forgetAll('proposal');
+                            this.forgetAllProposal();
                             this.purchase_info = response;
                             this.proposal_requests = {};
                             this.debouncedProposal();
@@ -547,7 +557,7 @@ export default class TradeStore extends BaseStore {
                             this.root_store.ui.toggleServicesErrorModal(true);
                         }
                     }
-                    WS.forgetAll('proposal');
+                    this.forgetAllProposal();
                     this.purchase_info = response;
                     this.is_purchase_enabled = true;
                 })
@@ -614,7 +624,7 @@ export default class TradeStore extends BaseStore {
         // Sets the default value to Amount when Currency has changed from Fiat to Crypto and vice versa.
         // The source of default values is the website_status response.
         if (should_forget_first) {
-            WS.forgetAll('proposal');
+            this.forgetAllProposal();
             this.proposal_requests = {};
         }
         if (is_changed_by_user && /\bcurrency\b/.test(Object.keys(obj_new_values))) {
@@ -694,7 +704,6 @@ export default class TradeStore extends BaseStore {
             if (/\bcontract_type\b/.test(Object.keys(new_state))) {
                 this.validateAllProperties();
             }
-
             this.debouncedProposal();
         }
     }
@@ -702,6 +711,11 @@ export default class TradeStore extends BaseStore {
     @computed
     get show_digits_stats() {
         return isDigitTradeType(this.contract_type);
+    }
+
+    @action.bound
+    setMobileDigitView(bool) {
+        this.is_mobile_digit_view_selected = bool;
     }
 
     @action.bound
@@ -753,7 +767,7 @@ export default class TradeStore extends BaseStore {
         if (Object.values(this.validation_errors).some(e => e.length)) {
             this.proposal_info = {};
             this.purchase_info = {};
-            WS.forgetAll('proposal');
+            this.forgetAllProposal();
             return;
         }
 
@@ -769,6 +783,12 @@ export default class TradeStore extends BaseStore {
             });
         }
         this.root_store.ui.resetPurchaseStates();
+    }
+
+    @action.bound
+    forgetAllProposal() {
+        const length = Object.keys(this.proposal_requests).length;
+        if (length > 0) WS.forgetAll('proposal');
     }
 
     @action.bound
@@ -972,6 +992,8 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async initAccountCurrency(new_currency) {
+        if (this.currency === new_currency) return;
+
         await this.processNewValuesAsync({ currency: new_currency }, true, { currency: this.currency }, false);
         this.refresh();
         WS.forgetAll('balance').then(() => {

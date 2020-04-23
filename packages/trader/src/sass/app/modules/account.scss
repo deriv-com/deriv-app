@@ -1,5 +1,5 @@
 $FLOATING_PADDING: 2.4rem;
-$FLOATING_HEADER_HEIGHT: 41px;
+$FLOATING_HEADER_HEIGHT: 53px;
 $MIN_HEIGHT_FLOATING: calc(
     100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - #{$FLOATING_PADDING}
 );
@@ -477,7 +477,6 @@ $MIN_HEIGHT_FLOATING: calc(
         @include mobile {
             &__message-icon {
                 width: 93px;
-                height: 93px;
             }
             &__message {
                 color: var(--text-prominent);
@@ -794,6 +793,29 @@ $MIN_HEIGHT_FLOATING: calc(
             .dc-modal-body {
                 padding-top: 1.2rem;
             }
+        }
+    }
+    .leave-confirm {
+        &__message-content {
+            text-align: center;
+        }
+        &__message-icon {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2.4rem;
+        }
+        &__message {
+            margin-bottom: 0.8rem;
+            font-weight: bold;
+        }
+    }
+    .account-management-leave-confirm {
+        display: flex;
+        justify-content: center;
+        margin-top: 2.4rem;
+
+        :first-child {
+            margin-right: 0.8rem;
         }
     }
 }

@@ -5,27 +5,51 @@
         .sendbird-conversation {
             margin-top: 2.4rem;
             width: 440px;
-            min-height: 400px;
+            min-height: 500px;
             border-radius: 4px;
             border: none;
             box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.08), 0 0 8px 0 rgba(0, 0, 0, 0.08);
 
+            .sendbird-user-message__sender-name {
+                display: none;
+            }
+            .sendbird-user-message__sent-at,
+            .sendbird-message-status__text {
+                color: var(--text-less-prominent);
+                font-size: 10px;
+                margin-left: 0;
+            }
             .sendbird-user-message__tooltip {
-                background-color: var(--brand-secondary);
-                border-bottom-right-radius: 4px;
                 padding: 8px 16px;
 
                 &__text {
-                    color: var(--text-colored-background);
                     font-size: 14px;
                     font-family: $FONT_STACK;
                 }
             }
-            .icon-more_svg__fill {
-                fill: var(--brand-secondary);
+            .sendbird-user-message--incoming .sendbird-user-message__tooltip,
+            .sendbird-user-message--incoming:hover .sendbird-user-message__tooltip {
+                background-color: var(--general-section-1);
+                border-bottom-left-radius: 4px;
+
+                &__text {
+                    color: var(--text-prominent);
+                }
+                .icon-more_svg__fill {
+                    fill: var(--general-section-1);
+                }
             }
+            .sendbird-user-message--outgoing .sendbird-user-message__tooltip,
             .sendbird-user-message--outgoing:hover .sendbird-user-message__tooltip {
                 background-color: var(--brand-secondary);
+                border-bottom-right-radius: 4px;
+
+                &__text {
+                    color: var(--text-colored-background);
+                }
+                .icon-more_svg__fill {
+                    fill: var(--brand-secondary);
+                }
             }
             .sendbird-chat-header {
                 background-color: var(--general-section-1);

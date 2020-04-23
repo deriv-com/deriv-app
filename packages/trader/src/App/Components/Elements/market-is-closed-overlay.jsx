@@ -61,14 +61,17 @@ const startAnimation = node => {
  * Handle animation for dropdown, this is imperative, with DOM manipulation.
  */
 const onClick = () => {
-    const dropdown = document.querySelector('.cq-menu-dropdown');
-    if (dropdown.classList.contains('open')) return;
+    const dropdown = document.querySelector('.cq-menu-btn');
+    if (dropdown?.classList.contains('open')) return;
     document.querySelector('.cq-symbol-select-btn').click();
-    const left_panel = document.querySelector('.cq-filter-panel');
-    left_panel.querySelector('.ic-synthetic_index').parentNode.click();
-
-    const node = document.querySelector('.category-synthetic_index').querySelector('.category-content');
-    setTimeout(startAnimation.bind(this, node), 600);
+    requestAnimationFrame(() => {
+        const left_panel = document.querySelector('.cq-lookup-filters');
+        left_panel.querySelector('.ic-synthetic_index').click();
+        requestAnimationFrame(() => {
+            const node = document.querySelector('.category-synthetic_index').querySelector('.category-content');
+            setTimeout(startAnimation.bind(this, node), 600);
+        });
+    });
 };
 
 const MarketIsClosedOverlay = () => (

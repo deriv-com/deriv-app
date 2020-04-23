@@ -236,7 +236,7 @@
         }
         &-items,
         &-label {
-            justify-content: left;
+            justify-content: left !important;
         }
         &-label {
             margin: 0 1.6rem;
@@ -620,16 +620,17 @@
     }
     &__drop-down {
         margin-left: 8px;
-        width: auto;
+        width: auto !important;
         margin-bottom: 0 !important;
     }
     &__filter {
-        min-width: 22.8rem;
-        margin-top: 0;
+        min-width: 22.8rem !important;
+        margin-top: 0 !important;
 
-        &-display {
+        .payment-agent__filter-display {
             min-height: 3.2rem;
             min-width: 22.8rem;
+            justify-content: left;
         }
     }
     &__accordion-content {

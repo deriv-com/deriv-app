@@ -665,6 +665,13 @@
         <category name="Miscellaneous" id="misc" description="Miscellaneous blocks">
             <block type="loader"></block>
             <block type="block_holder"></block>
+            <block type="console">
+                <value name="MESSAGE">
+                    <shadow type="text">
+                        <field name="TEXT">abc</field>
+                    </shadow>
+                </value>
+            </block>
         </category>
     </category>
 

@@ -54,11 +54,11 @@ const AccountTransferNote = ({
         </AccountTransferBullet>
         <AccountTransferBullet>
             <Localize
-                i18n_default_text='We’ll charge a {{transfer_fee}}% transfer fee, or {{currency}} {{minimum_fee}}, whichever is higher.'
+                i18n_default_text='We’ll charge a {{transfer_fee}}% transfer fee, or {{minimum_fee}} {{currency}}, whichever is higher.'
                 values={{
                     transfer_fee,
-                    currency,
                     minimum_fee,
+                    currency: CurrencyUtils.getCurrencyDisplayCode(currency),
                 }}
             />
         </AccountTransferBullet>
@@ -207,6 +207,7 @@ class AccountTransferForm extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     className='account-transfer__transfer-from'
                                                     classNameDisplay='cashier__drop-down-display'
                                                     label={localize('From')}
@@ -244,6 +245,7 @@ class AccountTransferForm extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     className='account-transfer__transfer-to'
                                                     classNameDisplay='cashier__drop-down-display'
                                                     label={localize('To')}

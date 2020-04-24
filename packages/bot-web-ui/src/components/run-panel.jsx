@@ -120,6 +120,7 @@ class RunPanel extends React.PureComponent {
                 className='run-panel'
                 is_open={this.props.is_drawer_open}
                 toggleDrawer={this.props.toggleDrawer}
+                contentClassName='run-panel__content'
                 footer={footer}
             >
                 {content}

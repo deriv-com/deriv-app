@@ -400,7 +400,7 @@ Blockly.Blocks.trade_definition_tradeoptions_payout = Blockly.Blocks.trade_defin
 
 Blockly.JavaScript.trade_definition_tradeoptions = block => {
     const amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT') || '0';
-    const currency = block.getFieldValue('CURRENCY_LIST');
+    const { currency } = DBotStore.instance.client;
     const duration_type = block.getFieldValue('DURATIONTYPE_LIST') || '0';
     const duration_value = Blockly.JavaScript.valueToCode(block, 'DURATION') || '0';
 

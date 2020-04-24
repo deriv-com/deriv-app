@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Button, DesktopWrapper, Icon, MobileWrapper } from '@deriv/components';
+import { Button, Icon } from '@deriv/components';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
@@ -21,23 +22,13 @@ class PaymentAgentReceipt extends React.Component {
     render() {
         const { currency, loginid, receipt, resetPaymentAgent } = this.props;
 
-        const payment_agent = receipt.payment_agent_name || receipt.payment_agent_id;
         const currency_lowercase = currency.toLowerCase();
 
         return (
             <div className='cashier__wrapper--align-left payment-agent__receipt '>
                 <div className='cashier__success'>
                     <h2 className='cashier__header'>
-                        <DesktopWrapper>
-                            <Localize
-                                i18n_default_text='Your funds have been transferred to {{payment_agent}}.'
-                                values={{ payment_agent }}
-                                options={{ interpolation: { escapeValue: false } }}
-                            />
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <Localize i18n_default_text='Your funds have been transferred.' />
-                        </MobileWrapper>
+                        <Localize i18n_default_text='Your funds have been transferred' />
                     </h2>
                     <div className='cashier__transferred-amount cashier__text--bold'>
                         <span className={classNames('symbols', `symbols--${currency_lowercase}`)} />
@@ -46,7 +37,10 @@ class PaymentAgentReceipt extends React.Component {
                     <div className='cashier__transferred-details-wrapper'>
                         <Icon icon={`IcCurrency-${currency_lowercase}`} />
                         <span className='cashier__transferred-details'>
-                            <span className='cashier__text--bold'>{currency}</span>&nbsp;(
+                            <span className='cashier__text--bold'>
+                                {CurrencyUtils.getCurrencyDisplayCode(currency)}
+                            </span>
+                            &nbsp;(
                             {loginid})
                         </span>
                         <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
@@ -98,7 +92,7 @@ class PaymentAgentReceipt extends React.Component {
                     <Button
                         className='cashier__form-submit-button cashier__done-button'
                         has_effect
-                        text={localize('Done')}
+                        text={localize('Make a new transfer')}
                         onClick={resetPaymentAgent}
                         primary
                         large

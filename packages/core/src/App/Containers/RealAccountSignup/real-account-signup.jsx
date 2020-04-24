@@ -1,49 +1,18 @@
 import classNames from 'classnames';
-import { Icon, Button, Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
+import { Icon, Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
-import { getDerivComLink } from '_common/url';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
+import SignupErrorContent from './signup-error-content.jsx';
 import SuccessDialog from '../Modals/success-dialog.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
-
-const ErrorModal = ({ message, code, openPersonalDetails }) => {
-    return (
-        <div className='account-wizard--error'>
-            <Icon icon='IcAccountError' size={115} />
-            <h1>
-                <Localize i18n_default_text='Whoops!' />
-            </h1>
-            <p>{localize(message)}</p>
-            {code !== 'InvalidPhone' && (
-                <a
-                    href={getDerivComLink('help-centre')}
-                    type='button'
-                    className='dc-btn dc-btn--primary dc-btn__medium'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                >
-                    <span className='dc-btn__text'>
-                        <Localize i18n_default_text='Go To Help Centre' />
-                    </span>
-                </a>
-            )}
-            {code === 'InvalidPhone' && (
-                <Button primary onClick={openPersonalDetails}>
-                    <Localize i18n_default_text='Try again using a different number' />
-                </Button>
-            )}
-        </div>
-    );
-};
-
-const LoadingModal = () => <Loading is_fullscreen={false} />;
 
 class RealAccountSignup extends Component {
     constructor(props) {
@@ -99,14 +68,14 @@ class RealAccountSignup extends Component {
                     ),
                 },
                 {
-                    value: () => <LoadingModal />,
+                    value: () => <Loading is_fullscreen={false} />,
                 },
                 {
                     value: () => (
-                        <ErrorModal
+                        <SignupErrorContent
                             message={this.props.state_value.error_message}
                             code={this.props.state_value.error_code}
-                            openPersonalDetails={this.openPersonalDetails}
+                            onConfirm={this.openPersonalDetails}
                         />
                     ),
                 },
@@ -129,6 +98,7 @@ class RealAccountSignup extends Component {
             null,
             null,
             localize('Add a real account'),
+            localize('Create a DMT5 real Advanced account'),
         ];
     }
 
@@ -153,7 +123,7 @@ class RealAccountSignup extends Component {
                 <Localize
                     i18n_default_text='<0>You have added a Deriv {{currency}} account.</0><0>Make a deposit now to start trading.</0>'
                     values={{
-                        currency: currency.toUpperCase(),
+                        currency: CurrencyUtils.getCurrencyDisplayCode(currency),
                     }}
                     components={[<p key={currency} />]}
                 />
@@ -234,6 +204,8 @@ class RealAccountSignup extends Component {
         const { is_real_acc_signup_on } = this.props;
         const title = this.labels[this.active_modal_index];
         const Body = this.state.modal_content[this.active_modal_index].value;
+        const has_close_icon =
+            this.active_modal_index < 2 || this.active_modal_index === 5 || this.active_modal_index === 6;
 
         return (
             <>
@@ -246,7 +218,7 @@ class RealAccountSignup extends Component {
                                 this.active_modal_index >= 2 && this.active_modal_index < 5,
                         })}
                         is_open={is_real_acc_signup_on}
-                        has_close_icon={this.active_modal_index < 2 || this.active_modal_index === 5}
+                        has_close_icon={has_close_icon}
                         title={title}
                         toggleModal={this.closeModal}
                         height={this.modal_height}
@@ -272,12 +244,11 @@ class RealAccountSignup extends Component {
 }
 
 export default connect(({ ui, client }) => ({
-    available_crypto_currencies: client.available_crypto_currencies,
-    can_change_fiat_currency: client.can_change_fiat_currency,
     has_real_account: client.has_active_real_account,
     currency: client.currency,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     closeRealAccountSignup: ui.closeRealAccountSignup,
+    closeSignupAndOpenCashier: ui.closeSignupAndOpenCashier,
     setParams: ui.setRealAccountSignupParams,
     state_value: ui.real_account_signup,
 }))(withRouter(RealAccountSignup));

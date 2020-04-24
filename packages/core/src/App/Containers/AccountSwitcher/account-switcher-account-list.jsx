@@ -43,11 +43,7 @@ const AccountList = ({
                     <div className='acc-switcher__loginid-text'>{loginid}</div>
                 </span>
                 {has_balance && (
-                    <span
-                        className={classNames('acc-switcher__balance', {
-                            'acc-switcher__balance--virtual': is_virtual,
-                        })}
-                    >
+                    <span className='acc-switcher__balance'>
                         {currency && (
                             <Money
                                 currency={currency}
@@ -81,7 +77,7 @@ const CurrencyDisplay = ({ currency, is_virtual }) => {
     if (!currency) {
         return <Localize i18n_default_text='Real' />;
     }
-    return currency.toUpperCase();
+    return CurrencyUtils.getCurrencyDisplayCode(currency);
 };
 
 const AccountDisplay = ({ account_type }) => <div>{getMT5AccountDisplay(account_type)}</div>;

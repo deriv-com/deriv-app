@@ -2,6 +2,7 @@ import { Checkbox, RadioGroup } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import MediaItem, { MediaHeading, MediaIcon, MediaDescription } from 'App/Components/Elements/Media';
 import ChartPositionEnabledLightIcon from 'Assets/SvgComponents/settings/bottom.svg';
 
@@ -123,6 +124,16 @@ ChartSettings.propTypes = {
     is_dark_mode: PropTypes.bool,
     is_layout_default: PropTypes.bool,
     setChartLayout: PropTypes.func,
+    toggleAsset: PropTypes.func,
+    toggleCountdown: PropTypes.func,
 };
 
-export default ChartSettings;
+export default connect(({ ui }) => ({
+    is_asset_visible: ui.is_chart_asset_info_visible,
+    is_countdown_visible: ui.is_chart_countdown_visible,
+    is_dark_mode: ui.is_dark_mode_on,
+    is_layout_default: ui.is_chart_layout_default,
+    setAsset: ui.setChartAssetInfo,
+    setCountdown: ui.setChartCountdown,
+    setChartLayout: ui.setChartLayout,
+}))(ChartSettings);

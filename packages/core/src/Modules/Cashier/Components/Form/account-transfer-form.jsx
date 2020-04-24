@@ -54,11 +54,11 @@ const AccountTransferNote = ({
         </AccountTransferBullet>
         <AccountTransferBullet>
             <Localize
-                i18n_default_text='We’ll charge a {{transfer_fee}}% transfer fee, or {{currency}} {{minimum_fee}}, whichever is higher.'
+                i18n_default_text='We’ll charge a {{transfer_fee}}% transfer fee, or {{minimum_fee}} {{currency}}, whichever is higher.'
                 values={{
                     transfer_fee,
-                    currency,
                     minimum_fee,
+                    currency: CurrencyUtils.getCurrencyDisplayCode(currency),
                 }}
             />
         </AccountTransferBullet>

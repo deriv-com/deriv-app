@@ -34,7 +34,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 {
                     type: 'field_label',
                     name: 'CURRENCY_LIST',
-                    text: config.lists.CURRENCY[0],
+                    text: CurrencyUtils.getCurrencyDisplayCode(config.lists.CURRENCY[0]),
                 },
                 {
                     type: 'input_value',
@@ -357,8 +357,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     },
     setCurrency() {
         const currency_field = this.getField('CURRENCY_LIST');
-        const { client } = DBotStore.instance;
-        currency_field.setText((client && client.currency) || 'USD');
+        const { currency } = DBotStore.instance.client;
+        currency_field.setText(CurrencyUtils.getCurrencyDisplayCode(currency));
     },
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {

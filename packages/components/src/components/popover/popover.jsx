@@ -107,7 +107,7 @@ class Popover extends React.PureComponent {
                                               break;
                                           }
                                           case 'right': {
-                                              left_offset = targetReact.width + margin;
+                                              left_offset = popoverRect.width + margin;
                                               top_offset = 0;
                                               break;
                                           }
@@ -127,6 +127,8 @@ class Popover extends React.PureComponent {
                                               top_offset = targetRect.height + margin;
                                               break;
                                           }
+                                          default:
+                                              break;
                                       }
                                       return {
                                           top: top_offset,

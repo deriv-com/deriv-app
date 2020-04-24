@@ -290,7 +290,7 @@ class AccountSwitcher extends React.Component {
                                 </div>
                             ) : (
                                 <React.Fragment>
-                                    {this.demo_mt5.length && (
+                                    {this.demo_mt5.length ? (
                                         <div className='acc-switcher__accounts'>
                                             {this.demo_mt5.map(account => (
                                                 <AccountList
@@ -306,6 +306,8 @@ class AccountSwitcher extends React.Component {
                                                 />
                                             ))}
                                         </div>
+                                    ) : (
+                                        undefined
                                     )}
                                     {this.remaining_demo_mt5.map(account => (
                                         <div key={account.title} className='acc-switcher__new-account'>
@@ -412,7 +414,7 @@ class AccountSwitcher extends React.Component {
                                 </div>
                             ) : (
                                 <React.Fragment>
-                                    {this.real_mt5.length && (
+                                    {this.real_mt5.length ? (
                                         <div className='acc-switcher__accounts'>
                                             {this.real_mt5.map(account => (
                                                 <AccountList
@@ -427,6 +429,8 @@ class AccountSwitcher extends React.Component {
                                                 />
                                             ))}
                                         </div>
+                                    ) : (
+                                        undefined
                                     )}
                                     {this.remaining_real_mt5.map(account => (
                                         <div key={account.title} className='acc-switcher__new-account'>

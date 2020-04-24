@@ -40,6 +40,7 @@ class MT5Dashboard extends React.Component {
 
     componentDidUpdate(prev_props) {
         this.updateActiveIndex();
+        this.props.checkShouldOpenAccount();
         if (prev_props.is_mt5_allowed !== this.props.is_mt5_allowed && !this.props.is_mt5_allowed) {
             this.history.push(routes.trade);
         }
@@ -185,6 +186,7 @@ class MT5Dashboard extends React.Component {
 export default withRouter(
     connect(({ client, modules, ui }) => ({
         beginRealSignupForMt5: modules.mt5.beginRealSignupForMt5,
+        checkShouldOpenAccount: modules.mt5.checkShouldOpenAccount,
         createMT5Account: modules.mt5.createMT5Account,
         current_list: modules.mt5.current_list,
         is_logged_in: client.is_logged_in,

@@ -70,7 +70,7 @@ export default class MT5Store extends BaseStore {
     }
 
     // other platforms can redirect to here using account switcher's `Add` account button
-    // so in that case we should open the corresponding account opening modal on load
+    // so in that case we should open the corresponding account opening modal on load/component update
     checkShouldOpenAccount() {
         const account_type = sessionStorage.getItem('open_mt5_account_type');
         if (account_type) {

@@ -122,7 +122,6 @@ class RunPanel extends React.PureComponent {
                 toggleDrawer={this.props.toggleDrawer}
                 contentClassName='run-panel__content'
                 footer={footer}
-                footerHeight='156px'
             >
                 {content}
             </Drawer>

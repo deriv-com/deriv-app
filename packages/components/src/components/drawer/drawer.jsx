@@ -55,22 +55,9 @@ class Drawer extends React.PureComponent {
                 })}
             >
                 <div className='dc-drawer__container'>
-                    {header && (
-                        <div className='dc-drawer__header' style={{ height: headerHeight }}>
-                            {header}
-                        </div>
-                    )}
-                    <div
-                        className={classNames('dc-drawer__content', contentClassName)}
-                        style={{ height: contentHeight }}
-                    >
-                        {children}
-                    </div>
-                    {footer && (
-                        <div className='dc-drawer__footer' style={{ height: footerHeight }}>
-                            {footer}
-                        </div>
-                    )}
+                    {header && <div className='dc-drawer__header'>{header}</div>}
+                    <div className={classNames('dc-drawer__content', contentClassName)}>{children}</div>
+                    {footer && <div className='dc-drawer__footer'>{footer}</div>}
                 </div>
                 <div
                     className={classNames('dc-drawer__toggle', {

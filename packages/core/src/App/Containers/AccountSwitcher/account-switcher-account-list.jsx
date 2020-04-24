@@ -77,7 +77,7 @@ const CurrencyDisplay = ({ currency, is_virtual }) => {
     if (!currency) {
         return <Localize i18n_default_text='Real' />;
     }
-    return currency.toUpperCase();
+    return CurrencyUtils.getCurrencyDisplayCode(currency);
 };
 
 const AccountDisplay = ({ account_type }) => <div>{getMT5AccountDisplay(account_type)}</div>;

@@ -10,6 +10,7 @@ import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import { connect } from 'Stores/connect';
+import { clientNotifications } from 'Stores/Helpers/client-notifications';
 import { header_links } from 'App/Constants/header-links';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
@@ -20,6 +21,17 @@ class Header extends React.Component {
     onClickDeposit = () => {
         this.props.history.push(routes.cashier_deposit);
     };
+
+    // eslint-disable-next-line class-methods-use-this
+    componentWillUnmount() {
+        document.removeEventListener('UpdateAvailable');
+    }
+
+    componentDidMount() {
+        document.addEventListener('UpdateAvailable', () => {
+            this.props.addNotificationMessage(clientNotifications().new_version_available);
+        });
+    }
 
     render() {
         const {
@@ -209,4 +221,5 @@ export default connect(({ client, common, ui, modules }) => ({
     toggleAccountsDialog: ui.toggleAccountsDialog,
     setDarkMode: ui.setDarkMode,
     toggleNotifications: ui.toggleNotificationsModal,
+    addNotificationMessage: ui.addNotificationMessage,
 }))(withRouter(Header));

@@ -23,6 +23,7 @@ class SelectNative extends Component {
             list_items,
             value,
             label,
+            placeholder,
             use_text,
             error,
             hint,
@@ -60,25 +61,33 @@ class SelectNative extends Component {
                         </div>
                         <Icon icon='IcChevronDown' className='dc-select-native__arrow' />
                         <select className='dc-select-native__picker' value={value} disabled={disabled} {...props}>
-                            {Array.isArray(list_items)
-                                ? list_items.map((option, idx) => (
-                                      <option key={idx} value={use_text ? option.text : option.value}>
-                                          {option.nativepicker_text || option.text}
-                                      </option>
-                                  ))
-                                : Object.keys(list_items).map(key => (
-                                      <optgroup key={key} label={key}>
-                                          {list_items[key].map((option, idx) => (
-                                              <option
-                                                  key={idx}
-                                                  value={use_text ? option.text : option.value}
-                                                  disabled={option.disabled}
-                                              >
-                                                  {option.nativepicker_text || option.text}
-                                              </option>
-                                          ))}
-                                      </optgroup>
-                                  ))}
+                            {Array.isArray(list_items) ? (
+                                <React.Fragment>
+                                    {/* In native select, first option is selected by default. 
+                                        Added an empty option to avoid it from selecting first item 
+                                        from list_items provided */}
+                                    <option value=''>{placeholder}</option>
+                                    {list_items.map((option, idx) => (
+                                        <option key={idx} value={use_text ? option.text : option.value}>
+                                            {option.nativepicker_text || option.text}
+                                        </option>
+                                    ))}
+                                </React.Fragment>
+                            ) : (
+                                Object.keys(list_items).map(key => (
+                                    <optgroup key={key} label={key}>
+                                        {list_items[key].map((option, idx) => (
+                                            <option
+                                                key={idx}
+                                                value={use_text ? option.text : option.value}
+                                                disabled={option.disabled}
+                                            >
+                                                {option.nativepicker_text || option.text}
+                                            </option>
+                                        ))}
+                                    </optgroup>
+                                ))
+                            )}
                         </select>
                         {error && <FieldError message={error} />}
                     </div>

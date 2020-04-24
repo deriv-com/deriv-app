@@ -119,8 +119,9 @@ const ContractInfo = ({
                     alignment='left'
                     icon='info'
                     id={`dt_purchase_${type.toLowerCase()}_info`}
-                    margin={210}
+                    margin={220}
                     message={has_error_or_not_loaded ? '' : message}
+                    relative_render
                 />
             </DesktopWrapper>
         </div>

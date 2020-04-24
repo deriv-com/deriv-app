@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
 import { withRouter } from 'react-router';
-import { Button, Dropdown, Modal, Icon } from '@deriv/components';
+import { Button, Dropdown, Modal, Icon, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { isMobile, isDesktop } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -284,131 +284,251 @@ class FinancialAssessment extends React.Component {
                             )}
                             <LeaveConfirm onDirty={isMobile() ? this.showForm : null} />
                             {show_form && (
-                                <form className='account-form' onSubmit={handleSubmit}>
+                                <form
+                                    className='account-form account-form__financial-assessment'
+                                    onSubmit={handleSubmit}
+                                >
                                     <FormBody scroll_offset={isMobile() ? '200px' : '80px'}>
                                         <FormSubHeader
                                             title={localize('Financial information')}
                                             subtitle={isDesktop() && `(${localize('All fields are required')})`}
                                         />
                                         <fieldset className='account-form__fieldset'>
-                                            <Dropdown
-                                                placeholder={localize('Source of income')}
-                                                is_align_text_left
-                                                name='income_source'
-                                                list={income_source_list}
-                                                value={values.income_source}
-                                                onChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                is_nativepicker={isMobile()}
-                                                error={touched.income_source && errors.income_source}
-                                            />
+                                            <DesktopWrapper>
+                                                <Dropdown
+                                                    placeholder={localize('Source of income')}
+                                                    is_align_text_left
+                                                    name='income_source'
+                                                    list={income_source_list}
+                                                    value={values.income_source}
+                                                    onChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    error={touched.income_source && errors.income_source}
+                                                />
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    placeholder={localize('Please select')}
+                                                    name='income_source'
+                                                    label={localize('Source of income')}
+                                                    list_items={income_source_list}
+                                                    value={values.income_source}
+                                                    use_text={true}
+                                                    error={touched.income_source && errors.income_source}
+                                                    onChange={handleChange}
+                                                />
+                                            </MobileWrapper>
                                         </fieldset>
                                         <fieldset className='account-form__fieldset'>
-                                            <Dropdown
-                                                placeholder={localize('Employment status')}
-                                                is_align_text_left
-                                                name='employment_status'
-                                                list={employment_status_list}
-                                                value={values.employment_status}
-                                                onChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                is_nativepicker={isMobile()}
-                                                error={touched.employment_status && errors.employment_status}
-                                            />
+                                            <DesktopWrapper>
+                                                <Dropdown
+                                                    placeholder={localize('Employment status')}
+                                                    is_align_text_left
+                                                    name='employment_status'
+                                                    list={employment_status_list}
+                                                    value={values.employment_status}
+                                                    onChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    error={touched.employment_status && errors.employment_status}
+                                                />
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    placeholder={localize('Please select')}
+                                                    name='employment_status'
+                                                    label={localize('Employment status')}
+                                                    list_items={employment_status_list}
+                                                    value={values.employment_status}
+                                                    use_text={true}
+                                                    error={touched.employment_status && errors.employment_status}
+                                                    onChange={handleChange}
+                                                />
+                                            </MobileWrapper>
                                         </fieldset>
                                         <fieldset className='account-form__fieldset'>
-                                            <Dropdown
-                                                placeholder={localize('Industry of employment')}
-                                                is_align_text_left
-                                                name='employment_industry'
-                                                list={employment_industry_list}
-                                                value={values.employment_industry}
-                                                onChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                is_nativepicker={isMobile()}
-                                                error={touched.employment_industry && errors.employment_industry}
-                                            />
+                                            <DesktopWrapper>
+                                                <Dropdown
+                                                    placeholder={localize('Industry of employment')}
+                                                    is_align_text_left
+                                                    name='employment_industry'
+                                                    list={employment_industry_list}
+                                                    value={values.employment_industry}
+                                                    onChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    error={touched.employment_industry && errors.employment_industry}
+                                                />
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    placeholder={localize('Please select')}
+                                                    name='employment_industry'
+                                                    label={localize('Industry of employment')}
+                                                    list_items={employment_industry_list}
+                                                    value={values.employment_industry}
+                                                    use_text={true}
+                                                    error={touched.employment_industry && errors.employment_industry}
+                                                    onChange={handleChange}
+                                                />
+                                            </MobileWrapper>
                                         </fieldset>
                                         <fieldset className='account-form__fieldset'>
-                                            <Dropdown
-                                                className='account-form__occupation'
-                                                placeholder={localize('Occupation')}
-                                                is_align_text_left
-                                                name='occupation'
-                                                list={occupation_list}
-                                                value={values.occupation}
-                                                onChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                is_nativepicker={isMobile()}
-                                                error={touched.occupation && errors.occupation}
-                                            />
+                                            <DesktopWrapper>
+                                                <Dropdown
+                                                    className='account-form__occupation'
+                                                    placeholder={localize('Occupation')}
+                                                    is_align_text_left
+                                                    name='occupation'
+                                                    list={occupation_list}
+                                                    value={values.occupation}
+                                                    onChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    error={touched.occupation && errors.occupation}
+                                                />
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    placeholder={localize('Please select')}
+                                                    name='occupation'
+                                                    label={localize('Occupation')}
+                                                    list_items={occupation_list}
+                                                    value={values.occupation}
+                                                    use_text={true}
+                                                    error={touched.occupation && errors.occupation}
+                                                    onChange={handleChange}
+                                                />
+                                            </MobileWrapper>
                                         </fieldset>
                                         <fieldset className='account-form__fieldset'>
-                                            <Dropdown
-                                                placeholder={localize('Source of wealth')}
-                                                is_align_text_left
-                                                name='source_of_wealth'
-                                                list={source_of_wealth_list}
-                                                value={values.source_of_wealth}
-                                                onChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                is_nativepicker={isMobile()}
-                                                error={touched.source_of_wealth && errors.source_of_wealth}
-                                            />
+                                            <DesktopWrapper>
+                                                <Dropdown
+                                                    placeholder={localize('Source of wealth')}
+                                                    is_align_text_left
+                                                    name='source_of_wealth'
+                                                    list={source_of_wealth_list}
+                                                    value={values.source_of_wealth}
+                                                    onChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    error={touched.source_of_wealth && errors.source_of_wealth}
+                                                />
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    placeholder={localize('Please select')}
+                                                    name='source_of_wealth'
+                                                    label={localize('Source of wealth')}
+                                                    list_items={source_of_wealth_list}
+                                                    value={values.source_of_wealth}
+                                                    use_text={true}
+                                                    error={touched.source_of_wealth && errors.source_of_wealth}
+                                                    onChange={handleChange}
+                                                />
+                                            </MobileWrapper>
                                         </fieldset>
                                         <fieldset className='account-form__fieldset'>
-                                            <Dropdown
-                                                placeholder={localize('Level of education')}
-                                                is_align_text_left
-                                                name='education_level'
-                                                list={education_level_list}
-                                                value={values.education_level}
-                                                onChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                is_nativepicker={isMobile()}
-                                                error={touched.education_level && errors.education_level}
-                                            />
+                                            <DesktopWrapper>
+                                                <Dropdown
+                                                    placeholder={localize('Level of education')}
+                                                    is_align_text_left
+                                                    name='education_level'
+                                                    list={education_level_list}
+                                                    value={values.education_level}
+                                                    onChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    error={touched.education_level && errors.education_level}
+                                                />
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    placeholder={localize('Please select')}
+                                                    name='education_level'
+                                                    label={localize('Level of education')}
+                                                    list_items={education_level_list}
+                                                    value={values.education_level}
+                                                    use_text={true}
+                                                    error={touched.education_level && errors.education_level}
+                                                    onChange={handleChange}
+                                                />
+                                            </MobileWrapper>
                                         </fieldset>
                                         <fieldset className='account-form__fieldset'>
-                                            <Dropdown
-                                                placeholder={localize('Net annual income')}
-                                                is_align_text_left
-                                                name='net_income'
-                                                list={net_income_list}
-                                                value={values.net_income}
-                                                onChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                is_nativepicker={isMobile()}
-                                                error={touched.net_income && errors.net_income}
-                                            />
+                                            <DesktopWrapper>
+                                                <Dropdown
+                                                    placeholder={localize('Net annual income')}
+                                                    is_align_text_left
+                                                    name='net_income'
+                                                    list={net_income_list}
+                                                    value={values.net_income}
+                                                    onChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    error={touched.net_income && errors.net_income}
+                                                />
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    placeholder={localize('Please select')}
+                                                    name='net_income'
+                                                    label={localize('Net annual income')}
+                                                    list_items={net_income_list}
+                                                    value={values.net_income}
+                                                    use_text={true}
+                                                    error={touched.net_income && errors.net_income}
+                                                    onChange={handleChange}
+                                                />
+                                            </MobileWrapper>
                                         </fieldset>
                                         <fieldset className='account-form__fieldset'>
-                                            <Dropdown
-                                                placeholder={localize('Estimated net worth')}
-                                                is_alignment_top
-                                                is_align_text_left
-                                                name='estimated_worth'
-                                                list={estimated_worth_list}
-                                                value={values.estimated_worth}
-                                                onChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                is_nativepicker={isMobile()}
-                                                error={touched.estimated_worth && errors.estimated_worth}
-                                            />
+                                            <DesktopWrapper>
+                                                <Dropdown
+                                                    placeholder={localize('Estimated net worth')}
+                                                    is_alignment_top
+                                                    is_align_text_left
+                                                    name='estimated_worth'
+                                                    list={estimated_worth_list}
+                                                    value={values.estimated_worth}
+                                                    onChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    error={touched.estimated_worth && errors.estimated_worth}
+                                                />
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    placeholder={localize('Please select')}
+                                                    name='estimated_worth'
+                                                    label={localize('Estimated net worth')}
+                                                    list_items={estimated_worth_list}
+                                                    value={values.estimated_worth}
+                                                    use_text={true}
+                                                    error={touched.estimated_worth && errors.estimated_worth}
+                                                    onChange={handleChange}
+                                                />
+                                            </MobileWrapper>
                                         </fieldset>
                                         <fieldset className='account-form__fieldset'>
-                                            <Dropdown
-                                                placeholder={localize('Anticipated account turnover')}
-                                                is_alignment_top
-                                                is_align_text_left
-                                                name='account_turnover'
-                                                list={account_turnover_list}
-                                                value={values.account_turnover}
-                                                onChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                is_nativepicker={isMobile()}
-                                                error={touched.account_turnover && errors.account_turnover}
-                                            />
+                                            <DesktopWrapper>
+                                                <Dropdown
+                                                    placeholder={localize('Anticipated account turnover')}
+                                                    is_alignment_top
+                                                    is_align_text_left
+                                                    name='account_turnover'
+                                                    list={account_turnover_list}
+                                                    value={values.account_turnover}
+                                                    onChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    error={touched.account_turnover && errors.account_turnover}
+                                                />
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    placeholder={localize('Please select')}
+                                                    name='account_turnover'
+                                                    label={localize('Anticipated account turnover')}
+                                                    list_items={account_turnover_list}
+                                                    value={values.account_turnover}
+                                                    use_text={true}
+                                                    error={touched.account_turnover && errors.account_turnover}
+                                                    onChange={handleChange}
+                                                />
+                                            </MobileWrapper>
                                         </fieldset>
                                     </FormBody>
                                     <FormFooter>

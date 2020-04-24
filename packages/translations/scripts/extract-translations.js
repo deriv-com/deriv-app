@@ -7,6 +7,7 @@ const crc32 = require('crc-32').str;
 const fs = require('fs');
 const glob = require('glob');
 const static_strings = require('./app-static-strings');
+const getStringsFromInput = require('./extract-string').getStringsFromInput;
 
 program
     .version('0.1.0')
@@ -29,7 +30,6 @@ const getKeyHash = string => crc32(string);
     try {
         const file_paths = [];
         const messages = [];
-        const i18n_marker = new RegExp(/i18n_default_text=(['"])(.*?)(?<!\\)\1|localize\(\s*(['"])\s*(.*?)\s*(?<!\\)\3\s*/gs);
         const messages_json = {};
         // Bot: Find all file types listed in `globs`
         for (let i = 0; i < packages_with_translations.length; i++) {
@@ -47,12 +47,7 @@ const getKeyHash = string => crc32(string);
 
             try {
                 const file = fs.readFileSync(file_paths[i], 'utf8');
-                let result = i18n_marker.exec(file);
-                while (result != null) {
-                    const extracted = result[2] || result[4]; // If it captures `text=` then it will be index 2, else its index 4 which captures `localize`
-                    messages.push(extracted.replace(/\\/g, ''));
-                    result = i18n_marker.exec(file);
-                }
+                messages.push(...getStringsFromInput(file));
             } catch (e) {
                 console.log(e);
             }

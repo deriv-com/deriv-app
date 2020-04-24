@@ -45,8 +45,7 @@ class Drawer extends React.PureComponent {
     };
 
     render() {
-        const { children, className, footer, header, footerHeight, headerHeight, contentClassName } = this.props;
-        const contentHeight = `calc(100% - ${headerHeight} - ${footerHeight})`;
+        const { children, className, footer, header, contentClassName } = this.props;
 
         return (
             <div

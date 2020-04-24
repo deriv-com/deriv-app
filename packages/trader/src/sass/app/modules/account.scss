@@ -239,6 +239,11 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
+        &__financial-assessment {
+            .dc-select-native__placeholder {
+                background-color: var(--general-main-1);
+            }
+        }
         &__occupation {
             .dc-native-select__select,
             .dc-dropdown__display-text {

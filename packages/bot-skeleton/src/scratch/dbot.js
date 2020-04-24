@@ -243,11 +243,32 @@ class DBot {
 
         this.workspace.centerOnBlock(error_blocks[0].id);
         error_blocks.forEach(block => {
-            const message = { name: 'BlocksError', message: block.error_message };
-            globalObserver.emit('Error', message);
+            globalObserver.emit('ui.log.error', block.error_message);
         });
 
         return false;
+    }
+
+    centerAndHighlightBlock(block_id, should_animate = false) {
+        const block_to_highlight = this.workspace.getBlockById(block_id);
+
+        if (!block_to_highlight) {
+            return;
+        }
+
+        const all_blocks = this.workspace.getAllBlocks();
+
+        all_blocks.forEach(block => block.setErrorHighlighted(false));
+        if (should_animate) {
+            block_to_highlight.blink();
+        }
+        block_to_highlight.setErrorHighlighted(true);
+
+        this.workspace.centerOnBlock(block_to_highlight.id);
+    }
+
+    unHighlightAllBlocks() {
+        this.workspace.getAllBlocks().forEach(block => block.setErrorHighlighted(false));
     }
 
     /**

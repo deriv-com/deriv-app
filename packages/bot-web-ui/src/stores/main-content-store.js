@@ -32,6 +32,9 @@ export default class MainContentStore {
     @action.bound
     onMount() {
         window.addEventListener('resize', this.setContainerSize);
+    }
+    @action.bound
+    cached_active_tab() {
         if (getSetting('active_tab')) {
             this.active_tab = getSetting('active_tab');
         }

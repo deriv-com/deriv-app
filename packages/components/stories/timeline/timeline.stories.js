@@ -9,7 +9,7 @@ const stories = storiesOf('Timeline', module);
 
 stories.addDecorator(withKnobs).addDecorator(withInfo);
 
-stories.add('vertical', () => (
+stories.add('basic usage', () => (
     <Theme is_dark={boolean('Theme', true)}>
         <Timeline>
             <div

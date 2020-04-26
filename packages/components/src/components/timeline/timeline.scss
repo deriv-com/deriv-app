@@ -5,7 +5,6 @@
     &__flex {
         display: flex;
         border-left: var(--brand-red-coral) solid 1px;
-        margin-left: 100px;
         position: relative;
 
         &-noborder {
@@ -29,7 +28,7 @@
         position: absolute;
         left: -12px;
 
-        &-span {
+        &--number {
             color: var(--text-prominent);
             font-size: 16px;
             font-weight: bold;

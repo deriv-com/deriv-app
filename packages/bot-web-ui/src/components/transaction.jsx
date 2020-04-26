@@ -24,7 +24,7 @@ const TransactionIconWithText = ({ icon, title, message, className }) => (
 
 const TransactionFieldLoader = () => (
     <ContentLoader
-        className='transactions__loader'
+        className='transactions__loader-text'
         height={10}
         width={80}
         speed={3}
@@ -32,6 +32,19 @@ const TransactionFieldLoader = () => (
         secondaryColor={'var(--general-hover)'}
     >
         <rect x='0' y='0' rx='0' ry='0' width='100' height='12' />
+    </ContentLoader>
+);
+
+const TransactionIconLoader = () => (
+    <ContentLoader
+        className='transactions__loader-icon'
+        speed={3}
+        width={30}
+        height={30}
+        primaryColor={'var(--general-section-1)'}
+        secondaryColor={'var(--general-hover)'}
+    >
+        <rect x='0' y='0' rx='5' ry='5' width='30' height='30' />
     </ContentLoader>
 );
 
@@ -113,10 +126,13 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
         zIndex={popover_zindex.TRANSACTION}
         alignment='left'
         className='transactions__item-wrapper'
-        is_open={active_transaction_id === contract.transaction_ids.buy}
-        message={<PopoverContent contract={contract} />}
+        is_open={contract && active_transaction_id === contract.transaction_ids.buy}
+        message={contract && <PopoverContent contract={contract} />}
     >
-        <div className='transactions__item' onClick={() => setActiveTransactionId(contract.transaction_ids.buy)}>
+        <div
+            className='transactions__item'
+            onClick={contract && (() => setActiveTransactionId(contract.transaction_ids.buy))}
+        >
             {/* TODO: Re-enable when <Icon> is shared.
         <div className='transactions__cell transactions__symbol'>
             <TransactionIconWithText
@@ -125,46 +141,44 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
             />
         </div> */}
             <div className='transactions__cell transactions__trade-type'>
-                <TransactionIconWithText
-                    icon={<IconTradeTypes type={contract.contract_type} />}
-                    title={getContractTypeName(contract)}
-                />
+                {contract ? (
+                    <TransactionIconWithText
+                        icon={<IconTradeTypes type={contract.contract_type} />}
+                        title={getContractTypeName(contract)}
+                    />
+                ) : (
+                    <TransactionIconLoader />
+                )}
             </div>
             <div className='transactions__cell transactions__entry-spot'>
-                <React.Fragment>
-                    <Popover
-                        zIndex={popover_zindex.TRANSACTION}
-                        className='transactions__icon'
-                        alignment='left'
-                        message={localize('Entry spot')}
-                    >
-                        <Icon icon='IcContractEntrySpot' />
-                    </Popover>
-                    {contract.entry_tick || <TransactionFieldLoader />}
-                </React.Fragment>
+                <TransactionIconWithText
+                    icon={<Icon icon='IcContractEntrySpot' />}
+                    title={localize('Entry spot')}
+                    message={(contract && contract.entry_tick) || <TransactionFieldLoader />}
+                />
             </div>
             <div className='transactions__cell transactions__exit-spot'>
-                <React.Fragment>
-                    <Popover
-                        zIndex={popover_zindex.TRANSACTION}
-                        className='transactions__icon'
-                        alignment='left'
-                        message={localize('Exit spot')}
-                    >
-                        <Icon icon='IcContractExitSpot' />
-                    </Popover>
-                    {contract.exit_tick || <TransactionFieldLoader />}
-                </React.Fragment>
+                <TransactionIconWithText
+                    icon={<Icon icon='IcContractExitSpot' />}
+                    title={localize('Exit spot')}
+                    message={(contract && contract.exit_tick) || <TransactionFieldLoader />}
+                />
             </div>
             <div className='transactions__cell transactions__stake'>
                 <TransactionIconWithText
                     icon={<Icon icon='IcContractBuyPrice' />}
                     title={localize('Buy price')}
-                    message={<Money amount={contract.buy_price} currency={contract.currency} />}
+                    message={
+                        contract ? (
+                            <Money amount={contract.buy_price} currency={contract.currency} />
+                        ) : (
+                            <TransactionFieldLoader />
+                        )
+                    }
                 />
             </div>
             <div className='transactions__cell transactions__profit'>
-                {contract.profit ? (
+                {contract && contract.profit ? (
                     <div
                         className={classNames({
                             'transactions__profit--win': contract.profit > 0,

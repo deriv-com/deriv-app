@@ -542,7 +542,7 @@ export default withRouter(
         // TODO: Change this later and make it a separate computed
         has_demo: (client.standpoint.malta || client.standpoint.maltainvest) && !client.standpoint.iom,
         is_account_types_modal_visible: ui.is_account_types_modal_visible,
-        is_dismissible: !client.is_forced_to_have_real_account,
+        is_dismissible: !client.should_have_real_account,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,
         openRealAccountSignup: ui.openRealAccountSignup,

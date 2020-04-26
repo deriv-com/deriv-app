@@ -314,7 +314,7 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get is_forced_to_have_real_account() {
+    get should_have_real_account() {
         return this.standpoint.iom && !this.has_any_real_account && this.residence === 'gb';
     }
 

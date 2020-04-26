@@ -35,8 +35,9 @@ export const hasDurationForCallPutEqual = (contract_type_list, duration_unit, co
         if (found.length > 0) {
             return found[0].rise_fall_equal.some(duration => duration.value === duration_unit)
         }
-        return false;
     }
+
+    return false;
 };
 
 export const isRiseFallEqual = contract_type => /^(rise_fall|rise_fall_equal)$/.test(contract_type);

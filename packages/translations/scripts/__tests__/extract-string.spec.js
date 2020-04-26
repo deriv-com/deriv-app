@@ -1,5 +1,7 @@
+const fs = require('fs');
 const expect = require('chai').expect;
-const { getStringsFromInput } = require('../extract-string');
+const getStringsFromInput = require('../extract-string').getStringsFromInput;
+const getTranslatableFiles = require('../extract-string').getTranslatableFiles;
 
 describe('Regular expression checks', () => {
     it('should extract strings from localize() correctly', () => {
@@ -78,5 +80,27 @@ describe('Regular expression checks', () => {
             "It's time to win.",
             "It's time to {{ status }}, isn't it?",
         ]);
+    });
+
+    it('should not contain calls to localize/<Localize> with backticks "`"', () => {
+        const illegal_i18n_marker = new RegExp(/i18n_default_text=([`])(.*?)(?<!\\)\1|localize\(\s*([`])\s*(.*?)\s*(?<!\\)\3\s*/gs);
+        const file_paths = getTranslatableFiles();
+        const errors = [];
+
+        for (let i = 0; i < file_paths.length; i++) {
+            try {
+                const file = fs.readFileSync(file_paths[i], 'utf8');
+                const messages = getStringsFromInput(file, illegal_i18n_marker);
+
+                if (messages.length) {
+                    errors.push(file_paths[i]);
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+        const error_message = `The file(s) below contain(s) calls to localize/<Localize> with backticks:\n\n\t${errors.join('\n\t')}\n\n\t`;
+        expect(errors, error_message).to.be.empty;
     });
 });

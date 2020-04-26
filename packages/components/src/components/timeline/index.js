@@ -1,4 +1,4 @@
 import Timeline from './timeline.jsx';
-// import './button.scss';
+import './timeline.scss';
 
 export default Timeline;

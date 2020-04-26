@@ -321,7 +321,7 @@ export default class ClientStore extends BaseStore {
     // Shows all possible landing companies of user between all
     @computed
     get standpoint() {
-        let result = {
+        const result = {
             iom: false,
             svg: false,
             malta: false,

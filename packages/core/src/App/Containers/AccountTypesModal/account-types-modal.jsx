@@ -19,8 +19,8 @@ const boxGenerator = ({
     redirectToMt5Real,
     redirectToMt5Demo,
 }) => {
-    // MLT/MF
     if (standpoint.malta && standpoint.maltainvest) {
+        // MLT/MF
         return has_demo ? (
             <Tabs
                 active_index={state.account_type_tab_index}
@@ -44,8 +44,8 @@ const boxGenerator = ({
                 <GamingBox mt5OnClick={redirectToMt5Real} />
             </div>
         );
-    } // MX/MF
-    else if (standpoint.iom && standpoint.maltainvest) {
+    } else if (standpoint.iom && standpoint.maltainvest) {
+        // MX/MF
         return has_demo ? (
             <Tabs
                 active_index={state.account_type_tab_index}
@@ -69,8 +69,8 @@ const boxGenerator = ({
                 <GamingBox no_mt5 mt5OnClick={redirectToMt5Real} />
             </div>
         );
-    } // Only MLT
-    else if (standpoint.malta) {
+    } else if (standpoint.malta) {
+        // Only MLT
         return has_demo ? (
             <Tabs
                 active_index={state.account_type_tab_index}
@@ -91,8 +91,8 @@ const boxGenerator = ({
                 <SyntheticBox mt5OnClick={redirectToMt5Real} />
             </div>
         );
-    } // Only MX
-    else if (standpoint.iom) {
+    } else if (standpoint.iom) {
+        // Only MX
         return has_demo ? (
             <Tabs
                 active_index={state.account_type_tab_index}
@@ -116,8 +116,8 @@ const boxGenerator = ({
                 <GamingBox no_mt5 mt5OnClick={redirectToMt5Real} />
             </div>
         );
-    } //only MF
-    else if (standpoint.maltainvest) {
+    } else if (standpoint.maltainvest) {
+        // only MF
         return has_demo ? (
             <Tabs
                 active_index={state.account_type_tab_index}
@@ -138,9 +138,8 @@ const boxGenerator = ({
                 <FinancialBox mt5OnClick={redirectToMt5Real} />
             </div>
         );
-    } else {
-        throw new Error('Unknown box');
     }
+    throw new Error('Unknown box');
 };
 
 const Box = ({ title, description, footer_text, icons, cards }) => {

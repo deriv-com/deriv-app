@@ -72,6 +72,7 @@ class Popover extends React.PureComponent {
             relative_render,
         } = this.props;
 
+        const has_external_open_state = is_open !== undefined;
         const icon_class_name = classNames(classNameTargetIcon, icon);
 
         return (

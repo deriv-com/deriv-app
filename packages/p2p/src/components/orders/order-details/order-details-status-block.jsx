@@ -13,19 +13,14 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
         is_pending,
         is_refunded,
     } = order_details;
-    const status_type = () => {
-        let status = 'info';
-        if (is_buyer) {
-            is_pending ? (status = 'danger') : is_buyer_confirmed ? (status = 'alert') : '';
-        } else {
-            is_pending ? (status = 'alert') : is_buyer_confirmed ? (status = 'danger') : '';
-        }
-        is_completed ? (status = 'success') : '';
-
-        return status;
-    };
     return (
-        <h2 className={'order-details__header-status order-details__header-status--' + status_type()}>
+        <h2
+            className={classNames('order-details__header-status order-details__header-status--info', {
+                'order-details__header-status--danger': (is_buyer && is_pending) || (!is_buyer && is_buyer_confirmed),
+                'order-details__header-status--alert': (is_buyer && is_buyer_confirmed) || (!is_buyer && is_pending),
+                'order-details__header-status--success': is_completed,
+            })}
+        >
             {is_pending && is_buyer && localize('Pay now')}
             {is_pending && !is_buyer && localize('Wait for payment')}
             {is_buyer_cancelled && is_buyer && localize('Cancelled')}

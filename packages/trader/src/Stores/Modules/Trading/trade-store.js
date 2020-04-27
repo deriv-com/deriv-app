@@ -621,12 +621,6 @@ export default class TradeStore extends BaseStore {
                 obj_new_values.duration = +obj_new_values.duration;
             }
         }
-        // Sets the default value to Amount when Currency has changed from Fiat to Crypto and vice versa.
-        // The source of default values is the website_status response.
-        if (should_forget_first) {
-            this.forgetAllProposal();
-            this.proposal_requests = {};
-        }
         if (is_changed_by_user && /\bcurrency\b/.test(Object.keys(obj_new_values))) {
             const prev_currency =
                 obj_old_values && !ObjectUtils.isEmptyObject(obj_old_values) && obj_old_values.currency
@@ -704,7 +698,7 @@ export default class TradeStore extends BaseStore {
             if (/\bcontract_type\b/.test(Object.keys(new_state))) {
                 this.validateAllProperties();
             }
-            this.debouncedProposal();
+            this.debouncedProposal({ should_forget_first });
         }
     }
 
@@ -761,7 +755,7 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    requestProposal() {
+    requestProposal({ should_forget_first } = {}) {
         const requests = createProposalRequests(this);
 
         if (Object.values(this.validation_errors).some(e => e.length)) {
@@ -769,6 +763,13 @@ export default class TradeStore extends BaseStore {
             this.purchase_info = {};
             this.forgetAllProposal();
             return;
+        }
+
+        // Sets the default value to Amount when Currency has changed from Fiat to Crypto and vice versa.
+        // The source of default values is the website_status response.
+        if (should_forget_first) {
+            this.forgetAllProposal();
+            this.proposal_requests = {};
         }
 
         if (!ObjectUtils.isEmptyObject(requests)) {

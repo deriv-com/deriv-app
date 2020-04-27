@@ -1,4 +1,3 @@
-import { Table } from '@deriv/components';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ButtonToggle } from '@deriv/components';

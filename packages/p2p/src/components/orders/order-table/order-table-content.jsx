@@ -9,8 +9,8 @@ import { requestWS, getModifiedP2POrderList } from 'Utils/websocket';
 import Dp2pContext from 'Components/context/dp2p-context';
 import BuyOrderRowComponent from './order-table-buy-row.jsx';
 import SellOrderRowComponent from './order-table-sell-row.jsx';
-import OrderInfo from '../order-info';
 import OrderTableHeader from './order-table-header.jsx';
+import OrderInfo from '../order-info';
 
 const OrderRowLoader = () => (
     <ContentLoader

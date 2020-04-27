@@ -15,7 +15,6 @@
     &__title {
         max-width: 500px;
         font-size: 14px;
-        margin-bottom: 16px;
         color: var(--text-prominent);
     }
     &__oval {
@@ -35,7 +34,7 @@
         font-weight: bold;
     }
     &__content {
-        margin-bottom: 16px;
+        margin: 16px 0;
         color: var(--text-prominent);
     }
 }

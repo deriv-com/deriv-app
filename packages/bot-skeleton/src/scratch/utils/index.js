@@ -5,8 +5,13 @@ import { config } from '../../constants/config';
 import { observer as globalObserver } from '../../utils/observer';
 import { removeLimitedBlocks } from '../../utils/workspace';
 import { saveWorkspaceToRecent } from '../../utils/local-storage';
+import DBotStore from '../dbot-store';
 
-export const updateWorkspaceName = file_name => {
+export const updateWorkspaceName = () => {
+    const { save_modal } = DBotStore.instance;
+
+    const file_name = save_modal.bot_name ?? config.default_file_name;
+
     if (document.title.indexOf('-') > -1) {
         const string_to_replace = document.title.split('-')[1];
         const new_document_title = document.title.replace(string_to_replace, ` ${file_name}`);
@@ -118,8 +123,9 @@ export const load = ({
 
             const is_main_workspace = workspace === Blockly.derivWorkspace;
             if (is_main_workspace) {
-                updateWorkspaceName(file_name);
+                const { save_modal } = DBotStore.instance;
 
+                save_modal.updateBotName(file_name);
                 workspace.clearUndo();
                 workspace.current_strategy_id = strategy_id || Blockly.utils.genUid();
                 saveWorkspaceToRecent(from);

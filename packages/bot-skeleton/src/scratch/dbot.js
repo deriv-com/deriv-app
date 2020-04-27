@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import './blockly';
-import { hasAllRequiredBlocks, updateDisabledBlocks, updateWorkspaceName } from './utils';
+import { hasAllRequiredBlocks, updateDisabledBlocks } from './utils';
 import main_xml from './xml/main.xml';
 import toolbox_xml from './xml/toolbox.xml';
 import DBotStore from './dbot-store';
@@ -73,8 +73,9 @@ class DBot {
             const event_group = `dbot-load${Date.now()}`;
             Blockly.Events.setGroup(event_group);
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
-            updateWorkspaceName(file_name);
+            const { save_modal } = DBotStore.instance;
 
+            save_modal.updateBotName(file_name);
             this.workspace.cleanUp();
             this.workspace.clearUndo();
 

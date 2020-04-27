@@ -33,6 +33,7 @@ class App extends React.Component {
             core: { client },
             flyout,
             toolbar,
+            save_modal,
             quick_strategy,
             load_modal,
         } = this.root_store;
@@ -43,6 +44,7 @@ class App extends React.Component {
             client,
             flyout,
             toolbar,
+            save_modal,
             toggleStrategyModal,
             handleFileChange,
         };

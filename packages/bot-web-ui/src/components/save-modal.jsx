@@ -9,9 +9,8 @@ import { connect } from '../stores/connect';
 import '../assets/sass/google-drive.scss';
 import '../assets/sass/save-modal.scss';
 
-const initial_option = { is_local: true, save_as_collection: false, botname: config.default_file_name };
-
 const SaveModal = ({
+    bot_name,
     button_status,
     is_authorised,
     is_save_modal_open,
@@ -27,12 +26,20 @@ const SaveModal = ({
         is_open={is_save_modal_open}
         toggleModal={toggleSaveModal}
     >
-        <Formik initialValues={initial_option} validate={validateBotName} onSubmit={onConfirmSave}>
+        <Formik
+            initialValues={{
+                is_local: true,
+                save_as_collection: false,
+                bot_name: bot_name ?? config.default_file_name,
+            }}
+            validate={validateBotName}
+            onSubmit={onConfirmSave}
+        >
             {({ values: { is_local, save_as_collection }, setFieldValue, touched, errors }) => (
                 <Form>
                     <div className='modal__content'>
                         <div className='modal__content-row'>
-                            <Field name='botname'>
+                            <Field name='bot_name'>
                                 {({ field }) => (
                                     <Input
                                         {...field}
@@ -170,6 +177,7 @@ SaveModal.propTypes = {
     onConfirmSave: PropTypes.func,
     onDriveConnect: PropTypes.func,
     toggleSaveModal: PropTypes.func,
+    bot_name: PropTypes.string,
 };
 
 export default connect(({ save_modal, google_drive }) => ({
@@ -180,4 +188,5 @@ export default connect(({ save_modal, google_drive }) => ({
     onDriveConnect: save_modal.onDriveConnect,
     toggleSaveModal: save_modal.toggleSaveModal,
     validateBotName: save_modal.validateBotName,
+    bot_name: save_modal.bot_name,
 }))(SaveModal);

@@ -6,6 +6,7 @@ import { button_status } from '../constants/button-status';
 export default class SaveModalStore {
     @observable is_save_modal_open = false;
     @observable button_status = button_status.NORMAL;
+    @observable bot_name;
 
     constructor(root_store) {
         this.root_store = root_store;
@@ -23,15 +24,15 @@ export default class SaveModalStore {
     validateBotName = values => {
         const errors = {};
 
-        if (values.botname === '') {
-            errors.botname = localize('Field name cannot be empty');
+        if (values.bot_name.trim() === '') {
+            errors.bot_name = localize('Field name cannot be empty');
         }
 
         return errors;
     };
 
     @action.bound
-    async onConfirmSave({ is_local, save_as_collection, botname }) {
+    async onConfirmSave({ is_local, save_as_collection, bot_name }) {
         this.setButtonStatus(button_status.LOADING);
 
         const { saveFile } = this.root_store.google_drive;
@@ -41,10 +42,10 @@ export default class SaveModalStore {
         xml.setAttribute('collection', save_as_collection ? 'true' : 'false');
 
         if (is_local) {
-            save(botname, save_as_collection, xml);
+            save(bot_name, save_as_collection, xml);
         } else {
             await saveFile({
-                name: botname,
+                name: bot_name,
                 content: Blockly.Xml.domToPrettyText(xml),
                 mimeType: 'application/xml',
             });
@@ -52,9 +53,15 @@ export default class SaveModalStore {
             this.setButtonStatus(button_status.COMPLETED);
         }
 
-        updateWorkspaceName(botname);
         saveWorkspaceToRecent(is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
+        this.updateBotName(bot_name);
         this.toggleSaveModal();
+    }
+
+    @action.bound
+    updateBotName(bot_name) {
+        this.bot_name = bot_name;
+        updateWorkspaceName();
     }
 
     @action.bound

@@ -19,7 +19,6 @@ const getTranslatableFiles = () => {
     const globs = ['**/*.js', '**/*.jsx'];
     const file_paths = [];
 
-    // Bot: Find all file types listed in `globs`
     for (let i = 0; i < packages_with_translations.length; i++) {
         for (let j = 0; j < globs.length; j++) {
             let files_found = glob.sync(`/${packages_with_translations[i]}/src/${globs[j]}`, {

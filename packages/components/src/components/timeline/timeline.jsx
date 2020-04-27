@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 
-const FlexWrapper = ({ children, className }) => <div className={className}>{children}</div>;
 const Oval = ({ children }) => {
     return (
         <div className='dc-timeline__oval'>
@@ -17,7 +16,7 @@ const Timeline = ({ children }) => {
     return (
         <div>
             {children.map((child, idx) => (
-                <FlexWrapper
+                <div
                     className={classNames('dc-timeline__flex', {
                         'dc-timeline__flex--no-border': children.length === idx + 1,
                     })}
@@ -25,9 +24,9 @@ const Timeline = ({ children }) => {
                     <Oval>{idx + 1}</Oval>
                     <div className='dc-timeline__container' key={idx}>
                         <Title className='dc-timeline__title' title={child.props.title} />
-                        <FlexWrapper className='dc-timeline__content'>{child}</FlexWrapper>
+                        <div className='dc-timeline__content'>{child}</div>
                     </div>
-                </FlexWrapper>
+                </div>
             ))}
         </div>
     );

@@ -10,8 +10,7 @@ import '../assets/sass/journal.scss';
 const DateItem = ({ date, time }) => {
     return (
         <div>
-            <span className='journal__table--date'>{date}</span>
-            <span className='journal__table--time'>{time}</span>
+            <span className='journal__table--date'>{date}</span> <span className='journal__table--time'>{time}</span>
         </div>
     );
 };

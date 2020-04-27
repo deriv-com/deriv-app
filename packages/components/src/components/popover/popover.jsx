@@ -72,7 +72,6 @@ class Popover extends React.PureComponent {
             relative_render,
         } = this.props;
 
-        const has_external_open_state = is_open !== undefined;
         const icon_class_name = classNames(classNameTargetIcon, icon);
 
         return (
@@ -82,7 +81,7 @@ class Popover extends React.PureComponent {
                 </div>
                 {(this.state.popover_ref || !relative_render) && (
                     <TinyPopover
-                        isOpen={has_external_open_state ? is_open : this.state.is_open}
+                        isOpen={is_open ?? this.state.is_open}
                         position={alignment}
                         transitionDuration={0.25}
                         padding={margin + 8}

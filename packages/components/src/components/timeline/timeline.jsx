@@ -1,11 +1,11 @@
-import React, { Children } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 
 const FlexWrapper = ({ children, className }) => <div className={className}>{children}</div>;
 const Oval = ({ children }) => {
     return (
         <div className='dc-timeline__oval'>
-            <span className='dc-timeline__oval--number'>{children}</span>
+            <span className='dc-timeline__number'>{children}</span>
         </div>
     );
 };
@@ -19,11 +19,11 @@ const Timeline = ({ children }) => {
             {children.map((child, idx) => (
                 <FlexWrapper
                     className={classNames('dc-timeline__flex', {
-                        'dc-timeline__flex-noborder': children.length === idx + 1,
+                        'dc-timeline__flex--no-border': children.length === idx + 1,
                     })}
                 >
                     <Oval>{idx + 1}</Oval>
-                    <div className='dc-timeline' key={idx}>
+                    <div className='dc-timeline__container' key={idx}>
                         <Title className='dc-timeline__title' title={child.props.title} />
                         <FlexWrapper className='dc-timeline__content'>{child}</FlexWrapper>
                     </div>
@@ -32,5 +32,6 @@ const Timeline = ({ children }) => {
         </div>
     );
 };
-
+const Item = ({ children }) => <div>{children}</div>;
+Timeline.Item = Item;
 export default Timeline;

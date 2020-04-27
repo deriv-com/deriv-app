@@ -1,15 +1,16 @@
 .dc-timeline {
-    margin-top: 6px;
-    margin-left: 20px;
-
     &__flex {
         display: flex;
         border-left: var(--brand-red-coral) solid 1px;
         position: relative;
 
-        &-noborder {
+        &--no-border {
             border-left: unset;
         }
+    }
+    &__container {
+        margin-top: 6px;
+        margin-left: 20px;
     }
     &__title {
         max-width: 500px;
@@ -27,12 +28,11 @@
         margin-right: 8px;
         position: absolute;
         left: -12px;
-
-        &--number {
-            color: var(--text-prominent);
-            font-size: 16px;
-            font-weight: bold;
-        }
+    }
+    &__number {
+        color: var(--text-prominent);
+        font-size: 16px;
+        font-weight: bold;
     }
     &__content {
         margin-bottom: 16px;

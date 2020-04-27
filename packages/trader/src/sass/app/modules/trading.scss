@@ -97,7 +97,9 @@
         }
         &-wrapper {
             &--disabled {
-                opacity: 0.32;
+                .btn-purchase__box-shadow {
+                    opacity: 0;
+                }
             }
         }
         &-tooltip-text,
@@ -211,6 +213,9 @@
                 }
             }
 
+            &--disabled {
+                opacity: 0.32;
+            }
             &--slide {
                 width: 92px;
                 height: 8px;

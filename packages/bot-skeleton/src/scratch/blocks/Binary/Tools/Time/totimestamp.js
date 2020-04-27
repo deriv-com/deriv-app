@@ -46,46 +46,6 @@ Blockly.Blocks.totimestamp = {
 
 Blockly.JavaScript.totimestamp = block => {
     const datetime_string = Blockly.JavaScript.valueToCode(block, 'DATETIME', Blockly.JavaScript.ORDER_ATOMIC);
-    const invalid_datetime = `${localize('Invalid date/time')}:`;
-
-    // eslint-disable-next-line no-underscore-dangle
-    const function_name = Blockly.JavaScript.provideFunction_('dateTimeStringToTimestamp', [
-        // eslint-disable-next-line no-underscore-dangle
-        `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(datetime_string) {
-            if (typeof datetime_string !== 'string') {
-                return "${invalid_datetime} " + datetime_string;
-            }
-
-            var datetime = datetime_string
-                .replace(/[^0-9.:-\\s]/g, '')
-                .replace(/\\s+/g,' ')
-                .trim()
-                .split(' ');  
-
-            var date_pattern = /^[12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$/;
-            var time_pattern = /^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(:([0-5][0-9])?)?$/;
-
-            var validated_datetime = null;
-
-            if (datetime.length >= 2) {
-                validated_datetime = date_pattern.test(datetime[0]) && time_pattern.test(datetime[1])
-                    ? datetime[0] + 'T' + datetime[1] : null;
-            } else if (datetime.length === 1) {
-                validated_datetime = date_pattern.test(datetime[0]) ? datetime[0] : null;
-            }
-
-            if (validated_datetime) {
-                var date_obj = new Date(validated_datetime);
-
-                if (date_obj instanceof Date && !isNaN(date_obj)) {
-                    return date_obj.getTime() / 1000;
-                }
-            }
-
-            return "${invalid_datetime} " + datetime_string;
-        }`,
-    ]);
-
-    const code = `${function_name}(${datetime_string})`;
+    const code = `Bot.dateTimeStringToTimestamp(${datetime_string})`;
     return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };

@@ -152,9 +152,15 @@ class App extends Component {
                     setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                 }}
             >
-                <main className={classNames('deriv-p2p', className)}>
-                    <Tabs onTabItemClick={this.handleTabClick} active_index={active_index} top>
-                        <div label={localize('Buy/Sell')}>
+                <main className={classNames('p2p-cashier', className)}>
+                    <Tabs
+                        onTabItemClick={this.handleTabClick}
+                        active_index={active_index}
+                        className='p2p-cashier'
+                        top
+                        header_fit_content
+                    >
+                        <div label={localize('Buy / Sell')}>
                             <BuySell navigate={this.redirectTo} params={parameters} />
                         </div>
                         <div count={notification_count} label={localize('Orders')}>

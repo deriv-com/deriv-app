@@ -5,17 +5,23 @@
 .run-panel {
     height: var(--bot-content-height) !important;
     top: 104px !important;
-    // Mahboobeh, don't re-add z-index plz.
 
     &__footer {
         text-align: center;
-        margin: 16px 0;
+        display: flex;
+        height: 156px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    &__content {
+        overflow: hidden !important;
     }
     &__buttons {
         display: inline-flex !important;
         justify-content: space-between;
         width: 67%;
-        height: 6rem;
+        margin-top: 1rem;
         align-items: center;
     }
     &__icon-info {
@@ -28,5 +34,35 @@
     &__animation {
         height: 64px;
         margin: 0 16px;
+        width: 90%;
+    }
+    &-tab {
+        &__content {
+            height: var(--drawer-content-height);
+        }
+    }
+}
+
+//animation
+.list {
+    &__animation {
+        &-enter {
+            height: 0;
+            transform: translateX(200%);
+
+            &-active {
+                height: auto;
+                transform: translateX(0%);
+                transition: height 500ms, transform 500ms;
+            }
+        }
+        &-exit {
+            opacity: 1;
+
+            &-active {
+                opacity: 0;
+                transition: opacity 300ms;
+            }
+        }
     }
 }

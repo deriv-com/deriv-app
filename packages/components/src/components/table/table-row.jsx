@@ -2,18 +2,13 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-const Row = ({ children, className, has_hover, style }) => {
-    const columns_in_row = React.Children.toArray(children).length; // toArray doesn't count null as a child
+const Row = ({ children, className, has_hover }) => {
     return (
         <div
             role='row'
             className={classNames('dc-table__row', className, {
                 'dc-table__row--hover': has_hover,
             })}
-            style={{
-                gridTemplateColumns: `repeat(${columns_in_row}, 1fr)`,
-                ...(style ?? {}),
-            }}
         >
             {children}
         </div>

@@ -210,6 +210,10 @@
     background: inherit;
     height: 100%;
 
+    &__table-row {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
     .dc-table {
         padding: 0 30px;
         height: calc(100% - 100px);

@@ -178,7 +178,7 @@ const ModalContent = () => (
     <div className='mt5-compare-accounts'>
         <Table fixed>
             <Table.Header>
-                <Table.Row>
+                <Table.Row className='mt5-compare-accounts__table-row'>
                     <Table.Head fixed />
                     <Table.Head>{localize('Standard')}</Table.Head>
                     <Table.Head>{localize('Advanced')}</Table.Head>
@@ -187,7 +187,7 @@ const ModalContent = () => (
             </Table.Header>
             <Table.Body>
                 {compareAccountsData.map((row, i) => (
-                    <Table.Row key={i}>
+                    <Table.Row key={i} className='mt5-compare-accounts__table-row'>
                         {Object.keys(row).map((col, j) => (
                             <Table.Cell key={j} fixed={j === 0}>
                                 {row[col]}

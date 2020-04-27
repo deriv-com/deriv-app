@@ -10,6 +10,7 @@ import {
     FadeWrapper,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import { getSelectedRoute } from '@deriv/shared/utils/route';
 import { isMobile, isTouchDevice } from '@deriv/shared/utils/screen';
 import routes from 'Constants/routes';
@@ -91,6 +92,7 @@ class Cashier extends React.Component {
             : null;
         const should_show_tab_headers_note =
             !this.props.is_virtual &&
+            !CurrencyUtils.isCryptocurrency(this.props.loggedin_currency) &&
             (location.pathname.startsWith(routes.cashier_deposit) ||
                 location.pathname.startsWith(routes.cashier_withdrawal));
 
@@ -173,6 +175,7 @@ export default connect(({ client, common, modules, ui }) => ({
     routeBackInApp: common.routeBackInApp,
     tab_index: modules.cashier.cashier_route_tab_index,
     setTabIndex: modules.cashier.setCashierTabIndex,
+    loggedin_currency: client.currency,
     is_p2p_visible: modules.cashier.is_p2p_visible,
     is_virtual: client.is_virtual,
     is_visible: ui.is_cashier_visible,

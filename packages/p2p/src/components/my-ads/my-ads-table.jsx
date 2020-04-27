@@ -24,13 +24,9 @@ const type = {
     sell: localize('Sell'),
 };
 
-const row_style = {
-    gridTemplateColumns: '1fr 2fr 2fr 2fr 2fr 1fr',
-};
-
 const RowComponent = React.memo(({ data, row_actions, style }) => (
     <div style={style}>
-        <Table.Row style={row_style}>
+        <Table.Row className='p2p-my-ads__table-row'>
             <Table.Cell>
                 {type[data.type]} {data.id}
             </Table.Cell>
@@ -149,7 +145,7 @@ const MyAdsTable = ({ is_enabled }) => {
                     })}
                 >
                     <Table.Header>
-                        <Table.Row style={row_style}>
+                        <Table.Row className='p2p-my-ads__table-row'>
                             {getHeaders(currency).map(header => (
                                 <Table.Head key={header.text}>{header.text}</Table.Head>
                             ))}

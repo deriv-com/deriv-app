@@ -102,6 +102,9 @@
                 margin-bottom: 0.4rem;
             }
         }
+        &-row {
+            grid-template-columns: 1fr 2fr 2fr 2fr 2fr 1fr;
+        }
 
         &--disabled {
             .dc-table__cell {

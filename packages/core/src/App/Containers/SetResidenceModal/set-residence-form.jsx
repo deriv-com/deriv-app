@@ -36,6 +36,7 @@ const SetResidenceForm = ({
                     </DesktopWrapper>
                     <MobileWrapper>
                         <SelectNative
+                            placeholder={localize('Please select')}
                             label={localize('Choose country')}
                             value={field.value}
                             list_items={residence_list}

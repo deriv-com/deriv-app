@@ -1,4 +1,4 @@
-@keyframes animate-fade-in {
+@keyframes fade-in {
     0% {
         opacity: 0;
     }
@@ -25,11 +25,12 @@
     margin-top: 20px;
     box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_2;
     min-width: 400px;
+    visibility: hidden;
 
     &__item:hover {
         .flyout__button-add--hide {
             display: flex !important;
-            animation: animate-fade-in 0.3s;
+            animation: fade-in 0.3s;
         }
     }
     &__content {
@@ -159,6 +160,7 @@
     &__search {
         left: 0;
         padding: 0;
+        visibility: visible;
 
         &-header {
             padding: 20px;
@@ -185,6 +187,8 @@
         }
     }
     &__normal {
+        visibility: visible;
+
         &-content {
             height: 100%;
         }

@@ -30,6 +30,10 @@
                 // Edge: hide clear icon for increment input
                 display: none;
             }
+            &::-moz-placeholder {
+                /* Fix value placeholder for datepicker for Firefox 19+ */
+                line-height: 4rem;
+            }
         }
         &--has-leading-icon .dc-input__field {
             text-align: center;

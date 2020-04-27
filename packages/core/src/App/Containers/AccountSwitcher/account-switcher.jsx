@@ -254,10 +254,9 @@ class AccountSwitcher extends React.Component {
             ? localize('Total assets in your Deriv and DMT5 demo accounts.')
             : localize('Total assets in your Deriv demo accounts.');
 
-        const total_assets_message_real =
-            this.props.is_mt5_allowed && this.props.has_any_real_account
-                ? localize('Total assets in your Deriv and DMT5 real accounts.')
-                : localize('Total assets in your Deriv real accounts.');
+        const total_assets_message_real = this.props.is_mt5_allowed
+            ? localize('Total assets in your Deriv and DMT5 real accounts.')
+            : localize('Total assets in your Deriv real accounts.');
 
         const total_assets_message = this.is_real_account_tab ? total_assets_message_real : total_assets_message_demo;
 
@@ -414,7 +413,7 @@ class AccountSwitcher extends React.Component {
                             )}
                     </AccountWrapper>
                 </>
-                {this.props.is_mt5_allowed && this.props.has_any_real_account && (
+                {this.props.is_mt5_allowed && (
                     <>
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                         <AccountWrapper

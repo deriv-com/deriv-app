@@ -18,7 +18,7 @@
     }
     &__residence-selection {
         @include mobile {
-            & .dc-input {
+            & .dc-select-native {
                 margin-bottom: 4.8rem;
             }
         }

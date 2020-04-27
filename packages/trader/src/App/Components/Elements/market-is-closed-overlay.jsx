@@ -97,9 +97,17 @@ const onClick = async () => {
     await waitForElement('.cq-menu-dropdown-enter-done');
     const reset_icon = await waitForElement('.icon-reset');
     reset_icon.click();
-    const left_panel = await waitForElement('.cq-lookup-filters');
-    await waitFor(50);
-    left_panel.querySelector('.ic-synthetic_index').click();
+    const input_search = await waitForElement('.data-hj-whitelist');
+    // This is a workaround to trigger input events in React.
+    const nativeInputSetter = Object.getOwnPropertyDescriptor(
+        window.HTMLInputElement.prototype,
+        'value'
+    ).set;
+    nativeInputSetter.call(input_search, 'Volatility');
+
+    const input_event = new Event('input', { bubbles: true });
+    input_search.dispatchEvent(input_event);
+
     const node = document.querySelector('.category-synthetic_index').querySelector('.category-content');
     startAnimation(node);
 };

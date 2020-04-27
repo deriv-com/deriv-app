@@ -17,7 +17,7 @@ import { localize, Localize } from '@deriv/translations';
 import { urlFor } from '_common/url';
 import { connect } from 'Stores/connect';
 import routes from 'Constants/routes';
-import { getAllMtAccounts, getMT5AccountDisplay } from 'Stores/Helpers/client';
+import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
@@ -108,14 +108,34 @@ class AccountSwitcher extends React.Component {
     isReal = account => !this.isDemo(account);
 
     getRemainingAccounts = existing_mt5_groups => {
-        const mt5_config = getAllMtAccounts();
-        const available = [];
-        Object.keys(mt5_config).forEach(account => {
-            if (!mt5_config[account].account_regex.test(existing_mt5_groups.join(' '))) {
-                available.push(mt5_config[account]);
-            }
+        const mt5_config = [
+            {
+                account_types: ['svg'],
+                icon: 'Synthetic indices',
+                title: localize('Synthetic Indices'),
+                type: 'synthetic_indices',
+            },
+            {
+                account_types: ['vanuatu', 'svg_standard'],
+                icon: 'Standard',
+                title: localize('Standard'),
+                type: 'standard',
+            },
+            {
+                account_types: ['labuan'],
+                icon: 'Advanced',
+                title: localize('Advanced'),
+                type: 'advanced',
+            },
+        ];
+
+        existing_mt5_groups.forEach(group => {
+            const type = group.split('\\')[1];
+            const index_to_remove = mt5_config.findIndex(account => account.account_types.indexOf(type) > -1);
+            mt5_config.splice(index_to_remove, 1);
         });
-        return available;
+
+        return mt5_config;
     };
 
     componentDidMount() {
@@ -201,7 +221,7 @@ class AccountSwitcher extends React.Component {
     }
 
     get can_upgrade() {
-        return !!(this.props.is_upgrade_enabled && this.props.is_virtual && this.props.can_upgrade_to);
+        return !!(this.props.is_virtual && this.props.can_upgrade_to);
     }
 
     get can_open_multi() {
@@ -302,7 +322,7 @@ class AccountSwitcher extends React.Component {
                                                     has_balance={'balance' in account}
                                                     is_virtual
                                                     loginid={account.display_login}
-                                                    onClickAccount={this.redirectToMt5Demo}
+                                                    onClickAccount={() => this.redirectToMt5Demo()}
                                                 />
                                             ))}
                                         </div>
@@ -359,10 +379,6 @@ class AccountSwitcher extends React.Component {
                                             account.is_disabled ? undefined : this.doSwitch.bind(this, account.loginid)
                                         }
                                         selected_loginid={this.props.account_loginid}
-                                        setCurrency={() => {
-                                            this.props.toggleAccountsDialog();
-                                            this.props.openRealAccountSignup();
-                                        }}
                                     />
                                 ))}
                         </div>
@@ -425,7 +441,7 @@ class AccountSwitcher extends React.Component {
                                                     currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
                                                     has_balance={'balance' in account}
                                                     loginid={account.display_login}
-                                                    onClickAccount={this.redirectToMt5Real}
+                                                    onClickAccount={() => this.redirectToMt5Real()}
                                                 />
                                             ))}
                                         </div>
@@ -567,7 +583,6 @@ AccountSwitcher.propTypes = {
     is_mt5_allowed: PropTypes.bool,
     is_pending_authentication: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
-    is_upgrade_enabled: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     logoutClient: PropTypes.func,

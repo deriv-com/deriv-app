@@ -39,7 +39,6 @@ class Header extends React.Component {
             acc_switcher_disabled_message,
             app_routing_history,
             balance,
-            can_upgrade_to,
             currency,
             enableApp,
             header_extension,
@@ -136,7 +135,6 @@ class Header extends React.Component {
                             <AccountActions
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
                                 balance={balance}
-                                can_upgrade_to={can_upgrade_to}
                                 currency={currency}
                                 disableApp={disableApp}
                                 enableApp={enableApp}
@@ -166,7 +164,6 @@ Header.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
     app_routing_history: PropTypes.array,
     balance: PropTypes.string,
-    can_upgrade_to: PropTypes.string,
     currency: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
@@ -198,7 +195,6 @@ export default connect(({ client, common, ui, modules }) => ({
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     balance: client.balance,
-    can_upgrade_to: client.can_upgrade_to,
     currency: client.currency,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,

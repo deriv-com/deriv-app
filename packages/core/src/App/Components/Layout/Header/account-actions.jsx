@@ -19,7 +19,6 @@ export class AccountActions extends Component {
         return (
             nextProps.is_acc_switcher_disabled !== this.props.is_acc_switcher_disabled ||
             nextProps.balance !== this.props.balance ||
-            nextProps.can_upgrade_to !== this.props.can_upgrade_to ||
             nextProps.currency !== this.props.currency ||
             nextProps.is_acc_switcher_on !== this.props.is_acc_switcher_on ||
             nextProps.is_notifications_visible !== this.props.is_notifications_visible ||
@@ -34,7 +33,6 @@ export class AccountActions extends Component {
         const {
             acc_switcher_disabled_message,
             balance,
-            can_upgrade,
             currency,
             disableApp,
             enableApp,
@@ -66,7 +64,6 @@ export class AccountActions extends Component {
                                         ? balance
                                         : CurrencyUtils.formatMoney(currency, balance, true)
                                 }
-                                is_upgrade_enabled={can_upgrade}
                                 is_disabled={is_acc_switcher_disabled}
                                 disableApp={disableApp}
                                 enableApp={enableApp}
@@ -101,7 +98,6 @@ export class AccountActions extends Component {
                                         ? balance
                                         : CurrencyUtils.formatMoney(currency, balance, true)
                                 }
-                                is_upgrade_enabled={can_upgrade}
                                 is_disabled={is_acc_switcher_disabled}
                                 is_virtual={is_virtual}
                                 currency={currency}
@@ -145,8 +141,6 @@ export class AccountActions extends Component {
 AccountActions.propTypes = {
     acc_switcher_disabled_message: PropTypes.any,
     balance: PropTypes.any,
-    can_upgrade: PropTypes.any,
-    can_upgrade_to: PropTypes.any,
     currency: PropTypes.any,
     is_acc_switcher_disabled: PropTypes.any,
     disableApp: PropTypes.any,

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money } from '@deriv/components';
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 
 const AccountList = ({
@@ -16,7 +16,6 @@ const AccountList = ({
     is_virtual,
     loginid,
     onClickAccount,
-    setCurrency,
     selected_loginid,
 }) => (
     <>
@@ -60,13 +59,6 @@ const AccountList = ({
                 )}
             </span>
         </div>
-        {!currency && selected_loginid === loginid && (
-            <div className={classNames('acc-switcher__account', 'acc-switcher__account-set-currency')}>
-                <div className='acc-switcher__account-set-currency-link' onClick={setCurrency}>
-                    <span>{localize('Select currency')}</span>
-                </div>
-            </div>
-        )}
     </>
 );
 

@@ -50,11 +50,6 @@ const AccountList = ({
                                 should_format={false}
                             />
                         )}
-                        {!currency && (
-                            <span className='no-currency'>
-                                <Localize i18n_default_text='No currency selected' />
-                            </span>
-                        )}
                     </span>
                 )}
             </span>
@@ -67,7 +62,7 @@ const CurrencyDisplay = ({ currency, is_virtual }) => {
         return <Localize i18n_default_text='Demo' />;
     }
     if (!currency) {
-        return <Localize i18n_default_text='Real' />;
+        return <Localize i18n_default_text='No currency assigned' />;
     }
     return CurrencyUtils.getCurrencyDisplayCode(currency);
 };

@@ -37,7 +37,7 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
             <Table.Cell>{data.display_payment_method}</Table.Cell>
             <Table.Cell>
                 <Button
-                    className='deriv-p2p__button--right-aligned'
+                    className='p2p-cashier__button--right-aligned'
                     secondary
                     small
                     onClick={() => row_actions.onClickDelete(data.id)}
@@ -178,7 +178,7 @@ const MyAdsTable = () => {
         );
     }
 
-    return <div className='deriv-p2p__empty'>{localize("You haven't posted any ads yet.")}</div>;
+    return <div className='cashier-p2p__empty'>{localize("You haven't posted any ads yet.")}</div>;
 };
 
 export default MyAdsTable;

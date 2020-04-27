@@ -2,6 +2,7 @@ import after_purchase from './after_purchase';
 import balance from './balance';
 import before_purchase from './before_purchase';
 import check_direction from './check_direction';
+import console from './console';
 import contract_check_result from './contract_check_result';
 import controls_flow_statements from './controls_flow_statements';
 import controls_for from './controls_for';
@@ -43,6 +44,7 @@ export default {
     balance,
     before_purchase,
     check_direction,
+    console,
     contract_check_result,
     controls_flow_statements,
     controls_for,

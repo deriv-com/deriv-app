@@ -105,6 +105,7 @@ import './common/ic-money-transfer.svg';
 import './common/ic-multiplier.svg';
 import './common/ic-new-file.svg';
 import './common/ic-no-order.svg';
+import './common/ic-no-ad.svg';
 import './common/ic-open-positions.svg';
 import './common/ic-passport.svg';
 import './common/ic-password-eye-hide.svg';

@@ -1,7 +1,8 @@
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { FormSubmitButton } from '@deriv/components';
+import { FormSubmitButton, Div100vhContainer } from '@deriv/components';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import ProofOfIdentityContainer from 'Modules/Account/Sections/Verification/ProofOfIdentity/proof-of-identity-container.jsx';
 
@@ -26,7 +27,7 @@ class MT5POI extends PureComponent {
 
     render() {
         return (
-            <div id='mt5_proof_of_identity' className='details-form mt5-details-form'>
+            <div id='mt5_proof_of_identity'>
                 <Formik
                     initialValues={{
                         poi_state: this.props.value.poi_state,
@@ -43,7 +44,11 @@ class MT5POI extends PureComponent {
                     {({ handleSubmit }) => {
                         return (
                             <form onSubmit={handleSubmit}>
-                                <div className='account-form mt5-proof-of-identity'>
+                                <Div100vhContainer
+                                    className='details-form'
+                                    height_offset='199px'
+                                    is_disabled={isDesktop()}
+                                >
                                     <input type='hidden' name='poi_state' value={this.state.poi_state} readOnly />
                                     <div className='mt5-proof-of-identity__fields'>
                                         <ProofOfIdentityContainer
@@ -53,7 +58,7 @@ class MT5POI extends PureComponent {
                                             is_description_enabled={false}
                                         />
                                     </div>
-                                </div>
+                                </Div100vhContainer>
                                 <FormSubmitButton
                                     has_cancel
                                     cancel_label={localize('Previous')}

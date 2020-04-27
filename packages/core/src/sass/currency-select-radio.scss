@@ -41,7 +41,7 @@
         &--selected {
             border: 2px solid var(--border-active);
 
-            & p.label {
+            & .label {
                 @include typeface(--paragraph-center-bold-black);
                 color: var(--text-prominent);
             }
@@ -52,7 +52,7 @@
             justify-content: space-between;
             align-items: center;
         }
-        svg {
+        .currency-list__icon {
             height: 48px;
             width: 48px;
             margin-bottom: 1em;
@@ -62,7 +62,7 @@
                 margin-bottom: 0.8rem;
             }
         }
-        p {
+        &-text {
             text-align: center;
             @include typeface(--paragraph-center-normal-black);
             color: var(--text-general);
@@ -76,6 +76,17 @@
     }
     &__radio-button {
         display: none;
+    }
+    &__popover {
+        position: relative;
+        left: 4.8rem;
+        top: -4.8rem;
+        margin-top: -16px;
+
+        @include mobile {
+            left: 15vw;
+            top: -5.8rem;
+        }
     }
 }
 

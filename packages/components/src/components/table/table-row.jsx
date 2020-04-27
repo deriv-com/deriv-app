@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 const Row = ({ children, className, has_hover, style }) => {
     const columns_in_row = React.Children.toArray(children).length; // toArray doesn't count null as a child
-
     return (
         <div
             role='row'

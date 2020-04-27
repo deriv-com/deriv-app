@@ -1,7 +1,7 @@
 import { getRoundedNumber } from '@deriv/shared/utils/currency';
 import { localize } from '@deriv/translations';
+import { formatTime } from '@deriv/shared/utils/date';
 import { log } from './broadcast';
-import { getUTCTime } from '../../../utils/date-time-helper';
 
 export const noop = () => {};
 
@@ -148,9 +148,9 @@ export const createDetails = contract => {
         +contract.sell_price,
         profit,
         contract.contract_type,
-        getUTCTime(new Date(parseInt(`${contract.entry_tick_time}000`))),
+        formatTime(parseInt(`${contract.entry_tick_time}000`), 'HH:mm:ss'),
         +contract.entry_tick,
-        getUTCTime(new Date(parseInt(`${contract.exit_tick_time}000`))),
+        formatTime(parseInt(`${contract.exit_tick_time}000`), 'HH:mm:ss'),
         +contract.exit_tick,
         +(contract.barrier ? contract.barrier : 0),
         result,

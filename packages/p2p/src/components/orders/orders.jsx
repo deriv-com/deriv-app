@@ -10,7 +10,7 @@ import './orders.scss';
 const Orders = ({ params, navigate }) => {
     const { orders } = React.useContext(Dp2pContext);
     const [order_details, setDetails] = React.useState(null);
-    const [nav, setNav] = React.useState(null);
+    const [nav, setNav] = React.useState(params?.nav);
     const showDetails = setDetails;
     const hideDetails = () => {
         if (nav) {

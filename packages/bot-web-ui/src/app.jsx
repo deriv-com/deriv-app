@@ -57,7 +57,7 @@ class App extends React.Component {
         this.registerOnAccountSwitch();
         this.registerClickOutsideBlockly();
         this.registerBeforeUnload();
-        this.root_store.main_content.cached_active_tab();
+        this.root_store.main_content.getCachedActiveTab();
     }
 
     componentWillUnmount() {

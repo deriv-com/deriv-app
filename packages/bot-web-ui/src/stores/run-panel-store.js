@@ -47,6 +47,7 @@ export default class RunPanelStore {
         const { core, contract_card } = this.root_store;
         const { client, ui } = core;
 
+        this.dbot.unHighlightAllBlocks();
         if (!client.is_logged_in) {
             this.showLoginDialog();
             return;
@@ -195,7 +196,7 @@ export default class RunPanelStore {
 
     // #region Bot listenets
     registerBotListeners() {
-        const { contract_card, journal, summary, transactions } = this.root_store;
+        const { contract_card, summary, transactions } = this.root_store;
 
         observer.register('bot.running', this.onBotRunningEvent);
         observer.register('bot.stop', this.onBotStopEvent);
@@ -206,9 +207,7 @@ export default class RunPanelStore {
         observer.register('bot.contract', this.onBotContractEvent);
         observer.register('bot.contract', contract_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
-        observer.register('ui.log.error', this.onError);
         observer.register('Error', this.onError);
-        observer.register('ui.log.notify', journal.onNotify);
     }
 
     @action.bound
@@ -291,7 +290,8 @@ export default class RunPanelStore {
             this.error_type = error_types.RECOVERABLE_ERRORS;
         }
 
-        this.showErrorMessage(data);
+        const error_message = data?.error?.error?.message ?? data?.message;
+        this.showErrorMessage(error_message);
     }
 
     @action.bound
@@ -307,9 +307,7 @@ export default class RunPanelStore {
         observer.unregisterAll('bot.trade_again');
         observer.unregisterAll('contract.status');
         observer.unregisterAll('bot.contract');
-        observer.unregisterAll('ui.log.error');
         observer.unregisterAll('Error');
-        observer.unregisterAll('ui.log.notify');
     }
 
     // #endregion
@@ -359,6 +357,8 @@ export default class RunPanelStore {
     @action.bound
     onMount() {
         const { journal } = this.root_store;
+        observer.register('ui.log.error', this.showErrorMessage);
+        observer.register('ui.log.notify', journal.onNotify);
         observer.register('ui.log.success', journal.onLogSuccess);
     }
 
@@ -366,5 +366,9 @@ export default class RunPanelStore {
     onUnmount() {
         RunPanelStore.unregisterBotListeners();
         this.disposeIsSocketOpenedListener();
+
+        observer.unregisterAll('ui.log.error');
+        observer.unregisterAll('ui.log.notify');
+        observer.unregisterAll('ui.log.success');
     }
 }

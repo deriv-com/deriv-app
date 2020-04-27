@@ -87,6 +87,7 @@ const RadioDropDown = ({ field, values, ...props }) => (
                     </DesktopWrapper>
                     <MobileWrapper>
                         <SelectNative
+                            placeholder={localize('Please select')}
                             name='payment_methods'
                             list_items={props.payment_agent_list}
                             value={values.payment_agents}

@@ -6,6 +6,7 @@ import { observer as globalObserver } from '../../utils/observer';
 import { removeLimitedBlocks } from '../../utils/workspace';
 import { saveWorkspaceToRecent } from '../../utils/local-storage';
 import DBotStore from '../dbot-store';
+import { log_types } from '../../constants/messages';
 
 export const updateWorkspaceName = () => {
     const { save_modal } = DBotStore.instance;
@@ -63,7 +64,7 @@ export const load = ({
 }) => {
     const showInvalidStrategyError = () => {
         const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
-        globalObserver.emit('Error', error_message);
+        globalObserver.emit('ui.log.error', error_message);
     };
 
     // Check if XML can be parsed correctly.
@@ -142,7 +143,9 @@ export const load = ({
 
         // Dispatch resize event for comments.
         window.dispatchEvent(new Event('resize'));
-        globalObserver.emit('ui.log.success', localize('Blocks are loaded successfully'));
+        if (workspace === Blockly.derivWorkspace) {
+            globalObserver.emit('ui.log.success', { log_type: log_types.LOAD_BLOCK });
+        }
     } catch (e) {
         console.log(e); // eslint-disable-line
         return showInvalidStrategyError();

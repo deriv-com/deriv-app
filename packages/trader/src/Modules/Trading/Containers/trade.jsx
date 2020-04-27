@@ -117,10 +117,13 @@ class Trade extends React.Component {
                     {/* Remove Test component for debugging below for production release */}
                     <Test />
                 </Div100vhContainer>
-                <div className={form_wrapper_class}>
-                    {this.props.is_market_closed && <MarketIsClosedOverlay />}
-                    <FormLayout is_market_closed={this.props.is_market_closed} is_trade_enabled={is_trade_enabled} />
-                </div>
+                    <div className={form_wrapper_class}>
+                        {this.props.is_market_closed && <MarketIsClosedOverlay />}
+                        <FormLayout
+                            is_market_closed={this.props.is_market_closed}
+                            is_trade_enabled={is_trade_enabled}
+                        />
+                    </div>
             </div>
         );
     }

@@ -14,7 +14,7 @@ class P2PCashier extends React.Component {
     };
 
     setQueryOrder = input_order_id => {
-        const { history, location, match } = this.props;
+        const { history, location } = this.props;
         const order_id_param = input_order_id ? `?order=${input_order_id}` : '';
 
         if (this.state.order_id !== input_order_id) {

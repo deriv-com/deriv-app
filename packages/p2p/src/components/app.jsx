@@ -107,7 +107,6 @@ class App extends Component {
     };
 
     componentDidMount() {
-        const { order_id } = this.props;
         this.setIsAdvertiser();
         subscribeWS(
             {

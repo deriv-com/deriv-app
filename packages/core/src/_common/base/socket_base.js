@@ -23,7 +23,9 @@ const BinarySocketBase = (() => {
     let is_disconnect_called = false;
     let is_connected_before = false;
 
-    const socket_url = `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
+    const getSocketUrl = () =>
+        `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
+
     const timeouts = {};
 
     const clearTimeouts = () => {
@@ -37,9 +39,14 @@ const BinarySocketBase = (() => {
 
     const isClose = () => !binary_socket || hasReadyState(2, 3);
 
+    const closeAndOpenNewConnection = () => {
+        binary_socket.close();
+        init(config, true);
+    };
+
     const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
 
-    const init = options => {
+    const init = (options, should_reconnect) => {
         if (wrong_app_id === getAppId()) {
             return;
         }
@@ -49,9 +56,9 @@ const BinarySocketBase = (() => {
         clearTimeouts();
         config.wsEvent('init');
 
-        if (isClose()) {
+        if (isClose() || should_reconnect) {
             is_disconnect_called = false;
-            binary_socket = new WebSocket(socket_url);
+            binary_socket = new WebSocket(getSocketUrl());
             deriv_api = new DerivAPIBasic({
                 connection: binary_socket,
                 storage: SocketCache,
@@ -317,6 +324,7 @@ const BinarySocketBase = (() => {
         subscribeWebsiteStatus,
         tncApproval,
         transferBetweenAccounts,
+        closeAndOpenNewConnection,
     };
 })();
 

@@ -68,6 +68,8 @@ export default class ClientStore extends BaseStore {
 
     is_mt5_account_list_updated = false;
 
+    previous_login_id = undefined;
+
     constructor(root_store) {
         super({ root_store });
     }
@@ -585,6 +587,7 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(true);
         this.root_store.ui.removeNotifications();
         this.root_store.ui.removeAllNotificationMessages();
+        this.previous_login_id = this.loginid;
         this.setSwitched(loginid);
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
     }
@@ -641,6 +644,7 @@ export default class ClientStore extends BaseStore {
             }
         }
 
+        // TODO: check why this one is fired so many times:
         /**
          * Set up reaction for account_settings, account_status
          */
@@ -670,7 +674,6 @@ export default class ClientStore extends BaseStore {
         );
 
         this.selectCurrency('');
-
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
             // mt5 will get called on response of authorize so we should just wait for the response here
@@ -689,7 +692,8 @@ export default class ClientStore extends BaseStore {
             }
             this.getLimits();
         }
-        this.responseWebsiteStatus(await WS.wait('website_status'));
+        // TODO: why does this get stuck?
+        // this.responseWebsiteStatus(await WS.wait('website_status'));
 
         this.registerReactions();
         this.setIsLoggingIn(false);
@@ -810,17 +814,25 @@ export default class ClientStore extends BaseStore {
         });
     }
 
+    handleNotFoundLoginId() {
+        // Logout if the switched_account doesn't belong to any loginid.
+        this.root_store.ui.addNotificationMessage({
+            message: localize('Could not switch to default account.'),
+            type: 'danger',
+        });
+        // request a logout
+        this.logout();
+    }
+
+    isUnableToFindLoginId() {
+        return !this.all_loginids.some(id => id !== this.switched) || this.switched === this.loginid;
+    }
+
     @action.bound
     async switchAccountHandler() {
         if (!this.switched || !this.switched.length || !this.getAccount(this.switched).token) {
-            // Logout if the switched_account doesn't belong to any loginid.
-            if (!this.all_loginids.some(id => id !== this.switched) || this.switched === this.loginid) {
-                this.root_store.ui.addNotificationMessage({
-                    message: localize('Could not switch to default account.'),
-                    type: 'danger',
-                });
-                // request a logout
-                this.logout();
+            if (this.isUnableToFindLoginId()) {
+                this.handleNotFoundLoginId();
                 return;
             }
 
@@ -837,15 +849,28 @@ export default class ClientStore extends BaseStore {
         }
 
         runInAction(() => (this.is_switching = true));
+
         sessionStorage.setItem('active_tab', '1');
+
         // set local storage
         this.root_store.gtm.setLoginFlag();
         this.resetLocalStorageValues(this.switched);
+
         SocketCache.clear();
         WS.forgetAll('balance');
+
         await BinarySocket.authorize(this.getToken());
         await this.init();
+
+        // if real to virtual --> switch to blue
+        // if virtual to real --> switch to green
+        // else keep the existing connection
+        if (this.is_virtual || /VRTC/.test(this.previous_login_id)) {
+            BinarySocket.closeAndOpenNewConnection();
+        }
+
         this.broadcastAccountChange();
+
         this.getLimits();
         runInAction(() => (this.is_switching = false));
     }

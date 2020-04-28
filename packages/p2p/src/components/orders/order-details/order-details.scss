@@ -48,16 +48,16 @@
             line-height: 1.5;
 
             &--info {
-                color: #{$color-grey-1};
+                color: var(--text-less-prominent);
             }
             &--success {
-                color: #{$color-green-1};
+                color: var(--status-success);
             }
             &--danger {
-                color: #{$color-red-1};
+                color: var(--status-danger);
             }
             &--alert {
-                color: #{$color-yellow};
+                color: var(--status-warning);
             }
         }
         &-amount {

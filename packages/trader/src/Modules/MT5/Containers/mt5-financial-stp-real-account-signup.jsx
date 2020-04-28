@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { FormProgress } from '@deriv/components';
+import { FormProgress, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
 import { getPropertyValue } from '@deriv/shared/utils/object';
-import { localize } from '@deriv/translations';
+import { isDesktop } from '@deriv/shared/utils/screen';
+import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import MT5POA from '../Components/mt5-poa.jsx';
@@ -221,9 +222,38 @@ class MT5FinancialStpRealAccountSignup extends Component {
         return (
             <div className='mt5-financial-stp-modal' id='real_mt5_financial_stp_account_opening'>
                 <div className='mt5-financial-stp-modal__heading'>
-                    {this.getCurrent() && <FormProgress steps={this.state.items} current_step={this.state.step} />}
+                    {this.getCurrent() && (
+                        <>
+                            <DesktopWrapper>
+                                <FormProgress steps={this.state.items} current_step={this.state.step} />
+                            </DesktopWrapper>
+                            <MobileWrapper>
+                                <div className='mt5-financial-stp-modal__header-steps'>
+                                    <h4 className='mt5-financial-stp-modal__header-steps-title'>
+                                        <Localize
+                                            i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
+                                            values={{
+                                                step: this.state.step + 1,
+                                                steps: this.state.items.length,
+                                                step_title: this.state.items[this.state.step].header.title,
+                                            }}
+                                        />
+                                    </h4>
+                                    {this.state.items[this.state.step].header.active_title && (
+                                        <h4 className='mt5-financial-stp-modal__header-steps-subtitle'>
+                                            {this.state.items[this.state.step].header.active_title}
+                                        </h4>
+                                    )}
+                                </div>
+                            </MobileWrapper>
+                        </>
+                    )}
                 </div>
-                <div className='mt5-financial-stp-modal__body'>
+                <Div100vhContainer
+                    className='mt5-financial-stp-modal__body'
+                    is_disabled={isDesktop()}
+                    height_offset='40px'
+                >
                     <BodyComponent
                         value={form_value}
                         index={this.state_index}
@@ -234,7 +264,7 @@ class MT5FinancialStpRealAccountSignup extends Component {
                         onSave={this.saveFormData}
                         {...passthrough}
                     />
-                </div>
+                </Div100vhContainer>
             </div>
         );
     }

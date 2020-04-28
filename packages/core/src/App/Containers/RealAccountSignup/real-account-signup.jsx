@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { Icon, Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
@@ -122,7 +123,7 @@ class RealAccountSignup extends Component {
                 <Localize
                     i18n_default_text='<0>You have added a Deriv {{currency}} account.</0><0>Make a deposit now to start trading.</0>'
                     values={{
-                        currency: currency.toUpperCase(),
+                        currency: CurrencyUtils.getCurrencyDisplayCode(currency),
                     }}
                     components={[<p key={currency} />]}
                 />

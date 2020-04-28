@@ -1,7 +1,8 @@
-import { localize } from '@deriv/translations';
 import { DURING_PURCHASE } from './state/constants';
 import { contractStatus, log } from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
+import { log_types } from '../../../constants/messages';
+import { createError } from '../../../utils/error';
 
 let delay_index = 0;
 
@@ -18,14 +19,14 @@ export default Engine =>
             }
 
             if (!this.isSellAtMarketAvailable()) {
-                log(localize('Resale of this contract is not offered.'));
+                log(log_types.NOT_OFFERED);
                 return Promise.resolve();
             }
 
             const onSuccess = sold_for => {
                 delay_index = 0;
                 contractStatus('purchase.sold');
-                log(`${localize('Sold for')}: ${sold_for}`);
+                log(log_types.SELL, { sold_for });
                 return this.waitForAfter();
             };
 
@@ -48,9 +49,7 @@ export default Engine =>
                         }
                         // In all other cases, throw a custom error that will stop the bot (after the current contract has finished).
                         // See interpreter for SellNotAvailableCustom.
-                        const custom_error = new Error(error.message);
-                        custom_error.name = 'SellNotAvailableCustom';
-                        throw custom_error;
+                        throw createError('SellNotAvailableCustom', error.message);
                     });
 
             if (!this.options.timeMachineEnabled) {

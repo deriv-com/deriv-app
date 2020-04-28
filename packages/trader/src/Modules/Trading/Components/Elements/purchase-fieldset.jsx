@@ -99,7 +99,7 @@ class PurchaseFieldset extends React.PureComponent {
                             }}
                         >
                             <div className='btn-purchase__box-shadow' />
-                            {is_proposal_error ? (
+                            {is_proposal_error && info.error_code !== 'ContractBuyValidationError' ? (
                                 <Popover has_error is_openalignment='left' message={info.message}>
                                     {purchase_button}
                                 </Popover>

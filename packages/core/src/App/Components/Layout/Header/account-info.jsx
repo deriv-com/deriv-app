@@ -23,7 +23,6 @@ const AccountInfo = ({
     disableApp,
     enableApp,
     is_dialog_on,
-    is_upgrade_enabled,
     is_virtual,
     toggleDialog,
     is_disabled,
@@ -85,7 +84,6 @@ const AccountInfo = ({
                 disableApp={disableApp}
                 enableApp={enableApp}
                 toggle={toggleDialog}
-                is_upgrade_enabled={is_upgrade_enabled}
             />
         </MobileWrapper>
         <DesktopWrapper>
@@ -100,11 +98,7 @@ const AccountInfo = ({
                 unmountOnExit
             >
                 <div className='acc-switcher__wrapper'>
-                    <AccountSwitcher
-                        is_visible={is_dialog_on}
-                        toggle={toggleDialog}
-                        is_upgrade_enabled={is_upgrade_enabled}
-                    />
+                    <AccountSwitcher is_visible={is_dialog_on} toggle={toggleDialog} />
                 </div>
             </CSSTransition>
         </DesktopWrapper>
@@ -118,7 +112,6 @@ AccountInfo.propTypes = {
     currency: PropTypes.string,
     is_dialog_on: PropTypes.bool,
     is_disabled: PropTypes.bool,
-    is_upgrade_enabled: PropTypes.bool,
     is_virtual: PropTypes.bool,
     loginid: PropTypes.string,
     toggleDialog: PropTypes.func,

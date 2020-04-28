@@ -121,12 +121,6 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get can_change_currency() {
-        const has_available_crypto_currencies = this.available_crypto_currencies.length > 0;
-        return this.can_change_fiat_currency || (!this.is_virtual && has_available_crypto_currencies);
-    }
-
-    @computed
     get legal_allowed_currencies() {
         if (!this.landing_companies) return [];
         if (this.landing_companies.gaming_company) {
@@ -673,9 +667,7 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            // mt5 will get called on response of authorize so we should just wait for the response here
-            // we can't use .storage here because if mt5 response takes longer to return we will send the request twice
-            BinarySocket.wait('mt5_login_list').then(this.responseMt5LoginList);
+            WS.storage.mt5LoginList().then(this.responseMt5LoginList);
             WS.authorized.storage.landingCompany(this.residence).then(this.responseLandingCompany);
             this.responseStatement(
                 await BinarySocket.send({

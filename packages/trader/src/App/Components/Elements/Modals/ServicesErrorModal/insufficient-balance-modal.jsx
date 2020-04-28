@@ -24,8 +24,9 @@ const InsufficientBalanceModal = ({ history, is_virtual, is_visible, message, to
                 onClick={() => {
                     if (!is_virtual) {
                         history.push(routes.cashier_deposit);
+                    } else {
+                        toggleModal();
                     }
-                    toggleModal();
                 }}
                 primary
             />

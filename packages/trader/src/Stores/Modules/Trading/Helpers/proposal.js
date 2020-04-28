@@ -49,6 +49,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         id: proposal.id || '',
         has_error: !!response.error,
         has_error_details: !!getProposalErrorField(response),
+        error_code: response?.error?.code,
         has_increased,
         limit_order: proposal.limit_order,
         message: proposal.longcode || response.error.message,

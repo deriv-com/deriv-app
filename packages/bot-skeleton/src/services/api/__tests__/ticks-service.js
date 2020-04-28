@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import { logoutAllTokens, addTokenIfValid, generateLiveApiInstance } from '../appId';
+import { generateLiveApiInstance } from '../appId';
 import TicksService from '../ticks_service';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
@@ -55,28 +55,6 @@ describe('Ticks Service', () => {
         });
         it('ohlc list received', () => {
             expect(isCandles(candles)).toBeTruthy();
-        });
-    });
-});
-
-describe('Account', () => {
-    describe('Login', () => {
-        it.skip('Login should be successful', () => {
-            expect(addTokenIfValid('Xkq6oGFEHh6hJH8')).resolves;
-        });
-    });
-    describe('Login on invalid token', () => {
-        it.skip('Login should be unsuccessful', async () => {
-            try {
-                await addTokenIfValid('someinvalidtoken123xyz');
-            } catch (e) {
-                expect(e).toBeTruthy();
-            }
-        });
-    });
-    describe('logout', () => {
-        it.skip('Logout should be successful', () => {
-            expect(logoutAllTokens).not.toThrow();
         });
     });
 });

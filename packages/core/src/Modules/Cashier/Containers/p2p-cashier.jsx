@@ -14,22 +14,23 @@ class P2PCashier extends React.Component {
     };
 
     setQueryOrder = input_order_id => {
-        const { history, location } = this.props;
+        const { history, location, match } = this.props;
         const order_id_param = input_order_id ? `?order=${input_order_id}` : '';
-        // Changing query params
-        history.push({ search: `${order_id_param}${location.hash}` });
 
-        this.setState({ order_id: input_order_id });
+        if (this.state.order_id !== input_order_id) {
+            // Changing query params
+            history.push({ pathname: '/cashier/p2p', search: order_id_param, hash: location.hash });
+            this.setState({ order_id: input_order_id });
+        }
     };
 
     componentDidMount() {
-        const { location } = this.props;
-        const url_params = new URLSearchParams(window.location.search);
-        console.log(location.search);
-        console.log(url_params);
+        const url_params = new URLSearchParams(this.props.location.search);
         const order_id = url_params.get('order');
 
-        this.setState({ order_id });
+        if (order_id) {
+            this.setQueryOrder(order_id);
+        }
     }
     render() {
         const { currency, local_currency_config, is_virtual, residence, setNotificationCount } = this.props;

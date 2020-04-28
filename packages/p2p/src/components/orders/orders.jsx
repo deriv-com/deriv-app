@@ -8,16 +8,15 @@ import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
 const Orders = ({ params }) => {
-    const { orders } = React.useContext(Dp2pContext);
+    const { orders, order_id, setOrderId } = React.useContext(Dp2pContext);
     const [order_details, setDetails] = React.useState(null);
-    const [order_id, setOrderId] = React.useState('');
-    const hideDetails = () => setDetails(null);
+    const hideDetails = () => {
+        setDetails(null);
+        setOrderId(null);
+    };
 
     const setQueryDetails = input_order => {
-        // Changing query params
-        const new_url = `${window.location.protocol}//${window.location.host}${window.location.pathname}?order=${input_order.id}${window.location.hash}`;
-        window.history.pushState({ path: new_url }, '', new_url);
-
+        setOrderId(input_order.id);
         setDetails(input_order);
     };
 
@@ -26,10 +25,6 @@ const Orders = ({ params }) => {
             const order_info = new OrderInfo(params.order_info);
             setQueryDetails(order_info);
         }
-        if (params && params.order_id) {
-            setOrderId(params.order_id);
-        }
-
         // Clear details when unmounting
         return () => {
             hideDetails();

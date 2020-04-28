@@ -63,7 +63,11 @@ class HighlightWrapper extends React.PureComponent {
                         onClick: e => this.onClick(e, child.props.onClick),
                     })
                 )}
-                <Highlight left={this.state.left} width={`${button_width}%`} />
+                <Highlight
+                    left={this.state.left}
+                    width={`${button_width}%`}
+                    rounded_button={this.props.rounded_button}
+                />
             </div>
         );
     }
@@ -72,6 +76,7 @@ class HighlightWrapper extends React.PureComponent {
 HighlightWrapper.propTypes = {
     children: PropTypes.array,
     className: PropTypes.string,
+    rounded_button: PropTypes.bool,
     timeout: PropTypes.number,
 };
 

@@ -18,6 +18,7 @@ Blockly.Blocks.math_on_list = {
                         [localize('average'), 'AVERAGE'],
                         [localize('median'), 'MEDIAN'],
                         [localize('modes'), 'MODE'],
+                        [localize('anti modes'), 'LEAST'],
                         [localize('standard deviation'), 'STD_DEV'],
                         [localize('random item'), 'RANDOM'],
                     ],
@@ -133,6 +134,49 @@ Blockly.JavaScript.math_on_list = block => {
                 }
 
                 return modes;
+            }`,
+        ]);
+
+        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
+        code = `${functionName}(${list})`;
+    } else if (operation === 'LEAST') {
+        const functionName = Blockly.JavaScript.provideFunction_('mathLeast', [
+            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(values) {
+                var least = [];
+                var counts = [];
+                var minCount = 1;
+                var countArray = [];
+    
+                for (var i = 0; i < values.length; i++) {
+                    var value = values[i];
+                    var found = false;
+                    var thisCount;
+
+                    for (var j = 0; j < counts.length; j++) {
+                        if (counts[j][0] === value) {
+                            thisCount = ++counts[j][1];
+                            found = true;
+                            break;
+                        }	
+                    }
+                    
+                    if (!found) {
+                        counts.push([value, 1]);
+                        thisCount = 1;
+                    }
+                }
+
+                 minCount = Math.min.apply(null, counts.map(function(element) {
+                     return element[1];
+                 }));
+
+                 for (var j = 0; j < counts.length; j++) {
+                    if (counts[j][1] == minCount) {
+                        least.push(counts[j][0]);
+                    }
+                }
+
+                return least;
             }`,
         ]);
 

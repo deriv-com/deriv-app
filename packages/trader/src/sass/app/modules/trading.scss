@@ -122,26 +122,6 @@
                 }
             }
         }
-        .dc-button-menu {
-            &__button {
-                span {
-                    color: var(--text-prominent);
-                }
-            }
-            &__wrapper {
-                background-color: var(--state-normal);
-
-                .dc-button-menu {
-                    &__button,
-                    &__button--active {
-                        height: 3.2rem;
-                    }
-                }
-            }
-            &--highlight {
-                background-color: var(--state-active) !important;
-            }
-        }
     }
     &__input {
         align-self: center;

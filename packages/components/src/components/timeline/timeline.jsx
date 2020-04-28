@@ -9,9 +9,9 @@ const Oval = ({ children }) => {
     );
 };
 
-const Timeline = ({ children }) => {
+const Timeline = ({ children, ...props }) => {
     return (
-        <div>
+        <div {...props}>
             {children.map((child, idx) => (
                 <div
                     key={idx}
@@ -29,6 +29,6 @@ const Timeline = ({ children }) => {
         </div>
     );
 };
-const Item = ({ children }) => <div>{children}</div>;
+const Item = ({ children, ...props }) => <div {...props}>{children}</div>;
 Timeline.Item = Item;
 export default Timeline;

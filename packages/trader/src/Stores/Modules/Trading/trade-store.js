@@ -815,6 +815,10 @@ export default class TradeStore extends BaseStore {
                 WS.forget(this.proposal_info[contract_type].id);
             }
             this.proposal_req_id[contract_type] = response.echo_req.req_id;
+        } else if (this.proposal_req_id[contract_type] !== response.echo_req.req_id) {
+            // When trade params are changed rapidly, we might still get old proposal responses.
+            // This is to unsubscribe from old proposal subscriptions.
+            WS.forget(response.proposal.id);
         }
 
         this.proposal_info = {

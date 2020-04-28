@@ -192,6 +192,14 @@
         position: absolute;
         top: 4rem;
     }
+    &__counter {
+        color: var(--text-less-prominent);
+        font-size: 1.2rem;
+        margin-left: 1.2rem;
+        position: absolute;
+        top: 4rem;
+        right: 20px;
+    }
     &--no-placeholder {
         label {
             transform: translate(0, -1.8rem) scale(0.75);

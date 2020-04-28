@@ -72,10 +72,12 @@ class AccountSwitcher extends React.Component {
         this.props.history.push(`${routes.mt5}#${account_type}`);
     };
 
-    redirectToMt5Real = account_type => {
-        if (account_type) {
-            sessionStorage.setItem('open_mt5_account_type', `real.${account_type}`);
-        }
+    openMt5RealAccount = account_type => {
+        sessionStorage.setItem('open_mt5_account_type', `real.${account_type}`);
+        this.redirectToMt5Real();
+    };
+
+    redirectToMt5Real = () => {
         if (!this.props.is_logged_in || this.props.is_mt5_allowed) {
             this.redirectToMt5('real');
         } else {
@@ -83,10 +85,12 @@ class AccountSwitcher extends React.Component {
         }
     };
 
-    redirectToMt5Demo = account_type => {
-        if (account_type) {
-            sessionStorage.setItem('open_mt5_account_type', `demo.${account_type}`);
-        }
+    openMt5DemoAccount = account_type => {
+        sessionStorage.setItem('open_mt5_account_type', `demo.${account_type}`);
+        this.redirectToMt5Demo();
+    };
+
+    redirectToMt5Demo = () => {
         this.redirectToMt5('demo');
     };
 
@@ -321,7 +325,7 @@ class AccountSwitcher extends React.Component {
                                                     has_balance={'balance' in account}
                                                     is_virtual
                                                     loginid={account.display_login}
-                                                    onClickAccount={() => this.redirectToMt5Demo()}
+                                                    onClickAccount={this.redirectToMt5Demo}
                                                 />
                                             ))}
                                         </div>
@@ -333,7 +337,7 @@ class AccountSwitcher extends React.Component {
                                             <Icon icon={`IcMt5-${account.icon}`} size={24} />
                                             <span className='acc-switcher__new-account-text'>{account.title}</span>
                                             <Button
-                                                onClick={() => this.redirectToMt5Demo(account.type)}
+                                                onClick={() => this.openMt5DemoAccount(account.type)}
                                                 className='acc-switcher__new-account-btn'
                                                 secondary
                                                 small
@@ -440,7 +444,7 @@ class AccountSwitcher extends React.Component {
                                                     currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
                                                     has_balance={'balance' in account}
                                                     loginid={account.display_login}
-                                                    onClickAccount={() => this.redirectToMt5Real()}
+                                                    onClickAccount={this.redirectToMt5Real}
                                                 />
                                             ))}
                                         </div>
@@ -452,7 +456,7 @@ class AccountSwitcher extends React.Component {
                                             <Icon icon={`IcMt5-${account.icon}`} size={24} />
                                             <span className='acc-switcher__new-account-text'>{account.title}</span>
                                             <Button
-                                                onClick={() => this.redirectToMt5Real(account.type)}
+                                                onClick={() => this.openMt5RealAccount(account.type)}
                                                 className='acc-switcher__new-account-btn'
                                                 secondary
                                                 small

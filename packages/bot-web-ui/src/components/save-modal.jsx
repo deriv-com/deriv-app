@@ -30,7 +30,7 @@ const SaveModal = ({
             initialValues={{
                 is_local: true,
                 save_as_collection: false,
-                bot_name: bot_name ?? config.default_file_name,
+                bot_name: bot_name === config.default_file_name ? '' : bot_name,
             }}
             validate={validateBotName}
             onSubmit={onConfirmSave}
@@ -45,6 +45,7 @@ const SaveModal = ({
                                         {...field}
                                         className='save-type__input'
                                         type='text'
+                                        placeholder={'Untitled Bot'}
                                         error={touched[field.name] && errors[field.name]}
                                         label={localize('Bot name')}
                                         trailing_icon={<Icon icon='IcEdit' />}

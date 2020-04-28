@@ -122,6 +122,26 @@
                 }
             }
         }
+        .dc-button-menu {
+            &__button {
+                span {
+                    color: var(--text-general);
+                }
+            }
+            &__wrapper {
+                background-color: var(--state-normal);
+
+                .dc-button-menu {
+                    &__button,
+                    &__button--active {
+                        height: 3.2rem;
+                    }
+                }
+            }
+            &--highlight {
+                background-color: var(--state-disabled) !important;
+            }
+        }
     }
     &__input {
         align-self: center;

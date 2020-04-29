@@ -108,7 +108,7 @@ class Popover extends React.PureComponent {
                                               top_offset =
                                                   targetRect.height > popoverRect.height
                                                       ? (targetRect.height - popoverRect.height) / 2
-                                                      : 0;
+                                                      : ((popoverRect.height - targetRect.height) / 2) * -1;
                                               break;
                                           }
                                           case 'right': {
@@ -116,7 +116,7 @@ class Popover extends React.PureComponent {
                                               top_offset =
                                                   targetRect.height > popoverRect.height
                                                       ? (targetRect.height - popoverRect.height) / 2
-                                                      : 0;
+                                                      : ((popoverRect.height - targetRect.height) / 2) * -1;
                                               break;
                                           }
                                           case 'top': {

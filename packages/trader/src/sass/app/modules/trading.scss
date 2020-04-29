@@ -75,24 +75,20 @@
             margin-top: 0;
         }
         &-header {
-            height: 1.5rem;
             position: relative;
 
             &--inline {
-                /* postcss-bem-linter: ignore */
-                .dc-popover {
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                }
+                display: flex;
+                justify-content: flex-end;
             }
         }
         &-info {
             @include typeface(--paragraph-left-normal-black);
             color: var(--text-general);
+            margin: auto;
 
             &--left {
-                left: 5px;
+                transform: translateX(5px);
             }
         }
         &-wrapper {
@@ -377,17 +373,6 @@
             /* postcss-bem-linter: ignore */
             &__label {
                 font-size: inherit;
-            }
-        }
-    }
-    &__tooltip[data-tooltip] {
-        &:before {
-            width: max-content !important;
-        }
-        &,
-        &[data-tooltip-pos='left'] {
-            &:before {
-                max-width: 280px !important;
             }
         }
     }

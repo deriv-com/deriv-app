@@ -59,7 +59,7 @@ const OrderDetails = ({ order_details }) => {
                         </span>
                         <OrderDetailsTimerBlock order_details={order_details} />
                     </div>
-                    <div className='deriv-p2p__separator' />
+                    <div className='p2p-cashier__separator' />
                     <div className='order-details__info'>
                         <div className='order-details__info-columns'>
                             <div className='order-details__info--left'>
@@ -107,7 +107,7 @@ const OrderDetails = ({ order_details }) => {
                     </div>
                     {(is_buyer_confirmed || (is_expired && is_buyer)) && (
                         <React.Fragment>
-                            <div className='deriv-p2p__separator' />
+                            <div className='p2p-cashier__separator' />
                             <div className='order-details__footer'>
                                 <p>
                                     <Localize

@@ -187,7 +187,8 @@ class PersonalDetailsForm extends React.Component {
 
         const permitted_characters = "- . ' # ; : ( ) , @ /";
         const address_validation_message = localize(
-            `Only letters, numbers, space, and these special characters are allowed: ${permitted_characters}`
+            'Only letters, numbers, space, and these special characters are allowed: {{ permitted_characters }}',
+            { permitted_characters }
         );
 
         if (values.address_line_1 && !validAddress(values.address_line_1)) {
@@ -375,6 +376,7 @@ class PersonalDetailsForm extends React.Component {
                                                 </DesktopWrapper>
                                                 <MobileWrapper>
                                                     <SelectNative
+                                                        placeholder={localize('Please select')}
                                                         label={localize('Place of birth*')}
                                                         required
                                                         disabled={
@@ -436,6 +438,7 @@ class PersonalDetailsForm extends React.Component {
                                                 <MobileWrapper>
                                                     <MobileWrapper>
                                                         <SelectNative
+                                                            placeholder={localize('Please select')}
                                                             label={localize('Citizenship*')}
                                                             required
                                                             disabled={
@@ -635,6 +638,7 @@ class PersonalDetailsForm extends React.Component {
                                                             </DesktopWrapper>
                                                             <MobileWrapper>
                                                                 <SelectNative
+                                                                    placeholder={localize('Please select')}
                                                                     label={localize('State/Province (optional)')}
                                                                     value={values.address_state}
                                                                     list_items={this.props.states_list}

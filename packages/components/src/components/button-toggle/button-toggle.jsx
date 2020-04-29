@@ -4,7 +4,7 @@ import React from 'react';
 import Button from 'Components/button/button.jsx';
 import HighlightWrapper from './button-highlight-wrapper.jsx';
 
-const ButtonToggle = ({ buttons_arr, className, id, is_animated, name, onChange, value }) => {
+const ButtonToggle = ({ buttons_arr, className, id, is_animated, name, onChange, value, rounded_button }) => {
     const changeValue = selected_value => {
         if (value === selected_value) return;
         onChange({ target: { value: selected_value, name } });
@@ -25,7 +25,11 @@ const ButtonToggle = ({ buttons_arr, className, id, is_animated, name, onChange,
     });
     return (
         <div id={id} className={classNames('dc-button-menu', className)}>
-            {is_animated ? <HighlightWrapper>{menu}</HighlightWrapper> : <React.Fragment>{menu}</React.Fragment>}
+            {is_animated ? (
+                <HighlightWrapper rounded_button={rounded_button}>{menu}</HighlightWrapper>
+            ) : (
+                <React.Fragment>{menu}</React.Fragment>
+            )}
         </div>
     );
 };
@@ -37,6 +41,7 @@ ButtonToggle.propTypes = {
     is_animated: PropTypes.bool,
     name: PropTypes.string,
     onChange: PropTypes.func,
+    rounded_button: PropTypes.bool,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 

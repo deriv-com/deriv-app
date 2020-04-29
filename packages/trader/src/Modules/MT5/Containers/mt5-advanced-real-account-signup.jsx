@@ -220,7 +220,12 @@ class MT5AdvancedRealAccountSignup extends Component {
         );
         const height = this.getCurrent('height') || 'auto';
         return (
-            <div className='mt5-advanced-modal' id='real_mt5_advanced_account_opening'>
+            <Div100vhContainer
+                className='mt5-advanced-modal'
+                id='real_mt5_advanced_account_opening'
+                is_disabled={isDesktop()}
+                height_offset='40px'
+            >
                 <div className='mt5-advanced-modal__heading'>
                     {this.getCurrent() && (
                         <>
@@ -249,7 +254,7 @@ class MT5AdvancedRealAccountSignup extends Component {
                         </>
                     )}
                 </div>
-                <Div100vhContainer className='mt5-advanced-modal__body' is_disabled={isDesktop()} height_offset='40px'>
+                <div className='mt5-advanced-modal__body'>
                     <BodyComponent
                         value={form_value}
                         index={this.state_index}
@@ -260,8 +265,8 @@ class MT5AdvancedRealAccountSignup extends Component {
                         onSave={this.saveFormData}
                         {...passthrough}
                     />
-                </Div100vhContainer>
-            </div>
+                </div>
+            </Div100vhContainer>
         );
     }
 }

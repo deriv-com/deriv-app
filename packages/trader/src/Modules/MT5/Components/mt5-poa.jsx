@@ -231,7 +231,7 @@ class MT5POA extends Component {
                             <form ref={setRef} onSubmit={handleSubmit} className='mt5-proof-of-address'>
                                 <Div100vhContainer
                                     className='details-form'
-                                    height_offset='199px'
+                                    height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
                                     {is_loading && (

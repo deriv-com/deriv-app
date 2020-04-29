@@ -530,6 +530,7 @@
         flex: 1 1 auto;
         flex-grow: 1;
         height: 100%;
+        overflow: auto;
     }
     @include mobile {
         &__heading {
@@ -538,8 +539,6 @@
         &__header {
             &-steps {
                 padding-bottom: 0.8rem;
-                position: absolute;
-                top: 3.6rem;
                 width: 100%;
                 background: var(--general-section-2);
 
@@ -643,10 +642,6 @@
     height: 100%;
     &__fields {
         padding: 0;
-        margin-bottom: 7rem;
-        @include mobile {
-            padding: 0 1.6rem;
-        }
     }
     & .mt5-tax-identification-number {
         margin-top: 1em;
@@ -790,6 +785,9 @@
     &__field-area {
         max-width: 556px;
         margin: 0 auto;
+        @include mobile {
+            overflow: auto;
+        }
     }
     &__inline-fields {
         display: grid;
@@ -830,13 +828,27 @@
 
 .mt5-proof-of-identity {
     height: 100%;
+    overflow: auto;
+
+    &__fields {
+        @include mobile {
+            position: relative;
+        }
+    }
     & .details-form {
         display: grid;
         grid-template-rows: minmax(10rem, 1fr) 7.2rem;
         height: 100%;
+        position: relative;
     }
 }
-
+.dc-modal__container_mt5-advanced-signup-modal {
+    @include desktop {
+        min-height: 80vh;
+        display: grid;
+        grid-template-rows: 6rem minmax(20rem, 1fr);
+    }
+}
 .dc-modal__container_mt5-password-modal {
     .dc-form-submit-button {
         background-color: unset;
@@ -846,7 +858,6 @@
         }
     }
 }
-
 .dc-modal__container_mt5-pending-dialog,
 .dc-modal__container_mt5-success-dialog {
     .dc-modal-header__title--mt5-pending-dialog {
@@ -875,7 +886,6 @@
         }
     }
 }
-
 .dc-modal__container_mt5-success-dialog {
     .success-change__icon-area {
         width: 120px;

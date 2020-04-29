@@ -61,11 +61,15 @@
 }
 
 .account-wizard {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 0; /* fix for Safari */
+    display: grid;
     width: 100%;
     position: relative;
+    overflow: auto;
+    grid-template-rows: 13rem minmax(10rem, 1fr);
+    height: 100%;
+    @include mobile {
+        grid-template-rows: 7rem minmax(10rem, 1fr);
+    }
 
     h1 {
         @include typeface(--title-center-bold-black);
@@ -90,8 +94,6 @@
         margin-bottom: 1.6rem;
     }
     form {
-        display: flex;
-        flex: 1 1 0; /* fix for Safari */
         width: 100%;
 
         .currency-selector {
@@ -100,7 +102,6 @@
                 @include mobile {
                     overflow-x: hidden;
                     overflow-y: auto;
-                    margin-top: 70px;
 
                     &--no-top-margin {
                         margin-top: 0;
@@ -109,19 +110,10 @@
             }
         }
         @include desktop {
-            padding: 0 2.4rem 3.2rem;
+            height: 100%;
+            display: grid;
+            grid-template-rows: minmax(20rem, 1fr) 7rem;
         }
-        @include mobile {
-            height: inherit;
-            overflow: hidden;
-            position: relative;
-            max-height: inherit;
-        }
-    }
-    &__body {
-        display: flex;
-        flex: 1 1 0; /* fix for Safari */
-        width: 100%;
     }
     &__set-currency {
         p {
@@ -234,8 +226,6 @@
         &__header {
             &-steps {
                 padding-bottom: 0.8rem;
-                position: absolute;
-                top: 0;
                 width: 100%;
                 background: var(--general-section-2);
 

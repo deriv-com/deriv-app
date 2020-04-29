@@ -40,9 +40,9 @@ class MT5POI extends PureComponent {
                     <Height default_height={200}>
                         {({ setRef, height }) => (
                             <form ref={setRef} className='mt5-proof-of-identity' onSubmit={handleSubmit}>
-                                <Div100vhContainer className='details-form' height_offset='199px' is_disabled={isDesktop()}>
+                                <div className='details-form' >
                                     <input type='hidden' name='poi_state' value={this.state.poi_state} readOnly />
-                                    <div className='mt5-proof-of-identity__fields'>
+                                    <Div100vhContainer className='mt5-proof-of-identity__fields' height_offset='180px' is_disabled={isDesktop()}>
                                         <ProofOfIdentityContainer
                                             {...this.props}
                                             height={height}
@@ -50,7 +50,7 @@ class MT5POI extends PureComponent {
                                             is_trading_button_enabled={false}
                                             is_description_enabled={false}
                                         />
-                                    </div>
+                                    </Div100vhContainer>
                                     <FormSubmitButton
                                         has_cancel
                                         cancel_label={localize('Previous')}
@@ -59,7 +59,7 @@ class MT5POI extends PureComponent {
                                         onCancel={this.props.onCancel}
                                         form_error={this.props.form_error}
                                     />
-                                </Div100vhContainer>
+                                </div>
                             </form>
                         )}
                     </Height>

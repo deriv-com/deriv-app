@@ -132,7 +132,7 @@ class MT5PersonalDetailsForm extends React.Component {
             >
                 {({ handleSubmit, isSubmitting, errors, touched, values, setFieldValue }) => (
                     <form className='mt5-advanced-modal__form' onSubmit={handleSubmit} autoComplete='off'>
-                        <Div100vhContainer className={classNames('details-form', 'mt5-details-form')} height_offset='199px' is_disabled={isDesktop()}>
+                        <div className={classNames('details-form', 'mt5-details-form')}>
                             <p className='details-form__description'>
                                 <Localize
                                     i18n_default_text={
@@ -142,11 +142,9 @@ class MT5PersonalDetailsForm extends React.Component {
                             </p>
                             <Height>
                                 {({ height, setRef }) => (
-                                    <div ref={setRef}>
+                                    <div ref={setRef} className='mt5-details-form__fields'>
                                         <ThemedScrollbars autoHide height={height} is_native={isMobile()}>
-                                            <div
-                                                className='details-form__elements mt5-details-form__fields'
-                                            >
+                                            <div className='details-form__elements'>
                                                 <FormSubHeader title={localize('Details')} />
                                                 <fieldset className='account-form__fieldset'>
                                                     <DesktopWrapper>
@@ -254,7 +252,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                 label={localize('Next')}
                                 onCancel={() => this.handleCancel(values)}
                             />
-                        </Div100vhContainer>
+                        </div>
                     </form>
                 )}
             </Formik>

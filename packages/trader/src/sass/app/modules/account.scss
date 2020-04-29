@@ -776,6 +776,7 @@ $MIN_HEIGHT_FLOATING: calc(
     margin-top: 24px;
 
     @include mobile {
+        margin-top: 0;
         .onfido-sdk-ui-PageTitle {
             &-titleWrapper {
                 margin: 0 1.5em 0.4em;

@@ -103,12 +103,18 @@ class Popover extends React.PureComponent {
                                                           ? nudgedLeft
                                                           : popoverRect.width) + margin
                                                   ) * -1;
-                                              top_offset = 0;
+                                              top_offset =
+                                                  targetRect.height > popoverRect.height
+                                                      ? (targetRect.height - popoverRect.height) / 2
+                                                      : 0;
                                               break;
                                           }
                                           case 'right': {
                                               left_offset = popoverRect.width + margin;
-                                              top_offset = 0;
+                                              top_offset =
+                                                  targetRect.height > popoverRect.height
+                                                      ? (targetRect.height - popoverRect.height) / 2
+                                                      : 0;
                                               break;
                                           }
                                           case 'top': {

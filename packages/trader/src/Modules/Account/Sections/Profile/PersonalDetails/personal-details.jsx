@@ -238,6 +238,7 @@ class PersonalDetailsForm extends React.Component {
         if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
         if (is_loading || is_state_loading || !residence_list.length) {
+            console.log(is_loading, is_state_loading, !residence_list.length);
             return <Loading is_fullscreen={false} className='account___intial-loader' />;
         }
 
@@ -773,6 +774,7 @@ class PersonalDetailsForm extends React.Component {
     }
 
     initializeFormValues() {
+        console.log('WS.wait()');
         WS.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
             const { getChangeableFields, is_virtual, account_settings } = this.props;
 
@@ -790,7 +792,7 @@ class PersonalDetailsForm extends React.Component {
                 'request_professional_status',
             ];
             const form_initial_values = removeObjProperties(hidden_settings, account_settings);
-
+            console.log('landing_company', 'get_account_status', 'get_settings');
             this.setState({
                 changeable_fields: is_virtual ? [] : getChangeableFields(),
                 is_loading: false,

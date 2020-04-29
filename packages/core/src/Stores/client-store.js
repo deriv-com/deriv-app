@@ -852,22 +852,21 @@ export default class ClientStore extends BaseStore {
 
         sessionStorage.setItem('active_tab', '1');
 
+        // if real to virtual --> switch to blue
+        // if virtual to real --> switch to green
+        // else keep the existing connection
+        if (this.is_virtual || /VRTC/.test(this.previous_login_id)) {
+            BinarySocket.closeAndOpenNewConnection(this.getToken());
+        }
+
         // set local storage
         this.root_store.gtm.setLoginFlag();
         this.resetLocalStorageValues(this.switched);
 
         SocketCache.clear();
-        WS.forgetAll('balance');
-
+        await WS.forgetAll('balance');
         await BinarySocket.authorize(this.getToken());
         await this.init();
-
-        // if real to virtual --> switch to blue
-        // if virtual to real --> switch to green
-        // else keep the existing connection
-        if (this.is_virtual || /VRTC/.test(this.previous_login_id)) {
-            BinarySocket.closeAndOpenNewConnection();
-        }
 
         this.broadcastAccountChange();
 

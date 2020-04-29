@@ -22,6 +22,7 @@ const BinarySocketBase = (() => {
     let is_available = true;
     let is_disconnect_called = false;
     let is_connected_before = false;
+    let should_close = true;
 
     const getSocketUrl = () =>
         `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
@@ -39,9 +40,10 @@ const BinarySocketBase = (() => {
 
     const isClose = () => !binary_socket || hasReadyState(2, 3);
 
-    const closeAndOpenNewConnection = () => {
-        binary_socket.close();
-        init(config, true);
+    const closeAndOpenNewConnection = token => {
+        const new_connection = new WebSocket(getSocketUrl());
+        deriv_api.changeSocket(new_connection);
+        binary_socket = new_connection;
     };
 
     const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
@@ -56,7 +58,7 @@ const BinarySocketBase = (() => {
         clearTimeouts();
         config.wsEvent('init');
 
-        if (isClose() || should_reconnect) {
+        if (isClose()) {
             is_disconnect_called = false;
             binary_socket = new WebSocket(getSocketUrl());
             deriv_api = new DerivAPIBasic({
@@ -67,6 +69,7 @@ const BinarySocketBase = (() => {
         }
 
         deriv_api.onOpen().subscribe(() => {
+            console.log('onOpen: ', { ...deriv_api });
             config.wsEvent('open');
             if (ClientBase.isLoggedIn()) {
                 deriv_api.authorize(ClientBase.get('token'));
@@ -101,8 +104,10 @@ const BinarySocketBase = (() => {
         });
 
         deriv_api.onClose().subscribe(() => {
+            console.log('onClose');
             clearTimeouts();
-            config.wsEvent('close');
+
+            if (should_close) config.wsEvent('close');
 
             if (wrong_app_id !== getAppId() && typeof config.onDisconnect === 'function' && !is_disconnect_called) {
                 config.onDisconnect();

@@ -56,6 +56,7 @@ const NetworkMonitorBase = (() => {
         clearTimeout(reconnect_timeout);
         reconnect_timeout = setTimeout(() => {
             reconnect_timeout = null;
+            console.log('reconnectAfter: ');
             if (isOnline() && BinarySocket.hasReadyState(2, 3)) {
                 BinarySocket.init(ws_config);
             } else {

@@ -525,15 +525,11 @@
     &__heading {
         padding: 2em 2em 0 2em;
     }
+    &__form,
     &__body {
         flex: 1 1 auto;
         flex-grow: 1;
-    }
-    .dc-form-submit-button {
-        padding: 0 2em 2em 2em;
-        position: fixed;
-        bottom: 0;
-        background-color: var(--content-bg-color);
+        height: 100%;
     }
     @include mobile {
         &__heading {
@@ -644,6 +640,7 @@
 }
 
 .mt5-details-form {
+    height: 100%;
     &__fields {
         padding: 0;
         margin-bottom: 7rem;
@@ -773,6 +770,12 @@
 }
 
 .mt5-proof-of-address {
+    height: 100%;
+    & .details-form {
+        display: grid;
+        grid-template-rows: minmax(10rem, 1fr) 7.2rem;
+        height: 100%;
+    }
     &__file-upload {
         position: relative;
 
@@ -785,7 +788,6 @@
         }
     }
     &__field-area {
-        padding: 0 0 20rem 0;
         max-width: 556px;
         margin: 0 auto;
     }
@@ -823,6 +825,15 @@
                 flex-direction: column;
             }
         }
+    }
+}
+
+.mt5-proof-of-identity {
+    height: 100%;
+    & .details-form {
+        display: grid;
+        grid-template-rows: minmax(10rem, 1fr) 7.2rem;
+        height: 100%;
     }
 }
 

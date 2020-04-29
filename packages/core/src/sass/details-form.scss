@@ -2,6 +2,8 @@
 
 .details-form {
     flex-grow: 1;
+    display: grid;
+    grid-template-rows: 4rem minmax(10rem, 1fr) 7.2rem;
 
     &__elements {
         flex-grow: 1;

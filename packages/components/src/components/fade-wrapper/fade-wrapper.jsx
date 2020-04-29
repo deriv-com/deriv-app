@@ -45,10 +45,11 @@ const FadeInOnlyDiv = posed.div({
     },
 });
 
+// `flipMove={false}` is necessary to fix react-pose bug: https://github.com/Popmotion/popmotion/issues/805
 const FadeWrapper = ({ children, className, is_visible, keyname, type }) => {
     if (type === 'top') {
         return (
-            <PoseGroup>
+            <PoseGroup flipMove={false}>
                 {is_visible && (
                     <FadeInFromTopDiv className={className} key={keyname}>
                         {children}
@@ -59,7 +60,7 @@ const FadeWrapper = ({ children, className, is_visible, keyname, type }) => {
     }
     if (type === 'bottom') {
         return (
-            <PoseGroup>
+            <PoseGroup flipMove={false}>
                 {is_visible && (
                     <FadeInFromBottomDiv className={className} key={keyname}>
                         {children}
@@ -69,7 +70,7 @@ const FadeWrapper = ({ children, className, is_visible, keyname, type }) => {
         );
     }
     return (
-        <PoseGroup>
+        <PoseGroup flipMove={false}>
             {is_visible && (
                 <FadeInOnlyDiv className={className} key={keyname}>
                     {children}

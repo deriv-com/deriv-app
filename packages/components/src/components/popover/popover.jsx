@@ -92,6 +92,7 @@ class Popover extends React.PureComponent {
                         {...(relative_render
                             ? {
                                   contentLocation: ({ targetRect, popoverRect, nudgedLeft }) => {
+                                      console.log(popoverRect.height, targetRect.height);
                                       const screen_width = document.body.clientWidth;
                                       const total_width = targetRect.right + (popoverRect.width - targetRect.width / 2);
                                       let top_offset = 0;

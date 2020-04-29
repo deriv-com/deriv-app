@@ -115,21 +115,21 @@ class AccountSwitcher extends React.Component {
         const mt5_config = [
             {
                 account_types: ['svg'],
-                icon: 'Synthetic indices',
-                title: localize('Synthetic Indices'),
-                type: 'synthetic_indices',
+                icon: 'Synthetic',
+                title: localize('Synthetic'),
+                type: 'synthetic',
             },
             {
                 account_types: ['vanuatu', 'svg_standard'],
-                icon: 'Standard',
-                title: localize('Standard'),
-                type: 'standard',
+                icon: 'Financial',
+                title: localize('Financial'),
+                type: 'financial',
             },
             {
                 account_types: ['labuan'],
-                icon: 'Advanced',
-                title: localize('Advanced'),
-                type: 'advanced',
+                icon: 'Financial STP',
+                title: localize('Financial STP'),
+                type: 'financial_stp',
             },
         ];
 
@@ -458,7 +458,7 @@ class AccountSwitcher extends React.Component {
                                                 small
                                                 is_disabled={
                                                     !this.props.has_any_real_account ||
-                                                    (account.type === 'advanced' &&
+                                                    (account.type === 'financial_stp' &&
                                                         this.props.is_pending_authentication)
                                                 }
                                             >

@@ -107,6 +107,7 @@ class PurchaseFieldset extends React.PureComponent {
                                     message={info.message}
                                     is_open={is_proposal_error && !is_market_close}
                                     relative_render
+                                    margin={6}
                                 >
                                     {purchase_button}
                                 </Popover>

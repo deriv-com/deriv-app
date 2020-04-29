@@ -380,6 +380,17 @@
             }
         }
     }
+    &__tooltip[data-tooltip] {
+        &:before {
+            width: max-content !important;
+        }
+        &,
+        &[data-tooltip-pos='left'] {
+            &:before {
+                max-width: 280px !important;
+            }
+        }
+    }
     /* postcss-bem-linter: ignore */
     .symbols.disabled {
         color: var(--text-disabled);

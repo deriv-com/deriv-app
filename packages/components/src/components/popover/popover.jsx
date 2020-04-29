@@ -77,9 +77,11 @@ class Popover extends React.PureComponent {
 
         return (
             <div className='dc-popover__wrapper'>
-                <div className='dc-popover__container' style={{ zIndex: zIndex || 1 }}>
-                    <div ref={this.setWrapperRef} className='dc-popover__container-relative' />
-                </div>
+                {relative_render && (
+                    <div className='dc-popover__container' style={{ zIndex: zIndex || 1 }}>
+                        <div ref={this.setWrapperRef} className='dc-popover__container-relative' />
+                    </div>
+                )}
                 {(this.state.popover_ref || !relative_render) && (
                     <TinyPopover
                         isOpen={is_open ?? this.state.is_open}

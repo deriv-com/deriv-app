@@ -75,29 +75,27 @@
             margin-top: 0;
         }
         &-header {
-            height: 1.5rem;
             position: relative;
 
             &--inline {
-                /* postcss-bem-linter: ignore */
-                .dc-popover {
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                }
+                display: flex;
+                justify-content: flex-end;
             }
         }
         &-info {
             @include typeface(--paragraph-left-normal-black);
             color: var(--text-general);
+            margin: auto;
 
             &--left {
-                left: 5px;
+                transform: translateX(5px);
             }
         }
         &-wrapper {
             &--disabled {
-                opacity: 0.32;
+                .btn-purchase__box-shadow {
+                    opacity: 0;
+                }
             }
         }
         &-tooltip-text,
@@ -211,6 +209,9 @@
                 }
             }
 
+            &--disabled {
+                opacity: 0.32;
+            }
             &--slide {
                 width: 92px;
                 height: 8px;

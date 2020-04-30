@@ -45,7 +45,7 @@ const OrderDetails = ({ order_details, chat_info }) => {
 
     return (
         <div className='order-details'>
-            <div class='order-details__container'>
+            <div className='order-details__container'>
                 <div className='order-details__wrapper order-details__wrapper--outer'>
                     <OrderDetailsResultMessage order_details={order_details} />
                     <div className='order-details__wrapper--inner'>

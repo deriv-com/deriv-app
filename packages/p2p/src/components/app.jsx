@@ -68,16 +68,15 @@ class App extends Component {
 
     setChatInformation = async () => {
         const advertiser_info = await requestWS({ p2p_advertiser_info: 1 });
+        if (advertiser_info.error) return;
 
-        if (!advertiser_info.error) {
-            // This is using QA10 SendBird AppId, please change to production's SendBird AppId when we deploy to production.
-            const app_id = '0D7CB7BD-554A-43D0-A34E-945C299B49D4';
-            const user_id = ObjectUtils.getPropertyValue(advertiser_info, ['p2p_advertiser_info', 'chat_user_id']);
-            const token =
-                ObjectUtils.getPropertyValue(advertiser_info, ['p2p_advertiser_info', 'chat_token']) ||
-                requestWS({ service_token: 1, service: 'sendbird' }).then(val => val);
-            this.setState({ chat_info: { app_id, user_id, token } });
-        }
+        const app_id = '0D7CB7BD-554A-43D0-A34E-945C299B49D4'; // This is using QA10 SendBird AppId, please change to production's SendBird AppId when we deploy to production.
+        const user_id = ObjectUtils.getPropertyValue(advertiser_info, ['p2p_advertiser_info', 'chat_user_id']);
+        const token =
+            ObjectUtils.getPropertyValue(advertiser_info, ['p2p_advertiser_info', 'chat_token']) ||
+            (await requestWS({ service_token: 1, service: 'sendbird' }).then(val => val.service_token.token));
+
+        this.setState({ chat_info: { app_id, user_id, token } });
     };
 
     handleNotifications = orders => {

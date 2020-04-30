@@ -24,35 +24,40 @@ const type = {
     sell: localize('Sell'),
 };
 
-const RowComponent = React.memo(({ data, row_actions, style }) => (
-    <div style={style}>
-        <Table.Row className='p2p-my-ads__table-row'>
-            <Table.Cell>
-                {type[data.type]} {data.id}
-            </Table.Cell>
-            <Table.Cell>
-                {data.display_min_available}-{data.display_max_available} {data.offer_currency}
-            </Table.Cell>
-            <Table.Cell className='p2p-my-ads__table-price'>
-                {data.display_price_rate} {data.transaction_currency}
-            </Table.Cell>
-            <Table.Cell>{data.display_payment_method}</Table.Cell>
-            <Table.Cell className='p2p-my-ads__table-available'>
-                <ProgressIndicator
-                    className={'p2p-my-ads__table-available-progress'}
-                    value={data.available_amount}
-                    total={data.offer_amount}
-                />
-                <div className='p2p-my-ads__table-available-value'>
-                    {data.display_available_amount}/{data.display_offer_amount} {data.offer_currency}
-                </div>
-            </Table.Cell>
-            <Table.Cell className='p2p-my-ads__table-delete'>
-                <Icon icon='IcDelete' size={16} onClick={() => row_actions.onClickDelete(data.id)} />
-            </Table.Cell>
-        </Table.Row>
-    </div>
-));
+const RowComponent = React.memo(({ data, row_actions, style }) => {
+    const purchase_limit_min =
+        data.available_amount > data.min_transaction ? data.display_min_order_amount : data.display_available_amount;
+    return (
+        <div style={style}>
+            <Table.Row className='p2p-my-ads__table-row'>
+                <Table.Cell>
+                    {type[data.type]} {data.id}
+                </Table.Cell>
+                <Table.Cell>
+                    {purchase_limit_min}-{data.display_available_amount} {data.offer_currency}
+                </Table.Cell>
+                <Table.Cell className='p2p-my-ads__table-price'>
+                    {data.display_price_rate} {data.transaction_currency}
+                </Table.Cell>
+                <Table.Cell>{data.display_payment_method}</Table.Cell>
+                <Table.Cell className='p2p-my-ads__table-available'>
+                    <ProgressIndicator
+                        className={'p2p-my-ads__table-available-progress'}
+                        value={data.available_amount}
+                        total={data.offer_amount}
+                    />
+                    <div className='p2p-my-ads__table-available-value'>
+                        {data.display_available_amount}/{data.display_offer_amount} {data.offer_currency}
+                    </div>
+                </Table.Cell>
+                <Table.Cell className='p2p-my-ads__table-delete'>
+                    <Icon icon='IcDelete' size={16} onClick={() => row_actions.onClickDelete(data.id)} />
+                </Table.Cell>
+            </Table.Row>
+        </div>
+    );
+});
+
 RowComponent.propTypes = {
     data: PropTypes.object,
     style: PropTypes.object,

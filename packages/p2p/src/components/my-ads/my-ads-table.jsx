@@ -121,7 +121,7 @@ const MyAdsTable = ({ is_enabled }) => {
     };
 
     const onClickConfirm = showError => {
-        requestWS({ p2p_advert_update: 1, id: selected_ad_id, is_active: 0 }).then(response => {
+        requestWS({ p2p_advert_update: 1, id: selected_ad_id, delete: 1 }).then(response => {
             if (response.error) {
                 showError({ error_message: response.error.message });
             } else {

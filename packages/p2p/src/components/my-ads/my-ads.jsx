@@ -59,7 +59,7 @@ class MyAds extends Component {
             );
         }
         return (
-            <div className='deriv-p2p__empty'>
+            <div className='p2p-cashier__empty'>
                 <Localize
                     i18n_default_text='Contact us at <0>{{support_email}}</0> to become an advertiser.'
                     values={{ support_email: `support@${this.context.email_domain}` }}

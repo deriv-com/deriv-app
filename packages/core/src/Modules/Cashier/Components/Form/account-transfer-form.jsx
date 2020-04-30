@@ -207,6 +207,7 @@ class AccountTransferForm extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     className='account-transfer__transfer-from'
                                                     classNameDisplay='cashier__drop-down-display'
                                                     label={localize('From')}
@@ -244,6 +245,7 @@ class AccountTransferForm extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     className='account-transfer__transfer-to'
                                                     classNameDisplay='cashier__drop-down-display'
                                                     label={localize('To')}

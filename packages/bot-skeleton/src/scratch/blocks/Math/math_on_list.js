@@ -17,8 +17,8 @@ Blockly.Blocks.math_on_list = {
                         [localize('max'), 'MAX'],
                         [localize('average'), 'AVERAGE'],
                         [localize('median'), 'MEDIAN'],
-                        [localize('modes'), 'MODE'],
-                        [localize('anti modes'), 'LEAST'],
+                        [localize('mode'), 'MODE'],
+                        [localize('antimode'), 'ANTIMODE'],
                         [localize('standard deviation'), 'STD_DEV'],
                         [localize('random item'), 'RANDOM'],
                     ],
@@ -139,10 +139,10 @@ Blockly.JavaScript.math_on_list = block => {
 
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
         code = `${functionName}(${list})`;
-    } else if (operation === 'LEAST') {
-        const functionName = Blockly.JavaScript.provideFunction_('mathLeast', [
+    } else if (operation === 'ANTIMODE') {
+        const functionName = Blockly.JavaScript.provideFunction_('mathAntiMode', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(values) {
-                var least = [];
+                var antiMode = [];
                 var counts = [];
                 var minCount = 1;
                 var countArray = [];
@@ -172,11 +172,11 @@ Blockly.JavaScript.math_on_list = block => {
 
                  for (var j = 0; j < counts.length; j++) {
                     if (counts[j][1] == minCount) {
-                        least.push(counts[j][0]);
+                        antiMode.push(counts[j][0]);
                     }
                 }
 
-                return least;
+                return antiMode;
             }`,
         ]);
 

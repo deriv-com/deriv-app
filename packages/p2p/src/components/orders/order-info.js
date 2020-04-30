@@ -4,9 +4,13 @@ export default class OrderInfo {
     id = '';
     status;
     type = '';
+    advertiser_id = '';
     advertiser_name = '';
     advertiser_notes = '';
     chat_channel_url = '';
+    advertiser_instructions = '';
+    contact_info = '';
+    payment_info = '';
     order_purchase_datetime = '';
     price_rate = 0;
     display_price_rate = '';

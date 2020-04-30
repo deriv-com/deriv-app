@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Dp2pContext from 'Components/context/dp2p-context';
 import BuySellForm from './buy-sell-form.jsx';
@@ -27,17 +27,14 @@ class Popup extends Component {
     render() {
         const { ad, handleClose, handleConfirm } = this.props;
         const { has_nickname } = this.state;
-
         return (
-            <Fragment>
-                <div className='buy-sell__popup'>
-                    {has_nickname ? (
-                        <BuySellForm ad={ad} handleClose={handleClose} handleConfirm={handleConfirm} />
-                    ) : (
-                        <NickNameForm ad={ad} handleClose={handleClose} setNicknameTrue={this.setNicknameTrue} />
-                    )}
-                </div>
-            </Fragment>
+            <div className='buy-sell__popup'>
+                {has_nickname ? (
+                    <BuySellForm ad={ad} handleClose={handleClose} handleConfirm={handleConfirm} />
+                ) : (
+                    <NickNameForm ad={ad} handleClose={handleClose} setNicknameTrue={this.setNicknameTrue} />
+                )}
+            </div>
         );
     }
 }

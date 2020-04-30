@@ -76,7 +76,7 @@ class Popover extends React.PureComponent {
         const icon_class_name = classNames(classNameTargetIcon, icon);
 
         return (
-            <div className='dc-popover__wrapper'>
+            <div className={classNames({ 'dc-popover__wrapper': relative_render })}>
                 {relative_render && (
                     <div className='dc-popover__container' style={{ zIndex: zIndex || 1 }}>
                         <div ref={this.setWrapperRef} className='dc-popover__container-relative' />

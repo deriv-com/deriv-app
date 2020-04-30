@@ -140,5 +140,6 @@
     @include mobile {
         justify-content: flex-start;
         flex-grow: unset;
+        height: 33rem;
     }
 }

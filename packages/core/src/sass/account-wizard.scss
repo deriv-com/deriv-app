@@ -71,6 +71,11 @@
         grid-template-rows: 7rem minmax(10rem, 1fr);
     }
 
+    &.add-or-manage {
+        @include mobile {
+            grid-template-rows: 1fr 1fr;
+        }
+    }
     h1 {
         @include typeface(--title-center-bold-black);
         color: var(--text-prominent);

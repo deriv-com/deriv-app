@@ -51,7 +51,8 @@ const AllowEquals = ({
                     icon='info'
                     id='dt_allow_equals_info'
                     message={localize('Win payout if exit spot is also equal to entry spot.')}
-                    margin={113}
+                    margin={130}
+                    relative_render
                 />
             </div>
         )

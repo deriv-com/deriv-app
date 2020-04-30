@@ -693,7 +693,7 @@ export default class ClientStore extends BaseStore {
             this.getLimits();
         }
         // TODO: why does this get stuck?
-        // this.responseWebsiteStatus(await WS.wait('website_status'));
+        this.responseWebsiteStatus(await WS.wait('website_status'));
 
         this.registerReactions();
         this.setIsLoggingIn(false);
@@ -852,6 +852,19 @@ export default class ClientStore extends BaseStore {
 
         sessionStorage.setItem('active_tab', '1');
 
+        // set local storage
+        this.root_store.gtm.setLoginFlag();
+        this.resetLocalStorageValues(this.switched);
+
+        SocketCache.clear();
+        // await WS.forgetAll('balance');
+        await BinarySocket.authorize(this.getToken());
+        await this.init();
+
+        this.broadcastAccountChange();
+
+        this.getLimits();
+
         // if real to virtual --> switch to blue
         // if virtual to real --> switch to green
         // else keep the existing connection
@@ -859,18 +872,6 @@ export default class ClientStore extends BaseStore {
             BinarySocket.closeAndOpenNewConnection(this.getToken());
         }
 
-        // set local storage
-        this.root_store.gtm.setLoginFlag();
-        this.resetLocalStorageValues(this.switched);
-
-        SocketCache.clear();
-        await WS.forgetAll('balance');
-        await BinarySocket.authorize(this.getToken());
-        await this.init();
-
-        this.broadcastAccountChange();
-
-        this.getLimits();
         runInAction(() => (this.is_switching = false));
     }
 

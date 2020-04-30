@@ -779,7 +779,7 @@ export default class TradeStore extends BaseStore {
             Object.keys(this.proposal_requests).forEach(type => {
                 // to keep track of proposal req_id that is set by subscription manager in deriv-api,
                 // we need to initialize it to 0 every time a new request is being sent
-                this.proposal_req_id[type] = 0;
+                if (!this.proposal_req_id[type]) this.proposal_req_id[type] = 0;
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
         }
@@ -815,7 +815,7 @@ export default class TradeStore extends BaseStore {
                 WS.forget(this.proposal_info[contract_type].id);
             }
             this.proposal_req_id[contract_type] = response.echo_req.req_id;
-        } else if (this.proposal_req_id[contract_type] !== response.echo_req.req_id) {
+        } else if (this.proposal_req_id[contract_type] > response.echo_req.req_id) {
             // When trade params are changed rapidly, we might still get old proposal responses.
             // This is to unsubscribe from old proposal subscriptions.
             WS.forget(response.proposal.id);

@@ -1,6 +1,6 @@
 import {
     Div100vhContainer,
-    Height,
+    AutoHeightWrapper,
     Input,
     ThemedScrollbars,
     DateOfBirthPicker,
@@ -91,7 +91,7 @@ class PersonalDetails extends React.Component {
                 ref={this.form}
             >
                 {({ handleSubmit, isSubmitting, errors, values }) => (
-                    <Height default_height={200}>
+                    <AutoHeightWrapper default_height={200}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer
@@ -146,7 +146,7 @@ class PersonalDetails extends React.Component {
                                 />
                             </form>
                         )}
-                    </Height>
+                    </AutoHeightWrapper>
                 )}
             </Formik>
         );

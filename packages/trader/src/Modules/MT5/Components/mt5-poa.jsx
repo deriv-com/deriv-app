@@ -2,11 +2,11 @@ import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
+    AutoHeightWrapper,
     FormSubmitButton,
     ThemedScrollbars,
     Dropdown,
     Loading,
-    Height,
     Div100vhContainer,
     SelectNative,
     DesktopWrapper,
@@ -226,7 +226,7 @@ class MT5POA extends Component {
                     values,
                     touched,
                 }) => (
-                    <Height default_height={200}>
+                    <AutoHeightWrapper default_height={200}>
                         {({ setRef, height}) => (
                             <form ref={setRef} onSubmit={handleSubmit} className='mt5-proof-of-address'>
                                 <Div100vhContainer
@@ -374,7 +374,7 @@ class MT5POA extends Component {
                                 </Div100vhContainer>
                             </form>
                         )}
-                    </Height>
+                    </AutoHeightWrapper>
 
                 )}
             </Formik>

@@ -3,10 +3,10 @@ import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
-    ThemedScrollbars,
     Autocomplete,
+    AutoHeightWrapper,
+    ThemedScrollbars,
     Input,
-    Height,
     Loading,
     FormSubmitButton,
     DesktopWrapper,
@@ -139,7 +139,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                     }
                                 />
                             </p>
-                            <Height>
+                            <AutoHeightWrapper default_height={200}>
                                 {({ height, setRef }) => (
                                     <div ref={setRef} className='mt5-details-form__fields'>
                                         <ThemedScrollbars autoHide height={height} is_native={isMobile()}>
@@ -240,7 +240,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                         </ThemedScrollbars>
                                     </div>
                                 )}
-                            </Height>
+                            </AutoHeightWrapper>
                             <FormSubmitButton
                                 cancel_label={localize('Previous')}
                                 is_disabled={

@@ -1,5 +1,13 @@
 import classNames from 'classnames';
-import { Height, FormSubmitButton, Div100vhContainer, MobileWrapper, Popover, Icon, ThemedScrollbars } from '@deriv/components';
+import {
+    AutoHeightWrapper,
+    FormSubmitButton,
+    Div100vhContainer,
+    MobileWrapper,
+    Popover,
+    Icon,
+    ThemedScrollbars,
+} from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik } from 'formik';
@@ -140,8 +148,8 @@ class CurrencySelector extends React.Component {
                     touched,
                     isSubmitting,
                 }) => (
-                    <Height default_height={200}>
-                        {({setRef, height}) => (
+                    <AutoHeightWrapper default_height={200}>
+                        {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit} className='currency-selector'>
                                 <Div100vhContainer
                                     className={classNames('currency-selector__container', {
@@ -165,11 +173,7 @@ class CurrencySelector extends React.Component {
                                             </div>
                                         )}
                                     </MobileWrapper>
-                                    <ThemedScrollbars
-                                        is_native={isMobile()}
-                                        autohide
-                                        height={height}
-                                    >
+                                    <ThemedScrollbars is_native={isMobile()} autohide height={height}>
                                         <RadioButtonGroup
                                             id='currency'
                                             className='currency-selector__radio-group'
@@ -216,11 +220,13 @@ class CurrencySelector extends React.Component {
                                 <FormSubmitButton
                                     is_disabled={isSubmitting || !values.currency}
                                     is_center={!has_currency || isMobile()}
-                                    label={!has_real_account && isMobile() ? localize('Next') : localize('Set currency')}
+                                    label={
+                                        !has_real_account && isMobile() ? localize('Next') : localize('Set currency')
+                                    }
                                 />
                             </form>
                         )}
-                    </Height>
+                    </AutoHeightWrapper>
                 )}
             </Formik>
         );

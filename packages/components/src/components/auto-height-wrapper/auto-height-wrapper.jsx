@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-class Height extends React.Component {
+class AutoHeightWrapper extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,9 +31,9 @@ class Height extends React.Component {
     }
 }
 
-Height.propTypes = {
+AutoHeightWrapper.propTypes = {
     default_height: PropTypes.any,
     children: PropTypes.any,
 };
 
-export default Height;
+export default AutoHeightWrapper;

@@ -1,9 +1,9 @@
 import {
     Autocomplete,
+    AutoHeightWrapper,
     DesktopWrapper,
     Div100vhContainer,
     FormSubmitButton,
-    Height,
     Input,
     MobileWrapper,
     ThemedScrollbars,
@@ -91,7 +91,7 @@ class AddressDetails extends Component {
                 ref={this.form}
             >
                 {({ handleSubmit, isSubmitting, errors, values, setFieldValue }) => (
-                    <Height default_height={200}>
+                    <AutoHeightWrapper default_height={200}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer
@@ -107,8 +107,9 @@ class AddressDetails extends Component {
                                         autoHide={!(window.innerHeight < 890)}
                                         height={height}
                                     >
-                                        <div className='details-form__elements'
-                                             style={{ paddingBottom: isDesktop() ? padding_bottom : null }}
+                                        <div
+                                            className='details-form__elements'
+                                            style={{ paddingBottom: isDesktop() ? padding_bottom : null }}
                                         >
                                             <InputField
                                                 name='address_line_1'
@@ -201,7 +202,7 @@ class AddressDetails extends Component {
                                 </Div100vhContainer>
                             </form>
                         )}
-                    </Height>
+                    </AutoHeightWrapper>
                 )}
             </Formik>
         );

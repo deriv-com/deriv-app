@@ -1,5 +1,5 @@
 import React from 'react';
-import { Height } from '@deriv/components';
+import { AutoHeightWrapper } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 import { MissingPersonalDetails } from './proof-of-identity-messages.jsx';
@@ -11,7 +11,7 @@ class ProofOfIdentity extends React.Component {
         if (this.props.has_missing_required_field) return <MissingPersonalDetails />;
 
         return (
-            <Height default_height={200}>
+            <AutoHeightWrapper default_height={200}>
                 {({ setRef, height }) => (
                     <div
                         ref={setRef}
@@ -25,7 +25,7 @@ class ProofOfIdentity extends React.Component {
                         />
                     </div>
                 )}
-            </Height>
+            </AutoHeightWrapper>
 
         );
     }

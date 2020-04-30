@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { Height, FormSubmitButton, Div100vhContainer } from '@deriv/components';
+import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer } from '@deriv/components';
 import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import ProofOfIdentityContainer from 'Modules/Account/Sections/Verification/ProofOfIdentity/proof-of-identity-container.jsx';
@@ -37,7 +37,7 @@ class MT5POI extends PureComponent {
                 }
             >
                 {({ handleSubmit }) => (
-                    <Height default_height={200}>
+                    <AutoHeightWrapper default_height={200}>
                         {({ setRef, height }) => (
                             <form ref={setRef} className='mt5-proof-of-identity' onSubmit={handleSubmit}>
                                 <div className='details-form' >
@@ -62,7 +62,7 @@ class MT5POI extends PureComponent {
                                 </div>
                             </form>
                         )}
-                    </Height>
+                    </AutoHeightWrapper>
                 )}
             </Formik>
         );

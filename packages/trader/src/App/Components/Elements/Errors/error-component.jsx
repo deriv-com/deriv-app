@@ -13,7 +13,7 @@ const ErrorComponent = ({ header, message, redirect_label, redirectOnClick, shou
 
     return (
         <PageError
-            header={header || <Localize i18n_default_text='Oops, something went wrong.' />}
+            header={header || <Localize i18n_default_text='Something’s not right' />}
             messages={
                 message
                     ? [message, refresh_message]

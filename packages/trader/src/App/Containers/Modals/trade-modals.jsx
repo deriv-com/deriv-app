@@ -35,12 +35,12 @@ const TradeModals = ({
     };
 
     const unsupportedContractOnConfirm = () => {
-        window.open(urlFor('user/portfoliows', undefined, undefined, true), '_blank');
-        unsupportedContractOnClose();
+        toggleUnsupportedContractModal(false);
     };
 
     const unsupportedContractOnClose = () => {
-        toggleUnsupportedContractModal(false);
+        window.open(urlFor('user/portfoliows', undefined, undefined, true), '_blank');
+        unsupportedContractOnClose();
     };
 
     return (

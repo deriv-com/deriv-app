@@ -25,16 +25,16 @@
         }
     }
     &__header {
-        @include typeface(--heading-center-bold-black, none);
+        @include typeface(--xheading-center-bold-black, none);
         color: var(--text-prominent);
         line-height: 44px;
     }
     &__message {
-        @include typeface(--paragraph-center-normal-black, none);
-        @include toEm(margin, 16px 0px, 14px);
+        @include typeface(--title-center-normal-black, none);
         color: var(--text-prominent);
-        line-height: 1.45;
+        line-height: 1.5;
         max-width: 400px;
+        margin: 1.6rem 0 2.4rem;
 
         &-wrapper {
             display: flex;

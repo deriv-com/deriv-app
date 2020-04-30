@@ -7,9 +7,9 @@ import { website_name } from 'App/Constants/app-config';
 
 const DenialOfServiceModal = ({ disableApp, enableApp, is_loading, is_visible, onCancel, onConfirm }) => (
     <Dialog
-        title={localize('Whoops!')}
-        confirm_button_text={localize('Continue with Demo Account')}
-        cancel_button_text={localize('Back to main website')}
+        title={localize("That's not ready yet!")}
+        confirm_button_text={localize('Stay on {{website_name}}', { website_name })}
+        cancel_button_text={localize('Go to Binary')}
         onConfirm={onConfirm}
         onCancel={onCancel}
         disableApp={disableApp}
@@ -19,7 +19,7 @@ const DenialOfServiceModal = ({ disableApp, enableApp, is_loading, is_visible, o
         is_visible={is_visible}
     >
         <Localize
-            i18n_default_text='You cannot use your real money account with {{website_name}} at this time.'
+            i18n_default_text='Real money account is currently unavailable on {{website_name}} but it’s in the works.'
             values={{ website_name }}
         />
     </Dialog>

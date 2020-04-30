@@ -24,7 +24,7 @@ const PageError = ({ buttonOnClick, error_code_message, messages, header, redire
                 </span>
             </div>
             {redirect_label && (
-                <ButtonLink className='dc-page-error__btn' to={redirect_url} onClick={buttonOnClick}>
+                <ButtonLink className='dc-page-error__btn' to={redirect_url} onClick={buttonOnClick} size='large'>
                     <span className='dc-page-error__btn-text dc-btn__text'>{redirect_label}</span>
                 </ButtonLink>
             )}

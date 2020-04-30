@@ -9,7 +9,7 @@ class MT5ServerErrorDialog extends Component {
         const should_show_error = this.props.has_mt5_error && !this.props.is_mt5_success_dialog_enabled;
         return (
             <Modal
-                title={localize('Whoops!')}
+                title={localize('Something’s not right')}
                 is_open={should_show_error}
                 small
                 toggleModal={this.props.clearMt5Error}

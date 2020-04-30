@@ -10,9 +10,9 @@ class UnsupportedContractModal extends React.Component {
         const { disableApp, enableApp, is_loading, is_visible, onConfirm, onClose } = this.props;
         return (
             <Dialog
-                title={localize('Whoops!')}
-                confirm_button_text={localize('Continue to Binary.com')}
-                cancel_button_text={localize('Back to trade page')}
+                title={localize('Let’s try that again!')}
+                confirm_button_text={localize('Stay on {{website_name}}', { website_name })}
+                cancel_button_text={localize('Go to Binary')}
                 onConfirm={onConfirm}
                 onCancel={onClose}
                 disableApp={disableApp}
@@ -21,10 +21,7 @@ class UnsupportedContractModal extends React.Component {
                 is_closed_on_cancel
                 is_visible={is_visible}
             >
-                <Localize
-                    i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to Binary.com for details.'
-                    values={{ website_name }}
-                />
+                <Localize i18n_default_text='You’ve selected a trade type that is currently unsupported but we’re working on it.' />
             </Dialog>
         );
     }

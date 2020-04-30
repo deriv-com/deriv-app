@@ -19,10 +19,8 @@ const Orders = ({ params, navigate }) => {
         setDetails(null);
     };
     React.useEffect(() => {
-        if (params && params.nav) {
-            setNav(params.nav);
-        }
-    });
+        setNav(params?.nav ?? nav);
+    }, [params]);
 
     React.useEffect(() => {
         if (params && params.order_info) {

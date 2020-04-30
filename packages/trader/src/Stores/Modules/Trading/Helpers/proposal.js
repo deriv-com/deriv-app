@@ -107,7 +107,7 @@ const createProposalRequestForContract = (store, type_of_contract) => {
         amount: parseFloat(store.amount) || 0,
         basis: store.basis,
         contract_type: type_of_contract,
-        currency: store.root_store.client.currency,
+        currency: store.currency,
         symbol: store.symbol,
         ...(store.start_date && { date_start: convertToUnix(store.start_date, store.start_time) }),
         ...(store.expiry_type === 'duration'

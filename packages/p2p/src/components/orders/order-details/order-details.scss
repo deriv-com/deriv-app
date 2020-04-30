@@ -11,6 +11,16 @@
             border: none;
             box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.08), 0 0 8px 0 rgba(0, 0, 0, 0.08);
 
+            .sendbird-avatar {
+                background-color: var(--brand-orange);
+                width: 40px !important;
+                height: 40px !important;
+                background-image: none !important;
+
+                div {
+                    background-image: none !important;
+                }
+            }
             .sendbird-user-message__sender-name {
                 display: none;
             }

@@ -58,6 +58,7 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     onMount() {
+        this.checkShouldOpenAccount();
         this.onRealAccountSignupEnd(this.realAccountSignupEndListener);
         this.root_store.ui.is_mt5_page = true;
     }
@@ -66,6 +67,17 @@ export default class MT5Store extends BaseStore {
     onUnmount() {
         this.disposeRealAccountSignupEnd();
         this.root_store.ui.is_mt5_page = false;
+    }
+
+    // other platforms can redirect to here using account switcher's `Add` account button
+    // so in that case we should open the corresponding account opening modal on load/component update
+    checkShouldOpenAccount() {
+        const account_type = sessionStorage.getItem('open_mt5_account_type');
+        if (account_type) {
+            const [category, type] = account_type.split('.');
+            this.createMT5Account({ category, type });
+            sessionStorage.removeItem('open_mt5_account_type');
+        }
     }
 
     @action.bound

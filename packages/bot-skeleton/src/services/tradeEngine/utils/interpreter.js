@@ -13,7 +13,7 @@ JSInterpreter.prototype.takeStateSnapshot = function() {
 JSInterpreter.prototype.restoreStateSnapshot = function(snapshot) {
     this.stateStack = clone(snapshot, undefined, undefined, undefined, true);
     this.global = this.stateStack[0].scope;
-    this.initFunc_(this, this.global);
+    this.initFunc_(this, this.global.object);
 };
 
 const botInitialized = bot => bot && bot.tradeEngine.options;

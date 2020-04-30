@@ -1,0 +1,40 @@
+.dc-timeline {
+    &__flex {
+        display: flex;
+        border-left: var(--brand-red-coral) solid 1px;
+        position: relative;
+
+        &--no-border {
+            border-left: unset;
+        }
+    }
+    &__container {
+        margin-top: 6px;
+        margin-left: 20px;
+    }
+    &__title {
+        max-width: 500px;
+        font-size: 14px;
+        color: var(--text-prominent);
+    }
+    &__oval {
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        background-color: var(--brand-red-coral);
+        border-radius: 50%;
+        text-align: center;
+        margin-right: 8px;
+        position: absolute;
+        left: -12px;
+    }
+    &__number {
+        color: var(--text-prominent);
+        font-size: 16px;
+        font-weight: bold;
+    }
+    &__content {
+        margin: 16px 0;
+        color: var(--text-prominent);
+    }
+}

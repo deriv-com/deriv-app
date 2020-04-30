@@ -104,7 +104,11 @@ const getJournalItemContent = (message, type, className, extra) => {
             return <FormatMessage logType={message} extra={extra} className={className} />;
         }
         case message_types.NOTIFY: {
-            return <div className={classnames('journal__text', className)}>{message}</div>;
+            return Array.isArray(message.slice()) ? (
+                <div className={classnames('journal__text', className)}>[{message.slice().toString()}]</div>
+            ) : (
+                <div className={classnames('journal__text', className)}>{message}</div>
+            );
         }
         case message_types.ERROR: {
             return <div className='journal__text--error journal__text'>{message}</div>;

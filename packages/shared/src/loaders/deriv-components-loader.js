@@ -36,7 +36,7 @@ module.exports = function(source, map) {
             .map(
                 c => `
 import ${c} from '@deriv/components/lib/${getKebabCase(c)}';
-${existsSync(c) ? `import '@deriv/components/lib/${getKebabCase(c)}.css';` : ''}
+${checkExists(c) ? `import '@deriv/components/lib/${getKebabCase(c)}.css';` : ''}
         `
             )
             .join('\n');

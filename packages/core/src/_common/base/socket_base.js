@@ -42,7 +42,7 @@ const BinarySocketBase = (() => {
 
     const closeAndOpenNewConnection = token => {
         const new_connection = new WebSocket(getSocketUrl());
-        deriv_api.changeSocket(new_connection);
+        deriv_api.changeSocket({ new_socket: new_connection, authorize_token: token });
         binary_socket = new_connection;
     };
 

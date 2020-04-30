@@ -10,6 +10,4 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url }) => {
     );
 };
 
-// /public/images/sprite/common.svg#IcCashierP2pUser
-
 export default OrderDetailsChatbox;

@@ -44,7 +44,6 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
                 offset: start_idx,
                 limit: list_item_limit,
             }).then(response => {
-                console.log({ response });
                 if (is_mounted) {
                     if (!response.error) {
                         setHasMoreItemsToLoad(response.length >= list_item_limit);

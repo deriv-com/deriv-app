@@ -54,7 +54,10 @@ class App extends Component {
 
         /* if there is no error means it's an advertiser else it's a client */
         if (!advertiser_info.error) {
-            await this.setState({ advertiser_id: advertiser_info.p2p_advertiser_info.id, is_advertiser: true });
+            await this.setState({
+                advertiser_id: advertiser_info.p2p_advertiser_info.id,
+                is_advertiser: !!advertiser_info.p2p_advertiser_info.is_approved,
+            });
         }
         return true;
     };

@@ -44,15 +44,16 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
                 offset: start_idx,
                 limit: list_item_limit,
             }).then(response => {
+                console.log({ response });
                 if (is_mounted) {
                     if (!response.error) {
                         setHasMoreItemsToLoad(response.length >= list_item_limit);
-                        setIsLoading(false);
                         setItems(items.concat(response));
                         item_offset += response.length;
                     } else {
-                        setApiErrorMessage(response.api_error_message);
+                        setApiErrorMessage(response.error.message);
                     }
+                    setIsLoading(false);
                     resolve();
                 }
             });

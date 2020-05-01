@@ -65,7 +65,7 @@ class MyAds extends Component {
                                 className='link'
                                 rel='noopener noreferrer'
                                 target='_blank'
-                                href={`mailto:support@${this.context.email_domain}`}
+                                href={`mailto:p2p-support@${this.context.email_domain}`}
                             />,
                         ]}
                     />

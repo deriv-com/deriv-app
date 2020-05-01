@@ -124,7 +124,7 @@ const OrderDetails = ({ order_details }) => {
                                                 className='link'
                                                 rel='noopener noreferrer'
                                                 target='_blank'
-                                                href={`mailto:support@${email_domain}`}
+                                                href={`mailto:p2p-support@${email_domain}`}
                                             />,
                                         ]}
                                     />

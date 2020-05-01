@@ -11,6 +11,7 @@ import './cashier/ic-cashier-deposit.svg';
 import './cashier/ic-cashier-dp2p.svg';
 import './cashier/ic-cashier-error.svg';
 import './cashier/ic-cashier-no-balance.svg';
+import './cashier/ic-cashier-send-email.svg';
 import './cashier/ic-cashier-wallet.svg';
 import './cashier/ic-cashier-withdrawal.svg';
 import './common/ic-account-error.svg';

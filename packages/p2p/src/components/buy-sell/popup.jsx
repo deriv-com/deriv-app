@@ -276,7 +276,7 @@ class Popup extends Component {
 
         const mapped_key = {
             contact_info: localize('Contact details'),
-            payment_info: localize('Bank details'),
+            payment_info: localize('Payment instructions'),
         };
 
         const errors = {};

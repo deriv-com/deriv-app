@@ -358,7 +358,7 @@ class FormAds extends Component {
             max_transaction: localize('Max limit'),
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
-            payment_info: localize('Bank details'),
+            payment_info: localize('Payment instructions'),
             price_rate: localize('Fixed price'),
         };
 

@@ -121,7 +121,7 @@ const BinarySocketBase = (() => {
 
     const subscribeBalanceAll = cb => subscribe({ balance: 1, account: 'all' }, cb);
 
-    const subscribeProposal = (req, cb) => subscribe({ proposal: 1, ...req }, cb);
+    const subscribeProposal = (req, cb) => (req.proposal = 1) && subscribe(req, cb);
 
     const subscribeProposalOpenContract = (contract_id = null, cb) =>
         subscribe({ proposal_open_contract: 1, ...(contract_id && { contract_id }) }, cb);

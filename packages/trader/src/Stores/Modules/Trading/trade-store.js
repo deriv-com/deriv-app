@@ -777,10 +777,12 @@ export default class TradeStore extends BaseStore {
             this.purchase_info = {};
 
             Object.keys(this.proposal_requests).forEach(type => {
-                // to keep track of proposal req_id that is set by subscription manager in deriv-api,
-                // we need to initialize it to 0 every time a new request is being sent
-                if (!this.proposal_req_id[type]) this.proposal_req_id[type] = 0;
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
+
+                // to keep track of proposal req_id that is set by subscription manager in deriv-api,
+                // req_id will be appended to the request in deriv-api
+                const { req_id } = this.proposal_requests[type];
+                if (req_id) this.proposal_req_id[type] = req_id;
             });
         }
         this.root_store.ui.resetPurchaseStates();
@@ -803,22 +805,11 @@ export default class TradeStore extends BaseStore {
         const prev_proposal_info = ObjectUtils.getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = ObjectUtils.getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
 
-        // Sometimes the API doesn't forget old 'proposal' response and returns them with new 'proposal' response, so here
-        // we need to send 'forget' req for old proposal subscriptions and store the latest proposal req_id
-        if (this.proposal_req_id[contract_type] < response.echo_req.req_id) {
-            // if not the first proposal response and if an old proposal subscription exist, send 'forget'
-            if (
-                this.proposal_req_id[contract_type] &&
-                this.proposal_info[contract_type] &&
-                this.proposal_info[contract_type].id
-            ) {
-                WS.forget(this.proposal_info[contract_type].id);
-            }
-            this.proposal_req_id[contract_type] = response.echo_req.req_id;
-        } else if (this.proposal_req_id[contract_type] > response.echo_req.req_id) {
-            // When trade params are changed rapidly, we might still get old proposal responses.
-            // This is to unsubscribe from old proposal subscriptions.
+        // When trade params are changed rapidly, we might still get old proposal responses.
+        // This is to unsubscribe from old proposal subscriptions.
+        if (this.proposal_req_id[contract_type] !== response.echo_req.req_id) {
             WS.forget(response.proposal.id);
+            return;
         }
 
         this.proposal_info = {

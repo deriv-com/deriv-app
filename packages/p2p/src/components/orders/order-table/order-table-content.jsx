@@ -84,7 +84,7 @@ const OrderTableContent = ({ showDetails }) => {
         );
     }
 
-    return <div className='deriv-p2p__empty'>{localize("You haven't made or received any orders yet.")}</div>;
+    return <div className='cashier-p2p__empty'>{localize("You haven't made or received any orders yet.")}</div>;
 };
 
 OrderTableContent.propTypes = {

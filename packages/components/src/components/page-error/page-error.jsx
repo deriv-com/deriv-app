@@ -34,7 +34,7 @@ const PageError = ({ buttonOnClick, error_code_message, messages, header, redire
 
 PageError.propTypes = {
     buttonOnClick: PropTypes.func,
-    error_code_message: PropTypes.oneOf([PropTypes.number, PropTypes.string, PropTypes.node]),
+    error_code_message: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.node]),
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     messages: PropTypes.array,
     redirect_label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),

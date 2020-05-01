@@ -274,6 +274,8 @@ class FormAds extends Component {
                                                         hint={localize('This information will be visible to everyone')}
                                                         className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
                                                         placeholder={localize('Instructions (optional)')}
+                                                        has_character_counter
+                                                        max_characters={300}
                                                         required
                                                     />
                                                 )}

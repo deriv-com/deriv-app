@@ -12,7 +12,7 @@ import { getAvailableContractTypes, unsupported_contract_types_list } from '../H
 const Contract = ({ contract_type, contract_types_list, is_digit_view, is_equal, onChange, symbol }) => {
     const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);
 
-    const digits_message = localize(`Last digit stats for latest 1000 ticks for {{underlying_name}}`, {
+    const digits_message = localize('Last digit stats for latest 1000 ticks for {{ underlying_name }}', {
         underlying_name: getMarketNamesMap()[symbol.toUpperCase()],
     });
 

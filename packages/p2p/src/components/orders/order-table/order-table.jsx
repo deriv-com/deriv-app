@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Loading, Table } from '@deriv/components';
-import { localize } from 'Components/i18next';
+import { Button, Loading, Table, Icon } from '@deriv/components';
+import { localize, Localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS, getModifiedP2POrderList } from 'Utils/websocket';
@@ -11,7 +11,7 @@ import BuyOrderRowComponent from './order-table-buy-row.jsx';
 import SellOrderRowComponent from './order-table-sell-row.jsx';
 import OrderInfo from '../order-info';
 
-const OrderTable = ({ showDetails }) => {
+const OrderTable = ({ navigate, showDetails }) => {
     const { list_item_limit, order_offset, orders, setOrders, setOrderOffset } = useContext(Dp2pContext);
     const [is_mounted, setIsMounted] = useState(false);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
@@ -97,7 +97,17 @@ const OrderTable = ({ showDetails }) => {
         );
     }
 
-    return <div className='cashier-p2p__empty'>{localize("You haven't made or received any orders yet.")}</div>;
+    return (
+        <div className='p2p-cashier__empty'>
+            <Icon icon='IcCashierNoAds' className='p2p-cashier__empty-icon' size={102} />
+            <div className='p2p-cashier__empty-title'>
+                <Localize i18n_default_text='You have no orders' />
+            </div>
+            <Button primary large className='p2p-cashier__empty-button' onClick={() => navigate('buy_sell')}>
+                {localize('Buy/Sell')}
+            </Button>
+        </div>
+    );
 };
 
 OrderTable.propTypes = {

@@ -7,7 +7,7 @@ import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
-const Orders = ({ params }) => {
+const Orders = ({ navigate, params }) => {
     const { orders } = React.useContext(Dp2pContext);
     const [order_details, setDetails] = React.useState(null);
     const showDetails = setDetails;
@@ -54,7 +54,7 @@ const Orders = ({ params }) => {
                     <OrderDetails order_details={order_details} />
                 </React.Fragment>
             )}
-            {!order_details && <OrderTable showDetails={showDetails} />}
+            {!order_details && <OrderTable navigate={navigate} showDetails={showDetails} />}
         </div>
     );
 };

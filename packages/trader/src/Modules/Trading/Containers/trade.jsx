@@ -117,13 +117,10 @@ class Trade extends React.Component {
                     {/* Remove Test component for debugging below for production release */}
                     <Test />
                 </Div100vhContainer>
-                    <div className={form_wrapper_class}>
-                        {this.props.is_market_closed && <MarketIsClosedOverlay />}
-                        <FormLayout
-                            is_market_closed={this.props.is_market_closed}
-                            is_trade_enabled={is_trade_enabled}
-                        />
-                    </div>
+                <div className={form_wrapper_class}>
+                    {this.props.is_market_closed && <MarketIsClosedOverlay />}
+                    <FormLayout is_market_closed={this.props.is_market_closed} is_trade_enabled={is_trade_enabled} />
+                </div>
             </div>
         );
     }
@@ -209,10 +206,11 @@ class ChartTradeClass extends React.Component {
                 bottomWidgets={show_digits_stats && isDesktop() ? this.bottomWidgets : this.props.bottomWidgets}
                 crosshairState={isMobile() ? 0 : undefined}
                 showLastDigitStats={isDesktop() ? show_digits_stats : false}
-                chartControlsWidgets={isDesktop() ? ChartControlWidgets : null}
+                chartControlsWidgets={null}
                 chartStatusListener={v => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}
                 enabledNavigationWidget={isDesktop()}
+                enabledChartFooter={false}
                 id='trade'
                 isMobile={isMobile()}
                 maxTick={isMobile() ? max_ticks : undefined}
@@ -226,7 +224,7 @@ class ChartTradeClass extends React.Component {
                 topWidgets={this.props.is_trade_enabled ? this.topWidgets : null}
                 isConnectionOpened={this.props.is_socket_opened}
                 clearChart={false}
-                toolbarWidget={isMobile() ? ChartToolbarWidgets : null}
+                toolbarWidget={ChartToolbarWidgets}
                 importedLayout={this.props.chart_layout}
                 onExportLayout={this.props.exportLayout}
                 shouldFetchTradingTimes={!this.props.end_epoch}

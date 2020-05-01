@@ -48,6 +48,9 @@
             font-size: var(--text-size-xs);
             line-height: 1.43;
         }
+        &-button {
+            margin-top: 1.6rem;
+        }
     }
     &__button--right-aligned {
         margin-left: auto;

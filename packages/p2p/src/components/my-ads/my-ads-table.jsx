@@ -189,7 +189,7 @@ const MyAdsTable = ({ onClickCreate, is_enabled }) => {
 
     return (
         <div className='p2p-cashier__empty'>
-            <Icon icon='IcCashierSendEmail' className='p2p-cashier__empty-icon' size={102} />
+            <Icon icon='IcCashierNoAds' className='p2p-cashier__empty-icon' size={102} />
             <div className='p2p-cashier__empty-title'>
                 <Localize i18n_default_text='You have no ads' />
             </div>

@@ -67,7 +67,7 @@ class MyAds extends Component {
                 <div className='p2p-cashier__empty-contact'>
                     <Localize
                         i18n_default_text='Email <0>{{support_email}}</0>'
-                        values={{ support_email: `support@${this.context.email_domain}` }}
+                        values={{ support_email: `p2p-support@${this.context.email_domain}` }}
                         components={[
                             <a
                                 key={0}

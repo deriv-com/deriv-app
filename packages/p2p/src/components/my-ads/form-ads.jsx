@@ -33,7 +33,7 @@ class FormAds extends Component {
             amount: values.offer_amount,
             max_order_amount: values.max_transaction,
             min_order_amount: values.min_transaction,
-            payment_method: values.payment_method,
+            payment_method: 'bank_transfer', // TODO: Allow for other types of payment_method.
             rate: values.price_rate,
         };
         if (values.contact_info) {
@@ -82,7 +82,7 @@ class FormAds extends Component {
                             min_transaction: '',
                             offer_amount: '',
                             payment_info: '',
-                            payment_method: 'bank_transfer',
+                            // payment_method: 'bank_transfer',
                             price_rate: '',
                             type: 'buy',
                         }}

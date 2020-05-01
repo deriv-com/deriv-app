@@ -102,7 +102,7 @@ class AccountTransferForm extends React.Component {
 
     onTransferPassthrough = async (values, actions) => {
         const transfer_between_accounts = await this.props.requestTransferBetweenAccounts({
-            amount: values.amount,
+            amount: +values.amount,
         });
         if (transfer_between_accounts.error) {
             actions.setSubmitting(false);

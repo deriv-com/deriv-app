@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Button } from '@deriv/components';
+import { Button, Icon } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { localize, Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
@@ -60,19 +60,25 @@ class MyAds extends Component {
         }
         return (
             <div className='p2p-cashier__empty'>
-                <Localize
-                    i18n_default_text='Contact us at <0>{{support_email}}</0> to become an advertiser.'
-                    values={{ support_email: `support@${this.context.email_domain}` }}
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            rel='noopener noreferrer'
-                            target='_blank'
-                            href={`mailto:support@${this.context.email_domain}`}
-                        />,
-                    ]}
-                />
+                <Icon icon='IcCashierSendEmail' className='p2p-cashier__empty-icon' size={102} />
+                <div className='p2p-cashier__empty-title'>
+                    <Localize i18n_default_text='Want to post ads?' />
+                </div>
+                <div className='p2p-cashier__empty-contact'>
+                    <Localize
+                        i18n_default_text='Email <0>{{support_email}}</0>'
+                        values={{ support_email: `support@${this.context.email_domain}` }}
+                        components={[
+                            <a
+                                key={0}
+                                className='link'
+                                rel='noopener noreferrer'
+                                target='_blank'
+                                href={`mailto:support@${this.context.email_domain}`}
+                            />,
+                        ]}
+                    />
+                </div>
             </div>
         );
     }

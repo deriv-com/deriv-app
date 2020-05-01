@@ -33,23 +33,20 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        text-align: center;
         height: 50vh;
 
-        &-item {
-            transform: translate(-100%, -70%);
+        &-icon {
+            margin-bottom: 2.4rem;
         }
-
-        &-text {
-            margin-top: 24px;
-            color: var(--text-general);
+        &-title {
             font-size: var(--text-size-s);
             font-weight: bold;
+            line-height: 1.5;
+            margin: 0.8rem;
         }
-
-        a {
-            // display flex removes the space between letters and anchor tag
-            margin: 0 3px;
+        &-contact {
+            font-size: var(--text-size-xs);
+            line-height: 1.43;
         }
     }
     &__button--right-aligned {

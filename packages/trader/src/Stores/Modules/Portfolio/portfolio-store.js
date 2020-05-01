@@ -20,7 +20,6 @@ export default class PortfolioStore extends BaseStore {
     @observable error = '';
     getPositionById = createTransformer(id => this.positions.find(position => +position.id === +id));
 
-    subscribers = {};
     responseQueue = [];
 
     @observable.shallow active_positions = [];
@@ -66,19 +65,12 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     onBuyResponse({ contract_id, longcode, contract_type }) {
-        if (this.subscribers[contract_id]) {
-            return /* do nothing */;
-        }
         const new_pos = {
             contract_id,
             longcode,
             contract_type,
         };
         this.pushNewPosition(new_pos);
-        this.subscribers[contract_id] = WS.subscribeProposalOpenContract(
-            contract_id,
-            this.proposalOpenContractQueueHandler
-        );
     }
 
     @action.bound
@@ -87,15 +79,9 @@ export default class PortfolioStore extends BaseStore {
             this.error = response.error.message;
         }
         if (!response.transaction) return;
-        const { contract_id, action: act, longcode } = response.transaction;
+        const { contract_id, action: act } = response.transaction;
 
-        if (act === 'buy') {
-            this.onBuyResponse({
-                contract_id,
-                longcode,
-                contract_type: '', // TODO: figure out the icon not showing
-            });
-        } else if (act === 'sell') {
+        if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
 
             if (!this.positions[i]) {
@@ -288,14 +274,6 @@ export default class PortfolioStore extends BaseStore {
 
         this.positions[i].is_loading = false;
 
-        if (getEndTime(contract_response)) {
-            // also forget for buy
-            [this.populateResultDetails, this.proposalOpenContractHandler].forEach(() => {
-                if (!(contract_response.contract_id in this.subscribers)) return;
-                this.subscribers[contract_response.contract_id].unsubscribe();
-                delete this.subscribers[contract_response.contract_id];
-            });
-        }
         if (this.hovered_position_id === this.positions[i].id && this.positions[i].contract_info.is_sold) {
             this.updateTradeStore(false, this.positions[i]);
         }

@@ -6,7 +6,7 @@ import { routes } from 'Constants/index';
 const Page404 = () => (
     <PageError
         header={localize('Oops, page not available.')}
-        error_code_message={<Localize i18n_default_text={'Error Code: {{error_code}}'} values={404} />}
+        error_code_message={<Localize i18n_default_text={'Error Code: {{error_code}}'} values={{ error_code: 404 }} />}
         messages={[
             localize(
                 'The page you requested could not be found. Either it no longer exists or the address is wrong. Please check for any typos.'

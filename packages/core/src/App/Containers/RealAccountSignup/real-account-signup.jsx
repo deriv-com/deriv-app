@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';

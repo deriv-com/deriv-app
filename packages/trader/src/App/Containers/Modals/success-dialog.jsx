@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
 const SuccessDialog = ({
@@ -15,6 +15,10 @@ const SuccessDialog = ({
     icon_size,
     text_submit,
     text_cancel,
+    is_open,
+    toggleModal,
+    title,
+    has_close_icon,
 }) => {
     const MainIcon = () => icon || null;
 
@@ -35,7 +39,7 @@ const SuccessDialog = ({
             </div>
             <div className='status-dialog__body-area'>
                 {!heading && (
-                    <h2>
+                    <h2 className='dc-modal-header__title'>
                         <Localize i18n_default_text='Success!' />
                     </h2>
                 )}
@@ -48,8 +52,8 @@ const SuccessDialog = ({
                     <Button onClick={onCancel} has_effect text={text_cancel || localize('Maybe later')} secondary />
                 )}
                 {has_submit && <Button has_effect onClick={onSubmit} text={text_submit} primary />}
-            </div>
-        </div>
+            </Modal.Footer>
+        </Modal>
     );
 };
 

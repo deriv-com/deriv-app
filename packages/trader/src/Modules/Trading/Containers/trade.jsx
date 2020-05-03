@@ -7,13 +7,7 @@ import { connect } from 'Stores/connect';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import Test from './test.jsx';
-import {
-    ChartBottomWidgets,
-    ChartControlWidgets,
-    ChartToolbarWidgets,
-    ChartTopWidgets,
-    DigitsWidget,
-} from './chart-widgets.jsx';
+import { ChartBottomWidgets, ChartToolbarWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 

@@ -115,6 +115,7 @@ module.exports = function(env, argv) {
                 react: 'react',
                 'react-dom': 'react-dom',
                 'smartcharts-beta': 'smartcharts-beta',
+                'moment': 'moment',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,

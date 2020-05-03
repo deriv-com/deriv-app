@@ -123,7 +123,7 @@
     "mobx": "^5.0.3",
     "mobx-react": "^5.4.2",
     "mobx-utils": "^5.4.0",
-    "moment": "^2.24.0",
+    "moment": "~2.24.0",
     "null-loader": "^3.0.0",
     "object.fromentries": "^2.0.0",
     "onfido-sdk-ui": "^5.8.0",

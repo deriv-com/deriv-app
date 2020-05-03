@@ -65,6 +65,7 @@ module.exports = function(env, argv) {
                 '@deriv/components': '@deriv/components',
                 '@deriv/translations': '@deriv/translations',
                 'smartcharts-beta': 'smartcharts-beta',
+                moment: 'moment',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,

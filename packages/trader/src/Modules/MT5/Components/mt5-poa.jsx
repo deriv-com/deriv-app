@@ -15,16 +15,16 @@ import {
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
-import { FormSubHeader } from 'Modules/Account/Components/layout-components.jsx';
-import FileUploaderContainer from 'Modules/Account/Sections/Verification/ProofOfAddress/file-uploader-container.jsx';
-import { poa_status_codes } from 'Modules/Account/Sections/Verification/ProofOfAddress/proof-of-address-container.jsx';
 import {
     Expired,
     NeedsReview,
     Unverified,
     Verified,
     Submitted,
-} from 'Modules/Account/Sections/Verification/ProofOfAddress/proof-of-address-messages.jsx';
+    poa_status_codes,
+    FileUploaderContainer,
+    FormSubHeader,
+} from '@deriv/account';
 import { validAddress, validLength, validPostCode } from 'Utils/Validator/declarative-validation-rules';
 import { InputField } from './mt5-personal-details-form.jsx';
 

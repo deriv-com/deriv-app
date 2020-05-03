@@ -208,7 +208,7 @@
     }
 }
 
-/** @define sc-toolbar-widget */
+/** @define sc-toolbar-widget; weak */
 .sc-toolbar-widget {
     &--bottom {
         .ciq-menu {
@@ -217,7 +217,7 @@
     }
 }
 
-/** @define smartcharts-mobile */
+/** @define smartcharts-mobile; weak */
 .smartcharts-mobile {
     .cq-modal-dropdown {
         left: 0px;

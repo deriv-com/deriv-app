@@ -41,7 +41,7 @@ Blockly.Blocks.math_on_list = {
         return {
             display_name: localize('Aggregate operations'),
             description: localize(
-                'This block performs the following operations on a given list: sum, minimum, maximum, average, median, modes, standard deviation, random item.'
+                'This block performs the following operations on a given list: sum, minimum, maximum, average, median, mode, antimode, standard deviation, random item.'
             ),
         };
     },

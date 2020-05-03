@@ -71,7 +71,11 @@ class VerticalTab extends React.Component {
                 })}
             >
                 {this.props.is_sidebar_enabled && (
-                    <div className='dc-vertical-tab__tab-meta-wrapper'>
+                    <div
+                        className={classNames('dc-vertical-tab__tab-meta-wrapper', {
+                            'dc-vertical-tab__tab-meta-wrapper--floating': this.props.is_floating,
+                        })}
+                    >
                         <VerticalTabHeaders
                             className={this.props.header_classname}
                             items={this.props.list}

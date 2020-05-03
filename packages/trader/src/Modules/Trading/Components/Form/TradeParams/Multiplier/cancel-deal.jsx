@@ -59,6 +59,7 @@ const CancelDeal = ({
                                 onChange={() => toggleCancellationWarning()}
                             />
                         }
+                        relative_render
                     >
                         {input}
                     </Popover>
@@ -71,6 +72,7 @@ const CancelDeal = ({
                     id='dt_cancellation-checkbox__tooltip'
                     message={localize('Allows you to cancel this deal (within 1 hour) to avoid loss.')}
                     margin={210}
+                    relative_render
                 />
             </div>
         </Fieldset>

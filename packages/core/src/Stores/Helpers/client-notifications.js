@@ -223,6 +223,20 @@ export const clientNotifications = (ui = {}) => {
             message: <Localize i18n_default_text='Check your connection.' />,
             type: 'danger',
         },
+        you_were_disconnected: {
+            key: 'you_were_disconnected',
+            header: localize('You were disconnected'),
+            message: (
+                <Localize
+                    i18n_default_text='You were disconnected from Deriv. Please <0>reload</0>.'
+                    components={[
+                        <a key={0} className='link' rel='noopener' href='javascript:window.location.reload()' />,
+                    ]}
+                />
+            ),
+            should_hide_close_btn: true,
+            type: 'danger',
+        },
         password_changed: {
             key: 'password_changed',
             header: localize('Password updated.'),

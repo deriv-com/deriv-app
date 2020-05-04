@@ -12,6 +12,7 @@ import { LocalStore, State } from '_common/storage';
 import BinarySocketGeneral from 'Services/socket-general';
 import { getAllowedLocalStorageOrigin } from 'Utils/Events/storage';
 import { handleClientNotifications } from './Helpers/client-notifications';
+import { clientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
 import { getClientAccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
@@ -686,14 +687,7 @@ export default class ClientStore extends BaseStore {
         this.setInitialized(true);
 
         // Added WS method for reconnecting balance stream on API reconnection
-        WS.setOnReconnect(async () => {
-            this.setIsLoggingIn(true);
-            await BinarySocket.authorize(client.token);
-            WS.authorized.balanceAll().then(response => {
-                this.setBalance(response.balance);
-                this.setIsLoggingIn(false);
-            });
-        });
+        WS.setOnReconnect(() => this.root_store.ui.addNotificationMessage(clientNotifications().you_were_disconnected));
     }
 
     @action.bound

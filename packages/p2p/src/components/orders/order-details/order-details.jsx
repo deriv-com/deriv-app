@@ -43,10 +43,6 @@ const OrderDetails = ({ order_details, chat_info }) => {
         setShowPopup(true);
     };
 
-    if (!chat_channel_url) {
-        console.log(chatCreate(id).then(val => val));
-    }
-
     return (
         <div className='order-details'>
             <div className='order-details__container'>

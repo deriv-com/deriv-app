@@ -11,8 +11,8 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
 
         const chat_avatar_elements = document.getElementsByClassName('sendbird-avatar');
         if (chat_avatar_elements) {
-            var matches = nickname.match(/\b(\w)/g);
-            var acronym = matches.join('');
+            const matches = nickname.match(/\b(\w)/g);
+            const acronym = matches.join('');
 
             Array.from(chat_avatar_elements).map(element => (element.innerText = acronym));
         }

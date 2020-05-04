@@ -30,7 +30,7 @@ Blockly.Blocks.lists_statement = {
     meta() {
         return {
             display_name: localize('List Statement'),
-            description: localize('List Statement Description'),
+            description: '',
         };
     },
     onIconClick() {

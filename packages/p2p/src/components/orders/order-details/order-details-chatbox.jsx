@@ -14,7 +14,19 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
             const matches = nickname.match(/\b(\w)/g);
             const acronym = matches.join('');
 
-            Array.from(chat_avatar_elements).map(element => (element.innerText = acronym));
+            Array.from(chat_avatar_elements).map(element => {
+                if (element.innerText !== acronym) {
+                    element.innerText = acronym;
+                }
+            });
+        }
+
+        if (!document.querySelector('.sendbird-chat-header__info-container')) {
+            const chat_info_container_element = document.createElement('div');
+            chat_info_container_element.className = 'sendbird-chat-header__info-container';
+            chat_info_container_element.appendChild(chat_title_element);
+            chat_info_container_element.appendChild(document.querySelector('.sendbird-chat-header__subtitle'));
+            document.querySelector('.sendbird-chat-header__left').appendChild(chat_info_container_element);
         }
     }, 1000);
 

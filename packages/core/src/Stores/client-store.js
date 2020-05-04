@@ -692,7 +692,6 @@ export default class ClientStore extends BaseStore {
             }
             this.getLimits();
         }
-        // TODO: why does this get stuck?
         this.responseWebsiteStatus(await WS.wait('website_status'));
 
         this.registerReactions();
@@ -857,7 +856,7 @@ export default class ClientStore extends BaseStore {
         this.resetLocalStorageValues(this.switched);
 
         SocketCache.clear();
-        // await WS.forgetAll('balance');
+        await WS.forgetAll('balance');
         await BinarySocket.authorize(this.getToken());
         await this.init();
 

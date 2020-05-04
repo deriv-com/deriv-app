@@ -56,13 +56,13 @@ const modules = [
     },
 ];
 
-function handleLoading(props) {
+const handleLoading = props => {
     // 200ms default
     if (props.pastDelay) {
         return <Loading />;
     }
     return null;
-}
+};
 
 const lazyLoadCashierComponent = component => {
     return Loadable.Map({

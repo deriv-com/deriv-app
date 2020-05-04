@@ -14,13 +14,13 @@ const MT5 = lazy(() => import(/* webpackChunkName: "mt5", webpackPrefetch: true 
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
-function handleLoading(props) {
+const handleLoading = props => {
     // 200ms default
     if (props.pastDelay) {
         return <Loading />;
     }
     return null;
-}
+};
 
 const makeLazyLoader = importFn => component_name =>
     Loadable.Map({

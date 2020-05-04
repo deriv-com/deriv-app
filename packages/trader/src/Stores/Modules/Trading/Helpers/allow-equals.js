@@ -29,11 +29,14 @@ export const hasDurationForCallPutEqual = (contract_type_list, duration_unit, co
     }));
 
     // Check whether rise fall equal is exists and has the current store duration unit
-    return hasCallPutEqual(contract_type_list)
-        ? contract_duration_list
-              .filter(contract => contract.rise_fall_equal)[0]
-              .rise_fall_equal.some(duration => duration.value === duration_unit)
-        : false;
+    if (hasCallPutEqual(contract_type_list)) {
+        const found = contract_duration_list.filter(contract => contract && contract.rise_fall_equal);
+        if (found.length > 0) {
+            return found[0].rise_fall_equal.some(duration => duration.value === duration_unit);
+        }
+    }
+
+    return false;
 };
 
 export const isRiseFallEqual = contract_type => /^(rise_fall|rise_fall_equal)$/.test(contract_type);

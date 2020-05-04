@@ -34,7 +34,7 @@ const Summary = ({
     currency,
 }) => {
     return (
-        <div className='summary'>
+        <div className='summary run-panel-tab__content'>
             <ThemedScrollbars autoHide style={{ height: 'var(--drawer-scroll-height)' }}>
                 <ContractCard />
                 <div className='summary__tiles'>

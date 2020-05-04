@@ -98,7 +98,7 @@ class RealAccountSignup extends Component {
             null,
             null,
             localize('Add a real account'),
-            localize('Create a DMT5 real Advanced account'),
+            localize('Create a DMT5 real Financial STP account'),
         ];
     }
 

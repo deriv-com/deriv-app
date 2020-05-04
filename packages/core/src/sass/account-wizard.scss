@@ -62,16 +62,22 @@
 
 .account-wizard {
     display: grid;
-    width: 100%;
-    position: relative;
-    overflow: auto;
     grid-template-rows: 13rem minmax(10rem, 1fr);
     height: 100%;
+    overflow: auto;
+    position: relative;
+    width: 100%;
     @include mobile {
         grid-template-rows: 7rem minmax(10rem, 1fr);
     }
 
     &.add-or-manage {
+        grid-template-rows: 1fr 1fr;
+        @include desktop {
+            & form {
+                grid-template-rows: auto;
+            }
+        }
         @include mobile {
             grid-template-rows: 1fr 1fr;
         }

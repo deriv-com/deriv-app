@@ -20,13 +20,44 @@ const MT5DemoAccountDisplay = ({
         <div className='mt5-demo-accounts-display'>
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}
-                icon={() => <Icon icon='IcMt5Standard' size={64} />}
-                title={localize('Standard')}
+                icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
+                title={localize('Synthetic')}
                 type={{
                     category: 'demo',
-                    type: 'standard',
+                    type: 'synthetic',
                 }}
-                existing_data={current_list['demo.standard']}
+                existing_data={current_list['demo.synthetic']}
+                commission_message={<Localize i18n_default_text='No commission' />}
+                onSelectAccount={() =>
+                    onSelectAccount({
+                        category: 'demo',
+                        type: 'synthetic',
+                    })
+                }
+                onPasswordManager={openPasswordManager}
+                onClickFund={() =>
+                    openAccountTransfer(current_list['demo.synthetic'], {
+                        category: 'demo',
+                        type: 'synthetic',
+                    })
+                }
+                descriptor={localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.')}
+                specs={{
+                    [localize('Leverage')]: localize('Up to 1:1000'),
+                    [localize('Margin call')]: localize('100%'),
+                    [localize('Stop out level')]: localize('50%'),
+                    [localize('Number of assets')]: localize('10+'),
+                }}
+            />
+            <MT5AccountCard
+                has_mt5_account={has_mt5_account}
+                icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
+                title={localize('Financial')}
+                type={{
+                    category: 'demo',
+                    type: 'financial',
+                }}
+                existing_data={current_list['demo.financial']}
                 commission_message={
                     <Localize
                         i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
@@ -36,17 +67,19 @@ const MT5DemoAccountDisplay = ({
                 onSelectAccount={() =>
                     onSelectAccount({
                         category: 'demo',
-                        type: 'standard',
+                        type: 'financial',
                     })
                 }
                 onPasswordManager={openPasswordManager}
                 onClickFund={() =>
-                    openAccountTransfer(current_list['demo.standard'], {
+                    openAccountTransfer(current_list['demo.financial'], {
                         category: 'demo',
-                        type: 'standard',
+                        type: 'financial',
                     })
                 }
-                descriptor={localize('Suitable for both new and experienced traders.')}
+                descriptor={localize(
+                    'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
+                )}
                 specs={{
                     [localize('Leverage')]: localize('Up to 1:1000'),
                     [localize('Margin call')]: localize('150%'),
@@ -56,64 +89,35 @@ const MT5DemoAccountDisplay = ({
             />
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}
-                icon={() => <Icon icon='IcMt5Advanced' size={64} />}
-                title={localize('Advanced')}
+                icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}
+                title={localize('Financial STP')}
                 type={{
                     category: 'demo',
-                    type: 'advanced',
+                    type: 'financial_stp',
                 }}
-                existing_data={current_list['demo.advanced']}
+                existing_data={current_list['demo.financial_stp']}
                 commission_message={<Localize i18n_default_text='No commission' />}
                 onSelectAccount={() =>
                     onSelectAccount({
                         category: 'demo',
-                        type: 'advanced',
+                        type: 'financial_stp',
                     })
                 }
                 onPasswordManager={openPasswordManager}
                 onClickFund={() =>
-                    openAccountTransfer(current_list['demo.advanced'], {
+                    openAccountTransfer(current_list['demo.financial_stp'], {
                         category: 'demo',
-                        type: 'advanced',
+                        type: 'financial_stp',
                     })
                 }
-                descriptor={localize('Give you more products, tight spreads, and higher ticket size.')}
+                descriptor={localize(
+                    'Trade major, minor, and exotic currency pairs with Straight-Through Processing (STP) of your orders direct to the market.'
+                )}
                 specs={{
                     [localize('Leverage')]: localize('Up to 1:100'),
                     [localize('Margin call')]: localize('150%'),
                     [localize('Stop out level')]: localize('75%'),
                     [localize('Number of assets')]: localize('50+'),
-                }}
-            />
-            <MT5AccountCard
-                has_mt5_account={has_mt5_account}
-                icon={() => <Icon icon='IcMt5SyntheticIndices' size={64} />}
-                title={localize('Synthetic Indices')}
-                type={{
-                    category: 'demo',
-                    type: 'synthetic_indices',
-                }}
-                existing_data={current_list['demo.synthetic_indices']}
-                commission_message={<Localize i18n_default_text='No commission' />}
-                onSelectAccount={() =>
-                    onSelectAccount({
-                        category: 'demo',
-                        type: 'synthetic_indices',
-                    })
-                }
-                onPasswordManager={openPasswordManager}
-                onClickFund={() =>
-                    openAccountTransfer(current_list['demo.synthetic_indices'], {
-                        category: 'demo',
-                        type: 'synthetic_indices',
-                    })
-                }
-                descriptor={localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.')}
-                specs={{
-                    [localize('Leverage')]: localize('Up to 1:1000'),
-                    [localize('Margin call')]: localize('100%'),
-                    [localize('Stop out level')]: localize('50%'),
-                    [localize('Number of assets')]: localize('10+'),
                 }}
             />
         </div>

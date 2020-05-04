@@ -516,7 +516,7 @@
     }
 }
 
-.mt5-advanced-modal {
+.mt5-financial-stp-modal {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -627,7 +627,7 @@
             &__description {
                 max-width: 300px;
                 @include typeface(--small-left-normal-black);
-                &--advanced {
+                &--financial-stp {
                     margin: 1em 0 0;
                     color: var(--text-less-prominent);
                 }

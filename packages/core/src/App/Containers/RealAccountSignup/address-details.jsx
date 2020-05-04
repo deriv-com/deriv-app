@@ -150,6 +150,7 @@ class AddressDetails extends Component {
                                                                 </DesktopWrapper>
                                                                 <MobileWrapper>
                                                                     <SelectNative
+                                                                        placeholder={localize('Please select')}
                                                                         label={localize('State/Province')}
                                                                         value={values.address_state}
                                                                         list_items={this.props.states_list}

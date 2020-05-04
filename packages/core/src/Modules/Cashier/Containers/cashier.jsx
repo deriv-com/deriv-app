@@ -10,7 +10,8 @@ import {
     FadeWrapper,
 } from '@deriv/components';
 import { routes } from '@deriv/shared/routes';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import { getSelectedRoute } from '@deriv/shared/utils/route';
 import { isMobile, isTouchDevice } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
@@ -89,6 +90,11 @@ class Cashier extends React.Component {
         const selected_route = isMobile()
             ? getSelectedRoute({ routes: routes_config, pathname: location.pathname })
             : null;
+        const should_show_tab_headers_note =
+            !this.props.is_virtual &&
+            !CurrencyUtils.isCryptocurrency(this.props.loggedin_currency) &&
+            (location.pathname.startsWith(routes.cashier_deposit) ||
+                location.pathname.startsWith(routes.cashier_withdrawal));
 
         return (
             <FadeWrapper
@@ -109,9 +115,31 @@ class Cashier extends React.Component {
                                 classNameHeader='cashier__tab-header'
                                 current_path={this.props.location.pathname}
                                 is_floating
+                                setVerticalTabIndex={this.props.setTabIndex}
+                                vertical_tab_index={this.props.tab_index}
                                 is_full_width
                                 is_routed
                                 list={menu_options()}
+                                tab_headers_note={
+                                    should_show_tab_headers_note ? (
+                                        <p className='cashier__tab-header-note'>
+                                            <Localize
+                                                i18n_default_text='Want to exchange between e-wallet currencies? Try <0>bestchange.com</0>'
+                                                components={[
+                                                    <a
+                                                        key={0}
+                                                        href='https://www.bestchange.com/?p=1095016'
+                                                        rel='noopener noreferrer'
+                                                        target='_blank'
+                                                        className='link'
+                                                    />,
+                                                ]}
+                                            />
+                                        </p>
+                                    ) : (
+                                        undefined
+                                    )
+                                }
                             />
                         </DesktopWrapper>
                         <MobileWrapper>
@@ -137,13 +165,19 @@ Cashier.propTypes = {
     location: PropTypes.object,
     onMount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
+    setTabIndex: PropTypes.func,
+    tab_index: PropTypes.number,
     routes: PropTypes.arrayOf(PropTypes.object),
     toggleCashier: PropTypes.func,
 };
 
-export default connect(({ common, modules, ui }) => ({
+export default connect(({ client, common, modules, ui }) => ({
     routeBackInApp: common.routeBackInApp,
+    tab_index: modules.cashier.cashier_route_tab_index,
+    setTabIndex: modules.cashier.setCashierTabIndex,
+    loggedin_currency: client.currency,
     is_p2p_visible: modules.cashier.is_p2p_visible,
+    is_virtual: client.is_virtual,
     is_visible: ui.is_cashier_visible,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,

@@ -29,7 +29,9 @@ class PaymentAgentTransferReceipt extends React.Component {
                         <span className='account-transfer__transfer-details-from'>
                             <Icon icon={`IcCurrency-${this.props.currency.toLowerCase()}`} />
                             <span className='cashier__transferred-details'>
-                                <span className='cashier__text--bold'>{this.props.currency.toUpperCase()}</span>
+                                <span className='cashier__text--bold'>
+                                    {CurrencyUtils.getCurrencyDisplayCode(this.props.currency)}
+                                </span>
                                 {this.props.loginid}
                             </span>
                         </span>

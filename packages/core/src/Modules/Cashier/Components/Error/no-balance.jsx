@@ -3,13 +3,14 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon } from '@deriv/components';
 import { routes } from '@deriv/shared/routes';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 class NoBalance extends React.Component {
     onClickDeposit = () => {
         // index of deposit tab in the cashier modal is 0
-        this.props.setVerticalTabIndex(0);
+        this.props.setTabIndex(0);
         this.props.history.push(routes.cashier_deposit);
     };
 
@@ -20,7 +21,7 @@ class NoBalance extends React.Component {
                 <h2 className='withdraw__header'>
                     <Localize
                         i18n_default_text='You have no funds in your {{currency}} account'
-                        values={{ currency: this.props.currency.toUpperCase() }}
+                        values={{ currency: CurrencyUtils.getCurrencyDisplayCode(this.props.currency) }}
                     />
                 </h2>
                 <p className='cashier__text'>
@@ -41,10 +42,10 @@ class NoBalance extends React.Component {
 
 NoBalance.propTypes = {
     currency: PropTypes.string,
-    setVerticalTabIndex: PropTypes.func,
+    setTabIndex: PropTypes.func,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, modules }) => ({
     currency: client.currency,
-    setVerticalTabIndex: ui.setVerticalTabIndex,
+    setTabIndex: modules.cashier.setCashierTabIndex,
 }))(withRouter(NoBalance));

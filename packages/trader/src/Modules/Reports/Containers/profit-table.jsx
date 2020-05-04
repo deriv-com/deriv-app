@@ -151,7 +151,7 @@ class ProfitTable extends React.Component {
                     )}
                     filter_component={filter_component}
                 />
-                {is_loading || data.length === 0 || is_empty ? (
+                {data.length === 0 || is_empty ? (
                     <PlaceholderComponent
                         is_loading={is_loading}
                         has_selected_date={has_selected_date}

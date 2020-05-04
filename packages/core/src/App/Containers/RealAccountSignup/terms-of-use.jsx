@@ -94,7 +94,7 @@ class TermsOfUse extends React.Component {
                                                     className='link'
                                                     target='_blank'
                                                     rel='noopener noreferrer'
-                                                    href={getDerivComLink('/terms-and-conditions/#general')}
+                                                    href={getDerivComLink('/terms-and-conditions')}
                                                 />,
                                             ]}
                                         />

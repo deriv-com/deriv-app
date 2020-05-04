@@ -6,6 +6,7 @@ import { LocalStore } from '_common/storage';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import { clientNotifications, excluded_notifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
+import { getPlatformHeader } from '../Utils/PlatformSwitcher/platform-switcher';
 
 const store_name = 'ui_store';
 
@@ -145,10 +146,15 @@ export default class UIStore extends BaseStore {
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
             // TODO: [disable-dark-bot] Delete this condition when Bot is ready
-            if (isBot()) {
+            const new_app_routing_history = this.root_store.common.app_routing_history.slice();
+            const platform = getPlatformHeader(new_app_routing_history);
+            if (platform === 'DBot') {
                 document.body.classList.remove('theme--dark');
                 document.body.classList.add('theme--light');
-            } else if (this.is_dark_mode_on) {
+                return;
+            }
+
+            if (this.is_dark_mode_on) {
                 document.body.classList.remove('theme--light');
                 document.body.classList.add('theme--dark');
             } else {

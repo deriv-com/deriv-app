@@ -52,7 +52,6 @@ class PlatformSwitcher extends React.PureComponent {
                         size={32}
                     />
                     <h1 className='platform-switcher__header'>{getPlatformHeader(this.props.app_routing_history)}</h1>
-                    <p className='platform-switcher__label'>{localize('BETA')}</p>
                     <Icon className='platform-switcher__arrow' icon='IcChevronDownBold' />
                 </div>
                 <CSSTransition

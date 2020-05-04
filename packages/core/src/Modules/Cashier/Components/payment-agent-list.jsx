@@ -82,6 +82,7 @@ class PaymentAgentList extends React.Component {
                                 </DesktopWrapper>
                                 <MobileWrapper>
                                     <SelectNative
+                                        placeholder={localize('Please select')}
                                         name='payment_methods'
                                         list_items={this.props.supported_banks}
                                         value={this.props.selected_bank}

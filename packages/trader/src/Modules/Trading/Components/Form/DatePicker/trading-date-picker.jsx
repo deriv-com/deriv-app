@@ -93,14 +93,20 @@ class TradingDatePicker extends React.Component {
             ? toMoment()
                   .add(this.state.duration, 'days')
                   .format('YYYY-MM-DD')
-            : this.min_date_expiry;
+            : this.state.selected_date || this.min_date_expiry;
     }
 
     onChange = e => {
-        if (this.has_range_selection && this.is_mounted) {
-            this.setState({
-                duration: e.duration,
-            });
+        if (this.is_mounted) {
+            if (this.has_range_selection) {
+                this.setState({
+                    duration: e.duration,
+                });
+            } else if (e.target.value) {
+                this.setState({
+                    selected_date: toMoment(e.target.value),
+                });
+            }
         }
 
         const { onChange } = this.props;
@@ -151,6 +157,7 @@ class TradingDatePicker extends React.Component {
                 })}
             >
                 <Tooltip
+                    className='trade-container__tooltip'
                     alignment='left'
                     message={has_error ? validation_errors[name][0] : undefined}
                     has_error={has_error}

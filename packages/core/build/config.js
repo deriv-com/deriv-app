@@ -71,7 +71,7 @@ const copyConfig = base => [
 
 const generateSWConfig = () => ({
     cleanupOutdatedCaches: true,
-    exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^localstorage-sync\.html$/],
+    exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^localstorage-sync\.html$/, /\.map$/],
     skipWaiting: true,
     clientsClaim: true,
 });
@@ -107,6 +107,14 @@ const htmlInjectConfig = () => ({
                 rel: 'icon',
             },
         },
+        {
+            path: 'public/fonts/binary_symbols.woff',
+            attributes: {
+                rel: 'preload',
+                as: 'font',
+                crossorigin: 'crossorigin',
+            },
+        },
         // {
         //     path: 'pushwoosh-web-notifications.js',
         //     attributes: {
@@ -127,6 +135,16 @@ const htmlInjectConfig = () => ({
     append: false,
 });
 
+const htmlPreloadConfig = () => ({
+    rel: 'preload',
+    as(entry) {
+        if (/\.css$/.test(entry)) return 'style';
+        if (/\.woff$/.test(entry)) return 'font';
+        return 'script';
+    },
+    fileWhitelist: [/\.css$/],
+});
+
 const cssConfig = () => ({ filename: 'css/core.main.css', chunkFilename: 'css/core.[name].[contenthash].css' });
 
 const stylelintConfig = () => ({
@@ -140,6 +158,7 @@ module.exports = {
     copyConfig,
     htmlOutputConfig,
     htmlInjectConfig,
+    htmlPreloadConfig,
     cssConfig,
     stylelintConfig,
     generateSWConfig,

@@ -87,6 +87,7 @@ export default class TradeStore extends BaseStore {
 
     // Last Digit
     @observable last_digit = 5;
+    @observable is_mobile_digit_view_selected = false;
 
     // Purchase
     @observable.ref proposal_info = {};
@@ -106,6 +107,9 @@ export default class TradeStore extends BaseStore {
     @observable commission = 0;
     @observable cancellation_price = 0;
     @observable hovered_contract_type;
+
+    // Mobile
+    @observable is_trade_params_expanded = true;
 
     addTickByProposal = () => null;
     debouncedProposal = debounce(this.requestProposal, 500);
@@ -151,6 +155,7 @@ export default class TradeStore extends BaseStore {
             'symbol',
             'stop_loss',
             'take_profit',
+            'is_trade_params_expanded',
         ];
         super({
             root_store,
@@ -285,7 +290,8 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async prepareTradeStore() {
-        this.currency = this.root_store.client.currency;
+        // fallback to default currency if current logged-in client hasn't selected a currency yet
+        this.currency = this.root_store.client.currency || this.root_store.client.default_currency;
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
         await WS.wait('authorize');
@@ -364,6 +370,11 @@ export default class TradeStore extends BaseStore {
     @action.bound
     setAllowEqual(is_equal) {
         this.is_equal = is_equal;
+    }
+
+    @action.bound
+    setIsTradeParamsExpanded(value) {
+        this.is_trade_params_expanded = value;
     }
 
     @action.bound
@@ -704,6 +715,11 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    setMobileDigitView(bool) {
+        this.is_mobile_digit_view_selected = bool;
+    }
+
+    @action.bound
     pushPurchaseDataToGtm(contract_data) {
         const data = {
             event: 'buy_contract',
@@ -900,7 +916,7 @@ export default class TradeStore extends BaseStore {
         }
         this.setContractTypes();
         return this.processNewValuesAsync(
-            { currency: this.root_store.client.currency },
+            { currency: this.root_store.client.currency || this.root_store.client.default_currency },
             true,
             { currency: this.currency },
             false
@@ -930,7 +946,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     clientInitListener() {
         this.should_refresh_active_symbols = true;
-        this.initAccountCurrency(this.root_store.client.currency);
+        this.initAccountCurrency(this.root_store.client.currency || this.root_store.client.default_currency);
         return Promise.resolve();
     }
 

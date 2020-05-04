@@ -101,6 +101,7 @@ export default class CashierStore extends BaseStore {
     @observable is_p2p_visible = false;
     @observable p2p_notification_count = 0;
     @observable is_p2p_advertiser = false;
+    @observable cashier_route_tab_index = 0;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -186,6 +187,10 @@ export default class CashierStore extends BaseStore {
         }
     }
 
+    @action.bound
+    setCashierTabIndex(index) {
+        this.cashier_route_tab_index = index;
+    }
     @action.bound
     setNotificationCount(notification_count) {
         this.p2p_notification_count = notification_count;
@@ -659,10 +664,10 @@ export default class CashierStore extends BaseStore {
             this.setHasNoAccountsBalance(false);
         }
 
-        const transfer_between_accounts =
-            !this.config.account_transfer.accounts_list.length || has_updated_account_balance
-                ? await WS.transferBetweenAccounts()
-                : await WS.authorized.cache.transferBetweenAccounts({ accounts: 'all' }); // load from cache to get the latest updates
+        // various issues happen when loading from cache
+        // e.g. new account may have been created, transfer may have been done elsewhere, etc
+        // so on load of this page just call it again
+        const transfer_between_accounts = await WS.transferBetweenAccounts();
 
         if (transfer_between_accounts.error) {
             this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
@@ -687,11 +692,15 @@ export default class CashierStore extends BaseStore {
         if (!accounts.find(account => +account.balance > 0)) {
             can_transfer = false;
             this.setHasNoAccountsBalance(true);
+        } else {
+            this.setHasNoAccountsBalance(false);
         }
         // should have at least two real-money accounts
         if (accounts.length <= 1) {
             can_transfer = false;
             this.setHasNoAccount(true);
+        } else {
+            this.setHasNoAccount(false);
         }
         if (!can_transfer) {
             this.setLoading(false);
@@ -754,7 +763,7 @@ export default class CashierStore extends BaseStore {
         // remove disabled mt5 accounts
         const accounts = transfer_between_accounts.accounts.filter(account => !/inactive/.test(account.mt5_group));
         // sort accounts as follows:
-        // for MT5, synthetic indices, standard, advanced
+        // for MT5, synthetic, financial, financial stp
         // for non-MT5, fiat, crypto (alphabetically by currency)
         accounts.sort((a, b) => {
             const a_is_mt = a.account_type === 'mt5';
@@ -764,11 +773,11 @@ export default class CashierStore extends BaseStore {
             const a_is_fiat = !a_is_mt && !a_is_crypto;
             const b_is_fiat = !b_is_mt && !b_is_crypto;
             if (a_is_mt && b_is_mt) {
-                if (/vanuatu/.test(a.mt5_group)) {
-                    return 1;
-                }
-                if (/svg/.test(a.mt5_group)) {
+                if (/svg$/.test(a.mt5_group)) {
                     return -1;
+                }
+                if (/vanuatu|svg_standard/.test(a.mt5_group)) {
+                    return /svg$/.test(b.mt5_group) ? 1 : -1;
                 }
                 return 1;
             } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
@@ -782,7 +791,9 @@ export default class CashierStore extends BaseStore {
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
         accounts.forEach(account => {
             const obj_values = {
-                text: account.mt5_group ? getMT5AccountDisplay(account.mt5_group) : account.currency.toUpperCase(),
+                text: account.mt5_group
+                    ? `${localize('DMT5')} ${getMT5AccountDisplay(account.mt5_group)}`
+                    : CurrencyUtils.getCurrencyDisplayCode(account.currency.toUpperCase()),
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,

@@ -22,17 +22,6 @@
         font-weight: bold;
         color: var(--text-general);
     }
-    &__label {
-        font-size: 1.4rem;
-        line-height: 2rem;
-        border-radius: 1rem;
-        background-color: var(--brand-secondary);
-        color: var(--text-colored-background);
-        width: 50px;
-        height: 20px;
-        font-weight: bold;
-        text-align: center;
-    }
     &__arrow {
         transition: transform 0.3s ease;
         transform: rotate(0deg);

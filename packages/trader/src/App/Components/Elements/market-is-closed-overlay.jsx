@@ -57,18 +57,56 @@ const startAnimation = node => {
     );
 };
 
+const asyncNextFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
+
+const waitForElement = async query_selector => {
+    const element = document.querySelector(query_selector);
+    if (element !== null) {
+        return Promise.resolve(element);
+    }
+
+    await asyncNextFrame();
+    return Promise.resolve(waitForElement(query_selector));
+};
+
+const waitForElementRemoval = async query_selector => {
+    const element = document.querySelector(query_selector);
+    if (element === null) {
+        return Promise.resolve(true);
+    }
+
+    await asyncNextFrame();
+    return Promise.resolve(waitForElementRemoval(query_selector));
+};
+
+const waitFor = msec => new Promise(resolve => setTimeout(resolve, msec));
+
 /**
  * Handle animation for dropdown, this is imperative, with DOM manipulation.
  */
-const onClick = () => {
-    const dropdown = document.querySelector('.cq-menu-dropdown');
-    if (dropdown.classList.contains('open')) return;
-    document.querySelector('.cq-symbol-select-btn').click();
-    const left_panel = document.querySelector('.cq-filter-panel');
-    left_panel.querySelector('.ic-synthetic_index').parentNode.click();
+const onClick = async () => {
+    // Check if menu is already open
+    const dropdown_menu = document.querySelector('.cq-menu-dropdown');
+    if (dropdown_menu) {
+        dropdown_menu.querySelector('.icon-reset').click();
+        await waitForElementRemoval('.cq-menu-dropdown');
+    }
+    const dropdown = await waitForElement('.cq-symbol-select-btn');
+    await waitFor(100);
+    dropdown.click();
+    await waitForElement('.cq-menu-dropdown-enter-done');
+    const reset_icon = await waitForElement('.icon-reset');
+    reset_icon.click();
+    const input_search = await waitForElement('.data-hj-whitelist');
+    // This is a workaround to trigger input events in React.
+    const nativeInputSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+    nativeInputSetter.call(input_search, 'Volatility');
+
+    const input_event = new Event('input', { bubbles: true });
+    input_search.dispatchEvent(input_event);
 
     const node = document.querySelector('.category-synthetic_index').querySelector('.category-content');
-    setTimeout(startAnimation.bind(this, node), 600);
+    startAnimation(node);
 };
 
 const MarketIsClosedOverlay = () => (

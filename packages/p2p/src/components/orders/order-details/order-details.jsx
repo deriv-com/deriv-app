@@ -18,6 +18,7 @@ import './order-details.scss';
 
 const OrderDetails = ({ order_details, chat_info }) => {
     const {
+        advertiser_id,
         advertiser_name,
         advertiser_instructions,
         chat_channel_url,
@@ -36,7 +37,8 @@ const OrderDetails = ({ order_details, chat_info }) => {
     } = order_details;
     const [show_popup, setShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
-    const { email_domain } = React.useContext(Dp2pContext);
+    const { email_domain, advertiser_id: ad_advertiser_id } = React.useContext(Dp2pContext);
+    const is_my_ad = advertiser_id === ad_advertiser_id;
     const onCancelClick = () => setShowPopup(false);
     const handleShowPopup = options => {
         setPopupOptions(options);
@@ -69,7 +71,8 @@ const OrderDetails = ({ order_details, chat_info }) => {
                                 <div className='order-details__info--left'>
                                     <OrderInfoBlock
                                         label={is_buyer ? localize('Seller') : localize('Buyer')}
-                                        value={advertiser_name}
+                                        // TODO: Once we have access to other party's information we can update below.
+                                        value={is_my_ad ? '-' : advertiser_name}
                                     />
                                 </div>
                                 <div className='order-details__info--right'>
@@ -91,10 +94,12 @@ const OrderDetails = ({ order_details, chat_info }) => {
                                     />
                                 </React.Fragment>
                             )}
-                            <OrderInfoBlock
-                                label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
-                                value={advertiser_instructions || '-'}
-                            />
+                            {!is_my_ad && (
+                                <OrderInfoBlock
+                                    label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
+                                    value={advertiser_instructions || '-'}
+                                />
+                            )}
                             <div className='order-details__info-columns'>
                                 <div className='order-details__info--left'>
                                     <OrderInfoBlock
@@ -111,30 +116,30 @@ const OrderDetails = ({ order_details, chat_info }) => {
                                     <OrderInfoBlock label={localize('Time')} value={order_purchase_datetime} />
                                 </div>
                             </div>
+                            {(is_buyer_confirmed || (is_expired && is_buyer)) && (
+                                <React.Fragment>
+                                    <div className='p2p-cashier__separator' />
+                                    <div className='order-details__footer'>
+                                        <p>
+                                            <Localize
+                                                i18n_default_text='If you have a complaint, please email <0>{{support_email}}</0> and include your order ID.'
+                                                values={{ support_email: `support@${email_domain}` }}
+                                                components={[
+                                                    <a
+                                                        key={0}
+                                                        className='link'
+                                                        rel='noopener noreferrer'
+                                                        target='_blank'
+                                                        href={`mailto:support@${email_domain}`}
+                                                    />,
+                                                ]}
+                                            />
+                                        </p>
+                                        <OrderInfoBlock label={localize('Order ID')} value={id} />
+                                    </div>
+                                </React.Fragment>
+                            )}
                         </div>
-                        {(is_buyer_confirmed || (is_expired && is_buyer)) && (
-                            <React.Fragment>
-                                <div className='p2p-cashier__separator' />
-                                <div className='order-details__footer'>
-                                    <p>
-                                        <Localize
-                                            i18n_default_text='If you have a complaint, please email <0>{{support_email}}</0> and include your order ID.'
-                                            values={{ support_email: `support@${email_domain}` }}
-                                            components={[
-                                                <a
-                                                    key={0}
-                                                    className='link'
-                                                    rel='noopener noreferrer'
-                                                    target='_blank'
-                                                    href={`mailto:support@${email_domain}`}
-                                                />,
-                                            ]}
-                                        />
-                                    </p>
-                                    <OrderInfoBlock label={localize('Order ID')} value={id} />
-                                </div>
-                            </React.Fragment>
-                        )}
                     </div>
                 </div>
 

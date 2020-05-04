@@ -686,7 +686,7 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(false);
         this.setInitialized(true);
 
-        // Added WS method for reconnecting balance stream on API reconnection
+        // Added WS method for showing reconnect prompt on API reconnection
         WS.setOnReconnect(() => {
             this.root_store.ui.addNotificationMessage({
                 key: 'you_were_disconnected',

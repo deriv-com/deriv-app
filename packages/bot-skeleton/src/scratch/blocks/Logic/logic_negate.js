@@ -18,7 +18,7 @@ Blockly.Blocks.logic_negate = {
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary: Blockly.Colours.Base.colourTertiary,
-            tooltip: localize('Converts a given True of False to the oposite value'),
+            tooltip: localize('Converts a given True or False to the opposite value'),
             category: Blockly.Categories.Logic,
         };
     },

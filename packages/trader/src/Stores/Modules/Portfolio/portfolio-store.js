@@ -90,11 +90,6 @@ export default class PortfolioStore extends BaseStore {
                 return;
             }
             this.positions[i].is_loading = true;
-            const subscriber = WS.subscribeProposalOpenContract(contract_id, poc => {
-                this.updateContractTradeStore(poc);
-                this.populateResultDetails(poc);
-                subscriber.unsubscribe();
-            });
         }
     }
 
@@ -181,6 +176,15 @@ export default class PortfolioStore extends BaseStore {
                 this.updateTradeStore(false, portfolio_position);
             } else {
                 this.updateTradeStore(true, portfolio_position, true);
+            }
+        }
+
+        if (portfolio_position.contract_info.is_sold === 1) {
+            this.populateResultDetails(response);
+
+            if (this.remove_position_after_sell) {
+                this.removePositionById(proposal.contract_id);
+                this.remove_position_after_sell = false;
             }
         }
     }
@@ -273,10 +277,6 @@ export default class PortfolioStore extends BaseStore {
         if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
 
         this.positions[i].is_loading = false;
-
-        if (this.hovered_position_id === this.positions[i].id && this.positions[i].contract_info.is_sold) {
-            this.updateTradeStore(false, this.positions[i]);
-        }
     };
 
     @action.bound

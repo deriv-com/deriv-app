@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
-import { getAllowedLocalStorageOrigin } from '@deriv/shared/events/storage';
+import { getAllowedLocalStorageOrigin } from '@deriv/shared/utils/storage';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { requestLogout, WS } from 'Services';

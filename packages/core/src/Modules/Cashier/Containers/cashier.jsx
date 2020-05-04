@@ -9,7 +9,7 @@ import {
     Div100vhContainer,
     FadeWrapper,
 } from '@deriv/components';
-import { routes } from '@deriv/shared/routes';
+import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { getSelectedRoute } from '@deriv/shared/utils/route';

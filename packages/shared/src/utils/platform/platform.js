@@ -1,4 +1,4 @@
-import { routes } from '../../routes';
+import { routes } from '../routes/routes';
 
 /*
  * These functions exist because we want to refresh the browser page on switch between Bot and the rest of the platforms.

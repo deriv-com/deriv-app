@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { removeBranchName } from '@deriv/shared/utils/url';
-import { routes } from '@deriv/shared/routes';
+import routes from '@deriv/shared/utils/routes';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { redirectToLogin, redirectToSignUp } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';

@@ -1,6 +1,6 @@
-import { getAllowedLocalStorageOrigin } from '../events/storage';
+import { getAllowedLocalStorageOrigin } from '../storage/storage_events';
 
-const routes = {
+export const routes = {
     error404: '/404',
     account: '/account',
     financial_assessment: '/account/financial-assessment',
@@ -40,5 +40,3 @@ const routes = {
     smarttrader: `${getAllowedLocalStorageOrigin()}`,
     endpoint: '/endpoint',
 };
-
-export default routes;

@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter, matchPath, Prompt } from 'react-router';
-import { routes } from '@deriv/shared/routes';
+import routes from '@deriv/shared/utils/routes';
 import BinaryRoutes from 'App/Components/Routes';
 import Lazy from 'App/Containers/Lazy';
 import { connect } from 'Stores/connect';

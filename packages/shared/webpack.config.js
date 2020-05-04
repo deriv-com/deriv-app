@@ -14,11 +14,11 @@ module.exports = {
         string  : path.resolve(__dirname, 'src', 'utils/string/index.js'),
         os: path.resolve(__dirname, 'src', 'utils/os/index.js'),
         route: path.resolve(__dirname, 'src', 'utils/route/index.js'),
+        routes: path.resolve(__dirname, 'src', 'utils/routes/index.js'),
         date: path.resolve(__dirname, 'src', 'utils/date/index.js'),
         platform: path.resolve(__dirname, 'src', 'utils/platform/index.js'),
         url: path.resolve(__dirname, 'src', 'utils/url/index.js'),
-        routes: path.resolve(__dirname, 'src', 'routes/index.js'),
-        storage: path.resolve(__dirname, 'src', 'events/storage/index.js')
+        storage: path.resolve(__dirname, 'src', 'utils/storage/index.js'),
     },
     output: {
         path: path.resolve(__dirname, 'utils'),

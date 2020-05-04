@@ -1,4 +1,4 @@
-import { routes } from '@deriv/shared/routes';
+import routes from '@deriv/shared/utils/routes';
 import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 

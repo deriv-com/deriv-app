@@ -13,7 +13,7 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { urlFor } from '@deriv/shared/utils/url';
-import { routes } from '@deriv/shared/routes';
+import routes from '@deriv/shared/utils/routes';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';

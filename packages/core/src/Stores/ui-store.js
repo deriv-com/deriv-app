@@ -1,12 +1,11 @@
 import { action, autorun, computed, observable } from 'mobx';
-import { isBot } from '@deriv/shared/utils/platform';
+import { getPlatformHeader } from '@deriv/shared/utils/platform';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import { LocalStore } from '_common/storage';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import { clientNotifications, excluded_notifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import { getPlatformHeader } from '../Utils/PlatformSwitcher/platform-switcher';
 
 const store_name = 'ui_store';
 

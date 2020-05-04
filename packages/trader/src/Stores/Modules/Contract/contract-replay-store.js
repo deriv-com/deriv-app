@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx';
-import { routes } from '@deriv/shared/routes';
+import routes from '@deriv/shared/utils/routes';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';

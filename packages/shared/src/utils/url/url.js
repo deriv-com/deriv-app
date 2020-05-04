@@ -139,3 +139,11 @@ export const resetStaticHost = () => {
 export const setUrlLanguage = lang => {
     default_language = lang;
 };
+
+export const getDerivComLink = (path = '') => {
+    const host = 'https://deriv.com';
+    const lang = default_language?.toLowerCase();
+    const link_lang = lang === 'en' ? '' : `/${lang}`;
+
+    return `${host}${link_lang}/${normalizePath(path)}`;
+};

@@ -3,7 +3,7 @@ import { Icon, Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } fro
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import { routes } from '@deriv/shared/routes';
+import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';

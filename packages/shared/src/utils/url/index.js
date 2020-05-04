@@ -1,4 +1,5 @@
 import {
+    getDerivComLink,
     reset,
     params,
     paramsHash,
@@ -17,6 +18,7 @@ import {
 } from './url';
 
 export default {
+    getDerivComLink,
     reset,
     params,
     paramsHash,

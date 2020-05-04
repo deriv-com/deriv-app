@@ -1,6 +1,6 @@
 import { action, observable } from 'mobx';
-import { routes } from '@deriv/shared/routes';
-import { getAllowedLocalStorageOrigin } from '@deriv/shared/events/storage';
+import routes from '@deriv/shared/utils/routes';
+import { getAllowedLocalStorageOrigin } from '@deriv/shared/utils/storage';
 import { toMoment } from '@deriv/shared/utils/date';
 import ServerTime from '_common/base/server_time';
 import { currentLanguage } from 'Utils/Language/index';

@@ -189,7 +189,6 @@
 
 .mt5-attribute-describer {
     @include typeface(--paragraph-left-bold-black, none);
-    color: var(--text-general);
     font-size: 14px;
     font-weight: bold;
     color: var(--text-general);
@@ -517,22 +516,25 @@
 }
 
 .mt5-financial-stp-modal {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    flex-shrink: 0;
+    display: grid;
+    grid-template-rows: 13rem minmax(10rem, 1fr);
+    height: 100%;
+    overflow: auto;
+    position: relative;
+    width: 100%;
 
     &__heading {
         padding: 2em 2em 0 2em;
     }
     &__form,
     &__body {
-        flex: 1 1 auto;
-        flex-grow: 1;
-        height: 100%;
-        overflow: auto;
+        display: grid;
+    }
+    &__form {
+        grid-template-rows: minmax(20rem, 1fr) 7rem;
     }
     @include mobile {
+        grid-template-rows: 7rem minmax(10rem, 1fr);
         &__heading {
             padding: unset;
         }

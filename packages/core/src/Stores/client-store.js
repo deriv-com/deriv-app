@@ -6,7 +6,7 @@ import { requestLogout, WS } from 'Services';
 import ClientBase from '_common/base/client_base';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared/utils/date';
 import { LocalStore, State } from '_common/storage';
 import BinarySocketGeneral from 'Services/socket-general';
@@ -687,7 +687,20 @@ export default class ClientStore extends BaseStore {
         this.setInitialized(true);
 
         // Added WS method for reconnecting balance stream on API reconnection
-        WS.setOnReconnect(() => this.root_store.ui.addNotificationMessage(clientNotifications().you_were_disconnected));
+        WS.setOnReconnect(() => {
+            this.root_store.ui.addNotificationMessage({
+                key: 'you_were_disconnected',
+                header: localize('You were disconnected'),
+                message: localize('Please reload for updates.'),
+                should_hide_close_btn: true,
+                action: {
+                    onClick: () => window.location.reload(),
+                    text: localize('Reload'),
+                },
+                type: 'danger',
+                is_persistent: true,
+            });
+        });
     }
 
     @action.bound

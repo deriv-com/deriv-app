@@ -48,7 +48,6 @@ const SaveModal = ({
                                         placeholder={'Untitled Bot'}
                                         error={touched[field.name] && errors[field.name]}
                                         label={localize('Bot name')}
-                                        trailing_icon={<Icon icon='IcEdit' />}
                                     />
                                 )}
                             </Field>

@@ -14,8 +14,8 @@ export const updateWorkspaceName = () => {
     const file_name = save_modal.bot_name ?? config.default_file_name;
 
     if (document.title.indexOf('-') > -1) {
-        const string_to_replace = document.title.split('-')[1];
-        const new_document_title = document.title.replace(string_to_replace, ` ${file_name}`);
+        const string_to_replace = document.title.substr(document.title.indexOf('-'));
+        const new_document_title = document.title.replace(string_to_replace, `- ${file_name}`);
 
         document.title = new_document_title;
     } else {

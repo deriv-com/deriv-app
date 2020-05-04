@@ -431,7 +431,7 @@ class AccountSwitcher extends React.Component {
                                 </div>
                             ) : (
                                 <React.Fragment>
-                                    {this.real_mt5.length && (
+                                    {!!this.real_mt5.length && (
                                         <div className='acc-switcher__accounts'>
                                             {this.real_mt5.map(account => (
                                                 <AccountList

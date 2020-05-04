@@ -2,8 +2,7 @@ import React from 'react';
 import { Channel, SendBirdProvider } from 'sendbird-uikit';
 import 'sendbird-uikit/dist/index.css';
 
-const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url }) => {
-    const nickname = 'Joseph Joestar';
+const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) => {
     setInterval(() => {
         const chat_title_element = document.querySelector('.sendbird-chat-header__title');
         if (chat_title_element && chat_title_element.innerText !== nickname) {

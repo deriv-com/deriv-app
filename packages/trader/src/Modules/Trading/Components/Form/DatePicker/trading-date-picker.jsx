@@ -157,6 +157,7 @@ class TradingDatePicker extends React.Component {
                 })}
             >
                 <Tooltip
+                    className='trade-container__tooltip'
                     alignment='left'
                     message={has_error ? validation_errors[name][0] : undefined}
                     has_error={has_error}

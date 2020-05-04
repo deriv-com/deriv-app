@@ -121,6 +121,7 @@ const ContractInfo = ({
                     id={`dt_purchase_${type.toLowerCase()}_info`}
                     margin={210}
                     message={has_error_or_not_loaded ? '' : message}
+                    relative_render
                 />
             </DesktopWrapper>
         </div>

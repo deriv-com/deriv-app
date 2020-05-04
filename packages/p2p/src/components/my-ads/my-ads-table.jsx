@@ -12,7 +12,6 @@ import Popup from '../orders/popup.jsx';
 const headers = [
     { text: localize('Ad ID') },
     { text: localize('Available') },
-    { text: localize('Limits') },
     { text: localize('Price') },
     { text: localize('Payment method') },
     { text: '' }, // empty header
@@ -32,16 +31,13 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
             <Table.Cell>
                 {data.display_available_amount} {data.offer_currency}
             </Table.Cell>
-            <Table.Cell>
-                {data.display_min_available}-{data.display_max_available} {data.offer_currency}
-            </Table.Cell>
             <Table.Cell className='p2p-my-ads__table-price'>
                 {data.display_price_rate} {data.transaction_currency}
             </Table.Cell>
             <Table.Cell>{data.display_payment_method}</Table.Cell>
             <Table.Cell>
                 <Button
-                    className='deriv-p2p__button--right-aligned'
+                    className='p2p-cashier__button--right-aligned'
                     secondary
                     small
                     onClick={() => row_actions.onClickDelete(data.id)}
@@ -182,7 +178,7 @@ const MyAdsTable = () => {
         );
     }
 
-    return <div className='deriv-p2p__empty'>{localize("You haven't posted any ads yet.")}</div>;
+    return <div className='cashier-p2p__empty'>{localize("You haven't posted any ads yet.")}</div>;
 };
 
 export default MyAdsTable;

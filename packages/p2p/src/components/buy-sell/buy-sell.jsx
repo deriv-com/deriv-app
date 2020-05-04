@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, ButtonToggle } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import { BuySellTable } from './buy-sell-table.jsx';
 import Popup from './popup.jsx';
 import './buy-sell.scss';
+import BuySellTableContent from './buy-sell-table-content.jsx';
 
 const buy_sell_filters = [
     {
@@ -53,9 +53,14 @@ class BuySell extends Component {
                         name='filter'
                         onChange={this.onChangeTableType}
                         value={table_type}
+                        rounded_button
                     />
                 </div>
-                <BuySellTable table_type={table_type} setSelectedAd={this.setSelectedAd} />
+                <BuySellTableContent
+                    key={table_type}
+                    is_buy={table_type === 'buy'}
+                    setSelectedAd={this.setSelectedAd}
+                />
                 {show_popup && (
                     <div className='buy-sell__dialog'>
                         <Dialog is_visible={show_popup}>

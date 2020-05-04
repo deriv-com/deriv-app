@@ -286,7 +286,7 @@ class Dropdown extends React.Component {
                                 icon={this.props.is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
                                 className={classNames('dc-dropdown__select-arrow', {
                                     'dc-dropdown__select-arrow--left': this.props.is_alignment_left,
-                                    'dc-dropdown__select-arrow--show': this.state.is_list_visible,
+                                    'dc-dropdown__select-arrow--upward': this.state.is_list_visible,
                                 })}
                             />
                         )}

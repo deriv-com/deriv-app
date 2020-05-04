@@ -18,21 +18,18 @@
             .sendbird-label--color-onbackground-2 {
                 color: var(--text-less-prominent);
             }
+            .sendbird-avatar-img {
+                display: none;
+            }
             .sendbird-avatar {
                 background-color: var(--brand-orange);
                 width: 40px !important;
                 height: 40px !important;
                 background-image: none !important;
-
-                div {
-                    width: inherit !important;
-                    height: inherit !important;
-                    background-image: none !important;
-                    line-height: 40px;
-                    text-align: center;
-                    font-size: 16px;
-                    color: var(--text-colored-background);
-                }
+                line-height: 40px;
+                text-align: center;
+                font-size: 16px;
+                color: var(--text-colored-background);
             }
             .sendbird-user-message__sender-name {
                 display: none;
@@ -81,9 +78,12 @@
 
                 &__title {
                     font-size: 16px;
+                    display: flex;
+                    text-indent: -9999px;
 
                     &:after {
                         content: attr(data-content);
+                        text-indent: 0;
                     }
                 }
                 &__right {

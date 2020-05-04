@@ -234,6 +234,7 @@ const LoadModal = ({
         toggleModal={toggleLoadModal}
         onMount={onMount}
         onUnmount={onUnmount}
+        elements_to_ignore={[document.querySelector('.injectionDiv')]}
     >
         <div className='load__container'>
             <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top fit_content header_fit_content>

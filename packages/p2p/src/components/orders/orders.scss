@@ -13,6 +13,11 @@
             font-size: var(--text-size-s);
         }
     }
+    &__table {
+        & .dc-table__head:first-child {
+            padding-left: 17px;
+        }
+    }
     &__header {
         background: var(--state-disabled);
         padding: 0.4rem;
@@ -109,6 +114,11 @@
         &-row {
             cursor: pointer;
 
+            & .dc-table__row {
+                & .dc-table__cell:first-child {
+                    padding-left: 17px;
+                }
+            }
             &--attention {
                 background: var(--button-tertiary-hover);
             }
@@ -116,17 +126,26 @@
                 background: var(--general-hover);
             }
         }
-        &-cell {
+        &-status {
             font-weight: bold;
+            border-radius: 16px;
+            padding: 2px 16px;
 
             &--primary {
                 color: var(--brand-red-coral);
+                background-color: rgba(236, 63, 63, 0.16);
+            }
+            &--secondary {
+                color: var(--brand-yellow);
+                background-color: rgba(255, 173, 58, 0.16);
             }
             &--success {
                 color: var(--text-profit-success);
+                background-color: rgba(75, 180, 179, 0.16);
             }
             &--disabled {
                 color: var(--text-less-prominent);
+                background-color: rgba(153, 153, 153, 0.16);
             }
         }
     }

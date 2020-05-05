@@ -6,6 +6,7 @@ import { localize } from 'Components/i18next';
 
 const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
     const {
+        advertiser_name,
         display_transaction_amount,
         display_offer_amount,
         display_status,
@@ -32,15 +33,18 @@ const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
                 <Table.Cell>
                     {localize('Sell')} {id}
                 </Table.Cell>
-                <Table.Cell>{order_purchase_datetime}</Table.Cell>
-                <Table.Cell
-                    className={classNames('orders__table-cell', {
-                        'orders__table-cell--primary': is_pending || is_buyer_confirmed,
-                        'orders__table-cell--success': is_completed,
-                        'orders__table-cell--disabled': is_buyer_cancelled || is_expired,
-                    })}
-                >
-                    {display_status}
+                <Table.Cell>{advertiser_name === '' ? '-' : advertiser_name}</Table.Cell>
+                <Table.Cell>
+                    <div
+                        className={classNames('orders__table-status', {
+                            'orders__table-status--primary': is_pending,
+                            'orders__table-status--secondary': is_buyer_confirmed,
+                            'orders__table-status--success': is_completed,
+                            'orders__table-status--disabled': is_buyer_cancelled || is_expired,
+                        })}
+                    >
+                        {display_status}
+                    </div>
                 </Table.Cell>
                 <Table.Cell>
                     {display_offer_amount} {offer_currency}
@@ -48,6 +52,7 @@ const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
                 <Table.Cell>
                     {display_transaction_amount} {transaction_currency}
                 </Table.Cell>
+                <Table.Cell>{order_purchase_datetime}</Table.Cell>
             </Table.Row>
         </div>
     );

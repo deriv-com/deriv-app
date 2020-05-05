@@ -28,6 +28,7 @@ const OrderTable = ({ showDetails }) => {
                     name='filter'
                     onChange={({ target: { value } }) => setTableType(value)}
                     value={table_type}
+                    rounded_button
                 />
             </div>
             <OrderTableContent showDetails={showDetails} is_active={table_type === 'active'} />

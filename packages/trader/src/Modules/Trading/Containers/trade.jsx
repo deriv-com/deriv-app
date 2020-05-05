@@ -195,6 +195,7 @@ class ChartTradeClass extends React.Component {
         const { show_digits_stats, main_barrier, should_refresh, extra_barriers = [] } = this.props;
 
         const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
+        const active_symbols = ['synthetic_index', 'forex', 'indices', 'stocks', 'commodities'];
 
         // max ticks to display for mobile view for tick chart
         const max_ticks = this.props.granularity === 0 ? 8 : 24;
@@ -230,6 +231,7 @@ class ChartTradeClass extends React.Component {
                 refreshActiveSymbols={should_refresh}
                 hasAlternativeSource={this.props.has_alternative_source}
                 refToAddTick={this.props.refToAddTick}
+                activeSymbols={active_symbols}
             >
                 <ChartMarkers />
             </SmartChart>

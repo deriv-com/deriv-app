@@ -4,6 +4,9 @@
     display: flex;
     flex-direction: column;
     transition: all 0.3s ease-in-out;
+    @include tablet {
+        max-height: calc(100vh - 102px); // Header and footer
+    }
 
     &--success {
         max-height: 380px;
@@ -124,6 +127,18 @@
             height: 100%;
             display: grid;
             grid-template-rows: minmax(20rem, 1fr) 7rem;
+        }
+        @include tablet {
+            height: 100%;
+            display: grid;
+            grid-template-rows: minmax(20rem, 1fr) 7rem;
+        }
+    }
+    &__body {
+        & .details-form {
+            @include tablet {
+                grid-template-rows: 5rem minmax(10rem, 1fr);
+            }
         }
     }
     &__set-currency {

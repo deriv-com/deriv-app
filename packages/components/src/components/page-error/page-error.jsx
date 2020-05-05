@@ -1,25 +1,39 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ButtonLink from 'Components/button-link/button-link.jsx';
+import DesktopWrapper from 'Components/desktop-wrapper/desktop-wrapper.jsx';
 
-const PageError = ({ buttonOnClick, error_code_message, messages, header, redirect_label, redirect_url }) => (
-    <div className='dc-page-error__container'>
+// if classNameImage is passed we should split the page to two columns and left-align messages
+const PageError = ({ buttonOnClick, messages, header, redirect_label, redirect_url, classNameImage }) => (
+    <div className={classNames('dc-page-error__container', { 'dc-page-error__container--left': classNameImage })}>
+        {classNameImage && (
+            <DesktopWrapper>
+                <div className={classNames('dc-page-error__image', classNameImage)} />
+            </DesktopWrapper>
+        )}
         <div className='dc-page-error__box'>
             <h3 className='dc-page-error__header'>{header}</h3>
-            <div className='dc-page-error__message-wrapper'>
-                <span className='dc-page-error__message'>
+            <div
+                className={classNames('dc-page-error__message-wrapper', {
+                    'dc-page-error__message-wrapper--left': classNameImage,
+                })}
+            >
+                <span
+                    className={classNames('dc-page-error__message', { 'dc-page-error__message--left': classNameImage })}
+                >
                     {messages.map((message, index) =>
                         message.has_html ? (
-                            <p key={index} dangerouslySetInnerHTML={{ __html: message.message }} />
+                            <p
+                                key={index}
+                                className='dc-page-error__message-paragraph'
+                                dangerouslySetInnerHTML={{ __html: message.message }}
+                            />
                         ) : (
-                            <p key={index}>{message}</p>
+                            <p key={index} className='dc-page-error__message-paragraph'>
+                                {message}
+                            </p>
                         )
-                    )}
-                    {error_code_message && (
-                        <React.Fragment>
-                            <br />
-                            <p className='dc-page-error__code'>{error_code_message}</p>
-                        </React.Fragment>
                     )}
                 </span>
             </div>
@@ -34,7 +48,7 @@ const PageError = ({ buttonOnClick, error_code_message, messages, header, redire
 
 PageError.propTypes = {
     buttonOnClick: PropTypes.func,
-    error_code_message: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.node]),
+    classNameImage: PropTypes.string,
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     messages: PropTypes.array,
     redirect_label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),

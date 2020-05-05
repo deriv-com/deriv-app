@@ -1,0 +1,13 @@
+/** @define page-404 */
+.page-404 {
+    &__image {
+        background-image: url('~Images/common/404.png');
+        width: calc(100vw / 2.15);
+        min-height: 100%;
+        background-repeat: no-repeat;
+        background-size: 133%;
+        background-position-x: right;
+        background-position-y: center;
+        margin-right: 0.6rem;
+    }
+}

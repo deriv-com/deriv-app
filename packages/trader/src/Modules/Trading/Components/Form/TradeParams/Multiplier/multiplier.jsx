@@ -39,6 +39,7 @@ const Multiplier = ({ amount, commission, currency, multiplier, multiplier_range
                     ]}
                 />
             }
+            relative_render
         >
             <p className='trade-container__fieldset-tooltip-text'>
                 {localize('Commission: {{commission}}%', { commission })}

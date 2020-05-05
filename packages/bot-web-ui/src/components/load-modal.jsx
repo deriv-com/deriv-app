@@ -96,7 +96,9 @@ const Recent = ({
                     })}
                 >
                     <div>
-                        {localize("If you've recently used bots but don't see them in this list. It may because you:")}
+                        {localize(
+                            "If you've recently used bots but don't see them in this list, it may be because you:"
+                        )}
                     </div>
                     <ol className='load-recent__explain-list'>
                         <li>{localize('1. Logged in from a different device')}</li>
@@ -232,6 +234,7 @@ const LoadModal = ({
         toggleModal={toggleLoadModal}
         onMount={onMount}
         onUnmount={onUnmount}
+        elements_to_ignore={[document.querySelector('.injectionDiv')]}
     >
         <div className='load__container'>
             <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top fit_content header_fit_content>

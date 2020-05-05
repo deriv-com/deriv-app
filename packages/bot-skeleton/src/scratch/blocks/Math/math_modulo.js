@@ -45,7 +45,19 @@ Blockly.Blocks.math_modulo = {
 Blockly.JavaScript.math_modulo = block => {
     const argument0 = Blockly.JavaScript.valueToCode(block, 'DIVIDEND', Blockly.JavaScript.ORDER_MODULUS) || '0';
     const argument1 = Blockly.JavaScript.valueToCode(block, 'DIVISOR', Blockly.JavaScript.ORDER_MODULUS) || '0';
+    const functionName = Blockly.JavaScript.provideFunction_('mathModulo', [
+        // eslint-disable-next-line no-underscore-dangle
+        `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(a, b) {
+        if (b === 0) {
+            return ${block.parentBlock_.type === 'notify'} ? NaN : Bot.notify({ message: NaN, block_id: '${
+            block.id
+        }' });
+        } else {
+            return a % b;
+        }
+    }`,
+    ]);
 
-    const code = `${argument0} % ${argument1}`;
-    return [code, Blockly.JavaScript.ORDER_MODULUS];
+    const code = `${functionName}(${argument0}, ${argument1})`;
+    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };

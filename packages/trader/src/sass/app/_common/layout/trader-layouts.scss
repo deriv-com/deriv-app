@@ -11,6 +11,12 @@
                 .cq-top-ui-widgets {
                     transform: translate3d(248px, 0, 0);
                 }
+                .sc-toolbar-widget {
+                    transform: translate3d(248px, 0, 0);
+                }
+                .stx-panel-control {
+                    transform: translate3d(248px, 0, 0);
+                }
                 .cq-chart-controls {
                     transform: translate3d(130px, 0, 0) !important;
                 }
@@ -152,6 +158,12 @@ $FLOATING_HEADER_HEIGHT: 41px;
                                 display: none;
                             }
                         }
+                    }
+                    .sc-toolbar-widget {
+                        transition: transform 0.25s ease;
+                    }
+                    .stx-panel-control {
+                        transition: transform 0.25s ease;
                     }
                     .ciq-asset-information {
                         top: 75px;
@@ -330,6 +342,12 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 transform: translate3d(0, 0, 0);
             }
         }
+        .sc-toolbar-widget {
+            transform: translate3d(0, 0, 0);
+        }
+        .stx-panel-control {
+            transform: translate3d(0, 0, 0);
+        }
         .ciq-navigation-widget {
             transform: translate3d(0, 0, 0);
         }
@@ -375,8 +393,14 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .cq-chart-controls {
             transition: max-width 0.25s ease, transform 0.25s ease;
         }
+        .sc-toolbar-widget {
+            transition: transform 0.25s ease;
+        }
         .ciq-navigation-widget {
-            transform: translate3d(0, 0, 0);
+            transition: transform 0.25s ease;
+        }
+        .stx-panel-control {
+            transition: transform 0.25s ease;
         }
         .ciq-toolbar-widget {
             @include mobile {

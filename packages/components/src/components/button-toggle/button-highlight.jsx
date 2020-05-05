@@ -26,6 +26,7 @@ const Highlight = ({ left, width, rounded_button }) => {
 Highlight.propTypes = {
     left: PropTypes.number,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    rounded_button: PropTypes.bool,
 };
 
 export { Highlight };

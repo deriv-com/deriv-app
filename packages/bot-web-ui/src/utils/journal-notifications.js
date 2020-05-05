@@ -6,7 +6,7 @@ const showErrorMessageWithButton = (message, block_id, showErrorMessage, centerA
         messageWithButton({
             unique_id: block_id,
             type: 'error',
-            message: message,
+            message,
             btn_text: localize('Go to block'),
             onClick: () => {
                 centerAndHighlightBlock();

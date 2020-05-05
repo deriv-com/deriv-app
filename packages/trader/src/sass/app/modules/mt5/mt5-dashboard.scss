@@ -642,6 +642,11 @@
 
 .mt5-details-form {
     height: 100%;
+    @include tablet {
+        display: grid;
+        grid-template-rows: 7rem minmax(10rem, 1fr);
+        height: auto;
+    }
     &__fields {
         padding: 0;
     }
@@ -844,11 +849,14 @@
         position: relative;
     }
 }
-.dc-modal__container_mt5-advanced-signup-modal {
+.dc-modal__container_mt5-financial-stp-signup-modal {
     @include desktop {
         min-height: 80vh;
         display: grid;
         grid-template-rows: 6rem minmax(20rem, 1fr);
+    }
+    @include tablet {
+        max-height: calc(100vh - 102px); // HEADER and FOOTER
     }
 }
 .dc-modal__container_mt5-password-modal {

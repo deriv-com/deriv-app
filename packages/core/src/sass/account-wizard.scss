@@ -273,3 +273,14 @@
         }
     }
 }
+
+.add-crypto-currency,
+.change-currency {
+    @include tablet {
+        form {
+            display: grid;
+            grid-template-rows: repeat(2, 7rem) 1fr 7rem;
+            height: auto;
+        }
+    }
+}

@@ -17,7 +17,7 @@ const index_lookup = {
     MT5PendingVerification: 3,
 };
 
-class MT5AdvancedRealAccountSignup extends Component {
+class MT5FinancialStpRealAccountSignup extends Component {
     state = {};
 
     constructor(props) {
@@ -220,16 +220,16 @@ class MT5AdvancedRealAccountSignup extends Component {
         );
         const height = this.getCurrent('height') || 'auto';
         return (
-            <div className='mt5-advanced-modal' id='real_mt5_advanced_account_opening'>
-                <div className='mt5-advanced-modal__heading'>
+            <div className='mt5-financial-stp-modal' id='real_mt5_financial_stp_account_opening'>
+                <div className='mt5-financial-stp-modal__heading'>
                     {this.getCurrent() && (
                         <>
                             <DesktopWrapper>
                                 <FormProgress steps={this.state.items} current_step={this.state.step} />
                             </DesktopWrapper>
                             <MobileWrapper>
-                                <div className='mt5-advanced-modal__header-steps'>
-                                    <h4 className='mt5-advanced-modal__header-steps-title'>
+                                <div className='mt5-financial-stp-modal__header-steps'>
+                                    <h4 className='mt5-financial-stp-modal__header-steps-title'>
                                         <Localize
                                             i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
                                             values={{
@@ -240,7 +240,7 @@ class MT5AdvancedRealAccountSignup extends Component {
                                         />
                                     </h4>
                                     {this.state.items[this.state.step].header.active_title && (
-                                        <h4 className='mt5-advanced-modal__header-steps-subtitle'>
+                                        <h4 className='mt5-financial-stp-modal__header-steps-subtitle'>
                                             {this.state.items[this.state.step].header.active_title}
                                         </h4>
                                     )}
@@ -249,7 +249,11 @@ class MT5AdvancedRealAccountSignup extends Component {
                         </>
                     )}
                 </div>
-                <Div100vhContainer className='mt5-advanced-modal__body' is_disabled={isDesktop()} height_offset='40px'>
+                <Div100vhContainer
+                    className='mt5-financial-stp-modal__body'
+                    is_disabled={isDesktop()}
+                    height_offset='40px'
+                >
                     <BodyComponent
                         value={form_value}
                         index={this.state_index}
@@ -266,7 +270,7 @@ class MT5AdvancedRealAccountSignup extends Component {
     }
 }
 
-MT5AdvancedRealAccountSignup.propTypes = {
+MT5FinancialStpRealAccountSignup.propTypes = {
     openPendingDialog: PropTypes.func,
     toggleModal: PropTypes.func,
 };
@@ -282,4 +286,4 @@ export default connect(({ client, modules: { mt5 }, ui }) => ({
     residence_list: client.residence_list,
     states_list: client.states_list,
     storeProofOfAddress: mt5.storeProofOfAddress,
-}))(MT5AdvancedRealAccountSignup);
+}))(MT5FinancialStpRealAccountSignup);

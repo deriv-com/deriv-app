@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Icon } from '@deriv/components';
+import { localize, Localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
-import { Localize } from 'Components/i18next';
+import { TableError } from 'Components/table/table-error.jsx';
 import { requestWS } from 'Utils/websocket';
 import FormAds from './form-ads.jsx';
 import MyAdsTable from './my-ads-table.jsx';
@@ -38,6 +39,13 @@ class MyAds extends Component {
     };
 
     render() {
+        if (this.context.is_restricted) {
+            return (
+                <div className='p2p-my-ads'>
+                    <TableError message={localize('P2P cashier is unavailable in your country.')} />;
+                </div>
+            );
+        }
         if (this.context.is_advertiser) {
             return (
                 <div className='p2p-my-ads'>

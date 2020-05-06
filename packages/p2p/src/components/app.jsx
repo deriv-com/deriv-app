@@ -38,6 +38,7 @@ class App extends Component {
             notification_count: 0,
             parameters: null,
             is_advertiser: false,
+            is_restricted: false,
         };
     }
 
@@ -56,6 +57,8 @@ class App extends Component {
                 advertiser_id: advertiser_info.p2p_advertiser_info.id,
                 is_advertiser: !!advertiser_info.p2p_advertiser_info.is_approved,
             });
+        } else if (advertiser_info.error?.code === 'RestrictedCountry') {
+            await this.setState({ is_restricted: true });
         }
         return true;
     };
@@ -145,6 +148,7 @@ class App extends Component {
                     residence,
                     advertiser_id: this.state.advertiser_id,
                     is_advertiser: this.state.is_advertiser,
+                    is_restricted: this.state.is_restricted,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,
                     order_offset,

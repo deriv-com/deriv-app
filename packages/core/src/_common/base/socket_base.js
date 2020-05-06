@@ -78,6 +78,8 @@ const BinarySocketBase = (() => {
                 deriv_api.authorize(authorize_token);
             }
 
+            wait('website_status');
+
             if (typeof config.onOpen === 'function') {
                 config.onOpen(isReady());
             }

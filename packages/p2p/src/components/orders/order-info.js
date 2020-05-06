@@ -29,7 +29,7 @@ export default class OrderInfo {
     }
 
     static status_map_buyer = {
-        pending: localize('Please pay'),
+        pending: localize('Pay now'),
         'buyer-confirmed': localize('Wait for release'),
     };
 
@@ -39,7 +39,7 @@ export default class OrderInfo {
     };
 
     static status_map_common = {
-        cancelled: localize('Cancelled'),
+        cancelled: localize('Expired'),
         'timed-out': localize('Cancelled'),
         refunded: localize('Refunded'),
         completed: localize('Completed'),

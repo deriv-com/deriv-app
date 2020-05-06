@@ -183,7 +183,7 @@ class Popup extends Component {
                                                                     hint={localize(
                                                                         'Bank name, account number, beneficiary name'
                                                                     )}
-                                                                    label={localize('Your bank details')}
+                                                                    label={localize('Your payment instructions')}
                                                                     required
                                                                 />
                                                             )}

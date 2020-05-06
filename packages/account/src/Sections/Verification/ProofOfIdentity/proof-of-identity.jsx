@@ -1,6 +1,7 @@
 import React from 'react';
 import { AutoHeightWrapper } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import { WS } from 'Services/ws-methods';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 import { MissingPersonalDetails } from './proof-of-identity-messages.jsx';
 import DemoMessage from '../../ErrorMessages/DemoMessage';
@@ -13,10 +14,9 @@ class ProofOfIdentity extends React.Component {
         return (
             <AutoHeightWrapper default_height={200}>
                 {({ setRef, height }) => (
-                    <div
-                        ref={setRef}
-                        className='proof-of-identity'>
+                    <div ref={setRef} className='proof-of-identity'>
                         <ProofOfIdentityContainer
+                            WS={WS}
                             addNotificationByKey={this.props.addNotificationByKey}
                             removeNotificationByKey={this.props.removeNotificationByKey}
                             removeNotificationMessage={this.props.removeNotificationMessage}
@@ -26,7 +26,6 @@ class ProofOfIdentity extends React.Component {
                     </div>
                 )}
             </AutoHeightWrapper>
-
         );
     }
 }

@@ -35,7 +35,6 @@ const makeLazyLoader = importFn => component_name =>
     });
 
 const lazyLoadReportComponent = makeLazyLoader(() => import(/* webpackChunkName: "reports" */ 'Modules/Reports'));
-const lazyLoadAccountComponent = makeLazyLoader(() => import(/* webpackChunkName: "account" */ 'Modules/Account'));
 
 // Order matters
 const initRoutesConfig = () => [

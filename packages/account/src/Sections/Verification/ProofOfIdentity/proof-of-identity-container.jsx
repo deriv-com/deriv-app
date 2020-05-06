@@ -2,7 +2,6 @@ import * as Cookies from 'js-cookie';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 import Onfido from './onfido.jsx';
 import { getIdentityStatus } from './proof-of-identity';
 import { Unverified } from './proof-of-identity-messages.jsx';
@@ -18,16 +17,16 @@ class ProofOfIdentityContainer extends React.Component {
     };
 
     getOnfidoServiceToken = () =>
-        new Promise(resolve => {
+        new Promise((resolve) => {
             const onfido_cookie_name = 'onfido_token';
             const onfido_cookie = Cookies.get(onfido_cookie_name);
             const unsupported_country_code = 'UnsupportedCountry';
 
             if (!onfido_cookie) {
-                WS.serviceToken({
+                this.props.WS.serviceToken({
                     service_token: 1,
                     service: 'onfido',
-                }).then(response => {
+                }).then((response) => {
                     if (response.error || !response.service_token) {
                         if (response.error.code === unsupported_country_code) {
                             this.setState({ onfido_unsupported: true });
@@ -53,11 +52,11 @@ class ProofOfIdentityContainer extends React.Component {
         });
 
     handleComplete = () => {
-        WS.notificationEvent({
+        this.props.WS.notificationEvent({
             notification_event: 1,
             category: 'authentication',
             event: 'poi_documents_uploaded',
-        }).then(response => {
+        }).then((response) => {
             if (response.error) {
                 this.setState({ api_error: true });
                 return;
@@ -78,17 +77,17 @@ class ProofOfIdentityContainer extends React.Component {
     componentDidMount() {
         // TODO: Find a better solution for handling no-op instead of using is_mounted flags
         this.is_mounted = true;
-        WS.authorized.getAccountStatus().then(response => {
+        this.props.WS.authorized.getAccountStatus().then((response) => {
             const { get_account_status } = response;
-            this.getOnfidoServiceToken().then(onfido_service_token => {
+            this.getOnfidoServiceToken().then((onfido_service_token) => {
                 const { document, identity, needs_verification } = get_account_status.authentication;
                 const has_poa = !(document && document.status === 'none');
                 const needs_poa = needs_verification.length && needs_verification.includes('document');
                 const { onfido_unsupported } = this.state;
                 const status = getIdentityStatus(identity, onfido_unsupported);
-                const unwelcome = get_account_status.status.some(account_status => account_status === 'unwelcome');
+                const unwelcome = get_account_status.status.some((account_status) => account_status === 'unwelcome');
                 const allow_document_upload = get_account_status.status.some(
-                    account_status => account_status === 'allow_document_upload'
+                    (account_status) => account_status === 'allow_document_upload'
                 );
                 const documents_supported = identity.services.onfido.documents_supported;
                 if (this.is_mounted) {
@@ -115,15 +114,15 @@ class ProofOfIdentityContainer extends React.Component {
 
     render() {
         const {
-                  documents_supported,
-                  is_loading,
-                  status,
-                  onfido_service_token,
-                  has_poa,
-                  api_error,
-                  unwelcome,
-                  allow_document_upload,
-              } = this.state;
+            documents_supported,
+            is_loading,
+            status,
+            onfido_service_token,
+            has_poa,
+            api_error,
+            unwelcome,
+            allow_document_upload,
+        } = this.state;
 
         if (api_error)
             return (

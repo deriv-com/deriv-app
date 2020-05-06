@@ -29,7 +29,7 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
             {is_buyer_confirmed && is_buyer && localize('Wait for release')}
             {is_buyer_confirmed && !is_buyer && localize('Confirm payment')}
             {is_expired && localize('Expired')}
-            {is_completed && localize('Order complete')}
+            {is_completed && localize('Completed')}
         </h2>
     );
 };

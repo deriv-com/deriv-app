@@ -35,6 +35,8 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             title: localize('Cancel this order?'),
             message: localize('If you have paid, please do not cancel the order.'),
             confirm_text: localize('Cancel this order'),
+            has_cancel: true,
+            cancel_text: localize('Do not Cancel'),
             onClickConfirm: cancel,
         };
         showPopup(options);
@@ -102,7 +104,12 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
 
     if (is_buyer_confirmed && !is_buyer) {
         buttons_to_render = (
-            <Button className='order-details__actions-button' large primary onClick={receivedFunds}>
+            <Button
+                className='order-details__actions-button order-details__footer--right'
+                large
+                primary
+                onClick={receivedFunds}
+            >
                 {localize("I've received funds")}
             </Button>
         );

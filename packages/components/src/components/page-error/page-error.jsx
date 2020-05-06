@@ -4,28 +4,26 @@ import React from 'react';
 import ButtonLink from 'Components/button-link/button-link.jsx';
 import DesktopWrapper from 'Components/desktop-wrapper/desktop-wrapper.jsx';
 
-// if classNameImage is passed we should split the page to two columns and left-align messages
-const PageError = ({ buttonOnClick, messages, header, redirect_label, redirect_url, classNameImage }) => (
-    <div className={classNames('dc-page-error__container', { 'dc-page-error__container--left': classNameImage })}>
-        {classNameImage && (
+// if image_url is passed we should split the page to two columns and left-align messages
+const PageError = ({ buttonOnClick, messages, header, redirect_label, redirect_url, classNameImage, image_url }) => (
+    <div className={classNames('dc-page-error__container', { 'dc-page-error__container--left': !!image_url })}>
+        {!!image_url && (
             <DesktopWrapper>
-                <div className={classNames('dc-page-error__image', classNameImage)} />
+                <img className={classNameImage} src={image_url} />
             </DesktopWrapper>
         )}
         <div
             className={classNames('dc-page-error__box', {
-                'dc-page-error__box--left': classNameImage,
+                'dc-page-error__box--left': !!image_url,
             })}
         >
             <h3 className='dc-page-error__header'>{header}</h3>
             <div
                 className={classNames('dc-page-error__message-wrapper', {
-                    'dc-page-error__message-wrapper--left': classNameImage,
+                    'dc-page-error__message-wrapper--left': !!image_url,
                 })}
             >
-                <span
-                    className={classNames('dc-page-error__message', { 'dc-page-error__message--left': classNameImage })}
-                >
+                <span className={classNames('dc-page-error__message', { 'dc-page-error__message--left': !!image_url })}>
                     {messages.map((message, index) =>
                         message.has_html ? (
                             <p
@@ -54,6 +52,7 @@ PageError.propTypes = {
     buttonOnClick: PropTypes.func,
     classNameImage: PropTypes.string,
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    image_url: PropTypes.string,
     messages: PropTypes.array,
     redirect_label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     redirect_url: PropTypes.string,

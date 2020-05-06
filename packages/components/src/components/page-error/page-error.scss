@@ -2,12 +2,14 @@
 .dc-page-error {
     &__container {
         display: flex;
-        height: calc(100vh - 83px);
-        align-items: center;
         justify-content: center;
+        align-items: center;
+        height: calc(100vh - 83px);
 
-        &--left {
-            justify-content: left;
+        @include desktop {
+            &--left {
+                justify-content: left;
+            }
         }
     }
     &__box {
@@ -41,7 +43,7 @@
         @include typeface(--title-center-normal-black, none);
         color: var(--text-prominent);
         line-height: 1.5;
-        max-width: 400px;
+        max-width: 502px;
         margin: 1.6rem 0 2.4rem;
 
         &-wrapper {

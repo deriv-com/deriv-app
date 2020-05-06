@@ -167,6 +167,7 @@ export default class StatementStore extends BaseStore {
 
     @action.bound
     onUnmount() {
+        this.clearTable();
         this.disposeSwitchAccount();
         WS.forgetAll('proposal');
     }

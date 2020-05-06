@@ -19,6 +19,11 @@
         align-items: center;
         justify-content: center;
 
+        @include desktop {
+            &--left {
+                align-items: start;
+            }
+        }
         @media screen and (min-width: 1008px) {
             max-width: calc(100vw - 45%);
         }

@@ -12,7 +12,11 @@ const PageError = ({ buttonOnClick, messages, header, redirect_label, redirect_u
                 <div className={classNames('dc-page-error__image', classNameImage)} />
             </DesktopWrapper>
         )}
-        <div className='dc-page-error__box'>
+        <div
+            className={classNames('dc-page-error__box', {
+                'dc-page-error__box--left': classNameImage,
+            })}
+        >
             <h3 className='dc-page-error__header'>{header}</h3>
             <div
                 className={classNames('dc-page-error__message-wrapper', {

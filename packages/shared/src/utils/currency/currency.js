@@ -188,7 +188,10 @@ export const getPaWithdrawalLimit = (currency, limit) => {
 };
 
 export const getCurrencyDisplayCode = (currency = '') => {
-    return ObjectUtils.getPropertyValue(CryptoConfig.get(), [currency.toUpperCase(), 'display_code']) || currency;
+    return (
+        ObjectUtils.getPropertyValue(CryptoConfig.get(), [currency.toUpperCase(), 'display_code']) ||
+        currency.toUpperCase()
+    );
 };
 
 export const getCurrencyName = currency => {

@@ -17,7 +17,7 @@ const SignupErrorContent = ({ message, code, onConfirm }) => {
             </h1>
             <p>{message}</p>
             {code === 'InvalidPhone' ? (
-                <Button primary onClick={onConfirm}>
+                <Button primary onClick={onConfirm} large>
                     <Localize i18n_default_text='Try again using a different phone number' />
                 </Button>
             ) : (

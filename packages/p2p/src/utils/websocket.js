@@ -110,6 +110,7 @@ const getModifiedP2POrder = response => {
         price_rate,
         transaction_amount,
         transaction_currency,
+        advertiser_id: ObjectUtils.getPropertyValue(response, ['advertiser_details', 'id']),
         advertiser_name: ObjectUtils.getPropertyValue(response, ['advertiser_details', 'name']),
         advertiser_instructions: ObjectUtils.getPropertyValue(response, ['advert_details', 'description']),
         display_offer_amount: formatMoney(offer_currency, offer_amount),

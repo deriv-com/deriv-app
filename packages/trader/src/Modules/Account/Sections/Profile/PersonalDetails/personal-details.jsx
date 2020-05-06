@@ -187,7 +187,8 @@ class PersonalDetailsForm extends React.Component {
 
         const permitted_characters = "- . ' # ; : ( ) , @ /";
         const address_validation_message = localize(
-            `Only letters, numbers, space, and these special characters are allowed: ${permitted_characters}`
+            'Only letters, numbers, space, and these special characters are allowed: {{ permitted_characters }}',
+            { permitted_characters }
         );
 
         if (values.address_line_1 && !validAddress(values.address_line_1)) {

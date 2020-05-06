@@ -16,6 +16,7 @@ import './order-details.scss';
 
 const OrderDetails = ({ order_details }) => {
     const {
+        advertiser_id,
         advertiser_name,
         advertiser_instructions,
         contact_info,
@@ -33,7 +34,8 @@ const OrderDetails = ({ order_details }) => {
     } = order_details;
     const [show_popup, setShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
-    const { email_domain } = React.useContext(Dp2pContext);
+    const { email_domain, advertiser_id: ad_advertiser_id } = React.useContext(Dp2pContext);
+    const is_my_ad = advertiser_id === ad_advertiser_id;
     const onCancelClick = () => setShowPopup(false);
     const handleShowPopup = options => {
         setPopupOptions(options);
@@ -59,13 +61,14 @@ const OrderDetails = ({ order_details }) => {
                         </span>
                         <OrderDetailsTimerBlock order_details={order_details} />
                     </div>
-                    <div className='deriv-p2p__separator' />
+                    <div className='p2p-cashier__separator' />
                     <div className='order-details__info'>
                         <div className='order-details__info-columns'>
                             <div className='order-details__info--left'>
                                 <OrderInfoBlock
                                     label={is_buyer ? localize('Seller') : localize('Buyer')}
-                                    value={advertiser_name}
+                                    // TODO: Once we have access to other party's information we can update below.
+                                    value={is_my_ad ? '-' : advertiser_name}
                                 />
                             </div>
                             <div className='order-details__info--right'>
@@ -84,10 +87,12 @@ const OrderDetails = ({ order_details }) => {
                                 />
                             </React.Fragment>
                         )}
-                        <OrderInfoBlock
-                            label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
-                            value={advertiser_instructions || '-'}
-                        />
+                        {!is_my_ad && (
+                            <OrderInfoBlock
+                                label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
+                                value={advertiser_instructions || '-'}
+                            />
+                        )}
                         <div className='order-details__info-columns'>
                             <div className='order-details__info--left'>
                                 <OrderInfoBlock
@@ -107,7 +112,7 @@ const OrderDetails = ({ order_details }) => {
                     </div>
                     {(is_buyer_confirmed || (is_expired && is_buyer)) && (
                         <React.Fragment>
-                            <div className='deriv-p2p__separator' />
+                            <div className='p2p-cashier__separator' />
                             <div className='order-details__footer'>
                                 <p>
                                     <Localize

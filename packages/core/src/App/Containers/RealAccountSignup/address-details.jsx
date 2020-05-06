@@ -45,7 +45,7 @@ const getLocation = (location_list, value, type) => {
 class AddressDetails extends Component {
     constructor(props) {
         super(props);
-        this.state = { has_fetched_states_list: false };
+        this.state = { has_fetched_states_list: false, addres_state_to_display: '' };
         this.form = React.createRef();
         // TODO: Find a better solution for handling no-op instead of using is_mounted flags
         this.is_mounted = false;
@@ -54,7 +54,11 @@ class AddressDetails extends Component {
     async componentDidMount() {
         this.is_mounted = true;
         await this.props.fetchStatesList();
-        if (this.is_mounted) this.setState({ has_fetched_states_list: true });
+        if (this.is_mounted)
+            this.setState({
+                has_fetched_states_list: true,
+                addres_state_to_display: getLocation(this.props.states_list, this.props.value.address_state, 'text'),
+            });
         this.form.current.getFormikActions().validateForm();
     }
 
@@ -133,19 +137,25 @@ class AddressDetails extends Component {
                                                                 <DesktopWrapper>
                                                                     <Autocomplete
                                                                         {...field}
+                                                                        {...(this.state.addres_state_to_display && {
+                                                                            value: this.state.addres_state_to_display,
+                                                                        })}
                                                                         data-lpignore='true'
                                                                         autoComplete='new-password' // prevent chrome autocomplete
                                                                         dropdown_offset='3.2rem'
                                                                         type='text'
                                                                         label={localize('State/Province')}
                                                                         list_items={this.props.states_list}
-                                                                        onItemSelection={({ value, text }) =>
+                                                                        onItemSelection={({ value, text }) => {
                                                                             setFieldValue(
                                                                                 'address_state',
                                                                                 value ? text : '',
                                                                                 true
-                                                                            )
-                                                                        }
+                                                                            );
+                                                                            this.setState({
+                                                                                addres_state_to_display: '',
+                                                                            });
+                                                                        }}
                                                                     />
                                                                 </DesktopWrapper>
                                                                 <MobileWrapper>

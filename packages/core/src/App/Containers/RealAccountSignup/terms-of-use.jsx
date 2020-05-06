@@ -1,4 +1,4 @@
-import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
+import { Div100vhContainer, ThemedScrollbars, FormSubmitButton } from '@deriv/components';
 import { Field, Formik } from 'formik';
 import React from 'react';
 import { getDerivComLink } from '_common/url';
@@ -6,7 +6,6 @@ import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { Hr } from './currency-selector.jsx';
-import FormSubmitButton from './form-submit-button.jsx';
 import 'Sass/terms-of-use.scss';
 
 class TermsOfUse extends React.Component {
@@ -95,7 +94,7 @@ class TermsOfUse extends React.Component {
                                                     className='link'
                                                     target='_blank'
                                                     rel='noopener noreferrer'
-                                                    href={getDerivComLink('/terms-and-conditions/#general')}
+                                                    href={getDerivComLink('/terms-and-conditions')}
                                                 />,
                                             ]}
                                         />

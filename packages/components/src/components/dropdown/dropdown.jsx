@@ -80,6 +80,7 @@ class Dropdown extends React.Component {
     get list_class_names() {
         return classNames('dc-list', {
             'dc-list--left': this.props.is_alignment_left,
+            'dc-list--large': this.props.is_large,
         });
     }
 
@@ -254,111 +255,119 @@ class Dropdown extends React.Component {
                     value={this.props.value || 0}
                 />
                 <div ref={this.setWrapperRef} className={this.container_class_name}>
-                    {this.props.label && (
-                        <span
-                            className={classNames('dc-dropdown__label', {
-                                'dc-dropdown__label--clicked': this.state.is_list_visible,
-                            })}
+                    <div className='dc-dropdown__container'>
+                        {this.props.label && (
+                            <span
+                                className={classNames('dc-dropdown__label', {
+                                    'dc-dropdown__label--clicked': this.state.is_list_visible,
+                                })}
+                            >
+                                {this.props.label}
+                            </span>
+                        )}
+                        <div
+                            className={this.dropdown_display_class_name}
+                            tabIndex={this.is_single_option ? '-1' : '0'}
+                            onClick={this.handleVisibility}
+                            onKeyDown={this.onKeyPressed}
                         >
-                            {this.props.label}
-                        </span>
-                    )}
-                    <div
-                        className={this.dropdown_display_class_name}
-                        tabIndex={this.is_single_option ? '-1' : '0'}
-                        onClick={this.handleVisibility}
-                        onKeyDown={this.onKeyPressed}
-                    >
-                        <DisplayText
-                            has_symbol={this.props.has_symbol}
-                            name={this.props.name}
-                            is_title={this.state.is_list_visible}
-                            placeholder={this.props.placeholder}
-                            value={this.props.value || 0}
-                            list={this.props.list}
-                            is_align_text_left={this.props.is_align_text_left}
-                        />
-                    </div>
-                    {!this.is_single_option && (
-                        <Icon
-                            icon={this.props.is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
-                            className={classNames('dc-dropdown__select-arrow', {
-                                'dc-dropdown__select-arrow--left': this.props.is_alignment_left,
-                            })}
-                        />
-                    )}
-                    {this.props.error && <p className='dc-field-error'>{this.props.error}</p>}
-                    {this.props.is_nativepicker ? (
-                        <NativeSelect
-                            ref={this.native_select_ref}
-                            name={this.props.name}
-                            value={this.props.value}
-                            list={this.props.list}
-                            onChange={this.props.onChange}
-                        />
-                    ) : (
-                        <CSSTransition
-                            in={this.state.is_list_visible}
-                            timeout={100}
-                            classNames={this.transition_class_names}
-                            onEntered={this.setListDimension}
-                            unmountOnExit
-                        >
-                            <div className={this.dropdown_list_class_names}>
-                                <div
-                                    className={this.list_class_names}
-                                    ref={this.list_ref}
-                                    style={getDropDownAlignment()}
-                                >
-                                    <ThemedScrollbars
-                                        autoHeight
-                                        autoHide
-                                        autoHeightMax={200}
-                                        renderTrackHorizontal={props => <div {...props} style={{ display: 'none' }} />}
-                                        renderThumbHorizontal={props => <div {...props} style={{ display: 'none' }} />}
+                            <DisplayText
+                                has_symbol={this.props.has_symbol}
+                                name={this.props.name}
+                                is_title={this.state.is_list_visible}
+                                placeholder={this.props.placeholder}
+                                value={this.props.value || 0}
+                                list={this.props.list}
+                                is_align_text_left={this.props.is_align_text_left}
+                            />
+                        </div>
+                        {!this.is_single_option && (
+                            <Icon
+                                icon={this.props.is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
+                                className={classNames('dc-dropdown__select-arrow', {
+                                    'dc-dropdown__select-arrow--left': this.props.is_alignment_left,
+                                    'dc-dropdown__select-arrow--up': this.state.is_list_visible,
+                                })}
+                            />
+                        )}
+                        {this.props.error && <p className='dc-field-error'>{this.props.error}</p>}
+                        {this.props.is_nativepicker ? (
+                            <NativeSelect
+                                ref={this.native_select_ref}
+                                name={this.props.name}
+                                value={this.props.value}
+                                list={this.props.list}
+                                onChange={this.props.onChange}
+                            />
+                        ) : (
+                            <CSSTransition
+                                in={this.state.is_list_visible}
+                                timeout={100}
+                                classNames={this.transition_class_names}
+                                onEntered={this.setListDimension}
+                                unmountOnExit
+                            >
+                                <div className={this.dropdown_list_class_names}>
+                                    <div
+                                        className={this.list_class_names}
+                                        ref={this.list_ref}
+                                        style={getDropDownAlignment()}
                                     >
-                                        {Array.isArray(this.props.list) ? (
-                                            <Items
-                                                className={this.props.classNameItems}
-                                                index={this.state.curr_index}
-                                                handleSelect={this.handleSelect}
-                                                has_symbol={this.props.has_symbol}
-                                                items={this.props.list}
-                                                name={this.props.name}
-                                                is_align_text_left={this.props.is_align_text_left}
-                                                value={this.props.value}
-                                            />
-                                        ) : (
-                                            Object.keys(this.props.list).map((key, idx) => (
-                                                <React.Fragment key={key}>
-                                                    <div
-                                                        className={classNames(
-                                                            'dc-list__label',
-                                                            this.props.classNameLabel
+                                        <ThemedScrollbars
+                                            autoHeight
+                                            autoHide
+                                            autoHeightMax={404}
+                                            renderTrackHorizontal={props => (
+                                                <div {...props} style={{ display: 'none' }} />
+                                            )}
+                                            renderThumbHorizontal={props => (
+                                                <div {...props} style={{ display: 'none' }} />
+                                            )}
+                                        >
+                                            {Array.isArray(this.props.list) ? (
+                                                <Items
+                                                    className={this.props.classNameItems}
+                                                    index={this.state.curr_index}
+                                                    handleSelect={this.handleSelect}
+                                                    has_symbol={this.props.has_symbol}
+                                                    items={this.props.list}
+                                                    name={this.props.name}
+                                                    is_align_text_left={this.props.is_align_text_left}
+                                                    value={this.props.value}
+                                                />
+                                            ) : (
+                                                Object.keys(this.props.list).map((key, idx) => (
+                                                    <React.Fragment key={key}>
+                                                        <div
+                                                            className={classNames(
+                                                                'dc-list__label',
+                                                                this.props.classNameLabel
+                                                            )}
+                                                        >
+                                                            {key}
+                                                        </div>
+                                                        <Items
+                                                            className={this.props.classNameItems}
+                                                            handleSelect={this.handleSelect}
+                                                            has_symbol={this.props.has_symbol}
+                                                            items={this.props.list[key]}
+                                                            name={this.props.name}
+                                                            is_align_text_left={this.props.is_align_text_left}
+                                                            value={this.props.value}
+                                                        />
+                                                        {idx !== Object.keys(this.props.list).length - 1 && (
+                                                            <span className='dc-list__separator' />
                                                         )}
-                                                    >
-                                                        {key}
-                                                    </div>
-                                                    <Items
-                                                        className={this.props.classNameItems}
-                                                        handleSelect={this.handleSelect}
-                                                        has_symbol={this.props.has_symbol}
-                                                        items={this.props.list[key]}
-                                                        name={this.props.name}
-                                                        is_align_text_left={this.props.is_align_text_left}
-                                                        value={this.props.value}
-                                                    />
-                                                    {idx !== Object.keys(this.props.list).length - 1 && (
-                                                        <span className='dc-list__separator' />
-                                                    )}
-                                                </React.Fragment>
-                                            ))
-                                        )}
-                                    </ThemedScrollbars>
+                                                    </React.Fragment>
+                                                ))
+                                            )}
+                                        </ThemedScrollbars>
+                                    </div>
                                 </div>
-                            </div>
-                        </CSSTransition>
-                    )}
+                            </CSSTransition>
+                        )}
+                    </div>
+                    {!this.props.error && this.props.hint && <p className='dc-dropdown__hint'>{this.props.hint}</p>}
                 </div>
             </React.Fragment>
         );
@@ -373,6 +382,7 @@ Dropdown.propTypes = {
     disabled: PropTypes.bool,
     has_symbol: PropTypes.bool,
     is_alignment_left: PropTypes.bool,
+    is_large: PropTypes.bool,
     is_nativepicker: PropTypes.bool,
     is_nativepicker_visible: PropTypes.bool,
     label: PropTypes.string,

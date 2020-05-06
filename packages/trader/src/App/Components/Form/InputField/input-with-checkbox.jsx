@@ -24,27 +24,33 @@ const InputWithCheckbox = ({
     value,
 }) => {
     const checkboxRef = useRef();
+    const input_wrapper_ref = useRef();
+
     const [is_checked, setChecked] = useState(defaultChecked);
+    const [el_input, setInput] = useState(null);
 
     const checkboxName = `has_${name}`;
 
     useEffect(() => {
         setChecked(defaultChecked);
+        setInput(input_wrapper_ref.current.nextSibling.querySelector('input.input-wrapper__input'));
     }, [defaultChecked]);
 
     const changeValue = e => {
         // e.target.checked is not reliable, we have to toggle its previous value
         onChange({ target: { name: e.target.name, value: !is_checked } });
+        if (el_input && !is_checked) {
+            el_input.focus();
+        }
     };
 
-    const enableInputOnClick = e => {
+    const enableInputOnClick = () => {
         if (!is_checked) {
             setChecked(true);
             onChange({ target: { name: checkboxName, value: true } });
 
-            const input = e.target.querySelector('input.input-wrapper__input');
-            if (input) {
-                setTimeout(() => input.focus());
+            if (el_input) {
+                setTimeout(() => el_input.focus());
             }
         }
     };
@@ -91,7 +97,7 @@ const InputWithCheckbox = ({
 
     return (
         <React.Fragment>
-            <div className='input-wrapper--inline'>
+            <div ref={input_wrapper_ref} className='input-wrapper--inline'>
                 {checkbox_tooltip_label ? (
                     <Popover
                         alignment='left'
@@ -99,6 +105,7 @@ const InputWithCheckbox = ({
                         is_bubble_hover_enabled
                         margin={2}
                         message={checkbox_tooltip_label}
+                        relative_render
                     >
                         {checkbox}
                     </Popover>
@@ -112,6 +119,7 @@ const InputWithCheckbox = ({
                         id={`dt_${name}-checkbox__tooltip`}
                         message={tooltip_label}
                         margin={210}
+                        relative_render
                     />
                 )}
             </div>

@@ -1,7 +1,7 @@
 $MIN_HEIGHT_FULL_SCREEN: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT});
 
 $FLOATING_PADDING: 2.4rem;
-$FLOATING_HEADER_HEIGHT: 41px;
+$FLOATING_HEADER_HEIGHT: 53px;
 $MIN_HEIGHT_FLOATING: calc(
     100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - #{$FLOATING_PADDING}
 );
@@ -22,6 +22,7 @@ $MIN_HEIGHT_FLOATING: calc(
     &__content-container,
     &__content-inner {
         position: relative;
+        z-index: 0;
         height: 100%;
         width: 100%;
         display: flex;
@@ -81,18 +82,27 @@ $MIN_HEIGHT_FLOATING: calc(
             min-width: 256px;
             padding: 0.8rem;
             border-radius: #{$BORDER_RADIUS * 2};
-            position: sticky;
-            top: calc(2.4rem + 41px); // 41px for the header of PageOverlay
 
             .dc-vertical-tab__header--highlight {
                 width: calc(100% - 1.6rem);
                 border-radius: $BORDER_RADIUS;
             }
         }
+        &-meta-wrapper {
+            // a class used to wrap `.dc-vertical-tab__tab-bottom-note` and `.dc-vertical-tab__tab`
+            &--floating {
+                position: sticky;
+                top: calc(2.4rem + 41px); // 41px for the header of PageOverlay
+            }
+        }
+        &-bottom-note {
+            position: sticky;
+            margin-top: 1.6rem;
+        }
     }
     &__header-title {
         @include typeface(--title-center-bold-black, none);
-        color: var(--text-general);
+        color: var(--text-prominent);
         padding: 1.6rem;
         display: flex;
         align-items: center;
@@ -175,7 +185,7 @@ $MIN_HEIGHT_FLOATING: calc(
             padding: 0 0.4rem;
             margin: 0 0.4rem;
             background-color: var(--text-loss-danger);
-            color: var(--general-main-1);
+            color: var(--status-colored-background);
             border-radius: 8px;
         }
         &--floating {

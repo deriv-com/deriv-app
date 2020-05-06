@@ -10,6 +10,7 @@ import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import { connect } from 'Stores/connect';
+import { clientNotifications } from 'Stores/Helpers/client-notifications';
 import { header_links } from 'App/Constants/header-links';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
@@ -21,14 +22,23 @@ class Header extends React.Component {
         this.props.history.push(routes.cashier_deposit);
     };
 
+    // eslint-disable-next-line class-methods-use-this
+    componentWillUnmount() {
+        document.removeEventListener('UpdateAvailable');
+    }
+
+    componentDidMount() {
+        document.addEventListener('UpdateAvailable', () => {
+            this.props.addNotificationMessage(clientNotifications().new_version_available);
+        });
+    }
+
     render() {
         const {
             account_status,
             acc_switcher_disabled_message,
             app_routing_history,
             balance,
-            can_upgrade,
-            can_upgrade_to,
             currency,
             enableApp,
             header_extension,
@@ -41,6 +51,9 @@ class Header extends React.Component {
             is_logging_in,
             is_mt5_allowed,
             is_notifications_visible,
+            is_p2p_visible,
+            is_payment_agent_visible,
+            is_payment_agent_transfer_visible,
             is_route_modal_on,
             is_virtual,
             disableApp,
@@ -79,10 +92,14 @@ class Header extends React.Component {
                                 account_status={account_status}
                                 enableApp={enableApp}
                                 disableApp={disableApp}
+                                location={this.props.location}
                                 logoutClient={logoutClient}
                                 is_dark_mode={is_dark_mode}
                                 is_high_risk={is_high_risk}
                                 is_logged_in={is_logged_in}
+                                is_p2p_visible={is_p2p_visible}
+                                is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
+                                is_payment_agent_visible={is_payment_agent_visible}
                                 toggleTheme={setDarkMode}
                                 platform_switcher={
                                     <PlatformSwitcher
@@ -118,9 +135,7 @@ class Header extends React.Component {
                             <AccountActions
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
                                 balance={balance}
-                                can_upgrade_to={can_upgrade_to}
                                 currency={currency}
-                                can_upgrade={can_upgrade}
                                 disableApp={disableApp}
                                 enableApp={enableApp}
                                 is_acc_switcher_on={is_acc_switcher_on}
@@ -149,8 +164,6 @@ Header.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
     app_routing_history: PropTypes.array,
     balance: PropTypes.string,
-    can_upgrade: PropTypes.bool,
-    can_upgrade_to: PropTypes.string,
     currency: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
@@ -162,6 +175,9 @@ Header.propTypes = {
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
+    is_payment_agent_visible: PropTypes.bool,
+    is_payment_agent_transfer_visible: PropTypes.bool,
+    is_p2p_visible: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
     logoutClient: PropTypes.func,
@@ -171,13 +187,14 @@ Header.propTypes = {
     toggleNotifications: PropTypes.func,
 };
 
-export default connect(({ client, common, ui }) => ({
+export default connect(({ client, common, ui, modules }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
+    is_p2p_visible: modules.cashier.is_p2p_visible,
+    is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
+    is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     balance: client.balance,
-    can_upgrade: client.can_upgrade,
-    can_upgrade_to: client.can_upgrade_to,
     currency: client.currency,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
@@ -200,4 +217,5 @@ export default connect(({ client, common, ui }) => ({
     toggleAccountsDialog: ui.toggleAccountsDialog,
     setDarkMode: ui.setDarkMode,
     toggleNotifications: ui.toggleNotificationsModal,
+    addNotificationMessage: ui.addNotificationMessage,
 }))(withRouter(Header));

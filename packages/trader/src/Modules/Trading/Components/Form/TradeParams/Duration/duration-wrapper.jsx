@@ -128,7 +128,7 @@ class DurationWrapper extends React.Component {
             onChange({ target: { name: 'duration', value: min_value } });
         }
 
-        if (!(current_duration < min_value) && current_duration > max_value) {
+        if (!(current_duration < min_value) && current_duration > max_value && duration_unit !== 'd') {
             onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
             onChange({ target: { name: 'duration', value: max_value } });
         }

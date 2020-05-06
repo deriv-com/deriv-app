@@ -1,15 +1,15 @@
-import { Icon, PasswordInput, Modal, PasswordMeter } from '@deriv/components';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
+import { FormSubmitButton, Icon, Modal, PasswordInput, PasswordMeter } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import routes from 'Constants/routes';
-import { connect } from 'Stores/connect';
-import { validPassword, validLength } from 'Utils/Validator/declarative-validation-rules';
-import FormSubmitButton from '../Components/mt5-form-submit-button.jsx';
 import 'Sass/app/modules/mt5/mt5.scss';
+import { connect } from 'Stores/connect';
+import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
+import FinancialStpDescription from './financial-stp-description.jsx';
 
 const getSubmitText = (account_title, category) => {
     if (category === 'real') {
@@ -24,12 +24,12 @@ const getSubmitText = (account_title, category) => {
 
 const getIconFromType = type => {
     switch (type) {
-        case 'synthetic_indices':
-            return <Icon icon='IcMt5SyntheticIndices' size={64} />;
-        case 'standard':
-            return <Icon icon='IcMt5Standard' size={64} />;
+        case 'synthetic':
+            return <Icon icon='IcMt5Synthetic' size={64} />;
+        case 'financial':
+            return <Icon icon='IcMt5Financial' size={64} />;
         default:
-            return <Icon icon='IcMt5Advanced' size={64} />;
+            return <Icon icon='IcMt5FinancialStp' size={64} />;
     }
 };
 
@@ -84,6 +84,7 @@ const MT5PasswordModal = ({
     const IconType = () => getIconFromType(account_type.type);
     const should_show_password = is_mt5_password_modal_enabled && !has_mt5_error && !is_mt5_success_dialog_enabled;
     const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
+    const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
 
     return (
         <React.Fragment>
@@ -91,6 +92,7 @@ const MT5PasswordModal = ({
                 className='mt5-password-modal'
                 is_open={should_show_password}
                 toggleModal={closeModal}
+                width={is_real_financial_stp ? '360px' : 'auto'}
                 has_close_icon
             >
                 <Formik
@@ -115,7 +117,7 @@ const MT5PasswordModal = ({
                         <form onSubmit={handleSubmit}>
                             <h2>
                                 <Localize
-                                    i18n_default_text='Choose a password for your DMT5 {{ account_type }}'
+                                    i18n_default_text='Choose a password for your DMT5 {{ account_type }} account'
                                     values={{
                                         account_type: account_title,
                                     }}
@@ -141,11 +143,13 @@ const MT5PasswordModal = ({
                                     <p>
                                         <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters with numbers' />
                                     </p>
+                                    <FinancialStpDescription is_real_financial_stp={is_real_financial_stp} />
                                 </div>
                             </div>
                             <FormSubmitButton
+                                is_center={is_real_financial_stp}
                                 is_disabled={isSubmitting || !values.password || Object.keys(errors).length > 0}
-                                has_cancel
+                                has_cancel={!is_real_financial_stp}
                                 cancel_label={localize('Cancel')}
                                 onCancel={closeModal}
                                 is_loading={isSubmitting}
@@ -156,23 +160,18 @@ const MT5PasswordModal = ({
                     )}
                 />
             </Modal>
-            <Modal
-                className='mt5-password-modal'
+            <SuccessDialog
                 is_open={should_show_success}
                 toggleModal={closeModal}
-                has_close_icon={false}
-            >
-                <SuccessDialog
-                    onCancel={closeModal}
-                    onSubmit={closeOpenSuccess}
-                    message={getSubmitText(account_title, account_type.category)}
-                    // message={error_message}
-                    icon={<IconType />}
-                    icon_size='xlarge'
-                    text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('OK')}
-                    has_cancel={account_type.category === 'real'}
-                />
-            </Modal>
+                onCancel={closeModal}
+                onSubmit={closeOpenSuccess}
+                message={getSubmitText(account_title, account_type.category)}
+                // message={error_message}
+                icon={<IconType />}
+                icon_size='xlarge'
+                text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('OK')}
+                has_cancel={account_type.category === 'real'}
+            />
         </React.Fragment>
     );
 };

@@ -1,3 +1,5 @@
+const resolve = require('path').resolve
+const existsSync = require('fs').existsSync
 /* Using this loader you can import components from @deriv/components without having to manually
 import the corresponding stylesheet. The deriv-components-loader will automatically import
 stylesheets.
@@ -15,6 +17,10 @@ function getKebabCase(str) {
         .toLowerCase();
 }
 
+function checkExists(component) {
+    return existsSync(resolve(__dirname, '../../components/src/components/', component, `${component}.scss`));
+}
+
 module.exports = function(source, map) {
     const lines = source.split(/\n/);
     const mapped_lines = lines.map(line => {
@@ -22,12 +28,15 @@ module.exports = function(source, map) {
         if (!matches || !matches[1]) {
             return line; // do nothing;
         }
-        const components = matches[1].replace(/\s+/g, '').split(',');
+        const components = matches[1]
+            .replace(/\sas\s\w+/, '') // Remove aliasing from imports.
+            .replace(/\s+/g, '')
+            .split(',');
         const replace = components
             .map(
                 c => `
 import ${c} from '@deriv/components/lib/${getKebabCase(c)}';
-import '@deriv/components/lib/${getKebabCase(c)}.css';
+${checkExists(getKebabCase(c)) ? `import '@deriv/components/lib/${getKebabCase(c)}.css';` : ''}
         `
             )
             .join('\n');

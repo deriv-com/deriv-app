@@ -2,10 +2,19 @@
 import React from 'react';
 import { Formik, Field } from 'formik';
 import classNames from 'classnames';
-import { Autocomplete, Checkbox, Button, Input, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
+import {
+    Autocomplete,
+    Checkbox,
+    Button,
+    Input,
+    DesktopWrapper,
+    MobileWrapper,
+    SelectNative,
+    DateOfBirthPicker,
+} from '@deriv/components';
+import { toMoment } from '@deriv/shared/utils/date';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
-import DatePicker from 'App/Components/Form/DatePicker';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import {
@@ -17,8 +26,6 @@ import {
     validLetterSymbol,
     validLength,
 } from 'Utils/Validator/declarative-validation-rules';
-import { toMoment } from 'Utils/Date';
-import DateOfBirth from 'App/Components/Form/DateOfBirth';
 // import { account_opening_reason_list }         from './constants';
 import Loading from '../../../../../templates/app/components/loading.jsx';
 import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
@@ -92,8 +99,8 @@ class PersonalDetailsForm extends React.Component {
         request.email_consent = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
         request.first_name = request.first_name.trim();
         request.last_name = request.last_name.trim();
-        // request.tax_identification_number = request.tax_identification_number ? request.tax_identification_number.trim() : '';
         request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
+        // request.tax_identification_number = request.tax_identification_number ? request.tax_identification_number.trim() : '';
         request.citizen = request.citizen ? getLocation(this.props.residence_list, request.citizen, 'value') : '';
         request.place_of_birth = request.place_of_birth
             ? getLocation(this.props.residence_list, request.place_of_birth, 'value')
@@ -180,7 +187,8 @@ class PersonalDetailsForm extends React.Component {
 
         const permitted_characters = "- . ' # ; : ( ) , @ /";
         const address_validation_message = localize(
-            `Only letters, numbers, space, and these special characters are allowed: ${permitted_characters}`
+            'Only letters, numbers, space, and these special characters are allowed: {{ permitted_characters }}',
+            { permitted_characters }
         );
 
         if (values.address_line_1 && !validAddress(values.address_line_1)) {
@@ -266,9 +274,10 @@ class PersonalDetailsForm extends React.Component {
                     handleSubmit,
                     isSubmitting,
                     setFieldValue,
+                    setTouched,
                 }) => (
                     <>
-                        <LeaveConfirm onDirty={this.showForm} />
+                        <LeaveConfirm onDirty={isMobile() ? this.showForm : null} />
                         {show_form && (
                             <form
                                 noValidate
@@ -367,6 +376,7 @@ class PersonalDetailsForm extends React.Component {
                                                 </DesktopWrapper>
                                                 <MobileWrapper>
                                                     <SelectNative
+                                                        placeholder={localize('Please select')}
                                                         label={localize('Place of birth*')}
                                                         required
                                                         disabled={
@@ -384,35 +394,22 @@ class PersonalDetailsForm extends React.Component {
                                                 </MobileWrapper>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
-                                                    <DateOfBirth
-                                                        name='date_of_birth'
-                                                        label={localize('Date of birth*')}
-                                                        value={values.date_of_birth}
-                                                        disabled={is_fully_authenticated}
-                                                    />
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
-                                                    <DatePicker
-                                                        name='date_of_birth'
-                                                        className='date-of-birth-datepicker'
-                                                        is_nativepicker={true}
-                                                        label={localize('Date of birth*')}
-                                                        value={
-                                                            values.date_of_birth
-                                                                ? toMoment(values.date_of_birth).format('DD MMM YYYY')
-                                                                : ''
-                                                        }
-                                                        max_date={toMoment()
-                                                            .subtract(18, 'years')
-                                                            .format('YYYY-MM-DD')}
-                                                        min_date={toMoment()
-                                                            .subtract(100, 'years')
-                                                            .format('YYYY-MM-DD')}
-                                                        onChange={handleChange}
-                                                        disabled={is_fully_authenticated}
-                                                    />
-                                                </MobileWrapper>
+                                                <DateOfBirthPicker
+                                                    name='date_of_birth'
+                                                    label={localize('Date of birth*')}
+                                                    error={touched.date_of_birth && errors.date_of_birth}
+                                                    onBlur={() => setTouched({ date_of_birth: true })}
+                                                    onChange={({ target }) =>
+                                                        setFieldValue(
+                                                            'date_of_birth',
+                                                            target?.value
+                                                                ? toMoment(target.value).format('YYYY-MM-DD')
+                                                                : '',
+                                                            true
+                                                        )
+                                                    }
+                                                    value={values.date_of_birth}
+                                                />
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
@@ -441,6 +438,7 @@ class PersonalDetailsForm extends React.Component {
                                                 <MobileWrapper>
                                                     <MobileWrapper>
                                                         <SelectNative
+                                                            placeholder={localize('Please select')}
                                                             label={localize('Citizenship*')}
                                                             required
                                                             disabled={
@@ -640,6 +638,7 @@ class PersonalDetailsForm extends React.Component {
                                                             </DesktopWrapper>
                                                             <MobileWrapper>
                                                                 <SelectNative
+                                                                    placeholder={localize('Please select')}
                                                                     label={localize('State/Province (optional)')}
                                                                     value={values.address_state}
                                                                     list_items={this.props.states_list}

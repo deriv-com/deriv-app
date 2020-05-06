@@ -7,9 +7,9 @@ import ClientBase from '_common/base/client_base';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
+import { toMoment } from '@deriv/shared/utils/date';
 import { LocalStore, State } from '_common/storage';
 import BinarySocketGeneral from 'Services/socket-general';
-import { toMoment } from 'Utils/Date';
 import { getAllowedLocalStorageOrigin } from 'Utils/Events/storage';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
@@ -118,12 +118,6 @@ export default class ClientStore extends BaseStore {
         const has_no_transaction = this.statement.count === 0 && this.statement.transactions.length === 0;
         const has_account_criteria = has_no_transaction && has_no_mt5;
         return !this.is_virtual && has_account_criteria && this.current_currency_type === 'fiat';
-    }
-
-    @computed
-    get can_change_currency() {
-        const has_available_crypto_currencies = this.available_crypto_currencies.length > 0;
-        return this.can_change_fiat_currency || (!this.is_virtual && has_available_crypto_currencies);
     }
 
     @computed
@@ -251,6 +245,12 @@ export default class ClientStore extends BaseStore {
     get is_fully_authenticated() {
         if (!this.account_status.status) return false;
         return this.account_status.status.some(status => status === 'authenticated');
+    }
+
+    @computed
+    get is_pending_authentication() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'document_under_review');
     }
 
     @computed
@@ -616,6 +616,8 @@ export default class ClientStore extends BaseStore {
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
         let client = this.accounts[this.loginid];
+        // Added WS method for reconnecting balance stream on API reconnection
+        WS.setOnReconnect(WS.authorized.balanceAll().then(response => this.setBalance(response.balance)));
 
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
@@ -665,9 +667,7 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            // mt5 will get called on response of authorize so we should just wait for the response here
-            // we can't use .storage here because if mt5 response takes longer to return we will send the request twice
-            BinarySocket.wait('mt5_login_list').then(this.responseMt5LoginList);
+            WS.storage.mt5LoginList().then(this.responseMt5LoginList);
             WS.authorized.storage.landingCompany(this.residence).then(this.responseLandingCompany);
             this.responseStatement(
                 await BinarySocket.send({
@@ -679,8 +679,9 @@ export default class ClientStore extends BaseStore {
                 await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
+            this.getLimits();
         }
-        this.responseWebsiteStatus(await WS.storage.websiteStatus());
+        this.responseWebsiteStatus(await WS.wait('website_status'));
 
         this.registerReactions();
         this.setIsLoggingIn(false);
@@ -1121,6 +1122,16 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    fetchAccountSettings() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getSettings().then(response => {
+                this.setAccountSettings(response.get_settings);
+                resolve(response);
+            });
+        });
+    }
+
+    @action.bound
     fetchResidenceList() {
         return new Promise(resolve => {
             WS.storage.residenceList().then(response => {
@@ -1185,10 +1196,12 @@ export default class ClientStore extends BaseStore {
         }, 60000);
 
         if (!response.error) {
-            this.mt5_login_list = response.mt5_login_list.map(account => ({
-                ...account,
-                display_login: account.login.replace(/^(MT[DR]?)/i, ''),
-            }));
+            this.mt5_login_list = response.mt5_login_list
+                .filter(account => !/inactive/.test(account.group)) // remove disabled mt5 accounts
+                .map(account => ({
+                    ...account,
+                    display_login: account.login.replace(/^(MT[DR]?)/i, ''),
+                }));
         }
     }
 

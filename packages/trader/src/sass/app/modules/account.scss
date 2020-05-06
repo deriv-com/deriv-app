@@ -1,7 +1,5 @@
-@import '../_common/base/index';
-
 $FLOATING_PADDING: 2.4rem;
-$FLOATING_HEADER_HEIGHT: 41px;
+$FLOATING_HEADER_HEIGHT: 53px;
 $MIN_HEIGHT_FLOATING: calc(
     100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - #{$FLOATING_PADDING}
 );
@@ -231,11 +229,19 @@ $MIN_HEIGHT_FLOATING: calc(
                 .dc-checkbox__label {
                     font-size: 1.2rem;
                 }
+                .dc-select-native__placeholder {
+                    background-color: var(--general-main-1);
+                }
                 .date-of-birth-datepicker {
                     .datepicker-native__input {
                         height: 3.8rem;
                     }
                 }
+            }
+        }
+        &__financial-assessment {
+            .dc-select-native__placeholder {
+                background-color: var(--general-main-1);
             }
         }
         &__occupation {
@@ -367,12 +373,9 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     .account__text_container {
         margin-top: 12px;
-        margin-bottom: 24px;
     }
     .account-management-table {
         width: 100%;
-        max-width: 546px;
-        margin-top: 24px;
 
         thead {
             position: relative;
@@ -383,38 +386,77 @@ $MIN_HEIGHT_FLOATING: calc(
             th {
                 @include typeface(--paragraph-left-bold-black, none);
                 color: var(--text-prominent);
-            }
-        }
-        &__divider {
-            position: relative;
-            display: block;
-
-            th {
-                position: absolute;
-                width: 100%;
-                height: 1px;
-                left: 0px;
-                border-bottom: 2px solid var(--general-section-1);
-            }
-        }
-        tbody {
-            tr {
-                border-bottom: 1px solid var(--general-section-1);
-                padding: 8px 0;
-
-                &:first-child {
-                    padding-top: 0;
-                    padding-bottom: 4px;
+                @include mobile {
+                    font-size: 1.2rem;
+                    color: var(--text-general);
                 }
             }
         }
-        &--last {
-            margin-top: 28px;
+        tbody {
+            tr td {
+                border-bottom: 1px solid var(--general-section-1);
+            }
+        }
+
+        @include desktop {
+            max-width: 546px;
         }
     }
     .account-limit-container {
         height: 100%;
         width: 100%;
+
+        &-title {
+            @include mobile {
+                padding-bottom: 0.8rem;
+            }
+        }
+        .account-management-table {
+            tr th:nth-child(2),
+            tr td:nth-child(2) {
+                text-align: right;
+            }
+            th {
+                padding: 2rem 0 0.8rem;
+                border-bottom: 2px solid var(--general-section-1);
+            }
+            td {
+                line-height: 3.6rem;
+
+                .account-limit-container__extra-info {
+                    padding-bottom: 0.8rem;
+                }
+                @include mobile {
+                    line-height: 2.4rem;
+                }
+            }
+        }
+        .account-management-flex-wrapper {
+            @include desktop {
+                align-items: center;
+            }
+            @include mobile {
+                flex-direction: column;
+            }
+        }
+        &__extra-info {
+            line-height: 1.4rem;
+            color: var(--text-less-prominent);
+            font-size: 1rem;
+            font-weight: normal;
+        }
+        @include mobile {
+            &__main-text {
+                margin-top: 2.4rem;
+                font-size: 1.2rem;
+            }
+            &__content {
+                padding: 0 0.8rem;
+            }
+            .account__text {
+                font-size: 1rem;
+            }
+        }
     }
     .account-limit-popover {
         display: flex;
@@ -440,7 +482,6 @@ $MIN_HEIGHT_FLOATING: calc(
         @include mobile {
             &__message-icon {
                 width: 93px;
-                height: 93px;
             }
             &__message {
                 color: var(--text-prominent);
@@ -733,8 +774,9 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define onfido-container; weak */
 .onfido-container {
     margin-top: 24px;
-
     @include mobile {
+        margin-top: 0;
+
         .onfido-sdk-ui-PageTitle {
             &-titleWrapper {
                 margin: 0 1.5em 0.4em;
@@ -759,5 +801,33 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
+    .leave-confirm {
+        &__message-content {
+            text-align: center;
+        }
+        &__message-icon {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2.4rem;
+        }
+        &__message {
+            margin-bottom: 0.8rem;
+            font-weight: bold;
+        }
+    }
+    .account-management-leave-confirm {
+        display: flex;
+        justify-content: center;
+        margin-top: 2.4rem;
+
+        :first-child {
+            margin-right: 0.8rem;
+        }
+    }
 }
 /* stylelint-enable */
+
+/** @define proof-of-identity */
+.proof-of-identity {
+    height: 100%;
+}

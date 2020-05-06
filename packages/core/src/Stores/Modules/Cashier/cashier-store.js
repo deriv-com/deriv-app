@@ -101,6 +101,7 @@ export default class CashierStore extends BaseStore {
     @observable is_p2p_visible = false;
     @observable p2p_notification_count = 0;
     @observable is_p2p_advertiser = false;
+    @observable cashier_route_tab_index = 0;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -186,6 +187,10 @@ export default class CashierStore extends BaseStore {
         }
     }
 
+    @action.bound
+    setCashierTabIndex(index) {
+        this.cashier_route_tab_index = index;
+    }
     @action.bound
     setNotificationCount(notification_count) {
         this.p2p_notification_count = notification_count;
@@ -532,8 +537,9 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     onChangePaymentMethod({ target }) {
-        this.config.payment_agent.selected_bank = target.value;
-        this.filterPaymentAgentList(target.value);
+        const value = target.value === '0' ? parseInt(target.value) : target.value;
+        this.config.payment_agent.selected_bank = value;
+        this.filterPaymentAgentList(value);
     }
 
     @action.bound
@@ -658,10 +664,10 @@ export default class CashierStore extends BaseStore {
             this.setHasNoAccountsBalance(false);
         }
 
-        const transfer_between_accounts =
-            !this.config.account_transfer.accounts_list.length || has_updated_account_balance
-                ? await WS.transferBetweenAccounts()
-                : await WS.authorized.cache.transferBetweenAccounts({ accounts: 'all' }); // load from cache to get the latest updates
+        // various issues happen when loading from cache
+        // e.g. new account may have been created, transfer may have been done elsewhere, etc
+        // so on load of this page just call it again
+        const transfer_between_accounts = await WS.transferBetweenAccounts();
 
         if (transfer_between_accounts.error) {
             this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
@@ -686,11 +692,15 @@ export default class CashierStore extends BaseStore {
         if (!accounts.find(account => +account.balance > 0)) {
             can_transfer = false;
             this.setHasNoAccountsBalance(true);
+        } else {
+            this.setHasNoAccountsBalance(false);
         }
         // should have at least two real-money accounts
         if (accounts.length <= 1) {
             can_transfer = false;
             this.setHasNoAccount(true);
+        } else {
+            this.setHasNoAccount(false);
         }
         if (!can_transfer) {
             this.setLoading(false);
@@ -750,10 +760,11 @@ export default class CashierStore extends BaseStore {
                 return;
             }
         }
-        const accounts = transfer_between_accounts.accounts;
+        // remove disabled mt5 accounts
+        const accounts = transfer_between_accounts.accounts.filter(account => !/inactive/.test(account.mt5_group));
         // sort accounts as follows:
-        // for non-MT5, top is fiat, then crypto, alphabetically by currency
-        // for MT5, standard, advanced, then synthetic indices
+        // for MT5, synthetic, financial, financial stp
+        // for non-MT5, fiat, crypto (alphabetically by currency)
         accounts.sort((a, b) => {
             const a_is_mt = a.account_type === 'mt5';
             const b_is_mt = b.account_type === 'mt5';
@@ -762,24 +773,27 @@ export default class CashierStore extends BaseStore {
             const a_is_fiat = !a_is_mt && !a_is_crypto;
             const b_is_fiat = !b_is_mt && !b_is_crypto;
             if (a_is_mt && b_is_mt) {
-                if (/vanuatu/.test(a.mt5_group)) {
+                if (/svg$/.test(a.mt5_group)) {
                     return -1;
                 }
-                if (/svg/.test(a.mt5_group)) {
-                    return 1;
+                if (/vanuatu|svg_standard/.test(a.mt5_group)) {
+                    return /svg$/.test(b.mt5_group) ? 1 : -1;
                 }
-                return -1;
+                return 1;
             } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
                 return a.currency < b.currency ? -1 : 1;
             } else if ((a_is_crypto && b_is_mt) || (a_is_fiat && b_is_crypto) || (a_is_fiat && b_is_mt)) {
                 return -1;
             }
-            return 1;
+            return a_is_mt ? -1 : 1;
         });
         const arr_accounts = [];
-        accounts.forEach((account, idx) => {
+        this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
+        accounts.forEach(account => {
             const obj_values = {
-                text: account.mt5_group ? getMT5AccountDisplay(account.mt5_group) : account.currency.toUpperCase(),
+                text: account.mt5_group
+                    ? `${localize('DMT5')} ${getMT5AccountDisplay(account.mt5_group)}`
+                    : CurrencyUtils.getCurrencyDisplayCode(account.currency.toUpperCase()),
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,
@@ -787,9 +801,11 @@ export default class CashierStore extends BaseStore {
                 is_mt: account.account_type === 'mt5',
                 ...(account.mt5_group && { mt_icon: getMT5AccountDisplay(account.mt5_group) }),
             };
-            if (idx === 0) {
+            // set current logged in client as the default transfer from account
+            if (account.loginid === this.root_store.client.loginid) {
                 this.setSelectedFrom(obj_values);
-            } else if (idx === 1) {
+            } else if (ObjectUtils.isEmptyObject(this.config.account_transfer.selected_to)) {
+                // set the first available account as the default transfer to account
                 this.setSelectedTo(obj_values);
             }
             arr_accounts.push(obj_values);
@@ -837,7 +853,8 @@ export default class CashierStore extends BaseStore {
             this.onChangeTransferTo({ target: { value: this.config.account_transfer.selected_from.value } });
         } else if (selected_from.is_mt && this.config.account_transfer.selected_to.is_mt) {
             // not allowed to transfer from MT to MT
-            this.onChangeTransferTo({ target: { value: this.config.account_transfer.accounts_list[0].value } });
+            const first_non_mt = this.config.account_transfer.accounts_list.find(account => !account.is_mt);
+            this.onChangeTransferTo({ target: { value: first_non_mt.value } });
         } else if (selected_from.is_crypto && this.config.account_transfer.selected_to.is_crypto) {
             // not allowed to transfer crypto to crypto
             const first_fiat = this.config.account_transfer.accounts_list.find(account => !account.is_crypto);
@@ -894,7 +911,7 @@ export default class CashierStore extends BaseStore {
     };
 
     @action.bound
-    resetAccountTransfer = () => {
+    resetAccountTransfer = async () => {
         this.setIsTransferSuccessful(false);
     };
 

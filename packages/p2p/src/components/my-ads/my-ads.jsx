@@ -4,7 +4,7 @@ import Dp2pContext from 'Components/context/dp2p-context';
 import { localize, Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import FormAds from './form-ads.jsx';
-import { MyAdsTable } from './my-ads-table.jsx';
+import MyAdsTable from './my-ads-table.jsx';
 import ToggleAds from './toggle-ads.jsx';
 import './my-ads.scss';
 
@@ -38,6 +38,10 @@ class MyAds extends Component {
         this.setState({ show_form: true });
     };
 
+    setEnabled = is_enabled => {
+        this.setState({ is_enabled });
+    };
+
     render() {
         if (this.context.is_advertiser) {
             return (
@@ -47,19 +51,21 @@ class MyAds extends Component {
                     ) : (
                         <Fragment>
                             <div className='p2p-my-ads__header'>
-                                {!this.state.is_loading && <ToggleAds is_enabled={this.state.is_enabled} />}
-                                <Button primary onClick={this.onClickCreate}>
-                                    {localize('Create ad')}
+                                <Button primary large onClick={this.onClickCreate}>
+                                    {localize('Create new ad')}
                                 </Button>
+                                {!this.state.is_loading && (
+                                    <ToggleAds is_enabled={this.state.is_enabled} onToggle={this.setEnabled} />
+                                )}
                             </div>
-                            <MyAdsTable />
+                            <MyAdsTable is_enabled={this.state.is_enabled} />
                         </Fragment>
                     )}
                 </div>
             );
         }
         return (
-            <div className='deriv-p2p__empty'>
+            <div className='p2p-cashier__empty'>
                 <Localize
                     i18n_default_text='Contact us at <0>{{support_email}}</0> to become an advertiser.'
                     values={{ support_email: `support@${this.context.email_domain}` }}

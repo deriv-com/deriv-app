@@ -1,7 +1,7 @@
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { isVisible } from '_common/common_functions';
-import { convertToUnix, toMoment } from 'Utils/Date';
+import { convertToUnix, toMoment } from '@deriv/shared/utils/date';
 
 const map_error_field = {
     barrier: 'barrier_1',
@@ -49,6 +49,8 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         id: proposal.id || '',
         has_error: !!response.error,
         has_error_details: !!getProposalErrorField(response),
+        error_code: response?.error?.code,
+        error_field: response?.error?.details?.field,
         has_increased,
         limit_order: proposal.limit_order,
         message: proposal.longcode || response.error.message,
@@ -78,12 +80,12 @@ const setProposalMultiplier = (store, obj_multiplier) => {
 
     obj_multiplier.limit_order = {};
 
-    if (store.has_take_profit) {
-        obj_multiplier.limit_order.take_profit = +store.take_profit; // send positive take_profit to API
+    if (store.has_take_profit && store.take_profit) {
+        obj_multiplier.limit_order.take_profit = +store.take_profit || 0; // send positive take_profit to API
     }
 
-    if (store.has_stop_loss) {
-        obj_multiplier.limit_order.stop_loss = +store.stop_loss; // send positive stop_loss to API
+    if (store.has_stop_loss && store.stop_loss) {
+        obj_multiplier.limit_order.stop_loss = +store.stop_loss || 0; // send positive stop_loss to API
     }
 };
 
@@ -103,10 +105,10 @@ const createProposalRequestForContract = (store, type_of_contract) => {
     return {
         proposal: 1,
         subscribe: 1,
-        amount: parseFloat(store.amount),
+        amount: parseFloat(store.amount) || 0,
         basis: store.basis,
         contract_type: type_of_contract,
-        currency: store.root_store.client.currency,
+        currency: store.currency,
         symbol: store.symbol,
         ...(store.start_date && { date_start: convertToUnix(store.start_date, store.start_time) }),
         ...(store.expiry_type === 'duration'

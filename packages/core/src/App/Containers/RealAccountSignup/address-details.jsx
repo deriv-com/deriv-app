@@ -1,7 +1,9 @@
 import {
     Autocomplete,
+    AutoHeightWrapper,
     DesktopWrapper,
     Div100vhContainer,
+    FormSubmitButton,
     Input,
     MobileWrapper,
     ThemedScrollbars,
@@ -9,10 +11,9 @@ import {
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import React, { Component } from 'react';
-import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
-import FormSubmitButton from './form-submit-button.jsx';
+import { connect } from 'Stores/connect';
 
 const InputField = props => {
     return (
@@ -90,113 +91,118 @@ class AddressDetails extends Component {
                 ref={this.form}
             >
                 {({ handleSubmit, isSubmitting, errors, values, setFieldValue }) => (
-                    <form onSubmit={handleSubmit}>
-                        <Div100vhContainer className='details-form' height_offset='199px' is_disabled={isDesktop()}>
-                            <p className='details-form__description'>
-                                <Localize i18n_default_text='Please ensure that this address is the same as in your proof of address' />
-                            </p>
-                            <div className='details-form__elements-container'>
-                                <ThemedScrollbars
-                                    is_native={isMobile()}
-                                    autoHide={!(window.innerHeight < 890)}
-                                    style={{
-                                        height: 'calc(100% - 16px)',
-                                    }}
+                    <AutoHeightWrapper default_height={200}>
+                        {({ setRef, height }) => (
+                            <form ref={setRef} onSubmit={handleSubmit}>
+                                <Div100vhContainer
+                                    className='details-form'
+                                    height_offset='199px'
+                                    is_disabled={isDesktop()}
                                 >
-                                    <div
-                                        className='details-form__elements'
-                                        style={{ paddingBottom: isDesktop() ? padding_bottom : null }}
+                                    <p className='details-form__description'>
+                                        <Localize i18n_default_text='Please ensure that this address is the same as in your proof of address' />
+                                    </p>
+                                    <ThemedScrollbars
+                                        is_native={isMobile()}
+                                        autoHide={!(window.innerHeight < 890)}
+                                        height={height}
                                     >
-                                        <InputField
-                                            name='address_line_1'
-                                            required
-                                            label={localize('First line of address*')}
-                                            placeholder={localize('First line of address')}
-                                        />
-                                        <InputField
-                                            name='address_line_2'
-                                            label={localize('Second line of address')}
-                                            placeholder={localize('Second line of address')}
-                                        />
-                                        <InputField
-                                            name='address_city'
-                                            required
-                                            label={localize('Town/City*')}
-                                            placeholder={localize('Town/City')}
-                                        />
-                                        {this.state.has_fetched_states_list && (
-                                            <React.Fragment>
-                                                {this.props.states_list.length > 0 ? (
-                                                    <Field name='address_state'>
-                                                        {({ field }) => (
-                                                            <>
-                                                                <DesktopWrapper>
-                                                                    <Autocomplete
-                                                                        {...field}
-                                                                        data-lpignore='true'
-                                                                        autoComplete='new-password' // prevent chrome autocomplete
-                                                                        dropdown_offset='3.2rem'
-                                                                        type='text'
-                                                                        label={localize('State/Province')}
-                                                                        list_items={this.props.states_list}
-                                                                        onItemSelection={({ value, text }) =>
-                                                                            setFieldValue(
-                                                                                'address_state',
-                                                                                value ? text : '',
-                                                                                true
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                </DesktopWrapper>
-                                                                <MobileWrapper>
-                                                                    <SelectNative
-                                                                        label={localize('State/Province')}
-                                                                        value={values.address_state}
-                                                                        list_items={this.props.states_list}
-                                                                        use_text={true}
-                                                                        onChange={e =>
-                                                                            setFieldValue(
-                                                                                'address_state',
-                                                                                e.target.value,
-                                                                                true
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                </MobileWrapper>
-                                                            </>
-                                                        )}
-                                                    </Field>
-                                                ) : (
-                                                    <InputField
-                                                        name='address_state'
-                                                        label={localize('State/Province')}
-                                                        placeholder={localize('State/Province')}
-                                                    />
-                                                )}
-                                            </React.Fragment>
-                                        )}
-                                        <InputField
-                                            name='address_postcode'
-                                            required
-                                            label={localize('Postal/ZIP Code*')}
-                                            placeholder={localize('Postal/ZIP Code')}
-                                        />
-                                    </div>
-                                </ThemedScrollbars>
-                            </div>
-                        </Div100vhContainer>
-                        <FormSubmitButton
-                            is_absolute
-                            is_disabled={
-                                // eslint-disable-next-line no-unused-vars
-                                isSubmitting || Object.keys(errors).length > 0
-                            }
-                            label={localize('Next')}
-                            has_cancel
-                            cancel_label={localize('Previous')}
-                            onCancel={this.handleCancel.bind(this, values)}
-                        />
-                    </form>
+                                        <div
+                                            className='details-form__elements'
+                                            style={{ paddingBottom: isDesktop() ? padding_bottom : null }}
+                                        >
+                                            <InputField
+                                                name='address_line_1'
+                                                required
+                                                label={localize('First line of address*')}
+                                                placeholder={localize('First line of address')}
+                                            />
+                                            <InputField
+                                                name='address_line_2'
+                                                label={localize('Second line of address')}
+                                                placeholder={localize('Second line of address')}
+                                            />
+                                            <InputField
+                                                name='address_city'
+                                                required
+                                                label={localize('Town/City*')}
+                                                placeholder={localize('Town/City')}
+                                            />
+                                            {this.state.has_fetched_states_list && (
+                                                <React.Fragment>
+                                                    {this.props.states_list.length > 0 ? (
+                                                        <Field name='address_state'>
+                                                            {({ field }) => (
+                                                                <>
+                                                                    <DesktopWrapper>
+                                                                        <Autocomplete
+                                                                            {...field}
+                                                                            data-lpignore='true'
+                                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                                            dropdown_offset='3.2rem'
+                                                                            type='text'
+                                                                            label={localize('State/Province')}
+                                                                            list_items={this.props.states_list}
+                                                                            onItemSelection={({ value, text }) =>
+                                                                                setFieldValue(
+                                                                                    'address_state',
+                                                                                    value ? text : '',
+                                                                                    true
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                    </DesktopWrapper>
+                                                                    <MobileWrapper>
+                                                                        <SelectNative
+                                                                            placeholder={localize('Please select')}
+                                                                            label={localize('State/Province')}
+                                                                            value={values.address_state}
+                                                                            list_items={this.props.states_list}
+                                                                            use_text={true}
+                                                                            onChange={e =>
+                                                                                setFieldValue(
+                                                                                    'address_state',
+                                                                                    e.target.value,
+                                                                                    true
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                    </MobileWrapper>
+                                                                </>
+                                                            )}
+                                                        </Field>
+                                                    ) : (
+                                                        <InputField
+                                                            name='address_state'
+                                                            label={localize('State/Province')}
+                                                            placeholder={localize('State/Province')}
+                                                        />
+                                                    )}
+                                                </React.Fragment>
+                                            )}
+                                            <InputField
+                                                name='address_postcode'
+                                                required
+                                                label={localize('Postal/ZIP Code*')}
+                                                placeholder={localize('Postal/ZIP Code')}
+                                            />
+                                        </div>
+                                    </ThemedScrollbars>
+                                    <FormSubmitButton
+                                        is_absolute
+                                        is_disabled={
+                                            // eslint-disable-next-line no-unused-vars
+                                            isSubmitting || Object.keys(errors).length > 0
+                                        }
+                                        label={localize('Next')}
+                                        has_cancel
+                                        cancel_label={localize('Previous')}
+                                        onCancel={this.handleCancel.bind(this, values)}
+                                    />
+                                </Div100vhContainer>
+                            </form>
+                        )}
+                    </AutoHeightWrapper>
                 )}
             </Formik>
         );

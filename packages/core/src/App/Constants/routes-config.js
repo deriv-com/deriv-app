@@ -1,18 +1,12 @@
-import { lazy } from 'react';
+import React, { lazy } from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
+import Loadable from 'react-loadable';
+import { Loading } from '@deriv/components';
 import { addRoutesConfig } from '@deriv/shared/utils/route';
 import { Redirect } from 'App/Containers/Redirect';
 import { localize } from '@deriv/translations';
 import { routes } from 'Constants';
 import { getUrlBase } from '_common/url';
-import Cashier, {
-    Deposit,
-    Withdrawal,
-    PaymentAgent,
-    AccountTransfer,
-    PaymentAgentTransfer,
-    P2PCashier,
-} from 'Modules/Cashier';
 import Endpoint from 'Modules/Endpoint';
 
 // Error Routes
@@ -42,13 +36,46 @@ const modules = [
         title: localize('Trader'),
         routes: [
             { path: routes.mt5, component: Trader, title: localize('MT5'), is_authenticated: true },
-            { path: routes.reports, component: Trader, title: localize('Reports'), is_authenticated: true },
-            { path: routes.account, component: Trader, title: localize('Accounts management'), is_authenticated: true },
+            {
+                path: routes.reports,
+                component: Trader,
+                title: localize('Reports'),
+                icon_component: 'IcReports',
+                is_authenticated: true,
+            },
+            {
+                path: routes.account,
+                component: Trader,
+                title: localize('Accounts Settings'),
+                icon_component: 'IcUserOutline',
+                is_authenticated: true,
+            },
             { path: routes.contract, component: Trader, title: localize('Contract Details'), is_authenticated: true },
             { path: routes.error404, component: Trader, title: localize('Error 404') },
         ],
     },
 ];
+
+const handleLoading = props => {
+    // 200ms default
+    if (props.pastDelay) {
+        return <Loading />;
+    }
+    return null;
+};
+
+const lazyLoadCashierComponent = component => {
+    return Loadable.Map({
+        loader: {
+            Cashier: () => import(/* webpackChunkName: "cashier" */ 'Modules/Cashier'),
+        },
+        render(loaded, props) {
+            const CashierLazy = loaded.Cashier.default[component];
+            return <CashierLazy {...props} />;
+        },
+        loading: handleLoading,
+    });
+};
 
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
@@ -58,43 +85,49 @@ const initRoutesConfig = () => [
     { path: routes.redirect, component: Redirect, title: localize('Redirect') },
     {
         path: routes.cashier,
-        component: Cashier,
+        component: lazyLoadCashierComponent('Cashier'),
         is_modal: true,
         is_authenticated: true,
         title: localize('Cashier'),
+        icon_component: 'IcCashier',
         routes: [
             {
                 path: routes.cashier_deposit,
-                component: Deposit,
+                component: lazyLoadCashierComponent('Deposit'),
                 title: localize('Deposit'),
                 icon_component: 'IcWalletAdd',
                 default: true,
             },
             {
                 path: routes.cashier_withdrawal,
-                component: Withdrawal,
+                component: lazyLoadCashierComponent('Withdrawal'),
                 title: localize('Withdrawal'),
                 icon_component: 'IcWalletMinus',
             },
             {
                 path: routes.cashier_pa,
-                component: PaymentAgent,
+                component: lazyLoadCashierComponent('PaymentAgent'),
                 title: localize('Payment agents'),
                 icon_component: 'IcPaymentAgent',
             },
             {
                 path: routes.cashier_acc_transfer,
-                component: AccountTransfer,
+                component: lazyLoadCashierComponent('AccountTransfer'),
                 title: localize('Transfer'),
                 icon_component: 'IcAccountTransfer',
             },
             {
                 path: routes.cashier_pa_transfer,
-                component: PaymentAgentTransfer,
+                component: lazyLoadCashierComponent('PaymentAgentTransfer'),
                 title: localize('Transfer to client'),
                 icon_component: 'IcAccountTransfer',
             },
-            { path: routes.cashier_p2p, component: P2PCashier, title: localize('P2P'), icon_component: 'IcDp2p' },
+            {
+                path: routes.cashier_p2p,
+                component: lazyLoadCashierComponent('P2PCashier'),
+                title: localize('P2P'),
+                icon_component: 'IcDp2p',
+            },
         ],
     },
     ...modules,

@@ -1,12 +1,20 @@
 import classNames from 'classnames';
-import { Div100vhContainer, MobileWrapper, Icon, ThemedScrollbars } from '@deriv/components';
+import {
+    AutoHeightWrapper,
+    FormSubmitButton,
+    Div100vhContainer,
+    MobileWrapper,
+    Popover,
+    Icon,
+    ThemedScrollbars,
+} from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik } from 'formik';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import { isMobile, isDesktop } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
-import FormSubmitButton from './form-submit-button.jsx';
 import 'Sass/currency-select-radio.scss';
 
 // Radio input
@@ -33,11 +41,23 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
                 })}
             >
                 <div>
-                    <Icon icon={`IcCurrency-${id.toLowerCase()}`} />
-                    <p className='label'>
+                    <Icon className='currency-list__icon' icon={`IcCurrency-${id.toLowerCase()}`} />
+                    {/^UST$/i.test(id) && (
+                        <Popover
+                            alignment='top'
+                            icon='info'
+                            disable_message_icon
+                            zIndex={9999}
+                            className='currency-list__popover'
+                            message={localize(
+                                'Deriv currently supports Tether (USDT). Please deposit USDT from your Omni Layer-enabled wallet into your Deriv account.'
+                            )}
+                        />
+                    )}
+                    <div className='label currency-list__item-text'>
                         {label}
-                        <br />({id})
-                    </p>
+                        <br />({CurrencyUtils.getCurrencyDisplayCode(id)})
+                    </div>
                 </div>
             </label>
         </React.Fragment>
@@ -118,7 +138,8 @@ class CurrencySelector extends React.Component {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
                 validate={this.validateCurrencies}
-                render={({
+            >
+                {({
                     handleSubmit,
                     // setFieldValue,
                     // setFieldTouched,
@@ -127,66 +148,41 @@ class CurrencySelector extends React.Component {
                     touched,
                     isSubmitting,
                 }) => (
-                    <form onSubmit={handleSubmit} className='currency-selector'>
-                        <Div100vhContainer
-                            className={classNames('currency-selector__container', {
-                                'currency-selector__container--no-top-margin':
-                                    !has_currency && has_real_account && isMobile(),
-                            })}
-                            height_offset={!has_currency && has_real_account ? '129px' : '199px'}
-                            is_disabled={isDesktop()}
-                        >
-                            <MobileWrapper>
-                                {has_real_account && (
-                                    <div className='account-wizard__set-currency'>
-                                        {!has_currency && (
-                                            <p>
-                                                <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
-                                            </p>
-                                        )}
-                                        <h2>
-                                            <Localize i18n_default_text='Please choose your currency' />
-                                        </h2>
-                                    </div>
-                                )}
-                            </MobileWrapper>
-                            <ThemedScrollbars
-                                is_native={isMobile()}
-                                autohide
-                                style={{
-                                    height: 'calc(100% - 50px)',
-                                }}
-                            >
-                                <RadioButtonGroup
-                                    id='currency'
-                                    className='currency-selector__radio-group'
-                                    label={localize('Fiat currencies')}
-                                    value={values.currency}
-                                    error={errors.currency}
-                                    touched={touched.currency}
+                    <AutoHeightWrapper default_height={200}>
+                        {({ setRef, height }) => (
+                            <form ref={setRef} onSubmit={handleSubmit} className='currency-selector'>
+                                <Div100vhContainer
+                                    className={classNames('currency-selector__container', {
+                                        'currency-selector__container--no-top-margin':
+                                            !has_currency && has_real_account && isMobile(),
+                                    })}
+                                    height_offset={!has_currency && has_real_account ? '129px' : '199px'}
+                                    is_disabled={isDesktop()}
                                 >
-                                    {this.state.fiat_currencies.map(currency => (
-                                        <Field
-                                            key={currency.value}
-                                            component={RadioButton}
-                                            name='currency'
-                                            id={currency.value}
-                                            label={currency.name}
-                                        />
-                                    ))}
-                                </RadioButtonGroup>
-                                {this.state.crypto_currencies.length > 0 && (
-                                    <React.Fragment>
-                                        <Hr />
+                                    <MobileWrapper>
+                                        {has_real_account && (
+                                            <div className='account-wizard__set-currency'>
+                                                {!has_currency && (
+                                                    <p>
+                                                        <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
+                                                    </p>
+                                                )}
+                                                <h2>
+                                                    <Localize i18n_default_text='Please choose your currency' />
+                                                </h2>
+                                            </div>
+                                        )}
+                                    </MobileWrapper>
+                                    <ThemedScrollbars is_native={isMobile()} autohide height={height}>
                                         <RadioButtonGroup
                                             id='currency'
                                             className='currency-selector__radio-group'
-                                            label={localize('Cryptocurrencies')}
+                                            label={localize('Fiat currencies')}
                                             value={values.currency}
                                             error={errors.currency}
                                             touched={touched.currency}
                                         >
-                                            {this.state.crypto_currencies.map(currency => (
+                                            {this.state.fiat_currencies.map(currency => (
                                                 <Field
                                                     key={currency.value}
                                                     component={RadioButton}
@@ -196,19 +192,43 @@ class CurrencySelector extends React.Component {
                                                 />
                                             ))}
                                         </RadioButtonGroup>
-                                    </React.Fragment>
-                                )}
-                            </ThemedScrollbars>
-                        </Div100vhContainer>
-                        <FormSubmitButton
-                            is_absolute
-                            is_disabled={isSubmitting || !values.currency}
-                            is_center={!has_currency || isMobile()}
-                            label={!has_real_account && isMobile() ? localize('Next') : localize('Set currency')}
-                        />
-                    </form>
+                                        {this.state.crypto_currencies.length > 0 && (
+                                            <React.Fragment>
+                                                <Hr />
+                                                <RadioButtonGroup
+                                                    id='currency'
+                                                    className='currency-selector__radio-group'
+                                                    label={localize('Cryptocurrencies')}
+                                                    value={values.currency}
+                                                    error={errors.currency}
+                                                    touched={touched.currency}
+                                                >
+                                                    {this.state.crypto_currencies.map(currency => (
+                                                        <Field
+                                                            key={currency.value}
+                                                            component={RadioButton}
+                                                            name='currency'
+                                                            id={currency.value}
+                                                            label={currency.name}
+                                                        />
+                                                    ))}
+                                                </RadioButtonGroup>
+                                            </React.Fragment>
+                                        )}
+                                    </ThemedScrollbars>
+                                </Div100vhContainer>
+                                <FormSubmitButton
+                                    is_disabled={isSubmitting || !values.currency}
+                                    is_center={!has_currency || isMobile()}
+                                    label={
+                                        !has_real_account && isMobile() ? localize('Next') : localize('Set currency')
+                                    }
+                                />
+                            </form>
+                        )}
+                    </AutoHeightWrapper>
                 )}
-            />
+            </Formik>
         );
     }
 }

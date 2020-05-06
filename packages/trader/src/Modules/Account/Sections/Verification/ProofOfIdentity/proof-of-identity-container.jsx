@@ -71,6 +71,7 @@ class ProofOfIdentityContainer extends React.Component {
             this.props.removeNotificationMessage({ key: 'poi_expired' });
             this.props.removeNotificationByKey({ key: 'poi_expired' });
             if (this.state.needs_poa) this.props.addNotificationByKey('needs_poa');
+            if (this.props.onStateChange) this.props.onStateChange({ status: 'pending' });
         });
     };
 
@@ -102,6 +103,7 @@ class ProofOfIdentityContainer extends React.Component {
                         allow_document_upload,
                     });
                     this.props.refreshNotifications();
+                    if (this.props.onStateChange) this.props.onStateChange({ status });
                 }
             });
         });
@@ -138,6 +140,7 @@ class ProofOfIdentityContainer extends React.Component {
                 status={status}
                 onfido_service_token={onfido_service_token}
                 has_poa={has_poa}
+                height={this.props.height ?? null}
                 handleComplete={this.handleComplete}
             />
         );

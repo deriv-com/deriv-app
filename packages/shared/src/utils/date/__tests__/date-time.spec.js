@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import * as DateTime from '../date-time.js';
 import moment from 'moment';
+import * as DateTime from '../date-time.js';
 
 describe('toMoment', () => {
     it('return utc epoch value date based on client epoch value passed', () => {
@@ -79,7 +79,7 @@ describe('daysFromTodayTo', () => {
     });
 
     it('return empty string if the user selected previous day', () => {
-        //get previous day
+        // get previous day
         const date = moment()
             .utc()
             .startOf('day')
@@ -89,7 +89,7 @@ describe('daysFromTodayTo', () => {
     });
 
     it('return difference value between selected date and today', () => {
-        //get date three days from now
+        // get date three days from now
         const date = moment()
             .utc()
             .startOf('day')
@@ -115,7 +115,7 @@ describe('convertDuration', () => {
     describe('formatDuration', () => {
         it('return correct value when argument passed', () => {
             const duration = moment.duration(moment.unix(end_time).diff(moment.unix(start_time))); // three minutes
-            expect(DateTime.formatDuration(duration)).to.eql('00:03:00');
+            expect(DateTime.formatDuration(duration).timestamp).to.eql('00:03:00');
         });
     });
 });

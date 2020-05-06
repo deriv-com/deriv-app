@@ -70,8 +70,6 @@ const getSocketURL = () => {
     const server = is_real ? 'green' : 'blue';
     const server_url = `${server}.binaryws.com`;
 
-    // const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
-
     return server_url;
 };
 

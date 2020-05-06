@@ -189,7 +189,6 @@
 
 .mt5-attribute-describer {
     @include typeface(--paragraph-left-bold-black, none);
-    color: var(--text-general);
     font-size: 14px;
     font-weight: bold;
     color: var(--text-general);
@@ -517,33 +516,31 @@
 }
 
 .mt5-financial-stp-modal {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    flex-shrink: 0;
+    display: grid;
+    grid-template-rows: 13rem minmax(10rem, 1fr);
+    height: 100%;
+    overflow: auto;
+    position: relative;
+    width: 100%;
 
     &__heading {
         padding: 2em 2em 0 2em;
     }
+    &__form,
     &__body {
-        flex: 1 1 auto;
-        flex-grow: 1;
+        display: grid;
     }
-    .dc-form-submit-button {
-        padding: 0 2em 2em 2em;
-        position: fixed;
-        bottom: 0;
-        background-color: var(--content-bg-color);
+    &__form {
+        grid-template-rows: minmax(20rem, 1fr) 7rem;
     }
     @include mobile {
+        grid-template-rows: 7rem minmax(10rem, 1fr);
         &__heading {
             padding: unset;
         }
         &__header {
             &-steps {
                 padding-bottom: 0.8rem;
-                position: absolute;
-                top: 3.6rem;
                 width: 100%;
                 background: var(--general-section-2);
 
@@ -644,12 +641,14 @@
 }
 
 .mt5-details-form {
+    height: 100%;
+    @include tablet {
+        display: grid;
+        grid-template-rows: 7rem minmax(10rem, 1fr);
+        height: auto;
+    }
     &__fields {
         padding: 0;
-        margin-bottom: 7rem;
-        @include mobile {
-            padding: 0 1.6rem;
-        }
     }
     & .mt5-tax-identification-number {
         margin-top: 1em;
@@ -773,6 +772,12 @@
 }
 
 .mt5-proof-of-address {
+    height: 100%;
+    & .details-form {
+        display: grid;
+        grid-template-rows: minmax(10rem, 1fr) 7.2rem;
+        height: 100%;
+    }
     &__file-upload {
         position: relative;
 
@@ -785,9 +790,11 @@
         }
     }
     &__field-area {
-        padding: 0 0 20rem 0;
         max-width: 556px;
         margin: 0 auto;
+        @include mobile {
+            overflow: auto;
+        }
     }
     &__inline-fields {
         display: grid;
@@ -826,6 +833,31 @@
     }
 }
 
+.mt5-proof-of-identity {
+    height: 100%;
+    overflow: auto;
+
+    &__fields {
+        @include mobile {
+            position: relative;
+        }
+    }
+    & .details-form {
+        display: grid;
+        grid-template-rows: minmax(10rem, 1fr) 7.2rem;
+        height: 100%;
+        position: relative;
+    }
+}
+.dc-modal__container_mt5-financial-stp-signup-modal {
+    @include desktop {
+        display: grid;
+        grid-template-rows: 6rem minmax(20rem, 1fr);
+    }
+    @include tablet {
+        max-height: calc(100vh - 102px); // HEADER and FOOTER
+    }
+}
 .dc-modal__container_mt5-password-modal {
     .dc-form-submit-button {
         background-color: unset;
@@ -835,7 +867,6 @@
         }
     }
 }
-
 .dc-modal__container_mt5-pending-dialog,
 .dc-modal__container_mt5-success-dialog {
     .dc-modal-header__title--mt5-pending-dialog {
@@ -864,7 +895,6 @@
         }
     }
 }
-
 .dc-modal__container_mt5-success-dialog {
     .success-change__icon-area {
         width: 120px;

@@ -82,3 +82,10 @@ Blockly.Workspace.prototype.dispatchBlockEventEffects = function(event) {
         }
     });
 };
+
+Blockly.Workspace.prototype.getAllFields = function(is_ordered) {
+    return this.getAllBlocks(is_ordered).reduce((fields, block) => {
+        block.inputList.forEach(input => fields.push(...input.fieldRow));
+        return fields;
+    }, []);
+};

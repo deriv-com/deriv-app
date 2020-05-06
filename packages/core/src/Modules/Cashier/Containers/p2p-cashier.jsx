@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import queryString from 'query-string';
 import P2P from '@deriv/p2p';
 import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
@@ -15,11 +16,19 @@ class P2PCashier extends React.Component {
 
     setQueryOrder = input_order_id => {
         const { history, location } = this.props;
-        const order_id_param = input_order_id ? `?order=${input_order_id}` : '';
+        const current_query_param = queryString.parse(this.props.location.search);
+
+        const order_id_param = input_order_id
+            ? { order: input_order_id, ...current_query_param }
+            : { ...current_query_param };
 
         if (this.state.order_id !== input_order_id) {
             // Changing query params
-            history.push({ pathname: '/cashier/p2p', search: order_id_param, hash: location.hash });
+            history.replace({
+                pathname: '/cashier/p2p',
+                search: queryString.stringify(order_id_param),
+                hash: location.hash,
+            });
             this.setState({ order_id: input_order_id });
         }
     };

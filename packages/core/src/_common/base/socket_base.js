@@ -71,14 +71,15 @@ const BinarySocketBase = (() => {
 
         deriv_api.onOpen().subscribe(() => {
             config.wsEvent('open');
+
+            wait('website_status');
+
             if (ClientBase.isLoggedIn()) {
                 // ClientBase is not up to date after first load
                 // TODO: remove this once ClientBase has been migrated to client-store
                 const authorize_token = token || ClientBase.get('token');
                 deriv_api.authorize(authorize_token);
             }
-
-            wait('website_status');
 
             if (typeof config.onOpen === 'function') {
                 config.onOpen(isReady());

@@ -858,7 +858,7 @@ export default class ClientStore extends BaseStore {
 
         if (should_switch_socket_connection) {
             BinarySocket.closeAndOpenNewConnection(this.getToken());
-            await WS.wait('website_status');
+            // await WS.wait('website_status');
             await BinarySocket.wait('authorize');
         } else {
             await WS.forgetAll('balance');

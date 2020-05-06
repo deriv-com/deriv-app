@@ -5,7 +5,7 @@ import { message_types } from '@deriv/bot-skeleton';
 
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
-import { validateJournalMessageWithButton } from '../utils/journal-notifications';
+import { validateJournalMessage } from '../utils/journal-notifications';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -44,7 +44,7 @@ export default class JournalStore {
         let message_string = message;
 
         if (
-            validateJournalMessageWithButton({ message, block_id, variable_name }, run_panel.showErrorMessage, () =>
+            validateJournalMessage({ message, block_id, variable_name }, run_panel.showErrorMessage, () =>
                 this.dbot.centerAndHighlightBlock(block_id, true)
             )
         ) {

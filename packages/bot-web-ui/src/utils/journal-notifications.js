@@ -15,7 +15,7 @@ const showErrorMessageWithButton = (message, block_id, showErrorMessage, centerA
     );
 };
 
-export const validateJournalMessageWithButton = (
+export const validateJournalMessage = (
     { message, block_id, variable_name },
     showErrorMessage,
     centerAndHighlightBlock

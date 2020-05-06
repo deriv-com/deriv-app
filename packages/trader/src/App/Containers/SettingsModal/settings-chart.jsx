@@ -1,4 +1,4 @@
-import { Checkbox, RadioGroup } from '@deriv/components';
+import { Checkbox } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';

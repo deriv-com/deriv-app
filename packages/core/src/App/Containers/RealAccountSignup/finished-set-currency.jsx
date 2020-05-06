@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import CurrencyUtils from '@deriv/shared/utils/currency';
 
 const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
     const IconPrevCurrency = () => <Icon icon={`IcCurrency-${prev.toLowerCase()}`} height={120} width={90} />;

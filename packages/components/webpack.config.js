@@ -32,6 +32,7 @@ module.exports = {
         'file-dropzone': 'Components/file-dropzone',
         'form-progress': path.resolve(__dirname, 'src', 'components/form-progress/index.js'),
         'form-submit-button': path.resolve(__dirname, 'src', 'components/form-submit-button/index.js'),
+        'auto-height-wrapper': 'Components/auto-height-wrapper',
         icon: 'Components/icon',
         'icon-trade-types': 'Components/icon-trade-types',
         'icon/js/icons': 'Components/icon/icons.js',

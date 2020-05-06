@@ -643,7 +643,6 @@ export default class ClientStore extends BaseStore {
             }
         }
 
-        // TODO: check why this one is fired so many times:
         /**
          * Set up reaction for account_settings, account_status
          */
@@ -673,6 +672,7 @@ export default class ClientStore extends BaseStore {
         );
 
         this.selectCurrency('');
+
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
             // mt5 will get called on response of authorize so we should just wait for the response here
@@ -858,7 +858,6 @@ export default class ClientStore extends BaseStore {
 
         if (should_switch_socket_connection) {
             BinarySocket.closeAndOpenNewConnection(this.getToken());
-            // await WS.wait('website_status');
             await BinarySocket.wait('authorize');
         } else {
             await WS.forgetAll('balance');

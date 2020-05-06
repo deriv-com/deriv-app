@@ -851,7 +851,6 @@
 }
 .dc-modal__container_mt5-financial-stp-signup-modal {
     @include desktop {
-        min-height: 80vh;
         display: grid;
         grid-template-rows: 6rem minmax(20rem, 1fr);
     }

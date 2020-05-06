@@ -45,7 +45,7 @@ const getLocation = (location_list, value, type) => {
 class AddressDetails extends Component {
     constructor(props) {
         super(props);
-        this.state = { has_fetched_states_list: false, addres_state_to_display: '' };
+        this.state = { has_fetched_states_list: false, address_state_to_display: '' };
         this.form = React.createRef();
         // TODO: Find a better solution for handling no-op instead of using is_mounted flags
         this.is_mounted = false;
@@ -57,7 +57,7 @@ class AddressDetails extends Component {
         if (this.is_mounted)
             this.setState({
                 has_fetched_states_list: true,
-                addres_state_to_display: getLocation(this.props.states_list, this.props.value.address_state, 'text'),
+                address_state_to_display: getLocation(this.props.states_list, this.props.value.address_state, 'text'),
             });
         this.form.current.getFormikActions().validateForm();
     }
@@ -137,8 +137,8 @@ class AddressDetails extends Component {
                                                                 <DesktopWrapper>
                                                                     <Autocomplete
                                                                         {...field}
-                                                                        {...(this.state.addres_state_to_display && {
-                                                                            value: this.state.addres_state_to_display,
+                                                                        {...(this.state.address_state_to_display && {
+                                                                            value: this.state.address_state_to_display,
                                                                         })}
                                                                         data-lpignore='true'
                                                                         autoComplete='new-password' // prevent chrome autocomplete
@@ -153,7 +153,7 @@ class AddressDetails extends Component {
                                                                                 true
                                                                             );
                                                                             this.setState({
-                                                                                addres_state_to_display: '',
+                                                                                address_state_to_display: '',
                                                                             });
                                                                         }}
                                                                     />

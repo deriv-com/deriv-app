@@ -67,7 +67,7 @@ class AddOrManageAccounts extends React.Component {
 
     render() {
         return (
-            <ThemedScrollbars is_native={isMobile()} autoHide style={{ height: '100%' }}>
+            <ThemedScrollbars is_native={isMobile()} autoHide>
                 <Div100vhContainer
                     className='account-wizard add-or-manage'
                     is_disabled={isDesktop()}

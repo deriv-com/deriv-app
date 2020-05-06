@@ -9,13 +9,20 @@ import { onfido_status_codes } from './proof-of-identity';
 
 const onfido_container_id = 'onfido';
 
-const OnfidoContainer = () => (
-    <ThemedScrollbars is_native={isMobile()} autoHide autoHeight>
-        <div className='onfido-container'>
-            <div id={onfido_container_id} />
-        </div>
-    </ThemedScrollbars>
-);
+const OnfidoContainer = ({ height }) => {
+    const is_auto_height = !height;
+    const height_props = {
+        ...(is_auto_height && { autoHeight: true }),
+        ...(!is_auto_height && { height }),
+    };
+    return (
+        <ThemedScrollbars is_native={isMobile()} autoHide {...height_props}>
+            <div className='onfido-container'>
+                <div id={onfido_container_id} />
+            </div>
+        </ThemedScrollbars>
+    );
+};
 
 class Onfido extends React.Component {
     state = {

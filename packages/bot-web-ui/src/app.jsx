@@ -33,20 +33,20 @@ class App extends React.Component {
             core: { client },
             flyout,
             toolbar,
+            save_modal,
             quick_strategy,
             load_modal,
         } = this.root_store;
         const { handleFileChange } = load_modal;
         const { toggleStrategyModal } = quick_strategy;
-        const { onBotNameTyped } = toolbar;
         this.dbot_store = {
             is_mobile: false,
             client,
             flyout,
             toolbar,
+            save_modal,
             toggleStrategyModal,
             handleFileChange,
-            onBotNameTyped,
         };
         this.api_helpers_store = { ws: this.root_store.ws, server_time: this.root_store.server_time };
     }

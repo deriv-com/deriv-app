@@ -7,11 +7,20 @@ import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
-const Orders = ({ params }) => {
+const Orders = ({ params, navigate }) => {
     const { orders } = React.useContext(Dp2pContext);
     const [order_details, setDetails] = React.useState(null);
+    const [nav, setNav] = React.useState(params?.nav);
     const showDetails = setDetails;
-    const hideDetails = () => setDetails(null);
+    const hideDetails = () => {
+        if (nav) {
+            navigate(nav.location);
+        }
+        setDetails(null);
+    };
+    React.useEffect(() => {
+        setNav(params?.nav ?? nav);
+    }, [params]);
 
     React.useEffect(() => {
         if (params && params.order_info) {

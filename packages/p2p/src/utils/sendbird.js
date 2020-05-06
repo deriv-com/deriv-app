@@ -59,14 +59,15 @@ const getChannel = channel_url =>
         });
     });
 
-const chatCreate = async order_id => {
-    const chat_create_response = await requestWS({ p2p_chat_create: 1, order_id });
-    if (chat_create_response.error) {
-        return chat_create_response.error.code;
-    }
+const chatCreate = order_id =>
+    new Promise(async (resolve, reject) => {
+        const chat_create_response = await requestWS({ p2p_chat_create: 1, order_id });
+        if (chat_create_response.error) {
+            reject(chat_create_response.error.code);
+        }
 
-    return chat_create_response.p2p_chat_create;
-};
+        resolve(chat_create_response.p2p_chat_create);
+    });
 
 // you need to pass in the channel to get message list
 const getMessageList = channel =>

@@ -35,6 +35,7 @@ const OrderDetails = ({ order_details, chat_info }) => {
         payment_info,
         transaction_currency,
     } = order_details;
+    const [channel_url, setChannelUrl] = React.useState(chat_channel_url);
     const [show_popup, setShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
     const { email_domain, advertiser_id: ad_advertiser_id } = React.useContext(Dp2pContext);
@@ -44,6 +45,15 @@ const OrderDetails = ({ order_details, chat_info }) => {
         setPopupOptions(options);
         setShowPopup(true);
     };
+    React.useEffect(() => {
+        if (!channel_url) {
+            chatCreate(id)
+                .then(val => {
+                    setChannelUrl(val.channel_url);
+                })
+                .catch(err => console.log(err));
+        }
+    }, []);
 
     return (
         <div className='order-details'>
@@ -143,11 +153,9 @@ const OrderDetails = ({ order_details, chat_info }) => {
                     </div>
                 </div>
 
-                <OrderDetailsChatbox
-                    {...chat_info}
-                    channel_url={chat_channel_url || chatCreate(id).then(val => val).channel_url}
-                    nickname={advertiser_name}
-                />
+                {channel_url && (
+                    <OrderDetailsChatbox {...chat_info} channel_url={channel_url} nickname={advertiser_name} />
+                )}
             </div>
 
             <FooterActions>

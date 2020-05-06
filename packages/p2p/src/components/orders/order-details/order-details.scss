@@ -88,7 +88,6 @@
                 &__title {
                     font-size: 16px;
                     display: flex;
-                    text-indent: -9999px;
 
                     &:after {
                         content: attr(data-content);

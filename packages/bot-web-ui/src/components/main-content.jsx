@@ -60,6 +60,7 @@ MainContent.propTypes = {
     active_tab: PropTypes.string,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
+    setContainerSize: PropTypes.func,
 };
 
 export default connect(({ main_content }) => ({

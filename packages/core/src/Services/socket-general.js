@@ -50,7 +50,8 @@ const BinarySocketGeneral = (() => {
                     // In any other case, if the response loginid does not match the store's loginid, user must be logged out
                     if (
                         response.authorize.loginid !== client_store.loginid &&
-                        !client_store.is_populating_account_list
+                        !client_store.is_populating_account_list &&
+                        !client_store.is_switching
                     ) {
                         client_store.logout();
                     } else if (response.authorize.loginid === client_store.loginid) {

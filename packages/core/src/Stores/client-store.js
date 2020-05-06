@@ -627,7 +627,6 @@ export default class ClientStore extends BaseStore {
         let client = this.accounts[this.loginid];
         // Added WS method for reconnecting balance stream on API reconnection
         WS.setOnReconnect(WS.authorized.balanceAll().then(response => this.setBalance(response.balance)));
-
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
             // If this fails, it means the landing company check failed
@@ -849,27 +848,34 @@ export default class ClientStore extends BaseStore {
 
         runInAction(() => (this.is_switching = true));
 
-        sessionStorage.setItem('active_tab', '1');
-
-        // set local storage
-        this.root_store.gtm.setLoginFlag();
         this.resetLocalStorageValues(this.switched);
-
         SocketCache.clear();
-        await WS.forgetAll('balance');
-        await BinarySocket.authorize(this.getToken());
-        await this.init();
-
-        this.broadcastAccountChange();
-
-        this.getLimits();
 
         // if real to virtual --> switch to blue
         // if virtual to real --> switch to green
         // else keep the existing connection
-        if (this.is_virtual || /VRTC/.test(this.previous_login_id)) {
+        const should_switch_socket_connection = this.is_virtual || /VRTC/.test(this.previous_login_id);
+
+        if (should_switch_socket_connection) {
             BinarySocket.closeAndOpenNewConnection(this.getToken());
+            await WS.wait('website_status');
+            await BinarySocket.wait('authorize');
+        } else {
+            await WS.forgetAll('balance');
+            await BinarySocket.authorize(this.getToken());
         }
+
+        sessionStorage.setItem('active_tab', '1');
+
+        // set local storage
+        this.root_store.gtm.setLoginFlag();
+
+        await this.init();
+
+        // broadcastAccountChange is already called after authorize from onOpen in socket_base
+        if (!should_switch_socket_connection) this.broadcastAccountChange();
+
+        this.getLimits();
 
         runInAction(() => (this.is_switching = false));
     }

@@ -40,7 +40,7 @@ const NetworkMonitorBase = (() => {
         }
 
         if (isOnline()) {
-            BinarySocket.init(ws_config);
+            BinarySocket.init({ options: ws_config });
         }
 
         setNetworkStatus(isOnline() ? 'blinking' : 'offline');
@@ -57,7 +57,7 @@ const NetworkMonitorBase = (() => {
         reconnect_timeout = setTimeout(() => {
             reconnect_timeout = null;
             if (isOnline() && BinarySocket.hasReadyState(2, 3)) {
-                BinarySocket.init(ws_config);
+                BinarySocket.init({ options: ws_config });
             } else {
                 BinarySocket.send({ ping: 1 }); // get stable status sooner
             }

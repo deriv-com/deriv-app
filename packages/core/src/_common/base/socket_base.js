@@ -22,7 +22,6 @@ const BinarySocketBase = (() => {
     let is_available = true;
     let is_disconnect_called = false;
     let is_connected_before = false;
-    let should_close = true;
 
     const getSocketUrl = () =>
         `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
@@ -41,14 +40,13 @@ const BinarySocketBase = (() => {
     const isClose = () => !binary_socket || hasReadyState(2, 3);
 
     const closeAndOpenNewConnection = token => {
-        const new_connection = new WebSocket(getSocketUrl());
-        deriv_api.changeSocket({ new_socket: new_connection, authorize_token: token });
-        binary_socket = new_connection;
+        binary_socket.close();
+        init({ config, is_switching_socket: true, token });
     };
 
     const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
 
-    const init = (options, should_reconnect) => {
+    const init = ({ options, is_switching_socket, token }) => {
         if (wrong_app_id === getAppId()) {
             return;
         }
@@ -56,7 +54,10 @@ const BinarySocketBase = (() => {
             config = options;
         }
         clearTimeouts();
-        config.wsEvent('init');
+
+        if (!is_switching_socket) {
+            config.wsEvent('init');
+        }
 
         if (isClose()) {
             is_disconnect_called = false;
@@ -69,10 +70,12 @@ const BinarySocketBase = (() => {
         }
 
         deriv_api.onOpen().subscribe(() => {
-            console.log('onOpen: ', { ...deriv_api });
             config.wsEvent('open');
             if (ClientBase.isLoggedIn()) {
-                deriv_api.authorize(ClientBase.get('token'));
+                // ClientBase is not up to date after first load
+                // TODO: remove this once ClientBase has been migrated to client-store
+                const authorize_token = token || ClientBase.get('token');
+                deriv_api.authorize(authorize_token);
             }
 
             if (typeof config.onOpen === 'function') {
@@ -104,10 +107,11 @@ const BinarySocketBase = (() => {
         });
 
         deriv_api.onClose().subscribe(() => {
-            console.log('onClose');
             clearTimeouts();
 
-            if (should_close) config.wsEvent('close');
+            if (!is_switching_socket) {
+                config.wsEvent('close');
+            }
 
             if (wrong_app_id !== getAppId() && typeof config.onDisconnect === 'function' && !is_disconnect_called) {
                 config.onDisconnect();

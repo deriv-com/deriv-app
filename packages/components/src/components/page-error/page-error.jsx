@@ -9,7 +9,14 @@ const PageError = ({ buttonOnClick, messages, header, redirect_label, redirect_u
     <div className={classNames('dc-page-error__container', { 'dc-page-error__container--left': !!image_url })}>
         {!!image_url && (
             <DesktopWrapper>
-                <img className={classNameImage} src={image_url} />
+                <img
+                    className={classNameImage}
+                    src={image_url}
+                    alt={'404'}
+                    loading='lazy'
+                    width='771px'
+                    height='448px'
+                />
             </DesktopWrapper>
         )}
         <div

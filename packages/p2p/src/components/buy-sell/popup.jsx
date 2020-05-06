@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Dp2pContext from 'Components/context/dp2p-context';
 import BuySellForm from './buy-sell-form.jsx';
-import NickNameForm from './nick-name-form.jsx';
+import NicknameForm from './nickname-form.jsx';
 
 class Popup extends Component {
     state = {
@@ -32,7 +32,7 @@ class Popup extends Component {
                 {has_nickname ? (
                     <BuySellForm ad={ad} handleClose={handleClose} handleConfirm={handleConfirm} />
                 ) : (
-                    <NickNameForm ad={ad} handleClose={handleClose} setNicknameTrue={this.setNicknameTrue} />
+                    <NicknameForm ad={ad} handleClose={handleClose} setNicknameTrue={this.setNicknameTrue} />
                 )}
             </div>
         );

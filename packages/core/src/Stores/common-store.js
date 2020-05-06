@@ -1,8 +1,8 @@
 import { action, observable } from 'mobx';
 import { toMoment } from '@deriv/shared/utils/date';
+import { getUrlSmartTrader } from '@deriv/shared/utils/route';
 import ServerTime from '_common/base/server_time';
 import AppRoutes from 'Constants/routes';
-import { getAllowedLocalStorageOrigin } from 'Utils/Events/storage';
 import { currentLanguage } from 'Utils/Language/index';
 import BaseStore from './base-store';
 import { clientNotifications } from './Helpers/client-notifications';
@@ -38,7 +38,7 @@ export default class CommonStore extends BaseStore {
         if (window.location.href.indexOf('?ext_platform_url=') !== -1) {
             const ext_url = decodeURI(new URL(window.location.href).searchParams.get('ext_platform_url'));
 
-            if (ext_url?.indexOf(getAllowedLocalStorageOrigin()) === 0) {
+            if (ext_url?.indexOf(getUrlSmartTrader()) === 0) {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else {
                 this.addRouteHistoryItem({ ...location, action: 'PUSH' });

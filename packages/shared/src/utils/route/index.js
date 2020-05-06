@@ -24,4 +24,12 @@ const getUrlBase = (path = '') => {
     return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
 };
 
-export default { getAllRoutesConfig, getSelectedRoute, addRoutesConfig, getUrlBase };
+const getUrlSmartTrader = () => {
+    if (/^staging\.deriv\.app$/i.test(window.location.hostname)) {
+        return 'https://smarttrader-staging.deriv.app';
+    }
+
+    return 'https://smarttrader.deriv.app';
+};
+
+export default { getAllRoutesConfig, getSelectedRoute, addRoutesConfig, getUrlBase, getUrlSmartTrader };

@@ -1,4 +1,5 @@
 import React from 'react';
+import { getUrlSmartTrader } from '@deriv/shared/utils/route';
 import { connect } from 'Stores/connect';
 import { urlFor } from '_common/url';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
@@ -23,8 +24,7 @@ const TradeModals = ({
         resetPreviousSymbol();
     };
 
-    const marketUnavailableOnCancel = () =>
-        window.open(urlFor('trading', undefined, undefined, true)) && setHasOnlyForwardingContracts(false);
+    const marketUnavailableOnCancel = () => window.open(getUrlSmartTrader()) && setHasOnlyForwardingContracts(false);
 
     const servicesErrorModalOnConfirm = () => {
         toggleServicesErrorModal(false);

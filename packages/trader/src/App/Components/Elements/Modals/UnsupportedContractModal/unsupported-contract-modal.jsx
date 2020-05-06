@@ -10,7 +10,7 @@ class UnsupportedContractModal extends React.Component {
         const { disableApp, enableApp, is_loading, is_visible, onConfirm, onClose } = this.props;
         return (
             <Dialog
-                title={localize('Let’s try that again!')}
+                title={localize('We’re working on it')}
                 confirm_button_text={localize('Stay on {{website_name}}', { website_name })}
                 cancel_button_text={localize('Go to Binary')}
                 onConfirm={onConfirm}

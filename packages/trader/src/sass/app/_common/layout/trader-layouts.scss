@@ -393,9 +393,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .cq-chart-controls {
             transition: max-width 0.25s ease, transform 0.25s ease;
         }
-        .sc-toolbar-widget {
-            transition: transform 0.25s ease;
-        }
         .ciq-navigation-widget {
             transition: transform 0.25s ease;
         }
@@ -403,6 +400,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
             transition: transform 0.25s ease;
         }
         .sc-toolbar-widget {
+            transition: transform 0.25s ease;
+
             @include mobile {
                 background: transparent;
                 border-width: 0;

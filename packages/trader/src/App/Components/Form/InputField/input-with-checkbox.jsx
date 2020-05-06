@@ -105,6 +105,7 @@ const InputWithCheckbox = ({
                         is_bubble_hover_enabled
                         margin={2}
                         message={checkbox_tooltip_label}
+                        relative_render
                     >
                         {checkbox}
                     </Popover>
@@ -118,6 +119,7 @@ const InputWithCheckbox = ({
                         id={`dt_${name}-checkbox__tooltip`}
                         message={tooltip_label}
                         margin={210}
+                        relative_render
                     />
                 )}
             </div>

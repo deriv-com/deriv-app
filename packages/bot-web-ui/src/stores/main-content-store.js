@@ -1,6 +1,7 @@
 import { action, observable, reaction } from 'mobx';
 import { onWorkspaceResize } from '@deriv/bot-skeleton';
 import { tabs_title } from '../constants/bot-contents';
+import { storeSetting, getSetting } from '../utils/settings';
 
 export default class MainContentStore {
     constructor(root_store) {
@@ -18,6 +19,7 @@ export default class MainContentStore {
     @action.bound
     setActiveTab(tab) {
         this.active_tab = tab;
+        storeSetting('active_tab', this.active_tab);
     }
 
     @action.bound
@@ -30,6 +32,12 @@ export default class MainContentStore {
     @action.bound
     onMount() {
         window.addEventListener('resize', this.setContainerSize);
+    }
+    @action.bound
+    getCachedActiveTab() {
+        if (getSetting('active_tab')) {
+            this.active_tab = getSetting('active_tab');
+        }
     }
 
     @action.bound

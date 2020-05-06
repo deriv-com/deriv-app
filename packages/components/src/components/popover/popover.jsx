@@ -10,11 +10,18 @@ class Popover extends React.PureComponent {
         this.state = {
             is_open: false,
             is_bubble_open: false,
+            popover_ref: undefined,
         };
+
+        this.setWrapperRef = ref => (this.wrapper_ref = ref);
     }
 
     componentDidMount() {
         this.setState({ is_open: this.props.has_error });
+
+        if (this.wrapper_ref) {
+            this.setState({ popover_ref: this.wrapper_ref });
+        }
     }
 
     toggleOpen = () => {
@@ -62,69 +69,144 @@ class Popover extends React.PureComponent {
             margin,
             message,
             zIndex,
+            relative_render,
         } = this.props;
 
         const has_external_open_state = is_open !== undefined;
         const icon_class_name = classNames(classNameTargetIcon, icon);
+
         return (
-            <TinyPopover
-                isOpen={has_external_open_state ? is_open : this.state.is_open}
-                position={alignment}
-                transitionDuration={0.25}
-                padding={margin + 8}
-                containerStyle={{ zIndex: zIndex || 1 }}
-                content={({ position, targetRect, popoverRect }) => (
-                    <ArrowContainer
-                        position={position}
-                        targetRect={targetRect}
-                        popoverRect={popoverRect}
-                        arrowColor={has_error ? 'var(--status-danger)' : 'var(--general-active)'}
-                        arrowSize={5}
+            <div className={classNames({ 'dc-popover__wrapper': relative_render })}>
+                {relative_render && (
+                    <div className='dc-popover__container' style={{ zIndex: zIndex || 1 }}>
+                        <div ref={this.setWrapperRef} className='dc-popover__container-relative' />
+                    </div>
+                )}
+                {(this.state.popover_ref || !relative_render) && (
+                    <TinyPopover
+                        isOpen={is_open ?? this.state.is_open}
+                        position={alignment}
+                        transitionDuration={0.25}
+                        padding={margin + 8}
+                        contentDestination={relative_render ? this.state.popover_ref : document.body}
+                        {...(relative_render
+                            ? {
+                                  contentLocation: ({ targetRect, popoverRect, nudgedLeft }) => {
+                                      const screen_width = document.body.clientWidth;
+                                      const total_width = targetRect.right + (popoverRect.width - targetRect.width / 2);
+                                      let top_offset = 0;
+                                      let left_offset = 0;
+
+                                      switch (alignment) {
+                                          case 'left': {
+                                              left_offset =
+                                                  Math.abs(
+                                                      (popoverRect.height > popoverRect.width
+                                                          ? nudgedLeft
+                                                          : popoverRect.width) + margin
+                                                  ) * -1;
+                                              top_offset =
+                                                  targetRect.height > popoverRect.height
+                                                      ? (targetRect.height - popoverRect.height) / 2
+                                                      : ((popoverRect.height - targetRect.height) / 2) * -1;
+                                              break;
+                                          }
+                                          case 'right': {
+                                              left_offset = popoverRect.width + margin;
+                                              top_offset =
+                                                  targetRect.height > popoverRect.height
+                                                      ? (targetRect.height - popoverRect.height) / 2
+                                                      : ((popoverRect.height - targetRect.height) / 2) * -1;
+                                              break;
+                                          }
+                                          case 'top': {
+                                              left_offset =
+                                                  total_width > screen_width
+                                                      ? Math.abs(total_width - screen_width) * -1
+                                                      : 0;
+                                              top_offset = Math.abs(popoverRect.height + margin) * -1;
+                                              break;
+                                          }
+                                          case 'bottom': {
+                                              left_offset =
+                                                  total_width > screen_width
+                                                      ? Math.abs(total_width - screen_width) * -1
+                                                      : 0;
+                                              top_offset = targetRect.height + margin;
+                                              break;
+                                          }
+                                          default:
+                                              break;
+                                      }
+                                      return {
+                                          top: top_offset,
+                                          left: left_offset,
+                                      };
+                                  },
+                              }
+                            : { containerStyle: { zIndex: zIndex || 1 } })}
+                        content={({ position, targetRect, popoverRect }) => {
+                            return (
+                                <ArrowContainer
+                                    position={position}
+                                    targetRect={targetRect}
+                                    popoverRect={popoverRect}
+                                    arrowColor={has_error ? 'var(--status-danger)' : 'var(--general-active)'}
+                                    arrowSize={5}
+                                >
+                                    <div
+                                        id={id}
+                                        className={classNames(classNameBubble, 'dc-popover__bubble', {
+                                            'dc-popover__bubble--error': has_error,
+                                        })}
+                                        onMouseEnter={this.onMouseEnter}
+                                        onMouseLeave={this.onMouseLeave}
+                                    >
+                                        {!disable_message_icon && icon === 'info' && (
+                                            <i className='dc-popover__bubble__icon'>
+                                                <Icon icon='IcInfoBlue' />
+                                            </i>
+                                        )}
+                                        <span
+                                            className={classNames('dc-popover__bubble__text', {
+                                                'dc-popover__bubble__text--error': has_error,
+                                            })}
+                                        >
+                                            {message}
+                                        </span>
+                                    </div>
+                                </ArrowContainer>
+                            );
+                        }}
                     >
                         <div
+                            className={classNames('dc-popover', className)}
                             id={id}
-                            className={classNames(classNameBubble, 'dc-popover__bubble', {
-                                'dc-popover__bubble--error': has_error,
-                            })}
-                            onMouseEnter={this.onMouseEnter}
-                            onMouseLeave={this.onMouseLeave}
+                            onMouseEnter={has_external_open_state ? undefined : this.toggleOpen}
+                            onMouseLeave={has_external_open_state ? undefined : this.toggleClose}
                         >
-                            {!disable_message_icon && icon === 'info' && (
-                                <i className='dc-popover__bubble__icon'>
-                                    <Icon icon='IcInfoBlue' />
-                                </i>
-                            )}
-                            <span
-                                className={classNames('dc-popover__bubble__text', {
-                                    'dc-popover__bubble__text--error': has_error,
-                                })}
-                            >
-                                {message}
-                            </span>
-                        </div>
-                    </ArrowContainer>
-                )}
-            >
-                <div
-                    className={classNames('dc-popover', className)}
-                    id={id}
-                    onMouseEnter={has_external_open_state ? undefined : this.toggleOpen}
-                    onMouseLeave={has_external_open_state ? undefined : this.toggleClose}
-                >
-                    <div className={classNames(classNameTarget, 'dc-popover__target')}>
-                        {!disable_target_icon && (
-                            <i className={message ? 'dc-popover__target__icon' : 'dc-popover__target__icon--disabled'}>
-                                {icon === 'info' && <Icon icon='IcInfoOutline' className={icon_class_name} />}
-                                {icon === 'question' && <Icon icon='IcUnknown' className={icon_class_name} />}
-                                {icon === 'dot' && <Icon icon='IcCircle' className={icon_class_name} size={4} />}
-                                {icon === 'counter' && <span className={icon_class_name}>{counter}</span>}
-                            </i>
-                        )}
+                            <div className={classNames(classNameTarget, 'dc-popover__target')}>
+                                {!disable_target_icon && (
+                                    <i
+                                        className={
+                                            message ? 'dc-popover__target__icon' : 'dc-popover__target__icon--disabled'
+                                        }
+                                    >
+                                        {icon === 'info' && <Icon icon='IcInfoOutline' className={icon_class_name} />}
+                                        {icon === 'question' && <Icon icon='IcUnknown' className={icon_class_name} />}
+                                        {icon === 'dot' && (
+                                            <Icon icon='IcCircle' className={icon_class_name} size={4} />
+                                        )}
+                                        {icon === 'counter' && <span className={icon_class_name}>{counter}</span>}
+                                    </i>
+                                )}
 
-                        {children}
-                    </div>
-                </div>
-            </TinyPopover>
+                                {children}
+                            </div>
+                        </div>
+                    </TinyPopover>
+                )}
+            </div>
         );
     }
 }
@@ -132,6 +214,7 @@ class Popover extends React.PureComponent {
 Popover.defaultProps = {
     portal_container: 'deriv_app',
     margin: 0,
+    relative_render: false,
 };
 
 Popover.propTypes = {
@@ -149,6 +232,7 @@ Popover.propTypes = {
     id: PropTypes.string,
     is_bubble_hover_enabled: PropTypes.bool,
     is_open: PropTypes.bool,
+    relative_render: PropTypes.bool,
     margin: PropTypes.number,
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.object, PropTypes.string]),
     portal_container: PropTypes.string,

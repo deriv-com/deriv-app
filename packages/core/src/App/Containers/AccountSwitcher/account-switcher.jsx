@@ -271,7 +271,7 @@ class AccountSwitcher extends React.Component {
 
         const demo_accounts = (
             <div className='acc-switcher__list-wrapper'>
-                <>
+                <React.Fragment>
                     <AccountWrapper
                         header={<Localize i18n_default_text='Deriv Accounts' />}
                         is_visible={this.state.is_demo_deriv_visible}
@@ -301,9 +301,9 @@ class AccountSwitcher extends React.Component {
                                 ))}
                         </div>
                     </AccountWrapper>
-                </>
+                </React.Fragment>
                 {this.props.is_mt5_allowed && (
-                    <>
+                    <React.Fragment>
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                         <AccountWrapper
                             header={<Localize i18n_default_text='DMT5 Accounts' />}
@@ -352,14 +352,14 @@ class AccountSwitcher extends React.Component {
                                 </React.Fragment>
                             )}
                         </AccountWrapper>
-                    </>
+                    </React.Fragment>
                 )}
             </div>
         );
 
         const real_accounts = (
             <div className='acc-switcher__list-wrapper' onMouseEnter={this.onListEnter} onMouseLeave={this.onListLeave}>
-                <>
+                <React.Fragment>
                     <AccountWrapper
                         header={<Localize i18n_default_text='Deriv Accounts' />}
                         is_visible={this.state.is_real_deriv_visible}
@@ -419,9 +419,9 @@ class AccountSwitcher extends React.Component {
                                 </Button>
                             )}
                     </AccountWrapper>
-                </>
+                </React.Fragment>
                 {this.props.is_mt5_allowed && (
-                    <>
+                    <React.Fragment>
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                         <AccountWrapper
                             header={<Localize i18n_default_text='DMT5 Accounts' />}
@@ -474,7 +474,7 @@ class AccountSwitcher extends React.Component {
                                 </React.Fragment>
                             )}
                         </AccountWrapper>
-                    </>
+                    </React.Fragment>
                 )}
             </div>
         );

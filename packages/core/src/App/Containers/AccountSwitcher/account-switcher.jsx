@@ -32,6 +32,7 @@ class AccountSwitcher extends React.Component {
             is_demo_dmt5_visible: true,
             is_real_deriv_visible: true,
             is_real_dmt5_visible: true,
+            has_autohide: true,
         };
     }
 
@@ -84,6 +85,10 @@ class AccountSwitcher extends React.Component {
             window.open(urlFor('user/metatrader', undefined, undefined, true));
         }
     };
+
+    onListEnter = () => this.setState({ has_autohide: false });
+
+    onListLeave = () => this.setState({ has_autohide: true });
 
     openMt5DemoAccount = account_type => {
         sessionStorage.setItem('open_mt5_account_type', `demo.${account_type}`);
@@ -353,7 +358,7 @@ class AccountSwitcher extends React.Component {
         );
 
         const real_accounts = (
-            <div className='acc-switcher__list-wrapper'>
+            <div className='acc-switcher__list-wrapper' onMouseEnter={this.onListEnter} onMouseLeave={this.onListLeave}>
                 <>
                     <AccountWrapper
                         header={<Localize i18n_default_text='Deriv Accounts' />}
@@ -488,7 +493,7 @@ class AccountSwitcher extends React.Component {
                         <DesktopWrapper>
                             <ThemedScrollbars
                                 autoHeight
-                                autoHide
+                                autoHide={this.state.has_autohide}
                                 autoHeightMax={354}
                                 renderTrackHorizontal={props => (
                                     <div {...props} className='track-horizontal' style={{ display: 'none' }} />

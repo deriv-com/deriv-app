@@ -16,5 +16,8 @@
             // Hide scratch workspace when switch to chart
             display: none;
         }
+        .cq-dialog-portal {
+            position: absolute;
+        }
     }
 }

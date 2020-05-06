@@ -9,6 +9,22 @@
         &__filters {
             width: 16.8rem;
             height: 3.6rem;
+
+            .dc-button-menu {
+                &__wrapper {
+                    background-color: var(--state-disabled);
+
+                    .dc-button-menu {
+                        &__button,
+                        &__button--active {
+                            height: 100%;
+                        }
+                    }
+                }
+                &--highlight {
+                    background-color: var(--state-normal) !important;
+                }
+            }
         }
     }
     &__price {
@@ -135,5 +151,13 @@
         width: 24px;
         height: 24px;
         white-space: nowrap;
+    }
+    &__table-row {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+    }
+    &__button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }

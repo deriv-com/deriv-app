@@ -59,6 +59,7 @@ export const icons = {
         'IcCloudUpload',
         'IcCrossCircle',
         'IcCross',
+        'IcDelete',
         'IcDemo',
         'IcDeriv',
         'IcDesktop',

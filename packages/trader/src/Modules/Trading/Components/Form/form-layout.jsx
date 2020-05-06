@@ -1,21 +1,23 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import Lazy from 'App/Containers/Lazy';
-import ScreenLarge from './screen-large.jsx';
+import Loadable from 'react-loadable';
+import { isMobile } from '@deriv/shared/utils/screen';
+
+const Screen = Loadable({
+    loader: () =>
+        isMobile()
+            ? import(/* webpackChunkName: "screen-small" */ './screen-small.jsx')
+            : import(/* webpackChunkName: "screen-large" */ './screen-large.jsx'),
+    loading: () => null,
+    render(loaded, props) {
+        const Component = loaded.default;
+        return <Component {...props} />;
+    },
+});
 
 const FormLayout = ({ is_market_closed, is_trade_enabled }) => (
     <React.Fragment>
-        <MobileWrapper>
-            <Lazy
-                ctor={() => import(/* webpackChunkName: "screen-small" */ './screen-small.jsx')}
-                should_load={true}
-                is_trade_enabled={is_trade_enabled}
-            />
-        </MobileWrapper>
-        <DesktopWrapper>
-            <ScreenLarge is_trade_enabled={is_trade_enabled} is_market_closed={is_market_closed} />
-        </DesktopWrapper>
+        <Screen is_trade_enabled={is_trade_enabled} is_market_closed={isMobile() ? undefined : is_market_closed} />
     </React.Fragment>
 );
 

@@ -152,4 +152,12 @@
         height: 24px;
         white-space: nowrap;
     }
+    &__table-row {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+    }
+    &__button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }

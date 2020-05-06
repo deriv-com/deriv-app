@@ -140,6 +140,7 @@ class ProofOfIdentityContainer extends React.Component {
                 status={status}
                 onfido_service_token={onfido_service_token}
                 has_poa={has_poa}
+                height={this.props.height ?? null}
                 handleComplete={this.handleComplete}
             />
         );

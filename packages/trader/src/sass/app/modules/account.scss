@@ -774,8 +774,9 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define onfido-container; weak */
 .onfido-container {
     margin-top: 24px;
-
     @include mobile {
+        margin-top: 0;
+
         .onfido-sdk-ui-PageTitle {
             &-titleWrapper {
                 margin: 0 1.5em 0.4em;
@@ -825,3 +826,8 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 /* stylelint-enable */
+
+/** @define proof-of-identity */
+.proof-of-identity {
+    height: 100%;
+}

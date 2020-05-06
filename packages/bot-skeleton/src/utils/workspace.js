@@ -13,11 +13,14 @@ export const hasAllRequiredBlocks = () => {
 };
 
 export const onWorkspaceResize = () => {
+    const workspace = Blockly.derivWorkspace;
+    workspace.getAllFields().forEach(field => field.forceRerender());
+
     const el_scratch_div = document.getElementById('scratch_div');
     if (el_scratch_div) {
         el_scratch_div.style.width = 'var(--bot-content-width)';
         el_scratch_div.style.height = 'var(--bot-content-height)';
-        Blockly.svgResize(Blockly.derivWorkspace);
+        Blockly.svgResize(workspace);
     }
 };
 

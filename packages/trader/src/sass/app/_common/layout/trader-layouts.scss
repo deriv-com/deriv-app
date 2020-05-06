@@ -402,14 +402,14 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .stx-panel-control {
             transition: transform 0.25s ease;
         }
-        .ciq-toolbar-widget {
+        .sc-toolbar-widget {
             @include mobile {
                 background: transparent;
                 border-width: 0;
                 bottom: 2.8rem;
 
                 /* postcss-bem-linter: ignore */
-                .ciq-chart-mode {
+                .sc-chart-mode {
                     background: var(--general-section-1);
                     padding: 0.4rem 0.2rem;
                     width: 4rem;
@@ -518,7 +518,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 }
             }
             /** @define ciq-chart-type; weak */
-            .ciq-chart-type {
+            .sc-chart-type {
                 &__item {
                     /* postcss-bem-linter: ignore */
                     .sc-tooltip,
@@ -528,11 +528,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 }
             }
             /** @define ciq-chart-mode; weak */
-            .ciq-chart-mode {
+            .sc-chart-mode {
                 /* postcss-bem-linter: ignore */
                 &__section__item {
                     /* postcss-bem-linter: ignore */
-                    .cq-interval {
+                    .sc-interval {
                         display: grid;
                         padding: 1.6rem;
                         grid-template-columns: 1fr;

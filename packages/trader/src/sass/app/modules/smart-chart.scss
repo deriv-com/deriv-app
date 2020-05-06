@@ -229,4 +229,10 @@
             display: none;
         }
     }
+    .cq-chart-title .sc-dialog__body {
+        height: 100% !important;
+    }
+    .cq-categorical-display {
+        height: calc(100% - 38px) !important;
+    }
 }

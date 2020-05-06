@@ -123,7 +123,7 @@ class RealAccountSignup extends Component {
                 <Localize
                     i18n_default_text='<0>You have added a Deriv {{currency}} account.</0><0>Make a deposit now to start trading.</0>'
                     values={{
-                        currency: CurrencyUtils.getCurrencyDisplayCode(currency),
+                        currency: CurrencyUtils.getCurrencyDisplayCode(currency).toUpperCase(),
                     }}
                     components={[<p key={currency} />]}
                 />

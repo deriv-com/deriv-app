@@ -52,7 +52,7 @@ export const addComma = (num, decimal_points, is_crypto) => {
 };
 
 export const calcDecimalPlaces = currency => {
-    return isCryptocurrency(currency) ? 8 : 2;
+    return isCryptocurrency(currency) && !/USB|UST/i.test(currency) ? 8 : 2;
 };
 
 export const getDecimalPlaces = currency =>

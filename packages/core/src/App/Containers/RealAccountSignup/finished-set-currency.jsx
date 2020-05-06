@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 
 const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
     const IconPrevCurrency = () => <Icon icon={`IcCurrency-${prev.toLowerCase()}`} height={120} width={90} />;
@@ -21,11 +22,13 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
                 <h2>
                     <Localize i18n_default_text='Success!' />
                 </h2>
-                <p>
-                    <Localize
-                        i18n_default_text={`You have successfully changed your currency to ${current}.<br />Make a deposit now to start trading.`}
-                    />
-                </p>
+                <Localize
+                    i18n_default_text='<0>You have successfully changed your currency to {{currency}}.</0><0>Make a deposit now to start trading.</0>'
+                    values={{
+                        currency: current,
+                    }}
+                    components={[<p key={current} />]}
+                />
             </div>
             <div className='success-change__btn-area'>
                 <Button onClick={onCancel} text={localize('Maybe later')} secondary />

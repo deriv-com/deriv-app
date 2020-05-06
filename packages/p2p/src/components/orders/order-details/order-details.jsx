@@ -47,11 +47,9 @@ const OrderDetails = ({ order_details, chat_info }) => {
     };
     React.useEffect(() => {
         if (!channel_url) {
-            chatCreate(id)
-                .then(val => {
-                    setChannelUrl(val.channel_url);
-                })
-                .catch(err => console.log(err));
+            chatCreate(id).then(val => {
+                setChannelUrl(val.channel_url);
+            });
         }
     }, []);
 

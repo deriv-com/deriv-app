@@ -1,5 +1,9 @@
 .orders {
-    padding: 2.4rem 0 9.6rem; // 2.4rem 0 (2.4rem + 7.2rem (footer-actions height))
+    padding-top: 2.4rem;
+
+    &--order-view {
+        margin-bottom: 9.6rem;
+    }
 
     &__button {
         margin: 0 1.6rem;

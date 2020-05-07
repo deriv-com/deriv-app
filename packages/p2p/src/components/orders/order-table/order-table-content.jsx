@@ -69,11 +69,19 @@ const OrderTableContent = ({ showDetails }) => {
     if (orders.length) {
         const modified_list = orders.map(list => new OrderInfo(list));
         const item_height = 72;
+        const height_values = {
+            screen_size: '100vh',
+            header_size: '48px',
+            page_overlay_header: '53px',
+            page_overlay_content_padding: '2.4rem',
+            tabs_height: '36px',
+            table_header_height: '50px',
+            table_header_top_padding: '2.4rem',
+            footer_size: '37px',
+        };
         return (
             <InfiniteLoaderList
-                // screen size - header size - footer size - page overlay header - page overlay content padding -
-                // tabs height - padding of tab content - table header height
-                initial_height={'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 2.4rem - 52px)'}
+                height={`calc(${Object.values(height_values).join(' - ')})`}
                 items={modified_list}
                 item_size={item_height}
                 RenderComponent={Row}

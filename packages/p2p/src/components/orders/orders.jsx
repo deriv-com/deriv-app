@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
@@ -45,7 +46,7 @@ const Orders = ({ params, navigate }) => {
     }, [orders]);
 
     return (
-        <div className='orders'>
+        <div className={classNames('orders', { 'orders--order-view': !!order_details })}>
             {order_details && (
                 <React.Fragment>
                     <PageReturn

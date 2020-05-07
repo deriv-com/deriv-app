@@ -28,7 +28,7 @@ class DBot {
             ApiHelpers.setInstance(api_helpers_store);
             DBotStore.setInstance(store);
             const window_width = window.innerWidth;
-            const workspaceScale = 0.8;
+            let workspaceScale = 0.8;
 
             const { handleFileChange } = DBotStore.instance;
             if (window_width < 1640) {

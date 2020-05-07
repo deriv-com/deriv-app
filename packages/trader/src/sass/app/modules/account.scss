@@ -694,7 +694,16 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 }
-
+/** @define connected-apps; weak */
+.connected-apps {
+    &__title {
+        p {
+            color: var(--text-prominent);
+            font-size: var(--text-size-s);
+            font-weight: bold;
+        }
+    }
+}
 /** @define form-submit-error-message; weak */
 .form-submit-error-message {
     display: flex;

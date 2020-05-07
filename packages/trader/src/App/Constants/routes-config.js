@@ -123,6 +123,11 @@ const initRoutesConfig = () => [
                         component: lazyLoadAccountComponent('AccountLimits'),
                         title: localize('Account limits'),
                     },
+                    {
+                        path: routes.connected_apps,
+                        component: lazyLoadAccountComponent('ConnectedApps'),
+                        title: localize('Connected apps'),
+                    },
                 ],
             },
         ],

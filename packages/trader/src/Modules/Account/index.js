@@ -5,6 +5,7 @@ import ProofOfAddress from './Sections/Verification/ProofOfAddress';
 import DerivPassword from './Sections/Security/DerivPassword';
 import AccountLimits from './Sections/Security/AccountLimits';
 import Account from './Containers/account.jsx';
+import ConnectedApps from './Sections/Security/ConnectedApps';
 
 export default {
     Account,

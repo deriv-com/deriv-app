@@ -65,6 +65,7 @@ class AccountSwitcher extends React.Component {
             this.props.togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
         this.props.logoutClient();
+        this.props.routeBackInApp(this.props.history);
     };
 
     redirectToMt5 = account_type => {
@@ -596,7 +597,7 @@ AccountSwitcher.propTypes = {
 };
 
 const account_switcher = withRouter(
-    connect(({ client, ui }) => ({
+    connect(({ client, common, ui }) => ({
         available_crypto_currencies: client.available_crypto_currencies,
         account_loginid: client.loginid,
         accounts: client.accounts,
@@ -614,6 +615,7 @@ const account_switcher = withRouter(
         switchAccount: client.switchAccount,
         logoutClient: client.logout,
         updateMt5LoginList: client.updateMt5LoginList,
+        routeBackInApp: common.routeBackInApp,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup: ui.openRealAccountSignup,
         toggleAccountsDialog: ui.toggleAccountsDialog,

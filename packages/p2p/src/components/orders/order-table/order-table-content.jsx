@@ -81,7 +81,7 @@ const OrderTableContent = ({ showDetails }) => {
         };
         return (
             <InfiniteLoaderList
-                height={`calc(${Object.values(height_values).join(' - ')})`}
+                autosizer_height={`calc(${Object.values(height_values).join(' - ')})`}
                 items={modified_list}
                 item_size={item_height}
                 RenderComponent={Row}

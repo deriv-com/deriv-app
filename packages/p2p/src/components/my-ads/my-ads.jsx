@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Icon } from '@deriv/components';
+import React, { Component, Fragment } from 'react';
+import { Button, Icon } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { TableError } from 'Components/table/table-error.jsx';
@@ -56,17 +56,7 @@ class MyAds extends Component {
                     {this.state.show_form ? (
                         <FormAds handleShowForm={this.handleShowForm} />
                     ) : (
-                        <Fragment>
-                            <div className='p2p-my-ads__header'>
-                                <Button primary large onClick={this.onClickCreate}>
-                                    {localize('Create new ad')}
-                                </Button>
-                                {!this.state.is_loading && (
-                                    <ToggleAds is_enabled={this.state.is_enabled} onToggle={this.setEnabled} />
-                                )}
-                            </div>
-                            <MyAdsTable onClickCreate={this.onClickCreate} is_enabled={this.state.is_enabled} />
-                        </Fragment>
+                        <MyAdsTable onClickCreate={this.onClickCreate} is_enabled={this.state.is_enabled} />
                     )}
                 </div>
             );

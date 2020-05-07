@@ -12,7 +12,8 @@ import SellOrderRowComponent from './order-table-sell-row.jsx';
 import OrderInfo from '../order-info';
 
 const OrderTable = ({ navigate, showDetails }) => {
-    const { list_item_limit, order_offset, orders, setOrders, setOrderOffset } = useContext(Dp2pContext);
+    const { list_item_limit, order_offset, setOrders, setOrderOffset } = useContext(Dp2pContext);
+    const orders = [];
     const [is_mounted, setIsMounted] = useState(false);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
     const [api_error_message, setApiErrorMessage] = useState('');
@@ -72,7 +73,7 @@ const OrderTable = ({ navigate, showDetails }) => {
         return (
             <Table>
                 <Table.Header>
-                    <Table.Row>
+                    <Table.Row className='orders__table-row'>
                         <Table.Head>{localize('Order ID')}</Table.Head>
                         <Table.Head>{localize('Time')}</Table.Head>
                         <Table.Head>{localize('Status')}</Table.Head>

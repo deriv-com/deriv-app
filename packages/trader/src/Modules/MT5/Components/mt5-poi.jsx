@@ -50,7 +50,9 @@ class MT5POI extends PureComponent {
                                     >
                                         <ProofOfIdentityContainer
                                             {...this.props}
-                                            WS={WS}
+                                            serviceToken={WS.serviceToken}
+                                            notificationEvent={WS.notificationEvent}
+                                            getAccountStatus={WS.authorized.getAccountStatus}
                                             height={height}
                                             onStateChange={this.onStateChange}
                                             is_trading_button_enabled={false}

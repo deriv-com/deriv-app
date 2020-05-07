@@ -16,7 +16,9 @@ class ProofOfIdentity extends React.Component {
                 {({ setRef, height }) => (
                     <div ref={setRef} className='proof-of-identity'>
                         <ProofOfIdentityContainer
-                            WS={WS}
+                            serviceToken={WS.serviceToken}
+                            notificationEvent={WS.notificationEvent}
+                            getAccountStatus={WS.authorized.getAccountStatus}
                             addNotificationByKey={this.props.addNotificationByKey}
                             removeNotificationByKey={this.props.removeNotificationByKey}
                             removeNotificationMessage={this.props.removeNotificationMessage}

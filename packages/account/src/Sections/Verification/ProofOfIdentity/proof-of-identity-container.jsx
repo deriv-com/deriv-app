@@ -23,61 +23,65 @@ class ProofOfIdentityContainer extends React.Component {
             const unsupported_country_code = 'UnsupportedCountry';
 
             if (!onfido_cookie) {
-                this.props.WS.serviceToken({
-                    service_token: 1,
-                    service: 'onfido',
-                }).then((response) => {
-                    if (response.error || !response.service_token) {
-                        if (response.error.code === unsupported_country_code) {
-                            this.setState({ onfido_unsupported: true });
-                        } else {
-                            this.setState({ api_error: true, is_loading: false });
+                this.props
+                    .serviceToken({
+                        service_token: 1,
+                        service: 'onfido',
+                    })
+                    .then((response) => {
+                        if (response.error || !response.service_token) {
+                            if (response.error.code === unsupported_country_code) {
+                                this.setState({ onfido_unsupported: true });
+                            } else {
+                                this.setState({ api_error: true, is_loading: false });
+                            }
+                            resolve();
+                            return;
                         }
-                        resolve();
-                        return;
-                    }
 
-                    const { token } = response.service_token;
-                    const in_90_minutes = 1 / 16;
-                    Cookies.set(onfido_cookie_name, token, {
-                        expires: in_90_minutes,
-                        secure: true,
-                        sameSite: 'strict',
+                        const { token } = response.service_token;
+                        const in_90_minutes = 1 / 16;
+                        Cookies.set(onfido_cookie_name, token, {
+                            expires: in_90_minutes,
+                            secure: true,
+                            sameSite: 'strict',
+                        });
+                        resolve(token);
                     });
-                    resolve(token);
-                });
             } else {
                 resolve(onfido_cookie);
             }
         });
 
     handleComplete = () => {
-        this.props.WS.notificationEvent({
-            notification_event: 1,
-            category: 'authentication',
-            event: 'poi_documents_uploaded',
-        }).then((response) => {
-            if (response.error) {
-                this.setState({ api_error: true });
-                return;
-            }
-            this.setState({ status: 'pending' });
-            // TODO: clean all of this up by simplifying the manually toggled notifications functions
-            this.props.removeNotificationMessage({ key: 'authenticate' });
-            this.props.removeNotificationByKey({ key: 'authenticate' });
-            this.props.removeNotificationMessage({ key: 'needs_poi' });
-            this.props.removeNotificationByKey({ key: 'needs_poi' });
-            this.props.removeNotificationMessage({ key: 'poi_expired' });
-            this.props.removeNotificationByKey({ key: 'poi_expired' });
-            if (this.state.needs_poa) this.props.addNotificationByKey('needs_poa');
-            if (this.props.onStateChange) this.props.onStateChange({ status: 'pending' });
-        });
+        this.props
+            .notificationEvent({
+                notification_event: 1,
+                category: 'authentication',
+                event: 'poi_documents_uploaded',
+            })
+            .then((response) => {
+                if (response.error) {
+                    this.setState({ api_error: true });
+                    return;
+                }
+                this.setState({ status: 'pending' });
+                // TODO: clean all of this up by simplifying the manually toggled notifications functions
+                this.props.removeNotificationMessage({ key: 'authenticate' });
+                this.props.removeNotificationByKey({ key: 'authenticate' });
+                this.props.removeNotificationMessage({ key: 'needs_poi' });
+                this.props.removeNotificationByKey({ key: 'needs_poi' });
+                this.props.removeNotificationMessage({ key: 'poi_expired' });
+                this.props.removeNotificationByKey({ key: 'poi_expired' });
+                if (this.state.needs_poa) this.props.addNotificationByKey('needs_poa');
+                if (this.props.onStateChange) this.props.onStateChange({ status: 'pending' });
+            });
     };
 
     componentDidMount() {
         // TODO: Find a better solution for handling no-op instead of using is_mounted flags
         this.is_mounted = true;
-        this.props.WS.authorized.getAccountStatus().then((response) => {
+        this.props.getAccountStatus().then((response) => {
             const { get_account_status } = response;
             this.getOnfidoServiceToken().then((onfido_service_token) => {
                 const { document, identity, needs_verification } = get_account_status.authentication;

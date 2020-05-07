@@ -94,14 +94,18 @@
     &__table {
         &-row {
             grid-template-columns: 1fr 2fr 2fr 1fr 1fr;
-            cursor: pointer;
             padding-left: 1rem;
 
             &--attention {
                 background: var(--button-tertiary-hover);
             }
-            &:hover {
-                background: var(--general-hover);
+
+            &:not(.orders__table-row--header) {
+                cursor: pointer;
+
+                &:hover {
+                    background: var(--general-hover);
+                }
             }
         }
         &-cell {

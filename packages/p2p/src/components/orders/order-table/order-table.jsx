@@ -8,7 +8,7 @@ const OrderTable = ({ showDetails }) => {
     return (
         <Table>
             <Table.Header>
-                <Table.Row className='orders__table-row'>
+                <Table.Row className='orders__table-row orders__table-row--header'>
                     <Table.Head>{localize('Order ID')}</Table.Head>
                     <Table.Head>{localize('Time')}</Table.Head>
                     <Table.Head>{localize('Status')}</Table.Head>

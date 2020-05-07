@@ -616,6 +616,10 @@ $side-padding: 1.2em;
             }
         }
     }
+    .unsupported-trade-type {
+        position: fixed;
+        padding: 15px 0px 10px 15px;
+    }
 }
 
 /** @define open-positions-multiplier; weak */

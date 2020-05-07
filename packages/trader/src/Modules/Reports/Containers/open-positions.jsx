@@ -204,7 +204,7 @@ class OpenPositions extends React.Component {
         row_obj.is_unsupported
             ? {
                   component: (
-                      <div style={{ position: 'fixed' }}>
+                      <div className='unsupported-trade-type'>
                           <Localize
                               i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
                               values={{

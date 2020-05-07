@@ -70,12 +70,21 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
 
     if (items.length) {
         const item_height = 56;
+        const height_values = {
+            screen_size: '100vh',
+            header_size: '48px',
+            page_overlay_header: '53px',
+            page_overlay_content_padding: '2.4rem',
+            tabs_height: '36px',
+            filter_height: '44px',
+            filter_margin_padding: '4rem', // 2.4rem + 1.6rem
+            table_header_height: '50px',
+            footer_size: '37px',
+        };
         return (
             <BuySellTable>
                 <InfiniteLoaderList
-                    // screen size - header size - footer size - page overlay header - page overlay content padding -
-                    // tabs height - padding+margin of tab content - toggle height - table header height
-                    initial_height={'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 3.2rem - 40px - 52px)'}
+                    autosizer_height={`calc(${Object.values(height_values).join(' - ')})`}
                     items={items}
                     item_size={item_height}
                     RenderComponent={Row}

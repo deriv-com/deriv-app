@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Loading, Icon } from '@deriv/components';
 import { localize } from 'Components/i18next';
@@ -10,29 +10,24 @@ import { RowComponent, BuySellRowLoader } from './row.jsx';
 import { BuySellTable } from './buy-sell-table.jsx';
 
 const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
-    let item_offset = 0;
     const { list_item_limit } = useContext(Dp2pContext);
-    const [is_mounted, setIsMounted] = useState(false);
+    const mounted = useRef(false);
+    const item_offset = useRef(0);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
     const [api_error_message, setApiErrorMessage] = useState('');
     const [is_loading, setIsLoading] = useState(true);
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        setIsMounted(true);
-        return () => setIsMounted(false);
+        mounted.current = true;
+        loadMoreItems(item_offset.current, list_item_limit);
+        return () => (mounted.current = false);
     }, []);
 
     useEffect(() => {
-        if (is_mounted) {
-            loadMoreItems(item_offset, list_item_limit);
-        }
-    }, [is_mounted]);
-
-    useEffect(() => {
         setIsLoading(true);
-        if (is_mounted) {
-            loadMoreItems(item_offset, list_item_limit);
+        if (mounted.current) {
+            loadMoreItems(item_offset.current, list_item_limit);
         }
     }, [is_buy]);
 
@@ -44,12 +39,12 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
                 offset: start_idx,
                 limit: list_item_limit,
             }).then(response => {
-                if (is_mounted) {
+                if (mounted.current) {
                     if (!response.error) {
                         setHasMoreItemsToLoad(response.length >= list_item_limit);
                         setIsLoading(false);
                         setItems(items.concat(response));
-                        item_offset += response.length;
+                        item_offset.current += response.length;
                     } else {
                         setApiErrorMessage(response.api_error_message);
                     }

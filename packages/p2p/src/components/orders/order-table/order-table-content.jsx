@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
 import { localize } from 'Components/i18next';
@@ -12,22 +12,17 @@ import SellOrderRowComponent from './order-table-sell-row.jsx';
 import OrderInfo from '../order-info';
 
 const OrderTableContent = ({ showDetails }) => {
+    const mounted = useRef(false);
     const { list_item_limit, order_offset, orders, setOrders, setOrderOffset } = useContext(Dp2pContext);
-    const [is_mounted, setIsMounted] = useState(false);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
     const [api_error_message, setApiErrorMessage] = useState('');
     const [is_loading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        setIsMounted(true);
-        return () => setIsMounted(false);
+        mounted.current = true;
+        loadMoreOrders(order_offset);
+        return () => (mounted.current = false);
     }, []);
-
-    useEffect(() => {
-        if (is_mounted) {
-            loadMoreOrders(order_offset);
-        }
-    }, [is_mounted]);
 
     const loadMoreOrders = start_idx => {
         return new Promise(resolve => {
@@ -36,7 +31,7 @@ const OrderTableContent = ({ showDetails }) => {
                 offset: start_idx,
                 limit: list_item_limit,
             }).then(response => {
-                if (is_mounted) {
+                if (mounted.current) {
                     if (!response.error) {
                         const { list } = response.p2p_order_list;
                         setHasMoreItemsToLoad(list.length >= list_item_limit);

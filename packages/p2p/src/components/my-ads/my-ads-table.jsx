@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
 import { localize } from 'Components/i18next';
@@ -61,28 +61,21 @@ RowComponent.propTypes = {
 RowComponent.displayName = 'RowComponent';
 
 const MyAdsTable = ({ is_enabled }) => {
-    let item_offset = 0;
-
     const { currency, list_item_limit } = useContext(Dp2pContext);
-    const [is_mounted, setIsMounted] = useState(false);
+    const mounted = useRef(false);
+    const item_offset = useRef(0);
     const [is_loading, setIsLoading] = useState(true);
     const [api_error_message, setApiErrorMessage] = useState('');
     const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
     const [selected_ad_id, setSelectedAdId] = useState('');
     const [show_popup, setShowPopup] = useState(false);
     const [ads, setAds] = useState([]);
-    const table_container_Ref = React.createRef();
 
     useEffect(() => {
-        setIsMounted(true);
-        return () => setIsMounted(false);
+        mounted.current = true;
+        loadMoreAds(item_offset.current);
+        return () => (mounted.current = false);
     }, []);
-
-    useEffect(() => {
-        if (is_mounted) {
-            loadMoreAds(item_offset);
-        }
-    }, [is_mounted]);
 
     const loadMoreAds = start_idx => {
         return new Promise(resolve => {
@@ -91,12 +84,12 @@ const MyAdsTable = ({ is_enabled }) => {
                 offset: start_idx,
                 limit: list_item_limit,
             }).then(response => {
-                if (is_mounted) {
+                if (mounted.current) {
                     if (!response.error) {
                         setHasMoreItemsToLoad(response.length >= list_item_limit);
                         setAds(ads.concat(response));
                         setIsLoading(false);
-                        item_offset += response.length;
+                        item_offset.current += response.length;
                     } else {
                         setApiErrorMessage(response.api_error_message);
                     }
@@ -150,7 +143,7 @@ const MyAdsTable = ({ is_enabled }) => {
             footer_size: '37px',
         };
         return (
-            <div ref={table_container_Ref}>
+            <React.Fragment>
                 <Table
                     className={classNames('p2p-my-ads__table', {
                         'p2p-my-ads__table--disabled': !is_enabled,
@@ -166,7 +159,7 @@ const MyAdsTable = ({ is_enabled }) => {
                     <Table.Body>
                         <InfiniteLoaderList
                             autosizer_height={`calc(${Object.values(height_values).join(' - ')})`}
-                            items={ads}
+                            items={ads.slice()}
                             item_size={item_height}
                             row_actions={{ onClickDelete }}
                             RenderComponent={RowComponent}
@@ -191,7 +184,7 @@ const MyAdsTable = ({ is_enabled }) => {
                         </Dialog>
                     </div>
                 )}
-            </div>
+            </React.Fragment>
         );
     }
 

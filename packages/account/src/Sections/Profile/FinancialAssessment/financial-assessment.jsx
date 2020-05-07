@@ -5,9 +5,9 @@ import { withRouter } from 'react-router';
 import { Loading, Button, Dropdown, Modal, Icon, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { isMobile, isDesktop } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
+import { isEmptyObject } from '@deriv/shared/utils/object';
 import { connect } from 'Stores/connect';
 import AppRoutes from 'Constants/routes';
-import { isEmptyObject } from '@deriv/shared/src/utils/object/object';
 import { WS } from 'Services/ws-methods';
 import {
     account_turnover_list,
@@ -145,7 +145,7 @@ class FinancialAssessment extends React.Component {
         if (this.props.is_virtual) {
             this.setState({ is_loading: false });
         } else {
-            WS.authorized.storage.getFinancialAssessment().then(data => {
+            WS.authorized.storage.getFinancialAssessment().then((data) => {
                 // TODO: Find a better solution for handling no-op instead of using is_mounted flags
                 if (this.is_mounted) {
                     if (data.error) {
@@ -170,7 +170,7 @@ class FinancialAssessment extends React.Component {
     onSubmit = (values, { setSubmitting, setStatus }) => {
         setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
-        WS.setFinancialAssessment(values).then(data => {
+        WS.setFinancialAssessment(values).then((data) => {
             this.setState({ is_btn_loading: false });
             if (data.error) {
                 setStatus({ msg: data.error.message });
@@ -183,10 +183,10 @@ class FinancialAssessment extends React.Component {
         });
     };
 
-    validateFields = values => {
+    validateFields = (values) => {
         this.setState({ is_submit_success: false });
         const errors = {};
-        Object.keys(values).forEach(field => {
+        Object.keys(values).forEach((field) => {
             if (values[field] !== undefined && !values[field]) {
                 errors[field] = localize('This field is required');
             }
@@ -194,9 +194,9 @@ class FinancialAssessment extends React.Component {
         return errors;
     };
 
-    showForm = show_form => this.setState({ show_form });
+    showForm = (show_form) => this.setState({ show_form });
 
-    toggleConfirmationModal = value => {
+    toggleConfirmationModal = (value) => {
         const new_state = { is_confirmation_visible: value };
         if (isMobile()) {
             new_state.show_form = !value;
@@ -239,7 +239,7 @@ class FinancialAssessment extends React.Component {
                 net_income_list,
                 occupation_list,
                 source_of_wealth_list,
-            ].forEach(list => list.forEach(i => (i.nativepicker_text = i.text)));
+            ].forEach((list) => list.forEach((i) => (i.nativepicker_text = i.text)));
         }
 
         return (

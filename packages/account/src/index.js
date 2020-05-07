@@ -11,8 +11,9 @@ import MultiStep from 'Components/multistep.jsx';
 import Account from 'Containers/account.jsx';
 import App from './App.jsx';
 
-export default {
-    App,
+export default App;
+
+export {
     PersonalDetails,
     ProofOfIdentityContainer,
     FinancialAssessment,

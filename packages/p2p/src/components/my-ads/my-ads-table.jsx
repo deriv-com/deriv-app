@@ -142,15 +142,15 @@ const MyAdsTable = ({ onClickCreate, is_enabled }) => {
         return (
             <React.Fragment>
                 <div className='p2p-my-ads__header'>
-                    <ToggleAds is_enabled={is_enabled} />
-                    <Button primary onClick={onClickCreate}>
-                        {localize('Create ad')}
+                    <Button large primary onClick={onClickCreate}>
+                        {localize('Create new ad')}
                     </Button>
+                    <ToggleAds is_enabled={is_enabled} />
                 </div>
                 <div ref={table_container_Ref}>
                     <Table>
                         <Table.Header>
-                            <Table.Row>
+                            <Table.Row className='p2p-my-ads__table-row'>
                                 {getHeaders(currency).map(header => (
                                     <Table.Head key={header.text}>{header.text}</Table.Head>
                                 ))}

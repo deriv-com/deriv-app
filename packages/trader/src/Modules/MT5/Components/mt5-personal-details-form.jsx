@@ -14,7 +14,7 @@ import {
     MobileWrapper,
     SelectNative,
 } from '@deriv/components';
-import { FormSubHeader } from '@deriv/account';
+import { FormSubHeader } from '@deriv/account/dist/js/account.components';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { Localize, localize } from '@deriv/translations';
 import { isDeepEqual } from '@deriv/shared/utils/object';

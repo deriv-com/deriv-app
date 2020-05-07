@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared/utils/screen';
-import { flatten } from '@deriv/account';
+import { flatten } from '@deriv/account/dist/js/account.components';
 
 export const unsupported_contract_types_list = [
     // TODO: remove these once all contract types are supported

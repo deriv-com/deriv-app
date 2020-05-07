@@ -7,7 +7,10 @@ module.exports = function (env, argv) {
     return {
         context: path.resolve(__dirname, '../src'),
         devtool: IS_RELEASE ? 'source-map' : 'cheap-module-eval-source-map',
-        entry: path.resolve(__dirname, '../src', 'index.js'),
+        entry: {
+            main: path.resolve(__dirname, '../src', 'index.js'),
+            components: path.resolve(__dirname, '../src', 'index.components.js'),
+        },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
             rules: rules(),
@@ -45,7 +48,7 @@ module.exports = function (env, argv) {
             // }
         },
         output: {
-            filename: 'js/account.main.js',
+            filename: 'js/account.[name].js',
             publicPath: base,
             path: path.resolve(__dirname, '../dist'),
             chunkFilename: 'js/account.[name].[contenthash].js',

@@ -87,7 +87,9 @@ class AddressDetails extends Component {
                 onSubmit={(values, actions) => {
                     if (isDesktop() && values.address_state) {
                         values.address_state = this.props.states_list.length
-                            ? getLocation(this.props.states_list, values.address_state, 'value')
+                            ? this.state.address_state_to_display
+                                ? getLocation(this.props.states_list, this.state.address_state_to_display, 'value')
+                                : getLocation(this.props.states_list, values.address_state, 'value')
                             : values.address_state;
                     }
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);

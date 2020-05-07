@@ -5,10 +5,12 @@ import { withRouter } from 'react-router-dom';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
+import { isNavigationFromPlatform } from 'Utils/PlatformSwitcher';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
+import ModalLoginPrompt from './modal-login-prompt.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import SuccessDialog from '../Modals/success-dialog.jsx';
 import 'Sass/account-wizard.scss';
@@ -173,6 +175,10 @@ class RealAccountSignup extends Component {
             localStorage.removeItem('real_account_signup_wizard');
         }
         this.props.closeRealAccountSignup();
+
+        if (isNavigationFromPlatform(this.props.routing_history, routes.smarttrader)) {
+            window.location = routes.smarttrader;
+        }
     };
 
     openPersonalDetails = () => {
@@ -201,11 +207,13 @@ class RealAccountSignup extends Component {
     };
 
     render() {
-        const { is_real_acc_signup_on } = this.props;
+        const { is_real_acc_signup_on, is_logged_in } = this.props;
         const title = this.labels[this.active_modal_index];
-        const Body = this.state.modal_content[this.active_modal_index].value;
-        const has_close_icon =
-            this.active_modal_index < 2 || this.active_modal_index === 5 || this.active_modal_index === 6;
+        const Body = is_logged_in
+            ? this.state.modal_content[this.active_modal_index].value
+            : () => <ModalLoginPrompt />;
+        const has_close_icon = 
+              this.active_modal_index < 2 || this.active_modal_index === 5 || this.active_modal_index === 6;
 
         return (
             <>
@@ -243,12 +251,16 @@ class RealAccountSignup extends Component {
     }
 }
 
-export default connect(({ ui, client }) => ({
+export default connect(({ ui, client, common }) => ({
+    available_crypto_currencies: client.available_crypto_currencies,
+    can_change_fiat_currency: client.can_change_fiat_currency,
     has_real_account: client.has_active_real_account,
     currency: client.currency,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
+    is_logged_in: client.is_logged_in,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     closeSignupAndOpenCashier: ui.closeSignupAndOpenCashier,
     setParams: ui.setRealAccountSignupParams,
     state_value: ui.real_account_signup,
+    routing_history: common.app_routing_history,
 }))(withRouter(RealAccountSignup));

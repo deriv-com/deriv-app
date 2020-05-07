@@ -1,4 +1,11 @@
-import { Div100vhContainer, Input, ThemedScrollbars, DateOfBirthPicker, FormSubmitButton } from '@deriv/components';
+import {
+    Div100vhContainer,
+    AutoHeightWrapper,
+    Input,
+    ThemedScrollbars,
+    DateOfBirthPicker,
+    FormSubmitButton,
+} from '@deriv/components';
 import { Formik, Field } from 'formik';
 import React from 'react';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
@@ -84,63 +91,62 @@ class PersonalDetails extends React.Component {
                 ref={this.form}
             >
                 {({ handleSubmit, isSubmitting, errors, values }) => (
-                    <form onSubmit={handleSubmit}>
-                        <Div100vhContainer className='details-form' height_offset='199px' is_disabled={isDesktop()}>
-                            <p className='details-form__description'>
-                                <Localize
-                                    i18n_default_text={
-                                        'Any information you provide is confidential and will be used for verification purposes only.'
-                                    }
-                                />
-                            </p>
-                            <div className='details-form__elements-container'>
-                                <ThemedScrollbars
-                                    is_native={isMobile()}
-                                    autoHide
-                                    style={{
-                                        height: 'calc(100% - 16px)',
-                                    }}
+                    <AutoHeightWrapper default_height={200}>
+                        {({ setRef, height }) => (
+                            <form ref={setRef} onSubmit={handleSubmit}>
+                                <Div100vhContainer
+                                    className='details-form'
+                                    height_offset='199px'
+                                    is_disabled={isDesktop()}
                                 >
-                                    <div
-                                        className='details-form__elements'
-                                        style={{ paddingBottom: this.state.paddingBottom }}
-                                    >
-                                        <FormInputField
-                                            name='first_name'
-                                            label={localize('First name*')}
-                                            placeholder={localize('John')}
+                                    <p className='details-form__description'>
+                                        <Localize
+                                            i18n_default_text={
+                                                'Any information you provide is confidential and will be used for verification purposes only.'
+                                            }
                                         />
-                                        <FormInputField
-                                            name='last_name'
-                                            label={localize('Last name*')}
-                                            placeholder={localize('Doe')}
-                                        />
-                                        <DateOfBirthField
-                                            name='date_of_birth'
-                                            label={localize('Date of birth*')}
-                                            placeholder={localize('01-07-1999')}
-                                        />
-                                        <FormInputField
-                                            name='phone'
-                                            label={localize('Phone number*')}
-                                            placeholder={localize('Phone number')}
-                                        />
-                                    </div>
-                                </ThemedScrollbars>
-                            </div>
-                        </Div100vhContainer>
-                        <FormSubmitButton
-                            is_absolute
-                            cancel_label={localize('Previous')}
-                            has_cancel
-                            is_disabled={
-                                // eslint-disable-next-line no-unused-vars
-                                isSubmitting || Object.keys(errors).length > 0
-                            }
-                            label={localize('Next')}
-                            onCancel={this.handleCancel.bind(this, values)}
-                        />
-                    </form>
+                                    </p>
+                                    <ThemedScrollbars is_native={isMobile()} autoHide height={height}>
+                                        <div
+                                            className='details-form__elements'
+                                            style={{ paddingBottom: this.state.paddingBottom }}
+                                        >
+                                            <FormInputField
+                                                name='first_name'
+                                                label={localize('First name*')}
+                                                placeholder={localize('John')}
+                                            />
+                                            <FormInputField
+                                                name='last_name'
+                                                label={localize('Last name*')}
+                                                placeholder={localize('Doe')}
+                                            />
+                                            <DateOfBirthField
+                                                name='date_of_birth'
+                                                label={localize('Date of birth*')}
+                                                placeholder={localize('01-07-1999')}
+                                            />
+                                            <FormInputField
+                                                name='phone'
+                                                label={localize('Phone number*')}
+                                                placeholder={localize('Phone number')}
+                                            />
+                                        </div>
+                                    </ThemedScrollbars>
+                                </Div100vhContainer>
+                                <FormSubmitButton
+                                    cancel_label={localize('Previous')}
+                                    has_cancel
+                                    is_disabled={
+                                        // eslint-disable-next-line no-unused-vars
+                                        isSubmitting || Object.keys(errors).length > 0
+                                    }
+                                    label={localize('Next')}
+                                    onCancel={this.handleCancel.bind(this, values)}
+                                />
+                            </form>
+                        )}
+                    </AutoHeightWrapper>
                 )}
             </Formik>
         );

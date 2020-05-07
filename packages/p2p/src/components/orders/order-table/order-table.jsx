@@ -99,7 +99,7 @@ const OrderTable = ({ navigate, showDetails }) => {
 
     return (
         <div className='p2p-cashier__empty'>
-            <Icon icon='IcCashierNoOrders' className='p2p-cashier__empty-icon' size={102} />
+            <Icon icon='IcCashierNoOrders' className='p2p-cashier__empty-icon' size={128} />
             <div className='p2p-cashier__empty-title'>
                 <Localize i18n_default_text='You have no orders' />
             </div>

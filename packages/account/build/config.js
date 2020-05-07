@@ -39,7 +39,7 @@ const htmlInjectConfig = () => ({
     append: false,
 });
 
-const cssConfig = () => ({ filename: 'css/account.main.css', chunkFilename: 'css/account.[name].[contenthash].css' });
+const cssConfig = () => ({ filename: 'css/[name].css', chunkFilename: 'css/[name].[contenthash].css' });
 
 const stylelintConfig = () => ({
     configFile: path.resolve(__dirname, '../.stylelintrc.js'),

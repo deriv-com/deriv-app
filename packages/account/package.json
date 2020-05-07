@@ -6,7 +6,7 @@
   "author": "Deriv.com",
   "homepage": "https://github.com/binary-com/deriv-app",
   "license": "Apache-2.0",
-  "main": "dist/js/account.main.js",
+  "main": "lib/js/account.js",
   "bugs": {
     "url": "https://github.com/binary-com/deriv-app/issues"
   },

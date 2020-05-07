@@ -14,7 +14,7 @@ import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { urlFor } from '_common/url';
-import { MultiStep } from '@deriv/account/dist/js/account.components';
+import { MultiStep } from '@deriv/account/lib/js/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';

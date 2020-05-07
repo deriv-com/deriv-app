@@ -42,7 +42,6 @@ const ALIASES = {
     Services: path.resolve(__dirname, '../src/Services'),
     Stores: path.resolve(__dirname, '../src/Stores'),
     Styles: path.resolve(__dirname, '../src/Styles'),
-    /* TODO: REMOVE these once shared refactor is done. */
 };
 
 const rules = (is_test_env = false, is_mocha_only = false) => [

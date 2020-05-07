@@ -24,7 +24,7 @@ import {
     poa_status_codes,
     FileUploaderContainer,
     FormSubHeader,
-} from '@deriv/account/dist/js/account.components';
+} from '@deriv/account/lib/js/components';
 import { validAddress, validLength, validPostCode } from 'Utils/Validator/declarative-validation-rules';
 import { InputField } from './mt5-personal-details-form.jsx';
 

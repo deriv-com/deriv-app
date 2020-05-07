@@ -1258,7 +1258,6 @@ export default class ClientStore extends BaseStore {
         return new Promise(async (resolve, reject) => {
             const response = await WS.send({ oauth_apps: 1 });
             if (!response.error) {
-                console;
                 resolve(response.oauth_apps);
             } else {
                 reject(response.error);
@@ -1269,7 +1268,17 @@ export default class ClientStore extends BaseStore {
     setConnectedApps(apps_list = []) {
         this.connected_apps = apps_list;
     }
-
+    @action.bound
+    revokeAccess(app_id) {
+        return new Promise(async (resolve, reject) => {
+            const response = await WS.send({ revoke_oauth_app: app_id });
+            if (!response.error) {
+                resolve(response.revoke_oauth_app);
+            } else {
+                reject(response.error);
+            }
+        });
+    }
     @computed
     get is_high_risk() {
         return this.account_status.risk_classification === 'high';

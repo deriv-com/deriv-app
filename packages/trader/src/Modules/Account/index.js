@@ -15,4 +15,5 @@ export default {
     ProofOfAddress,
     DerivPassword,
     AccountLimits,
+    ConnectedApps,
 };

@@ -696,12 +696,23 @@ $MIN_HEIGHT_FLOATING: calc(
 }
 /** @define connected-apps; weak */
 .connected-apps {
+    min-height: 500px;
+    max-width: 700px;
+
     &__title {
         p {
             color: var(--text-prominent);
             font-size: var(--text-size-s);
             font-weight: bold;
         }
+    }
+    &__table {
+        height: calc(100% - 42px);
+        flex: 1;
+    }
+    &__row {
+        grid-template-columns: 22% 34% 22% 22%;
+        text-align: left;
     }
 }
 /** @define form-submit-error-message; weak */

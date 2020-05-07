@@ -15,7 +15,7 @@ const getSocketURL = require('../../config').getSocketURL;
  * reopen the closed connection and process the buffered requests
  */
 const BinarySocketBase = (() => {
-    let deriv_api, binary_socket;
+    let deriv_api, binary_socket, middleware;
 
     let config = {};
     let wrong_app_id = 0;
@@ -45,6 +45,7 @@ const BinarySocketBase = (() => {
         }
         if (typeof options === 'object' && config !== options) {
             config = options;
+            middleware = new APIMiddleware(config);
         }
         clearTimeouts();
         config.wsEvent('init');
@@ -55,7 +56,7 @@ const BinarySocketBase = (() => {
             deriv_api = new DerivAPIBasic({
                 connection: binary_socket,
                 storage: SocketCache,
-                middleware: new APIMiddleware(config),
+                middleware,
             });
         }
 
@@ -121,7 +122,7 @@ const BinarySocketBase = (() => {
 
     const subscribeBalanceAll = cb => subscribe({ balance: 1, account: 'all' }, cb);
 
-    const subscribeProposal = (req, cb) => (req.proposal = 1) && subscribe(req, cb);
+    const subscribeProposal = (req, cb) => subscribe({ proposal: 1, ...req }, cb);
 
     const subscribeProposalOpenContract = (contract_id = null, cb) =>
         subscribe({ proposal_open_contract: 1, ...(contract_id && { contract_id }) }, cb);
@@ -147,7 +148,7 @@ const BinarySocketBase = (() => {
         });
     };
 
-    const buy = ({ proposal_id, price }) => deriv_api.send({ buy: proposal_id, price });
+    const buy = ({ proposal_id, price, passthrough }) => deriv_api.send({ buy: proposal_id, price, passthrough });
 
     const sell = (contract_id, bid_price) => deriv_api.send({ sell: contract_id, price: bid_price });
 
@@ -240,22 +241,9 @@ const BinarySocketBase = (() => {
 
     const tncApproval = () => deriv_api.send({ tnc_approval: '1' });
 
-    const contractUpdate = (contract_id, limit_order) =>
-        deriv_api.send({
-            contract_update: 1,
-            contract_id,
-            limit_order,
-        });
+    const p2pOfferList = () => deriv_api.send({ p2p_offer_list: 1 });
 
-    const contractUpdateHistory = contract_id =>
-        deriv_api.send({
-            contract_update_history: 1,
-            contract_id,
-        });
-
-    const cancelContract = contract_id => deriv_api.send({ cancel: contract_id });
-
-    const p2pAdvertiserInfo = () => deriv_api.send({ p2p_advertiser_info: 1 });
+    const p2pAgentInfo = () => deriv_api.send({ p2p_agent_info: 1 });
 
     // subscribe method export for P2P use only
     // so that subscribe remains private
@@ -290,14 +278,12 @@ const BinarySocketBase = (() => {
         buyAndSubscribe,
         sell,
         cashier,
-        cancelContract,
-        contractUpdate,
-        contractUpdateHistory,
         mt5NewAccount,
         mt5PasswordChange,
         newAccountVirtual,
         newAccountReal,
-        p2pAdvertiserInfo,
+        p2pAgentInfo,
+        p2pOfferList,
         p2pSubscribe,
         profitTable,
         statement,

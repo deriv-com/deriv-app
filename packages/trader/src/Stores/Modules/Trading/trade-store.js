@@ -118,8 +118,6 @@ export default class TradeStore extends BaseStore {
     initial_barriers;
     is_initial_barrier_applied = false;
 
-    proposal_req_id = {};
-
     @observable should_skip_prepost_lifecycle = false;
 
     @action.bound
@@ -667,7 +665,6 @@ export default class TradeStore extends BaseStore {
                 is_purchase_enabled: false,
                 proposal_info: {},
             });
-            this.proposal_req_id = {};
 
             // To prevent infinite loop when changing from advanced end_time to digit type contract
             if (obj_new_values.contract_type && this.root_store.ui.is_advanced_duration) {
@@ -779,11 +776,6 @@ export default class TradeStore extends BaseStore {
 
             Object.keys(this.proposal_requests).forEach(type => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
-
-                // to keep track of proposal req_id that is set by subscription manager in deriv-api,
-                // req_id will be appended to the request in deriv-api
-                const { req_id } = this.proposal_requests[type];
-                if (req_id) this.proposal_req_id[type] = req_id;
             });
         }
         this.root_store.ui.resetPurchaseStates();
@@ -805,13 +797,6 @@ export default class TradeStore extends BaseStore {
         const contract_type = response.echo_req.contract_type;
         const prev_proposal_info = ObjectUtils.getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = ObjectUtils.getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
-
-        // When trade params are changed rapidly, we might still get old proposal responses.
-        // This is to unsubscribe from old proposal subscriptions.
-        if (this.proposal_req_id[contract_type] !== response.echo_req.req_id) {
-            WS.forget(response.proposal.id);
-            return;
-        }
 
         this.proposal_info = {
             ...this.proposal_info,

@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { Button, Icon } from '@deriv/components';
+import React, { Component } from 'react';
+import { Icon } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { TableError } from 'Components/table/table-error.jsx';

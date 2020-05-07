@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Dialog, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';

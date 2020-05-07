@@ -138,6 +138,17 @@ const MyAdsTable = ({ is_enabled }) => {
 
     if (ads.length) {
         const item_height = 56;
+        const height_values = {
+            screen_size: '100vh',
+            header_size: '48px',
+            page_overlay_header: '53px',
+            page_overlay_content_padding: '2.4rem',
+            tabs_height: '36px',
+            my_ads_header: '50px',
+            my_ads_header_margin: '4rem', // 1.6rem + 2.4rem
+            table_header_height: '50px',
+            footer_size: '37px',
+        };
         return (
             <div ref={table_container_Ref}>
                 <Table
@@ -154,11 +165,7 @@ const MyAdsTable = ({ is_enabled }) => {
                     </Table.Header>
                     <Table.Body>
                         <InfiniteLoaderList
-                            // screen size - header size - footer size - page overlay header - page overlay content padding -
-                            // tabs height - padding of tab content - toggle height - toggle margin - table header height
-                            initial_height={
-                                'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 2.4rem - 50px - 1.6rem - 52px)'
-                            }
+                            autosizer_height={`calc(${Object.values(height_values).join(' - ')})`}
                             items={ads}
                             item_size={item_height}
                             row_actions={{ onClickDelete }}

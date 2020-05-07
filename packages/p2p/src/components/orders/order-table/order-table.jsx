@@ -12,8 +12,7 @@ import SellOrderRowComponent from './order-table-sell-row.jsx';
 import OrderInfo from '../order-info';
 
 const OrderTable = ({ navigate, showDetails }) => {
-    const { list_item_limit, order_offset, setOrders, setOrderOffset } = useContext(Dp2pContext);
-    const orders = [];
+    const { list_item_limit, orders, order_offset, setOrders, setOrderOffset } = useContext(Dp2pContext);
     const [is_mounted, setIsMounted] = useState(false);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
     const [api_error_message, setApiErrorMessage] = useState('');

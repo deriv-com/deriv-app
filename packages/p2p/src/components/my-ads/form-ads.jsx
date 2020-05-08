@@ -33,7 +33,7 @@ class FormAds extends Component {
             amount: values.offer_amount,
             max_order_amount: values.max_transaction,
             min_order_amount: values.min_transaction,
-            payment_method: values.payment_method,
+            payment_method: 'bank_transfer', // TODO: Allow for other types of payment_method.
             rate: values.price_rate,
         };
         if (values.contact_info) {
@@ -82,7 +82,7 @@ class FormAds extends Component {
                             min_transaction: '',
                             offer_amount: '',
                             payment_info: '',
-                            payment_method: 'bank_transfer',
+                            // payment_method: 'bank_transfer',
                             price_rate: '',
                             type: 'buy',
                         }}
@@ -148,6 +148,20 @@ class FormAds extends Component {
                                                         />
                                                     )}
                                                 </Field>
+                                            </div>
+                                            <div className='p2p-my-ads__form-container'>
+                                                {/* <Field name='payment_method'>
+                                                    {({ field }) => (
+                                                        <Dropdown
+                                                            {...field}
+                                                            placeholder={localize('Payment method')}
+                                                            is_align_text_left
+                                                            className='p2p-my-ads__form-field'
+                                                            list={[{ text: 'Bank transfer', value: 'bank_transfer' }]}
+                                                            error={touched.payment_method && errors.payment_method}
+                                                        />
+                                                    )}
+                                                </Field> */}
                                                 <Field name='price_rate'>
                                                     {({ field }) => (
                                                         <Input
@@ -169,20 +183,6 @@ class FormAds extends Component {
                                                                 this.restrictLength(e, handleChange);
                                                             }}
                                                             required
-                                                        />
-                                                    )}
-                                                </Field>
-                                            </div>
-                                            <div className='p2p-my-ads__form-container'>
-                                                <Field name='payment_method'>
-                                                    {({ field }) => (
-                                                        <Dropdown
-                                                            {...field}
-                                                            placeholder={localize('Payment method')}
-                                                            is_align_text_left
-                                                            className='p2p-my-ads__form-field'
-                                                            list={[{ text: 'Bank transfer', value: 'bank_transfer' }]}
-                                                            error={touched.payment_method && errors.payment_method}
                                                         />
                                                     )}
                                                 </Field>
@@ -240,7 +240,7 @@ class FormAds extends Component {
                                                                 'Bank name, account number, beneficiary name'
                                                             )}
                                                             className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            placeholder={localize('Bank details')}
+                                                            placeholder={localize('Payment instructions')}
                                                             required
                                                             has_character_counter
                                                             max_characters={300}
@@ -362,7 +362,7 @@ class FormAds extends Component {
             max_transaction: localize('Max limit'),
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
-            payment_info: localize('Bank details'),
+            payment_info: localize('Payment instructions'),
             price_rate: localize('Fixed price'),
         };
 

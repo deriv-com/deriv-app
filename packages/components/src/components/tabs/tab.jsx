@@ -10,7 +10,11 @@ class Tab extends Component {
     };
 
     componentDidUpdate(prev_props) {
-        if (prev_props.count !== this.props.count) {
+        if (
+            prev_props.count !== this.props.count ||
+            prev_props.label !== this.props.label ||
+            prev_props.header_content !== this.props.header_content
+        ) {
             this.props.setActiveLineStyle();
         }
     }

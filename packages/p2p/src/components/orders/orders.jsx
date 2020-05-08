@@ -42,7 +42,11 @@ const Orders = ({ navigate, params }) => {
     React.useEffect(() => {
         if (orders.length && order_id) {
             const order_payload = orders.find(order => order.id === order_id);
-            order_payload ? setQueryDetails(order_payload) : navigate('orders');
+            if (order_payload) {
+                setQueryDetails(order_payload);
+            } else {
+                navigate('orders');
+            }
         }
         if (order_details) {
             const updated_order = orders.find(order => order.id === order_details.id);

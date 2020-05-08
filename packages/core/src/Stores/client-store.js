@@ -68,8 +68,6 @@ export default class ClientStore extends BaseStore {
 
     is_mt5_account_list_updated = false;
 
-    previous_login_id = undefined;
-
     constructor(root_store) {
         super({ root_store });
     }
@@ -581,7 +579,6 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(true);
         this.root_store.ui.removeNotifications();
         this.root_store.ui.removeAllNotificationMessages();
-        this.previous_login_id = this.loginid;
         this.setSwitched(loginid);
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
     }
@@ -840,13 +837,14 @@ export default class ClientStore extends BaseStore {
 
         runInAction(() => (this.is_switching = true));
 
+        const from_login_id = this.loginid;
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
 
         // if real to virtual --> switch to blue
         // if virtual to real --> switch to green
         // else keep the existing connection
-        const should_switch_socket_connection = this.is_virtual || /VRTC/.test(this.previous_login_id);
+        const should_switch_socket_connection = this.is_virtual || /VRTC/.test(from_login_id);
 
         if (should_switch_socket_connection) {
             BinarySocket.closeAndOpenNewConnection(this.getToken());
@@ -863,7 +861,7 @@ export default class ClientStore extends BaseStore {
 
         await this.init();
 
-        // broadcastAccountChange is already called after authorize from onOpen in socket_base
+        // broadcastAccountChange is already called after new connection is authorized
         if (!should_switch_socket_connection) this.broadcastAccountChange();
 
         this.getLimits();

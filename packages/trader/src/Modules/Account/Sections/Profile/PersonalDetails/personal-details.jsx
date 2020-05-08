@@ -14,6 +14,7 @@ import {
 } from '@deriv/components';
 import { toMoment } from '@deriv/shared/utils/date';
 import { isMobile } from '@deriv/shared/utils/screen';
+import ObjectUtils from '@deriv/shared/utils/object';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -256,6 +257,9 @@ class PersonalDetailsForm extends React.Component {
         } else {
             form_initial_values.address_state = '';
         }
+        if (form_initial_values.date_of_birth) {
+            form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
+        }
         // if (!form_initial_values.tax_identification_number) form_initial_values tax_identification_number = '';
         return (
             <Formik
@@ -400,15 +404,15 @@ class PersonalDetailsForm extends React.Component {
                                                     label={localize('Date of birth*')}
                                                     error={touched.date_of_birth && errors.date_of_birth}
                                                     onBlur={() => setTouched({ date_of_birth: true })}
-                                                    onChange={({ target }) =>
+                                                    onChange={({ target }) => {
                                                         setFieldValue(
                                                             'date_of_birth',
                                                             target?.value
                                                                 ? toMoment(target.value).format('YYYY-MM-DD')
                                                                 : '',
                                                             true
-                                                        )
-                                                    }
+                                                        );
+                                                    }}
                                                     value={values.date_of_birth}
                                                 />
                                             </fieldset>
@@ -715,6 +719,7 @@ class PersonalDetailsForm extends React.Component {
                                         type='submit'
                                         is_disabled={
                                             !dirty ||
+                                            ObjectUtils.isEqualObject(form_initial_values, values) ||
                                             isSubmitting ||
                                             (this.props.is_virtual
                                                 ? false

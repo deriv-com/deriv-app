@@ -79,11 +79,6 @@ export default class ToolbarStore {
     };
 
     @action.bound
-    onBotNameTyped(bot_name) {
-        this.file_name = bot_name;
-    }
-
-    @action.bound
     onResetClick() {
         this.is_dialog_open = true;
     }
@@ -110,7 +105,6 @@ export default class ToolbarStore {
             'reset'
         );
 
-        this.file_name = config.default_file_name;
         this.is_dialog_open = false;
     }
 

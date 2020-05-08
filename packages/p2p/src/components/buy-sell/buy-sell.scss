@@ -94,6 +94,9 @@
                 .dc-input__hint {
                     top: 9.7rem;
                 }
+                .dc-input__counter {
+                    top: 9.7rem;
+                }
             }
             &--icon {
                 width: 3.66rem;
@@ -151,5 +154,13 @@
         width: 24px;
         height: 24px;
         white-space: nowrap;
+    }
+    &__table-row {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+    }
+    &__button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }

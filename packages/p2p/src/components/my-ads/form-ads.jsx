@@ -242,6 +242,8 @@ class FormAds extends Component {
                                                             className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
                                                             placeholder={localize('Bank details')}
                                                             required
+                                                            has_character_counter
+                                                            max_characters={300}
                                                         />
                                                     )}
                                                 </Field>
@@ -257,6 +259,8 @@ class FormAds extends Component {
                                                             className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
                                                             placeholder={localize('Contact details')}
                                                             required
+                                                            has_character_counter
+                                                            max_characters={300}
                                                         />
                                                     )}
                                                 </Field>

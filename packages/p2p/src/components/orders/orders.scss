@@ -89,6 +89,7 @@
     }
     &__table {
         &-row {
+            grid-template-columns: 1fr 2fr 2fr 1fr 1fr;
             cursor: pointer;
             padding-left: 1rem;
 

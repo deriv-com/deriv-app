@@ -81,7 +81,7 @@ module.exports = {
     plugins: [
         new CopyPlugin([
             {
-                from: path.resolve(__dirname, 'node_modules', '@deriv/components/lib/icon/sprite/common.svg'),
+                from: path.resolve(__dirname, 'node_modules', '@deriv/components/lib/icon/sprite/**'),
                 to: 'sprites',
                 flatten: true, 
             }

@@ -1,13 +1,14 @@
 import classNames from 'classnames';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
-import { localize } from 'Components/i18next';
+import { Button, Dialog, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
+import { localize, Localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { requestWS } from 'Utils/websocket';
 import { MyAdsLoader } from './my-ads-loader.jsx';
+import ToggleAds from './toggle-ads.jsx';
 import Popup from '../orders/popup.jsx';
 
 const getHeaders = offered_currency => [
@@ -60,7 +61,7 @@ RowComponent.propTypes = {
 };
 RowComponent.displayName = 'RowComponent';
 
-const MyAdsTable = ({ is_enabled }) => {
+const MyAdsTable = ({ onClickCreate, is_enabled }) => {
     const { currency, list_item_limit } = useContext(Dp2pContext);
     const mounted = useRef(false);
     const item_offset = useRef(0);
@@ -144,6 +145,12 @@ const MyAdsTable = ({ is_enabled }) => {
         };
         return (
             <React.Fragment>
+                <div className='p2p-my-ads__header'>
+                    <Button large primary onClick={onClickCreate}>
+                        {localize('Create new ad')}
+                    </Button>
+                    <ToggleAds is_enabled={is_enabled} />
+                </div>
                 <Table
                     className={classNames('p2p-my-ads__table', {
                         'p2p-my-ads__table--disabled': !is_enabled,
@@ -188,7 +195,17 @@ const MyAdsTable = ({ is_enabled }) => {
         );
     }
 
-    return <div className='cashier-p2p__empty'>{localize("You haven't posted any ads yet.")}</div>;
+    return (
+        <div className='p2p-cashier__empty'>
+            <Icon icon='IcCashierNoAds' className='p2p-cashier__empty-icon' size={128} />
+            <div className='p2p-cashier__empty-title'>
+                <Localize i18n_default_text='You have no ads' />
+            </div>
+            <Button primary large className='p2p-cashier__empty-button' onClick={() => onClickCreate()}>
+                {localize('Create new ad')}
+            </Button>
+        </div>
+    );
 };
 
 MyAdsTable.propTypes = {

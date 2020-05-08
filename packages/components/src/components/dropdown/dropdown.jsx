@@ -183,11 +183,18 @@ class Dropdown extends React.Component {
 
         switch (event.keyCode) {
             case 13: // Enter is pressed
+                this.handleSelect(this.props.list[this.state.curr_index]);
+                break;
+            case 27: // esc is pressed
+                if (this.state.is_list_visible) this.handleVisibility();
+                break;
             case 32: // Space is pressed
                 if (value) this.handleToggle(value);
                 break;
             case 38: // Up Arrow is pressed
                 if (this.state.is_list_visible) {
+                    if (this.state.curr_index === 0) break;
+
                     const prev_index = getPrevIndex(this.state.curr_index, index.length);
                     this.setState({ curr_index: prev_index });
                 }
@@ -195,6 +202,8 @@ class Dropdown extends React.Component {
             case 40: // Down Arrow is pressed
                 if (this.state.is_list_visible) {
                     const next_index = getNextIndex(this.state.curr_index, index.length);
+                    if (next_index >= this.props.list.length) break;
+
                     this.setState({ curr_index: next_index });
                 } else if (!this.props.is_alignment_left) {
                     this.handleVisibility();

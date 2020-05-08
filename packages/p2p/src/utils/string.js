@@ -12,8 +12,10 @@ export const countDecimalPlaces = value => {
 export const generateHexColourFromNickname = nickname => {
     const colours = ['#f43f83', 'var(--brand-secondary)', '#9ed178', 'var(--brand-orange)'];
     const colour_hash = nickname.split().reduce((hash, char, idx) => {
-        hash = nickname.charCodeAt(idx) + ((hash << 5) - hash);
-        return hash & hash;
+        /* eslint-disable no-bitwise */
+        const char_hash = nickname.charCodeAt(idx) + ((hash << 5) - hash);
+        return char_hash & char_hash;
+        /* eslint-enable */
     }, 0);
     return colours[((colour_hash % colours.length) + colours.length) % colours.length];
 };

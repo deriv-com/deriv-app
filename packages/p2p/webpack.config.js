@@ -1,3 +1,4 @@
+const CopyPlugin              = require('copy-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin            = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin    = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -78,6 +79,13 @@ module.exports = {
         ],
     },
     plugins: [
+        new CopyPlugin([
+            {
+                from: path.resolve(__dirname, 'node_modules', '@deriv/components/lib/icon/sprite/common.svg'),
+                to: 'sprites',
+                flatten: true, 
+            }
+        ]),
         ...(is_publishing ? [ new MiniCssExtractPlugin({ filename: 'main.css' }) ] : []),
         // ...(is_release ? [] : [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ]),
     ],

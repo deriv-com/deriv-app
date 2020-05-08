@@ -1,7 +1,5 @@
-@import 'app/_common/base/index';
-
 .details-form {
-    flex-grow: 1;
+    display: grid;
 
     &__elements {
         flex-grow: 1;
@@ -61,6 +59,7 @@
         @include mobile {
             width: 100%;
             margin: 0;
+            padding: 0 1.6rem;
         }
     }
     &__description {
@@ -77,8 +76,10 @@
         }
     }
     @include mobile {
-        margin-top: 70px;
         overflow-x: hidden;
         overflow-y: auto;
+    }
+    @include desktop {
+        grid-template-rows: 4rem minmax(10rem, 1fr);
     }
 }

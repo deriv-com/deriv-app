@@ -64,8 +64,9 @@ class AccountSwitcher extends React.Component {
         if (this.props.is_positions_drawer_on) {
             this.props.togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
-        this.props.logoutClient();
-        this.props.routeBackInApp(this.props.history);
+        this.props.logoutClient().then(() => {
+            this.props.routeBackInApp(this.props.history);
+        });
     };
 
     redirectToMt5 = account_type => {

@@ -192,10 +192,21 @@ class ChartTradeClass extends React.Component {
     }
 
     render() {
-        const { show_digits_stats, main_barrier, should_refresh, extra_barriers = [] } = this.props;
+        const { show_digits_stats, main_barrier, should_refresh, extra_barriers = [], active_symbols } = this.props;
 
         const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
-        const active_symbols = ['synthetic_index', 'forex', 'indices', 'stocks', 'commodities'];
+
+        const has_synthetic_index = !!active_symbols.find(s => s.market === 'synthetic_index');
+        const active_symbol_markets = active_symbols
+            .sort((a, b) => (a.display_name < b.display_name ? -1 : 1))
+            .map(s => s.market)
+            .reduce(
+                (arr, market) => {
+                    if (arr.indexOf(market) === -1) arr.push(market);
+                    return arr;
+                },
+                has_synthetic_index ? ['synthetic_index'] : []
+            );
 
         // max ticks to display for mobile view for tick chart
         const max_ticks = this.props.granularity === 0 ? 8 : 24;
@@ -231,7 +242,7 @@ class ChartTradeClass extends React.Component {
                 refreshActiveSymbols={should_refresh}
                 hasAlternativeSource={this.props.has_alternative_source}
                 refToAddTick={this.props.refToAddTick}
-                activeSymbols={active_symbols}
+                activeSymbols={active_symbol_markets.length > 0 && active_symbol_markets}
             >
                 <ChartMarkers />
             </SmartChart>
@@ -268,6 +279,7 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     wsForgetStream: modules.trade.wsForgetStream,
     wsSendRequest: modules.trade.wsSendRequest,
     wsSubscribe: modules.trade.wsSubscribe,
+    active_symbols: modules.trade.active_symbols,
     should_refresh: modules.trade.should_refresh_active_symbols,
     resetRefresh: modules.trade.resetRefresh,
     has_alternative_source: modules.trade.has_alternative_source,

@@ -7,10 +7,14 @@ import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
-const Orders = ({ params }) => {
+const Orders = ({ navigate, params }) => {
     const { orders, order_id, setOrderId } = React.useContext(Dp2pContext);
     const [order_details, setDetails] = React.useState(null);
+    const [nav, setNav] = React.useState(params?.nav);
     const hideDetails = () => {
+        if (nav) {
+            navigate(nav.location);
+        }
         setDetails(null);
         setOrderId(null);
     };
@@ -19,6 +23,10 @@ const Orders = ({ params }) => {
         setOrderId(input_order.id);
         setDetails(input_order);
     };
+
+    React.useEffect(() => {
+        setNav(params?.nav ?? nav);
+    }, [params]);
 
     React.useEffect(() => {
         if (params && params.order_info) {
@@ -34,7 +42,7 @@ const Orders = ({ params }) => {
     React.useEffect(() => {
         if (orders.length && order_id) {
             const order_payload = orders.find(order => order.id === order_id);
-            setQueryDetails(order_payload);
+            order_payload ? setQueryDetails(order_payload) : navigate('orders');
         }
         if (order_details) {
             const updated_order = orders.find(order => order.id === order_details.id);
@@ -64,7 +72,7 @@ const Orders = ({ params }) => {
                     <OrderDetails order_details={order_details} />
                 </React.Fragment>
             )}
-            {!order_details && <OrderTable showDetails={setQueryDetails} />}
+            {!order_details && <OrderTable navigate={navigate} showDetails={setQueryDetails} />}
         </div>
     );
 };

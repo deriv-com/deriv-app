@@ -227,7 +227,7 @@ class MT5POA extends Component {
                     touched,
                 }) => (
                     <AutoHeightWrapper default_height={200}>
-                        {({ setRef, height}) => (
+                        {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit} className='mt5-proof-of-address'>
                                 <Div100vhContainer
                                     className='details-form'
@@ -238,12 +238,7 @@ class MT5POA extends Component {
                                         <Loading is_fullscreen={false} className='account___intial-loader' />
                                     )}
                                     {is_form_visible && (
-                                        <ThemedScrollbars
-                                            autohide
-                                            height={height}
-                                            is_native={isMobile()}
-
-                                        >
+                                        <ThemedScrollbars autohide height={height} is_native={isMobile()}>
                                             <div className='mt5-proof-of-address__field-area'>
                                                 <FormSubHeader
                                                     subtitle={localize('(All fields are required)')}
@@ -280,8 +275,7 @@ class MT5POA extends Component {
                                                                         is_align_text_left
                                                                         list={states_list}
                                                                         error={
-                                                                            touched[field.name] &&
-                                                                            errors[field.name]
+                                                                            touched[field.name] && errors[field.name]
                                                                         }
                                                                         name='address_state'
                                                                         value={values.address_state}
@@ -296,16 +290,10 @@ class MT5POA extends Component {
                                                                 label={localize('State/Province')}
                                                                 value={values.address_state}
                                                                 list_items={states_list}
-                                                                error={
-                                                                    touched.address_state && errors.address_state
-                                                                }
+                                                                error={touched.address_state && errors.address_state}
                                                                 use_text={true}
                                                                 onChange={e =>
-                                                                    setFieldValue(
-                                                                        'address_state',
-                                                                        e.target.value,
-                                                                        true
-                                                                    )
+                                                                    setFieldValue('address_state', e.target.value, true)
                                                                 }
                                                             />
                                                         </MobileWrapper>
@@ -337,10 +325,7 @@ class MT5POA extends Component {
                                         </ThemedScrollbars>
                                     )}
                                     {this.state.poa_status !== poa_status_codes.none && !resubmit_poa && (
-                                        <ThemedScrollbars
-                                            autohide
-                                            height={height}
-                                        >
+                                        <ThemedScrollbars autohide height={height}>
                                             {submitted_poa && (
                                                 <Submitted
                                                     is_description_disabled={true}
@@ -375,7 +360,6 @@ class MT5POA extends Component {
                             </form>
                         )}
                     </AutoHeightWrapper>
-
                 )}
             </Formik>
         );

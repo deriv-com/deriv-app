@@ -23,14 +23,13 @@ Blockly.Blocks.text_statement = {
             colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
-            tooltip: localize('Text string'),
             category: Blockly.Categories.Text,
         };
     },
     meta() {
         return {
             display_name: localize('Text Statement'),
-            description: localize('Text Statement Description'),
+            description: '',
         };
     },
     onIconClick: Blockly.Blocks.lists_statement.onIconClick,

@@ -3,7 +3,6 @@ import { localize } from '@deriv/translations';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { config } from '@deriv/bot-skeleton';
 import Dialog from './dialog.jsx';
 import LoadModal from './load-modal.jsx';
 import SaveModal from './save-modal.jsx';
@@ -48,39 +47,6 @@ const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, o
                     </Field>
                 </Form>
             )}
-        </Formik>
-    </div>
-);
-
-const BotNameBox = ({ onBotNameTyped, file_name }) => (
-    <div className='toolbar__form'>
-        <Formik
-            enableReinitialize={true}
-            initialValues={{ botname: file_name }}
-            onSubmit={({ botname }) => onBotNameTyped(botname)}
-        >
-            {({ submitForm, setFieldValue }) => {
-                return (
-                    <Form>
-                        <Field name='botname'>
-                            {({ field }) => (
-                                <Input
-                                    {...field}
-                                    className='toolbar__form-field'
-                                    type='text'
-                                    onKeyUp={({ target: { value } }) => {
-                                        setFieldValue('botname', value, false);
-                                        submitForm();
-                                    }}
-                                    label={localize('Bot name')}
-                                    placeholder={config.default_file_name}
-                                    trailing_icon={<Icon icon='IcEdit' />}
-                                />
-                            )}
-                        </Field>
-                    </Form>
-                );
-            }}
         </Formik>
     </div>
 );
@@ -186,7 +152,6 @@ const Toolbar = props => {
                     </Button>
                 </Popover>
                 {active_tab === tabs_title.WORKSPACE && <SearchBox {...props} />}
-                <BotNameBox {...props} />
                 {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...props} />}
             </div>
             {!is_drawer_open && (
@@ -240,7 +205,6 @@ Toolbar.propTypes = {
     is_search_loading: PropTypes.bool,
     is_stop_button_disabled: PropTypes.bool,
     is_stop_button_visible: PropTypes.bool,
-    onBotNameTyped: PropTypes.func,
     onCancelButtonClick: PropTypes.func,
     onGoogleDriveClick: PropTypes.func,
     onOkButtonClick: PropTypes.func,
@@ -268,7 +232,6 @@ export default connect(({ main_content, run_panel, save_modal, load_modal, toolb
     is_search_loading: toolbar.is_search_loading,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     is_stop_button_visible: run_panel.is_stop_button_visible,
-    onBotNameTyped: toolbar.onBotNameTyped,
     onCancelButtonClick: toolbar.onResetCancelButtonClick,
     onGoogleDriveClick: toolbar.onGoogleDriveClick,
     onOkButtonClick: toolbar.onResetOkButtonClick,

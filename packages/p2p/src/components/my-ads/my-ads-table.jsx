@@ -1,13 +1,13 @@
-import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
-import { localize } from 'Components/i18next';
+import { Button, Dialog, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
+import { localize, Localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { requestWS } from 'Utils/websocket';
 import { MyAdsLoader } from './my-ads-loader.jsx';
+import ToggleAds from './toggle-ads.jsx';
 import Popup from '../orders/popup.jsx';
 
 const getHeaders = offered_currency => [
@@ -60,7 +60,7 @@ RowComponent.propTypes = {
 };
 RowComponent.displayName = 'RowComponent';
 
-const MyAdsTable = ({ is_enabled }) => {
+const MyAdsTable = ({ onClickCreate, is_enabled }) => {
     let item_offset = 0;
 
     const { currency, list_item_limit } = useContext(Dp2pContext);
@@ -139,56 +139,70 @@ const MyAdsTable = ({ is_enabled }) => {
     if (ads.length) {
         const item_height = 56;
         return (
-            <div ref={table_container_Ref}>
-                <Table
-                    className={classNames('p2p-my-ads__table', {
-                        'p2p-my-ads__table--disabled': !is_enabled,
-                    })}
-                >
-                    <Table.Header>
-                        <Table.Row className='p2p-my-ads__table-row'>
-                            {getHeaders(currency).map(header => (
-                                <Table.Head key={header.text}>{header.text}</Table.Head>
-                            ))}
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        <InfiniteLoaderList
-                            // screen size - header size - footer size - page overlay header - page overlay content padding -
-                            // tabs height - padding of tab content - toggle height - toggle margin - table header height
-                            initial_height={
-                                'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 2.4rem - 50px - 1.6rem - 52px)'
-                            }
-                            items={ads}
-                            item_size={item_height}
-                            row_actions={{ onClickDelete }}
-                            RenderComponent={RowComponent}
-                            RowLoader={MyAdsLoader}
-                            has_more_items_to_load={has_more_items_to_load}
-                            loadMore={loadMoreAds}
-                        />
-                    </Table.Body>
-                </Table>
-                {show_popup && (
-                    <div className='orders__dialog'>
-                        <Dialog is_visible={!!show_popup}>
-                            <Popup
-                                has_cancel
-                                title={localize('Delete this ad')}
-                                message={localize("You won't be able to restore it later.")}
-                                cancel_text={localize('Cancel')}
-                                confirm_text={localize('Delete')}
-                                onCancel={onClickCancel}
-                                onClickConfirm={onClickConfirm}
+            <React.Fragment>
+                <div className='p2p-my-ads__header'>
+                    <Button large primary onClick={onClickCreate}>
+                        {localize('Create new ad')}
+                    </Button>
+                    <ToggleAds is_enabled={is_enabled} />
+                </div>
+                <div ref={table_container_Ref}>
+                    <Table>
+                        <Table.Header>
+                            <Table.Row className='p2p-my-ads__table-row'>
+                                {getHeaders(currency).map(header => (
+                                    <Table.Head key={header.text}>{header.text}</Table.Head>
+                                ))}
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
+                            <InfiniteLoaderList
+                                // screen size - header size - footer size - page overlay header - page overlay content padding -
+                                // tabs height - padding of tab content - toggle height - toggle margin - table header height
+                                initial_height={
+                                    'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 2.4rem - 50px - 1.6rem - 52px)'
+                                }
+                                items={ads}
+                                item_size={item_height}
+                                row_actions={{ onClickDelete }}
+                                RenderComponent={RowComponent}
+                                RowLoader={MyAdsLoader}
+                                has_more_items_to_load={has_more_items_to_load}
+                                loadMore={loadMoreAds}
                             />
-                        </Dialog>
-                    </div>
-                )}
-            </div>
+                        </Table.Body>
+                    </Table>
+                    {show_popup && (
+                        <div className='orders__dialog'>
+                            <Dialog is_visible={!!show_popup}>
+                                <Popup
+                                    has_cancel
+                                    title={localize('Delete this ad')}
+                                    message={localize("You won't be able to restore it later.")}
+                                    cancel_text={localize('Cancel')}
+                                    confirm_text={localize('Delete')}
+                                    onCancel={onClickCancel}
+                                    onClickConfirm={onClickConfirm}
+                                />
+                            </Dialog>
+                        </div>
+                    )}
+                </div>
+            </React.Fragment>
         );
     }
 
-    return <div className='cashier-p2p__empty'>{localize("You haven't posted any ads yet.")}</div>;
+    return (
+        <div className='p2p-cashier__empty'>
+            <Icon icon='IcCashierNoAds' className='p2p-cashier__empty-icon' size={128} />
+            <div className='p2p-cashier__empty-title'>
+                <Localize i18n_default_text='You have no ads' />
+            </div>
+            <Button primary large className='p2p-cashier__empty-button' onClick={() => onClickCreate()}>
+                {localize('Create new ad')}
+            </Button>
+        </div>
+    );
 };
 
 MyAdsTable.propTypes = {

@@ -100,8 +100,8 @@ class AccountSwitcher extends React.Component {
     };
 
     showAccountTypesModal = () => {
-        this.props.toggleAccountTypesModal(true);
         this.props.toggleAccountsDialog();
+        this.props.toggleAccountTypesModal(true);
     };
 
     onClickUpgrade = () => {

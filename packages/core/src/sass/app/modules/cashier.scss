@@ -312,6 +312,12 @@
             text-align: left;
         }
     }
+    &__tab-header-note {
+        color: var(--text-general);
+        font-size: 1.2rem;
+        line-height: 1.5;
+        max-width: 256px;
+    }
     &__modal-tab {
         min-width: 24rem;
     }
@@ -983,6 +989,12 @@
             }
             &-details-to {
                 flex-flow: column;
+
+                & .cashier {
+                    &__transferred-details {
+                        text-align: center;
+                    }
+                }
             }
         }
         &__receipt {
@@ -1006,9 +1018,10 @@
         &__form-submit {
             display: flex;
             flex-flow: row;
+            justify-content: center;
 
             .account-transfer__button {
-                margin: 1.6rem 0.8rem 0 0;
+                margin: 1.6rem 0.4rem 0;
 
                 @media only screen and (max-width: 340px) {
                     & .dc-btn__text {

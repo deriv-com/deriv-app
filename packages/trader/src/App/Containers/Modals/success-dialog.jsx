@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
 const SuccessDialog = ({
@@ -15,6 +15,10 @@ const SuccessDialog = ({
     icon_size,
     text_submit,
     text_cancel,
+    is_open,
+    toggleModal,
+    title,
+    has_close_icon,
 }) => {
     const MainIcon = () => icon || null;
 
@@ -23,33 +27,40 @@ const SuccessDialog = ({
     );
 
     return (
-        <div className='status-dialog'>
-            <div
-                className={classNames('status-dialog__icon-area', {
-                    'status-dialog__icon-area--large': icon_size === 'large',
-                    'status-dialog__icon-area--xlarge': icon_size === 'xlarge',
-                })}
-            >
-                <MainIcon />
-                <Checkmark className='bottom-right-overlay' />
-            </div>
-            <div className='status-dialog__body-area'>
+        <Modal
+            className='mt5-success-dialog'
+            is_open={is_open}
+            toggleModal={toggleModal}
+            has_close_icon={has_close_icon}
+            small={!title}
+            title={title}
+        >
+            <Modal.Body>
+                <div
+                    className={classNames('success-change__icon-area', {
+                        'success-change__icon-area--large': icon_size === 'large',
+                        'success-change__icon-area--xlarge': icon_size === 'xlarge',
+                    })}
+                >
+                    <MainIcon />
+                    <Checkmark className='bottom-right-overlay' />
+                </div>
                 {!heading && (
-                    <h2>
+                    <h2 className='dc-modal-header__title'>
                         <Localize i18n_default_text='Success!' />
                     </h2>
                 )}
                 {heading && heading}
                 {React.isValidElement(message) && message}
                 {!React.isValidElement(message) && <p>{message}</p>}
-            </div>
-            <div className='status-dialog__btn-area'>
+            </Modal.Body>
+            <Modal.Footer>
                 {has_cancel && (
                     <Button onClick={onCancel} has_effect text={text_cancel || localize('Maybe later')} secondary />
                 )}
                 {has_submit && <Button has_effect onClick={onSubmit} text={text_submit} primary />}
-            </div>
-        </div>
+            </Modal.Footer>
+        </Modal>
     );
 };
 

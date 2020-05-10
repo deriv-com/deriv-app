@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
@@ -107,7 +108,7 @@ class AddOrManageAccounts extends React.Component {
                                             <Localize
                                                 i18n_default_text='Currency change is not available because either you have deposited money into your {{currency}} account or you have created a real MetaTrader 5 (MT5) account.'
                                                 values={{
-                                                    currency: this.props.currency.toUpperCase(),
+                                                    currency: CurrencyUtils.getCurrencyDisplayCode(this.props.currency),
                                                 }}
                                             />
                                         ) : (

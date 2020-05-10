@@ -1,11 +1,10 @@
 import React from 'react';
+import { DesktopWrapper, MobileWrapper, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import Loading from '../../../../../templates/_common/components/loading.jsx';
 import DataTable from 'App/Components/Elements/DataTable';
 import DataList from 'App/Components/Elements/DataList';
-import { Button } from '@deriv/components';
+import Loading from '../../../../../templates/_common/components/loading.jsx';
 
 const ColTemplate = revokeAccess => [
     { title: 'Name', col_index: 'name' },
@@ -22,7 +21,7 @@ const ColTemplate = revokeAccess => [
         col_index: 'app_id',
         renderCellContent: ({ cell_value }) => {
             return (
-                <Button small secondary onClick={() => revokeAccess(cell_value)}>
+                <Button className='revoke_access' small secondary onClick={() => revokeAccess(cell_value)}>
                     {localize('Revoke access')}
                 </Button>
             );
@@ -71,8 +70,20 @@ class ConnectedApps extends React.Component {
 
     mobileRowRenderer = ({ row }) => {
         return (
-            <div>
-                <DataList.Cell row={row} column={this.columns_map(this.handleRevokeAccess).scopes} />
+            // <DataList.Cell row={row} column={this.columns_map(this.handleRevokeAccess).name} />
+            <div className='data-list__row'>
+                <div className='data-list__col'>
+                    <DataList.Cell row={row} column={this.columns_map(this.handleRevokeAccess).name} />
+                    <DataList.Cell row={row} column={this.columns_map(this.handleRevokeAccess).scopes} />
+                </div>
+                <div className='data-list__col--small'>
+                    <DataList.Cell row={row} column={this.columns_map(this.handleRevokeAccess).last_used} />
+                    <DataList.Cell
+                        row={row}
+                        column={this.columns_map(this.handleRevokeAccess).app_id}
+                        is_footer={true}
+                    />
+                </div>
             </div>
         );
     };
@@ -93,7 +104,7 @@ class ConnectedApps extends React.Component {
                                         data_source={this.props.connected_apps}
                                         columns={ColTemplate(this.handleRevokeAccess)}
                                         custom_width={'100%'}
-                                        getRowSize={() => 63}
+                                        getRowSize={() => 56}
                                         is_empty={false}
                                     >
                                         {this.state.is_loading && <Loading />}
@@ -101,10 +112,10 @@ class ConnectedApps extends React.Component {
                                 </DesktopWrapper>
                                 <MobileWrapper>
                                     <DataList
-                                        className='connected-apps__mobile'
+                                        className='connected-apps'
                                         data_source={this.props.connected_apps}
                                         custom_width={'100%'}
-                                        getRowSize={() => 204}
+                                        getRowSize={() => 108}
                                         is_empty={false}
                                         rowRenderer={this.mobileRowRenderer}
                                     >

@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import { Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import ModalLoginPrompt from './modal-login-prompt.jsx';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import { isNavigationFromPlatform } from 'Utils/PlatformSwitcher';
 import { connect } from 'Stores/connect';
+import ModalLoginPrompt from './modal-login-prompt.jsx';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';

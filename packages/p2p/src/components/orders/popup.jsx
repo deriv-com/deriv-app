@@ -62,6 +62,7 @@ class Popup extends Component {
                                 <Form noValidate>
                                     <ThemedScrollbars autoHide style={{ height: '128px' }}>
                                         <div className='orders__popup-content'>
+                                            {console.log(message)}
                                             {message}
                                             <div className='orders__popup-field'>
                                                 <Field name='need_confirmation'>

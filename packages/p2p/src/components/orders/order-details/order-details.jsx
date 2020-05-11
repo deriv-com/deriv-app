@@ -82,16 +82,22 @@ const OrderDetails = ({ order_details }) => {
                             </div>
                         </div>
                         {is_buyer && (
-                            <OrderInfoBlock label={localize('Seller bank details')} value={payment_info || '-'} />
+                            <React.Fragment>
+                                <OrderInfoBlock
+                                    label={localize('Seller payment instructions')}
+                                    value={payment_info || '-'}
+                                />
+                                <OrderInfoBlock
+                                    label={localize('Seller contact details')}
+                                    value={contact_info || '-'}
+                                />
+                            </React.Fragment>
                         )}
                         {!is_my_ad && (
                             <OrderInfoBlock
                                 label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
                                 value={advertiser_instructions || '-'}
                             />
-                        )}
-                        {is_buyer && (
-                            <OrderInfoBlock label={localize('Seller contact details')} value={contact_info || '-'} />
                         )}
                         <div className='order-details__info-columns'>
                             <div className='order-details__info--left'>
@@ -111,27 +117,6 @@ const OrderDetails = ({ order_details }) => {
                         </div>
                     </div>
                     <div className='order-details__footer'>
-                        {(is_buyer_confirmed || (is_expired && is_buyer)) && (
-                            <React.Fragment>
-                                <div className='order-details__separator' />
-                                {/* <p>
-                                    <Localize
-                                        i18n_default_text='If you have a complaint, please email <0>{{support_email}}</0> and include your order ID.'
-                                        values={{ support_email: `support@${email_domain}` }}
-                                        components={[
-                                            <a
-                                                key={0}
-                                                className='link'
-                                                rel='noopener noreferrer'
-                                                target='_blank'
-                                                href={`mailto:p2p-support@${email_domain}`}
-                                            />,
-                                        ]}
-                                    />
-                                </p> */}
-                                <Button>{localize('Complain')}</Button>
-                            </React.Fragment>
-                        )}
                         <OrderActionsBlock
                             cancelPopup={onCancelClick}
                             showPopup={handleShowPopup}

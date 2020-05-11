@@ -124,12 +124,17 @@
         font-size: 1.4rem;
         line-height: 1.43;
         color: var(--text-general);
-        &--right {
-            float: right;
-        }
     }
     &__actions-button {
         margin-left: 0.8rem;
+    }
+    &__justify-start {
+        justify-content: flex-start;
+        padding-left: 0 !important;
+    }
+    &__justify-space {
+        justify-content: space-between;
+        padding-left: 0 !important;
     }
     &__separator {
         width: 100%;
@@ -140,10 +145,19 @@
         font-size: 1.4rem;
         font-weight: bold;
     }
-    &__popup-checkBox {
-        margin-top: 1.4rem;
-        .dc-checkbox__box {
-            margin-left: 0px;
+    &__popup {
+        &-checkBox {
+            margin-top: 1.4rem;
+            .dc-checkbox__box {
+                margin-left: 0px;
+            }
+        }
+        &--danger {
+            color: var(--status-danger);
+            font-weight: bold;
+        }
+        &--bold {
+            font-weight: bold;
         }
     }
 }

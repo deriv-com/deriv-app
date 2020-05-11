@@ -12,10 +12,17 @@ export const countDecimalPlaces = value => {
 export const generateHexColourFromNickname = nickname => {
     const colours = ['#f43f83', 'var(--brand-secondary)', '#9ed178', 'var(--brand-orange)'];
     const colour_hash = nickname.split().reduce((hash, char, idx) => {
-        /* eslint-disable no-bitwise */
-        const char_hash = nickname.charCodeAt(idx) + ((hash << 5) - hash);
-        return char_hash & char_hash;
-        /* eslint-enable */
+        // https://gist.github.com/0x263b/2bdd90886c2036a1ad5bcf06d6e6fb37
+        // string.charCodeAt(i) returns the UTF-16 code for the character at index i
+        // Bit operators work on 32 bits numbers. Any numeric operand in the operation
+        // is converted into a 32 bit number.
+        // hash << 5 is equivalent to hash * Math.pow(2, 5) (hash * 32),
+        // except the bit operator << makes sure our result is a 32 bit number.
+        // hash & hash again, makes sure we only return a 32 bit number.
+        const char_hash = nickname.charCodeAt(idx) + ((hash << 5) - hash); // eslint-disable-line no-bitwise
+        return char_hash & char_hash; // eslint-disable-line no-bitwise
     }, 0);
+
+    // Returns a colour derived from nickname that is in our colours array.
     return colours[((colour_hash % colours.length) + colours.length) % colours.length];
 };

@@ -69,7 +69,9 @@ export default class ClientStore extends BaseStore {
     is_mt5_account_list_updated = false;
 
     constructor(root_store) {
-        super({ root_store });
+        super({
+            root_store,
+        });
     }
 
     @computed
@@ -90,7 +92,8 @@ export default class ClientStore extends BaseStore {
         return !!(
             !this.is_logged_in ||
             this.is_virtual ||
-            this.accounts[this.loginid].landing_company_shortcode === 'svg'
+            this.accounts[this.loginid].landing_company_shortcode === 'svg' ||
+            this.accounts[this.loginid].landing_company_shortcode === 'iom'
         );
     }
 
@@ -118,12 +121,6 @@ export default class ClientStore extends BaseStore {
         const has_no_transaction = this.statement.count === 0 && this.statement.transactions.length === 0;
         const has_account_criteria = has_no_transaction && has_no_mt5;
         return !this.is_virtual && has_account_criteria && this.current_currency_type === 'fiat';
-    }
-
-    @computed
-    get can_change_currency() {
-        const has_available_crypto_currencies = this.available_crypto_currencies.length > 0;
-        return this.can_change_fiat_currency || (!this.is_virtual && has_available_crypto_currencies);
     }
 
     @computed
@@ -393,10 +390,15 @@ export default class ClientStore extends BaseStore {
             WS.authorized.storage.getLimits().then(data => {
                 runInAction(() => {
                     if (data.error) {
-                        this.account_limits = { api_initial_load_error: data.error.message };
+                        this.account_limits = {
+                            api_initial_load_error: data.error.message,
+                        };
                         resolve(data);
                     } else {
-                        this.account_limits = { ...data.get_limits, is_loading: false };
+                        this.account_limits = {
+                            ...data.get_limits,
+                            is_loading: false,
+                        };
                         resolve(data);
                     }
                 });
@@ -506,8 +508,12 @@ export default class ClientStore extends BaseStore {
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));
                 LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
                 this.selectCurrency(currency);
-                this.root_store.ui.removeNotificationMessage({ key: 'currency' });
-                this.root_store.ui.removeNotificationByKey({ key: 'currency' });
+                this.root_store.ui.removeNotificationMessage({
+                    key: 'currency',
+                });
+                this.root_store.ui.removeNotificationByKey({
+                    key: 'currency',
+                });
                 await this.init();
                 resolve(response);
             } else {
@@ -634,7 +640,9 @@ export default class ClientStore extends BaseStore {
                 // Client comes back from oauth and logs in
                 await this.root_store.segment.identifyEvent();
 
-                this.root_store.gtm.pushDataLayer({ event: 'login' });
+                this.root_store.gtm.pushDataLayer({
+                    event: 'login',
+                });
             } else {
                 // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
@@ -661,9 +669,6 @@ export default class ClientStore extends BaseStore {
                             this.root_store.ui
                         );
                         this.setHasMissingRequiredField(has_missing_required_field);
-                    } else if (!client || client.is_virtual) {
-                        this.root_store.ui.removeNotifications();
-                        this.root_store.ui.removeAllNotificationMessages();
                     }
                 });
             }
@@ -673,9 +678,7 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            // mt5 will get called on response of authorize so we should just wait for the response here
-            // we can't use .storage here because if mt5 response takes longer to return we will send the request twice
-            BinarySocket.wait('mt5_login_list').then(this.responseMt5LoginList);
+            WS.storage.mt5LoginList().then(this.responseMt5LoginList);
             WS.authorized.storage.landingCompany(this.residence).then(this.responseLandingCompany);
             this.responseStatement(
                 await BinarySocket.send({
@@ -708,7 +711,9 @@ export default class ClientStore extends BaseStore {
                 is_persistent: true,
             });
         } else {
-            this.root_store.ui.removeNotificationMessage({ key: 'maintenance' });
+            this.root_store.ui.removeNotificationMessage({
+                key: 'maintenance',
+            });
         }
     }
 
@@ -853,7 +858,18 @@ export default class ClientStore extends BaseStore {
     @action.bound
     registerReactions() {
         // Switch account reactions.
-        when(() => this.switched, this.switchAccountHandler);
+        when(
+            () => this.switched,
+            () => {
+                // Remove real account notifications upon switching to virtual
+                if (this.accounts[this.switched]?.is_virtual) {
+                    this.root_store.ui.removeNotifications();
+                    this.root_store.ui.removeAllNotificationMessages();
+                }
+
+                this.switchAccountHandler();
+            }
+        );
     }
 
     @action.bound
@@ -908,7 +924,9 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     cleanUp() {
-        this.root_store.gtm.pushDataLayer({ event: 'log_out' });
+        this.root_store.gtm.pushDataLayer({
+            event: 'log_out',
+        });
         this.loginid = null;
         this.user_id = null;
         this.upgrade_info = undefined;
@@ -1073,7 +1091,9 @@ export default class ClientStore extends BaseStore {
     @action.bound
     onSetResidence({ residence }, cb) {
         if (!residence) return;
-        WS.setSettings({ residence }).then(async response => {
+        WS.setSettings({
+            residence,
+        }).then(async response => {
             if (response.error) {
                 cb(response.error.message);
             } else {
@@ -1115,7 +1135,9 @@ export default class ClientStore extends BaseStore {
                 await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
 
                 // GTM Signup event
-                this.root_store.gtm.pushDataLayer({ event: 'signup' });
+                this.root_store.gtm.pushDataLayer({
+                    event: 'signup',
+                });
             }
         });
     }

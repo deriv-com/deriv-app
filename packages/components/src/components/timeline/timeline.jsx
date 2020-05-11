@@ -1,39 +1,34 @@
 import React from 'react';
 import classNames from 'classnames';
 
-const FlexWrapper = ({ children, className }) => <div className={className}>{children}</div>;
-const Oval = ({ number }) => {
+const Oval = ({ children }) => {
     return (
         <div className='dc-timeline__oval'>
-            <span className='dc-timeline__oval-span'>{number}</span>
+            <span className='dc-timeline__number'>{children}</span>
         </div>
     );
 };
-const Content = ({ body, className }) => {
-    return <div className={className}>{body}</div>;
-};
-const Title = ({ title, className }) => {
-    return <div className={className}>{title}</div>;
-};
 
-const Timeline = ({ children }) => {
+const Timeline = ({ children, ...props }) => {
     return (
-        <div>
+        <div {...props}>
             {children.map((child, idx) => (
-                <FlexWrapper
+                <div
+                    key={idx}
                     className={classNames('dc-timeline__flex', {
-                        'dc-timeline__flex-noborder': children.length === idx + 1,
+                        'dc-timeline__flex--no-border': children.length === idx + 1,
                     })}
                 >
-                    <Oval number={idx} />
-                    <div className='dc-timeline' key={idx}>
-                        <Title className='dc-timeline__title' title={child.props.title} />
-                        <Content className='dc-timeline__content' body={child} />
+                    <Oval>{idx + 1}</Oval>
+                    <div className='dc-timeline__container'>
+                        <h className='dc-timeline__title'> {child.props.title}</h>
+                        <div className='dc-timeline__content'>{child}</div>
                     </div>
-                </FlexWrapper>
+                </div>
             ))}
         </div>
     );
 };
-
+const Item = ({ children, ...props }) => <div {...props}>{children}</div>;
+Timeline.Item = Item;
 export default Timeline;

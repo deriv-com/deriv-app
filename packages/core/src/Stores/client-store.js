@@ -1179,8 +1179,7 @@ export default class ClientStore extends BaseStore {
                     event: 'signup',
                 });
 
-                // Show Accounts popup to European users
-                this.root_store.ui.toggleAccountTypesModal(this.is_europe);
+                this.root_store.ui.showAccountTypesModalForEuropean();
             }
         });
     }

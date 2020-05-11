@@ -590,4 +590,9 @@ export default class UIStore extends BaseStore {
     toggleAccountTypesModal(is_visible) {
         this.is_account_types_modal_visible = is_visible;
     }
+
+    @action.bound
+    showAccountTypesModalForEuropean() {
+        this.toggleAccountTypesModal(this.root_store.client.is_europe);
+    }
 }

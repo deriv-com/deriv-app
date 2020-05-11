@@ -62,7 +62,6 @@ class AccountSignup extends React.Component {
         // Handle lower level modal controls due to overriding modal rendering
         this.props.isModalVisible(false);
         this.props.enableApp();
-        this.props.toggleAccountTypesModal(this.props.is_europe);
     };
 
     render() {
@@ -185,7 +184,6 @@ const AccountSignupModal = ({
     onSignup,
     residence_list,
     toggleAccountSignupModal,
-    toggleAccountTypesModal,
 }) => {
     return (
         <Dialog
@@ -202,7 +200,6 @@ const AccountSignupModal = ({
                 is_europe={is_europe}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
-                toggleAccountTypesModal={toggleAccountTypesModal}
             />
         </Dialog>
     );
@@ -216,13 +213,11 @@ AccountSignupModal.propTypes = {
     is_visible: PropTypes.bool,
     onSignup: PropTypes.func,
     residence_list: PropTypes.arrayOf(PropTypes.object),
-    toggleAccountTypesModal: PropTypes.func,
 };
 
 export default connect(({ ui, client }) => ({
     is_visible: ui.is_account_signup_modal_visible,
     toggleAccountSignupModal: ui.toggleAccountSignupModal,
-    toggleAccountTypesModal: ui.toggleAccountTypesModal,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
     is_europe: client.is_europe,

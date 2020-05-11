@@ -1,6 +1,7 @@
 import {
     Autocomplete,
     Div100vhContainer,
+    AutoHeightWrapper,
     Input,
     ThemedScrollbars,
     DateOfBirthPicker,
@@ -86,152 +87,151 @@ class PersonalDetails extends React.Component {
                 ref={this.form}
             >
                 {({ handleSubmit, isSubmitting, errors, setFieldValue, touched, values }) => (
-                    <form onSubmit={handleSubmit} autoComplete='off'>
-                        <Div100vhContainer className='details-form' height_offset='199px' is_disabled={isDesktop()}>
-                            <p className='details-form__description'>
-                                <Localize
-                                    i18n_default_text={
-                                        'Any information you provide is confidential and will be used for verification purposes only.'
-                                    }
-                                />
-                            </p>
-                            <div className='details-form__elements-container'>
-                                <ThemedScrollbars
-                                    is_native={isMobile()}
-                                    autoHide
-                                    style={{
-                                        height: 'calc(100% - 16px)',
-                                    }}
+                    <AutoHeightWrapper default_height={200}>
+                        {({ setRef, height }) => (
+                            <form ref={setRef} onSubmit={handleSubmit} autoComplete='off'>
+                                <Div100vhContainer
+                                    className='details-form'
+                                    height_offset='199px'
+                                    is_disabled={isDesktop()}
                                 >
-                                    <div
-                                        className='details-form__elements'
-                                        style={{ paddingBottom: this.state.paddingBottom }}
-                                    >
-                                        {/* TODO: [deriv-eu] Remove account opening reason once api is optional */}
-                                        {'account_opening_reason' in this.props.value && (
-                                            <Field name='account_opening_reason'>
-                                                {({ field }) => (
-                                                    <Autocomplete
-                                                        {...field}
-                                                        data-lpignore='true'
-                                                        autoComplete='new-password' // prevent chrome autocomplete
-                                                        type='text'
-                                                        label={localize('Account opening reason*')}
-                                                        error={
-                                                            touched.account_opening_reason &&
-                                                            errors.account_opening_reason
-                                                        }
-                                                        list_items={this.props.account_opening_reason_list}
-                                                        onItemSelection={({ value, text }) =>
-                                                            setFieldValue(
-                                                                'account_opening_reason',
-                                                                value ? text : '',
-                                                                true
-                                                            )
-                                                        }
-                                                        required
-                                                    />
-                                                )}
-                                            </Field>
-                                        )}
-                                        {/* TODO: [deriv-eu] Remove salutation once api is optional */}
-                                        {'salutation' in this.props.value && (
-                                            <Field name='salutation'>
-                                                {({ field }) => (
-                                                    <Autocomplete
-                                                        {...field}
-                                                        data-lpignore='true'
-                                                        autoComplete='new-password' // prevent chrome autocomplete
-                                                        type='text'
-                                                        label={localize('Title*')}
-                                                        error={touched.salutation && errors.salutation}
-                                                        list_items={this.props.salutation_list}
-                                                        onItemSelection={({ value, text }) =>
-                                                            setFieldValue('salutation', value ? text : '', true)
-                                                        }
-                                                        required
-                                                    />
-                                                )}
-                                            </Field>
-                                        )}
-                                        <FormInputField
-                                            name='first_name'
-                                            label={localize('First name*')}
-                                            placeholder={localize('John')}
+                                    <p className='details-form__description'>
+                                        <Localize
+                                            i18n_default_text={
+                                                'Any information you provide is confidential and will be used for verification purposes only.'
+                                            }
                                         />
-                                        <FormInputField
-                                            name='last_name'
-                                            label={localize('Last name*')}
-                                            placeholder={localize('Doe')}
-                                        />
-                                        <DateOfBirthField
-                                            name='date_of_birth'
-                                            label={localize('Date of birth*')}
-                                            placeholder={localize('01-07-1999')}
-                                        />
-                                        {'place_of_birth' in this.props.value && (
-                                            <Field name='place_of_birth'>
-                                                {({ field }) => (
-                                                    <Autocomplete
-                                                        {...field}
-                                                        data-lpignore='true'
-                                                        autoComplete='new-password' // prevent chrome autocomplete
-                                                        type='text'
-                                                        label={localize('Place of birth*')}
-                                                        error={touched.place_of_birth && errors.place_of_birth}
-                                                        list_items={this.props.residence_list}
-                                                        onItemSelection={({ value, text }) =>
-                                                            setFieldValue('place_of_birth', value ? text : '', true)
-                                                        }
-                                                        required
-                                                    />
-                                                )}
-                                            </Field>
-                                        )}
-                                        {'citizen' in this.props.value && (
-                                            <Field name='citizen'>
-                                                {({ field }) => (
-                                                    <Autocomplete
-                                                        {...field}
-                                                        data-lpignore='true'
-                                                        autoComplete='new-password' // prevent chrome autocomplete
-                                                        type='text'
-                                                        label={localize('Citizenship*')}
-                                                        error={touched.citizen && errors.citizen}
-                                                        disabled={
-                                                            this.props.value.citizen &&
-                                                            this.props.is_fully_authenticated
-                                                        }
-                                                        list_items={this.props.residence_list}
-                                                        onItemSelection={({ value, text }) =>
-                                                            setFieldValue('citizen', value ? text : '', true)
-                                                        }
-                                                        required
-                                                    />
-                                                )}
-                                            </Field>
-                                        )}
-                                        <FormInputField
-                                            name='phone'
-                                            label={localize('Phone number*')}
-                                            placeholder={localize('Phone number')}
-                                        />
-                                    </div>
-                                </ThemedScrollbars>
-                            </div>
-                        </Div100vhContainer>
-                        <FormSubmitButton
-                            is_absolute
-                            cancel_label={localize('Previous')}
-                            has_cancel
-                            is_disabled={
-                                // eslint-disable-next-line no-unused-vars
-                                isSubmitting || Object.keys(errors).length > 0
-                            }
-                            label={localize('Next')}
-                            onCancel={this.handleCancel.bind(this, values)}
-                        />
-                    </form>
+                                    </p>
+                                    <ThemedScrollbars is_native={isMobile()} autoHide height={height}>
+                                        <div
+                                            className='details-form__elements'
+                                            style={{ paddingBottom: this.state.paddingBottom }}
+                                        >
+                                            {/* TODO: [deriv-eu] Remove account opening reason once api is optional */}
+                                            {'account_opening_reason' in this.props.value && (
+                                                <Field name='account_opening_reason'>
+                                                    {({ field }) => (
+                                                        <Autocomplete
+                                                            {...field}
+                                                            data-lpignore='true'
+                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                            type='text'
+                                                            label={localize('Account opening reason*')}
+                                                            error={
+                                                                touched.account_opening_reason &&
+                                                                errors.account_opening_reason
+                                                            }
+                                                            list_items={this.props.account_opening_reason_list}
+                                                            onItemSelection={({ value, text }) =>
+                                                                setFieldValue(
+                                                                    'account_opening_reason',
+                                                                    value ? text : '',
+                                                                    true
+                                                                )
+                                                            }
+                                                            required
+                                                        />
+                                                    )}
+                                                </Field>
+                                            )}
+                                            {/* TODO: [deriv-eu] Remove salutation once api is optional */}
+                                            {'salutation' in this.props.value && (
+                                                <Field name='salutation'>
+                                                    {({ field }) => (
+                                                        <Autocomplete
+                                                            {...field}
+                                                            data-lpignore='true'
+                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                            type='text'
+                                                            label={localize('Title*')}
+                                                            error={touched.salutation && errors.salutation}
+                                                            list_items={this.props.salutation_list}
+                                                            onItemSelection={({ value, text }) =>
+                                                                setFieldValue('salutation', value ? text : '', true)
+                                                            }
+                                                            required
+                                                        />
+                                                    )}
+                                                </Field>
+                                            )}
+                                            <FormInputField
+                                                name='first_name'
+                                                label={localize('First name*')}
+                                                placeholder={localize('John')}
+                                            />
+                                            <FormInputField
+                                                name='last_name'
+                                                label={localize('Last name*')}
+                                                placeholder={localize('Doe')}
+                                            />
+                                            <DateOfBirthField
+                                                name='date_of_birth'
+                                                label={localize('Date of birth*')}
+                                                placeholder={localize('01-07-1999')}
+                                            />
+                                            {'place_of_birth' in this.props.value && (
+                                                <Field name='place_of_birth'>
+                                                    {({ field }) => (
+                                                        <Autocomplete
+                                                            {...field}
+                                                            data-lpignore='true'
+                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                            type='text'
+                                                            label={localize('Place of birth*')}
+                                                            error={touched.place_of_birth && errors.place_of_birth}
+                                                            list_items={this.props.residence_list}
+                                                            onItemSelection={({ value, text }) =>
+                                                                setFieldValue('place_of_birth', value ? text : '', true)
+                                                            }
+                                                            required
+                                                        />
+                                                    )}
+                                                </Field>
+                                            )}
+                                            {'citizen' in this.props.value && (
+                                                <Field name='citizen'>
+                                                    {({ field }) => (
+                                                        <Autocomplete
+                                                            {...field}
+                                                            data-lpignore='true'
+                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                            type='text'
+                                                            label={localize('Citizenship*')}
+                                                            error={touched.citizen && errors.citizen}
+                                                            disabled={
+                                                                this.props.value.citizen &&
+                                                                this.props.is_fully_authenticated
+                                                            }
+                                                            list_items={this.props.residence_list}
+                                                            onItemSelection={({ value, text }) =>
+                                                                setFieldValue('citizen', value ? text : '', true)
+                                                            }
+                                                            required
+                                                        />
+                                                    )}
+                                                </Field>
+                                            )}
+                                            <FormInputField
+                                                name='phone'
+                                                label={localize('Phone number*')}
+                                                placeholder={localize('Phone number')}
+                                            />
+                                        </div>
+                                    </ThemedScrollbars>
+                                </Div100vhContainer>
+                                <FormSubmitButton
+                                    cancel_label={localize('Previous')}
+                                    has_cancel
+                                    is_disabled={
+                                        // eslint-disable-next-line no-unused-vars
+                                        isSubmitting || Object.keys(errors).length > 0
+                                    }
+                                    label={localize('Next')}
+                                    onCancel={this.handleCancel.bind(this, values)}
+                                />
+                            </form>
+                        )}
+                    </AutoHeightWrapper>
                 )}
             </Formik>
         );

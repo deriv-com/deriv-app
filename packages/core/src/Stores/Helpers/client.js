@@ -18,11 +18,11 @@ export const getMT5AccountDisplay = group => {
     const value = getMT5AccountType(group);
     let display_text = localize('MT5');
     if (/svg$/.test(value)) {
-        display_text = localize('Synthetic indices');
+        display_text = localize('Synthetic');
     } else if (/vanuatu/.test(value) || /svg_standard/.test(value)) {
-        display_text = localize('Standard');
+        display_text = localize('Financial');
     } else if (/labuan/.test(value)) {
-        display_text = localize('Advanced');
+        display_text = localize('Financial STP');
     }
 
     return display_text;

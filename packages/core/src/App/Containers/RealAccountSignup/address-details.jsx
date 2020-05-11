@@ -68,6 +68,10 @@ class AddressDetails extends Component {
         this.props.onCancel();
     };
 
+    get should_render_address_state() {
+        return this.state.has_fetched_states_list && this.props.states_list.length > 0;
+    }
+
     render() {
         const padding_bottom = window.innerHeight < 930 ? '10rem' : '12rem';
         return (
@@ -122,7 +126,7 @@ class AddressDetails extends Component {
                                                 label={localize('Town/City*')}
                                                 placeholder={localize('Town/City')}
                                             />
-                                            {this.state.has_fetched_states_list && this.props.states_list.length > 0 && (
+                                            {this.should_render_address_state && (
                                                 <Field name='address_state'>
                                                     {({ field }) => (
                                                         <>

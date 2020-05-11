@@ -26,7 +26,7 @@ export const EXPERIAN = {
  * @param {object} options
  * @return {string} localized title
  */
-export const getAccountTitle = (short_code, { is_im_residence = false }) => {
+export const getAccountTitle = (short_code, { is_im_residence = false } = {}) => {
     // TODO: [deriv-eu] merge if statement and switch together once more residence cases are found.
     if (is_im_residence) {
         return localize('Real Synthetic');

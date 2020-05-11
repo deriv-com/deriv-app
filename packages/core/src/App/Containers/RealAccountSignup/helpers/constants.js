@@ -34,7 +34,7 @@ export const getAccountTitle = (short_code, { is_im_residence = false } = {}) =>
 
     switch (short_code) {
         case 'svg':
-            return localize('Real');
+            return localize('Deriv account');
         case 'iom':
         case 'malta':
             return localize('Real Gaming');

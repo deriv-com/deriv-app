@@ -80,6 +80,7 @@ export default class UIStore extends BaseStore {
 
     // real account signup
     @observable is_real_acc_signup_on = false;
+    @observable real_account_signup_target = 'svg';
     @observable has_real_account_signup_ended = false;
 
     // set currency modal
@@ -342,8 +343,9 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    openRealAccountSignup() {
+    openRealAccountSignup(target = 'svg') {
         this.is_real_acc_signup_on = true;
+        this.real_account_signup_target = target;
         this.is_accounts_switcher_on = false;
     }
 

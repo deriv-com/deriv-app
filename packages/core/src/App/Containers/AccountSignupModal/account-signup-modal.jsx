@@ -62,9 +62,7 @@ class AccountSignup extends React.Component {
         // Handle lower level modal controls due to overriding modal rendering
         this.props.isModalVisible(false);
         this.props.enableApp();
-        if (this.props.is_europe) {
-            this.props.toggleAccountTypesModal(true);
-        }
+        this.props.toggleAccountTypesModal(this.props.is_europe);
     };
 
     render() {

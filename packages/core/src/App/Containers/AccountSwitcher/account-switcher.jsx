@@ -384,7 +384,7 @@ class AccountSwitcher extends React.Component {
                 <>
                     <AccountWrapper
                         header={
-                            <React.Fragment>
+                            <>
                                 <Localize i18n_default_text='Deriv Accounts' />
                                 {this.props.is_europe && (
                                     <Icon
@@ -393,7 +393,7 @@ class AccountSwitcher extends React.Component {
                                         onClick={this.showAccountTypesModal}
                                     />
                                 )}
-                            </React.Fragment>
+                            </>
                         }
                         is_visible={this.state.is_real_deriv_visible}
                         toggleVisibility={() => {

@@ -5,7 +5,7 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import { Tabs } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
-import { init, requestWS, getModifiedP2POrderList, subscribeWS } from 'Utils/websocket';
+import { init, getModifiedP2POrderList, subscribeWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
@@ -70,8 +70,8 @@ class App extends Component {
     };
 
     setIsAdvertiser = response => {
+        const { p2p_advertiser_info } = response;
         if (!response.error) {
-            const { p2p_advertiser_info } = response;
             this.setState({
                 advertiser_id: p2p_advertiser_info.id,
                 is_advertiser: !!p2p_advertiser_info.is_approved,

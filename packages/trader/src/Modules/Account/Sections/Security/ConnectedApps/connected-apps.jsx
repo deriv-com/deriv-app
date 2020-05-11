@@ -1,88 +1,63 @@
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Button } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Button, Modal, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import DataTable from 'App/Components/Elements/DataTable';
 import DataList from 'App/Components/Elements/DataList';
+import getConnectedAppsColumnsTemplate from './data-table-template';
 import Loading from '../../../../../templates/_common/components/loading.jsx';
-
-const ColTemplate = revokeAccess => [
-    { title: 'Name', col_index: 'name' },
-    {
-        title: 'Permission',
-        col_index: 'scopes',
-        renderCellContent: ({ cell_value }) => {
-            return PreparePermissions(cell_value);
-        },
-    },
-    { title: 'Last login', col_index: 'last_used' },
-    {
-        title: 'Action',
-        col_index: 'app_id',
-        renderCellContent: ({ cell_value }) => {
-            return (
-                <Button className='revoke_access' small secondary onClick={() => revokeAccess(cell_value)}>
-                    {localize('Revoke access')}
-                </Button>
-            );
-        },
-    },
-];
-
-const PreparePermissions = permissions_list => {
-    let list = [];
-    permissions_list.forEach((value, index) => {
-        permissions_list.length - 1 !== index
-            ? list.push(value.charAt(0).toUpperCase() + value.slice(1) + ', ')
-            : list.push(value.charAt(0).toUpperCase() + value.slice(1));
-    });
-    return <div>{list}</div>;
-};
 
 class ConnectedApps extends React.Component {
     state = {
         is_loading: true,
+        is_modal_open: false,
+        selected_app_id: null,
     };
+
     componentDidMount() {
         this.updateApp();
     }
-    handleRevokeAccess = app_id => {
-        this.setState({ is_loading: true });
-        this.props.revokeAccess(app_id).then(() => this.updateApp());
+
+    handleRevokeAccess = () => {
+        this.setState({ is_modal_open: false, is_loading: true });
+        this.props.revokeAccess(this.state.selected_app_id).then(() => this.updateApp());
+    };
+
+    handleToggleModal = (app_id = null) => {
+        if (this.state.is_modal_open === true) {
+            this.setState({ is_modal_open: false, selected_app_id: null });
+        } else {
+            this.setState({ is_modal_open: true, selected_app_id: app_id });
+        }
     };
 
     updateApp = () => {
-        this.props.fetchConnectedApps().then(
-            result => {
+        this.props
+            .fetchConnectedApps()
+            .then(result => {
                 this.props.setConnectedApps(result);
                 this.setState({ is_loading: false });
-            },
-            error => {
+            })
+            .catch(() => {
                 this.setState({ is_loading: true });
-            }
-        );
+            });
     };
-    columns_map = handleRevokeAccess =>
-        ColTemplate(handleRevokeAccess).reduce((map, item) => {
-            map[item.col_index] = item;
-            return map;
-        }, {});
+
+    columns_map = getConnectedAppsColumnsTemplate(this.handleToggleModal).reduce((map, item) => {
+        map[item.col_index] = item;
+        return map;
+    }, {});
 
     mobileRowRenderer = ({ row }) => {
         return (
-            // <DataList.Cell row={row} column={this.columns_map(this.handleRevokeAccess).name} />
             <div className='data-list__row'>
                 <div className='data-list__col'>
-                    <DataList.Cell row={row} column={this.columns_map(this.handleRevokeAccess).name} />
-                    <DataList.Cell row={row} column={this.columns_map(this.handleRevokeAccess).scopes} />
+                    <DataList.Cell row={row} column={this.columns_map.name} />
+                    <DataList.Cell row={row} column={this.columns_map.scopes} />
                 </div>
                 <div className='data-list__col--small'>
-                    <DataList.Cell row={row} column={this.columns_map(this.handleRevokeAccess).last_used} />
-                    <DataList.Cell
-                        row={row}
-                        column={this.columns_map(this.handleRevokeAccess).app_id}
-                        is_footer={true}
-                    />
+                    <DataList.Cell row={row} column={this.columns_map.last_used} />
+                    <DataList.Cell row={row} column={this.columns_map.app_id} is_footer={true} />
                 </div>
             </div>
         );
@@ -102,7 +77,7 @@ class ConnectedApps extends React.Component {
                                     <DataTable
                                         className='connected-apps'
                                         data_source={this.props.connected_apps}
-                                        columns={ColTemplate(this.handleRevokeAccess)}
+                                        columns={getConnectedAppsColumnsTemplate(this.handleToggleModal)}
                                         custom_width={'100%'}
                                         getRowSize={() => 56}
                                         is_empty={false}
@@ -126,6 +101,26 @@ class ConnectedApps extends React.Component {
                         )}
                     </div>
                 </div>
+                <Modal
+                    is_open={this.state.is_modal_open}
+                    className='connected-apps'
+                    toggleModal={this.handleToggleModal}
+                >
+                    <Modal.Body>
+                        <div className='connected-app-modal'>
+                            <Icon icon='IcAccountTrashCan' size={128} className='connected-app-modal__icon' />
+                            <p className='connected-app-modal__message'>{localize('Confirm revoke access?')}</p>
+                            <div className='connected-app-modal__confirmation'>
+                                <Button secondary onClick={this.handleToggleModal}>
+                                    {localize('Back')}
+                                </Button>
+                                <Button primary onClick={this.handleRevokeAccess}>
+                                    {localize('Confirm')}
+                                </Button>
+                            </div>
+                        </div>
+                    </Modal.Body>
+                </Modal>
             </section>
         );
     }

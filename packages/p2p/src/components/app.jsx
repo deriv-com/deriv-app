@@ -42,6 +42,25 @@ class App extends Component {
         };
     }
 
+    componentDidMount() {
+        subscribeWS(
+            {
+                p2p_advertiser_info: 1,
+                subscribe: 1,
+            },
+            this.setIsAdvertiser
+        );
+        subscribeWS(
+            {
+                p2p_order_list: 1,
+                subscribe: 1,
+                offset: 0,
+                limit: this.list_item_limit,
+            },
+            this.setP2pOrderList
+        );
+    }
+
     redirectTo = (path_name, params = null) => {
         this.setState({ active_index: path[path_name], parameters: params });
     };
@@ -50,17 +69,16 @@ class App extends Component {
         this.setState({ active_index: idx, parameters: null });
     };
 
-    setIsAdvertiser = async () => {
-        const advertiser_info = await requestWS({ p2p_advertiser_info: 1 });
-        if (!advertiser_info.error) {
-            await this.setState({
-                advertiser_id: advertiser_info.p2p_advertiser_info.id,
-                is_advertiser: !!advertiser_info.p2p_advertiser_info.is_approved,
+    setIsAdvertiser = response => {
+        if (!response.error) {
+            const { p2p_advertiser_info } = response;
+            this.setState({
+                advertiser_id: p2p_advertiser_info.id,
+                is_advertiser: !!p2p_advertiser_info.is_approved,
             });
-        } else if (advertiser_info.error?.code === 'RestrictedCountry') {
-            await this.setState({ is_restricted: true });
+        } else if (p2p_advertiser_info.error?.code === 'RestrictedCountry') {
+            this.setState({ is_restricted: true });
         }
-        return true;
     };
 
     handleNotifications = orders => {
@@ -109,19 +127,6 @@ class App extends Component {
             }
         }
     };
-
-    componentDidMount() {
-        this.setIsAdvertiser();
-        subscribeWS(
-            {
-                p2p_order_list: 1,
-                subscribe: 1,
-                offset: 0,
-                limit: this.list_item_limit,
-            },
-            this.setP2pOrderList
-        );
-    }
 
     render() {
         const { active_index, order_offset, orders, parameters, notification_count } = this.state;

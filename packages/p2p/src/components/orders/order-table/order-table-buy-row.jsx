@@ -23,14 +23,12 @@ const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
     } = data;
 
     return (
-        <div
-            onClick={() => onOpenDetails(data)}
-            style={style}
-            className={classNames('orders__table-row', {
-                'orders__table-row--attention': is_pending,
-            })}
-        >
-            <Table.Row>
+        <div onClick={() => onOpenDetails(data)} style={style}>
+            <Table.Row
+                className={classNames('orders__table-row', {
+                    'orders__table-row--attention': is_pending,
+                })}
+            >
                 <Table.Cell>
                     {localize('Buy')} {id}
                 </Table.Cell>

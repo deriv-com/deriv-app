@@ -51,6 +51,12 @@ const Redirect = ({
         }
         case 'add_account': {
             fetchResidenceList().then(openRealAccountSignup);
+
+            const ext_platform_url = url_params.get('ext_platform_url');
+            if (ext_platform_url) {
+                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
+                redirected_to_route = true;
+            }
             break;
         }
         default:

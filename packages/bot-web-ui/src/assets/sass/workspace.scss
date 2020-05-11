@@ -3,13 +3,13 @@
 }
 
 .blocklyTextRootBlockHeader {
-    font-size: 14px;
+    font-size: var(--text-size-sm);
     font-weight: bold;
     font-stretch: normal;
     font-style: normal;
     line-height: 1.43;
     letter-spacing: normal;
-    fill: #ffffff;
+    fill: var(--fill-normal);
 }
 
 .blocklyMainWorkspaceScrollbar {

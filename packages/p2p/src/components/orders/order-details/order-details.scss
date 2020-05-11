@@ -140,4 +140,10 @@
         font-size: 1.4rem;
         font-weight: bold;
     }
+    &__popup-checkBox {
+        margin-top: 1.4rem;
+        .dc-checkbox__box {
+            margin-left: 0px;
+        }
+    }
 }

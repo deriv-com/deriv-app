@@ -63,6 +63,11 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 'Make sure you have successfully sent the funds to the seller’s bank account or e-wallet mentioned above.'
             ),
             has_cancel: true,
+            payment_confirm: true,
+            order: {
+                transaction_currency,
+                display_transaction_amount,
+            },
             cancel_text: localize("I didn't pay yet"),
             confirm_text: localize("I've paid"),
             onClickConfirm: payOrder,

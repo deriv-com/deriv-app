@@ -83,10 +83,10 @@ const NicknameForm = ({ handleClose, setNicknameTrue }) => {
                         </ThemedScrollbars>
                         <div className='buy-sell__popup-footer'>
                             {status && status.error_message && <FormError message={status.error_message} />}
-                            <Button secondary type='button' onClick={handleClose}>
+                            <Button secondary type='button' onClick={handleClose} large>
                                 {localize('Cancel')}
                             </Button>
-                            <Button type='submit' is_disabled={!!(isSubmitting || errors.amount)} primary>
+                            <Button type='submit' is_disabled={!!(isSubmitting || errors.amount)} primary large>
                                 {localize('Confirm')}
                             </Button>
                         </div>

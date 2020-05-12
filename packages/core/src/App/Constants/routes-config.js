@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import { Redirect as RouterRedirect, Prompt } from 'react-router-dom';
+import { Redirect as RouterRedirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
 import { addRoutesConfig } from '@deriv/shared/utils/route';

@@ -97,9 +97,10 @@
             background: var(--state-active);
             border-radius: $BORDER_RADIUS;
         }
-        &--highlighted:not(&--disabled) {
+        &:focus:not(&--disabled) {
             background-color: var(--state-hover);
             color: var(--text-general);
+            outline: none;
         }
         &--disabled {
             color: var(--text-disabled);

@@ -4,48 +4,93 @@ import React from 'react';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import Popover from 'Components/popover';
 
-const Items = ({ className, index, handleSelect, has_symbol, items, name, is_align_text_left, value }) =>
+const Items = ({ onKeyPressed, className, handleSelect, has_symbol, items, is_align_text_left, value, nodes }) =>
     items.map((item, idx) => {
         const symbol_type_class_name =
             item.text && typeof item.text === 'string' ? `symbols--${item.text.toLowerCase()}` : null;
 
         return (
-            <div
-                className={classNames(
-                    'dc-list__item',
-                    { 'dc-list__item--highlighted': idx === index },
-                    { 'dc-list__item--selected': value === item.value },
-                    { 'dc-list__item--disabled': item.disabled }
-                )}
-                name={name}
-                value={item.value}
-                onClick={item.disabled ? null : handleSelect.bind(null, item)}
+            <Item
+                onKeyPressed={onKeyPressed}
                 key={idx}
-            >
-                {!!has_symbol && item.has_tooltip && (
-                    <Popover alignment='left' message={CurrencyUtils.getCurrencyDisplayCode(item.text)}>
-                        <span className={classNames('symbols', 'dc-list__item-symbol', symbol_type_class_name)} />
-                    </Popover>
-                )}
-
-                {!!has_symbol && !item.has_tooltip && (
-                    <span className={classNames('symbols', 'dc-list__item-text', symbol_type_class_name)} />
-                )}
-
-                {!has_symbol && (
-                    <span
-                        className={classNames(
-                            'dc-list__item-text',
-                            { 'dc-list__item-text--left': is_align_text_left },
-                            className
-                        )}
-                    >
-                        {item.text}
-                    </span>
-                )}
-            </div>
+                value={value}
+                item={item}
+                handleSelect={handleSelect}
+                idx={idx}
+                nodes={nodes}
+                has_symbol={has_symbol}
+                symbol_type_class_name={symbol_type_class_name}
+                is_align_text_left={is_align_text_left}
+                className={className}
+            />
         );
     });
+
+const Item = ({
+    onKeyPressed,
+    value,
+    item,
+    handleSelect,
+    nodes,
+    has_symbol,
+    symbol_type_class_name,
+    is_align_text_left,
+    className,
+}) => {
+    const item_ref = React.useRef(null);
+
+    React.useEffect(() => {
+        const handleKeyPress = e => onKeyPressed(e, item);
+
+        item_ref.current.addEventListener('click', () => {});
+        item_ref.current.addEventListener('keydown', handleKeyPress);
+        nodes.set(item.value, item_ref.current);
+
+        return () => {
+            nodes.delete(item.value, item_ref.current);
+            item_ref.current.removeEventListener('click', () => {});
+            item_ref.current.removeEventListener('keydown', onKeyPressed);
+        };
+    }, []);
+
+    return (
+        <div
+            className={classNames(
+                'dc-list__item',
+                { 'dc-list__item--selected': value === item.value },
+                { 'dc-list__item--disabled': item.disabled }
+            )}
+            name={name}
+            value={item.value}
+            onClick={item.disabled ? null : handleSelect.bind(null, item)}
+            ref={item_ref}
+            tabIndex='0'
+            id={item.value}
+        >
+            {!!has_symbol && item.has_tooltip && (
+                <Popover alignment='left' message={CurrencyUtils.getCurrencyDisplayCode(item.text)}>
+                    <span className={classNames('symbols', 'dc-list__item-symbol', symbol_type_class_name)} />
+                </Popover>
+            )}
+
+            {!!has_symbol && !item.has_tooltip && (
+                <span className={classNames('symbols', 'dc-list__item-text', symbol_type_class_name)} />
+            )}
+
+            {!has_symbol && (
+                <span
+                    className={classNames(
+                        'dc-list__item-text',
+                        { 'dc-list__item-text--left': is_align_text_left },
+                        className
+                    )}
+                >
+                    {item.text}
+                </span>
+            )}
+        </div>
+    );
+};
 
 Items.propTypes = {
     className: PropTypes.string,

@@ -114,8 +114,8 @@ export default class UIStore extends BaseStore {
     @observable is_mt5_page = false;
     @observable is_nativepicker_visible = false;
 
-    // dbot
-    @observable is_bot_running = false;
+    @observable prompt_when = false;
+    @observable prompt_fn = () => {};
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -200,6 +200,12 @@ export default class UIStore extends BaseStore {
         if (this.is_mobile) {
             this.is_positions_drawer_on = false;
         }
+    }
+
+    @action.bound
+    handlePrompt(when, cb = () => {}) {
+        this.prompt_when = when;
+        this.prompt_fn = cb;
     }
 
     @computed

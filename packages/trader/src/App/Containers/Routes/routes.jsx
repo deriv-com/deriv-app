@@ -1,7 +1,7 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter, matchPath, Prompt } from 'react-router';
+import { withRouter, matchPath } from 'react-router';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
 import BinaryRoutes from 'App/Components/Routes';
@@ -38,28 +38,28 @@ const Error = Loadable({
     },
 });
 
-const Routes = props => {
-    if (props.has_error) {
-        return <Error {...props.error} />;
+class Routes extends React.Component {
+    componentDidMount() {
+        if (this.props.handlePrompt) {
+            this.props.handlePrompt(true, (route_to, action) =>
+                tradePageMountingMiddleware(
+                    route_to,
+                    action,
+                    this.props.history.location.pathname,
+                    this.props.setTradeMountingPolicy
+                )
+            );
+        }
     }
 
-    return (
-        <>
-            <Prompt
-                when
-                message={(route_to, action) =>
-                    tradePageMountingMiddleware(
-                        route_to,
-                        action,
-                        props.history.location.pathname,
-                        props.setTradeMountingPolicy
-                    )
-                }
-            />
-            <BinaryRoutes is_logged_in={props.is_logged_in} passthrough={props.passthrough} />
-        </>
-    );
-};
+    render() {
+        if (this.props.has_error) {
+            return <Error {...this.props.error} />;
+        }
+
+        return <BinaryRoutes is_logged_in={this.props.is_logged_in} passthrough={this.props.passthrough} />;
+    }
+}
 
 Routes.propTypes = {
     error: MobxPropTypes.objectOrObservableObject,
@@ -71,10 +71,11 @@ Routes.propTypes = {
 // need to wrap withRouter around connect
 // to prevent updates on <BinaryRoutes /> from being blocked
 export default withRouter(
-    connect(({ client, common, modules }) => ({
+    connect(({ client, common, modules, ui }) => ({
         is_logged_in: client.is_logged_in,
         error: common.error,
         has_error: common.has_error,
+        handlePrompt: ui.handlePrompt,
         setTradeMountingPolicy: modules.trade.setSkipPrePostLifecycle,
     }))(Routes)
 );

@@ -10,6 +10,7 @@ import BotNotificationMessages from './components/bot-notification-messages.jsx'
 import QuickStrategy from './components/quick-strategy.jsx';
 import RunPanel from './components/run-panel.jsx';
 import Toolbar from './components/toolbar.jsx';
+import RoutePromptDialog from './components/route-prompt-dialog.jsx';
 import RootStore from './stores';
 import GTM from './utils/gtm';
 import './assets/sass/app.scss';
@@ -177,6 +178,7 @@ class App extends React.Component {
                     <QuickStrategy />
                     <FooterExtension />
                     <Audio />
+                    <RoutePromptDialog />
                 </div>
             </Provider>
         );

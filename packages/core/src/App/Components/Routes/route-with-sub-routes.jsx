@@ -8,7 +8,6 @@ import { default_title } from 'App/Constants/app-config';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 import { removeBranchName } from '_common/url';
-import RoutePromptDialog from './route-prompt-dialog.jsx';
 
 const RouteWithSubRoutes = route => {
     const renderFactory = props => {
@@ -31,7 +30,6 @@ const RouteWithSubRoutes = route => {
             result = (
                 <React.Fragment>
                     {has_default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
-                    {route.prompt_before_leave && <RoutePromptDialog condition={route.prompt_before_leave} />}
                     <route.component {...props} routes={route.routes} passthrough={route.passthrough} />
                 </React.Fragment>
             );

@@ -274,7 +274,7 @@ class AccountSwitcher extends React.Component {
                 <>
                     <AccountWrapper
                         header={
-                            <React.Fragment>
+                            <>
                                 <Localize i18n_default_text='Deriv Accounts' />
                                 {this.props.is_europe && (
                                     <Icon
@@ -283,7 +283,7 @@ class AccountSwitcher extends React.Component {
                                         onClick={this.showAccountTypesModal}
                                     />
                                 )}
-                            </React.Fragment>
+                            </>
                         }
                         is_visible={this.state.is_demo_deriv_visible}
                         toggleVisibility={() => {
@@ -318,7 +318,7 @@ class AccountSwitcher extends React.Component {
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                         <AccountWrapper
                             header={
-                                <React.Fragment>
+                                <>
                                     <Localize i18n_default_text='DMT5 Accounts' />
                                     {this.props.is_europe && (
                                         <Icon
@@ -327,7 +327,7 @@ class AccountSwitcher extends React.Component {
                                             onClick={this.showAccountTypesModal}
                                         />
                                     )}
-                                </React.Fragment>
+                                </>
                             }
                             is_visible={this.state.is_demo_dmt5_visible}
                             toggleVisibility={() => {
@@ -339,7 +339,7 @@ class AccountSwitcher extends React.Component {
                                     <AccountsItemLoader speed={3} />
                                 </div>
                             ) : (
-                                <React.Fragment>
+                                <>
                                     {!!this.demo_mt5.length && (
                                         <div className='acc-switcher__accounts'>
                                             {this.demo_mt5.map(account => (
@@ -371,7 +371,7 @@ class AccountSwitcher extends React.Component {
                                             </Button>
                                         </div>
                                     ))}
-                                </React.Fragment>
+                                </>
                             )}
                         </AccountWrapper>
                     </>
@@ -458,7 +458,7 @@ class AccountSwitcher extends React.Component {
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                         <AccountWrapper
                             header={
-                                <React.Fragment>
+                                <>
                                     <Localize i18n_default_text='DMT5 Accounts' />
                                     {this.props.is_europe && (
                                         <Icon
@@ -467,7 +467,7 @@ class AccountSwitcher extends React.Component {
                                             onClick={this.showAccountTypesModal}
                                         />
                                     )}
-                                </React.Fragment>
+                                </>
                             }
                             is_visible={this.state.is_real_dmt5_visible}
                             toggleVisibility={() => {
@@ -479,7 +479,7 @@ class AccountSwitcher extends React.Component {
                                     <AccountsItemLoader speed={3} />
                                 </div>
                             ) : (
-                                <React.Fragment>
+                                <>
                                     {!!this.real_mt5.length && (
                                         <div className='acc-switcher__accounts'>
                                             {this.real_mt5.map(account => (
@@ -515,7 +515,7 @@ class AccountSwitcher extends React.Component {
                                             </Button>
                                         </div>
                                     ))}
-                                </React.Fragment>
+                                </>
                             )}
                         </AccountWrapper>
                     </>

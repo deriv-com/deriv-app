@@ -1,5 +1,5 @@
-import { lazy } from 'react';
-import { Redirect as RouterRedirect } from 'react-router-dom';
+import React, { lazy } from 'react';
+import { Redirect as RouterRedirect, Prompt } from 'react-router-dom';
 import { addRoutesConfig } from '@deriv/shared/utils/route';
 import { Redirect } from 'App/Containers/Redirect';
 import { localize } from '@deriv/translations';
@@ -34,8 +34,19 @@ const Bot = lazy(() => {
     return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
 });
 
+const BotWithPrompt = props => (
+    <>
+        <Prompt when={true} message='Are you sure?' />
+        <Bot {...props} />
+    </>
+);
+
 const modules = [
-    { path: routes.bot, component: Bot, title: localize('Bot') },
+    {
+        path: routes.bot,
+        component: Bot,
+        title: localize('Bot'),
+    },
     {
         path: routes.root,
         component: Trader,

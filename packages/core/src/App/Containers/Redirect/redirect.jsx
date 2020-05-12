@@ -40,6 +40,7 @@ const Redirect = ({
             break;
         }
         case 'payment_withdraw': {
+            console.log(history);
             history.push(routes.cashier_withdrawal);
             redirected_to_route = true;
             break;

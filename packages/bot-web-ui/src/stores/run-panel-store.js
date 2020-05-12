@@ -66,7 +66,7 @@ export default class RunPanelStore {
             )
         );
 
-        this.is_running = true;
+        this.is_running = ui.is_bot_running = true;
         this.toggleDrawer(true);
         this.run_id = `run-${Date.now()}`;
 
@@ -77,10 +77,9 @@ export default class RunPanelStore {
 
     @action.bound
     onStopButtonClick() {
-        this.dbot.stopBot();
-        this.is_running = false;
-
         const { ui } = this.root_store.core;
+        this.dbot.stopBot();
+        this.is_running = ui.is_bot_running = false;
 
         if (this.error_type) {
             // when user click stop button when there is a error but bot is retrying

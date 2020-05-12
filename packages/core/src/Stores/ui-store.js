@@ -114,6 +114,9 @@ export default class UIStore extends BaseStore {
     @observable is_mt5_page = false;
     @observable is_nativepicker_visible = false;
 
+    // dbot
+    @observable is_bot_running = false;
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {

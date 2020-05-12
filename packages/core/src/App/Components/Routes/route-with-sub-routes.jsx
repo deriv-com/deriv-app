@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, Prompt } from 'react-router-dom';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { redirectToLogin, redirectToSignUp } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
@@ -8,6 +8,7 @@ import { default_title } from 'App/Constants/app-config';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 import { removeBranchName } from '_common/url';
+import RoutePromptDialog from './route-prompt-dialog';
 
 const RouteWithSubRoutes = route => {
     const renderFactory = props => {
@@ -30,6 +31,7 @@ const RouteWithSubRoutes = route => {
             result = (
                 <React.Fragment>
                     {has_default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
+                    {route.prompt_before_leave && <RoutePromptDialog condition={route.prompt_before_leave} />}
                     <route.component {...props} routes={route.routes} passthrough={route.passthrough} />
                 </React.Fragment>
             );

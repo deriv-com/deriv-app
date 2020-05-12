@@ -1,9 +1,9 @@
 import React, { lazy } from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
-import { getUrlBase } from '@deriv/shared/utils/url';
-import routes from '@deriv/shared/utils/routes';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
+import { getUrlBase } from '@deriv/shared/utils/url';
+import routes from '@deriv/shared/utils/routes';
 import { addRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
 import { Redirect } from 'App/Containers/Redirect';

@@ -3,7 +3,7 @@
 }
 
 .blocklyTextRootBlockHeader {
-    font-size: var(--text-size-sm);
+    font-size: calc(var(--text-size-sm) * 0.9);
     font-weight: bold;
     font-stretch: normal;
     font-style: normal;

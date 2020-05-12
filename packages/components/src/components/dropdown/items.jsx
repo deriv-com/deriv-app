@@ -4,51 +4,24 @@ import React from 'react';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import Popover from 'Components/popover';
 
-const Items = ({ onKeyPressed, className, handleSelect, has_symbol, items, is_align_text_left, value, nodes }) =>
+const Items = ({ items, ...props }) =>
     items.map((item, idx) => {
-        const symbol_type_class_name =
-            item.text && typeof item.text === 'string' ? `symbols--${item.text.toLowerCase()}` : null;
-
-        return (
-            <Item
-                onKeyPressed={onKeyPressed}
-                key={idx}
-                value={value}
-                item={item}
-                handleSelect={handleSelect}
-                idx={idx}
-                nodes={nodes}
-                has_symbol={has_symbol}
-                symbol_type_class_name={symbol_type_class_name}
-                is_align_text_left={is_align_text_left}
-                className={className}
-            />
-        );
+        return <Item key={idx} item={item} {...props} />;
     });
 
-const Item = ({
-    onKeyPressed,
-    value,
-    item,
-    handleSelect,
-    nodes,
-    has_symbol,
-    symbol_type_class_name,
-    is_align_text_left,
-    className,
-}) => {
+const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_align_text_left, className }) => {
     const item_ref = React.useRef(null);
+    const symbol_type_class_name =
+        item.text && typeof item.text === 'string' ? `symbols--${item.text.toLowerCase()}` : null;
 
     React.useEffect(() => {
         const handleKeyPress = e => onKeyPressed(e, item);
 
-        item_ref.current.addEventListener('click', () => {});
         item_ref.current.addEventListener('keydown', handleKeyPress);
         nodes.set(item.value, item_ref.current);
 
         return () => {
             nodes.delete(item.value, item_ref.current);
-            item_ref.current.removeEventListener('click', () => {});
             item_ref.current.removeEventListener('keydown', onKeyPressed);
         };
     }, []);
@@ -96,6 +69,7 @@ Items.propTypes = {
     className: PropTypes.string,
     handleSelect: PropTypes.func,
     has_symbol: PropTypes.bool,
+    onKeyPressed: PropTypes.func,
     name: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };

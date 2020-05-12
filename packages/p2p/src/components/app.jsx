@@ -129,10 +129,6 @@ class App extends Component {
         }
     };
 
-    setAdvertiserName = advertiser_name => {
-        this.setState({ advertiser_name });
-    };
-
     setAdvertiserInfo = async () => await requestWS({ p2p_advertiser_info: 1 });
 
     componentDidMount() {

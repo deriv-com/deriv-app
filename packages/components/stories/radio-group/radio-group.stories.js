@@ -1,8 +1,8 @@
+import React from 'react';
 import { withInfo } from '@storybook/addon-info';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import RadioGroup from 'Components/radio-group';
-import React from 'react';
 import Theme from '../shared/theme';
 
 const stories = storiesOf('Radio Group', module);

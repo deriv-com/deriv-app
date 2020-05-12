@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
+import { Prompt, withRouter } from 'react-router-dom';
 import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { Prompt, withRouter } from 'react-router-dom';
 
 const RoutePromptDialog = ({ condition, history }) => {
     const [should_show, setShow] = React.useState(false);

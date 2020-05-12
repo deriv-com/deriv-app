@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route, Prompt } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { redirectToLogin, redirectToSignUp } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
@@ -8,7 +8,7 @@ import { default_title } from 'App/Constants/app-config';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 import { removeBranchName } from '_common/url';
-import RoutePromptDialog from './route-prompt-dialog';
+import RoutePromptDialog from './route-prompt-dialog.jsx';
 
 const RouteWithSubRoutes = route => {
     const renderFactory = props => {

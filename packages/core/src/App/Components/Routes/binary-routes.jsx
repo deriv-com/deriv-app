@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Prompt } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import getRoutesConfig from 'App/Constants/routes-config';

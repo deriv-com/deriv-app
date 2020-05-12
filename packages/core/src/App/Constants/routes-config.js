@@ -28,13 +28,6 @@ const Bot = lazy(() => {
     return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
 });
 
-const BotWithPrompt = props => (
-    <>
-        <Prompt when={true} message='Are you sure?' />
-        <Bot {...props} />
-    </>
-);
-
 const modules = [
     {
         path: routes.bot,

@@ -38,11 +38,11 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
             const order_info = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
             handleClose();
             handleConfirm(order_info);
-            setSubmitting(false);
         } else {
-            setSubmitting(false);
             setStatus({ error_message: order.error.message });
         }
+
+        setSubmitting(false);
     };
 
     const validatePopup = values => {

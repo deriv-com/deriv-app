@@ -129,10 +129,8 @@ class App extends Component {
         }
     };
 
-    setAdvertiserInfo = () => requestWS({ p2p_advertiser_info: 1 });
-
     componentDidMount() {
-        this.setAdvertiserInfo().then(advertiser_info => {
+        requestWS({ p2p_advertiser_info: 1 }).then(advertiser_info => {
             this.setState({ advertiser_info }, () => {
                 this.setIsAdvertiser();
                 this.setChatInformation();

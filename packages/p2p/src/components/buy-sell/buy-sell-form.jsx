@@ -236,6 +236,8 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
                                                             )}
                                                             label={localize('Your bank details')}
                                                             required
+                                                            has_character_counter
+                                                            max_characters={300}
                                                         />
                                                     )}
                                                 </Field>
@@ -250,6 +252,8 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
                                                             error={touched.contact_info && errors.contact_info}
                                                             label={localize('Your contact details')}
                                                             required
+                                                            has_character_counter
+                                                            max_characters={300}
                                                         />
                                                     )}
                                                 </Field>

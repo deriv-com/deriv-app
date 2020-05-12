@@ -7,7 +7,7 @@ import { requestWS } from 'Utils/websocket';
 import IconClose from 'Assets/icon-close.jsx';
 import FormError from '../form/error.jsx';
 
-const NickNameForm = ({ handleClose, setNicknameTrue }) => {
+const NicknameForm = ({ handleClose, setNicknameTrue }) => {
     const handleSubmit = async (values, { setStatus, setSubmitting }) => {
         const advertiser_create = await requestWS({ p2p_advertiser_create: 1, name: values.nickname });
         if (advertiser_create.error) {
@@ -97,9 +97,9 @@ const NickNameForm = ({ handleClose, setNicknameTrue }) => {
     );
 };
 
-NickNameForm.propTypes = {
+NicknameForm.propTypes = {
     handleClose: PropTypes.func,
     setNicknameTrue: PropTypes.func,
 };
 
-export default NickNameForm;
+export default NicknameForm;

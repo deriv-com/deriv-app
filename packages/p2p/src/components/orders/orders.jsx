@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import PageReturn from 'Components/page-return/page-return.jsx';
@@ -7,7 +8,7 @@ import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
-const Orders = ({ navigate, params, chat_info }) => {
+const Orders = ({ params, navigate, chat_info }) => {
     const { orders } = React.useContext(Dp2pContext);
     const [order_details, setDetails] = React.useState(null);
     const [nav, setNav] = React.useState(params?.nav);
@@ -66,6 +67,12 @@ const Orders = ({ navigate, params, chat_info }) => {
             {!order_details && <OrderTable navigate={navigate} showDetails={showDetails} />}
         </div>
     );
+};
+
+Orders.propTypes = {
+    chat_info: PropTypes.object,
+    navigate: PropTypes.func,
+    params: PropTypes.object,
 };
 
 export default Orders;

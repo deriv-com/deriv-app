@@ -17,7 +17,8 @@ Blockly.Blocks.math_on_list = {
                         [localize('max'), 'MAX'],
                         [localize('average'), 'AVERAGE'],
                         [localize('median'), 'MEDIAN'],
-                        [localize('modes'), 'MODE'],
+                        [localize('mode'), 'MODE'],
+                        [localize('antimode'), 'ANTIMODE'],
                         [localize('standard deviation'), 'STD_DEV'],
                         [localize('random item'), 'RANDOM'],
                     ],
@@ -40,7 +41,7 @@ Blockly.Blocks.math_on_list = {
         return {
             display_name: localize('Aggregate operations'),
             description: localize(
-                'This block performs the following operations on a given list: sum, minimum, maximum, average, median, modes, standard deviation, random item.'
+                'This block performs the following operations on a given list: sum, minimum, maximum, average, median, mode, antimode, standard deviation, random item.'
             ),
         };
     },
@@ -133,6 +134,49 @@ Blockly.JavaScript.math_on_list = block => {
                 }
 
                 return modes;
+            }`,
+        ]);
+
+        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
+        code = `${functionName}(${list})`;
+    } else if (operation === 'ANTIMODE') {
+        const functionName = Blockly.JavaScript.provideFunction_('mathAntiMode', [
+            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(values) {
+                var antiMode = [];
+                var counts = [];
+                var minCount = 1;
+                var countArray = [];
+    
+                for (var i = 0; i < values.length; i++) {
+                    var value = values[i];
+                    var found = false;
+                    var thisCount;
+
+                    for (var j = 0; j < counts.length; j++) {
+                        if (counts[j][0] === value) {
+                            thisCount = ++counts[j][1];
+                            found = true;
+                            break;
+                        }	
+                    }
+                    
+                    if (!found) {
+                        counts.push([value, 1]);
+                        thisCount = 1;
+                    }
+                }
+
+                 minCount = Math.min.apply(null, counts.map(function(element) {
+                     return element[1];
+                 }));
+
+                 for (var j = 0; j < counts.length; j++) {
+                    if (counts[j][1] == minCount) {
+                        antiMode.push(counts[j][0]);
+                    }
+                }
+
+                return antiMode;
             }`,
         ]);
 

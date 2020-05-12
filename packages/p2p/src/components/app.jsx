@@ -38,8 +38,7 @@ class App extends Component {
             notification_count: 0,
             parameters: null,
             is_advertiser: false,
-            advertiser_id: null,
-            advertiser_name: null,
+            is_restricted: false,
             chat_info: {
                 app_id: '',
                 user_id: '',
@@ -58,10 +57,13 @@ class App extends Component {
 
     setIsAdvertiser = async () => {
         const advertiser_info = await requestWS({ p2p_advertiser_info: 1 });
-
-        /* if there is no error means it's an advertiser else it's a client */
         if (!advertiser_info.error) {
-            await this.setState({ advertiser_id: advertiser_info.p2p_advertiser_info.id, is_advertiser: true });
+            await this.setState({
+                advertiser_id: advertiser_info.p2p_advertiser_info.id,
+                is_advertiser: !!advertiser_info.p2p_advertiser_info.is_approved,
+            });
+        } else if (advertiser_info.error?.code === 'RestrictedCountry') {
+            await this.setState({ is_restricted: true });
         }
         return true;
     };
@@ -171,6 +173,7 @@ class App extends Component {
                     advertiser_id: this.state.advertiser_id,
                     advertiser_name: this.state.advertiser_name,
                     is_advertiser: this.state.is_advertiser,
+                    is_restricted: this.state.is_restricted,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,
                     order_offset,

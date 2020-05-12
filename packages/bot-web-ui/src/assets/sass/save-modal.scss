@@ -17,7 +17,9 @@
                 }
             }
             .modal__content-row {
-                padding: 21px 21px 35px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
         }
     }
@@ -29,6 +31,7 @@ div.radio-group {
         display: flex;
         justify-content: center;
         margin-top: 0;
+        padding: 38px 0 30px;
 
         .dc-radio {
             &-group {
@@ -78,6 +81,11 @@ div.radio-group {
     }
     &__container {
         text-align: center;
+    }
+    &__input {
+        // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+        width: 232px !important;
+        margin: 28px 0 0 !important;
     }
     &__radio {
         text-align: center;

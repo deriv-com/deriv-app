@@ -123,6 +123,11 @@ const initRoutesConfig = () => [
                         component: lazyLoadAccountComponent('AccountLimits'),
                         title: localize('Account limits'),
                     },
+                    {
+                        path: routes.login_history,
+                        component: lazyLoadAccountComponent('LoginHistory'),
+                        title: localize('Login history'),
+                    },
                 ],
             },
         ],

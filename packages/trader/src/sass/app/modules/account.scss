@@ -478,6 +478,90 @@ $MIN_HEIGHT_FLOATING: calc(
             padding-left: 8px;
         }
     }
+    .login-history-container {
+        height: 100%;
+        width: 100%;
+
+        .login-history-table {
+            @include desktop {
+                height: 100%;
+            }
+
+            @include mobile {
+                flex: 1;
+
+                &__data-list-body,
+                &__data-list-footer {
+                    padding: 0 24px;
+                }
+                &__data-list-body {
+                    height: calc(100% - 50px);
+
+                    .sell_time__row-title {
+                        display: flex;
+                        align-items: center;
+
+                        .dc-icon {
+                            margin-left: 4px;
+                        }
+                    }
+                }
+                &__data-list-footer {
+                    height: 50px;
+                    min-height: 50px;
+                    font-weight: bold;
+
+                    .data-list__row__content {
+                        font-size: 1.2rem;
+                        color: var(--text-prominent);
+                    }
+                    .data-list__row {
+                        padding: 0;
+                    }
+                }
+            }
+
+            &__content {
+                width: 100%;
+                max-height: 100%;
+            }
+            /*
+                TABLE STYLES
+            */
+            &__table {
+                height: calc(100% - 42px);
+                flex: 1;
+            }
+            &__row {
+                /*             Date and Time Action Browser IP Status */
+                grid-template-columns: 3fr 1fr 3fr 2fr 1fr;
+                padding: 0px;
+            }
+            .table__head {
+                border-bottom: 2px solid #c2c2c2;
+            }
+            .table__body {
+                .login-history-table__row_wrapper {
+                    border-bottom: 1px solid #c2c2c2;
+                }
+                .date,
+                .action,
+                .browser,
+                .ip,
+                .status {
+                    font-size: 14px;
+                    font-weight: normal;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.43;
+                    letter-spacing: normal;
+                }
+                .action {
+                    text-transform: capitalize;
+                }
+            }
+        }
+    }
     .leave-confirm {
         @include mobile {
             &__message-icon {

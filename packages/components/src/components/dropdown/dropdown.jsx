@@ -201,12 +201,12 @@ class Dropdown extends React.Component {
         }
     };
     focusNextListItem = direction => {
-        const activeElement = document.activeElement;
+        const active_element = document.activeElement;
 
-        if (activeElement.id === 'dropdown-display') {
+        if (active_element.id === 'dropdown-display') {
             Array.from(this.nodes.values())[0].focus();
         } else {
-            const active_nodes = this.nodes.get(activeElement.id);
+            const active_nodes = this.nodes.get(active_element.id);
             if (active_nodes) {
                 if (active_nodes.nextSibling && direction === 40) active_nodes.nextSibling.focus();
                 if (active_nodes.previousSibling && direction === 38) active_nodes.previousSibling.focus();
@@ -303,7 +303,9 @@ class Dropdown extends React.Component {
                                         <ThemedScrollbars
                                             autoHeight
                                             autoHide
-                                            autoHeightMax={1000}
+                                            // TODO: remove this once tt-react-scrollbars have been replaced
+                                            // prevent focus handling from breaking
+                                            autoHeightMax={10000}
                                             renderTrackHorizontal={props => (
                                                 <div {...props} style={{ display: 'none' }} />
                                             )}

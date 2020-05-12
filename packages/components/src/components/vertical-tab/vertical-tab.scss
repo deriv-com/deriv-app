@@ -149,6 +149,7 @@ $MIN_HEIGHT_FLOATING: calc(
         transition: background-color 0.1s ease-in;
         text-decoration: none;
         z-index: 1;
+        user-select: none;
 
         &:hover:not(.dc-vertical-tab__header--active) {
             background-color: var(--state-hover);

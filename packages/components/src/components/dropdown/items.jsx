@@ -18,7 +18,7 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
         const handleKeyPress = e => onKeyPressed(e, item);
 
         item_ref.current.addEventListener('keydown', handleKeyPress);
-        nodes.set(item.value, item_ref.current);
+        nodes.set(item.value.toString(), item_ref.current);
 
         return () => {
             nodes.delete(item.value, item_ref.current);

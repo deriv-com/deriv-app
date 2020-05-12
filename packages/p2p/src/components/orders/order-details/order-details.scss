@@ -88,11 +88,8 @@
                 &__title {
                     font-size: 16px;
                     display: flex;
-
-                    &:after {
-                        content: attr(data-content);
-                        text-indent: 0;
-                    }
+                    max-width: 350px;
+                    margin-right: 0;
                 }
                 &__subtitle {
                     margin-left: 8px;
@@ -100,6 +97,9 @@
                 }
                 &__right {
                     display: none;
+                }
+                &__left {
+                    margin-right: 0;
                 }
             }
             .sendbird-conversation__footer {

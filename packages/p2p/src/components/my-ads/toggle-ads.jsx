@@ -28,10 +28,14 @@ class ToggleAds extends Component {
 
     handleToggle = () => {
         const is_listed = this.state.is_enabled ? 0 : 1;
+        const onToggleFn = this.props.onToggle || (() => {});
+
+        onToggleFn(!this.state.is_enabled);
         this.setState({ error: '', is_enabled: !this.state.is_enabled });
 
         requestWS({ p2p_advertiser_update: 1, is_listed }).then(response => {
             if (response.error) {
+                onToggleFn(!this.state.is_enabled);
                 this.setState({ error: response.error.message, is_enabled: !this.state.is_enabled });
             }
         });
@@ -40,18 +44,18 @@ class ToggleAds extends Component {
     render() {
         return (
             <div className={classNames('toggle-ads', this.state.is_enabled ? 'toggle-ads--on' : 'toggle-ads--off')}>
+                <ToggleMessage
+                    is_enabled={this.state.is_enabled}
+                    className='toggle-ads__message'
+                    error={this.state.error}
+                    is_loading={this.state.is_loading}
+                />
                 <ToggleSwitch
                     id='toggle-my-ads'
                     className='toggle-ads__switch'
                     classNameLabel='toggle-ads__switch'
                     is_enabled={this.state.is_enabled}
                     handleToggle={this.handleToggle}
-                />
-                <ToggleMessage
-                    is_enabled={this.state.is_enabled}
-                    className='toggle-ads__message'
-                    error={this.state.error}
-                    is_loading={this.state.is_loading}
                 />
             </div>
         );

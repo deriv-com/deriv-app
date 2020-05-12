@@ -706,11 +706,9 @@ $MIN_HEIGHT_FLOATING: calc(
         padding-right: 8px;
     }
     &__title {
-        p {
-            color: var(--text-prominent);
-            font-size: var(--text-size-s);
-            font-weight: bold;
-        }
+        color: var(--text-prominent);
+        font-size: var(--text-size-s);
+        font-weight: bold;
     }
     &__table {
         height: calc(100% - 42px);
@@ -769,6 +767,13 @@ $MIN_HEIGHT_FLOATING: calc(
                         line-height: 1.5;
                     }
                 }
+            }
+        }
+        .last_used {
+            .last_used_content {
+                font-size: var(--text-size-xxs);
+                line-height: 1.5;
+                margin-bottom: 4px;
             }
         }
     }

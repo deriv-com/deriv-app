@@ -30,7 +30,9 @@ const prepareConnectedAppsAction = (app_id, handleToggleModal) => (
     </Button>
 );
 
-const prepareConnectedAppsLastLogin = las_used => moment(las_used).format('YYYY-MM-DD HH:mm:ss');
+const prepareConnectedAppsLastLogin = las_used => (
+    <p className='last_used_content'>{moment(las_used).format('YYYY-MM-DD HH:mm:ss')}</p>
+);
 
 const prepareConnectedAppsScopes = permissions_list => {
     const list = permissions_list.map((value, index) => {

@@ -66,40 +66,38 @@ class ConnectedApps extends React.Component {
     render() {
         return (
             <section className='connected-apps'>
-                <div className='connected-apps__title'>
-                    <p>{localize('Authorised applications')}</p>
-                    <div>
-                        {this.state.is_loading ? (
-                            <Loading />
-                        ) : (
-                            <>
-                                <DesktopWrapper>
-                                    <DataTable
-                                        className='connected-apps'
-                                        data_source={this.props.connected_apps}
-                                        columns={getConnectedAppsColumnsTemplate(this.handleToggleModal)}
-                                        custom_width={'100%'}
-                                        getRowSize={() => 56}
-                                        is_empty={false}
-                                    >
-                                        {this.state.is_loading && <Loading />}
-                                    </DataTable>
-                                </DesktopWrapper>
-                                <MobileWrapper>
-                                    <DataList
-                                        className='connected-apps'
-                                        data_source={this.props.connected_apps}
-                                        custom_width={'100%'}
-                                        getRowSize={() => 108}
-                                        is_empty={false}
-                                        rowRenderer={this.mobileRowRenderer}
-                                    >
-                                        {this.state.is_loading && <Loading />}
-                                    </DataList>
-                                </MobileWrapper>
-                            </>
-                        )}
-                    </div>
+                <p className='connected-apps__title'>{localize('Authorised applications')}</p>
+                <div>
+                    {this.state.is_loading ? (
+                        <Loading />
+                    ) : (
+                        <>
+                            <DesktopWrapper>
+                                <DataTable
+                                    className='connected-apps'
+                                    data_source={this.props.connected_apps}
+                                    columns={getConnectedAppsColumnsTemplate(this.handleToggleModal)}
+                                    custom_width={'100%'}
+                                    getRowSize={() => 56}
+                                    is_empty={false}
+                                >
+                                    {this.state.is_loading && <Loading />}
+                                </DataTable>
+                            </DesktopWrapper>
+                            <MobileWrapper>
+                                <DataList
+                                    className='connected-apps'
+                                    data_source={this.props.connected_apps}
+                                    custom_width={'100%'}
+                                    getRowSize={() => 108}
+                                    is_empty={false}
+                                    rowRenderer={this.mobileRowRenderer}
+                                >
+                                    {this.state.is_loading && <Loading />}
+                                </DataList>
+                            </MobileWrapper>
+                        </>
+                    )}
                 </div>
                 <Modal
                     is_open={this.state.is_modal_open}

@@ -4,7 +4,6 @@ import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import getRoutesConfig from 'App/Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
-import { routes } from 'Constants';
 
 const BinaryRoutes = props => (
     <React.Suspense fallback={<Loading />}>

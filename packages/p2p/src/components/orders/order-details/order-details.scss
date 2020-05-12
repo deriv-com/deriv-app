@@ -40,7 +40,13 @@
                 font-size: 16px;
                 color: var(--text-colored-background);
             }
-            .sendbird-user-message__sender-name {
+            .sendbird-thumbnail--incoming {
+                padding-left: 50px;
+                border-bottom-left-radius: 4px;
+            }
+            .sendbird-user-message__sender-name,
+            .sendbird-thumbnail__sender-name,
+            .sendbird-file-message__sender-name {
                 display: none;
             }
             .sendbird-user-message__tooltip {
@@ -51,11 +57,15 @@
                     font-family: $FONT_STACK;
                 }
             }
-            .sendbird-user-message--incoming {
+            .sendbird-user-message--incoming,
+            .sendbird-file-message__incoming,
+            .sendbird-thumbnail--incoming {
                 padding-left: 48px;
 
                 .sendbird-user-message__tooltip,
-                &:hover .sendbird-user-message__tooltip {
+                &:hover .sendbird-user-message__tooltip,
+                .sendbird-file-message__tooltip,
+                &:hover .sendbird-file-message__tooltip {
                     background-color: var(--general-section-1);
                     border-bottom-left-radius: 4px;
                     transform: translateY(-50%);
@@ -64,7 +74,11 @@
                         color: var(--text-prominent);
                     }
                 }
-                .sendbird-user-message__sent-at {
+                .sendbird-thumbnail__body {
+                    transform: translateY(-7%);
+                }
+                .sendbird-user-message__sent-at,
+                .sendbird-file-message__sent-at {
                     transform: translateY(-180%);
                 }
             }

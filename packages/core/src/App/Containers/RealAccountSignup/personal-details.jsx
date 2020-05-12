@@ -136,23 +136,30 @@ class PersonalDetails extends React.Component {
                                             )}
                                             {/* TODO: [deriv-eu] Remove salutation once api is optional */}
                                             {'salutation' in this.props.value && (
-                                                <Field name='salutation'>
-                                                    {({ field }) => (
-                                                        <Autocomplete
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            autoComplete='new-password' // prevent chrome autocomplete
-                                                            type='text'
-                                                            label={localize('Title*')}
-                                                            error={touched.salutation && errors.salutation}
-                                                            list_items={this.props.salutation_list}
-                                                            onItemSelection={({ value, text }) =>
-                                                                setFieldValue('salutation', value ? text : '', true)
-                                                            }
-                                                            required
-                                                        />
-                                                    )}
-                                                </Field>
+                                                <RadioGroup
+                                                    items={this.props.salutation_list}
+                                                    name='salutation'
+                                                    onToggle={e => {
+                                                        e.persist();
+                                                    }}
+                                                />
+                                                // <Field name='salutation'>
+                                                //     {({ field }) => (
+                                                //         <Autocomplete
+                                                //             {...field}
+                                                //             data-lpignore='true'
+                                                //             autoComplete='new-password' // prevent chrome autocomplete
+                                                //             type='text'
+                                                //             label={localize('Title*')}
+                                                //             error={touched.salutation && errors.salutation}
+                                                //             list_items={this.props.salutation_list}
+                                                //             onItemSelection={({ value, text }) =>
+                                                //                 setFieldValue('salutation', value ? text : '', true)
+                                                //             }
+                                                //             required
+                                                //         />
+                                                //     )}
+                                                // </Field>
                                             )}
                                             <FormInputField
                                                 name='first_name'

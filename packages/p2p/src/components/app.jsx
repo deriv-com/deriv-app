@@ -32,7 +32,7 @@ class App extends Component {
 
         this.list_item_limit = 20;
         this.state = {
-            advertiser_info: null,
+            advertiser_info: '',
             active_index: 0,
             order_offset: 0,
             orders: [],
@@ -129,16 +129,15 @@ class App extends Component {
         }
     };
 
-    setAdvertiserInfo = async () => {
-        const advertiser_info = await requestWS({ p2p_advertiser_info: 1 });
-        return advertiser_info;
-    };
+    setAdvertiserInfo = () => requestWS({ p2p_advertiser_info: 1 });
 
     componentDidMount() {
-        this.setState({ advertiser_info: this.setAdvertiserInfo() });
-
-        this.setIsAdvertiser();
-        this.setChatInformation();
+        this.setAdvertiserInfo().then(advertiser_info => {
+            this.setState({ advertiser_info }, () => {
+                this.setIsAdvertiser();
+                this.setChatInformation();
+            });
+        });
 
         subscribeWS(
             {

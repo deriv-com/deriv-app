@@ -1,6 +1,7 @@
 import { localize } from '@deriv/translations';
 import { emptyTextValidator } from '../../../../utils';
 import { config } from '../../../../../constants/config';
+import { message_types } from '../../../../../constants/messages';
 
 Blockly.Blocks.notify = {
     init() {
@@ -62,7 +63,13 @@ Blockly.JavaScript.notify = block => {
     }
 
     const message = Blockly.JavaScript.valueToCode(block, 'MESSAGE') || `"${localize('<empty message>')}"`;
-
-    const code = `Bot.notify({ className: 'journal__text--${notificationType}', message: ${message}, sound: '${sound}', block_id: '${block.id}', variable_name: '${variable_name}' });\n`;
+    const code = `Bot.notify({ 
+        className: 'journal__text--${notificationType}', 
+        message: ${message}, 
+        sound: '${sound}', 
+        block_id: '${block.id}', 
+        variable_name: '${variable_name}',
+        message_type: '${message_types.NOTIFY}',
+    });\n`;
     return code;
 };

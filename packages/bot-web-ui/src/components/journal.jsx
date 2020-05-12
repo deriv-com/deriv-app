@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Checkbox, Icon, ThemedScrollbars } from '@deriv/components';
+import { Button, Checkbox, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
@@ -11,71 +11,99 @@ import { contract_stages } from '../constants/contract-stage';
 import { connect } from '../stores/connect';
 import '../assets/sass/journal.scss';
 
-const DateItem = ({ date, time }) => {
-    return (
-        <>
-            <span className='journal__text-date'>{date}</span> | <span className='journal__text-time'>{time}</span>
-        </>
-    );
-};
+const FormatMessage = ({ logType, className, passthrough }) => (
+    <div className={classnames('journal__text', className)}>
+        {(() => {
+            switch (logType) {
+                case log_types.LOAD_BLOCK: {
+                    return localize('Blocks are loaded successfully');
+                }
+                case log_types.NOT_OFFERED: {
+                    return localize('Resale of this contract is not offered.');
+                }
+                case log_types.PURCHASE: {
+                    const { longcode, transaction_id } = passthrough;
+                    return (
+                        <Localize
+                            i18n_default_text='<0>Bought</0>: {{longcode}} (ID: {{transaction_id}})'
+                            values={{ longcode, transaction_id }}
+                            components={[<span key={0} className='journal__text--info' />]}
+                            options={{ interpolation: { escapeValue: false } }}
+                        />
+                    );
+                }
+                case log_types.SELL: {
+                    const { sold_for } = passthrough;
+                    return (
+                        <Localize
+                            i18n_default_text='<0>Sold for</0>: {{sold_for}}'
+                            values={{ sold_for }}
+                            components={[<span key={0} className='journal__text--warn' />]}
+                        />
+                    );
+                }
+                case log_types.PROFIT: {
+                    const { profit } = passthrough;
+                    return (
+                        <Localize
+                            i18n_default_text='Profit amount: <0>{{profit}}</0>'
+                            values={{ profit }}
+                            components={[<span key={0} className='journal__text--success' />]}
+                        />
+                    );
+                }
+                case log_types.LOST: {
+                    const { profit } = passthrough;
+                    return (
+                        <Localize
+                            i18n_default_text='Loss amount: <0>{{profit}}</0>'
+                            values={{ profit }}
+                            components={[<span key={0} className='journal__text--error' />]}
+                        />
+                    );
+                }
+                default:
+                    return null;
+            }
+        })()}
+    </div>
+);
 
-const FormatMessage = ({ logType, className, extra }) => {
-    const getLogMessage = () => {
-        switch (logType) {
-            case log_types.LOAD_BLOCK: {
-                return localize('Blocks are loaded successfully');
+const JournalItemContent = ({ className, passthrough, message, message_type }) => (
+    <div className='journal__item-content'>
+        {(() => {
+            switch (message_type) {
+                case message_types.SUCCESS:
+                    return <FormatMessage logType={message} passthrough={passthrough} className={className} />;
+                case message_types.NOTIFY:
+                    return <div className='journal__text'>{message}</div>;
+                case message_types.ERROR:
+                    return <div className='journal__text--error journal__text'>{message}</div>;
+                case message_types.MESSAGE_WITH_BUTTONS:
+                    return (
+                        <React.Fragment>
+                            <div className='journal__text'>{message}</div>
+                            <Button.Group>
+                                {passthrough.map(button_obj => (
+                                    <Button
+                                        key={Blockly.utils.genUid()}
+                                        has_effect
+                                        onClick={button_obj.onClick}
+                                        secondary
+                                        small
+                                        text={button_obj.text}
+                                        type='button'
+                                    />
+                                ))}
+                            </Button.Group>
+                        </React.Fragment>
+                    );
+                default:
+                    return null;
             }
-            case log_types.NOT_OFFERED: {
-                return localize('Resale of this contract is not offered.');
-            }
-            case log_types.PURCHASE: {
-                const { longcode, transaction_id } = extra;
-                return (
-                    <Localize
-                        i18n_default_text='<0>Bought</0>: {{longcode}} (ID: {{transaction_id}})'
-                        values={{ longcode, transaction_id }}
-                        components={[<span key={0} className='journal__text--info' />]}
-                        options={{ interpolation: { escapeValue: false } }}
-                    />
-                );
-            }
-            case log_types.SELL: {
-                const { sold_for } = extra;
-                return (
-                    <Localize
-                        i18n_default_text='<0>Sold for</0>: {{sold_for}}'
-                        values={{ sold_for }}
-                        components={[<span key={0} className='journal__text--warn' />]}
-                    />
-                );
-            }
-            case log_types.PROFIT: {
-                const { profit } = extra;
-                return (
-                    <Localize
-                        i18n_default_text='Profit amount: <0>{{profit}}</0>'
-                        values={{ profit }}
-                        components={[<span key={0} className='journal__text--success' />]}
-                    />
-                );
-            }
-            case log_types.LOST: {
-                const { profit } = extra;
-                return (
-                    <Localize
-                        i18n_default_text='Loss amount: <0>{{profit}}</0>'
-                        values={{ profit }}
-                        components={[<span key={0} className='journal__text--error' />]}
-                    />
-                );
-            }
-            default:
-                return null;
-        }
-    };
-
-    return <div className={classnames('journal__text', className)}>{getLogMessage()}</div>;
-};
+        })()}
+    </div>
+);
 
 const Tools = ({ checked_filters, filters, filterMessage }) => (
     <div className='journal-tools__container'>
@@ -97,22 +125,6 @@ const Tools = ({ checked_filters, filters, filterMessage }) => (
         </div> */}
     </div>
 );
-
-const getJournalItemContent = (message, type, className, extra) => {
-    switch (type) {
-        case message_types.SUCCESS: {
-            return <FormatMessage logType={message} extra={extra} className={className} />;
-        }
-        case message_types.NOTIFY: {
-            return <div className={classnames('journal__text', className)}>{message}</div>;
-        }
-        case message_types.ERROR: {
-            return <div className='journal__text--error journal__text'>{message}</div>;
-        }
-        default:
-            return null;
-    }
-};
 
 const JournalLoader = () => (
     <ContentLoader
@@ -142,16 +154,20 @@ const Journal = ({ filtered_messages, contract_stage, ...props }) => {
                     {filtered_messages.length ? (
                         <TransitionGroup>
                             {filtered_messages.map(item => {
-                                const { date, time, message, message_type, className, unique_id, extra } = item;
-                                const date_el = DateItem({ date, time });
-
+                                const { date, time, message, message_type, className, unique_id, passthrough } = item;
                                 return (
                                     <CSSTransition key={unique_id} timeout={500} classNames='list__animation'>
                                         <div className='journal__item'>
-                                            <div className='journal__item-content'>
-                                                {getJournalItemContent(message, message_type, className, extra)}
+                                            <JournalItemContent
+                                                className={className}
+                                                message={message}
+                                                message_type={message_type}
+                                                passthrough={passthrough}
+                                            />
+                                            <div className='journal__text-datetime'>
+                                                <span className='journal__text-date'>{date}</span> |{' '}
+                                                <span className='journal__text-time'>{time}</span>
                                             </div>
-                                            <div className='journal__text-datetime'>{date_el}</div>
                                         </div>
                                     </CSSTransition>
                                 );

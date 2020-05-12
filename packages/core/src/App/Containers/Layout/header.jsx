@@ -18,19 +18,21 @@ import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Prel
 
 class Header extends React.Component {
     toggle_menu_drawer_ref = React.createRef();
+
+    addUpdateNotification = () => {
+        this.props.addNotificationMessage(clientNotifications().new_version_available);
+    };
+
     onClickDeposit = () => {
         this.props.history.push(routes.cashier_deposit);
     };
 
-    // eslint-disable-next-line class-methods-use-this
     componentWillUnmount() {
-        document.removeEventListener('UpdateAvailable');
+        document.removeEventListener('UpdateAvailable', this.addUpdateNotification);
     }
 
     componentDidMount() {
-        document.addEventListener('UpdateAvailable', () => {
-            this.props.addNotificationMessage(clientNotifications().new_version_available);
-        });
+        document.addEventListener('UpdateAvailable', this.addUpdateNotification);
     }
 
     render() {

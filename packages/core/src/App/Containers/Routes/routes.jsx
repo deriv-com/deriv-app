@@ -2,9 +2,19 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
+import Loadable from 'react-loadable';
+import { UILoader } from '@deriv/components';
 import BinaryRoutes from 'App/Components/Routes';
-import Lazy from 'App/Containers/Lazy';
 import { connect } from 'Stores/connect';
+
+const Error = Loadable({
+    loader: () => import(/* webpackChunkName: "error-component" */ 'App/Components/Elements/Errors'),
+    loading: UILoader,
+    render(loaded, props) {
+        const Component = loaded.default;
+        return <Component {...props} />;
+    },
+});
 
 class Routes extends React.Component {
     unlisten_to_change = null;
@@ -15,7 +25,8 @@ class Routes extends React.Component {
             this.initial_route = this.props.location.pathname;
         }
 
-        this.props.addRouteHistoryItem({ ...this.props.history.location, action: 'PUSH' });
+        this.props.setInitialRouteHistoryItem(this.props.history.location);
+
         this.unlisten_to_change = this.props.history.listen((route_to, action) => {
             if (action === 'PUSH') this.props.addRouteHistoryItem({ ...route_to, action });
         });
@@ -35,14 +46,7 @@ class Routes extends React.Component {
         const { error, has_error, is_logged_in, passthrough } = this.props;
 
         if (has_error) {
-            return (
-                <Lazy
-                    ctor={() => import(/* webpackChunkName: "error-component" */ 'App/Components/Elements/Errors')}
-                    should_load={has_error}
-                    has_progress={true}
-                    {...error}
-                />
-            );
+            return <Error {...error} />;
         }
 
         return <BinaryRoutes is_logged_in={is_logged_in} passthrough={passthrough} />;
@@ -65,5 +69,6 @@ export default withRouter(
         has_error: common.has_error,
         setAppRouterHistory: common.setAppRouterHistory,
         addRouteHistoryItem: common.addRouteHistoryItem,
+        setInitialRouteHistoryItem: common.setInitialRouteHistoryItem,
     }))(Routes)
 );

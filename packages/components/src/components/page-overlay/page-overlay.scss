@@ -36,9 +36,9 @@
             font-size: var(--text-size-m);
             color: var(--text-prominent);
             font-weight: bold;
+            line-height: 1.5;
 
             @include mobile {
-                color: var(--text-general);
                 font-size: 1.6rem;
             }
         }
@@ -47,6 +47,13 @@
             height: 16px;
             position: absolute;
             right: 0;
+
+            & .dc-icon {
+                --fill-color1: var(--text-prominent);
+            }
+            @include mobile {
+                right: 1.2rem;
+            }
         }
         &-wrapper {
             width: 100%;
@@ -55,11 +62,14 @@
 
             @include mobile {
                 height: 100%;
+                padding: 0;
             }
         }
         @include mobile {
             height: 4rem;
             z-index: 3;
+            padding: 0;
+            margin: 0;
         }
     }
     &__content {

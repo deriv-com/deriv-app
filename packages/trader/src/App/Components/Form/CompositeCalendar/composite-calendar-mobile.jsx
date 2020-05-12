@@ -1,11 +1,10 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, MobileDialog, Button } from '@deriv/components';
+import { Icon, MobileDialog, Button, DatePicker } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import DatePicker from 'App/Components/Form/DatePicker';
 import InputField from 'App/Components/Form/InputField/input-field.jsx';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 
 export const RadioButton = ({ id, className, selected_value, value, label, onChange }) => {
     return (
@@ -124,7 +123,7 @@ class CompositeCalendarMobile extends React.PureComponent {
     selectDate = (e, key) => {
         this.setState({
             selected_date_range: { value: CUSTOM_KEY },
-            [key]: e.target.value,
+            [key]: e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '',
         });
     };
 

@@ -11,6 +11,7 @@ import Input from './input.jsx';
 class InputField extends React.Component {
     render() {
         const {
+            ariaLabel,
             checked,
             className,
             classNameInlinePrefix,
@@ -163,6 +164,7 @@ class InputField extends React.Component {
 
         const input = (
             <Input
+                ariaLabel={ariaLabel}
                 changeValue={changeValue}
                 checked={checked}
                 current_focus={current_focus}
@@ -211,7 +213,7 @@ class InputField extends React.Component {
 
         const input_tooltip = (
             <Tooltip
-                className={classNames('', { 'dc-tooltip--with-label': label })}
+                className={classNames('trade-container__tooltip', { 'dc-tooltip--with-label': label })}
                 alignment='left'
                 message={has_error ? error_messages[0] : null}
                 has_error={has_error}
@@ -263,6 +265,7 @@ class InputField extends React.Component {
 // supports more than two different types of 'value' as a prop.
 // Quick Solution - Pass two different props to input field.
 InputField.propTypes = {
+    ariaLabel: PropTypes.string,
     checked: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     className: PropTypes.string,
     classNameInlinePrefix: PropTypes.string,

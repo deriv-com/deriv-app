@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Button, Icon } from '@deriv/components';
+import { Button, Div100vhContainer, Icon } from '@deriv/components';
 import React from 'react';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 
 const SuccessDialog = ({
@@ -23,7 +24,7 @@ const SuccessDialog = ({
     );
 
     return (
-        <div className='success-change'>
+        <Div100vhContainer className='success-change' is_disabled={isDesktop()} height_offset='40px'>
             <div
                 className={classNames('success-change__icon-area', {
                     'success-change__icon-area--large': icon_size === 'large',
@@ -49,7 +50,7 @@ const SuccessDialog = ({
                 )}
                 {has_submit && <Button has_effect onClick={onSubmit} text={text_submit} primary />}
             </div>
-        </div>
+        </Div100vhContainer>
     );
 };
 

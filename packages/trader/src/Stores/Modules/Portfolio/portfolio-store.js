@@ -24,7 +24,6 @@ export default class PortfolioStore extends BaseStore {
     responseQueue = [];
 
     @observable.shallow active_positions = [];
-    @observable active_positions_drawer_dialog_id = null;
 
     @action.bound
     initializePortfolio = async () => {
@@ -309,6 +308,15 @@ export default class PortfolioStore extends BaseStore {
     };
 
     @action.bound
+    populateContractUpdate({ contract_update }, contract_id) {
+        const position = this.getPositionById(contract_id);
+        if (position) {
+            Object.assign(position.contract_update, contract_update);
+            this.updatePositions();
+        }
+    }
+
+    @action.bound
     pushNewPosition(new_pos) {
         const position = formatPortfolioPosition(new_pos, this.root_store.modules.trade.active_symbols);
         this.positions.unshift(position);
@@ -444,6 +452,12 @@ export default class PortfolioStore extends BaseStore {
     @computed
     get is_empty() {
         return !this.is_loading && this.all_positions.length === 0;
+    }
+
+    @computed
+    get all_positions_filtered() {
+        // TODO: remove this once Multiplier is supported in Mobile
+        return this.all_positions.filter(p => !(isMultiplierContract(p.contract_info.contract_type) && isMobile()));
     }
 
     @computed

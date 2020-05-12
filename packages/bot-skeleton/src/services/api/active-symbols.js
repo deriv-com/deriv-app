@@ -136,6 +136,7 @@ export default class ActiveSymbols {
         if (market_options.length === 0) {
             return config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
         }
+        market_options.sort(a => (a[1] === 'synthetic_index' ? -1 : 1));
 
         const has_closed_markets = market_options.some(market_option => this.isMarketClosed(market_option[1]));
 
@@ -171,6 +172,9 @@ export default class ActiveSymbols {
 
         if (submarket_options.length === 0) {
             return config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
+        }
+        if (market === 'synthetic_index') {
+            submarket_options.sort(a => (a[1] === 'random_index' ? -1 : 1));
         }
 
         return this.sortDropdownOptions(submarket_options, this.isSubmarketClosed);

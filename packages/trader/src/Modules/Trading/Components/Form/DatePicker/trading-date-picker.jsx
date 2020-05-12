@@ -1,99 +1,198 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
-import DatePicker from 'App/Components/Form/DatePicker';
+import { DatePicker } from '@deriv/components';
+import { isTimeValid, setTime, toMoment } from '@deriv/shared/utils/date';
+import { localize } from '@deriv/translations';
+import Tooltip from 'App/Components/Elements/tooltip.jsx';
 import { connect } from 'Stores/connect';
+import ContractType from 'Stores/Modules/Trading/Helpers/contract-type';
 import { hasIntradayDurationUnit } from 'Stores/Modules/Trading/Helpers/duration';
-import { isTimeValid, setTime, toMoment } from 'Utils/Date';
 
-const TradingDatePicker = ({
-    duration_d,
-    duration_min_max,
-    duration_units_list,
-    expiry_date,
-    expiry_type,
-    is_24_hours_contract,
-    mode,
-    name,
-    onChange,
-    server_time,
-    start_time,
-    start_date,
-    symbol,
-    validation_errors,
-}) => {
-    let max_date_duration, min_date_expiry, has_today_btn, is_read_only;
-    const has_intraday_unit = hasIntradayDurationUnit(duration_units_list);
-    const min_duration = has_intraday_unit
-        ? toMoment(server_time).clone()
-        : toMoment(server_time)
-              .clone()
-              .add(duration_min_max.daily.min, 'second');
-    const moment_contract_start_date_time = setTime(
-        toMoment(min_duration),
-        isTimeValid(start_time) ? start_time : server_time.format('HH:mm:ss')
-    );
+class TradingDatePicker extends React.Component {
+    is_mounted = false;
 
-    const max_daily_duration = duration_min_max.daily ? duration_min_max.daily.max : 365 * 24 * 3600;
-    const is_duration_contract = expiry_type === 'duration';
-
-    if (is_24_hours_contract) {
-        min_date_expiry = moment_contract_start_date_time.clone().startOf('day');
-        max_date_duration = moment_contract_start_date_time
-            .clone()
-            .add(start_date ? 24 * 3600 : max_daily_duration, 'second');
-    } else {
-        min_date_expiry = moment_contract_start_date_time.clone().startOf('day');
-        max_date_duration = moment_contract_start_date_time.clone().add(max_daily_duration, 'second');
-    }
-    if (is_duration_contract) {
-        if (has_intraday_unit) {
-            min_date_expiry.add(1, 'day');
-        }
-        has_today_btn = false;
-        is_read_only = false;
-    } else {
-        has_today_btn = true;
-        is_read_only = true;
-    }
-
-    const tradingDatePickerOnChange = e => {
-        const is_same_duration_as_trade_store = e.target.name === 'duration' && duration_d === e.target.value;
-
-        if (!is_same_duration_as_trade_store) onChange(e);
+    state = {
+        disabled_days: [],
+        market_events: [],
+        duration: this.props.duration,
     };
 
-    const error_messages = is_duration_contract ? validation_errors.duration : validation_errors.expiry_date;
-    const date_value = is_duration_contract ? (duration_d || '').toString() : expiry_date;
+    componentDidMount() {
+        this.is_mounted = true;
+        this.onChangeCalendarMonth();
+    }
 
-    return (
-        <DatePicker
-            alignment='left'
-            disable_year_selector
-            disable_trading_events
-            error_messages={error_messages || []}
-            has_today_btn={has_today_btn}
-            has_range_selection={mode === 'duration'}
-            is_nativepicker={false}
-            is_read_only={is_read_only}
-            label={duration_units_list.length === 1 ? duration_units_list[0].text : null}
-            mode={mode}
-            name={name}
-            onChange={tradingDatePickerOnChange}
-            min_date={min_date_expiry}
-            max_date={max_date_duration}
-            start_date={start_date}
-            underlying={symbol}
-            value={date_value}
-        />
-    );
-};
+    componentWillUnmount() {
+        this.is_mounted = false;
+    }
+
+    get has_intraday_unit() {
+        return hasIntradayDurationUnit(this.props.duration_units_list);
+    }
+
+    get min_duration() {
+        const { duration_min_max, server_time } = this.props;
+
+        return this.has_intraday_unit
+            ? toMoment(server_time).clone()
+            : toMoment(server_time)
+                  .clone()
+                  .add(duration_min_max.daily.min, 'second');
+    }
+
+    get moment_contract_start_date_time() {
+        const { start_time, server_time } = this.props;
+
+        return setTime(
+            toMoment(this.min_duration),
+            isTimeValid(start_time) ? start_time : server_time.format('HH:mm:ss')
+        );
+    }
+
+    get max_daily_duration() {
+        const { duration_min_max } = this.props;
+
+        return duration_min_max.daily ? duration_min_max.daily.max : 365 * 24 * 3600;
+    }
+
+    get min_date_expiry() {
+        const is_duration_contract = this.props.expiry_type === 'duration';
+        const min_date = this.moment_contract_start_date_time.clone().startOf('day');
+
+        return is_duration_contract && this.has_intraday_unit ? min_date.add(1, 'day') : min_date;
+    }
+
+    get max_date_duration() {
+        const { is_24_hours_contract, start_date } = this.props;
+
+        return is_24_hours_contract
+            ? this.moment_contract_start_date_time
+                  .clone()
+                  .add(start_date ? 24 * 3600 : this.max_daily_duration, 'second')
+            : this.moment_contract_start_date_time.clone().add(this.max_daily_duration, 'second');
+    }
+
+    get has_range_selection() {
+        return this.props.mode === 'duration';
+    }
+
+    get footer() {
+        if (!this.has_range_selection) return null;
+
+        const { duration } = this.state;
+
+        if (!duration) return localize('Minimum duration is 1 day');
+        if (+duration === 1) return localize('Duration: {{duration}} day', { duration });
+        return localize('Duration: {{duration}} days', { duration });
+    }
+
+    get datepicker_value() {
+        return this.has_range_selection
+            ? toMoment()
+                  .add(this.state.duration, 'days')
+                  .format('YYYY-MM-DD')
+            : this.state.selected_date || this.min_date_expiry;
+    }
+
+    onChange = e => {
+        if (this.is_mounted) {
+            if (this.has_range_selection) {
+                this.setState({
+                    duration: e.duration,
+                });
+            } else if (e.target.value) {
+                this.setState({
+                    selected_date: toMoment(e.target.value),
+                });
+            }
+        }
+
+        const { onChange } = this.props;
+        if (typeof onChange === 'function' && e.target) {
+            onChange({
+                target: {
+                    name: e.target.name,
+                    value: this.has_range_selection ? e.target.value : toMoment(e.target.value).format('YYYY-MM-DD'),
+                },
+            });
+        }
+    };
+
+    onChangeCalendarMonth = async (e = toMoment().format('YYYY-MM-DD')) => {
+        const market_events = [];
+        let disabled_days = [];
+
+        const events = await ContractType.getTradingEvents(e, this.props.symbol);
+        events.forEach(evt => {
+            const dates = evt.dates.split(', '); // convert dates str into array
+            const idx = dates.indexOf('Fridays');
+            if (idx !== -1) {
+                disabled_days = [6, 0]; // Sat, Sun
+            }
+            market_events.push({
+                dates,
+                descrip: evt.descrip,
+            });
+        });
+
+        if (this.is_mounted) {
+            this.setState({
+                disabled_days,
+                market_events,
+            });
+        }
+    };
+
+    render() {
+        const { id, mode, name, validation_errors } = this.props;
+
+        const has_error = !!validation_errors[name].length;
+
+        return (
+            <div
+                className={classNames('input-field', {
+                    'input-field--has-error': has_error,
+                })}
+            >
+                <Tooltip
+                    className='trade-container__tooltip'
+                    alignment='left'
+                    message={has_error ? validation_errors[name][0] : undefined}
+                    has_error={has_error}
+                >
+                    <DatePicker
+                        id={id}
+                        alignment='left'
+                        display_format='DD MMM YYYY'
+                        show_leading_icon
+                        error={validation_errors[name].length ? '' : undefined}
+                        mode={mode}
+                        max_date={this.max_date_duration}
+                        min_date={this.min_date_expiry}
+                        name={name}
+                        onChange={this.onChange}
+                        onChangeCalendarMonth={this.onChangeCalendarMonth}
+                        has_range_selection={this.has_range_selection || undefined}
+                        has_today_btn={this.has_range_selection ? undefined : true}
+                        footer={this.footer}
+                        events={this.state.market_events}
+                        disabled_days={this.state.disabled_days}
+                        keep_open={true}
+                        readOnly={!this.has_range_selection}
+                        value={this.datepicker_value}
+                    />
+                </Tooltip>
+            </div>
+        );
+    }
+}
 
 TradingDatePicker.propTypes = {
     duration: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     duration_min_max: PropTypes.object,
     duration_units_list: MobxPropTypes.arrayOrObservableArray,
-    expiry_date: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     expiry_type: PropTypes.string,
     is_24_hours_contract: PropTypes.bool,
     mode: PropTypes.string,
@@ -105,10 +204,10 @@ TradingDatePicker.propTypes = {
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules, common, ui }) => ({
+export default connect(({ modules, common }) => ({
+    duration: modules.trade.duration,
     duration_min_max: modules.trade.duration_min_max,
     duration_units_list: modules.trade.duration_units_list,
-    expiry_date: modules.trade.expiry_date,
     expiry_type: modules.trade.expiry_type,
     onChange: modules.trade.onChange,
     server_time: common.server_time,
@@ -116,5 +215,4 @@ export default connect(({ modules, common, ui }) => ({
     start_time: modules.trade.start_time,
     symbol: modules.trade.symbol,
     validation_errors: modules.trade.validation_errors,
-    duration_d: ui.duration_d,
 }))(TradingDatePicker);

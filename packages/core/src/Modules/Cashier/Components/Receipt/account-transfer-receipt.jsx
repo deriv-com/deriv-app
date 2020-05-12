@@ -4,38 +4,51 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 
 class AccountTransferReceipt extends React.Component {
+    openStatement = () => {
+        this.props.history.push(routes.statement);
+        this.props.resetAccountTransfer();
+    };
+
     componentWillUnmount() {
         this.props.resetAccountTransfer();
     }
+
+    navigateToStatement = () => {
+        this.props.history.push(routes.statement);
+    };
 
     render() {
         const { receipt, selected_from, selected_to } = this.props;
 
         return (
             <div className='cashier__wrapper account-transfer__receipt'>
-                <Icon icon='IcCashierTransferDone' className='account-transfer__receipt-icon' size={128} />
                 <h2 className='cashier__header'>
-                    <Localize i18n_default_text='Your funds have been transferred.' />
+                    <Localize i18n_default_text='Your funds have been transferred' />
                 </h2>
                 <div className='cashier__transferred-amount cashier__text--bold'>
-                    <span className={classNames('symbols', `symbols--${selected_from.currency.toLowerCase()}`)} />
+                    <span className={classNames('symbols', `symbols--${selected_from.currency?.toLowerCase()}`)} />
                     {receipt.amount_transferred}
                 </div>
                 <div className='cashier__transferred-details-wrapper'>
                     <span className='account-transfer__transfer-details-from'>
+                        <div className='cashier__transferred-details'>
+                            <div className='cashier__text--bold cashier__text--right'>{selected_from.text}</div>
+                            <div className='cashier__text--faint'>
+                                {selected_from.value?.replace(/^(MT[DR]?)/i, '')}
+                            </div>
+                        </div>
                         <Icon
                             icon={
                                 selected_from.mt_icon
                                     ? `IcMt5-${selected_from.mt_icon}`
-                                    : `IcCurrency-${selected_from.currency.toLowerCase()}`
+                                    : `IcCurrency-${selected_from.currency?.toLowerCase()}`
                             }
+                            size={32}
                         />
-                        <span className='cashier__transferred-details'>
-                            <span className='cashier__text--bold'>{selected_from.text}</span>
-                        </span>
                     </span>
                     <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
                     <span className='account-transfer__transfer-details-to'>
@@ -43,22 +56,34 @@ class AccountTransferReceipt extends React.Component {
                             icon={
                                 selected_to.mt_icon
                                     ? `IcMt5-${selected_to.mt_icon}`
-                                    : `IcCurrency-${selected_to.currency.toLowerCase()}`
+                                    : `IcCurrency-${selected_to.currency?.toLowerCase()}`
                             }
+                            size={32}
                         />
-                        <span className='cashier__transferred-details'>
-                            <span className='cashier__text--bold'>{selected_to.text}</span>
-                        </span>
+                        <div className='cashier__transferred-details'>
+                            <div className='cashier__text--bold'>{selected_to.text}</div>
+                            <div className='cashier__text--faint'>{selected_to.value?.replace(/^(MT[DR]?)/i, '')}</div>
+                        </div>
                     </span>
                 </div>
-                <Button
-                    className='account-transfer__button-done'
-                    has_effect
-                    text={localize('Done')}
-                    onClick={this.props.resetAccountTransfer}
-                    primary
-                    large
-                />
+                <div className='account-transfer__form-submit'>
+                    <Button
+                        className='account-transfer__button'
+                        has_effect
+                        text={localize('View in statement')}
+                        onClick={this.openStatement}
+                        secondary
+                        large
+                    />
+                    <Button
+                        className='account-transfer__button'
+                        has_effect
+                        text={localize('Make a new transfer')}
+                        onClick={this.props.resetAccountTransfer}
+                        primary
+                        large
+                    />
+                </div>
             </div>
         );
     }

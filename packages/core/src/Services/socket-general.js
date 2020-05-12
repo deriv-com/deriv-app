@@ -195,10 +195,9 @@ const BinarySocketGeneral = (() => {
     const authorizeAccount = response => {
         client_store.responseAuthorize(response);
         forgetAndSubscribeBalance();
-        WS.getSettings();
+        WS.storage.getSettings();
         WS.getAccountStatus();
         WS.storage.payoutCurrencies();
-        WS.storage.mt5LoginList();
         setResidence(response.authorize.country || client_store.accounts[client_store.loginid].residence);
         if (!client_store.is_virtual) {
             WS.getSelfExclusion();

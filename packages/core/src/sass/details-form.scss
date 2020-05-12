@@ -1,34 +1,6 @@
-@import 'app/_common/base/index';
-
 .details-form {
-    flex-grow: 1;
+    display: grid;
 
-    & .datepicker {
-        max-width: initial;
-        position: relative;
-
-        &--active-label {
-            label {
-                color: var(--text-general);
-            }
-        }
-        & .icon-datepicker {
-            top: 1.2rem;
-            right: 1rem;
-            position: absolute;
-        }
-        &__picker {
-            margin-top: 8px;
-        }
-        .calendar__cell {
-            &--disabled {
-                color: var(--text-disabled) !important;
-            }
-            &--other:not(.calendar__cell--today) {
-                color: var(--text-prominent);
-            }
-        }
-    }
     &__elements {
         flex-grow: 1;
         margin: 1.2rem auto;
@@ -37,12 +9,45 @@
         &-container {
             height: calc(100% - 76px);
             overflow: hidden;
+
+            @include mobile {
+                height: auto;
+                width: calc(100% - 3.2rem);
+                overflow: unset;
+                margin: 1.6rem auto;
+            }
         }
         .dc-input {
             label {
                 top: 1.2rem;
                 background-color: var(--general-main-2);
+
+                @include mobile {
+                    background-color: var(--general-section-2);
+                }
             }
+            @include desktop {
+                /* To get rid of ugly chrome autofill shadow dom-applied background color */
+                &__field {
+                    &:-webkit-autofill {
+                        -webkit-box-shadow: 0 0 0 30px var(--general-main-2) inset !important;
+
+                        &:hover,
+                        &:focus,
+                        &:active {
+                            -webkit-box-shadow: 0 0 0 30px var(--general-main-2) inset !important;
+                        }
+                    }
+                }
+            }
+        }
+        .dc-datepicker__input {
+            .dc-input__field {
+                background-color: var(--general-main-2);
+            }
+        }
+        .dc-select-native {
+            margin-bottom: 3.2rem;
         }
         .dc-dropdown__display {
             background-color: var(--general-main-2);
@@ -51,11 +56,30 @@
                 background-color: var(--general-main-2);
             }
         }
+        @include mobile {
+            width: 100%;
+            margin: 0;
+            padding: 0 1.6rem;
+        }
     }
     &__description {
         text-align: center;
         font-size: var(--text-size-xxs);
         margin: 1.6rem 0;
         color: var(--text-general);
+
+        @include mobile {
+            text-align: left;
+            margin: 0 2.4rem;
+            line-height: 20px;
+            color: var(--text-less-prominent);
+        }
+    }
+    @include mobile {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    @include desktop {
+        grid-template-rows: 4rem minmax(10rem, 1fr);
     }
 }

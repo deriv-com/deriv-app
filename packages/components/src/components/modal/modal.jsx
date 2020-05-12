@@ -39,10 +39,20 @@ class ModalElement extends React.PureComponent {
 
     handleClickOutside = event => {
         const path = event.path || (event.composedPath && event.composedPath());
-        if (this.props.has_close_icon && this.wrapper_ref && !path.some(el => el === this.wrapper_ref)) {
+        if (
+            this.props.has_close_icon &&
+            this.wrapper_ref &&
+            !path.some(el => el === this.wrapper_ref) &&
+            !(this.props.elements_to_ignore && path.find(el => this.props.elements_to_ignore.includes(el))) &&
+            !this.is_datepicker_visible
+        ) {
             this.props.toggleModal();
         }
     };
+
+    get is_datepicker_visible() {
+        return this.state.modal_root.querySelectorAll('.dc-datepicker__picker').length;
+    }
 
     render() {
         const {
@@ -134,6 +144,7 @@ ModalElement.propTypes = {
     small: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     toggleModal: PropTypes.func,
+    elements_to_ignore: PropTypes.array,
 };
 
 const Modal = ({
@@ -153,6 +164,7 @@ const Modal = ({
     title,
     toggleModal,
     width,
+    elements_to_ignore,
 }) => (
     <CSSTransition
         appear
@@ -182,6 +194,7 @@ const Modal = ({
             onUnmount={onUnmount}
             small={small}
             width={width}
+            elements_to_ignore={elements_to_ignore}
         >
             {children}
         </ModalElement>
@@ -212,6 +225,7 @@ Modal.propTypes = {
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     toggleModal: PropTypes.func,
     width: PropTypes.string,
+    elements_to_ignore: PropTypes.array,
 };
 
 export default Modal;

@@ -16,7 +16,10 @@ export default class MT5Store extends BaseStore {
     @observable error_message = '';
 
     @observable is_mt5_success_dialog_enabled = false;
+    @observable is_mt5_financial_stp_modal_open = false;
     @observable is_mt5_password_modal_enabled = false;
+
+    @observable is_mt5_pending_dialog_open = false;
 
     @observable current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
 
@@ -55,6 +58,7 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     onMount() {
+        this.checkShouldOpenAccount();
         this.onRealAccountSignupEnd(this.realAccountSignupEndListener);
         this.root_store.ui.is_mt5_page = true;
     }
@@ -63,6 +67,17 @@ export default class MT5Store extends BaseStore {
     onUnmount() {
         this.disposeRealAccountSignupEnd();
         this.root_store.ui.is_mt5_page = false;
+    }
+
+    // other platforms can redirect to here using account switcher's `Add` account button
+    // so in that case we should open the corresponding account opening modal on load/component update
+    checkShouldOpenAccount() {
+        const account_type = sessionStorage.getItem('open_mt5_account_type');
+        if (account_type) {
+            const [category, type] = account_type.split('.');
+            this.createMT5Account({ category, type });
+            sessionStorage.removeItem('open_mt5_account_type');
+        }
     }
 
     @action.bound
@@ -114,10 +129,10 @@ export default class MT5Store extends BaseStore {
     getLoginDetails({ category, type }) {
         let tmp_type = '';
         switch (type) {
-            case 'synthetic_indices':
+            case 'synthetic':
                 tmp_type = 'svg';
                 break;
-            case 'standard':
+            case 'financial':
                 tmp_type = 'svg_standard';
                 break;
             default:
@@ -155,29 +170,32 @@ export default class MT5Store extends BaseStore {
     @action.bound
     beginRealSignupForMt5() {
         sessionStorage.setItem('post_real_account_signup', JSON.stringify(this.account_type));
-        this.root_store.ui.is_real_acc_signup_on = true;
+        this.root_store.ui.openRealAccountSignup();
     }
 
     realMt5Signup() {
-        // Check if the user has real account
-        if (!this.root_store.client.has_active_real_account || !this.root_store.client.currency) {
-            this.beginRealSignupForMt5();
-        } else {
-            switch (this.account_type.type) {
-                case 'standard':
-                    this.enableMt5PasswordModal();
-                    break;
-                case 'advanced':
-                    // eslint-disable-next-line no-console
-                    console.log('Open Real advanced account for user');
-                    break;
-                case 'synthetic_indices':
-                    // eslint-disable-next-line no-console
-                    this.enableMt5PasswordModal();
-                    break;
-                default:
-                    throw new Error('Cannot determine mt5 account signup.');
-            }
+        switch (this.account_type.type) {
+            case 'financial':
+                this.enableMt5PasswordModal();
+                break;
+            case 'financial_stp':
+                this.root_store.client.fetchResidenceList();
+                this.root_store.client.fetchStatesList();
+                this.root_store.client.fetchAccountSettings();
+                this.enableMt5FinancialStpModal();
+                break;
+            case 'synthetic':
+                this.enableMt5PasswordModal();
+                break;
+            default:
+                throw new Error('Cannot determine mt5 account signup.');
+        }
+    }
+
+    @action.bound
+    enableMt5FinancialStpModal() {
+        if (this.account_type.category === 'real' && this.account_type.type === 'financial_stp') {
+            this.is_mt5_financial_stp_modal_open = true;
         }
     }
 
@@ -211,6 +229,42 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
+    storeProofOfAddress(file_uploader_ref, values, { setStatus }) {
+        return new Promise((resolve, reject) => {
+            setStatus({ msg: '' });
+            this.setState({ is_btn_loading: true });
+
+            WS.setSettings(values).then(data => {
+                if (data.error) {
+                    setStatus({ msg: data.error.message });
+                    reject(data);
+                } else {
+                    this.root_store.fetchAccountSettings();
+                    // force request to update settings cache since settings have been updated
+                    file_uploader_ref.current.upload().then(api_response => {
+                        if (api_response.warning) {
+                            setStatus({ msg: api_response.message });
+                            reject(api_response);
+                        } else {
+                            WS.authorized.storage.getAccountStatus().then(({ error, get_account_status }) => {
+                                if (error) {
+                                    reject(error);
+                                }
+                                const { identity } = get_account_status.authentication;
+                                const has_poi = !(identity && identity.status === 'none');
+                                resolve({
+                                    identity,
+                                    has_poi,
+                                });
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    @action.bound
     async submitMt5Password(mt5_password, setSubmitting) {
         const response = await this.openAccount(mt5_password);
         if (!response.error) {
@@ -218,7 +272,7 @@ export default class MT5Store extends BaseStore {
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
             runInAction(() => {
                 this.setMt5Account(response.mt5_new_account);
-                this.root_store.ui.is_mt5_password_modal_enabled = false;
+                this.is_mt5_password_modal_enabled = false;
                 this.has_mt5_error = false;
                 setTimeout(() => this.setMt5SuccessDialog(true), 300);
             });
@@ -233,6 +287,11 @@ export default class MT5Store extends BaseStore {
     @action.bound
     toggleCompareAccountsModal() {
         this.is_compare_accounts_visible = !this.is_compare_accounts_visible;
+    }
+
+    @action.bound
+    disableMt5FinancialStpModal() {
+        this.is_mt5_financial_stp_modal_open = false;
     }
 
     @action.bound
@@ -261,13 +320,24 @@ export default class MT5Store extends BaseStore {
         }
     }
 
+    @action.bound
+    closeMT5PendingDialog() {
+        this.is_mt5_pending_dialog_open = false;
+    }
+
+    @action.bound
+    openPendingDialog() {
+        setTimeout(
+            runInAction(() => {
+                this.is_mt5_pending_dialog_open = true;
+            }),
+            300
+        );
+    }
+
     static async changePassword({ login, old_password, new_password, password_type }) {
-        const response = await WS.authorized.mt5PasswordChange(login, old_password, new_password, password_type);
+        const { error } = await WS.authorized.mt5PasswordChange(login, old_password, new_password, password_type);
 
-        if (response.error) {
-            return response.error.message;
-        }
-
-        return undefined;
+        return error?.message;
     }
 }

@@ -34,7 +34,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 {
                     type: 'field_label',
                     name: 'CURRENCY_LIST',
-                    text: config.lists.CURRENCY[0],
+                    text: CurrencyUtils.getCurrencyDisplayCode(config.lists.CURRENCY[0]),
                 },
                 {
                     type: 'input_value',
@@ -357,13 +357,17 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     },
     setCurrency() {
         const currency_field = this.getField('CURRENCY_LIST');
-        const { client } = DBotStore.instance;
-        currency_field.setText((client && client.currency) || 'USD');
+        const { currency } = DBotStore.instance.client;
+        currency_field.setText(CurrencyUtils.getCurrencyDisplayCode(currency));
     },
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {
         return {
-            AMOUNT: null,
+            AMOUNT: input => {
+                const input_number = Number(input);
+                this.error_message = localize('Amount must be a positive number.');
+                return !isNaN(input_number) && input_number <= 0;
+            },
             DURATION: input => {
                 const input_number = Number(input);
 
@@ -396,7 +400,7 @@ Blockly.Blocks.trade_definition_tradeoptions_payout = Blockly.Blocks.trade_defin
 
 Blockly.JavaScript.trade_definition_tradeoptions = block => {
     const amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT') || '0';
-    const currency = block.getFieldValue('CURRENCY_LIST');
+    const { currency } = DBotStore.instance.client;
     const duration_type = block.getFieldValue('DURATIONTYPE_LIST') || '0';
     const duration_value = Blockly.JavaScript.valueToCode(block, 'DURATION') || '0';
 

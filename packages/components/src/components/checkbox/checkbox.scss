@@ -3,6 +3,9 @@
     justify-content: flex-start;
     cursor: pointer;
     align-items: center;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
 
     &__input {
         display: none;
@@ -13,9 +16,10 @@
         height: 16px;
         transition: 0.3s ease-in-out;
         flex-shrink: 0;
-        margin: 2px 8px 0 0;
+        margin: 0 8px;
         border-radius: 2px;
         align-self: center;
+        box-sizing: border-box;
         border: 2px solid var(--text-less-prominent);
 
         &--active {

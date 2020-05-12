@@ -1,15 +1,30 @@
 .buy-sell {
-    margin-top: 1.6rem;
-    padding-top: 1.6rem;
-
     &__header {
-        background: var(--general-section-1);
+        background: var(--state-disabled);
         padding: 0.4rem;
+        margin: 2.4rem 0 1.6rem 0;
         width: fit-content;
         border-radius: 4px;
 
         &__filters {
-            width: 12rem;
+            width: 16.8rem;
+            height: 3.6rem;
+
+            .dc-button-menu {
+                &__wrapper {
+                    background-color: var(--state-disabled);
+
+                    .dc-button-menu {
+                        &__button,
+                        &__button--active {
+                            height: 100%;
+                        }
+                    }
+                }
+                &--highlight {
+                    background-color: var(--state-normal) !important;
+                }
+            }
         }
     }
     &__price {
@@ -73,6 +88,16 @@
                 margin-bottom: 1.6rem;
                 align-items: center;
             }
+            &--textarea {
+                margin-top: 4.3rem;
+
+                .dc-input__hint {
+                    top: 9.7rem;
+                }
+                .dc-input__counter {
+                    top: 9.7rem;
+                }
+            }
             &--icon {
                 width: 3.66rem;
                 margin: 0 1.6rem;
@@ -96,6 +121,7 @@
             &--text {
                 color: var(--text-general);
                 font-size: var(--text-size-xs);
+                word-break: break-word;
             }
             &--strong {
                 font-weight: bold;
@@ -117,5 +143,24 @@
             cursor: pointer;
             fill: var(--text-general);
         }
+    }
+    &__icon {
+        border-radius: 50%;
+        padding: 4px;
+        color: var(--text-colored-background);
+        margin-right: 8px;
+        font-size: 12px;
+        line-height: 1.33;
+        width: 24px;
+        height: 24px;
+        white-space: nowrap;
+    }
+    &__table-row {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+    }
+    &__button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }

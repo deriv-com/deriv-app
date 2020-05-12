@@ -23,7 +23,6 @@ const AccountInfo = ({
     disableApp,
     enableApp,
     is_dialog_on,
-    is_upgrade_enabled,
     is_virtual,
     toggleDialog,
     is_disabled,
@@ -40,14 +39,29 @@ const AccountInfo = ({
                 onClick={is_disabled ? undefined : toggleDialog}
             >
                 <span className='acc-info__id'>
-                    <Icon
-                        icon={`IcCurrency-${is_virtual ? 'virtual' : currency || 'Unknown'}`}
-                        className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
-                        size={24}
-                    />
+                    <DesktopWrapper>
+                        <Icon
+                            icon={`IcCurrency-${is_virtual ? 'virtual' : currency || 'Unknown'}`}
+                            className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
+                            size={24}
+                        />
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        {(is_virtual || currency) && (
+                            <Icon
+                                icon={`IcCurrency-${is_virtual ? 'virtual' : currency}`}
+                                className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
+                                size={24}
+                            />
+                        )}
+                    </MobileWrapper>
                 </span>
                 {typeof balance !== 'undefined' && (
-                    <p className='acc-info__balance'>
+                    <p
+                        className={classNames('acc-info__balance', {
+                            'acc-info__balance--no-currency': !currency && !is_virtual,
+                        })}
+                    >
                         <span
                             className={classNames('symbols', {
                                 [`symbols--${(currency || '').toLowerCase()}`]: currency,
@@ -70,7 +84,6 @@ const AccountInfo = ({
                 disableApp={disableApp}
                 enableApp={enableApp}
                 toggle={toggleDialog}
-                is_upgrade_enabled={is_upgrade_enabled}
             />
         </MobileWrapper>
         <DesktopWrapper>
@@ -85,11 +98,7 @@ const AccountInfo = ({
                 unmountOnExit
             >
                 <div className='acc-switcher__wrapper'>
-                    <AccountSwitcher
-                        is_visible={is_dialog_on}
-                        toggle={toggleDialog}
-                        is_upgrade_enabled={is_upgrade_enabled}
-                    />
+                    <AccountSwitcher is_visible={is_dialog_on} toggle={toggleDialog} />
                 </div>
             </CSSTransition>
         </DesktopWrapper>
@@ -103,7 +112,6 @@ AccountInfo.propTypes = {
     currency: PropTypes.string,
     is_dialog_on: PropTypes.bool,
     is_disabled: PropTypes.bool,
-    is_upgrade_enabled: PropTypes.bool,
     is_virtual: PropTypes.bool,
     loginid: PropTypes.string,
     toggleDialog: PropTypes.func,

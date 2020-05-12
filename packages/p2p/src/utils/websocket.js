@@ -102,7 +102,7 @@ const getModifiedP2POrder = response => {
     const price_rate = +response.rate;
     const transaction_amount = +response.price;
     const payment_method = map_payment_method.bank_transfer; // TODO: [p2p-replace-with-api] add payment method to order details once API has it
-    const chat_channel_url = response.chat_channel_url;
+    const { chat_channel_url } = response;
     // const payment_method = response.payment_method;
 
     return {

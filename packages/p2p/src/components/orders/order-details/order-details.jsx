@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Dialog } from '@deriv/components';
-import { localize, Localize } from 'Components/i18next';
+import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import OrderDetailsStatusBlock from './order-details-status-block.jsx';
 import OrderInfoBlock from './order-info-block.jsx';
@@ -10,7 +10,6 @@ import OrderDetailsTimerBlock from './order-details-timer-block.jsx';
 import OrderActionsBlock from './order-actions-block.jsx';
 import OrderDetailsResultMessage from './order-details-result-message.jsx';
 import Popup from '../popup.jsx';
-import { Button } from '@deriv/components';
 
 import './order-details.scss';
 
@@ -25,7 +24,6 @@ const OrderDetails = ({ order_details }) => {
         display_price_rate,
         display_transaction_amount,
         is_buyer,
-        is_buyer_confirmed,
         is_expired,
         offer_currency,
         is_completed,
@@ -37,7 +35,7 @@ const OrderDetails = ({ order_details }) => {
     } = order_details;
     const [show_popup, setShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
-    const { email_domain, advertiser_id: ad_advertiser_id } = React.useContext(Dp2pContext);
+    const { advertiser_id: ad_advertiser_id } = React.useContext(Dp2pContext);
     const is_my_ad = advertiser_id === ad_advertiser_id;
     const onCancelClick = () => setShowPopup(false);
     const handleShowPopup = options => {

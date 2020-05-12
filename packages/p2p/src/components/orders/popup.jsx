@@ -15,7 +15,6 @@ class Popup extends Component {
     handleSubmit = (values, { setStatus, setSubmitting }) => {
         // TODO: [p2p-remove-console] this console is to avoid unused variable eslint linter
         // eslint-disable-next-line no-console
-        console.log(values);
         this.props.onClickConfirm(setStatus);
         setSubmitting(false);
     };
@@ -62,7 +61,6 @@ class Popup extends Component {
                                 <Form noValidate>
                                     <ThemedScrollbars autoHide style={{ height: '128px' }}>
                                         <div className='orders__popup-content'>
-                                            {console.log(message)}
                                             {message}
                                             <div className='orders__popup-field'>
                                                 <Field name='need_confirmation'>

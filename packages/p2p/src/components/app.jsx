@@ -129,7 +129,10 @@ class App extends Component {
         }
     };
 
-    setAdvertiserInfo = async () => await requestWS({ p2p_advertiser_info: 1 });
+    setAdvertiserInfo = async () => {
+        const advertiser_info = await requestWS({ p2p_advertiser_info: 1 });
+        return advertiser_info;
+    };
 
     componentDidMount() {
         this.setState({ advertiser_info: this.setAdvertiserInfo() });

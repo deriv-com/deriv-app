@@ -1180,7 +1180,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     fetchStatesList() {
         return new Promise((resolve, reject) => {
-            WS.storage
+            WS.authorized.storage
                 .statesList({
                     states_list: this.accounts[this.loginid].residence,
                 })

@@ -99,6 +99,7 @@ export default class LoadModalStore {
                     startScale: config.workspaces.previewWorkspaceStartScale,
                 },
                 readOnly: true,
+                scrollbars: true,
             });
         } else {
             this.recent_workspace.clear();
@@ -200,6 +201,7 @@ export default class LoadModalStore {
                         startScale: config.workspaces.previewWorkspaceStartScale,
                     },
                     readOnly: true,
+                    scrollbars: true,
                 });
                 load_options.workspace = this.local_workspace;
             } else {

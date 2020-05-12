@@ -115,6 +115,7 @@ class AccountWizard extends React.Component {
 
     getCountryCode = async () => {
         await this.props.fetchResidenceList();
+        this.props.fetchStatesList();
         const response = this.props.residence_list.find(item => item.value === this.props.residence);
         if (!response || !response.phone_idd) return '';
         return `+${response.phone_idd}`;
@@ -270,7 +271,7 @@ class AccountWizard extends React.Component {
                             </div>
                         )}
                     </DesktopWrapper>
-                    <Div100vhContainer className='account-wizard__body' is_disabled={isDesktop()} height_offset='40px'>
+                    <Div100vhContainer className='account-wizard__body' is_disabled={isDesktop()} height_offset='110px'>
                         <BodyComponent
                             value={this.getCurrent('form_value')}
                             index={this.state_index}
@@ -313,5 +314,7 @@ export default connect(({ client }) => ({
     can_upgrade_to: client.can_upgrade_to,
     residence: client.residence,
     residence_list: client.residence_list,
+    states_list: client.states_list,
+    fetchStatesList: client.fetchStatesList,
     fetchResidenceList: client.fetchResidenceList,
 }))(AccountWizard);

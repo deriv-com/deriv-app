@@ -1,5 +1,12 @@
 import { help_content_config, help_content_types } from './help-content/help-content.config';
-import { load, save, scrollWorkspace, runGroupedEvents, runIrreversibleEvents } from './utils/index';
+import {
+    load,
+    save,
+    scrollWorkspace,
+    updateWorkspaceName,
+    runGroupedEvents,
+    runIrreversibleEvents,
+} from './utils/index';
 
 export default {
     load,
@@ -9,4 +16,5 @@ export default {
     runIrreversibleEvents,
     save,
     scrollWorkspace,
+    updateWorkspaceName,
 };

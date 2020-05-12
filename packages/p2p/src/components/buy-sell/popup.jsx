@@ -183,8 +183,10 @@ class Popup extends Component {
                                                                     hint={localize(
                                                                         'Bank name, account number, beneficiary name'
                                                                     )}
-                                                                    label={localize('Your bank details')}
+                                                                    label={localize('Your payment instructions')}
                                                                     required
+                                                                    has_character_counter
+                                                                    max_characters={300}
                                                                 />
                                                             )}
                                                         </Field>
@@ -199,6 +201,8 @@ class Popup extends Component {
                                                                     error={touched.contact_info && errors.contact_info}
                                                                     label={localize('Your contact details')}
                                                                     required
+                                                                    has_character_counter
+                                                                    max_characters={300}
                                                                 />
                                                             )}
                                                         </Field>
@@ -276,7 +280,7 @@ class Popup extends Component {
 
         const mapped_key = {
             contact_info: localize('Contact details'),
-            payment_info: localize('Bank details'),
+            payment_info: localize('Payment instructions'),
         };
 
         const errors = {};

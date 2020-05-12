@@ -79,14 +79,15 @@ module.exports = {
         ],
     },
     plugins: [
-        new CopyPlugin([
-            {
-                from: path.resolve(__dirname, 'node_modules', '@deriv/components/lib/icon/sprite/**'),
-                to: 'sprites',
-                flatten: true, 
-            }
-        ]),
-        ...(is_publishing ? [ new MiniCssExtractPlugin({ filename: 'main.css' }) ] : []),
+        ...(is_publishing ? [ 
+            new MiniCssExtractPlugin({ filename: 'main.css' }),
+            new CopyPlugin([
+                {
+                    from: path.resolve(__dirname, 'node_modules', '@deriv/components/lib/icon/sprite/**'),
+                    to: 'sprites',
+                    flatten: true, 
+                }
+            ])] : []),
         // ...(is_release ? [] : [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ]),
     ],
     optimization: {

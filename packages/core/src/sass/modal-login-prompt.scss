@@ -1,0 +1,23 @@
+.modal-login-prompt {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    color: var(--text-general);
+
+    h2 {
+        font-size: var(--text-size-s);
+        font-weight: 700;
+        line-height: 24px;
+        margin-bottom: 8px;
+    }
+    p {
+        font-size: var(--text-size-xs);
+        line-height: 20px;
+        margin: 8px 0 16px;
+    }
+    .dc-btn {
+        margin: 8px 4px;
+    }
+}

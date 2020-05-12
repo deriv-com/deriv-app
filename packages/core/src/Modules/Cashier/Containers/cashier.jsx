@@ -15,6 +15,7 @@ import CurrencyUtils from '@deriv/shared/utils/currency';
 import { getSelectedRoute } from '@deriv/shared/utils/route';
 import { isMobile, isTouchDevice } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
+import 'Sass/app/modules/cashier.scss';
 
 const el_landscape_blocker = document.getElementById('landscape_blocker');
 

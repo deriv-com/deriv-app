@@ -5,7 +5,7 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import { Tabs } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
-import { init, requestWS, getModifiedP2POrderList, subscribeWS } from 'Utils/websocket';
+import { init, getModifiedP2POrderList, subscribeWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
@@ -38,7 +38,27 @@ class App extends Component {
             notification_count: 0,
             parameters: null,
             is_advertiser: false,
+            is_restricted: false,
         };
+    }
+
+    componentDidMount() {
+        subscribeWS(
+            {
+                p2p_advertiser_info: 1,
+                subscribe: 1,
+            },
+            this.setIsAdvertiser
+        );
+        subscribeWS(
+            {
+                p2p_order_list: 1,
+                subscribe: 1,
+                offset: 0,
+                limit: this.list_item_limit,
+            },
+            this.setP2pOrderList
+        );
     }
 
     redirectTo = (path_name, params = null) => {
@@ -49,14 +69,16 @@ class App extends Component {
         this.setState({ active_index: idx, parameters: null });
     };
 
-    setIsAdvertiser = async () => {
-        const advertiser_info = await requestWS({ p2p_advertiser_info: 1 });
-
-        /* if there is no error means it's an advertiser else it's a client */
-        if (!advertiser_info.error) {
-            await this.setState({ advertiser_id: advertiser_info.p2p_advertiser_info.id, is_advertiser: true });
+    setIsAdvertiser = response => {
+        const { p2p_advertiser_info } = response;
+        if (!response.error) {
+            this.setState({
+                advertiser_id: p2p_advertiser_info.id,
+                is_advertiser: !!p2p_advertiser_info.is_approved,
+            });
+        } else if (p2p_advertiser_info.error?.code === 'RestrictedCountry') {
+            this.setState({ is_restricted: true });
         }
-        return true;
     };
 
     handleNotifications = orders => {
@@ -106,19 +128,6 @@ class App extends Component {
         }
     };
 
-    componentDidMount() {
-        this.setIsAdvertiser();
-        subscribeWS(
-            {
-                p2p_order_list: 1,
-                subscribe: 1,
-                offset: 0,
-                limit: this.list_item_limit,
-            },
-            this.setP2pOrderList
-        );
-    }
-
     render() {
         const { active_index, order_offset, orders, parameters, notification_count } = this.state;
         const {
@@ -144,6 +153,7 @@ class App extends Component {
                     residence,
                     advertiser_id: this.state.advertiser_id,
                     is_advertiser: this.state.is_advertiser,
+                    is_restricted: this.state.is_restricted,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,
                     order_offset,

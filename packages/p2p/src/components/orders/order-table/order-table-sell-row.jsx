@@ -21,14 +21,12 @@ const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
     } = data;
 
     return (
-        <div
-            onClick={() => onOpenDetails(data)}
-            style={style}
-            className={classNames('orders__table-row', {
-                'orders__table-row--attention': is_buyer_confirmed,
-            })}
-        >
-            <Table.Row>
+        <div onClick={() => onOpenDetails(data)} style={style}>
+            <Table.Row
+                className={classNames('orders__table-row', {
+                    'orders__table-row--attention': is_buyer_confirmed,
+                })}
+            >
                 <Table.Cell>
                     {localize('Sell')} {id}
                 </Table.Cell>

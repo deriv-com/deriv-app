@@ -20,6 +20,7 @@ class MT5AccountOpeningRealFinancialStpModal extends Component {
                         enableApp={enableApp}
                         is_open={is_mt5_financial_stp_modal_open}
                         has_close_icon={true}
+                        height='740px'
                         toggleModal={disableMt5FinancialStpModal}
                     >
                         <MT5FinancialStpRealAccountSignup toggleModal={disableMt5FinancialStpModal} />

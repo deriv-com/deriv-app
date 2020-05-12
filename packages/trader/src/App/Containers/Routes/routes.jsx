@@ -2,9 +2,10 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter, matchPath, Prompt } from 'react-router';
+import Loadable from 'react-loadable';
+import { UILoader } from '@deriv/components';
 import routes from '@deriv/shared/utils/routes';
 import BinaryRoutes from 'App/Components/Routes';
-import Lazy from 'App/Containers/Lazy';
 import { connect } from 'Stores/connect';
 
 const tradePageMountingMiddleware = (route_to, action, current_pathname, cb) => {
@@ -28,16 +29,18 @@ const tradePageMountingMiddleware = (route_to, action, current_pathname, cb) => 
     return true;
 };
 
+const Error = Loadable({
+    loader: () => import(/* webpackChunkName: "error-component" */ 'App/Components/Elements/Errors'),
+    loading: UILoader,
+    render(loaded, props) {
+        const Component = loaded.default;
+        return <Component {...props} />;
+    },
+});
+
 const Routes = props => {
     if (props.has_error) {
-        return (
-            <Lazy
-                ctor={() => import(/* webpackChunkName: "error-component" */ 'App/Components/Elements/Errors')}
-                should_load={props.has_error}
-                has_progress={true}
-                {...props.error}
-            />
-        );
+        return <Error {...props.error} />;
     }
 
     return (

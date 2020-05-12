@@ -271,37 +271,35 @@ class AccountSwitcher extends React.Component {
 
         const demo_accounts = (
             <div className='acc-switcher__list-wrapper'>
-                <React.Fragment>
-                    <AccountWrapper
-                        header={<Localize i18n_default_text='Deriv Accounts' />}
-                        is_visible={this.state.is_demo_deriv_visible}
-                        toggleVisibility={() => {
-                            this.toggleVisibility('demo_deriv');
-                        }}
-                    >
-                        <div className='acc-switcher__accounts'>
-                            {this.sorted_account_list
-                                .filter(account => account.is_virtual)
-                                .map(account => (
-                                    <AccountList
-                                        key={account.loginid}
-                                        balance={this.props.accounts[account.loginid].balance}
-                                        currency={this.props.accounts[account.loginid].currency}
-                                        currency_icon={`IcCurrency-${account.icon}`}
-                                        display_type={'currency'}
-                                        has_balance={'balance' in this.props.accounts[account.loginid]}
-                                        is_disabled={account.is_disabled}
-                                        is_virtual={account.is_virtual}
-                                        loginid={account.loginid}
-                                        onClickAccount={
-                                            account.is_disabled ? undefined : this.doSwitch.bind(this, account.loginid)
-                                        }
-                                        selected_loginid={this.props.account_loginid}
-                                    />
-                                ))}
-                        </div>
-                    </AccountWrapper>
-                </React.Fragment>
+                <AccountWrapper
+                    header={<Localize i18n_default_text='Deriv Accounts' />}
+                    is_visible={this.state.is_demo_deriv_visible}
+                    toggleVisibility={() => {
+                        this.toggleVisibility('demo_deriv');
+                    }}
+                >
+                    <div className='acc-switcher__accounts'>
+                        {this.sorted_account_list
+                            .filter(account => account.is_virtual)
+                            .map(account => (
+                                <AccountList
+                                    key={account.loginid}
+                                    balance={this.props.accounts[account.loginid].balance}
+                                    currency={this.props.accounts[account.loginid].currency}
+                                    currency_icon={`IcCurrency-${account.icon}`}
+                                    display_type={'currency'}
+                                    has_balance={'balance' in this.props.accounts[account.loginid]}
+                                    is_disabled={account.is_disabled}
+                                    is_virtual={account.is_virtual}
+                                    loginid={account.loginid}
+                                    onClickAccount={
+                                        account.is_disabled ? undefined : this.doSwitch.bind(this, account.loginid)
+                                    }
+                                    selected_loginid={this.props.account_loginid}
+                                />
+                            ))}
+                    </div>
+                </AccountWrapper>
                 {this.props.is_mt5_allowed && (
                     <React.Fragment>
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />

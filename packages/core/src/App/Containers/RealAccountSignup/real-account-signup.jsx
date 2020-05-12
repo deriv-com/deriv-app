@@ -125,7 +125,7 @@ class RealAccountSignup extends Component {
                 <Localize
                     i18n_default_text='<0>You have added a Deriv {{currency}} account.</0><0>Make a deposit now to start trading.</0>'
                     values={{
-                        currency: CurrencyUtils.getCurrencyDisplayCode(currency).toUpperCase(),
+                        currency: CurrencyUtils.getCurrencyDisplayCode(currency),
                     }}
                     components={[<p key={currency} />]}
                 />
@@ -212,8 +212,8 @@ class RealAccountSignup extends Component {
         const Body = is_logged_in
             ? this.state.modal_content[this.active_modal_index].value
             : () => <ModalLoginPrompt />;
-        const has_close_icon = 
-              this.active_modal_index < 2 || this.active_modal_index === 5 || this.active_modal_index === 6;
+        const has_close_icon =
+            this.active_modal_index < 2 || this.active_modal_index === 5 || this.active_modal_index === 6;
 
         return (
             <>

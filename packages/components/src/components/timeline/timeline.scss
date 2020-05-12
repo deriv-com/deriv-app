@@ -15,7 +15,8 @@
     &__title {
         max-width: 500px;
         font-size: 14px;
-        color: var(--text-prominent);
+        margin-bottom: 16px;
+        color: white;
     }
 
     &__oval {
@@ -28,15 +29,16 @@
         margin-right: 8px;
         position: absolute;
         left: -12px;
-    }
-    &__number {
-        color: var(--text-prominent);
-        font-size: 16px;
-        font-weight: bold;
+
+        &-span {
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+        }
     }
 
     &__content {
-        margin: 16px 0;
-        color: var(--text-prominent);
+        margin-bottom: 16px;
+        color: white;
     }
 }

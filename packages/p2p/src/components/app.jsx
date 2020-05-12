@@ -32,6 +32,7 @@ class App extends Component {
 
         this.list_item_limit = 20;
         this.state = {
+            advertiser_info: null,
             active_index: 0,
             order_offset: 0,
             orders: [],
@@ -56,7 +57,7 @@ class App extends Component {
     };
 
     setIsAdvertiser = async () => {
-        const advertiser_info = await requestWS({ p2p_advertiser_info: 1 });
+        const { advertiser_info } = this.state;
         if (!advertiser_info.error) {
             await this.setState({
                 advertiser_id: advertiser_info.p2p_advertiser_info.id,
@@ -69,7 +70,7 @@ class App extends Component {
     };
 
     setChatInformation = async () => {
-        const advertiser_info = await requestWS({ p2p_advertiser_info: 1 });
+        const { advertiser_info } = this.state;
         if (advertiser_info.error) return;
 
         const app_id = '0D7CB7BD-554A-43D0-A34E-945C299B49D4'; // This is using QA10 SendBird AppId, please change to production's SendBird AppId when we deploy to production.
@@ -132,7 +133,11 @@ class App extends Component {
         this.setState({ advertiser_name });
     };
 
+    setAdvertiserInfo = async () => await requestWS({ p2p_advertiser_info: 1 });
+
     componentDidMount() {
+        this.setState({ advertiser_info: this.setAdvertiserInfo() });
+
         this.setIsAdvertiser();
         this.setChatInformation();
 

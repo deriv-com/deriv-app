@@ -89,21 +89,23 @@ class ProfitTable extends React.Component {
             ? getContractPath(row_obj.contract_id)
             : {
                   component: (
-                      <Localize
-                          i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
-                          values={{
-                              website_name,
-                          }}
-                          components={[
-                              <a
-                                  key={0}
-                                  className='link link--orange'
-                                  rel='noopener noreferrer'
-                                  target='_blank'
-                                  href={urlFor('user/profit_tablews', undefined, undefined, true)}
-                              />,
-                          ]}
-                      />
+                      <div className='unsupported-trade-type'>
+                          <Localize
+                              i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
+                              values={{
+                                  website_name,
+                              }}
+                              components={[
+                                  <a
+                                      key={0}
+                                      className='link link--orange'
+                                      rel='noopener noreferrer'
+                                      target='_blank'
+                                      href={urlFor('user/profit_tablews', undefined, undefined, true)}
+                                  />,
+                              ]}
+                          />
+                      </div>
                   ),
               };
 

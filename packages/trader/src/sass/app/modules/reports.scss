@@ -69,6 +69,12 @@ $side-padding: 1.2em;
             height: 100%;
         }
     }
+    .unsupported-trade-type {
+        position: fixed;
+        width: 100%;
+        padding: 15px 0px 10px 15px;
+        text-align: center;
+    }
 }
 
 /** @define reports-page-wrapper; weak */
@@ -615,10 +621,6 @@ $side-padding: 1.2em;
                 margin-right: 4px;
             }
         }
-    }
-    .unsupported-trade-type {
-        position: fixed;
-        padding: 15px 0px 10px 15px;
     }
 }
 

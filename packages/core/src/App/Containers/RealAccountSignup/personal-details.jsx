@@ -135,7 +135,7 @@ class PersonalDetails extends React.Component {
                                                 </Field>
                                             )}
                                             {/* TODO: [deriv-eu] Remove salutation once api is optional */}
-                                            {'salutation' in this.props.value && (
+                                            {
                                                 <Field name='salutation'>
                                                     {({ field }) => (
                                                         <Autocomplete
@@ -153,7 +153,7 @@ class PersonalDetails extends React.Component {
                                                         />
                                                     )}
                                                 </Field>
-                                            )}
+                                            }
                                             <FormInputField
                                                 name='first_name'
                                                 label={localize('First name*')}

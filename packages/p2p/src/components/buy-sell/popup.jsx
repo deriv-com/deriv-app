@@ -1,43 +1,27 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Dp2pContext from 'Components/context/dp2p-context';
 import BuySellForm from './buy-sell-form.jsx';
 import NicknameForm from './nickname-form.jsx';
 
-class Popup extends Component {
-    state = {
-        has_nickname: false,
-        loading: true,
-    };
+const Popup = ({ ad, handleClose, handleConfirm }) => {
+    const { nickname, setNickname } = React.useContext(Dp2pContext);
+    const [has_nickname, setHasNickname] = React.useState(nickname);
 
-    componentDidMount() {
-        this.checkNickname();
-    }
+    useEffect(() => {
+        setHasNickname(!!nickname);
+    }, [nickname]);
 
-    checkNickname = () => {
-        if (this.context.is_advertiser) {
-            this.setState({ has_nickname: true });
-        }
-    };
-
-    setNicknameTrue = () => {
-        this.setState({ has_nickname: true });
-    };
-
-    render() {
-        const { ad, handleClose, handleConfirm } = this.props;
-        const { has_nickname } = this.state;
-        return (
-            <div className='buy-sell__popup'>
-                {has_nickname ? (
-                    <BuySellForm ad={ad} handleClose={handleClose} handleConfirm={handleConfirm} />
-                ) : (
-                    <NicknameForm ad={ad} handleClose={handleClose} setNicknameTrue={this.setNicknameTrue} />
-                )}
-            </div>
-        );
-    }
-}
+    return (
+        <div className='buy-sell__popup'>
+            {has_nickname ? (
+                <BuySellForm ad={ad} handleClose={handleClose} handleConfirm={handleConfirm} />
+            ) : (
+                <NicknameForm ad={ad} handleClose={handleClose} setNickname={setNickname} />
+            )}
+        </div>
+    );
+};
 
 Popup.propTypes = {
     ad: PropTypes.object,
@@ -45,5 +29,4 @@ Popup.propTypes = {
     handleConfirm: PropTypes.func,
 };
 
-Popup.contextType = Dp2pContext;
 export default Popup;

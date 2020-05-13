@@ -10,7 +10,7 @@ import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
 const Orders = ({ params, navigate, chat_info }) => {
-    const { orders } = React.useContext(Dp2pContext);
+    const { orders, order_id, setOrderId } = React.useContext(Dp2pContext);
     const [order_details, setDetails] = React.useState(null);
     const [nav, setNav] = React.useState(params?.nav);
     const is_mounted = React.useRef(false);

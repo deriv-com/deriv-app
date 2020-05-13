@@ -7,15 +7,14 @@ import { requestWS } from 'Utils/websocket';
 import IconClose from 'Assets/icon-close.jsx';
 import FormError from '../form/error.jsx';
 
-const NicknameForm = ({ handleClose, setNicknameTrue }) => {
-    const handleSubmit = async (values, { setStatus, setSubmitting }) => {
-        const advertiser_create = await requestWS({ p2p_advertiser_create: 1, name: values.nickname });
+const NicknameForm = ({ handleClose, setNickname }) => {
+    const handleSubmit = (values, { setStatus, setSubmitting }) => {
+        const advertiser_create = requestWS({ p2p_advertiser_create: 1, name: values.nickname });
         if (advertiser_create.error) {
             setStatus({ error_message: advertiser_create.error.message });
-            setSubmitting(false);
-            return;
+        } else {
+            setNickname(advertiser_create.name);
         }
-        setNicknameTrue();
         setSubmitting(false);
     };
 

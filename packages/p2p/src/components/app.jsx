@@ -96,6 +96,7 @@ class App extends Component {
             this.setState({
                 advertiser_id: p2p_advertiser_info.id,
                 is_advertiser: !!p2p_advertiser_info.is_approved,
+                nickname: p2p_advertiser_info.name,
             });
         } else if (p2p_advertiser_info.error?.code === 'RestrictedCountry') {
             this.setState({ is_restricted: true });
@@ -188,8 +189,9 @@ class App extends Component {
                     local_currency_config,
                     residence,
                     advertiser_id: this.state.advertiser_id,
-                    advertiser_name: this.state.advertiser_name,
                     is_advertiser: this.state.is_advertiser,
+                    nickname: this.state.nickname,
+                    setNickname: nickname => this.setState({ nickname }),
                     is_restricted: this.state.is_restricted,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,

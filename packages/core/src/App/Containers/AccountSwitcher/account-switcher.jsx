@@ -12,11 +12,11 @@ import {
     Tabs,
     ThemedScrollbars,
 } from '@deriv/components';
+import { urlFor } from '@deriv/shared/utils/url';
+import routes from '@deriv/shared/utils/routes';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
-import { urlFor } from '_common/url';
 import { connect } from 'Stores/connect';
-import routes from 'Constants/routes';
 import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import AccountList from './account-switcher-account-list.jsx';
@@ -81,7 +81,7 @@ class AccountSwitcher extends React.Component {
         if (!this.props.is_logged_in || this.props.is_mt5_allowed) {
             this.redirectToMt5('real');
         } else {
-            window.open(urlFor('user/metatrader', undefined, undefined, true));
+            window.open(urlFor('user/metatrader', { legacy: true }));
         }
     };
 
@@ -103,7 +103,7 @@ class AccountSwitcher extends React.Component {
         if (this.props.can_upgrade_to === 'svg') {
             this.props.openRealAccountSignup();
         } else {
-            window.open(urlFor('new_account/maltainvestws', undefined, undefined, true));
+            window.open(urlFor('new_account/maltainvestws', { legacy: true }));
         }
     };
 

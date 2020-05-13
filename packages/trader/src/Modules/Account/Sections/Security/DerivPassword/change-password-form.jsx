@@ -3,9 +3,9 @@ import React from 'react';
 import { Formik } from 'formik';
 import { Button, PasswordInput, PasswordMeter } from '@deriv/components';
 import { withRouter } from 'react-router-dom';
+import routes from '@deriv/shared/utils/routes';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
-import AppRoutes from 'Constants/routes';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
@@ -23,7 +23,7 @@ class ChangePasswordForm extends React.Component {
     };
 
     handlePasswordChange = () => {
-        this.props.history.push(AppRoutes.trade);
+        this.props.history.push(routes.trade);
     };
 
     onSubmit = (values, { setSubmitting, setStatus }) => {

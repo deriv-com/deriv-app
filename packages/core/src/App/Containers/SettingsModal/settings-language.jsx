@@ -21,7 +21,7 @@ const NonClickableLink = ({ children, lang }) => (
 const LanguageLink = ({ lang }) => (
     <React.Fragment>
         <Icon
-            icon='IcFlagUk' // TODO: enable other language
+            icon={`IcFlag${lang.indexOf('_') > -1 ? lang.split('_')[1] : lang}`} // some lang codes have 2 parts like ZH_CN, so we use the second part
             className={'settings-language__language-link-flag settings-language__language-flag'}
             type={lang.replace(/(\s|_)/, '-').toLowerCase()}
         />

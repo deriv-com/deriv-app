@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { getAllRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
-import routes from 'Constants/routes';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';

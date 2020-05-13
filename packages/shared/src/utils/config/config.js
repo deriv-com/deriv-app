@@ -1,12 +1,12 @@
 // const Cookies = require('js-cookie');
-const isBot = require('Utils/PlatformSwitcher/platform-switcher').isBot;
+import { isBot } from '../platform/platform';
 
 /*
  * Configuration values needed in js codes
  *
  * NOTE:
  * Please use the following command to avoid accidentally committing personal changes
- * git update-index --assume-unchanged src/javascript/config.js
+ * git update-index --assume-unchanged packages/shared/src/utils/config.js
  *
  */
 
@@ -14,19 +14,18 @@ const domain_app_ids = {
     // these domains as supported "production domains"
     'deriv.app': 16929,
 };
+const binary_desktop_app_id = 14473;
 
-const getCurrentProductionDomain = () =>
+export const getCurrentProductionDomain = () =>
     !/^staging\./.test(window.location.hostname) &&
     Object.keys(domain_app_ids).find(domain => new RegExp(`.${domain}$`, 'i').test(window.location.hostname));
 
-const isProduction = () => {
+export const isProduction = () => {
     const all_domains = Object.keys(domain_app_ids).map(domain => `(www\\.)?${domain.replace('.', '\\.')}`);
     return new RegExp(`^(${all_domains.join('|')})$`, 'i').test(window.location.hostname);
 };
 
-const binary_desktop_app_id = 14473;
-
-const getAppId = () => {
+export const getAppId = () => {
     let app_id = null;
     const user_app_id = ''; // you can insert Application ID of your registered application here
     const config_app_id = window.localStorage.getItem('config.app_id');
@@ -52,7 +51,7 @@ const getAppId = () => {
     return app_id;
 };
 
-const getSocketURL = () => {
+export const getSocketURL = () => {
     const local_storage_server_url = window.localStorage.getItem('config.server_url');
     if (local_storage_server_url) return local_storage_server_url;
 
@@ -70,12 +69,4 @@ const getSocketURL = () => {
     const server_url = `${server}.binaryws.com`;
 
     return server_url;
-};
-
-module.exports = {
-    domain_app_ids,
-    getCurrentProductionDomain,
-    isProduction,
-    getAppId,
-    getSocketURL,
 };

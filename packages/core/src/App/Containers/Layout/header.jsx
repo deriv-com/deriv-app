@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { getDecimalPlaces } from '@deriv/shared/utils/currency';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
@@ -14,23 +15,24 @@ import { clientNotifications } from 'Stores/Helpers/client-notifications';
 import { header_links } from 'App/Constants/header-links';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import routes from 'Constants/routes';
 
 class Header extends React.Component {
     toggle_menu_drawer_ref = React.createRef();
+
+    addUpdateNotification = () => {
+        this.props.addNotificationMessage(clientNotifications().new_version_available);
+    };
+
     onClickDeposit = () => {
         this.props.history.push(routes.cashier_deposit);
     };
 
-    // eslint-disable-next-line class-methods-use-this
     componentWillUnmount() {
-        document.removeEventListener('UpdateAvailable');
+        document.removeEventListener('UpdateAvailable', this.addUpdateNotification);
     }
 
     componentDidMount() {
-        document.addEventListener('UpdateAvailable', () => {
-            this.props.addNotificationMessage(clientNotifications().new_version_available);
-        });
+        document.addEventListener('UpdateAvailable', this.addUpdateNotification);
     }
 
     render() {

@@ -94,6 +94,7 @@ class Tabs extends Component {
                                 active_tab_ref={index === active_index ? this.setActiveTabRef : null}
                                 header_content={header_content}
                                 onClick={() => this.onTabItemClick(index)}
+                                setActiveLineStyle={this.setActiveLineStyle}
                             />
                         );
                     })}

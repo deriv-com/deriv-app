@@ -30,6 +30,7 @@ class App extends Component {
         WebsocketInit(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
         ServerTime.init(this.props.server_time);
 
+        this.ws_subscriptions = [];
         this.list_item_limit = 20;
         this.state = {
             advertiser_info: '',
@@ -48,6 +49,39 @@ class App extends Component {
         };
     }
 
+    componentDidMount() {
+        this.ws_subscriptions.push(
+            ...[
+                subscribeWS(
+                    {
+                        p2p_advertiser_info: 1,
+                        subscribe: 1,
+                    },
+                    [this.setIsAdvertiser, this.setChatInformation]
+                ),
+                subscribeWS(
+                    {
+                        p2p_order_list: 1,
+                        subscribe: 1,
+                        offset: 0,
+                        limit: this.list_item_limit,
+                    },
+                    [this.setP2pOrderList]
+                ),
+            ]
+        );
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.order_id !== this.props.order_id && this.props.order_id) {
+            this.redirectTo('orders');
+        }
+    }
+
+    componentWillUnmount() {
+        this.ws_subscriptions.forEach(subscription => subscription.unsubscribe());
+    }
+
     redirectTo = (path_name, params = null) => {
         this.setState({ active_index: path[path_name], parameters: params });
     };
@@ -56,17 +90,16 @@ class App extends Component {
         this.setState({ active_index: idx, parameters: null });
     };
 
-    setIsAdvertiser = async () => {
-        const { advertiser_info } = this.state;
-        if (!advertiser_info.error) {
-            await this.setState({
-                advertiser_id: advertiser_info.p2p_advertiser_info.id,
-                is_advertiser: !!advertiser_info.p2p_advertiser_info.is_approved,
+    setIsAdvertiser = response => {
+        const { p2p_advertiser_info } = response;
+        if (!response.error) {
+            this.setState({
+                advertiser_id: p2p_advertiser_info.id,
+                is_advertiser: !!p2p_advertiser_info.is_approved,
             });
-        } else if (advertiser_info.error?.code === 'RestrictedCountry') {
-            await this.setState({ is_restricted: true });
+        } else if (p2p_advertiser_info.error?.code === 'RestrictedCountry') {
+            this.setState({ is_restricted: true });
         }
-        return true;
     };
 
     setChatInformation = async () => {
@@ -129,31 +162,14 @@ class App extends Component {
         }
     };
 
-    componentDidMount() {
-        requestWS({ p2p_advertiser_info: 1 }).then(advertiser_info => {
-            this.setState({ advertiser_info }, () => {
-                this.setIsAdvertiser();
-                this.setChatInformation();
-            });
-        });
-
-        subscribeWS(
-            {
-                p2p_order_list: 1,
-                subscribe: 1,
-                offset: 0,
-                limit: this.list_item_limit,
-            },
-            [this.setP2pOrderList]
-        );
-    }
-
     render() {
         const { active_index, order_offset, orders, parameters, notification_count, chat_info } = this.state;
         const {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
             custom_strings,
+            order_id,
+            setOrderId,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -181,6 +197,8 @@ class App extends Component {
                     orders,
                     setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
                     setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
+                    order_id,
+                    setOrderId,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
@@ -225,6 +243,7 @@ App.propTypes = {
         residence: PropTypes.string.isRequired,
     }),
     lang: PropTypes.string,
+    order_id: PropTypes.string,
     setNotificationCount: PropTypes.func,
     websocket_api: PropTypes.object.isRequired,
 };

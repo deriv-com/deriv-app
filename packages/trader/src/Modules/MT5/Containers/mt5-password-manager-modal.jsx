@@ -13,7 +13,7 @@ import {
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { urlFor } from '_common/url';
+import { urlFor } from '@deriv/shared/utils/url';
 import MultiStep from 'Modules/Account/Components/multistep.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -32,7 +32,7 @@ const MT5PasswordResetUnavailable = () => (
             className='mt5-password-manager--button'
             has_effect
             text={localize('Take me to Binary.com MT5')}
-            onClick={() => window.open(urlFor('user/metatrader', undefined, undefined, true))}
+            onClick={() => window.open(urlFor('user/metatrader', { legacy: true }))}
             primary
             large
         />

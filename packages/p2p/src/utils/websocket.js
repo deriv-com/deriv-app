@@ -161,8 +161,7 @@ const getModifiedResponse = response => {
     return modified_response;
 };
 
-export const subscribeWS = (request, callbacks) => {
+export const subscribeWS = (request, callbacks) =>
     ws.p2pSubscribe(request, response => {
         callbacks.map(callback => callback(getModifiedResponse(response)));
     });
-};

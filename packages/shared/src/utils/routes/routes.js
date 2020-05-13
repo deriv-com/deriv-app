@@ -9,6 +9,7 @@ export const routes = {
     proof_of_address: '/account/proof-of-address',
     deriv_password: '/account/deriv-password',
     account_limits: '/account/account-limits',
+    login_history: '/account/login-history',
     account_password: '/settings/account_password',
     apps: '/settings/apps',
     cashier_password: '/settings/cashier_password',

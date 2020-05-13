@@ -60,6 +60,9 @@
                     font-family: $FONT_STACK;
                 }
             }
+            .sendbird-conversation__typing-indicator {
+                display: none;
+            }
             .sendbird-user-message--incoming,
             .sendbird-file-message__incoming,
             .sendbird-thumbnail--incoming {

@@ -31,7 +31,8 @@
                 display: none;
             }
             .sendbird-user-message__avatar,
-            .sendbird-thumbnail__avatar {
+            .sendbird-thumbnail__avatar,
+            .sendbird-file-message__avatar {
                 transform: translateY(50%);
             }
             .sendbird-avatar {

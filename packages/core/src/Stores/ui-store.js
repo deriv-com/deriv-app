@@ -115,7 +115,7 @@ export default class UIStore extends BaseStore {
     @observable is_nativepicker_visible = false;
 
     @observable prompt_when = false;
-    @observable prompt_fn = () => {};
+    @observable promptFn = () => {};
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -203,9 +203,9 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    handlePrompt(when, cb = () => {}) {
-        this.prompt_when = when;
-        this.prompt_fn = cb;
+    setPromptHandler(condition, cb = () => {}) {
+        this.prompt_when = condition;
+        this.promptFn = cb;
     }
 
     @computed

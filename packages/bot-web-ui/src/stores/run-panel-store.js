@@ -67,7 +67,7 @@ export default class RunPanelStore {
         );
 
         this.is_running = true;
-        ui.handlePrompt(true, route_prompt_dialog.handleBlockedNavigation);
+        ui.setPromptHandler(true, route_prompt_dialog.handleBlockedNavigation);
         this.toggleDrawer(true);
         this.run_id = `run-${Date.now()}`;
 
@@ -81,7 +81,7 @@ export default class RunPanelStore {
         const { ui } = this.root_store.core;
         this.dbot.stopBot();
         this.is_running = false;
-        ui.handlePrompt(false);
+        ui.setPromptHandler(false);
 
         if (this.error_type) {
             // when user click stop button when there is a error but bot is retrying

@@ -10,7 +10,7 @@ export default class RoutePromptDialogStore {
     @observable last_location = null;
 
     @action.bound
-    handleBlockedNavigation(next_location) {
+    shouldNavigateAfterPrompt(next_location) {
         if (!this.is_confirmed) {
             this.last_location = next_location;
             this.should_show = true;

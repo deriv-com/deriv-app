@@ -1,26 +1,41 @@
+import React from 'react';
+import Loadable from 'react-loadable';
+import { Loading } from '@deriv/components';
 import { addRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
 // TODO remove this once deriv-shared is updated
-import Page404 from 'Modules/Page404';
 import routes from './routes';
-import {
-    Account,
-    PersonalDetails,
-    FinancialAssessment,
-    ProofOfAddress,
-    ProofOfIdentity,
-    DerivPassword,
-    AccountLimits,
-} from '../exports';
 
 // Error Routes
-// const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
+const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
+
+const handleLoading = (props) => {
+    // 200ms default
+    if (props.pastDelay) {
+        return <Loading />;
+    }
+    return null;
+};
+
+const makeLazyLoader = (importFn) => (component_name) =>
+    Loadable.Map({
+        loader: {
+            ComponentModule: importFn,
+        },
+        render(loaded, props) {
+            const ComponentLazy = loaded.ComponentModule.default[component_name];
+            return <ComponentLazy {...props} />;
+        },
+        loading: handleLoading,
+    });
+
+const lazyLoadAccountComponent = makeLazyLoader(() => import(/* webpackChunkName: "account-sections" */ 'Sections'));
 
 // Order matters
 const initRoutesConfig = () => [
     {
         path: routes.account,
-        component: Account,
+        component: lazyLoadAccountComponent('Account'),
         is_authenticated: true,
         title: localize('Account Settings'),
         icon_component: 'IcUserOutline',
@@ -31,13 +46,13 @@ const initRoutesConfig = () => [
                 subroutes: [
                     {
                         path: routes.personal_details,
-                        component: PersonalDetails,
+                        component: lazyLoadAccountComponent('PersonalDetails'),
                         title: localize('Personal details'),
                         default: true,
                     },
                     {
                         path: routes.financial_assessment,
-                        component: FinancialAssessment,
+                        component: lazyLoadAccountComponent('FinancialAssessment'),
                         title: localize('Financial assessment'),
                     },
                 ],
@@ -48,18 +63,30 @@ const initRoutesConfig = () => [
                 subroutes: [
                     {
                         path: routes.proof_of_identity,
-                        component: ProofOfIdentity,
+                        component: lazyLoadAccountComponent('ProofOfIdentity'),
                         title: localize('Proof of identity'),
                     },
-                    { path: routes.proof_of_address, component: ProofOfAddress, title: localize('Proof of address') },
+                    {
+                        path: routes.proof_of_address,
+                        component: lazyLoadAccountComponent('ProofOfAddress'),
+                        title: localize('Proof of address'),
+                    },
                 ],
             },
             {
                 title: localize('Security and safety'),
                 icon: 'IcSecurity',
                 subroutes: [
-                    { path: routes.deriv_password, component: DerivPassword, title: localize('Deriv password') },
-                    { path: routes.account_limits, component: AccountLimits, title: localize('Account limits') },
+                    {
+                        path: routes.deriv_password,
+                        component: lazyLoadAccountComponent('DerivPassword'),
+                        title: localize('Deriv password'),
+                    },
+                    {
+                        path: routes.account_limits,
+                        component: lazyLoadAccountComponent('AccountLimits'),
+                        title: localize('Account limits'),
+                    },
                 ],
             },
         ],

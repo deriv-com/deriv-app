@@ -23,19 +23,26 @@ const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
         is_completed,
     } = data;
 
+    const max_word_count = 25;
+    let counter_party = '-';
+
+    if (advertiser_name !== '') {
+        return advertiser_name.length > max_word_count
+            ? `${advertiser_name.substring(0, max_word_count)}...`
+            : advertiser_name;
+    }
+
     return (
-        <div
-            onClick={() => onOpenDetails(data)}
-            style={style}
-            className={classNames('orders__table-row', {
-                'orders__table-row--attention': is_pending,
-            })}
-        >
-            <Table.Row>
+        <div onClick={() => onOpenDetails(data)} style={style}>
+            <Table.Row
+                className={classNames('orders__table-row', {
+                    'orders__table-row--attention': is_pending,
+                })}
+            >
                 <Table.Cell>
                     {localize('Buy')} {id}
                 </Table.Cell>
-                <Table.Cell>{advertiser_name === '' ? '-' : advertiser_name}</Table.Cell>
+                <Table.Cell>{counter_party}</Table.Cell>
                 <Table.Cell>
                     <div
                         className={classNames('orders__table-status', {

@@ -37,7 +37,6 @@ const OrderTable = ({ showDetails }) => {
 };
 
 OrderTable.propTypes = {
-    orders: PropTypes.array,
     showDetails: PropTypes.func,
 };
 

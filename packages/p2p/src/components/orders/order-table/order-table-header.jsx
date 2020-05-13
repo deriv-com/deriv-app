@@ -6,7 +6,7 @@ import { localize } from 'Components/i18next';
 const OrderTableHeader = ({ children }) => (
     <Table className='orders__table'>
         <Table.Header>
-            <Table.Row>
+            <Table.Row className='orders__table-grid'>
                 <Table.Head>{localize('Order ID')}</Table.Head>
                 <Table.Head>{localize('Counterparty')}</Table.Head>
                 <Table.Head>{localize('Status')}</Table.Head>

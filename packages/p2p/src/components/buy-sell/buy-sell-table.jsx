@@ -7,12 +7,12 @@ export const BuySellTable = ({ children }) => {
     return (
         <Table>
             <Table.Header>
-                <Table.Row>
-                    <Table.Head flex='2fr'>{localize('Advertisers')}</Table.Head>
-                    <Table.Head flex='2fr'>{localize('Limits')}</Table.Head>
-                    <Table.Head flex='2fr'>{localize('Rate (1 USD)')}</Table.Head>
-                    <Table.Head flex='2fr'>{localize('Payment method')}</Table.Head>
-                    <Table.Head flex='100px'>{''}</Table.Head>
+                <Table.Row className='buy-sell__table-row'>
+                    <Table.Head>{localize('Advertisers')}</Table.Head>
+                    <Table.Head>{localize('Limits')}</Table.Head>
+                    <Table.Head>{localize('Rate (1 USD)')}</Table.Head>
+                    <Table.Head>{localize('Payment method')}</Table.Head>
+                    <Table.Head>{''}</Table.Head>
                 </Table.Row>
             </Table.Header>
             <Table.Body>{children}</Table.Body>

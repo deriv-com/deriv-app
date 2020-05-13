@@ -13,11 +13,6 @@
             font-size: var(--text-size-s);
         }
     }
-    &__table {
-        & .dc-table__head:first-child {
-            padding-left: 17px;
-        }
-    }
     &__header {
         background: var(--state-disabled);
         padding: 0.4rem;
@@ -111,13 +106,12 @@
         }
     }
     &__table {
+        margin-top: 16px;
         &-row {
             cursor: pointer;
 
-            & .dc-table__row {
-                & .dc-table__cell:first-child {
-                    padding-left: 17px;
-                }
+            & .dc-table__cell:first-child {
+                padding-left: 17px;
             }
             &--attention {
                 background: var(--button-tertiary-hover);
@@ -125,6 +119,9 @@
             &:hover {
                 background: var(--general-hover);
             }
+        }
+        &-grid {
+            grid-template-columns: 1fr 2fr 160px 1fr 1fr 2fr;
         }
         &-status {
             font-weight: bold;
@@ -147,6 +144,9 @@
                 color: var(--text-less-prominent);
                 background-color: rgba(153, 153, 153, 0.16);
             }
+        }
+        & .dc-table__head:first-child {
+            padding-left: 17px;
         }
     }
 }

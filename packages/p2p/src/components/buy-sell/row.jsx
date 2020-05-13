@@ -40,30 +40,25 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
 
     return (
         <div style={style}>
-            <Table.Row>
-                <Table.Cell flex='2fr'>
+            <Table.Row className='buy-sell__table-row'>
+                <Table.Cell>
                     <div className='buy-sell__icon' style={{ backgroundColor: color }}>
                         {short_name}
                     </div>
                     {data.advertiser_name}
                 </Table.Cell>
-                <Table.Cell flex='2fr'>
+                <Table.Cell>
                     {data.display_min_available}&ndash;{data.display_max_available} {data.offer_currency}
                 </Table.Cell>
                 <Table.Cell className='buy-sell__price' flex='2fr'>
                     {data.display_price_rate} {data.transaction_currency}
                 </Table.Cell>
-                <Table.Cell flex='2fr'>{data.display_payment_method}</Table.Cell>
+                <Table.Cell>{data.display_payment_method}</Table.Cell>
                 {is_own_ad ? (
-                    <Table.Cell flex='100px' />
+                    <Table.Cell />
                 ) : (
-                    <Table.Cell flex='100px'>
-                        <Button
-                            className='p2p-cashier__button--right-aligned'
-                            primary
-                            small
-                            onClick={() => setSelectedAd(data)}
-                        >
+                    <Table.Cell className='buy-sell__button'>
+                        <Button primary small onClick={() => setSelectedAd(data)}>
                             {is_buy ? localize('Buy') : localize('Sell')} {data.offer_currency}
                         </Button>
                     </Table.Cell>

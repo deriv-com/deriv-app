@@ -7,9 +7,8 @@ import { TableError } from 'Components/table/table-error.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS, getModifiedP2POrderList } from 'Utils/websocket';
 import Dp2pContext from 'Components/context/dp2p-context';
-import BuyOrderRowComponent from './order-table-buy-row.jsx';
-import SellOrderRowComponent from './order-table-sell-row.jsx';
 import OrderTableHeader from './order-table-header.jsx';
+import OrderRowComponent from './order-table-row.jsx';
 import OrderInfo from '../order-info';
 
 const OrderRowLoader = () => (
@@ -85,26 +84,29 @@ const OrderTableContent = ({ showDetails, is_active }) => {
         return <TableError message={api_error_message} />;
     }
 
-    const Row = row_props =>
-        row_props.data.is_buyer ? (
-            <BuyOrderRowComponent {...row_props} onOpenDetails={showDetails} />
-        ) : (
-            <SellOrderRowComponent {...row_props} onOpenDetails={showDetails} />
-        );
+    const Row = row_props => <OrderRowComponent {...row_props} onOpenDetails={showDetails} />;
 
     if (orders.length) {
         const modified_list = orders
             .map(list => new OrderInfo(list))
             .filter(order => (is_active ? order.is_active : order.is_inactive));
         const item_height = 72;
+        const height_values = {
+            screen_size: '100vh',
+            header_size: '48px',
+            page_overlay_header: '53px',
+            page_overlay_content_padding: '2.4rem',
+            tabs_height: '36px',
+            table_header_height: '50px',
+            table_header_top_padding: '2.4rem',
+            footer_size: '37px',
+        };
 
         if (modified_list.length) {
             return (
                 <OrderTableHeader>
                     <InfiniteLoaderList
-                        // screen size - header size - footer size - page overlay header - page overlay content padding -
-                        // tabs height - padding of tab content - table header height
-                        initial_height={'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 2.4rem - 52px)'}
+                        autosizer_height={`calc(${Object.values(height_values).join(' - ')})`}
                         items={modified_list}
                         item_size={item_height}
                         RenderComponent={Row}

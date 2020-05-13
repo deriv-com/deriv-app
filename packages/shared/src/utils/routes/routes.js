@@ -1,4 +1,6 @@
-const routes = {
+import { getAllowedLocalStorageOrigin } from '../storage/storage_events';
+
+export const routes = {
     error404: '/404',
     account: '/account',
     financial_assessment: '/account/financial-assessment',
@@ -7,7 +9,6 @@ const routes = {
     proof_of_address: '/account/proof-of-address',
     deriv_password: '/account/deriv-password',
     account_limits: '/account/account-limits',
-    login_history: '/account/login-history',
     account_password: '/settings/account_password',
     apps: '/settings/apps',
     cashier_password: '/settings/cashier_password',
@@ -36,6 +37,6 @@ const routes = {
     cashier_acc_transfer: '/cashier/account-transfer',
     cashier_p2p: '/cashier/p2p',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
+    smarttrader: `${getAllowedLocalStorageOrigin()}`,
+    endpoint: '/endpoint',
 };
-
-export default routes;

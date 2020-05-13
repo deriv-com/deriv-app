@@ -1,9 +1,9 @@
 import React, { lazy } from 'react';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { addRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
-import { routes } from 'Constants';
 import Trade from 'Modules/Trading';
 
 const ContractDetails = lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));

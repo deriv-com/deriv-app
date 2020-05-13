@@ -37,7 +37,8 @@ class BuySell extends Component {
     };
 
     onConfirmClick = order_info => {
-        this.props.navigate('orders', { order_info });
+        const nav = { location: 'buy_sell' };
+        this.props.navigate('orders', { order_info, nav });
     };
 
     render() {
@@ -53,7 +54,7 @@ class BuySell extends Component {
                         name='filter'
                         onChange={this.onChangeTableType}
                         value={table_type}
-                        rounded_button
+                        has_rounded_button
                     />
                 </div>
                 <BuySellTableContent

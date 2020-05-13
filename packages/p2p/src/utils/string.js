@@ -10,7 +10,24 @@ export const countDecimalPlaces = value => {
 };
 
 export const generateHexColourFromNickname = nickname => {
-    const colours = ['#f43f83', 'var(--brand-secondary)', '#9ed178', 'var(--brand-orange)'];
+    const colours = [
+        '#f43f83',
+        'var(--brand-secondary)',
+        '#9ed178',
+        'var(--brand-orange)',
+        '#092694',
+        '#527bb5',
+        '#3f6fe5',
+        '#6b4bb6',
+        '#db69e1',
+        '#ca0051',
+        '#3fdce5',
+        '#1fb8bf',
+        '#6aba8d',
+        '#71bd0e',
+        '#ff8c00',
+        '#fc4400',
+    ];
     const colour_hash = nickname.split().reduce((hash, char, idx) => {
         // https://gist.github.com/0x263b/2bdd90886c2036a1ad5bcf06d6e6fb37
         // string.charCodeAt(i) returns the UTF-16 code for the character at index i

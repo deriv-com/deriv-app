@@ -149,7 +149,7 @@ Popup.propTypes = {
     cancel_text: PropTypes.string,
     confirm_text: PropTypes.string,
     has_cancel: PropTypes.bool,
-    message: PropTypes.string,
+    message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     need_confirmation: PropTypes.bool,
     onCancel: PropTypes.func,
     onClickConfirm: PropTypes.func,

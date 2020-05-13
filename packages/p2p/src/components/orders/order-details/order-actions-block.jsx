@@ -4,8 +4,11 @@ import { Button } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import FooterActions from 'Components/footer-actions/footer-actions.jsx';
+import Dp2pContext from 'Components/context/dp2p-context';
 
 const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
+    const { email_domain } = React.useContext(Dp2pContext);
+
     const {
         display_offer_amount,
         display_transaction_amount,
@@ -37,22 +40,29 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             message: localize('If you have paid, please do not cancel the order.'),
             confirm_text: localize('Cancel this order'),
             has_cancel: true,
-            cancel_text: localize('Do not Cancel'),
+            cancel_text: localize('Do not cancel'),
             onClickConfirm: cancel,
         };
         showPopup(options);
     };
-    const compalin = () => {
+    const showComplainPopup = () => {
+        const order_type = is_buyer ? 'Buy' : 'Sell';
         const options = {
-            title: localize('Something went wrong?'),
+            title: localize('Did something go wrong?'),
             message: (
                 <Localize
                     i18n_default_text='If you can not resolve a dispute with the other party, please email
-                <0>p2p-support@deriv.com</0>. Describe your situation and include your order 
-                <1>ID ({{id}})</1>'
-                    values={{ id }}
+                <0>{{support_email}}</0>. Describe your situation and include your order 
+                <1>ID ({{order_type}} {{id}})</1>'
+                    values={{ support_email: `p2p-support@${email_domain}`, id, order_type }}
                     components={[
-                        <span key={0} className='order-details__popup--danger' />,
+                        <a
+                            key={0}
+                            className='link order-details__popup--danger'
+                            rel='noopener noreferrer'
+                            target='_blank'
+                            href={`mailto:p2p-support@${email_domain}`}
+                        />,
                         <span key={1} className='order-details__popup--bold' />,
                     ]}
                 />
@@ -134,7 +144,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             <React.Fragment>
                 <div className='order-details__separator' />
                 <FooterActions className='order-details__justify-space'>
-                    <Button className='order-details__complain-button' large tertiary onClick={compalin}>
+                    <Button className='order-details__complain-button' large tertiary onClick={showComplainPopup}>
                         {localize('Complain')}
                     </Button>
                     <Button
@@ -170,7 +180,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             <React.Fragment>
                 <div className='order-details__separator' />
                 <FooterActions className='order-details__justify-start'>
-                    <Button large tertiary onClick={compalin}>
+                    <Button large tertiary onClick={showComplainPopup}>
                         {localize('Complain')}
                     </Button>
                 </FooterActions>

@@ -402,6 +402,11 @@ $MIN_HEIGHT_FLOATING: calc(
             max-width: 546px;
         }
     }
+    .api-token {
+        height: 100%;
+        width: 100%;
+        padding-left: 1.2rem;
+    }
     .account-limit-container {
         height: 100%;
         width: 100%;

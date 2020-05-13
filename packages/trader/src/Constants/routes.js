@@ -8,6 +8,7 @@ const routes = {
     deriv_password: '/account/deriv-password',
     account_limits: '/account/account-limits',
     account_password: '/settings/account_password',
+    api_token: '/account/api-token',
     apps: '/settings/apps',
     cashier_password: '/settings/cashier_password',
     contract: '/contract/:contract_id',

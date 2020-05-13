@@ -65,6 +65,7 @@ export default class ClientStore extends BaseStore {
         currency: '',
         decimal_places: undefined,
     };
+    @observable api_tokens = [];
 
     is_mt5_account_list_updated = false;
 

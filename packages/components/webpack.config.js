@@ -65,6 +65,7 @@ module.exports = {
         'toggle-switch': 'Components/toggle-switch',
         'tick-picker': 'Components/tick-picker',
         'tick-progress': 'Components/tick-progress',
+        timeline: 'Components/timeline',
         'u-i-loader': 'Components/u-i-loader',
         'vertical-tab': 'Components/vertical-tab',
     },

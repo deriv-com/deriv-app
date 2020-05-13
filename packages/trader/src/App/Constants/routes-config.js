@@ -123,6 +123,11 @@ const initRoutesConfig = () => [
                         component: lazyLoadAccountComponent('AccountLimits'),
                         title: localize('Account limits'),
                     },
+                    {
+                        path: routes.api_token,
+                        component: lazyLoadAccountComponent('ApiToken'),
+                        title: localize('API token'),
+                    },
                 ],
             },
         ],

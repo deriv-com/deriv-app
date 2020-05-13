@@ -54,7 +54,7 @@ class BuySell extends Component {
                         name='filter'
                         onChange={this.onChangeTableType}
                         value={table_type}
-                        rounded_button
+                        rounded_button={true}
                     />
                 </div>
                 <BuySellTableContent

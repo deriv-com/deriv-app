@@ -30,6 +30,7 @@ class App extends Component {
         init(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
         ServerTime.init(this.props.server_time);
 
+        this.ws_subscriptions = [];
         this.list_item_limit = 20;
         this.state = {
             active_index: 0,
@@ -43,21 +44,25 @@ class App extends Component {
     }
 
     componentDidMount() {
-        subscribeWS(
-            {
-                p2p_advertiser_info: 1,
-                subscribe: 1,
-            },
-            this.setIsAdvertiser
-        );
-        subscribeWS(
-            {
-                p2p_order_list: 1,
-                subscribe: 1,
-                offset: 0,
-                limit: this.list_item_limit,
-            },
-            this.setP2pOrderList
+        this.ws_subscriptions.push(
+            ...[
+                subscribeWS(
+                    {
+                        p2p_advertiser_info: 1,
+                        subscribe: 1,
+                    },
+                    this.setIsAdvertiser
+                ),
+                subscribeWS(
+                    {
+                        p2p_order_list: 1,
+                        subscribe: 1,
+                        offset: 0,
+                        limit: this.list_item_limit,
+                    },
+                    this.setP2pOrderList
+                ),
+            ]
         );
     }
 
@@ -65,6 +70,10 @@ class App extends Component {
         if (prevProps.order_id !== this.props.order_id && this.props.order_id) {
             this.redirectTo('orders');
         }
+    }
+
+    componentWillUnmount() {
+        this.ws_subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
     redirectTo = (path_name, params = null) => {

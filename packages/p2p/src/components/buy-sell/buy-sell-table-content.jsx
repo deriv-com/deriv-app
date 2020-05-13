@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Loading, Icon } from '@deriv/components';
 import { Localize } from 'Components/i18next';
@@ -10,29 +10,24 @@ import { RowComponent, BuySellRowLoader } from './row.jsx';
 import { BuySellTable } from './buy-sell-table.jsx';
 
 const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
-    let item_offset = 0;
     const { list_item_limit } = useContext(Dp2pContext);
-    const [is_mounted, setIsMounted] = useState(false);
+    const mounted = useRef(false);
+    const item_offset = useRef(0);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
     const [api_error_message, setApiErrorMessage] = useState('');
     const [is_loading, setIsLoading] = useState(true);
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        setIsMounted(true);
-        return () => setIsMounted(false);
+        mounted.current = true;
+        loadMoreItems(item_offset.current, list_item_limit);
+        return () => (mounted.current = false);
     }, []);
 
     useEffect(() => {
-        if (is_mounted) {
-            loadMoreItems(item_offset, list_item_limit);
-        }
-    }, [is_mounted]);
-
-    useEffect(() => {
         setIsLoading(true);
-        if (is_mounted) {
-            loadMoreItems(item_offset, list_item_limit);
+        if (mounted.current) {
+            loadMoreItems(item_offset.current, list_item_limit);
         }
     }, [is_buy]);
 
@@ -44,11 +39,11 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
                 offset: start_idx,
                 limit: list_item_limit,
             }).then(response => {
-                if (is_mounted) {
+                if (mounted.current) {
                     if (!response.error) {
                         setHasMoreItemsToLoad(response.length >= list_item_limit);
                         setItems(items.concat(response));
-                        item_offset += response.length;
+                        item_offset.current += response.length;
                     } else {
                         setApiErrorMessage(response.error.message);
                     }
@@ -70,12 +65,21 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
 
     if (items.length) {
         const item_height = 56;
+        const height_values = {
+            screen_size: '100vh',
+            header_size: '48px',
+            page_overlay_header: '53px',
+            page_overlay_content_padding: '2.4rem',
+            tabs_height: '36px',
+            filter_height: '44px',
+            filter_margin_padding: '4rem', // 2.4rem + 1.6rem
+            table_header_height: '50px',
+            footer_size: '37px',
+        };
         return (
             <BuySellTable>
                 <InfiniteLoaderList
-                    // screen size - header size - footer size - page overlay header - page overlay content padding -
-                    // tabs height - padding+margin of tab content - toggle height - table header height
-                    initial_height={'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 3.2rem - 40px - 52px)'}
+                    autosizer_height={`calc(${Object.values(height_values).join(' - ')})`}
                     items={items}
                     item_size={item_height}
                     RenderComponent={Row}

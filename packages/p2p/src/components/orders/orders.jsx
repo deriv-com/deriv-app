@@ -12,6 +12,7 @@ const Orders = ({ navigate, params }) => {
     const { orders } = React.useContext(Dp2pContext);
     const [order_details, setDetails] = React.useState(null);
     const [nav, setNav] = React.useState(params?.nav);
+    const is_mounted = React.useRef(false);
     const showDetails = setDetails;
     const hideDetails = () => {
         if (nav) {
@@ -25,6 +26,7 @@ const Orders = ({ navigate, params }) => {
 
     React.useEffect(() => {
         if (params && params.order_info) {
+            is_mounted.current = true;
             const order_info = new OrderInfo(params.order_info);
             setDetails(order_info);
         }
@@ -32,11 +34,12 @@ const Orders = ({ navigate, params }) => {
         // Clear details when unmounting
         return () => {
             setDetails(null);
+            is_mounted.current = false;
         };
     }, []);
 
     React.useEffect(() => {
-        if (order_details) {
+        if (is_mounted && order_details) {
             const updated_order = orders.find(order => order.id === order_details.id);
             if (updated_order.status !== order_details.status) {
                 const updated_order_info = new OrderInfo(updated_order);

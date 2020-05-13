@@ -61,6 +61,12 @@ class App extends Component {
         );
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.order_id !== this.props.order_id && this.props.order_id) {
+            this.redirectTo('orders');
+        }
+    }
+
     redirectTo = (path_name, params = null) => {
         this.setState({ active_index: path[path_name], parameters: params });
     };
@@ -134,6 +140,8 @@ class App extends Component {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
             custom_strings,
+            order_id,
+            setOrderId,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -160,6 +168,8 @@ class App extends Component {
                     orders,
                     setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
                     setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
+                    order_id,
+                    setOrderId,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
@@ -204,6 +214,7 @@ App.propTypes = {
         residence: PropTypes.string.isRequired,
     }),
     lang: PropTypes.string,
+    order_id: PropTypes.string,
     setNotificationCount: PropTypes.func,
     websocket_api: PropTypes.object.isRequired,
 };

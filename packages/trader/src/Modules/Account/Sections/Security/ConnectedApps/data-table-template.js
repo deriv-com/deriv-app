@@ -34,13 +34,30 @@ const prepareConnectedAppsLastLogin = las_used => (
     <p className='last_used_content'>{moment(las_used).format('YYYY-MM-DD HH:mm:ss')}</p>
 );
 
+const oauth_apps_list_map = {
+    read: 'Read',
+    trade: 'Trade',
+    trading_information: 'Trading Information',
+    payments: 'Payments',
+    admin: 'Admin',
+};
+
 const prepareConnectedAppsScopes = permissions_list => {
-    const list = permissions_list.map((value, index) => {
-        return permissions_list.length - 1 !== index
-            ? `${value.charAt(0).toUpperCase() + value.slice(1)}, `
-            : value.charAt(0).toUpperCase() + value.slice(1);
+    const is_trading_information = permissions_list.includes('trading_information');
+    const oauth_apps_list = [];
+    permissions_list.forEach((permision, index) => {
+        if (permision !== 'trading_information') {
+            if (permissions_list.length - 1 !== index) {
+                oauth_apps_list.push(`${oauth_apps_list_map[permision]}, `);
+            } else {
+                oauth_apps_list.push(oauth_apps_list_map[permision]);
+            }
+        }
     });
-    return <div>{list}</div>;
+    if (is_trading_information) {
+        oauth_apps_list.push(`${oauth_apps_list.pop()}, `, `${oauth_apps_list_map.trading_information}`);
+    }
+    return <div>{oauth_apps_list}</div>;
 };
 
 export default getConnectedAppsColumnsTemplate;

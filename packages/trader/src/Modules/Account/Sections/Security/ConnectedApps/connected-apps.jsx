@@ -89,7 +89,7 @@ class ConnectedApps extends React.Component {
                                     className='connected-apps'
                                     data_source={this.props.connected_apps}
                                     custom_width={'100%'}
-                                    getRowSize={() => 108}
+                                    getRowSize={() => 128}
                                     is_empty={false}
                                     rowRenderer={this.mobileRowRenderer}
                                 >

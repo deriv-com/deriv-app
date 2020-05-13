@@ -700,6 +700,7 @@ $MIN_HEIGHT_FLOATING: calc(
 .connected-apps {
     width: 100%;
     max-width: 674px;
+    min-height: 700px;
 
     .revoke_access {
         padding-left: 8px;
@@ -715,8 +716,9 @@ $MIN_HEIGHT_FLOATING: calc(
         flex: 1;
     }
     &__row {
-        grid-template-columns: 158px 194px 96px 99px;
-        column-gap: 42px;
+        grid-template-columns: 158px 215px 96px 99px;
+        padding: 0;
+        column-gap: 35px;
         text-align: left;
 
         .table__cell {
@@ -724,8 +726,6 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
     @include desktop {
-        min-height: 700px;
-
         .table__body .table__row:last-child {
             border-bottom: 1px solid var(--general-section-1);
         }
@@ -762,6 +762,10 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                     &--small {
                         max-width: 99px;
+
+                        .last_used__row-title {
+                            line-height: 1.5;
+                        }
                     }
                     .data-list__row-title {
                         line-height: 1.5;
@@ -774,6 +778,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 font-size: var(--text-size-xxs);
                 line-height: 1.5;
                 margin-bottom: 4px;
+                margin-top: 2px;
             }
         }
     }

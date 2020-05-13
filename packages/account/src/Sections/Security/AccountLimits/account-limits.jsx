@@ -2,11 +2,11 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Popover, DesktopWrapper, Loading, MobileWrapper } from '@deriv/components';
+import { getDerivComLink } from '@deriv/shared/utils/url';
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared/utils/screen';
+import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { getDerivComLink } from 'Duplicated/_common/url';
 import { FormBody, TextContainer, Text } from '../../../Components/layout-components.jsx';
 import DemoMessage from '../../ErrorMessages/DemoMessage';
 import LoadErrorMessage from '../../ErrorMessages/LoadErrorMessage';

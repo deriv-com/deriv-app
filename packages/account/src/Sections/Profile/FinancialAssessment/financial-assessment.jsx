@@ -3,11 +3,11 @@ import React from 'react';
 import { Formik } from 'formik';
 import { withRouter } from 'react-router';
 import { Loading, Button, Dropdown, Modal, Icon, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { isMobile, isDesktop } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { isEmptyObject } from '@deriv/shared/utils/object';
 import { connect } from 'Stores/connect';
-import AppRoutes from 'Constants/routes';
 import { WS } from 'Services/ws-methods';
 import {
     account_turnover_list,
@@ -100,7 +100,7 @@ const ConfirmationPage = ({ toggleModal, onSubmit }) => (
 
 const SubmittedPage = withRouter(({ history }) => {
     const redirectToPOA = () => {
-        history.push(AppRoutes.proof_of_address);
+        history.push(routes.proof_of_address);
     };
     return (
         <IconMessageContent

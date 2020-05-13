@@ -3,9 +3,9 @@ import React from 'react';
 import { Formik } from 'formik';
 import { Button, Loading, PasswordInput, PasswordMeter } from '@deriv/components';
 import { withRouter } from 'react-router-dom';
+import routes from '@deriv/shared/utils/routes';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
-import AppRoutes from 'Constants/routes';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
@@ -17,18 +17,18 @@ class ChangePasswordForm extends React.Component {
         new_pw_input: '',
     };
 
-    updateNewPassword = string => {
+    updateNewPassword = (string) => {
         this.setState({ new_pw_input: string });
     };
 
     handlePasswordChange = () => {
-        this.props.history.push(AppRoutes.trade);
+        this.props.history.push(routes.trade);
     };
 
     onSubmit = (values, { setSubmitting, setStatus }) => {
         setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
-        WS.authorized.storage.changePassword(values).then(data => {
+        WS.authorized.storage.changePassword(values).then((data) => {
             this.setState({ is_btn_loading: false });
             if (data.error) {
                 setStatus({ msg: data.error.message });
@@ -40,12 +40,12 @@ class ChangePasswordForm extends React.Component {
         });
     };
 
-    validateFields = values => {
+    validateFields = (values) => {
         this.setState({ is_submit_success: false });
         const errors = {};
 
         const required_fields = ['old_password', 'new_password'];
-        required_fields.forEach(required => {
+        required_fields.forEach((required) => {
             if (!values[required]) errors[required] = localize('This field is required');
         });
 
@@ -116,7 +116,7 @@ class ChangePasswordForm extends React.Component {
                                                 name='new_password'
                                                 value={values.new_password}
                                                 onBlur={handleBlur}
-                                                onChange={e => {
+                                                onChange={(e) => {
                                                     const input = e.target;
                                                     setFieldTouched('new_password', true);
                                                     if (input) this.updateNewPassword(input.value);

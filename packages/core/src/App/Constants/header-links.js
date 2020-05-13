@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { localize } from '@deriv/translations';
-import { routes } from 'Constants/index';
 import CashierNotifications from 'Modules/Cashier/Containers/cashier-notifications.jsx';
 
 export const header_links = [

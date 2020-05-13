@@ -1,15 +1,15 @@
 import React from 'react';
 import { Button } from '@deriv/components';
+import { urlFor, getDerivComLink } from '@deriv/shared/utils/url';
+import routes from '@deriv/shared/utils/routes';
+import { isMobile } from '@deriv/shared/utils/screen';
+import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { formatDate } from '@deriv/shared/utils/date';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { isMobile } from '@deriv/shared/utils/screen';
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
-import { localize, Localize } from '@deriv/translations';
-import routes from 'Constants/routes';
 import { LocalStore, State } from '_common/storage';
-import { urlFor, getDerivComLink } from '_common/url';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
@@ -39,12 +39,7 @@ export const clientNotifications = (ui = {}) => {
                         interpolation: { escapeValue: false },
                     }}
                     components={[
-                        <a
-                            key={0}
-                            className='link'
-                            target='_blank'
-                            href={urlFor('contact', undefined, undefined, true)}
-                        />,
+                        <a key={0} className='link' target='_blank' href={urlFor('contact', { legacy: true })} />,
                     ]}
                 />
             ),
@@ -152,7 +147,7 @@ export const clientNotifications = (ui = {}) => {
                             key={0}
                             className='link'
                             target='_blank'
-                            href={urlFor('user/security/self_exclusionws', undefined, undefined, true)}
+                            href={urlFor('user/security/self_exclusionws', { legacy: true })}
                         />,
                     ]}
                 />

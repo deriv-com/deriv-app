@@ -7,7 +7,7 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
         const interval_header = setInterval(() => {
             const chat_title_element = document.querySelector('.sendbird-chat-header__title');
 
-            if (chat_title_element && chat_title_element.innerText == 'No title') return;
+            if (chat_title_element && chat_title_element.innerText === 'No title') return;
 
             if (chat_title_element && chat_title_element.innerText !== nickname) {
                 chat_title_element.innerText = nickname;

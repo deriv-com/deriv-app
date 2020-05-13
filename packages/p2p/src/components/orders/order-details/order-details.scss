@@ -42,7 +42,10 @@
             }
             .sendbird-thumbnail--incoming {
                 padding-left: 50px;
-                border-bottom-left-radius: 4px;
+
+                .sendbird-thumbnail__img {
+                    border-bottom-left-radius: 4px;
+                }
             }
             .sendbird-user-message__sender-name,
             .sendbird-thumbnail__sender-name,

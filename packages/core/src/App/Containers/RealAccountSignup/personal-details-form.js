@@ -99,14 +99,17 @@ export const personalDetailsConfig = ({ can_upgrade_to }) => {
                     value: 'Mr',
                 },
                 {
+                    id: 'Ms',
                     text: localize('Ms'),
                     value: 'Ms',
                 },
                 {
+                    id: 'Mrs',
                     text: localize('Mrs'),
                     value: 'Mrs',
                 },
                 {
+                    id: 'Miss',
                     text: localize('Miss'),
                     value: 'Miss',
                 },

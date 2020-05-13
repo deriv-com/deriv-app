@@ -7,6 +7,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
 .account {
     margin: 0 16px;
+
     .dc-page-overlay__content {
         @include mobile {
             overflow-x: hidden;
@@ -500,6 +501,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin: 10px 20px;
                 padding-right: 10px;
                 color: var(--text-general);
+
                 .cell-title {
                     font-size: 12px;
                     font-weight: bold;
@@ -531,7 +533,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 grid-template-columns: 2fr 1fr 2fr 2fr 2fr;
                 padding: 0px;
             }
-
             .table__body {
                 .date,
                 .action,

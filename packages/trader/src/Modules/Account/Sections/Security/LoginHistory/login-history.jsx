@@ -1,13 +1,13 @@
 // import PropTypes        from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import { localize } from '@deriv/translations';
-import Loading from '../../../../../templates/app/components/loading.jsx';
-import { connect } from 'Stores/connect';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import DataTable from 'App/Components/Elements/DataTable';
-import LoadErrorMessage from '../../ErrorMessages/LoadErrorMessage';
 import { convertDateFormat } from '@deriv/shared/utils/date';
+import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
+import DataTable from 'App/Components/Elements/DataTable';
+import Loading from '../../../../../templates/app/components/loading.jsx';
+import LoadErrorMessage from '../../ErrorMessages/LoadErrorMessage';
 
 const Td = ({ title, text, className }) => (
     <td>
@@ -122,16 +122,19 @@ class LoginHistory extends React.Component {
         if (this.props.login_history && this.state.is_loading) {
             const feed = [];
             for (let i = 0; i < this.state.fetch_limit; i++) {
-                feed[i] = new Object();
-                let environment = this.props.login_history[i].environment;
-                let environment_split = environment.split(' ');
-                let date = environment_split[0];
-                let time = environment_split[1].replace('GMT', '');
-                let date_time = convertDateFormat(`${date} ${time}`, 'D-MMMM-YY hh:mm:ss', 'YYYY-MM-DD hh:mm:ss');
+                feed[i] = {};
+                const environment = this.props.login_history[i].environment;
+                const environment_split = environment.split(' ');
+                const date = environment_split[0];
+                const time = environment_split[1].replace('GMT', '');
+                const date_time = convertDateFormat(`${date} ${time}`, 'D-MMMM-YY hh:mm:ss', 'YYYY-MM-DD hh:mm:ss');
                 feed[i][this.fields.date.key] = `${date_time} GMT`;
                 feed[i][this.fields.action.key] = this.props.login_history[i][this.fields.action.key];
-                let user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
-                let ua = parseUA(user_agent);
+                const user_agent = environment.substring(
+                    environment.indexOf('User_AGENT'),
+                    environment.indexOf('LANG')
+                );
+                const ua = parseUA(user_agent);
                 feed[i][this.fields.browser.key] = ua ? `${ua.name} ${ua.version}` : '';
                 feed[i][this.fields.ip.key] = environment_split[2].split('=')[1];
                 feed[i][this.fields.status.key] =

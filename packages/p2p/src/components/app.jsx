@@ -103,14 +103,14 @@ class App extends Component {
         }
     };
 
-    setChatInformation = async () => {
-        const { advertiser_info } = this.state;
-        if (advertiser_info.error) return;
+    setChatInformation = async response => {
+        const { p2p_advertiser_info } = response;
+        if (p2p_advertiser_info.error) return;
 
         const app_id = '0D7CB7BD-554A-43D0-A34E-945C299B49D4'; // This is using QA10 SendBird AppId, please change to production's SendBird AppId when we deploy to production.
-        const user_id = ObjectUtils.getPropertyValue(advertiser_info, ['p2p_advertiser_info', 'chat_user_id']);
+        const user_id = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
         const token =
-            ObjectUtils.getPropertyValue(advertiser_info, ['p2p_advertiser_info', 'chat_token']) ||
+            ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_token']) ||
             (await requestWS({ service_token: 1, service: 'sendbird' }).then(val => val.service_token.token));
 
         this.setState({ chat_info: { app_id, user_id, token } });

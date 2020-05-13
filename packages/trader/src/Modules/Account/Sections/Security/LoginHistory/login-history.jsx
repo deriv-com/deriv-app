@@ -1,71 +1,142 @@
 // import PropTypes        from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
+import { localize } from '@deriv/translations';
 import Loading from '../../../../../templates/app/components/loading.jsx';
 import { connect } from 'Stores/connect';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import DataTable from 'App/Components/Elements/DataTable';
-import { getLoginHistoryColumnsTemplate } from '../../../Constants/data-table-constants';
 import LoadErrorMessage from '../../ErrorMessages/LoadErrorMessage';
+import { convertDateFormat } from '@deriv/shared/utils/date';
+
+const Td = ({ title, text, className }) => (
+    <td>
+        <h3 className='cell-title'>{title}</h3>
+        <span className={classNames('cell-value', className)}>{text}</span>
+    </td>
+);
+
+const LoginHistoryListView = ({ fields, login_history }) => (
+    <table className='login-history-table'>
+        <tbody>
+            <tr>
+                <Td title={fields.date.value} text={login_history[fields.date.key]} />
+            </tr>
+            <tr>
+                <Td title={fields.browser.value} text={login_history[fields.browser.key]} />
+                <Td className={fields.action.key} title={fields.action.value} text={login_history[fields.action.key]} />
+            </tr>
+            <tr>
+                <Td title={fields.ip.value} text={login_history[fields.ip.key]} />
+                <Td title={fields.status.value} text={login_history[fields.status.key]} />
+            </tr>
+        </tbody>
+    </table>
+);
+
+const parseUA = user_agent => {
+    const lookup = [
+        { name: 'Edge', regex: /(?:edge|edga|edgios|edg)\/([\d\w.-]+)/i },
+        { name: 'SeaMonkey', regex: /seamonkey\/([\d\w.-]+)/i },
+        { name: 'Opera', regex: /(?:opera|opr)\/([\d\w.-]+)/i },
+        { name: 'Chromium', regex: /(?:chromium|crios)\/([\d\w.-]+)/i },
+        { name: 'Chrome', regex: /chrome\/([\d\w.-]+)/i },
+        { name: 'Safari', regex: /version\/([\d\w.-]+)/i },
+        { name: 'IE', regex: /msie\s([\d.]+[\d])/i },
+        { name: 'IE', regex: /trident\/\d+\.\d+;.*[rv:]+(\d+\.\d)/i },
+        { name: 'Firefox', regex: /firefox\/([\d\w.-]+)/i },
+        { name: 'Binary app', regex: /binary\.com V([\d.]+)/i },
+    ];
+    for (let i = 0; i < lookup.length; i++) {
+        const info = lookup[i];
+        const match = user_agent.match(info.regex);
+        if (match !== null) {
+            return {
+                name: info.name,
+                version: match[1],
+            };
+        }
+    }
+    return null;
+};
 
 class LoginHistory extends React.Component {
+    // data keys+values
+    fields = {
+        date: {
+            key: 'date',
+            value: localize('Date and time'),
+        },
+        action: {
+            key: 'action',
+            value: localize('Action'),
+        },
+        browser: {
+            key: 'browser',
+            value: localize('Browser'),
+        },
+        ip: {
+            key: 'ip',
+            value: localize('IP address'),
+        },
+        status: {
+            key: 'status',
+            value: localize('Status'),
+        },
+    };
+    // state
     state = {
         is_loading: true,
-        limit: 12,
+        fetch_limit: 12, // TODO: put it in constants or configs
         data: [],
-        //     {
-        //         date: '2019-07-09 10:01:28 GMT',
-        //         action: 'Login',
-        //         browser: 'Chrome v75.0.3770.100',
-        //         ip: '211.24.114.86',
-        //         status: 'successful'
-        //     },
-        //     {
-        //         date: '2019-07-09 10:01:28 GMT',
-        //         action: 'logout',
-        //         browser: 'Chrome v75.0.3770.100',
-        //         ip: '211.24.114.86',
-        //         status: 'Successful'
-        //     },
-        //     {
-        //         date: '2019-07-09 10:01:28 GMT',
-        //         action: 'login',
-        //         browser: 'Mozila v75.0.3770.100',
-        //         ip: '211.24.114.86',
-        //         status: 'successful'
-        //     },
-        //     {
-        //         date: '2019-07-09 10:01:28 GMT',
-        //         action: 'Login',
-        //         browser: 'Chrome v75.0.3770.100',
-        //         ip: '817.24.114.86',
-        //         status: 'Successful'
-        //     },
-        //     {
-        //         date: '2019-07-09 10:01:28 GMT',
-        //         action: 'Login',
-        //         browser: 'Chrome v75.0.3770.100',
-        //         ip: '211.24.114.86',
-        //         status: 'failed'
-        //     },
-        // ]
     };
-
+    // methods
+    getLoginHistoryColumnsTemplate = () => [
+        {
+            title: localize(this.fields.date.value),
+            col_index: this.fields.date.key,
+        },
+        {
+            title: localize(this.fields.action.value),
+            col_index: this.fields.action.key,
+        },
+        {
+            title: localize(this.fields.browser.value),
+            col_index: this.fields.browser.key,
+        },
+        {
+            title: localize(this.fields.ip.value),
+            col_index: this.fields.ip.key,
+        },
+        {
+            title: localize(this.fields.status.value),
+            col_index: this.fields.status.key,
+        },
+    ];
+    // lifecycle methods
     componentDidMount() {
-        this.props.onMount(this.state.limit);
+        this.props.onMount(this.state.fetch_limit);
     }
 
     componentDidUpdate() {
         if (this.props.login_history && this.state.is_loading) {
             const feed = [];
-            for (let i = 0; i < this.state.limit; i++) {
+            for (let i = 0; i < this.state.fetch_limit; i++) {
                 feed[i] = new Object();
-                let environment_data = this.props.login_history[i].environment.split(' ');
-                let date_time = new Date(this.props.login_history[i].time).toISOString();
-                feed[i].date = `${date_time.slice(0, 10)} ${date_time.slice(11, 19)} GMT`;
-                feed[i].action = this.props.login_history[i].action;
-                feed[i].browser = environment_data[4].split('=')[1];
-                feed[i].ip = environment_data[2].split('=')[1];
-                feed[i].status = this.props.login_history[i] === 1 ? 'Success' : 'Failure';
+                let environment = this.props.login_history[i].environment;
+                let environment_split = environment.split(' ');
+                let date = environment_split[0];
+                let time = environment_split[1].replace('GMT', '');
+                let date_time = convertDateFormat(`${date} ${time}`, 'D-MMMM-YY hh:mm:ss', 'YYYY-MM-DD hh:mm:ss');
+                feed[i][this.fields.date.key] = `${date_time} GMT`;
+                feed[i][this.fields.action.key] = this.props.login_history[i][this.fields.action.key];
+                let user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
+                let ua = parseUA(user_agent);
+                feed[i][this.fields.browser.key] = ua ? `${ua.name} ${ua.version}` : '';
+                feed[i][this.fields.ip.key] = environment_split[2].split('=')[1];
+                feed[i][this.fields.status.key] =
+                    this.props.login_history[i] === 1 ? localize('Success') : localize('Failure');
+                feed[i].id = i;
             }
             this.setState({
                 is_loading: false,
@@ -81,7 +152,7 @@ class LoginHistory extends React.Component {
         const { api_initial_load_error } = this.props.login_history;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
 
-        this.columns = getLoginHistoryColumnsTemplate();
+        this.columns = this.getLoginHistoryColumnsTemplate();
 
         return (
             <section className='login-history-container'>
@@ -97,7 +168,9 @@ class LoginHistory extends React.Component {
                             />
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <h1>Hello World</h1>
+                            {this.state.data.map(item => (
+                                <LoginHistoryListView key={item.id} fields={this.fields} login_history={item} />
+                            ))}
                         </MobileWrapper>
                     </>
                 ) : null}

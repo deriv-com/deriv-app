@@ -24,13 +24,19 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
                 });
             }
 
-            if (!document.querySelector('.sendbird-chat-header__info-container')) {
+            const new_container_classname = 'sendbird-chat-header__info-container';
+            const new_container = document.querySelector(`.${new_container_classname}`);
+            if (!new_container) {
                 const chat_info_container_element = document.createElement('div');
-                chat_info_container_element.className = 'sendbird-chat-header__info-container';
+                chat_info_container_element.className = new_container_classname;
+
                 if (chat_title_element) chat_info_container_element.appendChild(chat_title_element);
+
                 const chat_subtitle_element = document.querySelector('.sendbird-chat-header__subtitle');
                 if (chat_subtitle_element) chat_info_container_element.appendChild(chat_subtitle_element);
-                document.querySelector('.sendbird-chat-header__left').appendChild(chat_info_container_element);
+
+                const chat_header_left_element = document.querySelector('.sendbird-chat-header__left');
+                if (chat_header_left_element) chat_header_left_element.appendChild(chat_info_container_element);
             }
         }, 500);
 

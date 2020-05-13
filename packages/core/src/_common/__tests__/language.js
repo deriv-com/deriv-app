@@ -1,6 +1,6 @@
-const { expect } = require('./tests_common');
+const Url = require('@deriv/shared/utils/url');
+const expect = require('chai').expect;
 const Language = require('../language');
-const Url = require('../url');
 
 describe('Language', () => {
     const website_url = Url.websiteUrl();

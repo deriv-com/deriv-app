@@ -2,11 +2,11 @@ import React, { lazy } from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
+import { getUrlBase } from '@deriv/shared/utils/url';
+import routes from '@deriv/shared/utils/routes';
 import { addRoutesConfig } from '@deriv/shared/utils/route';
-import { Redirect } from 'App/Containers/Redirect';
 import { localize } from '@deriv/translations';
-import { routes } from 'Constants';
-import { getUrlBase } from '_common/url';
+import { Redirect } from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
 
 // Error Routes

@@ -6,15 +6,12 @@ import NicknameForm from './nickname-form.jsx';
 
 const Popup = ({ ad, handleClose, handleConfirm }) => {
     const { nickname, setNickname } = React.useContext(Dp2pContext);
-    const [has_nickname, setHasNickname] = React.useState(nickname);
 
-    useEffect(() => {
-        setHasNickname(!!nickname);
-    }, [nickname]);
+    console.log('RENDERRRR', nickname);
 
     return (
         <div className='buy-sell__popup'>
-            {has_nickname ? (
+            {nickname ? (
                 <BuySellForm ad={ad} handleClose={handleClose} handleConfirm={handleConfirm} />
             ) : (
                 <NicknameForm ad={ad} handleClose={handleClose} setNickname={setNickname} />

@@ -38,9 +38,6 @@ const isLanguageAvailable = lang => {
 
     if (is_ach) return isStaging();
 
-    // TODO: remove when translations are ready
-    if (selected_language !== DEFAULT_LANGUAGE) return false;
-
     return Object.keys(ALL_LANGUAGES).includes(selected_language);
 };
 

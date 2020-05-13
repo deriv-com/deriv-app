@@ -94,6 +94,7 @@ export const personalDetailsConfig = ({ can_upgrade_to }) => {
             ],
             salutation_list: [
                 {
+                    id: 'Mr',
                     text: localize('Mr'),
                     value: 'Mr',
                 },

@@ -216,7 +216,6 @@ export const icons = {
         'IcCurrencyVirtual',
     ],
     flag: [
-        'IcFlagCn',
         'IcFlagDe',
         'IcFlagEn',
         'IcFlagEs',
@@ -227,9 +226,10 @@ export const icons = {
         'IcFlagPt',
         'IcFlagRu',
         'IcFlagTh',
-        'IcFlagTw',
         'IcFlagUk',
         'IcFlagVi',
+        'IcFlagZhCn',
+        'IcFlagZhTw',
     ],
     mt5: [
         'IcMt5DeviceDesktop',

@@ -4,8 +4,8 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { Icon } from '@deriv/components';
+import { getPlatformHeader, getPlatformIcon } from '@deriv/shared/utils/platform';
 import { isMobile } from '@deriv/shared/utils/screen';
-import { getPlatformHeader, getPlatformIcon } from 'Utils/PlatformSwitcher';
 import { PlatformSwitcherLoader } from './Components/Preloader/platform-switcher.jsx';
 import { PlatformDropdown } from './platform-dropdown.jsx';
 import 'Sass/app/_common/components/platform-switcher.scss';
@@ -13,6 +13,7 @@ import 'Sass/app/_common/components/platform-switcher.scss';
 class PlatformSwitcher extends React.PureComponent {
     constructor(props) {
         super(props);
+
         this.state = { is_open: false };
     }
 

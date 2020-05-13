@@ -6,7 +6,6 @@ import { Button, Dropdown, Modal, Icon, DesktopWrapper, MobileWrapper, SelectNat
 import routes from '@deriv/shared/utils/routes';
 import { isMobile, isDesktop } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
-import ObjectUtils from '@deriv/shared/utils/object';
 import { connect } from 'Stores/connect';
 import { isEmptyObject } from '@deriv/shared/src/utils/object/object';
 import { WS } from 'Services/ws-methods';
@@ -244,21 +243,23 @@ class FinancialAssessment extends React.Component {
             ].forEach(list => list.forEach(i => (i.nativepicker_text = i.text)));
         }
 
-        const form_initial_values = {
-            income_source,
-            employment_status,
-            employment_industry,
-            occupation,
-            source_of_wealth,
-            education_level,
-            net_income,
-            estimated_worth,
-            account_turnover,
-        };
-
         return (
             <React.Fragment>
-                <Formik initialValues={form_initial_values} validate={this.validateFields} onSubmit={this.onSubmit}>
+                <Formik
+                    initialValues={{
+                        income_source,
+                        employment_status,
+                        employment_industry,
+                        occupation,
+                        source_of_wealth,
+                        education_level,
+                        net_income,
+                        estimated_worth,
+                        account_turnover,
+                    }}
+                    validate={this.validateFields}
+                    onSubmit={this.onSubmit}
+                >
                     {({
                         values,
                         errors,
@@ -546,7 +547,6 @@ class FinancialAssessment extends React.Component {
                                             onClick={() => this.toggleConfirmationModal(true)}
                                             is_disabled={
                                                 !dirty ||
-                                                ObjectUtils.isEqualObject(form_initial_values, values) ||
                                                 isSubmitting ||
                                                 !!(
                                                     errors.income_source ||

@@ -3,7 +3,6 @@ import { Button, Input } from '@deriv/components';
 import { Formik } from 'formik';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared/utils/screen';
-import ObjectUtils from '@deriv/shared/utils/object';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import { validAddress, validPostCode, validLetterSymbol } from 'Utils/Validator/declarative-validation-rules';
@@ -211,16 +210,18 @@ class ProofOfAddressForm extends React.Component {
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
         const mobile_scroll_offset = status && status.msg ? '200px' : '154px';
 
-        const form_initial_values = {
-            address_line_1,
-            address_line_2,
-            address_city,
-            address_state,
-            address_postcode,
-        };
-
         return (
-            <Formik initialValues={form_initial_values} onSubmit={this.onSubmit} validate={this.validateFields}>
+            <Formik
+                initialValues={{
+                    address_line_1,
+                    address_line_2,
+                    address_city,
+                    address_state,
+                    address_postcode,
+                }}
+                onSubmit={this.onSubmit}
+                validate={this.validateFields}
+            >
                 {({ values, errors, status, dirty, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
                     <>
                         <LeaveConfirm onDirty={isMobile() ? this.showForm : null} />
@@ -323,9 +324,7 @@ class ProofOfAddressForm extends React.Component {
                                         className='account-form__footer-btn'
                                         type='submit'
                                         is_disabled={
-                                            (!dirty && document_file.length === 0) ||
-                                            (ObjectUtils.isEqualObject(form_initial_values, values) &&
-                                                document_file.length === 0) ||
+                                            !dirty ||
                                             isSubmitting ||
                                             !!(
                                                 errors.address_line_1 ||

@@ -1,6 +1,6 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared/utils/screen';
+import { localize } from '@deriv/translations';
 import { flatten } from 'Modules/Account/Helpers/flatten';
 
 export const unsupported_contract_types_list = [

@@ -9,8 +9,7 @@ import { isBot } from '../platform/platform';
  * git update-index --assume-unchanged packages/shared/src/utils/config.js
  *
  */
-
-const domain_app_ids = {
+export const domain_app_ids = {
     // these domains as supported "production domains"
     'deriv.app': 16929,
 };

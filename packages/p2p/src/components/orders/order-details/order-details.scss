@@ -30,6 +30,10 @@
             .sendbird-avatar-img {
                 display: none;
             }
+            .sendbird-user-message__avatar,
+            .sendbird-thumbnail__avatar {
+                transform: translateY(50%);
+            }
             .sendbird-avatar {
                 background-color: var(--brand-orange);
                 width: 40px !important;
@@ -74,18 +78,10 @@
                 &:hover .sendbird-file-message__tooltip {
                     background-color: var(--general-section-1);
                     border-bottom-left-radius: 4px;
-                    transform: translateY(-50%);
 
                     &__text {
                         color: var(--text-prominent);
                     }
-                }
-                .sendbird-thumbnail__body {
-                    transform: translateY(-7%);
-                }
-                .sendbird-user-message__sent-at,
-                .sendbird-file-message__sent-at {
-                    transform: translateY(-180%);
                 }
             }
             .sendbird-user-message--outgoing .sendbird-user-message__tooltip,
@@ -97,7 +93,8 @@
                     color: var(--text-colored-background);
                 }
             }
-            .sendbird-user-message__more {
+            .sendbird-user-message__more,
+            .sendbird-thumbnail__more {
                 display: none;
             }
             .sendbird-chat-header {

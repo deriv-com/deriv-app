@@ -67,7 +67,7 @@ export default class RunPanelStore {
         );
 
         this.is_running = true;
-        ui.setPromptHandler(true, route_prompt_dialog.handleBlockedNavigation);
+        ui.setPromptHandler(true, route_prompt_dialog.shouldNavigateAfterPrompt);
         this.toggleDrawer(true);
         this.run_id = `run-${Date.now()}`;
 

@@ -40,8 +40,8 @@ const Error = Loadable({
 
 class Routes extends React.Component {
     componentDidMount() {
-        if (this.props.handlePrompt) {
-            this.props.handlePrompt(true, (route_to, action) =>
+        if (this.props.setPromptHandler) {
+            this.props.setPromptHandler(true, (route_to, action) =>
                 tradePageMountingMiddleware(
                     route_to,
                     action,
@@ -66,6 +66,7 @@ Routes.propTypes = {
     has_error: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_virtual: PropTypes.bool,
+    setPromptHandler: PropTypes.func,
 };
 
 // need to wrap withRouter around connect
@@ -75,7 +76,7 @@ export default withRouter(
         is_logged_in: client.is_logged_in,
         error: common.error,
         has_error: common.has_error,
-        handlePrompt: ui.handlePrompt,
+        setPromptHandler: ui.setPromptHandler,
         setTradeMountingPolicy: modules.trade.setSkipPrePostLifecycle,
     }))(Routes)
 );

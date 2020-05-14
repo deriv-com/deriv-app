@@ -1,0 +1,27 @@
+.dc-expansion-panel {
+    &__header {
+        &-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: bold;
+        }
+    }
+    &__content {
+        &-array {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            font-size: var(--text-size-xxs);
+            line-height: 1.5;
+        }
+        &-chevron-icon {
+            margin-left: 4px;
+            margin-right: 4px;
+        }
+        &-array-item-index {
+            color: var(--text-general);
+            margin-right: 4px;
+        }
+    }
+}

@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { messageWithButton } from '../components/notify-item.jsx';
+import { messageWithButton, arrayAsMessage } from '../components/notify-item.jsx';
 
 const showErrorMessageWithButton = (message, block_id, showErrorMessage, centerAndHighlightBlock) => {
     showErrorMessage(
@@ -18,7 +18,8 @@ const showErrorMessageWithButton = (message, block_id, showErrorMessage, centerA
 export const validateJournalMessage = (
     { message, block_id, variable_name },
     showErrorMessage,
-    centerAndHighlightBlock
+    centerAndHighlightBlock,
+    pushMessage
 ) => {
     // notify undefined variable block
     if (message === undefined && variable_name != null) {
@@ -33,15 +34,29 @@ export const validateJournalMessage = (
         );
         return true;
     }
-    // notify operations represented by NaN
-    if (isNaN(message)) {
-        showErrorMessageWithButton(
-            localize('Tried to perform an invalid operation.'),
-            block_id,
-            showErrorMessage,
-            centerAndHighlightBlock
-        );
+    // notify list block
+    if (Array.isArray(message)) {
+        const parsedArray = {
+            header: message.length,
+            content: parseArray(message),
+        };
+        pushMessage(arrayAsMessage(parsedArray));
         return true;
     }
+    // notify boolean results
+    if (typeof message === 'boolean') {
+        pushMessage(message.toString());
+        return true;
+    }
+
     return false;
+};
+
+const parseArray = message => {
+    return message.map(item => {
+        return {
+            id: new Date().getTime() * Math.random(),
+            value: Array.isArray(item) ? parseArray(item) : item,
+        };
+    });
 };

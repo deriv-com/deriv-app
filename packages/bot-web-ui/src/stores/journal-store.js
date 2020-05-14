@@ -41,20 +41,19 @@ export default class JournalStore {
     onNotify(data) {
         const { run_panel } = this.root_store;
         const { message, className, message_type, sound, block_id, variable_name } = data;
-        let message_string = message;
 
         if (
-            validateJournalMessage({ message, block_id, variable_name }, run_panel.showErrorMessage, () =>
-                this.dbot.centerAndHighlightBlock(block_id, true)
+            validateJournalMessage(
+                { message, block_id, variable_name },
+                run_panel.showErrorMessage,
+                () => this.dbot.centerAndHighlightBlock(block_id, true),
+                parsed_message => this.pushMessage(parsed_message, message_type || message_types.NOTIFY, className)
             )
         ) {
             return;
         }
 
-        if (typeof message === 'boolean') {
-            message_string = message.toString();
-        }
-        this.pushMessage(message_string, message_type || message_types.NOTIFY, className);
+        this.pushMessage(message, message_type || message_types.NOTIFY, className);
 
         if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
             const audio = document.getElementById(sound);

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { DesktopWrapper, MobileWrapper, Button, Modal, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -20,11 +21,11 @@ class ConnectedApps extends React.Component {
 
     handleRevokeAccess = () => {
         this.setState({ is_modal_open: false, is_loading: true });
-        this.props.revokeAccess(this.state.selected_app_id).then(() => this.updateApp());
+        this.props.revokeAccess(this.state.selected_app_id).then(this.updateApp);
     };
 
     handleToggleModal = (app_id = null) => {
-        if (this.state.is_modal_open === true) {
+        if (this.state.is_modal_open) {
             this.setState({ is_modal_open: false, selected_app_id: null });
         } else {
             this.setState({ is_modal_open: true, selected_app_id: app_id });
@@ -34,8 +35,7 @@ class ConnectedApps extends React.Component {
     updateApp = () => {
         this.props
             .fetchConnectedApps()
-            .then(result => {
-                this.props.setConnectedApps(result);
+            .then(() => {
                 this.setState({ is_loading: false });
             })
             .catch(() => {
@@ -71,7 +71,7 @@ class ConnectedApps extends React.Component {
                     {this.state.is_loading ? (
                         <Loading />
                     ) : (
-                        <>
+                        <React.Fragment>
                             <DesktopWrapper>
                                 <DataTable
                                     className='connected-apps'
@@ -96,7 +96,7 @@ class ConnectedApps extends React.Component {
                                     {this.state.is_loading && <Loading />}
                                 </DataList>
                             </MobileWrapper>
-                        </>
+                        </React.Fragment>
                     )}
                 </div>
                 <Modal
@@ -124,9 +124,13 @@ class ConnectedApps extends React.Component {
     }
 }
 
+ConnectedApps.propTypes = {
+    connected_apps: PropTypes.array,
+    fetchConnectedApps: PropTypes.func,
+    revokeAccess: PropTypes.func,
+};
 export default connect(({ client }) => ({
     connected_apps: client.connected_apps,
     fetchConnectedApps: client.fetchConnectedApps,
-    revokeAccess: client.revokeAccess,
-    setConnectedApps: client.setConnectedApps,
+    revokeAccess: client.revokeConnectedApp,
 }))(ConnectedApps);

@@ -35,11 +35,11 @@ const prepareConnectedAppsLastLogin = las_used => (
 );
 
 const oauth_apps_list_map = {
-    read: 'Read',
-    trade: 'Trade',
-    trading_information: 'Trading Information',
-    payments: 'Payments',
-    admin: 'Admin',
+    read: localize('Read'),
+    trade: localize('Trade'),
+    trading_information: localize('Trading Information'),
+    payments: localize('Payments'),
+    admin: localize('Admin'),
 };
 
 const prepareConnectedAppsScopes = permissions_list => {

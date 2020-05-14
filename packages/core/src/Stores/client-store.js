@@ -1256,20 +1256,20 @@ export default class ClientStore extends BaseStore {
     @action.bound
     fetchConnectedApps() {
         return new Promise(async (resolve, reject) => {
-            const response = await WS.send({ oauth_apps: 1 });
-            if (!response.error) {
-                resolve(response.oauth_apps);
+            const response_connected_apps = await WS.send({ oauth_apps: 1 });
+            if (!response_connected_apps.error) {
+                runInAction(() => {
+                    this.connected_apps = response_connected_apps.oauth_apps;
+                });
+                resolve(response_connected_apps.oauth_apps);
             } else {
-                reject(response.error);
+                reject(response_connected_apps.error);
             }
         });
     }
+
     @action.bound
-    setConnectedApps(apps_list = []) {
-        this.connected_apps = apps_list;
-    }
-    @action.bound
-    revokeAccess(app_id) {
+    revokeConnectedApp(app_id) {
         return new Promise(async (resolve, reject) => {
             const response = await WS.send({ revoke_oauth_app: app_id });
             if (!response.error) {

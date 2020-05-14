@@ -90,6 +90,19 @@ const htmlInjectConfig = () => ({
     append: false,
 });
 
+const htmlPreloadConfig = () => ({
+    rel: 'preload',
+    as(entry) {
+        if (/\.css$/.test(entry)) {
+            console.log(entry);
+            return 'style';
+        }
+        if (/\.woff$/.test(entry)) return 'font';
+        return 'script';
+    },
+    fileWhitelist: [/\.css$/],
+});
+
 const cssConfig = () => ({ filename: 'css/trader.main.css', chunkFilename: 'css/trader.[name].[contenthash].css' });
 
 const stylelintConfig = () => ({
@@ -101,6 +114,7 @@ const stylelintConfig = () => ({
 
 module.exports = {
     copyConfig,
+    htmlPreloadConfig,
     htmlOutputConfig,
     htmlInjectConfig,
     cssConfig,

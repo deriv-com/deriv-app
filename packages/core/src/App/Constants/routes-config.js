@@ -20,7 +20,7 @@ const Trader = lazy(() => {
     el_main_css.type = 'text/css';
     el_head.appendChild(el_main_css);
     // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "trader" */ '@deriv/trader');
+    return import(/* webpackChunkName: "trader" */ /* webpackPreload: true */ '@deriv/trader');
 });
 
 const Bot = lazy(() => {

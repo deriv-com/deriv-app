@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Highlight = ({ left, width, rounded_button }) => {
+const Highlight = ({ left, width, has_rounded_button }) => {
     const border_radius_size = '4px';
     const highlight_style = {
         width,
@@ -9,7 +9,7 @@ const Highlight = ({ left, width, rounded_button }) => {
         transform: `translate3d(${left}px, 0, 0)`,
     };
 
-    if (rounded_button) {
+    if (has_rounded_button) {
         highlight_style.borderRadius = '4px';
     } else {
         Object.assign(highlight_style, {
@@ -26,7 +26,7 @@ const Highlight = ({ left, width, rounded_button }) => {
 Highlight.propTypes = {
     left: PropTypes.number,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    rounded_button: PropTypes.bool,
+    has_rounded_button: PropTypes.bool,
 };
 
 export { Highlight };

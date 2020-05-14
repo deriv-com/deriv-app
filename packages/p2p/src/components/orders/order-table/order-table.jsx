@@ -30,7 +30,7 @@ const OrderTable = ({ showDetails }) => {
                     name='filter'
                     onChange={({ target: { value } }) => changeOrderToggle(value)}
                     value={order_table_type}
-                    rounded_button
+                    has_rounded_button
                 />
             </div>
             <OrderTableContent showDetails={showDetails} is_active={order_table_type === orderToggleIndex.ACTIVE} />

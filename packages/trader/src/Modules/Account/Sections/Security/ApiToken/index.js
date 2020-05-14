@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, Field } from 'formik';
-import { Timeline, CompositeCheckbox, Input, Button, Table, Icon, Popover } from '@deriv/components';
+import { Timeline, CompositeCheckbox, Input, Button, Table, Icon, Popover, Dialog } from '@deriv/components';
 import { copyToClipboard } from '_common/utility';
 import ObjectUtils from '@deriv/shared/utils/object';
 import StringUtils from '@deriv/shared/utils/string';
@@ -77,6 +77,8 @@ class ApiToken extends React.Component {
         is_loading: true,
         is_success: false,
         error_message: '',
+        show_delete: false,
+        dispose_token: '',
     };
 
     initial_form = {
@@ -97,7 +99,7 @@ class ApiToken extends React.Component {
         return errors;
     };
 
-    handleSubmit = async (values, { setSubmitting, setFieldError }) => {
+    handleSubmit = async (values, { setSubmitting, setFieldError, resetForm }) => {
         const new_token_scopes = Object.keys(values).filter(item => item !== 'token_name' && values[item]);
 
         const request = {
@@ -114,9 +116,13 @@ class ApiToken extends React.Component {
                 is_success: true,
                 api_tokens: ObjectUtils.getPropertyValue(token_response, ['api_token', 'tokens']),
             });
+            setTimeout(() => {
+                this.setState({ is_success: false });
+            }, 2000);
         }
 
         setSubmitting(false);
+        resetForm();
     };
 
     populateTokenResponse = response => {
@@ -141,6 +147,15 @@ class ApiToken extends React.Component {
     deleteToken = async token => {
         const token_response = await WS.authorized.apiToken({ api_token: 1, delete_token: token });
         this.populateTokenResponse(token_response);
+        this.closeDialog();
+    };
+
+    showDialog = token => {
+        this.setState({ dispose_token: token, show_delete: true });
+    };
+
+    closeDialog = () => {
+        this.setState({ dispose_token: '', show_delete: false });
     };
 
     componentDidMount() {
@@ -152,8 +167,12 @@ class ApiToken extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        this.setState({ dispose_token: '' });
+    }
+
     render() {
-        const { api_tokens, is_loading, is_success, error_message } = this.state;
+        const { api_tokens, is_loading, is_success, error_message, show_delete, dispose_token } = this.state;
         const { is_virtual, is_switching } = this.props;
 
         if (is_virtual) return <DemoMessage />;
@@ -164,6 +183,17 @@ class ApiToken extends React.Component {
 
         return (
             <section className='api-token'>
+                <Dialog is_visible={show_delete}>
+                    <div>
+                        {localize('Confirm delete token?')} {dispose_token}
+                    </div>
+                    <Button type='button' primary small onClick={() => this.deleteToken(dispose_token)}>
+                        Delete
+                    </Button>
+                    <Button type='button' primary small onClick={this.closeDialog}>
+                        Close
+                    </Button>
+                </Dialog>
                 <Formik initialValues={this.initial_form} onSubmit={this.handleSubmit} validate={this.validateFields}>
                     {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting, setFieldValue }) => (
                         <Form noValidate>
@@ -278,9 +308,10 @@ class ApiToken extends React.Component {
                                                             <Table.Cell>{date_format}</Table.Cell>
                                                             <Table.Cell>
                                                                 <Button
+                                                                    type='button'
                                                                     secondary
                                                                     small
-                                                                    onClick={() => this.deleteToken(token.token)}
+                                                                    onClick={() => this.showDialog(token.token)}
                                                                 >
                                                                     {localize('Delete')}
                                                                 </Button>

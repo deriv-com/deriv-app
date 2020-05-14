@@ -7,6 +7,14 @@ export const getFormattedDateString = date_obj => {
     return `${day} ${month} ${year} ${time}`;
 };
 
+export const getFormattedTimeString = date_obj => {
+    if (!(date_obj instanceof Date)) throw Error('getFormattedDateString argument needs an instance of Date');
+
+    const [, , , , time] = date_obj.toUTCString().split(' ');
+
+    return time;
+};
+
 export const convertToMillis = epoch => {
     if (typeof epoch !== 'number') throw Error('getLocalEpoch argument needs a number');
 

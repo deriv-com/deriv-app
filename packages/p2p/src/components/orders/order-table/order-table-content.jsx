@@ -88,7 +88,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
         return <TableError message={api_error_message} />;
     }
 
-    const Row = row_props => <OrderRowComponent {...row_props} onOpenDetails={showDetails} />;
+    const Row = row_props => <OrderRowComponent {...row_props} onOpenDetails={showDetails} is_active={is_active} />;
 
     if (orders.length) {
         const modified_list = orders
@@ -108,7 +108,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
 
         if (modified_list.length) {
             return (
-                <OrderTableHeader>
+                <OrderTableHeader is_active={is_active}>
                     <InfiniteLoaderList
                         autosizer_height={`calc(${Object.values(height_values).join(' - ')})`}
                         items={modified_list}

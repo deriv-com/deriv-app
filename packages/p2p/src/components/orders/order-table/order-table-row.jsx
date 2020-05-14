@@ -3,8 +3,9 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from 'Components/i18next';
+import { getFormattedTimeString, getFormattedDateString } from '../../../utils/date-time';
 
-const OrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
+const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active }) => {
     const {
         advertiser_name,
         display_transaction_amount,
@@ -12,6 +13,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
         display_status,
         id,
         order_purchase_datetime,
+        order_purchase_time,
         offer_currency,
         transaction_currency,
         is_buyer,
@@ -40,12 +42,12 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
         <div onClick={() => onOpenDetails(data)} style={style}>
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
+                    'orders__table-grid--active': is_active,
                     'orders__table-row--attention': is_pending,
                 })}
             >
-                <Table.Cell>
-                    {is_buyer ? localize('Buy') : localize('Sell')} {id}
-                </Table.Cell>
+                <Table.Cell>{is_buyer ? localize('Buy') : localize('Sell')}</Table.Cell>
+                <Table.Cell>{id}</Table.Cell>
                 <Table.Cell>{counter_party}</Table.Cell>
                 <Table.Cell>
                     <div
@@ -62,7 +64,13 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
                 </Table.Cell>
                 <Table.Cell>{is_buyer ? transaction_amount : offer_amount}</Table.Cell>
                 <Table.Cell>{is_buyer ? offer_amount : transaction_amount}</Table.Cell>
-                <Table.Cell>{order_purchase_datetime}</Table.Cell>
+                <Table.Cell>
+                    {is_active ? (
+                        <div className='orders__table-time'>{order_purchase_time}</div>
+                    ) : (
+                        order_purchase_datetime
+                    )}
+                </Table.Cell>
             </Table.Row>
         </div>
     );

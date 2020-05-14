@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from 'Components/i18next';
-import { getFormattedTimeString, getFormattedDateString } from '../../../utils/date-time';
 
 const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active }) => {
     const {

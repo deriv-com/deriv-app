@@ -44,8 +44,8 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
                     const el_new_chat_title = document.createElement('div');
                     el_new_chat_title.classList.add(...el_chat_title.classList);
                     el_new_chat_title.innerText = nickname;
+                    el_chat_title.setAttribute('style', 'display: none;');
                     el_chat_info_container.appendChild(el_new_chat_title);
-                    el_chat_title.parentNode.removeChild(el_chat_title);
                 }
 
                 // If there's no message, there's no subtitle.
@@ -53,8 +53,8 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
                     const el_new_chat_subtitle = document.createElement('div');
                     el_new_chat_subtitle.classList.add(...el_chat_subtitle.classList);
                     el_new_chat_subtitle.innerText = el_chat_subtitle.innerText;
+                    el_chat_subtitle.setAttribute('style', 'display: none;');
                     el_chat_info_container.appendChild(el_new_chat_subtitle);
-                    el_chat_subtitle.parentNode.removeChild(el_chat_subtitle);
                 }
 
                 const el_chat_header_left = document.querySelector('.sendbird-chat-header__left');

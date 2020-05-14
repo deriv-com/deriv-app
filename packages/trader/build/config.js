@@ -20,6 +20,7 @@ const copyConfig = base => [
     // { from: path.resolve(__dirname, '../src/root_files/sitemap.xml'), to: 'sitemap.xml', toType: 'file' },
     { from: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'), to: 'favicon.ico', toType: 'file' },
     { from: path.resolve(__dirname, '../src/public/images/favicons/**') },
+    { from: path.resolve(__dirname, '../src/public/images/common/404.png'), to: 'public/images/common' },
     { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
     // { from: path.resolve(__dirname, '../src/_common/lib/pushwooshSDK/**'), flatten: true },
     // {

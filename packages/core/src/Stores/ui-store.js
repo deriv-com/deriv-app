@@ -587,7 +587,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleAccountTypesModal(is_visible) {
+    toggleAccountTypesModal(is_visible = !this.is_account_types_modal_visible) {
         this.is_account_types_modal_visible = is_visible;
     }
 

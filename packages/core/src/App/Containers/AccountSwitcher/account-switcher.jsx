@@ -22,11 +22,11 @@ import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Prel
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
 
-const AccountTitle = ({ title, onIconClick, is_europe }) => {
+const AccountTitle = ({ title, onIconClick, is_eu }) => {
     return (
         <React.Fragment>
             <span>{title}</span>
-            {is_europe && <Icon className='acc-switcher__help-icon' icon='IcInfoOutline' onClick={onIconClick} />}
+            {is_eu && <Icon className='acc-switcher__help-icon' icon='IcInfoOutline' onClick={onIconClick} />}
         </React.Fragment>
     );
 };
@@ -285,7 +285,7 @@ class AccountSwitcher extends React.Component {
                         header={
                             <AccountTitle
                                 title={localize('Deriv Accounts')}
-                                is_europe={this.props.is_europe}
+                                is_eu={this.props.is_eu}
                                 onIconClick={this.showAccountTypesModal}
                             />
                         }
@@ -324,7 +324,7 @@ class AccountSwitcher extends React.Component {
                             header={
                                 <AccountTitle
                                     title={localize('DMT5 Accounts')}
-                                    is_europe={this.props.is_europe}
+                                    is_eu={this.props.is_eu}
                                     onIconClick={this.showAccountTypesModal}
                                 />
                             }
@@ -385,7 +385,7 @@ class AccountSwitcher extends React.Component {
                         header={
                             <AccountTitle
                                 title={localize('Deriv Accounts')}
-                                is_europe={this.props.is_europe}
+                                is_eu={this.props.is_eu}
                                 onIconClick={this.showAccountTypesModal}
                             />
                         }
@@ -454,7 +454,7 @@ class AccountSwitcher extends React.Component {
                             header={
                                 <AccountTitle
                                     title={localize('DMT5 Accounts')}
-                                    is_europe={this.props.is_europe}
+                                    is_eu={this.props.is_eu}
                                     onIconClick={this.showAccountTypesModal}
                                 />
                             }
@@ -615,7 +615,7 @@ AccountSwitcher.propTypes = {
     can_change_fiat_currency: PropTypes.bool,
     can_upgrade_to: PropTypes.string,
     has_any_real_account: PropTypes.bool,
-    is_europe: PropTypes.bool,
+    is_eu: PropTypes.bool,
     is_loading_mt5: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
@@ -643,7 +643,7 @@ const account_switcher = withRouter(
         can_change_fiat_currency: client.can_change_fiat_currency,
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,
-        is_europe: client.is_europe,
+        is_eu: client.is_eu,
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,

@@ -296,7 +296,7 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get is_europe() {
+    get is_eu() {
         const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
         const eu_excluded_regex = new RegExp('^mt$');
         const { gaming_company, financial_company } = this.landing_companies;

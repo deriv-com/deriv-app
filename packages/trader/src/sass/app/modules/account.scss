@@ -539,8 +539,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 .browser,
                 .ip,
                 .status {
-                    font-size: 14px;
-                    font-weight: normal;
+                    @include typeface(--paragraph-left-normal-black);
                     font-stretch: normal;
                     font-style: normal;
                     line-height: 1.43;

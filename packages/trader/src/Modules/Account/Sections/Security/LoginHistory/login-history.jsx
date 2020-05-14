@@ -1,4 +1,4 @@
-// import PropTypes        from 'prop-types';
+import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
@@ -20,15 +20,15 @@ const LoginHistoryListView = ({ fields, login_history }) => (
     <table className='login-history-table'>
         <tbody>
             <tr>
-                <Td title={fields[0].value} text={login_history[fields[0].key]} />
+                <Td title={fields.date} text={login_history.date} />
             </tr>
             <tr>
-                <Td title={fields[2].value} text={login_history[fields[2].key]} />
-                <Td className={fields[1].key} title={fields[1].value} text={login_history[fields[1].key]} />
+                <Td title={fields.browser} text={login_history.browser} />
+                <Td className='action' title={fields.action} text={login_history.action} />
             </tr>
             <tr>
-                <Td title={fields[3].value} text={login_history[fields[3].key]} />
-                <Td title={fields[4].value} text={login_history[fields[4].key]} />
+                <Td title={fields.ip} text={login_history.ip} />
+                <Td title={fields.status} text={login_history.status} />
             </tr>
         </tbody>
     </table>
@@ -62,28 +62,13 @@ const parseUA = user_agent => {
 
 class LoginHistory extends React.Component {
     // data keys+values
-    fields = [
-        {
-            key: 'date',
-            value: localize('Date and time'),
-        },
-        {
-            key: 'action',
-            value: localize('Action'),
-        },
-        {
-            key: 'browser',
-            value: localize('Browser'),
-        },
-        {
-            key: 'ip',
-            value: localize('IP address'),
-        },
-        {
-            key: 'status',
-            value: localize('Status'),
-        },
-    ];
+    fields = {
+        date: localize('Date and time'),
+        action: localize('Action'),
+        browser: localize('Browser'),
+        id: localize('IP address'),
+        status: localize('Status'),
+    };
     // state
     state = {
         is_loading: true,
@@ -92,10 +77,8 @@ class LoginHistory extends React.Component {
     };
     // methods
     getLoginHistoryColumnsTemplate = () =>
-        this.fields.map(item => ({
-            title: localize(item.value),
-            col_index: item.key,
-        }));
+        Object.keys(this.fields).map(key => ({ title: this.fields.key, col_index: key }));
+
     getFormattedData() {
         const data = [];
         for (let i = 0; i < this.state.fetch_limit; i++) {
@@ -105,14 +88,13 @@ class LoginHistory extends React.Component {
             const date = environment_split[0];
             const time = environment_split[1].replace('GMT', '');
             const date_time = convertDateFormat(`${date} ${time}`, 'D-MMMM-YY hh:mm:ss', 'YYYY-MM-DD hh:mm:ss');
-            data[i][this.fields[0].key] = `${date_time} GMT`;
-            data[i][this.fields[1].key] = this.props.login_history[i][this.fields[1].key];
+            data[i].date = `${date_time} GMT`;
+            data[i].action = this.props.login_history[i].action;
             const user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
             const ua = parseUA(user_agent);
-            data[i][this.fields[2].key] = ua ? `${ua.name} ${ua.version}` : '';
-            data[i][this.fields[3].key] = environment_split[2].split('=')[1];
-            data[i][this.fields[4].key] =
-                this.props.login_history[i][this.fields[4].key] === 1 ? localize('Success') : localize('Failure');
+            data[i].browser = ua ? `${ua.name} ${ua.version}` : '';
+            data[i].ip = environment_split[2].split('=')[1];
+            data[i].status = this.props.login_history[i].status === 1 ? localize('Success') : localize('Failure');
             data[i].id = i;
         }
         return data;
@@ -166,7 +148,11 @@ class LoginHistory extends React.Component {
     }
 }
 
-// LoginHistory.propTypes = {};
+LoginHistory.propTypes = {
+    is_switching: PropTypes.bool,
+    login_history: PropTypes.object,
+    onMount: PropTypes.func,
+};
 
 export default connect(({ client }) => ({
     is_switching: client.is_switching,

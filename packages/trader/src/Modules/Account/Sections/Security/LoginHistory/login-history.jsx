@@ -20,15 +20,15 @@ const LoginHistoryListView = ({ fields, login_history }) => (
     <table className='login-history-table'>
         <tbody>
             <tr>
-                <Td title={fields.date.value} text={login_history[fields.date.key]} />
+                <Td title={fields[0].value} text={login_history[fields[0].key]} />
             </tr>
             <tr>
-                <Td title={fields.browser.value} text={login_history[fields.browser.key]} />
-                <Td className={fields.action.key} title={fields.action.value} text={login_history[fields.action.key]} />
+                <Td title={fields[2].value} text={login_history[fields[2].key]} />
+                <Td className={fields[1].key} title={fields[1].value} text={login_history[fields[1].key]} />
             </tr>
             <tr>
-                <Td title={fields.ip.value} text={login_history[fields.ip.key]} />
-                <Td title={fields.status.value} text={login_history[fields.status.key]} />
+                <Td title={fields[3].value} text={login_history[fields[3].key]} />
+                <Td title={fields[4].value} text={login_history[fields[4].key]} />
             </tr>
         </tbody>
     </table>
@@ -62,28 +62,28 @@ const parseUA = user_agent => {
 
 class LoginHistory extends React.Component {
     // data keys+values
-    fields = {
-        date: {
+    fields = [
+        {
             key: 'date',
             value: localize('Date and time'),
         },
-        action: {
+        {
             key: 'action',
             value: localize('Action'),
         },
-        browser: {
+        {
             key: 'browser',
             value: localize('Browser'),
         },
-        ip: {
+        {
             key: 'ip',
             value: localize('IP address'),
         },
-        status: {
+        {
             key: 'status',
             value: localize('Status'),
         },
-    };
+    ];
     // state
     state = {
         is_loading: true,
@@ -91,28 +91,32 @@ class LoginHistory extends React.Component {
         data: [],
     };
     // methods
-    getLoginHistoryColumnsTemplate = () => [
-        {
-            title: localize(this.fields.date.value),
-            col_index: this.fields.date.key,
-        },
-        {
-            title: localize(this.fields.action.value),
-            col_index: this.fields.action.key,
-        },
-        {
-            title: localize(this.fields.browser.value),
-            col_index: this.fields.browser.key,
-        },
-        {
-            title: localize(this.fields.ip.value),
-            col_index: this.fields.ip.key,
-        },
-        {
-            title: localize(this.fields.status.value),
-            col_index: this.fields.status.key,
-        },
-    ];
+    getLoginHistoryColumnsTemplate = () =>
+        this.fields.map(item => ({
+            title: localize(item.value),
+            col_index: item.key,
+        }));
+    getFormattedData() {
+        const data = [];
+        for (let i = 0; i < this.state.fetch_limit; i++) {
+            data[i] = {};
+            const environment = this.props.login_history[i].environment;
+            const environment_split = environment.split(' ');
+            const date = environment_split[0];
+            const time = environment_split[1].replace('GMT', '');
+            const date_time = convertDateFormat(`${date} ${time}`, 'D-MMMM-YY hh:mm:ss', 'YYYY-MM-DD hh:mm:ss');
+            data[i][this.fields[0].key] = `${date_time} GMT`;
+            data[i][this.fields[1].key] = this.props.login_history[i][this.fields[1].key];
+            const user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
+            const ua = parseUA(user_agent);
+            data[i][this.fields[2].key] = ua ? `${ua.name} ${ua.version}` : '';
+            data[i][this.fields[3].key] = environment_split[2].split('=')[1];
+            data[i][this.fields[4].key] =
+                this.props.login_history[i][this.fields[4].key] === 1 ? localize('Success') : localize('Failure');
+            data[i].id = i;
+        }
+        return data;
+    }
     // lifecycle methods
     componentDidMount() {
         this.props.onMount(this.state.fetch_limit);
@@ -120,30 +124,10 @@ class LoginHistory extends React.Component {
 
     componentDidUpdate() {
         if (this.props.login_history && this.state.is_loading) {
-            const feed = [];
-            for (let i = 0; i < this.state.fetch_limit; i++) {
-                feed[i] = {};
-                const environment = this.props.login_history[i].environment;
-                const environment_split = environment.split(' ');
-                const date = environment_split[0];
-                const time = environment_split[1].replace('GMT', '');
-                const date_time = convertDateFormat(`${date} ${time}`, 'D-MMMM-YY hh:mm:ss', 'YYYY-MM-DD hh:mm:ss');
-                feed[i][this.fields.date.key] = `${date_time} GMT`;
-                feed[i][this.fields.action.key] = this.props.login_history[i][this.fields.action.key];
-                const user_agent = environment.substring(
-                    environment.indexOf('User_AGENT'),
-                    environment.indexOf('LANG')
-                );
-                const ua = parseUA(user_agent);
-                feed[i][this.fields.browser.key] = ua ? `${ua.name} ${ua.version}` : '';
-                feed[i][this.fields.ip.key] = environment_split[2].split('=')[1];
-                feed[i][this.fields.status.key] =
-                    this.props.login_history[i] === 1 ? localize('Success') : localize('Failure');
-                feed[i].id = i;
-            }
+            const formated_data = this.getFormattedData();
             this.setState({
                 is_loading: false,
-                data: feed,
+                data: formated_data,
             });
         }
     }

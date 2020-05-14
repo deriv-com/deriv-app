@@ -15,7 +15,7 @@ const RoutePromptDialog = ({ continueRoute, is_confirmed, last_location, should_
             onCancel={onCancel}
             is_visible={should_show}
         >
-            {/*// TODO: update text once available from copywriters */}
+            {/* TODO: update text once available from copywriters */}
             <Localize i18n_default_text='Navigating to other platform will still complete current bought contract but will stop purchasing a new contract.' />
         </Dialog>
     );

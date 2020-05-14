@@ -1,13 +1,13 @@
-const { getLanguage } = require('@deriv/translations');
+const domain_app_ids = require('@deriv/shared/utils/config').domain_app_ids;
+const getAppId = require('@deriv/shared/utils/config').getAppId;
+const getDerivComLink = require('@deriv/shared/utils/url').getDerivComLink;
+const urlForCurrentDomain = require('@deriv/shared/utils/url').urlForCurrentDomain;
 const isMobile = require('@deriv/shared/utils/os').isMobile;
+const { getLanguage } = require('@deriv/translations');
 const website_name = require('App/Constants/app-config').website_name;
 const getElementById = require('../common_functions').getElementById;
 const isStorageSupported = require('../storage').isStorageSupported;
 const LocalStore = require('../storage').LocalStore;
-const urlForCurrentDomain = require('../url').urlForCurrentDomain;
-const getDerivComLink = require('../url').getDerivComLink;
-const domain_app_ids = require('../../config').domain_app_ids;
-const getAppId = require('../../config').getAppId;
 
 const Login = (() => {
     const redirectToLogin = is_logged_in => {

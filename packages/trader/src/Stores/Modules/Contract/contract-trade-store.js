@@ -1,7 +1,7 @@
 import { action, computed, observable, toJS } from 'mobx';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import { WS } from 'Services/ws-methods';
 import { LocalStore } from '_common/storage';
-import { isDesktop } from '@deriv/shared/utils/screen';
 import { switch_to_tick_chart } from './Helpers/chart-notifications';
 import ContractStore from './contract-store';
 import getValidationRules from './Constants/validation-rules';

@@ -1,4 +1,5 @@
 import { Icon, Modal, Tabs, ThemedScrollbars } from '@deriv/components';
+import { website_name } from 'App/Constants/app-config';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
@@ -180,7 +181,7 @@ const FinancialBox = ({ is_demo = false, mt5OnClick }) => {
             cards={[
                 <AccountCard
                     key={0}
-                    title={localize('Trade on Deriv')}
+                    title={localize('Trade on {{ website_name }}', { website_name })}
                     subtitle={localize('Option trading account')}
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
                     // TODO: [deriv-eu] Add click handler
@@ -259,7 +260,7 @@ const GamingBox = ({ is_demo = false, no_mt5 = false, mt5OnClick }) => {
     const cards = [
         <AccountCard
             key={0}
-            title={localize('Trade on Deriv')}
+            title={localize('Trade on {{website_name}}', { website_name })}
             subtitle={localize('Option trading account')}
             button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
             // TODO: [deriv-eu] Add click handler
@@ -371,7 +372,7 @@ const SyntheticBox = ({ is_demo = false, mt5OnClick }) => {
             cards={[
                 <AccountCard
                     key={0}
-                    title={localize('Trade on Deriv')}
+                    title={localize('Trade on {{website_name}}', { website_name })}
                     subtitle={localize('Option trading account')}
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
                     // TODO: [deriv-eu] Add click handler
@@ -501,7 +502,8 @@ class AccountTypesModal extends Component {
                     <div className='account-types'>
                         <p className='account-types__intro'>
                             <Localize
-                                i18n_default_text='Deriv offer various accounts based on 2 account types that suites different need. You can have all of them whenever you want. To view this page again, simply press any of the <0/> icon in Account Swithcer.'
+                                i18n_default_text='{{ website_name }} offer various accounts based on 2 account types that suites different need. You can have all of them whenever you want. To view this page again, simply press any of the <0/> icon in Account Swithcer.'
+                                values={{ website_name }}
                                 components={[
                                     <Icon key={0} className='account-types__text-icon' icon='IcInfoOutline' />,
                                 ]}

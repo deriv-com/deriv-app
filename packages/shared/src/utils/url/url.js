@@ -78,8 +78,7 @@ export const urlFor = (
     }
     const new_url = `${domain}${normalizePath(path) || 'home'}.html${query_string ? `?${query_string}` : ''}`;
 
-    // replace old lang with new lang
-    return urlForLanguage(lang, new_url);
+    return lang ? urlForLanguage(lang, new_url) : new_url;
 };
 
 export const urlForCurrentDomain = href => {

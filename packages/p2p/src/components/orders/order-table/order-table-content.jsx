@@ -27,13 +27,17 @@ const OrderRowLoader = () => (
     </ContentLoader>
 );
 
-const OrderEmptyStates = () => (
-    <div className='orders__empty'>
-        <Icon icon='IcNoOrder' size={128} />
-        <div className='orders__empty-text'>{localize('You have no orders')}</div>
-        <Button primary text={localize('Buy/Sell')} type='button' />
-    </div>
-);
+const OrderEmptyStates = () => {
+    const { changeTab } = useContext(Dp2pContext);
+
+    return (
+        <div className='orders__empty'>
+            <Icon icon='IcNoOrder' size={128} />
+            <div className='orders__empty-text'>{localize('You have no orders')}</div>
+            <Button primary text={localize('Buy/Sell')} type='button' onClick={() => changeTab(0)} />
+        </div>
+    );
+};
 
 const OrderTableContent = ({ showDetails, is_active }) => {
     const { list_item_limit, order_offset, orders, setOrders, setOrderOffset } = useContext(Dp2pContext);

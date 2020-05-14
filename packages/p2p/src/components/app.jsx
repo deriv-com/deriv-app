@@ -165,6 +165,7 @@ class App extends Component {
         return (
             <Dp2pProvider
                 value={{
+                    changeTab: this.handleTabClick,
                     currency,
                     local_currency_config,
                     residence,

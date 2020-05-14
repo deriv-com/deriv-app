@@ -121,7 +121,7 @@
             }
         }
         &-grid {
-            grid-template-columns: 1fr 2fr 160px 1fr 1fr 2fr;
+            grid-template-columns: 1fr 1fr 160px 1fr 1fr 2fr;
         }
         &-status {
             font-weight: bold;
@@ -143,6 +143,10 @@
             &--disabled {
                 color: var(--text-less-prominent);
                 background-color: rgba(153, 153, 153, 0.16);
+            }
+            &--info {
+                color: var(--status-info);
+                background-color: rgba(28, 90, 227, 0.16);
             }
         }
         & .dc-table__head:first-child {

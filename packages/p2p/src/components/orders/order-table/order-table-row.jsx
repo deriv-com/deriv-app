@@ -20,9 +20,10 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
         is_expired,
         is_pending,
         is_completed,
+        is_refunded,
     } = data;
 
-    const max_word_count = 20;
+    const max_word_count = 22;
     let counter_party = '-';
 
     if (advertiser_name !== '') {
@@ -39,7 +40,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
         <div onClick={() => onOpenDetails(data)} style={style}>
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
-                    'orders__table-row--attention': is_buyer_confirmed || is_pending,
+                    'orders__table-row--attention': is_pending,
                 })}
             >
                 <Table.Cell>
@@ -52,6 +53,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
                             'orders__table-status--primary': is_pending,
                             'orders__table-status--secondary': is_buyer_confirmed,
                             'orders__table-status--success': is_completed,
+                            'orders__table-status--info': is_refunded,
                             'orders__table-status--disabled': is_buyer_cancelled || is_expired,
                         })}
                     >

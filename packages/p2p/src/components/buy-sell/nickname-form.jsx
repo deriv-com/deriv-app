@@ -9,13 +9,10 @@ import FormError from '../form/error.jsx';
 
 const NicknameForm = ({ handleClose, setNickname }) => {
     const handleSubmit = (values, { setStatus, setSubmitting }) => {
-        console.log('RUNNING');
         requestWS({ p2p_advertiser_create: 1, name: values.nickname }).then(response => {
-            console.log(response);
             if (response.error) {
                 setStatus({ error_message: response.error.message });
             } else {
-                console.log('EXECUTED');
                 setNickname(response.name);
             }
 

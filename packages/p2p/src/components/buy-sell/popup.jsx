@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Dp2pContext from 'Components/context/dp2p-context';
 import BuySellForm from './buy-sell-form.jsx';
@@ -6,8 +6,6 @@ import NicknameForm from './nickname-form.jsx';
 
 const Popup = ({ ad, handleClose, handleConfirm }) => {
     const { nickname, setNickname } = React.useContext(Dp2pContext);
-
-    console.log('RENDERRRR', nickname);
 
     return (
         <div className='buy-sell__popup'>

@@ -44,7 +44,7 @@ export default class RunPanelStore {
 
     @action.bound
     onRunButtonClick = () => {
-        const { core, contract_card } = this.root_store;
+        const { core, contract_card, route_prompt_dialog } = this.root_store;
         const { client, ui } = core;
 
         this.dbot.unHighlightAllBlocks();
@@ -67,6 +67,7 @@ export default class RunPanelStore {
         );
 
         this.is_running = true;
+        ui.setPromptHandler(true, route_prompt_dialog.shouldNavigateAfterPrompt);
         this.toggleDrawer(true);
         this.run_id = `run-${Date.now()}`;
 
@@ -77,10 +78,10 @@ export default class RunPanelStore {
 
     @action.bound
     onStopButtonClick() {
+        const { ui } = this.root_store.core;
         this.dbot.stopBot();
         this.is_running = false;
-
-        const { ui } = this.root_store.core;
+        ui.setPromptHandler(false);
 
         if (this.error_type) {
             // when user click stop button when there is a error but bot is retrying

@@ -50,14 +50,14 @@ const initRoutesConfig = () => [
             {
                 path: routes.positions,
                 component: lazyLoadReportComponent('OpenPositions'),
-                title: localize('Open Positions'),
+                title: localize('Open positions'),
                 icon_component: 'IcOpenPositions',
                 default: true,
             },
             {
                 path: routes.profit,
                 component: lazyLoadReportComponent('ProfitTable'),
-                title: localize('Profit Table'),
+                title: localize('Profit table'),
                 icon_component: 'IcProfitTable',
             },
             {
@@ -65,6 +65,64 @@ const initRoutesConfig = () => [
                 component: lazyLoadReportComponent('Statement'),
                 title: localize('Statement'),
                 icon_component: 'IcStatement',
+            },
+        ],
+    },
+    {
+        path: routes.account,
+        component: lazyLoadAccountComponent('Account'),
+        is_authenticated: true,
+        title: localize('Account settings'),
+        icon_component: 'IcUserOutline',
+        routes: [
+            {
+                title: localize('Profile'),
+                icon: 'IcUserOutline',
+                subroutes: [
+                    {
+                        path: routes.personal_details,
+                        component: lazyLoadAccountComponent('PersonalDetails'),
+                        title: localize('Personal details'),
+                        default: true,
+                    },
+                    {
+                        path: routes.financial_assessment,
+                        component: lazyLoadAccountComponent('FinancialAssessment'),
+                        title: localize('Financial assessment'),
+                    },
+                ],
+            },
+            {
+                title: localize('Verification'),
+                icon: 'IcVerification',
+                subroutes: [
+                    {
+                        path: routes.proof_of_identity,
+                        component: lazyLoadAccountComponent('ProofOfIdentity'),
+                        title: localize('Proof of identity'),
+                    },
+                    {
+                        path: routes.proof_of_address,
+                        component: lazyLoadAccountComponent('ProofOfAddress'),
+                        title: localize('Proof of address'),
+                    },
+                ],
+            },
+            {
+                title: localize('Security and safety'),
+                icon: 'IcSecurity',
+                subroutes: [
+                    {
+                        path: routes.deriv_password,
+                        component: lazyLoadAccountComponent('DerivPassword'),
+                        title: localize('Deriv password'),
+                    },
+                    {
+                        path: routes.account_limits,
+                        component: lazyLoadAccountComponent('AccountLimits'),
+                        title: localize('Account limits'),
+                    },
+                ],
             },
         ],
     },

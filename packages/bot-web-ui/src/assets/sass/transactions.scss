@@ -60,6 +60,10 @@
     }
     &__content {
         height: calc(100% - 42px);
+
+        .list__animation-enter {
+            overflow: hidden;
+        }
     }
     &__item {
         display: grid;

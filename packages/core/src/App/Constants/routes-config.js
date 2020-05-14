@@ -20,11 +20,11 @@ const Trader = lazy(() => {
 
     el_preload_css.as = 'style';
     el_preload_css.href = getUrlBase('/css/trader.main.css');
-    el_preload_css.rel = 'prefetch';
+    el_preload_css.rel = 'preload';
 
     el_small_preload_css.as = 'style';
     el_small_preload_css.href = getUrlBase('/css/trader.screen-small.css');
-    el_small_preload_css.rel = 'prefetch';
+    el_small_preload_css.rel = 'preload';
 
     el_main_css.href = getUrlBase('/css/trader.main.css');
     el_main_css.rel = 'stylesheet';

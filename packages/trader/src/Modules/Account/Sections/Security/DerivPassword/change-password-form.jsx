@@ -155,7 +155,7 @@ class ChangePasswordForm extends React.Component {
                                     is_loading={this.state.is_btn_loading}
                                     is_submit_success={this.state.is_submit_success}
                                     has_effect
-                                    text={localize('Change Password')}
+                                    text={localize('Change password')}
                                     primary
                                     large
                                 />

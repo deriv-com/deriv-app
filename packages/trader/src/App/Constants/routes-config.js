@@ -73,7 +73,7 @@ const initRoutesConfig = () => [
         path: routes.account,
         component: lazyLoadAccountComponent('Account'),
         is_authenticated: true,
-        title: localize('Account Settings'),
+        title: localize('Account settings'),
         icon_component: 'IcUserOutline',
         routes: [
             {

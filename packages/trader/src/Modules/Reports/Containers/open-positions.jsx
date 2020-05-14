@@ -204,23 +204,21 @@ class OpenPositions extends React.Component {
         row_obj.is_unsupported
             ? {
                   component: (
-                      <div className='unsupported-trade-type'>
-                          <Localize
-                              i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
-                              values={{
-                                  website_name,
-                              }}
-                              components={[
-                                  <a
-                                      key={0}
-                                      className='link link--orange'
-                                      rel='noopener noreferrer'
-                                      target='_blank'
-                                      href={urlFor('user/portfoliows', undefined, undefined, true)}
-                                  />,
-                              ]}
-                          />
-                      </div>
+                      <Localize
+                          i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
+                          values={{
+                              website_name,
+                          }}
+                          components={[
+                              <a
+                                  key={0}
+                                  className='link link--orange'
+                                  rel='noopener noreferrer'
+                                  target='_blank'
+                                  href={urlFor('user/portfoliows', undefined, undefined, true)}
+                              />,
+                          ]}
+                      />
                   ),
               }
             : getContractPath(row_obj.id);

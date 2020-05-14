@@ -23,7 +23,7 @@ const OrderTable = ({ showDetails }) => {
             <div className='orders__header'>
                 <ButtonToggle
                     buttons_arr={orders_filters}
-                    className='orders__header__filters'
+                    className='orders__header-filter'
                     is_animated
                     name='filter'
                     onChange={({ target: { value } }) => setTableType(value)}

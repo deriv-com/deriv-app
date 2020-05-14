@@ -18,6 +18,15 @@
         padding: 0.4rem;
         width: fit-content;
         border-radius: 4px;
+
+        &-filter {
+            .dc-button-menu__wrapper {
+                button.dc-btn {
+                    height: 36px;
+                    width: 120px;
+                }
+            }
+        }
     }
     &__button {
         margin: 0 1.6rem;

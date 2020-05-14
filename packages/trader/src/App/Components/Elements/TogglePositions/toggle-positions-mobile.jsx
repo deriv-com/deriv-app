@@ -103,5 +103,6 @@ class TogglePositionsMobile extends React.Component {
 // Fixes issue with positions not updated in positions modal
 export default connect(({ ui }) => ({
     togglePositionsDrawer: ui.togglePositionsDrawer,
+    toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
     is_positions_drawer_on: ui.is_positions_drawer_on,
 }))(TogglePositionsMobile);

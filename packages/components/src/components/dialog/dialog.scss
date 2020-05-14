@@ -92,9 +92,9 @@
 @media screen and (max-width: 560px) {
     .dc-dialog {
         &__dialog {
-            width: 100vw;
+            width: calc(100vw - 3.2rem);
             height: 100vh;
-            min-width: 100vw;
+            min-width: calc(100vw - 3.2rem);
 
             &--has-margin {
                 min-width: unset;

@@ -74,7 +74,10 @@ const PositionsModalCard = ({
                             })}
                             is_disabled={!is_valid_to_sell || is_sell_requested}
                             text={localize('Sell')}
-                            onClick={() => onClickSell(id)}
+                            onClick={e => {
+                                if (is_unsupported) e.stopPropagation();
+                                onClickSell(id);
+                            }}
                             secondary
                         />
                     </div>
@@ -174,7 +177,10 @@ const PositionsModalCard = ({
             {is_unsupported ? (
                 <div
                     className={classNames('positions-modal-card')}
-                    onClick={() => toggleUnsupportedContractModal(true)}
+                    onClick={() => {
+                        toggleUnsupportedContractModal(true);
+                        togglePositions();
+                    }}
                 >
                     {contract_info.underlying ? contract_el : loader_el}
                 </div>

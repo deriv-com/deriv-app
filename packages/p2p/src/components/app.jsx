@@ -56,7 +56,7 @@ class App extends Component {
                         p2p_advertiser_info: 1,
                         subscribe: 1,
                     },
-                    [this.setIsAdvertiser, this.setChatInformation]
+                    [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
                 ),
                 subscribeWS(
                     {
@@ -102,28 +102,31 @@ class App extends Component {
         }
     };
 
-    setChatInformation = response => {
+    setChatInfoUsingAdvertiserInfo = response => {
         const { p2p_advertiser_info } = response;
         if (response.error) return;
 
-        // This is using QA10 SendBird AppId, please change to production's SendBird AppId when we deploy to production.
-        const app_id = '0D7CB7BD-554A-43D0-A34E-945C299B49D4';
         const user_id = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
         const token = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_token']);
 
-        if (!token) {
-            requestWS({ service_token: 1, service: 'sendbird' }).then(value => {
-                this.setState({
-                    chat_info: {
-                        app_id,
-                        user_id,
-                        token: value.service_token.token,
-                    },
-                });
+        this.setChatInfo(user_id, token);
+    };
+
+    setChatInfo = (user_id, token) => {
+        const chat_info = {
+            // This is using QA10 SendBird AppId, please change to production's SendBird AppId when we deploy to production.
+            app_id: '0D7CB7BD-554A-43D0-A34E-945C299B49D4',
+            user_id,
+            token,
+        };
+
+        if (!chat_info.token) {
+            requestWS({ service_token: 1, service: 'sendbird' }).then(response => {
+                chat_info.token = response.service_token.token;
             });
-        } else {
-            this.setState({ chat_info: { app_id, user_id, token } });
         }
+
+        this.setState({ chat_info });
     };
 
     handleNotifications = orders => {
@@ -202,6 +205,7 @@ class App extends Component {
                     is_advertiser: this.state.is_advertiser,
                     nickname: this.state.nickname,
                     setNickname: nickname => this.setState({ nickname }),
+                    setChatInfo: this.setChatInfo,
                     is_restricted: this.state.is_restricted,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,

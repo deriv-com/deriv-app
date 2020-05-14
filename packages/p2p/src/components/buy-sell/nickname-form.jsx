@@ -7,13 +7,16 @@ import { requestWS } from 'Utils/websocket';
 import IconClose from 'Assets/icon-close.jsx';
 import FormError from '../form/error.jsx';
 
-const NicknameForm = ({ handleClose, setNickname }) => {
+const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
     const handleSubmit = (values, { setStatus, setSubmitting }) => {
         requestWS({ p2p_advertiser_create: 1, name: values.nickname }).then(response => {
             if (response.error) {
                 setStatus({ error_message: response.error.message });
             } else {
-                setNickname(response.name);
+                const { p2p_advertiser_create } = response;
+
+                setNickname(p2p_advertiser_create.name);
+                setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
             }
 
             setSubmitting(false);

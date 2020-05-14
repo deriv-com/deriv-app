@@ -184,15 +184,18 @@ class ApiToken extends React.Component {
         return (
             <section className='api-token'>
                 <Dialog is_visible={show_delete}>
-                    <div>
+                    <Icon icon='IcRemoveToken' className='api-token__popup-image' />
+                    <h4 className='api-token__popup-header'>
                         {localize('Confirm delete token?')} {dispose_token}
+                    </h4>
+                    <div className='api-token__popup-button_group'>
+                        <Button type='button' primary small onClick={() => this.deleteToken(dispose_token)}>
+                            Delete
+                        </Button>
+                        <Button type='button' primary small onClick={this.closeDialog}>
+                            Close
+                        </Button>
                     </div>
-                    <Button type='button' primary small onClick={() => this.deleteToken(dispose_token)}>
-                        Delete
-                    </Button>
-                    <Button type='button' primary small onClick={this.closeDialog}>
-                        Close
-                    </Button>
                 </Dialog>
                 <Formik initialValues={this.initial_form} onSubmit={this.handleSubmit} validate={this.validateFields}>
                     {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting, setFieldValue }) => (

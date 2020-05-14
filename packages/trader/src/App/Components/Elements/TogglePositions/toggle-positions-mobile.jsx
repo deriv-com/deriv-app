@@ -1,8 +1,8 @@
 import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { Icon, Div100vhContainer, Modal } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { localize } from '@deriv/translations';
-import routes from 'Constants/routes';
 import { BinaryLink } from 'App/Components/Routes';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card.jsx';
@@ -75,7 +75,7 @@ class TogglePositionsMobile extends React.Component {
                         <div className='positions-modal__header'>
                             <span className='positions-modal__title'>
                                 <Icon icon='IcPortfolio' className='positions-modal__title-icon' />
-                                {localize('Recent Positions')}
+                                {localize('Recent positions')}
                             </span>
                             <div className='positions-modal__close-btn' onClick={this.props.togglePositionsDrawer}>
                                 <Icon icon='IcMinusBold' />

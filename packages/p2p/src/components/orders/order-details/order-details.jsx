@@ -80,7 +80,10 @@ const OrderDetails = ({ order_details }) => {
                         </div>
                         {is_buyer && (
                             <React.Fragment>
-                                <OrderInfoBlock label={localize('Seller bank details')} value={payment_info || '-'} />
+                                <OrderInfoBlock
+                                    label={localize('Seller payment instructions')}
+                                    value={payment_info || '-'}
+                                />
                                 <OrderInfoBlock
                                     label={localize('Seller contact details')}
                                     value={contact_info || '-'}
@@ -124,7 +127,7 @@ const OrderDetails = ({ order_details }) => {
                                                 className='link'
                                                 rel='noopener noreferrer'
                                                 target='_blank'
-                                                href={`mailto:support@${email_domain}`}
+                                                href={`mailto:p2p-support@${email_domain}`}
                                             />,
                                         ]}
                                     />

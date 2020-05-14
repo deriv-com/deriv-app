@@ -1,18 +1,14 @@
 // // import PropTypes            from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
+import Expired from 'Components/poa-expired';
+import Unverified from 'Components/poa-unverified';
+import NeedsReview from 'Components/poa-needs-review';
+import Submitted from 'Components/poa-submitted';
+import Verified from 'Components/poa-verified';
+import PoaStatusCodes from 'Components/poa-status-codes';
 import { WS } from 'Services/ws-methods';
 import ProofOfAddressForm from './proof-of-address-form.jsx';
-import { Expired, NeedsReview, Submitted, Verified, Unverified } from './proof-of-address-messages.jsx';
-
-export const poa_status_codes = {
-    none: 'none',
-    pending: 'pending',
-    rejected: 'rejected',
-    verified: 'verified',
-    expired: 'expired',
-    suspected: 'suspected',
-};
 
 class ProofOfAddressContainer extends React.Component {
     is_mounted = false;
@@ -35,7 +31,7 @@ class ProofOfAddressContainer extends React.Component {
                     status: document.status,
                     needs_poi,
                     is_loading: false,
-                    submitted_poa: document.status === poa_status_codes.pending,
+                    submitted_poa: document.status === PoaStatusCodes.pending,
                 });
                 this.props.refreshNotifications();
             }
@@ -62,17 +58,17 @@ class ProofOfAddressContainer extends React.Component {
         if (resubmit_poa) return <ProofOfAddressForm onSubmit={() => this.onSubmit({ needs_poi })} />;
 
         switch (status) {
-            case poa_status_codes.none:
+            case PoaStatusCodes.none:
                 return <ProofOfAddressForm onSubmit={() => this.onSubmit({ needs_poi })} />;
-            case poa_status_codes.pending:
+            case PoaStatusCodes.pending:
                 return <NeedsReview />;
-            case poa_status_codes.verified:
+            case PoaStatusCodes.verified:
                 return <Verified needs_poi={needs_poi} />;
-            case poa_status_codes.expired:
+            case PoaStatusCodes.expired:
                 return <Expired onClick={this.handleResubmit} />;
-            case poa_status_codes.rejected:
+            case PoaStatusCodes.rejected:
                 return <Unverified />;
-            case poa_status_codes.suspected:
+            case PoaStatusCodes.suspected:
                 return <Unverified />;
             default:
                 return null;

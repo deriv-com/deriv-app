@@ -1,5 +1,4 @@
 import React from 'react';
-import { flatten } from '@deriv/account/lib/js/components';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 
@@ -106,6 +105,7 @@ export const getFilteredList = (contract_types_list, filtered_items_array) => {
     return filtered_list;
 };
 
+const flatten = arr => [].concat(...arr);
 /**
  * Flatten list object into an array of contract category label and contract types names
  * @param {object} list

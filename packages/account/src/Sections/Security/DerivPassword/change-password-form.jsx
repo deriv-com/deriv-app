@@ -8,8 +8,10 @@ import { isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
-import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
-import { FormSubHeader, FormBody, FormFooter } from '../../../Components/layout-components.jsx';
+import FormSubHeader from 'Components/form-sub-header';
+import FormBody from 'Components/form-body';
+import FormFooter from 'Components/form-footer';
+import FormSubmitErrorMessage from 'Components/form-submit-error-message';
 
 class ChangePasswordForm extends React.Component {
     state = {

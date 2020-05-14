@@ -4,7 +4,11 @@ import { ThemedScrollbars } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { getLanguage } from '@deriv/translations';
-import { Expired, OnfidoFailed, Verified, UploadComplete, Unsupported } from './proof-of-identity-messages.jsx';
+import UploadComplete from 'Components/poi-upload-complete';
+import Unsupported from 'Components/poi-unsupported';
+import Expired from 'Components/poi-expired';
+import OnfidoFailed from 'Components/poi-onfido-failed';
+import Verified from 'Components/poi-verified';
 import { onfido_status_codes } from './proof-of-identity';
 
 const onfido_container_id = 'onfido';
@@ -46,9 +50,9 @@ class Onfido extends React.Component {
                         type: 'document',
                         options: {
                             documentTypes: {
-                                passport: documents_supported.some(doc => /Passport/g.test(doc)),
-                                driving_licence: documents_supported.some(doc => /Driving Licence/g.test(doc)),
-                                national_identity_card: documents_supported.some(doc =>
+                                passport: documents_supported.some((doc) => /Passport/g.test(doc)),
+                                driving_licence: documents_supported.some((doc) => /Driving Licence/g.test(doc)),
+                                national_identity_card: documents_supported.some((doc) =>
                                     /National Identity Card/g.test(doc)
                                 ),
                             },

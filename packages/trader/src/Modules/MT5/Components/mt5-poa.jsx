@@ -12,19 +12,18 @@ import {
     DesktopWrapper,
     MobileWrapper,
 } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
-import { localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 import {
-    Expired,
-    NeedsReview,
-    Unverified,
-    Verified,
-    Submitted,
-    poa_status_codes,
     FileUploaderContainer,
     FormSubHeader,
-} from '@deriv/account/lib/js/components';
+    PoaExpired,
+    PoaNeedsReview,
+    PoaVerified,
+    PoaSubmitted,
+    PoaStatusCodes,
+} from '@deriv/account';
+import { WS } from 'Services/ws-methods';
+import { localize } from '@deriv/translations';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { validAddress, validLength, validPostCode } from 'Utils/Validator/declarative-validation-rules';
 import { InputField } from './mt5-personal-details-form.jsx';
 
@@ -44,7 +43,7 @@ class MT5POA extends Component {
 
     validateForm = values => {
         // No need to validate if we are waiting for confirmation.
-        if ([poa_status_codes.verified, poa_status_codes.pending].includes(this.state.poa_status)) {
+        if ([PoaStatusCodes.verified, PoaStatusCodes.pending].includes(this.state.poa_status)) {
             return {};
         }
 
@@ -199,7 +198,7 @@ class MT5POA extends Component {
 
         const { is_loading, resubmit_poa, submitted_poa } = this.state;
 
-        const is_form_visible = !is_loading && (resubmit_poa || this.state.poa_status === poa_status_codes.none);
+        const is_form_visible = !is_loading && (resubmit_poa || this.state.poa_status === PoaStatusCodes.none);
 
         return (
             <Formik
@@ -324,7 +323,7 @@ class MT5POA extends Component {
                                             </div>
                                         </ThemedScrollbars>
                                     )}
-                                    {this.state.poa_status !== poa_status_codes.none && !resubmit_poa && (
+                                    {this.state.poa_status !== PoaStatusCodes.none && !resubmit_poa && (
                                         <ThemedScrollbars autohide height={height}>
                                             {submitted_poa && (
                                                 <Submitted
@@ -332,17 +331,17 @@ class MT5POA extends Component {
                                                     has_poi={this.state.has_poi}
                                                 />
                                             )}
-                                            {this.state.poa_status === poa_status_codes.pending && (
+                                            {this.state.poa_status === PoaStatusCodes.pending && (
                                                 <NeedsReview is_description_disabled={true} />
                                             )}
-                                            {this.state.poa_status === poa_status_codes.verified && (
+                                            {this.state.poa_status === PoaStatusCodes.verified && (
                                                 <Verified is_description_disabled={true} has_poi={this.state.has_poi} />
                                             )}
-                                            {this.state.poa_status === poa_status_codes.expired && (
+                                            {this.state.poa_status === PoaStatusCodes.expired && (
                                                 <Expired onClick={this.handleResubmit} />
                                             )}
-                                            {(this.state.poa_status === poa_status_codes.rejected ||
-                                                this.state.poa_status === poa_status_codes.suspected) && <Unverified />}
+                                            {(this.state.poa_status === PoaStatusCodes.rejected ||
+                                                this.state.poa_status === PoaStatusCodes.suspected) && <Unverified />}
                                         </ThemedScrollbars>
                                     )}
                                     {is_form_visible && (

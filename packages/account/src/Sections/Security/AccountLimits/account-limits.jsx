@@ -6,10 +6,12 @@ import { getDerivComLink } from '@deriv/shared/utils/url';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
+import LoadErrorMessage from 'Components/load-error-message';
+import FormBody from 'Components/form-body';
+import Text from 'Components/text';
+import TextContainer from 'Components/text-container';
+import DemoMessage from 'Components/demo-message';
 import { connect } from 'Stores/connect';
-import { FormBody, TextContainer, Text } from '../../../Components/layout-components.jsx';
-import DemoMessage from '../../ErrorMessages/DemoMessage';
-import LoadErrorMessage from '../../ErrorMessages/LoadErrorMessage';
 
 const makeTurnoverLimitRow = (currency, arr, title) => (
     <>

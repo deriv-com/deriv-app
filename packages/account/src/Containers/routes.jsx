@@ -4,15 +4,11 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import BinaryRoutes from 'Components/Routes';
 import { connect } from 'Stores/connect';
+import ErrorComponent from 'Components/error-component';
 
 const Routes = (props) => {
     if (props.has_error) {
-        const ErrorBox = React.suspense(() => import(/* webpackChunkName: "error-component" */ 'Components/Errors'));
-        return (
-            <React.Suspense>
-                <ErrorBox {...props.error} />
-            </React.Suspense>
-        );
+        return <ErrorComponent {...props.error} />;
     }
 
     return <BinaryRoutes is_logged_in={props.is_logged_in} passthrough={props.passthrough} />;

@@ -10,11 +10,13 @@ import {
     validPostCode,
     validLetterSymbol,
 } from 'Duplicated/Utils/Validator/declarative-validation-rules';
-import { FormFooter, FormBody, FormSubHeader } from 'Components/layout-components.jsx';
-import { LeaveConfirm } from 'Components/leave-confirm.jsx';
-import FileUploaderContainer from './file-uploader-container.jsx';
-import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
-import LoadErrorMessage from '../../ErrorMessages/LoadErrorMessage';
+import FormFooter from 'Components/form-footer';
+import FormBody from 'Components/form-body';
+import FormSubHeader from 'Components/form-sub-header';
+import FormSubmitErrorMessage from 'Components/form-submit-error-message';
+import LoadErrorMessage from 'Components/load-error-message';
+import LeaveConfirm from 'Components/leave-confirm';
+import FileUploaderContainer from 'Components/file-uploader-container';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach((field) => {

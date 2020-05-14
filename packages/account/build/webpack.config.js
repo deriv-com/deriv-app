@@ -9,7 +9,34 @@ module.exports = function (env, argv) {
         devtool: IS_RELEASE ? 'source-map' : 'cheap-module-eval-source-map',
         entry: {
             account: path.resolve(__dirname, '../src', 'index.js'),
-            components: path.resolve(__dirname, '../src', 'index.components.js'),
+            'demo-message': 'Components/demo-message',
+            'error-component': 'Components/error-component',
+            'file-uploader-container': 'Components/file-uploader-container',
+            'form-body': 'Components/form-body',
+            'form-footer': 'Components/form-footer',
+            'form-sub-header': 'Components/form-sub-header',
+            'form-submit-error-message': 'Components/form-submit-error-message',
+            'icon-message-content': 'Components/icon-message-content',
+            'leave-confirm': 'Components/leave-confirm',
+            'load-error-message': 'Components/load-error-message',
+            'multi-step': 'Components/multi-step',
+            'poa-expired': 'Components/poa-expired',
+            'poa-needs-review': 'Components/poa-needs-review',
+            'poa-status-codes': 'Components/poa-status-codes',
+            'poa-submitted': 'Components/poa-submitted',
+            'poa-unverified': 'Components/poa-unverified',
+            'poa-verified': 'Components/poa-verified',
+            'poi-expired': 'Components/poi-expired',
+            'poi-missing-personal-details': 'Components/poi-missing-personal-details',
+            'poi-onfido-failed': 'Components/poi-onfido-failed',
+            'poi-unsupported': 'Components/poi-unsupported',
+            'poi-unverified': 'Components/poi-unverified',
+            'poi-upload-complete': 'Components/poi-upload-complete',
+            'poi-verified': 'Components/poi-verified',
+            'proof-of-identity-container': 'Sections/Verification/ProofOfIdentity/proof-of-identity-container.jsx',
+            'scrollbars-container': 'Components/scrollbars-container',
+            text: 'Components/text',
+            'text-container': 'Components/text-container',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
@@ -24,28 +51,6 @@ module.exports = function (env, argv) {
             namedModules: true,
             minimize: IS_RELEASE,
             minimizer: MINIMIZERS,
-            // splitChunks: {
-            //     chunks: 'all',
-            //     minSize: 30000,
-            //     maxSize: 0,
-            //     minChunks: 1,
-            //     maxAsyncRequests: 5,
-            //     maxInitialRequests: 3,
-            //     automaticNameDelimiter: '~',
-            //     automaticNameMaxLength: 30,
-            //     name: true,
-            //     cacheGroups: {
-            //         vendors: {
-            //             test: /[\\/]node_modules[\\/]/,
-            //             priority: -10
-            //         },
-            //         default: {
-            //             minChunks: 2,
-            //             priority: -20,
-            //             reuseExistingChunk: true
-            //         }
-            //     }
-            // }
         },
         output: {
             filename: 'js/[name].js',

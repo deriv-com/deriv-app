@@ -28,10 +28,12 @@ import {
     validLength,
 } from 'Duplicated/Utils/Validator/declarative-validation-rules';
 // import { account_opening_reason_list }         from './constants';
-import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
-import LoadErrorMessage from '../../ErrorMessages/LoadErrorMessage';
-import { LeaveConfirm } from '../../../Components/leave-confirm.jsx';
-import { FormFooter, FormBody, FormSubHeader } from '../../../Components/layout-components.jsx';
+import LeaveConfirm from 'Components/leave-confirm';
+import FormFooter from 'Components/form-footer';
+import FormBody from 'Components/form-body';
+import FormSubHeader from 'Components/form-sub-header';
+import FormSubmitErrorMessage from 'Components/form-submit-error-message';
+import LoadErrorMessage from 'Components/load-error-message';
 
 const getLocation = (location_list, value, type) => {
     const location_obj = location_list.find(

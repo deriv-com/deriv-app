@@ -2,10 +2,10 @@ import * as Cookies from 'js-cookie';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import Unverified from 'Components/poi-unverified';
+import ErrorMessage from 'Components/error-component';
 import Onfido from './onfido.jsx';
 import { getIdentityStatus } from './proof-of-identity';
-import { Unverified } from './proof-of-identity-messages.jsx';
-import ErrorMessage from '../../ErrorMessages/LoadErrorMessage';
 
 class ProofOfIdentityContainer extends React.Component {
     is_mounted = false;

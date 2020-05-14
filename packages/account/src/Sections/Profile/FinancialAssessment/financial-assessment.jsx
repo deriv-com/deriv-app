@@ -9,6 +9,14 @@ import { localize, Localize } from '@deriv/translations';
 import { isEmptyObject } from '@deriv/shared/utils/object';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
+import LeaveConfirm from 'Components/leave-confirm';
+import IconMessageContent from 'Components/icon-message-content';
+import DemoMessage from 'Components/demo-message';
+import LoadErrorMessage from 'Components/load-error-message';
+import FormSubmitErrorMessage from 'Components/form-submit-error-message';
+import FormBody from 'Components/form-body';
+import FormSubHeader from 'Components/form-sub-header';
+import FormFooter from 'Components/form-footer';
 import {
     account_turnover_list,
     education_level_list,
@@ -20,13 +28,6 @@ import {
     occupation_list,
     source_of_wealth_list,
 } from './financial-information-list';
-import DemoMessage from '../../ErrorMessages/DemoMessage';
-import LoadErrorMessage from '../../ErrorMessages/LoadErrorMessage';
-import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
-
-import { FormBody, FormSubHeader, FormFooter } from '../../../Components/layout-components.jsx';
-import { LeaveConfirm } from '../../../Components/leave-confirm.jsx';
-import IconMessageContent from '../../../Components/icon-message-content.jsx';
 
 const ConfirmationContent = ({ className }) => {
     return (

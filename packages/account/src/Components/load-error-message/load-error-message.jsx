@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import IconMessageContent from '../../../Components/icon-message-content.jsx';
+import IconMessageContent from 'Components/icon-message-content';
 
 // TODO: Needs UI
 const LoadErrorMessage = ({ error_message }) => (

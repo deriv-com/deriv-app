@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'Stores/connect';
+import DemoMessage from 'Components/demo-message';
 import ProofOfAddressContainer from './proof-of-address-container.jsx';
-import DemoMessage from '../../ErrorMessages/DemoMessage';
 
 class ProofOfAddress extends React.Component {
     render() {

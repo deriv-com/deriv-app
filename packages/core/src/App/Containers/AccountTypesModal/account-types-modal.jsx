@@ -189,13 +189,13 @@ const FinancialBox = ({ is_demo = false, mt5OnClick }) => {
                         [localize('Multiplier')]: localize('Up to X1000'),
                         [localize('Stop loss')]: localize('Flexible'),
                         [localize('Take profit')]: localize('Flexible'),
-                        [localize('Cancel Trade')]: localize('Allow'),
+                        [localize('Cancel trade')]: localize('Allow'),
                         [localize('Currency')]: localize('USD/GBP/EUR'),
                     }}
                     // TODO: Update paths
                     learn_more={[
                         {
-                            text: localize('Option Trading'),
+                            text: localize('Option trading'),
                             path: '/#',
                         },
                         {
@@ -274,7 +274,7 @@ const GamingBox = ({ is_demo = false, no_mt5 = false, mt5OnClick }) => {
             // TODO: Update paths
             learn_more={[
                 {
-                    text: localize('Option Trading'),
+                    text: localize('Option trading'),
                     path: '/#',
                 },
                 {
@@ -386,7 +386,7 @@ const SyntheticBox = ({ is_demo = false, mt5OnClick }) => {
                     // TODO: Update paths
                     learn_more={[
                         {
-                            text: localize('Option Trading'),
+                            text: localize('Option trading'),
                             path: '/#',
                         },
                         {

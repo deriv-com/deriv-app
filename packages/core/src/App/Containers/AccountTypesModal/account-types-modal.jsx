@@ -10,7 +10,7 @@ import AccountCard from './account-card.jsx';
 
 import 'Sass/app/modules/account-types.scss';
 
-// TODO: this function is needed to be updated after end of all landing companies design
+// TODO: [deriv-eu] this function is needed to be updated after end of all landing companies design
 const boxGenerator = ({
     standpoint,
     has_demo,
@@ -183,7 +183,7 @@ const FinancialBox = ({ is_demo = false, mt5OnClick }) => {
                     title={localize('Trade on Deriv')}
                     subtitle={localize('Option trading account')}
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
-                    // TODO: Add click handler
+                    // TODO: [deriv-eu] Add click handler
                     buttonOnClick={() => {}}
                     items={{
                         [localize('Multiplier')]: localize('Up to X1000'),
@@ -192,7 +192,7 @@ const FinancialBox = ({ is_demo = false, mt5OnClick }) => {
                         [localize('Cancel trade')]: localize('Allow'),
                         [localize('Currency')]: localize('USD/GBP/EUR'),
                     }}
-                    // TODO: Update paths
+                    // TODO: [deriv-eu] Update paths
                     learn_more={[
                         {
                             text: localize('Option trading'),
@@ -228,7 +228,7 @@ const FinancialBox = ({ is_demo = false, mt5OnClick }) => {
                         [localize('Stop out level')]: localize('75%'),
                         [localize('Currency')]: localize('USD'),
                     }}
-                    // TODO: Update paths
+                    // TODO: [deriv-eu] Update paths
                     learn_more={[
                         {
                             text: localize('Margin Trading'),
@@ -262,7 +262,7 @@ const GamingBox = ({ is_demo = false, no_mt5 = false, mt5OnClick }) => {
             title={localize('Trade on Deriv')}
             subtitle={localize('Option trading account')}
             button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
-            // TODO: Add click handler
+            // TODO: [deriv-eu] Add click handler
             buttonOnClick={() => {}}
             items={{
                 [localize('Trade type')]: localize('10+'),
@@ -271,7 +271,7 @@ const GamingBox = ({ is_demo = false, no_mt5 = false, mt5OnClick }) => {
                 [localize('Availability')]: localize('24/7'),
                 [localize('Currency')]: localize('USD/GBP/EUR'),
             }}
-            // TODO: Update paths
+            // TODO: [deriv-eu] Update paths
             learn_more={[
                 {
                     text: localize('Option trading'),
@@ -307,7 +307,7 @@ const GamingBox = ({ is_demo = false, no_mt5 = false, mt5OnClick }) => {
                 [localize('Stop out level')]: localize('50%'),
                 [localize('Currency')]: localize('USD'),
             }}
-            // TODO: Update paths
+            // TODO: [deriv-eu] Update paths
             learn_more={[
                 {
                     text: localize('Margin Trading'),
@@ -374,7 +374,7 @@ const SyntheticBox = ({ is_demo = false, mt5OnClick }) => {
                     title={localize('Trade on Deriv')}
                     subtitle={localize('Option trading account')}
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
-                    // TODO: Add click handler
+                    // TODO: [deriv-eu] Add click handler
                     buttonOnClick={() => {}}
                     items={{
                         [localize('Trade type')]: localize('10+'),
@@ -383,7 +383,7 @@ const SyntheticBox = ({ is_demo = false, mt5OnClick }) => {
                         [localize('Availability')]: localize('24/7'),
                         [localize('Currency')]: localize('USD/GBP/EUR'),
                     }}
-                    // TODO: Update paths
+                    // TODO: [deriv-eu] Update paths
                     learn_more={[
                         {
                             text: localize('Option trading'),
@@ -419,7 +419,7 @@ const SyntheticBox = ({ is_demo = false, mt5OnClick }) => {
                         [localize('Stop out level')]: localize('50%'),
                         [localize('Currency')]: localize('USD'),
                     }}
-                    // TODO: Update paths
+                    // TODO: [deriv-eu] Update paths
                     learn_more={[
                         {
                             text: localize('Margin Trading'),
@@ -469,7 +469,7 @@ class AccountTypesModal extends Component {
     redirectToMt5Real = () => {
         if (!this.props.is_logged_in || this.props.is_mt5_allowed) {
             this.redirectToMt5('real');
-            // TODO: Update this after EU account sign-up completion
+            // TODO: [deriv-eu] Update this after EU account sign-up completion
         } else {
             window.open(urlFor('user/metatrader', undefined, undefined, true));
         }
@@ -479,7 +479,7 @@ class AccountTypesModal extends Component {
         this.redirectToMt5('demo');
     };
 
-    // TODO: Update and use it after EU account sign-up completion
+    // TODO: [deriv-eu] Update and use it after EU account sign-up completion
     createRealAccount = () => {
         if (this.props.can_upgrade_to === 'svg') {
             this.props.openRealAccountSignup();
@@ -539,7 +539,7 @@ export default withRouter(
         can_upgrade: client.can_upgrade,
         can_upgrade_to: client.can_upgrade_to,
         has_any_real_account: client.has_any_real_account,
-        // TODO: Change this later and make it a separate computed
+        // TODO: [deriv-eu] Change this later and make it a separate computed
         has_demo: (client.standpoint.malta || client.standpoint.maltainvest) && !client.standpoint.iom,
         is_account_types_modal_visible: ui.is_account_types_modal_visible,
         is_dismissible: !client.should_have_real_account,

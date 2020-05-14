@@ -36,6 +36,7 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     clearTable() {
+        this.all_positions = [];
         this.positions = [];
         this.positions_map = {};
         this.is_loading = false;

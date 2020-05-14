@@ -87,7 +87,7 @@ class App extends Component {
     };
 
     updateOrderToggleIndex = index => {
-        this.setState({ order_active_index: index });
+        this.setState({ order_table_type: index });
     };
 
     setIsAdvertiser = response => {
@@ -150,7 +150,7 @@ class App extends Component {
     };
 
     render() {
-        const { active_index, order_offset, orders, parameters, notification_count, order_active_index } = this.state;
+        const { active_index, order_offset, orders, parameters, notification_count, order_table_type } = this.state;
         const {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
@@ -172,7 +172,7 @@ class App extends Component {
             <Dp2pProvider
                 value={{
                     changeTab: this.handleTabClick,
-                    order_active_index,
+                    order_table_type,
                     changeOrderToggle: this.updateOrderToggleIndex,
                     currency,
                     local_currency_config,

@@ -9,16 +9,16 @@ import { orderToggleIndex } from '../order-info';
 const orders_filters = [
     {
         text: localize('Active order'),
-        value: 'active',
+        value: orderToggleIndex.ACTIVE,
     },
     {
         text: localize('Past order'),
-        value: 'past',
+        value: orderToggleIndex.INACTIVE,
     },
 ];
 
 const OrderTable = ({ showDetails }) => {
-    const { order_active_index, changeOrderToggle } = useContext(Dp2pContext);
+    const { order_table_type, changeOrderToggle } = useContext(Dp2pContext);
 
     return (
         <>
@@ -29,11 +29,11 @@ const OrderTable = ({ showDetails }) => {
                     is_animated
                     name='filter'
                     onChange={({ target: { value } }) => changeOrderToggle(value)}
-                    value={order_active_index}
+                    value={order_table_type}
                     rounded_button
                 />
             </div>
-            <OrderTableContent showDetails={showDetails} is_active={order_active_index === orderToggleIndex.ACTIVE} />
+            <OrderTableContent showDetails={showDetails} is_active={order_table_type === orderToggleIndex.ACTIVE} />
         </>
     );
 };

@@ -195,8 +195,9 @@ class Dropdown extends React.Component {
         if (event.key.length === 1 && this.props.list.length) {
             const char = event.key.toLowerCase();
             const item_starting_with_char = this.props.list.find(li => li.value && li.value[0].toLowerCase() === char);
-            const item_ref = this.nodes.get(item_starting_with_char.value);
+            if (!item_starting_with_char) return;
 
+            const item_ref = this.nodes.get(item_starting_with_char.value);
             if (item_ref) item_ref.focus();
         }
     };

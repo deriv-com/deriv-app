@@ -406,6 +406,49 @@ $MIN_HEIGHT_FLOATING: calc(
         height: 100%;
         width: 100%;
         padding-left: 1.2rem;
+
+        & .dc-timeline__container {
+            width: 100%;
+        }
+        & .dc-table__cell {
+            padding: 1.8rem 0;
+        }
+        & .dc-popover__target {
+            display: flex;
+        }
+        &__input-group {
+            display: flex;
+            margin-top: 2.7rem;
+        }
+        &__input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: 0;
+        }
+        &__button {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            margin-left: -1px;
+        }
+        &__checkbox-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            grid-gap: 1.6rem;
+        }
+        &__table-row {
+            grid-template-columns: 1fr 1.2fr 1.2fr 1fr 0.6fr;
+        }
+        &__clipboard {
+            margin: 0 1rem;
+            cursor: pointer;
+
+            &-wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
     }
     .account-limit-container {
         height: 100%;

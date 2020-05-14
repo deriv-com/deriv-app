@@ -75,7 +75,7 @@ class TogglePositionsMobile extends React.Component {
                         <div className='positions-modal__header'>
                             <span className='positions-modal__title'>
                                 <Icon icon='IcPortfolio' className='positions-modal__title-icon' />
-                                {localize('Recent Positions')}
+                                {localize('Recent positions')}
                             </span>
                             <div className='positions-modal__close-btn' onClick={this.props.togglePositionsDrawer}>
                                 <Icon icon='IcMinusBold' />

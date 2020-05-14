@@ -177,6 +177,8 @@ class FinancialAssessment extends React.Component {
                 setStatus({ msg: data.error.message });
             } else {
                 this.setState({ is_submit_success: true });
+                setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+
                 this.props.removeNotificationMessage({ key: 'risk' });
                 this.props.removeNotificationByKey({ key: 'risk' });
             }

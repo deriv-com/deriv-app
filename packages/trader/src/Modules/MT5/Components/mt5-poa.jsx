@@ -18,6 +18,7 @@ import {
     PoaExpired,
     PoaNeedsReview,
     PoaVerified,
+    PoaUnverified,
     PoaSubmitted,
     PoaStatusCodes,
 } from '@deriv/account';
@@ -326,22 +327,27 @@ class MT5POA extends Component {
                                     {this.state.poa_status !== PoaStatusCodes.none && !resubmit_poa && (
                                         <ThemedScrollbars autohide height={height}>
                                             {submitted_poa && (
-                                                <Submitted
+                                                <PoaSubmitted
                                                     is_description_disabled={true}
                                                     has_poi={this.state.has_poi}
                                                 />
                                             )}
                                             {this.state.poa_status === PoaStatusCodes.pending && (
-                                                <NeedsReview is_description_disabled={true} />
+                                                <PoaNeedsReview is_description_disabled={true} />
                                             )}
                                             {this.state.poa_status === PoaStatusCodes.verified && (
-                                                <Verified is_description_disabled={true} has_poi={this.state.has_poi} />
+                                                <PoaVerified
+                                                    is_description_disabled={true}
+                                                    has_poi={this.state.has_poi}
+                                                />
                                             )}
                                             {this.state.poa_status === PoaStatusCodes.expired && (
-                                                <Expired onClick={this.handleResubmit} />
+                                                <PoaExpired onClick={this.handleResubmit} />
                                             )}
                                             {(this.state.poa_status === PoaStatusCodes.rejected ||
-                                                this.state.poa_status === PoaStatusCodes.suspected) && <Unverified />}
+                                                this.state.poa_status === PoaStatusCodes.suspected) && (
+                                                <PoaUnverified />
+                                            )}
                                         </ThemedScrollbars>
                                     )}
                                     {is_form_visible && (

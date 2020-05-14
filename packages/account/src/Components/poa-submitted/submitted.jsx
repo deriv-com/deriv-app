@@ -1,6 +1,7 @@
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import React from 'react';
+import { ContinueTradingButton } from 'Components/poa-continue-trading-button/continue-trading-button.jsx';
 import PoiButton from 'Components/poi-button';
 import IconMessageContent from 'Components/icon-message-content';
 

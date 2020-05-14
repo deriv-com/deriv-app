@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer } from '@deriv/components';
-import { ProofOfIdentityContainer } from '@deriv/account/lib/js/components';
+import { ProofOfIdentityContainer } from '@deriv/account';
 import { WS } from 'Services/ws-methods';
 import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';

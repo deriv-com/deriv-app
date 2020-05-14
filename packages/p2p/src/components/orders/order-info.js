@@ -1,5 +1,10 @@
 import { localize } from 'Components/i18next';
 
+export const orderToggleIndex = {
+    ACTIVE: 'active',
+    INACTIVE: 'inactive',
+};
+
 export default class OrderInfo {
     id = '';
     status;

@@ -8,15 +8,14 @@ const RoutePromptDialog = ({ continueRoute, is_confirmed, last_location, should_
 
     return (
         <Dialog
-            title={localize('Are you sure?')}
-            confirm_button_text={localize('Yes')}
-            cancel_button_text={localize('No')}
+            title={localize('Leaving already?')}
+            confirm_button_text={localize("Yes, I'll come back later")}
+            cancel_button_text={localize("No, I'll stay")}
             onConfirm={onConfirm}
             onCancel={onCancel}
             is_visible={should_show}
         >
-            {/* TODO: update text once available from copywriters */}
-            <Localize i18n_default_text='Navigating to other platform will still complete current bought contract but will stop purchasing a new contract.' />
+            <Localize i18n_default_text='If you leave, your current contract will be completed, but your bot will stop running immediately.' />
         </Dialog>
     );
 };

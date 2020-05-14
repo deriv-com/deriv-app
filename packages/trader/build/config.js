@@ -90,7 +90,7 @@ const htmlInjectConfig = () => ({
     append: false,
 });
 
-const cssConfig = () => ({ filename: 'css/trader.main.css', chunkFilename: 'css/trader.[name].[contenthash].css' });
+const cssConfig = () => ({ filename: 'css/trader.main.css', chunkFilename: 'css/trader.[name].css' });
 
 const stylelintConfig = () => ({
     configFile: path.resolve(__dirname, '../.stylelintrc.js'),

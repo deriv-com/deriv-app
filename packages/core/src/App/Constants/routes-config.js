@@ -15,16 +15,22 @@ const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404
 const Trader = lazy(() => {
     const el_head = document.querySelector('head');
     const el_preload_css = document.createElement('link');
+    const el_small_preload_css = document.createElement('link');
     const el_main_css = document.createElement('link');
 
     el_preload_css.as = 'style';
     el_preload_css.href = getUrlBase('/css/trader.main.css');
     el_preload_css.rel = 'preload';
 
+    el_small_preload_css.as = 'style';
+    el_small_preload_css.href = getUrlBase('/css/trader.screen-small.css');
+    el_small_preload_css.rel = 'preload';
+
     el_main_css.href = getUrlBase('/css/trader.main.css');
     el_main_css.rel = 'stylesheet';
     el_main_css.type = 'text/css';
 
+    el_head.appendChild(el_small_preload_css);
     el_head.appendChild(el_preload_css);
     el_head.appendChild(el_main_css);
 

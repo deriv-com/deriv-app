@@ -1,6 +1,6 @@
-import { getUrlSmartTrader } from '@deriv/shared/utils/route';
+import getUrlSmartTrader from '../route';
 
-const routes = {
+export const routes = {
     error404: '/404',
     account: '/account',
     financial_assessment: '/account/financial-assessment',
@@ -37,8 +37,6 @@ const routes = {
     cashier_acc_transfer: '/cashier/account-transfer',
     cashier_p2p: '/cashier/p2p',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
-    smarttrader: `${getUrlSmartTrader()}`,
+    smarttrader: getUrlSmartTrader(),
     endpoint: '/endpoint',
 };
-
-export default routes;

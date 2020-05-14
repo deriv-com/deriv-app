@@ -4,8 +4,8 @@ import React from 'react';
 import ButtonLink from 'Components/button-link/button-link.jsx';
 import DesktopWrapper from 'Components/desktop-wrapper/desktop-wrapper.jsx';
 
-// if image_url is passed we should split the page to two columns and left-align messages
-const PageError = ({ buttonOnClick, messages, header, redirect_label, redirect_url, classNameImage, image_url }) => (
+const PageError = ({ buttonOnClick, classNameImage, header, image_url, messages, redirect_label, redirect_url }) => (
+    // if image_url is passed we should split the page to two columns and left-align messages
     <div className={classNames('dc-page-error__container', { 'dc-page-error__container--left': !!image_url })}>
         {!!image_url && (
             <DesktopWrapper>
@@ -14,7 +14,7 @@ const PageError = ({ buttonOnClick, messages, header, redirect_label, redirect_u
                     src={image_url}
                     alt={'404'}
                     loading='lazy'
-                    width='771px'
+                    width='771px' // width and height should be specified so it doesn't jump to the right after image loads
                     height='448px'
                 />
             </DesktopWrapper>

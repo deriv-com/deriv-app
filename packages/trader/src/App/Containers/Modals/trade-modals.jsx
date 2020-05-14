@@ -1,7 +1,7 @@
 import React from 'react';
+import { urlFor } from '@deriv/shared/utils/url';
 import { getUrlSmartTrader } from '@deriv/shared/utils/route';
 import { connect } from 'Stores/connect';
-import { urlFor } from '_common/url';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import MarketUnavailableModal from 'App/Components/Elements/Modals/MarketUnavailableModal';
 import ServicesErrorModal from 'App/Components/Elements/Modals/ServicesErrorModal';
@@ -39,8 +39,8 @@ const TradeModals = ({
     };
 
     const unsupportedContractOnClose = () => {
-        window.open(urlFor('user/portfoliows', undefined, undefined, true), '_blank');
-        unsupportedContractOnClose();
+        window.open(urlFor('user/portfoliows', { legacy: true }), '_blank');
+        unsupportedContractOnConfirm(false);
     };
 
     return (

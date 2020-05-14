@@ -280,7 +280,7 @@ class AccountSwitcher extends React.Component {
 
         const demo_accounts = (
             <div className='acc-switcher__list-wrapper'>
-                <>
+                <React.Fragment>
                     <AccountWrapper
                         header={
                             <AccountTitle
@@ -316,9 +316,9 @@ class AccountSwitcher extends React.Component {
                                 ))}
                         </div>
                     </AccountWrapper>
-                </>
+                </React.Fragment>
                 {this.props.is_mt5_allowed && (
-                    <>
+                    <React.Fragment>
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                         <AccountWrapper
                             header={
@@ -338,7 +338,7 @@ class AccountSwitcher extends React.Component {
                                     <AccountsItemLoader speed={3} />
                                 </div>
                             ) : (
-                                <>
+                                <React.Fragment>
                                     {!!this.demo_mt5.length && (
                                         <div className='acc-switcher__accounts'>
                                             {this.demo_mt5.map(account => (
@@ -370,17 +370,17 @@ class AccountSwitcher extends React.Component {
                                             </Button>
                                         </div>
                                     ))}
-                                </>
+                                </React.Fragment>
                             )}
                         </AccountWrapper>
-                    </>
+                    </React.Fragment>
                 )}
             </div>
         );
 
         const real_accounts = (
             <div className='acc-switcher__list-wrapper'>
-                <>
+                <React.Fragment>
                     <AccountWrapper
                         header={
                             <AccountTitle
@@ -446,9 +446,9 @@ class AccountSwitcher extends React.Component {
                                 </Button>
                             )}
                     </AccountWrapper>
-                </>
+                </React.Fragment>
                 {this.props.is_mt5_allowed && (
-                    <>
+                    <React.Fragment>
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                         <AccountWrapper
                             header={
@@ -468,7 +468,7 @@ class AccountSwitcher extends React.Component {
                                     <AccountsItemLoader speed={3} />
                                 </div>
                             ) : (
-                                <>
+                                <React.Fragment>
                                     {!!this.real_mt5.length && (
                                         <div className='acc-switcher__accounts'>
                                             {this.real_mt5.map(account => (
@@ -504,10 +504,10 @@ class AccountSwitcher extends React.Component {
                                             </Button>
                                         </div>
                                     ))}
-                                </>
+                                </React.Fragment>
                             )}
                         </AccountWrapper>
-                    </>
+                    </React.Fragment>
                 )}
             </div>
         );

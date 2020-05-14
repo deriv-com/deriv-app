@@ -22,6 +22,15 @@ import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Prel
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
 
+const AccountTitle = ({ title, onIconClick, is_europe }) => {
+    return (
+        <React.Fragment>
+            <span>{title}</span>
+            {is_europe && <Icon className='acc-switcher__help-icon' icon='IcInfoOutline' onClick={onIconClick} />}
+        </React.Fragment>
+    );
+};
+
 class AccountSwitcher extends React.Component {
     constructor(props) {
         super(props);
@@ -274,16 +283,11 @@ class AccountSwitcher extends React.Component {
                 <>
                     <AccountWrapper
                         header={
-                            <>
-                                <Localize i18n_default_text='Deriv Accounts' />
-                                {this.props.is_europe && (
-                                    <Icon
-                                        className='acc-switcher__help-icon'
-                                        icon='IcInfoOutline'
-                                        onClick={this.showAccountTypesModal}
-                                    />
-                                )}
-                            </>
+                            <AccountTitle
+                                title={localize('Deriv Accounts')}
+                                is_europe={this.props.is_europe}
+                                onIconClick={this.showAccountTypesModal}
+                            />
                         }
                         is_visible={this.state.is_demo_deriv_visible}
                         toggleVisibility={() => {
@@ -318,16 +322,11 @@ class AccountSwitcher extends React.Component {
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                         <AccountWrapper
                             header={
-                                <>
-                                    <Localize i18n_default_text='DMT5 Accounts' />
-                                    {this.props.is_europe && (
-                                        <Icon
-                                            className='acc-switcher__help-icon'
-                                            icon='IcInfoOutline'
-                                            onClick={this.showAccountTypesModal}
-                                        />
-                                    )}
-                                </>
+                                <AccountTitle
+                                    title={localize('DMT5 Accounts')}
+                                    is_europe={this.props.is_europe}
+                                    onIconClick={this.showAccountTypesModal}
+                                />
                             }
                             is_visible={this.state.is_demo_dmt5_visible}
                             toggleVisibility={() => {
@@ -384,16 +383,11 @@ class AccountSwitcher extends React.Component {
                 <>
                     <AccountWrapper
                         header={
-                            <>
-                                <Localize i18n_default_text='Deriv Accounts' />
-                                {this.props.is_europe && (
-                                    <Icon
-                                        className='acc-switcher__help-icon'
-                                        icon='IcInfoOutline'
-                                        onClick={this.showAccountTypesModal}
-                                    />
-                                )}
-                            </>
+                            <AccountTitle
+                                title={localize('Deriv Accounts')}
+                                is_europe={this.props.is_europe}
+                                onIconClick={this.showAccountTypesModal}
+                            />
                         }
                         is_visible={this.state.is_real_deriv_visible}
                         toggleVisibility={() => {
@@ -458,16 +452,11 @@ class AccountSwitcher extends React.Component {
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                         <AccountWrapper
                             header={
-                                <>
-                                    <Localize i18n_default_text='DMT5 Accounts' />
-                                    {this.props.is_europe && (
-                                        <Icon
-                                            className='acc-switcher__help-icon'
-                                            icon='IcInfoOutline'
-                                            onClick={this.showAccountTypesModal}
-                                        />
-                                    )}
-                                </>
+                                <AccountTitle
+                                    title={localize('DMT5 Accounts')}
+                                    is_europe={this.props.is_europe}
+                                    onIconClick={this.showAccountTypesModal}
+                                />
                             }
                             is_visible={this.state.is_real_dmt5_visible}
                             toggleVisibility={() => {

@@ -33,7 +33,10 @@ const NetworkMonitorBase = (() => {
                 setNetworkStatus('blinking');
                 reconnectAfter({ timeout: 500 });
             });
-            window.addEventListener('offline', () => setNetworkStatus('offline'));
+            window.addEventListener('offline', () => {
+                BinarySocket.close();
+                setNetworkStatus('offline');
+            });
         } else {
             // default to always online and fallback to WS checks
             navigator.onLine = true;

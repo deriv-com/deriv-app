@@ -39,8 +39,12 @@ const BinarySocketBase = (() => {
 
     const isClose = () => !binary_socket || hasReadyState(2, 3);
 
-    const closeAndOpenNewConnection = token => {
+    const close = () => {
         binary_socket.close();
+    };
+
+    const closeAndOpenNewConnection = token => {
+        close();
         init({ config, is_switching_socket: true, token });
     };
 
@@ -310,6 +314,7 @@ const BinarySocketBase = (() => {
         sell,
         cashier,
         cancelContract,
+        close,
         contractUpdate,
         contractUpdateHistory,
         mt5NewAccount,

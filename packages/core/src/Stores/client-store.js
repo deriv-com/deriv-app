@@ -2,7 +2,7 @@ import moment from 'moment';
 import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { getUrlSmartTrader } from '@deriv/shared/utils/route';
+import { getUrlSmartTrader } from '@deriv/shared/utils/storage';
 import { requestLogout, WS } from 'Services';
 import ClientBase from '_common/base/client_base';
 import BinarySocket from '_common/base/socket_base';

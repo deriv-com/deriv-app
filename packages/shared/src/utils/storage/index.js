@@ -1,5 +1,6 @@
-import { setStorageEvents } from './storage_events';
+import { setStorageEvents, getUrlSmartTrader } from './storage_events';
 
 export default {
     setStorageEvents,
+    getUrlSmartTrader,
 };

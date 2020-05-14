@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { getKebabCase } from '@deriv/shared/utils/string';
-import { getUrlBase } from '@deriv/shared/utils/route';
+import { getUrlBase } from '@deriv/shared/utils/url';
 
 const Icon = ({
     className,

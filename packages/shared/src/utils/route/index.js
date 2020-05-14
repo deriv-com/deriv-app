@@ -16,20 +16,4 @@ const getSelectedRoute = ({ routes, pathname }) => {
     return route;
 };
 
-const getUrlBase = (path = '') => {
-    const l = window.location;
-
-    if (!/^\/(br_)/.test(l.pathname)) return path;
-
-    return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
-};
-
-const getUrlSmartTrader = () => {
-    if (/^staging\.deriv\.app$/i.test(window.location.hostname)) {
-        return 'https://smarttrader-staging.deriv.app';
-    }
-
-    return 'https://smarttrader.deriv.app';
-};
-
-export default { getAllRoutesConfig, getSelectedRoute, addRoutesConfig, getUrlBase, getUrlSmartTrader };
+export default { getAllRoutesConfig, getSelectedRoute, addRoutesConfig };

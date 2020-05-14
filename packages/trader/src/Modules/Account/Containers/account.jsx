@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import { PageOverlay, VerticalTab, DesktopWrapper, MobileWrapper, FadeWrapper } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { getSelectedRoute } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
-import AppRoutes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import { flatten } from '../Helpers/flatten';
@@ -60,7 +60,7 @@ class Account extends React.Component {
         if (!selected_content) {
             // fallback
             selected_content = subroutes[0];
-            this.props.history.push(AppRoutes.personal_details);
+            this.props.history.push(routes.personal_details);
         }
 
         if (!is_loading && !is_high_risk_client && /financial-assessment/.test(selected_content.path))
@@ -69,7 +69,7 @@ class Account extends React.Component {
         // TODO: modify account route to support disabled
         this.props.routes.forEach(menu_item => {
             menu_item.subroutes.forEach(route => {
-                if (route.path === AppRoutes.financial_assessment) {
+                if (route.path === routes.financial_assessment) {
                     route.is_disabled = !is_high_risk_client;
                 }
 
@@ -82,14 +82,14 @@ class Account extends React.Component {
         const action_bar_items = [
             {
                 onClick: () => {
-                    this.props.history.push(AppRoutes.trade);
+                    this.props.history.push(routes.trade);
                 },
                 icon: 'IcCross',
                 title: localize('Close'),
             },
         ];
 
-        const is_account_limits_route = selected_content.path === AppRoutes.account_limits;
+        const is_account_limits_route = selected_content.path === routes.account_limits;
         if (is_account_limits_route) {
             action_bar_items.push({
                 component: () => <AccountLimitInfo currency={this.props.currency} is_virtual={this.props.is_virtual} />,

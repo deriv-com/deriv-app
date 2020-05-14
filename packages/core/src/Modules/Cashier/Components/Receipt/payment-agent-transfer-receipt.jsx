@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Icon } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
-import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 
 class PaymentAgentTransferReceipt extends React.Component {

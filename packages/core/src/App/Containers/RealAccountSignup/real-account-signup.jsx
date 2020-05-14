@@ -2,10 +2,10 @@ import classNames from 'classnames';
 import { Icon, Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import routes from '@deriv/shared/utils/routes';
+import { isNavigationFromPlatform } from '@deriv/shared/utils/platform';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
-import routes from 'Constants/routes';
-import { isNavigationFromPlatform } from 'Utils/PlatformSwitcher';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
@@ -212,8 +212,8 @@ class RealAccountSignup extends Component {
         const Body = is_logged_in
             ? this.state.modal_content[this.active_modal_index].value
             : () => <ModalLoginPrompt />;
-        const has_close_icon = 
-              this.active_modal_index < 2 || this.active_modal_index === 5 || this.active_modal_index === 6;
+        const has_close_icon =
+            this.active_modal_index < 2 || this.active_modal_index === 5 || this.active_modal_index === 6;
 
         return (
             <>

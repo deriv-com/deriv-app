@@ -159,8 +159,4 @@ const getModifiedResponse = response => {
     return modified_response;
 };
 
-export const subscribeWS = (request, cb) => {
-    ws.p2pSubscribe(request, response => {
-        cb(getModifiedResponse(response));
-    });
-};
+export const subscribeWS = (request, cb) => ws.p2pSubscribe(request, response => cb(getModifiedResponse(response)));

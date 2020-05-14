@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React from 'react';
 import { Money, Button } from '@deriv/components';
 import { Localize } from '@deriv/translations';
@@ -21,10 +20,19 @@ const MT5AccountCard = ({
     onPasswordManager,
 }) => {
     const IconComponent = icon || (() => null);
-    const cta_label = button_label || <Localize i18n_default_text='Create account' />;
+    const lbl_add_account =
+        type.category === 'real' ? (
+            <Localize i18n_default_text='Add real account' />
+        ) : (
+            <Localize i18n_default_text='Add demo account' />
+        );
+    const cta_label = button_label || lbl_add_account;
 
     return (
         <div className='mt5-account-card'>
+            <div className='mt5-account-card__banner'>
+                <Localize i18n_default_text='Most popular' />
+            </div>
             <div className='mt5-account-card__type' id={`mt5_${type.category}_${type.type}`}>
                 {icon && <IconComponent />}
                 <div className='mt5-account-card__type--description'>
@@ -107,15 +115,11 @@ const MT5AccountCard = ({
                 )}
                 {!existing_data && !has_mt5_account && (
                     <Button
-                        className={classNames(
-                            'mt5-account-card__account-selection mt5-account-card__account-selection--primary',
-                            {
-                                'mt5-account-card__account-selection--disabled': is_disabled,
-                            }
-                        )}
-                        onClick={!is_disabled ? onSelectAccount : undefined}
+                        className='mt5-account-card__account-selection'
+                        onClick={onSelectAccount}
                         type='button'
-                        primary
+                        is_disabled={is_disabled}
+                        secondary
                     >
                         {cta_label}
                     </Button>

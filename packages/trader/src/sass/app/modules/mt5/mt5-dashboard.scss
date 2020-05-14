@@ -15,9 +15,7 @@
     margin: 0 auto;
 
     &--hint {
-        //@include typeface(--xsmall-left-normal-black, none);
-        color: var(--text-less-prominent);
-        font-size: 10px;
+        @include typeface(--xsmall-left-normal-black, none);
     }
     &__container {
         position: relative;
@@ -30,32 +28,12 @@
         }
     }
     &__welcome-message {
-        margin-bottom: 3.2em;
+        margin-bottom: 2.4em;
 
-        &--content {
-            display: flex;
-            justify-content: space-between;
-        }
         &--heading {
             @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
             line-height: 1.5em;
-            margin-bottom: 0.8rem;
-        }
-        &--paragraph {
-            @include typeface(--paragraph-left-normal-black, none);
-            color: var(--text-general);
-        }
-        &--hint {
-            @include typeface(--xsmall-left-normal-black, none);
-            color: var(--text-less-prominent);
-        }
-        &--button {
-            background-color: transparent;
-            color: var(--text-prominent);
-            font-weight: bold;
-            height: 4em;
-            margin: 0;
         }
     }
     &__missing-real {
@@ -64,7 +42,7 @@
         display: flex;
         justify-content: space-between;
         margin: 2.4em 0;
-        padding-left: 1.6rem;
+        padding: 1.6rem;
 
         &--heading {
             color: var(--text-prominent);
@@ -89,27 +67,14 @@
             }
         }
     }
-    &__accounts-display {
-        margin-bottom: 2.4em;
-
-        .dc-tabs__list--top {
-            position: relative;
-
-            @include desktop {
-                width: 40%;
-                left: 30%;
-            }
-        }
-    }
     &__download-center {
-        border: solid 1px var(--border-normal);
-        border-radius: 4px;
-        padding-bottom: 1.6em;
-        padding-top: 1.6em;
+        border-top: 2px solid var(--general-section-1);
+        padding-top: 4rem;
+        padding-bottom: 6.8rem;
 
         &-options {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
 
             &--desktop,
             &--mobile {
@@ -118,34 +83,33 @@
                 flex-flow: column nowrap;
             }
             &--desktop {
-                align-items: flex-start;
-                display: flex;
-                flex-flow: row nowrap;
-                margin-left: 7em;
-
                 &-devices {
-                    align-items: flex-end;
                     display: flex;
-                    flex-wrap: wrap;
-                    justify-content: space-between;
-                    margin-right: 1.6em;
-                    width: 200px;
-                    svg:first-child {
-                        margin-right: 0.4em;
+                    align-items: baseline;
+                    > svg:first-child {
+                        margin-left: 4.3rem;
+                        margin-right: 0.4rem;
                     }
-                    svg:not(:last-child) {
-                        margin-bottom: 1.6em;
+                    > svg:not(:last-child) {
+                        margin-bottom: 1.1rem;
+                    }
+                    a svg {
+                        margin-left: 5.2rem;
                     }
                 }
                 &-links {
                     display: flex;
-                    flex-flow: column nowrap;
-                    height: 142px;
-                    justify-content: space-between;
+                }
+                &-link {
+                    &:not(:last-child) {
+                        margin-right: 0.8rem;
+                    }
+                    &--top {
+                    }
                 }
             }
             &--mobile {
-                margin-right: 7em;
+                margin-left: 4.7rem;
 
                 &-devices {
                     margin-bottom: 1.6em;
@@ -153,10 +117,8 @@
                         margin-right: 0.8em;
                     }
                 }
-                &-links {
-                    display: flex;
-                    justify-content: space-between;
-                    width: 27.1em;
+                &-link:not(:first-child) {
+                    margin-left: 1.6rem;
                 }
                 @include mobile {
                     margin-right: unset;
@@ -166,16 +128,31 @@
         &--heading {
             @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
-            line-height: 1.5em;
-            margin-bottom: 1.5em;
-            margin-left: 1.3em;
+            line-height: 1.5;
+            margin-left: 2.1rem;
+            margin-bottom: 4.2rem;
         }
         &--hint {
             @include typeface(--xsmall-left-normal-black, none);
-            margin-left: 7.05em;
+            margin-top: 1.6rem;
         }
         @include mobile {
             margin-bottom: 1.6rem;
+        }
+    }
+    &__maintenance {
+        @include typeface(--small-center-normal-black, none);
+        display: flex;
+        justify-content: center;
+        margin: 2.4rem 0;
+
+        &-icon {
+            margin-right: 0.8rem;
+            margin-top: 0.2rem;
+        }
+        &-text {
+            text-align: left;
+            line-height: 1.67;
         }
     }
     .notification-messages {
@@ -191,6 +168,7 @@
     @include typeface(--paragraph-left-bold-black, none);
     font-size: 14px;
     font-weight: bold;
+    line-height: 1.43;
     color: var(--text-general);
 
     .counter {
@@ -210,15 +188,44 @@
     height: 100%;
 
     &__table-row {
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1.5fr 1fr 2fr 1fr;
+        box-shadow: inset 0 -1px 0 0 var(--general-section-1);
+    }
+    &__star {
+        color: var(--brand-red-coral);
+        font-weight: bold;
+    }
+    &__bullet {
+        flex: none;
+
+        &--circle {
+            background-color: var(--text-general);
+            border-radius: 100%;
+            margin-right: 1.2rem;
+            margin-left: 0.2rem;
+            margin-top: 0.8rem;
+            width: 0.4rem;
+            height: 0.4rem;
+        }
+        &--star {
+            font-size: 14px;
+            margin-right: 1rem;
+            line-height: 1.43;
+        }
+        &-wrapper {
+            display: flex;
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
+        }
     }
 
     .dc-table {
         padding: 0 30px;
-        height: calc(100% - 100px);
+        height: calc(100% + 100px);
 
-        &__row {
-            padding: 0 16px;
+        &__header {
+            border-bottom: none;
+            height: 50px;
         }
         &__cell,
         &__head {
@@ -234,6 +241,8 @@
         }
         &__cell {
             border-bottom: none;
+            align-items: normal;
+            padding: 1rem 0.8rem;
         }
         @include desktop {
             &__header {
@@ -245,7 +254,7 @@
         &__wrapper {
             display: flex;
             justify-content: center;
-            margin-top: 1.6rem;
+            margin-top: 2.4rem;
         }
     }
     @include mobile {
@@ -281,7 +290,7 @@
     font-size: 12px;
     line-height: 1.5em;
     width: 100%;
-    padding: 1.6em 6.4em 2.4em 6.4em;
+    padding: 1.6rem 2.4rem 0.8rem 2.4rem;
 
     @include mobile {
         padding: 1.6rem;
@@ -305,7 +314,7 @@
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
-    min-height: 32em;
+    min-height: 36em;
     width: 30.4em;
 
     &:hover {
@@ -324,6 +333,21 @@
     &--balance {
         @include typeface(--paragraph-left-bold-black);
         color: var(--text-profit-success);
+    }
+    &__banner {
+        position: absolute;
+        transform: rotate(45deg);
+        border-bottom: 2.3rem solid var(--brand-red-coral);
+        border-left: 2.3rem solid transparent;
+        border-right: 2.3rem solid transparent;
+        height: 0;
+        width: 10.3rem;
+        left: 23.1rem;
+        bottom: 32rem;
+        color: var(--text-colored-background);
+        font-weight: bold;
+        line-height: 24px;
+        white-space: nowrap;
     }
     &__type {
         display: flex;
@@ -357,14 +381,9 @@
     &__specs-table {
         width: 100%;
 
-        &-attribute {
-            display: inline-block;
-            white-space: nowrap;
-            width: 14.8em;
-
-            .mt5-account-card--paragraph {
-                color: var(--text-general);
-            }
+        &-attribute .mt5-account-card--paragraph {
+            color: var(--text-general);
+            margin-right: 2.4rem;
         }
         &-data {
             .mt5-account-card--paragraph {

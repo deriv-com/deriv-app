@@ -15,7 +15,7 @@ const getRealFinancialStpBtnLbl = (is_fully_authenticated, is_pending_authentica
         return <Localize i18n_default_text='Pending verification' />;
     }
 
-    return <Localize i18n_default_text='Create account' />;
+    return <Localize i18n_default_text='Add real account' />;
 };
 
 const MT5RealAccountDisplay = ({

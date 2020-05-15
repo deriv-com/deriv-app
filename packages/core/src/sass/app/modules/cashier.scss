@@ -912,8 +912,8 @@
         }
     }
     &__drop-down {
-        min-width: calc(calc(100% - calc(16px + 3.2rem)) / 2) !important;
-        width: auto !important;
+        min-width: calc(calc(100% - calc(16px + 3.2rem)) / 2);
+        width: auto;
         margin-bottom: 1.7rem;
 
         @include mobile {

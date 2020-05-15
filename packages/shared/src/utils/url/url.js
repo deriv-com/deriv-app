@@ -11,6 +11,9 @@ const host_map = {
 };
 let location_url, static_host, default_language;
 
+export const legacyUrlForLanguage = (target_language, url = window.location.href) =>
+    url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
+
 export const urlForLanguage = (lang, url = window.location.href) => {
     if (/[&?]lang=(\w*)/i.test(url)) {
         return url.replace(/lang=(\w*)/, `lang=${lang?.trim().toUpperCase() || 'EN'}`);
@@ -71,14 +74,20 @@ export const urlFor = (
     let domain = `https://${window.location.hostname}/`;
     if (legacy) {
         if (/localhost|binary\.sx/.test(domain)) {
-            domain = `https://binary.com/${lang || 'en'}/`;
+            domain = `https://binary.com/${lang.toLowerCase() || 'en'}/`;
         } else {
-            domain = domain.replace(/deriv\.app/, `binary.com/${lang || 'en'}`);
+            domain = domain.replace(/deriv\.app/, `binary.com/${lang.toLowerCase() || 'en'}`);
         }
     }
     const new_url = `${domain}${normalizePath(path) || 'home'}.html${query_string ? `?${query_string}` : ''}`;
 
-    return lang ? urlForLanguage(lang, new_url) : new_url;
+    if (lang && !legacy) {
+        return urlForLanguage(lang, new_url);
+    } else if (legacy) {
+        return legacyUrlForLanguage(lang, new_url);
+    }
+
+    return new_url;
 };
 
 export const urlForCurrentDomain = href => {

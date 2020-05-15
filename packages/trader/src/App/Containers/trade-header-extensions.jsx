@@ -20,7 +20,7 @@ class TradeHeaderExtensions extends React.Component {
             positions_error,
             populateHeaderExtensions,
         } = this.props;
-        console.log(this.props.store);
+
         const header_items = is_logged_in && (
             <MobileWrapper>
                 <MobxContentProvider store={this.props.store}>

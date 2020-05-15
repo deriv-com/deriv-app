@@ -143,7 +143,6 @@ const OrderDetails = ({ order_details, chat_info }) => {
                                                 ]}
                                             />
                                         </p>
-                                        <OrderInfoBlock label={localize('Order ID')} value={id} />
                                     </div>
                                 </React.Fragment>
                             )}

@@ -31,7 +31,7 @@ class App extends React.Component {
                     <Routes />
                     <TradeModals />
                     <NetworkStatusToastErrorPopup />
-                    <TradeHeaderExtensions />
+                    <TradeHeaderExtensions store={this.root_store} />
                     <TradeFooterExtensions />
                     <TradeSettingsExtensions />
                 </React.Fragment>

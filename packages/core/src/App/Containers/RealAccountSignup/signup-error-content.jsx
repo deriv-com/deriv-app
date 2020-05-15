@@ -29,7 +29,7 @@ const SignupErrorContent = ({ message, code, onConfirm }) => {
                     rel='noopener noreferrer'
                 >
                     <span className='dc-btn__text'>
-                        <Localize i18n_default_text='Go to Help Centre' />
+                        <Localize i18n_default_text='OK' />
                     </span>
                 </a>
             )}

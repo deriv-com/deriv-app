@@ -190,7 +190,7 @@ class App extends Component {
                     setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
                     setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     order_id,
-                    setOrderId,
+                    setOrderId: setOrderId ?? (() => {}),
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>

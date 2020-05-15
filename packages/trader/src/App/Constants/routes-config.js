@@ -51,14 +51,14 @@ const initRoutesConfig = () => [
             {
                 path: routes.positions,
                 component: lazyLoadReportComponent('OpenPositions'),
-                title: localize('Open Positions'),
+                title: localize('Open positions'),
                 icon_component: 'IcOpenPositions',
                 default: true,
             },
             {
                 path: routes.profit,
                 component: lazyLoadReportComponent('ProfitTable'),
-                title: localize('Profit Table'),
+                title: localize('Profit table'),
                 icon_component: 'IcProfitTable',
             },
             {
@@ -73,7 +73,7 @@ const initRoutesConfig = () => [
         path: routes.account,
         component: lazyLoadAccountComponent('Account'),
         is_authenticated: true,
-        title: localize('Account Settings'),
+        title: localize('Account settings'),
         icon_component: 'IcUserOutline',
         routes: [
             {

@@ -9,6 +9,7 @@ import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared/utils/date';
+import { isEmptyObject } from '@deriv/shared/src/utils/object/object';
 import { LocalStore, State } from '_common/storage';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
@@ -1255,6 +1256,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_high_risk() {
+        if (isEmptyObject(this.account_status)) return false;
         return this.account_status.risk_classification === 'high';
     }
 

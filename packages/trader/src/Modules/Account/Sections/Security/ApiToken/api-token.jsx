@@ -61,7 +61,7 @@ class ApiToken extends React.Component {
 
     getScopeValue = token => {
         const titled_scopes = token.scopes.map(scope => StringUtils.toTitleCase(scope));
-        const mapped_scopes = titled_scopes.length === 4 ? 'All' : titled_scopes.join(', ');
+        const mapped_scopes = titled_scopes.length === 4 ? localize('All') : titled_scopes.join(', ');
         const date_format = token.last_used
             ? DateUtils.formatDate(new Date(token.last_used), 'DD/MM/YYYY')
             : localize('Never');

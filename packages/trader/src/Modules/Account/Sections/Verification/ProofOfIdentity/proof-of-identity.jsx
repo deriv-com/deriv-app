@@ -13,9 +13,7 @@ class ProofOfIdentity extends React.Component {
         return (
             <AutoHeightWrapper default_height={200}>
                 {({ setRef, height }) => (
-                    <div
-                        ref={setRef}
-                        className='proof-of-identity'>
+                    <div ref={setRef} className='proof-of-identity'>
                         <ProofOfIdentityContainer
                             addNotificationByKey={this.props.addNotificationByKey}
                             removeNotificationByKey={this.props.removeNotificationByKey}
@@ -26,7 +24,6 @@ class ProofOfIdentity extends React.Component {
                     </div>
                 )}
             </AutoHeightWrapper>
-
         );
     }
 }

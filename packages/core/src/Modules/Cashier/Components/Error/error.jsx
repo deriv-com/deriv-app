@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, ButtonLink } from '@deriv/components';
+import { getDerivComLink } from '@deriv/shared/utils/url';
 import { localize, Localize } from '@deriv/translations';
-import { getDerivComLink } from '_common/url';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 

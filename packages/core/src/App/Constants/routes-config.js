@@ -29,7 +29,11 @@ const Bot = lazy(() => {
 });
 
 const modules = [
-    { path: routes.bot, component: Bot, title: localize('Bot') },
+    {
+        path: routes.bot,
+        component: Bot,
+        title: localize('Bot'),
+    },
     {
         path: routes.root,
         component: Trader,

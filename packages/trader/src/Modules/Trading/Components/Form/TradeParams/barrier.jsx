@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Icon } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import InputField from 'App/Components/Form/InputField';
 import { connect } from 'Stores/connect';
@@ -23,45 +23,92 @@ const Barrier = ({ barrier_1, barrier_2, barrier_count, is_minimized, onChange, 
 
     const input_class = barrier_count === 2 ? 'multiple' : 'single';
     return (
-        <Fieldset className='trade-container__fieldset trade-container__barriers' header={barrier_title} is_center>
-            <div>
-                <InputField
-                    id='dt_barrier_1_input'
-                    type='number'
-                    name='barrier_1'
-                    value={barrier_1}
-                    className={`trade-container__barriers-${input_class}`}
-                    classNameInput={classNames(
-                        'trade-container__input',
-                        'trade-container__barriers-input',
-                        `trade-container__barriers-${input_class}-input`
-                    )}
-                    onChange={onChange}
-                    error_messages={validation_errors.barrier_1 || []}
-                    is_float
-                    is_signed
-                />
-
-                {barrier_count === 2 && (
-                    <React.Fragment>
+        <React.Fragment>
+            <DesktopWrapper>
+                <Fieldset
+                    className='trade-container__fieldset trade-container__barriers'
+                    header={barrier_title}
+                    is_center
+                >
+                    <div>
                         <InputField
-                            id='dt_barrier_2_input'
+                            id='dt_barrier_1_input'
                             type='number'
-                            name='barrier_2'
-                            value={barrier_2}
-                            className='multiple'
-                            classNameInput='trade-container__input'
+                            name='barrier_1'
+                            value={barrier_1}
+                            className={`trade-container__barriers-${input_class}`}
+                            classNameInput={classNames(
+                                'trade-container__input',
+                                'trade-container__barriers-input',
+                                `trade-container__barriers-${input_class}-input`
+                            )}
                             onChange={onChange}
-                            error_messages={validation_errors.barrier_2}
+                            error_messages={validation_errors.barrier_1 || []}
                             is_float
                             is_signed
                         />
-                        <Icon icon='IcArrowUp' className='trade-container__barriers--up' />
-                        <Icon icon='IcArrowDown' className='trade-container__barriers--down' />
-                    </React.Fragment>
-                )}
-            </div>
-        </Fieldset>
+
+                        {barrier_count === 2 && (
+                            <React.Fragment>
+                                <InputField
+                                    id='dt_barrier_2_input'
+                                    type='number'
+                                    name='barrier_2'
+                                    value={barrier_2}
+                                    className='multiple'
+                                    classNameInput='trade-container__input'
+                                    onChange={onChange}
+                                    error_messages={validation_errors.barrier_2}
+                                    is_float
+                                    is_signed
+                                />
+                                <Icon icon='IcArrowUp' className='trade-container__barriers--up' />
+                                <Icon icon='IcArrowDown' className='trade-container__barriers--down' />
+                            </React.Fragment>
+                        )}
+                    </div>
+                </Fieldset>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <Fieldset className='trade-container__fieldset trade-container__barriers'>
+                    <InputField
+                        id='dt_barrier_1_input'
+                        type='number'
+                        name='barrier_1'
+                        value={barrier_1}
+                        className={`trade-container__barriers-${input_class}`}
+                        classNameInput={classNames(
+                            'trade-container__input',
+                            'trade-container__barriers-input',
+                            `trade-container__barriers-${input_class}-input`
+                        )}
+                        onChange={onChange}
+                        error_messages={validation_errors.barrier_1 || []}
+                        is_float
+                        is_signed
+                    />
+
+                    {barrier_count === 2 && (
+                        <React.Fragment>
+                            <InputField
+                                id='dt_barrier_2_input'
+                                type='number'
+                                name='barrier_2'
+                                value={barrier_2}
+                                className='multiple'
+                                classNameInput='trade-container__input'
+                                onChange={onChange}
+                                error_messages={validation_errors.barrier_2}
+                                is_float
+                                is_signed
+                            />
+                            <Icon icon='IcArrowUp' className='trade-container__barriers--up' />
+                            <Icon icon='IcArrowDown' className='trade-container__barriers--down' />
+                        </React.Fragment>
+                    )}
+                </Fieldset>
+            </MobileWrapper>
+        </React.Fragment>
     );
 };
 

@@ -1,5 +1,10 @@
 import { localize } from 'Components/i18next';
 
+export const orderToggleIndex = {
+    ACTIVE: 'active',
+    INACTIVE: 'inactive',
+};
+
 export default class OrderInfo {
     id = '';
     status;
@@ -30,7 +35,7 @@ export default class OrderInfo {
     }
 
     static status_map_buyer = {
-        pending: localize('Please pay'),
+        pending: localize('Pay now'),
         'buyer-confirmed': localize('Wait for release'),
     };
 
@@ -40,7 +45,7 @@ export default class OrderInfo {
     };
 
     static status_map_common = {
-        cancelled: localize('Cancelled'),
+        cancelled: localize('Expired'),
         'timed-out': localize('Cancelled'),
         refunded: localize('Refunded'),
         completed: localize('Completed'),
@@ -58,6 +63,19 @@ export default class OrderInfo {
 
     get is_buyer() {
         return this.type === 'buy';
+    }
+
+    get is_active() {
+        return this.status === 'pending' || this.status === 'buyer-confirmed';
+    }
+
+    get is_inactive() {
+        return (
+            this.status === 'cancelled' ||
+            this.status === 'timed-out' ||
+            this.status === 'refunded' ||
+            this.status === 'completed'
+        );
     }
 
     get is_pending() {

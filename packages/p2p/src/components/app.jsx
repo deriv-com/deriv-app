@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { Tabs } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
+import { orderToggleIndex } from 'Components/orders/order-info';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
@@ -34,6 +35,7 @@ class App extends Component {
         this.list_item_limit = 20;
         this.state = {
             active_index: 0,
+            order_table_type: orderToggleIndex.ACTIVE,
             order_offset: 0,
             orders: [],
             notification_count: 0,
@@ -87,6 +89,10 @@ class App extends Component {
 
     handleTabClick = idx => {
         this.setState({ active_index: idx, parameters: null });
+    };
+
+    updateOrderToggleIndex = index => {
+        this.setState({ order_table_type: index });
     };
 
     setIsAdvertiser = response => {
@@ -177,7 +183,7 @@ class App extends Component {
     };
 
     render() {
-        const { active_index, order_offset, orders, parameters, notification_count, chat_info } = this.state;
+        const { active_index, order_offset, orders, parameters, notification_count, order_table_type } = this.state;
         const {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
@@ -198,6 +204,9 @@ class App extends Component {
         return (
             <Dp2pProvider
                 value={{
+                    changeTab: this.handleTabClick,
+                    order_table_type,
+                    changeOrderToggle: this.updateOrderToggleIndex,
                     currency,
                     local_currency_config,
                     residence,

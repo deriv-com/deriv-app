@@ -15,13 +15,13 @@ export const getDisplayText = (list, value) => {
 };
 
 export const findNextFocusableNode = active_node => {
-    if (!active_node) return;
+    if (!active_node) return null;
     if (active_node.attributes.tabIndex) return active_node;
     return findNextFocusableNode(active_node.nextSibling);
 };
 
 export const findPreviousFocusableNode = active_node => {
-    if (!active_node) return;
+    if (!active_node) return null;
     if (active_node.attributes.tabIndex) return active_node;
     return findPreviousFocusableNode(active_node.previousSibling);
 };

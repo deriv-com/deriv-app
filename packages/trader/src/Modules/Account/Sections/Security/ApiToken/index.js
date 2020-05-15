@@ -1,7 +1,19 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, Field } from 'formik';
-import { Timeline, CompositeCheckbox, Input, Button, Table, Icon, Popover, Dialog } from '@deriv/components';
+import {
+    Timeline,
+    CompositeCheckbox,
+    Input,
+    Button,
+    Table,
+    Icon,
+    Popover,
+    Dialog,
+    ThemedScrollbars,
+    DesktopWrapper,
+    MobileWrapper,
+} from '@deriv/components';
 import { copyToClipboard } from '_common/utility';
 import ObjectUtils from '@deriv/shared/utils/object';
 import StringUtils from '@deriv/shared/utils/string';
@@ -71,6 +83,23 @@ const Clipboard = ({ token }) => {
     );
 };
 
+const Article = () => {
+    return (
+        <article className='api-token__article'>
+            <h4 className='api-token__article-title'>{localize('API token')}</h4>
+            <ul className='api-token__article-list'>
+                <li>
+                    <p className='api-token__article-text'>
+                        {localize(
+                            "To access our mobile apps and other third-party apps, you'll first need to generate an API token."
+                        )}
+                    </p>
+                </li>
+            </ul>
+        </article>
+    );
+};
+
 class ApiToken extends React.Component {
     state = {
         api_tokens: [],
@@ -94,8 +123,12 @@ class ApiToken extends React.Component {
     validateFields = values => {
         const errors = {};
 
-        if (!values.token_name) {
-            errors.token_name = 'Token name is required.';
+        const token_name = values.token_name;
+
+        if (!token_name) {
+            errors.token_name = localize('Token name is required.');
+        } else if (token_name.length < 2 || token_name.length > 32) {
+            errors.token_name = localize('Length of token name must be between 2 and 32 characters.');
         }
 
         return errors;
@@ -219,99 +252,169 @@ class ApiToken extends React.Component {
                         </div>
                     </div>
                 </Dialog>
-                <Formik initialValues={this.initial_form} onSubmit={this.handleSubmit} validate={this.validateFields}>
-                    {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting, setFieldValue }) => (
-                        <Form noValidate>
-                            <Timeline>
-                                <Timeline.Item title={localize('Select tokens based on the access you need.')}>
-                                    <div className='api-token__checkbox-wrapper'>
-                                        <Card
-                                            name='read'
-                                            value={values.read}
-                                            setFieldValue={setFieldValue}
-                                            display_name={localize('Read')}
-                                            description={localize(
-                                                'View account activity such as settings, limits, balance sheets, trade purchase history, and more.'
-                                            )}
-                                        />
-                                        <Card
-                                            name='trade'
-                                            value={values.trade}
-                                            display_name={localize('Trade')}
-                                            setFieldValue={setFieldValue}
-                                            description={localize(
-                                                'Buy and sell contracts, renew expired purchases, and top up demo accounts.'
-                                            )}
-                                        />
-                                        <Card
-                                            name='payments'
-                                            value={values.payments}
-                                            display_name={localize('Payments')}
-                                            setFieldValue={setFieldValue}
-                                            description={localize(
-                                                'Withdraw to payment agents, transfer funds between accounts, and set/clear cashier passwords.'
-                                            )}
-                                        />
-                                        <Card
-                                            name='admin'
-                                            value={values.admin}
-                                            display_name={localize('Admin')}
-                                            setFieldValue={setFieldValue}
-                                            description={localize(
-                                                'Open accounts, manage settings, manage token usage, and more.'
-                                            )}
-                                        />
-                                    </div>
-                                </Timeline.Item>
-                                <Timeline.Item
-                                    title={localize("Name your token and click on 'Create' to generate your token.")}
-                                >
-                                    <div className='api-token__input-group'>
-                                        <Field name='token_name'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    data-lpignore='true'
-                                                    type='text'
-                                                    className='api-token__input'
-                                                    label={localize('First name*')}
-                                                    value={values.token_name}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    required
-                                                    error={touched.token_name && errors.token_name}
+                <div className='api-token__wrapper'>
+                    <ThemedScrollbars
+                        autoHide
+                        className='api-token__scrollbars'
+                        style={{ width: '100%', height: '100%' }}
+                        hideHorizontal={true}
+                    >
+                        <MobileWrapper>
+                            <Article />
+                        </MobileWrapper>
+                        <Formik
+                            initialValues={this.initial_form}
+                            onSubmit={this.handleSubmit}
+                            validate={this.validateFields}
+                        >
+                            {({
+                                values,
+                                errors,
+                                isValid,
+                                touched,
+                                handleChange,
+                                handleBlur,
+                                isSubmitting,
+                                setFieldValue,
+                            }) => (
+                                <Form noValidate>
+                                    <Timeline className='api-token__timeline'>
+                                        <Timeline.Item title={localize('Select tokens based on the access you need.')}>
+                                            <div className='api-token__checkbox-wrapper'>
+                                                <Card
+                                                    name='read'
+                                                    value={values.read}
+                                                    setFieldValue={setFieldValue}
+                                                    display_name={localize('Read')}
+                                                    description={localize(
+                                                        'View account activity such as settings, limits, balance sheets, trade purchase history, and more.'
+                                                    )}
                                                 />
+                                                <Card
+                                                    name='trade'
+                                                    value={values.trade}
+                                                    display_name={localize('Trade')}
+                                                    setFieldValue={setFieldValue}
+                                                    description={localize(
+                                                        'Buy and sell contracts, renew expired purchases, and top up demo accounts.'
+                                                    )}
+                                                />
+                                                <Card
+                                                    name='payments'
+                                                    value={values.payments}
+                                                    display_name={localize('Payments')}
+                                                    setFieldValue={setFieldValue}
+                                                    description={localize(
+                                                        'Withdraw to payment agents, transfer funds between accounts, and set/clear cashier passwords.'
+                                                    )}
+                                                />
+                                                <Card
+                                                    name='admin'
+                                                    value={values.admin}
+                                                    display_name={localize('Admin')}
+                                                    setFieldValue={setFieldValue}
+                                                    description={localize(
+                                                        'Open accounts, manage settings, manage token usage, and more.'
+                                                    )}
+                                                />
+                                            </div>
+                                        </Timeline.Item>
+                                        <Timeline.Item
+                                            title={localize(
+                                                "Name your token and click on 'Create' to generate your token."
                                             )}
-                                        </Field>
-                                        <Button
-                                            className={classNames('api-token__button', {
-                                                'api-token__button--success': is_success,
-                                            })}
-                                            type='submit'
-                                            is_disabled={isSubmitting || !isValid}
-                                            has_effect
-                                            is_loading={isSubmitting}
-                                            is_submit_success={is_success}
-                                            text={localize('Submit')}
-                                            primary
-                                            large
-                                        />
-                                    </div>
-                                </Timeline.Item>
+                                        >
+                                            <div className='api-token__input-group'>
+                                                <Field name='token_name'>
+                                                    {({ field }) => (
+                                                        <Input
+                                                            {...field}
+                                                            data-lpignore='true'
+                                                            type='text'
+                                                            className='api-token__input'
+                                                            label={localize('First name*')}
+                                                            value={values.token_name}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            hint={localize(
+                                                                'Length of token name must be between 2 and 32 characters.'
+                                                            )}
+                                                            required
+                                                            error={touched.token_name && errors.token_name}
+                                                        />
+                                                    )}
+                                                </Field>
+                                                <Button
+                                                    className={classNames('api-token__button', {
+                                                        'api-token__button--success': is_success,
+                                                    })}
+                                                    type='submit'
+                                                    is_disabled={isSubmitting || !isValid}
+                                                    has_effect
+                                                    is_loading={isSubmitting}
+                                                    is_submit_success={is_success}
+                                                    text={localize('Submit')}
+                                                    primary
+                                                    large
+                                                />
+                                            </div>
+                                        </Timeline.Item>
 
-                                <Timeline.Item title={localize('Copy and paste the token into the app.')}>
-                                    <div>
-                                        <Table>
-                                            <Table.Header>
-                                                <Table.Row className='api-token__table-row'>
-                                                    <Table.Head>{localize('Name')}</Table.Head>
-                                                    <Table.Head>{localize('Token')}</Table.Head>
-                                                    <Table.Head>{localize('Scope')}</Table.Head>
-                                                    <Table.Head>{localize('Last used')}</Table.Head>
-                                                    <Table.Head>{localize('Action')}</Table.Head>
-                                                </Table.Row>
-                                            </Table.Header>
-                                            <Table.Body>
+                                        <Timeline.Item title={localize('Copy and paste the token into the app.')}>
+                                            <DesktopWrapper>
+                                                <Table>
+                                                    <Table.Header>
+                                                        <Table.Row className='api-token__table-row'>
+                                                            <Table.Head>{localize('Name')}</Table.Head>
+                                                            <Table.Head>{localize('Token')}</Table.Head>
+                                                            <Table.Head>{localize('Scope')}</Table.Head>
+                                                            <Table.Head>{localize('Last used')}</Table.Head>
+                                                            <Table.Head>{localize('Action')}</Table.Head>
+                                                        </Table.Row>
+                                                    </Table.Header>
+                                                    <Table.Body>
+                                                        {api_tokens.map((token, idx) => {
+                                                            const titled_scopes = token.scopes.map(scope =>
+                                                                StringUtils.toTitleCase(scope)
+                                                            );
+                                                            const mapped_scopes =
+                                                                titled_scopes.length === 4
+                                                                    ? 'All'
+                                                                    : titled_scopes.join(', ');
+                                                            const date_format = token.last_used
+                                                                ? DateUtils.formatDate(
+                                                                      new Date(token.last_used),
+                                                                      'DD/MM/YYYY'
+                                                                  )
+                                                                : localize('Never');
+                                                            return (
+                                                                <Table.Row key={idx} className='api-token__table-row'>
+                                                                    <Table.Cell>{token.display_name}</Table.Cell>
+                                                                    <Table.Cell>
+                                                                        <div className='api-token__clipboard-wrapper'>
+                                                                            {token.token}{' '}
+                                                                            <Clipboard token={token.token} />
+                                                                        </div>
+                                                                    </Table.Cell>
+                                                                    <Table.Cell>{mapped_scopes}</Table.Cell>
+                                                                    <Table.Cell>{date_format}</Table.Cell>
+                                                                    <Table.Cell>
+                                                                        <Button
+                                                                            type='button'
+                                                                            secondary
+                                                                            small
+                                                                            onClick={() => this.showDialog(token.token)}
+                                                                        >
+                                                                            {localize('Delete')}
+                                                                        </Button>
+                                                                    </Table.Cell>
+                                                                </Table.Row>
+                                                            );
+                                                        })}
+                                                    </Table.Body>
+                                                </Table>
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
                                                 {api_tokens.map((token, idx) => {
                                                     const titled_scopes = token.scopes.map(scope =>
                                                         StringUtils.toTitleCase(scope)
@@ -322,36 +425,72 @@ class ApiToken extends React.Component {
                                                         ? DateUtils.formatDate(new Date(token.last_used), 'DD/MM/YYYY')
                                                         : localize('Never');
                                                     return (
-                                                        <Table.Row key={idx} className='api-token__table-row'>
-                                                            <Table.Cell>{token.display_name}</Table.Cell>
-                                                            <Table.Cell>
-                                                                <div className='api-token__clipboard-wrapper'>
-                                                                    {token.token} <Clipboard token={token.token} />
+                                                        <div key={idx} className='api-token__scope'>
+                                                            <div className='api-token__scope-item'>
+                                                                <div>
+                                                                    <h5 className='api-token__scope--title'>
+                                                                        {localize('Name')}
+                                                                    </h5>
+                                                                    <p className='api-token__scope--text'>
+                                                                        {token.display_name}
+                                                                    </p>
                                                                 </div>
-                                                            </Table.Cell>
-                                                            <Table.Cell>{mapped_scopes}</Table.Cell>
-                                                            <Table.Cell>{date_format}</Table.Cell>
-                                                            <Table.Cell>
-                                                                <Button
-                                                                    type='button'
-                                                                    secondary
-                                                                    small
-                                                                    onClick={() => this.showDialog(token.token)}
-                                                                >
-                                                                    {localize('Delete')}
-                                                                </Button>
-                                                            </Table.Cell>
-                                                        </Table.Row>
+                                                            </div>
+                                                            <div className='api-token__scope-item'>
+                                                                <div>
+                                                                    <h5 className='api-token__scope--title'>
+                                                                        {localize('Token')}
+                                                                    </h5>
+                                                                    <p className='api-token__scope--text'>
+                                                                        <div className='api-token__clipboard-wrapper'>
+                                                                            {token.token}{' '}
+                                                                            <Clipboard token={token.token} />
+                                                                        </div>
+                                                                    </p>
+                                                                </div>
+                                                                <div>
+                                                                    <h5 className='api-token__scope--title'>
+                                                                        {localize('Last Used')}
+                                                                    </h5>
+                                                                    <p className='api-token__scope--text'>
+                                                                        {date_format}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div className='api-token__scope-item'>
+                                                                <div>
+                                                                    <h5 className='api-token__scope--title'>
+                                                                        {localize('Scope')}
+                                                                    </h5>
+                                                                    <p className='api-token__scope--text'>
+                                                                        {mapped_scopes}
+                                                                    </p>
+                                                                </div>
+                                                                <div>
+                                                                    <Button
+                                                                        type='button'
+                                                                        secondary
+                                                                        small
+                                                                        onClick={() => this.showDialog(token.token)}
+                                                                    >
+                                                                        {localize('Delete')}
+                                                                    </Button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     );
                                                 })}
-                                            </Table.Body>
-                                        </Table>
-                                    </div>
-                                </Timeline.Item>
-                            </Timeline>
-                        </Form>
-                    )}
-                </Formik>
+                                            </MobileWrapper>
+                                        </Timeline.Item>
+                                    </Timeline>
+                                </Form>
+                            )}
+                        </Formik>
+                    </ThemedScrollbars>
+                    <DesktopWrapper>
+                        <Article />
+                    </DesktopWrapper>
+                </div>
             </section>
         );
     }

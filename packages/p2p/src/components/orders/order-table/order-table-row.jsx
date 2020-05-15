@@ -59,13 +59,12 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
 
     const offer_amount = `${display_offer_amount} ${offer_currency}`;
     const transaction_amount = `${display_transaction_amount} ${transaction_currency}`;
-
     return (
         <div onClick={() => onOpenDetails(data)} style={style}>
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
                     'orders__table-grid--active': is_active,
-                    'orders__table-row--attention': is_pending && !(is_buyer_confirmed && is_buyer),
+                    'orders__table-row--attention': is_pending || (is_buyer_confirmed && !is_buyer),
                 })}
             >
                 <Table.Cell>{is_buyer ? localize('Buy') : localize('Sell')}</Table.Cell>

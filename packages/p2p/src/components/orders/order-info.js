@@ -6,7 +6,6 @@ export default class OrderInfo {
     type = '';
     advertiser_id = '';
     advertiser_name = '';
-    advertiser_notes = '';
     chat_channel_url = '';
     advertiser_instructions = '';
     contact_info = '';

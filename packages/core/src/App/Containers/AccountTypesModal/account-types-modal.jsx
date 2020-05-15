@@ -502,7 +502,7 @@ class AccountTypesModal extends Component {
                     <div className='account-types'>
                         <p className='account-types__intro'>
                             <Localize
-                                i18n_default_text='{{ website_name }} offer various accounts based on 2 account types that suites different need. You can have all of them whenever you want. To view this page again, simply press any of the <0/> icon in Account Swithcer.'
+                                i18n_default_text='{{ website_name }} offer various accounts based on 2 account types that suites different need. You can have all of them whenever you want. To view this page again, simply press any of the <0/> icon in Account Switcher.'
                                 values={{ website_name }}
                                 components={[
                                     <Icon key={0} className='account-types__text-icon' icon='IcInfoOutline' />,

@@ -4,7 +4,7 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { mobileOSDetect } from '@deriv/shared/utils/os';
 import ThemedScrollbars from 'Components/themed-scrollbars';
-import { listPropType } from './dropdown';
+import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from './dropdown';
 import Items from './items.jsx';
 import NativeSelect from './native-select.jsx';
 import DisplayText from './display-text.jsx';
@@ -172,6 +172,7 @@ class Dropdown extends React.Component {
             case 9: // Tab
             case 13: // Enter
             case 32: // Space
+                if (!item) return;
                 this.handleSelect(item);
                 break;
             case 38: // Up Arrow
@@ -201,16 +202,23 @@ class Dropdown extends React.Component {
             if (item_ref) item_ref.focus();
         }
     };
+
     focusNextListItem = direction => {
         const active_element = document.activeElement;
 
         if (active_element.id === 'dropdown-display') {
             Array.from(this.nodes.values())[0].focus();
         } else {
-            const active_nodes = this.nodes.get(active_element.id);
-            if (active_nodes) {
-                if (active_nodes.nextSibling && direction === 40) active_nodes.nextSibling.focus();
-                if (active_nodes.previousSibling && direction === 38) active_nodes.previousSibling.focus();
+            const active_node = this.nodes.get(active_element.id);
+            if (active_node) {
+                if (direction === 40) {
+                    const next_node = findNextFocusableNode(active_node.nextSibling);
+                    if (next_node) next_node.focus();
+                }
+                if (direction === 38) {
+                    const prev_node = findPreviousFocusableNode(active_node.previousSibling);
+                    if (prev_node) prev_node.focus();
+                }
             }
         }
     };

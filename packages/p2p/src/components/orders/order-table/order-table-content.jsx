@@ -27,20 +27,8 @@ const OrderRowLoader = () => (
     </ContentLoader>
 );
 
-const OrderEmptyStates = () => {
-    const { changeTab } = useContext(Dp2pContext);
-
-    return (
-        <div className='orders__empty'>
-            <Icon icon='IcNoOrder' size={128} />
-            <div className='orders__empty-text'>{localize('You have no orders')}</div>
-            <Button primary text={localize('Buy/Sell')} type='button' onClick={() => changeTab(0)} />
-        </div>
-    );
-};
-
 const OrderTableContent = ({ showDetails, is_active }) => {
-    const { list_item_limit, order_offset, orders, setOrders, setOrderOffset } = useContext(Dp2pContext);
+    const { list_item_limit, order_offset, orders, setOrders, setOrderOffset, changeTab } = useContext(Dp2pContext);
     const [is_mounted, setIsMounted] = useState(false);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
     const [api_error_message, setApiErrorMessage] = useState('');
@@ -69,12 +57,12 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                     if (!response.error) {
                         const { list } = response.p2p_order_list;
                         setHasMoreItemsToLoad(list.length >= list_item_limit);
-                        setIsLoading(false);
                         setOrders(orders.concat(getModifiedP2POrderList(list)));
                         setOrderOffset(order_offset + list.length);
                     } else {
                         setApiErrorMessage(response.api_error_message);
                     }
+                    setIsLoading(false);
                     resolve();
                 }
             });
@@ -121,11 +109,17 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                 </OrderTableHeader>
             );
         }
-
-        return <OrderEmptyStates />;
     }
 
-    return <OrderEmptyStates />;
+    return (
+        <div className='p2p-cashier__empty'>
+            <Icon icon='IcNoOrder' className='p2p-cashier__empty-icon' size={128} />
+            <div className='p2p-cashier__empty-title'>{localize('You have no orders')}</div>
+            <Button primary large className='p2p-cashier__empty-button' onClick={() => () => changeTab(0)}>
+                {localize('Buy/Sell')}
+            </Button>
+        </div>
+    );
 };
 
 OrderTableContent.propTypes = {

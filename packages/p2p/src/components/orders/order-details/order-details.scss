@@ -1,15 +1,14 @@
 .order-details {
     &__container {
         display: flex;
+        padding-top: 2.4rem;
 
         .sendbird-container {
             border-radius: 4px;
-            margin-top: 2.4rem;
-            height: 500px;
+            height: 516px;
             width: calc(50% - 32px);
             box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.08), 0 0 8px 0 rgba(0, 0, 0, 0.08);
         }
-
         .sendbird-conversation {
             display: none;
             width: 100%;
@@ -160,8 +159,8 @@
         }
     }
     &__wrapper {
-        width: 476px;
-        margin-top: 2.4rem;
+        width: 456px;
+        height: 516px;
 
         &-message {
             margin: 0.8rem 0.8rem 1.6rem;
@@ -179,12 +178,13 @@
             border-radius: 4px;
             padding: 0.8rem;
             margin-right: 32px;
-            height: fit-content;
+            overflow-y: scroll;
         }
         &--inner {
             background-color: var(--general-main-1);
             border-radius: 4px;
             width: 100%;
+            height: 100%;
         }
     }
     &__header,

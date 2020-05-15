@@ -1,8 +1,8 @@
 import { action, observable } from 'mobx';
+import routes from '@deriv/shared/utils/routes';
+import { getAllowedLocalStorageOrigin } from '@deriv/shared/utils/storage';
 import { toMoment } from '@deriv/shared/utils/date';
 import ServerTime from '_common/base/server_time';
-import AppRoutes from 'Constants/routes';
-import { getAllowedLocalStorageOrigin } from 'Utils/Events/storage';
 import { currentLanguage } from 'Utils/Language/index';
 import BaseStore from './base-store';
 import { clientNotifications } from './Helpers/client-notifications';
@@ -160,7 +160,7 @@ export default class CommonStore extends BaseStore {
                 }
 
                 const parent_path = history_item.pathname.split('/')[1];
-                const platform_parent_paths = [AppRoutes.mt5, AppRoutes.bot, AppRoutes.trade].map(i => i.split('/')[1]); // map full path to just base path (`/mt5/abc` -> `mt5`)
+                const platform_parent_paths = [routes.mt5, routes.bot, routes.trade].map(i => i.split('/')[1]); // map full path to just base path (`/mt5/abc` -> `mt5`)
 
                 if (platform_parent_paths.includes(parent_path)) {
                     route_to_item_idx = idx;
@@ -182,6 +182,6 @@ export default class CommonStore extends BaseStore {
             }
         }
 
-        history.push(AppRoutes.trade);
+        history.push(routes.trade);
     }
 }

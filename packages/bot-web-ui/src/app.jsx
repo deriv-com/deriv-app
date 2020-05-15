@@ -10,6 +10,7 @@ import QuickStrategy from './components/quick-strategy.jsx';
 import RunPanel from './components/run-panel.jsx';
 import Toolbar from './components/toolbar.jsx';
 import { MobxContentProvider } from './stores/connect';
+import RoutePromptDialog from './components/route-prompt-dialog.jsx';
 import RootStore from './stores';
 import GTM from './utils/gtm';
 import './assets/sass/app.scss';
@@ -71,6 +72,7 @@ class App extends React.Component {
         // Ensure account switch is re-enabled.
         const { ui } = this.root_store.core;
         ui.setAccountSwitcherDisabledMessage(false);
+        ui.setPromptHandler(false);
     }
 
     /**
@@ -177,6 +179,7 @@ class App extends React.Component {
                     <QuickStrategy />
                     <FooterExtension />
                     <Audio />
+                    <RoutePromptDialog />
                 </div>
             </MobxContentProvider>
         );

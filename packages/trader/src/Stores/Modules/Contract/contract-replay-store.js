@@ -1,8 +1,8 @@
 import { action, observable } from 'mobx';
+import routes from '@deriv/shared/utils/routes';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
-import AppRoutes from 'Constants/routes';
 import ContractStore from './contract-store';
 import { contractCancelled, contractSold } from '../Portfolio/Helpers/portfolio-notifications';
 import BaseStore from '../../base-store';
@@ -238,7 +238,7 @@ export default class ContractReplayStore extends BaseStore {
             this.removeErrorMessage();
             this.onMount(contract_id);
         } else {
-            history.push(AppRoutes.reports);
+            history.push(routes.reports);
         }
         return Promise.resolve();
     };

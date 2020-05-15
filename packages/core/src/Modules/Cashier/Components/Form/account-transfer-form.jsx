@@ -4,8 +4,8 @@ import React from 'react';
 import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { Field, Formik, Form } from 'formik';
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import { website_name } from 'App/Constants/app-config';
 import { localize, Localize } from '@deriv/translations';
+import { website_name } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
 import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
 import Loading from '../../../../templates/_common/components/loading.jsx';
@@ -193,6 +193,7 @@ class AccountTransferForm extends React.Component {
                                                     classNameDisplaySpan='cashier__drop-down-display-span'
                                                     classNameItems='cashier__drop-down-items'
                                                     classNameLabel='cashier__drop-down-label'
+                                                    autoHeightMax={404}
                                                     is_large
                                                     label={localize('From')}
                                                     list={from_accounts}
@@ -231,6 +232,7 @@ class AccountTransferForm extends React.Component {
                                                     id='transfer_to'
                                                     className='cashier__drop-down account-transfer__drop-down'
                                                     classNameDisplay='cashier__drop-down-display'
+                                                    autoHeightMax={404}
                                                     classNameDisplaySpan='cashier__drop-down-display-span'
                                                     classNameItems='cashier__drop-down-items'
                                                     classNameLabel='cashier__drop-down-label'

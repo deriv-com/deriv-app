@@ -79,6 +79,8 @@ class ApiToken extends React.Component {
         error_message: '',
         show_delete: false,
         dispose_token: '',
+        is_delete_loading: false,
+        is_delete_success: false,
     };
 
     initial_form = {
@@ -118,7 +120,7 @@ class ApiToken extends React.Component {
             });
             setTimeout(() => {
                 this.setState({ is_success: false });
-            }, 2000);
+            }, 500);
         }
 
         setSubmitting(false);
@@ -145,9 +147,14 @@ class ApiToken extends React.Component {
     };
 
     deleteToken = async token => {
+        this.setState({ is_delete_loading: true });
         const token_response = await WS.authorized.apiToken({ api_token: 1, delete_token: token });
         this.populateTokenResponse(token_response);
-        this.closeDialog();
+        this.setState({ is_delete_loading: false, is_delete_success: true });
+        setTimeout(() => {
+            this.closeDialog();
+            this.setState({ is_delete_success: false });
+        }, 500);
     };
 
     showDialog = token => {
@@ -172,7 +179,16 @@ class ApiToken extends React.Component {
     }
 
     render() {
-        const { api_tokens, is_loading, is_success, error_message, show_delete, dispose_token } = this.state;
+        const {
+            api_tokens,
+            is_loading,
+            is_success,
+            error_message,
+            show_delete,
+            dispose_token,
+            is_delete_loading,
+            is_delete_success,
+        } = this.state;
         const { is_virtual, is_switching } = this.props;
 
         if (is_virtual) return <DemoMessage />;
@@ -184,17 +200,23 @@ class ApiToken extends React.Component {
         return (
             <section className='api-token'>
                 <Dialog is_visible={show_delete}>
-                    <Icon icon='IcRemoveToken' className='api-token__popup-image' />
-                    <h4 className='api-token__popup-header'>
-                        {localize('Confirm delete token?')} {dispose_token}
-                    </h4>
-                    <div className='api-token__popup-button_group'>
-                        <Button type='button' primary small onClick={() => this.deleteToken(dispose_token)}>
-                            Delete
-                        </Button>
-                        <Button type='button' primary small onClick={this.closeDialog}>
-                            Close
-                        </Button>
+                    <div className='api-token__popup'>
+                        <Icon icon='IcRemoveToken' className='api-token__popup-image' />
+                        <h4 className='api-token__popup-header'>{localize('Confirm delete token?')}</h4>
+                        <div className='api-token__popup-buttons'>
+                            <Button type='button' secondary large onClick={this.closeDialog}>
+                                {localize('Back')}
+                            </Button>
+                            <Button
+                                type='button'
+                                is_loading={is_delete_loading}
+                                is_submit_success={is_delete_success}
+                                primary
+                                large
+                                text={localize('Confirm')}
+                                onClick={() => this.deleteToken(dispose_token)}
+                            />
+                        </div>
                     </div>
                 </Dialog>
                 <Formik initialValues={this.initial_form} onSubmit={this.handleSubmit} validate={this.validateFields}>

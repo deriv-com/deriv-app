@@ -416,6 +416,16 @@ $MIN_HEIGHT_FLOATING: calc(
         & .dc-popover__target {
             display: flex;
         }
+        & .dc-dialog__dialog {
+            width: 440px;
+            height: 312px;
+            min-width: 0;
+        }
+        & .dc-dialog__content {
+            max-width: 100%;
+            width: 100%;
+            height: 100%;
+        }
         &__input-group {
             display: flex;
             margin-top: 2.7rem;
@@ -447,6 +457,32 @@ $MIN_HEIGHT_FLOATING: calc(
                 display: flex;
                 justify-content: center;
                 align-items: center;
+            }
+        }
+        &__popup {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+
+            &-header {
+                @include typeface(--paragraph-center-bold-black, none);
+                margin: 1.6rem 0 3.2rem;
+            }
+            &-image {
+                width: 12.8rem;
+                height: 12.8rem;
+            }
+            &-buttons {
+                & > button:first-child {
+                    margin-right: 1.6rem;
+                }
+            }
+            &-error {
+                margin-top: 1.6rem;
+                @include typeface(--paragraph-center-bold-red, none);
             }
         }
     }

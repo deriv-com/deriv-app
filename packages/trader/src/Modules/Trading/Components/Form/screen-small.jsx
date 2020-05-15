@@ -38,7 +38,6 @@ const CollapsibleTradeParams = ({
     };
 
     const isVisible = component => form_components.includes(component);
-    console.warn(isVisible('barrier'));
 
     return (
         <Collapsible position='top' is_collapsed={is_collapsed} onClick={onClick}>

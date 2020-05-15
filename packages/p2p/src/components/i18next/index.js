@@ -22,6 +22,7 @@ let CURRENT_LANGUAGE = 'EN';
 
 export const setLanguage = lang => {
     CURRENT_LANGUAGE = lang || DEFAULT_LANGUAGE;
+    i18n.changeLanguage(lang);
 };
 
 const getLanguage = () => CURRENT_LANGUAGE;

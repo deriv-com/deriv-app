@@ -2,9 +2,12 @@ export const getFormattedDateString = date_obj => {
     if (!(date_obj instanceof Date)) throw Error('getFormattedDateString argument needs an instance of Date');
 
     const [, day, month, year, time] = date_obj.toUTCString().split(' ');
+    const times = time.split(':');
+    times.pop();
+    const time_without_sec = times.join(':');
 
     // Return in the format "DD MMM YYYY HH:mm:ss". e.g.: "01 Jan 1970 21:01:02"
-    return `${day} ${month} ${year} ${time}`;
+    return `${day} ${month} ${year}, ${time_without_sec}`;
 };
 
 export const convertToMillis = epoch => {

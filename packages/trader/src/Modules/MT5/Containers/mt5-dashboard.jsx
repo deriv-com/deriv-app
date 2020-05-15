@@ -1,8 +1,8 @@
 import { DesktopWrapper, Icon, MobileWrapper, Tabs } from '@deriv/components';
 import React from 'react';
 import { withRouter } from 'react-router';
+import routes from '@deriv/shared/utils/routes';
 import { Localize, localize } from '@deriv/translations';
-import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 import LoadingMT5RealAccountDisplay from './loading-mt5-real-account-display.jsx';
 import MissingRealAccount from './missing-real-account.jsx';

@@ -183,7 +183,15 @@ class App extends Component {
     };
 
     render() {
-        const { active_index, order_offset, orders, parameters, notification_count, order_table_type } = this.state;
+        const {
+            active_index,
+            order_offset,
+            orders,
+            parameters,
+            notification_count,
+            order_table_type,
+            chat_info,
+        } = this.state;
         const {
             className,
             client: { currency, local_currency_config, is_virtual, residence },

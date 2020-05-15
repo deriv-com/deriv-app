@@ -108,6 +108,7 @@ export const icons = {
         'IcMoneyTransfer',
         'IcMultiplier',
         'IcNewFile',
+        'IcNoOrder',
         'IcNoAd',
         'IcOpenPositions',
         'IcPassport',

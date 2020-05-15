@@ -19,6 +19,7 @@ import { createProposalRequests, getProposalErrorField, getProposalInfo } from '
 import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
+import { getBarrierPipSize } from './Helpers/barrier';
 import { isBarrierSupported, removeBarrier } from '../SmartChart/Helpers/barriers';
 import BaseStore from '../../base-store';
 
@@ -451,6 +452,11 @@ export default class TradeStore extends BaseStore {
             barriers,
             is_over: false,
         });
+    }
+
+    @computed
+    get barrier_pipsize() {
+        return getBarrierPipSize(this.barrier_1);
     }
 
     @computed

@@ -1,4 +1,68 @@
 @include mobile {
+    /** @define barrier; weak */
+    .barrier {
+        .draggable {
+            pointer-events: none;
+
+            & .price {
+                padding-left: 0;
+
+                &:after {
+                    content: none;
+                }
+            }
+        }
+        &__widget {
+            display: grid;
+            grid-template-columns: 3.5fr 1fr;
+            height: 4rem;
+            margin: 0 0 0.8rem;
+            background: var(--general-main-1);
+            border-radius: $BORDER_RADIUS;
+
+            &-title {
+                font-size: 1.4rem;
+                font-weight: 400;
+                text-transform: none;
+                color: var(--text-less-prominent);
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                padding-right: 0.8rem;
+            }
+        }
+        &__fields {
+            width: 100%;
+
+            &-input {
+                width: 100%;
+                padding: 0;
+            }
+            &-single {
+                margin: 0;
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
+            & .dc-tooltip {
+                width: 100%;
+            }
+            & .input-wrapper {
+                &__input {
+                    outline: 0;
+                    border: none;
+                }
+                &__button {
+                    transform: scale(1.4);
+
+                    &:hover,
+                    &:active {
+                        background: none;
+                    }
+                }
+            }
+        }
+    }
     /** @define allow-equals; weak */
     .allow-equals {
         &__subtitle {

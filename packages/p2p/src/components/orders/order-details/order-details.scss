@@ -2,15 +2,37 @@
     &__container {
         display: flex;
 
+        .sendbird-container {
+            border-radius: 4px;
+            margin-top: 2.4rem;
+            height: 500px;
+            width: 440px;
+            box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.08), 0 0 8px 0 rgba(0, 0, 0, 0.08);
+        }
+
         .sendbird-conversation {
             display: none;
-            margin-top: 2.4rem;
-            min-height: 500px;
-            height: inherit;
             width: 440px;
             border-radius: 4px;
             border: none;
-            box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.08), 0 0 8px 0 rgba(0, 0, 0, 0.08);
+
+            .sendbird-chat-header {
+                padding: 0 16px;
+
+                &__left {
+                    display: flex;
+                    flex-flow: column;
+                    align-items: flex-start;
+
+                    > .sendbird-avatar {
+                        display: none;
+                    }
+
+                    > .sendbird-chat-header__title {
+                        margin-left: 0 !important;
+                    }
+                }
+            }
 
             .sendbird-separator__left,
             .sendbird-separator__right {
@@ -31,20 +53,8 @@
             .sendbird-avatar-img {
                 display: none;
             }
-            .sendbird-user-message__avatar,
-            .sendbird-thumbnail__avatar,
-            .sendbird-file-message__avatar {
-                transform: translateY(50%);
-            }
             .sendbird-avatar {
-                background-color: var(--brand-orange);
-                width: 40px !important;
-                height: 40px !important;
-                background-image: none !important;
-                line-height: 40px;
-                text-align: center;
-                font-size: 16px;
-                color: var(--text-colored-background);
+                display: none;
             }
             .sendbird-thumbnail--incoming {
                 padding-left: 50px;
@@ -72,7 +82,7 @@
             .sendbird-user-message--incoming,
             .sendbird-file-message__incoming,
             .sendbird-thumbnail--incoming {
-                padding-left: 48px;
+                padding-left: 0px !important;
 
                 .sendbird-user-message__tooltip,
                 &:hover .sendbird-user-message__tooltip,
@@ -109,10 +119,6 @@
                     display: flex;
                     max-width: 350px;
                     margin-right: 0;
-                }
-                &__subtitle {
-                    margin-left: 8px;
-                    margin-right: 9px;
                 }
                 &__right {
                     display: none;

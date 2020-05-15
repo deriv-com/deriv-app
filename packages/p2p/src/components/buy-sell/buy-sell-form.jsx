@@ -29,8 +29,8 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
             advert_id: ad.id,
             amount: values.amount,
             ...(ad.type === 'sell' && {
-                contact_info: [v => !!v, v => textValidator(v), v => lengthValidator(v)],
-                payment_info: [v => !!v, v => textValidator(v), v => lengthValidator(v)],
+                contact_info: values.contact_info,
+                payment_info: values.payment_info,
             }),
         });
 

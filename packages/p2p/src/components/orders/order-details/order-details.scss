@@ -145,6 +145,12 @@
                     right: 8px;
                 }
             }
+            .sendbird-chat-footer--textarea__character-count {
+                float: right;
+                line-height: 18px;
+                font-size: 12px;
+                color: var(--text-less-prominent);
+            }
         }
     }
     &__wrapper {

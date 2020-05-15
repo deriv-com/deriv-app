@@ -11,6 +11,8 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
             const el_chat_avatars = document.getElementsByClassName('sendbird-avatar');
             const el_chat_subtitle = document.querySelector('.sendbird-chat-header__subtitle');
             const el_new_container = document.querySelector(`.${new_container_classname}`);
+            const el_message_input = document.querySelector('.sendbird-message-input--textarea');
+            const el_chat_footer = document.querySelector('.sendbird-conversation__footer');
 
             if (el_chat_title) {
                 if (el_chat_title.innerText === 'No title') {
@@ -60,6 +62,22 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
                 const el_chat_header_left = document.querySelector('.sendbird-chat-header__left');
                 if (el_chat_header_left) {
                     el_chat_header_left.appendChild(el_chat_info_container);
+                }
+            }
+
+            const getCharCount = input => `${input.value.length}/${input.getAttribute('maxlength')}`;
+            if (el_message_input) {
+                const new_character_count_classname = 'sendbird-chat-footer--textarea__character-count';
+                if (!document.querySelector(`.${new_character_count_classname}`)) {
+                    const el_new_character_count = document.createElement('span');
+                    el_new_character_count.className = new_character_count_classname;
+                    el_new_character_count.innerText = getCharCount(el_message_input);
+
+                    el_message_input.addEventListener('input', e => {
+                        el_new_character_count.innerText = getCharCount(e.target);
+                    });
+
+                    el_chat_footer.appendChild(el_new_character_count);
                 }
             }
         }, 500);

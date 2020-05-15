@@ -15,17 +15,20 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
         item.text && typeof item.text === 'string' ? `symbols--${item.text.toLowerCase()}` : null;
 
     React.useEffect(() => {
-        if (item.disabled) return;
-        const handleKeyPress = e => onKeyPressed(e, item);
-
-        item_ref.current.addEventListener('keydown', handleKeyPress);
-        nodes.set(item.value.toString(), item_ref.current);
-
-        return () => {
-            if (item.disabled) return;
+        const removeListeners = () => {
             nodes.delete(item.value, item_ref.current);
             item_ref.current.removeEventListener('keydown', onKeyPressed);
         };
+
+        if (item.disabled) removeListeners();
+        else {
+            const handleKeyPress = e => onKeyPressed(e, item);
+
+            item_ref.current.addEventListener('keydown', handleKeyPress);
+            nodes.set(item.value.toString(), item_ref.current);
+        }
+
+        return () => removeListeners();
     }, [item]);
 
     return (

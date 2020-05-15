@@ -555,6 +555,10 @@ $MIN_HEIGHT_FLOATING: calc(
                 @include typeface(--paragraph-left-normal-black, none);
             }
         }
+        &__scrollbars {
+            height: 100%;
+            width: 100%;
+        }
     }
     .account-limit-container {
         height: 100%;

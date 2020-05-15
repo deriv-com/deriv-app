@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from 'Components/i18next';
+import { secondsToTimer } from 'Utils/date-time';
+import ServerTime from 'Utils/server-time';
 
 const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active }) => {
     const {
@@ -12,7 +14,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
         display_status,
         id,
         order_purchase_datetime,
-        order_purchase_time,
+        order_expiry_millis,
         offer_currency,
         transaction_currency,
         is_buyer,
@@ -23,6 +25,27 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
         is_completed,
         is_refunded,
     } = data;
+    const [remaining_time, setRemainingTime] = React.useState();
+    let interval;
+
+    const countDownTimer = () => {
+        const distance = ServerTime.getDistanceToServerTime(order_expiry_millis);
+        const timer = secondsToTimer(distance);
+
+        if (distance < 0) {
+            setRemainingTime(localize('expired'));
+            if (interval) clearInterval(interval);
+        } else {
+            setRemainingTime(timer);
+        }
+    };
+
+    React.useEffect(() => {
+        countDownTimer();
+        interval = setInterval(countDownTimer, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     const max_word_count = 22;
     let counter_party = '-';
@@ -51,8 +74,8 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
                 <Table.Cell>
                     <div
                         className={classNames('orders__table-status', {
-                            'orders__table-status--primary': is_pending,
-                            'orders__table-status--secondary': is_buyer_confirmed,
+                            'orders__table-status--primary': is_buyer_confirmed,
+                            'orders__table-status--secondary': is_pending,
                             'orders__table-status--success': is_completed,
                             'orders__table-status--info': is_refunded,
                             'orders__table-status--disabled': is_buyer_cancelled || is_expired,
@@ -64,11 +87,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
                 <Table.Cell>{is_buyer ? transaction_amount : offer_amount}</Table.Cell>
                 <Table.Cell>{is_buyer ? offer_amount : transaction_amount}</Table.Cell>
                 <Table.Cell>
-                    {is_active ? (
-                        <div className='orders__table-time'>{order_purchase_time}</div>
-                    ) : (
-                        order_purchase_datetime
-                    )}
+                    {is_active ? <div className='orders__table-time'>{remaining_time}</div> : order_purchase_datetime}
                 </Table.Cell>
             </Table.Row>
         </div>

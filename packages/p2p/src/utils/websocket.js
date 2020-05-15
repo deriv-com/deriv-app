@@ -122,7 +122,6 @@ const getModifiedP2POrder = response => {
         order_expiry_millis: convertToMillis(response.expiry_time),
         id: response.id,
         order_purchase_datetime: getFormattedDateString(new Date(convertToMillis(response.created_time))),
-        order_purchase_time: getFormattedTimeString(new Date(convertToMillis(response.created_time))),
         status: response.status,
         type: response.is_incoming ? ObjectUtils.getPropertyValue(response, ['advert_details', 'type']) : response.type,
     };

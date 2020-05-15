@@ -1,7 +1,7 @@
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { localize } from 'Components/i18next';
-import { convertToMillis, getFormattedDateString, getFormattedTimeString } from 'Utils/date-time';
+import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 
 let ws, transaction_currency_decimals;
 

@@ -170,7 +170,6 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
                     }
                     break;
                 }
-                // when
                 case 'block_term': {
                     if (
                         block_type_terms.some(term => search_regex.test(term)) ||
@@ -184,36 +183,27 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
                 }
                 case 'block_definitions': {
                     // eslint-disable-next-line consistent-return
-                    const matched_definition = Object.keys(block_definitions).filter(key => {
+                    Object.keys(block_definitions).forEach(key => {
                         const definition = block_definitions[key];
 
                         if (definition_key_to_search.test(key) && search_regex.test(definition.toUpperCase())) {
-                            return true;
+                            pushIfNotExists(flyout_content, block_content);
                         }
 
                         if (definition instanceof Array) {
-                            let has_dropdown_and_in_search = false;
-                            // eslint-disable-next-line consistent-return
                             definition.forEach(def => {
                                 const definition_strings = JSON.stringify(def).toUpperCase();
 
                                 if (
                                     def.type === 'field_dropdown' &&
-                                    search_term > 2 &&
+                                    search_term.length > 2 &&
                                     definition_strings.includes(search_term)
                                 ) {
-                                    has_dropdown_and_in_search = true;
+                                    pushIfNotExists(flyout_content, block_content);
                                 }
                             });
-
-                            return has_dropdown_and_in_search;
                         }
-                        return false;
                     });
-
-                    if (matched_definition && matched_definition.length) {
-                        pushIfNotExists(flyout_content, block_content);
-                    }
                     break;
                 }
                 case 'block_meta': {

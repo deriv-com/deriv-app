@@ -79,7 +79,10 @@ class App extends Component {
             }
         });
         this.setState({ notification_count: p2p_notification_count });
-        this.props.setNotificationCount(p2p_notification_count);
+
+        if (typeof this.props.setNotificationCount === 'function') {
+            this.props.setNotificationCount(p2p_notification_count);
+        }
     };
 
     setP2pOrderList = order_response => {

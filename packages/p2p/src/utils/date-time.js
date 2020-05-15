@@ -7,7 +7,7 @@ export const getFormattedDateString = date_obj => {
     const time_without_sec = times.join(':');
 
     // Return in the format "DD MMM YYYY HH:mm:ss". e.g.: "01 Jan 1970 21:01:02"
-    return `${day} ${month} ${year} ${time_without_sec}`;
+    return `${day} ${month} ${year},${time_without_sec}`;
 };
 
 export const convertToMillis = epoch => {

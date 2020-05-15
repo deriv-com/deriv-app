@@ -65,7 +65,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
                     'orders__table-grid--active': is_active,
-                    'orders__table-row--attention': is_pending || is_buyer_confirmed,
+                    'orders__table-row--attention': is_pending && !(is_buyer_confirmed && is_buyer),
                 })}
             >
                 <Table.Cell>{is_buyer ? localize('Buy') : localize('Sell')}</Table.Cell>
@@ -74,8 +74,10 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
                 <Table.Cell>
                     <div
                         className={classNames('orders__table-status', {
-                            'orders__table-status--primary': is_buyer_confirmed,
-                            'orders__table-status--secondary': is_pending,
+                            'orders__table-status--primary':
+                                (is_buyer_confirmed && !is_buyer) || (is_buyer && is_pending),
+                            'orders__table-status--secondary':
+                                (!is_buyer && is_pending) || (is_buyer_confirmed && is_buyer),
                             'orders__table-status--success': is_completed,
                             'orders__table-status--info': is_refunded,
                             'orders__table-status--disabled': is_buyer_cancelled || is_expired,

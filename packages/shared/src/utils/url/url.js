@@ -21,7 +21,7 @@ export const urlForLanguage = (lang, url = window.location.href) => {
 
     params.append('lang', lang);
 
-    return `${url.split('?')[0]}?${params.toString()}`;
+    return `${current_url.origin}${current_url.pathname}?${params.toString()}${current_url.hash}`;
 };
 
 export const reset = () => {

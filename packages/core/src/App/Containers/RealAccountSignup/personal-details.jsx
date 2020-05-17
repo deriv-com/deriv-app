@@ -6,6 +6,7 @@ import {
     ThemedScrollbars,
     DateOfBirthPicker,
     FormSubmitButton,
+    RadioGroup,
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import React from 'react';
@@ -135,7 +136,8 @@ class PersonalDetails extends React.Component {
                                                 </Field>
                                             )}
                                             {/* TODO: [deriv-eu] Remove salutation once api is optional */}
-                                            {
+                                            {<RadioGroup name='salutation' items={this.props.salutation_list} />}
+                                            {/* {'salutation' in this.props.value && (
                                                 <Field name='salutation'>
                                                     {({ field }) => (
                                                         <Autocomplete
@@ -153,7 +155,7 @@ class PersonalDetails extends React.Component {
                                                         />
                                                     )}
                                                 </Field>
-                                            }
+                                            )} */}
                                             <FormInputField
                                                 name='first_name'
                                                 label={localize('First name*')}

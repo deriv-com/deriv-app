@@ -13,6 +13,10 @@ stories.add('basic usage', () => (
     <Theme is_dark={boolean('Theme', false)}>
         <div style={{ display: 'flex' }}>
             <RadioGroup
+                onToggle={e => {
+                    e.persist();
+                    setFieldValue('salutation', e.target.value);
+                }}
                 items={[
                     { id: 'test1', label: 'test1', value: 'test1' },
                     { id: 'test2', label: 'test2', value: 'test2' },

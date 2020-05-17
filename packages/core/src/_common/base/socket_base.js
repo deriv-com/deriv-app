@@ -190,6 +190,11 @@ const BinarySocketBase = (() => {
             password_type,
             ...values,
         });
+    const mt5PasswordReset = payload =>
+        deriv_api.send({
+            ...payload,
+            mt5_password_reset: 1,
+        });
 
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
@@ -295,6 +300,7 @@ const BinarySocketBase = (() => {
         contractUpdateHistory,
         mt5NewAccount,
         mt5PasswordChange,
+        mt5PasswordReset,
         newAccountVirtual,
         newAccountReal,
         p2pAdvertiserInfo,

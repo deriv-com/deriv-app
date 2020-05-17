@@ -201,3 +201,37 @@
         margin: 3.2rem 0 0;
     }
 }
+
+.mt5-reset-password {
+    width: 38.4rem;
+    height: 28.3rem;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    &__container {
+        width: 30rem;
+        display: grid;
+        grid-template-rows: 8rem 1fr 7rem;
+        height: 100%;
+    }
+    &__heading {
+        @include typeface(--title-center-bold-black);
+        margin: 3.2rem 0 0;
+    }
+    &__hint {
+        @include typeface(--paragraph-center-normal-black);
+        color: var(--text-less-prominent);
+    }
+    &__error {
+        display: flex;
+        width: 32.8rem;
+        height: 28.4rem;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        padding-bottom: 4rem;
+    }
+}

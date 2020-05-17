@@ -335,6 +335,11 @@ export default class MT5Store extends BaseStore {
         );
     }
 
+    @action.bound
+    sendVerifyEmail() {
+        return WS.verifyEmail(this.root_store.client.email, 'mt5_password_reset');
+    }
+
     static async changePassword({ login, old_password, new_password, password_type }) {
         const { error } = await WS.authorized.mt5PasswordChange(login, old_password, new_password, password_type);
 

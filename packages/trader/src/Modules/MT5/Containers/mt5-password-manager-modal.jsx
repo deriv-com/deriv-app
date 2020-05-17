@@ -1,4 +1,5 @@
 import {
+    Icon,
     Modal,
     Tabs,
     PasswordInput,
@@ -13,31 +14,33 @@ import {
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { urlFor } from '@deriv/shared/utils/url';
+import { getDerivComLink } from '@deriv/shared/utils/url';
 import MultiStep from 'Modules/Account/Components/multistep.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
 import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
 
-// TODO: remove this once MT5 main password reset is supported in Deriv.app
-const MT5PasswordResetUnavailable = () => (
-    <>
-        <p className='mt5-password-manager--paragraph'>
-            {localize(
-                "We're currently only able to reset your MT5 password on Binary.com. While we fix this, please log in to Binary.com MT5 to reset your password."
-            )}
-        </p>
-        <Button
-            className='mt5-password-manager--button'
-            has_effect
-            text={localize('Take me to Binary.com MT5')}
-            onClick={() => window.open(urlFor('user/metatrader', { legacy: true }))}
-            primary
-            large
-        />
-    </>
-);
+const MT5PasswordReset = ({ sendVerifyEmail }) => {
+    React.useEffect(() => {
+        sendVerifyEmail();
+    }, []);
+
+    return (
+        <div className='mt5-verification-email-sent'>
+            <Icon icon='IcEmailSent' size={128} />
+            <h2 className='mt5-verification-email-sent__title'>
+                <Localize i18n_default_text="We've sent you an email" />
+            </h2>
+            <p className='mt5-verification-email-sent__description'>
+                <Localize i18n_default_text='Please click on the link in the email to reset your password.' />
+            </p>
+            <a className='mt5-verification-email-sent__help-centre' href={getDerivComLink('help-centre')}>
+                <Localize i18n_default_text="Didn't receive the email?" />
+            </a>
+        </div>
+    );
+};
 
 class MT5PasswordManagerModal extends React.Component {
     multistep_ref = React.createRef();
@@ -295,7 +298,7 @@ class MT5PasswordManagerModal extends React.Component {
                 component: <MT5PasswordManagerTabContent />,
             },
             {
-                component: <MT5PasswordResetUnavailable />,
+                component: <MT5PasswordReset sendVerifyEmail={this.props.sendVerifyEmail} />,
             },
         ];
 
@@ -343,7 +346,8 @@ MT5PasswordManagerModal.propTypes = {
     toggleModal: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
+export default connect(({ modules: { mt5 }, ui }) => ({
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
+    sendVerifyEmail: mt5.sendVerifyEmail,
 }))(MT5PasswordManagerModal);

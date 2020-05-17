@@ -185,3 +185,19 @@
         }
     }
 }
+
+.mt5-verification-email-sent {
+    &__title {
+        @include typeface(--title-center-bold-black);
+        margin: 0.8rem 0 0;
+    }
+    &__description {
+        @include typeface(--paragraph-center-normal-black);
+    }
+    &__help-centre {
+        display: block;
+        @include typeface(--paragraph-center-normal-black);
+        color: var(--brand-red-coral);
+        margin: 3.2rem 0 0;
+    }
+}

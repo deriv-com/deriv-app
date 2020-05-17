@@ -371,6 +371,10 @@ export default class ClientStore extends BaseStore {
         // TODO revert this when all landing companies are accepted.
         // return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
         if ('mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies) {
+            // TODO: [deriv-eu] Update this when all EU functionalities merge into production.
+            if (this.root_store.ui.is_eu_enabled) {
+                return true;
+            }
             const { gaming_company, financial_company } = this.landing_companies;
             // eslint-disable-next-line no-nested-ternary
             return gaming_company

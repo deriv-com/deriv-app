@@ -24,6 +24,10 @@
      */
     text-transform: none !important;
 
+    &__toggle {
+        height: auto;
+        padding: 0.8rem 2.5rem;
+    }
     &__text,
     &__icon {
         @include typeface(--paragraph-center-bold-black, unset);

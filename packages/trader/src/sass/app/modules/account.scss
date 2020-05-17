@@ -835,3 +835,61 @@ $MIN_HEIGHT_FLOATING: calc(
 .proof-of-identity {
     height: 100%;
 }
+
+/** @define deactivate-account */
+.deactivate-account {
+    max-width: 67.2rem;
+
+    .confirm-all-close {
+        &__information {
+            color: var(--text-prominent);
+            font-size: var(--text-size-xs);
+            line-height: 1.43;
+            margin-bottom: 8px;
+
+            &--bold {
+                font-weight: bold;
+                margin-bottom: 8px;
+                margin-top: 5px;
+            }
+        }
+        &__steps {
+            margin-top: 16px;
+            color: var(--text-prominent);
+            font-size: var(--text-size-xs);
+            line-height: 1.43;
+
+            &__title {
+                font-weight: bold;
+            }
+            &__content {
+                color: var(--text-general);
+                &__link {
+                    color: var(--text-loss-danger);
+                    font-weight: bold;
+                    text-decoration: none;
+                }
+            }
+        }
+        &__button {
+            margin-top: 24px;
+            float: right;
+        }
+    }
+}
+.dc-modal__container_confirm-all-close {
+    .dc-modal-header--confirm-all-close {
+        border: none;
+        .dc-modal-header__title {
+            padding-left: 24px;
+        }
+    }
+    .dc-modal-body {
+        min-width: 430px;
+        .open-positions {
+            &__title {
+                font-weight: bold;
+            }
+        }
+    }
+}

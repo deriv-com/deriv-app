@@ -123,6 +123,11 @@ const initRoutesConfig = () => [
                         component: lazyLoadAccountComponent('AccountLimits'),
                         title: localize('Account limits'),
                     },
+                    {
+                        path: routes.deactivate_account,
+                        component: lazyLoadAccountComponent('DeactivateAccount'),
+                        title: localize('Deactivate Account'),
+                    },
                 ],
             },
         ],

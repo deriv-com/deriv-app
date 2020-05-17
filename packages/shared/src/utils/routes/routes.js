@@ -39,4 +39,5 @@ export const routes = {
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
     smarttrader: `${getAllowedLocalStorageOrigin()}`,
     endpoint: '/endpoint',
+    deactivate_account: '/account/deactivate-account',
 };

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { DesktopWrapper, MobileWrapper, Button, Modal, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import ErrorComponent from 'App/Components/Elements/Errors';
 import DataTable from 'App/Components/Elements/DataTable';
 import DataList from 'App/Components/Elements/DataList';
 import getConnectedAppsColumnsTemplate from './data-table-template';
@@ -13,6 +14,7 @@ class ConnectedApps extends React.Component {
         is_loading: true,
         is_modal_open: false,
         selected_app_id: null,
+        is_error: false,
     };
 
     componentDidMount() {
@@ -39,7 +41,7 @@ class ConnectedApps extends React.Component {
                 this.setState({ is_loading: false });
             })
             .catch(() => {
-                this.setState({ is_loading: true });
+                this.setState({ is_error: true });
             });
     };
 
@@ -67,38 +69,37 @@ class ConnectedApps extends React.Component {
         return (
             <section className='connected-apps'>
                 <p className='connected-apps__title'>{localize('Authorised applications')}</p>
-                <div>
-                    {this.state.is_loading ? (
-                        <Loading />
-                    ) : (
-                        <React.Fragment>
-                            <DesktopWrapper>
-                                <DataTable
-                                    className='connected-apps'
-                                    data_source={this.props.connected_apps}
-                                    columns={getConnectedAppsColumnsTemplate(this.handleToggleModal)}
-                                    custom_width={'100%'}
-                                    getRowSize={() => 56}
-                                    is_empty={false}
-                                >
-                                    {this.state.is_loading && <Loading />}
-                                </DataTable>
-                            </DesktopWrapper>
-                            <MobileWrapper>
-                                <DataList
-                                    className='connected-apps'
-                                    data_source={this.props.connected_apps}
-                                    custom_width={'100%'}
-                                    getRowSize={() => 128}
-                                    is_empty={false}
-                                    rowRenderer={this.mobileRowRenderer}
-                                >
-                                    {this.state.is_loading && <Loading />}
-                                </DataList>
-                            </MobileWrapper>
-                        </React.Fragment>
-                    )}
-                </div>
+                {this.state.is_error ? (
+                    <ErrorComponent />
+                ) : (
+                    <React.Fragment>
+                        <DesktopWrapper>
+                            <DataTable
+                                className='connected-apps'
+                                data_source={this.props.connected_apps}
+                                columns={getConnectedAppsColumnsTemplate(this.handleToggleModal)}
+                                custom_width={'100%'}
+                                getRowSize={() => 56}
+                                is_empty={false}
+                            >
+                                {this.state.is_loading && <Loading />}
+                            </DataTable>
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <DataList
+                                className='connected-apps'
+                                data_source={this.props.connected_apps}
+                                custom_width={'100%'}
+                                getRowSize={() => 128}
+                                is_empty={false}
+                                rowRenderer={this.mobileRowRenderer}
+                            >
+                                {this.state.is_loading && <Loading />}
+                            </DataList>
+                        </MobileWrapper>
+                        )
+                    </React.Fragment>
+                )}
                 <Modal
                     is_open={this.state.is_modal_open}
                     className='connected-apps'

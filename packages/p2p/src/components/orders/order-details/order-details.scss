@@ -23,6 +23,11 @@
             background-color: var(--general-main-1);
             border-radius: 4px;
             width: 100%;
+            .footer-actions {
+                position: relative;
+                height: unset;
+                padding: 1.6rem;
+            }
         }
     }
     &__header,
@@ -120,5 +125,44 @@
     }
     &__actions-button {
         margin-left: 0.8rem;
+    }
+    &__justify-start {
+        justify-content: flex-start;
+    }
+    &__justify-space {
+        justify-content: space-between;
+    }
+    &__separator {
+        width: 100%;
+        border-top: 2px solid var(--general-section-1);
+    }
+    &__popup {
+        margin-top: 1.4rem;
+        &--danger {
+            color: var(--status-danger);
+            font-weight: bold;
+        }
+        &--bold {
+            font-weight: bold;
+        }
+    }
+    &__empty-space {
+        height: 90px;
+    }
+    &__popup-no-border {
+        .orders__popup-content {
+            padding: 0 2.4rem;
+        }
+        .orders__popup-header,
+        .orders__popup-footer {
+            border-top: unset;
+            border-bottom: unset;
+        }
+        .dc-checkbox {
+            margin-top: 1rem;
+            &__box {
+                margin-left: 0;
+            }
+        }
     }
 }

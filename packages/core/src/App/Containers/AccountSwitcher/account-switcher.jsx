@@ -114,7 +114,7 @@ class AccountSwitcher extends React.Component {
     };
 
     onClickUpgrade = () => {
-        if (['svg', 'iom'].includes(this.props.can_upgrade_to)) {
+        if (this.props.is_eu_enabled) {
             this.props.openRealAccountSignup();
         } else {
             window.open(urlFor('new_account/maltainvestws', undefined, undefined, true));
@@ -616,6 +616,7 @@ AccountSwitcher.propTypes = {
     can_upgrade_to: PropTypes.string,
     has_any_real_account: PropTypes.bool,
     is_eu: PropTypes.bool,
+    is_eu_enabled: PropTypes.bool,
     is_loading_mt5: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
@@ -644,6 +645,7 @@ const account_switcher = withRouter(
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,
         is_eu: client.is_eu,
+        is_eu_enabled: ui.is_eu_enabled,
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,

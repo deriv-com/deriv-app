@@ -109,6 +109,9 @@ export default class UIStore extends BaseStore {
     // UI Focus retention
     @observable current_focus = null;
 
+    // Enabling EU users
+    @observable is_eu_enabled = true;
+
     // Mobile
     @observable should_show_toast_error = false;
     @observable mobile_toast_error = '';

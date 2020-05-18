@@ -80,7 +80,7 @@ export const addressDetailsConfig = ({ can_upgrade_to, residence }) => {
  * @return {object} rules - Transformed rules
  */
 const transformForResidence = (rules, residence) => {
-    // IM Clients does not need to fill out state since API states_list is empty.
+    // Isle of Man Clients do not need to fill out state since API states_list is empty.
     if (residence === 'im') {
         rules.address_state.rules.shift();
     }

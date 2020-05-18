@@ -75,9 +75,6 @@
                     font-family: $FONT_STACK;
                 }
             }
-            .sendbird-conversation__typing-indicator {
-                display: none;
-            }
             .sendbird-user-message--incoming,
             .sendbird-file-message__incoming,
             .sendbird-thumbnail--incoming {
@@ -127,7 +124,7 @@
                 }
             }
             .sendbird-conversation__footer {
-                padding: 16px 24px;
+                padding: 16px 24px 26px;
                 border-top: 2px solid var(--general-section-1);
 
                 .sendbird-message-input {

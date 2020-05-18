@@ -13,8 +13,8 @@
   "scripts": {
     "start": "npm run test && npm run serve",
     "serve": "echo \"Serving...\" && webpack --progress --watch --config \"./build/webpack.config.js\"",
-    "build": "f () { webpack --config \"./build/webpack.config.js\" --env.base $1;}; f",
-    "build:travis": "rimraf lib && webpack --config \"./build/webpack.config.js\"  --mode=production --optimize-minimize",
+    "build": "rimraf dist && f () { webpack --config \"./build/webpack.config.js\" --env.base $1;}; f",
+    "build:travis": "echo \"No build:travis specified\"",
     "prettify": "prettier --write \"./{script,src,build}/**/*.{js,jsx,scss}\"",
     "precommit": "lint-staged",
     "test": "npm run test:stylelint && npm run test:eslint",

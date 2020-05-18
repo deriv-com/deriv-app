@@ -1,6 +1,4 @@
 import React from 'react';
-import Loadable from 'react-loadable';
-import { Loading } from '@deriv/components';
 import { addRoutesConfig } from '@deriv/shared/utils/route';
 import routes from '@deriv/shared/utils/routes';
 import { localize } from '@deriv/translations';
@@ -16,28 +14,6 @@ import {
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
-
-const handleLoading = (props) => {
-    // 200ms default
-    if (props.pastDelay) {
-        return <Loading />;
-    }
-    return null;
-};
-
-const makeLazyLoader = (importFn) => (component_name) =>
-    Loadable.Map({
-        loader: {
-            ComponentModule: importFn,
-        },
-        render(loaded, props) {
-            const ComponentLazy = loaded.ComponentModule.default[component_name];
-            return <ComponentLazy {...props} />;
-        },
-        loading: handleLoading,
-    });
-
-const lazyLoadAccountComponent = makeLazyLoader(() => import(/* webpackChunkName: "account-sections" */ 'Sections'));
 
 // Order matters
 const initRoutesConfig = () => [

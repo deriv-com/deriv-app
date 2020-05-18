@@ -36,7 +36,7 @@ export const isMarketClosed = (active_symbols = [], symbol) => {
 
 export const pickDefaultSymbol = (active_symbols = []) => {
     if (!active_symbols.length) return '';
-    return getFavoriteOpenSymbol(active_symbols) || getFirstOpenSymbol(active_symbols);
+    return getFavoriteOpenSymbol(active_symbols) || getDefaultOpenSymbol(active_symbols);
 };
 
 const getFavoriteOpenSymbol = active_symbols => {
@@ -58,15 +58,20 @@ const getFavoriteOpenSymbol = active_symbols => {
     }
 };
 
-const getFirstOpenSymbol = active_symbols => {
-    const first_open_symbol =
-        findFirstSymbol(active_symbols, /random_index/) || findFirstSymbol(active_symbols, /major_pairs/);
-    if (first_open_symbol) return first_open_symbol.symbol;
+const getDefaultOpenSymbol = active_symbols => {
+    const default_open_symbol =
+        findSymbol(active_symbols, '1HZ100V') ||
+        findFirstSymbol(active_symbols, /random_index/) ||
+        findFirstSymbol(active_symbols, /major_pairs/);
+    if (default_open_symbol) return default_open_symbol.symbol;
     return active_symbols.find(symbol_info => symbol_info.submarket === 'major_pairs').symbol;
 };
 
-const findFirstSymbol = (filtered_symbols, pattern) =>
-    filtered_symbols.find(symbol_info => pattern.test(symbol_info.submarket) && isSymbolOpen(symbol_info));
+const findSymbol = (active_symbols, symbol) =>
+    active_symbols.find(symbol_info => symbol_info.symbol === symbol && isSymbolOpen(symbol_info));
+
+const findFirstSymbol = (active_symbols, pattern) =>
+    active_symbols.find(symbol_info => pattern.test(symbol_info.submarket) && isSymbolOpen(symbol_info));
 
 const isSymbolOpen = symbol => symbol.exchange_is_open === 1;
 

@@ -429,7 +429,7 @@ export default class ClientStore extends BaseStore {
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id = response.authorize.user_id;
-
+        this.upgradeable_landing_companies = response.authorize.upgradeable_landing_companies;
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
         this.local_currency_config.decimal_places = +response.authorize.local_currencies[
             this.local_currency_config.currency

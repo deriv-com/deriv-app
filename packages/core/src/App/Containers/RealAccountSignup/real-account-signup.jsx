@@ -29,7 +29,7 @@ const WizardHeading = ({ can_upgrade_to, currency, is_isle_of_man_residence, is_
         return <Localize i18n_default_text='Add a Real Synthetic account' />;
     }
 
-    switch (can_upgrade_to) {
+    switch (this.props.real_account_signup_target) {
         case 'malta':
         case 'iom':
             return <Localize i18n_default_text='Add a Real Gaming account' />;
@@ -250,6 +250,7 @@ export default connect(({ ui, client, common }) => ({
     has_real_account: client.has_active_real_account,
     currency: client.currency,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
+    real_account_signup_target: ui.real_account_signup_target,
     is_logged_in: client.is_logged_in,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     closeSignupAndOpenCashier: ui.closeSignupAndOpenCashier,

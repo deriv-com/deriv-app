@@ -61,7 +61,7 @@ RowComponent.propTypes = {
 };
 RowComponent.displayName = 'RowComponent';
 
-const MyAdsTable = ({ onClickCreate, is_enabled }) => {
+const MyAdsTable = ({ onClickCreate, is_enabled, onToggle }) => {
     const { currency, list_item_limit } = useContext(Dp2pContext);
     const mounted = useRef(false);
     const item_offset = useRef(0);
@@ -149,7 +149,7 @@ const MyAdsTable = ({ onClickCreate, is_enabled }) => {
                     <Button large primary onClick={onClickCreate}>
                         {localize('Create new ad')}
                     </Button>
-                    <ToggleAds is_enabled={is_enabled} />
+                    <ToggleAds is_enabled={is_enabled} onToggle={onToggle} />
                 </div>
                 <Table
                     className={classNames('p2p-my-ads__table', {

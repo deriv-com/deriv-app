@@ -354,9 +354,14 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyText {',
-    'fill: #fff;',
+    'fill: var(--text-general);',
     'font-family: inherit;',
-    'font-size: 12pt;',
+    'font-size: var(--text-size-s);',
+    'font-weight: bold;',
+    'font-stretch: normal;',
+    'font-style: normal;',
+    'line-height: 1.5;',
+    'letter-spacing: normal;',
     '}',
 
     '.blocklyTextTruncated {',
@@ -378,7 +383,7 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyDropdownText {',
-    'fill: #fff !important;',
+    'fill: var(--text-general) !important;',
     '}',
 
     '.blocklyBubbleText {',
@@ -979,7 +984,7 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyDropDownDiv .goog-menuitem {',
-    'color: #fff;',
+    'color: var(--text-general);',
     'font: normal 13px "Helvetica Neue", Helvetica, sans-serif;',
     'font-weight: bold;',
     'list-style: none;',

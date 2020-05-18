@@ -66,8 +66,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 padding: 0 1.6rem;
                 overflow-x: hidden;
                 overflow-y: auto;
-                display: flex;
-                flex-direction: column;
+                grid-template-rows: 5rem 1fr 4rem 1fr;
             }
         }
         @include desktop {
@@ -582,6 +581,11 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 100%;
             flex: 1;
             margin-right: 16px;
+
+            @include mobile {
+                flex: unset;
+                margin-right: 0;
+            }
         }
         &-file {
             width: 100%;
@@ -593,6 +597,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 max-width: 400px;
             }
             @include mobile {
+                flex: unset;
                 margin-bottom: 2.4rem;
             }
         }

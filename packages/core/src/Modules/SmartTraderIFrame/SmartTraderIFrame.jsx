@@ -1,5 +1,5 @@
 import React from 'react';
-import { getAllowedLocalStorageOrigin } from 'Utils/Events/storage';
+import { getAllowedLocalStorageOrigin } from '@deriv/shared/utils/storage';
 
 const SmartTraderIFrame = () => {
     const url = getAllowedLocalStorageOrigin();

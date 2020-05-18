@@ -1,9 +1,9 @@
 import React, { lazy } from 'react';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { addRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
-import { routes } from 'Constants';
 import Trade from 'Modules/Trading';
 
 const ContractDetails = lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));
@@ -51,14 +51,14 @@ const initRoutesConfig = () => [
             {
                 path: routes.positions,
                 component: lazyLoadReportComponent('OpenPositions'),
-                title: localize('Open Positions'),
+                title: localize('Open positions'),
                 icon_component: 'IcOpenPositions',
                 default: true,
             },
             {
                 path: routes.profit,
                 component: lazyLoadReportComponent('ProfitTable'),
-                title: localize('Profit Table'),
+                title: localize('Profit table'),
                 icon_component: 'IcProfitTable',
             },
             {
@@ -73,7 +73,7 @@ const initRoutesConfig = () => [
         path: routes.account,
         component: lazyLoadAccountComponent('Account'),
         is_authenticated: true,
-        title: localize('Account Settings'),
+        title: localize('Account settings'),
         icon_component: 'IcUserOutline',
         routes: [
             {

@@ -15,7 +15,7 @@ const showErrorMessageWithButton = (message, block_id, showErrorMessage, centerA
     );
 };
 
-export const validateJournalMessage = (
+export const isCustomJournalMessage = (
     { message, block_id, variable_name },
     showErrorMessage,
     centerAndHighlightBlock,
@@ -36,8 +36,9 @@ export const validateJournalMessage = (
     }
     // notify list block
     if (Array.isArray(message)) {
+        const message_length = message.length;
         const parsedArray = {
-            header: message.length,
+            header: localize('{{variable_name}}: ({{message_length}})', { variable_name, message_length }),
             content: parseArray(message),
         };
         pushMessage(arrayAsMessage(parsedArray));
@@ -56,7 +57,7 @@ const parseArray = message => {
     return message.map(item => {
         return {
             id: new Date().getTime() * Math.random(),
-            value: Array.isArray(item) ? parseArray(item) : item,
+            value: item && Array.isArray(item) ? parseArray(item) : item,
         };
     });
 };

@@ -5,7 +5,7 @@ import { message_types } from '@deriv/bot-skeleton';
 
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
-import { validateJournalMessage } from '../utils/journal-notifications';
+import { isCustomJournalMessage } from '../utils/journal-notifications';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -43,7 +43,7 @@ export default class JournalStore {
         const { message, className, message_type, sound, block_id, variable_name } = data;
 
         if (
-            validateJournalMessage(
+            isCustomJournalMessage(
                 { message, block_id, variable_name },
                 run_panel.showErrorMessage,
                 () => this.dbot.centerAndHighlightBlock(block_id, true),

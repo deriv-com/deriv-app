@@ -60,7 +60,6 @@ export default class ClientStore extends BaseStore {
         payment_agent_withdraw: '',
     };
     @observable account_limits = {};
-    @observable login_history = {};
 
     @observable local_currency_config = {
         currency: '',
@@ -392,23 +391,6 @@ export default class ClientStore extends BaseStore {
                         resolve(data);
                     } else {
                         this.account_limits = { ...data.get_limits, is_loading: false };
-                        resolve(data);
-                    }
-                });
-            });
-        });
-    }
-
-    @action.bound
-    getLoginHistory(limit) {
-        return new Promise(resolve => {
-            WS.authorized.loginHistory(limit).then(data => {
-                runInAction(() => {
-                    if (data.error) {
-                        this.login_history = { api_initial_load_error: data.error.message };
-                        resolve(data);
-                    } else {
-                        this.login_history = { ...data.login_history, is_loading: false };
                         resolve(data);
                     }
                 });

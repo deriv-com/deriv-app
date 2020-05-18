@@ -6,6 +6,7 @@ import { convertDateFormat } from '@deriv/shared/utils/date';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import DataTable from 'App/Components/Elements/DataTable';
+import { WS } from 'Services/ws-methods';
 import Loading from '../../../../../templates/app/components/loading.jsx';
 import LoadErrorMessage from '../../ErrorMessages/LoadErrorMessage';
 
@@ -66,47 +67,59 @@ class LoginHistory extends React.Component {
         date: localize('Date and time'),
         action: localize('Action'),
         browser: localize('Browser'),
-        id: localize('IP address'),
+        ip: localize('IP address'),
         status: localize('Status'),
     };
     // state
     state = {
         is_loading: true,
         fetch_limit: 12, // TODO: put it in constants or configs
+        error: '',
         data: [],
     };
     // methods
     getLoginHistoryColumnsTemplate = () =>
-        Object.keys(this.fields).map(key => ({ title: this.fields.key, col_index: key }));
+        Object.keys(this.fields).map(key => ({ title: this.fields[key], col_index: key }));
 
-    getFormattedData() {
+    getFormattedData(login_history) {
         const data = [];
         for (let i = 0; i < this.state.fetch_limit; i++) {
             data[i] = {};
-            const environment = this.props.login_history[i].environment;
+            const environment = login_history[i].environment;
             const environment_split = environment.split(' ');
             const date = environment_split[0];
             const time = environment_split[1].replace('GMT', '');
             const date_time = convertDateFormat(`${date} ${time}`, 'D-MMMM-YY hh:mm:ss', 'YYYY-MM-DD hh:mm:ss');
             data[i].date = `${date_time} GMT`;
-            data[i].action = this.props.login_history[i].action;
+            data[i].action = login_history[i].action;
             const user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
             const ua = parseUA(user_agent);
             data[i].browser = ua ? `${ua.name} ${ua.version}` : '';
             data[i].ip = environment_split[2].split('=')[1];
-            data[i].status = this.props.login_history[i].status === 1 ? localize('Success') : localize('Failure');
+            data[i].status = login_history[i].status === 1 ? localize('Success') : localize('Failure');
             data[i].id = i;
         }
         return data;
     }
-    // lifecycle methods
-    componentDidMount() {
-        this.props.onMount(this.state.fetch_limit);
-    }
 
-    componentDidUpdate() {
-        if (this.props.login_history && this.state.is_loading) {
-            const formated_data = this.getFormattedData();
+    static getLoginHistory(limit) {
+        return new Promise(resolve => {
+            WS.authorized.loginHistory(limit).then(data => {
+                if (data.error) resolve({ api_initial_load_error: data.error.message });
+                resolve(data);
+            });
+        });
+    }
+    // lifecycle methods
+    async componentDidMount() {
+        const api_res = await LoginHistory.getLoginHistory(this.state.fetch_limit);
+        if (api_res.api_initial_load_error) {
+            this.setState({
+                is_loading: false,
+                error: api_res.api_initial_load_error,
+            });
+        } else {
+            const formated_data = this.getFormattedData(api_res.login_history);
             this.setState({
                 is_loading: false,
                 data: formated_data,
@@ -118,8 +131,7 @@ class LoginHistory extends React.Component {
         if (this.props.is_switching) return <Loading />;
         if (this.state.is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
 
-        const { api_initial_load_error } = this.props.login_history;
-        if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
+        if (this.state.error) return <LoadErrorMessage error_message={this.state.error} />;
 
         this.columns = this.getLoginHistoryColumnsTemplate();
 
@@ -150,12 +162,8 @@ class LoginHistory extends React.Component {
 
 LoginHistory.propTypes = {
     is_switching: PropTypes.bool,
-    login_history: PropTypes.object,
-    onMount: PropTypes.func,
 };
 
 export default connect(({ client }) => ({
     is_switching: client.is_switching,
-    login_history: client.login_history,
-    onMount: client.getLoginHistory,
 }))(LoginHistory);

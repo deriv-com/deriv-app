@@ -36,6 +36,7 @@
             font-size: var(--text-size-m);
             color: var(--text-prominent);
             font-weight: bold;
+            line-height: 1.5;
 
             @include mobile {
                 font-size: 1.6rem;

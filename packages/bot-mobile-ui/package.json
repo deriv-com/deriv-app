@@ -5,22 +5,31 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "precommit": "",
     "start": "react-native start",
     "test": "jest",
     "test:eslint": "eslint ."
   },
   "dependencies": {
+    "@deriv/bot-skeleton": "1.0.0",
+    "@deriv/deriv-api": "^1.0.3",
+    "mobx": "^5.15.4",
+    "mobx-react": "^6.1.8",
+    "precommit": "lint-staged",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-native": "^0.61.5",
     "react-native-webview": "^8.2.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.2",
-    "@babel/runtime": "^7.6.2",
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/runtime": "^7.9.2",
+    "@carimus/metro-symlinked-deps": "^1.1.0",
     "@react-native-community/eslint-config": "^0.0.5",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
+    "babel-plugin-module-resolver": "^4.0.0",
     "eslint": "^6.5.1",
     "jest": "^24.9.0",
     "metro": "^0.59.0",

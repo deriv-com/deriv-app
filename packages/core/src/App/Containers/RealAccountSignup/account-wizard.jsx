@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Div100vhContainer, FormProgress } from '@deriv/components';
 import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 import AddressDetails from './address-details.jsx';
 import CurrencySelector from './currency-selector.jsx';
-import FormProgress from './form-progress.jsx';
 import PersonalDetails from './personal-details.jsx';
 import TermsOfUse from './terms-of-use.jsx';
 
@@ -281,7 +280,7 @@ class AccountWizard extends React.Component {
                             </div>
                         )}
                     </DesktopWrapper>
-                    <Div100vhContainer className='account-wizard__body' is_disabled={isDesktop()} height_offset='40px'>
+                    <Div100vhContainer className='account-wizard__body' is_disabled={isDesktop()} height_offset='110px'>
                         <BodyComponent
                             value={this.getCurrent('form_value')}
                             index={this.state_index}

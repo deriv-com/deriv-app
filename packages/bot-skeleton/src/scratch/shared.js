@@ -1,10 +1,10 @@
-import filesaver from 'file-saver';
+// import filesaver from 'file-saver';
 import { config } from '../constants/config';
 
-export const saveAs = ({ data, filename, type }) => {
-    const blob = new Blob([data], { type });
-    filesaver.saveAs(blob, filename);
-};
+// export const saveAs = ({ data, filename, type }) => {
+//     const blob = new Blob([data], { type });
+//     filesaver.saveAs(blob, filename);
+// };
 
 export const getContractTypeOptions = (contract_type, trade_type) => {
     const trade_types = config.opposites[trade_type.toUpperCase()];

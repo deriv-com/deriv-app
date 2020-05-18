@@ -1,7 +1,5 @@
-@import '../_common/base/index';
-
 $FLOATING_PADDING: 2.4rem;
-$FLOATING_HEADER_HEIGHT: 41px;
+$FLOATING_HEADER_HEIGHT: 53px;
 $MIN_HEIGHT_FLOATING: calc(
     100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - #{$FLOATING_PADDING}
 );
@@ -12,6 +10,10 @@ $MIN_HEIGHT_FLOATING: calc(
     .dc-vertical-tab {
         &__content {
             height: $MIN_HEIGHT_FLOATING;
+        }
+        &__header--active {
+            border-left: 4px solid var(--brand-red-coral);
+            padding-left: 4.4rem;
         }
     }
     &__inset_header {
@@ -64,8 +66,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 padding: 0 1.6rem;
                 overflow-x: hidden;
                 overflow-y: auto;
-                display: flex;
-                flex-direction: column;
+                grid-template-rows: 5rem 1fr 4rem 1fr;
             }
         }
         @include desktop {
@@ -231,11 +232,19 @@ $MIN_HEIGHT_FLOATING: calc(
                 .dc-checkbox__label {
                     font-size: 1.2rem;
                 }
+                .dc-select-native__placeholder {
+                    background-color: var(--general-main-1);
+                }
                 .date-of-birth-datepicker {
                     .datepicker-native__input {
                         height: 3.8rem;
                     }
                 }
+            }
+        }
+        &__financial-assessment {
+            .dc-select-native__placeholder {
+                background-color: var(--general-main-1);
             }
         }
         &__occupation {
@@ -476,7 +485,6 @@ $MIN_HEIGHT_FLOATING: calc(
         @include mobile {
             &__message-icon {
                 width: 93px;
-                height: 93px;
             }
             &__message {
                 color: var(--text-prominent);
@@ -573,6 +581,11 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 100%;
             flex: 1;
             margin-right: 16px;
+
+            @include mobile {
+                flex: unset;
+                margin-right: 0;
+            }
         }
         &-file {
             width: 100%;
@@ -584,6 +597,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 max-width: 400px;
             }
             @include mobile {
+                flex: unset;
                 margin-bottom: 2.4rem;
             }
         }
@@ -769,8 +783,9 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define onfido-container; weak */
 .onfido-container {
     margin-top: 24px;
-
     @include mobile {
+        margin-top: 0;
+
         .onfido-sdk-ui-PageTitle {
             &-titleWrapper {
                 margin: 0 1.5em 0.4em;
@@ -795,5 +810,33 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
+    .leave-confirm {
+        &__message-content {
+            text-align: center;
+        }
+        &__message-icon {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2.4rem;
+        }
+        &__message {
+            margin-bottom: 0.8rem;
+            font-weight: bold;
+        }
+    }
+    .account-management-leave-confirm {
+        display: flex;
+        justify-content: center;
+        margin-top: 2.4rem;
+
+        :first-child {
+            margin-right: 0.8rem;
+        }
+    }
 }
 /* stylelint-enable */
+
+/** @define proof-of-identity */
+.proof-of-identity {
+    height: 100%;
+}

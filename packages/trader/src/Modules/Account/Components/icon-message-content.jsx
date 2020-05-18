@@ -4,7 +4,7 @@ import { Div100vhContainer } from '@deriv/components';
 import { isDesktop } from '@deriv/shared/utils/screen';
 
 const IconMessageContent = ({ className, children, icon, icon_row, message, text }) => (
-    <Div100vhContainer className='account-management__message-wrapper' is_disabled={isDesktop()} height_offset='80px'>
+    <Div100vhContainer className='account-management__message-wrapper' is_disabled={isDesktop()} height_offset='110px'>
         <div
             className={classNames('account-management__message-content', {
                 [`${className}__message-content`]: className,

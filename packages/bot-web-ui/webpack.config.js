@@ -9,11 +9,7 @@ const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 
 const output = {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bot-web-ui.main.js',
-    chunkFilename: 'bot.[name].[contenthash].js',
-    libraryExport: 'default',
-    library: '@deriv/bot-web-ui',
-    libraryTarget: 'umd',
+    filename: 'bot-mobile-ui.main.js',
 };
 
 module.exports = function(env, argv) {
@@ -24,10 +20,6 @@ module.exports = function(env, argv) {
         output: {
             ...output,
             publicPath: base,
-        },
-        devServer: {
-            publicPath: '/dist/',
-            disableHostCheck: true,
         },
         mode: is_release ? 'production' : 'development',
         devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',

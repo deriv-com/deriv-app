@@ -1,9 +1,9 @@
 import { action, autorun, computed, observable } from 'mobx';
+import { getPlatformHeader } from '@deriv/shared/utils/platform';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import { LocalStore } from '_common/storage';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
-import { isBot } from 'Utils/PlatformSwitcher';
 import { clientNotifications, excluded_notifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
 
@@ -114,6 +114,9 @@ export default class UIStore extends BaseStore {
     @observable is_mt5_page = false;
     @observable is_nativepicker_visible = false;
 
+    @observable prompt_when = false;
+    @observable promptFn = () => {};
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -145,10 +148,15 @@ export default class UIStore extends BaseStore {
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
             // TODO: [disable-dark-bot] Delete this condition when Bot is ready
-            if (isBot()) {
+            const new_app_routing_history = this.root_store.common.app_routing_history.slice();
+            const platform = getPlatformHeader(new_app_routing_history);
+            if (platform === 'DBot') {
                 document.body.classList.remove('theme--dark');
                 document.body.classList.add('theme--light');
-            } else if (this.is_dark_mode_on) {
+                return;
+            }
+
+            if (this.is_dark_mode_on) {
                 document.body.classList.remove('theme--light');
                 document.body.classList.add('theme--dark');
             } else {
@@ -192,6 +200,12 @@ export default class UIStore extends BaseStore {
         if (this.is_mobile) {
             this.is_positions_drawer_on = false;
         }
+    }
+
+    @action.bound
+    setPromptHandler(condition, cb = () => {}) {
+        this.prompt_when = condition;
+        this.promptFn = cb;
     }
 
     @computed

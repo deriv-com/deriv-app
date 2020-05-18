@@ -47,6 +47,10 @@ const isLanguageAvailable = lang => {
 const getAllLanguages = () => ALL_LANGUAGES;
 
 const getInitialLanguage = () => {
+    if (!window?.location?.search) {
+        return DEFAULT_LANGUAGE;
+    }
+
     const url_params = new URLSearchParams(window.location.search);
     const query_lang = url_params.get('lang');
     const local_storage_language = localStorage.getItem(LANGUAGE_KEY);
@@ -73,6 +77,7 @@ const loadLanguageJson = async lang => {
         const lang_json = await response.text();
 
         i18n.addResourceBundle(lang, 'translations', JSON.parse(lang_json));
+        document.documentElement.setAttribute('lang', lang);
     }
 };
 
@@ -125,6 +130,10 @@ const localize = (string, values) => {
 };
 
 const loadIncontextTranslation = () => {
+    if (!document) {
+        return;
+    }
+
     const is_ach = getLanguage().toUpperCase() === 'ACH';
     if (is_ach) {
         const jipt = document.createElement('script');

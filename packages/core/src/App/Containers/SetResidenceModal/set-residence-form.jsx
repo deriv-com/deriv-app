@@ -36,12 +36,13 @@ const SetResidenceForm = ({
                     </DesktopWrapper>
                     <MobileWrapper>
                         <SelectNative
+                            placeholder={localize('Please select')}
                             label={localize('Choose country')}
                             value={field.value}
                             list_items={residence_list}
                             error={touched.residence && errors.residence}
                             required
-                            use_text={true}
+                            use_text
                             onChange={e => {
                                 setFieldTouched('residence', true);
                                 setFieldValue('residence', e.target.value, true);

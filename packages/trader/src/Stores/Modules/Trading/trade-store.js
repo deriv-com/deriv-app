@@ -1,8 +1,8 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS } from 'mobx';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -10,7 +10,7 @@ import ServerTime from '_common/base/server_time';
 import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { processPurchase } from './Actions/purchase';
 import * as Symbol from './Actions/symbol';
-import getValidationRules from './Constants/validation-rules';
+import getValidationRules, { getMultiplierValidationRules } from './Constants/validation-rules';
 import { pickDefaultSymbol, showUnavailableLocationError, isMarketClosed } from './Helpers/active-symbols';
 import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
@@ -87,6 +87,7 @@ export default class TradeStore extends BaseStore {
 
     // Last Digit
     @observable last_digit = 5;
+    @observable is_mobile_digit_view_selected = false;
 
     // Purchase
     @observable.ref proposal_info = {};
@@ -107,14 +108,15 @@ export default class TradeStore extends BaseStore {
     @observable cancellation_price = 0;
     @observable hovered_contract_type;
 
+    // Mobile
+    @observable is_trade_params_expanded = true;
+
     addTickByProposal = () => null;
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
 
     initial_barriers;
     is_initial_barrier_applied = false;
-
-    proposal_req_id = {};
 
     @observable should_skip_prepost_lifecycle = false;
 
@@ -151,6 +153,7 @@ export default class TradeStore extends BaseStore {
             'symbol',
             'stop_loss',
             'take_profit',
+            'is_trade_params_expanded',
         ];
         super({
             root_store,
@@ -188,9 +191,14 @@ export default class TradeStore extends BaseStore {
             }
         );
         reaction(
-            () => [this.has_cancellation, this.has_stop_loss, this.has_take_profit],
+            () => [this.has_stop_loss, this.has_take_profit],
             () => {
-                this.validation_errors = {};
+                if (!this.has_stop_loss) {
+                    this.validation_errors.stop_loss = [];
+                }
+                if (!this.has_take_profit) {
+                    this.validation_errors.take_profit = [];
+                }
             }
         );
     }
@@ -221,10 +229,10 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     refresh() {
+        this.forgetAllProposal();
         this.proposal_info = {};
         this.purchase_info = {};
         this.proposal_requests = {};
-        WS.forgetAll('proposal');
     }
 
     @action.bound
@@ -280,7 +288,8 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async prepareTradeStore() {
-        this.currency = this.root_store.client.currency;
+        // fallback to default currency if current logged-in client hasn't selected a currency yet
+        this.currency = this.root_store.client.currency || this.root_store.client.default_currency;
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
         await WS.wait('authorize');
@@ -308,18 +317,19 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    onChangeMultiple(values) {
+    async onChangeMultiple(values) {
         Object.keys(values).forEach(name => {
             if (!(name in this)) {
                 throw new Error(`Invalid Argument: ${name}`);
             }
         });
 
-        this.processNewValuesAsync({ ...values }, true);
+        await this.processNewValuesAsync({ ...values }, true); // wait for store to be updated
+        this.validateAllProperties(); // then run validation before sending proposal
     }
 
     @action.bound
-    onChange(e) {
+    async onChange(e) {
         const { name, value } = e.target;
 
         if (name === 'symbol' && value) {
@@ -341,16 +351,13 @@ export default class TradeStore extends BaseStore {
             throw new Error(`Invalid Argument: ${name}`);
         }
 
-        this.validateAllProperties();
-
-        if (name === 'has_take_profit' && value && this.take_profit === undefined) {
-            this.take_profit = 0;
-        }
-        if (name === 'has_stop_loss' && value && this.stop_loss === undefined) {
-            this.stop_loss = 0;
-        }
-
-        this.processNewValuesAsync({ [name]: value }, true, {}, true);
+        await this.processNewValuesAsync(
+            { [name]: value },
+            true,
+            name === 'contract_type' ? { contract_type: this.contract_type } : {}, // refer to [Multiplier validation rules] below
+            true
+        ); // wait for store to be updated
+        this.validateAllProperties(); // then run validation before sending proposal
     }
 
     @action.bound
@@ -361,6 +368,11 @@ export default class TradeStore extends BaseStore {
     @action.bound
     setAllowEqual(is_equal) {
         this.is_equal = is_equal;
+    }
+
+    @action.bound
+    setIsTradeParamsExpanded(value) {
+        this.is_trade_params_expanded = value;
     }
 
     @action.bound
@@ -523,7 +535,7 @@ export default class TradeStore extends BaseStore {
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
                             if (isDesktop()) this.root_store.ui.openPositionsDrawer();
                             this.proposal_info = {};
-                            WS.forgetAll('proposal');
+                            this.forgetAllProposal();
                             this.purchase_info = response;
                             this.proposal_requests = {};
                             this.debouncedProposal();
@@ -544,7 +556,7 @@ export default class TradeStore extends BaseStore {
                             this.root_store.ui.toggleServicesErrorModal(true);
                         }
                     }
-                    WS.forgetAll('proposal');
+                    this.forgetAllProposal();
                     this.purchase_info = response;
                     this.is_purchase_enabled = true;
                 })
@@ -611,7 +623,7 @@ export default class TradeStore extends BaseStore {
         // Sets the default value to Amount when Currency has changed from Fiat to Crypto and vice versa.
         // The source of default values is the website_status response.
         if (should_forget_first) {
-            WS.forgetAll('proposal');
+            this.forgetAllProposal();
             this.proposal_requests = {};
         }
         if (is_changed_by_user && /\bcurrency\b/.test(Object.keys(obj_new_values))) {
@@ -664,6 +676,18 @@ export default class TradeStore extends BaseStore {
                 }
             }
 
+            // [Multiplier validation rules]
+            if (obj_new_values?.contract_type !== 'multiplier' && obj_old_values?.contract_type === 'multiplier') {
+                // we need to remove these two validation rules on contract_type change
+                // to be able to remove any existing Stop loss / Take profit validation errors
+                delete this.validation_rules.stop_loss;
+                delete this.validation_rules.take_profit;
+            }
+            if (obj_new_values?.contract_type === 'multiplier' && obj_old_values?.contract_type !== 'multiplier') {
+                // when switching back to Multiplier contract, re-apply Stop loss / Take profit validation rules
+                Object.assign(this.validation_rules, getMultiplierValidationRules());
+            }
+
             // TODO: handle barrier updates on proposal api
             // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
 
@@ -679,7 +703,6 @@ export default class TradeStore extends BaseStore {
             if (/\bcontract_type\b/.test(Object.keys(new_state))) {
                 this.validateAllProperties();
             }
-
             this.debouncedProposal();
         }
     }
@@ -687,6 +710,11 @@ export default class TradeStore extends BaseStore {
     @computed
     get show_digits_stats() {
         return isDigitTradeType(this.contract_type);
+    }
+
+    @action.bound
+    setMobileDigitView(bool) {
+        this.is_mobile_digit_view_selected = bool;
     }
 
     @action.bound
@@ -738,7 +766,8 @@ export default class TradeStore extends BaseStore {
         if (Object.values(this.validation_errors).some(e => e.length)) {
             this.proposal_info = {};
             this.purchase_info = {};
-            WS.forgetAll('proposal');
+            this.forgetAllProposal();
+            return;
         }
 
         if (!ObjectUtils.isEmptyObject(requests)) {
@@ -746,13 +775,16 @@ export default class TradeStore extends BaseStore {
             this.purchase_info = {};
 
             Object.keys(this.proposal_requests).forEach(type => {
-                // to keep track of proposal req_id that is set by subscription manager in deriv-api,
-                // we need to initialize it to 0 every time a new request is being sent
-                this.proposal_req_id[type] = 0;
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
         }
         this.root_store.ui.resetPurchaseStates();
+    }
+
+    @action.bound
+    forgetAllProposal() {
+        const length = Object.keys(this.proposal_requests).length;
+        if (length > 0) WS.forgetAll('proposal');
     }
 
     @action.bound
@@ -765,20 +797,6 @@ export default class TradeStore extends BaseStore {
         const contract_type = response.echo_req.contract_type;
         const prev_proposal_info = ObjectUtils.getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = ObjectUtils.getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
-
-        // Sometimes the API doesn't forget old 'proposal' response and returns them with new 'proposal' response, so here
-        // we need to send 'forget' req for old proposal subscriptions and store the latest proposal req_id
-        if (this.proposal_req_id[contract_type] < response.echo_req.req_id) {
-            // if not the first proposal response and if an old proposal subscription exist, send 'forget'
-            if (
-                this.proposal_req_id[contract_type] &&
-                this.proposal_info[contract_type] &&
-                this.proposal_info[contract_type].id
-            ) {
-                WS.forget(this.proposal_info[contract_type].id);
-            }
-            this.proposal_req_id[contract_type] = response.echo_req.req_id;
-        }
 
         this.proposal_info = {
             ...this.proposal_info,
@@ -849,6 +867,8 @@ export default class TradeStore extends BaseStore {
             return;
         }
 
+        if (!this.validation_rules.duration) return;
+
         const index = this.validation_rules.duration.rules.findIndex(item => item[0] === 'number');
         const limits = this.duration_min_max[this.contract_expiry_type] || false;
 
@@ -877,7 +897,7 @@ export default class TradeStore extends BaseStore {
         }
         this.setContractTypes();
         return this.processNewValuesAsync(
-            { currency: this.root_store.client.currency },
+            { currency: this.root_store.client.currency || this.root_store.client.default_currency },
             true,
             { currency: this.currency },
             false
@@ -907,7 +927,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     clientInitListener() {
         this.should_refresh_active_symbols = true;
-        this.initAccountCurrency(this.root_store.client.currency);
+        this.initAccountCurrency(this.root_store.client.currency || this.root_store.client.default_currency);
         return Promise.resolve();
     }
 
@@ -954,6 +974,8 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async initAccountCurrency(new_currency) {
+        if (this.currency === new_currency) return;
+
         await this.processNewValuesAsync({ currency: new_currency }, true, { currency: this.currency }, false);
         this.refresh();
         WS.forgetAll('balance').then(() => {

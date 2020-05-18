@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money } from '@deriv/components';
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 
 const AccountList = ({
@@ -16,7 +16,6 @@ const AccountList = ({
     is_virtual,
     loginid,
     onClickAccount,
-    setCurrency,
     selected_loginid,
 }) => (
     <>
@@ -43,11 +42,7 @@ const AccountList = ({
                     <div className='acc-switcher__loginid-text'>{loginid}</div>
                 </span>
                 {has_balance && (
-                    <span
-                        className={classNames('acc-switcher__balance', {
-                            'acc-switcher__balance--virtual': is_virtual,
-                        })}
-                    >
+                    <span className='acc-switcher__balance'>
                         {currency && (
                             <Money
                                 currency={currency}
@@ -55,22 +50,10 @@ const AccountList = ({
                                 should_format={false}
                             />
                         )}
-                        {!currency && (
-                            <span className='no-currency'>
-                                <Localize i18n_default_text='No currency selected' />
-                            </span>
-                        )}
                     </span>
                 )}
             </span>
         </div>
-        {!currency && selected_loginid === loginid && (
-            <div className={classNames('acc-switcher__account', 'acc-switcher__account-set-currency')}>
-                <div className='acc-switcher__account-set-currency-link' onClick={setCurrency}>
-                    <span>{localize('Select currency')}</span>
-                </div>
-            </div>
-        )}
     </>
 );
 
@@ -79,9 +62,9 @@ const CurrencyDisplay = ({ currency, is_virtual }) => {
         return <Localize i18n_default_text='Demo' />;
     }
     if (!currency) {
-        return <Localize i18n_default_text='Real' />;
+        return <Localize i18n_default_text='No currency assigned' />;
     }
-    return currency.toUpperCase();
+    return CurrencyUtils.getCurrencyDisplayCode(currency);
 };
 
 const AccountDisplay = ({ account_type }) => <div>{getMT5AccountDisplay(account_type)}</div>;

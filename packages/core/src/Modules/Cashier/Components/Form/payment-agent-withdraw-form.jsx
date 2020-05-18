@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Dropdown, Input, Money } from '@deriv/components';
+import { Button, DesktopWrapper, Dropdown, Input, MobileWrapper, Money, SelectNative } from '@deriv/components';
 import { Field, Formik, Form } from 'formik';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
@@ -43,7 +43,7 @@ const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
 
 // TODO: refactor this to use the main radio component for forms too if possible
 const Radio = ({ children, field, props }) => (
-    <div>
+    <div className='payment-agent__radio-container'>
         <input
             id={props.id}
             className={props.className}
@@ -71,17 +71,32 @@ const RadioDropDown = ({ field, values, ...props }) => (
         </span>
         <Field name='payment_agents'>
             {params => (
-                <Dropdown
-                    className='cashier__drop-down payment-agent__drop-down'
-                    classNameDisplay='cashier__drop-down-display'
-                    classNameDisplaySpan='cashier__drop-down-display-span'
-                    classNameItems='cashier__drop-down-items'
-                    list={props.payment_agent_list}
-                    value={values.payment_agents}
-                    onChange={e => {
-                        params.form.setFieldValue('payment_agents', e.target.value);
-                    }}
-                />
+                <React.Fragment>
+                    <DesktopWrapper>
+                        <Dropdown
+                            className='cashier__drop-down payment-agent__drop-down'
+                            classNameDisplay='cashier__drop-down-display'
+                            classNameDisplaySpan='cashier__drop-down-display-span'
+                            classNameItems='cashier__drop-down-items'
+                            list={props.payment_agent_list}
+                            value={values.payment_agents}
+                            onChange={e => {
+                                params.form.setFieldValue('payment_agents', e.target.value);
+                            }}
+                        />
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <SelectNative
+                            placeholder={localize('Please select')}
+                            name='payment_methods'
+                            list_items={props.payment_agent_list}
+                            value={values.payment_agents}
+                            label={localize('Choose agent')}
+                            onChange={e => params.form.setFieldValue('payment_agents', e.target.value)}
+                            use_text={false}
+                        />
+                    </MobileWrapper>
+                </React.Fragment>
             )}
         </Field>
     </Radio>
@@ -154,7 +169,7 @@ class PaymentAgentWithdrawForm extends React.Component {
             return <PaymentAgentReceipt />;
         }
         return (
-            <div className='cashier__wrapper--align-left'>
+            <div className='cashier__wrapper--align-left payment-agent__withdrawal'>
                 <h2 className='cashier__header'>
                     <Localize i18n_default_text='Payment agent withdrawal' />
                 </h2>

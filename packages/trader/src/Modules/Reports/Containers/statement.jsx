@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { urlFor } from '@deriv/shared/utils/url';
 import { localize, Localize } from '@deriv/translations';
-import { urlFor } from '_common/url';
 import DataTable from 'App/Components/Elements/DataTable';
 import DataList from 'App/Components/Elements/DataList';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
@@ -71,7 +71,7 @@ class Statement extends React.Component {
                                       className='link link--orange'
                                       rel='noopener noreferrer'
                                       target='_blank'
-                                      href={urlFor('user/statementws', undefined, undefined, true)}
+                                      href={urlFor('user/statementws', { legacy: true })}
                                   />,
                               ]}
                           />
@@ -130,7 +130,7 @@ class Statement extends React.Component {
                     )}
                     filter_component={filter_component}
                 />
-                {is_loading || data.length === 0 || is_empty ? (
+                {data.length === 0 || is_empty ? (
                     <PlaceholderComponent
                         is_loading={is_loading}
                         has_selected_date={has_selected_date}

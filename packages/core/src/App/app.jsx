@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import BinarySocket from '_common/base/socket_base';
+import { autorun } from 'mobx';
+import Cookies from 'js-cookie';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
@@ -13,6 +16,7 @@ import WS from 'Services/ws-methods';
 import { MobxProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
+import CookieBanner from './Components/Elements/CookieBanner/cookie-banner.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
 import Footer from './Containers/Layout/footer.jsx';
 import Header from './Containers/Layout/header.jsx';
@@ -24,7 +28,44 @@ import initStore from './app.js';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 
+const eu_countries = [
+    'it',
+    'de',
+    'fr',
+    'lu',
+    'gr',
+    'mf',
+    'es',
+    'sk',
+    'lt',
+    'nl',
+    'at',
+    'bg',
+    'si',
+    'cy',
+    'be',
+    'ro',
+    'hr',
+    'pt',
+    'pl',
+    'lv',
+    'ee',
+    'cz',
+    'fi',
+    'hu',
+    'dk',
+    'se',
+    'ie',
+    'im',
+    'gb',
+];
+
+const isEuCountry = clients_country => eu_countries.includes(clients_country);
+
 const App = ({ root_store }) => {
+    // state
+    const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
+    // non-state vars
     const l = window.location;
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
@@ -34,6 +75,24 @@ const App = ({ root_store }) => {
         initializeTranslations();
         setUrlLanguage(getLanguage());
     }, []);
+
+    React.useEffect(() =>
+        autorun(async () => {
+            let clients_country = Cookies.get('clients_country');
+            if (!clients_country) {
+                const website_status = await BinarySocket.wait('website_status');
+                clients_country = website_status.website_status.clients_country;
+                Cookies.set('clients_country', clients_country, {
+                    expires: 7,
+                });
+            }
+            setShowCookieBanner(
+                !root_store.client.loginid &&
+                    isEuCountry(clients_country) &&
+                    !(Cookies.get('has_cookie_accepted') === '1')
+            );
+        })
+    );
 
     if (isMobile()) {
         React.useEffect(() => {
@@ -85,6 +144,11 @@ const App = ({ root_store }) => {
         WS,
         client_base: Client,
     };
+    // handle accept cookies
+    const onAccept = async () => {
+        Cookies.set('has_cookie_accepted', 1);
+        setShowCookieBanner(false);
+    };
 
     return (
         <Router basename={has_base ? `/${base}` : null}>
@@ -98,6 +162,7 @@ const App = ({ root_store }) => {
                         </AppContents>
                     </ErrorBoundary>
                     <DesktopWrapper>
+                        {show_cookie_banner && <CookieBanner onAccept={onAccept} is_open={show_cookie_banner} />}
                         <Footer />
                     </DesktopWrapper>
                     <AppModals url_action_param={url_params.get('action')} />

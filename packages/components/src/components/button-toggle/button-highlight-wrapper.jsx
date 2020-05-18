@@ -72,7 +72,7 @@ class HighlightWrapper extends React.PureComponent {
 HighlightWrapper.propTypes = {
     children: PropTypes.array,
     className: PropTypes.string,
-    rounded_button: PropTypes.bool,
+    has_rounded_button: PropTypes.bool,
     timeout: PropTypes.number,
 };
 

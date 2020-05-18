@@ -17,6 +17,9 @@ import { getClientAccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
+const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
+const eu_excluded_regex = new RegExp('^mt$');
+
 export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
@@ -297,8 +300,6 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_eu() {
-        const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
-        const eu_excluded_regex = new RegExp('^mt$');
         const { gaming_company, financial_company } = this.landing_companies;
         const financial_shortcode = financial_company?.shortcode;
         const gaming_shortcode = gaming_company?.shortcode;

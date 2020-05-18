@@ -87,6 +87,7 @@ class PersonalDetailsForm extends React.Component {
                     this.props.refreshNotifications();
                 });
                 this.setState({ is_submit_success: true });
+                setTimeout(() => this.setState({ is_submit_success: false }), 3000);
             }
         });
     };

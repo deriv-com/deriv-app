@@ -132,7 +132,7 @@ class FormAds extends Component {
                                                         <Input
                                                             {...field}
                                                             data-lpignore='true'
-                                                            type='number'
+                                                            type='text'
                                                             error={touched.offer_amount && errors.offer_amount}
                                                             label={localize('Total amount')}
                                                             className='p2p-my-ads__form-field'
@@ -167,7 +167,7 @@ class FormAds extends Component {
                                                         <Input
                                                             {...field}
                                                             data-lpignore='true'
-                                                            type='number'
+                                                            type='text'
                                                             error={touched.price_rate && errors.price_rate}
                                                             label={localize('Fixed price')}
                                                             hint={localize('Per 1 {{currency}}', {
@@ -191,7 +191,7 @@ class FormAds extends Component {
                                                         <Input
                                                             {...field}
                                                             data-lpignore='true'
-                                                            type='number'
+                                                            type='text'
                                                             error={touched.min_transaction && errors.min_transaction}
                                                             label={localize('Min order')}
                                                             className='p2p-my-ads__form-field'
@@ -211,7 +211,7 @@ class FormAds extends Component {
                                                     {({ field }) => (
                                                         <Input
                                                             {...field}
-                                                            type='number'
+                                                            type='text'
                                                             error={touched.max_transaction && errors.max_transaction}
                                                             label={localize('Max order')}
                                                             className='p2p-my-ads__form-field'
@@ -326,27 +326,31 @@ class FormAds extends Component {
             default_advert_description: [v => !v || lengthValidator(v), v => !v || textValidator(v)],
             max_transaction: [
                 v => !!v,
+                v => !isNaN(v),
                 v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
-                v => (values.offer_amount ? v <= values.offer_amount : true),
-                v => (values.min_transaction ? v >= values.min_transaction : true),
+                v => (values.offer_amount ? +v <= values.offer_amount : true),
+                v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
             min_transaction: [
                 v => !!v,
+                v => !isNaN(v),
                 v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
-                v => (values.offer_amount ? v <= values.offer_amount : true),
-                v => (values.max_transaction ? v <= values.max_transaction : true),
+                v => (values.offer_amount ? +v <= values.offer_amount : true),
+                v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
             offer_amount: [
                 v => !!v,
                 // TODO: uncomment this when we have available_price
                 // v => v > available_price,
                 // TODO: remove v > 0 check when we have available_price
+                v => !isNaN(v),
                 v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
-                v => (values.min_transaction ? v >= values.min_transaction : true),
-                v => (values.max_transaction ? v >= values.max_transaction : true),
+                v => (values.min_transaction ? +v >= values.min_transaction : true),
+                v => (values.max_transaction ? +v >= values.max_transaction : true),
             ],
             price_rate: [
                 v => !!v,
+                v => !isNaN(v),
                 v => v > 0 && countDecimalPlaces(v) <= this.context.local_currency_config.decimal_places,
             ],
         };
@@ -390,12 +394,14 @@ class FormAds extends Component {
             // TODO: uncomment this when we have available_price
             // localize('Min is {{value}}', { value: available_price }),
             localize('Enter a valid amount'),
+            localize('Enter a valid amount'),
             localize('{{field_name}} should not be below Min limit', { field_name }),
             localize('{{field_name}} should not be below Max limit', { field_name }),
         ];
 
         const max_limit_messages = field_name => [
             localize('{{field_name}} is required', { field_name }),
+            localize('Enter a valid amount'),
             localize('Enter a valid amount'),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not be below Min limit', { field_name }),
@@ -404,12 +410,14 @@ class FormAds extends Component {
         const min_limit_messages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
+            localize('Enter a valid amount'),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not exceed Max limit', { field_name }),
         ];
 
         const price_rate_messages = field_name => [
             localize('{{field_name}} is required', { field_name }),
+            localize('Enter a valid amount'),
             localize('Enter a valid amount'),
         ];
 

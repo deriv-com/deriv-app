@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
 import { Loading, Icon, Button } from '@deriv/components';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS, getModifiedP2POrderList } from 'Utils/websocket';
@@ -27,20 +27,8 @@ const OrderRowLoader = () => (
     </ContentLoader>
 );
 
-const OrderEmptyStates = () => {
-    const { changeTab } = useContext(Dp2pContext);
-
-    return (
-        <div className='orders__empty'>
-            <Icon icon='IcNoOrder' size={128} />
-            <div className='orders__empty-text'>{localize('You have no orders')}</div>
-            <Button primary text={localize('Buy/Sell')} type='button' onClick={() => changeTab(0)} />
-        </div>
-    );
-};
-
 const OrderTableContent = ({ showDetails, is_active }) => {
-    const { list_item_limit, order_offset, orders, setOrders, setOrderOffset } = useContext(Dp2pContext);
+    const { changeTab, list_item_limit, order_offset, orders, setOrders, setOrderOffset } = useContext(Dp2pContext);
     const [is_mounted, setIsMounted] = useState(false);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
     const [api_error_message, setApiErrorMessage] = useState('');
@@ -121,14 +109,25 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                 </OrderTableHeader>
             );
         }
-
-        return <OrderEmptyStates />;
     }
 
-    return <OrderEmptyStates />;
+    return (
+        <div className='p2p-cashier__empty'>
+            <Icon icon='IcNoOrder' className='p2p-cashier__empty-icon' size={128} />
+            <div className='p2p-cashier__empty-title'>
+                <Localize i18n_default_text='You have no orders' />
+            </div>
+            {is_active && (
+                <Button primary large className='p2p-cashier__empty-button' onClick={() => changeTab(0)}>
+                    {localize('Buy/Sell')}
+                </Button>
+            )}
+        </div>
+    );
 };
 
 OrderTableContent.propTypes = {
+    is_active: PropTypes.bool,
     showDetails: PropTypes.func,
 };
 

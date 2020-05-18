@@ -1,4 +1,28 @@
 @include mobile {
+    /** @define dc-collapsible; weak */
+    .dc-collapsible {
+        &:before {
+            content: '';
+            position: absolute;
+            pointer-events: none;
+            opacity: 1;
+            z-index: -1;
+            border-radius: $BORDER_RADIUS;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.25s;
+            background: var(--general-section-1);
+        }
+        &--is-expanded {
+            background: transparent;
+
+            &:before {
+                opacity: 0.75;
+            }
+        }
+    }
     /** @define barrier; weak */
     .barrier {
         .draggable {

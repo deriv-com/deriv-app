@@ -12,6 +12,12 @@ import FormError from '../form/error.jsx';
 
 const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
     const [total_amount, setTotalAmount] = React.useState(ad.min_available);
+    const display_total_amount = CurrencyUtils.formatMoney(
+        ad.transaction_currency,
+        total_amount,
+        true,
+        ad.transaction_currency_decimals
+    );
     const is_buyer = ad.type === 'buy';
     const initial_values = {
         amount: ad.min_available,
@@ -217,7 +223,7 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
                                                 {is_buyer ? localize('You send') : localize('You receive')}
                                             </span>
                                             <p className='buy-sell__popup-info--text buy-sell__popup-info--strong'>
-                                                {total_amount} {ad.transaction_currency}
+                                                {display_total_amount} {ad.transaction_currency}
                                             </p>
                                         </div>
                                     </div>

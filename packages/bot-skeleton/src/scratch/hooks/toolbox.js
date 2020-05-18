@@ -97,6 +97,8 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
         .replace(/\s+/g, ' ')
         .trim()
         .toUpperCase();
+    const search_regex = new RegExp(`^${search_term}`);
+    const search_words = search_term.split(' ');
     const all_variables = workspace.getVariablesOfType('');
     const all_procedures = Blockly.Procedures.allProcedures(workspace);
     const { flyout } = DBotStore.instance;
@@ -104,11 +106,11 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
     flyout.setVisibility(false);
 
     // avoid general term which the result will return most of the blocks
-    const general_term = ['THE', 'OF', 'YOU', 'IS', 'THIS', 'THEN'];
+    const general_term = ['THE', 'OF', 'YOU', 'IS', 'THIS', 'THEN', 'A', 'AN'];
 
     if (search_term.length === 0) {
         return;
-    } else if (search_term.length <= 1 || general_term.includes(search_term)) {
+    } else if (search_term.length <= 1 || search_words.every(term => general_term.includes(term))) {
         flyout.setIsSearchFlyout(true);
         flyout.setContents(flyout_content, search);
         return;
@@ -145,17 +147,14 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
             const block_meta = block.meta instanceof Function && block.meta();
             const block_definitions = block.definition instanceof Function && block.definition();
             const block_name = block_meta.display_name;
-
             const block_type_terms = block_type.toUpperCase().split('_');
             const block_name_terms = block_name.toUpperCase().split(' ');
             const definition_key_to_search = /^((message)|(tooltip)|(category))/;
-            const search_regex = new RegExp(`^${search_term}`);
-            const search_words = search_term.split(' ');
 
             switch (priority) {
                 // when the search text match exactly the block's name
                 case 'exact_block_name': {
-                    if (search_regex.test(block_name.toUpperCase()) || search_regex.test(block_type.toUpperCase())) {
+                    if (search_term === block_name.toUpperCase() || search_term === block_type.toUpperCase()) {
                         pushIfNotExists(flyout_content, block_content);
                     }
                     break;
@@ -170,6 +169,7 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
                     }
                     break;
                 }
+                // when some of search word match block's name or block's type
                 case 'block_term': {
                     if (
                         block_type_terms.some(term => search_regex.test(term)) ||

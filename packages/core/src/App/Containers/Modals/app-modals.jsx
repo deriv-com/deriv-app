@@ -14,7 +14,7 @@ const SetResidenceModal = React.lazy(() =>
     import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal')
 );
 const AccountTypesModal = React.lazy(() =>
-    import(/* webpackChunkName: "set-residence-modal"  */ '../AccountTypesModal')
+    import(/* webpackChunkName: "account-types-modal"  */ '../AccountTypesModal')
 );
 
 const AppModals = ({

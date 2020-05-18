@@ -17,12 +17,15 @@ import 'Sass/real-account-signup.scss';
 
 const LoadingModal = () => <Loading is_fullscreen={false} />;
 
-const WizardHeading = ({ can_upgrade_to, currency, is_im_residence, is_be_residence }) => {
+const WizardHeading = ({ can_upgrade_to, currency, is_isle_of_man_residence, is_belgium_residence }) => {
     if (!currency) {
         return <Localize i18n_default_text='Set a currency for your Real Account' />;
     }
 
-    if ((can_upgrade_to === 'iom' && is_im_residence) || (can_upgrade_to === 'malta' && is_be_residence)) {
+    if (
+        (can_upgrade_to === 'iom' && is_isle_of_man_residence) ||
+        (can_upgrade_to === 'malta' && is_belgium_residence)
+    ) {
         return <Localize i18n_default_text='Add a Real Synthetic account' />;
     }
 
@@ -252,8 +255,8 @@ export default connect(({ ui, client, common }) => ({
     closeSignupAndOpenCashier: ui.closeSignupAndOpenCashier,
     setParams: ui.setRealAccountSignupParams,
     residence: client.residence,
-    is_im_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
-    is_be_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
+    is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
+    is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
     state_value: ui.real_account_signup,
     routing_history: common.app_routing_history,
 }))(withRouter(RealAccountSignup));

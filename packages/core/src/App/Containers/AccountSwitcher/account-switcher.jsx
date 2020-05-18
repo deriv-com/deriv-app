@@ -15,6 +15,7 @@ import {
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
 import { urlFor } from '_common/url';
+import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
 import routes from 'Constants/routes';
 import { getMT5AccountDisplay } from 'Stores/Helpers/client';
@@ -99,9 +100,9 @@ class AccountSwitcher extends React.Component {
         this.props.toggleSetCurrencyModal();
     };
 
-    onClickUpgrade = () => {
+    onClickUpgrade = account => {
         if (['svg', 'iom'].includes(this.props.can_upgrade_to)) {
-            this.props.openRealAccountSignup();
+            this.props.openRealAccountSignup(account);
         } else {
             window.open(urlFor('new_account/maltainvestws', undefined, undefined, true));
         }
@@ -218,6 +219,11 @@ class AccountSwitcher extends React.Component {
     get remaining_real_mt5() {
         const existing_real_mt5_groups = Object.keys(this.real_mt5).map(account => this.real_mt5[account].group);
         return this.getRemainingAccounts(existing_real_mt5_groups);
+    }
+
+    // SVG clients can't upgrade.
+    get remaining_real_accounts() {
+        return this.can_open_multi ? [] : this.props.upgradeable_landing_companies;
     }
 
     get has_set_currency() {
@@ -383,12 +389,12 @@ class AccountSwitcher extends React.Component {
                                     />
                                 ))}
                         </div>
-                        {this.can_upgrade && (
-                            <div className='acc-switcher__new-account'>
+                        {this.remaining_real_accounts.map((account, index) => (
+                            <div key={index} className='acc-switcher__new-account'>
                                 <Icon icon='IcDeriv' size={24} />
-                                <span className='acc-switcher__new-account-text'>{localize('Deriv account')}</span>
+                                <span className='acc-switcher__new-account-text'>{getAccountTitle(account)}</span>
                                 <Button
-                                    onClick={this.onClickUpgrade}
+                                    onClick={() => this.onClickUpgrade(account)}
                                     className='acc-switcher__new-account-btn'
                                     secondary
                                     small
@@ -396,7 +402,7 @@ class AccountSwitcher extends React.Component {
                                     {localize('Add')}
                                 </Button>
                             </div>
-                        )}
+                        ))}
                         {!this.can_upgrade &&
                             (this.can_open_multi || this.props.can_change_fiat_currency || !this.has_set_currency) && (
                                 <Button
@@ -613,6 +619,7 @@ const account_switcher = withRouter(
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,
         logoutClient: client.logout,
+        upgradeable_landing_companies: client.upgradeable_landing_companies,
         updateMt5LoginList: client.updateMt5LoginList,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup: ui.openRealAccountSignup,

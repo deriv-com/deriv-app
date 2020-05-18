@@ -150,12 +150,13 @@ class MT5PasswordManagerModal extends React.Component {
                                 {({ field }) => (
                                     <PasswordMeter
                                         input={field.value}
-                                        error={touched.new_password && errors.new_password}
+                                        has_error={!!(touched.new_password && errors.new_password)}
                                     >
                                         <PasswordInput
                                             {...field}
                                             autoComplete='password'
                                             label={localize('New password')}
+                                            error={touched.new_password && errors.new_password}
                                             onChange={e => {
                                                 setFieldTouched('new_password', true, true);
                                                 field.onChange(e);
@@ -220,12 +221,13 @@ class MT5PasswordManagerModal extends React.Component {
                                     {({ field }) => (
                                         <PasswordMeter
                                             input={field.value}
-                                            error={touched.new_password && errors.new_password}
+                                            has_error={!!(touched.new_password && errors.new_password)}
                                         >
                                             <PasswordInput
                                                 {...field}
                                                 autoComplete='password'
                                                 label={localize('New investor password')}
+                                                error={touched.new_password && errors.new_password}
                                                 onChange={e => {
                                                     setFieldTouched('new_password', true, true);
                                                     field.onChange(e);

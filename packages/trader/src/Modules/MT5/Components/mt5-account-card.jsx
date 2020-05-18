@@ -11,6 +11,7 @@ const MT5AccountCard = ({
     existing_data,
     has_mt5_account,
     icon,
+    is_button_primary,
     is_disabled,
     specs,
     title,
@@ -119,7 +120,8 @@ const MT5AccountCard = ({
                         onClick={onSelectAccount}
                         type='button'
                         is_disabled={is_disabled}
-                        secondary
+                        primary={is_button_primary}
+                        secondary={!is_button_primary}
                     >
                         {cta_label}
                     </Button>

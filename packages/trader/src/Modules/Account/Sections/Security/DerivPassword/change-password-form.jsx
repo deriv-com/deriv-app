@@ -109,11 +109,12 @@ class ChangePasswordForm extends React.Component {
                                     <fieldset className='account-form__fieldset'>
                                         <PasswordMeter
                                             input={this.state.new_pw_input}
-                                            error={touched.new_password && errors.new_password}
+                                            has_error={!!(touched.new_password && errors.new_password)}
                                         >
                                             <PasswordInput
                                                 autoComplete='new-password'
                                                 label={localize('New password')}
+                                                error={touched.new_password && errors.new_password}
                                                 name='new_password'
                                                 value={values.new_password}
                                                 onBlur={handleBlur}

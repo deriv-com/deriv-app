@@ -9,13 +9,12 @@ import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/mt5.scss';
 import { connect } from 'Stores/connect';
 import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
-import FinancialStpDescription from './financial-stp-description.jsx';
 
 const getSubmitText = (account_title, category) => {
     if (category === 'real') {
         return localize(
             'You have created a DMT5 {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.',
-            { account_title: account_title[0].toLowerCase() + account_title.substr(1) }
+            { account_title }
         );
     }
 
@@ -25,11 +24,11 @@ const getSubmitText = (account_title, category) => {
 const getIconFromType = type => {
     switch (type) {
         case 'synthetic':
-            return <Icon icon='IcMt5Synthetic' size={64} />;
+            return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
         case 'financial':
-            return <Icon icon='IcMt5Financial' size={64} />;
+            return <Icon icon='IcMt5FinancialPlatform' size={128} />;
         default:
-            return <Icon icon='IcMt5FinancialStp' size={64} />;
+            return <Icon icon='IcMt5FinancialStpPlatform' size={128} />;
     }
 };
 
@@ -92,7 +91,6 @@ const MT5PasswordModal = ({
                 className='mt5-password-modal'
                 is_open={should_show_password}
                 toggleModal={closeModal}
-                width={is_real_financial_stp ? '360px' : 'auto'}
                 has_close_icon
             >
                 <Formik
@@ -125,10 +123,17 @@ const MT5PasswordModal = ({
                             </h2>
                             <div className='dc-modal__container_mt5-password-modal__body'>
                                 <div className='input-element'>
-                                    <PasswordMeter input={values.password} error={touched.password && errors.password}>
+                                    <PasswordMeter
+                                        input={values.password}
+                                        has_error={!!(touched.password && errors.password)}
+                                    >
                                         <PasswordInput
                                             autoComplete='password'
-                                            label={localize('MT5 Password')}
+                                            label={localize('Create a password')}
+                                            error={touched.password && errors.password}
+                                            hint={localize(
+                                                'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                            )}
                                             name='password'
                                             value={values.password}
                                             onBlur={handleBlur}
@@ -139,17 +144,15 @@ const MT5PasswordModal = ({
                                         />
                                     </PasswordMeter>
                                 </div>
-                                <div className='dc-modal__container_mt5-password-modal__description'>
-                                    <p>
-                                        <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters with numbers' />
-                                    </p>
-                                    <FinancialStpDescription is_real_financial_stp={is_real_financial_stp} />
-                                </div>
+                                {is_real_financial_stp && (
+                                    <div className='dc-modal__container_mt5-password-modal__description'>
+                                        <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Binary (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA). All other accounts, including your Deriv account, are not subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA).' />
+                                    </div>
+                                )}
                             </div>
                             <FormSubmitButton
-                                is_center={is_real_financial_stp}
                                 is_disabled={isSubmitting || !values.password || Object.keys(errors).length > 0}
-                                has_cancel={!is_real_financial_stp}
+                                has_cancel
                                 cancel_label={localize('Cancel')}
                                 onCancel={closeModal}
                                 is_loading={isSubmitting}
@@ -165,6 +168,7 @@ const MT5PasswordModal = ({
                 toggleModal={closeModal}
                 onCancel={closeModal}
                 onSubmit={closeOpenSuccess}
+                classNameMessage='mt5-password-modal__message'
                 message={getSubmitText(account_title, account_type.category)}
                 // message={error_message}
                 icon={<IconType />}

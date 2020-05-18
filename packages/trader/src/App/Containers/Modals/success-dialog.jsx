@@ -5,6 +5,7 @@ import { Button, Icon, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
 const SuccessDialog = ({
+    classNameMessage = undefined,
     has_cancel,
     has_submit,
     icon,
@@ -23,7 +24,7 @@ const SuccessDialog = ({
     const MainIcon = () => icon || null;
 
     const Checkmark = ({ className }) => (
-        <Icon className={className} icon='IcCheckmarkCircle' color='green' size={24} />
+        <Icon className={className} icon='IcCheckmarkCircle' custom_color='var(--status-success)' size={24} />
     );
 
     return (
@@ -52,13 +53,19 @@ const SuccessDialog = ({
                 )}
                 {heading && heading}
                 {React.isValidElement(message) && message}
-                {!React.isValidElement(message) && <p>{message}</p>}
+                {!React.isValidElement(message) && <p className={classNameMessage}>{message}</p>}
             </Modal.Body>
             <Modal.Footer>
                 {has_cancel && (
-                    <Button onClick={onCancel} has_effect text={text_cancel || localize('Maybe later')} secondary />
+                    <Button
+                        onClick={onCancel}
+                        has_effect
+                        text={text_cancel || localize('Maybe later')}
+                        secondary
+                        large
+                    />
                 )}
-                {has_submit && <Button has_effect onClick={onSubmit} text={text_submit} primary />}
+                {has_submit && <Button has_effect onClick={onSubmit} text={text_submit} primary large />}
             </Modal.Footer>
         </Modal>
     );
@@ -71,6 +78,7 @@ SuccessDialog.defaultProps = {
 };
 
 SuccessDialog.propTypes = {
+    classNameMessage: PropTypes.string,
     has_cancel: PropTypes.bool,
     has_submit: PropTypes.bool,
     heading: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),

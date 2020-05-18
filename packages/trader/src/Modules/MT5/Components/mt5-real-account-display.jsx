@@ -126,6 +126,7 @@ const MT5RealAccountDisplay = ({
                 commission_message={<Localize i18n_default_text='No commission' />}
                 onSelectAccount={onSelectRealFinancialStp}
                 button_label={button_label}
+                is_button_primary={is_pending_authentication}
                 onPasswordManager={openPasswordManager}
                 onClickFund={onClickFundRealFinancialStp}
                 descriptor={localize(

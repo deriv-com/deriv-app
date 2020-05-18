@@ -28,6 +28,12 @@
         & .dc-password-meter__container {
             max-height: 4rem;
             margin-bottom: 3.3rem;
+            @include desktop {
+                width: calc(100% - 3.2rem);
+            }
+            @include mobile {
+                width: 100%;
+            }
         }
         & .dc-field-error {
             top: 4.4rem;

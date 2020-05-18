@@ -109,7 +109,7 @@
     "@binary-com/binary-document-uploader": "^2.4.4",
     "@deriv/bot-web-ui": "^1.0.0",
     "@deriv/components": "^1.0.0",
-    "@deriv/deriv-api": "^1.0.1",
+    "@deriv/deriv-api": "^1.0.5",
     "@deriv/p2p": "^0.6.0",
     "@deriv/shared": "^1.0.0",
     "@deriv/trader": "^3.8.0",
@@ -132,6 +132,7 @@
     "object.fromentries": "^2.0.0",
     "promise-polyfill": "^8.1.3",
     "prop-types": "^15.7.2",
+    "query-string": "^6.12.1",
     "react": "~16.8.6",
     "react-content-loader": "^4.2.1",
     "react-dom": "~16.8.6",
@@ -143,7 +144,6 @@
     "react-transition-group": "^2.5.0",
     "react-window": "^1.8.4",
     "smartcharts-beta": "^0.8.0-betam.10",
-    "url-polyfill": "^1.1.5",
     "web-push-notifications": "^3.2.15"
   }
 }

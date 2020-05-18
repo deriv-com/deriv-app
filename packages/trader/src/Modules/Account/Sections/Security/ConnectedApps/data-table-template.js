@@ -4,21 +4,21 @@ import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const getConnectedAppsColumnsTemplate = handleToggleModal => [
-    { title: 'Name', col_index: 'name' },
+    { title: localize('Name'), col_index: 'name' },
     {
-        title: 'Permission',
+        title: localize('Permission'),
         col_index: 'scopes',
         renderCellContent: ({ cell_value }) => {
             return prepareConnectedAppsScopes(cell_value);
         },
     },
     {
-        title: 'Last login',
+        title: localize('Last login'),
         col_index: 'last_used',
         renderCellContent: ({ cell_value }) => prepareConnectedAppsLastLogin(cell_value),
     },
     {
-        title: 'Action',
+        title: localize('Action'),
         col_index: 'app_id',
         renderCellContent: ({ cell_value }) => prepareConnectedAppsAction(cell_value, handleToggleModal),
     },

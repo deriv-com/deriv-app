@@ -4,6 +4,7 @@
 
     &__row {
         display: grid;
+        border-bottom: 1px solid var(--general-section-1);
         height: 100%;
 
         &--hover:hover {
@@ -29,8 +30,6 @@
         overflow-wrap: break-word;
     }
     &__cell {
-        border-bottom: 1px solid var(--general-section-1);
-
         &--right {
             display: flex;
             justify-content: flex-end;

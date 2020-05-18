@@ -81,7 +81,7 @@ Blockly.FieldDropdown.prototype.init = function() {
     this.arrow_.setAttributeNS(
         'http://www.w3.org/1999/xlink',
         'xlink:href',
-        `${Blockly.mainWorkspace.options.pathToMedia}dropdown-arrow.svg`
+        `${Blockly.mainWorkspace.options.pathToMedia}dropdown-arrow-dark.svg`
     );
     this.className_ += ' blocklyDropdownText';
 

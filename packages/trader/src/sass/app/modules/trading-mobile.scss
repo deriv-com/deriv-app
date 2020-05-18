@@ -51,9 +51,11 @@
                 &__input {
                     outline: 0;
                     border: none;
+                    font-weight: bold;
                 }
                 &__button {
                     transform: scale(1.4);
+                    stroke: var(--text-general);
 
                     &:hover,
                     &:active {

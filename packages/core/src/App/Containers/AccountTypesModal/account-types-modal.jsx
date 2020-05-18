@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { website_name } from 'App/Constants/app-config';
+import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { urlFor } from '_common/url';
-import routes from 'Constants/routes';
 import AccountCard from './account-card.jsx';
 
 import 'Sass/app/modules/account-types.scss';

@@ -28,6 +28,22 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url }) => {
             //         }
             //     });
             // }
+
+            const getCounterString = input => `${input.value.length}/${input.getAttribute('maxlength')}`;
+
+            const new_character_count_class = 'sendbird-chat-footer--textarea__character-count';
+            if (!document.querySelector(`.${new_character_count_class}`)) {
+                const el_character_count = document.createElement('span');
+                el_character_count.className = new_character_count_class;
+
+                const el_sendbird_textarea = document.querySelector('.sendbird-message-input--textarea');
+                el_character_count.innerText = getCounterString(el_sendbird_textarea);
+                el_sendbird_textarea.addEventListener('input', e => {
+                    el_character_count.innerText = getCounterString(e.target);
+                });
+
+                document.querySelector('.sendbird-conversation__footer').appendChild(el_character_count);
+            }
         }, 100);
 
         return () => {

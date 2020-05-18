@@ -108,7 +108,10 @@ const Barrier = ({
                             classNameInput={classNames(
                                 'barrier__fields-input',
                                 'barrier__fields-barriers-input',
-                                `barrier__fields-barriers-${input_class}-input`
+                                `barrier__fields-barriers-${input_class}-input`,
+                                {
+                                    'barrier__fields-input--is-offset': !is_absolute_barrier,
+                                }
                             )}
                             onChange={e => (is_absolute_barrier ? onChange(e) : handleOffsetChange(e))}
                             is_float
@@ -133,7 +136,10 @@ const Barrier = ({
                                 classNameInput={classNames(
                                     'barrier__fields-input',
                                     'barrier__fields-barriers-input',
-                                    `barrier__fields-barriers-${input_class}-input`
+                                    `barrier__fields-barriers-${input_class}-input`,
+                                    {
+                                        'barrier__fields-input--is-offset': !is_absolute_barrier,
+                                    }
                                 )}
                                 onChange={e => (is_absolute_barrier ? onChange(e) : handleOffsetChange(e))}
                                 is_float

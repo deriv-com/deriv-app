@@ -61,6 +61,16 @@
             &-input {
                 width: 100%;
                 padding: 0;
+                font-weight: bold;
+
+                &--is-offset {
+                    pointer-events: none;
+                }
+                &:focus,
+                &:active,
+                &:hover {
+                    border: none;
+                }
             }
             &-single {
                 margin: 0;
@@ -75,7 +85,6 @@
                 &__input {
                     outline: 0;
                     border: none;
-                    font-weight: bold;
                 }
                 &__button {
                     transform: scale(1.4);

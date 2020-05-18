@@ -1,11 +1,11 @@
 import { action, autorun, computed, observable } from 'mobx';
+import { getPlatformHeader } from '@deriv/shared/utils/platform';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import { LocalStore } from '_common/storage';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import { clientNotifications, excluded_notifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import { getPlatformHeader } from '../Utils/PlatformSwitcher/platform-switcher';
 
 const store_name = 'ui_store';
 
@@ -80,6 +80,7 @@ export default class UIStore extends BaseStore {
 
     // real account signup
     @observable is_real_acc_signup_on = false;
+    @observable real_account_signup_target = 'svg';
     @observable has_real_account_signup_ended = false;
 
     // account types modal
@@ -119,6 +120,9 @@ export default class UIStore extends BaseStore {
 
     @observable is_mt5_page = false;
     @observable is_nativepicker_visible = false;
+
+    @observable prompt_when = false;
+    @observable promptFn = () => {};
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -203,6 +207,12 @@ export default class UIStore extends BaseStore {
         if (this.is_mobile) {
             this.is_positions_drawer_on = false;
         }
+    }
+
+    @action.bound
+    setPromptHandler(condition, cb = () => {}) {
+        this.prompt_when = condition;
+        this.promptFn = cb;
     }
 
     @computed
@@ -348,8 +358,9 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    openRealAccountSignup() {
+    openRealAccountSignup(target = 'svg') {
         this.is_real_acc_signup_on = true;
+        this.real_account_signup_target = target;
         this.is_accounts_switcher_on = false;
     }
 

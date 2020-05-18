@@ -9,6 +9,16 @@ class Tab extends Component {
         onClick();
     };
 
+    componentDidUpdate(prev_props) {
+        if (
+            prev_props.count !== this.props.count ||
+            prev_props.label !== this.props.label ||
+            prev_props.header_content !== this.props.header_content
+        ) {
+            this.props.setActiveLineStyle();
+        }
+    }
+
     render() {
         const {
             active_tab_ref,

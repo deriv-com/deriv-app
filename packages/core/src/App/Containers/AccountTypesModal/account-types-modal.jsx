@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { website_name } from 'App/Constants/app-config';
+import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { urlFor } from '_common/url';
-import routes from 'Constants/routes';
 import AccountCard from './account-card.jsx';
 
 import 'Sass/app/modules/account-types.scss';
@@ -490,6 +490,14 @@ class AccountTypesModal extends Component {
     };
 
     render() {
+        const calculatedBox = boxGenerator({
+            standpoint: this.props.standpoint,
+            has_demo: this.props.has_demo,
+            state: this.state,
+            setAccountTypeTabIndex: this.setAccountTypeTabIndex,
+            redirectToMt5Real: this.redirectToMt5Real,
+            redirectToMt5Demo: this.redirectToMt5Demo,
+        });
         return (
             <Modal
                 title={localize('Account types')}
@@ -509,14 +517,7 @@ class AccountTypesModal extends Component {
                                 ]}
                             />
                         </p>
-                        {boxGenerator({
-                            standpoint: this.props.standpoint,
-                            has_demo: this.props.has_demo,
-                            state: this.state,
-                            setAccountTypeTabIndex: this.setAccountTypeTabIndex,
-                            redirectToMt5Real: this.redirectToMt5Real,
-                            redirectToMt5Demo: this.redirectToMt5Demo,
-                        })}
+                        {calculatedBox}
                     </div>
                 </ThemedScrollbars>
             </Modal>

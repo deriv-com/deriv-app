@@ -6,8 +6,8 @@ import { NavLink } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { VariableSizeList as List } from 'react-window';
 import { Icon, ThemedScrollbars } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { localize } from '@deriv/translations';
-import routes from 'Constants/routes';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { connect } from 'Stores/connect';
@@ -229,7 +229,7 @@ class PositionsDrawer extends React.Component {
                     })}
                 >
                     <div className='positions-drawer__header'>
-                        <span className='positions-drawer__title'>{localize('Recent Positions')}</span>
+                        <span className='positions-drawer__title'>{localize('Recent positions')}</span>
                         <div
                             id='dt_positions_drawer_close_icon'
                             className='positions-drawer__icon-close'

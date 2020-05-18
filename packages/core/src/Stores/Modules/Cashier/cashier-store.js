@@ -1,9 +1,9 @@
 import { action, computed, observable, toJS } from 'mobx';
+import routes from '@deriv/shared/utils/routes';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import BinarySocket from '_common/base/socket_base';
 import { localize } from '@deriv/translations';
-import AppRoutes from 'Constants/routes';
 import { WS } from 'Services';
 import BaseStore from '../../base-store';
 import { getMT5AccountDisplay } from '../../Helpers/client';
@@ -199,8 +199,8 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setIsP2pVisible(is_p2p_visible) {
         this.is_p2p_visible = is_p2p_visible;
-        if (!is_p2p_visible && window.location.pathname.startsWith(AppRoutes.cashier_p2p)) {
-            this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+        if (!is_p2p_visible && window.location.pathname.startsWith(routes.cashier_p2p)) {
+            this.root_store.common.routeTo(routes.cashier_deposit);
         }
     }
 
@@ -530,8 +530,8 @@ export default class CashierStore extends BaseStore {
         } else {
             this.config.payment_agent.filtered_list = this.config.payment_agent.list;
         }
-        if (!this.is_payment_agent_visible && window.location.pathname.startsWith(AppRoutes.cashier_pa)) {
-            this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+        if (!this.is_payment_agent_visible && window.location.pathname.startsWith(routes.cashier_pa)) {
+            this.root_store.common.routeTo(routes.cashier_deposit);
         }
     }
 
@@ -559,9 +559,9 @@ export default class CashierStore extends BaseStore {
             });
             if (
                 !payment_agent_list.paymentagent_list.list.length &&
-                window.location.pathname.startsWith(AppRoutes.cashier_pa)
+                window.location.pathname.startsWith(routes.cashier_pa)
             ) {
-                this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+                this.root_store.common.routeTo(routes.cashier_deposit);
             }
         }
 
@@ -944,8 +944,8 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsPaymentAgent(is_payment_agent) {
-        if (!is_payment_agent && window.location.pathname.startsWith(AppRoutes.cashier_pa_transfer)) {
-            this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+        if (!is_payment_agent && window.location.pathname.startsWith(routes.cashier_pa_transfer)) {
+            this.root_store.common.routeTo(routes.cashier_deposit);
         }
         this.config.payment_agent_transfer.is_payment_agent = !!is_payment_agent;
     }

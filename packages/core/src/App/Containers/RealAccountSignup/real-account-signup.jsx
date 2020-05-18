@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import routes from '@deriv/shared/utils/routes';
 import { isNavigationFromPlatform } from '@deriv/shared/utils/platform';
-import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import ModalLoginPrompt from './modal-login-prompt.jsx';

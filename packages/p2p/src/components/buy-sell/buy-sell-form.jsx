@@ -12,12 +12,6 @@ import FormError from '../form/error.jsx';
 
 const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
     const [total_amount, setTotalAmount] = React.useState(ad.min_available);
-    const display_total_amount = CurrencyUtils.formatMoney(
-        ad.transaction_currency,
-        total_amount,
-        true,
-        ad.transaction_currency_decimals
-    );
     const is_buyer = ad.type === 'buy';
     const initial_values = {
         amount: ad.min_available,
@@ -211,7 +205,14 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
                                                             return;
                                                         }
                                                         const amount = isNaN(e.target.value) ? 0 : e.target.value;
-                                                        setTotalAmount(amount);
+                                                        setTotalAmount(
+                                                            CurrencyUtils.formatMoney(
+                                                                ad.transaction_currency,
+                                                                amount * ad.price_rate,
+                                                                true,
+                                                                ad.transaction_currency_decimals
+                                                            )
+                                                        );
                                                         handleChange(e);
                                                     }}
                                                     required
@@ -223,7 +224,7 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
                                                 {is_buyer ? localize('You send') : localize('You receive')}
                                             </span>
                                             <p className='buy-sell__popup-info--text buy-sell__popup-info--strong'>
-                                                {display_total_amount} {ad.transaction_currency}
+                                                {total_amount} {ad.transaction_currency}
                                             </p>
                                         </div>
                                     </div>
@@ -270,12 +271,14 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
                             </ThemedScrollbars>
                             <div className='buy-sell__popup-footer'>
                                 {status && status.error_message && <FormError message={status.error_message} />}
-                                <Button secondary type='button' onClick={handleClose}>
-                                    {localize('Cancel')}
-                                </Button>
-                                <Button is_disabled={isSubmitting || !is_valid} primary>
-                                    {localize('Confirm')}
-                                </Button>
+                                <Button.Group>
+                                    <Button secondary type='button' onClick={handleClose}>
+                                        {localize('Cancel')}
+                                    </Button>
+                                    <Button is_disabled={isSubmitting || !is_valid} primary>
+                                        {localize('Confirm')}
+                                    </Button>
+                                </Button.Group>
                             </div>
                         </Form>
                     );

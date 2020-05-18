@@ -490,6 +490,14 @@ class AccountTypesModal extends Component {
     };
 
     render() {
+        const calculatedBox = boxGenerator({
+            standpoint: this.props.standpoint,
+            has_demo: this.props.has_demo,
+            state: this.state,
+            setAccountTypeTabIndex: this.setAccountTypeTabIndex,
+            redirectToMt5Real: this.redirectToMt5Real,
+            redirectToMt5Demo: this.redirectToMt5Demo,
+        });
         return (
             <Modal
                 title={localize('Account types')}
@@ -509,14 +517,7 @@ class AccountTypesModal extends Component {
                                 ]}
                             />
                         </p>
-                        {boxGenerator({
-                            standpoint: this.props.standpoint,
-                            has_demo: this.props.has_demo,
-                            state: this.state,
-                            setAccountTypeTabIndex: this.setAccountTypeTabIndex,
-                            redirectToMt5Real: this.redirectToMt5Real,
-                            redirectToMt5Demo: this.redirectToMt5Demo,
-                        })}
+                        {calculatedBox}
                     </div>
                 </ThemedScrollbars>
             </Modal>

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import BinarySocket from '_common/base/socket_base';
 import { autorun } from 'mobx';
 import Cookies from 'js-cookie';
 import ReactDOM from 'react-dom';
@@ -12,6 +11,8 @@ import { setUrlLanguage } from '@deriv/shared/utils/url';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import Client from '_common/base/client_base';
+import BinarySocket from '_common/base/socket_base';
+import { isEuCountry } from '_common/utility';
 import WS from 'Services/ws-methods';
 import { MobxProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
@@ -27,40 +28,6 @@ import Routes from './Containers/Routes/routes.jsx';
 import initStore from './app.js';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
-
-const eu_countries = [
-    'it',
-    'de',
-    'fr',
-    'lu',
-    'gr',
-    'mf',
-    'es',
-    'sk',
-    'lt',
-    'nl',
-    'at',
-    'bg',
-    'si',
-    'cy',
-    'be',
-    'ro',
-    'hr',
-    'pt',
-    'pl',
-    'lv',
-    'ee',
-    'cz',
-    'fi',
-    'hu',
-    'dk',
-    'se',
-    'ie',
-    'im',
-    'gb',
-];
-
-const isEuCountry = clients_country => eu_countries.includes(clients_country);
 
 const App = ({ root_store }) => {
     // state
@@ -83,13 +50,13 @@ const App = ({ root_store }) => {
                 const website_status = await BinarySocket.wait('website_status');
                 clients_country = website_status.website_status.clients_country;
                 Cookies.set('clients_country', clients_country, {
-                    expires: 7,
+                    expires: 7, // TODO: put it in constants or configs
                 });
             }
             setShowCookieBanner(
-                !root_store.client.loginid &&
-                    isEuCountry(clients_country) &&
-                    !(Cookies.get('has_cookie_accepted') === '1')
+                !root_store.client.loginid && // is not logged in
+                isEuCountry(clients_country) && // is from EU
+                    !(Cookies.get('has_cookie_accepted') === '1') // is not carrying cookie
             );
         })
     );
@@ -145,7 +112,7 @@ const App = ({ root_store }) => {
         client_base: Client,
     };
     // handle accept cookies
-    const onAccept = async () => {
+    const onAccept = () => {
         Cookies.set('has_cookie_accepted', 1);
         setShowCookieBanner(false);
     };
@@ -162,11 +129,11 @@ const App = ({ root_store }) => {
                         </AppContents>
                     </ErrorBoundary>
                     <DesktopWrapper>
-                        {show_cookie_banner && <CookieBanner onAccept={onAccept} is_open={show_cookie_banner} />}
                         <Footer />
                     </DesktopWrapper>
                     <AppModals url_action_param={url_params.get('action')} />
                     <SmartTraderIFrame />
+                    {show_cookie_banner && <CookieBanner onAccept={onAccept} is_open={show_cookie_banner} />}
                 </React.Fragment>
             </MobxProvider>
         </Router>

@@ -1,3 +1,4 @@
+// animations
 @keyframes FadeInDown {
     from {
         opacity: 0;
@@ -18,40 +19,50 @@
         bottom: -184px;
     }
 }
+// main
 .cookie-banner {
     position: fixed;
     z-index: 10;
     text-align: center;
-    background: rgba($color: #0e0e0e, $alpha: 0.72);
-    color: #fff;
+    background: rgba($color: $color-black, $alpha: 0.72);
+    color: $color-white;
     font-size: 16px;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
     line-height: 1.5;
     letter-spacing: normal;
-    text-align: center;
     padding: 4.8rem 0;
     bottom: 0;
     width: 100%;
     height: 184px;
     transition: all 0.3s ease-in-out;
+
+    &.theme-dark {
+        background: rgba($color: $color-white, $alpha: 0.72);
+        color: $color-black;
+    }
     &.is-open {
         animation-name: FadeInDown;
     }
     &.is-closed {
         animation-name: FadeOutUp;
     }
-    .btn-accept {
-        background: #ff444f;
-        font-size: 14px;
-        font-weight: bold;
+    .btn-accept,
+    .btn-accept:hover {
+        display: block;
+        margin: 20px auto;
+        width: 77px;
+        height: 40px;
+        border: none;
+        background: $color-red;
         font-stretch: normal;
         font-style: normal;
         line-height: 1.43;
         letter-spacing: normal;
+
         .dc-btn__text {
-            color: #fff;
+            color: $color-white;
         }
     }
 }

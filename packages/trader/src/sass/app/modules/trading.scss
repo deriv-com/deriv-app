@@ -208,6 +208,9 @@
                     align-items: center;
                 }
             }
+            @include desktop {
+                height: 2.1rem;
+            }
 
             &--disabled {
                 opacity: 0.32;

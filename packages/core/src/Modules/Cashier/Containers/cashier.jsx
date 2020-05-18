@@ -9,11 +9,11 @@ import {
     Div100vhContainer,
     FadeWrapper,
 } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { getSelectedRoute } from '@deriv/shared/utils/route';
 import { isMobile, isTouchDevice } from '@deriv/shared/utils/screen';
-import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/cashier.scss';
 
@@ -97,6 +97,8 @@ class Cashier extends React.Component {
             (location.pathname.startsWith(routes.cashier_deposit) ||
                 location.pathname.startsWith(routes.cashier_withdrawal));
 
+        const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
+
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}
@@ -117,7 +119,7 @@ class Cashier extends React.Component {
                                 current_path={this.props.location.pathname}
                                 is_floating
                                 setVerticalTabIndex={this.props.setTabIndex}
-                                vertical_tab_index={this.props.tab_index}
+                                vertical_tab_index={is_default_route ? 0 : this.props.tab_index}
                                 is_full_width
                                 is_routed
                                 list={menu_options()}

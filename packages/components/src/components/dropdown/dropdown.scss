@@ -39,6 +39,7 @@
             @include typeface(--paragraph-center-normal-black);
             color: var(--text-prominent);
             display: flex;
+            white-space: nowrap;
 
             &--placeholder:after {
                 content: attr(placeholder);

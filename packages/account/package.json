@@ -2,11 +2,11 @@
   "name": "@deriv/account",
   "private": true,
   "version": "1.0.0",
-  "description": "Deriv content",
+  "description": "Deriv account management module",
   "author": "Deriv.com",
   "homepage": "https://github.com/binary-com/deriv-app",
   "license": "Apache-2.0",
-  "main": "lib/js/account.js",
+  "main": "dist/js/account.js",
   "bugs": {
     "url": "https://github.com/binary-com/deriv-app/issues"
   },

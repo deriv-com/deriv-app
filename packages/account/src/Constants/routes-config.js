@@ -2,9 +2,17 @@ import React from 'react';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
 import { addRoutesConfig } from '@deriv/shared/utils/route';
+import routes from '@deriv/shared/utils/routes';
 import { localize } from '@deriv/translations';
-// TODO remove this once deriv-shared is updated
-import routes from './routes';
+import {
+    AccountLimits,
+    DerivPassword,
+    PersonalDetails,
+    FinancialAssessment,
+    ProofOfIdentity,
+    ProofOfAddress,
+    Account,
+} from 'Sections';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
@@ -35,7 +43,7 @@ const lazyLoadAccountComponent = makeLazyLoader(() => import(/* webpackChunkName
 const initRoutesConfig = () => [
     {
         path: routes.account,
-        component: lazyLoadAccountComponent('Account'),
+        component: Account,
         is_authenticated: true,
         title: localize('Account Settings'),
         icon_component: 'IcUserOutline',
@@ -46,13 +54,13 @@ const initRoutesConfig = () => [
                 subroutes: [
                     {
                         path: routes.personal_details,
-                        component: lazyLoadAccountComponent('PersonalDetails'),
+                        component: PersonalDetails,
                         title: localize('Personal details'),
                         default: true,
                     },
                     {
                         path: routes.financial_assessment,
-                        component: lazyLoadAccountComponent('FinancialAssessment'),
+                        component: FinancialAssessment,
                         title: localize('Financial assessment'),
                     },
                 ],
@@ -63,12 +71,12 @@ const initRoutesConfig = () => [
                 subroutes: [
                     {
                         path: routes.proof_of_identity,
-                        component: lazyLoadAccountComponent('ProofOfIdentity'),
+                        component: ProofOfIdentity,
                         title: localize('Proof of identity'),
                     },
                     {
                         path: routes.proof_of_address,
-                        component: lazyLoadAccountComponent('ProofOfAddress'),
+                        component: ProofOfAddress,
                         title: localize('Proof of address'),
                     },
                 ],
@@ -79,12 +87,12 @@ const initRoutesConfig = () => [
                 subroutes: [
                     {
                         path: routes.deriv_password,
-                        component: lazyLoadAccountComponent('DerivPassword'),
+                        component: DerivPassword,
                         title: localize('Deriv password'),
                     },
                     {
                         path: routes.account_limits,
-                        component: lazyLoadAccountComponent('AccountLimits'),
+                        component: AccountLimits,
                         title: localize('Account limits'),
                     },
                 ],

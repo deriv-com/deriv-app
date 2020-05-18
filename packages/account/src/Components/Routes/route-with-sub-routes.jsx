@@ -1,11 +1,11 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import ObjectUtils from '@deriv/shared/utils/object';
+import routes from '@deriv/shared/utils/routes';
 import { redirectToLogin, redirectToSignUp } from 'Duplicated/_common/base/login';
 import { WS } from 'Services/ws-methods';
 import LoginPrompt from 'Duplicated/App/Components/Elements/login-prompt.jsx';
 import { default_title } from 'Duplicated/App/Constants/app-config';
-import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 import { removeBranchName } from 'Duplicated/_common/url';
 

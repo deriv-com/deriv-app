@@ -35,8 +35,8 @@ module.exports = function(source, map) {
         const replace = components
             .map(
                 c => `
-import ${c} from '@deriv/account/lib/js/${getKebabCase(c)}';
-${checkExists(getKebabCase(c)) ? `import '@deriv/account/lib/css/${getKebabCase(c)}.css';` : ''}
+import ${c} from '@deriv/account/dist/js/${getKebabCase(c)}';
+${checkExists(getKebabCase(c)) ? `import '@deriv/account/dist/css/${getKebabCase(c)}.css';` : ''}
         `
             )
             .join('\n');

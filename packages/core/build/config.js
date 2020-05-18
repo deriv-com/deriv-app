@@ -32,9 +32,9 @@ const copyConfig = base => [
             return context.split('node_modules/@deriv/trader/dist/')[1];
         },
     },
-    { from: path.resolve(__dirname, '../node_modules/@deriv/account/lib/js/**'), to: 'js', flatten: true },
-    { from: path.resolve(__dirname, '../node_modules/@deriv/account/lib/css/**'), to: 'css/', flatten: true },
-    { from: path.resolve(__dirname, '../node_modules/@deriv/account/lib/*.*'), to: 'js', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/js/**'), to: 'account/js', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/css/**'), to: 'account/css/', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/*.*'), to: 'account/js', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/trader.*.js'), to: 'js', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/**'), to: 'css', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/*.*'), to: 'js', flatten: true },

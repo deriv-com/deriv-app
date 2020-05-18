@@ -6,12 +6,4 @@ import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
 import DerivPassword from 'Sections/Security/DerivPassword';
 import Account from 'Containers/account.jsx';
 
-export default {
-    AccountLimits,
-    DerivPassword,
-    PersonalDetails,
-    FinancialAssessment,
-    ProofOfIdentity,
-    ProofOfAddress,
-    Account,
-};
+export { AccountLimits, DerivPassword, PersonalDetails, FinancialAssessment, ProofOfIdentity, ProofOfAddress, Account };

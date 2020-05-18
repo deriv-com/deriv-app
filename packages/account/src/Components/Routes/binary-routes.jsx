@@ -1,6 +1,5 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
-// TODO use deriv/shared once routes-config are merged.
 import getRoutesConfig from 'Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 

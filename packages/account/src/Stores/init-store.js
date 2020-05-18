@@ -8,7 +8,7 @@ configure({ enforceActions: 'observed' });
 const initStore = (core_store, websocket, client_base) => {
     setWebsocket(websocket);
     setClientBase(client_base);
-    return RootStore(core_store);
+    return new RootStore(core_store);
 };
 
 export default initStore;

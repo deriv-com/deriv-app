@@ -15,6 +15,7 @@ class ConnectedApps extends React.Component {
         is_modal_open: false,
         selected_app_id: null,
         is_error: false,
+        connected_apps: [],
     };
 
     componentDidMount() {
@@ -37,8 +38,11 @@ class ConnectedApps extends React.Component {
     updateApp = () => {
         this.props
             .fetchConnectedApps()
-            .then(() => {
-                this.setState({ is_loading: false });
+            .then(response => {
+                this.setState({
+                    is_loading: false,
+                    connected_apps: response,
+                });
             })
             .catch(() => {
                 this.setState({ is_error: true });
@@ -76,7 +80,7 @@ class ConnectedApps extends React.Component {
                         <DesktopWrapper>
                             <DataTable
                                 className='connected-apps'
-                                data_source={this.props.connected_apps}
+                                data_source={this.state.connected_apps}
                                 columns={getConnectedAppsColumnsTemplate(this.handleToggleModal)}
                                 custom_width={'100%'}
                                 getRowSize={() => 56}
@@ -88,7 +92,7 @@ class ConnectedApps extends React.Component {
                         <MobileWrapper>
                             <DataList
                                 className='connected-apps'
-                                data_source={this.props.connected_apps}
+                                data_source={this.state.connected_apps}
                                 custom_width={'100%'}
                                 getRowSize={() => 128}
                                 is_empty={false}
@@ -126,12 +130,10 @@ class ConnectedApps extends React.Component {
 }
 
 ConnectedApps.propTypes = {
-    connected_apps: PropTypes.array,
     fetchConnectedApps: PropTypes.func,
     revokeAccess: PropTypes.func,
 };
 export default connect(({ client }) => ({
-    connected_apps: client.connected_apps,
     fetchConnectedApps: client.fetchConnectedApps,
     revokeAccess: client.revokeConnectedApp,
 }))(ConnectedApps);

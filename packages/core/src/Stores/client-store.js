@@ -67,7 +67,6 @@ export default class ClientStore extends BaseStore {
         decimal_places: undefined,
     };
 
-    @observable connected_apps = [];
     is_mt5_account_list_updated = false;
 
     constructor(root_store) {
@@ -1259,9 +1258,6 @@ export default class ClientStore extends BaseStore {
         return new Promise(async (resolve, reject) => {
             const response_connected_apps = await WS.send({ oauth_apps: 1 });
             if (!response_connected_apps.error) {
-                runInAction(() => {
-                    this.connected_apps = response_connected_apps.oauth_apps;
-                });
                 resolve(response_connected_apps.oauth_apps);
             } else {
                 reject(response_connected_apps.error);

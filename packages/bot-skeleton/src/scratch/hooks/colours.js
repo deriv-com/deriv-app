@@ -42,32 +42,32 @@ if (isDarkModeEnabled()) {
 } else {
     // Light theme
     Blockly.Colours.RootBlock = {
-        colour: '#F2F3F5',
-        colourSecondary: '#F2F3F5',
-        colourTertiary: '#F2F3F5',
+        colour: '#064e72',
+        colourSecondary: '#064e72',
+        colourTertiary: '#064e72',
     };
 
     Blockly.Colours.Base = {
-        colour: '#507ED5',
-        colourSecondary: '#4665A0',
-        colourTertiary: '#4665A0',
+        colour: '#e5e5e5',
+        colourSecondary: '#ffffff',
+        colourTertiary: '#ffffff',
     };
 
     Blockly.Colours.Special1 = {
-        colour: '#D27954',
-        colourSecondary: '#9E6248',
-        colourTertiary: '#9E6248',
+        colour: '#e5e5e5',
+        colourSecondary: '#ffffff',
+        colourTertiary: '#ffffff',
     };
 
     Blockly.Colours.Special2 = {
-        colour: '#5DA5A3',
-        colourSecondary: '#4F7F7E',
-        colourTertiary: '#4F7F7E',
+        colour: '#e5e5e5',
+        colourSecondary: '#ffffff',
+        colourTertiary: '#ffffff',
     };
 
     Blockly.Colours.Special3 = {
-        colour: '#CB5555',
-        colourSecondary: '#994949',
-        colourTertiary: '#994949',
+        colour: '#e5e5e5',
+        colourSecondary: '#ffffff',
+        colourTertiary: '#ffffff',
     };
 }

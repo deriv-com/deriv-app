@@ -11,6 +11,7 @@ import {
     ThemedScrollbars,
     DesktopWrapper,
     MobileWrapper,
+    Clipboard,
 } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
 import StringUtils from '@deriv/shared/utils/string';
@@ -20,7 +21,6 @@ import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import Article from './article.jsx';
 import Card from './card.jsx';
-import Clipboard from './clipboard.jsx';
 import Loading from '../../../../../templates/app/components/loading.jsx';
 import DemoMessage from '../../ErrorMessages/DemoMessage';
 import LoadErrorMessage from '../../ErrorMessages/LoadErrorMessage';
@@ -316,7 +316,16 @@ class ApiToken extends React.Component {
                                                                     <Table.Cell>
                                                                         <div className='api-token__clipboard-wrapper'>
                                                                             {token.token}{' '}
-                                                                            <Clipboard token={token.token} />
+                                                                            <Clipboard
+                                                                                text_copy={token.token}
+                                                                                info_message={localize(
+                                                                                    'Click here to copy token'
+                                                                                )}
+                                                                                success_message={localize(
+                                                                                    'Token copied!'
+                                                                                )}
+                                                                                className='api-token__clipboard'
+                                                                            />
                                                                         </div>
                                                                     </Table.Cell>
                                                                     <Table.Cell>{token.scopes}</Table.Cell>

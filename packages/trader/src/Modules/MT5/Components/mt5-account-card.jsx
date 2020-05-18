@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Money, Button } from '@deriv/components';
-import { Localize } from '@deriv/translations';
-import { Mt5AccountCopy } from './mt5-account-copy.jsx';
+import { Money, Button, Clipboard } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
 import { getMT5WebTerminalLink } from '../Helpers/constants';
 
 const MT5AccountCard = ({
@@ -48,7 +47,14 @@ const MT5AccountCard = ({
                             }}
                             components={[<strong key='0' />]}
                         />
-                        <Mt5AccountCopy text={existing_data.display_login} />
+                        <Clipboard
+                            text_copy={existing_data.display_login}
+                            info_message={localize(
+                                'Click here to copy account login number and paste into the login box in MT5 platform along with your password.'
+                            )}
+                            success_message={localize('Account login number copied!')}
+                            className='mt5-account-card__clipboard'
+                        />
                     </div>
                 )}
                 <div className='mt5-account-card__specs'>

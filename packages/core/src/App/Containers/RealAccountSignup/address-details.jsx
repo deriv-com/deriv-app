@@ -46,7 +46,7 @@ const getLocation = (location_list, value, type) => {
 class AddressDetails extends Component {
     constructor(props) {
         super(props);
-        this.state = { has_fetched_states_list: false };
+        this.state = { has_fetched_states_list: false, address_state_to_display: '' };
         this.form = React.createRef();
         // TODO: Find a better solution for handling no-op instead of using is_mounted flags
         this.is_mounted = false;
@@ -55,7 +55,11 @@ class AddressDetails extends Component {
     async componentDidMount() {
         this.is_mounted = true;
         await this.props.fetchStatesList();
-        if (this.is_mounted) this.setState({ has_fetched_states_list: true });
+        if (this.is_mounted)
+            this.setState({
+                has_fetched_states_list: true,
+                address_state_to_display: getLocation(this.props.states_list, this.props.value.address_state, 'text'),
+            });
         this.form.current.getFormikActions().validateForm();
     }
 
@@ -81,7 +85,9 @@ class AddressDetails extends Component {
                 onSubmit={(values, actions) => {
                     if (isDesktop() && values.address_state) {
                         values.address_state = this.props.states_list.length
-                            ? getLocation(this.props.states_list, values.address_state, 'value')
+                            ? this.state.address_state_to_display
+                                ? getLocation(this.props.states_list, this.state.address_state_to_display, 'value')
+                                : getLocation(this.props.states_list, values.address_state, 'value')
                             : values.address_state;
                     }
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
@@ -133,19 +139,25 @@ class AddressDetails extends Component {
                                                             <DesktopWrapper>
                                                                 <Autocomplete
                                                                     {...field}
+                                                                    {...(this.state.address_state_to_display && {
+                                                                        value: this.state.address_state_to_display,
+                                                                    })}
                                                                     data-lpignore='true'
                                                                     autoComplete='new-password' // prevent chrome autocomplete
                                                                     dropdown_offset='3.2rem'
                                                                     type='text'
                                                                     label={localize('State/Province')}
                                                                     list_items={this.props.states_list}
-                                                                    onItemSelection={({ value, text }) =>
+                                                                    onItemSelection={({ value, text }) => {
                                                                         setFieldValue(
                                                                             'address_state',
                                                                             value ? text : '',
                                                                             true
-                                                                        )
-                                                                    }
+                                                                        );
+                                                                        this.setState({
+                                                                            address_state_to_display: '',
+                                                                        });
+                                                                    }}
                                                                 />
                                                             </DesktopWrapper>
                                                             <MobileWrapper>

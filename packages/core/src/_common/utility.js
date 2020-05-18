@@ -52,6 +52,40 @@ const copyToClipboard = text => {
     document.execCommand('copy');
     textField.remove();
 };
+// eu countries to support
+const eu_countries = [
+    'it',
+    'de',
+    'fr',
+    'lu',
+    'gr',
+    'mf',
+    'es',
+    'sk',
+    'lt',
+    'nl',
+    'at',
+    'bg',
+    'si',
+    'cy',
+    'be',
+    'ro',
+    'hr',
+    'pt',
+    'pl',
+    'lv',
+    'ee',
+    'cz',
+    'fi',
+    'hu',
+    'dk',
+    'se',
+    'ie',
+    'im',
+    'gb',
+];
+// check if client is from EU
+const isEuCountry = clients_country => eu_countries.includes(clients_country);
 
 module.exports = {
     template,
@@ -59,4 +93,5 @@ module.exports = {
     createElement,
     getStaticHash,
     PromiseClass,
+    isEuCountry,
 };

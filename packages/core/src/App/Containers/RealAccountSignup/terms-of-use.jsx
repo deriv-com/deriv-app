@@ -49,7 +49,7 @@ const IOMDescription = () => (
         <p>
             <Localize
                 i18n_default_text={
-                    'Your account will be opened with Binary ( IOM ) Ltd, and will be subjected to the jurisdiction and laws of Isle of Man.'
+                    'Your account will be opened with Binary (IOM) Ltd, and will be subjected to the jurisdiction and laws of Isle of Man.'
                 }
             />
         </p>
@@ -76,7 +76,7 @@ const MaltaDescription = () => (
         <p>
             <Localize
                 i18n_default_text={
-                    'Your account will be opened with Binary ( Europe ) Ltd, and will be subjected to the jurisdiction and laws of Malta Gaming Authority.'
+                    'Your account will be opened with Binary (Europe) Ltd, and will be subjected to the jurisdiction and laws of Malta Gaming Authority.'
                 }
             />
         </p>

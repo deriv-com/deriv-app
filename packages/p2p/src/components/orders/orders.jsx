@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
@@ -11,6 +12,7 @@ const Orders = ({ navigate, params }) => {
     const { orders, order_id, setOrderId } = React.useContext(Dp2pContext);
     const [order_details, setDetails] = React.useState(null);
     const [nav, setNav] = React.useState(params?.nav);
+    const is_mounted = React.useRef(false);
     const hideDetails = () => {
         if (nav) {
             navigate(nav.location);
@@ -30,16 +32,20 @@ const Orders = ({ navigate, params }) => {
 
     React.useEffect(() => {
         if (params && params.order_info) {
+            is_mounted.current = true;
             const order_info = new OrderInfo(params.order_info);
             setQueryDetails(order_info);
         }
         // Clear details when unmounting
         return () => {
+            is_mounted.current = false;
             hideDetails();
         };
     }, []);
 
     React.useEffect(() => {
+        if (!is_mounted.current) return;
+
         if (orders.length && order_id) {
             const order_payload = orders.find(order => order.id === order_id);
             if (order_payload) {
@@ -58,7 +64,7 @@ const Orders = ({ navigate, params }) => {
     }, [orders]);
 
     return (
-        <div className='orders'>
+        <div className={classNames('orders', { 'orders--order-view': !!order_details })}>
             {order_details && (
                 <React.Fragment>
                     <PageReturn

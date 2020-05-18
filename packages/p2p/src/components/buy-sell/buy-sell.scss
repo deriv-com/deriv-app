@@ -144,10 +144,6 @@
             justify-content: flex-end;
             padding: 0 2.4rem;
             border-top: 1px solid var(--general-section-2);
-
-            & > button:first-of-type {
-                margin-right: 0.8rem;
-            }
         }
         &-close_icon {
             cursor: pointer;

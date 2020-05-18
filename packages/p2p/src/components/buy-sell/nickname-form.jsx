@@ -87,12 +87,14 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
                         </ThemedScrollbars>
                         <div className='buy-sell__popup-footer'>
                             {status && status.error_message && <FormError message={status.error_message} />}
-                            <Button secondary type='button' onClick={handleClose} large>
-                                {localize('Cancel')}
-                            </Button>
-                            <Button type='submit' is_disabled={!!(isSubmitting || errors.amount)} primary large>
-                                {localize('Confirm')}
-                            </Button>
+                            <Button.Group>
+                                <Button secondary type='button' onClick={handleClose} large>
+                                    {localize('Cancel')}
+                                </Button>
+                                <Button type='submit' is_disabled={!!(isSubmitting || errors.amount)} primary large>
+                                    {localize('Confirm')}
+                                </Button>
+                            </Button.Group>
                         </div>
                     </Form>
                 )}

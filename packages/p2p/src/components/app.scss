@@ -59,6 +59,16 @@
                 &__button--active {
                     height: 100%;
                 }
+                &__button {
+                    span {
+                        color: var(--text-less-prominent);
+                    }
+                    &--active {
+                        span {
+                            color: var(--text-prominent);
+                        }
+                    }
+                }
             }
         }
         &--highlight {

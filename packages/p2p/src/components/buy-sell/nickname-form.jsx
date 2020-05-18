@@ -24,12 +24,21 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
     };
 
     const validatePopup = values => {
-        const max_char = 100;
         const validations = {
-            nickname: [v => !!v, v => v.length <= max_char],
+            nickname: [
+                v => !!v,
+                v => v.length >= 2,
+                v => v.length <= 24,
+                v => /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9-_@.]{2,24}$/.test(v),
+            ],
         };
 
-        const common_messages = [localize('Nickname is required'), localize('Nickname is too long')];
+        const nickname_messages = [
+            localize('Nickname is required'),
+            localize('Nickname is too long'),
+            localize('Nickname is too short'),
+            localize('Nickname is in incorrect format'),
+        ];
 
         const errors = {};
 
@@ -41,7 +50,7 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
             if (error_index !== -1) {
                 switch (key) {
                     default: {
-                        errors[key] = common_messages[error_index];
+                        errors[key] = nickname_messages[error_index];
                         break;
                     }
                 }

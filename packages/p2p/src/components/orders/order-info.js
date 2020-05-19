@@ -45,8 +45,8 @@ export default class OrderInfo {
     };
 
     static status_map_common = {
-        cancelled: localize('Expired'),
-        'timed-out': localize('Cancelled'),
+        cancelled: localize('Cancelled'),
+        'timed-out': localize('Expired'),
         refunded: localize('Refunded'),
         completed: localize('Completed'),
     };

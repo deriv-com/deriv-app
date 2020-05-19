@@ -3,9 +3,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 class RadioGroup extends React.Component {
-    state = {
-        selectedOption: this.props.defaultOption,
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            selected_option: this.props.default_option,
+        };
+    }
 
     // componentDidUpdate(prevProps) {
     //     if (this.props.defaultChecked === prevProps.defaultChecked) {
@@ -15,12 +19,12 @@ class RadioGroup extends React.Component {
     //     this.setState({ checked: this.props.defaultChecked });
     // }
 
-    onChange(e) {
+    onChange = e => {
         this.setState({
-            selectedOption: e.target.value,
+            selected_option: e.target.value,
         });
         this.props.onToggle(e);
-    }
+    };
 
     render() {
         const { items, className, name } = this.props;
@@ -35,15 +39,13 @@ class RadioGroup extends React.Component {
                             className='dc-radio-group__input'
                             type='radio'
                             value={item.value}
-                            checked={this.state.selectedOption === item.value}
-                            onChange={e => {
-                                this.onChange(e);
-                            }}
+                            checked={this.state.selected_option === item.value}
+                            onChange={this.onChange}
                             disabled={item.disabled}
                         />
                         <span
                             className={classNames('dc-radio-group__circle', {
-                                'dc-radio-group__circle--selected': this.state.selectedOption === item.value,
+                                'dc-radio-group__circle--selected': this.state.selected_option === item.value,
                             })}
                         />
                         <span className='dc-radio-group__label'>{item.label}</span>
@@ -62,7 +64,7 @@ RadioGroup.propTypes = {
         })
     ),
     onToggle: PropTypes.func,
-    defaultOption: PropTypes.any,
+    default_option: PropTypes.any,
 };
 
 export default RadioGroup;

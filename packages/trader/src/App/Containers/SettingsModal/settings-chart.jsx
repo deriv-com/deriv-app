@@ -60,7 +60,7 @@ const ChartSettings = ({
                             },
                         ]}
                         name='chart_layout_default'
-                        defaultOption={is_layout_default.toString()}
+                        default_option={is_layout_default.toString()}
                         onToggle={e => {
                             e.persist();
                             setChartLayout(e.target.value === 'true');

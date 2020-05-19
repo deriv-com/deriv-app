@@ -27,8 +27,6 @@ const OrderDetails = ({ order_details }) => {
         is_completed,
         is_buyer_cancelled,
         offer_currency,
-        is_completed,
-        is_buyer_cancelled,
         id,
         order_purchase_datetime,
         payment_info,

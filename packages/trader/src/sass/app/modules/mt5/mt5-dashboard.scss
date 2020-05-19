@@ -356,6 +356,9 @@
         &--demo {
             border-bottom-color: var(--brand-secondary);
         }
+        @include mobile {
+            left: calc(100vw - 11.6rem);
+        }
     }
     &__type {
         display: flex;
@@ -492,7 +495,7 @@
     }
     &__manage {
         display: flex;
-        width: calc(100% - 3.2rem);
+        width: 272px;
 
         .dc-btn {
             width: 100%;

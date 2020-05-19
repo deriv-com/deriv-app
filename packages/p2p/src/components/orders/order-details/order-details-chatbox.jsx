@@ -17,6 +17,8 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url }) => {
                 clearInterval(interval_header);
                 setIsLoading(false);
                 el_sendbird_conversation.setAttribute('style', 'display: flex;');
+            } else {
+                return;
             }
 
             // if (el_chat_avatars) {
@@ -55,7 +57,12 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url }) => {
                     el_sendbird_textarea.addEventListener('keyup', event => {
                         if (event.key === 'Enter') naivelyResetCharacterCounter();
                     });
-                    document.querySelector('.sendbird-conversation__footer').appendChild(el_character_count);
+
+                    const el_conversation_footer = document.querySelector('.sendbird-conversation__footer');
+                    if (el_conversation_footer) {
+                        naivelyResetCharacterCounter();
+                        el_conversation_footer.appendChild(el_character_count);
+                    }
                 }
             }
         }, 100);

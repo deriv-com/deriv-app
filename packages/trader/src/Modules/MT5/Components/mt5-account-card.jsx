@@ -48,18 +48,6 @@ const MT5AccountCard = ({
             </div>
 
             <div className='mt5-account-card__cta'>
-                {existing_data && existing_data.login && (
-                    <div className='mt5-account-card__login'>
-                        <Localize
-                            i18n_default_text='Account login no.&nbsp;<0>{{login}}</0>'
-                            values={{
-                                login: existing_data.display_login,
-                            }}
-                            components={[<strong key='0' />]}
-                        />
-                        <Mt5AccountCopy text={existing_data.display_login} />
-                    </div>
-                )}
                 <div className='mt5-account-card__specs'>
                     <table className='mt5-account-card__specs-table'>
                         <tbody>
@@ -76,6 +64,18 @@ const MT5AccountCard = ({
                         </tbody>
                     </table>
                 </div>
+                {existing_data && existing_data.login && (
+                    <div className='mt5-account-card__login'>
+                        <Localize
+                            i18n_default_text='Account login no.&nbsp;<0>{{login}}</0>'
+                            values={{
+                                login: existing_data.display_login,
+                            }}
+                            components={[<strong key='0' />]}
+                        />
+                        <Mt5AccountCopy text={existing_data.display_login} />
+                    </div>
+                )}
 
                 {!existing_data && commission_message && (
                     <p className='mt5-account-card__commission mt5-account-card--paragraph'>{commission_message}</p>

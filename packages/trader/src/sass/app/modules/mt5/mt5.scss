@@ -153,7 +153,8 @@
     &__container {
         .dc-tooltip {
             position: relative;
-            display: inline-block;
+            display: flex;
+            align-items: center;
 
             &:hover {
                 .dc-tooltiptext {

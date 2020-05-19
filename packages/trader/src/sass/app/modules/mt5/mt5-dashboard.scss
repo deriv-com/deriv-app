@@ -300,7 +300,6 @@
 .mt5-real-accounts-display,
 .mt5-demo-accounts-display {
     display: flex;
-    justify-content: space-around;
     margin-top: 2.4em;
 
     @include mobile {
@@ -317,6 +316,9 @@
     min-height: 36em;
     width: 30.4em;
 
+    &:not(:last-child) {
+        margin-right: 2.4rem;
+    }
     &:hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
     }
@@ -342,7 +344,7 @@
         border-right: 2.3rem solid transparent;
         height: 0;
         width: 10.3rem;
-        left: 23.1rem;
+        left: 22.4rem;
         bottom: 32rem;
         color: var(--text-colored-background);
         font-weight: bold;
@@ -351,7 +353,7 @@
     }
     &__type {
         display: flex;
-        padding: 1.6em 1.6em 0;
+        padding: 1.6em 1.6em;
 
         &--description {
             display: inline-block;
@@ -368,15 +370,22 @@
     }
     &__clipboard {
         cursor: pointer;
-        margin-left: 1em;
+        margin-left: 1rem;
+
+        .dc-popover {
+            &__target {
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+    &__tooltip {
+        max-width: 18.7rem;
     }
     &__cta {
         align-items: center;
         display: flex;
         flex-direction: column;
-    }
-    &__specs {
-        padding: 0 1.6em 1.6em;
     }
     &__specs-table {
         width: 100%;
@@ -430,7 +439,7 @@
         }
     }
     &__login {
-        @include typeface(--paragraph-center-normal-black);
+        @include typeface(--title-center-normal-black);
         align-items: center;
         background-color: var(--general-section-1);
         border-radius: 4px;
@@ -438,7 +447,7 @@
         display: flex;
         height: 40px;
         justify-content: center;
-        margin: 1.6em 0 0.8em;
+        margin: 2.4rem 0 1.6rem;
         width: 272px;
 
         strong {
@@ -447,14 +456,14 @@
     }
     &__manage {
         display: flex;
-        justify-content: space-between;
+        width: calc(100% - 3.2rem);
 
         .dc-btn {
-            @include typeface(--small-center-bold-black, none);
-            color: var(--text-prominent);
-            height: 32px;
-            margin: 0 1em;
-            width: 122px;
+            width: 100%;
+
+            &:not(:last-child) {
+                margin-right: 1.6rem;
+            }
         }
     }
     @include mobile {

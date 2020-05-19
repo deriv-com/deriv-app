@@ -8,17 +8,33 @@ import { getMtCompanies } from 'Stores/Modules/MT5/Helpers/mt5-config';
 import { WS } from 'Services/ws-methods';
 
 const ResetPasswordIntent = ({ current_list, children, ...props }) => {
-    const reset_password_intent = sessionStorage.getItem('reset_password_intent');
-    const reset_password_type = sessionStorage.getItem('reset_password_type') || 'main'; // Default to main
+    const reset_password_intent = localStorage.getItem('reset_password_intent');
+    const reset_password_type = localStorage.getItem('reset_password_type') || 'main'; // Default to main
+    const has_intent =
+        reset_password_intent && /(real|demo)\.(financial_stp|financial|synthetic)/.test(reset_password_intent);
 
-    const [group, type] = /(real|demo)\.(financial_stp|financial|synthetic)/.test(reset_password_intent)
-        ? reset_password_intent.split('.')
-        : ['', ''];
-    const login = current_list[`${group}.${type}`].login;
+    let group, type, login, title;
+    if (has_intent && current_list) {
+        [group, type] = reset_password_intent.split('.');
+        login = current_list[`${group}.${type}`].login;
+        title = getMtCompanies()[group][type].title;
+    } else if (current_list) {
+        [group, type] = Object.keys(current_list)
+            .pop()
+            .split('.');
+        login = current_list[`${group}.${type}`].login;
+        title = getMtCompanies()[group][type].title;
+    } else {
+        // Set a default intent
+        group = '';
+        type = '';
+        login = '';
+        title = '';
+    }
 
     return children({
         login,
-        title: getMtCompanies()[group][type].title,
+        title,
         type: reset_password_type,
         ...props,
     });

@@ -79,7 +79,7 @@ const MT5AccountCard = ({
                         </Button>
                         <Button
                             onClick={() => {
-                                onPasswordManager(existing_data.login, title);
+                                onPasswordManager(existing_data.login, title, type.category, type.type);
                             }}
                             type='button'
                             secondary

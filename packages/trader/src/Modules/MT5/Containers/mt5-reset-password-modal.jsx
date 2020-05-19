@@ -8,8 +8,8 @@ import { getMtCompanies } from 'Stores/Modules/MT5/Helpers/mt5-config';
 import { WS } from 'Services/ws-methods';
 
 const ResetPasswordIntent = ({ current_list, children, ...props }) => {
-    const reset_password_intent = localStorage.getItem('reset_password_intent');
-    const reset_password_type = localStorage.getItem('reset_password_type') || 'main'; // Default to main
+    const reset_password_intent = localStorage.getItem('mt5_reset_password_intent');
+    const reset_password_type = localStorage.getItem('mt5_reset_password_type') || 'main'; // Default to main
     const has_intent =
         reset_password_intent && /(real|demo)\.(financial_stp|financial|synthetic)/.test(reset_password_intent);
 

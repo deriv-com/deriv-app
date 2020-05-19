@@ -21,8 +21,10 @@ import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
 import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
 
-const MT5PasswordReset = ({ sendVerifyEmail }) => {
+const MT5PasswordReset = ({ sendVerifyEmail, password_type, account_type, account_group }) => {
     React.useEffect(() => {
+        localStorage.setItem('mt5_reset_password_intent', [account_group, account_type].join('.'));
+        localStorage.setItem('mt5_reset_password_type', password_type);
         sendVerifyEmail();
     }, []);
 
@@ -91,7 +93,16 @@ class MT5PasswordManagerModal extends React.Component {
     };
 
     render() {
-        const { enableApp, disableApp, is_visible, selected_login, selected_account, toggleModal } = this.props;
+        const {
+            enableApp,
+            disableApp,
+            is_visible,
+            selected_login,
+            selected_account,
+            toggleModal,
+            selected_account_type,
+            selected_account_group,
+        } = this.props;
 
         const validatePassword = values => {
             const is_valid =
@@ -183,7 +194,14 @@ class MT5PasswordManagerModal extends React.Component {
                                 <Button
                                     className='mt5-password-manager--button'
                                     type='button'
-                                    onClick={() => this.multistep_ref.current?.nextStep()}
+                                    onClick={() => {
+                                        this.setState(
+                                            {
+                                                password_type: 'main',
+                                            },
+                                            () => this.multistep_ref.current?.nextStep()
+                                        );
+                                    }}
                                     text={localize('Reset main password')}
                                     tertiary
                                     large
@@ -253,7 +271,14 @@ class MT5PasswordManagerModal extends React.Component {
                                     <Button
                                         className='mt5-password-manager--button'
                                         type='button'
-                                        onClick={() => this.multistep_ref.current?.nextStep()}
+                                        onClick={() => {
+                                            this.setState(
+                                                {
+                                                    password_type: 'main',
+                                                },
+                                                () => this.multistep_ref.current?.nextStep()
+                                            );
+                                        }}
                                         text={localize('Create or reset investor password')}
                                         tertiary
                                         large
@@ -298,7 +323,14 @@ class MT5PasswordManagerModal extends React.Component {
                 component: <MT5PasswordManagerTabContent />,
             },
             {
-                component: <MT5PasswordReset sendVerifyEmail={this.props.sendVerifyEmail} />,
+                component: (
+                    <MT5PasswordReset
+                        sendVerifyEmail={this.props.sendVerifyEmail}
+                        password_type={this.state.password_type}
+                        account_type={selected_account_type}
+                        account_group={selected_account_group}
+                    />
+                ),
             },
         ];
 

@@ -27,6 +27,8 @@ class MT5Dashboard extends React.Component {
             is_visible: false,
             selected_login: '',
             selected_account: '',
+            selected_account_type: '',
+            selected_account_group: '',
         },
     };
 
@@ -73,13 +75,15 @@ class MT5Dashboard extends React.Component {
         }
     };
 
-    togglePasswordManagerModal = (login, title) => {
+    togglePasswordManagerModal = (login, title, group, type) => {
         this.setState(prev_state => ({
             active_index: prev_state.active_index,
             password_manager: {
                 is_visible: !prev_state.password_manager.is_visible,
                 selected_login: typeof login === 'string' ? login : '',
                 selected_account: typeof title === 'string' ? title : '',
+                selected_account_group: group,
+                selected_account_type: type,
             },
         }));
     };
@@ -110,6 +114,8 @@ class MT5Dashboard extends React.Component {
                             is_visible={this.state.password_manager.is_visible}
                             selected_login={this.state.password_manager.selected_login}
                             selected_account={this.state.password_manager.selected_account}
+                            selected_account_group={this.state.password_manager.selected_account_group}
+                            selected_account_type={this.state.password_manager.selected_account_type}
                             toggleModal={this.togglePasswordManagerModal}
                         />
                         <Tabs active_index={this.state.active_index} top>

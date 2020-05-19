@@ -37,11 +37,12 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url }) => {
                 el_character_count.className = new_character_count_class;
 
                 const el_sendbird_textarea = document.querySelector('.sendbird-message-input--textarea');
-                el_character_count.innerText = getCounterString(el_sendbird_textarea);
-                el_sendbird_textarea.addEventListener('input', e => {
-                    el_character_count.innerText = getCounterString(e.target);
-                });
+                const syncCharacterCounter = event => {
+                    el_character_count.innerText = getCounterString(event.target);
+                };
 
+                el_sendbird_textarea.addEventListener('input', syncCharacterCounter);
+                el_sendbird_textarea.addEventListener('keyup', syncCharacterCounter);
                 document.querySelector('.sendbird-conversation__footer').appendChild(el_character_count);
             }
         }, 100);

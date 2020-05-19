@@ -73,6 +73,7 @@
                 &__text {
                     font-size: 14px;
                     font-family: $FONT_STACK;
+                    white-space: break-spaces;
                 }
             }
             .sendbird-user-message--incoming,

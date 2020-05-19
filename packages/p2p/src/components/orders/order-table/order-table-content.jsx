@@ -119,7 +119,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
             </div>
             {is_active && (
                 <Button primary large className='p2p-cashier__empty-button' onClick={() => changeTab(0)}>
-                    {localize('Buy/Sell')}
+                   <Localize i18n_default_text='Buy/Sell' />
                 </Button>
             )}
         </div>

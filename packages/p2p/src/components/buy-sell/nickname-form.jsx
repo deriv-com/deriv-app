@@ -35,8 +35,8 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
 
         const nickname_messages = [
             localize('Nickname is required'),
-            localize('Nickname is too long'),
             localize('Nickname is too short'),
+            localize('Nickname is too long'),
             localize('Nickname is in incorrect format'),
         ];
 

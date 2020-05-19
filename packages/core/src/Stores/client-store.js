@@ -18,6 +18,9 @@ import { getClientAccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
+const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
+const eu_excluded_regex = new RegExp('^mt$');
+
 export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
@@ -294,6 +297,45 @@ export default class ClientStore extends BaseStore {
             this.accounts[this.loginid] &&
             !!this.accounts[this.loginid].is_virtual
         );
+    }
+
+    @computed
+    get is_eu() {
+        const { gaming_company, financial_company } = this.landing_companies;
+        const financial_shortcode = financial_company?.shortcode;
+        const gaming_shortcode = gaming_company?.shortcode;
+        return financial_shortcode || gaming_shortcode
+            ? eu_shortcode_regex.test(financial_shortcode) || eu_shortcode_regex.test(gaming_shortcode)
+            : eu_excluded_regex.test(this.residence);
+    }
+
+    // this is true when a user needs to have a active real account for trading
+    @computed
+    get should_have_real_account() {
+        return this.standpoint.iom && !this.has_any_real_account && this.residence === 'gb';
+    }
+
+    // Shows all possible landing companies of user between all
+    @computed
+    get standpoint() {
+        const result = {
+            iom: false,
+            svg: false,
+            malta: false,
+            maltainvest: false,
+        };
+        const { gaming_company, financial_company } = this.landing_companies;
+        if (gaming_company) {
+            Object.assign(result, {
+                [gaming_company.shortcode]: !!gaming_company?.shortcode,
+            });
+        }
+        if (financial_company) {
+            Object.assign(result, {
+                [financial_company.shortcode]: !!financial_company?.shortcode,
+            });
+        }
+        return result;
     }
 
     @computed
@@ -1139,6 +1181,8 @@ export default class ClientStore extends BaseStore {
                 this.root_store.gtm.pushDataLayer({
                     event: 'signup',
                 });
+
+                this.root_store.ui.showAccountTypesModalForEuropean();
             }
         });
     }

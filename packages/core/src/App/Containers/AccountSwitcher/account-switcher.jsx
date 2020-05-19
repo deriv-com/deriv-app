@@ -23,6 +23,15 @@ import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Prel
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
 
+const AccountTitle = ({ title, onIconClick, is_eu }) => {
+    return (
+        <React.Fragment>
+            <span>{title}</span>
+            {is_eu && <Icon className='acc-switcher__help-icon' icon='IcInfoOutline' onClick={onIconClick} />}
+        </React.Fragment>
+    );
+};
+
 class AccountSwitcher extends React.Component {
     constructor(props) {
         super(props);
@@ -105,6 +114,11 @@ class AccountSwitcher extends React.Component {
     setAccountCurrency = () => {
         this.props.toggleAccountsDialog();
         this.props.toggleSetCurrencyModal();
+    };
+
+    showAccountTypesModal = () => {
+        this.props.toggleAccountsDialog();
+        this.props.toggleAccountTypesModal(true);
     };
 
     onClickUpgrade = account => {
@@ -280,7 +294,13 @@ class AccountSwitcher extends React.Component {
         const demo_accounts = (
             <div className='acc-switcher__list-wrapper'>
                 <AccountWrapper
-                    header={<Localize i18n_default_text='Deriv Accounts' />}
+                    header={
+                        <AccountTitle
+                            title={localize('Deriv Accounts')}
+                            is_eu={this.props.is_eu}
+                            onIconClick={this.showAccountTypesModal}
+                        />
+                    }
                     is_visible={this.state.is_demo_deriv_visible}
                     toggleVisibility={() => {
                         this.toggleVisibility('demo_deriv');
@@ -312,7 +332,13 @@ class AccountSwitcher extends React.Component {
                     <React.Fragment>
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                         <AccountWrapper
-                            header={<Localize i18n_default_text='DMT5 Accounts' />}
+                            header={
+                                <AccountTitle
+                                    title={localize('DMT5 Accounts')}
+                                    is_eu={this.props.is_eu}
+                                    onIconClick={this.showAccountTypesModal}
+                                />
+                            }
                             is_visible={this.state.is_demo_dmt5_visible}
                             toggleVisibility={() => {
                                 this.toggleVisibility('demo_dmt5');
@@ -367,7 +393,13 @@ class AccountSwitcher extends React.Component {
             <div className='acc-switcher__list-wrapper' onMouseEnter={this.onListEnter} onMouseLeave={this.onListLeave}>
                 <React.Fragment>
                     <AccountWrapper
-                        header={<Localize i18n_default_text='Deriv Accounts' />}
+                        header={
+                            <AccountTitle
+                                title={localize('Deriv Accounts')}
+                                is_eu={this.props.is_eu}
+                                onIconClick={this.showAccountTypesModal}
+                            />
+                        }
                         is_visible={this.state.is_real_deriv_visible}
                         toggleVisibility={() => {
                             this.toggleVisibility('real_deriv');
@@ -430,7 +462,13 @@ class AccountSwitcher extends React.Component {
                     <React.Fragment>
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                         <AccountWrapper
-                            header={<Localize i18n_default_text='DMT5 Accounts' />}
+                            header={
+                                <AccountTitle
+                                    title={localize('DMT5 Accounts')}
+                                    is_eu={this.props.is_eu}
+                                    onIconClick={this.showAccountTypesModal}
+                                />
+                            }
                             is_visible={this.state.is_real_dmt5_visible}
                             toggleVisibility={() => {
                                 this.toggleVisibility('real_dmt5');
@@ -588,6 +626,7 @@ AccountSwitcher.propTypes = {
     can_change_fiat_currency: PropTypes.bool,
     can_upgrade_to: PropTypes.string,
     has_any_real_account: PropTypes.bool,
+    is_eu: PropTypes.bool,
     is_loading_mt5: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
@@ -601,6 +640,7 @@ AccountSwitcher.propTypes = {
     openRealAccountSignup: PropTypes.func,
     switchAccount: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
+    toggleAccountTypesModal: PropTypes.func,
     togglePositionsDrawer: PropTypes.func,
     toggleSetCurrencyModal: PropTypes.func,
     updateMt5LoginList: PropTypes.func,
@@ -614,6 +654,7 @@ const account_switcher = withRouter(
         can_change_fiat_currency: client.can_change_fiat_currency,
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,
+        is_eu: client.is_eu,
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,
@@ -630,6 +671,7 @@ const account_switcher = withRouter(
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup: ui.openRealAccountSignup,
         toggleAccountsDialog: ui.toggleAccountsDialog,
+        toggleAccountTypesModal: ui.toggleAccountTypesModal,
         togglePositionsDrawer: ui.togglePositionsDrawer,
         toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
     }))(AccountSwitcher)

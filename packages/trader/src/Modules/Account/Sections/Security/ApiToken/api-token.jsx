@@ -7,7 +7,7 @@ import {
     Button,
     Table,
     Icon,
-    Dialog,
+    Modal,
     ThemedScrollbars,
     DesktopWrapper,
     MobileWrapper,
@@ -178,7 +178,7 @@ class ApiToken extends React.Component {
 
         return (
             <section className='api-token'>
-                <Dialog is_visible={show_delete}>
+                <Modal className='api_token__modal' is_open={show_delete} has_close_icon={false}>
                     <div className='api-token__popup'>
                         <Icon icon='IcRemoveToken' className='api-token__popup-image' />
                         <h4 className='api-token__popup-header'>{localize('Confirm delete token?')}</h4>
@@ -197,7 +197,7 @@ class ApiToken extends React.Component {
                             />
                         </div>
                     </div>
-                </Dialog>
+                </Modal>
                 <div className='api-token__wrapper'>
                     <ThemedScrollbars autoHide className='api-token__scrollbars' hideHorizontal={true}>
                         <MobileWrapper>

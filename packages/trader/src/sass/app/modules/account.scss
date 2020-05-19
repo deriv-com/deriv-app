@@ -418,16 +418,6 @@ $MIN_HEIGHT_FLOATING: calc(
         & .dc-popover__target {
             display: flex;
         }
-        & .dc-dialog__dialog {
-            width: 440px;
-            height: 312px;
-            min-width: 0;
-
-            @include mobile {
-                width: 300px;
-                height: 272px;
-            }
-        }
         & .dc-dialog__content {
             max-width: 100%;
             width: 100%;
@@ -480,32 +470,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
             @include mobile {
                 margin-left: 1.2rem;
-            }
-        }
-        &__popup {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-
-            &-header {
-                @include typeface(--paragraph-center-bold-black, none);
-                margin: 1.6rem 0 3.2rem;
-            }
-            &-image {
-                width: 12.8rem;
-                height: 12.8rem;
-            }
-            &-buttons {
-                & > button:first-child {
-                    margin-right: 1.6rem;
-                }
-            }
-            &-error {
-                margin-top: 1.6rem;
-                @include typeface(--paragraph-center-bold-red, none);
             }
         }
         &__article {
@@ -989,6 +953,41 @@ $MIN_HEIGHT_FLOATING: calc(
 
         :first-child {
             margin-right: 0.8rem;
+        }
+    }
+}
+
+.dc-modal__container_api_token__modal {
+    .api-token {
+        &__popup {
+            display: flex;
+            width: 440px;
+            height: 312px;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+
+            &-header {
+                @include typeface(--paragraph-center-bold-black, none);
+                margin: 1.6rem 0 3.2rem;
+            }
+            &-image {
+                width: 12.8rem;
+                height: 12.8rem;
+            }
+            &-buttons {
+                & > button:first-child {
+                    margin-right: 1.6rem;
+                }
+            }
+            &-error {
+                margin-top: 1.6rem;
+                @include typeface(--paragraph-center-bold-red, none);
+            }
+            @include mobile {
+                width: 300px;
+                height: 272px;
+            }
         }
     }
 }

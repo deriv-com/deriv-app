@@ -1,8 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { DesktopWrapper, MobileWrapper, Button, Modal, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { WS } from 'Services/ws-methods';
 import ErrorComponent from 'App/Components/Elements/Errors';
 import DataTable from 'App/Components/Elements/DataTable';
 import DataList from 'App/Components/Elements/DataList';
@@ -17,27 +16,17 @@ class ConnectedApps extends React.Component {
         is_error: false,
         connected_apps: [],
     };
+    columns_map = getConnectedAppsColumnsTemplate(this.handleToggleModal).reduce((map, item) => {
+        map[item.col_index] = item;
+        return map;
+    }, {});
 
     componentDidMount() {
         this.updateApp();
     }
 
-    handleRevokeAccess = () => {
-        this.setState({ is_modal_open: false, is_loading: true });
-        this.props.revokeAccess(this.state.selected_app_id).then(this.updateApp);
-    };
-
-    handleToggleModal = (app_id = null) => {
-        if (this.state.is_modal_open) {
-            this.setState({ is_modal_open: false, selected_app_id: null });
-        } else {
-            this.setState({ is_modal_open: true, selected_app_id: app_id });
-        }
-    };
-
     updateApp = () => {
-        this.props
-            .fetchConnectedApps()
+        this.fetchConnectedApps()
             .then(response => {
                 this.setState({
                     is_loading: false,
@@ -49,10 +38,40 @@ class ConnectedApps extends React.Component {
             });
     };
 
-    columns_map = getConnectedAppsColumnsTemplate(this.handleToggleModal).reduce((map, item) => {
-        map[item.col_index] = item;
-        return map;
-    }, {});
+    handleRevokeAccess = () => {
+        this.setState({ is_modal_open: false, is_loading: true });
+        this.revokeConnectedApp(this.state.selected_app_id).then(this.updateApp);
+    };
+
+    handleToggleModal = (app_id = null) => {
+        if (this.state.is_modal_open) {
+            this.setState({ is_modal_open: false, selected_app_id: null });
+        } else {
+            this.setState({ is_modal_open: true, selected_app_id: app_id });
+        }
+    };
+
+    fetchConnectedApps = () => {
+        return new Promise(async (resolve, reject) => {
+            const response_connected_apps = await WS.send({ oauth_apps: 1 });
+            if (!response_connected_apps.error) {
+                resolve(response_connected_apps.oauth_apps);
+            } else {
+                reject(response_connected_apps.error);
+            }
+        });
+    };
+
+    revokeConnectedApp = app_id => {
+        return new Promise(async (resolve, reject) => {
+            const response = await WS.send({ revoke_oauth_app: app_id });
+            if (!response.error) {
+                resolve(response.revoke_oauth_app);
+            } else {
+                reject(response.error);
+            }
+        });
+    };
 
     mobileRowRenderer = ({ row }) => {
         return (
@@ -129,11 +148,4 @@ class ConnectedApps extends React.Component {
     }
 }
 
-ConnectedApps.propTypes = {
-    fetchConnectedApps: PropTypes.func,
-    revokeAccess: PropTypes.func,
-};
-export default connect(({ client }) => ({
-    fetchConnectedApps: client.fetchConnectedApps,
-    revokeAccess: client.revokeConnectedApp,
-}))(ConnectedApps);
+export default ConnectedApps;

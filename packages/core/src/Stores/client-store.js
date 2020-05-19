@@ -1253,29 +1253,6 @@ export default class ClientStore extends BaseStore {
         }
     }
 
-    @action.bound
-    fetchConnectedApps() {
-        return new Promise(async (resolve, reject) => {
-            const response_connected_apps = await WS.send({ oauth_apps: 1 });
-            if (!response_connected_apps.error) {
-                resolve(response_connected_apps.oauth_apps);
-            } else {
-                reject(response_connected_apps.error);
-            }
-        });
-    }
-
-    @action.bound
-    revokeConnectedApp(app_id) {
-        return new Promise(async (resolve, reject) => {
-            const response = await WS.send({ revoke_oauth_app: app_id });
-            if (!response.error) {
-                resolve(response.revoke_oauth_app);
-            } else {
-                reject(response.error);
-            }
-        });
-    }
     @computed
     get is_high_risk() {
         if (isEmptyObject(this.account_status)) return false;

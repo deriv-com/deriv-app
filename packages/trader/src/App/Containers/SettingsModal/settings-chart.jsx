@@ -50,17 +50,17 @@ const ChartSettings = ({
                         items={[
                             {
                                 label: <Localize i18n_default_text='Bottom' />,
-                                value: true,
+                                value: 'true',
                                 id: 'dt_settings_bottom_radio',
                             },
                             {
                                 label: <Localize i18n_default_text='Left' />,
-                                value: false,
+                                value: 'false',
                                 id: 'dt_settings_left_radio',
                             },
                         ]}
                         name='chart_layout_default'
-                        selected={is_layout_default}
+                        defaultOption={is_layout_default.toString()}
                         onToggle={e => {
                             e.persist();
                             setChartLayout(e.target.value === 'true');

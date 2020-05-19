@@ -136,7 +136,18 @@ class PersonalDetails extends React.Component {
                                                 </Field>
                                             )}
                                             {/* TODO: [deriv-eu] Remove salutation once api is optional */}
-                                            {<RadioGroup name='salutation' items={this.props.salutation_list} />}
+
+                                            {'salutation' in this.props.value && (
+                                                <RadioGroup
+                                                    name='salutation'
+                                                    items={this.props.salutation_list}
+                                                    onToggle={e => {
+                                                        e.persist();
+                                                        setFieldValue('salutation', e.target.value);
+                                                    }}
+                                                />
+                                            )}
+
                                             {/* {'salutation' in this.props.value && (
                                                 <Field name='salutation'>
                                                     {({ field }) => (

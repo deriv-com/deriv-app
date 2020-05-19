@@ -274,7 +274,7 @@ class MT5PasswordManagerModal extends React.Component {
                                         onClick={() => {
                                             this.setState(
                                                 {
-                                                    password_type: 'main',
+                                                    password_type: 'investor',
                                                 },
                                                 () => this.multistep_ref.current?.nextStep()
                                             );

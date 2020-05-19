@@ -46,6 +46,7 @@ class MT5ResetPasswordModal extends React.Component {
         has_error: false,
         error_message: undefined,
         is_finished: false,
+        changed_password_type: '',
     };
     renderErrorBox = error => {
         this.setState({
@@ -70,7 +71,10 @@ class MT5ResetPasswordModal extends React.Component {
             } else {
                 this.setState({
                     is_finished: true,
+                    changed_password_type: password_type,
                 });
+                localStorage.removeItem('mt5_reset_password_intent');
+                localStorage.removeItem('mt5_reset_password_type');
             }
             setSubmitting(false);
         });
@@ -170,7 +174,15 @@ class MT5ResetPasswordModal extends React.Component {
                             <Localize i18n_default_text='Password saved' />
                         </div>
                         <div className='mt5-reset-password__description'>
-                            <Localize i18n_default_text='Your main password has been changed.' />
+                            <Localize
+                                i18n_default_text='Your {{account_type}} password has been changed.'
+                                values={{
+                                    account_type:
+                                        this.state.changed_password_type === 'main'
+                                            ? localize('main')
+                                            : localize('investor'),
+                                }}
+                            />
                         </div>
                         <Button primary large onClick={() => setMt5PasswordResetModal(false)}>
                             <Localize i18n_default_text='Ok' />

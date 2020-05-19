@@ -14,6 +14,7 @@ import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
+import { validLength } from 'Utils/Validator/declarative-validation-rules';
 
 const InputField = props => {
     return (
@@ -228,7 +229,11 @@ class AddressDetails extends React.Component {
             address_line_2: [v => !v || /^[\w\W\s/-]{0,70}$/gu.exec(v) !== null],
             address_city: [v => !!v, v => /^[a-zA-Z\s\W'.-]{1,35}$/gu.exec(v) !== null],
             address_state: [v => /^[a-zA-Z\s\W'.-]{0,35}$/gu.exec(v) !== null],
-            address_postcode: [v => !!v, v => /^[^+]{0,20}$/gu.exec(v) !== null],
+            address_postcode: [
+                v => !!v,
+                v => /^[-A-Za-z0-9\s]*$/gu.exec(v) !== null,
+                v => validLength(v, { min: 0, max: 20 }),
+            ],
         };
 
         const mappedKey = {
@@ -242,6 +247,20 @@ class AddressDetails extends React.Component {
         const required_messages = ['{{field_name}} is required', '{{field_name}} is not in a proper format.'];
 
         const optional_messages = ['{{field_name}} is not in a proper format.'];
+
+        const custom_messages = {
+            address_postcode: [
+                localize('{{field_name}} is required', {
+                    field_name: mappedKey.address_postcode,
+                    interpolation: { escapeValue: false },
+                }),
+                localize('Only letters, numbers, space, and hyphen are allowed.'),
+                localize('You should enter {{min_number}}-{{max_number}} characters.', {
+                    min_number: 0,
+                    max_number: 20,
+                }),
+            ],
+        };
 
         const errors = {};
 
@@ -260,6 +279,9 @@ class AddressDetails extends React.Component {
                                 options={{ interpolation: { escapeValue: false } }}
                             />
                         );
+                        break;
+                    case 'address_postcode':
+                        errors[key] = custom_messages.address_postcode[error_index];
                         break;
                     default:
                         errors[key] = (

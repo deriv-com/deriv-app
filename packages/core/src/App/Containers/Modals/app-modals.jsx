@@ -1,8 +1,8 @@
 import React from 'react';
-import { urlFor } from '_common/url';
+import { isBot, isMT5 } from '@deriv/shared/utils/platform';
+import { urlFor } from '@deriv/shared/utils/url';
 import DenialOfServiceModal from 'App/Components/Elements/Modals/DenialOfServiceModal';
 import { connect } from 'Stores/connect';
-import { isBot, isMT5 } from 'Utils/PlatformSwitcher';
 
 const AccountSignupModal = React.lazy(() =>
     import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal')
@@ -13,12 +13,18 @@ const ResetPasswordModal = React.lazy(() =>
 const SetResidenceModal = React.lazy(() =>
     import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal')
 );
+const AccountTypesModal = React.lazy(() =>
+    import(/* webpackChunkName: "account-types-modal"  */ '../AccountTypesModal')
+);
 
 const AppModals = ({
+    is_account_types_modal_visible,
     is_denial_of_service_modal_visible,
+    should_have_real_account,
     is_set_residence_modal_visible,
     url_action_param,
     switchAccount,
+    toggleAccountTypesModal,
     virtual_account_loginid,
 }) => {
     let ComponentToLoad = null;
@@ -34,7 +40,7 @@ const AppModals = ({
                 const denialOfServiceOnCancel = () => {
                     const trade_link = isMT5() ? 'user/metatrader' : 'trading';
                     const link_to = isBot() ? 'bot' : trade_link;
-                    window.open(urlFor(link_to, undefined, undefined, true));
+                    window.open(urlFor(link_to, { legacy: true }));
                 };
 
                 const denialOfServiceOnConfirm = async () => {
@@ -53,13 +59,23 @@ const AppModals = ({
             }
             break;
     }
+    // Account Types modal
+    if (should_have_real_account) {
+        toggleAccountTypesModal(true);
+    }
+    if (is_account_types_modal_visible) {
+        ComponentToLoad = <AccountTypesModal />;
+    }
 
     return ComponentToLoad ? <React.Suspense fallback={<div />}>{ComponentToLoad}</React.Suspense> : null;
 };
 
 export default connect(({ client, ui }) => ({
+    is_account_types_modal_visible: ui.is_account_types_modal_visible,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_denial_of_service_modal_visible: !client.is_client_allowed_to_visit,
+    should_have_real_account: client.should_have_real_account,
     switchAccount: client.switchAccount,
+    toggleAccountTypesModal: ui.toggleAccountTypesModal,
     virtual_account_loginid: client.virtual_account_loginid,
 }))(AppModals);

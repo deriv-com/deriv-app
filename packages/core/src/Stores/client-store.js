@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
+import { getAllowedLocalStorageOrigin } from '@deriv/shared/utils/storage';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { requestLogout, WS } from 'Services';
@@ -8,15 +9,18 @@ import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared/utils/date';
+import { isEmptyObject } from '@deriv/shared/src/utils/object/object';
 import { LocalStore, State } from '_common/storage';
 import BinarySocketGeneral from 'Services/socket-general';
-import { getAllowedLocalStorageOrigin } from 'Utils/Events/storage';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
 import { getClientAccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
+const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
+const eu_excluded_regex = new RegExp('^mt$');
+
 export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
@@ -296,6 +300,45 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_eu() {
+        const { gaming_company, financial_company } = this.landing_companies;
+        const financial_shortcode = financial_company?.shortcode;
+        const gaming_shortcode = gaming_company?.shortcode;
+        return financial_shortcode || gaming_shortcode
+            ? eu_shortcode_regex.test(financial_shortcode) || eu_shortcode_regex.test(gaming_shortcode)
+            : eu_excluded_regex.test(this.residence);
+    }
+
+    // this is true when a user needs to have a active real account for trading
+    @computed
+    get should_have_real_account() {
+        return this.standpoint.iom && !this.has_any_real_account && this.residence === 'gb';
+    }
+
+    // Shows all possible landing companies of user between all
+    @computed
+    get standpoint() {
+        const result = {
+            iom: false,
+            svg: false,
+            malta: false,
+            maltainvest: false,
+        };
+        const { gaming_company, financial_company } = this.landing_companies;
+        if (gaming_company) {
+            Object.assign(result, {
+                [gaming_company.shortcode]: !!gaming_company?.shortcode,
+            });
+        }
+        if (financial_company) {
+            Object.assign(result, {
+                [financial_company.shortcode]: !!financial_company?.shortcode,
+            });
+        }
+        return result;
+    }
+
+    @computed
     get can_upgrade() {
         return this.upgrade_info && (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
     }
@@ -428,7 +471,7 @@ export default class ClientStore extends BaseStore {
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id = response.authorize.user_id;
-
+        this.upgradeable_landing_companies = response.authorize.upgradeable_landing_companies;
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
         this.local_currency_config.decimal_places = +response.authorize.local_currencies[
             this.local_currency_config.currency
@@ -1138,6 +1181,8 @@ export default class ClientStore extends BaseStore {
                 this.root_store.gtm.pushDataLayer({
                     event: 'signup',
                 });
+
+                this.root_store.ui.showAccountTypesModalForEuropean();
             }
         });
     }
@@ -1286,6 +1331,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_high_risk() {
+        if (isEmptyObject(this.account_status)) return false;
         return this.account_status.risk_classification === 'high';
     }
 

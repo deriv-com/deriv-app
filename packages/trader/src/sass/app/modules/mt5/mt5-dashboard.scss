@@ -312,8 +312,7 @@
     border-radius: 4px;
     display: flex;
     flex-flow: column nowrap;
-    justify-content: space-between;
-    min-height: 36em;
+    min-height: 35.8rem;
     width: 30.4em;
 
     &:not(:last-child) {
@@ -333,27 +332,34 @@
         line-height: 1.45em;
     }
     &--balance {
-        @include typeface(--paragraph-left-bold-black);
+        @include typeface(--title-left-bold-black);
+        line-height: 1.5;
+        margin-top: -0.4rem;
         color: var(--text-profit-success);
     }
     &__banner {
-        position: absolute;
+        position: relative;
         transform: rotate(45deg);
         border-bottom: 2.3rem solid var(--brand-red-coral);
         border-left: 2.3rem solid transparent;
         border-right: 2.3rem solid transparent;
         height: 0;
-        width: 10.3rem;
-        left: 22.4rem;
-        bottom: 32rem;
+        width: 10.6rem;
+        left: 22rem;
+        top: 1.7rem;
         color: var(--text-colored-background);
         font-weight: bold;
         line-height: 24px;
         white-space: nowrap;
+        text-align: center;
+
+        &--demo {
+            border-bottom-color: var(--brand-secondary);
+        }
     }
     &__type {
         display: flex;
-        padding: 1.6em 1.6em;
+        padding: 1.5rem 1.6rem 1.6rem; // -1 for border
 
         &--description {
             display: inline-block;
@@ -361,11 +367,38 @@
             max-width: 19.2em;
 
             .mt5-account-card--heading {
-                margin-bottom: 0.5em;
+                margin-bottom: 0.8rem;
             }
             .mt5-account-card--paragraph {
-                width: 13em;
+                width: 18.8rem;
             }
+        }
+        &--has-banner {
+            margin-top: -23px;
+        }
+    }
+    &__display {
+        display: flex;
+        flex-wrap: wrap;
+        width: min-content;
+        justify-content: center;
+        height: fit-content;
+
+        &-text {
+            @include typeface(--title-center-bold-black);
+            color: var(--brand-red-coral);
+            line-height: 1.5;
+            margin-top: 0.4rem;
+
+            &--top-right {
+                position: relative;
+                left: 22.2rem;
+                bottom: 7.2rem;
+                margin: 0;
+            }
+        }
+        &--fixed-height {
+            height: 64px; // don't leave space for the demo text that is moved to the top right
         }
     }
     &__clipboard {
@@ -386,6 +419,7 @@
         align-items: center;
         display: flex;
         flex-direction: column;
+        margin-top: auto;
     }
     &__specs-table {
         width: 100%;
@@ -404,6 +438,8 @@
     }
     &__commission {
         text-align: center;
+        margin-top: 1.6rem;
+
         &.mt5-account-card--paragraph {
             line-height: 1.4em;
         }
@@ -413,7 +449,7 @@
         display: flex;
         height: 4rem;
         justify-content: center;
-        margin: 1.6rem;
+        margin: 1.6rem 1.6rem 1.5rem; // -1 for border
         padding: 0;
         text-decoration: none;
         width: 27rem;
@@ -476,41 +512,36 @@
 }
 
 .mt5-password-manager {
-    margin: 5.6rem auto 0;
+    margin: 5.6rem auto 3.2rem;
     max-width: 400px;
     width: 100%;
 
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
-        margin-bottom: 2.4rem;
+        margin-bottom: 3.2rem;
     }
     &--error-message {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-loss-danger);
         margin-bottom: 1em;
     }
-    &--hint {
-        @include typeface(--small-left-normal-black, none);
-        color: var(--text-less-prominent);
-        font-size: 12px;
-        padding: 1.333em 0;
-
-        @include mobile {
-            padding: 1.6rem 0 0.8rem 0;
-        }
-    }
     &__main-form,
     &__investor-wrapper {
-        margin-top: 2.4rem;
+        margin-top: 3.2rem;
 
         @include mobile {
             padding-bottom: 12rem;
         }
     }
+    .dc-password-meter__container,
+    .dc-password-input {
+        width: 30rem;
+        margin: auto;
+    }
     &__investor-wrapper {
         .mt5-password-manager--paragraph:first-child {
-            margin-bottom: 0.6em;
+            margin-bottom: 0.8rem;
         }
     }
     &__investor-form {
@@ -521,6 +552,9 @@
         @include mobile {
             max-width: unset;
         }
+    }
+    &__new-password {
+        margin-bottom: 8.6rem;
     }
     &__actions {
         align-items: center;
@@ -535,15 +569,28 @@
             margin-top: 0.8rem;
         }
     }
+    &__success {
+        text-align: center;
+        margin-top: 3.2rem;
+
+        &-header {
+            @include typeface(--paragraph-center-bold-black);
+            margin: 1.6rem 0 0.8rem;
+        }
+        &-paragraph {
+            @include typeface(--small-center-normal-black);
+        }
+        &-btn {
+            margin-top: 3.2rem;
+            width: 32.8rem;
+        }
+    }
     @include mobile {
         padding: 0 1.6rem;
         margin-top: 2.4rem;
     }
     .multistep__header {
         margin: 0 0 2.4rem 0;
-    }
-    .multistep__component {
-        text-align: center;
     }
 }
 
@@ -932,13 +979,17 @@
         width: 128px;
         margin: 2.4rem auto 0;
 
+        &--large .bottom-right-overlay {
+            left: 76px;
+            top: 76px;
+        }
         &--xlarge .bottom-right-overlay {
             left: 104px;
             top: 80px;
         }
     }
     .dc-modal-body {
-        min-width: 400px;
+        min-width: 384px;
 
         .dc-modal-header__title {
             text-align: center;

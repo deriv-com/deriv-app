@@ -18,7 +18,7 @@ const getSubmitText = (account_title, category) => {
         );
     }
 
-    return localize('You have created a Deriv {{account_title}}.', { account_title });
+    return localize('You have created a DMT5 {{account_title}} account.', { account_title });
 };
 
 const getIconFromType = type => {

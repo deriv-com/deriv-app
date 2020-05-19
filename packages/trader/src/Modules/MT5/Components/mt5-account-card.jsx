@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { Money, Button } from '@deriv/components';
 import { Localize } from '@deriv/translations';
@@ -29,12 +30,27 @@ const MT5AccountCard = ({
         );
     const cta_label = button_label || lbl_add_account;
 
+    const has_popular_banner = type.type === 'synthetic' && type.category === 'real';
+    const has_demo_banner = type.category === 'demo';
+
     return (
         <div className='mt5-account-card'>
-            <div className='mt5-account-card__banner'>
-                <Localize i18n_default_text='Most popular' />
-            </div>
-            <div className='mt5-account-card__type' id={`mt5_${type.category}_${type.type}`}>
+            {has_popular_banner && (
+                <div className='mt5-account-card__banner'>
+                    <Localize i18n_default_text='Most popular' />
+                </div>
+            )}
+            {has_demo_banner && (
+                <div className='mt5-account-card__banner mt5-account-card__banner--demo'>
+                    <Localize i18n_default_text='DEMO' />
+                </div>
+            )}
+            <div
+                className={classNames('mt5-account-card__type', {
+                    'mt5-account-card__type--has-banner': has_popular_banner || has_demo_banner,
+                })}
+                id={`mt5_${type.category}_${type.type}`}
+            >
                 {icon && <IconComponent />}
                 <div className='mt5-account-card__type--description'>
                     <h1 className='mt5-account-card--heading'>{title}</h1>
@@ -88,7 +104,7 @@ const MT5AccountCard = ({
                         </Button>
                         <Button
                             onClick={() => {
-                                onPasswordManager(existing_data.login, title);
+                                onPasswordManager(existing_data.login, title, type.category);
                             }}
                             type='button'
                             secondary

@@ -114,6 +114,7 @@ export const icons = {
         'IcPassport',
         'IcPasswordEyeHide',
         'IcPasswordEyeVisible',
+        'IcPasswordUpdated',
         'IcPauseOutline',
         'IcPause',
         'IcPaymentAgent',

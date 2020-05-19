@@ -115,6 +115,7 @@ import './common/ic-open-positions.svg';
 import './common/ic-passport.svg';
 import './common/ic-password-eye-hide.svg';
 import './common/ic-password-eye-visible.svg';
+import './common/ic-password-updated.svg';
 import './common/ic-pause-outline.svg';
 import './common/ic-pause.svg';
 import './common/ic-payment-agent.svg';

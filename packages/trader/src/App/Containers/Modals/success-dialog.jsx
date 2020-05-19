@@ -20,6 +20,7 @@ const SuccessDialog = ({
     toggleModal,
     title,
     has_close_icon,
+    width = undefined,
 }) => {
     const MainIcon = () => icon || null;
 
@@ -35,6 +36,7 @@ const SuccessDialog = ({
             has_close_icon={has_close_icon}
             small={!title}
             title={title}
+            width={width}
         >
             <Modal.Body>
                 <div

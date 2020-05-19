@@ -62,7 +62,6 @@ const parseUA = user_agent => {
 };
 
 class LoginHistory extends React.Component {
-    // data keys+values
     fields = {
         date: localize('Date and time'),
         action: localize('Action'),
@@ -70,14 +69,14 @@ class LoginHistory extends React.Component {
         ip: localize('IP address'),
         status: localize('Status'),
     };
-    // state
+
     state = {
         is_loading: true,
         fetch_limit: 12, // TODO: put it in constants or configs
         error: '',
         data: [],
     };
-    // methods
+
     getLoginHistoryColumnsTemplate = () =>
         Object.keys(this.fields).map(key => ({ title: this.fields[key], col_index: key }));
 
@@ -110,7 +109,7 @@ class LoginHistory extends React.Component {
             });
         });
     }
-    // lifecycle methods
+
     async componentDidMount() {
         const api_res = await LoginHistory.getLoginHistory(this.state.fetch_limit);
         if (api_res.api_initial_load_error) {
@@ -133,19 +132,20 @@ class LoginHistory extends React.Component {
 
         if (this.state.error) return <LoadErrorMessage error_message={this.state.error} />;
 
-        this.columns = this.getLoginHistoryColumnsTemplate();
+        const columns = this.getLoginHistoryColumnsTemplate();
+        const row_size = () => 36;
 
         return (
             <section className='login-history-container'>
-                {this.state.data && this.state.data.length > 0 ? (
+                {this.state.data?.length > 0 ? (
                     <>
                         <DesktopWrapper>
                             <DataTable
                                 className='login-history-table'
                                 data_source={this.state.data}
-                                columns={this.columns}
+                                columns={columns}
                                 custom_width={'100%'}
-                                getRowSize={() => 36}
+                                getRowSize={row_size}
                             />
                         </DesktopWrapper>
                         <MobileWrapper>

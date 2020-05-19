@@ -19,7 +19,7 @@ class RadioGroup extends React.Component {
         this.setState({
             selectedOption: e.target.value,
         });
-        this.props.onToggle && this.props.onToggle(e);
+        this.props.onToggle(e);
     }
 
     render() {

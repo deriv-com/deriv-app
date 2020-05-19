@@ -2,6 +2,7 @@ import { Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal } 
 import { Formik } from 'formik';
 import * as PropTypes from 'prop-types';
 import React from 'react';
+import Button from '@deriv/components/src/components/button';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getMtCompanies } from 'Stores/Modules/MT5/Helpers/mt5-config';
@@ -44,6 +45,7 @@ class MT5ResetPasswordModal extends React.Component {
     state = {
         has_error: false,
         error_message: undefined,
+        is_finished: false,
     };
     renderErrorBox = error => {
         this.setState({
@@ -65,6 +67,10 @@ class MT5ResetPasswordModal extends React.Component {
         WS.mt5PasswordReset(request).then(response => {
             if (response.error && response.error.code === 'InvalidToken') {
                 this.renderErrorBox(response.error);
+            } else {
+                this.setState({
+                    is_finished: true,
+                });
             }
             setSubmitting(false);
         });
@@ -83,7 +89,7 @@ class MT5ResetPasswordModal extends React.Component {
                 title={localize('Reset DMT5 password')}
             >
                 {!this.is_list_fetched && !this.state.has_error && <Loading is_fullscreen={false} />}
-                {this.is_list_fetched && !this.state.has_error && (
+                {this.is_list_fetched && !this.state.has_error && !this.state.is_finished && (
                     <ResetPasswordIntent current_list={current_list}>
                         {({ title, type, login }) => (
                             <Formik
@@ -155,6 +161,20 @@ class MT5ResetPasswordModal extends React.Component {
                     <div className='mt5-reset-password__error'>
                         <Icon icon='IcAlertDanger' size={128} />
                         <p className='mt5-reset-password__hint'>{this.state.error_message}</p>
+                    </div>
+                )}
+                {this.state.is_finished && (
+                    <div className='mt5-reset-password__success'>
+                        <Icon icon='IcMt5PasswordUpdated' size={128} />
+                        <div className='mt5-reset-password__heading'>
+                            <Localize i18n_default_text='Password saved' />
+                        </div>
+                        <div className='mt5-reset-password__description'>
+                            <Localize i18n_default_text='Your main password has been changed.' />
+                        </div>
+                        <Button primary large onClick={() => setMt5PasswordResetModal(false)}>
+                            <Localize i18n_default_text='Ok' />
+                        </Button>
                     </div>
                 )}
             </Modal>

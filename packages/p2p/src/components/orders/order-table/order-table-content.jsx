@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
 import { Loading, Icon, Button } from '@deriv/components';
-import { localize, Localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS, getModifiedP2POrderList } from 'Utils/websocket';
@@ -119,7 +119,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
             </div>
             {is_active && (
                 <Button primary large className='p2p-cashier__empty-button' onClick={() => changeTab(0)}>
-                   <Localize i18n_default_text='Buy/Sell' />
+                    <Localize i18n_default_text='Buy/Sell' />
                 </Button>
             )}
         </div>

@@ -54,6 +54,8 @@ class ApiToken extends React.Component {
             errors.token_name = localize('Token name is required.');
         } else if (token_name.length < 2 || token_name.length > 32) {
             errors.token_name = localize('Length of token name must be between 2 and 32 characters.');
+        } else if (!/^[A-Za-z0-9\s_]+$/g.test(token_name)) {
+            errors.token_name = localize('Token name must only contain letters, numbers and underscores.');
         }
 
         return errors;
@@ -76,28 +78,31 @@ class ApiToken extends React.Component {
 
     handleSubmit = async (values, { setSubmitting, setFieldError, resetForm }) => {
         const new_token_scopes = Object.keys(values).filter(item => item !== 'token_name' && values[item]);
+        if (new_token_scopes.length) {
+            const request = {
+                api_token: 1,
+                new_token: values.token_name,
+                new_token_scopes,
+            };
 
-        const request = {
-            api_token: 1,
-            new_token: values.token_name,
-            new_token_scopes,
-        };
-
-        const token_response = await WS.apiToken(request);
-        if (token_response.error) {
-            setFieldError('token_name', token_response.error.message);
+            const token_response = await WS.apiToken(request);
+            if (token_response.error) {
+                setFieldError('token_name', token_response.error.message);
+            } else {
+                this.setState({
+                    is_success: true,
+                    api_tokens: ObjectUtils.getPropertyValue(token_response, ['api_token', 'tokens']),
+                });
+                setTimeout(() => {
+                    this.setState({ is_success: false });
+                }, 500);
+            }
+            resetForm();
         } else {
-            this.setState({
-                is_success: true,
-                api_tokens: ObjectUtils.getPropertyValue(token_response, ['api_token', 'tokens']),
-            });
-            setTimeout(() => {
-                this.setState({ is_success: false });
-            }, 500);
+            setFieldError('token_name', localize('Must choose at least one scope'));
         }
 
         setSubmitting(false);
-        resetForm();
     };
 
     populateTokenResponse = response => {
@@ -288,7 +293,7 @@ class ApiToken extends React.Component {
                                                     has_effect
                                                     is_loading={isSubmitting}
                                                     is_submit_success={is_success}
-                                                    text={localize('Submit')}
+                                                    text={localize('Create')}
                                                     primary
                                                     large
                                                 />

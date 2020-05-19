@@ -133,7 +133,6 @@ class PersonalDetailsForm extends React.Component {
             // 'account_opening_reason',
             'address_line_1',
             'address_city',
-            'address_postcode',
         ];
         validateValues((val) => val, required_fields, localize('This field is required'));
         const only_alphabet_fields = ['first_name', 'last_name', 'address_state'];
@@ -687,7 +686,7 @@ class PersonalDetailsForm extends React.Component {
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
                                                         name='address_postcode'
-                                                        label={localize('Postal/ZIP Code*')}
+                                                        label={localize('Postal/ZIP Code')}
                                                         value={values.address_postcode}
                                                         error={touched.address_postcode && errors.address_postcode}
                                                         onChange={handleChange}
@@ -744,8 +743,7 @@ class PersonalDetailsForm extends React.Component {
                                                       errors.address_city ||
                                                       !values.address_city ||
                                                       errors.address_state ||
-                                                      errors.address_postcode ||
-                                                      !values.address_postcode
+                                                      errors.address_postcode
                                                   ))
                                         }
                                         has_effect

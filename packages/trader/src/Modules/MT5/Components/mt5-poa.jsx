@@ -53,7 +53,7 @@ class MT5POA extends React.Component {
             address_line_2: [v => !v || validAddress(v)],
             address_city: [v => !!v, v => validLength(v, { min: 1, max: 35 })],
             address_state: [v => !!v, v => !v || validLength(v, { min: 1, max: 35 })],
-            address_postcode: [v => !!v, v => validPostCode(v), v => validLength(v, { min: 1, max: 20 })],
+            address_postcode: [v => validPostCode(v), v => validLength(v, { min: 1, max: 20 })],
             document_file: [v => !!v, ([file]) => !!file.name],
         };
 
@@ -67,14 +67,13 @@ class MT5POA extends React.Component {
             address_state: [
                 localize('State/Province is required'),
                 localize('State/Province is not in a proper format.'),
+            ],
+            address_postcode: [
+                localize('Postal/Zip Code is not in a proper format.'),
                 localize('You should enter {{min_number}}-{{max_number}} characters.', {
                     min_number: 0,
                     max_number: 20,
                 }),
-            ],
-            address_postcode: [
-                localize('Postal/Zip Code is required'),
-                localize('Postal/Zip Code is not in a proper format.'),
             ],
             document_file: [localize('Document file is not in a proper format.')],
         };

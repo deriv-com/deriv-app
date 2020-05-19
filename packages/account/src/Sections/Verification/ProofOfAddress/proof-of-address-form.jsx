@@ -64,7 +64,7 @@ class ProofOfAddressForm extends React.Component {
         const errors = {};
         const validateValues = validate(errors, values);
 
-        const required_fields = ['address_line_1', 'address_city', 'address_postcode'];
+        const required_fields = ['address_line_1', 'address_city'];
         validateValues((val) => val, required_fields, localize('This field is required'));
 
         const permitted_characters = "- . ' # ; : ( ) , @ /";
@@ -345,8 +345,7 @@ class ProofOfAddressForm extends React.Component {
                                                 errors.address_line_2 ||
                                                 errors.address_city ||
                                                 !values.address_city ||
-                                                errors.address_postcode ||
-                                                !values.address_postcode
+                                                errors.address_postcode
                                             ) ||
                                             (document_file && document_file.length < 1) ||
                                             !!file_error_message

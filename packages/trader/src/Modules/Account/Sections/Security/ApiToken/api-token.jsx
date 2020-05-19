@@ -43,6 +43,7 @@ class ApiToken extends React.Component {
         trade: false,
         payments: false,
         admin: false,
+        trading_information: false,
     };
 
     validateFields = values => {
@@ -62,8 +63,8 @@ class ApiToken extends React.Component {
     };
 
     getScopeValue = token => {
-        const titled_scopes = token.scopes.map(scope => StringUtils.toTitleCase(scope));
-        const mapped_scopes = titled_scopes.length === 4 ? localize('All') : titled_scopes.join(', ');
+        const titled_scopes = token.scopes.map(scope => StringUtils.toSentenceCase(scope));
+        const mapped_scopes = titled_scopes.length === 5 ? localize('All') : titled_scopes.join(', ');
         const date_format = token.last_used
             ? DateUtils.formatDate(new Date(token.last_used), 'DD/MM/YYYY')
             : localize('Never');
@@ -256,6 +257,13 @@ class ApiToken extends React.Component {
                                                     description={localize(
                                                         'Open accounts, manage settings, manage token usage, and more.'
                                                     )}
+                                                />
+                                                <Card
+                                                    name='trading_information'
+                                                    value={values.trading_information}
+                                                    display_name={localize('Trading information')}
+                                                    setFieldValue={setFieldValue}
+                                                    description={localize('View the trading history of an account.')}
                                                 />
                                             </div>
                                         </Timeline.Item>

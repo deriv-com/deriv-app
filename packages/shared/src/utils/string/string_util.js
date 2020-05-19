@@ -1,6 +1,14 @@
 export const toTitleCase = str =>
     (str || '').replace(/\w[^\s/\\]*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 
+export const toSentenceCase = str => {
+    const string = str || '';
+    const replace_filter = string.replace(/-|_/g, ' ');
+    const sentenced_case = replace_filter[0].toUpperCase() + replace_filter.slice(1).toLowerCase();
+
+    return sentenced_case;
+};
+
 export const padLeft = (txt, len, char) => {
     const text = String(txt || '');
     return text.length >= len ? text : `${Array(len - text.length + 1).join(char)}${text}`;

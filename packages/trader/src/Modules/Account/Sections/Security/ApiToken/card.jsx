@@ -27,7 +27,7 @@ Card.propTypes = {
     description: PropTypes.string,
     display_name: PropTypes.string,
     name: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     setFieldValue: PropTypes.func,
 };
 

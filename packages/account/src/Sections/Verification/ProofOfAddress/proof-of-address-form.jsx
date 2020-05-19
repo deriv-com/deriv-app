@@ -9,6 +9,7 @@ import {
     validAddress,
     validPostCode,
     validLetterSymbol,
+    validLength,
 } from 'Duplicated/Utils/Validator/declarative-validation-rules';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
@@ -91,8 +92,16 @@ class ProofOfAddressForm extends React.Component {
             errors.address_state = validation_letter_symbol_message;
         }
 
-        if (values.address_postcode && !validPostCode(values.address_postcode)) {
-            errors.address_postcode = localize('Only letters, numbers, space, and hyphen are allowed.');
+        if (values.address_postcode) {
+            if (!validPostCode(values.address_postcode)) {
+                errors.address_postcode = localize('Only letters, numbers, space, and hyphen are allowed.');
+            }
+            if (!validLength(values.address_postcode, { min: 0, max: 20 })) {
+                errors.address_postcode = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+                    min_number: 0,
+                    max_number: 20,
+                });
+            }
         }
 
         return errors;

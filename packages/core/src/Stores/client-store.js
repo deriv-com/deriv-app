@@ -326,16 +326,17 @@ export default class ClientStore extends BaseStore {
             maltainvest: false,
         };
         const { gaming_company, financial_company } = this.landing_companies;
-        if (gaming_company) {
+        if (gaming_company?.shortcode) {
             Object.assign(result, {
                 [gaming_company.shortcode]: !!gaming_company?.shortcode,
             });
         }
-        if (financial_company) {
+        if (financial_company?.shortcode) {
             Object.assign(result, {
                 [financial_company.shortcode]: !!financial_company?.shortcode,
             });
         }
+
         return result;
     }
 

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useState, useEffect, Children } from 'react';
+import React from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { positionPropType } from './utils';
 import ArrowButton from './arrow-button.jsx';
@@ -11,8 +11,8 @@ const swipe_config = {
 };
 
 const Collapsible = ({ as, is_collapsed, position = 'top', children, onClick, title }) => {
-    const [is_open, expand] = useState(!is_collapsed);
-    const [should_show_collapsible, setShouldShowCollapsible] = useState(false);
+    const [is_open, expand] = React.useState(!is_collapsed);
+    const [should_show_collapsible, setShouldShowCollapsible] = React.useState(false);
 
     const toggleExpand = () => {
         const new_state = !is_open;
@@ -22,12 +22,14 @@ const Collapsible = ({ as, is_collapsed, position = 'top', children, onClick, ti
         }
     };
 
-    useEffect(() => {
+    React.useEffect(() => {
         expand(!is_collapsed);
-        setShouldShowCollapsible(Children.toArray(children).some(({ props }) => 'collapsible' in props));
+        setShouldShowCollapsible(React.Children.toArray(children).some(({ props }) => 'collapsible' in props));
     }, [is_collapsed]);
 
-    useEffect(() => setShouldShowCollapsible(Children.toArray(children).some(({ props }) => 'collapsible' in props)));
+    React.useEffect(() =>
+        setShouldShowCollapsible(React.Children.toArray(children).some(({ props }) => 'collapsible' in props))
+    );
 
     const swipe_handlers = useSwipeable({
         onSwipedUp: () => !is_open && should_show_collapsible && expand(true),
@@ -51,7 +53,7 @@ const Collapsible = ({ as, is_collapsed, position = 'top', children, onClick, ti
         >
             {should_show_collapsible && position === 'top' && arrow_button}
             <div className='dc-collapsible__content'>
-                {Children.map(children, element => {
+                {React.Children.map(children, element => {
                     if (!element) return element;
                     const collapsed_class = classNames('dc-collapsible__item', element.props.className, {
                         'dc-collapsible__item--collapsed': 'collapsible' in element.props && !is_open,

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Dropdown, ButtonToggle } from '@deriv/components';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React from 'react';
 import InputField from 'App/Components/Form/InputField';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { connect } from 'Stores/connect';
@@ -51,7 +51,7 @@ const AdvancedDuration = ({
     };
 
     return (
-        <Fragment>
+        <>
             {expiry_list.length > 1 && (
                 <ButtonToggle
                     id='dt_advanced_duration_toggle'
@@ -63,7 +63,7 @@ const AdvancedDuration = ({
                 />
             )}
             {expiry_type === 'duration' ? (
-                <Fragment>
+                <>
                     <div className='duration-container'>
                         {duration_units_list.length > 1 && (
                             <Dropdown
@@ -102,9 +102,9 @@ const AdvancedDuration = ({
                             />
                         )}
                     </div>
-                </Fragment>
+                </>
             ) : (
-                <Fragment>
+                <>
                     <div className={endtime_container_class}>
                         <TradingDatePicker
                             id='dt_advanced_duration_datepicker'
@@ -116,9 +116,9 @@ const AdvancedDuration = ({
                         // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
                         }
                     </div>
-                </Fragment>
+                </>
             )}
-        </Fragment>
+        </>
     );
 };
 

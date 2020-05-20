@@ -8,7 +8,7 @@ import {
     Table,
     UILoader,
 } from '@deriv/components';
-import React, { useState } from 'react';
+import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -22,7 +22,7 @@ const MT5AttributeDescriberModal = ({ is_visible, toggleModal, message }) => (
 );
 
 const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
-    const [is_visible, setIsVisible] = useState(false);
+    const [is_visible, setIsVisible] = React.useState(false);
     const toggleModal = () => setIsVisible(!is_visible);
 
     return tooltip ? (

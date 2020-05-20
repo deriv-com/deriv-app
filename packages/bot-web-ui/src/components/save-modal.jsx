@@ -108,7 +108,7 @@ const SaveModal = ({
                             </Field>
                             <div className='save-type__checkbox-description'>
                                 {localize(
-                                    'A collection allow you to save block as an individual part which can be add into other bot.'
+                                    'Enabling this allows you to save your blocks as one collection which can be easily integrated into other bots.'
                                 )}
                             </div>
                         </>

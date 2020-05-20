@@ -92,7 +92,7 @@ export const getSocketURL = () => {
     return server_url;
 };
 
-export const checkAndSetStagingEndpoint = () => {
+export const checkAndSetEndpointFromUrl = () => {
     if (/^(staging\.deriv\.app|(.*)\.binary\.sx)$/i.test(location.hostname)) {
         const url_params = new URLSearchParams(location.search.slice(1));
 

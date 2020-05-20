@@ -4,7 +4,7 @@ import {
     isProduction,
     getAppId,
     getSocketURL,
-    checkAndSetStagingEndpoint,
+    checkAndSetEndpointFromUrl,
 } from './config';
 
 export default {
@@ -13,5 +13,5 @@ export default {
     isProduction,
     getAppId,
     getSocketURL,
-    checkAndSetStagingEndpoint,
+    checkAndSetEndpointFromUrl,
 };

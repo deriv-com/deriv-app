@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
-import React, { useState } from 'react';
+import React from 'react';
 import { toMoment } from '@deriv/shared/utils/date';
 import DatePicker from 'Components/date-picker';
 import Theme from '../shared/theme';
@@ -118,7 +118,7 @@ stories
         </Theme>
     ))
     .add('mode', () => {
-        const [footer, setFooterText] = useState('');
+        const [footer, setFooterText] = React.useState('');
 
         const onChange = e => {
             setFooterText(`Duration: ${e.duration} ${e.duration === 1 ? 'day' : 'days'}`);

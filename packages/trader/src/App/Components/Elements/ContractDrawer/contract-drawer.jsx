@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
@@ -13,7 +13,7 @@ import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier
 import ContractDrawerCard from './contract-drawer-card.jsx';
 import { SwipeableContractAudit } from './swipeable-components.jsx';
 
-class ContractDrawer extends Component {
+class ContractDrawer extends React.Component {
     state = {
         is_shade_on: false,
         should_show_contract_audit: false,

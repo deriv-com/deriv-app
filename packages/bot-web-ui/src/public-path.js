@@ -1,4 +1,4 @@
-import { setSmartChartsPublicPath } from 'smartcharts-beta';
+import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
 
 const getUrlBase = (path = '') => {
     const l = window.location;

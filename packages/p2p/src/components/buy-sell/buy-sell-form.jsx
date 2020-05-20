@@ -11,7 +11,14 @@ import IconClose from 'Assets/icon-close.jsx';
 import FormError from '../form/error.jsx';
 
 const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
-    const [total_amount, setTotalAmount] = React.useState(ad.display_min_available);
+    const [total_amount, setTotalAmount] = React.useState(
+        CurrencyUtils.formatMoney(
+            ad.transaction_currency,
+            ad.min_available * ad.price_rate,
+            true,
+            ad.transaction_currency_decimals
+        )
+    );
     const is_buyer = ad.type === 'buy';
     const initial_values = {
         amount: ad.min_available,

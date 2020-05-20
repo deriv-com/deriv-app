@@ -48,6 +48,7 @@ class AccountWizard extends React.Component {
 
     componentDidMount() {
         this.fetchFromStorage();
+        this.props.fetchStatesList();
         if (!this.residence_list?.length) {
             const items = this.state.items.slice(0);
             this.getCountryCode().then(phone_idd => {

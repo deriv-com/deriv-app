@@ -26,9 +26,12 @@ export const EXPERIAN = {
  * @param {object} options
  * @return {string} localized title
  */
-export const getAccountTitle = (short_code, { is_im_residence = false } = {}) => {
+export const getAccountTitle = (
+    short_code,
+    { is_isle_of_man_residence = false, is_belgium_residence = false } = {}
+) => {
     // TODO: [deriv-eu] merge if statement and switch together once more residence cases are found.
-    if (is_im_residence) {
+    if (is_isle_of_man_residence || is_belgium_residence) {
         return localize('Real Synthetic');
     }
 
@@ -46,11 +49,11 @@ export const getAccountTitle = (short_code, { is_im_residence = false } = {}) =>
 };
 
 /**
- *
  * @param {string} landing_company_shortcode
  * @param {boolean} is_fully_authenticated
  * @param {boolean} is_age_verified
- * @param {boolean} is_im_residence
+ * @param {boolean} is_isle_of_man_residence
+ * @param {boolean} is_belgium_residence,
  *
  * @return {EXPERIAN.WARN|EXPERIAN.SUCCESS|EXPERIAN.DANGER}
  */
@@ -58,7 +61,8 @@ export const getExperianResult = ({
     landing_company_shortcode = '',
     is_fully_authenticated = false,
     is_age_verified = false,
-    is_im_residence = false,
+    is_isle_of_man_residence = false,
+    is_belgium_residence = false,
 }) => {
     const getIOMStatus = () => {
         if (is_fully_authenticated) return EXPERIAN.SUCCESS;
@@ -67,7 +71,8 @@ export const getExperianResult = ({
         return EXPERIAN.DANGER;
     };
 
-    if (landing_company_shortcode === 'svg' || is_im_residence) return EXPERIAN.SUCCESS;
+    if (landing_company_shortcode === 'svg' || is_isle_of_man_residence || is_belgium_residence)
+        return EXPERIAN.SUCCESS;
     if (landing_company_shortcode === 'iom') return getIOMStatus({ is_fully_authenticated, is_age_verified });
 
     return EXPERIAN.SUCCESS;

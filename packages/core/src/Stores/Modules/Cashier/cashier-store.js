@@ -171,7 +171,7 @@ export default class CashierStore extends BaseStore {
         // so we don't have any unmount function here and everything gets reset on switch instead
         this.disposeSwitchAccount();
         this.onSwitchAccount(this.accountSwitcherListener);
-
+        this.onThemeChange(this.onThemeChangeListener);
         // we need to see if client's country has PA
         // if yes, we can show the PA tab in cashier
         if (!this.config.payment_agent.list.length) {
@@ -1009,5 +1009,13 @@ export default class CashierStore extends BaseStore {
         this.onRemount();
 
         return Promise.resolve();
+    }
+
+    onThemeChangeListener() {
+        const is_deposit = this.active_container === 'deposit';
+        const is_crypto = CurrencyUtils.isCryptocurrency(this.root_store.client.currency);
+
+        // reset cashier so crypto iframe is in correct theme
+        if (is_deposit && is_crypto) this.accountSwitcherListener();
     }
 }

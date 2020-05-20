@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, Field } from 'formik';
-import { localize } from '@deriv/translations';
 import { Input, Button } from '@deriv/components';
+import { localize } from '@deriv/translations';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { WS } from 'Services/ws-methods';
 

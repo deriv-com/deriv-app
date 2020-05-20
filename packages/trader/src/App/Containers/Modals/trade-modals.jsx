@@ -18,13 +18,19 @@ const TradeModals = ({
     resetPurchase,
     services_error,
 }) => {
-    const marketUnavailableOnConfirm = () => {
+    const resetToPreviousMarket = () => {
         setHasOnlyForwardingContracts(false);
         resetPreviousSymbol();
     };
 
-    const marketUnavailableOnCancel = () =>
-        window.open(urlFor('trading', { legacy: true })) && setHasOnlyForwardingContracts(false);
+    const marketUnavailableOnConfirm = () => {
+        resetToPreviousMarket();
+    };
+
+    const marketUnavailableOnCancel = () => {
+        window.open(urlFor('trading', { legacy: true }));
+        resetToPreviousMarket();
+    };
 
     const servicesErrorModalOnConfirm = () => {
         toggleServicesErrorModal(false);

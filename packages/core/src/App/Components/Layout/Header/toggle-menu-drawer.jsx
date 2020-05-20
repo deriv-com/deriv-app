@@ -54,12 +54,13 @@ class ToggleMenuDrawer extends React.Component {
         this.is_mounted = true;
         WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
-                const { authentication } = this.props.account_status;
+                const { authentication, status } = this.props.account_status;
                 const needs_financial_assessment =
                     this.props.is_high_risk || status.includes('financial_information_not_complete');
                 const needs_verification =
                     authentication.needs_verification.includes('identity') ||
                     authentication.needs_verification.includes('document');
+
                 if (this.is_mounted) this.setState({ needs_financial_assessment, needs_verification });
             }
         });

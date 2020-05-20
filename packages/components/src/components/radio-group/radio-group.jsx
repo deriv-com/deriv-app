@@ -7,7 +7,7 @@ class RadioGroup extends React.Component {
         super(props);
 
         this.state = {
-            selected_option: this.props.default_option,
+            selected_option: this.props.selected,
         };
     }
 
@@ -27,7 +27,7 @@ class RadioGroup extends React.Component {
     };
 
     render() {
-        const { items, className, name } = this.props;
+        const { items, className, name, required } = this.props;
 
         return (
             <div className={classNames('dc-radio-group', className)}>
@@ -42,6 +42,7 @@ class RadioGroup extends React.Component {
                             checked={this.state.selected_option === item.value}
                             onChange={this.onChange}
                             disabled={item.disabled}
+                            required={required}
                         />
                         <span
                             className={classNames('dc-radio-group__circle', {
@@ -64,7 +65,8 @@ RadioGroup.propTypes = {
         })
     ),
     onToggle: PropTypes.func,
-    default_option: PropTypes.any,
+    selected: PropTypes.any,
+    required: PropTypes.bool,
 };
 
 export default RadioGroup;

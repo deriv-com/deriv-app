@@ -1,18 +1,18 @@
 import {
     Autocomplete,
-    Div100vhContainer,
     AutoHeightWrapper,
-    Input,
-    ThemedScrollbars,
     DateOfBirthPicker,
+    Div100vhContainer,
     FormSubmitButton,
+    Input,
     RadioGroup,
+    ThemedScrollbars,
 } from '@deriv/components';
-import { Formik, Field } from 'formik';
-import React from 'react';
+import { toMoment } from '@deriv/shared/utils/date';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
-import { toMoment } from '@deriv/shared/utils/date';
+import { Field, Formik } from 'formik';
+import React from 'react';
 import 'Sass/details-form.scss';
 
 const DateOfBirthField = props => (
@@ -141,10 +141,12 @@ class PersonalDetails extends React.Component {
                                                 <RadioGroup
                                                     name='salutation'
                                                     items={this.props.salutation_list}
+                                                    selected={values.salutation}
                                                     onToggle={e => {
                                                         e.persist();
                                                         setFieldValue('salutation', e.target.value);
                                                     }}
+                                                    required
                                                 />
                                             )}
 

@@ -94,22 +94,18 @@ export const personalDetailsConfig = ({ can_upgrade_to }) => {
             ],
             salutation_list: [
                 {
-                    id: 'Mr',
                     label: localize('Mr'),
                     value: 'Mr',
                 },
                 {
-                    id: 'Ms',
                     label: localize('Ms'),
                     value: 'Ms',
                 },
                 {
-                    id: 'Mrs',
                     label: localize('Mrs'),
                     value: 'Mrs',
                 },
                 {
-                    id: 'Miss',
                     label: localize('Miss'),
                     value: 'Miss',
                 },

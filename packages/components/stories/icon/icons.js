@@ -216,6 +216,7 @@ export const icons = {
         'IcMt5DeviceLaptop',
         'IcMt5DevicePhone',
         'IcMt5DeviceTablet',
+        'IcMt5Expired',
         'IcMt5FinancialPlatform',
         'IcMt5FinancialStpPlatform',
         'IcMt5FinancialStp',

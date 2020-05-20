@@ -229,12 +229,12 @@
     }
     &__error {
         display: flex;
-        width: 32.8rem;
+        width: 38.4rem;
         height: 28.4rem;
         flex-direction: column;
         align-items: center;
-        justify-content: space-around;
-        padding-bottom: 4rem;
+        justify-content: flex-start;
+        padding: 2rem 0;
     }
     &__description {
         @include typeface(--paragraph-left-normal-black);

@@ -209,6 +209,7 @@ import './mt5/ic-mt5-device-desktop.svg';
 import './mt5/ic-mt5-device-laptop.svg';
 import './mt5/ic-mt5-device-phone.svg';
 import './mt5/ic-mt5-device-tablet.svg';
+import './mt5/ic-mt5-expired.svg';
 import './mt5/ic-mt5-financial-platform.svg';
 import './mt5/ic-mt5-financial-stp-platform.svg';
 import './mt5/ic-mt5-financial-stp.svg';

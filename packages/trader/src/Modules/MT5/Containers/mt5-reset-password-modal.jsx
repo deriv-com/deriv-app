@@ -1,7 +1,9 @@
-import { Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal } from '@deriv/components';
 import { Formik } from 'formik';
 import * as PropTypes from 'prop-types';
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import Button from '@deriv/components/src/components/button';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -27,8 +29,6 @@ const ResetPasswordIntent = ({ current_list, children, ...props }) => {
         title = getMtCompanies()[group][type].title;
     } else {
         // Set a default intent
-        group = '';
-        type = '';
         login = '';
         title = '';
     }
@@ -54,6 +54,12 @@ class MT5ResetPasswordModal extends React.Component {
             error_message: error.message,
         });
     };
+    clearAddressBar = () => {
+        localStorage.removeItem('mt5_reset_password_intent');
+        localStorage.removeItem('mt5_reset_password_type');
+        this.props.history.push(`${routes.mt5}`);
+    };
+
     resetPassword = (values, password_type, login, actions) => {
         const { setSubmitting } = actions;
         const url_params = new URLSearchParams(window.location.search);
@@ -73,8 +79,7 @@ class MT5ResetPasswordModal extends React.Component {
                     is_finished: true,
                     changed_password_type: password_type,
                 });
-                localStorage.removeItem('mt5_reset_password_intent');
-                localStorage.removeItem('mt5_reset_password_type');
+                this.clearAddressBar();
             }
             setSubmitting(false);
         });
@@ -163,8 +168,21 @@ class MT5ResetPasswordModal extends React.Component {
                 )}
                 {this.state.has_error && (
                     <div className='mt5-reset-password__error'>
-                        <Icon icon='IcAlertDanger' size={128} />
-                        <p className='mt5-reset-password__hint'>{this.state.error_message}</p>
+                        <Icon icon='IcMt5Expired' size={128} />
+                        <p className='mt5-reset-password__heading'>{this.state.error_message}</p>
+                        <p className='mt5-reset-password__description'>
+                            <Localize i18n_default_text='Please request a new password reset.' />
+                        </p>
+                        <Button
+                            primary
+                            large
+                            onClick={() => {
+                                this.clearAddressBar();
+                                setMt5PasswordResetModal(false);
+                            }}
+                        >
+                            <Localize i18n_default_text='Ok' />
+                        </Button>
                     </div>
                 )}
                 {this.state.is_finished && (
@@ -200,8 +218,10 @@ MT5ResetPasswordModal.propTypes = {
     current_list: PropTypes.any,
 };
 
-export default connect(({ modules: { mt5 } }) => ({
-    is_mt5_reset_password_modal_enabled: mt5.is_mt5_reset_password_modal_enabled,
-    setMt5PasswordResetModal: mt5.setMt5PasswordResetModal,
-    current_list: mt5.current_list,
-}))(MT5ResetPasswordModal);
+export default withRouter(
+    connect(({ modules: { mt5 } }) => ({
+        is_mt5_reset_password_modal_enabled: mt5.is_mt5_reset_password_modal_enabled,
+        setMt5PasswordResetModal: mt5.setMt5PasswordResetModal,
+        current_list: mt5.current_list,
+    }))(MT5ResetPasswordModal)
+);

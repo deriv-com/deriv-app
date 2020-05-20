@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
@@ -12,7 +12,7 @@ import { textValidator, lengthValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
 import AdSummary from './my-ads-summary.jsx';
 
-class FormAds extends Component {
+class FormAds extends React.Component {
     state = {
         error_message: '',
         is_loading: true,
@@ -69,7 +69,7 @@ class FormAds extends Component {
 
     render() {
         return (
-            <Fragment>
+            <>
                 <PageReturn onClick={() => this.props.handleShowForm(false)} page_title={localize('Create new ad')} />
                 {this.state.is_loading ? (
                     <Loading is_fullscreen={false} />
@@ -315,7 +315,7 @@ class FormAds extends Component {
                         }}
                     </Formik>
                 )}
-            </Fragment>
+            </>
         );
     }
 

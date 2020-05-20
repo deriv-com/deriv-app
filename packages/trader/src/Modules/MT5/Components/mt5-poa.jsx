@@ -1,6 +1,6 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import {
     AutoHeightWrapper,
     FormSubmitButton,
@@ -30,7 +30,7 @@ import { InputField } from './mt5-personal-details-form.jsx';
 
 const form = React.createRef();
 
-class MT5POA extends Component {
+class MT5POA extends React.Component {
     file_uploader_ref = undefined;
     state = {
         document_file: undefined,

@@ -16,7 +16,7 @@ class Account extends React.Component {
     // TODO: find better fix for no-op issue
     is_mounted = false;
     state = {
-        is_high_risk_client: false,
+        needs_financial_assessment: false,
         is_loading: true,
         allow_document_upload: false,
     };
@@ -26,11 +26,13 @@ class Account extends React.Component {
         WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
                 const { status } = this.props.account_status;
-                const is_high_risk_client = this.props.is_high_risk;
+                const needs_financial_assessment =
+                    this.props.is_high_risk || status.includes('financial_information_not_complete');
                 const allow_document_upload = status.includes('allow_document_upload');
+
                 if (this.is_mounted)
                     this.setState({
-                        is_high_risk_client,
+                        needs_financial_assessment,
                         is_loading: false,
                         allow_document_upload,
                     });
@@ -47,7 +49,7 @@ class Account extends React.Component {
     onClickClose = () => this.props.routeBackInApp(this.props.history);
 
     render() {
-        const { is_high_risk_client, is_loading, allow_document_upload } = this.state;
+        const { needs_financial_assessment, is_loading, allow_document_upload } = this.state;
 
         const subroutes = flatten(this.props.routes.map(i => i.subroutes));
         let list_groups = [...this.props.routes];
@@ -73,7 +75,7 @@ class Account extends React.Component {
         this.props.routes.forEach(menu_item => {
             menu_item.subroutes.forEach(route => {
                 if (route.path === routes.financial_assessment) {
-                    route.is_disabled = !is_high_risk_client;
+                    route.is_disabled = !needs_financial_assessment;
                 }
 
                 if (route.path === routes.proof_of_identity || route.path === routes.proof_of_address) {

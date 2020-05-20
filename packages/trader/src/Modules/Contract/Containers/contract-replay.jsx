@@ -179,6 +179,7 @@ class Chart extends React.Component {
                 margin={this.props.margin || null}
                 isMobile={isMobile()}
                 enabledNavigationWidget={isDesktop()}
+                enabledChartFooter={false}
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}

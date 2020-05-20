@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { Tabs } from '@deriv/components';
@@ -23,7 +23,7 @@ const path = {
     // my_profile: 3,
 };
 
-class App extends Component {
+class App extends React.Component {
     constructor(props) {
         super(props);
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
 import { Loading, Icon, Button } from '@deriv/components';
@@ -28,7 +28,7 @@ const OrderRowLoader = () => (
 );
 
 const OrderEmptyStates = () => {
-    const { changeTab } = useContext(Dp2pContext);
+    const { changeTab } = React.useContext(Dp2pContext);
 
     return (
         <div className='orders__empty'>
@@ -40,18 +40,18 @@ const OrderEmptyStates = () => {
 };
 
 const OrderTableContent = ({ showDetails, is_active }) => {
-    const { list_item_limit, order_offset, orders, setOrders, setOrderOffset } = useContext(Dp2pContext);
-    const [is_mounted, setIsMounted] = useState(false);
-    const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
-    const [api_error_message, setApiErrorMessage] = useState('');
-    const [is_loading, setIsLoading] = useState(true);
+    const { list_item_limit, order_offset, orders, setOrders, setOrderOffset } = React.useContext(Dp2pContext);
+    const [is_mounted, setIsMounted] = React.useState(false);
+    const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
+    const [api_error_message, setApiErrorMessage] = React.useState('');
+    const [is_loading, setIsLoading] = React.useState(true);
 
-    useEffect(() => {
+    React.useEffect(() => {
         setIsMounted(true);
         return () => setIsMounted(false);
     }, []);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (is_mounted) {
             setIsLoading(true);
             loadMoreOrders(order_offset);

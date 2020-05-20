@@ -1,5 +1,5 @@
 import { inject } from 'mobx-react';
-import React, { Component } from 'react';
+import React from 'react';
 
 function connectMainStore(mapperFunction) {
     // Combine both stores and props, with props taking precedence
@@ -13,7 +13,7 @@ function connectMainStore(mapperFunction) {
 
 function connectCustomStore(mapperFunction, CustomStore) {
     return WrappedComponent => {
-        class StoredComponent extends Component {
+        class StoredComponent extends React.Component {
             constructor(props) {
                 super(props);
                 const { root_store } = this.props;

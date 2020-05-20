@@ -10,6 +10,7 @@ import BotNotificationMessages from './components/bot-notification-messages.jsx'
 import QuickStrategy from './components/quick-strategy.jsx';
 import RunPanel from './components/run-panel.jsx';
 import Toolbar from './components/toolbar.jsx';
+import RoutePromptDialog from './components/route-prompt-dialog.jsx';
 import RootStore from './stores';
 import GTM from './utils/gtm';
 import './assets/sass/app.scss';
@@ -33,20 +34,20 @@ class App extends React.Component {
             core: { client },
             flyout,
             toolbar,
+            save_modal,
             quick_strategy,
             load_modal,
         } = this.root_store;
         const { handleFileChange } = load_modal;
         const { toggleStrategyModal } = quick_strategy;
-        const { onBotNameTyped } = toolbar;
         this.dbot_store = {
             is_mobile: false,
             client,
             flyout,
             toolbar,
+            save_modal,
             toggleStrategyModal,
             handleFileChange,
-            onBotNameTyped,
         };
         this.api_helpers_store = { ws: this.root_store.ws, server_time: this.root_store.server_time };
     }
@@ -71,6 +72,7 @@ class App extends React.Component {
         // Ensure account switch is re-enabled.
         const { ui } = this.root_store.core;
         ui.setAccountSwitcherDisabledMessage(false);
+        ui.setPromptHandler(false);
     }
 
     /**
@@ -177,6 +179,7 @@ class App extends React.Component {
                     <QuickStrategy />
                     <FooterExtension />
                     <Audio />
+                    <RoutePromptDialog />
                 </div>
             </Provider>
         );

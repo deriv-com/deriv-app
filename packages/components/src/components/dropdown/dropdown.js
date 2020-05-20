@@ -14,42 +14,16 @@ export const getDisplayText = (list, value) => {
     return text;
 };
 
-export const getItemFromValue = (list, value) => {
-    const findInArray = arr_list => arr_list.findIndex(item => item.value === value);
-    let item = {};
-    if (Array.isArray(list)) {
-        item = { number: findInArray(list), length: list.length };
-    } else {
-        Object.keys(list).some(key => {
-            item = { number: findInArray(list[key]), length: list[key].length };
-            return item;
-        });
-    }
-    return item;
+export const findNextFocusableNode = active_node => {
+    if (!active_node) return null;
+    if (active_node.attributes.tabIndex) return active_node;
+    return findNextFocusableNode(active_node.nextSibling);
 };
 
-export const getValueFromIndex = (list, index) => {
-    const findInArray = arr_list => arr_list[index];
-    let result;
-    if (Array.isArray(list)) {
-        result = findInArray(list);
-    } else {
-        Object.keys(list).some(key => {
-            result = findInArray(list[key]);
-            return result.value;
-        });
-    }
-    return result.value;
-};
-
-export const getPrevIndex = (index, length) => {
-    const prev_index = index - 1 < 0 ? length - 1 : index - 1;
-    return prev_index;
-};
-
-export const getNextIndex = (index, length) => {
-    const next_index = index + 1 === length ? 0 : index + 1;
-    return next_index;
+export const findPreviousFocusableNode = active_node => {
+    if (!active_node) return null;
+    if (active_node.attributes.tabIndex) return active_node;
+    return findPreviousFocusableNode(active_node.previousSibling);
 };
 
 export const listPropType = () =>

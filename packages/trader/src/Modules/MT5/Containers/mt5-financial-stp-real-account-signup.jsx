@@ -220,7 +220,12 @@ class MT5FinancialStpRealAccountSignup extends Component {
         );
         const height = this.getCurrent('height') || 'auto';
         return (
-            <div className='mt5-financial-stp-modal' id='real_mt5_financial_stp_account_opening'>
+            <Div100vhContainer
+                className='mt5-financial-stp-modal'
+                id='real_mt5_financial_stp_account_opening'
+                is_disabled={isDesktop()}
+                height_offset='40px'
+            >
                 <div className='mt5-financial-stp-modal__heading'>
                     {this.getCurrent() && (
                         <>
@@ -249,11 +254,7 @@ class MT5FinancialStpRealAccountSignup extends Component {
                         </>
                     )}
                 </div>
-                <Div100vhContainer
-                    className='mt5-financial-stp-modal__body'
-                    is_disabled={isDesktop()}
-                    height_offset='40px'
-                >
+                <div className='mt5-financial-stp-modal__body'>
                     <BodyComponent
                         value={form_value}
                         index={this.state_index}
@@ -264,8 +265,8 @@ class MT5FinancialStpRealAccountSignup extends Component {
                         onSave={this.saveFormData}
                         {...passthrough}
                     />
-                </Div100vhContainer>
-            </div>
+                </div>
+            </Div100vhContainer>
         );
     }
 }

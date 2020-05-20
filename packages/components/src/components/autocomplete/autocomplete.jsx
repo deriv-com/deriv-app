@@ -229,6 +229,7 @@ class Autocomplete extends React.PureComponent {
                                 className={{
                                     'dc-autocomplete__trailing-icon': true,
                                     'dc-autocomplete__trailing-icon--opened': this.state.should_show_list,
+                                    'dc-autocomplete__trailing-icon--disabled': otherProps.disabled,
                                 }}
                             />
                         }

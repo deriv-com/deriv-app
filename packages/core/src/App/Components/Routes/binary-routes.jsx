@@ -1,11 +1,13 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { Switch, Prompt } from 'react-router-dom';
 import { Loading } from '@deriv/components';
+import { connect } from 'Stores/connect';
 import getRoutesConfig from 'App/Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 
 const BinaryRoutes = props => (
     <React.Suspense fallback={<Loading />}>
+        <Prompt when={props.prompt_when} message={props.promptFn} />
         <Switch>
             {getRoutesConfig().map((route, idx) => (
                 <RouteWithSubRoutes key={idx} {...route} {...props} />
@@ -14,4 +16,7 @@ const BinaryRoutes = props => (
     </React.Suspense>
 );
 
-export default BinaryRoutes;
+export default connect(({ ui }) => ({
+    prompt_when: ui.prompt_when,
+    promptFn: ui.promptFn,
+}))(BinaryRoutes);

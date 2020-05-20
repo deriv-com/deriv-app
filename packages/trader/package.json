@@ -106,7 +106,7 @@
     "@babel/polyfill": "^7.4.4",
     "@binary-com/binary-document-uploader": "^2.4.4",
     "@deriv/components": "^1.0.0",
-    "@deriv/deriv-api": "^1.0.1",
+    "@deriv/deriv-api": "^1.0.5",
     "@deriv/shared": "^1.0.0",
     "@deriv/translations": "^1.0.0",
     "acorn": "^6.1.1",
@@ -133,12 +133,12 @@
     "react-content-loader": "^4.2.1",
     "react-dom": "~16.8.6",
     "react-i18next": "^10.11.1",
+    "react-loadable": "^5.5.0",
     "react-pose": "^4.0.10",
     "react-router-dom": "^5.0.1",
     "react-transition-group": "^2.5.0",
     "react-window": "^1.8.4",
     "smartcharts-beta": "^0.8.0-betam.10",
-    "url-polyfill": "^1.1.5",
     "web-push-notifications": "^3.2.15",
     "workbox-webpack-plugin": "^4.3.1"
   }

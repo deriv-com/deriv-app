@@ -39,6 +39,7 @@
             @include typeface(--paragraph-center-normal-black);
             color: var(--text-prominent);
             display: flex;
+            white-space: nowrap;
 
             &--placeholder:after {
                 content: attr(placeholder);
@@ -137,6 +138,9 @@
             content: '\002303';
             display: block;
             height: 0.53em; // center content glyph
+        }
+        &--up {
+            transform: rotate(-180deg);
         }
     }
     &:active,

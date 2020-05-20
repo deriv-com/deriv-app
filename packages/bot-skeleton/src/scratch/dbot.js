@@ -28,9 +28,9 @@ class DBot {
             ApiHelpers.setInstance(api_helpers_store);
             DBotStore.setInstance(store);
             const window_width = window.innerWidth;
-            let workspaceScale = 0.9;
+            let workspaceScale = 0.8;
 
-            const { handleFileChange, onBotNameTyped } = DBotStore.instance;
+            const { handleFileChange } = DBotStore.instance;
             if (window_width < 1640) {
                 const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
                 const zoom_scale = scratch_div_width / window_width;
@@ -73,8 +73,9 @@ class DBot {
             const event_group = `dbot-load${Date.now()}`;
             Blockly.Events.setGroup(event_group);
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
+            const { save_modal } = DBotStore.instance;
 
-            onBotNameTyped(file_name);
+            save_modal.updateBotName(file_name);
             this.workspace.cleanUp();
             this.workspace.clearUndo();
 

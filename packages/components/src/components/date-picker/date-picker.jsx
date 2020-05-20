@@ -16,7 +16,7 @@ class DatePicker extends React.PureComponent {
         date: this.props.value ? toMoment(this.props.value).format(this.props.display_format) : '',
         duration: daysFromTodayTo(this.props.value),
         is_datepicker_visible: false,
-        is_placeholder_visible: this.props.placeholder,
+        is_placeholder_visible: this.props.placeholder && !this.props.value,
     };
 
     componentDidMount() {

@@ -17,6 +17,9 @@
         &--opened {
             transform: rotate(-180deg);
         }
+        &--disabled {
+            --fill-color1: var(--text-disabled) !important;
+        }
         .color1-fill {
             fill: var(--text-less-prominent);
         }

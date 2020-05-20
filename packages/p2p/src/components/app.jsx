@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { Tabs } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
+import { orderToggleIndex } from 'Components/orders/order-info';
 import ServerTime from 'Utils/server-time';
-import { init, requestWS, getModifiedP2POrderList, subscribeWS } from 'Utils/websocket';
+import { init, getModifiedP2POrderList, subscribeWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
@@ -30,15 +31,51 @@ class App extends Component {
         init(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
         ServerTime.init(this.props.server_time);
 
+        this.ws_subscriptions = [];
         this.list_item_limit = 20;
         this.state = {
             active_index: 0,
+            order_table_type: orderToggleIndex.ACTIVE,
             order_offset: 0,
             orders: [],
             notification_count: 0,
             parameters: null,
             is_advertiser: false,
+            is_restricted: false,
         };
+    }
+
+    componentDidMount() {
+        this.ws_subscriptions.push(
+            ...[
+                subscribeWS(
+                    {
+                        p2p_advertiser_info: 1,
+                        subscribe: 1,
+                    },
+                    this.setIsAdvertiser
+                ),
+                subscribeWS(
+                    {
+                        p2p_order_list: 1,
+                        subscribe: 1,
+                        offset: 0,
+                        limit: this.list_item_limit,
+                    },
+                    this.setP2pOrderList
+                ),
+            ]
+        );
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.order_id !== this.props.order_id && this.props.order_id) {
+            this.redirectTo('orders');
+        }
+    }
+
+    componentWillUnmount() {
+        this.ws_subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
     redirectTo = (path_name, params = null) => {
@@ -49,14 +86,20 @@ class App extends Component {
         this.setState({ active_index: idx, parameters: null });
     };
 
-    setIsAdvertiser = async () => {
-        const advertiser_info = await requestWS({ p2p_advertiser_info: 1 });
+    updateOrderToggleIndex = index => {
+        this.setState({ order_table_type: index });
+    };
 
-        /* if there is no error means it's an advertiser else it's a client */
-        if (!advertiser_info.error) {
-            await this.setState({ advertiser_id: advertiser_info.p2p_advertiser_info.id, is_advertiser: true });
+    setIsAdvertiser = response => {
+        const { p2p_advertiser_info } = response;
+        if (!response.error) {
+            this.setState({
+                advertiser_id: p2p_advertiser_info.id,
+                is_advertiser: !!p2p_advertiser_info.is_approved,
+            });
+        } else if (p2p_advertiser_info.error?.code === 'RestrictedCountry') {
+            this.setState({ is_restricted: true });
         }
-        return true;
     };
 
     handleNotifications = orders => {
@@ -106,25 +149,14 @@ class App extends Component {
         }
     };
 
-    componentDidMount() {
-        this.setIsAdvertiser();
-        subscribeWS(
-            {
-                p2p_order_list: 1,
-                subscribe: 1,
-                offset: 0,
-                limit: this.list_item_limit,
-            },
-            this.setP2pOrderList
-        );
-    }
-
     render() {
-        const { active_index, order_offset, orders, parameters, notification_count } = this.state;
+        const { active_index, order_offset, orders, parameters, notification_count, order_table_type } = this.state;
         const {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
             custom_strings,
+            order_id,
+            setOrderId,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -139,17 +171,23 @@ class App extends Component {
         return (
             <Dp2pProvider
                 value={{
+                    changeTab: this.handleTabClick,
+                    order_table_type,
+                    changeOrderToggle: this.updateOrderToggleIndex,
                     currency,
                     local_currency_config,
                     residence,
                     advertiser_id: this.state.advertiser_id,
                     is_advertiser: this.state.is_advertiser,
+                    is_restricted: this.state.is_restricted,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,
                     order_offset,
                     orders,
                     setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
                     setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
+                    order_id,
+                    setOrderId,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
@@ -194,6 +232,7 @@ App.propTypes = {
         residence: PropTypes.string.isRequired,
     }),
     lang: PropTypes.string,
+    order_id: PropTypes.string,
     setNotificationCount: PropTypes.func,
     websocket_api: PropTypes.object.isRequired,
 };

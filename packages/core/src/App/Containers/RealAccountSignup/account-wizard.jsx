@@ -280,7 +280,7 @@ class AccountWizard extends React.Component {
                             </div>
                         )}
                     </DesktopWrapper>
-                    <Div100vhContainer className='account-wizard__body' is_disabled={isDesktop()} height_offset='40px'>
+                    <Div100vhContainer className='account-wizard__body' is_disabled={isDesktop()} height_offset='110px'>
                         <BodyComponent
                             value={this.getCurrent('form_value')}
                             index={this.state_index}

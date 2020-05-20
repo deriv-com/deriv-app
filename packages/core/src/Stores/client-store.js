@@ -97,7 +97,8 @@ export default class ClientStore extends BaseStore {
             !this.is_logged_in ||
             this.is_virtual ||
             this.accounts[this.loginid].landing_company_shortcode === 'svg' ||
-            this.accounts[this.loginid].landing_company_shortcode === 'iom'
+            this.accounts[this.loginid].landing_company_shortcode === 'iom' ||
+            this.accounts[this.loginid].landing_company_shortcode === 'malta'
         );
     }
 

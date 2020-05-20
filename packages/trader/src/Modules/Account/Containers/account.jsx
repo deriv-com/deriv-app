@@ -18,7 +18,7 @@ class Account extends React.Component {
     state = {
         is_high_risk_client: false,
         is_loading: true,
-        needs_verification: false,
+        allow_document_upload: false,
     };
 
     componentDidMount() {
@@ -63,9 +63,12 @@ class Account extends React.Component {
             this.props.history.push(routes.personal_details);
         }
 
-        if (!is_loading && !is_high_risk_client && /financial-assessment/.test(selected_content.path))
+        if (
+            !is_loading &&
+            ((!is_high_risk_client && /financial-assessment/.test(selected_content.path)) ||
+                (!allow_document_upload && /proof-of-identity|proof-of-address/.test(selected_content.path)))
+        )
             return <Redirect to='/' />;
-
         // TODO: modify account route to support disabled
         this.props.routes.forEach(menu_item => {
             menu_item.subroutes.forEach(route => {
@@ -73,8 +76,8 @@ class Account extends React.Component {
                     route.is_disabled = !is_high_risk_client;
                 }
 
-                if (!allow_document_upload && !is_loading && /proof-of-identity|proof-of-address/.test(route.path)) {
-                    route.is_disabled = true;
+                if (route.path === routes.proof_of_identity || route.path === routes.proof_of_address) {
+                    route.is_disabled = !allow_document_upload;
                 }
             });
         });

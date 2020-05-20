@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import * as React from 'react';
 import { Loading } from '@deriv/components';
 import { Channel, SendBirdProvider } from 'sendbird-uikit';
 // import { getShortNickname, generateHexColourFromNickname } from 'Utils/string';
 import 'sendbird-uikit/dist/index.css';
 
 const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url }) => {
-    const [is_loading, setIsLoading] = useState(true);
+    const [is_loading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
         const interval_header = setInterval(() => {

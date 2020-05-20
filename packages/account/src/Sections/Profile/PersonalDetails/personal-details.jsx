@@ -695,7 +695,7 @@ class PersonalDetailsForm extends React.Component {
                                         <Checkbox
                                             name='email_consent'
                                             value={values.email_consent}
-                                            onChange={handleChange}
+                                            onChange={() => setFieldValue('email_consent', !values.email_consent)}
                                             label={localize('Get updates about Deriv products, services and events.')}
                                             defaultChecked={!!values.email_consent}
                                         />

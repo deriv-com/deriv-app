@@ -379,7 +379,7 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyEditableText>.blocklyEditableLabel {',
-    'fill: #fff;',
+    'fill: var(--text-general);',
     '}',
 
     '.blocklyDropdownText {',

@@ -3,8 +3,10 @@ import classNames from 'classnames';
 import { Formik, Form, Field } from 'formik';
 import { localize } from '@deriv/translations';
 import { Input, Button } from '@deriv/components';
+import ObjectUtils from '@deriv/shared/utils/object';
+import { WS } from 'Services/ws-methods';
 
-const DigitForm = ({ is_enabled, populateDigitResponse }) => {
+const DigitForm = ({ is_enabled, setEnabled }) => {
     const [is_success, setSuccess] = React.useState(false);
     const button_text = is_enabled ? localize('Disable') : localize('Enable');
 
@@ -28,11 +30,28 @@ const DigitForm = ({ is_enabled, populateDigitResponse }) => {
         return errors;
     };
 
-    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    const handleSubmit = async (values, { setSubmitting, setFieldError, resetForm }) => {
+        const totp_action = is_enabled ? 'disable' : 'enable';
+        const enable_response = await WS.authorized.accountSecurity({
+            account_security: 1,
+            totp_action,
+            otp: values.digit_code,
+        });
+        if (enable_response.error) {
+            setFieldError('digit_code', enable_response.error.message);
+        } else {
+            const is_enabled_response = ObjectUtils.getPropertyValue(enable_response, [
+                'account_security',
+                'totp',
+                'is_enabled',
+            ]);
+            setEnabled(is_enabled_response);
+            setSuccess(true);
+        }
+
         setSubmitting(false);
-        setSuccess(true);
+
         resetForm();
-        populateDigitResponse(values);
     };
 
     return (

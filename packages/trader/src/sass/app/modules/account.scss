@@ -621,9 +621,12 @@ $MIN_HEIGHT_FLOATING: calc(
                 background: var(--general-section-1);
                 display: flex;
                 border-radius: 4px;
-            }
-            &--clipboard {
-                margin-left: 0.8rem;
+                margin-top: 1.6rem;
+                align-items: center;
+
+                span {
+                    margin-right: 0.8rem;
+                }
             }
         }
         &__icon {

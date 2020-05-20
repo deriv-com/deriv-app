@@ -93,7 +93,7 @@ export const getSocketURL = () => {
 };
 
 export const checkAndSetEndpointFromUrl = () => {
-    if (/^(staging\.deriv\.app|(.*)\.binary\.sx|(.*)\.binary\.ws)$/i.test(location.hostname)) {
+    if (/^(staging\.deriv\.app|(.*)\.binary\.sx|(.*)\.binaryws\.com)$/i.test(location.hostname)) {
         const url_params = new URLSearchParams(location.search.slice(1));
 
         if (url_params.has('qa_server') && url_params.has('app_id')) {

@@ -80,7 +80,7 @@ const MT5AccountCard = ({
                         </tbody>
                     </table>
                 </div>
-                {existing_data && existing_data.login && (
+                {existing_data?.login && (
                     <div className='mt5-account-card__login'>
                         <Localize
                             i18n_default_text='Account login no.&nbsp;<0>{{login}}</0>'

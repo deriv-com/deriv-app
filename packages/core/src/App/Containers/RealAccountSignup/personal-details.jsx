@@ -139,6 +139,7 @@ class PersonalDetails extends React.Component {
 
                                             {'salutation' in this.props.value && (
                                                 <RadioGroup
+                                                    className='dc-radio__input'
                                                     name='salutation'
                                                     items={this.props.salutation_list}
                                                     selected={values.salutation}

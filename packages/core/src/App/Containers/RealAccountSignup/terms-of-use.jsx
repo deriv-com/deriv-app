@@ -49,7 +49,7 @@ const IOMDescription = () => (
         <p>
             <Localize
                 i18n_default_text={
-                    'Your account will be opened with Binary ( IOM ) Ltd, and will be subjected to the jurisdiction and laws of Isle of Man.'
+                    'Your account will be opened with Binary (IOM) Ltd, and will be subjected to the jurisdiction and laws of Isle of Man.'
                 }
             />
         </p>
@@ -64,6 +64,28 @@ const IOMDescription = () => (
                                     associates and family members of a PEP are also considered
                                     to be PEPs.'
             />
+        </p>
+    </React.Fragment>
+);
+
+const MaltaDescription = () => (
+    <React.Fragment>
+        <h4>
+            <Localize i18n_default_text={'Jurisdiction and choice of law'} />
+        </h4>
+        <p>
+            <Localize
+                i18n_default_text={
+                    'Your account will be opened with Binary (Europe) Ltd, and will be subjected to the jurisdiction and laws of Malta Gaming Authority.'
+                }
+            />
+        </p>
+        <Hr />
+        <h4>
+            <Localize i18n_default_text='Real accounts are not available to politically exposed persons (PEPs).' />
+        </h4>
+        <p>
+            <Localize i18n_default_text='A politically exposed person (PEP) is someone appointed with a prominent public position. Close associates and family members of a PEP are also considered to be PEPs.' />
         </p>
     </React.Fragment>
 );
@@ -94,6 +116,7 @@ class TermsOfUse extends React.Component {
                             <Div100vhContainer className='terms-of-use' height_offset='169px' is_disabled={isDesktop()}>
                                 {this.props.can_upgrade_to === 'svg' && <SVGDescription />}
                                 {this.props.can_upgrade_to === 'iom' && <IOMDescription />}
+                                {this.props.can_upgrade_to === 'malta' && <MaltaDescription />}
                                 <Field
                                     component={CheckboxField}
                                     className='terms-of-use__checkbox'

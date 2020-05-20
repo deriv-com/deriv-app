@@ -8,16 +8,23 @@ import { EXPERIAN, getAccountTitle } from './constants';
  * @param {EXPERIAN} status
  * @param {string} landing_company_shortcode
  * @param {string} currency
- * @param {boolean} is_im_residence
+ * @param {boolean} is_isle_of_man_residence
+ * @param {boolean} is_belgium_residence
  */
-export const DialogMessage = ({ status, landing_company_shortcode, currency, is_im_residence }) => {
+export const DialogMessage = ({
+    status,
+    landing_company_shortcode,
+    currency,
+    is_belgium_residence,
+    is_isle_of_man_residence,
+}) => {
     if (landing_company_shortcode === 'svg') {
         return (
             <Localize
                 i18n_default_text='<0>You have added a {{account_type}} {{currency}} account.</0><0>Make a deposit now to start trading.</0>'
                 values={{
                     currency: currency.toUpperCase(),
-                    account_type: getAccountTitle(landing_company_shortcode),
+                    account_type: getAccountTitle(landing_company_shortcode, { is_belgium_residence }),
                 }}
                 components={[<p key={currency} />]}
             />
@@ -51,11 +58,27 @@ export const DialogMessage = ({ status, landing_company_shortcode, currency, is_
                         i18n_default_text='<0>You have added a {{account_type}} {{currency}} account. Make a deposit now and start trading after your account is verified.</0>'
                         values={{
                             currency: currency.toUpperCase(),
-                            account_type: getAccountTitle(landing_company_shortcode, { is_im_residence }),
+                            account_type: getAccountTitle(landing_company_shortcode, { is_isle_of_man_residence }),
                         }}
                         components={[<p key={currency} />]}
                     />
                 );
+        }
+    } else if (landing_company_shortcode === 'malta') {
+        switch (status) {
+            case EXPERIAN.SUCCESS:
+                return (
+                    <Localize
+                        i18n_default_text='<0>You have added a {{account_type}} {{currency}} account. Make a deposit now and start trading after your account is verified.</0>'
+                        values={{
+                            currency: currency.toUpperCase(),
+                            account_type: getAccountTitle(landing_company_shortcode, { is_isle_of_man_residence }),
+                        }}
+                        components={[<p key={currency} />]}
+                    />
+                );
+            default:
+                return null;
         }
     }
 
@@ -64,7 +87,7 @@ export const DialogMessage = ({ status, landing_company_shortcode, currency, is_
 
 DialogMessage.propTypes = {
     currency: PropTypes.string,
-    is_im_residence: PropTypes.bool,
+    is_isle_of_man_residence: PropTypes.bool,
     landing_company_shortcode: PropTypes.string,
     status: PropTypes.number,
 };

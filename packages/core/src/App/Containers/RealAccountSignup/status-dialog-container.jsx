@@ -34,18 +34,26 @@ class StatusDialogContainer extends React.Component {
     };
 
     /**
-     * Get the status for the current account,
+     * Get the status for the current account
+     *
      * @readonly
      * @return {EXPERIAN} status
      */
     get status() {
-        const { landing_company_shortcode, is_fully_authenticated, is_age_verified, is_im_residence } = this.props;
+        const {
+            landing_company_shortcode,
+            is_fully_authenticated,
+            is_age_verified,
+            is_isle_of_man_residence,
+            is_belgium_residence,
+        } = this.props;
 
         return getExperianResult({
             landing_company_shortcode,
             is_fully_authenticated,
             is_age_verified,
-            is_im_residence,
+            is_isle_of_man_residence,
+            is_belgium_residence,
         });
     }
 
@@ -56,7 +64,8 @@ class StatusDialogContainer extends React.Component {
             closeModal,
             icon_size,
             switchToVirtual,
-            is_im_residence,
+            is_isle_of_man_residence,
+            is_belgium_residence,
         } = this.props;
 
         return (
@@ -78,7 +87,8 @@ class StatusDialogContainer extends React.Component {
                         status={this.status}
                         landing_company_shortcode={landing_company_shortcode}
                         currency={currency}
-                        is_im_residence={is_im_residence}
+                        is_isle_of_man_residence={is_isle_of_man_residence}
+                        is_belgium_residence={is_belgium_residence}
                     />
                 </div>
                 <DialogButtons
@@ -102,7 +112,8 @@ StatusDialogContainer.propTypes = {
     icon: PropTypes.object,
     icon_size: PropTypes.string,
     icon_type: PropTypes.string,
-    is_im_residence: PropTypes.bool,
+    is_isle_of_man_residence: PropTypes.bool,
+    is_belgium_residence: PropTypes.bool,
     is_real: PropTypes.bool,
     message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     onCancel: PropTypes.func,
@@ -115,7 +126,8 @@ export default connect(({ client, ui }) => ({
     currency: client.currency,
     is_fully_authenticated: client.is_fully_authenticated,
     is_age_verified: client.is_age_verified,
-    is_im_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
+    is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
+    is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
     closeModal: ui.closeRealAccountSignup,
     switchToVirtual: () => client.switchAccount(client.virtual_account_loginid),
 }))(withRouter(StatusDialogContainer));

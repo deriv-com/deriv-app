@@ -57,12 +57,12 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                     if (!response.error) {
                         const { list } = response.p2p_order_list;
                         setHasMoreItemsToLoad(list.length >= list_item_limit);
-                        setIsLoading(false);
                         setOrders(orders.concat(getModifiedP2POrderList(list)));
                         setOrderOffset(order_offset + list.length);
                     } else {
                         setApiErrorMessage(response.api_error_message);
                     }
+                    setIsLoading(false);
                     resolve();
                 }
             });

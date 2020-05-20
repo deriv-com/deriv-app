@@ -188,6 +188,7 @@ class ChartTradeClass extends React.Component {
 
     componentDidMount() {
         performance.mark('smart-charts-mounted');
+        this.setActiveMarkets();
     }
 
     componentDidUpdate(prevProps) {

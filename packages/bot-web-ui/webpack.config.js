@@ -118,7 +118,7 @@ module.exports = function(env, argv) {
                 formik: 'formik',
                 react: 'react',
                 'react-dom': 'react-dom',
-                'smartcharts-beta': 'smartcharts-beta',
+                '@deriv/deriv-charts': '@deriv/deriv-charts',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,

@@ -12,33 +12,17 @@
     }
     &::-webkit-scrollbar {
         width: 5px;
-        background-color: var(--general-main-1);
+        background-color: transparent;
         border-radius: 10px;
         /* Firefox only */
         scrollbar-color: var(--state-active);
         scrollbar-width: thin;
     }
     &::-webkit-scrollbar-track {
-        background-color: var(--general-main-1);
+        background-color: transparent;
     }
     &::-webkit-scrollbar-thumb {
         border-radius: 10px;
         background-color: var(--state-active);
-    }
-    &--secondary {
-        &::-webkit-scrollbar {
-            background-color: var(--general-section-1);
-        }
-        &::-webkit-scrollbar-track {
-            background-color: var(--general-section-1);
-        }
-    }
-    &--tertiary {
-        &::-webkit-scrollbar {
-            background-color: var(--general-main-2);
-        }
-        &::-webkit-scrollbar-track {
-            background-color: var(--general-main-2);
-        }
     }
 }

@@ -302,6 +302,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_eu() {
+        if (!this.landing_companies) return false;
         const { gaming_company, financial_company } = this.landing_companies;
         const financial_shortcode = financial_company?.shortcode;
         const gaming_shortcode = gaming_company?.shortcode;
@@ -325,6 +326,7 @@ export default class ClientStore extends BaseStore {
             malta: false,
             maltainvest: false,
         };
+        if (!this.landing_companies) return result;
         const { gaming_company, financial_company } = this.landing_companies;
         if (gaming_company?.shortcode) {
             Object.assign(result, {

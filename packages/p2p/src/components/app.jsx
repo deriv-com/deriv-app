@@ -103,8 +103,10 @@ class App extends Component {
                 is_advertiser: !!p2p_advertiser_info.is_approved,
                 nickname: p2p_advertiser_info.name,
             });
-        } else if (p2p_advertiser_info.error?.code === 'RestrictedCountry') {
+        } else if (response.error.code === 'RestrictedCountry') {
             this.setState({ is_restricted: true });
+        } else if (response.error.code === 'AdvertiserNotFound') {
+            this.setState({ is_advertiser: false });
         }
     };
 

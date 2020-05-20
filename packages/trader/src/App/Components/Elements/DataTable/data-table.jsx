@@ -101,7 +101,6 @@ class DataTable extends React.PureComponent {
                     itemData={data_source}
                     itemSize={getRowSize}
                     width={this.state.width}
-                    outerElementType={is_empty ? null : ListScrollbar}
                 >
                     {this.rowRenderer}
                 </List>

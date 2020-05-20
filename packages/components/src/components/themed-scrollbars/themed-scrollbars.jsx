@@ -1,28 +1,49 @@
-import React from 'react';
-import { Scrollbars } from 'tt-react-custom-scrollbars';
+import classNames from 'classnames';
+import React, { useRef, useState, useEffect } from 'react';
 
-class ThemedScrollbars extends React.Component {
-    render() {
-        if (this.props.is_native) return this.props.children;
-        return (
-            <Scrollbars
-                ref={this.props.list_ref}
-                renderTrackHorizontal={props => (
-                    <div
-                        {...props}
-                        className='dc-themed-scrollbars__track--horizontal'
-                        style={{ display: this.props.hideHorizontal ? 'none' : 'block' }}
-                    />
-                )}
-                renderTrackVertical={props => <div {...props} className='dc-themed-scrollbars__track--vertical' />}
-                renderThumbHorizontal={props => <div {...props} className='dc-themed-scrollbars__thumb--horizontal' />}
-                renderThumbVertical={props => <div {...props} className='dc-themed-scrollbars__thumb--vertical' />}
-                {...this.props}
-            >
-                {this.props.children}
-            </Scrollbars>
-        );
-    }
-}
+const ThemedScrollbars = ({ children, className, height, autohide, is_native, has_horizontal, onScroll }) => {
+    // Hook
+    const useHover = () => {
+        const [value, setValue] = useState(false);
+
+        const ref = useRef(null);
+
+        const handleMouseOver = () => setValue(true);
+        const handleMouseOut = () => setValue(false);
+
+        useEffect(() => {
+            const node = ref.current;
+            if (node) {
+                node.addEventListener('mouseover', handleMouseOver);
+                node.addEventListener('mouseout', handleMouseOut);
+
+                return () => {
+                    node.removeEventListener('mouseover', handleMouseOver);
+                    node.removeEventListener('mouseout', handleMouseOut);
+                };
+            }
+            return null;
+        }, [ref.current]);
+
+        return [ref, value];
+    };
+
+    const [hoverRef, isHovered] = useHover();
+
+    if (is_native) return children;
+    return (
+        <div
+            ref={hoverRef}
+            className={classNames('dc-themed-scrollbars', className, {
+                'dc-themed-scrollbars__autohide': autohide,
+                'dc-themed-scrollbars__autohide--is-hovered': autohide && isHovered,
+            })}
+            style={{ maxHeight: height || '100%', overflowY: 'auto', overflowX: has_horizontal ? 'auto' : 'hidden' }}
+            onScroll={onScroll}
+        >
+            {children}
+        </div>
+    );
+};
 
 export default ThemedScrollbars;

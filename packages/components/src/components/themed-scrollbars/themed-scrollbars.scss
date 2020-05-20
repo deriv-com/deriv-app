@@ -1,29 +1,44 @@
 /** @define dc-themed-scrollbars */
 .dc-themed-scrollbars {
-    &__track {
-        &--horizontal {
-            height: 6px;
-            right: 2px;
-            bottom: 2px;
-            left: 2px;
-            border-radius: 3px;
+    &__autohide {
+        &::-webkit-scrollbar-thumb {
+            display: none;
         }
-        &--vertical {
-            width: 6px;
-            right: 2px;
-            bottom: 2px;
-            top: 2px;
-            border-radius: 3px;
+        &--is-hovered {
+            &::-webkit-scrollbar-thumb {
+                display: unset;
+            }
         }
     }
-    &__thumb {
-        &--horizontal {
-            border-radius: inherit;
-            background-color: var(--state-active);
+    &::-webkit-scrollbar {
+        width: 5px;
+        background-color: var(--general-main-1);
+        border-radius: 10px;
+        /* Firefox only */
+        scrollbar-color: var(--state-active);
+        scrollbar-width: thin;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: var(--general-main-1);
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: var(--state-active);
+    }
+    &--secondary {
+        &::-webkit-scrollbar {
+            background-color: var(--general-section-1);
         }
-        &--vertical {
-            border-radius: inherit;
-            background-color: var(--state-active);
+        &::-webkit-scrollbar-track {
+            background-color: var(--general-section-1);
+        }
+    }
+    &--tertiary {
+        &::-webkit-scrollbar {
+            background-color: var(--general-main-2);
+        }
+        &::-webkit-scrollbar-track {
+            background-color: var(--general-main-2);
         }
     }
 }

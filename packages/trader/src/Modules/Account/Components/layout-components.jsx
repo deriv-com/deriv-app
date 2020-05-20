@@ -47,13 +47,7 @@ export const Text = ({ children, size, color, className }) => (
 );
 
 export const ScrollbarsContainer = ({ children, className, scroll_offset }) => (
-    <ThemedScrollbars
-        is_native={isMobile()}
-        autoHide
-        style={{
-            height: scroll_offset ? `calc(100% - ${scroll_offset})` : '100%',
-        }}
-    >
+    <ThemedScrollbars autohide is_native={isMobile()} height={scroll_offset ? `calc(100% - ${scroll_offset})` : '100%'}>
         <div className={classNames('account__scrollbars_container', className)}>{children}</div>
     </ThemedScrollbars>
 );

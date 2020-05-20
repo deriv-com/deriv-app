@@ -8,7 +8,7 @@ import { WS } from 'Services/ws-methods';
 
 const DigitForm = ({ is_enabled, setEnabled }) => {
     const [is_success, setSuccess] = React.useState(false);
-    const button_text = is_enabled ? localize('Disable') : localize('Enable');
+    const button_text = is_enabled ? localize('Disable 2FA') : localize('Enable');
 
     const initial_form = {
         digit_code: '',

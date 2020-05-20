@@ -543,6 +543,7 @@ $MIN_HEIGHT_FLOATING: calc(
         &__title {
             @include typeface(--title-left-bold-black, none);
             margin-bottom: 1.5rem;
+            margin-left: 1.2rem;
         }
         &__input-group {
             display: flex;
@@ -550,7 +551,7 @@ $MIN_HEIGHT_FLOATING: calc(
             margin: 2.7rem auto 0;
 
             @include mobile {
-                width: auto;
+                width: 90vw;
                 max-width: 40rem;
             }
         }

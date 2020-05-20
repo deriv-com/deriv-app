@@ -11,14 +11,6 @@ class RadioGroup extends React.Component {
         };
     }
 
-    // componentDidUpdate(prevProps) {
-    //     if (this.props.defaultChecked === prevProps.defaultChecked) {
-    //         return;
-    //     }
-
-    //     this.setState({ checked: this.props.defaultChecked });
-    // }
-
     onChange = e => {
         this.setState({
             selected_option: e.target.value,

@@ -10,7 +10,7 @@ import {
     SelectNative,
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
-import React, { Component } from 'react';
+import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
@@ -43,7 +43,7 @@ const getLocation = (location_list, value, type) => {
     return '';
 };
 
-class AddressDetails extends Component {
+class AddressDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = { has_fetched_states_list: false, address_state_to_display: '' };

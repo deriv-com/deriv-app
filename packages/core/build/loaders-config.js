@@ -3,6 +3,7 @@ const path = require('path');
 
 const js_loaders = [
     '@deriv/shared/utils/deriv-components-loader.js',
+    '@deriv/shared/utils/react-import-loader.js',
     {
         loader: 'babel-loader',
         options: {

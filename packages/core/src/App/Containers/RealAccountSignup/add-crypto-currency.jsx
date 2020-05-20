@@ -1,6 +1,6 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { FormSubmitButton } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -24,7 +24,7 @@ const Headers = ({ heading, subheading }) => (
     </React.Fragment>
 );
 
-class AddCryptoCurrency extends Component {
+class AddCryptoCurrency extends React.Component {
     state = {
         available_fiat_currencies: [],
     };

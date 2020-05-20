@@ -423,6 +423,9 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 100%;
             height: 100%;
         }
+        & .dc-table__head {
+            @include typeface(--paragraph-left-bold-prominent, none);
+        }
         &__wrapper {
             display: flex;
             width: 100%;
@@ -486,7 +489,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 list-style-type: disc;
             }
             &-title {
-                @include typeface(--paragraph-left-bold-black, none);
+                @include typeface(--paragraph-left-bold-prominent, none);
                 margin-bottom: 0.8rem;
             }
             &-text {
@@ -968,7 +971,7 @@ $MIN_HEIGHT_FLOATING: calc(
             align-items: center;
 
             &-header {
-                @include typeface(--paragraph-center-bold-black, none);
+                @include typeface(--paragraph-center-bold-prominent, none);
                 margin: 1.6rem 0 3.2rem;
             }
             &-image {

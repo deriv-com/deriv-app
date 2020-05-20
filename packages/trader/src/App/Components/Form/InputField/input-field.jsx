@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import debounce from 'lodash.debounce';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -11,11 +10,6 @@ import Input from './input.jsx';
 
 class InputField extends React.Component {
     state = {};
-
-    debouncedOnChange = debounce(arg => {
-        this.props.onChange(arg);
-        this.setState({ local_value: undefined });
-    }, 300);
 
     render() {
         const {
@@ -133,7 +127,7 @@ class InputField extends React.Component {
             return new_value;
         };
 
-        const incrementValue = (ev, step) => {
+        const incrementValue = (ev, long_press_step) => {
             if (max_is_disabled) return;
             let increment_value;
 
@@ -142,8 +136,8 @@ class InputField extends React.Component {
             const decimal_places = current_value ? getDecimals(current_value) : 0;
             const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
-            if (step) {
-                const increase_percentage = Math.min(step, Math.max(step, 10)) / 10;
+            if (long_press_step) {
+                const increase_percentage = Math.min(long_press_step, Math.max(long_press_step, 10)) / 10;
                 const increase = (value * increase_percentage) / 100;
                 const new_value = parseFloat(+(current_value || 0)) + Math.abs(increase);
 
@@ -155,10 +149,10 @@ class InputField extends React.Component {
                 increment_value = parseFloat(+(current_value || 0) + 1).toFixed(decimal_places);
             }
 
-            updateValue(increment_value);
+            updateValue(increment_value, !!long_press_step);
         };
 
-        const calculateDecrementedValue = step => {
+        const calculateDecrementedValue = long_press_step => {
             let decrement_value;
 
             const current_value = this.state.local_value || value;
@@ -166,8 +160,8 @@ class InputField extends React.Component {
             const decimal_places = current_value ? getDecimals(current_value) : 0;
             const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
-            if (step) {
-                const decrease_percentage = Math.min(step, Math.max(step, 10)) / 10;
+            if (long_press_step) {
+                const decrease_percentage = Math.min(long_press_step, Math.max(long_press_step, 10)) / 10;
                 const decrease = (value * decrease_percentage) / 100;
                 const new_value = parseFloat(+(current_value || 0)) - Math.abs(decrease);
 
@@ -181,21 +175,28 @@ class InputField extends React.Component {
             return decrement_value;
         };
 
-        const decrementValue = (ev, step) => {
+        const decrementValue = (ev, long_press_step) => {
             if (!value || min_is_disabled) return;
-            const decrement_value = calculateDecrementedValue(step);
+            const decrement_value = calculateDecrementedValue(long_press_step);
             if (is_negative_disabled && decrement_value < 0) return;
-            updateValue(decrement_value);
+            updateValue(decrement_value, !!long_press_step);
         };
 
-        const updateValue = new_value => {
+        const updateValue = (new_value, is_long_press) => {
             const formatted_value = format ? format(new_value) : new_value;
-            if (is_incrementable_on_long_press) {
+            if (is_long_press) {
                 this.setState({ local_value: formatted_value });
-                this.debouncedOnChange({ target: { value: formatted_value, name } });
             } else {
                 onChange({ target: { value: formatted_value, name } });
             }
+        };
+
+        const onLongPressEnd = () => {
+            const new_value = this.state.local_value;
+            const formatted_value = format ? format(new_value) : new_value;
+            onChange({ target: { value: formatted_value, name } });
+
+            this.setState({ local_value: undefined });
         };
 
         const onKeyPressed = e => {
@@ -257,6 +258,7 @@ class InputField extends React.Component {
                     min_is_disabled || (is_negative_disabled && calculateDecrementedValue() < 0) || !!is_disabled
                 }
                 decrementValue={decrementValue}
+                onLongPressEnd={onLongPressEnd}
                 is_incrementable_on_long_press={is_incrementable_on_long_press}
             />
         );
@@ -334,6 +336,7 @@ InputField.propTypes = {
     is_float: PropTypes.bool,
     is_hj_whitelisted: PropTypes.bool,
     is_incrementable: PropTypes.bool,
+    is_incrementable_on_long_press: PropTypes.bool,
     is_negative_disabled: PropTypes.bool,
     is_read_only: PropTypes.bool,
     is_signed: PropTypes.bool,

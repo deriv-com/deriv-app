@@ -10,23 +10,30 @@ const IncrementButtons = ({
     max_is_disabled,
     min_is_disabled,
     is_incrementable_on_long_press,
+    onLongPressEnd,
 }) => {
-    const ref_interval = React.useRef();
-    const ref_timeout = React.useRef();
+    const interval_ref = React.useRef();
+    const timeout_ref = React.useRef();
+    const is_long_press_ref = React.useRef();
 
     const handleButtonPress = onChange => ev => {
-        ref_timeout.current = setTimeout(() => {
+        timeout_ref.current = setTimeout(() => {
+            is_long_press_ref.current = true;
             let step = 1;
             onChange(ev, step);
-            ref_interval.current = setInterval(() => {
+            interval_ref.current = setInterval(() => {
                 onChange(ev, ++step);
             }, 50);
         }, 300);
     };
 
     const handleButtonRelease = () => {
-        clearInterval(ref_interval.current);
-        clearTimeout(ref_timeout.current);
+        clearInterval(interval_ref.current);
+        clearTimeout(timeout_ref.current);
+
+        if (onLongPressEnd && is_long_press_ref.current) onLongPressEnd();
+
+        is_long_press_ref.current = false;
     };
 
     const getPressEvents = onChange => {
@@ -81,6 +88,8 @@ IncrementButtons.propTypes = {
     decrementValue: PropTypes.func,
     id: PropTypes.string,
     incrementValue: PropTypes.func,
+    onLongPressEnd: PropTypes.func,
+    is_incrementable_on_long_press: PropTypes.bool,
     max_is_disabled: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
     min_is_disabled: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
 };

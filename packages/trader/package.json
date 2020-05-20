@@ -107,6 +107,7 @@
     "@deriv/account": "^1.0.0",
     "@deriv/components": "^1.0.0",
     "@deriv/deriv-api": "^1.0.5",
+    "@deriv/deriv-charts": "^0.2.0",
     "@deriv/shared": "^1.0.0",
     "@deriv/translations": "^1.0.0",
     "acorn": "^6.1.1",
@@ -138,7 +139,6 @@
     "react-router-dom": "^5.0.1",
     "react-transition-group": "^2.5.0",
     "react-window": "^1.8.4",
-    "smartcharts-beta": "^0.8.0-betam.10",
     "web-push-notifications": "^3.2.15",
     "workbox-webpack-plugin": "^4.3.1"
   }

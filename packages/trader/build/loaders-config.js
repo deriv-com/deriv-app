@@ -6,6 +6,9 @@ const js_loaders = [
         loader: '@deriv/shared/utils/deriv-components-loader.js',
     },
     {
+        loader: '@deriv/shared/utils/react-import-loader.js',
+    },
+    {
         loader: '@deriv/shared/utils/deriv-account-loader.js',
     },
     {

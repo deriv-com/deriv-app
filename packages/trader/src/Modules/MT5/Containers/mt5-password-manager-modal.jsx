@@ -91,15 +91,19 @@ class MT5PasswordManagerModal extends React.Component {
         const { enableApp, disableApp, is_visible, selected_login, selected_account, toggleModal } = this.props;
 
         const validatePassword = values => {
-            const is_valid =
-                validPassword(values.new_password) &&
-                validLength(values.new_password, {
-                    min: 8,
-                    max: 25,
-                });
             const errors = {};
 
-            if (!is_valid) {
+            if (
+                !validLength(values.new_password, {
+                    min: 8,
+                    max: 25,
+                })
+            ) {
+                errors.new_password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+                    min_number: 8,
+                    max_number: 25,
+                });
+            } else if (!validPassword(values.new_password)) {
                 errors.new_password = localize('You need to include uppercase and lowercase letters, and numbers.');
             }
 

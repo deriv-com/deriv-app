@@ -55,6 +55,7 @@ module.exports = {
             { from: 'src/styles/*.scss', to: 'styles', flatten: true },
             { from: 'src/styles/index.js', to: 'index.js' },
             { from: 'src/loaders/deriv-components-loader.js', to: 'deriv-components-loader.js' },
+            { from: 'src/loaders/react-import-loader.js', to: 'react-import-loader.js' },
             { from: 'src/loaders/deriv-account-loader.js', to: 'deriv-account-loader.js' },
         ]),
         new StyleLintPlugin({ fix: true }),

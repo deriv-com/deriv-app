@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
@@ -10,9 +10,9 @@ import { Redirect } from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
 
 // Error Routes
-const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
+const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
-const Trader = lazy(() => {
+const Trader = React.lazy(() => {
     const el_head = document.querySelector('head');
     const el_main_css = document.createElement('link');
     el_main_css.href = getUrlBase('/css/trader.main.css');
@@ -34,7 +34,7 @@ const Account = lazy(() => {
     return import(/* webpackChunkName: "account" */ '@deriv/account');
 });
 
-const Bot = lazy(() => {
+const Bot = React.lazy(() => {
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
 });

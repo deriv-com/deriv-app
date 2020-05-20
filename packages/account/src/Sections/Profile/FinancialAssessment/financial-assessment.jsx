@@ -149,10 +149,14 @@ class FinancialAssessment extends React.Component {
             WS.authorized.storage.getFinancialAssessment().then((data) => {
                 // TODO: Find a better solution for handling no-op instead of using is_mounted flags
                 if (this.is_mounted) {
+                    const needs_financial_assessment =
+                        this.props.account_status.status.includes('financial_information_not_complete') ||
+                        this.props.is_high_risk;
+
                     if (data.error) {
                         this.setState({ api_initial_load_error: data.error.message });
                         return;
-                    } else if (!this.props.is_high_risk && isEmptyObject(data.get_financial_assessment)) {
+                    } else if (!needs_financial_assessment) {
                         // Additional layer of error handling if non high risk user somehow manages to reach FA page, need to define error to prevent app crash
                         this.setState({
                             api_initial_load_error: localize('Error: Could not load financial assessment information'),
@@ -589,6 +593,7 @@ class FinancialAssessment extends React.Component {
 
 // FinancialAssessment.propTypes = {};
 export default connect(({ client, ui }) => ({
+    account_status: client.account_status,
     is_virtual: client.is_virtual,
     is_high_risk: client.is_high_risk,
     removeNotificationMessage: ui.removeNotificationMessage,

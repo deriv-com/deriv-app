@@ -24,6 +24,11 @@ class App extends React.Component {
         } = props;
         this.root_store = initStore(root_store, WS, client_base);
     }
+
+    componentWillUnmount() {
+        this.root_store.ui.setPromptHandler(false);
+    }
+
     render() {
         return (
             <MobxProvider store={this.root_store}>

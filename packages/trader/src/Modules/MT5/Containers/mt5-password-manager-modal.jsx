@@ -13,7 +13,7 @@ import {
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { urlFor } from '_common/url';
+import { urlFor } from '@deriv/shared/utils/url';
 import MultiStep from 'Modules/Account/Components/multistep.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -32,7 +32,7 @@ const MT5PasswordResetUnavailable = () => (
             className='mt5-password-manager--button'
             has_effect
             text={localize('Take me to Binary.com MT5')}
-            onClick={() => window.open(urlFor('user/metatrader', undefined, undefined, true))}
+            onClick={() => window.open(urlFor('user/metatrader', { legacy: true }))}
             primary
             large
         />
@@ -91,15 +91,19 @@ class MT5PasswordManagerModal extends React.Component {
         const { enableApp, disableApp, is_visible, selected_login, selected_account, toggleModal } = this.props;
 
         const validatePassword = values => {
-            const is_valid =
-                validPassword(values.new_password) &&
-                validLength(values.new_password, {
-                    min: 8,
-                    max: 25,
-                });
             const errors = {};
 
-            if (!is_valid) {
+            if (
+                !validLength(values.new_password, {
+                    min: 8,
+                    max: 25,
+                })
+            ) {
+                errors.new_password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+                    min_number: 8,
+                    max_number: 25,
+                });
+            } else if (!validPassword(values.new_password)) {
                 errors.new_password = localize('You need to include uppercase and lowercase letters, and numbers.');
             }
 

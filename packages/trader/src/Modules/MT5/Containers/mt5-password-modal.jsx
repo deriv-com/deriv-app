@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { FormSubmitButton, Icon, Modal, PasswordInput, PasswordMeter } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
-import routes from 'Constants/routes';
 import 'Sass/app/modules/mt5/mt5.scss';
 import { connect } from 'Stores/connect';
 import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
@@ -48,15 +48,19 @@ const MT5PasswordModal = ({
     submitMt5Password,
 }) => {
     const validatePassword = values => {
-        const is_valid =
-            validPassword(values.password) &&
-            validLength(values.password, {
-                min: 8,
-                max: 25,
-            });
         const errors = {};
 
-        if (!is_valid) {
+        if (
+            !validLength(values.password, {
+                min: 8,
+                max: 25,
+            })
+        ) {
+            errors.password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+                min_number: 8,
+                max_number: 25,
+            });
+        } else if (!validPassword(values.password)) {
             errors.password = localize('You need to include uppercase and lowercase letters, and numbers.');
         }
 

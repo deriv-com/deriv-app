@@ -1,18 +1,18 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { addRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
-import { routes } from 'Constants';
 import Trade from 'Modules/Trading';
 
-const ContractDetails = lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));
+const ContractDetails = React.lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));
 
 // MT5 Routes
-const MT5 = lazy(() => import(/* webpackChunkName: "mt5", webpackPrefetch: true */ 'Modules/MT5'));
+const MT5 = React.lazy(() => import(/* webpackChunkName: "mt5", webpackPrefetch: true */ 'Modules/MT5'));
 
 // Error Routes
-const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
+const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
 const handleLoading = props => {
     // 200ms default
@@ -51,14 +51,14 @@ const initRoutesConfig = () => [
             {
                 path: routes.positions,
                 component: lazyLoadReportComponent('OpenPositions'),
-                title: localize('Open Positions'),
+                title: localize('Open positions'),
                 icon_component: 'IcOpenPositions',
                 default: true,
             },
             {
                 path: routes.profit,
                 component: lazyLoadReportComponent('ProfitTable'),
-                title: localize('Profit Table'),
+                title: localize('Profit table'),
                 icon_component: 'IcProfitTable',
             },
             {
@@ -73,7 +73,7 @@ const initRoutesConfig = () => [
         path: routes.account,
         component: lazyLoadAccountComponent('Account'),
         is_authenticated: true,
-        title: localize('Account Settings'),
+        title: localize('Account settings'),
         icon_component: 'IcUserOutline',
         routes: [
             {

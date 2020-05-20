@@ -10,7 +10,7 @@ import {
     SelectNative,
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
-import React, { Component } from 'react';
+import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
@@ -43,7 +43,7 @@ const getLocation = (location_list, value, type) => {
     return '';
 };
 
-class AddressDetails extends Component {
+class AddressDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = { has_fetched_states_list: false, address_state_to_display: '' };
@@ -224,8 +224,8 @@ class AddressDetails extends Component {
 
     validateAddressDetails = values => {
         const validations = {
-            address_line_1: [v => !!v, v => /^[\w\W\s\/-]{1,70}$/gu.exec(v) !== null],
-            address_line_2: [v => !v || /^[\w\W\s\/-]{0,70}$/gu.exec(v) !== null],
+            address_line_1: [v => !!v, v => /^[\w\W\s/-]{1,70}$/gu.exec(v) !== null],
+            address_line_2: [v => !v || /^[\w\W\s/-]{0,70}$/gu.exec(v) !== null],
             address_city: [v => !!v, v => /^[a-zA-Z\s\W'.-]{1,35}$/gu.exec(v) !== null],
             address_state: [v => /^[a-zA-Z\s\W'.-]{0,35}$/gu.exec(v) !== null],
             address_postcode: [v => !!v, v => /^[^+]{0,20}$/gu.exec(v) !== null],

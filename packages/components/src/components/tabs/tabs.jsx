@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Tab from './tab.jsx';
 
-class Tabs extends Component {
+class Tabs extends React.Component {
     constructor(props) {
         super(props);
 
@@ -94,6 +94,7 @@ class Tabs extends Component {
                                 active_tab_ref={index === active_index ? this.setActiveTabRef : null}
                                 header_content={header_content}
                                 onClick={() => this.onTabItemClick(index)}
+                                setActiveLineStyle={this.setActiveLineStyle}
                             />
                         );
                     })}

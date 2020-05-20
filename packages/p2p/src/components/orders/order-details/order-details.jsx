@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, ThemedScrollbars } from '@deriv/components';
+import { Dialog } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import OrderDetailsStatusBlock from './order-details-status-block.jsx';
@@ -24,8 +24,6 @@ const OrderDetails = ({ order_details }) => {
         display_transaction_amount,
         is_buyer,
         is_expired,
-        is_pending,
-        is_buyer_confirmed,
         offer_currency,
         is_completed,
         is_buyer_cancelled,
@@ -42,16 +40,6 @@ const OrderDetails = ({ order_details }) => {
     const handleShowPopup = options => {
         setPopupOptions(options);
         setShowPopup(true);
-    };
-    const infoHeigth = () => {
-        let heigth = 392;
-        if (!(is_expired && is_completed && is_buyer_cancelled)) {
-            heigth -= 15;
-        }
-        if ((is_buyer && (is_expired || is_buyer_confirmed || is_pending)) || (is_buyer_confirmed && !is_buyer)) {
-            heigth -= 72;
-        }
-        return `${heigth}px`;
     };
     return (
         <div className='order-details'>
@@ -73,58 +61,56 @@ const OrderDetails = ({ order_details }) => {
                         <OrderDetailsTimerBlock order_details={order_details} />
                     </div>
                     <div className='order-details__separator' />
-                    <div className='order-details__info' style={{ height: infoHeigth() }}>
-                        <ThemedScrollbars autoHide>
-                            <div className='order-details__info-columns'>
-                                <div className='order-details__info--left'>
-                                    <OrderInfoBlock
-                                        label={is_buyer ? localize('Seller') : localize('Buyer')}
-                                        // TODO: Once we have access to other party's information we can update below.
-                                        value={is_my_ad ? '-' : advertiser_name}
-                                    />
-                                </div>
-                                <div className='order-details__info--right'>
-                                    <OrderInfoBlock
-                                        label={localize('Rate (1 {{offer_currency}})', { offer_currency })}
-                                        value={`${display_price_rate} ${transaction_currency}`}
-                                    />
-                                </div>
-                            </div>
-                            {is_buyer && (
-                                <React.Fragment>
-                                    <OrderInfoBlock
-                                        label={localize('Seller payment instructions')}
-                                        value={payment_info || '-'}
-                                    />
-                                    <OrderInfoBlock
-                                        label={localize('Seller contact details')}
-                                        value={contact_info || '-'}
-                                    />
-                                </React.Fragment>
-                            )}
-                            {!is_my_ad && (
+                    <div className='order-details__info'>
+                        <div className='order-details__info-columns'>
+                            <div className='order-details__info--left'>
                                 <OrderInfoBlock
-                                    label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
-                                    value={advertiser_instructions || '-'}
+                                    label={is_buyer ? localize('Seller') : localize('Buyer')}
+                                    // TODO: Once we have access to other party's information we can update below.
+                                    value={is_my_ad ? '-' : advertiser_name}
                                 />
-                            )}
-                            <div className='order-details__info-columns'>
-                                <div className='order-details__info--left'>
-                                    <OrderInfoBlock
-                                        label={is_buyer ? localize('Send') : localize('Receive')}
-                                        value={`${display_transaction_amount} ${transaction_currency}`}
-                                    />
-                                    <OrderInfoBlock label={localize('Order ID')} value={id} />
-                                </div>
-                                <div className='order-details__info--right'>
-                                    <OrderInfoBlock
-                                        label={is_buyer ? localize('Receive') : localize('Send')}
-                                        value={`${display_offer_amount} ${offer_currency}`}
-                                    />
-                                    <OrderInfoBlock label={localize('Time')} value={order_purchase_datetime} />
-                                </div>
                             </div>
-                        </ThemedScrollbars>
+                            <div className='order-details__info--right'>
+                                <OrderInfoBlock
+                                    label={localize('Rate (1 {{offer_currency}})', { offer_currency })}
+                                    value={`${display_price_rate} ${transaction_currency}`}
+                                />
+                            </div>
+                        </div>
+                        {is_buyer && (
+                            <React.Fragment>
+                                <OrderInfoBlock
+                                    label={localize('Seller payment instructions')}
+                                    value={payment_info || '-'}
+                                />
+                                <OrderInfoBlock
+                                    label={localize('Seller contact details')}
+                                    value={contact_info || '-'}
+                                />
+                            </React.Fragment>
+                        )}
+                        {!is_my_ad && (
+                            <OrderInfoBlock
+                                label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
+                                value={advertiser_instructions || '-'}
+                            />
+                        )}
+                        <div className='order-details__info-columns'>
+                            <div className='order-details__info--left'>
+                                <OrderInfoBlock
+                                    label={is_buyer ? localize('Send') : localize('Receive')}
+                                    value={`${display_transaction_amount} ${transaction_currency}`}
+                                />
+                                <OrderInfoBlock label={localize('Order ID')} value={id} />
+                            </div>
+                            <div className='order-details__info--right'>
+                                <OrderInfoBlock
+                                    label={is_buyer ? localize('Receive') : localize('Send')}
+                                    value={`${display_offer_amount} ${offer_currency}`}
+                                />
+                                <OrderInfoBlock label={localize('Time')} value={order_purchase_datetime} />
+                            </div>
+                        </div>
                     </div>
                     <div className='order-details__footer'>
                         <OrderActionsBlock

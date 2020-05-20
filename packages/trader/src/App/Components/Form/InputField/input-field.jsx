@@ -137,13 +137,13 @@ class InputField extends React.Component {
             if (max_is_disabled) return;
             let increment_value;
 
-            const current_value = local_value || value;
+            const current_value = this.state.local_value || value;
 
             const decimal_places = current_value ? getDecimals(current_value) : 0;
             const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
             if (step) {
-                const increase_percentage = Math.max(step, 10) / 10;
+                const increase_percentage = Math.min(step, Math.max(step, 10)) / 10;
                 const increase = (value * increase_percentage) / 100;
                 const new_value = parseFloat(+(current_value || 0)) + Math.abs(increase);
 
@@ -161,13 +161,13 @@ class InputField extends React.Component {
         const calculateDecrementedValue = step => {
             let decrement_value;
 
-            const current_value = local_value || value;
+            const current_value = this.state.local_value || value;
 
             const decimal_places = current_value ? getDecimals(current_value) : 0;
             const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
             if (step) {
-                const decrease_percentage = Math.max(step, 10) / 10;
+                const decrease_percentage = Math.min(step, Math.max(step, 10)) / 10;
                 const decrease = (value * decrease_percentage) / 100;
                 const new_value = parseFloat(+(current_value || 0)) - Math.abs(decrease);
 

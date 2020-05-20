@@ -23,7 +23,7 @@ const Trader = React.lazy(() => {
     return import(/* webpackChunkName: "trader" */ '@deriv/trader');
 });
 
-const Account = lazy(() => {
+const Account = React.lazy(() => {
     const el_head = document.querySelector('head');
     const el_main_css = document.createElement('link');
     el_main_css.href = getUrlBase('/account/css/account.css');

@@ -6,7 +6,6 @@ import { Loading, Button, Dropdown, Modal, Icon, DesktopWrapper, MobileWrapper, 
 import routes from '@deriv/shared/utils/routes';
 import { isMobile, isDesktop } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
-import { isEmptyObject } from '@deriv/shared/utils/object';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import LeaveConfirm from 'Components/leave-confirm';

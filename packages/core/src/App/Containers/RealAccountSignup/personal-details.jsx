@@ -8,11 +8,11 @@ import {
     RadioGroup,
     ThemedScrollbars,
 } from '@deriv/components';
+import React from 'react';
+import { Field, Formik } from 'formik';
 import { toMoment } from '@deriv/shared/utils/date';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
-import { Field, Formik } from 'formik';
-import React from 'react';
 import 'Sass/details-form.scss';
 
 const DateOfBirthField = props => (

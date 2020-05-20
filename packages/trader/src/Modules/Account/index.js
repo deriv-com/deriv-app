@@ -4,6 +4,7 @@ import ProofOfIdentity from './Sections/Verification/ProofOfIdentity';
 import ProofOfAddress from './Sections/Verification/ProofOfAddress';
 import DerivPassword from './Sections/Security/DerivPassword';
 import AccountLimits from './Sections/Security/AccountLimits';
+import TwoFactorAuthentication from './Sections/Security/TwoFactorAuthentication';
 import Account from './Containers/account.jsx';
 
 export default {
@@ -14,4 +15,5 @@ export default {
     ProofOfAddress,
     DerivPassword,
     AccountLimits,
+    TwoFactorAuthentication,
 };

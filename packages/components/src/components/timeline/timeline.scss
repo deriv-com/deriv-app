@@ -9,18 +9,19 @@
         }
     }
     &__container {
-        margin-top: 6px;
+        margin-top: 4px;
         margin-left: 20px;
     }
     &__title {
         max-width: 500px;
         font-size: 14px;
         color: var(--text-prominent);
+        line-height: 2rem;
     }
     &__oval {
         width: 24px;
         height: 24px;
-        line-height: 24px;
+        line-height: 2.35rem;
         background-color: var(--brand-red-coral);
         border-radius: 50%;
         text-align: center;
@@ -29,7 +30,7 @@
         left: -12px;
     }
     &__number {
-        color: var(--text-prominent);
+        color: var(--text-colored-background);
         font-size: 16px;
         font-weight: bold;
     }

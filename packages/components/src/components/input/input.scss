@@ -174,7 +174,7 @@
         position: absolute;
         pointer-events: none;
         left: 1rem;
-        top: 0.9rem;
+        top: 1rem;
         transition: 0.25s ease all;
         transform-origin: top left;
     }
@@ -187,6 +187,7 @@
     }
     &__hint {
         color: var(--text-less-prominent);
+        line-height: 1.2;
         font-size: 1.2rem;
         margin-left: 1.2rem;
         position: absolute;

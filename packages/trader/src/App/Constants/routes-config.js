@@ -123,6 +123,11 @@ const initRoutesConfig = () => [
                         component: lazyLoadAccountComponent('AccountLimits'),
                         title: localize('Account limits'),
                     },
+                    {
+                        path: routes.two_factor_authentication,
+                        component: lazyLoadAccountComponent('TwoFactorAuthentication'),
+                        title: localize('Two-factor authentication'),
+                    },
                 ],
             },
         ],

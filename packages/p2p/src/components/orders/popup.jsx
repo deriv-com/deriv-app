@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
@@ -7,7 +7,7 @@ import FormError from '../form/error.jsx';
 import { localize } from '../i18next';
 import IconClose from '../../assets/icon-close.jsx';
 
-class Popup extends Component {
+class Popup extends React.Component {
     state = {
         api_error_message: '',
         disable_confirm: true,

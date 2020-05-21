@@ -52,11 +52,11 @@ class ApiToken extends React.Component {
         const token_name = values.token_name && values.token_name.trim();
 
         if (!token_name) {
-            errors.token_name = localize('Token name is required.');
+            errors.token_name = localize('Please enter a token name.');
         } else if (token_name.length < 2 || token_name.length > 32) {
             errors.token_name = localize('Length of token name must be between 2 and 32 characters.');
         } else if (!/^[A-Za-z0-9\s_]+$/g.test(token_name)) {
-            errors.token_name = localize('Token name must only contain letters, numbers and underscores.');
+            errors.token_name = localize('Only letters, numbers, and underscores are allowed.');
         }
 
         return errors;
@@ -263,7 +263,7 @@ class ApiToken extends React.Component {
                                                     value={values.trading_information}
                                                     display_name={localize('Trading information')}
                                                     setFieldValue={setFieldValue}
-                                                    description={localize('View the trading history of an account.')}
+                                                    description={localize('View the trading history.')}
                                                 />
                                             </div>
                                         </Timeline.Item>

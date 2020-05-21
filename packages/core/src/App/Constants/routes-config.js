@@ -23,6 +23,17 @@ const Trader = React.lazy(() => {
     return import(/* webpackChunkName: "trader" */ '@deriv/trader');
 });
 
+const Account = React.lazy(() => {
+    const el_head = document.querySelector('head');
+    const el_main_css = document.createElement('link');
+    el_main_css.href = getUrlBase('/account/css/account.css');
+    el_main_css.rel = 'stylesheet';
+    el_main_css.type = 'text/css';
+    el_head.appendChild(el_main_css);
+    // eslint-disable-next-line import/no-unresolved
+    return import(/* webpackChunkName: "account" */ '@deriv/account');
+});
+
 const Bot = React.lazy(() => {
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
@@ -35,6 +46,13 @@ const modules = [
         title: localize('Bot'),
     },
     {
+        path: routes.account,
+        component: Account,
+        title: localize('Accounts Settings'),
+        icon_component: 'IcUserOutline',
+        is_authenticated: true,
+    },
+    {
         path: routes.root,
         component: Trader,
         title: localize('Trader'),
@@ -45,13 +63,6 @@ const modules = [
                 component: Trader,
                 title: localize('Reports'),
                 icon_component: 'IcReports',
-                is_authenticated: true,
-            },
-            {
-                path: routes.account,
-                component: Trader,
-                title: localize('Accounts Settings'),
-                icon_component: 'IcUserOutline',
                 is_authenticated: true,
             },
             { path: routes.contract, component: Trader, title: localize('Contract Details'), is_authenticated: true },

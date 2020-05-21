@@ -13,8 +13,8 @@ import {
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { MultiStep } from '@deriv/account';
 import { urlFor } from '@deriv/shared/utils/url';
-import MultiStep from 'Modules/Account/Components/multistep.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';

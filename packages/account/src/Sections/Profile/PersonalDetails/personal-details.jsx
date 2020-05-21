@@ -690,7 +690,6 @@ class PersonalDetailsForm extends React.Component {
                                                         error={touched.address_postcode && errors.address_postcode}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
-                                                        required
                                                     />
                                                 </fieldset>
                                             </div>

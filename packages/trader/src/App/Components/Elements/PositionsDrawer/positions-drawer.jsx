@@ -229,7 +229,7 @@ class PositionsDrawer extends React.Component {
                     })}
                 >
                     <div className='positions-drawer__header'>
-                        <span className='positions-drawer__title'>{localize('Recent Positions')}</span>
+                        <span className='positions-drawer__title'>{localize('Recent positions')}</span>
                         <div
                             id='dt_positions_drawer_close_icon'
                             className='positions-drawer__icon-close'

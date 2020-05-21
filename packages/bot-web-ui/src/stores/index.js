@@ -12,6 +12,7 @@ import ToolbarStore from './toolbar-store';
 import TransactionsStore from './transactions-store';
 import QuickStrategyStore from './quick-strategy-store';
 import MainContentStore from './main-content-store';
+import RoutePromptDialogStore from './route-prompt-dialog-store';
 
 export default class RootStore {
     constructor(core, ws, dbot) {
@@ -33,6 +34,7 @@ export default class RootStore {
         this.transactions = new TransactionsStore(this);
         this.toolbar = new ToolbarStore(this);
         this.quick_strategy = new QuickStrategyStore(this);
+        this.route_prompt_dialog = new RoutePromptDialogStore(this);
 
         // need to be at last for dependency
         this.chart_store = new ChartStore(this);

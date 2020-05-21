@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import { ThemedScrollbars } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import PageReturn from 'Components/page-return/page-return.jsx';
@@ -79,7 +80,9 @@ const Orders = ({ navigate, params }) => {
                                   })
                         }
                     />
-                    <OrderDetails order_details={order_details} />
+                    <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 210px)' }}>
+                        <OrderDetails order_details={order_details} />
+                    </ThemedScrollbars>
                 </React.Fragment>
             )}
             {!order_details && <OrderTable navigate={navigate} showDetails={setQueryDetails} />}

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Theme extends Component {
+class Theme extends React.Component {
     render() {
         return (
             <div

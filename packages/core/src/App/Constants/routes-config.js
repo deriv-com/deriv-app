@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
@@ -10,9 +10,9 @@ import { Redirect } from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
 
 // Error Routes
-const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
+const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
-const Trader = lazy(() => {
+const Trader = React.lazy(() => {
     const el_head = document.querySelector('head');
     const el_main_css = document.createElement('link');
     el_main_css.href = getUrlBase('/css/trader.main.css');
@@ -23,7 +23,18 @@ const Trader = lazy(() => {
     return import(/* webpackChunkName: "trader" */ '@deriv/trader');
 });
 
-const Bot = lazy(() => {
+const Account = React.lazy(() => {
+    const el_head = document.querySelector('head');
+    const el_main_css = document.createElement('link');
+    el_main_css.href = getUrlBase('/account/css/account.css');
+    el_main_css.rel = 'stylesheet';
+    el_main_css.type = 'text/css';
+    el_head.appendChild(el_main_css);
+    // eslint-disable-next-line import/no-unresolved
+    return import(/* webpackChunkName: "account" */ '@deriv/account');
+});
+
+const Bot = React.lazy(() => {
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
 });
@@ -33,6 +44,13 @@ const modules = [
         path: routes.bot,
         component: Bot,
         title: localize('Bot'),
+    },
+    {
+        path: routes.account,
+        component: Account,
+        title: localize('Accounts Settings'),
+        icon_component: 'IcUserOutline',
+        is_authenticated: true,
     },
     {
         path: routes.root,
@@ -45,13 +63,6 @@ const modules = [
                 component: Trader,
                 title: localize('Reports'),
                 icon_component: 'IcReports',
-                is_authenticated: true,
-            },
-            {
-                path: routes.account,
-                component: Trader,
-                title: localize('Accounts Settings'),
-                icon_component: 'IcUserOutline',
                 is_authenticated: true,
             },
             { path: routes.contract, component: Trader, title: localize('Contract Details'), is_authenticated: true },

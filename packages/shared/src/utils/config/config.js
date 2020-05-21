@@ -69,3 +69,27 @@ export const getSocketURL = () => {
 
     return server_url;
 };
+
+export const checkAndSetEndpointFromUrl = () => {
+    if (/^(staging\.deriv\.app|(.*)\.binary\.sx)$/i.test(location.hostname)) {
+        const url_params = new URLSearchParams(location.search.slice(1));
+
+        if (url_params.has('qa_server') && url_params.has('app_id')) {
+            const qa_server = url_params.get('qa_server');
+            const app_id = url_params.get('app_id');
+
+            url_params.delete('qa_server');
+            url_params.delete('app_id');
+
+            if (/^(www\.binaryqa[0-9]{1,2}\.com|(.*)\.binaryws\.com)$/.test(qa_server) && /^[0-9]+$/.test(app_id)) {
+                localStorage.setItem('config.app_id', app_id);
+                localStorage.setItem('config.server_url', qa_server);
+            }
+
+            const params = url_params.toString();
+            location.href = `${location.protocol}//${location.hostname}${location.pathname}${
+                params ? `?${params}` : ''
+            }`;
+        }
+    }
+};

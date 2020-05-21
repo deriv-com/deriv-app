@@ -9,13 +9,13 @@ const getStringsFromInput = (input, i18n_marker = getRegexPattern()) => {
         // If it captures `text=` then it will be index 2, else its index 4 which captures `localize`
         const extracted = result[2] || result[4]
         // Replace escape characters.
-        messages.push(extracted.replace(/\\/g, '')); 
+        messages.push(extracted.replace(/\\/g, ''));
     }
     return messages;
 }
 
 const getTranslatableFiles = () => {
-    const packages_with_translations = ['bot-skeleton', 'bot-web-ui', 'trader', 'core'];
+    const packages_with_translations = ['bot-skeleton', 'bot-web-ui', 'trader', 'core', 'account'];
     const globs = ['**/*.js', '**/*.jsx'];
     const file_paths = [];
 

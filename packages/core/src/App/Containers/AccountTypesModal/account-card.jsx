@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { Button, Icon } from '@deriv/components';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { localize } from '@deriv/translations';
 
@@ -77,7 +77,7 @@ const MainCard = ({ button_text, buttonOnClick, items, setShowDescription, subti
 };
 
 const AccountCard = ({ button_text, buttonOnClick, children, items, learn_more, subtitle, title }) => {
-    const [descriptionShown, setShowDescription] = useState(false);
+    const [descriptionShown, setShowDescription] = React.useState(false);
 
     return (
         <div className='account-card'>

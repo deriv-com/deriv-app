@@ -97,7 +97,8 @@ export default class ClientStore extends BaseStore {
             !this.is_logged_in ||
             this.is_virtual ||
             this.accounts[this.loginid].landing_company_shortcode === 'svg' ||
-            this.accounts[this.loginid].landing_company_shortcode === 'iom'
+            this.accounts[this.loginid].landing_company_shortcode === 'iom' ||
+            this.accounts[this.loginid].landing_company_shortcode === 'malta'
         );
     }
 
@@ -301,6 +302,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_eu() {
+        if (!this.landing_companies) return false;
         const { gaming_company, financial_company } = this.landing_companies;
         const financial_shortcode = financial_company?.shortcode;
         const gaming_shortcode = gaming_company?.shortcode;
@@ -324,17 +326,19 @@ export default class ClientStore extends BaseStore {
             malta: false,
             maltainvest: false,
         };
+        if (!this.landing_companies) return result;
         const { gaming_company, financial_company } = this.landing_companies;
-        if (gaming_company) {
+        if (gaming_company?.shortcode) {
             Object.assign(result, {
                 [gaming_company.shortcode]: !!gaming_company?.shortcode,
             });
         }
-        if (financial_company) {
+        if (financial_company?.shortcode) {
             Object.assign(result, {
                 [financial_company.shortcode]: !!financial_company?.shortcode,
             });
         }
+
         return result;
     }
 

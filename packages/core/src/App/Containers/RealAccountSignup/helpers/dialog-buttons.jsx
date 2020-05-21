@@ -49,6 +49,7 @@ const getActionButton = ({ status, landing_company_shortcode, closeModalAndOpenC
                 action: closeModalAndOpenCashier,
             };
         case 'svg':
+        case 'malta':
         default:
             return {
                 label: localize('Deposit now'),

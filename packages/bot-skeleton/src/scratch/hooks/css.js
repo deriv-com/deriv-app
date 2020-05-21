@@ -357,7 +357,7 @@ Blockly.Css.CONTENT = [
     'fill: var(--text-general);',
     'font-family: inherit;',
     'font-size: var(--text-size-s);',
-    'font-weight: bold;',
+    'font-weight: normal;',
     'font-stretch: normal;',
     'font-style: normal;',
     'line-height: 1.5;',
@@ -379,7 +379,7 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyEditableText>.blocklyEditableLabel {',
-    'fill: #fff;',
+    'fill: var(--text-general);',
     '}',
 
     '.blocklyDropdownText {',

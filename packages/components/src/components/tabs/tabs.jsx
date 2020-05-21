@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Tab from './tab.jsx';
 
-class Tabs extends Component {
+class Tabs extends React.Component {
     constructor(props) {
         super(props);
 

@@ -46,6 +46,9 @@ module.exports = {
                         loader: '@deriv/shared/utils/deriv-components-loader.js'
                     },
                     {
+                        loader: '@deriv/shared/utils/react-import-loader.js'
+                    },
+                    {
                         loader : 'babel-loader',
                     },
                 ]

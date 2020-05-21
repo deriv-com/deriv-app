@@ -220,7 +220,7 @@ class ApiToken extends React.Component {
                             }) => (
                                 <Form noValidate>
                                     <Timeline className='api-token__timeline'>
-                                        <Timeline.Item title={localize('Select tokens based on the access you need.')}>
+                                        <Timeline.Item title={localize('Select scopes based on the access you need.')}>
                                             <div className='api-token__checkbox-wrapper'>
                                                 <Card
                                                     name='read'
@@ -315,7 +315,7 @@ class ApiToken extends React.Component {
                                                         <Table.Row className='api-token__table-row'>
                                                             <Table.Head>{localize('Name')}</Table.Head>
                                                             <Table.Head>{localize('Token')}</Table.Head>
-                                                            <Table.Head>{localize('Scope')}</Table.Head>
+                                                            <Table.Head>{localize('Scopes')}</Table.Head>
                                                             <Table.Head>{localize('Last used')}</Table.Head>
                                                             <Table.Head>{localize('Action')}</Table.Head>
                                                         </Table.Row>

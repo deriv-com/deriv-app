@@ -117,7 +117,6 @@
     "react-router-dom": "^5.1.2",
     "react-swipeable": "^5.5.1",
     "react-tiny-popover": "^4.0.0",
-    "react-transition-group": "^4.2.2",
-    "tt-react-custom-scrollbars": "^4.2.1-tt2"
+    "react-transition-group": "^4.2.2"
   }
 }

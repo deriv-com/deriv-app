@@ -189,7 +189,6 @@ module.exports = {
             'babel-polyfill': 'babel-polyfill',
             'prop-types': 'prop-types',
             'react-transition-group': 'react-transition-group',
-            'tt-react-custom-scrollbars': 'tt-react-custom-scrollbars',
             react: 'react',
             'react-dom': 'react-dom',
             '@deriv/shared': '@deriv/shared',

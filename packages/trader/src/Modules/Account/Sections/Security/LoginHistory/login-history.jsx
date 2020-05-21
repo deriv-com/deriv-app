@@ -17,8 +17,12 @@ const Td = ({ title, text, className }) => (
     </td>
 );
 
-const LoginHistoryListView = ({ fields, login_history }) => (
-    <table className='login-history-table'>
+const LoginHistoryListView = ({ fields, login_history, is_dark_mode }) => (
+    <table
+        className={classNames('login-history-table', {
+            'theme-dark': is_dark_mode,
+        })}
+    >
         <tbody>
             <tr>
                 <Td title={fields.date} text={login_history.date} />
@@ -95,7 +99,7 @@ class LoginHistory extends React.Component {
             const ua = parseUA(user_agent);
             data[i].browser = ua ? `${ua.name} ${ua.version}` : '';
             data[i].ip = environment_split[2].split('=')[1];
-            data[i].status = login_history[i].status === 1 ? localize('Success') : localize('Failure');
+            data[i].status = login_history[i].status === 1 ? localize('Successful') : localize('Failed');
             data[i].id = i;
         }
         return data;
@@ -150,7 +154,12 @@ class LoginHistory extends React.Component {
                         </DesktopWrapper>
                         <MobileWrapper>
                             {this.state.data.map(item => (
-                                <LoginHistoryListView key={item.id} fields={this.fields} login_history={item} />
+                                <LoginHistoryListView
+                                    key={item.id}
+                                    fields={this.fields}
+                                    login_history={item}
+                                    is_dark_mode={this.props.is_dark_mode}
+                                />
                             ))}
                         </MobileWrapper>
                     </>
@@ -164,6 +173,7 @@ LoginHistory.propTypes = {
     is_switching: PropTypes.bool,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
+    is_dark_mode: ui.is_dark_mode_on,
     is_switching: client.is_switching,
 }))(LoginHistory);

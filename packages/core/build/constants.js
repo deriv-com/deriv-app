@@ -146,7 +146,7 @@ const plugins = (base, is_test_env, is_mocha_only) => [
         ? [new StylelintPlugin(stylelintConfig())]
         : [
               new GenerateSW(generateSWConfig()),
-              // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
+              // ...(!IS_RELEASE ? [new BundleAnalyzerPlugin({ analyzerMode: 'static' })] : []),
           ]),
 ];
 

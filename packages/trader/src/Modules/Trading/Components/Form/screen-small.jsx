@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Collapsible } from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals.jsx';
@@ -23,7 +23,7 @@ const CollapsibleTradeParams = ({
     is_trade_params_expanded,
     setIsTradeParamsExpanded,
 }) => {
-    useEffect(() => {
+    React.useEffect(() => {
         if (previous_symbol && is_allow_equal && has_allow_equals) setIsTradeParamsExpanded(true);
     }, [previous_symbol]);
 

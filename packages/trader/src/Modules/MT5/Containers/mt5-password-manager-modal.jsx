@@ -14,8 +14,8 @@ import {
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { MultiStep } from '@deriv/account';
 import { getDerivComLink } from '@deriv/shared/utils/url';
-import MultiStep from 'Modules/Account/Components/multistep.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
@@ -105,15 +105,19 @@ class MT5PasswordManagerModal extends React.Component {
         } = this.props;
 
         const validatePassword = values => {
-            const is_valid =
-                validPassword(values.new_password) &&
-                validLength(values.new_password, {
-                    min: 8,
-                    max: 25,
-                });
             const errors = {};
 
-            if (!is_valid) {
+            if (
+                !validLength(values.new_password, {
+                    min: 8,
+                    max: 25,
+                })
+            ) {
+                errors.new_password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+                    min_number: 8,
+                    max_number: 25,
+                });
+            } else if (!validPassword(values.new_password)) {
                 errors.new_password = localize('You need to include uppercase and lowercase letters, and numbers.');
             }
 

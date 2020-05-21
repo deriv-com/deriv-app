@@ -378,7 +378,11 @@ export default class TradeStore extends BaseStore {
     @action.bound
     async resetPreviousSymbol() {
         this.setMarketStatus(isMarketClosed(this.active_symbols, this.previous_symbol));
+
         await Symbol.onChangeSymbolAsync(this.previous_symbol);
+        await this.updateSymbol(this.symbol);
+
+        this.setChartStatus(false);
         runInAction(() => {
             this.previous_symbol = ''; // reset the symbol to default
         });

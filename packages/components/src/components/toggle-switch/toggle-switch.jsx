@@ -1,11 +1,11 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-class ToggleSwitch extends Component {
+class ToggleSwitch extends React.Component {
     render() {
         return (
-            <Fragment>
+            <>
                 <input
                     className={classNames('dc-toggle-switch', {}, this.props.className)}
                     id={this.props.id}
@@ -19,7 +19,7 @@ class ToggleSwitch extends Component {
                 >
                     <span className={classNames('dc-toggle-switch__button', {}, this.props.classNameButton)} />
                 </label>
-            </Fragment>
+            </>
         );
     }
 }

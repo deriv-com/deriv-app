@@ -309,19 +309,7 @@ class Dropdown extends React.Component {
                                         aria-expanded={this.state.is_list_visible}
                                         role='list'
                                     >
-                                        <ThemedScrollbars
-                                            autoHeight
-                                            autoHide
-                                            // TODO: remove this once tt-react-scrollbars have been replaced
-                                            // prevent focus handling from breaking
-                                            autoHeightMax={10000}
-                                            renderTrackHorizontal={props => (
-                                                <div {...props} style={{ display: 'none' }} />
-                                            )}
-                                            renderThumbHorizontal={props => (
-                                                <div {...props} style={{ display: 'none' }} />
-                                            )}
-                                        >
+                                        <ThemedScrollbars height='200px'>
                                             {Array.isArray(this.props.list) ? (
                                                 <Items
                                                     onKeyPressed={this.onKeyPressed}

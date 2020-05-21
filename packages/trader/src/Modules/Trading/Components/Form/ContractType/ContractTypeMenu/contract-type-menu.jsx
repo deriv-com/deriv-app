@@ -44,9 +44,6 @@ class Dialog extends React.PureComponent {
             if (!this.vertical_tab_headers.length) {
                 this.vertical_tab_headers = this.getVerticalTabHeaders();
             }
-            if (this.scrollbar_ref.current && !this.is_user_scroll && this.should_scroll) {
-                this.scroll();
-            }
         }
     }
 
@@ -57,14 +54,9 @@ class Dialog extends React.PureComponent {
         if (this.state.input_value) {
             this.onClickClearInput();
         }
-        this.setState(
-            {
-                selected: e,
-            },
-            () => {
-                this.scroll();
-            }
-        );
+        this.setState({
+            selected: e,
+        });
     };
 
     onScroll = e => {
@@ -196,6 +188,7 @@ class Dialog extends React.PureComponent {
                                     {!is_info_dialog_open ? (
                                         <ThemedScrollbars
                                             list_ref={this.scrollbar_ref}
+                                            height='calc(100% - 84px)'
                                             onScroll={this.onScroll}
                                             onScrollStop={this.onScrollStop}
                                             renderView={props => (

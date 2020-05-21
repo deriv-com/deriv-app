@@ -9,19 +9,9 @@ const Card = ({ contract_type, onClick }) => (
     <ThemedScrollbars
         style={{
             width: '288px',
-            maxHeight: 'calc(100vh- 262px)',
             marginRight: '2.4rem',
         }}
-        renderTrackHorizontal={() => (
-            <div
-                // hide horizontal scrollbar
-                style={{
-                    display: 'none',
-                    overflowX: 'hidden',
-                }}
-            />
-        )}
-        renderView={props => <div {...props} style={{ ...props.style, width: '272px', overflowX: 'hidden' }} />}
+        height='calc(100vh- 262px)'
     >
         <div className='contract-type-info__card'>
             <div className='contract-type-info__gif'>

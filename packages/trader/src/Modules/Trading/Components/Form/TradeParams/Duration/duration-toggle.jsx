@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
@@ -12,7 +12,7 @@ const DurationToggle = ({ name, onChange, value }) => {
         'advanced-simple-toggle__icon--active': value,
     });
     return (
-        <Fragment>
+        <>
             <button
                 id={value ? 'dt_advanced_toggle' : 'dt_simple_toggle'}
                 className='advanced-simple-toggle'
@@ -25,7 +25,7 @@ const DurationToggle = ({ name, onChange, value }) => {
                     classNamePath={'advanced-simple-toggle__icon-path'}
                 />
             </button>
-        </Fragment>
+        </>
     );
 };
 

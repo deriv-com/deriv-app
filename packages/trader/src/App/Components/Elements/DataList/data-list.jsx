@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { VariableSizeList as List } from 'react-window';
 import { NavLink } from 'react-router-dom';
 import { ThemedScrollbars } from '@deriv/components';
@@ -15,7 +15,7 @@ const ListScrollbar = React.forwardRef((props, ref) => <ExtendedScrollbars {...p
 ListScrollbar.displayName = 'ListScrollbar';
 
 const ExtendedScrollbars = ({ onScroll, forwardedRef, style, children }) => {
-    const refSetter = useCallback(scrollbarsRef => {
+    const refSetter = React.useCallback(scrollbarsRef => {
         if (scrollbarsRef) {
             forwardedRef(scrollbarsRef.view);
         } else {

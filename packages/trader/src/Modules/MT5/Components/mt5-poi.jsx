@@ -1,12 +1,12 @@
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer } from '@deriv/components';
 import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import ProofOfIdentityContainer from 'Modules/Account/Sections/Verification/ProofOfIdentity/proof-of-identity-container.jsx';
 
-class MT5POI extends PureComponent {
+class MT5POI extends React.PureComponent {
     state = {
         poi_state: 'none',
     };

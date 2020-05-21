@@ -69,8 +69,8 @@ class MT5POA extends React.Component {
                 localize('State/Province is not in a proper format.'),
             ],
             address_postcode: [
-                localize('You should enter {{min_number}}-{{max_number}} characters.', {
-                    min_number: 0,
+                localize('Please enter a {{field_name}} under {{max_number}} characters.', {
+                    field_name: localize('postal/ZIP code'),
                     max_number: 20,
                 }),
                 localize('Only letters, numbers, space, and hyphen are allowed.'),
@@ -303,8 +303,8 @@ class MT5POA extends React.Component {
                                                     </fieldset>
                                                     <InputField
                                                         name='address_postcode'
-                                                        label={localize('Postal/ZIP Code')}
-                                                        placeholder={localize('Postal/ZIP Code')}
+                                                        label={localize('Postal/ZIP code')}
+                                                        placeholder={localize('Postal/ZIP code')}
                                                     />
                                                 </div>
                                                 <div className='mt5-proof-of-address__file-upload'>

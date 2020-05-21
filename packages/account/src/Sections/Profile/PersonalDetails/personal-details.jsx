@@ -214,8 +214,8 @@ class PersonalDetailsForm extends React.Component {
 
         if (values.address_postcode) {
             if (!validLength(values.address_postcode, { min: 0, max: 20 })) {
-                errors.address_postcode = localize('You should enter {{min_number}}-{{max_number}} characters.', {
-                    min_number: 0,
+                errors.address_postcode = localize('Please enter a {{field_name}} under {{max_number}} characters.', {
+                    field_name: localize('postal/ZIP code'),
                     max_number: 20,
                 });
             } else if (!validPostCode(values.address_postcode)) {
@@ -685,7 +685,7 @@ class PersonalDetailsForm extends React.Component {
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
                                                         name='address_postcode'
-                                                        label={localize('Postal/ZIP Code')}
+                                                        label={localize('Postal/ZIP code')}
                                                         value={values.address_postcode}
                                                         error={touched.address_postcode && errors.address_postcode}
                                                         onChange={handleChange}

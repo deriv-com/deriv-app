@@ -14,7 +14,7 @@ import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
-import { validLength } from 'Utils/Validator/declarative-validation-rules';
+import { validLength, validPostCode } from 'Utils/Validator/declarative-validation-rules';
 
 const InputField = props => {
     return (
@@ -197,8 +197,8 @@ class AddressDetails extends React.Component {
                                             )}
                                             <InputField
                                                 name='address_postcode'
-                                                label={localize('Postal/ZIP Code')}
-                                                placeholder={localize('Postal/ZIP Code')}
+                                                label={localize('Postal/ZIP code')}
+                                                placeholder={localize('Postal/ZIP code')}
                                             />
                                         </div>
                                     </ThemedScrollbars>
@@ -228,7 +228,7 @@ class AddressDetails extends React.Component {
             address_line_2: [v => !v || /^[\w\W\s/-]{0,70}$/gu.exec(v) !== null],
             address_city: [v => !!v, v => /^[a-zA-Z\s\W'.-]{1,35}$/gu.exec(v) !== null],
             address_state: [v => /^[a-zA-Z\s\W'.-]{0,35}$/gu.exec(v) !== null],
-            address_postcode: [v => /^[-A-Za-z0-9\s]*$/gu.exec(v) !== null, v => validLength(v, { min: 0, max: 20 })],
+            address_postcode: [v => validLength(v, { min: 0, max: 20 }), v => validPostCode(v)],
         };
 
         const mappedKey = {
@@ -236,7 +236,7 @@ class AddressDetails extends React.Component {
             address_line_2: localize('Second line of address'),
             address_city: `${localize('Town/City')}`,
             address_state: `${localize('State/Province')}`,
-            address_postcode: `${localize('Postal/ZIP Code')}`,
+            address_postcode: `${localize('Postal/ZIP code')}`,
         };
 
         const required_messages = ['{{field_name}} is required', '{{field_name}} is not in a proper format.'];
@@ -246,8 +246,8 @@ class AddressDetails extends React.Component {
         const custom_messages = {
             address_postcode: [
                 localize('Only letters, numbers, space, and hyphen are allowed.'),
-                localize('You should enter {{min_number}}-{{max_number}} characters.', {
-                    min_number: 0,
+                localize('Please enter a {{field_name}} under {{max_number}} characters.', {
+                    field_name: localize('postal/ZIP code'),
                     max_number: 20,
                 }),
             ],

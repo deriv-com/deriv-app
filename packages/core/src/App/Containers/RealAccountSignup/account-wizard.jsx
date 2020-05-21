@@ -3,13 +3,10 @@ import fromEntries from 'object.fromentries';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Div100vhContainer, FormProgress } from '@deriv/components';
 import { isDesktop } from '@deriv/shared/utils/screen';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { toMoment } from '@deriv/shared/utils/date';
-import CurrencySelector from './currency-selector.jsx';
-import { addressDetailsConfig } from './address-details-form';
-import { personalDetailsConfig } from './personal-details-form';
-import { termsOfUseConfig } from './terms-of-use-form';
+import { getItems } from './account-wizard-form';
 
 // TODO: [deriv-eu] remove and merge this with the original function in PersonalDetails
 const getLocation = (location_list, value, type) => {
@@ -28,21 +25,7 @@ class AccountWizard extends React.Component {
             finished: undefined,
             step: 0,
             form_error: '',
-            items: [
-                {
-                    header: {
-                        active_title: localize('Please choose your currency'),
-                        title: localize('Account currency'),
-                    },
-                    body: CurrencySelector,
-                    form_value: {
-                        currency: '',
-                    },
-                },
-                personalDetailsConfig(props),
-                addressDetailsConfig(props),
-                termsOfUseConfig(props),
-            ],
+            items: getItems(props),
         };
     }
 
@@ -318,4 +301,5 @@ export default connect(({ client }) => ({
     states_list: client.states_list,
     fetchStatesList: client.fetchStatesList,
     fetchResidenceList: client.fetchResidenceList,
+    refreshNotifications: client.refreshNotifications,
 }))(AccountWizard);

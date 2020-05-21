@@ -617,8 +617,6 @@ export default class ClientStore extends BaseStore {
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
         let client = this.accounts[this.loginid];
-        // Added WS method for reconnecting balance stream on API reconnection
-        WS.setOnReconnect(WS.authorized.balanceAll().then(response => this.setBalance(response.balance)));
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
             // If this fails, it means the landing company check failed
@@ -877,10 +875,24 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    setBalance(obj_balance) {
+    setBalanceActiveAccount(obj_balance) {
         if (this.accounts[obj_balance?.loginid]) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
+            this.resetLocalStorageValues(this.loginid);
+        }
+    }
+
+    // This callback is used for balance: all
+    // Balance: all is very slow
+    // --> so we keep a separate balance subscription for the active account
+    @action.bound
+    setBalanceOtherAccounts(obj_balance) {
+        if (this.accounts[obj_balance?.loginid]) {
             if (obj_balance.total) {
+                if (obj_balance.loginid !== this.loginid) {
+                    this.accounts[obj_balance.loginid].balance = obj_balance.balance;
+                }
+
                 const total_real = ObjectUtils.getPropertyValue(obj_balance, ['total', 'real']);
                 const total_mt5 = ObjectUtils.getPropertyValue(obj_balance, ['total', 'mt5']);
                 // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
@@ -891,7 +903,6 @@ export default class ClientStore extends BaseStore {
                     currency: total_real.currency,
                 };
             }
-            this.resetLocalStorageValues(this.loginid);
         }
     }
 
@@ -1203,10 +1214,6 @@ export default class ClientStore extends BaseStore {
         if (!this.is_mt5_account_list_updated && !this.is_populating_mt5_account_list) {
             const response = await WS.mt5LoginList();
             this.responseMt5LoginList(response);
-            // update total balance since MT5 total only comes in non-stream balance call
-            WS.balanceAll().then(response => {
-                this.setBalance(response.balance);
-            });
         }
     }
 

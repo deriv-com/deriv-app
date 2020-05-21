@@ -96,8 +96,12 @@ const BinarySocketGeneral = (() => {
 
     const setBalance = flow(function*(obj_balance) {
         yield BinarySocket.wait('website_status');
-        client_store.setBalance(obj_balance);
+        client_store.setBalanceActiveAccount(obj_balance);
     });
+
+    const setBalanceAll = obj_balance => {
+        client_store.setBalanceOtherAccounts(obj_balance);
+    };
 
     const handleError = response => {
         const msg_type = response.msg_type;
@@ -110,14 +114,15 @@ const BinarySocketGeneral = (() => {
                         if (!mt5_list_response.error) {
                             client_store.responseMt5LoginList(mt5_list_response);
                             WS.balanceAll().then(balance_response => {
-                                if (!balance_response.error) client_store.setBalance(balance_response.balance);
+                                if (!balance_response.error)
+                                    client_store.setBalanceOtherAccounts(balance_response.balance);
                             });
                         } else {
                             client_store.resetMt5ListPopulatedState();
                         }
                     });
                 } else if (msg_type === 'balance') {
-                    forgetAndSubscribeBalance();
+                    WS.forgetAll('balance').then(subscribeBalances);
                 } else if (msg_type === 'get_account_status') {
                     WS.authorized.getAccountStatus().then(account_status_response => {
                         if (!account_status_response.error) {
@@ -184,18 +189,14 @@ const BinarySocketGeneral = (() => {
         };
     };
 
-    const forgetAndSubscribeBalance = () => {
-        WS.forgetAll('balance').then(() => {
-            // the first has to be without subscribe to quickly update current account's balance
-            WS.authorized.balance().then(ResponseHandlers.balance);
-            // the second is to subscribe to balance and update all sibling accounts' balances too
-            WS.subscribeBalanceAll(ResponseHandlers.balance);
-        });
+    const subscribeBalances = () => {
+        WS.subscribeBalanceAll(ResponseHandlers.balanceOtherAccounts);
+        WS.subscribeBalanceActiveAccount(ResponseHandlers.balanceActiveAccount, client_store.loginid);
     };
 
     const authorizeAccount = response => {
         client_store.responseAuthorize(response);
-        forgetAndSubscribeBalance();
+        subscribeBalances();
         WS.storage.getSettings();
         WS.getAccountStatus();
         WS.storage.payoutCurrencies();
@@ -219,6 +220,7 @@ const BinarySocketGeneral = (() => {
     return {
         init,
         setBalance,
+        setBalanceAll,
         authorizeAccount,
     };
 })();
@@ -244,14 +246,21 @@ const ResponseHandlers = (() => {
         }
     };
 
-    const balance = response => {
+    const balanceActiveAccount = response => {
         if (!response.error) {
             BinarySocketGeneral.setBalance(response.balance);
         }
     };
 
+    const balanceOtherAccounts = response => {
+        if (!response.error) {
+            BinarySocketGeneral.setBalanceAll(response.balance);
+        }
+    };
+
     return {
         websiteStatus,
-        balance,
+        balanceActiveAccount,
+        balanceOtherAccounts,
     };
 })();

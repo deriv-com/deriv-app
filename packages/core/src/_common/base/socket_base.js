@@ -144,6 +144,8 @@ const BinarySocketBase = (() => {
 
     const subscribeBalanceAll = cb => subscribe({ balance: 1, account: 'all' }, cb);
 
+    const subscribeBalanceActiveAccount = (cb, account) => subscribe({ balance: 1, account }, cb);
+
     const subscribeProposal = (req, cb) => subscribe({ proposal: 1, ...req }, cb);
 
     const subscribeProposalOpenContract = (contract_id = null, cb) =>
@@ -333,6 +335,7 @@ const BinarySocketBase = (() => {
         setAccountCurrency,
         balanceAll,
         subscribeBalanceAll,
+        subscribeBalanceActiveAccount,
         subscribeProposal,
         subscribeProposalOpenContract,
         subscribeTicks,

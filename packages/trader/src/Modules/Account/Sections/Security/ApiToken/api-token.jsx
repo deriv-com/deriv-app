@@ -49,7 +49,7 @@ class ApiToken extends React.Component {
     validateFields = values => {
         const errors = {};
 
-        const token_name = values.token_name;
+        const token_name = values.token_name && values.token_name.trim();
 
         if (!token_name) {
             errors.token_name = localize('Token name is required.');
@@ -66,7 +66,7 @@ class ApiToken extends React.Component {
         const titled_scopes = token.scopes.map(scope => StringUtils.toSentenceCase(scope));
         const mapped_scopes = titled_scopes.length === 5 ? localize('All') : titled_scopes.join(', ');
         const date_format = token.last_used
-            ? DateUtils.formatDate(new Date(token.last_used), 'DD/MM/YYYY')
+            ? DateUtils.formatDate(new Date(token.last_used).toDateString(), 'DD/MM/YYYY')
             : localize('Never');
 
         return {
@@ -280,7 +280,7 @@ class ApiToken extends React.Component {
                                                             data-lpignore='true'
                                                             type='text'
                                                             className='api-token__input'
-                                                            label={localize('First name*')}
+                                                            label={localize('Token name')}
                                                             value={values.token_name}
                                                             onChange={handleChange}
                                                             onBlur={handleBlur}
@@ -328,7 +328,7 @@ class ApiToken extends React.Component {
                                                                     <Table.Cell>{token.display_name}</Table.Cell>
                                                                     <Table.Cell>
                                                                         <div className='api-token__clipboard-wrapper'>
-                                                                            {token.token}{' '}
+                                                                            <span>{token.token}</span>
                                                                             <Clipboard
                                                                                 text_copy={token.token}
                                                                                 info_message={localize(
@@ -381,7 +381,7 @@ class ApiToken extends React.Component {
                                                                     </h5>
                                                                     <p className='api-token__scope--text'>
                                                                         <div className='api-token__clipboard-wrapper'>
-                                                                            {token.token}{' '}
+                                                                            <span>{token.token}</span>
                                                                             <Clipboard token={token.token} />
                                                                         </div>
                                                                     </p>

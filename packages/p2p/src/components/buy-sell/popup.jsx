@@ -125,7 +125,7 @@ class Popup extends React.Component {
                                                         <Input
                                                             {...field}
                                                             data-lpignore='true'
-                                                            type='number'
+                                                            type='text'
                                                             error={errors.amount}
                                                             label={localize('Amount')}
                                                             hint={
@@ -235,9 +235,10 @@ class Popup extends React.Component {
         const validations = {
             amount: [
                 v => !!v,
-                v => v >= ad.min_available,
-                v => v <= ad.max_available,
-                v => countDecimalPlaces(v) <= ad.offer_currency_decimals,
+                v => !isNaN(v),
+                v => +v >= ad.min_available,
+                v => +v <= ad.max_available,
+                v => countDecimalPlaces(+v) <= ad.offer_currency_decimals,
             ],
         };
         if (ad.type === 'sell') {
@@ -260,6 +261,7 @@ class Popup extends React.Component {
         );
 
         const common_messages = [
+            localize('Amount is required'),
             localize('Enter a valid amount'),
             localize('Minimum is {{value}} {{currency}}', {
                 currency: ad.offer_currency,

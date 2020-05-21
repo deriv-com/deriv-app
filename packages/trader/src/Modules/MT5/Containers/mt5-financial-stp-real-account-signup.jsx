@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { FormProgress, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
 import { getPropertyValue } from '@deriv/shared/utils/object';
 import { isDesktop } from '@deriv/shared/utils/screen';
@@ -17,7 +17,7 @@ const index_lookup = {
     MT5PendingVerification: 3,
 };
 
-class MT5FinancialStpRealAccountSignup extends Component {
+class MT5FinancialStpRealAccountSignup extends React.Component {
     state = {};
 
     constructor(props) {

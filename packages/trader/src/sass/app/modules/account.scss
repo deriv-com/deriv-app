@@ -981,7 +981,7 @@ $MIN_HEIGHT_FLOATING: calc(
             align-items: center;
 
             &-header {
-                @include typeface(--paragraph-center-bold-prominent, none);
+                @include typeface(--title-center-bold-prominent, none);
                 margin: 1.6rem 0 3.2rem;
             }
             &-image {

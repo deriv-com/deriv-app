@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { storiesOf } from '@storybook/react';
 import TickProgress from '../../src/components/tick-progress/index';
 import Theme from '../shared/theme';
 
 function useInterval(callback, delay) {
-    const savedCallback = useRef();
-    useEffect(() => {
+    const savedCallback = React.useRef();
+    React.useEffect(() => {
         savedCallback.current = callback;
     }, [callback]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         function tick() {
             savedCallback.current();
         }
@@ -68,7 +68,7 @@ storiesOf('Tick Progress', module)
         </div>
     ))
     .add('Dynamic', () => {
-        const [value, setValue] = useState(0);
+        const [value, setValue] = React.useState(0);
         const size = 10;
 
         useInterval(() => {

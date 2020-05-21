@@ -47,15 +47,19 @@ const MT5PasswordModal = ({
     submitMt5Password,
 }) => {
     const validatePassword = values => {
-        const is_valid =
-            validPassword(values.password) &&
-            validLength(values.password, {
-                min: 8,
-                max: 25,
-            });
         const errors = {};
 
-        if (!is_valid) {
+        if (
+            !validLength(values.password, {
+                min: 8,
+                max: 25,
+            })
+        ) {
+            errors.password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+                min_number: 8,
+                max_number: 25,
+            });
+        } else if (!validPassword(values.password)) {
             errors.password = localize('You need to include uppercase and lowercase letters, and numbers.');
         }
 

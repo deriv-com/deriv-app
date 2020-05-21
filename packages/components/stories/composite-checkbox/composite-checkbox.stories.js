@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
-import React, { useState } from 'react';
+import React from 'react';
 import Theme from '../shared/theme';
 import CompositeCheckbox from 'Components/composite-checkbox/composite-checkbox.jsx';
 import 'Components/composite-checkbox/composite-checkbox.scss';
@@ -28,7 +28,7 @@ const Grid = ({ children, rows, cols }) => (
 
 stories
     .add('Simple', () => {
-        const [value, setValue] = useState(false);
+        const [value, setValue] = React.useState(false);
         return (
             <Theme is_dark={boolean('Theme', false)}>
                 <CompositeCheckbox
@@ -45,10 +45,10 @@ stories
         );
     })
     .add('In a grid', () => {
-        const [value, setValue] = useState(false);
-        const [value2, setValue2] = useState(false);
-        const [value3, setValue3] = useState(false);
-        const [value4, setValue4] = useState(false);
+        const [value, setValue] = React.useState(false);
+        const [value2, setValue2] = React.useState(false);
+        const [value3, setValue3] = React.useState(false);
+        const [value4, setValue4] = React.useState(false);
 
         return (
             <Theme is_dark={boolean('Theme', false)}>

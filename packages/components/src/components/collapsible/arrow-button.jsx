@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { positionPropType } from './utils';
 import Icon from '../icon';
 
@@ -13,7 +13,7 @@ const IconArrowWithTitle = ({ title, ...props }) => (
 );
 
 const ArrowButton = ({ is_collapsed, position, onClick, title }) => {
-    const [is_open, expand] = useState(!is_collapsed);
+    const [is_open, expand] = React.useState(!is_collapsed);
 
     const toggleExpand = () => {
         expand(!is_open);
@@ -22,7 +22,7 @@ const ArrowButton = ({ is_collapsed, position, onClick, title }) => {
         }
     };
 
-    useEffect(() => {
+    React.useEffect(() => {
         expand(is_collapsed);
     }, [is_collapsed]);
 

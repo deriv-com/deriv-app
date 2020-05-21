@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { storiesOf } from '@storybook/react';
 import CircularProgress from '../../src/components/circular-progress/index';
 import Theme from '../shared/theme';
 
 function useInterval(callback, delay) {
-    const savedCallback = useRef();
-    useEffect(() => {
+    const savedCallback = React.useRef();
+    React.useEffect(() => {
         savedCallback.current = callback;
     }, [callback]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         function tick() {
             savedCallback.current();
         }
@@ -79,7 +79,7 @@ storiesOf('Circular Progress', module)
     ))
     .add('Timer', () => {
         const initial_time = 120; // 3600 seconds == 1 hour
-        const [remaining_time, setRemainingTime] = useState(initial_time);
+        const [remaining_time, setRemainingTime] = React.useState(initial_time);
         useInterval(() => {
             if (remaining_time > 0) {
                 setRemainingTime(remaining_time - 1);

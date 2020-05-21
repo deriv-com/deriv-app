@@ -456,7 +456,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__table-row {
-            grid-template-columns: 1fr 1.4fr 1.3fr 0.7fr 0.5fr;
+            grid-template-columns: 1fr 1.4fr 1.3fr 0.7fr 7.7rem;
         }
         &__clipboard {
             margin: 0 1rem;
@@ -483,7 +483,7 @@ $MIN_HEIGHT_FLOATING: calc(
         &__article {
             padding: 1.6rem 2.4rem;
             background: var(--general-section-1);
-            max-width: 25.6rem;
+            width: 25.6rem;
             height: fit-content;
             margin-left: 1.2rem;
             border-radius: 8px;

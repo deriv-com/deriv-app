@@ -150,6 +150,9 @@
                 height: 40px;
             }
         }
+        &--pending {
+            transform: translate(-30%, 20%);
+        }
     }
 }
 

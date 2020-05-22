@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import { Icon, Button } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { TableError } from 'Components/table/table-error.jsx';
 import { requestWS } from 'Utils/websocket';
+import { authentication_status } from 'Utils/constant';
 import FormAds from './form-ads.jsx';
 import MyAdsTable from './my-ads-table.jsx';
 import './my-ads.scss';
-import { authentication_status } from '../../utils/constant.js';
 
 class MyAds extends Component {
     // TODO: Find a better solution for handling no-op instead of using is_mounted flags
@@ -82,7 +83,11 @@ class MyAds extends Component {
         }
 
         return (
-            <div className='p2p-my-ads__empty'>
+            <div
+                className={classnames('p2p-my-ads__empty', {
+                    'p2p-my-ads__empty--pending': this.state.is_pending,
+                })}
+            >
                 <Icon icon='IcCashierSendEmail' className='p2p-my-ads__empty-icon' size={102} />
                 <div className='p2p-my-ads__empty-title'>
                     {this.state.is_pending ? localize('Documents received') : localize('Want to post ads?')}

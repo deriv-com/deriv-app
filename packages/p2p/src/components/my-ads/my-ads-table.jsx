@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Dialog, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
@@ -62,17 +62,17 @@ RowComponent.propTypes = {
 RowComponent.displayName = 'RowComponent';
 
 const MyAdsTable = ({ onClickCreate, is_enabled }) => {
-    const { currency, list_item_limit } = useContext(Dp2pContext);
-    const mounted = useRef(false);
-    const item_offset = useRef(0);
-    const [is_loading, setIsLoading] = useState(true);
-    const [api_error_message, setApiErrorMessage] = useState('');
-    const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
-    const [selected_ad_id, setSelectedAdId] = useState('');
-    const [show_popup, setShowPopup] = useState(false);
-    const [ads, setAds] = useState([]);
+    const { currency, list_item_limit } = React.useContext(Dp2pContext);
+    const mounted = React.useRef(false);
+    const item_offset = React.useRef(0);
+    const [is_loading, setIsLoading] = React.useState(true);
+    const [api_error_message, setApiErrorMessage] = React.useState('');
+    const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
+    const [selected_ad_id, setSelectedAdId] = React.useState('');
+    const [show_popup, setShowPopup] = React.useState(false);
+    const [ads, setAds] = React.useState([]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         mounted.current = true;
         loadMoreAds(item_offset.current);
         return () => (mounted.current = false);

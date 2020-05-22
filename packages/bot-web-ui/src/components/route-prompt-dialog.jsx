@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { Dialog } from '@deriv/components';
 import { connect } from '../stores/connect';
 
 const RoutePromptDialog = ({ continueRoute, is_confirmed, last_location, should_show, onCancel, onConfirm }) => {
-    useEffect(continueRoute, [is_confirmed, last_location]);
+    React.useEffect(continueRoute, [is_confirmed, last_location]);
 
     return (
         <Dialog

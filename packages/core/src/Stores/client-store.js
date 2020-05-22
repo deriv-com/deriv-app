@@ -9,6 +9,7 @@ import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared/utils/date';
+import { isEmptyObject } from '@deriv/shared/src/utils/object/object';
 import { LocalStore, State } from '_common/storage';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
@@ -633,6 +634,9 @@ export default class ClientStore extends BaseStore {
                 // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
             }
+            runInAction(() => {
+                this.is_populating_account_list = false;
+            });
         }
 
         /**
@@ -1025,7 +1029,6 @@ export default class ClientStore extends BaseStore {
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
             const authorize_response = await BinarySocket.authorize(is_client_logging_in);
-            this.is_populating_account_list = false;
 
             if (login_new_user) {
                 // overwrite obj_params if login is for new virtual account
@@ -1254,6 +1257,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_high_risk() {
+        if (isEmptyObject(this.account_status)) return false;
         return this.account_status.risk_classification === 'high';
     }
 

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-class MT5ServerErrorDialog extends Component {
+class MT5ServerErrorDialog extends React.Component {
     render() {
         const should_show_error = this.props.has_mt5_error && !this.props.is_mt5_success_dialog_enabled;
         return (

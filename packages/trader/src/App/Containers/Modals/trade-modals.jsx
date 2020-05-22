@@ -18,12 +18,19 @@ const TradeModals = ({
     resetPurchase,
     services_error,
 }) => {
-    const marketUnavailableOnConfirm = () => {
+    const resetToPreviousMarket = () => {
         setHasOnlyForwardingContracts(false);
         resetPreviousSymbol();
     };
 
-    const marketUnavailableOnCancel = () => window.open(getUrlSmartTrader()) && setHasOnlyForwardingContracts(false);
+    const marketUnavailableOnConfirm = () => {
+        resetToPreviousMarket();
+    };
+
+    const marketUnavailableOnCancel = () => {
+        window.open(getUrlSmartTrader());
+        resetToPreviousMarket();
+    };
 
     const servicesErrorModalOnConfirm = () => {
         toggleServicesErrorModal(false);

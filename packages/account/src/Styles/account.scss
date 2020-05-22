@@ -541,7 +541,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__title {
-            @include typeface(--title-left-bold-black, none);
+            @include typeface(--title-left-bold-prominent, none);
             margin-bottom: 1.5rem;
             margin-left: 1.2rem;
         }
@@ -586,7 +586,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 list-style-type: disc;
             }
             &-title {
-                @include typeface(--paragraph-left-bold-black, none);
+                @include typeface(--paragraph-left-bold-prominent, none);
                 margin-bottom: 0.8rem;
             }
             &-text {
@@ -608,8 +608,13 @@ $MIN_HEIGHT_FLOATING: calc(
             flex-direction: column;
             margin-bottom: 1.6rem;
 
+            &--wrapper {
+                background: var(--status-colored-background);
+                padding: 0.4rem;
+                width: auto;
+            }
             &--title {
-                @include typeface(--title-center-bold-black, none);
+                @include typeface(--title-center-bold-prominent, none);
                 margin-top: 2.4rem;
             }
             &--message {

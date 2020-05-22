@@ -131,7 +131,10 @@ class TwoFactorAuthentication extends React.Component {
                                             <Loading is_fullscreen={false} />
                                         ) : (
                                             <>
-                                                {/* <QRCode value={qr_secret_key} /> */}
+                                                <div className='two-factor__qr--wrapper'>
+                                                    <QRCode value={qr_secret_key} />
+                                                </div>
+
                                                 <h4 className='two-factor__qr--message'>
                                                     {localize(
                                                         'If you are unable to scan the QR code, you can manually enter this code instead:'

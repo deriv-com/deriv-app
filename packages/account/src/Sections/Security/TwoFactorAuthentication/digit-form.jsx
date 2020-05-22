@@ -38,7 +38,12 @@ const DigitForm = ({ is_enabled, setEnabled }) => {
             otp: values.digit_code,
         });
         if (enable_response.error) {
-            setFieldError('digit_code', enable_response.error.message);
+            const { code, message } = enable_response.error;
+            if (code === 'InvalidOTP') {
+                setFieldError('digit_code', localize("That's not the right code. Please try again."));
+            } else {
+                setFieldError('digit_code', message);
+            }
         } else {
             const is_enabled_response = ObjectUtils.getPropertyValue(enable_response, [
                 'account_security',
@@ -47,11 +52,11 @@ const DigitForm = ({ is_enabled, setEnabled }) => {
             ]);
             setEnabled(is_enabled_response);
             setSuccess(true);
+
+            resetForm();
         }
 
         setSubmitting(false);
-
-        resetForm();
     };
 
     return (

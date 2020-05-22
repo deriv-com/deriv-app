@@ -166,7 +166,6 @@ export default class CashierStore extends BaseStore {
             }
 
             if (!this.config.account_transfer.accounts_list.length) {
-                console.log({ response: WS.storage.authorize(this.root_store.client.getToken()) });
                 this.sortAccountsTransfer();
             }
 

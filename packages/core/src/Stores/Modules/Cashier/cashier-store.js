@@ -878,6 +878,10 @@ export default class CashierStore extends BaseStore {
     }
 
     requestTransferBetweenAccounts = async ({ amount }) => {
+        if (this.root_store.client.is_logged_in) {
+            return null;
+        }
+
         this.setErrorMessage('');
         const currency = this.config.account_transfer.selected_from.currency;
         const transfer_between_accounts = await WS.transferBetweenAccounts(

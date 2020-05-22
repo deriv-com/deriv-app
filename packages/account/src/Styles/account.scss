@@ -7,6 +7,11 @@ $MIN_HEIGHT_FLOATING: calc(
 .account {
     margin: 0 16px;
 
+    .multistep {
+        @include mobile {
+            width: 100%;
+        }
+    }
     .dc-vertical-tab {
         &__content {
             height: $MIN_HEIGHT_FLOATING;
@@ -251,6 +256,10 @@ $MIN_HEIGHT_FLOATING: calc(
             .dc-select-native__placeholder {
                 background-color: var(--general-main-1);
             }
+            .account__scrollbars_container--grid-layout {
+                display: flex;
+                flex-direction: column;
+            }
         }
         &__occupation {
             .dc-native-select__select,
@@ -262,6 +271,12 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     &__intial-loader {
         height: calc(100vh - 240px);
+    }
+    &__password-wrapper {
+        & .account__scrollbars_container--grid-layout {
+            display: flex;
+            flex-direction: column;
+        }
     }
     &__text {
         @include typeface(--paragraph-left-normal-black, none);

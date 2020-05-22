@@ -257,8 +257,10 @@ $MIN_HEIGHT_FLOATING: calc(
                 background-color: var(--general-main-1);
             }
             .account__scrollbars_container--grid-layout {
-                display: flex;
-                flex-direction: column;
+                @include mobile {
+                    display: flex;
+                    flex-direction: column;
+                }
             }
         }
         &__occupation {

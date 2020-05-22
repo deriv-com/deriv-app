@@ -20,10 +20,10 @@ import DateUtils from '@deriv/shared/utils/date';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
-import Article from './article.jsx';
-import Card from './card.jsx';
 import DemoMessage from 'Components/demo-message';
 import LoadErrorMessage from 'Components/load-error-message';
+import Article from './article.jsx';
+import Card from './card.jsx';
 
 class ApiToken extends React.Component {
     state = {

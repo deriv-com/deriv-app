@@ -6,6 +6,7 @@ import Icon from '../icon';
 
 const Clipboard = ({ text_copy, info_message, success_message, className, popoverClassName }) => {
     const [is_copied, setIsCopied] = React.useState(false);
+    let timeout_clipboard = null;
 
     const copyToClipboard = text => {
         const textField = document.createElement('textarea');
@@ -19,10 +20,14 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
     const onClick = () => {
         copyToClipboard(text_copy);
         setIsCopied(true);
-        setTimeout(() => {
+        timeout_clipboard = setTimeout(() => {
             setIsCopied(false);
         }, 2000);
     };
+
+    React.useEffect(() => {
+        return () => clearTimeout(timeout_clipboard);
+    }, []);
 
     return (
         <>

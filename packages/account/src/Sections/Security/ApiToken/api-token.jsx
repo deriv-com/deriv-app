@@ -15,7 +15,6 @@ import {
     Loading,
 } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
-import StringUtils from '@deriv/shared/utils/string';
 import DateUtils from '@deriv/shared/utils/date';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
@@ -62,8 +61,16 @@ class ApiToken extends React.Component {
         return errors;
     };
 
+    formatTokenScopes = (str) => {
+        const string = str || '';
+        const replace_filter = string.replace(/-|_/g, ' ');
+        const sentenced_case = replace_filter[0].toUpperCase() + replace_filter.slice(1).toLowerCase();
+
+        return sentenced_case;
+    };
+
     getScopeValue = (token) => {
-        const titled_scopes = token.scopes.map((scope) => StringUtils.toSentenceCase(scope));
+        const titled_scopes = token.scopes.map((scope) => this.formatTokenScopes(scope));
         const mapped_scopes = titled_scopes.length === 5 ? localize('All') : titled_scopes.join(', ');
         const date_format = token.last_used ? DateUtils.formatDate(token.last_used, 'DD/MM/YYYY') : localize('Never');
 

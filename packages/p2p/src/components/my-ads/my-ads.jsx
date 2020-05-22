@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon } from '@deriv/components';
+import { Icon, Button } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { TableError } from 'Components/table/table-error.jsx';
@@ -7,6 +7,7 @@ import { requestWS } from 'Utils/websocket';
 import FormAds from './form-ads.jsx';
 import MyAdsTable from './my-ads-table.jsx';
 import './my-ads.scss';
+import { authentication_status } from '../../utils/constant.js';
 
 class MyAds extends Component {
     // TODO: Find a better solution for handling no-op instead of using is_mounted flags
@@ -16,6 +17,8 @@ class MyAds extends Component {
         is_enabled: false,
         is_loading: true,
         show_form: false,
+        is_pending: false,
+        is_authenticated: false,
     };
 
     handleShowForm = show_form => {
@@ -30,6 +33,22 @@ class MyAds extends Component {
                 if (this.is_mounted && !response.error) {
                     this.setState({ is_enabled: !!response.p2p_advertiser_info.is_listed, is_loading: false });
                 }
+            });
+
+            requestWS({ get_account_status: 1 }).then(response => {
+                const { get_account_status } = response;
+                const { authentication } = get_account_status;
+                const { document, identity } = authentication;
+                const { status: document_status } = document;
+                const { status: identity_status } = identity;
+                const { status } = authentication;
+
+                this.setState({
+                    is_pending:
+                        document_status === authentication_status.PENDING ||
+                        identity_status === authentication_status.PENDING,
+                    is_authenticated: status === 'authenticated',
+                });
             });
         }
     }
@@ -50,7 +69,7 @@ class MyAds extends Component {
                 </div>
             );
         }
-        if (this.context.is_advertiser) {
+        if (this.context.is_advertiser && !this.state.is_pending) {
             return (
                 <div className='p2p-my-ads'>
                     {this.state.show_form ? (
@@ -61,27 +80,32 @@ class MyAds extends Component {
                 </div>
             );
         }
+
         return (
-            <div className='p2p-cashier__empty'>
-                <Icon icon='IcCashierSendEmail' className='p2p-cashier__empty-icon' size={102} />
-                <div className='p2p-cashier__empty-title'>
-                    <Localize i18n_default_text='Want to post ads?' />
+            <div className='p2p-my-ads__empty'>
+                <Icon icon='IcCashierSendEmail' className='p2p-my-ads__empty-icon' size={102} />
+                <div className='p2p-my-ads__empty-title'>
+                    {this.state.is_pending ? localize('Documents received') : localize('Want to post ads?')}
                 </div>
-                <div className='p2p-cashier__empty-contact'>
-                    <Localize
-                        i18n_default_text='Email <0>{{support_email}}</0>'
-                        values={{ support_email: `p2p-support@${this.context.email_domain}` }}
-                        components={[
-                            <a
-                                key={0}
-                                className='link'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                                href={`mailto:p2p-support@${this.context.email_domain}`}
-                            />,
-                        ]}
+                <div className='p2p-my-ads__empty-text'>
+                    {!this.state.is_pending && (
+                        <p>
+                            <Localize i18n_default_text='Register with us here.' />
+                        </p>
+                    )}
+                    <p>
+                        {this.state.is_pending
+                            ? localize('We will contact you once we have verified the information provided.')
+                            : localize('We’ll need you to upload your documents to verify your identity and address.')}
+                    </p>
+                </div>
+                <a href='/account/proof-of-identity' className='p2p-my-ads__empty-button'>
+                    <Button
+                        type='button'
+                        text={this.state.is_pending ? localize('Check Status') : localize('Apply')}
+                        primary
                     />
-                </div>
+                </a>
             </div>
         );
     }

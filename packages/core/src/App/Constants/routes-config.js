@@ -100,6 +100,11 @@ const modules = [
                         component: Account,
                         title: localize('Account limits'),
                     },
+                    {
+                        path: routes.two_factor_authentication,
+                        component: Account,
+                        title: localize('Two-factor authentication'),
+                    },
                 ],
             },
         ],

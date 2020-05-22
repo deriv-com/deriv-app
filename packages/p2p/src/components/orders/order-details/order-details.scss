@@ -1,12 +1,19 @@
 .order-details {
     &__container {
         display: flex;
-        padding-top: 2.4rem;
+        height: calc(100vh - 47px - 53px - 60px - 52px - 36px - 2.4rem - 1.6rem);
+        min-height: 555px;
+        overflow-y: scroll;
 
         .sendbird-container {
+            position: absolute;
+            left: 484px;
             border-radius: 4px;
-            height: 516px;
+            height: inherit;
+            min-height: inherit;
+            max-height: 555px;
             width: calc(50% - 32px);
+            max-width: calc(50% - 32px);
             box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.08), 0 0 8px 0 rgba(0, 0, 0, 0.08);
         }
         .sendbird-conversation {
@@ -61,10 +68,10 @@
             }
             .sendbird-thumbnail--incoming {
                 padding-left: 50px;
-
-                .sendbird-thumbnail__img {
-                    border-bottom-left-radius: 4px;
-                }
+            }
+            .sendbird-thumbnail__img {
+                width: 100%;
+                border-bottom-left-radius: 4px;
             }
             .sendbird-user-message__sender-name,
             .sendbird-thumbnail__sender-name,
@@ -165,10 +172,8 @@
     }
     &__wrapper {
         width: 456px;
-        height: 516px;
 
         &-message {
-            margin: 0.8rem 0.8rem 1.6rem;
             font-size: 1.4rem;
             line-height: 1.43;
             font-weight: bold;
@@ -178,28 +183,30 @@
                 color: var(--text-profit-success);
             }
         }
-        &--outer {
-            background-color: var(--general-section-1);
-            border-radius: 4px;
-            padding: 0.8rem;
-            margin-right: 32px;
-            overflow-y: scroll;
-        }
         &--inner {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
             background-color: var(--general-main-1);
             border-radius: 4px;
             width: 100%;
-            height: fit-content;
-            min-height: 100%;
+            border: 0.8rem solid var(--general-section-1);
+            min-height: 555px;
+
+            .footer-actions {
+                position: relative;
+                height: unset;
+                padding: 1.6rem;
+            }
         }
     }
     &__header,
-    &__info,
-    &__footer {
+    &__info {
         //border-bottom: 1px solid var(--general-section-1);
         padding: 1.6rem;
     }
     &__header {
+        max-height: 108px;
         display: flex;
         justify-content: space-between;
         color: var(--text-general);
@@ -282,11 +289,51 @@
         }
     }
     &__footer {
+        margin-top: auto;
         font-size: 1.4rem;
         line-height: 1.43;
         color: var(--text-general);
     }
     &__actions-button {
         margin-left: 0.8rem;
+    }
+    &__justify-start {
+        justify-content: flex-start;
+    }
+    &__justify-space {
+        justify-content: space-between;
+    }
+    &__separator {
+        width: 100%;
+        border-top: 2px solid var(--general-section-1);
+    }
+    &__popup {
+        margin-top: 1.4rem;
+        &--danger {
+            color: var(--status-danger);
+            font-weight: bold;
+        }
+        &--bold {
+            font-weight: bold;
+        }
+    }
+    &__empty-space {
+        height: 72px;
+    }
+    &__popup-no-border {
+        .orders__popup-content {
+            padding: 0 2.4rem;
+        }
+        .orders__popup-header,
+        .orders__popup-footer {
+            border-top: unset;
+            border-bottom: unset;
+        }
+        .dc-checkbox {
+            margin-top: 1rem;
+            &__box {
+                margin-left: 0;
+            }
+        }
     }
 }

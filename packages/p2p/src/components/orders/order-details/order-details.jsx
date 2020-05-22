@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Dialog } from '@deriv/components';
-import { localize, Localize } from 'Components/i18next';
+import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
-import FooterActions from 'Components/footer-actions/footer-actions.jsx';
+import { chatCreate } from 'Utils/sendbird';
 import OrderDetailsStatusBlock from './order-details-status-block.jsx';
 import OrderInfoBlock from './order-info-block.jsx';
 import OrderDetailsAmountBlock from './order-details-amount-block.jsx';
+import OrderDetailsChatbox from './order-details-chatbox.jsx';
 import OrderDetailsTimerBlock from './order-details-timer-block.jsx';
 import OrderActionsBlock from './order-actions-block.jsx';
 import OrderDetailsResultMessage from './order-details-result-message.jsx';
-import OrderDetailsChatbox from './order-details-chatbox.jsx';
 import Popup from '../popup.jsx';
-import { chatCreate } from '../../../utils/sendbird';
 
 import './order-details.scss';
 
@@ -27,9 +26,10 @@ const OrderDetails = ({ order_details, chat_info }) => {
         display_price_rate,
         display_transaction_amount,
         is_buyer,
-        is_buyer_confirmed,
         is_expired,
         offer_currency,
+        is_completed,
+        is_buyer_cancelled,
         id,
         order_purchase_datetime,
         payment_info,
@@ -38,7 +38,7 @@ const OrderDetails = ({ order_details, chat_info }) => {
     const [channel_url, setChannelUrl] = React.useState(chat_channel_url);
     const [show_popup, setShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
-    const { email_domain, advertiser_id: ad_advertiser_id } = React.useContext(Dp2pContext);
+    const { advertiser_id: ad_advertiser_id } = React.useContext(Dp2pContext);
     const is_my_ad = advertiser_id === ad_advertiser_id;
     const onCancelClick = () => setShowPopup(false);
     const handleShowPopup = options => {
@@ -56,13 +56,13 @@ const OrderDetails = ({ order_details, chat_info }) => {
     return (
         <div className='order-details'>
             <div className='order-details__container'>
-                <div className='order-details__wrapper order-details__wrapper--outer'>
-                    <OrderDetailsResultMessage order_details={order_details} />
+                <div className='order-details__wrapper'>
                     <div className='order-details__wrapper--inner'>
                         <div className='order-details__header'>
                             <span>
                                 <OrderDetailsStatusBlock order_details={order_details} />
-                                {!is_expired && (
+                                <OrderDetailsResultMessage order_details={order_details} />
+                                {!is_expired && !is_completed && !is_buyer_cancelled && (
                                     <React.Fragment>
                                         <OrderDetailsAmountBlock order_details={order_details} />
                                         <h1 className='order-details__header-method'>
@@ -73,7 +73,7 @@ const OrderDetails = ({ order_details, chat_info }) => {
                             </span>
                             <OrderDetailsTimerBlock order_details={order_details} />
                         </div>
-                        <div className='p2p-cashier__separator' />
+                        <div className='order-details__separator' />
                         <div className='order-details__info'>
                             <div className='order-details__info-columns'>
                                 <div className='order-details__info--left'>
@@ -93,7 +93,7 @@ const OrderDetails = ({ order_details, chat_info }) => {
                             {is_buyer && (
                                 <React.Fragment>
                                     <OrderInfoBlock
-                                        label={localize('Seller bank details')}
+                                        label={localize('Seller payment instructions')}
                                         value={payment_info || '-'}
                                     />
                                     <OrderInfoBlock
@@ -124,51 +124,27 @@ const OrderDetails = ({ order_details, chat_info }) => {
                                     <OrderInfoBlock label={localize('Time')} value={order_purchase_datetime} />
                                 </div>
                             </div>
-                            {(is_buyer_confirmed || (is_expired && is_buyer)) && (
-                                <React.Fragment>
-                                    <div className='p2p-cashier__separator' />
-                                    <div className='order-details__footer'>
-                                        <p>
-                                            <Localize
-                                                i18n_default_text='If you have a complaint, please email <0>{{support_email}}</0> and include your order ID.'
-                                                values={{ support_email: `support@${email_domain}` }}
-                                                components={[
-                                                    <a
-                                                        key={0}
-                                                        className='link'
-                                                        rel='noopener noreferrer'
-                                                        target='_blank'
-                                                        href={`mailto:support@${email_domain}`}
-                                                    />,
-                                                ]}
-                                            />
-                                        </p>
-                                    </div>
-                                </React.Fragment>
-                            )}
+                        </div>
+                        <div className='order-details__footer'>
+                            <OrderActionsBlock
+                                cancelPopup={onCancelClick}
+                                showPopup={handleShowPopup}
+                                order_details={order_details}
+                            />
                         </div>
                     </div>
                 </div>
-
                 {channel_url && (
                     <OrderDetailsChatbox {...chat_info} channel_url={channel_url} nickname={advertiser_name} />
                 )}
+                {show_popup && (
+                    <div className='orders__dialog'>
+                        <Dialog is_visible={show_popup}>
+                            <Popup {...popup_options} onCancel={onCancelClick} />
+                        </Dialog>
+                    </div>
+                )}
             </div>
-
-            <FooterActions>
-                <OrderActionsBlock
-                    cancelPopup={onCancelClick}
-                    showPopup={handleShowPopup}
-                    order_details={order_details}
-                />
-            </FooterActions>
-            {show_popup && (
-                <div className='orders__dialog'>
-                    <Dialog is_visible={show_popup}>
-                        <Popup {...popup_options} onCancel={onCancelClick} />
-                    </Dialog>
-                </div>
-            )}
         </div>
     );
 };

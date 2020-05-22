@@ -2,9 +2,10 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer } from '@deriv/components';
+import { ProofOfIdentityContainer } from '@deriv/account';
+import { WS } from 'Services/ws-methods';
 import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
-import ProofOfIdentityContainer from 'Modules/Account/Sections/Verification/ProofOfIdentity/proof-of-identity-container.jsx';
 
 class MT5POI extends React.PureComponent {
     state = {
@@ -49,6 +50,9 @@ class MT5POI extends React.PureComponent {
                                     >
                                         <ProofOfIdentityContainer
                                             {...this.props}
+                                            serviceToken={WS.serviceToken}
+                                            notificationEvent={WS.notificationEvent}
+                                            getAccountStatus={WS.authorized.getAccountStatus}
                                             height={height}
                                             onStateChange={this.onStateChange}
                                             is_trading_button_enabled={false}

@@ -525,7 +525,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 @include typeface(--small-left-normal-black, none);
             }
             @include mobile {
-                width: 100%;
+                width: auto;
                 margin: 1.6rem;
             }
         }

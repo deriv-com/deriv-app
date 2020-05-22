@@ -140,24 +140,6 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async init() {
-        if (this.root_store.client.is_logged_in) {
-            // show p2p if:
-            // 1. we have not already checked this before, and
-            // 2. client is not virtual, and
-            // 3. p2p call does not return error code `PermissionDenied`
-            if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
-                const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
-                const advertiser_error = ObjectUtils.getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'PermissionDenied') return;
-
-                this.is_p2p_advertiser = !advertiser_error;
-                this.setIsP2pVisible(true);
-            }
-        }
-    }
-
-    @action.bound
     async onMountCommon() {
         if (this.root_store.client.is_logged_in) {
             // avoid calling this again
@@ -185,6 +167,19 @@ export default class CashierStore extends BaseStore {
 
             if (!this.config.account_transfer.accounts_list.length) {
                 this.sortAccountsTransfer();
+            }
+
+            // show p2p if:
+            // 1. we have not already checked this before, and
+            // 2. client is not virtual, and
+            // 3. p2p call does not return error code `PermissionDenied`
+            if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
+                const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
+                const advertiser_error = ObjectUtils.getPropertyValue(advertiser_info, ['error', 'code']);
+                if (advertiser_error === 'PermissionDenied') return;
+
+                this.is_p2p_advertiser = !advertiser_error;
+                this.setIsP2pVisible(true);
             }
         }
     }
@@ -669,22 +664,24 @@ export default class CashierStore extends BaseStore {
         // various issues happen when loading from cache
         // e.g. new account may have been created, transfer may have been done elsewhere, etc
         // so on load of this page just call it again
-        const transfer_between_accounts = await WS.transferBetweenAccounts();
+        if (this.root_store.client.is_logged_in) {
+            const transfer_between_accounts = await WS.transferBetweenAccounts();
 
-        if (transfer_between_accounts.error) {
-            this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
-            this.setLoading(false);
-            return;
+            if (transfer_between_accounts.error) {
+                this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
+                this.setLoading(false);
+                return;
+            }
+
+            if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
+                return;
+            }
+
+            this.sortAccountsTransfer(transfer_between_accounts);
+            this.setTransferFee();
+            this.setMinimumFee();
+            this.setTransferLimit();
         }
-
-        if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
-            return;
-        }
-
-        this.sortAccountsTransfer(transfer_between_accounts);
-        this.setTransferFee();
-        this.setMinimumFee();
-        this.setTransferLimit();
         this.setLoading(false);
     }
 
@@ -878,7 +875,7 @@ export default class CashierStore extends BaseStore {
     }
 
     requestTransferBetweenAccounts = async ({ amount }) => {
-        if (this.root_store.client.is_logged_in) {
+        if (!this.root_store.client.is_logged_in) {
             return null;
         }
 
@@ -944,10 +941,8 @@ export default class CashierStore extends BaseStore {
     }
 
     async checkIsPaymentAgent() {
-        if (this.root_store.client.is_logged_in) {
-            const get_settings = (await WS.authorized.storage.getSettings()).get_settings;
-            this.setIsPaymentAgent(get_settings.is_authenticated_payment_agent);
-        }
+        const get_settings = (await WS.authorized.storage.getSettings()).get_settings;
+        this.setIsPaymentAgent(get_settings?.is_authenticated_payment_agent ?? false);
     }
 
     @action.bound

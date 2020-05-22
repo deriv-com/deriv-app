@@ -985,12 +985,16 @@ export default class TradeStore extends BaseStore {
 
         await this.processNewValuesAsync({ currency: new_currency }, true, { currency: this.currency }, false);
         this.refresh();
-        WS.forgetAll('balance').then(() => {
-            // the first has to be without subscribe to quickly update current account's balance
-            WS.authorized.balance().then(this.handleResponseBalance);
-            // the second is to subscribe to balance and update all sibling accounts' balances too
-            WS.subscribeBalanceAll(this.handleResponseBalance);
-        });
+
+        if (this.root_store.client.is_logged_in) {
+            WS.forgetAll('balance').then(() => {
+                // the first has to be without subscribe to quickly update current account's balance
+                WS.authorized.balance().then(this.handleResponseBalance);
+                // the second is to subscribe to balance and update all sibling accounts' balances too
+                WS.subscribeBalanceAll(this.handleResponseBalance);
+            });
+        }
+
         this.debouncedProposal();
     }
 

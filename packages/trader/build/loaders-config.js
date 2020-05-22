@@ -9,6 +9,9 @@ const js_loaders = [
         loader: '@deriv/shared/utils/react-import-loader.js',
     },
     {
+        loader: '@deriv/shared/utils/deriv-account-loader.js',
+    },
+    {
         loader: 'babel-loader',
         options: {
             presets: ['@babel/preset-env', '@babel/preset-react'],

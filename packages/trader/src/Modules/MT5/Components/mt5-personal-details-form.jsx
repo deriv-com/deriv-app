@@ -14,10 +14,10 @@ import {
     MobileWrapper,
     SelectNative,
 } from '@deriv/components';
+import { FormSubHeader } from '@deriv/account';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { Localize, localize } from '@deriv/translations';
 import { isDeepEqual } from '@deriv/shared/utils/object';
-import { FormSubHeader } from 'Modules/Account/Components/layout-components.jsx';
 
 export const InputField = ({ name, optional = false, ...props }) => (
     <Field name={name}>

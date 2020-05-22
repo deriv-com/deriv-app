@@ -126,7 +126,7 @@
     &__empty {
         width: fit-content;
         margin: 0 auto;
-        transform: translate(-25%, 20%);
+        transform: translateX(-25%);
         text-align: center;
 
         &-title {
@@ -151,7 +151,7 @@
             }
         }
         &--pending {
-            transform: translate(-30%, 20%);
+            transform: translateX(-30%);
         }
     }
 }

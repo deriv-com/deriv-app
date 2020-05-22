@@ -39,12 +39,21 @@
                     line-height: 1.5;
                     margin: 0.8rem;
                 }
+                &-text {
+                    font-size: var(--text-size-xs);
+                    margin: 12px 0;
+
+                    p {
+                        line-height: 1.43;
+                    }
+                }
                 &-contact {
                     color: var(--text-general);
                     font-size: var(--text-size-xs);
                     line-height: 1.43;
                 }
                 &-button {
+                    text-decoration: none;
                     margin-top: 1.6rem;
                 }
             }

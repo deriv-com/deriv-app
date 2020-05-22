@@ -81,15 +81,15 @@ class MyAds extends Component {
 
         return (
             <div
-                className={classnames('p2p-my-ads__empty', {
+                className={classnames('p2p-cashier__empty', 'p2p-my-ads__empty', {
                     'p2p-my-ads__empty--pending': this.state.is_pending,
                 })}
             >
-                <Icon icon='IcCashierSendEmail' className='p2p-my-ads__empty-icon' size={102} />
-                <div className='p2p-my-ads__empty-title'>
+                <Icon icon='IcCashierSendEmail' className='p2p-cashier__empty-icon' size={102} />
+                <div className='p2p-cashier__empty-title'>
                     {this.state.is_pending ? localize('Documents received') : localize('Want to post ads?')}
                 </div>
-                <div className='p2p-my-ads__empty-text'>
+                <div className='p2p-cashier__empty-text'>
                     {!this.state.is_pending && (
                         <p>
                             <Localize i18n_default_text='Register with us here.' />
@@ -101,7 +101,7 @@ class MyAds extends Component {
                             : localize('We’ll need you to upload your documents to verify your identity and address.')}
                     </p>
                 </div>
-                <a href='/account/proof-of-identity' className='p2p-my-ads__empty-button'>
+                <a href='/account/proof-of-identity' className='p2p-cashier__empty-button'>
                     <Button
                         type='button'
                         text={this.state.is_pending ? localize('Check Status') : localize('Apply')}

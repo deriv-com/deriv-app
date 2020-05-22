@@ -2,6 +2,7 @@
 .dc-themed-scrollbars {
     overflow-y: auto;
     overflow-x: hidden;
+    position: relative;
 
     &__autohide {
         &::-webkit-scrollbar-thumb {

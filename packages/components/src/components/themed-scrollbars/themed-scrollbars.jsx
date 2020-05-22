@@ -1,12 +1,21 @@
 import classNames from 'classnames';
 import React, { useRef, useState, useEffect } from 'react';
 
-const ThemedScrollbars = ({ children, className, height, autohide = true, is_native, has_horizontal, onScroll }) => {
+const ThemedScrollbars = ({
+    children,
+    className,
+    height,
+    autohide = true,
+    is_native,
+    has_horizontal,
+    onScroll,
+    refSetter,
+}) => {
     // Hook
     const useHover = () => {
         const [value, setValue] = useState(false);
 
-        const ref = useRef(null);
+        const ref = refSetter || useRef(null);
 
         const handleMouseOver = () => setValue(true);
         const handleMouseOut = () => setValue(false);

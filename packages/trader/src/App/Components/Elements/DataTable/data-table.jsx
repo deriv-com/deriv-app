@@ -3,7 +3,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { VariableSizeList as List } from 'react-window';
 import { ThemedScrollbars } from '@deriv/components';
 import PropTypes from 'prop-types';
-import React, { useCallback } from 'react';
+import React from 'react';
 import TableRow from './table-row.jsx';
 
 /* TODO:
@@ -11,27 +11,14 @@ import TableRow from './table-row.jsx';
       2. implement filtering per column
 */
 
-const ListScrollbar = React.forwardRef((props, ref) => <ExtendedScrollbars {...props} forwardedRef={ref} />);
-
+const ThemedScrollbarsWrapper = React.forwardRef((props, ref) => (
+    <ThemedScrollbars {...props} forwardedRef={ref}>
+        {props.children}
+    </ThemedScrollbars>
+));
 // Display name is required by Developer Tools to give a name to the components we use.
 // If a component doesn't have a displayName is will be shown as <Unknown />. Hence, name is set.
-ListScrollbar.displayName = 'ListScrollbar';
-
-const ExtendedScrollbars = ({ onScroll, forwardedRef, style, children }) => {
-    const refSetter = useCallback(scrollbarsRef => {
-        if (scrollbarsRef) {
-            forwardedRef(scrollbarsRef.view);
-        } else {
-            forwardedRef(null);
-        }
-    }, []);
-
-    return (
-        <ThemedScrollbars ref={refSetter} style={{ ...style, overflow: 'hidden' }} onScroll={onScroll} autoHide>
-            {children}
-        </ThemedScrollbars>
-    );
-};
+ThemedScrollbarsWrapper.displayName = 'ThemedScrollbars';
 
 class DataTable extends React.PureComponent {
     constructor(props) {
@@ -88,7 +75,6 @@ class DataTable extends React.PureComponent {
             footer,
             getActionColumns,
             getRowSize,
-            is_empty,
             onScroll,
         } = this.props;
 
@@ -101,6 +87,7 @@ class DataTable extends React.PureComponent {
                     itemData={data_source}
                     itemSize={getRowSize}
                     width={this.state.width}
+                    outerElementType={ThemedScrollbarsWrapper}
                 >
                     {this.rowRenderer}
                 </List>

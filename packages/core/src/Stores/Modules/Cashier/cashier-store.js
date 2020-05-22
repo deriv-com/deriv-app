@@ -944,8 +944,10 @@ export default class CashierStore extends BaseStore {
     }
 
     async checkIsPaymentAgent() {
-        const get_settings = (await WS.authorized.storage.getSettings()).get_settings;
-        this.setIsPaymentAgent(get_settings.is_authenticated_payment_agent);
+        if (this.root_store.client.is_logged_in) {
+            const get_settings = (await WS.authorized.storage.getSettings()).get_settings;
+            this.setIsPaymentAgent(get_settings.is_authenticated_payment_agent);
+        }
     }
 
     @action.bound

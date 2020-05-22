@@ -141,49 +141,51 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async init() {
-        // show p2p if:
-        // 1. we have not already checked this before, and
-        // 2. client is not virtual, and
-        // 3. p2p call does not return error code `PermissionDenied`
-        await BinarySocket.wait('authorize');
-        if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
-            const advertiser_error = ObjectUtils.getPropertyValue(await WS.p2pAdvertiserInfo(), ['error', 'code']);
-            if (advertiser_error === 'PermissionDenied') return;
+        if (this.root_store.client.is_logged_in) {
+            // show p2p if:
+            // 1. we have not already checked this before, and
+            // 2. client is not virtual, and
+            // 3. p2p call does not return error code `PermissionDenied`
+            if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
+                const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
+                const advertiser_error = ObjectUtils.getPropertyValue(advertiser_info, ['error', 'code']);
+                if (advertiser_error === 'PermissionDenied') return;
 
-            this.is_p2p_advertiser = !advertiser_error;
-            this.setIsP2pVisible(true);
+                this.is_p2p_advertiser = !advertiser_error;
+                this.setIsP2pVisible(true);
+            }
         }
     }
 
     @action.bound
     async onMountCommon() {
-        await BinarySocket.wait('authorize');
+        if (this.root_store.client.is_logged_in) {
+            // avoid calling this again
+            if (this.is_populating_values) {
+                return;
+            }
 
-        // avoid calling this again
-        if (this.is_populating_values) {
-            return;
-        }
+            this.is_populating_values = true;
 
-        this.is_populating_values = true;
+            // cashier inits once and tries to stay active until switching account
+            // since cashier calls take a long time to respond or display in iframe
+            // so we don't have any unmount function here and everything gets reset on switch instead
+            this.disposeSwitchAccount();
+            this.onSwitchAccount(this.accountSwitcherListener);
 
-        // cashier inits once and tries to stay active until switching account
-        // since cashier calls take a long time to respond or display in iframe
-        // so we don't have any unmount function here and everything gets reset on switch instead
-        this.disposeSwitchAccount();
-        this.onSwitchAccount(this.accountSwitcherListener);
+            // we need to see if client's country has PA
+            // if yes, we can show the PA tab in cashier
+            if (!this.config.payment_agent.list.length) {
+                this.setPaymentAgentList().then(this.filterPaymentAgentList);
+            }
 
-        // we need to see if client's country has PA
-        // if yes, we can show the PA tab in cashier
-        if (!this.config.payment_agent.list.length) {
-            this.setPaymentAgentList().then(this.filterPaymentAgentList);
-        }
+            if (!this.config.payment_agent_transfer.is_payment_agent) {
+                this.checkIsPaymentAgent();
+            }
 
-        if (!this.config.payment_agent_transfer.is_payment_agent) {
-            this.checkIsPaymentAgent();
-        }
-
-        if (!this.config.account_transfer.accounts_list.length) {
-            this.sortAccountsTransfer();
+            if (!this.config.account_transfer.accounts_list.length) {
+                this.sortAccountsTransfer();
+            }
         }
     }
 

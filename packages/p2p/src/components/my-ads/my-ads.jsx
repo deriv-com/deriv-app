@@ -45,9 +45,7 @@ class MyAds extends Component {
                 const { status } = authentication;
 
                 this.setState({
-                    is_pending:
-                        document_status === authentication_status.PENDING ||
-                        identity_status === authentication_status.PENDING,
+                    is_pending: document_status === 'pending' || identity_status === 'pending',
                     is_authenticated: status === 'authenticated',
                 });
             });
@@ -70,7 +68,7 @@ class MyAds extends Component {
                 </div>
             );
         }
-        if (this.context.is_advertiser && !this.state.is_pending) {
+        if (this.context.is_advertiser && this.state.is_authenticated) {
             return (
                 <div className='p2p-my-ads'>
                     {this.state.show_form ? (

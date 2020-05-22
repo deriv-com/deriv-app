@@ -185,21 +185,26 @@ class MT5PasswordManagerModal extends React.Component {
                                         input={field.value}
                                         has_error={!!(touched.new_password && errors.new_password)}
                                     >
-                                        <PasswordInput
-                                            {...field}
-                                            autoComplete='password'
-                                            label={localize('New password')}
-                                            hint={localize(
-                                                'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
-                                            )}
-                                            error={touched.new_password && errors.new_password}
-                                            onChange={e => {
-                                                setFieldTouched('new_password', true, true);
-                                                field.onChange(e);
-                                            }}
-                                            className='mt5-password-manager__new-password'
-                                            required
-                                        />
+                                        {({ has_warning }) => (
+                                            <PasswordInput
+                                                {...field}
+                                                autoComplete='password'
+                                                label={localize('New password')}
+                                                hint={
+                                                    !has_warning &&
+                                                    localize(
+                                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                                    )
+                                                }
+                                                error={touched.new_password && errors.new_password}
+                                                onChange={e => {
+                                                    setFieldTouched('new_password', true, true);
+                                                    field.onChange(e);
+                                                }}
+                                                className='mt5-password-manager__new-password'
+                                                required
+                                            />
+                                        )}
                                     </PasswordMeter>
                                 )}
                             </Field>
@@ -264,21 +269,26 @@ class MT5PasswordManagerModal extends React.Component {
                                             input={field.value}
                                             has_error={!!(touched.new_password && errors.new_password)}
                                         >
-                                            <PasswordInput
-                                                {...field}
-                                                autoComplete='password'
-                                                label={localize('New investor password')}
-                                                hint={localize(
-                                                    'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
-                                                )}
-                                                error={touched.new_password && errors.new_password}
-                                                onChange={e => {
-                                                    setFieldTouched('new_password', true, true);
-                                                    field.onChange(e);
-                                                }}
-                                                className='mt5-password-manager__new-password'
-                                                required
-                                            />
+                                            {({ has_warning }) => (
+                                                <PasswordInput
+                                                    {...field}
+                                                    autoComplete='password'
+                                                    label={localize('New investor password')}
+                                                    hint={
+                                                        !has_warning &&
+                                                        localize(
+                                                            'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                                        )
+                                                    }
+                                                    error={touched.new_password && errors.new_password}
+                                                    onChange={e => {
+                                                        setFieldTouched('new_password', true, true);
+                                                        field.onChange(e);
+                                                    }}
+                                                    className='mt5-password-manager__new-password'
+                                                    required
+                                                />
+                                            )}
                                         </PasswordMeter>
                                     )}
                                 </Field>
@@ -364,10 +374,10 @@ class MT5PasswordManagerModal extends React.Component {
                         is_open={is_visible}
                         title={
                             selected_type === 'real'
-                                ? localize('Manage your DMT5 Real {{account_title}} account password', {
+                                ? localize('Manage DMT5 Real {{account_title}} account password', {
                                       account_title: selected_account,
                                   })
-                                : localize('Manage your DMT5 Demo {{account_title}} account password', {
+                                : localize('Manage DMT5 Demo {{account_title}} account password', {
                                       account_title: selected_account,
                                   })
                         }

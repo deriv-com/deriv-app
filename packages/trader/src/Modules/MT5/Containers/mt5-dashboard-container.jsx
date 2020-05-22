@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 const MT5DashboardContainer = () => (
     <div className='mt5-dashboard__download-center'>
         <h1 className='mt5-dashboard__download-center--heading'>
-            <Localize i18n_default_text='Run MT5 from your browser or download the DMT5 app for your devices' />
+            <Localize i18n_default_text='Run MT5 from your browser or download the MT5 app for your devices' />
         </h1>
 
         <div className='mt5-dashboard__download-center-options'>

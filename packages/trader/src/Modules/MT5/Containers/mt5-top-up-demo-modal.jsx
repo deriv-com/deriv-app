@@ -24,7 +24,7 @@ class Mt5TopUpDemoModal extends React.Component {
                     toggleModal={this.props.closeTopUpModal}
                     is_open={this.props.is_top_up_virtual_open}
                     className='top-up-virtual'
-                    title={localize('Top up')}
+                    title={localize('Fund top up')}
                     width='384px'
                 >
                     <div className='dc-modal__container_top-up-virtual__body'>
@@ -65,7 +65,7 @@ class Mt5TopUpDemoModal extends React.Component {
                     is_open={this.props.is_top_up_virtual_success}
                     toggleModal={this.closeSuccess}
                     has_close_icon
-                    title={localize('Top up')}
+                    title={localize('Fund top up')}
                     icon={<Icon icon='IcCashierWallet' size={128} />}
                     heading={
                         <h3 className='mt5-success-topup__heading'>

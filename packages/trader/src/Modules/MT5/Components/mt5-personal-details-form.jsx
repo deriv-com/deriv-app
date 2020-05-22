@@ -240,6 +240,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                 </Div100vhContainer>
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
+                                    className='mt5-financial-stp-modal__button'
                                     is_disabled={
                                         isSubmitting ||
                                         (Object.keys(touched).length === 0 && !this.is_initial_valid) ||

@@ -21,7 +21,8 @@ const PasswordMeter = ({ children, has_error, input }) => {
     return (
         <React.Fragment>
             <div className='dc-password-meter__container'>
-                {children}
+                {/* if child input field has hint, they should not show the hint while warning is shown */}
+                {typeof children === 'function' ? children({ has_warning: !!feedback.warning }) : children}
                 <div className='dc-password-meter__bg' />
                 <div
                     className={classNames('dc-password-meter', {
@@ -39,7 +40,7 @@ const PasswordMeter = ({ children, has_error, input }) => {
 };
 
 PasswordMeter.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node, PropTypes.func]),
     has_error: PropTypes.bool,
     input: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };

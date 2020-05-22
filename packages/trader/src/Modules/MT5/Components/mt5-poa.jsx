@@ -354,6 +354,7 @@ class MT5POA extends React.Component {
                                         <FormSubmitButton
                                             has_cancel
                                             cancel_label={localize('Previous')}
+                                            className='mt5-financial-stp-modal__button'
                                             is_disabled={!!Object.keys(errors).length || isSubmitting}
                                             label={localize('Next')}
                                             is_loading={isSubmitting}

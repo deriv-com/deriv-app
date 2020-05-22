@@ -585,7 +585,7 @@
         }
         &-btn {
             margin-top: 3.2rem;
-            width: 32.8rem;
+            width: 6.4rem;
         }
     }
     @include mobile {
@@ -614,6 +614,9 @@
     }
     &__form {
         grid-template-rows: minmax(20rem, 1fr) 7rem;
+    }
+    &__button {
+        min-width: 9rem;
     }
     @include mobile {
         grid-template-rows: 7rem minmax(10rem, 1fr);

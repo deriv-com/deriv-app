@@ -131,21 +131,26 @@ const MT5PasswordModal = ({
                                         input={values.password}
                                         has_error={!!(touched.password && errors.password)}
                                     >
-                                        <PasswordInput
-                                            autoComplete='password'
-                                            label={localize('Create a password')}
-                                            error={touched.password && errors.password}
-                                            hint={localize(
-                                                'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
-                                            )}
-                                            name='password'
-                                            value={values.password}
-                                            onBlur={handleBlur}
-                                            onChange={e => {
-                                                setFieldTouched('password', true);
-                                                handleChange(e);
-                                            }}
-                                        />
+                                        {({ has_warning }) => (
+                                            <PasswordInput
+                                                autoComplete='password'
+                                                label={localize('Create a password')}
+                                                error={touched.password && errors.password}
+                                                hint={
+                                                    !has_warning &&
+                                                    localize(
+                                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                                    )
+                                                }
+                                                name='password'
+                                                value={values.password}
+                                                onBlur={handleBlur}
+                                                onChange={e => {
+                                                    setFieldTouched('password', true);
+                                                    handleChange(e);
+                                                }}
+                                            />
+                                        )}
                                     </PasswordMeter>
                                 </div>
                                 {is_real_financial_stp && (

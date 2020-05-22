@@ -37,7 +37,7 @@ class Mt5AccountCopy extends React.PureComponent {
                     }
                 >
                     {this.state.is_copied ? (
-                        <Icon icon='IcInfoOutline' />
+                        <Icon icon='IcCheckmarkCircle' custom_color='var(--status-success)' />
                     ) : (
                         <Icon icon='IcClipboard' custom_color='var(--text-less-prominent)' />
                     )}

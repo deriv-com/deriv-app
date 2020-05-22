@@ -100,7 +100,7 @@ const MT5AccountCard = ({
                     <div className='mt5-account-card__manage'>
                         <Button onClick={onClickFund} type='button' secondary>
                             {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
-                            {type.category === 'demo' && <Localize i18n_default_text='Top up' />}
+                            {type.category === 'demo' && <Localize i18n_default_text='Fund top up' />}
                         </Button>
                         <Button
                             onClick={() => {
@@ -138,6 +138,7 @@ const MT5AccountCard = ({
                         is_disabled={is_disabled}
                         primary={is_button_primary}
                         secondary={!is_button_primary}
+                        large
                     >
                         {cta_label}
                     </Button>

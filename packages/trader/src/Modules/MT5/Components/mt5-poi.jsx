@@ -62,7 +62,6 @@ class MT5POI extends React.PureComponent {
                                     <FormSubmitButton
                                         has_cancel
                                         cancel_label={localize('Previous')}
-                                        className='mt5-financial-stp-modal__button'
                                         is_disabled={!['pending', 'verified'].includes(this.state.poi_state)}
                                         label={localize('Next')}
                                         onCancel={this.props.onCancel}

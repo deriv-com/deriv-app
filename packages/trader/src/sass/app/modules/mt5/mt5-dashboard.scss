@@ -615,9 +615,6 @@
     &__form {
         grid-template-rows: minmax(20rem, 1fr) 7rem;
     }
-    &__button {
-        min-width: 9rem;
-    }
     @include mobile {
         grid-template-rows: 7rem minmax(10rem, 1fr);
         &__heading {

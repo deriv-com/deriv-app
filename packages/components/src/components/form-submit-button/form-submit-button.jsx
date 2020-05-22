@@ -5,7 +5,6 @@ import Button from '../button/button.jsx';
 
 const FormSubmitButton = ({
     cancel_label,
-    className,
     has_cancel,
     form_error,
     is_center,
@@ -24,19 +23,8 @@ const FormSubmitButton = ({
             })}
         >
             {!!form_error && <p className='dc-form-submit-button--error'>{form_error}</p>}
-            {has_cancel && (
-                <Button
-                    className={className}
-                    has_effect
-                    onClick={onCancel}
-                    text={cancel_label}
-                    type='button'
-                    secondary
-                    large
-                />
-            )}
+            {has_cancel && <Button has_effect onClick={onCancel} text={cancel_label} type='button' secondary large />}
             <Button
-                className={className}
                 has_effect
                 is_disabled={is_disabled}
                 type='submit'
@@ -50,7 +38,6 @@ const FormSubmitButton = ({
 };
 
 FormSubmitButton.defaultProps = {
-    className: undefined,
     has_cancel: false,
     form_error: '',
     is_disabled: false,
@@ -59,7 +46,6 @@ FormSubmitButton.defaultProps = {
 };
 
 FormSubmitButton.propTypes = {
-    className: PropTypes.string,
     has_cancel: PropTypes.bool,
     is_absolute: PropTypes.bool,
     is_center: PropTypes.bool,

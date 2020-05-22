@@ -129,27 +129,6 @@
         transform: translateX(-25%);
         text-align: center;
 
-        &-title {
-            font-size: var(--text-size-s);
-            font-weight: bold;
-            margin: 24px 0 8px 0;
-        }
-        &-text {
-            font-size: var(--text-size-xs);
-            margin: 12px 0;
-
-            p {
-                line-height: 1.43;
-            }
-        }
-        &-button {
-            text-decoration: none;
-
-            .dc-btn {
-                margin: 12px 0;
-                height: 40px;
-            }
-        }
         &--pending {
             transform: translateX(-30%);
         }

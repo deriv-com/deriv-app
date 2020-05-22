@@ -274,8 +274,10 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     &__password-wrapper {
         & .account__scrollbars_container--grid-layout {
-            display: flex;
-            flex-direction: column;
+            @include mobile {
+                display: flex;
+                flex-direction: column;
+            }
         }
     }
     &__text {

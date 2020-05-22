@@ -232,8 +232,13 @@ $MIN_HEIGHT_FLOATING: calc(
                 .dc-checkbox__label {
                     font-size: 1.2rem;
                 }
-                .dc-select-native__placeholder {
-                    background-color: var(--general-main-1);
+                .dc-select-native {
+                    &--disabled {
+                        margin-top: 2.4rem;
+                    }
+                    &__placeholder {
+                        background-color: var(--general-main-1);
+                    }
                 }
                 .date-of-birth-datepicker {
                     .datepicker-native__input {

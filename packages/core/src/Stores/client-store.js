@@ -618,7 +618,7 @@ export default class ClientStore extends BaseStore {
         this.setSwitched('');
         let client = this.accounts[this.loginid];
         // Added WS method for reconnecting balance stream on API reconnection
-        WS.setOnReconnect(WS.authorized.balanceAll().then(response => this.setBalance(response.balance)));
+        WS.setOnReconnect(() => WS.authorized.balanceAll().then(response => this.setBalance(response.balance)));
 
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {

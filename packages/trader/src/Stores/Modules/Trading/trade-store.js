@@ -991,7 +991,7 @@ export default class TradeStore extends BaseStore {
                 // the first has to be without subscribe to quickly update current account's balance
                 WS.authorized.balance().then(this.handleResponseBalance);
                 // the second is to subscribe to balance and update all sibling accounts' balances too
-                WS.subscribeBalanceAll(this.handleResponseBalance);
+                WS.authorized.subscribeBalanceAll(this.handleResponseBalance);
             });
         }
 

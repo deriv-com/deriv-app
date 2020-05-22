@@ -166,6 +166,7 @@ export default class CashierStore extends BaseStore {
             }
 
             if (!this.config.account_transfer.accounts_list.length) {
+                console.log({ response: WS.storage.authorize(this.root_store.client.getToken()) });
                 this.sortAccountsTransfer();
             }
 
@@ -665,7 +666,7 @@ export default class CashierStore extends BaseStore {
         // e.g. new account may have been created, transfer may have been done elsewhere, etc
         // so on load of this page just call it again
         if (this.root_store.client.is_logged_in) {
-            const transfer_between_accounts = await WS.transferBetweenAccounts();
+            const transfer_between_accounts = await WS.authorized.transferBetweenAccounts();
 
             if (transfer_between_accounts.error) {
                 this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
@@ -752,7 +753,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async sortAccountsTransfer(response_accounts) {
-        const transfer_between_accounts = response_accounts || (await WS.transferBetweenAccounts());
+        const transfer_between_accounts = response_accounts || (await WS.authorized.transferBetweenAccounts());
         if (!this.config.account_transfer.accounts_list.length) {
             // should have more than one account
             if (transfer_between_accounts.error || transfer_between_accounts.accounts.length <= 1) {
@@ -881,7 +882,7 @@ export default class CashierStore extends BaseStore {
 
         this.setErrorMessage('');
         const currency = this.config.account_transfer.selected_from.currency;
-        const transfer_between_accounts = await WS.transferBetweenAccounts(
+        const transfer_between_accounts = await WS.authorized.transferBetweenAccounts(
             this.config.account_transfer.selected_from.value,
             this.config.account_transfer.selected_to.value,
             currency,

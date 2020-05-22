@@ -94,12 +94,12 @@ const BinarySocketGeneral = (() => {
         }
     };
 
-    const setBalance = flow(function*(obj_balance) {
+    const setBalanceActiveAccount = flow(function*(obj_balance) {
         yield BinarySocket.wait('website_status');
         client_store.setBalanceActiveAccount(obj_balance);
     });
 
-    const setBalanceAll = obj_balance => {
+    const setBalanceOtherAccounts = obj_balance => {
         client_store.setBalanceOtherAccounts(obj_balance);
     };
 
@@ -219,8 +219,8 @@ const BinarySocketGeneral = (() => {
 
     return {
         init,
-        setBalance,
-        setBalanceAll,
+        setBalanceActiveAccount,
+        setBalanceOtherAccounts,
         authorizeAccount,
     };
 })();
@@ -248,13 +248,13 @@ const ResponseHandlers = (() => {
 
     const balanceActiveAccount = response => {
         if (!response.error) {
-            BinarySocketGeneral.setBalance(response.balance);
+            BinarySocketGeneral.setBalanceActiveAccount(response.balance);
         }
     };
 
     const balanceOtherAccounts = response => {
         if (!response.error) {
-            BinarySocketGeneral.setBalanceAll(response.balance);
+            BinarySocketGeneral.setBalanceOtherAccounts(response.balance);
         }
     };
 

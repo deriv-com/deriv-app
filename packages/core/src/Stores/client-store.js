@@ -876,7 +876,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setBalanceActiveAccount(obj_balance) {
-        if (this.accounts[obj_balance?.loginid]) {
+        if (this.accounts[obj_balance?.loginid] && obj_balance.loginid === this.loginid) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
             this.resetLocalStorageValues(this.loginid);
         }
@@ -888,11 +888,10 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setBalanceOtherAccounts(obj_balance) {
         if (this.accounts[obj_balance?.loginid]) {
+            if (obj_balance.loginid !== this.loginid) {
+                this.accounts[obj_balance.loginid].balance = obj_balance.balance;
+            }
             if (obj_balance.total) {
-                if (obj_balance.loginid !== this.loginid) {
-                    this.accounts[obj_balance.loginid].balance = obj_balance.balance;
-                }
-
                 const total_real = ObjectUtils.getPropertyValue(obj_balance, ['total', 'real']);
                 const total_mt5 = ObjectUtils.getPropertyValue(obj_balance, ['total', 'mt5']);
                 // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent

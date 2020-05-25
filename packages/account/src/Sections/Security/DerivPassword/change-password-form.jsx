@@ -88,7 +88,7 @@ class ChangePasswordForm extends React.Component {
                         handleSubmit,
                         isSubmitting,
                     }) => (
-                        <form className='account-form' onSubmit={handleSubmit}>
+                        <form className='account-form account__password-wrapper' onSubmit={handleSubmit}>
                             {this.state.is_loading ? (
                                 <FormBody>
                                     <Loading is_fullscreen={false} className='account___intial-loader' />;

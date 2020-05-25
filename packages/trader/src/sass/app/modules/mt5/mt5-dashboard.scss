@@ -516,7 +516,7 @@
 
 .mt5-password-manager {
     margin: 5.6rem auto 3.2rem;
-    max-width: 400px;
+    max-width: calc(400px + 1rem); // needs extra padding for the scrollbar, otherwise it will cover the words
     width: 100%;
 
     &--paragraph {
@@ -531,7 +531,7 @@
     }
     &__main-form,
     &__investor-wrapper {
-        margin-top: 3.2rem;
+        margin: 3.2rem 0.5rem 0;
 
         @include mobile {
             padding-bottom: 12rem;

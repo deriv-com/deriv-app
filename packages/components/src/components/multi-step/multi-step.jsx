@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import Icon from '../icon';
 
 class MultiStep extends React.Component {
     state = {
@@ -35,19 +34,19 @@ class MultiStep extends React.Component {
 
     prevButton = () =>
         this.state.step !== 0 && (
-            <div className='multistep__header'>
-                <a onClick={this.prevStep} className='multistep__btn'>
-                    <Icon icon='IcArrowLeftBold' className='multistep__btn-icon' />
-                    {localize('Back')}
+            <div className='multi-step__header'>
+                <a onClick={this.prevStep} className='multi-step__btn'>
+                    <Icon icon='IcArrowLeftBold' className='multi-step__btn-icon' />
+                    {this.props.lbl_previous}
                 </a>
             </div>
         );
 
     render() {
         return (
-            <div className={classNames('multistep', this.props.className)}>
+            <div className={classNames('multi-step', this.props.className)}>
                 {this.prevButton()}
-                <div className='multistep__component'>{this.state.component}</div>
+                <div className='multi-step__component'>{this.state.component}</div>
             </div>
         );
     }

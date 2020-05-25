@@ -46,6 +46,7 @@ module.exports = {
         'mobile-wrapper': 'Components/mobile-wrapper',
         modal: 'Components/modal',
         money: 'Components/money',
+        'multi-step': 'Components/multi-step',
         numpad: 'Components/numpad/',
         'page-error': 'Components/page-error',
         'page-overlay': 'Components/page-overlay',

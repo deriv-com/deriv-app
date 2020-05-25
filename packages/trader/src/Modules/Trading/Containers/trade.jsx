@@ -198,7 +198,7 @@ class ChartTradeClass extends React.Component {
                 ref={ref => (this.charts_ref = ref)}
                 barriers={barriers}
                 bottomWidgets={show_digits_stats && isDesktop() ? this.bottomWidgets : this.props.bottomWidgets}
-                crosshairState={isMobile() ? 0 : undefined}
+                crosshair={isMobile() ? 0 : undefined}
                 showLastDigitStats={isDesktop() ? show_digits_stats : false}
                 chartControlsWidgets={null}
                 chartStatusListener={v => this.props.setChartStatus(!v)}

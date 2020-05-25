@@ -57,6 +57,7 @@ module.exports = {
         'progress-indicator': 'Components/progress-indicator',
         'radio-group': 'Components/radio-group',
         'select-native': 'Components/select-native',
+        'send-email-template': 'Components/send-email-template',
         'swipeable-wrapper': 'Components/swipeable-wrapper',
         'relative-datepicker': 'Components/relative-datepicker',
         table: 'Components/table',

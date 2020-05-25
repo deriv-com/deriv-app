@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import Icon from '../icon';
@@ -51,5 +52,11 @@ class MultiStep extends React.Component {
         );
     }
 }
+
+MultiStep.propTypes = {
+    className: PropTypes.string,
+    lbl_previous: PropTypes.string,
+    steps: PropTypes.array,
+};
 
 export default MultiStep;

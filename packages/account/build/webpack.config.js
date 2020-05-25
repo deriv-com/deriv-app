@@ -19,7 +19,6 @@ module.exports = function (env, argv) {
             'icon-message-content': 'Components/icon-message-content',
             'leave-confirm': 'Components/leave-confirm',
             'load-error-message': 'Components/load-error-message',
-            'multi-step': 'Components/multi-step',
             'poa-expired': 'Components/poa-expired',
             'poa-needs-review': 'Components/poa-needs-review',
             'poa-status-codes': 'Components/poa-status-codes',

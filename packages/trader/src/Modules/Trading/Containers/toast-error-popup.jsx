@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { MobileWrapper, ToastError } from '@deriv/components';
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'Stores/connect';
 
@@ -40,7 +40,7 @@ export default connect(({ ui }) => ({
 const NetworkStatusToastError = ({ status, portal_id, message }) => {
     if (!document.getElementById(portal_id) || !message) return null;
 
-    const [is_open, setIsOpen] = useState(false);
+    const [is_open, setIsOpen] = React.useState(false);
 
     if (!is_open && status !== 'online') {
         setIsOpen(true); // open if status === 'blinker' or 'offline'

@@ -1,6 +1,6 @@
 import { Icon, Modal, Tabs, ThemedScrollbars } from '@deriv/components';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router';
 import { website_name } from 'App/Constants/app-config';
 import routes from '@deriv/shared/utils/routes';
@@ -447,7 +447,7 @@ const SyntheticBox = ({ is_demo = false, mt5OnClick }) => {
     );
 };
 
-class AccountTypesModal extends Component {
+class AccountTypesModal extends React.Component {
     state = {
         account_type_tab_index: 0,
     };

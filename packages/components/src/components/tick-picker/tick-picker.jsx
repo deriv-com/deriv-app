@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React from 'react';
 import throttle from 'lodash.throttle';
 import { useSwipeable } from 'react-swipeable';
 import Button from 'Components/button/button.jsx';
@@ -19,7 +19,7 @@ const TickPicker = ({
     onValueChange,
 }) => {
     const normalizedTick = tick => `${tick}`.padStart(2, 0);
-    const [tick_value, setTickValue] = useState(parseInt(default_value));
+    const [tick_value, setTickValue] = React.useState(parseInt(default_value));
 
     const handleDecrease = () => {
         if (tick_value - 1 >= min_value) {

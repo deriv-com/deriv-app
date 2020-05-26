@@ -51,6 +51,58 @@ const modules = [
         title: localize('Accounts Settings'),
         icon_component: 'IcUserOutline',
         is_authenticated: true,
+        // TODO: Revisit this workaround for subroutes [app-routing]
+        routes: [
+            {
+                title: localize('Profile'),
+                icon: 'IcUserOutline',
+                subroutes: [
+                    {
+                        path: routes.personal_details,
+                        component: Account,
+                        title: localize('Personal details'),
+                        default: true,
+                    },
+                    {
+                        path: routes.financial_assessment,
+                        component: Account,
+                        title: localize('Financial assessment'),
+                    },
+                ],
+            },
+            {
+                title: localize('Verification'),
+                icon: 'IcVerification',
+                subroutes: [
+                    {
+                        path: routes.proof_of_identity,
+                        component: Account,
+                        title: localize('Proof of identity'),
+                    },
+                    {
+                        path: routes.proof_of_address,
+                        component: Account,
+                        title: localize('Proof of address'),
+                    },
+                ],
+            },
+            {
+                title: localize('Security and safety'),
+                icon: 'IcSecurity',
+                subroutes: [
+                    {
+                        path: routes.deriv_password,
+                        component: Account,
+                        title: localize('Deriv password'),
+                    },
+                    {
+                        path: routes.account_limits,
+                        component: Account,
+                        title: localize('Account limits'),
+                    },
+                ],
+            },
+        ],
     },
     {
         path: routes.root,
@@ -64,6 +116,27 @@ const modules = [
                 title: localize('Reports'),
                 icon_component: 'IcReports',
                 is_authenticated: true,
+                routes: [
+                    {
+                        path: routes.positions,
+                        component: Trader,
+                        title: localize('Open positions'),
+                        icon_component: 'IcOpenPositions',
+                        default: true,
+                    },
+                    {
+                        path: routes.profit,
+                        component: Trader,
+                        title: localize('Profit table'),
+                        icon_component: 'IcProfitTable',
+                    },
+                    {
+                        path: routes.statement,
+                        component: Trader,
+                        title: localize('Statement'),
+                        icon_component: 'IcStatement',
+                    },
+                ],
             },
             { path: routes.contract, component: Trader, title: localize('Contract Details'), is_authenticated: true },
             { path: routes.error404, component: Trader, title: localize('Error 404') },

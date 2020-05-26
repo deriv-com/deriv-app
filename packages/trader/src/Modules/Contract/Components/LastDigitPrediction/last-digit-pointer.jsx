@@ -6,7 +6,10 @@ import { Icon } from '@deriv/components';
 const LastDigitPointer = ({ is_lost, is_trade_page, is_won, position }) => (
     <React.Fragment>
         {!!position && (
-            <span className='digits__pointer' style={{ transform: `translate3d(calc(${position}px), 0, 0px)` }}>
+            <span
+                className='digits__pointer'
+                style={{ transform: `translate3d(calc(${position.left}px), ${position.top}px, 0px)` }}
+            >
                 <Icon
                     icon='IcProfit'
                     className={classNames('digits__icon', {
@@ -24,7 +27,7 @@ const LastDigitPointer = ({ is_lost, is_trade_page, is_won, position }) => (
 LastDigitPointer.propTypes = {
     is_lost: PropTypes.bool,
     is_won: PropTypes.bool,
-    position: PropTypes.number,
+    position: PropTypes.object,
 };
 
 export default LastDigitPointer;

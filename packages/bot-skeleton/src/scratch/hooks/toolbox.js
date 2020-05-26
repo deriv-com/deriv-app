@@ -19,7 +19,7 @@ Blockly.Toolbox.prototype.init = function() {
      * HTML container for the Toolbox menu.
      * @type {Element}
      */
-    this.HtmlDiv = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox');
+    this.HtmlDiv = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox toolbox--hidden');
     this.HtmlDiv.setAttribute('id', 'gtm-toolbox');
     this.HtmlDiv.setAttribute('dir', workspace.RTL ? 'RTL' : 'LTR');
 
@@ -27,7 +27,7 @@ Blockly.Toolbox.prototype.init = function() {
     const el_toolbox_header = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__header');
     const el_toolbox_title = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__title');
 
-    el_toolbox_title.textContent = localize('Blocks Menu');
+    el_toolbox_title.textContent = localize('Blocks menu');
     el_toolbox_header.appendChild(el_toolbox_title);
     this.HtmlDiv.appendChild(el_toolbox_header);
 
@@ -64,7 +64,6 @@ Blockly.Toolbox.prototype.init = function() {
         this.categoryMenu_.allCategories_.push(clone_category);
     });
     this.position();
-    this.toggle();
 };
 
 /**
@@ -82,8 +81,8 @@ Blockly.Toolbox.prototype.populate_ = function(newTree) {
     const { toggleStrategyModal } = DBotStore.instance;
     if (toggleStrategyModal) {
         const quick_strat_btn = document.createElement('BUTTON');
-        quick_strat_btn.innerHTML = localize('Quick Strategy');
-        quick_strat_btn.className = 'toolbox__button btn effect btn--primary btn__medium';
+        quick_strat_btn.innerHTML = localize('Quick strategy');
+        quick_strat_btn.className = 'toolbox__button dc-btn effect dc-btn--primary dc-btn__medium';
         quick_strat_btn.id = 'gtm-quick-strategy';
         quick_strat_btn.onclick = toggleStrategyModal;
 
@@ -281,6 +280,7 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
  * @private
  */
 Blockly.Toolbox.prototype.showCategory_ = function(category_id) {
+    const { flyout } = DBotStore.instance;
     const selected_category = this.categoryMenu_.categories_.find(category => category.id_ === category_id);
     let flyout_content = selected_category.getContents();
 
@@ -290,9 +290,6 @@ Blockly.Toolbox.prototype.showCategory_ = function(category_id) {
         flyout_content = fnToApply(this.workspace_);
     }
 
-    const {
-        instance: { flyout },
-    } = DBotStore;
     flyout.setIsSearchFlyout(false);
     flyout.setContents(flyout_content);
 };
@@ -644,7 +641,7 @@ Blockly.Toolbox.prototype.refreshCategory = function() {
 Blockly.Toolbox.prototype.toggle = function() {
     const { toolbar, flyout } = DBotStore.instance;
     if (!toolbar.is_toolbox_open) {
-        this.addStyle('hidden');
+        this.addStyle('toolbox--hidden');
 
         flyout.setVisibility(false);
 
@@ -654,6 +651,6 @@ Blockly.Toolbox.prototype.toggle = function() {
         }
     } else {
         flyout.setVisibility(false);
-        this.removeStyle('hidden');
+        this.removeStyle('toolbox--hidden');
     }
 };

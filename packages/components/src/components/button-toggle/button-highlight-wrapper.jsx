@@ -49,7 +49,7 @@ class HighlightWrapper extends React.PureComponent {
     };
 
     render() {
-        const { children, className, ...other_props } = this.props;
+        const { children, className, has_rounded_button, ...other_props } = this.props;
         const props = {
             className: classnames('dc-button-menu__wrapper', className),
             ...other_props,
@@ -63,7 +63,7 @@ class HighlightWrapper extends React.PureComponent {
                         onClick: e => this.onClick(e, child.props.onClick),
                     })
                 )}
-                <Highlight left={this.state.left} width={`${button_width}%`} />
+                <Highlight left={this.state.left} width={`${button_width}%`} has_rounded_button={has_rounded_button} />
             </div>
         );
     }
@@ -72,6 +72,7 @@ class HighlightWrapper extends React.PureComponent {
 HighlightWrapper.propTypes = {
     children: PropTypes.array,
     className: PropTypes.string,
+    has_rounded_button: PropTypes.bool,
     timeout: PropTypes.number,
 };
 

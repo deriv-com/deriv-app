@@ -3,10 +3,17 @@ import { Scrollbars } from 'tt-react-custom-scrollbars';
 
 class ThemedScrollbars extends React.Component {
     render() {
+        if (this.props.is_native) return this.props.children;
         return (
             <Scrollbars
                 ref={this.props.list_ref}
-                renderTrackHorizontal={props => <div {...props} className='dc-themed-scrollbars__track--horizontal' />}
+                renderTrackHorizontal={props => (
+                    <div
+                        {...props}
+                        className='dc-themed-scrollbars__track--horizontal'
+                        style={{ display: this.props.hideHorizontal ? 'none' : 'block' }}
+                    />
+                )}
                 renderTrackVertical={props => <div {...props} className='dc-themed-scrollbars__track--vertical' />}
                 renderThumbHorizontal={props => <div {...props} className='dc-themed-scrollbars__thumb--horizontal' />}
                 renderThumbVertical={props => <div {...props} className='dc-themed-scrollbars__thumb--vertical' />}

@@ -128,6 +128,9 @@ html,
     &--white {
         color: $color-white;
     }
+    &--right {
+        float: right;
+    }
 }
 
 /** @define icon */

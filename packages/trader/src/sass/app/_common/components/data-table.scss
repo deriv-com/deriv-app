@@ -71,9 +71,11 @@ $header-height: 52px;
         font-weight: 500;
         white-space: nowrap;
     }
+    &__foot {
+        border-top: 2px solid var(--general-section-1);
+    }
     &__foot &__row {
         color: var(--text-general);
-        border-top: var(--general-section-1);
         border-bottom: none;
     }
 }

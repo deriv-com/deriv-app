@@ -1,9 +1,9 @@
 import { action } from 'mobx';
+import { getAppId } from '@deriv/shared/utils/config';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
 import { isLoginPages } from '_common/base/login';
 import BaseStore from './base-store';
-import { getAppId } from '../config';
 
 export default class SegmentStore extends BaseStore {
     // only available on production (bot and deriv)

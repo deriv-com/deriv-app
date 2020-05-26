@@ -4,7 +4,8 @@ import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Dialog from './dialog.jsx';
-import SaveLoadModal from './saveload-modal.jsx';
+import LoadModal from './load-modal.jsx';
+import SaveModal from './save-modal.jsx';
 import TradeAnimation from './trade-animation.jsx';
 import { tabs_title } from '../constants/bot-contents';
 import { popover_zindex } from '../constants/z-indexes';
@@ -13,7 +14,7 @@ import '../assets/sass/toolbar.scss';
 
 const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, onSearchKeyUp }) => (
     <div className='toolbar__form'>
-        <Formik initialValues={{ search: '' }} onSubmit={values => onSearch(values)}>
+        <Formik initialValues={{ search: '' }} onSubmit={onSearch}>
             {({ submitForm, values: { search }, setFieldValue }) => (
                 <Form>
                     <Field name='search'>
@@ -50,39 +51,6 @@ const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, o
     </div>
 );
 
-const BotNameBox = ({ onBotNameTyped, file_name }) => (
-    <div className='toolbar__form'>
-        <Formik
-            enableReinitialize={true}
-            initialValues={{ botname: file_name }}
-            onSubmit={({ botname }) => onBotNameTyped(botname)}
-        >
-            {({ submitForm, setFieldValue }) => {
-                return (
-                    <Form>
-                        <Field name='botname'>
-                            {({ field }) => (
-                                <Input
-                                    {...field}
-                                    className='toolbar__form-field'
-                                    type='text'
-                                    onKeyUp={({ target: { value } }) => {
-                                        setFieldValue('botname', value, false);
-                                        submitForm();
-                                    }}
-                                    label={localize('Bot name')}
-                                    placeholder={localize('Untitled Bot')}
-                                    trailing_icon={<Icon icon='IcEdit' />}
-                                />
-                            )}
-                        </Field>
-                    </Form>
-                );
-            }}
-        </Formik>
-    </div>
-);
-
 const WorkspaceGroup = ({
     has_redo_stack,
     has_undo_stack,
@@ -90,7 +58,8 @@ const WorkspaceGroup = ({
     onSortClick,
     onUndoClick,
     onZoomInOutClick,
-    toggleSaveLoadModal,
+    toggleLoadModal,
+    toggleSaveModal,
 }) => (
     <div className='toolbar__group toolbar__group-btn'>
         <Popover alignment='bottom' message={localize('Reset')} zIndex={popover_zindex.TOOLBAR}>
@@ -101,16 +70,11 @@ const WorkspaceGroup = ({
                 icon='IcFolderOpen'
                 id='db-toolbar__import-button'
                 className='toolbar__icon'
-                onClick={() => toggleSaveLoadModal(false)}
+                onClick={toggleLoadModal}
             />
         </Popover>
         <Popover alignment='bottom' message={localize('Save')} zIndex={popover_zindex.TOOLBAR}>
-            <Icon
-                icon='IcSave'
-                id='db-toolbar__save-button'
-                className='toolbar__icon'
-                onClick={() => toggleSaveLoadModal(true)}
-            />
+            <Icon icon='IcSave' id='db-toolbar__save-button' className='toolbar__icon' onClick={toggleSaveModal} />
         </Popover>
         <div className='vertical-divider' />
         <Popover alignment='bottom' message={localize('Undo')} zIndex={popover_zindex.TOOLBAR}>
@@ -188,7 +152,6 @@ const Toolbar = props => {
                     </Button>
                 </Popover>
                 {active_tab === tabs_title.WORKSPACE && <SearchBox {...props} />}
-                <BotNameBox {...props} />
                 {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...props} />}
             </div>
             {!is_drawer_open && (
@@ -218,17 +181,16 @@ const Toolbar = props => {
                     <TradeAnimation className='toolbar__animation' should_show_overlay={true} />
                 </div>
             )}
-            <SaveLoadModal />
-            {is_dialog_open && (
-                <Dialog
-                    title={localize('Are you sure?')}
-                    is_open={is_dialog_open}
-                    onOkButtonClick={onOkButtonClick}
-                    onCancelButtonClick={onCancelButtonClick}
-                >
-                    {localize('Any unsaved changes will be lost.')}
-                </Dialog>
-            )}
+            <SaveModal />
+            <LoadModal />
+            <Dialog
+                title={localize('Are you sure?')}
+                is_open={is_dialog_open}
+                onOkButtonClick={onOkButtonClick}
+                onCancelButtonClick={onCancelButtonClick}
+            >
+                {localize('Any unsaved changes will be lost.')}
+            </Dialog>
         </div>
     );
 };
@@ -243,7 +205,6 @@ Toolbar.propTypes = {
     is_search_loading: PropTypes.bool,
     is_stop_button_disabled: PropTypes.bool,
     is_stop_button_visible: PropTypes.bool,
-    onBotNameTyped: PropTypes.func,
     onCancelButtonClick: PropTypes.func,
     onGoogleDriveClick: PropTypes.func,
     onOkButtonClick: PropTypes.func,
@@ -261,7 +222,7 @@ Toolbar.propTypes = {
     toggleSaveLoadModal: PropTypes.func,
 };
 
-export default connect(({ main_content, run_panel, saveload, toolbar }) => ({
+export default connect(({ main_content, run_panel, save_modal, load_modal, toolbar }) => ({
     active_tab: main_content.active_tab,
     file_name: toolbar.file_name,
     has_redo_stack: toolbar.has_redo_stack,
@@ -271,7 +232,6 @@ export default connect(({ main_content, run_panel, saveload, toolbar }) => ({
     is_search_loading: toolbar.is_search_loading,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     is_stop_button_visible: run_panel.is_stop_button_visible,
-    onBotNameTyped: toolbar.onBotNameTyped,
     onCancelButtonClick: toolbar.onResetCancelButtonClick,
     onGoogleDriveClick: toolbar.onGoogleDriveClick,
     onOkButtonClick: toolbar.onResetOkButtonClick,
@@ -286,5 +246,6 @@ export default connect(({ main_content, run_panel, saveload, toolbar }) => ({
     onToolboxToggle: toolbar.onToolboxToggle,
     onUndoClick: toolbar.onUndoClick,
     onZoomInOutClick: toolbar.onZoomInOutClick,
-    toggleSaveLoadModal: saveload.toggleSaveLoadModal,
+    toggleLoadModal: load_modal.toggleLoadModal,
+    toggleSaveModal: save_modal.toggleSaveModal,
 }))(Toolbar);

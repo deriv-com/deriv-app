@@ -1,10 +1,10 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'Stores/connect';
+import React from 'react';
+import { FormSubmitButton } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import { Hr, RadioButtonGroup, RadioButton } from './currency-selector.jsx';
-import FormSubmitButton from './form-submit-button.jsx';
 
 const messages = [
     'Choose your preferred cryptocurrency',
@@ -24,7 +24,7 @@ const Headers = ({ heading, subheading }) => (
     </React.Fragment>
 );
 
-class AddCryptoCurrency extends Component {
+class AddCryptoCurrency extends React.Component {
     state = {
         available_fiat_currencies: [],
     };

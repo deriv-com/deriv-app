@@ -1,11 +1,12 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import { removeBranchName } from '@deriv/shared/utils/url';
+import routes from '@deriv/shared/utils/routes';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { redirectToLogin, redirectToSignUp } from '_common/base/login';
 import { WS } from 'Services/ws-methods';
 import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
 import { default_title } from 'App/Constants/app-config';
-import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 
 const RouteWithSubRoutes = route => {
@@ -31,11 +32,10 @@ const RouteWithSubRoutes = route => {
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !ObjectUtils.isEmptyObject(default_subroute);
+            const pathname = removeBranchName(location.pathname);
             result = (
                 <React.Fragment>
-                    {has_default_subroute && location.pathname === route.path && (
-                        <Redirect to={default_subroute.path} />
-                    )}
+                    {has_default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
                     <route.component {...props} routes={route.routes} />
                 </React.Fragment>
             );

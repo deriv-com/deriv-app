@@ -26,15 +26,14 @@ const BounceUp = posed.div({
     },
 });
 
-const Bounce = ({ children, className, is_visible, keyname }) => (
-    <PoseGroup>
-        {is_visible && (
+const Bounce = ({ children, className, is_visible, keyname }) =>
+    is_visible ? (
+        <PoseGroup>
             <BounceUp className={className} key={keyname}>
                 {children}
             </BounceUp>
-        )}
-    </PoseGroup>
-);
+        </PoseGroup>
+    ) : null;
 
 Bounce.propTypes = {
     children: PropTypes.node,

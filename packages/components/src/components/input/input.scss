@@ -30,6 +30,7 @@
         height: 3.8rem;
         display: block;
         min-width: 0;
+        box-sizing: border-box;
 
         &::placeholder {
             line-height: 1.5;
@@ -190,6 +191,14 @@
         margin-left: 1.2rem;
         position: absolute;
         top: 4rem;
+    }
+    &__counter {
+        color: var(--text-less-prominent);
+        font-size: 1.2rem;
+        margin-left: 1.2rem;
+        position: absolute;
+        top: 4rem;
+        right: 20px;
     }
     &--no-placeholder {
         label {

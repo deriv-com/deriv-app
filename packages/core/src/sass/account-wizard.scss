@@ -1,9 +1,10 @@
-@import 'app/_common/base/index';
-
 .dc-modal__container_real-account-signup-modal {
     display: flex;
     flex-direction: column;
     transition: all 0.3s ease-in-out;
+    @include tablet {
+        max-height: calc(100vh - 102px); // Header and footer
+    }
 
     &--success {
         max-height: 380px;
@@ -61,11 +62,27 @@
 }
 
 .account-wizard {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 0; /* fix for Safari */
+    display: grid;
+    grid-template-rows: 13rem minmax(10rem, 1fr);
+    height: 100%;
+    overflow: auto;
+    position: relative;
     width: 100%;
+    @include mobile {
+        grid-template-rows: 7rem minmax(10rem, 1fr);
+    }
 
+    &.add-or-manage {
+        grid-template-rows: 1fr 1fr;
+        @include desktop {
+            & form {
+                grid-template-rows: auto;
+            }
+        }
+        @include mobile {
+            grid-template-rows: 1fr 1fr;
+        }
+    }
     h1 {
         @include typeface(--title-center-bold-black);
         color: var(--text-prominent);
@@ -73,10 +90,14 @@
         margin-top: 3rem;
     }
     h2 {
-        @include typeface(--title-center-bold-black);
         text-transform: none;
         margin-top: 2.4rem;
         color: var(--text-less-prominent);
+        @include typeface(--title-center-bold-black);
+        @include mobile {
+            margin-top: 0.8rem;
+            font-size: 1.2rem;
+        }
     }
     h3 {
         @include typeface(--small-center-normal-black);
@@ -85,15 +106,38 @@
         margin-bottom: 1.6rem;
     }
     form {
-        display: flex;
-        flex: 1 1 0; /* fix for Safari */
         width: 100%;
-        padding: 0 2.4rem 3.2rem;
+
+        .currency-selector {
+            &__container {
+                width: 100%;
+                @include mobile {
+                    overflow-x: hidden;
+                    overflow-y: auto;
+
+                    &--no-top-margin {
+                        margin-top: 0;
+                    }
+                }
+            }
+        }
+        @include desktop {
+            height: 100%;
+            display: grid;
+            grid-template-rows: minmax(20rem, 1fr) 7rem;
+        }
+        @include tablet {
+            height: 100%;
+            display: grid;
+            grid-template-rows: minmax(20rem, 1fr) 7rem;
+        }
     }
     &__body {
-        display: flex;
-        flex: 1 1 0; /* fix for Safari */
-        width: 100%;
+        & .details-form {
+            @include tablet {
+                grid-template-rows: 5rem minmax(10rem, 1fr);
+            }
+        }
     }
     &__set-currency {
         p {
@@ -101,45 +145,22 @@
             @include typeface(--paragraph-center-normal-black);
             text-transform: initial;
             color: var(--text-prominent);
+
+            @include mobile {
+                font-size: 1.2rem;
+                margin: 2.4rem auto 0 2.4rem;
+                text-align: left;
+            }
         }
         h2 {
             @include typeface(--title-center-bold-black);
             color: var(--text-prominent);
-        }
-    }
-    &__btn-area {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        align-self: flex-end;
-        padding-top: 2.4em;
-        width: 100%;
 
-        .btn:not(:last-child) {
-            margin: 0 1em;
-        }
-        .btn:last-child {
-            margin: 0;
-        }
-        &--absolute {
-            bottom: 0;
-            position: absolute;
-            left: 0;
-            padding: 2.4em;
-            border-top: 1px solid var(--general-section-1);
-        }
-        &--center {
-            justify-content: center;
-            width: 100%;
-
-            & .btn {
-                min-width: 9em;
+            @include mobile {
+                font-size: 1.2rem;
+                text-align: left;
+                margin-left: 2.4rem;
             }
-        }
-        &--error {
-            @include typeface(--paragraph-left-normal-black);
-            text-transform: none;
-            color: var(--brand-red-coral) !important;
         }
     }
     .checkbox {
@@ -195,6 +216,69 @@
                 width: 78%;
                 text-align: center;
             }
+        }
+    }
+    @include mobile {
+        &--error {
+            margin-top: $MOBILE_HEADER_HEIGHT;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            h1 {
+                font-size: 3.6rem;
+                font-weight: bold;
+                color: var(--brand-red-coral);
+                line-height: 1.5;
+            }
+            p {
+                font-size: 1.4rem;
+                margin: 1.6rem;
+                line-height: 1.4;
+                color: var(--text-general);
+            }
+            .dc-btn {
+                height: 4rem;
+            }
+            .dc-ion {
+                width: 100%;
+                max-width: 96px;
+                margin-top: 2rem;
+                height: auto;
+            }
+        }
+        &__header {
+            &-steps {
+                padding-bottom: 0.8rem;
+                width: 100%;
+                background: var(--general-section-2);
+
+                &-title {
+                    color: var(--brand-red-coral);
+                    font-size: 1.4rem;
+                    font-weight: bold;
+                    line-height: 20px;
+                    padding: 1.6rem 2.4rem 0.8rem;
+                }
+                &-subtitle {
+                    color: var(--text-prominent);
+                    line-height: 18px;
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    padding: 0 2.4rem;
+                }
+            }
+        }
+    }
+}
+
+.add-crypto-currency,
+.change-currency {
+    @include tablet {
+        form {
+            display: grid;
+            grid-template-rows: repeat(2, 7rem) 1fr 7rem;
+            height: auto;
         }
     }
 }

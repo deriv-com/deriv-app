@@ -1,6 +1,19 @@
 @import '../icon/icon.scss';
 
 .dc-popover {
+    &__wrapper {
+        position: relative;
+    }
+    &__container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 280px;
+
+        &-relative {
+            position: relative;
+        }
+    }
     &__target {
         &__icon .info {
             @extend .dc-icon--secondary;
@@ -48,6 +61,9 @@
             flex-grow: 2;
             text-align: left;
 
+            .bold {
+                font-weight: bold;
+            }
             &--error {
                 color: var(--text-colored-background);
             }

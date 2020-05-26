@@ -1,31 +1,25 @@
-export const getUTCTime = date => {
-    const dateObject = new Date(date);
-    return `${`0${dateObject.getUTCHours()}`.slice(-2)}:${`0${dateObject.getUTCMinutes()}`.slice(
-        -2
-    )}:${`0${dateObject.getUTCSeconds()}`.slice(-2)}`;
-};
+import { localize } from '@deriv/translations';
 
-export const durationToSecond = duration => {
-    const parsedDuration = duration.match(/^([0-9]+)([stmhd])$/);
-    if (!parsedDuration) {
-        return 0;
+export const timeSince = timestamp => {
+    const now = new Date();
+    const secondPast = (now.getTime() - timestamp) / 1000;
+
+    if (secondPast < 60) {
+        return localize('{{secondPast}}s ago', { secondPast: parseInt(secondPast) });
     }
-    const durationValue = parseFloat(parsedDuration[1]);
-    const durationType = parsedDuration[2];
-    if (durationType === 's') {
-        return durationValue;
+    if (secondPast < 3600) {
+        return localize('{{minutePast}}m ago', { minutePast: parseInt(secondPast / 60) });
     }
-    if (durationType === 't') {
-        return durationValue * 2;
+    if (secondPast <= 86400) {
+        return localize('{{hourPast}}h ago', { hourPast: parseInt(secondPast / 3600) });
     }
-    if (durationType === 'm') {
-        return durationValue * 60;
-    }
-    if (durationType === 'h') {
-        return durationValue * 60 * 60;
-    }
-    if (durationType === 'd') {
-        return durationValue * 60 * 60 * 24;
-    }
-    return 0;
+
+    const timestampDate = new Date(timestamp);
+    const day = timestampDate.getDate();
+    const month = timestampDate
+        .toDateString()
+        .match(/ [a-zA-Z]*/)[0]
+        .replace(' ', '');
+    const year = `${timestampDate.getFullYear() === now.getFullYear() ? '' : ' '}${timestampDate.getFullYear()}`;
+    return `${day} ${month}${year}`;
 };

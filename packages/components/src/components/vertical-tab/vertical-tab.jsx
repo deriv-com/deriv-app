@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import VerticalTabContentContainer from 'Components/vertical-tab/vertical-tab-content-container.jsx';
 import VerticalTabHeader from 'Components/vertical-tab/vertical-tab-header.jsx';
+import VerticalTabHeaderGroup from 'Components/vertical-tab/vertical-tab-header-group.jsx';
 import VerticalTabHeaders from 'Components/vertical-tab/vertical-tab-headers.jsx';
 import VerticalTabHeaderTitle from 'Components/vertical-tab/vertical-tab-header-title.jsx';
 import VerticalTabLayout from 'Components/vertical-tab/vertical-tab-layout.jsx';
@@ -17,7 +18,12 @@ class VerticalTab extends React.Component {
     setSelectedIndex = ({ list, selected_index, is_routed, current_path }) => {
         let index;
         if (typeof selected_index === 'undefined') {
-            index = is_routed ? list.indexOf(list.find(item => item.path === (current_path || item.default))) || 0 : 0;
+            index = is_routed
+                ? Math.max(
+                      list.indexOf(list.find(item => item.path === current_path) || list.find(item => item.default)),
+                      0
+                  )
+                : 0;
         } else {
             index = typeof selected_index === 'object' ? list.indexOf(selected_index) : selected_index;
         }
@@ -59,22 +65,37 @@ class VerticalTab extends React.Component {
         return (
             <div
                 className={classNames('dc-vertical-tab', {
+                    'dc-vertical-tab--floating': this.props.is_floating, // This is currently only configured for use in PageOverlay
                     'dc-vertical-tab--full-screen': this.props.is_full_width,
+                    'dc-vertical-tab--grouped': Array.isArray(this.props.list_groups),
                 })}
             >
                 {this.props.is_sidebar_enabled && (
-                    <VerticalTabHeaders
-                        className={this.props.header_classname}
-                        items={this.props.list}
-                        onChange={this.changeSelected}
-                        selected={selected}
-                        is_routed={this.props.is_routed}
-                        header_title={this.props.header_title}
-                    />
+                    <div
+                        className={classNames('dc-vertical-tab__tab-meta-wrapper', {
+                            'dc-vertical-tab__tab-meta-wrapper--floating': this.props.is_floating,
+                        })}
+                    >
+                        <VerticalTabHeaders
+                            className={this.props.header_classname}
+                            items={this.props.list}
+                            item_groups={this.props.list_groups}
+                            onChange={this.changeSelected}
+                            selected={selected}
+                            is_floating={this.props.is_floating}
+                            is_routed={this.props.is_routed}
+                            header_title={this.props.header_title}
+                            tab_headers_note={this.props.tab_headers_note}
+                        />
+                        {this.props.is_floating && this.props.tab_headers_note && (
+                            <div className='dc-vertical-tab__tab-bottom-note'>{this.props.tab_headers_note}</div>
+                        )}
+                    </div>
                 )}
                 <VerticalTabContentContainer
                     action_bar={this.props.action_bar}
                     action_bar_classname={this.props.action_bar_classname}
+                    is_floating={this.props.is_floating}
                     items={this.props.list}
                     selected={selected}
                     is_routed={this.props.is_routed}
@@ -101,6 +122,7 @@ VerticalTab.propTypes = {
     current_path: PropTypes.string,
     header_classname: PropTypes.string,
     header_title: PropTypes.string,
+    is_floating: PropTypes.bool,
     is_full_width: PropTypes.bool,
     is_routed: PropTypes.bool,
     is_sidebar_enabled: PropTypes.bool,
@@ -113,6 +135,14 @@ VerticalTab.propTypes = {
             value: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
         })
     ).isRequired,
+    list_groups: PropTypes.arrayOf(
+        PropTypes.shape({
+            icon: PropTypes.string,
+            label: PropTypes.string,
+            subitems: PropTypes.arrayOf(PropTypes.number),
+        })
+    ),
+    tab_headers_note: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     selected_index: PropTypes.number,
     setVerticalTabIndex: PropTypes.func,
     vertical_tab_index: PropTypes.number,
@@ -120,6 +150,7 @@ VerticalTab.propTypes = {
 
 VerticalTab.ContentContainer = VerticalTabContentContainer;
 VerticalTab.Header = VerticalTabHeader;
+VerticalTab.HeaderGroup = VerticalTabHeaderGroup;
 VerticalTab.Headers = VerticalTabHeaders;
 VerticalTab.HeaderTitle = VerticalTabHeaderTitle;
 VerticalTab.Layout = VerticalTabLayout;

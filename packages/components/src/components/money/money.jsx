@@ -30,4 +30,4 @@ Money.propTypes = {
     should_format: PropTypes.bool,
 };
 
-export default Money;
+export default React.memo(Money);

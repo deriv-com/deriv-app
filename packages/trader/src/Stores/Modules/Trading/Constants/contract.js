@@ -105,8 +105,8 @@ export const getContractTypesConfig = () => ({
     multiplier: {
         title: localize('Multiplier'),
         trade_types: ['MULTUP', 'MULTDOWN'],
-        basis: [],
-        components: [],
+        basis: ['stake'],
+        components: ['multiplier', 'take_profit', 'stop_loss', 'cancellation'],
         config: { hide_duration: true },
     }, // hide Duration for Multiplier contracts for now
 });

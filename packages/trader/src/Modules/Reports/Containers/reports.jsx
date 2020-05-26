@@ -1,36 +1,23 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { VerticalTab } from '@deriv/components';
+import { VerticalTab, DesktopWrapper, MobileWrapper, FadeWrapper, PageOverlay } from '@deriv/components';
+import { isMobile } from '@deriv/shared/utils/screen';
+import { getSelectedRoute } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
-import { FadeWrapper } from 'App/Components/Animations';
-import AppRoutes from 'Constants/routes';
 import { connect } from 'Stores/connect';
-import WalletInformation from './wallet-information.jsx';
 import 'Sass/app/modules/reports.scss';
 
 class Reports extends React.Component {
-    setWrapperRef = node => {
-        this.wrapper_ref = node;
-    };
-
-    handleClickOutside = event => {
-        if (this.wrapper_ref && !this.wrapper_ref.contains(event.target)) {
-            this.props.history.push(AppRoutes.trade);
-        }
-    };
-
     componentDidMount() {
-        this.props.enableRouteMode();
-        document.addEventListener('mousedown', this.handleClickOutside);
         this.props.toggleReports(true);
     }
 
     componentWillUnmount() {
         this.props.toggleReports(false);
-        this.props.disableRouteMode();
-        document.removeEventListener('mousedown', this.handleClickOutside);
     }
+
+    onClickClose = () => this.props.routeBackInApp(this.props.history);
 
     render() {
         const menu_options = () => {
@@ -49,41 +36,37 @@ class Reports extends React.Component {
             return options;
         };
 
-        const action_bar_items = [
-            {
-                onClick: () => {
-                    this.props.history.push(AppRoutes.trade);
-                    this.props.toggleReports(false);
-                },
-                icon: 'IcCross',
-                title: localize('Close'),
-            },
-            {
-                component: () => <WalletInformation has_description has_loginid />,
-                title: '',
-            },
-        ];
+        const { routes, location } = this.props;
+        const selected_route = isMobile() ? getSelectedRoute({ routes, pathname: location.pathname }) : null;
+
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}
                 className='reports-page-wrapper'
                 keyname='reports-page-wrapper'
             >
-                <div className='reports' ref={this.setWrapperRef}>
-                    <VerticalTab
-                        header_title={localize('Reports')}
-                        action_bar={action_bar_items}
-                        action_bar_classname='reports__inset_header'
-                        alignment='center'
-                        id='report'
-                        classNameHeader='reports__tab-header'
-                        current_path={this.props.location.pathname}
-                        is_routed={true}
-                        is_full_width={true}
-                        list={menu_options()}
-                        vertical_tab_index={this.props.vertical_tab_index}
-                        setVerticalTabIndex={this.props.setVerticalTabIndex}
-                    />
+                <div className='reports'>
+                    <PageOverlay header={localize('Reports')} onClickClose={this.onClickClose}>
+                        <DesktopWrapper>
+                            <VerticalTab
+                                alignment='center'
+                                id='report'
+                                is_floating
+                                classNameHeader='reports__tab-header'
+                                current_path={this.props.location.pathname}
+                                is_routed={true}
+                                is_full_width={true}
+                                list={menu_options()}
+                            />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <div className='reports__mobile-wrapper'>
+                                {selected_route && (
+                                    <selected_route.component component_icon={selected_route.icon_component} />
+                                )}
+                            </div>
+                        </MobileWrapper>
+                    </PageOverlay>
                 </div>
             </FadeWrapper>
         );
@@ -91,22 +74,15 @@ class Reports extends React.Component {
 }
 
 Reports.propTypes = {
-    disableRouteMode: PropTypes.func,
-    enableRouteMode: PropTypes.func,
     history: PropTypes.object,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
     routes: PropTypes.arrayOf(PropTypes.object),
-    setVerticalTabIndex: PropTypes.func,
     toggleReports: PropTypes.func,
-    vertical_tab_index: PropTypes.number,
 };
 
-export default connect(({ ui }) => ({
-    disableRouteMode: ui.disableRouteModal,
-    enableRouteMode: ui.setRouteModal,
+export default connect(({ common, ui }) => ({
+    routeBackInApp: common.routeBackInApp,
     is_visible: ui.is_reports_visible,
-    setVerticalTabIndex: ui.setVerticalTabIndex,
     toggleReports: ui.toggleReports,
-    vertical_tab_index: ui.vertical_tab_index,
 }))(withRouter(Reports));

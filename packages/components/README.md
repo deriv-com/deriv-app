@@ -57,4 +57,7 @@ const SomeComponent = () => (
     </Button>
   );
 ```
+
+> NOTE: While developing new components, be mindful that import the direct .jsx file, instead of referencing `../component/index.js`. This will make sure there won't be a style bleed
+>When it is imported from other packages. 
 ## Components

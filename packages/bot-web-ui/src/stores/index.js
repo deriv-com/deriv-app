@@ -4,13 +4,15 @@ import FlyoutStore from './flyout-store';
 import FlyoutHelpStore from './flyout-help-store';
 import GoogleDriveStore from './google-drive-store';
 import JournalStore from './journal-store';
+import LoadModalStore from './load-modal-store';
 import RunPanelStore from './run-panel-store';
-import SaveLoadModalStore from './saveload-modal-store';
+import SaveModalStore from './save-modal-store';
 import SummaryStore from './summary-store';
 import ToolbarStore from './toolbar-store';
 import TransactionsStore from './transactions-store';
 import QuickStrategyStore from './quick-strategy-store';
 import MainContentStore from './main-content-store';
+import RoutePromptDialogStore from './route-prompt-dialog-store';
 
 export default class RootStore {
     constructor(core, ws, dbot) {
@@ -25,12 +27,16 @@ export default class RootStore {
         this.flyout_help = new FlyoutHelpStore(this);
         this.google_drive = new GoogleDriveStore(this);
         this.journal = new JournalStore(this);
-        this.saveload = new SaveLoadModalStore(this);
+        this.load_modal = new LoadModalStore(this);
+        this.run_panel = new RunPanelStore(this);
+        this.save_modal = new SaveModalStore(this);
         this.summary = new SummaryStore(this);
         this.transactions = new TransactionsStore(this);
         this.toolbar = new ToolbarStore(this);
         this.quick_strategy = new QuickStrategyStore(this);
-        this.run_panel = new RunPanelStore(this);
+        this.route_prompt_dialog = new RoutePromptDialogStore(this);
+
+        // need to be at last for dependency
         this.chart_store = new ChartStore(this);
         this.main_content = new MainContentStore(this);
     }

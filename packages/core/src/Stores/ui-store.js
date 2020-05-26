@@ -1,9 +1,9 @@
 import { action, autorun, computed, observable } from 'mobx';
+import { getPlatformHeader } from '@deriv/shared/utils/platform';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import { LocalStore } from '_common/storage';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
-import { isBot } from 'Utils/PlatformSwitcher';
 import { clientNotifications, excluded_notifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
 
@@ -11,20 +11,28 @@ const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
     @observable is_account_settings_visible = false;
-    @observable is_main_drawer_on = false;
     @observable is_notifications_visible = false;
     @observable is_positions_drawer_on = false;
     @observable is_reports_visible = false;
     @observable is_cashier_visible = false;
+    @observable is_history_tab_active = false;
+
+    // TODO: [cleanup ui-store]
+    // Take profit, Stop loss & Deal cancellation checkbox
+    @observable should_show_take_profit_warning = true;
+    @observable should_show_stop_loss_warning = true;
+    @observable should_show_cancellation_warning = true;
 
     // Extensions
     @observable footer_extension = undefined;
+    @observable header_extension = undefined;
     @observable settings_extension = undefined;
     @observable notification_messages_ui = undefined;
 
     @observable is_dark_mode_on = false;
     @observable is_settings_modal_on = false;
     @observable is_accounts_switcher_on = false;
+    @observable account_switcher_disabled_message = '';
 
     @observable has_only_forward_starting_contracts = false;
 
@@ -80,7 +88,7 @@ export default class UIStore extends BaseStore {
     // position states
     @observable show_positions_toggle = true;
 
-    @observable vertical_tab_index = 0;
+    @observable modal_index = 0;
 
     // Mt5 topup
     @observable is_top_up_virtual_open = false;
@@ -97,6 +105,17 @@ export default class UIStore extends BaseStore {
 
     // UI Focus retention
     @observable current_focus = null;
+
+    // Mobile
+    @observable should_show_toast_error = false;
+    @observable mobile_toast_error = '';
+    @observable mobile_toast_timeout = 1500;
+
+    @observable is_mt5_page = false;
+    @observable is_nativepicker_visible = false;
+
+    @observable prompt_when = false;
+    @observable promptFn = () => {};
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -120,16 +139,24 @@ export default class UIStore extends BaseStore {
             'is_reports_visible',
             // 'is_purchase_confirm_on',
             // 'is_purchase_lock_on',
+            'should_show_stop_loss_warning',
+            'should_show_take_profit_warning',
+            'should_show_cancellation_warning',
         ];
 
         super({ root_store, local_storage_properties, store_name });
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
             // TODO: [disable-dark-bot] Delete this condition when Bot is ready
-            if (isBot()) {
+            const new_app_routing_history = this.root_store.common.app_routing_history.slice();
+            const platform = getPlatformHeader(new_app_routing_history);
+            if (platform === 'DBot') {
                 document.body.classList.remove('theme--dark');
                 document.body.classList.add('theme--light');
-            } else if (this.is_dark_mode_on) {
+                return;
+            }
+
+            if (this.is_dark_mode_on) {
                 document.body.classList.remove('theme--light');
                 document.body.classList.add('theme--dark');
             } else {
@@ -147,6 +174,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     populateFooterExtensions(component) {
         this.footer_extension = component;
+    }
+
+    @action.bound
+    populateHeaderExtensions(component) {
+        this.header_extension = component;
     }
 
     @action.bound
@@ -170,6 +202,12 @@ export default class UIStore extends BaseStore {
         }
     }
 
+    @action.bound
+    setPromptHandler(condition, cb = () => {}) {
+        this.prompt_when = condition;
+        this.promptFn = cb;
+    }
+
     @computed
     get is_mobile() {
         return this.screen_width <= MAX_MOBILE_WIDTH;
@@ -178,6 +216,11 @@ export default class UIStore extends BaseStore {
     @computed
     get is_tablet() {
         return this.screen_width <= MAX_TABLET_WIDTH;
+    }
+
+    @computed
+    get is_account_switcher_disabled() {
+        return !!this.account_switcher_disabled_message;
     }
 
     @action.bound
@@ -203,6 +246,16 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleAccountsDialog() {
         this.is_accounts_switcher_on = !this.is_accounts_switcher_on;
+    }
+
+    @action.bound
+    setAccountSwitcherDisabledMessage(message) {
+        if (message) {
+            this.is_accounts_switcher_on = false;
+            this.account_switcher_disabled_message = message;
+        } else {
+            this.account_switcher_disabled_message = '';
+        }
     }
 
     @action.bound
@@ -282,8 +335,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    setVerticalTabIndex(index = 0) {
-        this.vertical_tab_index = index;
+    setModalIndex(index = 0) {
+        this.modal_index = index;
     }
 
     @action.bound
@@ -339,16 +392,6 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    showMainDrawer() {
-        this.is_main_drawer_on = true;
-    }
-
-    @action.bound
-    hideDrawers() {
-        this.is_main_drawer_on = false;
-    }
-
-    @action.bound
     removePWAPromptEvent() {
         this.pwa_prompt_event = null;
     }
@@ -385,6 +428,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     addNotificationMessage(notification) {
+        if (!notification) return;
         if (!this.notification_messages.find(item => item.header === notification.header)) {
             this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
             if (!excluded_notifications.includes(notification.key)) {
@@ -406,7 +450,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    removeNotificationMessage({ key }) {
+    removeNotificationMessage({ key } = {}) {
+        if (!key) return;
         this.notification_messages = this.notification_messages.filter(n => n.key !== key);
         // Add notification messages to LocalStore when user closes, check for redundancy
         const active_loginid = LocalStore.get('active_loginid');
@@ -463,6 +508,26 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    toggleTakeProfitWarning(state_change = !this.should_show_take_profit_warning) {
+        this.should_show_take_profit_warning = state_change;
+    }
+
+    @action.bound
+    toggleStopLossWarning(state_change = !this.should_show_stop_loss_warning) {
+        this.should_show_stop_loss_warning = state_change;
+    }
+
+    @action.bound
+    toggleCancellationWarning(state_change = !this.should_show_cancellation_warning) {
+        this.should_show_cancellation_warning = state_change;
+    }
+
+    @action.bound
+    toggleHistoryTab(state_change = !this.is_history_tab_active) {
+        this.is_history_tab_active = state_change;
+    }
+
+    @action.bound
     closeTopUpModal() {
         this.is_top_up_virtual_open = false;
     }
@@ -509,5 +574,21 @@ export default class UIStore extends BaseStore {
     @action.bound
     setCurrentFocus(value) {
         this.current_focus = value;
+    }
+
+    @action.bound
+    setToastErrorVisibility(status) {
+        this.should_show_toast_error = status;
+    }
+
+    @action.bound
+    setToastErrorMessage(msg, timeout = 1500) {
+        this.mobile_toast_timeout = timeout;
+        this.mobile_toast_error = msg;
+    }
+
+    @action.bound
+    setIsNativepickerVisible(is_nativepicker_visible) {
+        this.is_nativepicker_visible = is_nativepicker_visible;
     }
 }

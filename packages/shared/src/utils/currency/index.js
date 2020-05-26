@@ -1,10 +1,12 @@
 import {
+    AMOUNT_MAX_LENGTH,
     formatMoney,
     formatCurrency,
     addComma,
     getDecimalPlaces,
     setCurrencies,
     isCryptocurrency,
+    getCurrencyDisplayCode,
     getCurrencyName,
     getMinWithdrawal,
     getTransferLimits,
@@ -18,12 +20,14 @@ import {
 } from './currency';
 
 export default {
+    AMOUNT_MAX_LENGTH,
     formatMoney,
     formatCurrency,
     addComma,
     getDecimalPlaces,
     setCurrencies,
     isCryptocurrency,
+    getCurrencyDisplayCode,
     getCurrencyName,
     getMinWithdrawal,
     getTransferLimits,

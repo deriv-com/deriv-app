@@ -16,7 +16,7 @@
     bottom: 0;
 
     &__wrapper {
-        position: absolute;
+        position: fixed;
         left: 0;
         top: 0;
         width: 100%;
@@ -26,6 +26,7 @@
         justify-content: center;
         z-index: 999;
         transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+        background-color: var(--overlay-outside-dialog);
 
         &--enter,
         &--exit {
@@ -79,6 +80,9 @@
         justify-content: flex-end;
         align-items: center;
         width: 100%;
+        @include mobile {
+            flex-wrap: wrap;
+        }
     }
     &__button {
         margin: 0.4em;
@@ -90,6 +94,12 @@
         &__dialog {
             width: 100vw;
             height: 100vh;
+            min-width: 100vw;
+
+            &--has-margin {
+                min-width: unset;
+                width: calc(100vw - 3.2rem);
+            }
         }
     }
 }

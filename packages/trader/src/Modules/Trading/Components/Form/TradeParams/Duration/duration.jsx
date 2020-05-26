@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import RangeSlider from 'App/Components/Form/RangeSlider';
-import { toMoment } from 'Utils/Date';
+import { toMoment } from '@deriv/shared/utils/date';
 import DurationToggle from './duration-toggle.jsx';
 import AdvancedDuration from './advanced-duration.jsx';
 import SimpleDuration from './simple-duration.jsx';
@@ -138,7 +138,7 @@ const Duration = ({
         >
             {!has_toggle && <RangeSlider name='duration' value={duration_t} {...props.shared_input} />}
             {has_toggle && (
-                <Fragment>
+                <>
                     {is_advanced_duration && (
                         <AdvancedDuration
                             advanced_expiry_type={advanced_expiry_type}
@@ -175,7 +175,7 @@ const Duration = ({
                         onChange={onToggleDurationType}
                         value={is_advanced_duration}
                     />
-                </Fragment>
+                </>
             )}
         </Fieldset>
     );

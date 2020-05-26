@@ -1,14 +1,16 @@
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { isDesktop } from '_common/os_detect';
+import routes from '@deriv/shared/utils/routes';
+import { isDesktop } from '@deriv/shared/utils/os';
 import { connect } from 'Stores/connect';
-import routes from '../../../Constants/routes';
 
 const Redirect = ({
     server_time,
     history,
     setDeviceData,
     setVerificationCode,
+    fetchResidenceList,
+    openRealAccountSignup,
     toggleAccountSignupModal,
     toggleResetPasswordModal,
 }) => {
@@ -47,6 +49,16 @@ const Redirect = ({
             redirected_to_route = true;
             break;
         }
+        case 'add_account': {
+            fetchResidenceList().then(openRealAccountSignup);
+
+            const ext_platform_url = url_params.get('ext_platform_url');
+            if (ext_platform_url) {
+                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
+                redirected_to_route = true;
+            }
+            break;
+        }
         default:
             break;
     }
@@ -73,7 +85,9 @@ export default withRouter(
     connect(({ client, ui, common }) => ({
         setDeviceData: client.setDeviceData,
         setVerificationCode: client.setVerificationCode,
+        fetchResidenceList: client.fetchResidenceList,
         server_time: common.server_time,
+        openRealAccountSignup: ui.openRealAccountSignup,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,
     }))(Redirect)

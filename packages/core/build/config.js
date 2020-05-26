@@ -32,6 +32,9 @@ const copyConfig = base => [
             return context.split('node_modules/@deriv/trader/dist/')[1];
         },
     },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/js/**'), to: 'account/js', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/css/**'), to: 'account/css/', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/*.*'), to: 'account/js', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/trader.*.js'), to: 'js', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/**'), to: 'css', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/*.*'), to: 'js', flatten: true },
@@ -42,6 +45,11 @@ const copyConfig = base => [
     },
     { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file' },
     { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },
+    {
+        from: path.resolve(__dirname, '../src/root_files/localstorage-sync.html'),
+        to: 'localstorage-sync.html',
+        toType: 'file',
+    },
     { from: path.resolve(__dirname, '../src/root_files/robots.txt'), to: 'robots.txt', toType: 'file' },
     { from: path.resolve(__dirname, '../src/root_files/sitemap.xml'), to: 'sitemap.xml', toType: 'file' },
     { from: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'), to: 'favicon.ico', toType: 'file' },
@@ -66,7 +74,7 @@ const copyConfig = base => [
 
 const generateSWConfig = () => ({
     cleanupOutdatedCaches: true,
-    exclude: [/CNAME$/, /index\.html$/, /404\.html$/],
+    exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^localstorage-sync\.html$/, /\.map$/],
     skipWaiting: true,
     clientsClaim: true,
 });
@@ -102,6 +110,14 @@ const htmlInjectConfig = () => ({
                 rel: 'icon',
             },
         },
+        {
+            path: 'public/fonts/binary_symbols.woff',
+            attributes: {
+                rel: 'preload',
+                as: 'font',
+                crossorigin: 'crossorigin',
+            },
+        },
         // {
         //     path: 'pushwoosh-web-notifications.js',
         //     attributes: {
@@ -122,6 +138,16 @@ const htmlInjectConfig = () => ({
     append: false,
 });
 
+const htmlPreloadConfig = () => ({
+    rel: 'preload',
+    as(entry) {
+        if (/\.css$/.test(entry)) return 'style';
+        if (/\.woff$/.test(entry)) return 'font';
+        return 'script';
+    },
+    fileWhitelist: [/\.css$/],
+});
+
 const cssConfig = () => ({ filename: 'css/core.main.css', chunkFilename: 'css/core.[name].[contenthash].css' });
 
 const stylelintConfig = () => ({
@@ -135,6 +161,7 @@ module.exports = {
     copyConfig,
     htmlOutputConfig,
     htmlInjectConfig,
+    htmlPreloadConfig,
     cssConfig,
     stylelintConfig,
     generateSWConfig,

@@ -168,7 +168,8 @@ export default class FlyoutStore {
         }
 
         const toolbox = workspace.getToolbox();
-        const is_flyout_click = event.path.some(el => el.classList && el.classList.contains('flyout'));
+        const path = event.path || (event.composedPath && event.composedPath());
+        const is_flyout_click = path.some(el => el.classList && el.classList.contains('flyout'));
         const is_search_focus = this.root_store.toolbar.is_search_focus;
         const isToolboxClick = () => toolbox.HtmlDiv.contains(event.target);
 

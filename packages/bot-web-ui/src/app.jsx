@@ -6,10 +6,11 @@ import './public-path'; // Leave this here! OK boss!
 import Audio from './components/audio.jsx';
 import FooterExtension from './components/footer-extension.jsx';
 import MainContent from './components/main-content.jsx';
-import NotificationMessages from './components/notification-messages.jsx';
+import BotNotificationMessages from './components/bot-notification-messages.jsx';
 import QuickStrategy from './components/quick-strategy.jsx';
 import RunPanel from './components/run-panel.jsx';
 import Toolbar from './components/toolbar.jsx';
+import RoutePromptDialog from './components/route-prompt-dialog.jsx';
 import RootStore from './stores';
 import GTM from './utils/gtm';
 import './assets/sass/app.scss';
@@ -33,12 +34,21 @@ class App extends React.Component {
             core: { client },
             flyout,
             toolbar,
+            save_modal,
             quick_strategy,
-            saveload,
+            load_modal,
         } = this.root_store;
-        const { handleFileChange } = saveload;
+        const { handleFileChange } = load_modal;
         const { toggleStrategyModal } = quick_strategy;
-        this.dbot_store = { is_mobile: false, client, flyout, toolbar, toggleStrategyModal, handleFileChange };
+        this.dbot_store = {
+            is_mobile: false,
+            client,
+            flyout,
+            toolbar,
+            save_modal,
+            toggleStrategyModal,
+            handleFileChange,
+        };
         this.api_helpers_store = { ws: this.root_store.ws, server_time: this.root_store.server_time };
     }
 
@@ -47,6 +57,8 @@ class App extends React.Component {
         this.registerCurrencyReaction();
         this.registerOnAccountSwitch();
         this.registerClickOutsideBlockly();
+        this.registerBeforeUnload();
+        this.root_store.main_content.getCachedActiveTab();
     }
 
     componentWillUnmount() {
@@ -55,6 +67,12 @@ class App extends React.Component {
         }
 
         this.disposeReactions();
+        DBot.terminateBot();
+
+        // Ensure account switch is re-enabled.
+        const { ui } = this.root_store.core;
+        ui.setAccountSwitcherDisabledMessage(false);
+        ui.setPromptHandler(false);
     }
 
     /**
@@ -115,7 +133,8 @@ class App extends React.Component {
      * Ensures inputs are closed when clicking on non-Blockly elements.
      */
     onClickOutsideBlockly = event => {
-        const is_click_outside_blockly = !event.path.some(el => el.classList && el.classList.contains('injectionDiv'));
+        const path = event.path || (event.composedPath && event.composedPath());
+        const is_click_outside_blockly = !path.some(el => el.classList && el.classList.contains('injectionDiv'));
         if (is_click_outside_blockly) {
             Blockly.hideChaff(/* allowToolbox */ false);
         }
@@ -123,6 +142,16 @@ class App extends React.Component {
 
     registerClickOutsideBlockly() {
         window.addEventListener('click', this.onClickOutsideBlockly);
+    }
+
+    onBeforeUnload = event => {
+        if (this.root_store.run_panel.is_stop_button_visible) {
+            event.returnValue = true;
+        }
+    };
+
+    registerBeforeUnload() {
+        window.addEventListener('beforeunload', this.onBeforeUnload);
     }
 
     /**
@@ -136,19 +165,21 @@ class App extends React.Component {
             this.disposeSwitchAccountListener();
         }
         window.removeEventListener('click', this.onClickOutsideBlockly);
+        window.removeEventListener('beforeunload', this.onBeforeUnload);
     }
 
     render() {
         return (
             <Provider {...this.root_store}>
                 <div className='bot'>
-                    <NotificationMessages />
+                    <BotNotificationMessages />
                     <Toolbar />
                     <MainContent />
                     <RunPanel />
                     <QuickStrategy />
                     <FooterExtension />
                     <Audio />
+                    <RoutePromptDialog />
                 </div>
             </Provider>
         );

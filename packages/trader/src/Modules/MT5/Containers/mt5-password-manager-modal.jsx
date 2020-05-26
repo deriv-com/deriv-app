@@ -1,15 +1,46 @@
-import { Modal, Tabs, PasswordInput, PasswordMeter, Button } from '@deriv/components';
+import {
+    Modal,
+    Tabs,
+    PasswordInput,
+    PasswordMeter,
+    Button,
+    DesktopWrapper,
+    MobileWrapper,
+    MultiStep,
+    PageOverlay,
+    ThemedScrollbars,
+    UILoader,
+} from '@deriv/components';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { urlFor } from '_common/url';
-import UILoader from 'App/Components/Elements/ui-loader.jsx';
+import { urlFor } from '@deriv/shared/utils/url';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
 import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
 
+// TODO: remove this once MT5 main password reset is supported in Deriv.app
+const MT5PasswordResetUnavailable = () => (
+    <>
+        <p className='mt5-password-manager--paragraph'>
+            {localize(
+                "We're currently only able to reset your MT5 password on Binary.com. While we fix this, please log in to Binary.com MT5 to reset your password."
+            )}
+        </p>
+        <Button
+            className='mt5-password-manager--button'
+            has_effect
+            text={localize('Take me to Binary.com MT5')}
+            onClick={() => window.open(urlFor('user/metatrader', { legacy: true }))}
+            primary
+            large
+        />
+    </>
+);
+
 class MT5PasswordManagerModal extends React.Component {
+    multi_step_ref = React.createRef();
     state = {
         // error_message_main: '',
         // error_message_investor: '',
@@ -23,7 +54,7 @@ class MT5PasswordManagerModal extends React.Component {
         },
     };
 
-    shouldComponentUpdate(next_props, next_state) {
+    componentDidUpdate(next_props) {
         if (!next_props.is_visible && this.props.is_visible) {
             this.setState({
                 main: {
@@ -36,8 +67,6 @@ class MT5PasswordManagerModal extends React.Component {
                 },
             });
         }
-
-        return this.props !== next_props || this.state !== next_state;
     }
 
     showError = (section, error_message) => {
@@ -62,15 +91,19 @@ class MT5PasswordManagerModal extends React.Component {
         const { enableApp, disableApp, is_visible, selected_login, selected_account, toggleModal } = this.props;
 
         const validatePassword = values => {
-            const is_valid =
-                validPassword(values.new_password) &&
-                validLength(values.new_password, {
-                    min: 8,
-                    max: 25,
-                });
             const errors = {};
 
-            if (!is_valid) {
+            if (
+                !validLength(values.new_password, {
+                    min: 8,
+                    max: 25,
+                })
+            ) {
+                errors.new_password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+                    min_number: 8,
+                    max_number: 25,
+                });
+            } else if (!validPassword(values.new_password)) {
                 errors.new_password = localize('You need to include uppercase and lowercase letters, and numbers.');
             }
 
@@ -95,10 +128,6 @@ class MT5PasswordManagerModal extends React.Component {
             } else {
                 this.hideError(values.password_type);
             }
-        };
-
-        const onClickReset = () => {
-            window.open(urlFor('user/metatrader', undefined, undefined, true));
         };
 
         const MainPasswordManager = () => {
@@ -155,7 +184,7 @@ class MT5PasswordManagerModal extends React.Component {
                                 <Button
                                     className='mt5-password-manager--button'
                                     type='button'
-                                    onClick={onClickReset}
+                                    onClick={() => this.multi_step_ref.current?.nextStep()}
                                     text={localize('Reset main password')}
                                     tertiary
                                     large
@@ -225,7 +254,7 @@ class MT5PasswordManagerModal extends React.Component {
                                     <Button
                                         className='mt5-password-manager--button'
                                         type='button'
-                                        onClick={onClickReset}
+                                        onClick={() => this.multi_step_ref.current?.nextStep()}
                                         text={localize('Create or reset investor password')}
                                         tertiary
                                         large
@@ -238,31 +267,79 @@ class MT5PasswordManagerModal extends React.Component {
             );
         };
 
+        const MT5PasswordManagerTabContent = () => (
+            <>
+                <Tabs top>
+                    <div label={localize('Main password')}>
+                        <DesktopWrapper>
+                            <MainPasswordManager />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 120px)' }}>
+                                <MainPasswordManager />
+                            </ThemedScrollbars>
+                        </MobileWrapper>
+                    </div>
+                    <div label={localize('Investor password')}>
+                        <DesktopWrapper>
+                            <InvestorPasswordManager />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 120px)' }}>
+                                <InvestorPasswordManager />
+                            </ThemedScrollbars>
+                        </MobileWrapper>
+                    </div>
+                </Tabs>
+            </>
+        );
+
+        const steps = [
+            {
+                component: <MT5PasswordManagerTabContent />,
+            },
+            {
+                component: <MT5PasswordResetUnavailable />,
+            },
+        ];
+
+        const MT5PasswordManagerTabContentWrapper = () => (
+            <MultiStep
+                ref={this.multi_step_ref}
+                steps={steps}
+                className='mt5-password-manager'
+                lbl_previous={localize('Back')}
+            />
+        );
+
         return (
             <React.Suspense fallback={<UILoader />}>
-                <Modal
-                    className='mt5-password-manager__modal'
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    is_open={is_visible}
-                    title={localize('Manage your DMT5 {{account_title}} account password', {
-                        account_title: selected_account,
-                    })}
-                    toggleModal={toggleModal}
-                    height='688px'
-                    width='904px'
-                >
-                    <div className='mt5-password-manager'>
-                        <Tabs top>
-                            <div label={localize('Main password')}>
-                                <MainPasswordManager />
-                            </div>
-                            <div label={localize('Investor password')}>
-                                <InvestorPasswordManager />
-                            </div>
-                        </Tabs>
-                    </div>
-                </Modal>
+                <DesktopWrapper>
+                    <Modal
+                        className='mt5-password-manager__modal'
+                        disableApp={disableApp}
+                        enableApp={enableApp}
+                        is_open={is_visible}
+                        title={localize('Manage your DMT5 {{account_title}} account password', {
+                            account_title: selected_account,
+                        })}
+                        toggleModal={toggleModal}
+                        height='688px'
+                        width='904px'
+                    >
+                        <MT5PasswordManagerTabContentWrapper />
+                    </Modal>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <PageOverlay
+                        is_open={is_visible}
+                        portal_id='deriv_app'
+                        header={localize('Manage password')}
+                        onClickClose={toggleModal}
+                    >
+                        <MT5PasswordManagerTabContentWrapper />
+                    </PageOverlay>
+                </MobileWrapper>
             </React.Suspense>
         );
     }

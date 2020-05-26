@@ -5,17 +5,17 @@ import { FixedSizeList as List } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
 
 export const InfiniteLoaderList = ({
+    autosizer_height,
     items,
     // TODO: use with API later
     // eslint-disable-next-line no-unused-vars
-    is_loading_more_items,
+    // is_loading_more_items,
     loadMore,
     has_more_items_to_load,
     item_size,
     RenderComponent,
     row_actions,
     RowLoader,
-    height: initial_height,
 }) => {
     const RowRenderer = ({ index, style }) => {
         const is_loading = index === items.length;
@@ -36,12 +36,15 @@ export const InfiniteLoaderList = ({
     };
 
     const item_count = has_more_items_to_load ? items.length + 1 : items.length;
-
     return (
-        <InfiniteLoader isItemLoaded={index => index < items.length} itemCount={item_count} loadMoreItems={loadMore}>
-            {({ onItemsRendered, ref }) => (
-                <AutoSizer style={{ height: initial_height || 600 }}>
-                    {({ height, width }) => (
+        <AutoSizer style={{ height: autosizer_height }}>
+            {({ height, width }) => (
+                <InfiniteLoader
+                    isItemLoaded={index => index < items.length}
+                    itemCount={item_count}
+                    loadMoreItems={loadMore}
+                >
+                    {({ onItemsRendered, ref }) => (
                         <List
                             height={height}
                             width={width}
@@ -53,9 +56,9 @@ export const InfiniteLoaderList = ({
                             {RowRenderer}
                         </List>
                     )}
-                </AutoSizer>
+                </InfiniteLoader>
             )}
-        </InfiniteLoader>
+        </AutoSizer>
     );
 };
 

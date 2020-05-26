@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 import { localize, getLanguage } from '@deriv/translations';
 import { importExternal, config } from '@deriv/bot-skeleton';
+import { button_status } from '../constants/button-status';
 
 export default class GoogleDriveStore {
     constructor(root_store) {
@@ -123,7 +124,7 @@ export default class GoogleDriveStore {
     }
 
     createSaveFilePicker(mime_type, title, options) {
-        const { setButtonStatus } = this.root_store.saveload;
+        const { setButtonStatus } = this.root_store.save_modal;
         return new Promise(resolve => {
             const savePickerCallback = data => {
                 if (data.action === google.picker.Action.PICKED) {
@@ -148,12 +149,12 @@ export default class GoogleDriveStore {
                             this.signOut();
                         }
 
-                        setButtonStatus(0);
+                        setButtonStatus(button_status.NORMAL);
                         resolve();
                     };
                     xhr.send(form_data);
                 } else if (data.action === google.picker.Action.CANCEL) {
-                    setButtonStatus(0);
+                    setButtonStatus(button_status.NORMAL);
                 }
             };
 
@@ -162,7 +163,6 @@ export default class GoogleDriveStore {
     }
 
     createLoadFilePicker(mime_type, title) {
-        const { setButtonStatus } = this.root_store.saveload;
         return new Promise(resolve => {
             const loadPickerCallback = async data => {
                 if (data.action === google.picker.Action.PICKED) {
@@ -178,8 +178,6 @@ export default class GoogleDriveStore {
                     });
 
                     resolve({ xml_doc: response.body, file_name });
-                } else if (data.action === google.picker.Action.CANCEL) {
-                    setButtonStatus(0);
                 }
             };
 

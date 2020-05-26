@@ -77,6 +77,7 @@ TableRow.propTypes = {
     replace: PropTypes.object,
     row_obj: PropTypes.object,
     to: PropTypes.string,
+    content_loader: PropTypes.elementType,
 };
 
 export default TableRow;

@@ -19,6 +19,24 @@ import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { Localize, localize } from '@deriv/translations';
 import { isDeepEqual } from '@deriv/shared/utils/object';
 
+const account_opening_reason_list = [
+    {
+        text: localize('Hedging'),
+        value: 'Hedging',
+    },
+    {
+        text: localize('Income Earning'),
+        value: 'Income Earning',
+    },
+    {
+        text: localize('Speculative'),
+        value: 'Speculative',
+    },
+    {
+        text: localize('Peer-to-peer exchange'),
+        value: 'Peer-to-peer exchange',
+    },
+];
 export const InputField = ({ name, optional = false, ...props }) => (
     <Field name={name}>
         {({ field, form: { errors, touched } }) => (
@@ -38,6 +56,9 @@ export const InputField = ({ name, optional = false, ...props }) => (
 
 class MT5PersonalDetailsForm extends React.Component {
     is_initial_valid = false;
+    state = {
+        is_acc_op_focused: false,
+    };
 
     handleCancel = values => {
         this.props.onSave(this.props.index, values);
@@ -49,12 +70,14 @@ class MT5PersonalDetailsForm extends React.Component {
             citizen: [v => !!v, v => this.props.residence_list.map(i => i.text).includes(v)],
             tax_residence: [v => !!v, v => this.props.residence_list.map(i => i.text).includes(v)],
             tax_identification_number: [v => !!v, v => /^[\w-]{0,20}$/.test(v)],
+            account_opening_reason: [v => !!v, v => account_opening_reason_list.map(i => i.text).includes(v)],
         };
 
         const mappedKey = {
             citizen: localize('Citizenship'),
             tax_residence: localize('Tax residence'),
             tax_identification_number: localize('Tax identification number'),
+            account_opening_reason: localize('Account opening reason'),
         };
 
         const common_messages = ['{{field_name}} is required', '{{field_name}} is not properly formatted.'];
@@ -92,6 +115,11 @@ class MT5PersonalDetailsForm extends React.Component {
         };
         onSubmit(index, payload, actions.setSubmitting, is_dirty);
     };
+    toggleAccOpeningDropdown = () => {
+        this.setState({
+            is_acc_op_focused: !this.state.is_acc_op_focused,
+        });
+    };
 
     findDefaultValuesInResidenceList = (citizen_text, tax_residence_text) => {
         let citizen, tax_residence;
@@ -119,6 +147,7 @@ class MT5PersonalDetailsForm extends React.Component {
                     citizen: value.citizen,
                     tax_residence: value.tax_residence,
                     tax_identification_number: value.tax_identification_number,
+                    account_opening_reason: value.account_opening_reason,
                 }}
                 enableReinitialize={true}
                 isInitialValid={({ initialValues }) => {
@@ -234,6 +263,35 @@ class MT5PersonalDetailsForm extends React.Component {
                                                 id='real_mt5_tax_identification_number'
                                                 name='tax_identification_number'
                                                 placeholder={localize('Tax identification number')}
+                                            />
+                                            <FormSubHeader title={localize('Account opening reason')} />
+                                            <Field name='account_opening_reason'>
+                                                {({ field }) => (
+                                                    <Autocomplete
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        autoComplete='new-password' // prevent chrome autocomplete
+                                                        type='text'
+                                                        label={localize('Account opening reason')}
+                                                        error={
+                                                            touched.account_opening_reason &&
+                                                            errors.account_opening_reason
+                                                        }
+                                                        list_items={account_opening_reason_list}
+                                                        onItemSelection={({ value: v, text }) =>
+                                                            setFieldValue('account_opening_reason', v ? text : '', true)
+                                                        }
+                                                        onFocus={this.toggleAccOpeningDropdown}
+                                                        onBlur={this.toggleAccOpeningDropdown}
+                                                        required
+                                                    />
+                                                )}
+                                            </Field>
+                                            {/* Extend the modal to allow the scrolling when dropdown is open */}
+                                            <div
+                                                style={{
+                                                    paddingBottom: this.state.is_acc_op_focused ? '14rem' : '0',
+                                                }}
                                             />
                                         </div>
                                     </ThemedScrollbars>

@@ -39,6 +39,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                         citizen: '',
                         tax_residence: '',
                         tax_identification_number: '',
+                        account_opening_reason: '',
                     },
                     props: ['residence_list', 'is_fully_authenticated', 'is_loading'],
                 },

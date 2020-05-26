@@ -6,6 +6,7 @@ import {
     Button,
     DesktopWrapper,
     MobileWrapper,
+    MultiStep,
     PageOverlay,
     ThemedScrollbars,
     UILoader,
@@ -13,7 +14,6 @@ import {
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { MultiStep } from '@deriv/account';
 import { urlFor } from '@deriv/shared/utils/url';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -40,7 +40,7 @@ const MT5PasswordResetUnavailable = () => (
 );
 
 class MT5PasswordManagerModal extends React.Component {
-    multistep_ref = React.createRef();
+    multi_step_ref = React.createRef();
     state = {
         // error_message_main: '',
         // error_message_investor: '',
@@ -184,7 +184,7 @@ class MT5PasswordManagerModal extends React.Component {
                                 <Button
                                     className='mt5-password-manager--button'
                                     type='button'
-                                    onClick={() => this.multistep_ref.current?.nextStep()}
+                                    onClick={() => this.multi_step_ref.current?.nextStep()}
                                     text={localize('Reset main password')}
                                     tertiary
                                     large
@@ -254,7 +254,7 @@ class MT5PasswordManagerModal extends React.Component {
                                     <Button
                                         className='mt5-password-manager--button'
                                         type='button'
-                                        onClick={() => this.multistep_ref.current?.nextStep()}
+                                        onClick={() => this.multi_step_ref.current?.nextStep()}
                                         text={localize('Create or reset investor password')}
                                         tertiary
                                         large
@@ -304,7 +304,12 @@ class MT5PasswordManagerModal extends React.Component {
         ];
 
         const MT5PasswordManagerTabContentWrapper = () => (
-            <MultiStep ref={this.multistep_ref} steps={steps} className='mt5-password-manager' />
+            <MultiStep
+                ref={this.multi_step_ref}
+                steps={steps}
+                className='mt5-password-manager'
+                lbl_previous={localize('Back')}
+            />
         );
 
         return (

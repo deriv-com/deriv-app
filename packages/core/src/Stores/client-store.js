@@ -1025,8 +1025,9 @@ export default class ClientStore extends BaseStore {
 
         let is_allowed_real = true;
         // Performs check to avoid login of landing companies that are currently not supported in app
+        // TODO: [deriv-eu] Remove this after full merging of EU. When EU is enabled all landing companies are allowed.
         account_list.forEach(function(account) {
-            if (!/^virtual|svg$/.test(account.landing_company_name)) {
+            if (!this.is_eu_enabled && !/^virtual|svg$/.test(account.landing_company_name)) {
                 is_allowed_real = false;
             }
         });

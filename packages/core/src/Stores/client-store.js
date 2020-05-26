@@ -374,13 +374,12 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_mt5_allowed() {
         if (!this.landing_companies || !Object.keys(this.landing_companies).length) return false;
-        // TODO revert this when all landing companies are accepted.
-        // return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
-        if ('mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies) {
-            // TODO: [deriv-eu] Update this when all EU functionalities merge into production.
-            if (this.root_store.ui.is_eu_enabled) {
-                return true;
-            }
+        const has_mt5 =
+            'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
+        // TODO: [deriv-eu] Update this when all EU functionalities are merged into production and all landing companies are accepted.
+        // return has_mtf;
+        if (this.root_store.ui.is_eu_enabled) return has_mt5;
+        if (has_mt5) {
             const { gaming_company, financial_company } = this.landing_companies;
             // eslint-disable-next-line no-nested-ternary
             return gaming_company

@@ -6,16 +6,15 @@ import DataTable from 'Components/data-table/data-table.jsx';
 import 'Components/data-table/data-table.scss';
 import './data-table.stories.css';
 
-// mock data
-const data = [];
+const mock_data = [];
 for (let i = 1; i < 30; i++)
-    data.push({
+    mock_data.push({
         id: i,
         name: 'Test name ' + i,
         family: 'Test family ' + i,
     });
-// columns
-const columns = [
+
+const mock_columns = [
     {
         key: 'id',
         title: '',
@@ -30,9 +29,9 @@ const columns = [
         col_index: 'family',
     },
 ];
-// getRowAction
+
 const handleRowAction = row_obj => console.log(row_obj);
-// getActionColumns
+
 const handleActionColumns = () => ({ row_obj, is_header, is_footer }) => {
     if (is_header || is_footer) {
         return <div className='test__row-action' />;
@@ -44,7 +43,7 @@ const handleActionColumns = () => ({ row_obj, is_header, is_footer }) => {
         </div>
     );
 };
-// scroll
+
 const handleScroll = e => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     console.log(scrollTop, scrollHeight, clientHeight);
@@ -63,7 +62,7 @@ stories
                     height: '360px',
                 }}
             >
-                <DataTable className='test' columns={columns} data_source={data} getRowSize={() => 30} />
+                <DataTable className='test' columns={mock_columns} data_source={mock_data} getRowSize={() => 30} />
             </div>
         </Theme>
     ))
@@ -78,8 +77,8 @@ stories
             >
                 <DataTable
                     className='test'
-                    columns={columns}
-                    data_source={data}
+                    columns={mock_columns}
+                    data_source={mock_data}
                     getRowSize={() => 30}
                     custom_width={`${number('Width', 70)}%`}
                 />
@@ -97,8 +96,8 @@ stories
             >
                 <DataTable
                     className='test'
-                    columns={columns}
-                    data_source={data}
+                    columns={mock_columns}
+                    data_source={mock_data}
                     getRowSize={() => 30}
                     getRowAction={row => handleRowAction(row)}
                 />
@@ -116,10 +115,10 @@ stories
             >
                 <DataTable
                     className='test'
-                    columns={columns}
-                    data_source={data}
+                    columns={mock_columns}
+                    data_source={mock_data}
                     getRowSize={() => 30}
-                    getActionColumns={() => handleActionColumns()}
+                    getActionColumns={handleActionColumns}
                 />
             </div>
         </Theme>
@@ -135,8 +134,8 @@ stories
             >
                 <DataTable
                     className='test'
-                    columns={columns}
-                    data_source={data}
+                    columns={mock_columns}
+                    data_source={mock_data}
                     getRowSize={() => 30}
                     onScroll={handleScroll}
                 />
@@ -154,8 +153,8 @@ stories
             >
                 <DataTable
                     className='test'
-                    columns={columns}
-                    data_source={data}
+                    columns={mock_columns}
+                    data_source={mock_data}
                     getRowSize={() => 30}
                     footer={{
                         name: 'All names here',

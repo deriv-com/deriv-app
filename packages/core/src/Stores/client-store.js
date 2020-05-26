@@ -93,12 +93,12 @@ export default class ClientStore extends BaseStore {
      */
     @computed
     get is_client_allowed_to_visit() {
+        // TODO: [deriv-eu] Remove this after complete EU merge into production
         return !!(
+            this.is_eu_enabled ||
             !this.is_logged_in ||
             this.is_virtual ||
-            this.accounts[this.loginid].landing_company_shortcode === 'svg' ||
-            this.accounts[this.loginid].landing_company_shortcode === 'iom' ||
-            this.accounts[this.loginid].landing_company_shortcode === 'malta'
+            this.accounts[this.loginid].landing_company_shortcode === 'svg'
         );
     }
 

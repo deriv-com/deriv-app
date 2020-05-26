@@ -1,0 +1,8 @@
+.test__table {
+    height: calc(100% - 42px);
+    flex: 1;
+}
+.test__row {
+    /*                     icon   refId tr_time  transaction cred/debt  balance */
+    grid-template-columns: 1fr 1fr 1fr;
+}

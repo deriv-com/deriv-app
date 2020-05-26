@@ -97,7 +97,7 @@ const OpenPositionsTable = ({
                                 getRowAction={getRowAction}
                                 getRowSize={() => 63}
                                 custom_width={'100%'}
-                                reports_table_loader={ReportsTableRowLoader}
+                                content_loader={ReportsTableRowLoader}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataTable>

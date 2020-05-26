@@ -174,7 +174,7 @@ class ProfitTable extends React.Component {
                                 getRowAction={this.getRowAction}
                                 custom_width={'100%'}
                                 getRowSize={() => 63}
-                                reports_table_loader={ReportsTableRowLoader}
+                                content_loader={ReportsTableRowLoader}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataTable>

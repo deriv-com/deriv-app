@@ -152,7 +152,7 @@ class Statement extends React.Component {
                                 is_empty={is_empty}
                                 custom_width={'100%'}
                                 getRowSize={() => 63}
-                                reports_table_loader={ReportsTableRowLoader}
+                                content_loader={ReportsTableRowLoader}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataTable>

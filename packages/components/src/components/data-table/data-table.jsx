@@ -56,7 +56,7 @@ class DataTable extends React.PureComponent {
         index, // Index of row
         style, // Style object to be applied to row (to position it);
     }) => {
-        const { className, getRowAction, columns, preloaderCheck, id, getActionColumns } = this.props;
+        const { className, getRowAction, columns, preloaderCheck, id, getActionColumns, content_loader } = this.props;
         const item = data[index];
         const action = getRowAction && getRowAction(item);
         const contract_id = data[index].contract_id || data[index].id;
@@ -73,7 +73,7 @@ class DataTable extends React.PureComponent {
                 show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : null}
                 replace={typeof action === 'object' ? action : undefined}
                 getActionColumns={getActionColumns}
-                reports_table_loader={this.props.reports_table_loader}
+                content_loader={content_loader}
             />
         );
 
@@ -91,6 +91,7 @@ class DataTable extends React.PureComponent {
             getRowSize,
             is_empty,
             onScroll,
+            content_loader,
         } = this.props;
 
         const TableData = (
@@ -129,7 +130,7 @@ class DataTable extends React.PureComponent {
                         columns={columns}
                         is_header
                         getActionColumns={getActionColumns}
-                        reports_table_loader={this.props.reports_table_loader}
+                        content_loader={content_loader}
                     />
                 </div>
                 <div
@@ -150,7 +151,7 @@ class DataTable extends React.PureComponent {
                             columns={columns}
                             is_footer
                             getActionColumns={getActionColumns}
-                            reports_table_loader={this.props.reports_table_loader}
+                            content_loader={content_loader}
                         />
                     </div>
                 )}

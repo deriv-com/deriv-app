@@ -16,7 +16,7 @@ const TableRow = ({
     replace,
     row_obj = {},
     to,
-    ...other
+    content_loader,
 }) => {
     const action_columns = getActionColumns && getActionColumns({ row_obj, is_header, is_footer });
 
@@ -40,13 +40,9 @@ const TableRow = ({
         { 'table__row-link': to || replace },
         { [`${className}__row`]: className }
     );
-    const ReportsTableRowLoader = other.reports_table_loader;
+    const ContentLoader = content_loader;
     if (!is_footer && !is_header && show_preloader) {
-        return (
-            <div className='table__row--preloader'>
-                <ReportsTableRowLoader />
-            </div>
-        );
+        return <div className='table__row--preloader'>{content_loader ? <ContentLoader /> : null}</div>;
     }
     return to ? (
         <div className={`${className}__row_wrapper`}>

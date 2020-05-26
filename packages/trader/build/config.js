@@ -5,12 +5,12 @@ const { IS_RELEASE } = require('./constants');
 
 const copyConfig = base => [
     {
-        from: path.resolve(__dirname, '../node_modules/smartcharts-beta/dist/*.smartcharts.*'),
+        from: path.resolve(__dirname, '../node_modules/@deriv/deriv-charts/dist/*.smartcharts.*'),
         to: 'js/smartcharts/',
         flatten: true,
     },
     {
-        from: path.resolve(__dirname, '../node_modules/smartcharts-beta/dist/smartcharts.css*'),
+        from: path.resolve(__dirname, '../node_modules/@deriv/deriv-charts/dist/smartcharts.css*'),
         to: 'css/',
         flatten: true,
     },

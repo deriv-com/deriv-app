@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
 import routes from '@deriv/shared/utils/routes';
@@ -6,13 +6,13 @@ import { addRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
 import Trade from 'Modules/Trading';
 
-const ContractDetails = lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));
+const ContractDetails = React.lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));
 
 // MT5 Routes
-const MT5 = lazy(() => import(/* webpackChunkName: "mt5", webpackPrefetch: true */ 'Modules/MT5'));
+const MT5 = React.lazy(() => import(/* webpackChunkName: "mt5", webpackPrefetch: true */ 'Modules/MT5'));
 
 // Error Routes
-const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
+const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
 const handleLoading = props => {
     // 200ms default
@@ -35,7 +35,6 @@ const makeLazyLoader = importFn => component_name =>
     });
 
 const lazyLoadReportComponent = makeLazyLoader(() => import(/* webpackChunkName: "reports" */ 'Modules/Reports'));
-const lazyLoadAccountComponent = makeLazyLoader(() => import(/* webpackChunkName: "account" */ 'Modules/Account'));
 
 // Order matters
 const initRoutesConfig = () => [

@@ -189,15 +189,16 @@
 .mt5-verification-email-sent {
     &__title {
         @include typeface(--title-center-bold-black);
-        margin: 0.8rem 0 0;
+        margin: 0.8rem 0;
     }
     &__description {
         @include typeface(--paragraph-center-normal-black);
     }
     &__help-centre {
         display: block;
-        @include typeface(--paragraph-center-normal-black);
+        @include typeface(--paragraph-center-bold-black);
         color: var(--brand-red-coral);
+        text-decoration: none;
         margin: 3.2rem 0 0;
     }
 }

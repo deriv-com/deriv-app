@@ -67,7 +67,7 @@ class Account extends React.Component {
 
         if (
             !is_loading &&
-            ((!is_high_risk_client && /financial-assessment/.test(selected_content.path)) ||
+            ((!needs_financial_assessment && /financial-assessment/.test(selected_content.path)) ||
                 (!allow_document_upload && /proof-of-identity|proof-of-address/.test(selected_content.path)))
         )
             return <Redirect to='/' />;

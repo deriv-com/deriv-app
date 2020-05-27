@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import routes from '@deriv/shared/utils/routes';
 import { isNavigationFromPlatform } from '@deriv/shared/utils/platform';
@@ -40,7 +40,7 @@ const WizardHeading = ({ can_upgrade_to, currency, is_isle_of_man_residence, is_
     }
 };
 
-class RealAccountSignup extends Component {
+class RealAccountSignup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

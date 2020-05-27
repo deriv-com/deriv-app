@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import Head from './table-head.jsx';
 import Header from './table-header.jsx';
@@ -8,7 +8,7 @@ import Cell from './table-cell.jsx';
 import ThemedScrollbars from '../themed-scrollbars';
 
 // TODO: update the <Table /> component to fit with the DataTable in Trader
-class Table extends Component {
+class Table extends React.Component {
     render() {
         return (
             <div

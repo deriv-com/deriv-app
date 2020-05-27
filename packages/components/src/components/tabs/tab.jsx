@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Counter from '../counter';
 
-class Tab extends Component {
+class Tab extends React.Component {
     onClick = () => {
         const { onClick } = this.props;
         onClick();

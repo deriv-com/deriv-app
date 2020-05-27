@@ -1025,7 +1025,7 @@ export default class ClientStore extends BaseStore {
 
         if (is_client_logging_in) {
             window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
-
+            SocketCache.clear();
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
             const authorize_response = await BinarySocket.authorize(is_client_logging_in);

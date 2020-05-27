@@ -67,9 +67,14 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url }) => {
             }
         }, 100);
 
-        return () => {
-            clearInterval(interval_header);
-        };
+        // After 10 secs show container as it may show an error.
+        setTimeout(() => {
+            const el_sendbird_conversation = document.querySelector('.sendbird-conversation');
+            el_sendbird_conversation.setAttribute('style', 'display: flex;');
+            setIsLoading(false);
+        }, 10000);
+
+        return () => clearInterval(interval_header);
     }, []);
 
     return (

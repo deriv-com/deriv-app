@@ -10,16 +10,16 @@ const currency_selector_config = {
     },
 };
 
-export const currencySelectorConfig = ({ can_upgrade_to }) => {
+export const currencySelectorConfig = ({ real_account_signup_target }) => {
     return {
         header: {
             active_title: localize('Please choose your currency'),
             title: localize('Account currency'),
         },
         body: CurrencySelector,
-        form_value: getDefaultFields(can_upgrade_to, currency_selector_config),
+        form_value: getDefaultFields(real_account_signup_target, currency_selector_config),
         props: {
-            validate: generateValidationFunction(can_upgrade_to, currency_selector_config),
+            validate: generateValidationFunction(real_account_signup_target, currency_selector_config),
         },
         passthrough: ['legal_allowed_currencies'],
     };

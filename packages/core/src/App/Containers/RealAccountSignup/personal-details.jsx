@@ -192,33 +192,73 @@ class PersonalDetails extends React.Component {
                                                     )}
                                                 </Field>
                                             )}
-                                            <FormSubHeader title={localize('Account opening reason')} />
-                                            {/* TODO: [deriv-eu] Remove account opening reason once api is optional */}
-                                            {'account_opening_reason' in this.props.value && (
-                                                <Field name='account_opening_reason'>
-                                                    {({ field }) => (
-                                                        <Autocomplete
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            autoComplete='new-password' // prevent chrome autocomplete
-                                                            type='text'
-                                                            label={localize('Account opening reason*')}
-                                                            error={
-                                                                touched.account_opening_reason &&
-                                                                errors.account_opening_reason
-                                                            }
-                                                            list_items={this.props.account_opening_reason_list}
-                                                            onItemSelection={({ value, text }) =>
-                                                                setFieldValue(
-                                                                    'account_opening_reason',
-                                                                    value ? text : '',
-                                                                    true
-                                                                )
-                                                            }
-                                                            required
+                                            {('tax_residence' in this.props.value ||
+                                                'tax_identification_number' in this.props.value) && (
+                                                <>
+                                                    <FormSubHeader title={localize('Tax information')} />
+                                                    {'tax_residence' in this.props.value && (
+                                                        <Field name='tax_residence'>
+                                                            {({ field }) => (
+                                                                <Autocomplete
+                                                                    {...field}
+                                                                    data-lpignore='true'
+                                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                                    type='text'
+                                                                    label={localize('Tax residence*')}
+                                                                    error={
+                                                                        touched.tax_residence && errors.tax_residence
+                                                                    }
+                                                                    list_items={this.props.residence_list}
+                                                                    onItemSelection={({ value, text }) =>
+                                                                        setFieldValue(
+                                                                            'tax_residence',
+                                                                            value ? text : '',
+                                                                            true
+                                                                        )
+                                                                    }
+                                                                    required
+                                                                />
+                                                            )}
+                                                        </Field>
+                                                    )}
+                                                    {'tax_identification_number' in this.props.value && (
+                                                        <FormInputField
+                                                            name='tax_identification_number'
+                                                            label={localize('Tax identification number')}
+                                                            placeholder={localize('Tax identification number')}
                                                         />
                                                     )}
-                                                </Field>
+                                                </>
+                                            )}
+                                            {/* TODO: [deriv-eu] Remove account opening reason once api is optional */}
+                                            {'account_opening_reason' in this.props.value && (
+                                                <>
+                                                    <FormSubHeader title={localize('Account opening reason')} />
+                                                    <Field name='account_opening_reason'>
+                                                        {({ field }) => (
+                                                            <Autocomplete
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                autoComplete='new-password' // prevent chrome autocomplete
+                                                                type='text'
+                                                                label={localize('Account opening reason*')}
+                                                                error={
+                                                                    touched.account_opening_reason &&
+                                                                    errors.account_opening_reason
+                                                                }
+                                                                list_items={this.props.account_opening_reason_list}
+                                                                onItemSelection={({ value, text }) =>
+                                                                    setFieldValue(
+                                                                        'account_opening_reason',
+                                                                        value ? text : '',
+                                                                        true
+                                                                    )
+                                                                }
+                                                                required
+                                                            />
+                                                        )}
+                                                    </Field>
+                                                </>
                                             )}
                                         </div>
                                     </ThemedScrollbars>

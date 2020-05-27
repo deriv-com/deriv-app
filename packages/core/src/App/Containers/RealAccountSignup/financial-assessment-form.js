@@ -10,16 +10,16 @@ const financial_assessment_config = {
     },
 };
 
-export const financialAssessmentConfig = ({ can_upgrade_to }) => {
+export const financialAssessmentConfig = ({ real_account_signup_target }) => {
     return {
         header: {
             active_title: localize('Complete financial assessment'),
             title: localize('Financial assessment'),
         },
         body: FinancialAssessment,
-        form_value: getDefaultFields(can_upgrade_to, financial_assessment_config),
+        form_value: getDefaultFields(real_account_signup_target, financial_assessment_config),
         props: {
-            validate: generateValidationFunction(can_upgrade_to, financial_assessment_config),
+            validate: generateValidationFunction(real_account_signup_target, financial_assessment_config),
         },
         passthrough: [],
     };

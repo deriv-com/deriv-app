@@ -310,7 +310,6 @@ export default connect(({ client, ui }) => ({
     real_account_signup_target: ui.real_account_signup_target,
     has_currency: !!client.currency,
     setAccountCurrency: client.setAccountCurrency,
-    can_upgrade_to: client.can_upgrade_to,
     residence: client.residence,
     residence_list: client.residence_list,
     states_list: client.states_list,

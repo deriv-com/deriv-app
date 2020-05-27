@@ -45,7 +45,7 @@ const personal_details_config = {
         ],
     },
     place_of_birth: {
-        supported_in: ['iom', 'malta'],
+        supported_in: ['maltainvest', 'iom', 'malta'],
         default_value: '',
         rules: [['req', localize('Place of birth is required')]],
     },
@@ -62,18 +62,28 @@ const personal_details_config = {
             ['phone', localize('Phone is not in a correct format.')],
         ],
     },
+    tax_residence: {
+        default_value: '',
+        supported_in: ['maltainvest'],
+        rules: [['req', localize('Tax residence is required')]],
+    },
+    tax_identification_number: {
+        default_Value: '',
+        supported_in: ['maltainvest'],
+        rules: [['req', localize('Tax identification number is required')]],
+    },
 };
 
-export const personalDetailsConfig = ({ can_upgrade_to }) => {
+export const personalDetailsConfig = ({ real_account_signup_target }) => {
     return {
         header: {
             active_title: localize('Complete your personal details'),
             title: localize('Personal details'),
         },
         body: PersonalDetails,
-        form_value: getDefaultFields(can_upgrade_to, personal_details_config),
+        form_value: getDefaultFields(real_account_signup_target, personal_details_config),
         props: {
-            validate: generateValidationFunction(can_upgrade_to, personal_details_config),
+            validate: generateValidationFunction(real_account_signup_target, personal_details_config),
             account_opening_reason_list: [
                 {
                     text: localize('Hedging'),

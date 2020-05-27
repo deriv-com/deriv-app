@@ -4,10 +4,11 @@ import { financialAssessmentConfig } from './financial-assessment-form';
 import { personalDetailsConfig } from './personal-details-form';
 import { termsOfUseConfig } from './terms-of-use-form';
 
-const shouldShowAddressDetails = ({ can_upgrade_to }) => !shouldShowPOIPOA({ can_upgrade_to });
+const shouldShowAddressDetails = ({ real_account_signup_target }) =>
+    !shouldShowFinancialAssessment({ real_account_signup_target });
 
-const shouldShowPOIPOA = ({ can_upgrade_to }) => {
-    return !['svg', 'malta', 'iom'].includes(can_upgrade_to);
+const shouldShowFinancialAssessment = ({ real_account_signup_target }) => {
+    return !['svg', 'malta', 'iom'].includes(real_account_signup_target);
 };
 
 export const getItems = props => {
@@ -15,7 +16,7 @@ export const getItems = props => {
         currencySelectorConfig(props),
         personalDetailsConfig(props),
         ...(shouldShowAddressDetails(props) ? [addressDetailsConfig(props)] : []),
-        ...(shouldShowPOIPOA(props) ? [financialAssessmentConfig(props)] : []),
+        ...(shouldShowFinancialAssessment(props) ? [financialAssessmentConfig(props)] : []),
         termsOfUseConfig(props),
     ];
 };

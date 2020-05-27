@@ -54,17 +54,17 @@ const address_details_config = {
     },
 };
 
-export const addressDetailsConfig = ({ can_upgrade_to, residence }) => {
+export const addressDetailsConfig = ({ real_account_signup_target, residence }) => {
     return {
         header: {
             active_title: localize('Complete your address details'),
             title: localize('Address details'),
         },
         body: AddressDetails,
-        form_value: getDefaultFields(can_upgrade_to, address_details_config),
+        form_value: getDefaultFields(real_account_signup_target, address_details_config),
         props: {
             validate: generateValidationFunction(
-                can_upgrade_to,
+                real_account_signup_target,
                 transformForResidence(address_details_config, residence)
             ),
         },

@@ -10,16 +10,16 @@ const proof_of_address_config = {
     },
 };
 
-export const proofOfAddressConfig = ({ can_upgrade_to }) => {
+export const proofOfAddressConfig = ({ real_account_signup_target }) => {
     return {
         header: {
             active_title: localize('Complete your proof of address'),
             title: localize('Proof of address'),
         },
         body: ProofOfAddressContainer,
-        form_value: getDefaultFields(can_upgrade_to, proof_of_address_config),
+        form_value: getDefaultFields(real_account_signup_target, proof_of_address_config),
         props: {
-            validate: generateValidationFunction(can_upgrade_to, proof_of_address_config),
+            validate: generateValidationFunction(real_account_signup_target, proof_of_address_config),
         },
         passthrough: ['refreshNotifications'],
     };

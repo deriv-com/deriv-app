@@ -17,20 +17,14 @@ import 'Sass/real-account-signup.scss';
 
 const LoadingModal = () => <Loading is_fullscreen={false} />;
 
-const WizardHeading = ({
-    real_account_signup_target,
-    can_upgrade_to,
-    currency,
-    is_isle_of_man_residence,
-    is_belgium_residence,
-}) => {
+const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, is_belgium_residence }) => {
     if (!currency) {
         return <Localize i18n_default_text='Set a currency for your Real Account' />;
     }
 
     if (
-        (can_upgrade_to === 'iom' && is_isle_of_man_residence) ||
-        (can_upgrade_to === 'malta' && is_belgium_residence)
+        (real_account_signup_target === 'iom' && is_isle_of_man_residence) ||
+        (real_account_signup_target === 'malta' && is_belgium_residence)
     ) {
         return <Localize i18n_default_text='Add a Real Synthetic account' />;
     }
@@ -258,7 +252,6 @@ class RealAccountSignup extends React.Component {
 export default connect(({ ui, client, common }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,
-    can_upgrade_to: client.can_upgrade_to,
     has_real_account: client.has_active_real_account,
     currency: client.currency,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,

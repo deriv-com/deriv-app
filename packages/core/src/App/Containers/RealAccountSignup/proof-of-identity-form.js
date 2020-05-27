@@ -10,16 +10,16 @@ const proof_of_identity_config = {
     },
 };
 
-export const proofOfIdentityConfig = ({ can_upgrade_to }) => {
+export const proofOfIdentityConfig = ({ real_account_signup_target }) => {
     return {
         header: {
             active_title: localize('Complete your proof of identity'),
             title: localize('Proof of identity'),
         },
         body: ProofOfIdentityForm,
-        form_value: getDefaultFields(can_upgrade_to, proof_of_identity_config),
+        form_value: getDefaultFields(real_account_signup_target, proof_of_identity_config),
         props: {
-            validate: generateValidationFunction(can_upgrade_to, proof_of_identity_config),
+            validate: generateValidationFunction(real_account_signup_target, proof_of_identity_config),
         },
         passthrough: ['refreshNotifications'],
     };

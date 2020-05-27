@@ -97,8 +97,8 @@ class MyAds extends React.Component {
                     )}
                     <p>
                         {this.state.is_pending
-                            ? localize('We will contact you once we have verified the information provided.')
-                            : localize("We'll need you to upload your documents to verify your identity and address.")
+                            ? localize("We'll contact you once we have verified the information provided.")
+                            : localize("We'll need you to upload your documents to verify your identity and address.")}
                     </p>
                 </div>
                 <a href='/account/proof-of-identity' className='p2p-cashier__empty-button'>

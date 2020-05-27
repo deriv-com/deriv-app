@@ -21,7 +21,7 @@ class UnsupportedContractModal extends React.Component {
                 is_closed_on_cancel
                 is_visible={is_visible}
             >
-                <Localize i18n_default_text='You’ve selected a trade type that is currently unsupported but we’re working on it.' />
+                <Localize i18n_default_text='You’ve selected a trade type that is currently unsupported, but we’re working on it.' />
             </Dialog>
         );
     }

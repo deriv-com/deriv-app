@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Checkbox, Button, ThemedScrollbars } from '@deriv/components';
@@ -6,15 +7,15 @@ import FormError from '../form/error.jsx';
 import { localize } from '../i18next';
 import IconClose from '../../assets/icon-close.jsx';
 
-class Popup extends Component {
+class Popup extends React.Component {
     state = {
         api_error_message: '',
+        disable_confirm: true,
     };
 
     handleSubmit = (values, { setStatus, setSubmitting }) => {
         // TODO: [p2p-remove-console] this console is to avoid unused variable eslint linter
         // eslint-disable-next-line no-console
-        console.log(values);
         this.props.onClickConfirm(setStatus);
         setSubmitting(false);
     };
@@ -34,12 +35,14 @@ class Popup extends Component {
             order,
             onCancel,
             title,
+            className,
+            payment_confirm,
         } = this.props;
-        const { api_error_message } = this.state;
+        const { api_error_message, disable_confirm } = this.state;
 
         return (
             <>
-                <div className='orders__popup'>
+                <div className={classNames('orders__popup', className)}>
                     <div className='orders__popup-header'>
                         <div className='orders__popup-header_wrapper'>
                             <h2 className='orders__popup-header--title'>{title}</h2>
@@ -58,7 +61,7 @@ class Popup extends Component {
                         >
                             {({ isSubmitting, setFieldValue, values, status }) => (
                                 <Form noValidate>
-                                    <ThemedScrollbars autoHide style={{ height: '128px' }}>
+                                    <ThemedScrollbars autoHide style={{ height: '90px' }}>
                                         <div className='orders__popup-content'>
                                             {message}
                                             <div className='orders__popup-field'>
@@ -86,6 +89,11 @@ class Popup extends Component {
                                     </ThemedScrollbars>
                                     <div className='orders__popup-footer'>
                                         {status && status.error_message && <FormError message={status.error_message} />}
+                                        {has_cancel && (
+                                            <Button onClick={onCancel} secondary>
+                                                {cancel_text}
+                                            </Button>
+                                        )}
                                         <Button is_disabled={isSubmitting || !values.need_confirmation} primary>
                                             {localize('Release {{amount}} {{currency}}', {
                                                 amount: order.display_offer_amount,
@@ -98,8 +106,34 @@ class Popup extends Component {
                         </Formik>
                     ) : (
                         <>
-                            <ThemedScrollbars autoHide style={{ height: '92px' }}>
-                                <div className='orders__popup-content'>{message}</div>
+                            <ThemedScrollbars
+                                autoHide
+                                autoHeight
+                                autoHeightMax={130}
+
+                                // style={{ height: '120px' }}
+                            >
+                                <div className='orders__popup-content'>
+                                    {message}
+                                    {payment_confirm ? (
+                                        <div className='order-details__popup-checkBox'>
+                                            <Checkbox
+                                                onChange={() => {
+                                                    this.setState({
+                                                        disable_confirm: !this.state.disable_confirm,
+                                                    });
+                                                }}
+                                                defaultChecked={!disable_confirm}
+                                                label={localize('I have paid {{amount}} {{currency}}', {
+                                                    amount: order.display_transaction_amount,
+                                                    currency: order.transaction_currency,
+                                                })}
+                                            />
+                                        </div>
+                                    ) : (
+                                        ''
+                                    )}
+                                </div>
                             </ThemedScrollbars>
                             <div className='orders__popup-footer'>
                                 {api_error_message && <FormError message={api_error_message} />}
@@ -108,7 +142,11 @@ class Popup extends Component {
                                         {cancel_text}
                                     </Button>
                                 )}
-                                <Button onClick={() => onClickConfirm(this.setApiError)} primary>
+                                <Button
+                                    onClick={() => onClickConfirm(this.setApiError)}
+                                    primary
+                                    is_disabled={payment_confirm && disable_confirm}
+                                >
                                     {confirm_text}
                                 </Button>
                             </div>
@@ -124,12 +162,13 @@ Popup.propTypes = {
     cancel_text: PropTypes.string,
     confirm_text: PropTypes.string,
     has_cancel: PropTypes.bool,
-    message: PropTypes.string,
+    message: PropTypes.oneOfType((PropTypes.string, PropTypes.object)),
     need_confirmation: PropTypes.bool,
     onCancel: PropTypes.func,
     onClickConfirm: PropTypes.func,
     order: PropTypes.object,
     title: PropTypes.string,
+    payment_confirm: PropTypes.bool,
 };
 
 export default Popup;

@@ -1,6 +1,6 @@
 import React from 'react';
-import { AssetInformation, ChartTitle, SmartChart } from 'smartcharts-beta';
-import ControlWidgets from './control-widgets.jsx';
+import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
+import ToolbarWidgets from './toolbar-widgets.jsx';
 import { connect } from '../../stores/connect';
 
 import '../../assets/sass/chart.scss';
@@ -14,15 +14,10 @@ import '../../assets/sass/chart.scss';
 // import AllMarkers            from '../../SmartChart/Components/all-markers.jsx';
 
 class Chart extends React.Component {
-    chartTopWidgets = () => (
-        <>
-            <ChartTitle onChange={this.props.onSymbolChange} />
-            <AssetInformation />
-        </>
-    );
+    chartTopWidgets = () => <ChartTitle onChange={this.props.onSymbolChange} />;
 
-    chartControlsWidgets = () => (
-        <ControlWidgets updateChartType={this.props.updateChartType} updateGranularity={this.props.updateGranularity} />
+    chartToolbarWidget = () => (
+        <ToolbarWidgets updateChartType={this.props.updateChartType} updateGranularity={this.props.updateGranularity} />
     );
 
     // bottomWidgets = ({ digits, tick }) => (
@@ -64,8 +59,10 @@ class Chart extends React.Component {
                 barriers={barriers}
                 // bottomWidgets={ show_digits_stats ? this.bottomWidgets : null}
                 showLastDigitStats={show_digits_stats}
-                chartControlsWidgets={this.chartControlsWidgets}
+                chartControlsWidgets={null}
+                enabledChartFooter={false}
                 chartStatusListener={v => this.props.setChartStatus(!v)}
+                toolbarWidget={this.chartToolbarWidget}
                 chartType={chart_type}
                 isMobile={is_mobile}
                 granularity={granularity}

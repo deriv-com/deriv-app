@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import { Icon, Button } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
@@ -9,7 +9,7 @@ import FormAds from './form-ads.jsx';
 import MyAdsTable from './my-ads-table.jsx';
 import './my-ads.scss';
 
-class MyAds extends Component {
+class MyAds extends React.Component {
     // TODO: Find a better solution for handling no-op instead of using is_mounted flags
     is_mounted = false;
 

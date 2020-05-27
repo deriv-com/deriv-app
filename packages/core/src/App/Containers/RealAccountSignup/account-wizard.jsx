@@ -18,6 +18,49 @@ const getLocation = (location_list, value, type) => {
     return '';
 };
 
+const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, step }) => (
+    <>
+        {(!has_real_account || has_target) && (
+            <>
+                <DesktopWrapper>
+                    <FormProgress steps={items} current_step={step} />
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <div className='account-wizard__header-steps'>
+                        <h4 className='account-wizard__header-steps-title'>
+                            <Localize
+                                i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
+                                values={{
+                                    step: step + 1,
+                                    steps: items.length,
+                                    step_title: items[step].header.title,
+                                }}
+                            />
+                        </h4>
+                        {items[step].header.active_title && (
+                            <h4 className='account-wizard__header-steps-subtitle'>{items[step].header.active_title}</h4>
+                        )}
+                    </div>
+                </MobileWrapper>
+            </>
+        )}
+        <DesktopWrapper>
+            {has_real_account && !has_target && (
+                <div className='account-wizard__set-currency'>
+                    {!has_currency && (
+                        <p>
+                            <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
+                        </p>
+                    )}
+                    <h2>
+                        <Localize i18n_default_text='Please choose your currency' />
+                    </h2>
+                </div>
+            )}
+        </DesktopWrapper>
+    </>
+);
+
 class AccountWizard extends React.Component {
     constructor(props) {
         super(props);
@@ -95,6 +138,10 @@ class AccountWizard extends React.Component {
 
     get state_index() {
         return this.state.step;
+    }
+
+    get has_target() {
+        return this.props.real_account_signup_target !== 'manage';
     }
 
     getCountryCode = async () => {
@@ -215,46 +262,13 @@ class AccountWizard extends React.Component {
             const passthrough = this.getPropsForChild();
             return (
                 <div className='account-wizard'>
-                    {!this.props.has_real_account && (
-                        <>
-                            <DesktopWrapper>
-                                <FormProgress steps={this.state.items} current_step={this.state.step} />
-                            </DesktopWrapper>
-                            <MobileWrapper>
-                                <div className='account-wizard__header-steps'>
-                                    <h4 className='account-wizard__header-steps-title'>
-                                        <Localize
-                                            i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
-                                            values={{
-                                                step: this.state.step + 1,
-                                                steps: this.state.items.length,
-                                                step_title: this.state.items[this.state.step].header.title,
-                                            }}
-                                        />
-                                    </h4>
-                                    {this.state.items[this.state.step].header.active_title && (
-                                        <h4 className='account-wizard__header-steps-subtitle'>
-                                            {this.state.items[this.state.step].header.active_title}
-                                        </h4>
-                                    )}
-                                </div>
-                            </MobileWrapper>
-                        </>
-                    )}
-                    <DesktopWrapper>
-                        {this.props.has_real_account && (
-                            <div className='account-wizard__set-currency'>
-                                {!this.props.has_currency && (
-                                    <p>
-                                        <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
-                                    </p>
-                                )}
-                                <h2>
-                                    <Localize i18n_default_text='Please choose your currency' />
-                                </h2>
-                            </div>
-                        )}
-                    </DesktopWrapper>
+                    <SetCurrencyHeader
+                        has_real_account={this.props.has_real_account}
+                        step={this.state.step}
+                        items={this.state.items}
+                        has_currency={this.props.has_currency}
+                        has_target={this.has_target}
+                    />
                     <Div100vhContainer className='account-wizard__body' is_disabled={isDesktop()} height_offset='110px'>
                         <BodyComponent
                             value={this.getCurrent('form_value')}
@@ -289,10 +303,11 @@ AccountWizard.propTypes = {
     setAccountCurrency: PropTypes.func,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     is_fully_authenticated: client.is_fully_authenticated,
     realAccountSignup: client.realAccountSignup,
     has_real_account: client.has_active_real_account,
+    real_account_signup_target: ui.real_account_signup_target,
     has_currency: !!client.currency,
     setAccountCurrency: client.setAccountCurrency,
     can_upgrade_to: client.can_upgrade_to,

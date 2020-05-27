@@ -19,6 +19,7 @@ const boxGenerator = ({
     setAccountTypeTabIndex,
     redirectToMt5Real,
     redirectToMt5Demo,
+    openRealAccountSignup,
 }) => {
     if (standpoint.malta && standpoint.maltainvest) {
         // MLT/MF
@@ -31,18 +32,38 @@ const boxGenerator = ({
                 top
             >
                 <div label={localize('Real accounts')}>
-                    <FinancialBox mt5OnClick={redirectToMt5Real} />
-                    <GamingBox mt5OnClick={redirectToMt5Real} />
+                    <FinancialBox
+                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
+                        mt5OnClick={redirectToMt5Real}
+                    />
+                    <GamingBox
+                        derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
+                        mt5OnClick={redirectToMt5Real}
+                    />
                 </div>
                 <div label={localize('Demo accounts')}>
-                    <FinancialBox is_demo mt5OnClick={redirectToMt5Demo} />
-                    <GamingBox is_demo mt5OnClick={redirectToMt5Demo} />
+                    <FinancialBox
+                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
+                        is_demo
+                        mt5OnClick={redirectToMt5Demo}
+                    />
+                    <GamingBox
+                        derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
+                        is_demo
+                        mt5OnClick={redirectToMt5Demo}
+                    />
                 </div>
             </Tabs>
         ) : (
             <div>
-                <FinancialBox mt5OnClick={redirectToMt5Real} />
-                <GamingBox mt5OnClick={redirectToMt5Real} />
+                <FinancialBox
+                    derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
+                    mt5OnClick={redirectToMt5Real}
+                />
+                <GamingBox
+                    derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
+                    mt5OnClick={redirectToMt5Real}
+                />
             </div>
         );
     } else if (standpoint.iom && standpoint.maltainvest) {
@@ -56,18 +77,44 @@ const boxGenerator = ({
                 top
             >
                 <div label={localize('Real accounts')}>
-                    <FinancialBox mt5OnClick={redirectToMt5Real} />
-                    <GamingBox no_mt5 mt5OnClick={redirectToMt5Real} />
+                    <FinancialBox
+                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
+                        mt5OnClick={redirectToMt5Real}
+                    />
+                    <GamingBox
+                        no_mt5
+                        mt5OnClick={redirectToMt5Real}
+                        derivOnClick={() => {
+                            console.log('Open real account signup');
+                            openRealAccountSignup(standpoint.gaming_company);
+                        }}
+                    />
                 </div>
                 <div label={localize('Demo accounts')}>
-                    <FinancialBox is_demo mt5OnClick={redirectToMt5Demo} />
-                    <GamingBox is_demo no_mt5 mt5OnClick={redirectToMt5Demo} />
+                    <FinancialBox
+                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
+                        is_demo
+                        mt5OnClick={redirectToMt5Demo}
+                    />
+                    <GamingBox
+                        derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
+                        is_demo
+                        no_mt5
+                        mt5OnClick={redirectToMt5Demo}
+                    />
                 </div>
             </Tabs>
         ) : (
             <div>
-                <FinancialBox mt5OnClick={redirectToMt5Real} />
-                <GamingBox no_mt5 mt5OnClick={redirectToMt5Real} />
+                <FinancialBox
+                    derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
+                    mt5OnClick={redirectToMt5Real}
+                />
+                <GamingBox
+                    derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
+                    no_mt5
+                    mt5OnClick={redirectToMt5Real}
+                />
             </div>
         );
     } else if (standpoint.malta) {
@@ -103,18 +150,41 @@ const boxGenerator = ({
                 top
             >
                 <div label={localize('Real accounts')}>
-                    <FinancialBox mt5OnClick={redirectToMt5Real} />
-                    <GamingBox no_mt5 mt5OnClick={redirectToMt5Real} />
+                    <FinancialBox
+                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
+                        mt5OnClick={redirectToMt5Real}
+                    />
+                    <GamingBox
+                        derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
+                        no_mt5
+                        mt5OnClick={redirectToMt5Real}
+                    />
                 </div>
                 <div label={localize('Demo accounts')}>
-                    <FinancialBox is_demo mt5OnClick={redirectToMt5Demo} />
-                    <GamingBox is_demo no_mt5 mt5OnClick={redirectToMt5Demo} />
+                    <FinancialBox
+                        is_demo
+                        mt5OnClick={redirectToMt5Demo}
+                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
+                    />
+                    <GamingBox
+                        is_demo
+                        no_mt5
+                        mt5OnClick={redirectToMt5Demo}
+                        derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
+                    />
                 </div>
             </Tabs>
         ) : (
             <div>
-                <FinancialBox mt5OnClick={redirectToMt5Real} />
-                <GamingBox no_mt5 mt5OnClick={redirectToMt5Real} />
+                <FinancialBox
+                    derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
+                    mt5OnClick={redirectToMt5Real}
+                />
+                <GamingBox
+                    no_mt5
+                    mt5OnClick={redirectToMt5Real}
+                    derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
+                />
             </div>
         );
     } else if (standpoint.maltainvest) {
@@ -128,15 +198,25 @@ const boxGenerator = ({
                 top
             >
                 <div label={localize('Real accounts')}>
-                    <FinancialBox mt5OnClick={redirectToMt5Real} />
+                    <FinancialBox
+                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
+                        mt5OnClick={redirectToMt5Real}
+                    />
                 </div>
                 <div label={localize('Demo accounts')}>
-                    <FinancialBox is_demo mt5OnClick={redirectToMt5Demo} />
+                    <FinancialBox
+                        is_demo
+                        mt5OnClick={redirectToMt5Demo}
+                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
+                    />
                 </div>
             </Tabs>
         ) : (
             <div>
-                <FinancialBox mt5OnClick={redirectToMt5Real} />
+                <FinancialBox
+                    derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
+                    mt5OnClick={redirectToMt5Real}
+                />
             </div>
         );
     }
@@ -169,7 +249,7 @@ Box.propTypes = {
     cards: PropTypes.array,
 };
 
-const FinancialBox = ({ is_demo = false, mt5OnClick }) => {
+const FinancialBox = ({ derivOnClick, is_demo = false, mt5OnClick }) => {
     return (
         <Box
             title={localize('Financial account ({{type}})', { type: is_demo ? localize('Demo') : localize('Real') })}
@@ -185,7 +265,7 @@ const FinancialBox = ({ is_demo = false, mt5OnClick }) => {
                     subtitle={localize('Option trading account')}
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
                     // TODO: [deriv-eu] Add click handler
-                    buttonOnClick={() => {}}
+                    buttonOnClick={derivOnClick}
                     items={{
                         [localize('Multiplier')]: localize('Up to X1000'),
                         [localize('Stop loss')]: localize('Flexible'),
@@ -256,7 +336,7 @@ const FinancialBox = ({ is_demo = false, mt5OnClick }) => {
     );
 };
 
-const GamingBox = ({ is_demo = false, no_mt5 = false, mt5OnClick }) => {
+const GamingBox = ({ is_demo = false, no_mt5 = false, mt5OnClick, derivOnClick }) => {
     const cards = [
         <AccountCard
             key={0}
@@ -264,7 +344,7 @@ const GamingBox = ({ is_demo = false, no_mt5 = false, mt5OnClick }) => {
             subtitle={localize('Option trading account')}
             button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
             // TODO: [deriv-eu] Add click handler
-            buttonOnClick={() => {}}
+            buttonOnClick={derivOnClick}
             items={{
                 [localize('Trade type')]: localize('10+'),
                 [localize('Min duration')]: localize('1 tick'),
@@ -481,12 +561,9 @@ class AccountTypesModal extends React.Component {
     };
 
     // TODO: [deriv-eu] Update and use it after EU account sign-up completion
-    createRealAccount = () => {
-        if (this.props.can_upgrade_to === 'svg') {
-            this.props.openRealAccountSignup();
-        } else {
-            window.open(urlFor('new_account/maltainvestws', undefined, undefined, true));
-        }
+    createRealAccount = (target = 'svg') => {
+        this.props.toggleAccountTypesModal();
+        this.props.openRealAccountSignup(target);
     };
 
     render() {
@@ -497,6 +574,7 @@ class AccountTypesModal extends React.Component {
             setAccountTypeTabIndex: this.setAccountTypeTabIndex,
             redirectToMt5Real: this.redirectToMt5Real,
             redirectToMt5Demo: this.redirectToMt5Demo,
+            openRealAccountSignup: this.createRealAccount,
         });
         return (
             <Modal

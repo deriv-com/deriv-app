@@ -21,7 +21,8 @@
         flex-direction: column;
         height: 6rem;
         justify-content: space-around;
-        min-width: 160px;
+        max-width: 160px;
+        min-width: 120px;
         z-index: 2;
 
         & .title {

@@ -17,7 +17,13 @@ import 'Sass/real-account-signup.scss';
 
 const LoadingModal = () => <Loading is_fullscreen={false} />;
 
-const WizardHeading = ({ can_upgrade_to, currency, is_isle_of_man_residence, is_belgium_residence }) => {
+const WizardHeading = ({
+    real_account_signup_target,
+    can_upgrade_to,
+    currency,
+    is_isle_of_man_residence,
+    is_belgium_residence,
+}) => {
     if (!currency) {
         return <Localize i18n_default_text='Set a currency for your Real Account' />;
     }
@@ -29,7 +35,7 @@ const WizardHeading = ({ can_upgrade_to, currency, is_isle_of_man_residence, is_
         return <Localize i18n_default_text='Add a Real Synthetic account' />;
     }
 
-    switch (this.props.real_account_signup_target) {
+    switch (real_account_signup_target) {
         case 'malta':
         case 'iom':
             return <Localize i18n_default_text='Add a Real Gaming account' />;
@@ -173,12 +179,18 @@ class RealAccountSignup extends React.Component {
         });
     };
 
+    get is_manage_target() {
+        return this.props.real_account_signup_target === 'manage';
+    }
+
     get active_modal_index() {
-        const ACCOUNT_WIZARD = 1;
-        const ADD_OR_MANAGE_ACCOUNT = 0;
+        const ACCOUNT_WIZARD = 0;
+        const ADD_OR_MANAGE_ACCOUNT = 1;
 
         if (this.props.state_value.active_modal_index === -1) {
-            return this.props.has_real_account && this.props.currency ? ACCOUNT_WIZARD : ADD_OR_MANAGE_ACCOUNT;
+            return this.props.has_real_account && this.props.currency && this.is_manage_target
+                ? ADD_OR_MANAGE_ACCOUNT
+                : ACCOUNT_WIZARD;
         }
 
         return this.props.state_value.active_modal_index;

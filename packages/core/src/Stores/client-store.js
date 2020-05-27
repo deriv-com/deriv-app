@@ -314,7 +314,12 @@ export default class ClientStore extends BaseStore {
     // this is true when a user needs to have a active real account for trading
     @computed
     get should_have_real_account() {
-        return this.standpoint.iom && !this.has_any_real_account && this.residence === 'gb';
+        return (
+            this.standpoint.iom &&
+            !this.has_any_real_account &&
+            this.residence === 'gb' &&
+            this.root_store.ui.is_real_acc_signup_on === false
+        );
     }
 
     // Shows all possible landing companies of user between all
@@ -325,17 +330,21 @@ export default class ClientStore extends BaseStore {
             svg: false,
             malta: false,
             maltainvest: false,
+            gaming_company: false,
+            financial_company: false,
         };
         if (!this.landing_companies) return result;
         const { gaming_company, financial_company } = this.landing_companies;
         if (gaming_company?.shortcode) {
             Object.assign(result, {
                 [gaming_company.shortcode]: !!gaming_company?.shortcode,
+                gaming_company: gaming_company?.shortcode ?? false,
             });
         }
         if (financial_company?.shortcode) {
             Object.assign(result, {
                 [financial_company.shortcode]: !!financial_company?.shortcode,
+                financial_company: financial_company?.shortcode ?? false,
             });
         }
 

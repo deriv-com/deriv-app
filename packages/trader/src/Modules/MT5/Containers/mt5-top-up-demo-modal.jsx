@@ -24,19 +24,17 @@ class Mt5TopUpDemoModal extends React.Component {
                     toggleModal={this.props.closeTopUpModal}
                     is_open={this.props.is_top_up_virtual_open}
                     className='top-up-virtual'
-                    header={localize('Fund top up')}
-                    width='400px'
+                    title={localize('Fund top up')}
+                    width='384px'
                 >
                     <div className='dc-modal__container_top-up-virtual__body'>
                         <p className='dc-modal__container_top-up-virtual__description'>
-                            <Localize i18n_default_text='You can top up your demo account with an additional USD 10,000.00 if your balance is USD 1,000.00 or less.' />
+                            <Localize i18n_default_text='You can top up your demo account with an additional $10,000.00 if your balance is $1,000.00 or less.' />
                         </p>
                         <h4 className='dc-modal__container_top-up-virtual--h4'>
                             <Localize
                                 i18n_default_text='DMT5 {{ account_title }} account'
-                                values={{
-                                    account_title: title.charAt(0).toLowerCase() + title.slice(1),
-                                }}
+                                values={{ account_title: title }}
                             />
                         </h4>
                         <div>
@@ -56,9 +54,9 @@ class Mt5TopUpDemoModal extends React.Component {
                                 type='button'
                                 onClick={this.props.topUpVirtual}
                                 primary
-                                disabled={this.props.current_account.balance > 1000}
+                                large
                             >
-                                <Localize i18n_default_text='Top up USD 10,000.00' />
+                                <Localize i18n_default_text='Top up $10,000.00' />
                             </Button>
                         </div>
                     </div>
@@ -67,15 +65,13 @@ class Mt5TopUpDemoModal extends React.Component {
                     is_open={this.props.is_top_up_virtual_success}
                     toggleModal={this.closeSuccess}
                     has_close_icon
-                    title={localize('Top up success')}
-                    icon={<Icon icon='IcCashierWallet' size={115} />}
+                    title={localize('Fund top up')}
+                    icon={<Icon icon='IcCashierWallet' size={128} />}
                     heading={
                         <h3 className='mt5-success-topup__heading'>
                             <Localize
-                                i18n_default_text='Your DMT5 {{title}} account has been topped up with USD 10,000 in virtual funds.'
-                                values={{
-                                    title: title[0].toLowerCase() + title.slice(1),
-                                }}
+                                i18n_default_text='$10,000.00 has been credited into your DMT5 {{title}} account.'
+                                values={{ title }}
                             />
                         </h3>
                     }
@@ -92,9 +88,10 @@ class Mt5TopUpDemoModal extends React.Component {
                             </div>
                         </div>
                     }
-                    icon_size='xlarge'
+                    icon_size='large'
                     has_cancel={false}
                     has_submit={false}
+                    width='384px'
                 />
             </React.Fragment>
         );

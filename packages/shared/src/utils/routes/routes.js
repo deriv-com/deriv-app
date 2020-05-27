@@ -1,4 +1,4 @@
-import { getAllowedLocalStorageOrigin } from '../storage/storage_events';
+import { getUrlSmartTrader } from '../storage/storage_events';
 
 export const routes = {
     error404: '/404',
@@ -37,6 +37,6 @@ export const routes = {
     cashier_acc_transfer: '/cashier/account-transfer',
     cashier_p2p: '/cashier/p2p',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
-    smarttrader: `${getAllowedLocalStorageOrigin()}`,
+    smarttrader: getUrlSmartTrader(),
     endpoint: '/endpoint',
 };

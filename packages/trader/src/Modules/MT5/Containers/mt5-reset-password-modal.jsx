@@ -143,7 +143,7 @@ class MT5ResetPasswordModal extends React.Component {
                                                             required
                                                         />
                                                     </PasswordMeter>
-                                                    {!touched && (
+                                                    {!values.new_password && (
                                                         <p className='mt5-reset-password__hint'>
                                                             <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.' />
                                                         </p>
@@ -155,6 +155,7 @@ class MT5ResetPasswordModal extends React.Component {
                                                         is_disabled={isSubmitting || !values.new_password}
                                                         errors={errors}
                                                         is_center={true}
+                                                        large
                                                         label={localize('Create {{type}} password', { type })}
                                                     />
                                                 )}
@@ -170,8 +171,8 @@ class MT5ResetPasswordModal extends React.Component {
                     <div className='mt5-reset-password__error'>
                         <Icon icon='IcMt5Expired' size={128} />
                         <p className='mt5-reset-password__heading'>{this.state.error_message}</p>
-                        <p className='mt5-reset-password__description'>
-                            <Localize i18n_default_text='Please request a new password reset.' />
+                        <p className='mt5-reset-password__description mt5-reset-password__description--is-centered'>
+                            <Localize i18n_default_text='Please request a new password and check your email for the new token.' />
                         </p>
                         <Button
                             primary

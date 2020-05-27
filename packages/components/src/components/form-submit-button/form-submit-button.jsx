@@ -13,6 +13,7 @@ const FormSubmitButton = ({
     is_loading,
     label,
     onCancel,
+    ...props
 }) => {
     return (
         <div
@@ -24,7 +25,15 @@ const FormSubmitButton = ({
         >
             {!!form_error && <p className='dc-form-submit-button--error'>{form_error}</p>}
             {has_cancel && <Button has_effect onClick={onCancel} text={cancel_label} type='button' secondary />}
-            <Button has_effect is_disabled={is_disabled} type='submit' text={label} is_loading={is_loading} primary />
+            <Button
+                has_effect
+                is_disabled={is_disabled}
+                type='submit'
+                text={label}
+                is_loading={is_loading}
+                primary
+                {...props}
+            />
         </div>
     );
 };

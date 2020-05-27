@@ -217,7 +217,7 @@
     &__container {
         width: 30rem;
         display: grid;
-        grid-template-rows: 8rem 1fr 7rem;
+        grid-template-rows: 6rem 1fr 7rem;
         height: 100%;
     }
     &__heading {
@@ -225,8 +225,11 @@
         margin: 1.6rem 0 0;
     }
     &__hint {
-        @include typeface(--paragraph-center-normal-black);
+        @include typeface(--paragraph-left-normal-black);
         color: var(--text-less-prominent);
+    }
+    &__password-field {
+        margin-bottom: 0.5rem;
     }
     &__error {
         display: flex;
@@ -241,6 +244,12 @@
         @include typeface(--paragraph-left-normal-black);
         color: var(--text-prominent);
         margin-bottom: 2.4rem;
+
+        &--is-centered {
+            @include typeface(--paragraph-center-normal-black);
+            color: var(--text-prominent);
+            max-width: 70%;
+        }
     }
     &__success {
         width: 38.4rem;

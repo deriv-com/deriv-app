@@ -121,6 +121,7 @@
                     margin-left: 1.6rem;
                 }
                 @include mobile {
+                    margin-left: unset;
                     margin-right: unset;
                 }
             }
@@ -988,10 +989,23 @@
         &--large .bottom-right-overlay {
             left: 76px;
             top: 76px;
+
+            @include mobile {
+                left: 78px;
+                top: 58px;
+            }
         }
         &--xlarge .bottom-right-overlay {
             left: 104px;
             top: 80px;
+
+            @include mobile {
+                left: 78px;
+                top: 74px;
+            }
+        }
+        @include mobile {
+            width: 96px;
         }
     }
     .dc-modal-body {

@@ -9,6 +9,7 @@ import {
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import React from 'react';
+import { FormSubHeader } from '@deriv/account';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared/utils/date';
@@ -107,33 +108,7 @@ class PersonalDetails extends React.Component {
                                             className='details-form__elements'
                                             style={{ paddingBottom: this.state.paddingBottom }}
                                         >
-                                            {/* TODO: [deriv-eu] Remove account opening reason once api is optional */}
-                                            {'account_opening_reason' in this.props.value && (
-                                                <Field name='account_opening_reason'>
-                                                    {({ field }) => (
-                                                        <Autocomplete
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            autoComplete='new-password' // prevent chrome autocomplete
-                                                            type='text'
-                                                            label={localize('Account opening reason*')}
-                                                            error={
-                                                                touched.account_opening_reason &&
-                                                                errors.account_opening_reason
-                                                            }
-                                                            list_items={this.props.account_opening_reason_list}
-                                                            onItemSelection={({ value, text }) =>
-                                                                setFieldValue(
-                                                                    'account_opening_reason',
-                                                                    value ? text : '',
-                                                                    true
-                                                                )
-                                                            }
-                                                            required
-                                                        />
-                                                    )}
-                                                </Field>
-                                            )}
+                                            <FormSubHeader title={localize('Title and name')} />
                                             {/* TODO: [deriv-eu] Remove salutation once api is optional */}
                                             {'salutation' in this.props.value && (
                                                 <Field name='salutation'>
@@ -164,6 +139,12 @@ class PersonalDetails extends React.Component {
                                                 label={localize('Last name*')}
                                                 placeholder={localize('Doe')}
                                             />
+                                            <FormInputField
+                                                name='phone'
+                                                label={localize('Phone number*')}
+                                                placeholder={localize('Phone number')}
+                                            />
+                                            <FormSubHeader title={localize('Other details')} />
                                             <DateOfBirthField
                                                 name='date_of_birth'
                                                 label={localize('Date of birth*')}
@@ -211,11 +192,34 @@ class PersonalDetails extends React.Component {
                                                     )}
                                                 </Field>
                                             )}
-                                            <FormInputField
-                                                name='phone'
-                                                label={localize('Phone number*')}
-                                                placeholder={localize('Phone number')}
-                                            />
+                                            <FormSubHeader title={localize('Account opening reason')} />
+                                            {/* TODO: [deriv-eu] Remove account opening reason once api is optional */}
+                                            {'account_opening_reason' in this.props.value && (
+                                                <Field name='account_opening_reason'>
+                                                    {({ field }) => (
+                                                        <Autocomplete
+                                                            {...field}
+                                                            data-lpignore='true'
+                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                            type='text'
+                                                            label={localize('Account opening reason*')}
+                                                            error={
+                                                                touched.account_opening_reason &&
+                                                                errors.account_opening_reason
+                                                            }
+                                                            list_items={this.props.account_opening_reason_list}
+                                                            onItemSelection={({ value, text }) =>
+                                                                setFieldValue(
+                                                                    'account_opening_reason',
+                                                                    value ? text : '',
+                                                                    true
+                                                                )
+                                                            }
+                                                            required
+                                                        />
+                                                    )}
+                                                </Field>
+                                            )}
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>

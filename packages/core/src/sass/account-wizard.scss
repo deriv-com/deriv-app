@@ -83,12 +83,6 @@
             grid-template-rows: 1fr 1fr;
         }
     }
-    h1 {
-        @include typeface(--title-center-bold-black);
-        color: var(--text-prominent);
-        text-transform: none;
-        margin-top: 3rem;
-    }
     h2 {
         text-transform: none;
         margin-top: 2.4rem;
@@ -280,5 +274,34 @@
             grid-template-rows: repeat(2, 7rem) 1fr 7rem;
             height: auto;
         }
+    }
+}
+
+/* TODO: [refactor-components] Refactor form subheader to components */
+.account-form {
+    &__header {
+        font-size: var(--text-size-xs);
+        font-weight: bold;
+        margin-bottom: 1.6em;
+        position: relative;
+        height: 1.6em;
+    }
+    &__header:not(:first-child) {
+        margin-top: 1.6em;
+    }
+    &__header:before {
+        border-top: 1px solid var(--general-section-1);
+        content: '';
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0.5em;
+        width: 100%;
+    }
+    &__title {
+        background: var(--general-main-1);
+        color: var(--text-prominent);
+        padding-right: 8px;
+        position: absolute;
     }
 }

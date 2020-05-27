@@ -8,7 +8,7 @@ import {
     Table,
     UILoader,
 } from '@deriv/components';
-import React, { useState } from 'react';
+import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -22,7 +22,7 @@ const MT5AttributeDescriberModal = ({ is_visible, toggleModal, message }) => (
 );
 
 const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
-    const [is_visible, setIsVisible] = useState(false);
+    const [is_visible, setIsVisible] = React.useState(false);
     const toggleModal = () => setIsVisible(!is_visible);
 
     return tooltip ? (
@@ -170,7 +170,16 @@ const compareAccountsData = [
 
 const MT5CompareAccountHint = () => (
     <p className='mt5-compare-account--hint'>
-        <Localize i18n_default_text='Note: At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
+        <div className='mt5-compare-accounts__bullet-wrapper'>
+            <span className='mt5-compare-accounts__bullet mt5-compare-accounts__bullet--circle' />
+            <Localize i18n_default_text='At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
+        </div>
+        <div className='mt5-compare-accounts__bullet-wrapper'>
+            <span className='mt5-compare-accounts__bullet mt5-compare-accounts__bullet--star mt5-compare-accounts__star'>
+                *
+            </span>
+            <Localize i18n_default_text='To protect your portfolio from adverse market movements due to the market opening gap, we reserve the right to decrease leverage on all offered symbols for financial accounts before market close and increase it again after market open. Please make sure that you have enough funds available in your MT5 account to support your positions at all times.' />
+        </div>
     </p>
 );
 
@@ -181,8 +190,14 @@ const ModalContent = () => (
                 <Table.Row className='mt5-compare-accounts__table-row'>
                     <Table.Head fixed />
                     <Table.Head>{localize('Synthetic')}</Table.Head>
-                    <Table.Head>{localize('Financial')}</Table.Head>
-                    <Table.Head>{localize('Financial STP')}</Table.Head>
+                    <Table.Head>
+                        {localize('Financial')}
+                        <span className='mt5-compare-accounts__star'>*</span>
+                    </Table.Head>
+                    <Table.Head>
+                        {localize('Financial STP')}
+                        <span className='mt5-compare-accounts__star'>*</span>
+                    </Table.Head>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -210,7 +225,7 @@ const CompareAccountsModal = ({ disableApp, enableApp, is_compare_accounts_visib
             has_effect
             text={localize('Compare accounts')}
             onClick={toggleCompareAccounts}
-            tertiary
+            secondary
         />
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
@@ -222,8 +237,8 @@ const CompareAccountsModal = ({ disableApp, enableApp, is_compare_accounts_visib
                     title={localize('Compare accounts')}
                     toggleModal={toggleCompareAccounts}
                     type='button'
-                    height='580px'
-                    width='904px'
+                    height='696px'
+                    width='903px'
                 >
                     <ModalContent />
                 </Modal>

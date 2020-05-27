@@ -1,18 +1,14 @@
 .order-details {
+    height: 650px;
     &__wrapper {
         width: 476px;
         margin-top: 2.4rem;
 
         &-message {
-            margin: 0.8rem 0.8rem 1.6rem;
+            margin: 0.8rem 0;
             font-size: 1.4rem;
             line-height: 1.43;
-            font-weight: bold;
             color: var(--text-general);
-
-            &--success {
-                color: var(--text-profit-success);
-            }
         }
         &--outer {
             background-color: var(--general-section-1);
@@ -20,18 +16,29 @@
             padding: 0.8rem;
         }
         &--inner {
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            margin-bottom: 5px;
             background-color: var(--general-main-1);
             border-radius: 4px;
             width: 100%;
+            min-height: 500px;
+            .footer-actions {
+                position: relative;
+                height: unset;
+                padding: 1.6rem;
+            }
         }
     }
     &__header,
-    &__info,
-    &__footer {
+    &__info {
         //border-bottom: 1px solid var(--general-section-1);
         padding: 1.6rem;
     }
     &__header {
+        max-height: 108px;
         display: flex;
         justify-content: space-between;
         color: var(--text-general);
@@ -42,10 +49,16 @@
             font-weight: bold;
             line-height: 1.5;
 
-            &--expired {
+            &--info {
                 color: var(--text-less-prominent);
             }
-            &--wait-for-payment {
+            &--success {
+                color: var(--status-success);
+            }
+            &--danger {
+                color: var(--status-danger);
+            }
+            &--alert {
                 color: var(--status-warning);
             }
         }
@@ -55,11 +68,10 @@
         }
         &-method {
             font-size: 1.2rem;
-            color: var(--status-info);
-            border: 1px solid var(--status-info);
+            border: 1px solid var(--border-normal);
             width: fit-content;
             border-radius: 1.6rem;
-            padding: 0.2rem 0.8rem;
+            padding: 0.4rem 1rem;
             margin-top: 0.8rem;
         }
         &-timer {
@@ -86,6 +98,7 @@
         }
     }
     &__info {
+        min-height: 320px;
         &-block {
             margin-bottom: 1.6rem;
 
@@ -120,5 +133,44 @@
     }
     &__actions-button {
         margin-left: 0.8rem;
+    }
+    &__justify-start {
+        justify-content: flex-start;
+    }
+    &__justify-space {
+        justify-content: space-between;
+    }
+    &__separator {
+        width: 100%;
+        border-top: 2px solid var(--general-section-1);
+    }
+    &__popup {
+        margin-top: 1.4rem;
+        &--danger {
+            color: var(--status-danger);
+            font-weight: bold;
+        }
+        &--bold {
+            font-weight: bold;
+        }
+    }
+    &__empty-space {
+        height: 72px;
+    }
+    &__popup-no-border {
+        .orders__popup-content {
+            padding: 0 2.4rem;
+        }
+        .orders__popup-header,
+        .orders__popup-footer {
+            border-top: unset;
+            border-bottom: unset;
+        }
+        .dc-checkbox {
+            margin-top: 1rem;
+            &__box {
+                margin-left: 0;
+            }
+        }
     }
 }

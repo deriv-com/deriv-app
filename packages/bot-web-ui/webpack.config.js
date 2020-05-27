@@ -30,7 +30,7 @@ module.exports = function(env, argv) {
             disableHostCheck: true,
         },
         mode: is_release ? 'production' : 'development',
-        devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
+        devtool: is_release ? undefined : 'cheap-module-eval-source-map',
         target: 'web',
         module: {
             rules: [
@@ -88,7 +88,11 @@ module.exports = function(env, argv) {
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
-                    loader: ['@deriv/shared/utils/deriv-components-loader.js', 'babel-loader'],
+                    loader: [
+                      '@deriv/shared/utils/deriv-components-loader.js',
+                      '@deriv/shared/utils/react-import-loader.js',
+                      'babel-loader'
+                    ],
                 },
                 {
                     test: /\.xml$/,
@@ -114,7 +118,7 @@ module.exports = function(env, argv) {
                 formik: 'formik',
                 react: 'react',
                 'react-dom': 'react-dom',
-                'smartcharts-beta': 'smartcharts-beta',
+                '@deriv/deriv-charts': '@deriv/deriv-charts',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,

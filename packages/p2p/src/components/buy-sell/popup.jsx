@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Input, Button, ThemedScrollbars } from '@deriv/components';
@@ -10,7 +10,7 @@ import { textValidator, lengthValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
 import FormError from '../form/error.jsx';
 
-class Popup extends Component {
+class Popup extends React.Component {
     state = {
         total_amount: undefined,
     };
@@ -67,7 +67,7 @@ class Popup extends Component {
         };
 
         return (
-            <Fragment>
+            <>
                 <div className='buy-sell__popup'>
                     <div className='buy-sell__popup-header'>
                         <div className='buy-sell__popup-header_wrapper'>
@@ -125,7 +125,7 @@ class Popup extends Component {
                                                         <Input
                                                             {...field}
                                                             data-lpignore='true'
-                                                            type='number'
+                                                            type='text'
                                                             error={errors.amount}
                                                             label={localize('Amount')}
                                                             hint={
@@ -225,7 +225,7 @@ class Popup extends Component {
                         }}
                     </Formik>
                 </div>
-            </Fragment>
+            </>
         );
     }
 
@@ -235,9 +235,10 @@ class Popup extends Component {
         const validations = {
             amount: [
                 v => !!v,
-                v => v >= ad.min_available,
-                v => v <= ad.max_available,
-                v => countDecimalPlaces(v) <= ad.offer_currency_decimals,
+                v => !isNaN(v),
+                v => +v >= ad.min_available,
+                v => +v <= ad.max_available,
+                v => countDecimalPlaces(+v) <= ad.offer_currency_decimals,
             ],
         };
         if (ad.type === 'sell') {
@@ -260,6 +261,7 @@ class Popup extends Component {
         );
 
         const common_messages = [
+            localize('Amount is required'),
             localize('Enter a valid amount'),
             localize('Minimum is {{value}} {{currency}}', {
                 currency: ad.offer_currency,

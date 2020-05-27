@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Loading, Icon } from '@deriv/components';
 import { Localize } from 'Components/i18next';
@@ -10,21 +10,21 @@ import { RowComponent, BuySellRowLoader } from './row.jsx';
 import { BuySellTable } from './buy-sell-table.jsx';
 
 const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
-    const { list_item_limit } = useContext(Dp2pContext);
-    const mounted = useRef(false);
-    const item_offset = useRef(0);
-    const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
-    const [api_error_message, setApiErrorMessage] = useState('');
-    const [is_loading, setIsLoading] = useState(true);
-    const [items, setItems] = useState([]);
+    const { list_item_limit } = React.useContext(Dp2pContext);
+    const mounted = React.useRef(false);
+    const item_offset = React.useRef(0);
+    const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
+    const [api_error_message, setApiErrorMessage] = React.useState('');
+    const [is_loading, setIsLoading] = React.useState(true);
+    const [items, setItems] = React.useState([]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         mounted.current = true;
         loadMoreItems(item_offset.current, list_item_limit);
         return () => (mounted.current = false);
     }, []);
 
-    useEffect(() => {
+    React.useEffect(() => {
         setIsLoading(true);
         if (mounted.current) {
             loadMoreItems(item_offset.current, list_item_limit);

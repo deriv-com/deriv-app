@@ -7,7 +7,7 @@ const OrderDetailsResultMessage = ({ order_details }) => {
 
     if (is_completed) {
         return (
-            <p className='order-details__wrapper-message order-details__wrapper-message--success'>
+            <p className='order-details__wrapper-message'>
                 {is_buyer
                     ? localize('{{offered_amount}} {{offered_currency}} was deposited on your account', {
                           offered_amount: display_offer_amount,

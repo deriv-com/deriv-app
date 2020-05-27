@@ -125,7 +125,7 @@ class AccountSignup extends React.Component {
                                             {({ field }) => (
                                                 <PasswordMeter
                                                     input={this.state.pw_input}
-                                                    error={touched.password && errors.password}
+                                                    has_error={!!(touched.password && errors.password)}
                                                 >
                                                     <PasswordInput
                                                         {...field}

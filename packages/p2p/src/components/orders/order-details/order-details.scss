@@ -5,15 +5,10 @@
         margin-top: 2.4rem;
 
         &-message {
-            margin: 0.8rem 0.8rem 1.6rem;
+            margin: 0.8rem 0;
             font-size: 1.4rem;
             line-height: 1.43;
-            font-weight: bold;
             color: var(--text-general);
-
-            &--success {
-                color: var(--text-profit-success);
-            }
         }
         &--outer {
             background-color: var(--general-section-1);
@@ -29,6 +24,7 @@
             background-color: var(--general-main-1);
             border-radius: 4px;
             width: 100%;
+            min-height: 500px;
             .footer-actions {
                 position: relative;
                 height: unset;
@@ -53,10 +49,16 @@
             font-weight: bold;
             line-height: 1.5;
 
-            &--expired {
+            &--info {
                 color: var(--text-less-prominent);
             }
-            &--wait-for-payment {
+            &--success {
+                color: var(--status-success);
+            }
+            &--danger {
+                color: var(--status-danger);
+            }
+            &--alert {
                 color: var(--status-warning);
             }
         }
@@ -66,11 +68,10 @@
         }
         &-method {
             font-size: 1.2rem;
-            color: var(--status-info);
-            border: 1px solid var(--status-info);
+            border: 1px solid var(--border-normal);
             width: fit-content;
             border-radius: 1.6rem;
-            padding: 0.2rem 0.8rem;
+            padding: 0.4rem 1rem;
             margin-top: 0.8rem;
         }
         &-timer {

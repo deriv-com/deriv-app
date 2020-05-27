@@ -245,11 +245,12 @@ class AddressDetails extends React.Component {
 
         const custom_messages = {
             address_postcode: [
-                localize('Only letters, numbers, space, and hyphen are allowed.'),
                 localize('Please enter a {{field_name}} under {{max_number}} characters.', {
                     field_name: localize('postal/ZIP code'),
                     max_number: 20,
+                    interpolation: { escapeValue: false },
                 }),
+                localize('Only letters, numbers, space, and hyphen are allowed.'),
             ],
         };
 

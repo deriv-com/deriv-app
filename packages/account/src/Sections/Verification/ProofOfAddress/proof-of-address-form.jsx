@@ -97,6 +97,7 @@ class ProofOfAddressForm extends React.Component {
                 errors.address_postcode = localize('Please enter a {{field_name}} under {{max_number}} characters.', {
                     field_name: localize('postal/ZIP code'),
                     max_number: 20,
+                    interpolation: { escapeValue: false },
                 });
             } else if (!validPostCode(values.address_postcode)) {
                 errors.address_postcode = localize('Only letters, numbers, space, and hyphen are allowed.');

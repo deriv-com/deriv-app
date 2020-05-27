@@ -44,7 +44,6 @@ const IncrementButtons = ({
             onTouchEnd: handleButtonRelease,
             onMouseDown: handleButtonPress(onChange),
             onMouseUp: handleButtonRelease,
-            onMouseLeave: handleButtonRelease,
         };
     };
 

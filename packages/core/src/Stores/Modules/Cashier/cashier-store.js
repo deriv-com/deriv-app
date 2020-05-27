@@ -16,8 +16,6 @@ import { WS } from 'Services';
 import BaseStore from '../../base-store';
 import { getMT5AccountDisplay } from '../../Helpers/client';
 
-const bank_default_option = [{ text: localize('All payment agents'), value: 0 }];
-
 class Config {
     container = '';
     is_session_timeout = true;
@@ -51,8 +49,8 @@ class ConfigPaymentAgent {
     @observable is_withdraw = false;
     @observable is_withdraw_successful = false;
     @observable receipt = {};
-    @observable selected_bank = bank_default_option[0].value;
-    @observable supported_banks = bank_default_option;
+    @observable selected_bank = 0;
+    @observable supported_banks = [];
     @observable verification = new ConfigVerification();
 }
 

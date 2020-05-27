@@ -65,6 +65,14 @@
 
 
 # ==============================================================
+#  binary-com/deriv-account
+# ==============================================================
+#  Used for approving all relevant changes to Account
+#
+#   - reza-fs
+#   - zaki-binary
+
+# ==============================================================
 #  binary-com/deriv-bot
 # ==============================================================
 #  Used for approving all relevant changes to Bot

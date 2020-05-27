@@ -1,8 +1,9 @@
 // import PropTypes        from 'prop-types';
 import React from 'react';
+import { MultiStep } from '@deriv/components';
+import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
-import MultiStep from 'Components/multi-step';
 import ChangePasswordForm from './change-password-form.jsx';
 import ForgotYourPassword from './forgot-your-password.jsx';
 
@@ -33,7 +34,7 @@ class DerivPassword extends React.Component {
     }
 
     render() {
-        return <MultiStep ref={(node) => (this.node = node)} steps={this.steps} />;
+        return <MultiStep ref={(node) => (this.node = node)} steps={this.steps} lbl_previous={localize('Back')} />;
     }
 }
 

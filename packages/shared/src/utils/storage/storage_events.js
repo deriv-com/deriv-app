@@ -11,7 +11,7 @@ export const setStorageEvents = () => {
     });
 };
 
-export const getAllowedLocalStorageOrigin = () => {
+export const getUrlSmartTrader = () => {
     if (/^staging\.deriv\.app$/i.test(window.location.hostname)) {
         return 'https://smarttrader-staging.deriv.app';
     }

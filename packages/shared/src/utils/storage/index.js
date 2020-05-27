@@ -1,6 +1,6 @@
-import { setStorageEvents, getAllowedLocalStorageOrigin } from './storage_events';
+import { setStorageEvents, getUrlSmartTrader } from './storage_events';
 
 export default {
     setStorageEvents,
-    getAllowedLocalStorageOrigin,
+    getUrlSmartTrader,
 };

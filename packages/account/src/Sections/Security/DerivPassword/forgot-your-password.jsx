@@ -1,8 +1,7 @@
 import React from 'react';
-import { Div100vhContainer, Icon } from '@deriv/components';
+import { Div100vhContainer, Icon, SendEmailTemplate } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared/utils/screen';
-import SendEmailTemplate from 'Layout/send-email.jsx';
 import ScrollbarsContainer from 'Components/scrollbars-container';
 
 const ForgotYourPassword = ({ onClickSendEmail }) => (
@@ -14,7 +13,11 @@ const ForgotYourPassword = ({ onClickSendEmail }) => (
         >
             <SendEmailTemplate
                 className='forgot-password'
-                subtitle={'Please click on the link in the email to reset your password.'}
+                title={localize("We've sent you an email")}
+                subtitle={localize('Please click on the link in the email to reset your password.')}
+                lbl_no_receive={localize("Didn't receive the email?")}
+                txt_resend={localize('Resend email')}
+                txt_resend_in={localize('Resend email in {{seconds}}s', { seconds: '{{seconds}}' })}
                 onClickSendEmail={onClickSendEmail}
             >
                 <div className='forgot-password__content'>

@@ -104,7 +104,7 @@ class MyAds extends React.Component {
                 <a href='/account/proof-of-identity' className='p2p-cashier__empty-button'>
                     <Button
                         type='button'
-                        text={this.state.is_pending ? localize('Check Status') : localize('Apply')}
+                        text={this.state.is_pending ? localize('Check status') : localize('Apply')}
                         primary
                     />
                 </a>

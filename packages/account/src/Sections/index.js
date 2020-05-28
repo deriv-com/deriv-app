@@ -6,6 +6,7 @@ import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
 import DerivPassword from 'Sections/Security/DerivPassword';
 import ApiToken from 'Sections/Security/ApiToken';
 import Account from 'Containers/account.jsx';
+import DeactivateAccount from 'Sections/Security/DeactivateAccount';
 
 export {
     AccountLimits,
@@ -16,4 +17,5 @@ export {
     ProofOfAddress,
     ApiToken,
     Account,
+    DeactivateAccount,
 };

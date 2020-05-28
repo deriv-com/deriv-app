@@ -105,6 +105,11 @@ const modules = [
                         component: Account,
                         title: localize('API token'),
                     },
+                    {
+                        path: routes.deactivate_account,
+                        component: Account,
+                        title: localize('Deactivate Account'),
+                    },
                 ],
             },
         ],

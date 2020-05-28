@@ -8,6 +8,7 @@ export const routes = {
     proof_of_identity: '/account/proof-of-identity',
     proof_of_address: '/account/proof-of-address',
     deriv_password: '/account/deriv-password',
+    deactivate_account: '/account/deactivate-account',
     account_limits: '/account/account-limits',
     account_password: '/settings/account_password',
     api_token: '/account/api-token',
@@ -40,5 +41,4 @@ export const routes = {
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
     smarttrader: getUrlSmartTrader(),
     endpoint: '/endpoint',
-    deactivate_account: '/account/deactivate-account',
 };

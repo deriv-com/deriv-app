@@ -11,6 +11,7 @@ import {
     ProofOfAddress,
     ApiToken,
     Account,
+    DeactivateAccount,
 } from 'Sections';
 
 // Error Routes
@@ -76,6 +77,11 @@ const initRoutesConfig = () => [
                         path: routes.api_token,
                         component: ApiToken,
                         title: localize('API token'),
+                    },
+                    {
+                        path: routes.deactivate_account,
+                        component: DeactivateAccount,
+                        title: localize('Deactivate Account'),
                     },
                 ],
             },

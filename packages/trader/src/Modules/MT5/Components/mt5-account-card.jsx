@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Money, Button, Clipboard } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Money, Button } from '@deriv/components';
+import { Localize } from '@deriv/translations';
+import { Mt5AccountCopy } from './mt5-account-copy.jsx';
 import { getMT5WebTerminalLink } from '../Helpers/constants';
 
 const MT5AccountCard = ({
@@ -11,6 +12,7 @@ const MT5AccountCard = ({
     existing_data,
     has_mt5_account,
     icon,
+    is_button_primary,
     is_disabled,
     specs,
     title,
@@ -20,11 +22,35 @@ const MT5AccountCard = ({
     onPasswordManager,
 }) => {
     const IconComponent = icon || (() => null);
-    const cta_label = button_label || <Localize i18n_default_text='Create account' />;
+    const lbl_add_account =
+        type.category === 'real' ? (
+            <Localize i18n_default_text='Add real account' />
+        ) : (
+            <Localize i18n_default_text='Add demo account' />
+        );
+    const cta_label = button_label || lbl_add_account;
+
+    const has_popular_banner = type.type === 'synthetic' && type.category === 'real';
+    const has_demo_banner = type.category === 'demo';
 
     return (
         <div className='mt5-account-card'>
-            <div className='mt5-account-card__type' id={`mt5_${type.category}_${type.type}`}>
+            {has_popular_banner && (
+                <div className='mt5-account-card__banner'>
+                    <Localize i18n_default_text='Most popular' />
+                </div>
+            )}
+            {has_demo_banner && (
+                <div className='mt5-account-card__banner mt5-account-card__banner--demo'>
+                    <Localize i18n_default_text='DEMO' />
+                </div>
+            )}
+            <div
+                className={classNames('mt5-account-card__type', {
+                    'mt5-account-card__type--has-banner': has_popular_banner || has_demo_banner,
+                })}
+                id={`mt5_${type.category}_${type.type}`}
+            >
                 {icon && <IconComponent />}
                 <div className='mt5-account-card__type--description'>
                     <h1 className='mt5-account-card--heading'>{title}</h1>
@@ -38,25 +64,6 @@ const MT5AccountCard = ({
             </div>
 
             <div className='mt5-account-card__cta'>
-                {existing_data && existing_data.login && (
-                    <div className='mt5-account-card__login'>
-                        <Localize
-                            i18n_default_text='Account login no.&nbsp;<0>{{login}}</0>'
-                            values={{
-                                login: existing_data.display_login,
-                            }}
-                            components={[<strong key='0' />]}
-                        />
-                        <Clipboard
-                            text_copy={existing_data.display_login}
-                            info_message={localize(
-                                'Click here to copy account login number and paste into the login box in MT5 platform along with your password.'
-                            )}
-                            success_message={localize('Account login number copied!')}
-                            className='mt5-account-card__clipboard'
-                        />
-                    </div>
-                )}
                 <div className='mt5-account-card__specs'>
                     <table className='mt5-account-card__specs-table'>
                         <tbody>
@@ -73,6 +80,18 @@ const MT5AccountCard = ({
                         </tbody>
                     </table>
                 </div>
+                {existing_data?.login && (
+                    <div className='mt5-account-card__login'>
+                        <Localize
+                            i18n_default_text='Account login no.&nbsp;<0>{{login}}</0>'
+                            values={{
+                                login: existing_data.display_login,
+                            }}
+                            components={[<strong key='0' />]}
+                        />
+                        <Mt5AccountCopy text={existing_data.display_login} />
+                    </div>
+                )}
 
                 {!existing_data && commission_message && (
                     <p className='mt5-account-card__commission mt5-account-card--paragraph'>{commission_message}</p>
@@ -81,11 +100,11 @@ const MT5AccountCard = ({
                     <div className='mt5-account-card__manage'>
                         <Button onClick={onClickFund} type='button' secondary>
                             {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
-                            {type.category === 'demo' && <Localize i18n_default_text='Top up' />}
+                            {type.category === 'demo' && <Localize i18n_default_text='Fund top up' />}
                         </Button>
                         <Button
                             onClick={() => {
-                                onPasswordManager(existing_data.login, title);
+                                onPasswordManager(existing_data.login, title, type.category);
                             }}
                             type='button'
                             secondary
@@ -113,15 +132,13 @@ const MT5AccountCard = ({
                 )}
                 {!existing_data && !has_mt5_account && (
                     <Button
-                        className={classNames(
-                            'mt5-account-card__account-selection mt5-account-card__account-selection--primary',
-                            {
-                                'mt5-account-card__account-selection--disabled': is_disabled,
-                            }
-                        )}
-                        onClick={!is_disabled ? onSelectAccount : undefined}
+                        className='mt5-account-card__account-selection'
+                        onClick={onSelectAccount}
                         type='button'
-                        primary
+                        is_disabled={is_disabled}
+                        primary={is_button_primary}
+                        secondary={!is_button_primary}
+                        large
                     >
                         {cta_label}
                     </Button>

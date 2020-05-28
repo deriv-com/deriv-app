@@ -7,7 +7,7 @@ $MIN_HEIGHT_FLOATING: calc(
 .account {
     margin: 0 16px;
 
-    .multistep {
+    .multi-step {
         @include mobile {
             width: 100%;
         }

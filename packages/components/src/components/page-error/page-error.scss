@@ -5,17 +5,27 @@
         justify-content: center;
         align-items: center;
         height: calc(100vh - 83px);
+
+        @include desktop {
+            &--left {
+                justify-content: left;
+            }
+        }
     }
     &__box {
         background: var(--general-main-1);
         border: var(--general-main-1);
         padding: 5em;
-        text-align: center;
         display: flex;
         flex-flow: column nowrap;
         align-items: center;
         justify-content: center;
 
+        @include desktop {
+            &--left {
+                align-items: start;
+            }
+        }
         @media screen and (min-width: 1008px) {
             max-width: calc(100vw - 45%);
         }
@@ -25,23 +35,35 @@
         }
     }
     &__header {
-        @include typeface(--heading-center-bold-black, none);
+        @include typeface(--xheading-center-bold-black, none);
         color: var(--text-prominent);
         line-height: 44px;
     }
     &__message {
-        @include typeface(--paragraph-center-normal-black, none);
-        @include toEm(margin, 16px 0px, 14px);
+        @include typeface(--title-center-normal-black, none);
         color: var(--text-prominent);
-        line-height: 1.45;
-        max-width: 400px;
+        line-height: 1.5;
+        max-width: 502px;
+        margin: 1.6rem 0 2.4rem;
 
         &-wrapper {
             display: flex;
             justify-content: center;
+
+            &--left {
+                @include desktop {
+                    justify-content: left;
+                }
+
+                .dc-page-error__message-paragraph:not(:last-child) {
+                    margin-bottom: 1.6rem;
+                }
+            }
         }
-    }
-    &__code {
-        font-weight: bold;
+        @include desktop {
+            &--left {
+                text-align: left;
+            }
+        }
     }
 }

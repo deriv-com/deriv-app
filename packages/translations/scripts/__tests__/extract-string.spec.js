@@ -60,6 +60,7 @@ describe('Regular expression checks', () => {
                     <Button onClick={() => window.alert(localize('Here is where you can decide if your bot should continue trading.')) } />
                     <Localize i18n_default_text='Tick {{current_tick}} - ' values={{ current_tick }} />
                     <Localize i18n_default_text='You cannot use your real money account with {{website_name}} at this time.' values={{ website_name }} />
+                    <Localize i18n_default_text={'Jurisdiction and choice of law'} />
                 </React.Fragment>
             );
         `);
@@ -67,7 +68,8 @@ describe('Regular expression checks', () => {
             'This chart display is not ideal for tick contracts',
             'Here is where you can decide if your bot should continue trading.',
             'Tick {{current_tick}} - ',
-            'You cannot use your real money account with {{website_name}} at this time.'
+            'You cannot use your real money account with {{website_name}} at this time.',
+            'Jurisdiction and choice of law',
         ]);
     });
 

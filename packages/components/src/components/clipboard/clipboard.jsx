@@ -49,7 +49,7 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
                     message={success_message}
                     relative_render
                 >
-                    <Icon icon='IcCheckmarkOutline' className={classNames('dc-clipboard', className)} />
+                    <Icon icon='IcCheckmarkCircle' className={classNames('dc-clipboard', className)} />
                 </Popover>
             )}
         </>

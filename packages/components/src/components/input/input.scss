@@ -6,6 +6,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 3.2rem;
+    line-height: 1.43;
 
     &:hover:not(.dc-input__disabled) {
         border-color: var(--border-hover);
@@ -192,6 +193,7 @@
         margin-left: 1.2rem;
         position: absolute;
         top: 4rem;
+        line-height: 1.5;
     }
     &__counter {
         color: var(--text-less-prominent);

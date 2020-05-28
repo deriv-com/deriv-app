@@ -5,7 +5,7 @@ import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
 import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile.jsx';
-// import Barrier                        from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
+import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
 import ToastErrorPopup from 'Modules/Trading/Containers/toast-error-popup.jsx';
 import 'Sass/app/modules/trading-mobile.scss';
@@ -291,3 +291,7 @@ const TradeParamsMobileWrapper = connect(({ modules }) => ({
 export const LastDigitMobile = connect(({ modules }) => ({
     form_components: modules.trade.form_components,
 }))(({ form_components }) => form_components.includes('last_digit') && <LastDigit />);
+
+export const BarrierMobile = connect(({ modules }) => ({
+    form_components: modules.trade.form_components,
+}))(({ form_components }) => form_components.includes('barrier') && <Barrier />);

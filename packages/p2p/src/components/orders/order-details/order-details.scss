@@ -5,171 +5,246 @@
         min-height: 555px;
         overflow-y: scroll;
 
-        .sendbird-container {
-            position: absolute;
-            left: 484px;
-            border-radius: 4px;
-            height: inherit;
-            min-height: inherit;
-            max-height: 555px;
-            width: calc(50% - 32px);
-            max-width: calc(50% - 32px);
-            box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.08), 0 0 8px 0 rgba(0, 0, 0, 0.08);
-        }
-        .sendbird-conversation {
-            display: none;
-            width: 100%;
-            border-radius: 4px;
-            border: none;
-
-            .sendbird-chat-header {
-                padding: 0 16px;
-
-                &__left {
-                    display: flex;
-                    flex-flow: column;
-                    align-items: flex-start;
-
-                    > .sendbird-avatar {
-                        display: none;
-                    }
-
-                    > .sendbird-chat-header__title {
-                        margin-left: 0 !important;
-                    }
-                }
-            }
-
-            .sendbird-file-message__more {
-                display: none !important;
-            }
-
-            .sendbird-separator__left,
-            .sendbird-separator__right {
-                display: none;
-            }
-            .sendbird-separator__text {
-                display: initial;
-                width: 100%;
-                text-align: center;
-            }
-            .sendbird-label--caption-3 {
-                font-size: 10px;
-                margin-left: 0;
-            }
-            .sendbird-label--color-onbackground-2 {
-                color: var(--text-less-prominent);
-            }
-            .sendbird-avatar-img {
-                display: none;
-            }
-            .sendbird-avatar {
-                display: none;
-            }
-            .sendbird-thumbnail--incoming {
-                padding-left: 50px;
-            }
-            .sendbird-thumbnail__img {
-                width: 100%;
-                border-bottom-left-radius: 4px;
-            }
-            .sendbird-user-message__sender-name,
-            .sendbird-thumbnail__sender-name,
-            .sendbird-file-message__sender-name {
-                display: none;
-            }
-            .sendbird-user-message__tooltip {
-                padding: 8px 16px;
-
-                &__text {
-                    font-size: 14px;
-                    font-family: $FONT_STACK;
-                    white-space: break-spaces;
-                }
-            }
-            .sendbird-user-message--incoming,
-            .sendbird-file-message__incoming,
-            .sendbird-thumbnail--incoming {
-                padding-left: 0px !important;
-
-                .sendbird-user-message__tooltip,
-                &:hover .sendbird-user-message__tooltip,
-                .sendbird-file-message__tooltip,
-                &:hover .sendbird-file-message__tooltip {
-                    background-color: var(--general-section-1);
-                    border-bottom-left-radius: 4px;
-
-                    &__text {
-                        color: var(--text-prominent);
-                    }
-                }
-            }
-            .sendbird-user-message--outgoing .sendbird-user-message__tooltip,
-            .sendbird-user-message--outgoing:hover .sendbird-user-message__tooltip {
-                background-color: var(--brand-secondary);
-                border-bottom-right-radius: 4px;
-
-                &__text {
-                    color: var(--text-colored-background);
-                }
-            }
-            .sendbird-user-message__more,
-            .sendbird-thumbnail__more {
-                display: none;
-            }
-            .sendbird-chat-header {
-                background-color: var(--general-section-1);
-                border-radius: 4px 4px 0 0;
-                border-bottom: none;
-
-                &__title {
-                    font-size: 16px;
-                    display: flex;
-                    max-width: 350px;
-                    margin-right: 0;
-                }
-                &__right {
-                    display: none;
-                }
-                &__left {
-                    margin-right: 0;
-                }
-            }
-            .sendbird-conversation__footer {
-                padding: 16px 24px 26px;
-                border-top: 2px solid var(--general-section-1);
-
-                .sendbird-message-input {
-                    height: 40px;
-
-                    &--textarea {
-                        max-height: 150px;
-                        height: 40px;
-                        overflow-y: scroll;
-                        padding: 10px 44px 10px 8px;
-                        line-height: normal;
-                        border: 1px solid var(--border-normal);
-                        box-shadow: none;
-                    }
-                    &--placeholder {
-                        top: 10px;
-                        left: 8px;
-                    }
-                }
-                .sendbird-iconbutton {
-                    top: 4px;
-                    right: 8px;
-                }
-            }
-            .sendbird-chat-footer--textarea__character-count {
+        .sendbird {
+            &-container {
                 position: absolute;
-                right: 24px;
-                line-height: 18px;
-                font-size: 12px;
-                color: var(--text-less-prominent);
+                left: 484px;
+                border-radius: 4px;
+                height: inherit;
+                min-height: inherit;
+                max-height: 555px;
+                width: calc(50% - 32px);
+                max-width: calc(50% - 32px);
+                box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.08), 0 0 8px 0 rgba(0, 0, 0, 0.08);
+
+                &--dark {
+                    box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.64), 0 0 8px 0 rgba(0, 0, 0, 0.64);
+                }
+            }
+
+            &-conversation {
+                display: none;
+                width: 100%;
+                border-radius: 4px;
+                border: none;
+                background-color: var(--general-section-2);
+
+                &__messages {
+                    background-color: var(--general-main-2);
+                }
+
+                &__footer {
+                    padding: 16px 24px 26px;
+                    border-top: 2px solid var(--general-section-2);
+                    background-color: var(--general-main-2);
+
+                    .sendbird-message-input {
+                        height: 40px;
+
+                        &--textarea {
+                            max-height: 150px;
+                            height: 40px;
+                            overflow-y: scroll;
+                            padding: 10px 44px 10px 8px;
+                            line-height: normal;
+                            border: 1px solid var(--border-normal);
+                            box-shadow: none;
+                            background-color: var(--general-main-2);
+                            color: var(--text-less-prominent);
+                            caret-color: var(--text-less-prominent);
+
+                            &:focus {
+                                border: 1px solid var(--border-hover);
+                                color: var(--text-less-prominent);
+                            }
+                        }
+                        &--placeholder {
+                            top: 10px;
+                            left: 8px;
+                            color: var(--text-less-prominent);
+                        }
+                    }
+                    .sendbird-iconbutton {
+                        top: 4px;
+                        right: 8px;
+                        fill: var(--text-general) !important;
+                    }
+                }
+
+                .sendbird {
+                    &-separator {
+                        &__left,
+                        &__right {
+                            display: none;
+                        }
+                        &__text {
+                            display: initial;
+                            width: 100%;
+                            text-align: center;
+                        }
+                    }
+
+                    &-label {
+                        &--caption-3 {
+                            font-size: 10px;
+                            margin-left: 0;
+                        }
+                        &--color-onbackground-2 {
+                            color: var(--text-less-prominent);
+                        }
+                    }
+
+                    &-avatar {
+                        display: none;
+
+                        &-img {
+                            display: none;
+                        }
+                    }
+
+                    &-thumbnail {
+                        &--incoming {
+                            padding-left: 0px !important;
+                        }
+
+                        &__img {
+                            width: 100%;
+                            border-bottom-left-radius: 4px;
+                        }
+                        &__sender-name {
+                            display: none;
+                        }
+                    }
+
+                    &-file-message {
+                        &__more {
+                            display: none !important;
+                        }
+                        &__sender-name {
+                            display: none;
+                        }
+                        &--incoming {
+                            padding-left: 0px !important;
+
+                            .sendbird-file-message__tooltip,
+                            &:hover .sendbird-file-message__tooltip {
+                                background-color: var(--general-active);
+                                border-bottom-left-radius: $BORDER_RADIUS;
+
+                                &__text {
+                                    color: var(--text-prominent);
+                                }
+                            }
+                        }
+                    }
+
+                    &-user-message {
+                        &__sender-name {
+                            display: none;
+                        }
+                        &__tooltip {
+                            padding: 8px 16px;
+
+                            &__text {
+                                font-size: 14px;
+                                font-family: $FONT_STACK;
+                                white-space: break-spaces;
+                            }
+                        }
+                        &__more {
+                            display: none;
+                        }
+                        &--incoming {
+                            padding-left: 0px !important;
+
+                            .sendbird-user-message__tooltip {
+                                background-color: var(--general-active);
+                            }
+
+                            .sendbird-user-message__tooltip,
+                            &:hover .sendbird-user-message__tooltip {
+                                background-color: var(--general-active);
+                                border-bottom-left-radius: $BORDER_RADIUS;
+
+                                &__text {
+                                    color: var(--text-prominent);
+                                }
+                            }
+                        }
+                        &--outgoing {
+                            .sendbird-user-message__tooltip,
+                            &:hover .sendbird-user-message__tooltip {
+                                background-color: var(--brand-secondary);
+                                border-bottom-right-radius: 4px;
+
+                                &__text {
+                                    color: var(--text-colored-background);
+                                }
+                            }
+                        }
+                    }
+
+                    &-chat-header {
+                        border-radius: $BORDER_RADIUS $BORDER_RADIUS 0 0;
+                        border-bottom: none;
+                        padding: 0 16px;
+                        background-color: var(--general-section-2);
+
+                        &__left {
+                            display: flex;
+                            flex-flow: column;
+                            align-items: flex-start;
+                            margin-right: 0;
+                        }
+
+                        &__right {
+                            display: none;
+                        }
+
+                        &__title {
+                            font-size: 16px;
+                            display: flex;
+                            max-width: 350px;
+                            margin-right: 0;
+                            margin-left: 0;
+                            color: var(--text-prominent);
+                        }
+
+                        &__subtitle {
+                            color: var(--text-less-prominent);
+                        }
+                    }
+
+                    &-chat-footer {
+                        &--textarea {
+                            &__character-count {
+                                position: absolute;
+                                right: 24px;
+                                line-height: 18px;
+                                font-size: 12px;
+                                color: var(--text-less-prominent);
+                            }
+                        }
+                    }
+
+                    &-iconbutton {
+                        svg {
+                            fill: var(--text-general) !important;
+                        }
+
+                        .icon-send_svg__fill {
+                            fill: var(--text-general) !important;
+                        }
+
+                        &:hover {
+                            background-color: var(--general-hover) !important;
+                        }
+                    }
+                }
             }
         }
     }
+
     &__wrapper {
         width: 456px;
 

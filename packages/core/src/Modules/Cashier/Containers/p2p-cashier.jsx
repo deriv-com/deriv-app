@@ -43,7 +43,14 @@ class P2PCashier extends React.Component {
         }
     }
     render() {
-        const { currency, local_currency_config, is_virtual, residence, setNotificationCount } = this.props;
+        const {
+            currency,
+            local_currency_config,
+            is_dark_mode_on,
+            is_virtual,
+            residence,
+            setNotificationCount,
+        } = this.props;
         const { order_id } = this.state;
         return (
             <P2P
@@ -54,6 +61,7 @@ class P2PCashier extends React.Component {
                 setNotificationCount={setNotificationCount}
                 order_id={order_id}
                 setOrderId={this.setQueryOrder}
+                is_dark_mode_on={is_dark_mode_on}
             />
         );
     }
@@ -62,15 +70,17 @@ class P2PCashier extends React.Component {
 P2PCashier.propTypes = {
     currency: PropTypes.string,
     local_currency_config: PropTypes.object,
+    is_dark_mode_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
 };
 
 export default withRouter(
-    connect(({ client, modules }) => ({
+    connect(({ client, modules, ui }) => ({
         currency: client.currency,
         local_currency_config: client.local_currency_config,
+        is_dark_mode_on: ui.is_dark_mode_on,
         is_virtual: client.is_virtual,
         residence: client.residence,
         setNotificationCount: modules.cashier.setNotificationCount,

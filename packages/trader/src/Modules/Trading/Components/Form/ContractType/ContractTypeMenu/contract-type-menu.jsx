@@ -187,7 +187,7 @@ class Dialog extends React.PureComponent {
                                     )}
                                     {!is_info_dialog_open ? (
                                         <ThemedScrollbars
-                                            list_ref={this.scrollbar_ref}
+                                            refSetter={this.scrollbar_ref}
                                             height='615px'
                                             onScroll={this.onScroll}
                                             onScrollStop={this.onScrollStop}

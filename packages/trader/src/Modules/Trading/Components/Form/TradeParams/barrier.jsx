@@ -1,13 +1,23 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Icon } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import InputField from 'App/Components/Form/InputField';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 
-const Barrier = ({ barrier_1, barrier_2, barrier_count, is_minimized, onChange, validation_errors }) => {
+const Barrier = ({
+    barrier_1,
+    barrier_2,
+    barrier_count,
+    barrier_pipsize,
+    duration_unit,
+    is_minimized,
+    is_absolute_only,
+    onChange,
+    validation_errors,
+}) => {
     const barrier_title = barrier_count === 1 ? localize('Barrier') : localize('Barriers');
 
     if (is_minimized) {
@@ -22,46 +32,125 @@ const Barrier = ({ barrier_1, barrier_2, barrier_count, is_minimized, onChange, 
     }
 
     const input_class = barrier_count === 2 ? 'multiple' : 'single';
-    return (
-        <Fieldset className='trade-container__fieldset trade-container__barriers' header={barrier_title} is_center>
-            <div>
-                <InputField
-                    id='dt_barrier_1_input'
-                    type='number'
-                    name='barrier_1'
-                    value={barrier_1}
-                    className={`trade-container__barriers-${input_class}`}
-                    classNameInput={classNames(
-                        'trade-container__input',
-                        'trade-container__barriers-input',
-                        `trade-container__barriers-${input_class}-input`
-                    )}
-                    onChange={onChange}
-                    error_messages={validation_errors.barrier_1 || []}
-                    is_float
-                    is_signed
-                />
+    const is_day_duration = duration_unit === 'd';
+    // TODO: Some contracts yet to be implemented in deriv.app allow only absolute barrier, hence the prop
+    const is_absolute_barrier = is_day_duration || is_absolute_only;
 
-                {barrier_count === 2 && (
-                    <React.Fragment>
+    const handleOffsetChange = e => {
+        const float_value = parseFloat(e.target.value);
+        let final_value;
+        if (Math.sign(float_value) === -1) {
+            final_value = float_value.toFixed(barrier_pipsize).toString();
+        } else {
+            final_value = `+${float_value.toFixed(barrier_pipsize)}`;
+        }
+        onChange({ target: { name: e.target.name, value: final_value } });
+    };
+
+    return (
+        <React.Fragment>
+            <DesktopWrapper>
+                <Fieldset
+                    className='trade-container__fieldset trade-container__barriers'
+                    header={barrier_title}
+                    is_center
+                >
+                    <div>
                         <InputField
-                            id='dt_barrier_2_input'
+                            id='dt_barrier_1_input'
                             type='number'
-                            name='barrier_2'
-                            value={barrier_2}
-                            className='multiple'
-                            classNameInput='trade-container__input'
+                            name='barrier_1'
+                            value={barrier_1}
+                            className={`trade-container__barriers-${input_class}`}
+                            classNameInput={classNames(
+                                'trade-container__input',
+                                'trade-container__barriers-input',
+                                `trade-container__barriers-${input_class}-input`
+                            )}
                             onChange={onChange}
-                            error_messages={validation_errors.barrier_2}
+                            error_messages={validation_errors.barrier_1 || []}
                             is_float
                             is_signed
                         />
-                        <Icon icon='IcArrowUp' className='trade-container__barriers--up' />
-                        <Icon icon='IcArrowDown' className='trade-container__barriers--down' />
-                    </React.Fragment>
+
+                        {barrier_count === 2 && (
+                            <React.Fragment>
+                                <InputField
+                                    id='dt_barrier_2_input'
+                                    type='number'
+                                    name='barrier_2'
+                                    value={barrier_2}
+                                    className='multiple'
+                                    classNameInput='trade-container__input'
+                                    onChange={onChange}
+                                    error_messages={validation_errors.barrier_2}
+                                    is_float
+                                    is_signed
+                                />
+                                <Icon icon='IcArrowUp' className='trade-container__barriers--up' />
+                                <Icon icon='IcArrowDown' className='trade-container__barriers--down' />
+                            </React.Fragment>
+                        )}
+                    </div>
+                </Fieldset>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <div className='barrier__widget'>
+                    <Fieldset className='barrier__fields'>
+                        <InputField
+                            id='dt_barrier_1_input'
+                            type='number'
+                            name='barrier_1'
+                            value={barrier_1}
+                            is_incrementable={!is_absolute_barrier}
+                            is_negative_disabled={is_absolute_barrier}
+                            className={`barrier__fields-${input_class}`}
+                            classNameInput={classNames(
+                                'barrier__fields-input',
+                                'barrier__fields-barriers-input',
+                                `barrier__fields-barriers-${input_class}-input`,
+                                {
+                                    'barrier__fields-input--is-offset': !is_absolute_barrier,
+                                }
+                            )}
+                            onChange={e => (is_absolute_barrier ? onChange(e) : handleOffsetChange(e))}
+                            is_float
+                            is_signed
+                        />
+                    </Fieldset>
+                    <h2 className='barrier__widget-title'>
+                        {barrier_count === 2 ? localize('Barrier 1') : localize('Barrier')}
+                    </h2>
+                </div>
+                {barrier_count === 2 && (
+                    <div className='barrier__widget'>
+                        <Fieldset className='barrier__fields'>
+                            <InputField
+                                id='dt_barrier_2_input'
+                                type='number'
+                                name='barrier_2'
+                                value={barrier_2}
+                                is_incrementable={!is_absolute_barrier}
+                                is_negative_disabled={is_absolute_barrier}
+                                className={`barrier__fields-${input_class}`}
+                                classNameInput={classNames(
+                                    'barrier__fields-input',
+                                    'barrier__fields-barriers-input',
+                                    `barrier__fields-barriers-${input_class}-input`,
+                                    {
+                                        'barrier__fields-input--is-offset': !is_absolute_barrier,
+                                    }
+                                )}
+                                onChange={e => (is_absolute_barrier ? onChange(e) : handleOffsetChange(e))}
+                                is_float
+                                is_signed
+                            />
+                        </Fieldset>
+                        <h2 className='barrier__widget-title'>{localize('Barrier 2')}</h2>
+                    </div>
                 )}
-            </div>
-        </Fieldset>
+            </MobileWrapper>
+        </React.Fragment>
     );
 };
 
@@ -69,6 +158,9 @@ Barrier.propTypes = {
     barrier_1: PropTypes.string,
     barrier_2: PropTypes.string,
     barrier_count: PropTypes.number,
+    barrier_pipsize: PropTypes.number,
+    duration_unit: PropTypes.string,
+    is_absolute_only: PropTypes.bool,
     is_minimized: PropTypes.bool,
     onChange: PropTypes.func,
     validation_errors: PropTypes.object,
@@ -77,7 +169,9 @@ Barrier.propTypes = {
 export default connect(({ modules }) => ({
     barrier_1: modules.trade.barrier_1,
     barrier_2: modules.trade.barrier_2,
+    barrier_pipsize: modules.trade.barrier_pipsize,
     barrier_count: modules.trade.barrier_count,
+    duration_unit: modules.trade.duration_unit,
     onChange: modules.trade.onChange,
     validation_errors: modules.trade.validation_errors,
 }))(Barrier);

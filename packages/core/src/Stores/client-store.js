@@ -1,8 +1,8 @@
 import moment from 'moment';
 import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
-import { getAllowedLocalStorageOrigin } from '@deriv/shared/utils/storage';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
+import { getUrlSmartTrader } from '@deriv/shared/utils/storage';
 import { requestLogout, WS } from 'Services';
 import ClientBase from '_common/base/client_base';
 import BinarySocket from '_common/base/socket_base';
@@ -1234,7 +1234,7 @@ export default class ClientStore extends BaseStore {
     syncWithSmartTrader(active_loginid, client_accounts) {
         const iframe_window = document.getElementById('localstorage-sync');
         if (iframe_window) {
-            const origin = getAllowedLocalStorageOrigin();
+            const origin = getUrlSmartTrader();
             if (origin) {
                 // Keep client.accounts in sync (in case user wasn't logged in).
                 iframe_window.contentWindow.postMessage(

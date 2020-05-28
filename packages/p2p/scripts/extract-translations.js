@@ -27,7 +27,7 @@ const getKeyHash = string => crc32(string);
     try {
         const file_paths = [];
         const messages = [];
-        const i18n_marker = new RegExp(/i18n_default_text=(['"])(.*?)\1|localize\(\s*?(['"])\s*(.*?)\s*\3/gs);
+        const i18n_marker = new RegExp(/(i18n_default_text={?|localize\()\s*(['"])\s*(.*?)(?<!\\)\2\s*/gs);
         const messages_json = {};
 
         for (let j = 0; j < globs.length; j++) {
@@ -45,7 +45,7 @@ const getKeyHash = string => crc32(string);
                 const file = fs.readFileSync(file_paths[i], 'utf8');
                 let result = i18n_marker.exec(file);
                 while (result != null) {
-                    const extracted = result[2] || result[4]; // If it captures `text=` then it will be index 2, else its index 4 which captures `localize`
+                    const extracted = result[3];
                     messages.push(extracted.replace(/\\/g, ''));
                     result = i18n_marker.exec(file);
                 }

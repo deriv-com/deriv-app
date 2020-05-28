@@ -31,7 +31,7 @@ Blockly.Blocks.text_indexOf = {
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary: Blockly.Colours.Base.colourTertiary,
-            tooltip: localize('Search for a given string string'),
+            tooltip: localize('Search for a given string'),
             cateogry: Blockly.Categories.Text,
         };
     },

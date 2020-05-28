@@ -88,7 +88,7 @@ const Tools = ({ checked_filters, filters, filterMessage }) => (
                         value={checked_filters.includes(item.id)}
                         defaultChecked={checked_filters.includes(item.id)}
                         label={item.label}
-                        onChange={e => filterMessage(e.target.checked, item.id)}
+                        onChange={() => filterMessage(!checked_filters.includes(item.id), item.id)}
                     />
                 );
             })}

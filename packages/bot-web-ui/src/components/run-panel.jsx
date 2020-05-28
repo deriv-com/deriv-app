@@ -1,13 +1,14 @@
-import { Button, Drawer, Icon, Popover, Tabs } from '@deriv/components';
+import { Money, Button, Drawer, Tabs, Popover } from '@deriv/components';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import Dialog from './dialog.jsx';
 import Journal from './journal.jsx';
 import Summary from './summary.jsx';
-import TradeAnimation from './trade-animation.jsx';
 import Transactions from './transactions.jsx';
 import { connect } from '../stores/connect';
+import { popover_zindex } from '../constants/z-indexes';
 import '../assets/sass/run-panel.scss';
 
 const drawerContent = ({ active_index, setActiveTabIndex }) => {
@@ -26,74 +27,111 @@ const drawerContent = ({ active_index, setActiveTabIndex }) => {
     );
 };
 
+const StatTile = props => (
+    <div className='run-panel__tile'>
+        <Popover
+            className='run-panel__info'
+            alignment={props.alignment}
+            message={props.tooltip}
+            zIndex={popover_zindex.SUMMARY_TOOLTIPS}
+        >
+            <div className='run-panel__tile-title'>{props.title}</div>
+            <div className={classNames('run-panel__tile-content', props.contentClassName)}>{props.content}</div>
+        </Popover>
+    </div>
+);
+
 const drawerFooter = ({
     active_index,
     dialog_options,
     is_clear_stat_disabled,
     is_dialog_open,
-    is_stop_button_disabled,
-    is_stop_button_visible,
     onCancelButtonClick,
     onClearStatClick,
     onOkButtonClick,
-    onRunButtonClick,
-    onStopButtonClick,
+    total_stake,
+    total_payout,
+    number_of_runs,
+    lost_contracts,
+    won_contracts,
+    total_profit,
+    currency,
 }) => {
     return (
         <div className='run-panel__footer'>
-            <TradeAnimation className='run-panel__animation' should_show_overlay={active_index > 0} />
-            <div className='run-panel__buttons'>
-                <Button
-                    id='db-run-panel__clear-button'
-                    is_disabled={is_clear_stat_disabled}
-                    text={localize('Clear stat')}
-                    onClick={onClearStatClick}
-                    has_effect
-                    secondary
-                />
-
-                {is_stop_button_visible ? (
-                    <Button
-                        is_disabled={is_stop_button_disabled}
-                        id='db-run-panel__stop-button'
-                        text={localize('Stop bot')}
-                        icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
-                        onClick={onStopButtonClick}
-                        has_effect
-                        primary
+            {active_index !== 2 && (
+                <div className='run-panel__footer-stat'>
+                    <StatTile
+                        title={localize('Total stake')}
+                        alignment='top'
+                        content={<Money amount={total_stake} currency={currency} />}
+                        tooltip={localize(
+                            'Total stake since you last cleared your stats. Refreshing the page will also clear your stats.'
+                        )}
                     />
-                ) : (
-                    <Button
-                        id='db-run-panel__run-button'
-                        text={localize('Run bot')}
-                        icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
-                        onClick={onRunButtonClick}
-                        has_effect
-                        green
+                    <StatTile
+                        title={localize('Total payout')}
+                        alignment='top'
+                        content={<Money amount={total_payout} currency={currency} />}
+                        tooltip={localize(
+                            'Total payout since you last cleared your stats. Refreshing the page will also clear your stats.'
+                        )}
                     />
-                )}
-                <Popover
-                    className='run-panel__info'
-                    classNameBubble='run-panel__info--bubble'
-                    alignment='top'
-                    message={localize(
-                        'Stopping the bot will prevent further trades. Any ongoing trades will be completed by our system. Please be aware that some completed transactions may not be displayed in the transaction table if the bot is stopped while placing trades. You may refer to the statement page for details of all completed transactions.'
-                    )}
-                    zIndex={5}
-                >
-                    <Icon icon='IcInfoOutline' id='db-run-panel__clear-stat' className='run-panel__icon-info' />
-                </Popover>
-            </div>
-            {is_dialog_open && (
-                <Dialog
-                    title={dialog_options.title}
-                    is_open={is_dialog_open}
-                    onOkButtonClick={onOkButtonClick}
-                    onCancelButtonClick={onCancelButtonClick}
-                >
-                    {dialog_options.message}
-                </Dialog>
+                    <StatTile
+                        title={localize('No. of runs')}
+                        alignment='top'
+                        content={number_of_runs}
+                        tooltip={localize(
+                            'The number of times your bot has run since you last cleared your stats. Each run includes the execution of all the root blocks. Refreshing the page will also clear your stats.'
+                        )}
+                    />
+                    <StatTile
+                        title={localize('Contracts lost')}
+                        alignment='bottom'
+                        content={lost_contracts}
+                        tooltip={localize(
+                            'The number of contracts you have lost since you last cleared your stats. Refreshing the page will also clear your stats.'
+                        )}
+                    />
+                    <StatTile
+                        title={localize('Contracts won')}
+                        alignment='bottom'
+                        content={won_contracts}
+                        tooltip={localize(
+                            'The number of contracts you have won since you last cleared your stats. Refreshing the page will also clear your stats.'
+                        )}
+                    />
+                    <StatTile
+                        title={localize('Profit/Loss')}
+                        content={<Money amount={total_profit} currency={currency} has_sign={true} />}
+                        alignment='bottom'
+                        contentClassName={classNames('summary__amount', {
+                            'summary__amount--positive': total_profit > 0,
+                            'summary__amount--negative': total_profit < 0,
+                        })}
+                        tooltip={localize(
+                            'Your total profit/loss since you last cleared your stats. It is the difference between your total payout and your total stake. Refreshing the page will also clear your stats.'
+                        )}
+                    />
+                </div>
             )}
+            <Button
+                id='db-run-panel__clear-button'
+                className='run-panel__footer-button'
+                is_disabled={is_clear_stat_disabled}
+                text={localize('Clear stat')}
+                onClick={onClearStatClick}
+                has_effect
+                secondary
+            />
+            <Dialog
+                title={dialog_options.title}
+                is_open={is_dialog_open}
+                onOkButtonClick={onOkButtonClick}
+                onCancelButtonClick={onCancelButtonClick}
+            >
+                {dialog_options.message}
+            </Dialog>
         </div>
     );
 };
@@ -110,7 +148,7 @@ class RunPanel extends React.PureComponent {
     render() {
         const { active_index, setActiveTabIndex } = this.props;
         const content = drawerContent({ active_index, setActiveTabIndex });
-        const footer = drawerFooter(this.props);
+        const footer = drawerFooter({ ...this.props, active_index });
 
         return (
             <Drawer
@@ -143,9 +181,16 @@ RunPanel.propTypes = {
     onUnmount: PropTypes.func,
     setActiveTabIndex: PropTypes.func,
     toggleDrawer: PropTypes.func,
+    currency: PropTypes.string,
+    lost_contracts: PropTypes.number,
+    number_of_runs: PropTypes.number,
+    total_payout: PropTypes.number,
+    total_profit: PropTypes.number,
+    total_stake: PropTypes.number,
+    won_contracts: PropTypes.number,
 };
 
-export default connect(({ run_panel }) => ({
+export default connect(({ run_panel, core, summary: s }) => ({
     active_index: run_panel.active_index,
     dialog_options: run_panel.dialog_options,
     is_clear_stat_disabled: run_panel.is_clear_stat_disabled,
@@ -162,4 +207,11 @@ export default connect(({ run_panel }) => ({
     onUnmount: run_panel.onUnmount,
     setActiveTabIndex: run_panel.setActiveTabIndex,
     toggleDrawer: run_panel.toggleDrawer,
+    currency: core.client.currency,
+    lost_contracts: s.summary.lost_contracts,
+    number_of_runs: s.summary.number_of_runs,
+    total_payout: s.summary.total_payout,
+    total_profit: s.summary.total_profit,
+    total_stake: s.summary.total_stake,
+    won_contracts: s.summary.won_contracts,
 }))(RunPanel);

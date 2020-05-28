@@ -1,6 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button, Icon, Popover } from '@deriv/components';
+import { localize } from '@deriv/translations';
 import ContractResultOverlay from './contract-result-overlay.jsx';
 import { connect } from '../stores/connect';
 import '../assets/sass/trade-animation.scss';
@@ -12,7 +14,16 @@ const CircularWrapper = ({ className }) => (
     </div>
 );
 
-const TradeAnimation = ({ className, contract_stage, is_contract_completed, profit, should_show_overlay }) => {
+const TradeAnimation = ({
+    className,
+    contract_stage,
+    is_contract_completed,
+    is_stop_button_visible,
+    profit,
+    should_show_overlay,
+    onRunButtonClick,
+    onStopButtonClick,
+}) => {
     const { index, text } = contract_stage;
     const status_classes = ['', '', ''];
     let progress_status = index - (index === 2 || index === 3 ? 2 : 3);
@@ -32,21 +43,43 @@ const TradeAnimation = ({ className, contract_stage, is_contract_completed, prof
     }
 
     return (
-        <div
-            className={classNames('animation__container', className, {
-                'animation--running': index > 0,
-                'animation--completed': should_show_overlay && is_contract_completed,
-            })}
-        >
-            {should_show_overlay && is_contract_completed && <ContractResultOverlay profit={profit} />}
-            <span className='animation__text'>{text}</span>
-            <div className='animation__progress'>
-                <div className='animation__progress-line'>
-                    <div className={`animation__progress-bar animation__progress-${index}`} />
+        <div className={classNames('animation__wrapper', className)}>
+            <Popover
+                className='animation__info'
+                alignment='bottom'
+                message={localize(
+                    'Stopping the bot will prevent further trades. Any ongoing trades will be completed by our system. Please be aware that some completed transactions may not be displayed in the transaction table if the bot is stopped while placing trades. You may refer to the statement page for details of all completed transactions.'
+                )}
+                zIndex={5}
+            >
+                <Icon icon='IcInfoOutline' id='db-animation__clear-stat' />
+            </Popover>
+            <Button
+                className='animation__button'
+                id={is_stop_button_visible ? 'db-animation__stop-button' : 'db-animation__run-button'}
+                text={is_stop_button_visible ? localize('Stop') : localize('Run')}
+                icon={<Icon icon={is_stop_button_visible ? 'IcPause' : 'IcPlay'} color='active' />}
+                onClick={is_stop_button_visible ? onStopButtonClick : onRunButtonClick}
+                has_effect
+                {...(is_stop_button_visible ? { primary: true } : { green: true })}
+            />
+            <div
+                className={classNames('animation__container', {
+                    'animation--running': index > 0,
+                })}
+            >
+                {should_show_overlay && is_contract_completed && (
+                    <ContractResultOverlay profit={profit} className='animation__overlay' />
+                )}
+                <span className='animation__text'>{text}</span>
+                <div className='animation__progress'>
+                    <div className='animation__progress-line'>
+                        <div className={`animation__progress-bar animation__progress-${index}`} />
+                    </div>
+                    {status_classes.map((status_class, i) => (
+                        <CircularWrapper key={i} className={status_class} />
+                    ))}
                 </div>
-                {status_classes.map((status_class, i) => (
-                    <CircularWrapper key={i} className={status_class} />
-                ))}
             </div>
         </div>
     );
@@ -63,6 +96,9 @@ TradeAnimation.propTypes = {
 export default connect(({ run_panel, contract_card }) => ({
     contract_stage: run_panel.contract_stage,
     is_contract_completed: contract_card.is_contract_completed,
+    is_stop_button_visible: run_panel.is_stop_button_visible,
+    onRunButtonClick: run_panel.onRunButtonClick,
+    onStopButtonClick: run_panel.onStopButtonClick,
     profit: contract_card.profit,
     should_show_overlay: run_panel.should_show_overlay,
 }))(TradeAnimation);

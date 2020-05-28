@@ -119,18 +119,7 @@ const WorkspaceGroup = ({
 );
 
 const Toolbar = props => {
-    const {
-        active_tab,
-        is_dialog_open,
-        is_drawer_open,
-        is_stop_button_disabled,
-        is_stop_button_visible,
-        onOkButtonClick,
-        onCancelButtonClick,
-        onRunButtonClick,
-        onStopButtonClick,
-        onToolboxToggle,
-    } = props;
+    const { active_tab, is_dialog_open, onOkButtonClick, onCancelButtonClick, onToolboxToggle } = props;
 
     return (
         <div className='toolbar'>
@@ -154,33 +143,7 @@ const Toolbar = props => {
                 {active_tab === tabs_title.WORKSPACE && <SearchBox {...props} />}
                 {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...props} />}
             </div>
-            {!is_drawer_open && (
-                <div className='toolbar__section'>
-                    {is_stop_button_visible ? (
-                        <Button
-                            className='db-toolbar__stop-button'
-                            is_disabled={is_stop_button_disabled}
-                            text={localize('Stop bot')}
-                            icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
-                            onClick={onStopButtonClick}
-                            has_effect
-                            primary
-                            large
-                        />
-                    ) : (
-                        <Button
-                            className='db-toolbar__run-button'
-                            text={localize('Run bot')}
-                            icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
-                            onClick={onRunButtonClick}
-                            has_effect
-                            large
-                            green
-                        />
-                    )}
-                    <TradeAnimation className='toolbar__animation' should_show_overlay={true} />
-                </div>
-            )}
+            <TradeAnimation className='toolbar__animation' should_show_overlay />
             <SaveModal />
             <LoadModal />
             <Dialog

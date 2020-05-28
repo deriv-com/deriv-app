@@ -6,13 +6,43 @@
     height: var(--bot-content-height) !important;
     top: 104px !important;
 
+    &__tile {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 56px;
+
+        &-title {
+            height: 18px;
+            margin-bottom: 4px;
+            @include typeface(--small-center-bold-black, none);
+        }
+        &-content {
+            height: 18px;
+            margin-bottom: 4px;
+            @include typeface(--small-center-normal-black, none);
+        }
+    }
     &__footer {
         text-align: center;
         display: flex;
-        height: 156px;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
+
+        &-stat {
+            display: grid;
+            grid-template: 50px / 1fr 1fr 1fr;
+            width: 100%;
+            padding: 16px 0;
+            background-color: var(--general-section-1);
+        }
+        &-button {
+            width: 318px;
+            // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+            height: 32px !important;
+            margin: 12px 24px;
+        }
     }
     &__content {
         overflow: hidden !important;
@@ -23,18 +53,6 @@
         width: 67%;
         margin-top: 1rem;
         align-items: center;
-    }
-    &__icon-info {
-        vertical-align: middle;
-    }
-    &__info {
-        display: block;
-        font-size: 10px;
-    }
-    &__animation {
-        height: 64px;
-        margin: 0 16px;
-        width: 90%;
     }
     &-tab {
         &__content {

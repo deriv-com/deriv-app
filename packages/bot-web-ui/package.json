@@ -97,12 +97,12 @@
     "webpack-cli": "^3.3.4"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.4.4",
     "@deriv/bot-skeleton": "^1.0.0",
     "@deriv/components": "^1.0.0",
     "@deriv/deriv-charts": "^0.2.0",
     "@deriv/shared": "^1.0.0",
     "@deriv/translations": "^1.0.0",
-    "@babel/polyfill": "^7.4.4",
     "classnames": "^2.2.6",
     "commander": "^2.20.0",
     "concat-stream": "^2.0.0",
@@ -111,7 +111,7 @@
     "formik": "^1.5.8",
     "gh-pages": "^2.0.1",
     "mobx": "^5.15.4",
-    "mobx-react": "^6.1.8",
+    "mobx-react": "^6.2.2",
     "react": "~16.8.6",
     "react-content-loader": "^4.2.2",
     "react-dom": "~16.8.6",

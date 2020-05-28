@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import Button from 'Components/button/button.jsx';
 import NumberGrid from './number-grid.jsx';
@@ -34,14 +34,14 @@ const Numpad = ({
     const [default_value, setValue] = React.useState(formatted_value);
     const [has_error, setHasError] = React.useState(false);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (formatted_value !== formatNumber(default_value)) {
             updateValue(value);
             setFloat(isFloat(value));
         }
     }, [value]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         const is_error = !onValidate(default_value) || onValidate(default_value) === 'error';
         setHasError(is_error);
     }, [default_value, value]);

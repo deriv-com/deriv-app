@@ -106,10 +106,11 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
-    "@binary-com/binary-document-uploader": "^2.4.4",
+    "@deriv/account": "^1.0.0",
     "@deriv/bot-web-ui": "^1.0.0",
     "@deriv/components": "^1.0.0",
     "@deriv/deriv-api": "^1.0.5",
+    "@deriv/deriv-charts": "^0.2.0",
     "@deriv/p2p": "^0.6.0",
     "@deriv/shared": "^1.0.0",
     "@deriv/trader": "^3.8.0",
@@ -143,7 +144,6 @@
     "react-tiny-popover": "^4.0.0",
     "react-transition-group": "^2.5.0",
     "react-window": "^1.8.4",
-    "smartcharts-beta": "^0.8.0-betam.10",
     "web-push-notifications": "^3.2.15"
   }
 }

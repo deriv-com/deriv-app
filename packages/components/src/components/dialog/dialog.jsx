@@ -82,6 +82,7 @@ class Dialog extends React.Component {
                                         text={cancel_button_text}
                                         onClick={this.handleCancel}
                                         tertiary
+                                        large
                                     />
                                 )}
                                 {!!confirm_button_text && (
@@ -91,6 +92,7 @@ class Dialog extends React.Component {
                                         text={confirm_button_text}
                                         onClick={this.handleConfirm}
                                         primary
+                                        large
                                     />
                                 )}
                             </div>

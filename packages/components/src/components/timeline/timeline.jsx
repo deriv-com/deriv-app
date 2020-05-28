@@ -21,7 +21,7 @@ const Timeline = ({ children, ...props }) => {
                 >
                     <Oval>{idx + 1}</Oval>
                     <div className='dc-timeline__container'>
-                        <h className='dc-timeline__title'> {child.props.title}</h>
+                        <h2 className='dc-timeline__title'>{child.props.title}</h2>
                         <div className='dc-timeline__content'>{child}</div>
                     </div>
                 </div>

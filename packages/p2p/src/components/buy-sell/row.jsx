@@ -4,7 +4,7 @@ import ContentLoader from 'react-content-loader';
 import { Table, Button } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
-import { generateHexColourFromNickname } from 'Utils/string';
+import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 
 export const BuySellRowLoader = () => (
     <ContentLoader
@@ -30,7 +30,7 @@ BuySellRowLoader.propTypes = {
 export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) => {
     const { advertiser_id } = React.useContext(Dp2pContext);
     const is_own_ad = data.advertiser_id === advertiser_id;
-    const short_name = data.advertiser_name.substr(0, 2).toUpperCase();
+    const short_name = getShortNickname(data.advertiser_name);
 
     return (
         <div style={style}>

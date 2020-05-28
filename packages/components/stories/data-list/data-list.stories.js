@@ -67,7 +67,12 @@ stories
                     height: '100vh',
                 }}
             >
-                <DataList className='test' data_source={mock_data} getRowSize={() => 72} rowRenderer={rowRenderer} />
+                <DataList
+                    className='container'
+                    data_source={mock_data}
+                    getRowSize={() => 72}
+                    rowRenderer={rowRenderer}
+                />
             </div>
         </Theme>
     ))
@@ -81,7 +86,7 @@ stories
                 }}
             >
                 <DataList
-                    className='test'
+                    className='container'
                     data_source={mock_data}
                     getRowSize={() => 72}
                     rowRenderer={rowRenderer}
@@ -100,7 +105,7 @@ stories
                 }}
             >
                 <DataList
-                    className='test'
+                    className='container'
                     data_source={mock_data}
                     getRowSize={() => 72}
                     rowRenderer={rowRenderer}
@@ -119,7 +124,7 @@ stories
                 }}
             >
                 <DataList
-                    className='test'
+                    className='container'
                     data_source={mock_data}
                     getRowSize={() => 72}
                     rowRenderer={rowRenderer}
@@ -138,7 +143,7 @@ stories
                 }}
             >
                 <DataList
-                    className='test'
+                    className='container'
                     data_source={mock_data}
                     getRowSize={() => 72}
                     rowRenderer={rowRenderer}

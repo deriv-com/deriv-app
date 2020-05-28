@@ -1,5 +1,5 @@
 import React from 'react';
-import { urlFor } from '@deriv/shared/utils/url';
+import { getUrlSmartTrader, urlFor } from '@deriv/shared/utils/url';
 import { connect } from 'Stores/connect';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import MarketUnavailableModal from 'App/Components/Elements/Modals/MarketUnavailableModal';
@@ -28,7 +28,7 @@ const TradeModals = ({
     };
 
     const marketUnavailableOnCancel = () => {
-        window.open(urlFor('trading', { legacy: true }));
+        window.open(getUrlSmartTrader());
         resetToPreviousMarket();
     };
 
@@ -41,12 +41,12 @@ const TradeModals = ({
     };
 
     const unsupportedContractOnConfirm = () => {
-        window.open(urlFor('user/portfoliows', { legacy: true }), '_blank');
-        unsupportedContractOnClose();
+        toggleUnsupportedContractModal(false);
     };
 
     const unsupportedContractOnClose = () => {
-        toggleUnsupportedContractModal(false);
+        window.open(urlFor('user/portfoliows', { legacy: true }), '_blank');
+        unsupportedContractOnConfirm(false);
     };
 
     return (

@@ -1,10 +1,10 @@
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Button, Modal, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 import ErrorComponent from 'App/Components/Elements/Errors';
 import DataTable from 'App/Components/Elements/DataTable';
 import DataList from 'App/Components/Elements/DataList';
+import { WS } from 'Services/ws-methods';
 import getConnectedAppsColumnsTemplate from './data-table-template';
 
 class ConnectedApps extends React.Component {

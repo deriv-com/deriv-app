@@ -167,6 +167,14 @@ const BinarySocketGeneral = (() => {
                         redirectOnClick: Login.redirectToLogin,
                     });
                 });
+                break;
+            case 'AuthorizationRequired':
+                // if msg_type is coming from 'buy', behaviour should be handled in app itself.
+                if (msg_type === 'buy') {
+                    return;
+                }
+                client_store.logout();
+                break;
             // no default
         }
     };

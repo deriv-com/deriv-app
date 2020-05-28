@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { website_name } from '../../../../Constants/app-config';
+import { website_domain } from '../../../../Constants/app-config';
 
 class UnsupportedContractModal extends React.Component {
     render() {
         const { disableApp, enableApp, is_loading, is_visible, onConfirm, onClose } = this.props;
         return (
             <Dialog
-                title={localize('Whoops!')}
-                confirm_button_text={localize('Continue to Binary.com')}
-                cancel_button_text={localize('Back to trade page')}
+                title={localize('We’re working on it')}
+                confirm_button_text={localize('Stay on {{website_domain}}', { website_domain })}
+                cancel_button_text={localize('Go to Binary.com')}
                 onConfirm={onConfirm}
                 onCancel={onClose}
                 disableApp={disableApp}
@@ -21,10 +21,7 @@ class UnsupportedContractModal extends React.Component {
                 is_closed_on_cancel
                 is_visible={is_visible}
             >
-                <Localize
-                    i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to Binary.com for details.'
-                    values={{ website_name }}
-                />
+                <Localize i18n_default_text='You’ve selected a trade type that is currently unsupported, but we’re working on it.' />
             </Dialog>
         );
     }

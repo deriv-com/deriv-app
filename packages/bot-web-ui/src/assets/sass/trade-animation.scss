@@ -61,6 +61,7 @@
     }
     &__overlay {
         border-top-left-radius: 0;
+        border-bottom-right-radius: $BORDER_RADIUS;
     }
     &__info {
         font-size: 10px;

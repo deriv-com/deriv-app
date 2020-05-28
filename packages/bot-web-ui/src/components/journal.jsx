@@ -85,6 +85,7 @@ const Tools = ({ checked_filters, filters, filterMessage }) => (
                     <Checkbox
                         key={item.id}
                         classNameLabel='journal-tools__text'
+                        value={checked_filters.includes(item.id)}
                         defaultChecked={checked_filters.includes(item.id)}
                         label={item.label}
                         onChange={e => filterMessage(e.target.checked, item.id)}

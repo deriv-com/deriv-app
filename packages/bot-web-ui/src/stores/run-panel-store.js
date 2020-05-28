@@ -14,6 +14,15 @@ export default class RunPanelStore {
 
     run_id = '';
 
+    @observable state = {
+        lost_contracts: 0,
+        number_of_runs: 0,
+        total_profit: 0,
+        total_payout: 0,
+        total_stake: 0,
+        won_contracts: 0,
+    };
+
     @observable active_index = 0;
     @observable contract_stage = contract_stages.NOT_RUNNING;
     @observable dialog_options = {};
@@ -109,13 +118,13 @@ export default class RunPanelStore {
 
     @action.bound
     clearStat() {
-        const { contract_card, journal, summary, transactions } = this.root_store;
+        const { contract_card, journal, transactions } = this.root_store;
 
         this.is_running = false;
         this.has_open_contract = false;
+        this.clear();
         journal.clear();
         contract_card.clear();
-        summary.clear();
         transactions.clear();
         this.setContractStage(contract_stages.NOT_RUNNING);
     }
@@ -197,14 +206,13 @@ export default class RunPanelStore {
 
     // #region Bot listenets
     registerBotListeners() {
-        const { contract_card, summary, transactions } = this.root_store;
+        const { contract_card, transactions } = this.root_store;
 
         observer.register('bot.running', this.onBotRunningEvent);
         observer.register('bot.stop', this.onBotStopEvent);
         observer.register('bot.click_stop', this.onStopButtonClick);
         observer.register('bot.trade_again', this.onBotTradeAgain);
         observer.register('contract.status', this.onContractStatusEvent);
-        observer.register('contract.status', summary.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
         observer.register('bot.contract', contract_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
@@ -263,8 +271,8 @@ export default class RunPanelStore {
     }
 
     @action.bound
-    onContractStatusEvent(data) {
-        switch (data.id) {
+    onContractStatusEvent(contract_status) {
+        switch (contract_status.id) {
             case 'contract.purchase_sent': {
                 this.setContractStage(contract_stages.PURCHASE_SENT);
                 break;
@@ -274,10 +282,45 @@ export default class RunPanelStore {
 
                 // Close transaction-specific popover, if any.
                 this.root_store.transactions.setActiveTransactionId(null);
+
+                const { buy } = contract_status;
+                this.state.total_stake += buy.buy_price;
+                const { is_virtual } = this.root_store.core.client;
+                if (!is_virtual) {
+                    this.root_store.core.gtm.pushDataLayer({ event: 'dbot_purchase', buy_price: buy.buy_price });
+                }
+
                 break;
             }
             case 'contract.sold': {
                 this.setContractStage(contract_stages.CONTRACT_CLOSED);
+
+                const { contract } = contract_status;
+                this.state.total_profit += contract.profit;
+                this.state.number_of_runs += 1;
+
+                switch (contract.status) {
+                    case 'won': {
+                        this.state.won_contracts += 1;
+                        this.state.total_payout += contract.payout;
+                        break;
+                    }
+                    case 'lost': {
+                        this.state.lost_contracts += 1;
+                        break;
+                    }
+                    case 'sold': {
+                        if (contract.profit > 0) {
+                            this.state.won_contracts += 1;
+                            this.state.total_payout += contract.profit;
+                        } else {
+                            this.state.lost_contracts += 1;
+                        }
+                        break;
+                    }
+                    default:
+                        break;
+                }
                 break;
             }
             default: {
@@ -285,6 +328,19 @@ export default class RunPanelStore {
                 break;
             }
         }
+    }
+
+    @action.bound
+    clear() {
+        this.state = {
+            lost_contracts: 0,
+            number_of_runs: 0,
+            total_profit: 0,
+            total_payout: 0,
+            total_stake: 0,
+            won_contracts: 0,
+        };
+        observer.emit('state.clear');
     }
 
     @action.bound

@@ -23,10 +23,10 @@ export default Engine =>
             this.sessionRuns = 0;
             this.sessionProfit = 0;
 
-            globalObserver.register('summary.clear', this.clearSummary.bind(this));
+            globalObserver.register('state.clear', this.clearState.bind(this));
         }
 
-        clearSummary() {
+        clearState() {
             this.sessionRuns = 0;
             this.sessionProfit = 0;
             if (!this.accountInfo) return;

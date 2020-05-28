@@ -57,10 +57,11 @@ const drawerFooter = ({
     total_profit,
     currency,
 }) => {
+    const is_journal_tab = active_index === 2;
     return (
         <div className='run-panel__footer'>
-            {active_index !== 2 && (
-                <div className='run-panel__footer-stat'>
+            {!is_journal_tab && (
+                <div className='run-panel__stat'>
                     <StatTile
                         title={localize('Total stake')}
                         alignment='top'
@@ -105,9 +106,9 @@ const drawerFooter = ({
                         title={localize('Profit/Loss')}
                         content={<Money amount={total_profit} currency={currency} has_sign={true} />}
                         alignment='bottom'
-                        contentClassName={classNames('summary__amount', {
-                            'summary__amount--positive': total_profit > 0,
-                            'summary__amount--negative': total_profit < 0,
+                        contentClassName={classNames('run-panel__stat-amount', {
+                            'run-panel__stat-amount--positive': total_profit > 0,
+                            'run-panel__stat-amount--negative': total_profit < 0,
                         })}
                         tooltip={localize(
                             'Your total profit/loss since you last cleared your stats. It is the difference between your total payout and your total stake. Refreshing the page will also clear your stats.'
@@ -190,7 +191,7 @@ RunPanel.propTypes = {
     won_contracts: PropTypes.number,
 };
 
-export default connect(({ run_panel, core, summary: s }) => ({
+export default connect(({ run_panel, core }) => ({
     active_index: run_panel.active_index,
     dialog_options: run_panel.dialog_options,
     is_clear_stat_disabled: run_panel.is_clear_stat_disabled,
@@ -208,10 +209,10 @@ export default connect(({ run_panel, core, summary: s }) => ({
     setActiveTabIndex: run_panel.setActiveTabIndex,
     toggleDrawer: run_panel.toggleDrawer,
     currency: core.client.currency,
-    lost_contracts: s.summary.lost_contracts,
-    number_of_runs: s.summary.number_of_runs,
-    total_payout: s.summary.total_payout,
-    total_profit: s.summary.total_profit,
-    total_stake: s.summary.total_stake,
-    won_contracts: s.summary.won_contracts,
+    lost_contracts: run_panel.state.lost_contracts,
+    number_of_runs: run_panel.state.number_of_runs,
+    total_payout: run_panel.state.total_payout,
+    total_profit: run_panel.state.total_profit,
+    total_stake: run_panel.state.total_stake,
+    won_contracts: run_panel.state.won_contracts,
 }))(RunPanel);

@@ -23,6 +23,26 @@
             @include typeface(--small-center-normal-black, none);
         }
     }
+    &__stat {
+        display: grid;
+        grid-template: 50px / 1fr 1fr 1fr;
+        width: 100%;
+        padding: 16px 0;
+        background-color: var(--general-section-1);
+
+        &-amount {
+            @include typeface(--small-center-normal-black, none);
+
+            &--positive {
+                font-weight: bold;
+                color: var(--text-profit-success);
+            }
+            &--negative {
+                font-weight: bold;
+                color: var(--text-loss-danger);
+            }
+        }
+    }
     &__footer {
         text-align: center;
         display: flex;
@@ -30,13 +50,6 @@
         justify-content: space-between;
         align-items: center;
 
-        &-stat {
-            display: grid;
-            grid-template: 50px / 1fr 1fr 1fr;
-            width: 100%;
-            padding: 16px 0;
-            background-color: var(--general-section-1);
-        }
         &-button {
             width: 318px;
             // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
@@ -57,6 +70,10 @@
     &-tab {
         &__content {
             height: var(--drawer-content-height);
+
+            &--no-stat {
+                height: var(--drawer-content-height-no-stat);
+            }
         }
     }
 }

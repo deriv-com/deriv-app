@@ -6,7 +6,6 @@ import { connect } from 'Stores/connect';
 import Login from '_common/base/login';
 
 const Redirect = ({
-    is_logged_in,
     server_time,
     history,
     setDeviceData,
@@ -80,7 +79,6 @@ const Redirect = ({
 };
 
 Redirect.propTypes = {
-    is_logged_in: PropTypes.bool,
     getServerTime: PropTypes.object,
     history: PropTypes.object,
     setDeviceData: PropTypes.func,
@@ -91,7 +89,6 @@ Redirect.propTypes = {
 
 export default withRouter(
     connect(({ client, ui, common }) => ({
-        is_logged_in: client.is_logged_in,
         setDeviceData: client.setDeviceData,
         setVerificationCode: client.setVerificationCode,
         fetchResidenceList: client.fetchResidenceList,

@@ -128,69 +128,62 @@ const JournalLoader = () => (
     </ContentLoader>
 );
 
-const Journal = ({ filtered_messages, contract_stage, ...props }) => {
-    return (
-        <div className='journal run-panel-tab__content--no-stat'>
-            <Tools {...props} />
-            <ThemedScrollbars
-                autoHide
-                className='journal__scrollbars'
-                style={{ height: 'calc(100% - 42px)' }}
-                hideHorizontal
-            >
-                <div className='journal__item-list'>
-                    {filtered_messages.length ? (
-                        <TransitionGroup>
-                            {filtered_messages.map(item => {
-                                const { date, time, message, message_type, className, unique_id, extra } = item;
-                                const date_el = DateItem({ date, time });
+const Journal = ({ filtered_messages, contract_stage, ...props }) => (
+    <div className='journal run-panel-tab__content--no-stat'>
+        <Tools {...props} />
+        <ThemedScrollbars
+            autoHide
+            className='journal__scrollbars'
+            style={{ height: 'calc(100% - 42px)' }}
+            hideHorizontal
+        >
+            <div className='journal__item-list'>
+                {filtered_messages.length ? (
+                    <TransitionGroup>
+                        {filtered_messages.map(item => {
+                            const { date, time, message, message_type, className, unique_id, extra } = item;
+                            const date_el = DateItem({ date, time });
 
-                                return (
-                                    <CSSTransition key={unique_id} timeout={500} classNames='list__animation'>
-                                        <div className='journal__item'>
-                                            <div className='journal__item-content'>
-                                                {getJournalItemContent(message, message_type, className, extra)}
-                                            </div>
-                                            <div className='journal__text-datetime'>{date_el}</div>
+                            return (
+                                <CSSTransition key={unique_id} timeout={500} classNames='list__animation'>
+                                    <div className='journal__item'>
+                                        <div className='journal__item-content'>
+                                            {getJournalItemContent(message, message_type, className, extra)}
                                         </div>
-                                    </CSSTransition>
-                                );
-                            })}
-                        </TransitionGroup>
-                    ) : (
-                        <>
-                            {contract_stage.index >= contract_stages.STARTING.index ? (
-                                <JournalLoader />
-                            ) : (
-                                <div className='journal-empty__container'>
-                                    <div className='journal-empty'>
-                                        <Icon
-                                            icon='IcBox'
-                                            className='journal-empty__icon'
-                                            size={64}
-                                            color='secondary'
-                                        />
-                                        <h4 className='journal-empty__header'>
-                                            {localize('There are no messages to display')}
-                                        </h4>
-                                        <div className='journal-empty__message'>
-                                            <span>{localize('Here are the possible reasons:')}</span>
-                                            <ul className='journal-empty__list'>
-                                                <li>{localize('The bot is not running')}</li>
-                                                <li>{localize('The stats are cleared')}</li>
-                                                <li>{localize('All messages are filtered out')}</li>
-                                            </ul>
-                                        </div>
+                                        <div className='journal__text-datetime'>{date_el}</div>
+                                    </div>
+                                </CSSTransition>
+                            );
+                        })}
+                    </TransitionGroup>
+                ) : (
+                    <>
+                        {contract_stage.index >= contract_stages.STARTING.index ? (
+                            <JournalLoader />
+                        ) : (
+                            <div className='journal-empty__container'>
+                                <div className='journal-empty'>
+                                    <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
+                                    <h4 className='journal-empty__header'>
+                                        {localize('There are no messages to display')}
+                                    </h4>
+                                    <div className='journal-empty__message'>
+                                        <span>{localize('Here are the possible reasons:')}</span>
+                                        <ul className='journal-empty__list'>
+                                            <li>{localize('The bot is not running')}</li>
+                                            <li>{localize('The stats are cleared')}</li>
+                                            <li>{localize('All messages are filtered out')}</li>
+                                        </ul>
                                     </div>
                                 </div>
-                            )}
-                        </>
-                    )}
-                </div>
-            </ThemedScrollbars>
-        </div>
-    );
-};
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
+        </ThemedScrollbars>
+    </div>
+);
 
 Journal.propTypes = {
     checked_filters: PropTypes.array,

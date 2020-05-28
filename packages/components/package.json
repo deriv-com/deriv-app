@@ -107,7 +107,6 @@
     "classnames": "^2.2.6",
     "formik": "^1.5.8",
     "gh-pages": "^2.1.1",
-    "mobx-react": "^6.2.2",
     "prop-types": "^15.7.2",
     "react": "~16.8.6",
     "react-div-100vh": "^0.3.8",

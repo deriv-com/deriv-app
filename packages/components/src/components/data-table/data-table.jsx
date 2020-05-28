@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { VariableSizeList as List } from 'react-window';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -164,7 +163,7 @@ DataTable.propTypes = {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
     className: PropTypes.string,
     columns: PropTypes.array,
-    data_source: MobxPropTypes.arrayOrObservableArray,
+    data_source: PropTypes.array,
     footer: PropTypes.object,
     getRowAction: PropTypes.func,
     getRowSize: PropTypes.func,

@@ -9,7 +9,7 @@ export default {
         localize('- Payout: the payout of the contract'),
         localize('- Profit: the profit you’ve earned'),
         localize('- Contract type: the name of the contract type such as Rise, Fall, Touch, No Touch, etс.'),
-        localize('- Entry spot: the starting time of the contract'),
+        localize('- Entry time: the starting time of the contract'),
         localize('- Entry value: the value of the first tick of the contract'),
         localize('- Exit time: the contract expiration time'),
         localize('- Exit value: the value of the last tick of the contract'),

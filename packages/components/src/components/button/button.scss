@@ -158,6 +158,8 @@
         display: block;
     }
     &__group {
+        white-space: nowrap;
+
         .dc-btn + .dc-btn {
             margin-left: 8px;
         }

@@ -3,24 +3,20 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { website_name } from 'App/Constants/app-config';
 
 const MarketUnavailableModal = ({ disableApp, enableApp, is_loading, is_visible, onCancel, onConfirm }) => (
     <Dialog
+        title={localize('We’re working on it')}
+        confirm_button_text={localize('Stay on DTrader')}
         cancel_button_text={localize('Go to SmartTrader')}
-        confirm_button_text={localize('No, stay on {{website_name}}', { website_name })}
-        is_visible={is_visible}
-        onCancel={onCancel}
         onConfirm={onConfirm}
+        onCancel={onCancel}
+        is_visible={is_visible}
         disableApp={disableApp}
         enableApp={enableApp}
         is_loading={is_loading}
-        title={localize('Market is unavailable')}
     >
-        <Localize
-            i18n_default_text='Sorry, but this market is not supported yet on {{website_name}}. Do you want to trade this market on SmartTrader?'
-            values={{ website_name }}
-        />
+        <Localize i18n_default_text='This market is not yet available on DTrader, but it is on SmartTrader.' />
     </Dialog>
 );
 

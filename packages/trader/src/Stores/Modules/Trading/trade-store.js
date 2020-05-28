@@ -1,5 +1,5 @@
 import debounce from 'lodash.debounce';
-import { action, computed, observable, reaction, runInAction, toJS } from 'mobx';
+import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { isDesktop } from '@deriv/shared/utils/screen';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
@@ -16,6 +16,7 @@ import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
 import { processTradeParams } from './Helpers/process';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
+import { getBarrierPipSize } from './Helpers/barrier';
 import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
@@ -124,6 +125,8 @@ export default class TradeStore extends BaseStore {
     init = async () => {
         // To be sure that the website_status response has been received before processing trading page.
         await WS.wait('authorize', 'website_status');
+        // This is to wait when the client is logging in via OAuth redirect
+        await when(() => !this.root_store.client.is_populating_account_list);
         WS.storage.activeSymbols('brief').then(({ active_symbols }) => {
             runInAction(() => {
                 this.active_symbols = active_symbols;
@@ -293,6 +296,7 @@ export default class TradeStore extends BaseStore {
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
         await WS.wait('authorize');
+        await when(() => !this.root_store.client.is_populating_account_list);
         await this.setActiveSymbols();
         runInAction(async () => {
             await WS.storage.contractsFor(this.symbol).then(async r => {
@@ -455,6 +459,11 @@ export default class TradeStore extends BaseStore {
             barriers,
             is_over: false,
         });
+    }
+
+    @computed
+    get barrier_pipsize() {
+        return getBarrierPipSize(this.barrier_1);
     }
 
     @computed

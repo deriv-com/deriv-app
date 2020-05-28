@@ -181,7 +181,6 @@
     color: var(--text-prominent);
 
     &__container {
-        width: 30rem;
         display: grid;
         grid-template-rows: 6rem 1fr 7rem;
         height: 100%;
@@ -191,11 +190,15 @@
         margin: 1.6rem 0 0;
     }
     &__hint {
-        @include typeface(--paragraph-left-normal-black);
+        @include typeface(--small-left-normal-black);
         color: var(--text-less-prominent);
+        margin-left: 1.2rem;
     }
     &__password-field {
         margin-bottom: 0.5rem;
+    }
+    &__password-area {
+        width: 30rem;
     }
     &__error {
         display: flex;

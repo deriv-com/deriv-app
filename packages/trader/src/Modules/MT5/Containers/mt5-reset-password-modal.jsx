@@ -126,7 +126,7 @@ class MT5ResetPasswordModal extends React.Component {
                                                         }}
                                                     />
                                                 </h2>
-                                                <div className='password-area'>
+                                                <div className='mt5-reset-password__password-area'>
                                                     <PasswordMeter
                                                         input={values.new_password}
                                                         error={touched.new_password && errors.new_password}

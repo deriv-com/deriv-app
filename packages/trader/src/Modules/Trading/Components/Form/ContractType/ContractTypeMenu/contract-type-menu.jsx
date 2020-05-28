@@ -188,12 +188,9 @@ class Dialog extends React.PureComponent {
                                     {!is_info_dialog_open ? (
                                         <ThemedScrollbars
                                             list_ref={this.scrollbar_ref}
-                                            height='calc(100% - 84px)'
+                                            height='615px'
                                             onScroll={this.onScroll}
                                             onScrollStop={this.onScrollStop}
-                                            renderView={props => (
-                                                <div style={{ paddingBottom: 'calc(100% + 140px)', ...props.style }} />
-                                            )}
                                         >
                                             {children}
                                         </ThemedScrollbars>

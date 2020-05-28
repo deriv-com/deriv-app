@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, ButtonToggle } from '@deriv/components';
 import { localize } from 'Components/i18next';
@@ -17,7 +17,7 @@ const buy_sell_filters = [
     },
 ];
 
-class BuySell extends Component {
+class BuySell extends React.Component {
     state = {
         table_type: 'buy',
         selected_ad: {},

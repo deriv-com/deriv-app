@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { ToggleSwitch } from '@deriv/components';
 import classNames from 'classnames';
@@ -20,7 +20,7 @@ ToggleMessage.propTypes = {
     is_enabled: PropTypes.bool.isRequired,
 };
 
-class ToggleAds extends Component {
+class ToggleAds extends React.Component {
     state = {
         error: '',
         is_enabled: this.props.is_enabled,

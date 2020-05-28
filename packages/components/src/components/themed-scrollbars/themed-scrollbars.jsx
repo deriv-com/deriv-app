@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useRef, useState, useEffect } from 'react';
+import React from 'react';
 
 const ThemedScrollbars = ({
     children,
@@ -13,14 +13,14 @@ const ThemedScrollbars = ({
 }) => {
     // Hook
     const useHover = () => {
-        const [value, setValue] = useState(false);
+        const [value, setValue] = React.useState(false);
 
-        const ref = refSetter || useRef(null);
+        const ref = refSetter || React.useRef(null);
 
         const handleMouseOver = () => setValue(true);
         const handleMouseOut = () => setValue(false);
 
-        useEffect(() => {
+        React.useEffect(() => {
             const node = ref.current;
             if (node) {
                 node.addEventListener('mouseover', handleMouseOver);

@@ -62,7 +62,7 @@ stories
                     height: '360px',
                 }}
             >
-                <DataTable className='test' columns={mock_columns} data_source={mock_data} getRowSize={() => 30} />
+                <DataTable className='container' columns={mock_columns} data_source={mock_data} getRowSize={() => 30} />
             </div>
         </Theme>
     ))
@@ -76,7 +76,7 @@ stories
                 }}
             >
                 <DataTable
-                    className='test'
+                    className='container'
                     columns={mock_columns}
                     data_source={mock_data}
                     getRowSize={() => 30}
@@ -95,7 +95,7 @@ stories
                 }}
             >
                 <DataTable
-                    className='test'
+                    className='container'
                     columns={mock_columns}
                     data_source={mock_data}
                     getRowSize={() => 30}
@@ -114,7 +114,7 @@ stories
                 }}
             >
                 <DataTable
-                    className='test'
+                    className='container'
                     columns={mock_columns}
                     data_source={mock_data}
                     getRowSize={() => 30}
@@ -133,7 +133,7 @@ stories
                 }}
             >
                 <DataTable
-                    className='test'
+                    className='container'
                     columns={mock_columns}
                     data_source={mock_data}
                     getRowSize={() => 30}
@@ -152,7 +152,7 @@ stories
                 }}
             >
                 <DataTable
-                    className='test'
+                    className='container'
                     columns={mock_columns}
                     data_source={mock_data}
                     getRowSize={() => 30}

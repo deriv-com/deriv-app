@@ -1,7 +1,7 @@
-.test__table {
+.container__table {
     height: calc(100% - 42px);
     flex: 1;
 }
-.test__row {
+.container__row {
     grid-template-columns: 1fr 1fr 1fr;
 }

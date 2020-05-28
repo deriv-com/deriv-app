@@ -19,7 +19,7 @@ import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { Localize, localize } from '@deriv/translations';
 import { isDeepEqual } from '@deriv/shared/utils/object';
 
-const account_opening_reason_list = [
+const getAccountOpeningReasonList = () => [
     {
         text: localize('Hedging'),
         value: 'Hedging',
@@ -58,6 +58,7 @@ class MT5PersonalDetailsForm extends React.Component {
     is_initial_valid = false;
     state = {
         is_acc_op_focused: false,
+        account_opening_reason: getAccountOpeningReasonList(),
     };
 
     handleCancel = values => {
@@ -70,7 +71,7 @@ class MT5PersonalDetailsForm extends React.Component {
             citizen: [v => !!v, v => this.props.residence_list.map(i => i.text).includes(v)],
             tax_residence: [v => !!v, v => this.props.residence_list.map(i => i.text).includes(v)],
             tax_identification_number: [v => !!v, v => /^[\w-]{0,20}$/.test(v)],
-            account_opening_reason: [v => !!v, v => account_opening_reason_list.map(i => i.text).includes(v)],
+            account_opening_reason: [v => !!v, v => this.state.account_opening_reason.map(i => i.text).includes(v)],
         };
 
         const mappedKey = {
@@ -277,7 +278,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                                             touched.account_opening_reason &&
                                                             errors.account_opening_reason
                                                         }
-                                                        list_items={account_opening_reason_list}
+                                                        list_items={this.state.account_opening_reason}
                                                         onItemSelection={({ value: v, text }) =>
                                                             setFieldValue('account_opening_reason', v ? text : '', true)
                                                         }

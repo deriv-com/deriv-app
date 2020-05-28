@@ -84,10 +84,7 @@ const boxGenerator = ({
                     <GamingBox
                         no_mt5
                         mt5OnClick={redirectToMt5Real}
-                        derivOnClick={() => {
-                            console.log('Open real account signup');
-                            openRealAccountSignup(standpoint.gaming_company);
-                        }}
+                        derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
                     />
                 </div>
                 <div label={localize('Demo accounts')}>

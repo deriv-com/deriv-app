@@ -88,7 +88,7 @@ class ResetPassword extends React.Component {
                                         <fieldset className='reset-password__fieldset'>
                                             <PasswordMeter
                                                 input={values.password}
-                                                error={touched.password && errors.password}
+                                                has_error={!!(touched.password && errors.password)}
                                             >
                                                 <PasswordInput
                                                     className='reset-password__password-field'

@@ -50,7 +50,8 @@ const Orders = ({ navigate, params }) => {
         if (orders.length && order_id) {
             const order_payload = orders.find(order => order.id === order_id);
             if (order_payload) {
-                setQueryDetails(order_payload);
+                const order_info = new OrderInfo(order_payload);
+                setQueryDetails(order_info);
             } else {
                 navigate('orders');
             }

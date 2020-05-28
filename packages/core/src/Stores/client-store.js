@@ -1,8 +1,8 @@
 import moment from 'moment';
 import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
-import { getAllowedLocalStorageOrigin } from '@deriv/shared/utils/storage';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
+import { getUrlSmartTrader } from '@deriv/shared/utils/storage';
 import { requestLogout, WS } from 'Services';
 import ClientBase from '_common/base/client_base';
 import BinarySocket from '_common/base/socket_base';
@@ -618,7 +618,7 @@ export default class ClientStore extends BaseStore {
         this.setSwitched('');
         let client = this.accounts[this.loginid];
         // Added WS method for reconnecting balance stream on API reconnection
-        WS.setOnReconnect(WS.authorized.balanceAll().then(response => this.setBalance(response.balance)));
+        WS.setOnReconnect(() => WS.authorized.balanceAll().then(response => this.setBalance(response.balance)));
 
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
@@ -634,6 +634,9 @@ export default class ClientStore extends BaseStore {
                 // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
             }
+            runInAction(() => {
+                this.is_populating_account_list = false;
+            });
         }
 
         /**
@@ -1026,7 +1029,6 @@ export default class ClientStore extends BaseStore {
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
             const authorize_response = await BinarySocket.authorize(is_client_logging_in);
-            this.is_populating_account_list = false;
 
             if (login_new_user) {
                 // overwrite obj_params if login is for new virtual account
@@ -1173,13 +1175,11 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     async updateMt5LoginList() {
-        if (!this.is_mt5_account_list_updated && !this.is_populating_mt5_account_list) {
+        if (this.is_logged_in && !this.is_mt5_account_list_updated && !this.is_populating_mt5_account_list) {
             const response = await WS.mt5LoginList();
             this.responseMt5LoginList(response);
             // update total balance since MT5 total only comes in non-stream balance call
-            WS.balanceAll().then(response => {
-                this.setBalance(response.balance);
-            });
+            WS.authorized.balanceAll().then(response => this.setBalance(response.balance));
         }
     }
 
@@ -1232,7 +1232,7 @@ export default class ClientStore extends BaseStore {
     syncWithSmartTrader(active_loginid, client_accounts) {
         const iframe_window = document.getElementById('localstorage-sync');
         if (iframe_window) {
-            const origin = getAllowedLocalStorageOrigin();
+            const origin = getUrlSmartTrader();
             if (origin) {
                 // Keep client.accounts in sync (in case user wasn't logged in).
                 iframe_window.contentWindow.postMessage(

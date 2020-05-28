@@ -1,4 +1,5 @@
 import {
+    Icon,
     Modal,
     Tabs,
     PasswordInput,
@@ -6,6 +7,7 @@ import {
     Button,
     DesktopWrapper,
     MobileWrapper,
+    MultiStep,
     PageOverlay,
     ThemedScrollbars,
     UILoader,
@@ -14,7 +16,6 @@ import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { urlFor } from '@deriv/shared/utils/url';
-import MultiStep from 'Modules/Account/Components/multistep.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
@@ -39,67 +40,95 @@ const MT5PasswordResetUnavailable = () => (
     </>
 );
 
+const MT5PasswordSuccessMessage = ({ toggleModal, is_investor }) => (
+    <div className='mt5-password-manager__success'>
+        <Icon icon='IcPasswordUpdated' size={128} />
+        <h1 className='mt5-password-manager__success-header'>
+            <Localize i18n_default_text='Password changed' />
+        </h1>
+        <p className='mt5-password-manager__success-paragraph'>
+            {is_investor ? (
+                <Localize i18n_default_text='Your investor password has been changed.' />
+            ) : (
+                <Localize i18n_default_text='Your password has been changed.' />
+            )}
+        </p>
+        <Button onClick={toggleModal} className='mt5-password-manager__success-btn' primary large>
+            <p className='dc-btn__text'>{localize('OK')}</p>
+        </Button>
+    </div>
+);
+
 class MT5PasswordManagerModal extends React.Component {
-    multistep_ref = React.createRef();
+    multi_step_ref = React.createRef();
     state = {
-        // error_message_main: '',
-        // error_message_investor: '',
-        main: {
-            has_error: false,
-            error_message: '',
-        },
-        investor: {
-            has_error: false,
-            error_message: '',
-        },
+        active_tab_index: 0,
+        error_message_main: '',
+        is_submit_success_main: false,
+        error_message_investor: '',
+        is_submit_success_investor: false,
     };
 
     componentDidUpdate(next_props) {
         if (!next_props.is_visible && this.props.is_visible) {
             this.setState({
-                main: {
-                    has_error: false,
-                    error_message: '',
-                },
-                investor: {
-                    has_error: false,
-                    error_message: '',
-                },
+                active_tab_index: 0,
+                error_message_main: '',
+                is_submit_success_main: false,
+                error_message_investor: '',
+                is_submit_success_investor: false,
             });
         }
     }
 
     showError = (section, error_message) => {
         this.setState({
-            [section]: {
-                has_error: true,
-                error_message,
-            },
+            [`error_message_${section}`]: error_message,
         });
     };
 
     hideError = section => {
         this.setState({
-            [section]: {
-                has_error: false,
-                error_message: '',
-            },
+            [`error_message_${section}`]: '',
+            [`is_submit_success_${section}`]: true,
+        });
+    };
+
+    updateAccountTabIndex = index => {
+        this.setState({
+            active_tab_index: index,
+            error_message_main: '',
+            is_submit_success_main: false,
+            error_message_investor: '',
+            is_submit_success_investor: false,
         });
     };
 
     render() {
-        const { enableApp, disableApp, is_visible, selected_login, selected_account, toggleModal } = this.props;
+        const {
+            enableApp,
+            disableApp,
+            is_visible,
+            selected_login,
+            selected_account,
+            selected_type,
+            toggleModal,
+        } = this.props;
 
         const validatePassword = values => {
-            const is_valid =
-                validPassword(values.new_password) &&
-                validLength(values.new_password, {
-                    min: 8,
-                    max: 25,
-                });
             const errors = {};
 
-            if (!is_valid) {
+            if (
+                !validLength(values.new_password, {
+                    min: 8,
+                    max: 25,
+                })
+            ) {
+                errors.new_password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+                    min_number: 8,
+                    max_number: 25,
+                });
+            } else if (!validPassword(values.new_password)) {
                 errors.new_password = localize('You need to include uppercase and lowercase letters, and numbers.');
             }
 
@@ -127,14 +156,18 @@ class MT5PasswordManagerModal extends React.Component {
         };
 
         const MainPasswordManager = () => {
+            if (this.state.is_submit_success_main) {
+                return <MT5PasswordSuccessMessage toggleModal={toggleModal} />;
+            }
+
             const initial_values = { old_password: '', new_password: '', password_type: 'main' };
 
             return (
                 <Formik initialValues={initial_values} validate={validatePassword} onSubmit={onSubmit}>
                     {({ isSubmitting, errors, setFieldTouched, touched }) => (
                         <Form className='mt5-password-manager__main-form' noValidate>
-                            {this.state.main.has_error && (
-                                <p className='mt5-password-manager--error-message'>{this.state.main.error_message}</p>
+                            {this.state.error_message_main && (
+                                <p className='mt5-password-manager--error-message'>{this.state.error_message_main}</p>
                             )}
                             <Field name='old_password'>
                                 {({ field }) => (
@@ -150,24 +183,31 @@ class MT5PasswordManagerModal extends React.Component {
                                 {({ field }) => (
                                     <PasswordMeter
                                         input={field.value}
-                                        error={touched.new_password && errors.new_password}
+                                        has_error={!!(touched.new_password && errors.new_password)}
                                     >
-                                        <PasswordInput
-                                            {...field}
-                                            autoComplete='password'
-                                            label={localize('New password')}
-                                            onChange={e => {
-                                                setFieldTouched('new_password', true, true);
-                                                field.onChange(e);
-                                            }}
-                                            required
-                                        />
+                                        {({ has_warning }) => (
+                                            <PasswordInput
+                                                {...field}
+                                                autoComplete='password'
+                                                label={localize('New password')}
+                                                hint={
+                                                    !has_warning &&
+                                                    localize(
+                                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                                    )
+                                                }
+                                                error={touched.new_password && errors.new_password}
+                                                onChange={e => {
+                                                    setFieldTouched('new_password', true, true);
+                                                    field.onChange(e);
+                                                }}
+                                                className='mt5-password-manager__new-password'
+                                                required
+                                            />
+                                        )}
                                     </PasswordMeter>
                                 )}
                             </Field>
-                            <p className='mt5-password-manager--hint'>
-                                <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.' />
-                            </p>
                             <div className='mt5-password-manager__actions'>
                                 <Button
                                     className='mt5-password-manager--button'
@@ -180,7 +220,7 @@ class MT5PasswordManagerModal extends React.Component {
                                 <Button
                                     className='mt5-password-manager--button'
                                     type='button'
-                                    onClick={() => this.multistep_ref.current?.nextStep()}
+                                    onClick={() => this.multi_step_ref.current?.nextStep()}
                                     text={localize('Reset main password')}
                                     tertiary
                                     large
@@ -193,15 +233,22 @@ class MT5PasswordManagerModal extends React.Component {
         };
 
         const InvestorPasswordManager = () => {
+            if (this.state.is_submit_success_investor) {
+                return <MT5PasswordSuccessMessage toggleModal={toggleModal} is_investor />;
+            }
+
             const initial_values = { old_password: '', new_password: '', password_type: 'investor' };
 
             return (
                 <div className='mt5-password-manager__investor-wrapper'>
                     <p className='mt5-password-manager--paragraph'>
-                        <Localize i18n_default_text='Use this password to allow another user to access your account to view your trades. This user will not be able to trade or take any other actions.' />
+                        <Localize i18n_default_text='Use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions.' />
                     </p>
-                    {this.state.investor.has_error && (
-                        <p className='mt5-password-manager--error-message'>{this.state.investor.error_message}</p>
+                    <p className='mt5-password-manager--paragraph'>
+                        <Localize i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password, please reset it.' />
+                    </p>
+                    {this.state.error_message_investor && (
+                        <p className='mt5-password-manager--error-message'>{this.state.error_message_investor}</p>
                     )}
                     <Formik initialValues={initial_values} validate={validatePassword} onSubmit={onSubmit}>
                         {({ isSubmitting, errors, setFieldTouched, touched }) => (
@@ -220,24 +267,31 @@ class MT5PasswordManagerModal extends React.Component {
                                     {({ field }) => (
                                         <PasswordMeter
                                             input={field.value}
-                                            error={touched.new_password && errors.new_password}
+                                            has_error={!!(touched.new_password && errors.new_password)}
                                         >
-                                            <PasswordInput
-                                                {...field}
-                                                autoComplete='password'
-                                                label={localize('New investor password')}
-                                                onChange={e => {
-                                                    setFieldTouched('new_password', true, true);
-                                                    field.onChange(e);
-                                                }}
-                                                required
-                                            />
+                                            {({ has_warning }) => (
+                                                <PasswordInput
+                                                    {...field}
+                                                    autoComplete='password'
+                                                    label={localize('New investor password')}
+                                                    hint={
+                                                        !has_warning &&
+                                                        localize(
+                                                            'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                                        )
+                                                    }
+                                                    error={touched.new_password && errors.new_password}
+                                                    onChange={e => {
+                                                        setFieldTouched('new_password', true, true);
+                                                        field.onChange(e);
+                                                    }}
+                                                    className='mt5-password-manager__new-password'
+                                                    required
+                                                />
+                                            )}
                                         </PasswordMeter>
                                     )}
                                 </Field>
-                                <p className='mt5-password-manager--hint'>
-                                    <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.' />
-                                </p>
                                 <div className='mt5-password-manager__actions'>
                                     <Button
                                         className='mt5-password-manager--button'
@@ -250,7 +304,7 @@ class MT5PasswordManagerModal extends React.Component {
                                     <Button
                                         className='mt5-password-manager--button'
                                         type='button'
-                                        onClick={() => this.multistep_ref.current?.nextStep()}
+                                        onClick={() => this.multi_step_ref.current?.nextStep()}
                                         text={localize('Create or reset investor password')}
                                         tertiary
                                         large
@@ -263,12 +317,17 @@ class MT5PasswordManagerModal extends React.Component {
             );
         };
 
+        // view height - margin top and bottom of modal - modal title - modal content margin top and bottom - table title
+        const password_container_height = 'calc(100vh - 84px - 5.6rem - 8.8rem - 4rem)';
+
         const MT5PasswordManagerTabContent = () => (
             <>
-                <Tabs top>
+                <Tabs active_index={this.state.active_tab_index} onTabItemClick={this.updateAccountTabIndex} top>
                     <div label={localize('Main password')}>
                         <DesktopWrapper>
-                            <MainPasswordManager />
+                            <ThemedScrollbars style={{ height: password_container_height }}>
+                                <MainPasswordManager />
+                            </ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
                             <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 120px)' }}>
@@ -278,7 +337,9 @@ class MT5PasswordManagerModal extends React.Component {
                     </div>
                     <div label={localize('Investor password')}>
                         <DesktopWrapper>
-                            <InvestorPasswordManager />
+                            <ThemedScrollbars style={{ height: password_container_height }}>
+                                <InvestorPasswordManager />
+                            </ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
                             <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 120px)' }}>
@@ -300,7 +361,12 @@ class MT5PasswordManagerModal extends React.Component {
         ];
 
         const MT5PasswordManagerTabContentWrapper = () => (
-            <MultiStep ref={this.multistep_ref} steps={steps} className='mt5-password-manager' />
+            <MultiStep
+                ref={this.multi_step_ref}
+                steps={steps}
+                className='mt5-password-manager'
+                lbl_previous={localize('Back')}
+            />
         );
 
         return (
@@ -311,9 +377,15 @@ class MT5PasswordManagerModal extends React.Component {
                         disableApp={disableApp}
                         enableApp={enableApp}
                         is_open={is_visible}
-                        title={localize('Manage your DMT5 {{account_title}} account password', {
-                            account_title: selected_account,
-                        })}
+                        title={
+                            selected_type === 'real'
+                                ? localize('Manage DMT5 Real {{account_title}} account password', {
+                                      account_title: selected_account,
+                                  })
+                                : localize('Manage DMT5 Demo {{account_title}} account password', {
+                                      account_title: selected_account,
+                                  })
+                        }
                         toggleModal={toggleModal}
                         height='688px'
                         width='904px'

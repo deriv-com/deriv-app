@@ -1,5 +1,5 @@
 import debounce from 'lodash.debounce';
-import { action, computed, observable, reaction, runInAction, toJS } from 'mobx';
+import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { isDesktop } from '@deriv/shared/utils/screen';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
@@ -16,6 +16,7 @@ import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
 import { processTradeParams } from './Helpers/process';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
+import { getBarrierPipSize } from './Helpers/barrier';
 import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
@@ -124,6 +125,8 @@ export default class TradeStore extends BaseStore {
     init = async () => {
         // To be sure that the website_status response has been received before processing trading page.
         await WS.wait('authorize', 'website_status');
+        // This is to wait when the client is logging in via OAuth redirect
+        await when(() => !this.root_store.client.is_populating_account_list);
         WS.storage.activeSymbols('brief').then(({ active_symbols }) => {
             runInAction(() => {
                 this.active_symbols = active_symbols;
@@ -293,6 +296,7 @@ export default class TradeStore extends BaseStore {
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
         await WS.wait('authorize');
+        await when(() => !this.root_store.client.is_populating_account_list);
         await this.setActiveSymbols();
         runInAction(async () => {
             await WS.storage.contractsFor(this.symbol).then(async r => {
@@ -378,7 +382,11 @@ export default class TradeStore extends BaseStore {
     @action.bound
     async resetPreviousSymbol() {
         this.setMarketStatus(isMarketClosed(this.active_symbols, this.previous_symbol));
+
         await Symbol.onChangeSymbolAsync(this.previous_symbol);
+        await this.updateSymbol(this.symbol);
+
+        this.setChartStatus(false);
         runInAction(() => {
             this.previous_symbol = ''; // reset the symbol to default
         });
@@ -451,6 +459,11 @@ export default class TradeStore extends BaseStore {
             barriers,
             is_over: false,
         });
+    }
+
+    @computed
+    get barrier_pipsize() {
+        return getBarrierPipSize(this.barrier_1);
     }
 
     @computed
@@ -978,12 +991,16 @@ export default class TradeStore extends BaseStore {
 
         await this.processNewValuesAsync({ currency: new_currency }, true, { currency: this.currency }, false);
         this.refresh();
-        WS.forgetAll('balance').then(() => {
-            // the first has to be without subscribe to quickly update current account's balance
-            WS.authorized.balance().then(this.handleResponseBalance);
-            // the second is to subscribe to balance and update all sibling accounts' balances too
-            WS.subscribeBalanceAll(this.handleResponseBalance);
-        });
+
+        if (this.root_store.client.is_logged_in) {
+            WS.forgetAll('balance').then(() => {
+                // the first has to be without subscribe to quickly update current account's balance
+                WS.authorized.balance().then(this.handleResponseBalance);
+                // the second is to subscribe to balance and update all sibling accounts' balances too
+                WS.authorized.subscribeBalanceAll(this.handleResponseBalance);
+            });
+        }
+
         this.debouncedProposal();
     }
 

@@ -16,6 +16,7 @@ module.exports = {
         'button-link': 'Components/button-link',
         'button-toggle': 'Components/button-toggle',
         calendar: 'Components/calendar',
+        clipboard: 'Components/clipboard',
         checkbox: 'Components/checkbox',
         'circular-progress': 'Components/circular-progress',
         collapsible: 'Components/collapsible',
@@ -46,6 +47,7 @@ module.exports = {
         'mobile-wrapper': 'Components/mobile-wrapper',
         modal: 'Components/modal',
         money: 'Components/money',
+        'multi-step': 'Components/multi-step',
         numpad: 'Components/numpad/',
         'page-error': 'Components/page-error',
         'page-overlay': 'Components/page-overlay',
@@ -56,6 +58,7 @@ module.exports = {
         'progress-indicator': 'Components/progress-indicator',
         'radio-group': 'Components/radio-group',
         'select-native': 'Components/select-native',
+        'send-email-template': 'Components/send-email-template',
         'swipeable-wrapper': 'Components/swipeable-wrapper',
         'relative-datepicker': 'Components/relative-datepicker',
         table: 'Components/table',
@@ -65,6 +68,7 @@ module.exports = {
         'toggle-switch': 'Components/toggle-switch',
         'tick-picker': 'Components/tick-picker',
         'tick-progress': 'Components/tick-progress',
+        timeline: 'Components/timeline',
         'u-i-loader': 'Components/u-i-loader',
         'vertical-tab': 'Components/vertical-tab',
     },
@@ -168,7 +172,10 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader: 'babel-loader',
+                loader: [
+                  '@deriv/shared/utils/react-import-loader.js',
+                  'babel-loader',
+                ]
             },
         ],
     },

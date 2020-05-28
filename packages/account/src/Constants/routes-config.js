@@ -9,6 +9,7 @@ import {
     FinancialAssessment,
     ProofOfIdentity,
     ProofOfAddress,
+    ApiToken,
     Account,
 } from 'Sections';
 
@@ -70,6 +71,11 @@ const initRoutesConfig = () => [
                         path: routes.account_limits,
                         component: AccountLimits,
                         title: localize('Account limits'),
+                    },
+                    {
+                        path: routes.api_token,
+                        component: ApiToken,
+                        title: localize('API token'),
                     },
                 ],
             },

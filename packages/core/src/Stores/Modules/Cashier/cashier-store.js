@@ -140,50 +140,47 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async init() {
-        // show p2p if:
-        // 1. we have not already checked this before, and
-        // 2. client is not virtual, and
-        // 3. p2p call does not return error code `PermissionDenied`
-        await BinarySocket.wait('authorize');
-        if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
-            const advertiser_error = ObjectUtils.getPropertyValue(await WS.p2pAdvertiserInfo(), ['error', 'code']);
-            if (advertiser_error === 'PermissionDenied') return;
-
-            this.is_p2p_advertiser = !advertiser_error;
-            this.setIsP2pVisible(true);
-        }
-    }
-
-    @action.bound
     async onMountCommon() {
-        await BinarySocket.wait('authorize');
+        if (this.root_store.client.is_logged_in) {
+            // avoid calling this again
+            if (this.is_populating_values) {
+                return;
+            }
 
-        // avoid calling this again
-        if (this.is_populating_values) {
-            return;
-        }
+            this.is_populating_values = true;
 
-        this.is_populating_values = true;
+            // cashier inits once and tries to stay active until switching account
+            // since cashier calls take a long time to respond or display in iframe
+            // so we don't have any unmount function here and everything gets reset on switch instead
+            this.disposeSwitchAccount();
+            this.onSwitchAccount(this.accountSwitcherListener);
 
-        // cashier inits once and tries to stay active until switching account
-        // since cashier calls take a long time to respond or display in iframe
-        // so we don't have any unmount function here and everything gets reset on switch instead
-        this.disposeSwitchAccount();
-        this.onSwitchAccount(this.accountSwitcherListener);
+            // we need to see if client's country has PA
+            // if yes, we can show the PA tab in cashier
+            if (!this.config.payment_agent.list.length) {
+                this.setPaymentAgentList().then(this.filterPaymentAgentList);
+            }
 
-        // we need to see if client's country has PA
-        // if yes, we can show the PA tab in cashier
-        if (!this.config.payment_agent.list.length) {
-            this.setPaymentAgentList().then(this.filterPaymentAgentList);
-        }
+            if (!this.config.payment_agent_transfer.is_payment_agent) {
+                this.checkIsPaymentAgent();
+            }
 
-        if (!this.config.payment_agent_transfer.is_payment_agent) {
-            this.checkIsPaymentAgent();
-        }
+            if (!this.config.account_transfer.accounts_list.length) {
+                this.sortAccountsTransfer();
+            }
 
-        if (!this.config.account_transfer.accounts_list.length) {
-            this.sortAccountsTransfer();
+            // show p2p if:
+            // 1. we have not already checked this before, and
+            // 2. client is not virtual, and
+            // 3. p2p call does not return error code `PermissionDenied`
+            if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
+                const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
+                const advertiser_error = ObjectUtils.getPropertyValue(advertiser_info, ['error', 'code']);
+                if (advertiser_error === 'PermissionDenied') return;
+
+                this.is_p2p_advertiser = !advertiser_error;
+                this.setIsP2pVisible(true);
+            }
         }
     }
 
@@ -667,22 +664,24 @@ export default class CashierStore extends BaseStore {
         // various issues happen when loading from cache
         // e.g. new account may have been created, transfer may have been done elsewhere, etc
         // so on load of this page just call it again
-        const transfer_between_accounts = await WS.transferBetweenAccounts();
+        if (this.root_store.client.is_logged_in) {
+            const transfer_between_accounts = await WS.authorized.transferBetweenAccounts();
 
-        if (transfer_between_accounts.error) {
-            this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
-            this.setLoading(false);
-            return;
+            if (transfer_between_accounts.error) {
+                this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
+                this.setLoading(false);
+                return;
+            }
+
+            if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
+                return;
+            }
+
+            this.sortAccountsTransfer(transfer_between_accounts);
+            this.setTransferFee();
+            this.setMinimumFee();
+            this.setTransferLimit();
         }
-
-        if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
-            return;
-        }
-
-        this.sortAccountsTransfer(transfer_between_accounts);
-        this.setTransferFee();
-        this.setMinimumFee();
-        this.setTransferLimit();
         this.setLoading(false);
     }
 
@@ -753,7 +752,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async sortAccountsTransfer(response_accounts) {
-        const transfer_between_accounts = response_accounts || (await WS.transferBetweenAccounts());
+        const transfer_between_accounts = response_accounts || (await WS.authorized.transferBetweenAccounts());
         if (!this.config.account_transfer.accounts_list.length) {
             // should have more than one account
             if (transfer_between_accounts.error || transfer_between_accounts.accounts.length <= 1) {
@@ -876,9 +875,13 @@ export default class CashierStore extends BaseStore {
     }
 
     requestTransferBetweenAccounts = async ({ amount }) => {
+        if (!this.root_store.client.is_logged_in) {
+            return null;
+        }
+
         this.setErrorMessage('');
         const currency = this.config.account_transfer.selected_from.currency;
-        const transfer_between_accounts = await WS.transferBetweenAccounts(
+        const transfer_between_accounts = await WS.authorized.transferBetweenAccounts(
             this.config.account_transfer.selected_from.value,
             this.config.account_transfer.selected_to.value,
             currency,
@@ -939,7 +942,7 @@ export default class CashierStore extends BaseStore {
 
     async checkIsPaymentAgent() {
         const get_settings = (await WS.authorized.storage.getSettings()).get_settings;
-        this.setIsPaymentAgent(get_settings.is_authenticated_payment_agent);
+        this.setIsPaymentAgent(get_settings?.is_authenticated_payment_agent ?? false);
     }
 
     @action.bound

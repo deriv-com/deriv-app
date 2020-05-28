@@ -16,8 +16,6 @@ export const unsupported_contract_types_list = [
     'lb_high_low',
     // TODO: Remove the conditional values below once barrier and path dependent contracts are ready for mobile
     isMobile() ? 'multiplier' : null,
-    isMobile() ? 'high_low' : null,
-    isMobile() ? 'touch' : null,
 ];
 
 export const contract_category_icon = {

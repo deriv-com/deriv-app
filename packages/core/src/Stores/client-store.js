@@ -618,7 +618,7 @@ export default class ClientStore extends BaseStore {
         this.setSwitched('');
         let client = this.accounts[this.loginid];
         // Added WS method for reconnecting balance stream on API reconnection
-        WS.setOnReconnect(WS.authorized.balanceAll().then(response => this.setBalance(response.balance)));
+        WS.setOnReconnect(() => WS.authorized.balanceAll().then(response => this.setBalance(response.balance)));
 
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
@@ -1175,13 +1175,11 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     async updateMt5LoginList() {
-        if (!this.is_mt5_account_list_updated && !this.is_populating_mt5_account_list) {
+        if (this.is_logged_in && !this.is_mt5_account_list_updated && !this.is_populating_mt5_account_list) {
             const response = await WS.mt5LoginList();
             this.responseMt5LoginList(response);
             // update total balance since MT5 total only comes in non-stream balance call
-            WS.balanceAll().then(response => {
-                this.setBalance(response.balance);
-            });
+            WS.authorized.balanceAll().then(response => this.setBalance(response.balance));
         }
     }
 

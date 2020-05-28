@@ -53,7 +53,7 @@ class MT5POA extends React.Component {
             address_line_2: [v => !v || validAddress(v)],
             address_city: [v => !!v, v => validLength(v, { min: 1, max: 35 })],
             address_state: [v => !!v, v => !v || validLength(v, { min: 1, max: 35 })],
-            address_postcode: [v => !!v, v => validPostCode(v)],
+            address_postcode: [v => validLength(v, { min: 1, max: 20 }), v => validPostCode(v)],
             document_file: [v => !!v, ([file]) => !!file.name],
         };
 
@@ -69,8 +69,12 @@ class MT5POA extends React.Component {
                 localize('State/Province is not in a proper format.'),
             ],
             address_postcode: [
-                localize('Postal/Zip Code is required'),
-                localize('Postal/Zip Code is not in a proper format.'),
+                localize('Please enter a {{field_name}} under {{max_number}} characters.', {
+                    field_name: localize('postal/ZIP code'),
+                    max_number: 20,
+                    interpolation: { escapeValue: false },
+                }),
+                localize('Only letters, numbers, space, and hyphen are allowed.'),
             ],
             document_file: [localize('Document file is not in a proper format.')],
         };
@@ -300,9 +304,8 @@ class MT5POA extends React.Component {
                                                     </fieldset>
                                                     <InputField
                                                         name='address_postcode'
-                                                        required
-                                                        label={localize('Postal/ZIP Code')}
-                                                        placeholder={localize('Postal/ZIP Code')}
+                                                        label={localize('Postal/ZIP code')}
+                                                        placeholder={localize('Postal/ZIP code')}
                                                     />
                                                 </div>
                                                 <div className='mt5-proof-of-address__file-upload'>

@@ -10,6 +10,7 @@ export const icons = {
         'IcCashierNoAds',
         'IcCashierNoBalance',
         'IcCashierNoOrders',
+        'IcCashierP2pUser',
         'IcCashierSendEmail',
         'IcCashierWallet',
         'IcCashierWithdrawal',

@@ -16,6 +16,7 @@ import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
 import { processTradeParams } from './Helpers/process';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
+import { getBarrierPipSize } from './Helpers/barrier';
 import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
@@ -458,6 +459,11 @@ export default class TradeStore extends BaseStore {
             barriers,
             is_over: false,
         });
+    }
+
+    @computed
+    get barrier_pipsize() {
+        return getBarrierPipSize(this.barrier_1);
     }
 
     @computed

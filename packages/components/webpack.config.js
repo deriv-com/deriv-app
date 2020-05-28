@@ -202,7 +202,6 @@ module.exports = {
             'react-router-dom': 'react-router-dom',
             'react-swipeable': 'react-swipeable',
             'react-tiny-popover': 'react-tiny-popover',
-            'mobx-react': 'mobx-react',
             'react-window': 'react-window',
         },
         /^@deriv\/shared\/.+$/,

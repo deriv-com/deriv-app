@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { VariableSizeList as List } from 'react-window';
@@ -117,7 +116,7 @@ class DataList extends React.PureComponent {
 
 DataList.propTypes = {
     className: PropTypes.string,
-    data_source: MobxPropTypes.arrayOrObservableArray,
+    data_source: PropTypes.array,
     getRowAction: PropTypes.func,
     getRowSize: PropTypes.func,
     rowRenderer: PropTypes.func,

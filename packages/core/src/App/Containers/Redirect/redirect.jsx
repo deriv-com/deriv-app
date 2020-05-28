@@ -3,8 +3,10 @@ import { withRouter } from 'react-router-dom';
 import routes from '@deriv/shared/utils/routes';
 import { isDesktop } from '@deriv/shared/utils/os';
 import { connect } from 'Stores/connect';
+import Login from '_common/base/login';
 
 const Redirect = ({
+    is_logged_in,
     server_time,
     history,
     setDeviceData,
@@ -59,6 +61,11 @@ const Redirect = ({
             }
             break;
         }
+        case 'document_verification': {
+            sessionStorage.setItem('redirect_url', routes.proof_of_identity);
+            window.location.href = Login.loginUrl();
+            return null;
+        }
         default:
             break;
     }
@@ -73,6 +80,7 @@ const Redirect = ({
 };
 
 Redirect.propTypes = {
+    is_logged_in: PropTypes.bool,
     getServerTime: PropTypes.object,
     history: PropTypes.object,
     setDeviceData: PropTypes.func,
@@ -83,6 +91,7 @@ Redirect.propTypes = {
 
 export default withRouter(
     connect(({ client, ui, common }) => ({
+        is_logged_in: client.is_logged_in,
         setDeviceData: client.setDeviceData,
         setVerificationCode: client.setVerificationCode,
         fetchResidenceList: client.fetchResidenceList,

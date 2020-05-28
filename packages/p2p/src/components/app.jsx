@@ -198,7 +198,6 @@ class App extends React.Component {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
             custom_strings,
-            is_dark_mode_on,
             order_id,
             setOrderId,
         } = this.props;
@@ -235,7 +234,6 @@ class App extends React.Component {
                     setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     order_id,
                     setOrderId,
-                    is_dark_mode_on,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>

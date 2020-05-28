@@ -15,11 +15,7 @@
                 max-height: 555px;
                 width: calc(50% - 32px);
                 max-width: calc(50% - 32px);
-                box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.08), 0 0 8px 0 rgba(0, 0, 0, 0.08);
-
-                &--dark {
-                    box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.64), 0 0 8px 0 rgba(0, 0, 0, 0.64);
-                }
+                box-shadow: 0 8px 8px 0 var(--shadow-menu), 0 0 8px 0 var(--shadow-menu);
             }
 
             &-conversation {

@@ -406,18 +406,7 @@
         }
     }
     &__clipboard {
-        cursor: pointer;
-        margin-left: 1rem;
-
-        .dc-popover {
-            &__target {
-                display: flex;
-                align-items: center;
-            }
-        }
-    }
-    &__tooltip {
-        max-width: 18.7rem;
+        margin: 0 1em;
     }
     &__cta {
         align-items: center;

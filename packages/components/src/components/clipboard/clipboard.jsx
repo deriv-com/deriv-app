@@ -38,7 +38,12 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
                     is_bubble_hover_enabled
                     message={info_message}
                 >
-                    <Icon icon='IcClipboard' className={classNames('dc-clipboard', className)} onClick={onClick} />
+                    <Icon
+                        icon='IcClipboard'
+                        custom_color='var(--text-less-prominent)'
+                        className={classNames('dc-clipboard', className)}
+                        onClick={onClick}
+                    />
                 </Popover>
             )}
             {is_copied && (
@@ -49,7 +54,11 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
                     message={success_message}
                     relative_render
                 >
-                    <Icon icon='IcCheckmarkCircle' className={classNames('dc-clipboard', className)} />
+                    <Icon
+                        icon='IcCheckmarkCircle'
+                        custom_color='var(--status-success)'
+                        className={classNames('dc-clipboard', className)}
+                    />
                 </Popover>
             )}
         </>

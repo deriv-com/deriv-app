@@ -36,15 +36,15 @@ const Barrier = ({
     // TODO: Some contracts yet to be implemented in deriv.app allow only absolute barrier, hence the prop
     const is_absolute_barrier = is_day_duration || is_absolute_only;
 
-    const handleOffsetChange = e => {
-        const float_value = parseFloat(e.target.value);
+    const format = value => {
+        const float_value = parseFloat(value);
         let final_value;
         if (Math.sign(float_value) === -1) {
             final_value = float_value.toFixed(barrier_pipsize).toString();
         } else {
             final_value = `+${float_value.toFixed(barrier_pipsize)}`;
         }
-        onChange({ target: { name: e.target.name, value: final_value } });
+        return final_value;
     };
 
     return (
@@ -103,6 +103,7 @@ const Barrier = ({
                             name='barrier_1'
                             value={barrier_1}
                             is_incrementable={!is_absolute_barrier}
+                            is_incrementable_on_long_press={!is_absolute_barrier}
                             is_negative_disabled={is_absolute_barrier}
                             className={`barrier__fields-${input_class}`}
                             classNameInput={classNames(
@@ -113,7 +114,8 @@ const Barrier = ({
                                     'barrier__fields-input--is-offset': !is_absolute_barrier,
                                 }
                             )}
-                            onChange={e => (is_absolute_barrier ? onChange(e) : handleOffsetChange(e))}
+                            format={format}
+                            onChange={onChange}
                             is_float
                             is_signed
                         />
@@ -131,6 +133,7 @@ const Barrier = ({
                                 name='barrier_2'
                                 value={barrier_2}
                                 is_incrementable={!is_absolute_barrier}
+                                is_incrementable_on_long_press={!is_absolute_barrier}
                                 is_negative_disabled={is_absolute_barrier}
                                 className={`barrier__fields-${input_class}`}
                                 classNameInput={classNames(
@@ -141,7 +144,8 @@ const Barrier = ({
                                         'barrier__fields-input--is-offset': !is_absolute_barrier,
                                     }
                                 )}
-                                onChange={e => (is_absolute_barrier ? onChange(e) : handleOffsetChange(e))}
+                                format={format}
+                                onChange={onChange}
                                 is_float
                                 is_signed
                             />

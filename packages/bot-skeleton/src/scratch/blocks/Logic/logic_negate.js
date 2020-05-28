@@ -24,7 +24,7 @@ Blockly.Blocks.logic_negate = {
     },
     meta() {
         return {
-            display_name: localize('Logic negate'),
+            display_name: localize('Logic negation'),
             description: localize('This block converts the boolean value (true or false) to its opposite.'),
         };
     },

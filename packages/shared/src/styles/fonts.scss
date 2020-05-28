@@ -21,6 +21,7 @@ $FONT_SIZES: (
 
 $FONT_COLORS: (
     'active' var(--text-colored-background),
+    'prominent' var(--text-prominent),
     'black' var(--text-general),
     'grey' var(--text-less-prominent),
     'disabled' var(--text-disabled),
@@ -36,6 +37,7 @@ $LINEHEIGHTS: (
     'large': 1.75,
     'medium': 1.5,
     'small': 1.25,
+    'xsmall': 1.4,
 );
 
 /*

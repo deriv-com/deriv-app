@@ -138,6 +138,7 @@ import './common/ic-profit.svg';
 import './common/ic-purchase.svg';
 import './common/ic-puzzle.svg';
 import './common/ic-redo.svg';
+import './common/ic-remove-token.svg';
 import './common/ic-reports.svg';
 import './common/ic-reset.svg';
 import './common/ic-save.svg';

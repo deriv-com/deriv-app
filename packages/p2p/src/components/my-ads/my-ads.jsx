@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Icon, Button, Dialog, Loading } from '@deriv/components';
+import { Icon, Button, Loading } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { TableError } from 'Components/table/table-error.jsx';

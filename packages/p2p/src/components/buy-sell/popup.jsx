@@ -6,7 +6,6 @@ import NicknameForm from '../nickname/nickname-form.jsx';
 
 const Popup = ({ ad, handleClose, handleConfirm }) => {
     const { nickname } = React.useContext(Dp2pContext);
-    console.log(nickname);
 
     return (
         <div className='buy-sell__popup'>

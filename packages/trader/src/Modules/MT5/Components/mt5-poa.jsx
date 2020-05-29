@@ -12,19 +12,19 @@ import {
     DesktopWrapper,
     MobileWrapper,
 } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
-import { localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
-import { FormSubHeader } from 'Modules/Account/Components/layout-components.jsx';
-import FileUploaderContainer from 'Modules/Account/Sections/Verification/ProofOfAddress/file-uploader-container.jsx';
-import { poa_status_codes } from 'Modules/Account/Sections/Verification/ProofOfAddress/proof-of-address-container.jsx';
 import {
-    Expired,
-    NeedsReview,
-    Unverified,
-    Verified,
-    Submitted,
-} from 'Modules/Account/Sections/Verification/ProofOfAddress/proof-of-address-messages.jsx';
+    FileUploaderContainer,
+    FormSubHeader,
+    PoaExpired,
+    PoaNeedsReview,
+    PoaVerified,
+    PoaUnverified,
+    PoaSubmitted,
+    PoaStatusCodes,
+} from '@deriv/account';
+import { WS } from 'Services/ws-methods';
+import { localize } from '@deriv/translations';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { validAddress, validLength, validPostCode } from 'Utils/Validator/declarative-validation-rules';
 import { InputField } from './mt5-personal-details-form.jsx';
 
@@ -44,7 +44,7 @@ class MT5POA extends React.Component {
 
     validateForm = values => {
         // No need to validate if we are waiting for confirmation.
-        if ([poa_status_codes.verified, poa_status_codes.pending].includes(this.state.poa_status)) {
+        if ([PoaStatusCodes.verified, PoaStatusCodes.pending].includes(this.state.poa_status)) {
             return {};
         }
 
@@ -53,7 +53,7 @@ class MT5POA extends React.Component {
             address_line_2: [v => !v || validAddress(v)],
             address_city: [v => !!v, v => validLength(v, { min: 1, max: 35 })],
             address_state: [v => !!v, v => !v || validLength(v, { min: 1, max: 35 })],
-            address_postcode: [v => !!v, v => validPostCode(v)],
+            address_postcode: [v => validLength(v, { min: 1, max: 20 }), v => validPostCode(v)],
             document_file: [v => !!v, ([file]) => !!file.name],
         };
 
@@ -69,8 +69,12 @@ class MT5POA extends React.Component {
                 localize('State/Province is not in a proper format.'),
             ],
             address_postcode: [
-                localize('Postal/Zip Code is required'),
-                localize('Postal/Zip Code is not in a proper format.'),
+                localize('Please enter a {{field_name}} under {{max_number}} characters.', {
+                    field_name: localize('postal/ZIP code'),
+                    max_number: 20,
+                    interpolation: { escapeValue: false },
+                }),
+                localize('Only letters, numbers, space, and hyphen are allowed.'),
             ],
             document_file: [localize('Document file is not in a proper format.')],
         };
@@ -199,7 +203,7 @@ class MT5POA extends React.Component {
 
         const { is_loading, resubmit_poa, submitted_poa } = this.state;
 
-        const is_form_visible = !is_loading && (resubmit_poa || this.state.poa_status === poa_status_codes.none);
+        const is_form_visible = !is_loading && (resubmit_poa || this.state.poa_status === PoaStatusCodes.none);
 
         return (
             <Formik
@@ -300,9 +304,8 @@ class MT5POA extends React.Component {
                                                     </fieldset>
                                                     <InputField
                                                         name='address_postcode'
-                                                        required
-                                                        label={localize('Postal/ZIP Code')}
-                                                        placeholder={localize('Postal/ZIP Code')}
+                                                        label={localize('Postal/ZIP code')}
+                                                        placeholder={localize('Postal/ZIP code')}
                                                     />
                                                 </div>
                                                 <div className='mt5-proof-of-address__file-upload'>
@@ -324,25 +327,30 @@ class MT5POA extends React.Component {
                                             </div>
                                         </ThemedScrollbars>
                                     )}
-                                    {this.state.poa_status !== poa_status_codes.none && !resubmit_poa && (
+                                    {this.state.poa_status !== PoaStatusCodes.none && !resubmit_poa && (
                                         <ThemedScrollbars autohide height={height}>
                                             {submitted_poa && (
-                                                <Submitted
+                                                <PoaSubmitted
                                                     is_description_disabled={true}
                                                     has_poi={this.state.has_poi}
                                                 />
                                             )}
-                                            {this.state.poa_status === poa_status_codes.pending && (
-                                                <NeedsReview is_description_disabled={true} />
+                                            {this.state.poa_status === PoaStatusCodes.pending && (
+                                                <PoaNeedsReview is_description_disabled={true} />
                                             )}
-                                            {this.state.poa_status === poa_status_codes.verified && (
-                                                <Verified is_description_disabled={true} has_poi={this.state.has_poi} />
+                                            {this.state.poa_status === PoaStatusCodes.verified && (
+                                                <PoaVerified
+                                                    is_description_disabled={true}
+                                                    has_poi={this.state.has_poi}
+                                                />
                                             )}
-                                            {this.state.poa_status === poa_status_codes.expired && (
-                                                <Expired onClick={this.handleResubmit} />
+                                            {this.state.poa_status === PoaStatusCodes.expired && (
+                                                <PoaExpired onClick={this.handleResubmit} />
                                             )}
-                                            {(this.state.poa_status === poa_status_codes.rejected ||
-                                                this.state.poa_status === poa_status_codes.suspected) && <Unverified />}
+                                            {(this.state.poa_status === PoaStatusCodes.rejected ||
+                                                this.state.poa_status === PoaStatusCodes.suspected) && (
+                                                <PoaUnverified />
+                                            )}
                                         </ThemedScrollbars>
                                     )}
                                     {is_form_visible && (

@@ -12,7 +12,7 @@ Blockly.Blocks.tick = {
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary: Blockly.Colours.Base.colourTertiary,
-            tooltip: localize('Returns the tick value received from server'),
+            tooltip: localize('Returns the value of the latest tick'),
             category: Blockly.Categories.Tick_Analysis,
         };
     },
@@ -36,7 +36,7 @@ Blockly.Blocks.tick_string = {
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary: Blockly.Colours.Base.colourTertiary,
-            tooltip: localize('Returns the tick value received by a before purchase block in string format'),
+            tooltip: localize('Returns the value of the latest tick in string format'),
             category: Blockly.Categories.Tick_Analysis,
         };
     },

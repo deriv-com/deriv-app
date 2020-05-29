@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ButtonLink = ({ children, className, to, onClick }) => (
+const ButtonLink = ({ children, className, to, onClick, size = 'medium' }) => (
     <Link
-        className={classNames('dc-btn dc-btn--primary dc-btn__medium', className, 'effect')}
+        className={classNames('dc-btn dc-btn--primary', className, 'effect', `dc-btn__${size}`)}
         to={to}
         onClick={onClick}
     >
@@ -17,6 +17,7 @@ ButtonLink.propTypes = {
     children: PropTypes.object,
     className: PropTypes.string,
     onClick: PropTypes.func,
+    size: PropTypes.string,
     to: PropTypes.string,
 };
 

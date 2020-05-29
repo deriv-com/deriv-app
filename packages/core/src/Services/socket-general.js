@@ -160,8 +160,7 @@ const BinarySocketGeneral = (() => {
                 common_store.setError(true, { message: response.error.message });
                 break;
             case 'InvalidToken':
-                // if message type equals to cashier, there is no need to logout user
-                if (msg_type === 'cashier' || msg_type === 'paymentagent_withdraw') {
+                if (['cashier', 'paymentagent_withdraw', 'mt5_password_reset'].includes(msg_type)) {
                     return;
                 }
                 client_store.logout().then(() => {

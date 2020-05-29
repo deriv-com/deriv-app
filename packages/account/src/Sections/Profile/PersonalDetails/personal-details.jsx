@@ -133,7 +133,6 @@ class PersonalDetailsForm extends React.Component {
             // 'account_opening_reason',
             'address_line_1',
             'address_city',
-            'address_postcode',
         ];
         validateValues((val) => val, required_fields, localize('This field is required'));
         const only_alphabet_fields = ['first_name', 'last_name', 'address_state'];
@@ -213,8 +212,16 @@ class PersonalDetailsForm extends React.Component {
             }
         }
 
-        if (values.address_postcode && !validPostCode(values.address_postcode)) {
-            errors.address_postcode = localize('Only letters, numbers, space, and hyphen are allowed.');
+        if (values.address_postcode) {
+            if (!validLength(values.address_postcode, { min: 0, max: 20 })) {
+                errors.address_postcode = localize('Please enter a {{field_name}} under {{max_number}} characters.', {
+                    field_name: localize('postal/ZIP code'),
+                    max_number: 20,
+                    interpolation: { escapeValue: false },
+                });
+            } else if (!validPostCode(values.address_postcode)) {
+                errors.address_postcode = localize('Only letters, numbers, space, and hyphen are allowed.');
+            }
         }
 
         return errors;
@@ -679,12 +686,11 @@ class PersonalDetailsForm extends React.Component {
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
                                                         name='address_postcode'
-                                                        label={localize('Postal/ZIP Code*')}
+                                                        label={localize('Postal/ZIP code')}
                                                         value={values.address_postcode}
                                                         error={touched.address_postcode && errors.address_postcode}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
-                                                        required
                                                     />
                                                 </fieldset>
                                             </div>
@@ -736,8 +742,7 @@ class PersonalDetailsForm extends React.Component {
                                                       errors.address_city ||
                                                       !values.address_city ||
                                                       errors.address_state ||
-                                                      errors.address_postcode ||
-                                                      !values.address_postcode
+                                                      errors.address_postcode
                                                   ))
                                         }
                                         has_effect
@@ -794,7 +799,6 @@ class PersonalDetailsForm extends React.Component {
                 'request_professional_status',
             ];
             const form_initial_values = removeObjProperties(hidden_settings, account_settings);
-
             this.setState({
                 changeable_fields: is_virtual ? [] : getChangeableFields(),
                 is_loading: false,

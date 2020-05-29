@@ -56,6 +56,7 @@ class Tabs extends React.Component {
             className,
             top,
             bottom,
+            center,
             fit_content,
             header_fit_content,
             single_tab_has_no_label,
@@ -74,6 +75,7 @@ class Tabs extends React.Component {
                     className={classNames('dc-tabs__list', {
                         'dc-tabs__list--top': top,
                         'dc-tabs__list--bottom': bottom,
+                        'dc-tabs__list--center': center,
                         'dc-tabs__list--header-fit-content': header_fit_content,
                     })}
                     ref={this.setTabsWrapperRef}

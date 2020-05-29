@@ -16,6 +16,7 @@ import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
 import { processTradeParams } from './Helpers/process';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
+import { getBarrierPipSize } from './Helpers/barrier';
 import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
@@ -458,6 +459,11 @@ export default class TradeStore extends BaseStore {
             barriers,
             is_over: false,
         });
+    }
+
+    @computed
+    get barrier_pipsize() {
+        return getBarrierPipSize(this.barrier_1);
     }
 
     @computed
@@ -987,20 +993,8 @@ export default class TradeStore extends BaseStore {
 
         await this.processNewValuesAsync({ currency: new_currency }, true, { currency: this.currency }, false);
         this.refresh();
-        WS.forgetAll('balance').then(() => {
-            // the first has to be without subscribe to quickly update current account's balance
-            WS.authorized.balance().then(this.handleResponseBalance);
-            // the second is to subscribe to balance and update all sibling accounts' balances too
-            WS.subscribeBalanceAll(this.handleResponseBalance);
-        });
         this.debouncedProposal();
     }
-
-    handleResponseBalance = response => {
-        if (response.balance) {
-            this.root_store.client.setBalance(response.balance);
-        }
-    };
 
     @action.bound
     onUnmount() {

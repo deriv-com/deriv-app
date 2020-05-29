@@ -32,6 +32,7 @@ class PasswordInput extends React.Component {
                             className='dc-password-input__visibility-icon'
                             onClick={this.togglePasswordVisibility}
                             color='secondary'
+                            width={18}
                         />
                     }
                 />

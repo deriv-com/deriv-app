@@ -1,12 +1,13 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Icon, Button } from '@deriv/components';
+import { Icon, Button, Dialog } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { TableError } from 'Components/table/table-error.jsx';
 import { requestWS } from 'Utils/websocket';
 import FormAds from './form-ads.jsx';
 import MyAdsTable from './my-ads-table.jsx';
+import NicknameForm from '../nickname/nickname-form.jsx';
 import './my-ads.scss';
 
 class MyAds extends React.Component {
@@ -19,6 +20,7 @@ class MyAds extends React.Component {
         show_form: false,
         is_pending: false,
         is_authenticated: false,
+        show_popup: false,
     };
 
     handleShowForm = show_form => {
@@ -50,6 +52,18 @@ class MyAds extends React.Component {
             });
         }
     }
+    applyAction = () => {
+        if (this.context.nickname) {
+            // TODO: redirect without refresh
+            window.location.href = '/account/proof-of-identity';
+        } else {
+            this.setState({ show_popup: true });
+        }
+    };
+
+    onCancelClick = () => {
+        this.setState({ show_popup: false });
+    };
 
     onClickCreate = () => {
         this.setState({ show_form: true });
@@ -84,36 +98,46 @@ class MyAds extends React.Component {
         }
 
         return (
-            <div
-                className={classnames('p2p-cashier__empty', 'p2p-my-ads__empty', {
-                    'p2p-my-ads__empty--pending': this.state.is_pending,
-                })}
-            >
-                <Icon icon='IcCashierSendEmail' className='p2p-cashier__empty-icon' size={102} />
-                <div className='p2p-cashier__empty-title'>
-                    {this.state.is_pending ? localize('Documents received') : localize('Want to post ads?')}
-                </div>
-                <div className='p2p-cashier__empty-text'>
-                    {!this.state.is_pending && (
+            <>
+                <div
+                    className={classnames('p2p-cashier__empty', 'p2p-my-ads__empty', {
+                        'p2p-my-ads__empty--pending': this.state.is_pending,
+                    })}
+                >
+                    <Icon icon='IcCashierSendEmail' className='p2p-cashier__empty-icon' size={102} />
+                    <div className='p2p-cashier__empty-title'>
+                        {this.state.is_pending ? localize('Documents received') : localize('Want to post ads?')}
+                    </div>
+                    <div className='p2p-cashier__empty-text'>
+                        {!this.state.is_pending && (
+                            <p>
+                                <Localize i18n_default_text='Register with us here.' />
+                            </p>
+                        )}
                         <p>
-                            <Localize i18n_default_text='Register with us here.' />
+                            {this.state.is_pending
+                                ? localize("We'll contact you once we have verified the information provided.")
+                                : localize(
+                                      "We'll need you to upload your documents to verify your identity and address."
+                                  )}
                         </p>
-                    )}
-                    <p>
-                        {this.state.is_pending
-                            ? localize("We'll contact you once we have verified the information provided.")
-                            : localize("We'll need you to upload your documents to verify your identity and address.")}
-                    </p>
-                </div>
-                <a href='/account/proof-of-identity' className='p2p-cashier__empty-button'>
+                    </div>
                     <Button
                         type='button'
                         className='p2p-my-ads__empty-button'
                         text={this.state.is_pending ? localize('Check status') : localize('Apply')}
+                        onClick={this.applyAction}
                         primary
                     />
-                </a>
-            </div>
+                </div>
+                {this.state.show_popup && (
+                    <div className='p2p-my-ads__dialog'>
+                        <Dialog is_visible={this.state.show_popup}>
+                            <NicknameForm handleClose={this.onCancelClick} handleConfirm={this.applyAction} />
+                        </Dialog>
+                    </div>
+                )}
+            </>
         );
     }
 }

@@ -138,22 +138,12 @@ class App extends React.Component {
     };
 
     handleNotifications = orders => {
-        let p2p_notification_count = 0;
+        const notification_count = orders.filter(order => ['pending', 'buyer-confirmed'].includes(order.status)).length;
+        this.setState({ notification_count });
 
-        orders.forEach(order => {
-            const type = order.is_incoming
-                ? ObjectUtils.getPropertyValue(order, ['advert_details', 'type'])
-                : order.type;
-
-            // show notifications for:
-            // 1. buy orders that are pending buyer payment, or
-            // 2. sell orders that are pending seller confirmation
-            if (type === 'buy' ? order.status === 'pending' : order.status === 'buyer-confirmed') {
-                p2p_notification_count++;
-            }
-        });
-        this.setState({ notification_count: p2p_notification_count });
-        this.props.setNotificationCount(p2p_notification_count);
+        if (typeof this.props.setNotificationCount === 'function') {
+            this.props.setNotificationCount(notification_count);
+        }
     };
 
     setP2pOrderList = order_response => {

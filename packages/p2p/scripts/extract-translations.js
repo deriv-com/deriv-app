@@ -27,7 +27,7 @@ const getKeyHash = string => crc32(string);
     try {
         const file_paths = [];
         const messages = [];
-        const i18n_marker = new RegExp(/(i18n_default_text={?|localize\()\s*(['"])\s*(.*?)(?<!\\)\2\s*/gs);
+        const i18n_marker = /(i18n_default_text={?|localize\()\s*(['"])\s*(.*?)(?<!\\)\2\s*/gs;
         const messages_json = {};
 
         for (let j = 0; j < globs.length; j++) {

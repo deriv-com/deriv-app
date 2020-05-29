@@ -85,7 +85,7 @@ describe('Regular expression checks', () => {
     });
 
     it('should not contain calls to localize/<Localize> with backticks "`"', () => {
-        const illegal_i18n_marker = new RegExp(/i18n_default_text=([`])(.*?)(?<!\\)\1|localize\(\s*([`])\s*(.*?)\s*(?<!\\)\3\s*/gs);
+        const illegal_i18n_marker = /i18n_default_text=([`])(.*?)(?<!\\)\1|localize\(\s*([`])\s*(.*?)\s*(?<!\\)\3\s*/gs;
         const file_paths = getTranslatableFiles();
         const errors = [];
 

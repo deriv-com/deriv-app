@@ -38,7 +38,7 @@ class App extends React.Component {
                     <NetworkStatusToastErrorPopup />
                     <TradeHeaderExtensions store={this.root_store} />
                     <TradeFooterExtensions />
-                    <TradeSettingsExtensions />
+                    <TradeSettingsExtensions store={this.root_store} />
                 </React.Fragment>
             </MobxContentProvider>
         );

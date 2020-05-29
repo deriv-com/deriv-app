@@ -2,6 +2,7 @@ import { Checkbox } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import MediaItem, { MediaHeading, MediaIcon, MediaDescription } from 'App/Components/Elements/Media';
 
 // TODO: enable asset information
@@ -44,11 +45,12 @@ const ChartSettings = ({ is_countdown_visible, is_dark_mode, setCountdown }) => 
 );
 
 ChartSettings.propTypes = {
-    is_asset_visible: PropTypes.bool,
     is_countdown_visible: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
-    is_layout_default: PropTypes.bool,
-    setChartLayout: PropTypes.func,
 };
 
-export default ChartSettings;
+export default connect(({ ui }) => ({
+    is_countdown_visible: ui.is_chart_countdown_visible,
+    is_dark_mode: ui.is_dark_mode_on,
+    setCountdown: ui.setChartCountdown,
+}))(ChartSettings);

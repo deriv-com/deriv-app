@@ -3,7 +3,7 @@ import React from 'react';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { connect, MobxContentProvider } from 'Stores/connect';
 
 const ChartSettingContainer = Loadable({
     loader: () =>
@@ -21,28 +21,16 @@ const ChartSettingContainer = Loadable({
 
 class TradeSettingsExtensions extends React.Component {
     populateSettings = () => {
-        const {
-            populateSettingsExtensions,
-            is_countdown_visible,
-            is_dark_mode,
-            is_layout_default,
-            setCountdown,
-            setChartLayout,
-        } = this.props;
+        const { populateSettingsExtensions } = this.props;
 
         const menu_items = [
             {
                 icon: 'IcChart',
                 label: localize('Charts'),
                 value: ({ ...props }) => (
-                    <ChartSettingContainer
-                        is_countdown_visible={is_countdown_visible}
-                        is_dark_mode={is_dark_mode}
-                        is_layout_default={is_layout_default}
-                        setCountdown={setCountdown}
-                        setChartLayout={setChartLayout}
-                        {...props}
-                    />
+                    <MobxContentProvider store={this.props.store}>
+                        <ChartSettingContainer {...props} />
+                    </MobxContentProvider>
                 ),
                 // uncomment below lines to bring back purchase lock and purchase confirmation}
                 // }, {
@@ -79,11 +67,4 @@ TradeSettingsExtensions.propTypes = {
 
 export default connect(({ ui }) => ({
     populateSettingsExtensions: ui.populateSettingsExtensions,
-    is_asset_visible: ui.is_chart_asset_info_visible,
-    is_countdown_visible: ui.is_chart_countdown_visible,
-    is_dark_mode: ui.is_dark_mode_on,
-    is_layout_default: ui.is_chart_layout_default,
-    setAsset: ui.setChartAssetInfo,
-    setCountdown: ui.setChartCountdown,
-    setChartLayout: ui.setChartLayout,
 }))(TradeSettingsExtensions);

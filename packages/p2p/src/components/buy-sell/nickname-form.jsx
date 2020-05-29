@@ -70,7 +70,7 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
             <Formik validate={validatePopup} initialValues={{ nickname: '' }} onSubmit={handleSubmit}>
                 {({ errors, isSubmitting, handleChange, status }) => (
                     <Form noValidate>
-                        <ThemedScrollbars autoHide style={{ height: '289px' }}>
+                        <ThemedScrollbars height='289px'>
                             <div className='buy-sell__popup-content buy-sell__popup-content_centre'>
                                 <Icon icon='IcCashierP2pUser' width='128' height='128' />
                                 <h5 className='buy-sell__popup-content--title'>{localize('Choose a nickname')}</h5>

@@ -168,12 +168,7 @@ class PositionsDrawer extends React.Component {
             };
 
             return (
-                <ThemedScrollbars
-                    list_ref={refCallback}
-                    style={{ ...style, overflow: 'hidden' }}
-                    onScroll={onScroll}
-                    autoHide
-                >
+                <ThemedScrollbars refSetter={refCallback} onScroll={onScroll}>
                     {children}
                 </ThemedScrollbars>
             );

@@ -4,9 +4,6 @@ import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
 import ThemedScrollbars from 'Components/themed-scrollbars';
 
-const trackHorizontal = props => <div {...props} style={{ display: 'none' }} />;
-const thumbHorizontal = props => <div {...props} style={{ display: 'none' }} />;
-
 const ListItem = ({ is_active, is_disabled, item, child_ref, onItemSelection, is_object_list }) => {
     return (
         <div
@@ -115,19 +112,7 @@ const DropdownList = React.forwardRef((props, ref) => {
             unmountOnExit
         >
             <div style={style} className='dc-dropdown-list' ref={list_wrapper_ref}>
-                <ThemedScrollbars
-                    list_ref={dropdown_ref}
-                    autoHeight
-                    autoHide
-                    autoHeightMax={220} // As specified by design spec
-                    onScrollStop={() => {
-                        if (typeof props.onScrollStop === 'function') {
-                            props.onScrollStop();
-                        }
-                    }}
-                    renderTrackHorizontal={trackHorizontal}
-                    renderThumbHorizontal={thumbHorizontal}
-                >
+                <ThemedScrollbars refSetter={dropdown_ref} height='220px'>
                     {is_object ? (
                         Object.keys(list_items).map((items, idx) => (
                             <ListItems

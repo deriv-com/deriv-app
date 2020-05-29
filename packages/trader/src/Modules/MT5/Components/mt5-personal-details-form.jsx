@@ -151,7 +151,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                             }
                                         />
                                     </p>
-                                    <ThemedScrollbars autoHide height={height} is_native={isMobile()}>
+                                    <ThemedScrollbars height={height} is_native={isMobile()}>
                                         <div className='details-form__elements'>
                                             <FormSubHeader title={localize('Details')} />
                                             <fieldset className='account-form__fieldset'>

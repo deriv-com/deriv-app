@@ -6,13 +6,7 @@ import TradeCategories from 'Assets/Trading/Categories/trade-categories.jsx';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif.jsx';
 
 const Card = ({ contract_type, onClick }) => (
-    <ThemedScrollbars
-        style={{
-            width: '288px',
-            marginRight: '2.4rem',
-        }}
-        height='calc(100vh- 262px)'
-    >
+    <ThemedScrollbars height='calc(100vh- 262px)'>
         <div className='contract-type-info__card'>
             <div className='contract-type-info__gif'>
                 <TradeCategoriesGIF category={contract_type.value} />

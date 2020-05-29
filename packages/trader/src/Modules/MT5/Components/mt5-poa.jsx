@@ -242,7 +242,7 @@ class MT5POA extends React.Component {
                                         <Loading is_fullscreen={false} className='account___intial-loader' />
                                     )}
                                     {is_form_visible && (
-                                        <ThemedScrollbars autohide height={height} is_native={isMobile()}>
+                                        <ThemedScrollbars height={height} is_native={isMobile()}>
                                             <div className='mt5-proof-of-address__field-area'>
                                                 <FormSubHeader
                                                     subtitle={localize('(All fields are required)')}
@@ -328,7 +328,7 @@ class MT5POA extends React.Component {
                                         </ThemedScrollbars>
                                     )}
                                     {this.state.poa_status !== PoaStatusCodes.none && !resubmit_poa && (
-                                        <ThemedScrollbars autohide height={height}>
+                                        <ThemedScrollbars height={height}>
                                             {submitted_poa && (
                                                 <PoaSubmitted
                                                     is_description_disabled={true}

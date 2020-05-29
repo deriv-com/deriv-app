@@ -8,35 +8,14 @@ import { ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared/utils/screen';
 import DataListCell from './data-list-cell.jsx';
 
-const ListScrollbar = React.forwardRef((props, ref) => <ExtendedScrollbars {...props} forwardedRef={ref} />);
-
+const ThemedScrollbarsWrapper = React.forwardRef((props, ref) => (
+    <ThemedScrollbars {...props} forwardedRef={ref}>
+        {props.children}
+    </ThemedScrollbars>
+));
 // Display name is required by Developer Tools to give a name to the components we use.
 // If a component doesn't have a displayName is will be shown as <Unknown />. Hence, name is set.
-ListScrollbar.displayName = 'ListScrollbar';
-
-const ExtendedScrollbars = ({ onScroll, forwardedRef, style, children }) => {
-    const refSetter = React.useCallback(scrollbarsRef => {
-        if (scrollbarsRef) {
-            forwardedRef(scrollbarsRef.view);
-        } else {
-            forwardedRef(null);
-        }
-    }, []);
-
-    return (
-        <ThemedScrollbars
-            ref={refSetter}
-            style={{
-                ...style,
-                overflow: 'hidden',
-            }}
-            onScroll={onScroll}
-            autoHide
-        >
-            {children}
-        </ThemedScrollbars>
-    );
-};
+ThemedScrollbarsWrapper.displayName = 'ThemedScrollbars';
 
 class DataList extends React.PureComponent {
     constructor(props) {
@@ -86,7 +65,7 @@ class DataList extends React.PureComponent {
     };
 
     render() {
-        const { className, children, data_source, getRowSize, is_empty, onScroll, footer } = this.props;
+        const { className, children, data_source, getRowSize, onScroll, footer } = this.props;
 
         return (
             <div className={classNames(className, 'data-list', `${className}__data-list`)} onScroll={onScroll}>
@@ -100,7 +79,7 @@ class DataList extends React.PureComponent {
                         itemCount={data_source.length}
                         itemSize={getRowSize}
                         width={this.state.width}
-                        outerElementType={is_empty || isMobile() ? null : ListScrollbar}
+                        outerElementType={ThemedScrollbarsWrapper}
                     >
                         {this.rowRenderer}
                     </List>

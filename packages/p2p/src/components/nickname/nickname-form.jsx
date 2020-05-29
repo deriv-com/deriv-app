@@ -13,7 +13,7 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
     const { setNickname, setChatInfo } = React.useContext(Dp2pContext);
 
     const handleSubmit = (values, { setStatus, setSubmitting }) => {
-        /* requestWS({ p2p_advertiser_create: 1, name: values.nickname }).then(response => {
+        requestWS({ p2p_advertiser_create: 1, name: values.nickname }).then(response => {
             if (response.error) {
                 setStatus({ error_message: response.error.message });
             } else {
@@ -21,15 +21,13 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
 
                 setNickname(p2p_advertiser_create.name);
                 setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
-                handleConfirm();
+                if (typeof handleCOnfirm === 'function') {
+                    handleConfirm();
+                }
             }
 
             setSubmitting(false);
-        }); */
-
-        setSubmitting(false);
-        setNickname(values.nickname);
-        handleConfirm();
+        });
     };
 
     const validatePopup = values => {

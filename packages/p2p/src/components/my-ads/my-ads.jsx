@@ -29,7 +29,6 @@ class MyAds extends React.Component {
     is_mounted = false;
 
     state = {
-        is_enabled: false,
         is_loading: true,
         show_form: false,
         is_pending: false,
@@ -60,14 +59,6 @@ class MyAds extends React.Component {
 
             this.setState({ is_loading: false });
         });
-
-        if (this.context.is_advertiser) {
-            requestWS({ p2p_advertiser_info: 1 }).then(response => {
-                if (this.is_mounted && !response.error) {
-                    this.setState({ is_enabled: !!response.p2p_advertiser_info.is_listed });
-                }
-            });
-        }
     }
     applyAction = () => {
         if (this.context.nickname) {
@@ -78,10 +69,6 @@ class MyAds extends React.Component {
 
     onClickCreate = () => {
         this.setState({ show_form: true });
-    };
-
-    setEnabled = is_enabled => {
-        this.setState({ is_enabled });
     };
 
     render() {
@@ -115,11 +102,7 @@ class MyAds extends React.Component {
                     {this.state.show_form ? (
                         <FormAds handleShowForm={this.handleShowForm} />
                     ) : (
-                        <MyAdsTable
-                            onClickCreate={this.onClickCreate}
-                            is_enabled={this.state.is_enabled}
-                            onToggle={this.setEnabled}
-                        />
+                        <MyAdsTable onClickCreate={this.onClickCreate} />
                     )}
                 </div>
             );

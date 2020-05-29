@@ -32,8 +32,9 @@ const Orders = ({ params, navigate, chat_info }) => {
     }, [params]);
 
     React.useEffect(() => {
+        is_mounted.current = true;
+
         if (params && params.order_info) {
-            is_mounted.current = true;
             const order_info = new OrderInfo(params.order_info);
             setQueryDetails(order_info);
         }

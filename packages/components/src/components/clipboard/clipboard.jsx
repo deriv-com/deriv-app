@@ -6,7 +6,7 @@ import Icon from '../icon';
 
 const Clipboard = ({ text_copy, info_message, success_message, className, popoverClassName }) => {
     const [is_copied, setIsCopied] = React.useState(false);
-    let copy_timeout = null;
+    let timeout_clipboard = null;
 
     const copyToClipboard = text => {
         const textField = document.createElement('textarea');
@@ -20,15 +20,13 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
     const onClick = () => {
         copyToClipboard(text_copy);
         setIsCopied(true);
-        copy_timeout = setTimeout(() => {
+        timeout_clipboard = setTimeout(() => {
             setIsCopied(false);
         }, 2000);
     };
 
     React.useEffect(() => {
-        return () => {
-            clearTimeout(copy_timeout);
-        };
+        return () => clearTimeout(timeout_clipboard);
     }, []);
 
     return (
@@ -40,7 +38,12 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
                     is_bubble_hover_enabled
                     message={info_message}
                 >
-                    <Icon icon='IcClipboard' className={classNames('dc-clipboard', className)} onClick={onClick} />
+                    <Icon
+                        icon='IcClipboard'
+                        custom_color='var(--text-less-prominent)'
+                        className={classNames('dc-clipboard', className)}
+                        onClick={onClick}
+                    />
                 </Popover>
             )}
             {is_copied && (
@@ -51,7 +54,11 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
                     message={success_message}
                     relative_render
                 >
-                    <Icon icon='IcCheckmarkOutline' className={classNames('dc-clipboard', className)} />
+                    <Icon
+                        icon='IcCheckmarkCircle'
+                        custom_color='var(--status-success)'
+                        className={classNames('dc-clipboard', className)}
+                    />
                 </Popover>
             )}
         </>

@@ -43,3 +43,5 @@ export const generateHexColourFromNickname = nickname => {
     // Returns a colour derived from nickname that is in our colours array.
     return colours[((colour_hash % colours.length) + colours.length) % colours.length];
 };
+
+export const getShortNickname = nickname => nickname.substr(0, 2).toUpperCase();

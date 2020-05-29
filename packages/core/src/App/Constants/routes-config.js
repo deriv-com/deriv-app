@@ -101,6 +101,11 @@ const modules = [
                         title: localize('Account limits'),
                     },
                     {
+                        path: routes.api_token,
+                        component: Account,
+                        title: localize('API token'),
+                    },
+                    {
                         path: routes.two_factor_authentication,
                         component: Account,
                         title: localize('Two-factor authentication'),

@@ -5,6 +5,7 @@ import ProofOfIdentity from 'Sections/Verification/ProofOfIdentity';
 import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
 import DerivPassword from 'Sections/Security/DerivPassword';
 import TwoFactorAuthentication from 'Sections/Security/TwoFactorAuthentication';
+import ApiToken from 'Sections/Security/ApiToken';
 import Account from 'Containers/account.jsx';
 
 export {
@@ -15,5 +16,6 @@ export {
     ProofOfIdentity,
     ProofOfAddress,
     TwoFactorAuthentication,
+    ApiToken,
     Account,
 };

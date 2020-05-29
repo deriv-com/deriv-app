@@ -92,11 +92,15 @@ class App extends React.Component {
         this.setState({ show_popup: !this.state.show_popup });
     };
 
+    forceUpdateTab = () => {
+        this.setState({ show_popup: false, active_index: 1 });
+    };
+
     handleTabClick = idx => {
         this.setState({ active_index: idx, parameters: null });
 
         // when user is verified but nickname not set
-        if (!this.state.nickname) {
+        if (!this.state.nickname && idx === 2) {
             this.toggleNicknamePopup();
         }
     };
@@ -266,7 +270,7 @@ class App extends React.Component {
                                 <div className='p2p-my-ads__dialog'>
                                     <Dialog is_visible={this.state.show_popup}>
                                         <NicknameForm
-                                            handleClose={this.toggleNicknamePopup}
+                                            handleClose={this.forceUpdateTab}
                                             handleConfirm={this.toggleNicknamePopup}
                                         />
                                     </Dialog>

@@ -69,7 +69,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
             >
                 <Table.Cell>{is_buyer ? localize('Buy') : localize('Sell')}</Table.Cell>
                 <Table.Cell>{id}</Table.Cell>
-                <Table.Cell>{counter_party}</Table.Cell>
+                {/* <Table.Cell>{counter_party}</Table.Cell> */}
                 <Table.Cell>
                     <div
                         className={classNames('orders__table-status', {

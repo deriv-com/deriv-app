@@ -137,8 +137,52 @@ class App extends React.Component {
         this.setState({ chat_info });
     };
 
-    handleNotifications = orders => {
-        const notification_count = orders.filter(order => ['pending', 'buyer-confirmed'].includes(order.status)).length;
+    getLocalStorageSettings = () => {
+        return JSON.parse(localStorage.getItem('dp2p_settings') || '{}');
+    };
+
+    handleNotifications = (old_orders, new_orders) => {
+        const { is_cached = false, notifications = [] } = this.getLocalStorageSettings();
+
+        new_orders.forEach(new_order => {
+            const old_order = old_orders.find(o => o.id === new_order.id);
+            const notification = notifications.find(n => n.order_id === new_order.id);
+
+            if (old_order) {
+                if (old_order.status !== new_order.status) {
+                    if (notification) {
+                        // If order status changed, notify the user.
+                        notification.seen = false;
+                    } else {
+                        // If we have an old_order, but for some reason don't have a copy in local storage.
+                        notifications.push({ order_id: new_order.id, seen: false });
+                    }
+                }
+            } else if (!notification) {
+                // If we don't have an old order nor a notification, this is a first page load. Compare with
+                // cached list or only notify user of actionable orders.
+                if (is_cached) {
+                    // If we can compare with a cached list, assume each new order should be notified.
+                    notifications.push({ order_id: new_order.id, seen: false });
+                } else {
+                    // If we don't have a cached list, only notify user of orders that require action.
+                    // (We do this so old orders are not considered.)
+                    const is_action_required = ['pending', 'buyer-confirmed'].includes(new_order.status);
+                    notifications.push({ order_id: new_order.id, seen: !is_action_required });
+                }
+            }
+        });
+
+        this.updateNotifications(new_orders, notifications);
+    };
+
+    updateNotifications = (orders, notifications) => {
+        // Purge values from local storage that are not in the notifications array.
+        const updated_notifications = notifications.filter(n => orders.findIndex(o => o.id === n.order_id) !== -1);
+        const notification_count = updated_notifications.filter(notification => notification.seen === false).length;
+        const dp2p_settings = JSON.stringify({ is_cached: true, notifications: updated_notifications });
+
+        localStorage.setItem('dp2p_settings', dp2p_settings);
         this.setState({ notification_count });
 
         if (typeof this.props.setNotificationCount === 'function') {
@@ -154,8 +198,8 @@ class App extends React.Component {
             if (p2p_order_list) {
                 const { list } = p2p_order_list;
                 // it's an array of orders from p2p_order_list
+                this.handleNotifications(this.state.orders, list);
                 this.setState({ order_offset: list.length, orders: getModifiedP2POrderList(list) });
-                this.handleNotifications(list);
             } else {
                 // it's a single order from p2p_order_info
                 const idx_order_to_update = this.state.orders.findIndex(order => order.id === order_response.id);
@@ -168,8 +212,8 @@ class App extends React.Component {
                     updated_orders[idx_order_to_update] = order_response;
                 }
                 // trigger re-rendering by setting orders again
+                this.handleNotifications(this.state.orders, updated_orders);
                 this.setState({ order_offset: updated_orders.length, orders: updated_orders });
-                this.handleNotifications(updated_orders);
             }
         }
     };
@@ -224,6 +268,8 @@ class App extends React.Component {
                     setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     order_id,
                     setOrderId,
+                    updateNotifications: this.updateNotifications.bind(this),
+                    getLocalStorageSettings: this.getLocalStorageSettings.bind(this),
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>

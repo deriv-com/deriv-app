@@ -1,14 +1,28 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Icon, Button, Dialog } from '@deriv/components';
+import { Icon, Button, Dialog, Loading } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { TableError } from 'Components/table/table-error.jsx';
 import { requestWS } from 'Utils/websocket';
 import FormAds from './form-ads.jsx';
 import MyAdsTable from './my-ads-table.jsx';
-import NicknameForm from '../nickname/nickname-form.jsx';
 import './my-ads.scss';
+
+const MyAdsState = ({ message, button_text, buttonOnClick }) => (
+    <div className='p2p-my-ads__state'>
+        <TableError message={message} />
+        {button_text && buttonOnClick && (
+            <Button
+                type='button'
+                className='p2p-my-ads__state-button'
+                text={button_text}
+                onClick={buttonOnClick}
+                primary
+            />
+        )}
+    </div>
+);
 
 class MyAds extends React.Component {
     // TODO: Find a better solution for handling no-op instead of using is_mounted flags
@@ -30,25 +44,28 @@ class MyAds extends React.Component {
     componentDidMount() {
         this.is_mounted = true;
 
-        if (this.context.is_advertiser) {
-            requestWS({ p2p_advertiser_info: 1 }).then(response => {
-                if (this.is_mounted && !response.error) {
-                    this.setState({ is_enabled: !!response.p2p_advertiser_info.is_listed, is_loading: false });
-                }
-            });
-
-            requestWS({ get_account_status: 1 }).then(response => {
+        requestWS({ get_account_status: 1 }).then(response => {
+            if (this.is_mounted && !response.error) {
                 const { get_account_status } = response;
                 const { authentication } = get_account_status;
                 const { document, identity } = authentication;
                 const { status: document_status } = document;
                 const { status: identity_status } = identity;
-                const { status } = authentication;
 
                 this.setState({
                     is_pending: document_status === 'pending' || identity_status === 'pending',
-                    is_authenticated: status === 'authenticated',
+                    is_authenticated: document_status === 'verified' || identity_status === 'verified',
                 });
+            }
+
+            this.setState({ is_loading: false });
+        });
+
+        if (this.context.is_advertiser) {
+            requestWS({ p2p_advertiser_info: 1 }).then(response => {
+                if (this.is_mounted && !response.error) {
+                    this.setState({ is_enabled: !!response.p2p_advertiser_info.is_listed });
+                }
             });
         }
     }
@@ -56,13 +73,7 @@ class MyAds extends React.Component {
         if (this.context.nickname) {
             // TODO: redirect without refresh
             window.location.href = '/account/proof-of-identity';
-        } else {
-            this.setState({ show_popup: true });
         }
-    };
-
-    onCancelClick = () => {
-        this.setState({ show_popup: false });
     };
 
     onClickCreate = () => {
@@ -74,14 +85,31 @@ class MyAds extends React.Component {
     };
 
     render() {
+        if (this.state.is_loading) {
+            return <Loading is_fullscreen={false} />;
+        }
+
         if (this.context.is_restricted) {
+            return <MyAdsState message={localize('P2P cashier is unavailable in your country.')} />;
+        }
+
+        if (!this.context.is_advertiser && this.state.is_authenticated && this.context.nickname) {
             return (
-                <div className='p2p-my-ads'>
-                    <TableError message={localize('P2P cashier is unavailable in your country.')} />;
-                </div>
+                <MyAdsState message={localize('Your P2P cashier has been blocked. Please contact customer support')} />
             );
         }
-        if (this.context.is_advertiser && this.state.is_authenticated) {
+
+        if (this.state.is_authenticated && !this.context.nickname) {
+            return (
+                <MyAdsState
+                    message={localize('To get started, you need a nickname.')}
+                    button_text={localize('Set nickname')}
+                    buttonOnClick={this.toggleNicknamePopup}
+                />
+            );
+        }
+
+        if (this.context.is_advertiser) {
             return (
                 <div className='p2p-my-ads'>
                     {this.state.show_form ? (
@@ -130,13 +158,6 @@ class MyAds extends React.Component {
                         primary
                     />
                 </div>
-                {this.state.show_popup && (
-                    <div className='p2p-my-ads__dialog'>
-                        <Dialog is_visible={this.state.show_popup}>
-                            <NicknameForm handleClose={this.onCancelClick} handleConfirm={this.applyAction} />
-                        </Dialog>
-                    </div>
-                )}
             </>
         );
     }

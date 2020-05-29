@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { Tabs } from '@deriv/components';
+import { Tabs, Dialog } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import { orderToggleIndex } from 'Components/orders/order-info';
 import ServerTime from 'Utils/server-time';
@@ -10,8 +10,8 @@ import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS 
 import { localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
-// import MyProfile  from './my-profile/my-profile.jsx';
 import Orders from './orders/orders.jsx';
+import NicknameForm from './nickname/nickname-form.jsx';
 import './app.scss';
 
 const allowed_currency = 'USD';
@@ -42,6 +42,7 @@ class App extends React.Component {
             parameters: null,
             is_advertiser: false,
             is_restricted: false,
+            show_popup: false,
             chat_info: {
                 app_id: '',
                 user_id: '',
@@ -87,8 +88,17 @@ class App extends React.Component {
         this.setState({ active_index: path[path_name], parameters: params });
     };
 
+    toggleNicknamePopup = () => {
+        this.setState({ show_popup: !this.state.show_popup });
+    };
+
     handleTabClick = idx => {
         this.setState({ active_index: idx, parameters: null });
+
+        // when user is verified but nickname not set
+        if (!this.state.nickname) {
+            this.toggleNicknamePopup();
+        }
     };
 
     updateOrderToggleIndex = index => {
@@ -252,6 +262,16 @@ class App extends React.Component {
                         </div>
                         <div label={localize('My ads')}>
                             <MyAds navigate={this.redirectTo} params={parameters} />
+                            {this.state.show_popup && (
+                                <div className='p2p-my-ads__dialog'>
+                                    <Dialog is_visible={this.state.show_popup}>
+                                        <NicknameForm
+                                            handleClose={this.toggleNicknamePopup}
+                                            handleConfirm={this.toggleNicknamePopup}
+                                        />
+                                    </Dialog>
+                                </div>
+                            )}
                         </div>
                         {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
                         {/* <div label={localize('My profile')}>

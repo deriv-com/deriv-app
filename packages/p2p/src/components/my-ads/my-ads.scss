@@ -269,6 +269,14 @@
             height: 40px;
         }
     }
+    &__state {
+        text-align: center;
+        margin: 0 auto;
+
+        &-button {
+            margin-top: 12px;
+        }
+    }
 }
 
 .toggle-ads {

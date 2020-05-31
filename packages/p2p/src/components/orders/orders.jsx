@@ -10,7 +10,7 @@ import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
 const Orders = ({ params, navigate, chat_info }) => {
-    const { orders, order_id, setOrderId, updateNotifications, getLocalStorageSettings } = React.useContext(
+    const { orders, order_id, setOrderId, updateP2pNotifications, getLocalStorageSettings } = React.useContext(
         Dp2pContext
     );
     const [order_details, setDetails] = React.useState(null);
@@ -33,7 +33,7 @@ const Orders = ({ params, navigate, chat_info }) => {
 
         if (notification) {
             notification.is_seen = true;
-            updateNotifications(orders, notifications);
+            updateP2pNotifications(orders, notifications);
         }
     };
 

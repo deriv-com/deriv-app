@@ -138,11 +138,16 @@ class App extends React.Component {
     };
 
     getLocalStorageSettings = () => {
-        return JSON.parse(localStorage.getItem('dp2p_settings') || '{}');
+        return JSON.parse(localStorage.getItem('dp2p_settings') || '{ "is_cached": false, "notifications": [] }');
+    };
+
+    isOrderSeen = order_id => {
+        const { notifications } = this.getLocalStorageSettings();
+        return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
     };
 
     handleNotifications = (old_orders, new_orders) => {
-        const { is_cached = false, notifications = [] } = this.getLocalStorageSettings();
+        const { is_cached, notifications } = this.getLocalStorageSettings();
 
         new_orders.forEach(new_order => {
             const old_order = old_orders.find(o => o.id === new_order.id);
@@ -173,13 +178,11 @@ class App extends React.Component {
             }
         });
 
-        this.updateNotifications(new_orders, notifications);
+        this.updateP2pNotifications(notifications);
     };
 
-    updateNotifications = (orders, notifications) => {
-        // Purge values from local storage that are not in the notifications array.
-        const updated_notifications = notifications.filter(n => orders.findIndex(o => o.id === n.order_id) !== -1);
-        const notification_count = updated_notifications.filter(notification => notification.is_seen === false).length;
+    updateP2pNotifications = notifications => {
+        const notification_count = notifications.filter(notification => notification.is_seen === false).length;
         const dp2p_settings = JSON.stringify({ is_cached: true, notifications: updated_notifications });
 
         localStorage.setItem('dp2p_settings', dp2p_settings);
@@ -259,6 +262,7 @@ class App extends React.Component {
                     nickname: this.state.nickname,
                     setNickname: nickname => this.setState({ nickname }),
                     setChatInfo: this.setChatInfo,
+                    isOrderSeen: this.isOrderSeen,
                     is_restricted: this.state.is_restricted,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,
@@ -268,7 +272,7 @@ class App extends React.Component {
                     setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     order_id,
                     setOrderId,
-                    updateNotifications: this.updateNotifications.bind(this),
+                    updateP2pNotifications: this.updateP2pNotifications.bind(this),
                     getLocalStorageSettings: this.getLocalStorageSettings.bind(this),
                 }}
             >

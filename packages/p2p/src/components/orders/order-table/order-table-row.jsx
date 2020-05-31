@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from 'Components/i18next';
+import Dp2pContext from 'Components/context/dp2p-context';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
 
@@ -26,6 +27,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
         is_refunded,
     } = data;
     const [remaining_time, setRemainingTime] = React.useState();
+    const { isOrderSeen } = React.useContext(Dp2pContext);
     let interval;
 
     const countDownTimer = () => {
@@ -64,7 +66,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
                     'orders__table-grid--active': is_active,
-                    'orders__table-row--attention': is_pending || (is_buyer_confirmed && !is_buyer),
+                    'orders__table-row--attention': isOrderSeen(id),
                 })}
             >
                 <Table.Cell>{is_buyer ? localize('Buy') : localize('Sell')}</Table.Cell>

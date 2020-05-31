@@ -171,8 +171,9 @@ class App extends React.Component {
                     notifications.push({ order_id: new_order.id, is_seen: false });
                 } else {
                     // If we don't have a cached list, only notify user of orders that require action.
-                    // (We do this so old orders are not considered.)
-                    const is_action_required = ['pending', 'buyer-confirmed'].includes(new_order.status);
+                    // This is done so user isn't spammed with old orders after resetting their local storage.
+                    const actionable_statuses = ['pending', 'buyer-confirmed'];
+                    const is_action_required = actionable_statuses.includes(new_order.status);
                     notifications.push({ order_id: new_order.id, is_seen: !is_action_required });
                 }
             }

@@ -28,12 +28,15 @@ const Orders = ({ params, navigate, chat_info }) => {
         setOrderId(input_order.id);
         setDetails(input_order);
 
-        const { notifications = [] } = getLocalStorageSettings();
-        const notification = notifications.find(notification => notification.order_id === input_order.id);
+        const { notifications } = getLocalStorageSettings();
 
-        if (notification) {
-            notification.is_seen = true;
-            updateP2pNotifications(orders, notifications);
+        if (notifications.length) {
+            const notification = notifications.find(notification => notification.order_id === input_order.id);
+
+            if (notification) {
+                notification.is_seen = true;
+                updateP2pNotifications(notifications);
+            }
         }
     };
 

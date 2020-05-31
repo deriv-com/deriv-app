@@ -44,7 +44,7 @@ export const InputField = ({ name, optional = false, ...props }) => (
                 type='text'
                 required={!optional}
                 name={name}
-                autoComplete='new-password'
+                autoComplete='off'
                 maxLength='30'
                 error={touched[field.name] && errors[field.name]}
                 {...field}
@@ -160,7 +160,7 @@ class MT5PersonalDetailsForm extends React.Component {
                 validate={this.validatePersonalDetails}
                 onSubmit={onSubmitForm}
             >
-                {({ handleSubmit, isSubmitting, errors, touched, values, setFieldValue }) => (
+                {({ handleSubmit, isSubmitting, errors, touched, values, setFieldValue, setFieldTouched }) => (
                     <AutoHeightWrapper default_height={200}>
                         {({ height, setRef }) => (
                             <form
@@ -192,7 +192,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                                                 {...field}
                                                                 id='real_mt5_citizenship'
                                                                 data-lpignore='true'
-                                                                autoComplete='new-password'
+                                                                autoComplete='off'
                                                                 type='text'
                                                                 label={localize('Citizenship')}
                                                                 error={touched.citizen && errors.citizen}
@@ -232,7 +232,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                                                 id='real_mt5_tax_residence'
                                                                 data-lpignore='true'
                                                                 type='text'
-                                                                autoComplete='new-password'
+                                                                autoComplete='off'
                                                                 label={localize('Tax residence')}
                                                                 error={touched.tax_residence && errors.tax_residence}
                                                                 disabled={value.tax_residence && is_fully_authenticated}
@@ -271,7 +271,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                                     <Autocomplete
                                                         {...field}
                                                         data-lpignore='true'
-                                                        autoComplete='new-password' // prevent chrome autocomplete
+                                                        autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
                                                         label={localize('Account opening reason')}
                                                         error={
@@ -279,9 +279,14 @@ class MT5PersonalDetailsForm extends React.Component {
                                                             errors.account_opening_reason
                                                         }
                                                         list_items={this.state.account_opening_reason}
-                                                        onItemSelection={({ value: v, text }) =>
-                                                            setFieldValue('account_opening_reason', v ? text : '', true)
-                                                        }
+                                                        onItemSelection={({ value: v, text }) => {
+                                                            setFieldValue(
+                                                                'account_opening_reason',
+                                                                v ? text : '',
+                                                                true
+                                                            );
+                                                            setFieldTouched('account_opening_reason', true, true);
+                                                        }}
                                                         onFocus={this.toggleAccOpeningDropdown}
                                                         onBlur={this.toggleAccOpeningDropdown}
                                                         required

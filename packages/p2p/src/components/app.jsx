@@ -152,10 +152,10 @@ class App extends React.Component {
                 if (old_order.status !== new_order.status) {
                     if (notification) {
                         // If order status changed, notify the user.
-                        notification.seen = false;
+                        notification.is_seen = false;
                     } else {
                         // If we have an old_order, but for some reason don't have a copy in local storage.
-                        notifications.push({ order_id: new_order.id, seen: false });
+                        notifications.push({ order_id: new_order.id, is_seen: false });
                     }
                 }
             } else if (!notification) {
@@ -163,12 +163,12 @@ class App extends React.Component {
                 // cached list or only notify user of actionable orders.
                 if (is_cached) {
                     // If we can compare with a cached list, assume each new order should be notified.
-                    notifications.push({ order_id: new_order.id, seen: false });
+                    notifications.push({ order_id: new_order.id, is_seen: false });
                 } else {
                     // If we don't have a cached list, only notify user of orders that require action.
                     // (We do this so old orders are not considered.)
                     const is_action_required = ['pending', 'buyer-confirmed'].includes(new_order.status);
-                    notifications.push({ order_id: new_order.id, seen: !is_action_required });
+                    notifications.push({ order_id: new_order.id, is_seen: !is_action_required });
                 }
             }
         });
@@ -179,7 +179,7 @@ class App extends React.Component {
     updateNotifications = (orders, notifications) => {
         // Purge values from local storage that are not in the notifications array.
         const updated_notifications = notifications.filter(n => orders.findIndex(o => o.id === n.order_id) !== -1);
-        const notification_count = updated_notifications.filter(notification => notification.seen === false).length;
+        const notification_count = updated_notifications.filter(notification => notification.is_seen === false).length;
         const dp2p_settings = JSON.stringify({ is_cached: true, notifications: updated_notifications });
 
         localStorage.setItem('dp2p_settings', dp2p_settings);

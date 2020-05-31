@@ -32,7 +32,7 @@ const Orders = ({ params, navigate, chat_info }) => {
         const notification = notifications.find(notification => notification.order_id === input_order.id);
 
         if (notification) {
-            notification.seen = true;
+            notification.is_seen = true;
             updateNotifications(orders, notifications);
         }
     };

@@ -39,7 +39,7 @@ const address_details_config = {
                 'regular',
                 localize('State is not in a proper format'),
                 {
-                    regex: /^[a-zA-Z\s\W'.-]{0,35}$/,
+                    regex: /^[\w\s\W'.-;,]{0,60}$/,
                 },
             ],
         ],

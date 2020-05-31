@@ -11,7 +11,7 @@ import {
 } from 'Stores/Modules/Trading/Helpers/allow-equals';
 import MobileWidget from '../Elements/mobile-widget.jsx';
 import ContractType from '../../Containers/contract-type.jsx';
-import { LastDigitMobile } from '../../Containers/trade-params-mobile.jsx';
+import { BarrierMobile, LastDigitMobile } from '../../Containers/trade-params-mobile.jsx';
 import Purchase from '../../Containers/purchase.jsx';
 import 'Sass/app/_common/mobile-widget.scss';
 
@@ -45,6 +45,11 @@ const CollapsibleTradeParams = ({
             {isVisible('last_digit') && (
                 <div collapsible='true'>
                     <LastDigitMobile />
+                </div>
+            )}
+            {isVisible('barrier') && (
+                <div collapsible={'true'}>
+                    <BarrierMobile />
                 </div>
             )}
             <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />

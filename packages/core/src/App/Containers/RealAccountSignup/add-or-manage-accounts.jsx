@@ -80,7 +80,7 @@ class AddOrManageAccounts extends React.Component {
                     >
                         {this.props.available_crypto_currencies.length === 0 && (
                             <div className='account-wizard--disabled-message'>
-                                <p>
+                                <p className='add-crypto-currency'>
                                     {localize(
                                         'You already have an account for each of the cryptocurrencies available on Deriv.'
                                     )}

@@ -5,7 +5,6 @@ import React from 'react';
 import { VariableSizeList as List } from 'react-window';
 import { NavLink } from 'react-router-dom';
 import { ThemedScrollbars } from '@deriv/components';
-import { isMobile } from '@deriv/shared/utils/screen';
 import DataListCell from './data-list-cell.jsx';
 
 const ThemedScrollbarsWrapper = React.forwardRef((props, ref) => (

@@ -184,7 +184,7 @@ class App extends React.Component {
 
     updateP2pNotifications = notifications => {
         const notification_count = notifications.filter(notification => notification.is_seen === false).length;
-        const dp2p_settings = JSON.stringify({ is_cached: true, notifications: updated_notifications });
+        const dp2p_settings = JSON.stringify({ is_cached: true, notifications });
 
         localStorage.setItem('dp2p_settings', dp2p_settings);
         this.setState({ notification_count });

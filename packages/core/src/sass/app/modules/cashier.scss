@@ -619,8 +619,8 @@
         }
     }
     &__drop-down {
-        margin-left: 8px;
-        width: auto;
+        margin-left: 8px !important;
+        width: auto !important;
         margin-bottom: 0 !important;
     }
     &__filter {

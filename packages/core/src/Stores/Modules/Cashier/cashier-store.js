@@ -904,7 +904,7 @@ export default class CashierStore extends BaseStore {
                     WS.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
                     // update total balance since MT5 total only comes in non-stream balance call
                     WS.balanceAll().then(response => {
-                        this.root_store.client.setBalance(response.balance);
+                        this.root_store.client.setBalanceOtherAccounts(response.balance);
                     });
                 }
             });
@@ -1008,7 +1008,6 @@ export default class CashierStore extends BaseStore {
         this.is_populating_values = false;
         this.setIsP2pVisible(false);
 
-        this.init();
         this.onRemount();
 
         return Promise.resolve();

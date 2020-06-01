@@ -11,6 +11,7 @@ const MarketUnavailableModal = ({ disableApp, enableApp, is_loading, is_visible,
         cancel_button_text={localize('Go to SmartTrader')}
         onConfirm={onConfirm}
         onCancel={onCancel}
+        is_mobile_full_width={false}
         is_visible={is_visible}
         disableApp={disableApp}
         enableApp={enableApp}

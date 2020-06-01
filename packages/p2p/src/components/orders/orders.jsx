@@ -31,7 +31,7 @@ const Orders = ({ params, navigate, chat_info }) => {
         const { notifications } = getLocalStorageSettings();
 
         if (notifications.length) {
-            const notification = notifications.find(notification => notification.order_id === input_order.id);
+            const notification = notifications.find(n => n.order_id === input_order.id);
 
             if (notification) {
                 notification.is_seen = true;

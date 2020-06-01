@@ -83,26 +83,41 @@ describe('Regular expression checks', () => {
             "It's time to {{ status }}, isn't it?",
         ]);
     });
+});
 
-    it('should not contain calls to localize/<Localize> with backticks "`"', () => {
-        const illegal_i18n_marker = /i18n_default_text=([`])(.*?)(?<!\\)\1|localize\(\s*([`])\s*(.*?)\s*(?<!\\)\3\s*/gs;
+describe('Integration checks', () => {
+    // Invalid string formats include:
+    // 1. Concatenation or string interpolation
+    // 2. Line-break (line-breaks are preserved in string when extracted) — UI/content line-break should be distinct from in-code line-break
+    it('should pass localized strings in correct format', () => {
         const file_paths = getTranslatableFiles();
+        const invalid_usage_regexp = /(i18n_default_text={?|localize\()\s*(['"`])\s*(.*?)(?<!\\)\2\s*(\+)?/gs;
         const errors = [];
 
         for (let i = 0; i < file_paths.length; i++) {
             try {
                 const file = fs.readFileSync(file_paths[i], 'utf8');
-                const messages = getStringsFromInput(file, illegal_i18n_marker);
+                let result = invalid_usage_regexp.exec(file);
 
-                if (messages.length) {
-                    errors.push(file_paths[i]);
+                while (result != null) {
+                    if (result[2] === '`') {
+                        errors.push(`Localized string interpolation is not allowed at: ${file_paths[i]}`);
+                    }
+                    if (result[3].includes('\n')) {
+                        errors.push(`Localized string line-break is not allowed at: ${file_paths[i]}`);
+                    }
+                    if (result[4] === '+') {
+                        errors.push(`Localized string concatenation is not allowed at: ${file_paths[i]}`);
+                    }
+
+                    result = invalid_usage_regexp.exec(file);
                 }
             } catch (e) {
                 console.log(e);
             }
         }
 
-        const error_message = `The file(s) below contain(s) calls to localize/<Localize> with backticks:\n\n\t${errors.join('\n\t')}\n\n\t`;
+        const error_message = `Invalid string format passed to localize/<Localize>:\n\n\t${errors.join('\n\t')}\n\n\t`;
         expect(errors, error_message).to.be.empty;
     });
 });

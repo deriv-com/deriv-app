@@ -1008,7 +1008,6 @@ export default class CashierStore extends BaseStore {
         this.is_populating_values = false;
         this.setIsP2pVisible(false);
 
-        this.init();
         this.onRemount();
 
         return Promise.resolve();

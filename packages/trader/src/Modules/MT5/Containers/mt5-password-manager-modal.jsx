@@ -22,9 +22,6 @@ import { validLength, validPassword } from 'Utils/Validator/declarative-validati
 
 const CountdownComponent = ({ count_from = 60, onTimeout }) => {
     const [count, setCount] = React.useState(count_from);
-    if (count === 0) {
-        onTimeout();
-    }
 
     React.useEffect(() => {
         if (count !== 0) {
@@ -34,6 +31,9 @@ const CountdownComponent = ({ count_from = 60, onTimeout }) => {
 
             return () => clearTimeout(interval);
         }
+
+        onTimeout();
+
         return () => {};
     }, [count]);
     return <span className='countdown'>{count}</span>;

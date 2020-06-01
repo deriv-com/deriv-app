@@ -7,7 +7,7 @@
     .dc-mobile-drawer__wrapper {
         /* Break the flow */
         position: absolute !important;
-        top: 0 !important;
+        top: 0;
 
         /* Give them all the available space */
         width: 100%;
@@ -34,7 +34,7 @@
         z-index: 2;
     }
     .modal-root {
-        height: 100% !important;
+        height: 100%;
     }
     .deriv-app,
     .modal-root {

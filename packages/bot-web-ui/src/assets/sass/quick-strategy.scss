@@ -98,3 +98,35 @@
     }
 }
 /* stylelint-enable */
+@include mobile {
+    .modal-root {
+        height: fit-content !important;
+        width: fit-content !important;
+        top: unset !important;
+    }
+    .dc-modal__container {
+        border-radius: unset !important;
+        max-width: 100% !important;
+    }
+    .dc-tabs__content {
+        padding: 1.6rem;
+    }
+    .dc-modal-header__title {
+        display: block !important;
+        width: 100%;
+        text-align: center !important;
+        margin-left: 4.2rem !important;
+    }
+    .modal__content {
+        padding: 0px !important;
+    }
+    .dc-dropdown-list {
+        &__group {
+            &-header {
+                padding: 0.6rem 2rem !important;
+                color: var(--brand-dark-grey) !important;
+                justify-content: start !important;
+            }
+        }
+    }
+}

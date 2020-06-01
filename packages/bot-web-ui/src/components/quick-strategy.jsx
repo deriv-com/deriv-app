@@ -34,6 +34,7 @@ const QuickStrategyForm = ({
     symbol_dropdown,
     trade_type_dropdown,
     validateQuickStrategy,
+    is_mobile,
 }) => (
     <div className='quick-strategy__form'>
         <Formik
@@ -130,7 +131,7 @@ const QuickStrategyForm = ({
                                         placeholder='5'
                                         trailing_icon={
                                             <Popover
-                                                alignment='bottom'
+                                                alignment={is_mobile ? 'top' : 'bottom'}
                                                 message={localize('The trade length of your purchased contract.')}
                                                 zIndex={popover_zindex.QUICK_STRATEGY}
                                             >
@@ -159,7 +160,7 @@ const QuickStrategyForm = ({
                                         placeholder='10'
                                         trailing_icon={
                                             <Popover
-                                                alignment='bottom'
+                                                alignment={is_mobile ? 'top' : 'bottom'}
                                                 message={localize('The amount that you pay to enter a trade.')}
                                                 zIndex={popover_zindex.QUICK_STRATEGY}
                                             >
@@ -186,7 +187,7 @@ const QuickStrategyForm = ({
                                         placeholder='5000'
                                         trailing_icon={
                                             <Popover
-                                                alignment='bottom'
+                                                alignment={is_mobile ? 'top' : 'bottom'}
                                                 message={localize(
                                                     'The bot will stop trading if your total loss exceeds this amount.'
                                                 )}
@@ -217,7 +218,7 @@ const QuickStrategyForm = ({
                                         placeholder='2'
                                         trailing_icon={
                                             <Popover
-                                                alignment='bottom'
+                                                alignment={is_mobile ? 'top' : 'bottom'}
                                                 message={getSizeDesc(active_index)}
                                                 zIndex={popover_zindex.QUICK_STRATEGY}
                                             >
@@ -244,7 +245,7 @@ const QuickStrategyForm = ({
                                         placeholder='5000'
                                         trailing_icon={
                                             <Popover
-                                                alignment='bottom'
+                                                alignment={is_mobile ? 'top' : 'bottom'}
                                                 message={localize(
                                                     'The bot will stop trading if your total profit exceeds this amount.'
                                                 )}
@@ -259,17 +260,19 @@ const QuickStrategyForm = ({
                         </div>
                         <div className='quick-strategy__form-footer'>
                             <Button.Group>
-                                <Button
-                                    id='db-quick-strategy__button-edit'
-                                    text={localize('Create & Edit')}
-                                    is_disabled={!is_submit_enabled}
-                                    secondary
-                                    large
-                                    onClick={() => {
-                                        setFieldValue('button', 'edit');
-                                        submitForm();
-                                    }}
-                                />
+                                {!is_mobile && (
+                                    <Button
+                                        id='db-quick-strategy__button-edit'
+                                        text={localize('Create & Edit')}
+                                        is_disabled={!is_submit_enabled}
+                                        secondary
+                                        large
+                                        onClick={() => {
+                                            setFieldValue('button', 'edit');
+                                            submitForm();
+                                        }}
+                                    />
+                                )}
                                 <Button
                                     id='db-quick-strategy__button-run'
                                     text={localize('Run')}
@@ -326,6 +329,7 @@ const QuickStrategy = props => {
         symbol_dropdown,
         trade_type_dropdown,
         toggleStrategyModal,
+        is_mobile,
     } = props;
 
     const symbol_dropdown_options = symbol_dropdown.map(symbol => ({
@@ -344,13 +348,14 @@ const QuickStrategy = props => {
             className='modal--strategy'
             is_open={is_strategy_modal_open}
             toggleModal={toggleStrategyModal}
-            width={'460px'}
+            width={is_mobile ? '100vw' : '480px'}
+            height={is_mobile ? 'calc(100vh - 40px)' : ''}
         >
             <ThemedScrollbars
                 className='modal__scrollbar'
                 autohide
                 style={{
-                    height: 'calc(100vh - 250px)',
+                    height: is_mobile ? 'calc(100vh - 40px)' : 'calc(100vh - 250px)',
                 }}
             >
                 <div className='modal__content'>
@@ -378,6 +383,7 @@ const QuickStrategy = props => {
                                                 validateQuickStrategy={validateQuickStrategy}
                                                 symbol_dropdown={symbol_dropdown_options}
                                                 trade_type_dropdown={trade_type_dropdown_options}
+                                                is_mobile={is_mobile}
                                             />
                                         </div>
                                     </div>
@@ -411,9 +417,10 @@ QuickStrategy.propTypes = {
     toggleStrategyModal: PropTypes.func,
     trade_type_dropdown: PropTypes.array,
     validateQuickStrategy: PropTypes.func,
+    is_mobile: PropTypes.bool,
 };
 
-export default connect(({ run_panel, quick_strategy }) => ({
+export default connect(({ run_panel, quick_strategy, ui }) => ({
     active_index: quick_strategy.active_index,
     createStrategy: quick_strategy.createStrategy,
     duration_unit_dropdown: quick_strategy.duration_unit_dropdown,
@@ -433,4 +440,5 @@ export default connect(({ run_panel, quick_strategy }) => ({
     toggleStrategyModal: quick_strategy.toggleStrategyModal,
     trade_type_dropdown: quick_strategy.trade_type_dropdown,
     validateQuickStrategy: quick_strategy.validateQuickStrategy,
+    is_mobile: ui.is_mobile,
 }))(QuickStrategy);

@@ -21,7 +21,7 @@
             }
             @include mobile {
                 left: 2.4rem;
-                width: calc(100vw - 4.8rem) !important;
+                width: calc(100vw - 4.8rem);
             }
         }
         &--is-vertical-top {
@@ -30,7 +30,7 @@
             @include mobile {
                 top: $MOBILE_HEADER_HEIGHT;
                 left: 1.6rem;
-                width: calc(100vw - 3.2rem) !important;
+                width: calc(100vw - 3.2rem);
             }
         }
         &--is-vertical-bottom {
@@ -38,7 +38,7 @@
             position: absolute;
             @include mobile {
                 left: 1.6rem;
-                width: calc(100vw - 3.2rem) !important;
+                width: calc(100vw - 3.2rem);
             }
         }
         &--hide {
@@ -67,7 +67,7 @@
             max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
         }
         @include mobile {
-            max-width: calc(100vw - 3.2rem) !important;
+            max-width: calc(100vw - 3.2rem);
         }
     }
     /** @define dc-modal-header */

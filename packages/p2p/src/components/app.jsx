@@ -147,15 +147,16 @@ class App extends React.Component {
         new_orders.forEach(new_order => {
             const old_order = old_orders.find(o => o.id === new_order.id);
             const notification = notifications.find(n => n.order_id === new_order.id);
+            const is_current_order = new_order.id === this.props.order_id;
 
             if (old_order) {
                 if (old_order.status !== new_order.status) {
                     if (notification) {
                         // If order status changed, notify the user.
-                        notification.is_seen = false;
+                        notification.is_seen = is_current_order;
                     } else {
                         // If we have an old_order, but for some reason don't have a copy in local storage.
-                        notifications.push({ order_id: new_order.id, is_seen: false });
+                        notifications.push({ order_id: new_order.id, is_seen: is_current_order });
                     }
                 }
             } else if (!notification) {
@@ -163,13 +164,13 @@ class App extends React.Component {
                 // cached list or only notify user of actionable orders.
                 if (is_cached) {
                     // If we can compare with a cached list, assume each new order should be notified.
-                    notifications.push({ order_id: new_order.id, is_seen: false });
+                    notifications.push({ order_id: new_order.id, is_seen: is_current_order });
                 } else {
                     // If we don't have a cached list, only notify user of orders that require action.
                     // This is done so user isn't spammed with old orders after resetting their local storage.
                     const actionable_statuses = ['pending', 'buyer-confirmed'];
                     const is_action_required = actionable_statuses.includes(new_order.status);
-                    notifications.push({ order_id: new_order.id, is_seen: !is_action_required });
+                    notifications.push({ order_id: new_order.id, is_seen: is_current_order || !is_action_required });
                 }
             }
         });

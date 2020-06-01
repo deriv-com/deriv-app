@@ -22,7 +22,7 @@ class DeactivateAccount extends React.Component {
     };
     render() {
         return (
-            <React.Fragment>
+            <div className='deactivate-account'>
                 {this.state.render_deactivate_account_reason ? (
                     <DeactivateAccountReason />
                 ) : (
@@ -36,7 +36,7 @@ class DeactivateAccount extends React.Component {
                 >
                     <Modal.Body>{this.state.is_loading ? 'loading...' : 'modal content'}</Modal.Body>
                 </Modal>
-            </React.Fragment>
+            </div>
         );
     }
 }

@@ -1078,6 +1078,12 @@ $MIN_HEIGHT_FLOATING: calc(
             float: right;
         }
     }
+    .deactivate-account-reasons {
+        color: var(--text-prominent);
+        font-size: var(--text-size-xs);
+        line-height: 1.43;
+        font-weight: bold;
+    }
 }
 .dc-modal__container_confirm-all-close {
     .dc-modal-header--confirm-all-close {

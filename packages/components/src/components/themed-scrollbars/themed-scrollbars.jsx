@@ -13,6 +13,7 @@ const ThemedScrollbars = ({
     onScroll,
     refSetter,
 }) => {
+    if (is_native) return children;
     const useHover = () => {
         const [value, setValue] = React.useState(false);
 
@@ -40,7 +41,6 @@ const ThemedScrollbars = ({
 
     const [hoverRef, isHovered] = useHover();
 
-    if (is_native) return children;
     return (
         <div
             ref={hoverRef}

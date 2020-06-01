@@ -73,14 +73,14 @@
         left: 100vw;
 
         &-mobile {
-            transform: translateY(calc(-100% + 138px));
+            transform: translateY(calc(-100% + 4rem));
         }
     }
     &--mobile {
         left: unset;
         width: 100vw !important;
-        height: 100vh !important;
-        top: calc(100vh - 98px) !important;
+        height: calc(100% - 8.8rem) !important;
+        top: calc(100% - 8.8rem) !important;
         z-index: unset;
     }
 }

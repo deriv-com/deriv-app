@@ -33,14 +33,17 @@ const NetworkMonitorBase = (() => {
                 setNetworkStatus('blinking');
                 reconnectAfter({ timeout: 500 });
             });
-            window.addEventListener('offline', () => setNetworkStatus('offline'));
+            window.addEventListener('offline', () => {
+                BinarySocket.close();
+                setNetworkStatus('offline');
+            });
         } else {
             // default to always online and fallback to WS checks
             navigator.onLine = true;
         }
 
         if (isOnline()) {
-            BinarySocket.init(ws_config);
+            BinarySocket.init({ options: ws_config });
         }
 
         setNetworkStatus(isOnline() ? 'blinking' : 'offline');
@@ -57,7 +60,7 @@ const NetworkMonitorBase = (() => {
         reconnect_timeout = setTimeout(() => {
             reconnect_timeout = null;
             if (isOnline() && BinarySocket.hasReadyState(2, 3)) {
-                BinarySocket.init(ws_config);
+                BinarySocket.init({ options: ws_config });
             } else {
                 BinarySocket.send({ ping: 1 }); // get stable status sooner
             }

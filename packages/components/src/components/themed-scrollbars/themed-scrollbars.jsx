@@ -5,8 +5,10 @@ const ThemedScrollbars = ({
     children,
     className,
     height,
+    width,
     autohide = true,
     is_native,
+    is_only_horizontal,
     has_horizontal,
     onScroll,
     refSetter,
@@ -46,8 +48,13 @@ const ThemedScrollbars = ({
             className={classNames('dc-themed-scrollbars', className, {
                 'dc-themed-scrollbars__autohide': autohide,
                 'dc-themed-scrollbars__autohide--is-hovered': autohide && isHovered,
+                'dc-themed-scrollbars--has-horizontal': has_horizontal,
+                'dc-themed-scrollbars--only-horizontal': is_only_horizontal,
             })}
-            style={{ maxHeight: height || '100%', overflowY: 'auto', overflowX: has_horizontal ? 'auto' : 'hidden' }}
+            style={{
+                maxHeight: height || '100%',
+                maxWidth: width || 'none',
+            }}
             onScroll={onScroll}
         >
             {children}

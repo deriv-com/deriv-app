@@ -18,6 +18,7 @@ export default class MT5Store extends BaseStore {
     @observable is_mt5_success_dialog_enabled = false;
     @observable is_mt5_financial_stp_modal_open = false;
     @observable is_mt5_password_modal_enabled = false;
+    @observable is_mt5_reset_password_modal_enabled = false;
 
     @observable is_mt5_pending_dialog_open = false;
 
@@ -333,6 +334,16 @@ export default class MT5Store extends BaseStore {
             }),
             300
         );
+    }
+
+    @action.bound
+    sendVerifyEmail() {
+        return WS.verifyEmail(this.root_store.client.email, 'mt5_password_reset');
+    }
+
+    @action.bound
+    setMt5PasswordResetModal(val) {
+        this.is_mt5_reset_password_modal_enabled = !!val;
     }
 
     static async changePassword({ login, old_password, new_password, password_type }) {

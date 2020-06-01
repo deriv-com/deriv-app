@@ -17,7 +17,13 @@ class Table extends React.Component {
                     'dc-table--scroll': this.props.fixed,
                 })}
             >
-                {this.props.fixed ? <ThemedScrollbars>{this.props.children}</ThemedScrollbars> : this.props.children}
+                {this.props.fixed ? (
+                    <ThemedScrollbars has_horizontal width='100%'>
+                        {this.props.children}
+                    </ThemedScrollbars>
+                ) : (
+                    this.props.children
+                )}
             </div>
         );
     }

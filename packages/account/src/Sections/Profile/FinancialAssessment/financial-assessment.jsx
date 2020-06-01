@@ -200,7 +200,7 @@ class FinancialAssessment extends React.Component {
         return errors;
     };
 
-    showForm = (show_form) => this.setState({ show_form });
+    showForm = (show_form) => this.setState({ show_form, is_confirmation_visible: false });
 
     toggleConfirmationModal = (value) => {
         const new_state = { is_confirmation_visible: value };

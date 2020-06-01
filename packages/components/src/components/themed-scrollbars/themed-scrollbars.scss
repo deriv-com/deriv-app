@@ -17,8 +17,16 @@
             }
         }
     }
+    &--has-horizontal {
+        overflow-x: auto;
+    }
+    &--only-horizontal {
+        overflow-y: hidden;
+        overflow-x: auto;
+    }
     &::-webkit-scrollbar {
         width: 5px;
+        height: 5px;
         background-color: transparent;
         border-radius: 10px;
     }

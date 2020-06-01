@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Icon from '../icon';
 
 // TODO: use-from-shared - Use this icon from icons' shared package
 const IconDrawer = () => (
@@ -45,26 +46,33 @@ class Drawer extends React.PureComponent {
     };
 
     render() {
-        const { children, className, footer, header, contentClassName } = this.props;
+        const { children, className, footer, header, contentClassName, is_mobile } = this.props;
 
         return (
             <div
                 className={classNames('dc-drawer', className, {
-                    'dc-drawer--open': this.state.is_open,
+                    'dc-drawer--mobile': is_mobile,
+                    'dc-drawer--open': this.state.is_open && !is_mobile,
+                    'dc-drawer--open-mobile': this.state.is_open && is_mobile,
                 })}
             >
-                <div className='dc-drawer__container'>
-                    {header && <div className='dc-drawer__header'>{header}</div>}
-                    <div className={classNames('dc-drawer__content', contentClassName)}>{children}</div>
-                    {footer && <div className='dc-drawer__footer'>{footer}</div>}
-                </div>
                 <div
                     className={classNames('dc-drawer__toggle', {
                         'dc-drawer__toggle--open': this.state.is_open,
+                        'dc-drawer__toggle--mobile': is_mobile,
                     })}
                     onClick={this.toggleDrawer}
                 >
-                    <IconDrawer />
+                    {is_mobile ? <Icon icon='IcChevronDownBold' className='dc-drawer__toggle-icon' /> : <IconDrawer />}
+                </div>
+                <div
+                    className={classNames('dc-drawer__container', {
+                        'dc-drawer__container--mobile': is_mobile,
+                    })}
+                >
+                    {header && <div className='dc-drawer__header'>{header}</div>}
+                    <div className={classNames('dc-drawer__content', contentClassName)}>{children}</div>
+                    {footer && <div className='dc-drawer__footer'>{footer}</div>}
                 </div>
             </div>
         );

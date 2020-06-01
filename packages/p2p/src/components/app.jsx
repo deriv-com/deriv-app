@@ -207,6 +207,7 @@ class App extends React.Component {
             notification_count,
             order_table_type,
             chat_info,
+            show_popup,
         } = this.state;
         const {
             className,
@@ -266,9 +267,9 @@ class App extends React.Component {
                         </div>
                         <div label={localize('My ads')}>
                             <MyAds navigate={this.redirectTo} params={parameters} />
-                            {this.state.show_popup && (
+                            {show_popup && (
                                 <div className='p2p-my-ads__dialog'>
-                                    <Dialog is_visible={this.state.show_popup}>
+                                    <Dialog is_visible={show_popup}>
                                         <NicknameForm
                                             handleClose={this.forceUpdateTab}
                                             handleConfirm={this.toggleNicknamePopup}

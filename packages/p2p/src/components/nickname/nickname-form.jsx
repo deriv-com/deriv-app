@@ -21,7 +21,7 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
 
                 setNickname(p2p_advertiser_create.name);
                 setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
-                if (typeof handleCOnfirm === 'function') {
+                if (typeof handleConfirm === 'function') {
                     handleConfirm();
                 }
             }

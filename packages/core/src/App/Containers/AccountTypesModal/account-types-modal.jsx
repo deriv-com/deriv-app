@@ -6,7 +6,7 @@ import { website_name } from 'App/Constants/app-config';
 import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { urlFor } from '_common/url';
+import { urlFor } from '@deriv/shared/utils/url';
 import AccountCard from './account-card.jsx';
 
 import 'Sass/app/modules/account-types.scss';
@@ -549,7 +549,7 @@ class AccountTypesModal extends React.Component {
             this.redirectToMt5('real');
             // TODO: [deriv-eu] Update this after EU account sign-up completion
         } else {
-            window.open(urlFor('user/metatrader', undefined, undefined, true));
+            window.open(urlFor('user/metatrader', { legacy: true }));
         }
     };
 

@@ -13,7 +13,6 @@ const ThemedScrollbars = ({
     onScroll,
     refSetter,
 }) => {
-    // Hook
     const useHover = () => {
         const [value, setValue] = React.useState(false);
 

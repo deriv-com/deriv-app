@@ -173,10 +173,17 @@ export default class CashierStore extends BaseStore {
             // 1. we have not already checked this before, and
             // 2. client is not virtual, and
             // 3. p2p call does not return error code `PermissionDenied`
-            if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
+            if (
+                !this.is_p2p_visible &&
+                !this.root_store.client.is_virtual &&
+                this.root_store.client.is_client_allowed_to_visit
+            ) {
                 const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
                 const advertiser_error = ObjectUtils.getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'PermissionDenied') return;
+
+                if (advertiser_error === 'PermissionDenied' || advertiser_error === 'RestrictedCountry') {
+                    return;
+                }
 
                 this.is_p2p_advertiser = !advertiser_error;
                 this.setIsP2pVisible(true);

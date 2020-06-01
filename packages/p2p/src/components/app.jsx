@@ -141,11 +141,6 @@ class App extends React.Component {
         return JSON.parse(localStorage.getItem('dp2p_settings') || '{ "is_cached": false, "notifications": [] }');
     };
 
-    isOrderSeen = order_id => {
-        const { notifications } = this.getLocalStorageSettings();
-        return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
-    };
-
     handleNotifications = (old_orders, new_orders) => {
         const { is_cached, notifications } = this.getLocalStorageSettings();
 
@@ -263,7 +258,6 @@ class App extends React.Component {
                     nickname: this.state.nickname,
                     setNickname: nickname => this.setState({ nickname }),
                     setChatInfo: this.setChatInfo,
-                    isOrderSeen: this.isOrderSeen,
                     is_restricted: this.state.is_restricted,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,

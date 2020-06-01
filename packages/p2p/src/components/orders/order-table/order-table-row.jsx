@@ -27,8 +27,14 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
         is_refunded,
     } = data;
     const [remaining_time, setRemainingTime] = React.useState();
-    const { isOrderSeen } = React.useContext(Dp2pContext);
+    const { getLocalStorageSettings } = React.useContext(Dp2pContext);
+
     let interval;
+
+    const isOrderSeen = order_id => {
+        const { notifications } = getLocalStorageSettings();
+        return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
+    };
 
     const countDownTimer = () => {
         const distance = ServerTime.getDistanceToServerTime(order_expiry_millis);

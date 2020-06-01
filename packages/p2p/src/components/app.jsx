@@ -237,6 +237,7 @@ class App extends React.Component {
                     residence,
                     advertiser_id: this.state.advertiser_id,
                     is_advertiser: this.state.is_advertiser,
+                    setIsAdvertiser: is_advertiser => this.setState({ is_advertiser }),
                     nickname: this.state.nickname,
                     setNickname: nickname => this.setState({ nickname }),
                     setChatInfo: this.setChatInfo,

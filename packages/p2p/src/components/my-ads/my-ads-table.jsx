@@ -79,7 +79,7 @@ const MyAdsTable = ({ onClickCreate }) => {
 
         if (is_advertiser) {
             requestWS({ p2p_advertiser_info: 1 }).then(response => {
-                if (this.is_mounted && !response.error) {
+                if (mounted.current && !response.error) {
                     setEnabled(!!response.p2p_advertiser_info.is_listed);
                 }
             });

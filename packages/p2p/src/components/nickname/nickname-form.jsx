@@ -10,7 +10,7 @@ import FormError from '../form/error.jsx';
 import './nickname-form.scss';
 
 const NicknameForm = ({ handleClose, handleConfirm }) => {
-    const { setNickname, setChatInfo } = React.useContext(Dp2pContext);
+    const { setNickname, setIsAdvertiser, setChatInfo } = React.useContext(Dp2pContext);
 
     const handleSubmit = (values, { setStatus, setSubmitting }) => {
         requestWS({ p2p_advertiser_create: 1, name: values.nickname }).then(response => {
@@ -20,6 +20,7 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
                 const { p2p_advertiser_create } = response;
 
                 setNickname(p2p_advertiser_create.name);
+                setIsAdvertiser(p2p_advertiser_create.is_approved);
                 setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
                 if (typeof handleConfirm === 'function') {
                     handleConfirm();

@@ -1,5 +1,6 @@
 import React from 'react';
-import { getUrlSmartTrader, urlFor } from '@deriv/shared/utils/url';
+import { getUrlSmartTrader } from '@deriv/shared/utils/storage';
+import { urlFor } from '@deriv/shared/utils/url';
 import { connect } from 'Stores/connect';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import MarketUnavailableModal from 'App/Components/Elements/Modals/MarketUnavailableModal';

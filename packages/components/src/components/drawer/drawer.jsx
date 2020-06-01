@@ -63,7 +63,7 @@ class Drawer extends React.PureComponent {
                     })}
                     onClick={this.toggleDrawer}
                 >
-                    {is_mobile ? <Icon icon='IcChevronDownBold' className='dc-drawer__toggle-icon' /> : <IconDrawer />}
+                    {is_mobile ? <Icon icon='IcChevronUp' className='dc-drawer__toggle-icon-mobile' /> : <IconDrawer />}
                 </div>
                 <div
                     className={classNames('dc-drawer__container', {

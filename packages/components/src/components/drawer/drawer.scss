@@ -56,8 +56,17 @@
             transition: 0.25s ease;
             transform: rotate(180deg);
         }
+        &-icon-mobile {
+            width: 2.4rem;
+            height: 0.8rem;
+            transition: 0.25s ease;
+            transform: rotate(0);
+        }
         &--open > &-icon {
             transform: rotate(0);
+        }
+        &--open > &-icon-mobile {
+            transform: rotate(180deg);
         }
         &--mobile {
             position: unset;

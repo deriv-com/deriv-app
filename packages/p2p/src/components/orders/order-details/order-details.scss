@@ -1,34 +1,267 @@
 .order-details {
-    height: 650px;
-    &__wrapper {
-        width: 476px;
-        margin-top: 2.4rem;
+    &__container {
+        display: flex;
+        height: calc(100vh - 47px - 53px - 60px - 52px - 36px - 2.4rem - 1.6rem);
+        min-height: 555px;
+        overflow-y: scroll;
 
-        &-message {
-            margin: 0.8rem 0.8rem 1.6rem;
-            font-size: 1.4rem;
-            line-height: 1.43;
-            font-weight: bold;
-            color: var(--text-general);
+        .sendbird {
+            &-container {
+                position: absolute;
+                left: 484px;
+                border-radius: 4px;
+                height: inherit;
+                min-height: inherit;
+                max-height: 555px;
+                width: calc(50% - 32px);
+                max-width: calc(50% - 32px);
+                box-shadow: 0 8px 8px 0 var(--shadow-menu), 0 0 8px 0 var(--shadow-menu);
+            }
 
-            &--success {
-                color: var(--text-profit-success);
+            &-conversation {
+                display: none;
+                width: 100%;
+                border-radius: 4px;
+                border: none;
+                background-color: var(--general-section-2);
+
+                &__messages {
+                    background-color: var(--general-main-2);
+                }
+
+                &__footer {
+                    padding: 16px 24px 26px;
+                    border-top: 2px solid var(--general-section-2);
+                    background-color: var(--general-main-2);
+
+                    .sendbird-message-input {
+                        height: 40px;
+
+                        &--textarea {
+                            max-height: 150px;
+                            height: 40px;
+                            overflow-y: scroll;
+                            padding: 10px 44px 10px 8px;
+                            line-height: normal;
+                            border: 1px solid var(--border-normal);
+                            box-shadow: none;
+                            background-color: var(--general-main-2);
+                            color: var(--text-less-prominent);
+                            caret-color: var(--text-less-prominent);
+
+                            &:focus {
+                                border: 1px solid var(--border-hover);
+                                color: var(--text-less-prominent);
+                            }
+                        }
+                        &--placeholder {
+                            top: 10px;
+                            left: 8px;
+                            color: var(--text-less-prominent);
+                        }
+                    }
+                    .sendbird-iconbutton {
+                        top: 4px;
+                        right: 8px;
+                        fill: var(--text-general) !important;
+                    }
+                }
+
+                .sendbird {
+                    &-separator {
+                        &__left,
+                        &__right {
+                            display: none;
+                        }
+                        &__text {
+                            display: initial;
+                            width: 100%;
+                            text-align: center;
+                        }
+                    }
+
+                    &-label {
+                        &--caption-3 {
+                            font-size: 10px;
+                            margin-left: 0;
+                        }
+                        &--color-onbackground-2 {
+                            color: var(--text-less-prominent);
+                        }
+                    }
+
+                    &-avatar {
+                        display: none;
+
+                        &-img {
+                            display: none;
+                        }
+                    }
+
+                    &-thumbnail {
+                        &--incoming {
+                            padding-left: 0px !important;
+                        }
+
+                        &__img {
+                            width: 100%;
+                            border-bottom-left-radius: 4px;
+                        }
+                        &__sender-name {
+                            display: none;
+                        }
+                        &__more {
+                            display: none;
+                        }
+                    }
+
+                    &-file-message {
+                        &__more {
+                            display: none !important;
+                        }
+                        &__sender-name {
+                            display: none;
+                        }
+                        &--incoming {
+                            padding-left: 0px !important;
+
+                            .sendbird-file-message__tooltip,
+                            &:hover .sendbird-file-message__tooltip {
+                                background-color: var(--general-active);
+                                border-bottom-left-radius: $BORDER_RADIUS;
+
+                                &__text {
+                                    color: var(--text-prominent);
+                                }
+                            }
+                        }
+                    }
+
+                    &-user-message {
+                        &__sender-name {
+                            display: none;
+                        }
+                        &__tooltip {
+                            padding: 8px 16px;
+
+                            &__text {
+                                font-size: 14px;
+                                font-family: $FONT_STACK;
+                                white-space: break-spaces;
+                            }
+                        }
+                        &__more {
+                            display: none;
+                        }
+                        &--incoming {
+                            padding-left: 0px !important;
+
+                            .sendbird-user-message__tooltip {
+                                background-color: var(--general-active);
+                            }
+
+                            .sendbird-user-message__tooltip,
+                            &:hover .sendbird-user-message__tooltip {
+                                background-color: var(--general-active);
+                                border-bottom-left-radius: $BORDER_RADIUS;
+
+                                &__text {
+                                    color: var(--text-prominent);
+                                }
+                            }
+                        }
+                        &--outgoing {
+                            .sendbird-user-message__tooltip,
+                            &:hover .sendbird-user-message__tooltip {
+                                background-color: var(--brand-secondary);
+                                border-bottom-right-radius: 4px;
+
+                                &__text {
+                                    color: var(--text-colored-background);
+                                }
+                            }
+                        }
+                    }
+
+                    &-chat-header {
+                        border-radius: $BORDER_RADIUS $BORDER_RADIUS 0 0;
+                        border-bottom: none;
+                        padding: 0 16px;
+                        background-color: var(--general-section-2);
+
+                        &__left {
+                            display: flex;
+                            flex-flow: column;
+                            align-items: flex-start;
+                            margin-right: 0;
+                        }
+
+                        &__right {
+                            display: none;
+                        }
+
+                        &__title {
+                            font-size: 16px;
+                            display: flex;
+                            max-width: 350px;
+                            margin-right: 0;
+                            margin-left: 0;
+                            color: var(--text-prominent);
+                        }
+
+                        &__subtitle {
+                            color: var(--text-less-prominent);
+                        }
+                    }
+
+                    &-chat-footer {
+                        &--textarea {
+                            &__character-count {
+                                position: absolute;
+                                right: 24px;
+                                line-height: 18px;
+                                font-size: 12px;
+                                color: var(--text-less-prominent);
+                            }
+                        }
+                    }
+
+                    &-iconbutton {
+                        svg {
+                            fill: var(--text-general) !important;
+                        }
+
+                        .icon-send_svg__fill {
+                            fill: var(--text-general) !important;
+                        }
+
+                        &:hover {
+                            background-color: var(--general-hover) !important;
+                        }
+                    }
+                }
             }
         }
-        &--outer {
-            background-color: var(--general-section-1);
-            border-radius: 4px;
-            padding: 0.8rem;
+    }
+
+    &__wrapper {
+        width: 456px;
+
+        &-message {
+            font-size: 1.4rem;
+            line-height: 1.43;
+            color: var(--text-general);
         }
         &--inner {
-            min-height: 500px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            margin-bottom: 5px;
             background-color: var(--general-main-1);
             border-radius: 4px;
             width: 100%;
+            border: 0.8rem solid var(--general-section-1);
+            min-height: 555px;
+
             .footer-actions {
                 position: relative;
                 height: unset;
@@ -53,10 +286,16 @@
             font-weight: bold;
             line-height: 1.5;
 
-            &--expired {
+            &--info {
                 color: var(--text-less-prominent);
             }
-            &--wait-for-payment {
+            &--success {
+                color: var(--status-success);
+            }
+            &--danger {
+                color: var(--status-danger);
+            }
+            &--alert {
                 color: var(--status-warning);
             }
         }
@@ -66,11 +305,10 @@
         }
         &-method {
             font-size: 1.2rem;
-            color: var(--status-info);
-            border: 1px solid var(--status-info);
+            border: 1px solid var(--border-normal);
             width: fit-content;
             border-radius: 1.6rem;
-            padding: 0.2rem 0.8rem;
+            padding: 0.4rem 1rem;
             margin-top: 0.8rem;
         }
         &-timer {
@@ -97,7 +335,6 @@
         }
     }
     &__info {
-        min-height: 320px;
         &-block {
             margin-bottom: 1.6rem;
 
@@ -126,6 +363,7 @@
         }
     }
     &__footer {
+        margin-top: auto;
         font-size: 1.4rem;
         line-height: 1.43;
         color: var(--text-general);

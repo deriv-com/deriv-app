@@ -110,7 +110,7 @@
     "@deriv/bot-web-ui": "^1.0.0",
     "@deriv/components": "^1.0.0",
     "@deriv/deriv-api": "^1.0.5",
-    "@deriv/deriv-charts": "^0.2.0",
+    "@deriv/deriv-charts": "^0.2.1",
     "@deriv/p2p": "^0.6.0",
     "@deriv/shared": "^1.0.0",
     "@deriv/trader": "^3.8.0",

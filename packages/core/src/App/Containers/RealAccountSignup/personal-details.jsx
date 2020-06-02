@@ -118,7 +118,7 @@ class PersonalDetails extends React.Component {
                                                             data-lpignore='true'
                                                             autoComplete='new-password' // prevent chrome autocomplete
                                                             type='text'
-                                                            label={localize('Title*')}
+                                                            label={localize('Title')}
                                                             error={touched.salutation && errors.salutation}
                                                             list_items={this.props.salutation_list}
                                                             onItemSelection={({ value, text }) =>
@@ -131,23 +131,23 @@ class PersonalDetails extends React.Component {
                                             )}
                                             <FormInputField
                                                 name='first_name'
-                                                label={localize('First name*')}
+                                                label={localize('First name')}
                                                 placeholder={localize('John')}
                                             />
                                             <FormInputField
                                                 name='last_name'
-                                                label={localize('Last name*')}
+                                                label={localize('Last name')}
                                                 placeholder={localize('Doe')}
                                             />
                                             <FormInputField
                                                 name='phone'
-                                                label={localize('Phone number*')}
+                                                label={localize('Phone number')}
                                                 placeholder={localize('Phone number')}
                                             />
                                             <FormSubHeader title={localize('Other details')} />
                                             <DateOfBirthField
                                                 name='date_of_birth'
-                                                label={localize('Date of birth*')}
+                                                label={localize('Date of birth')}
                                                 placeholder={localize('01-07-1999')}
                                             />
                                             {'place_of_birth' in this.props.value && (
@@ -158,7 +158,7 @@ class PersonalDetails extends React.Component {
                                                             data-lpignore='true'
                                                             autoComplete='new-password' // prevent chrome autocomplete
                                                             type='text'
-                                                            label={localize('Place of birth*')}
+                                                            label={localize('Place of birth')}
                                                             error={touched.place_of_birth && errors.place_of_birth}
                                                             list_items={this.props.residence_list}
                                                             onItemSelection={({ value, text }) =>
@@ -177,7 +177,7 @@ class PersonalDetails extends React.Component {
                                                             data-lpignore='true'
                                                             autoComplete='new-password' // prevent chrome autocomplete
                                                             type='text'
-                                                            label={localize('Citizenship*')}
+                                                            label={localize('Citizenship')}
                                                             error={touched.citizen && errors.citizen}
                                                             disabled={
                                                                 this.props.value.citizen &&
@@ -204,7 +204,7 @@ class PersonalDetails extends React.Component {
                                                                     data-lpignore='true'
                                                                     autoComplete='new-password' // prevent chrome autocomplete
                                                                     type='text'
-                                                                    label={localize('Tax residence*')}
+                                                                    label={localize('Tax residence')}
                                                                     error={
                                                                         touched.tax_residence && errors.tax_residence
                                                                     }
@@ -241,7 +241,7 @@ class PersonalDetails extends React.Component {
                                                                 data-lpignore='true'
                                                                 autoComplete='new-password' // prevent chrome autocomplete
                                                                 type='text'
-                                                                label={localize('Account opening reason*')}
+                                                                label={localize('Account opening reason')}
                                                                 error={
                                                                     touched.account_opening_reason &&
                                                                     errors.account_opening_reason

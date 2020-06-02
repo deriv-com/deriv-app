@@ -34,7 +34,7 @@ class ExpansionPanel extends React.Component {
         return (
             <div>
                 {array.map((item, index) => {
-                    if (item && item.value !== undefined && Array.isArray(item.value)) {
+                    if (item && item.value && Array.isArray(item.value)) {
                         return (
                             <div key={index} className='dc-expansion-panel__content-array'>
                                 <div
@@ -59,7 +59,7 @@ class ExpansionPanel extends React.Component {
                     return (
                         <div key={index} className='dc-expansion-panel__content-array'>
                             <span className='dc-expansion-panel__content-array-item-index'>{index + 1}:</span>
-                            {item && item.value !== undefined ? item.value.toString() : undefined}
+                            {item && item.value ? item.value.toString() : undefined}
                         </div>
                     );
                 })}

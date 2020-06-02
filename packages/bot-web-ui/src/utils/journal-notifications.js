@@ -38,7 +38,10 @@ export const isCustomJournalMessage = (
     if (Array.isArray(message)) {
         const message_length = message.length;
         const parsedArray = {
-            header: localize('{{variable_name}}: ({{message_length}})', { variable_name, message_length }),
+            header:
+                variable_name !== 'null'
+                    ? localize('{{variable_name}}: ({{message_length}})', { variable_name, message_length })
+                    : localize('List: ({{message_length}})', { message_length }),
             content: parseArray(message),
         };
         pushMessage(arrayAsMessage(parsedArray));

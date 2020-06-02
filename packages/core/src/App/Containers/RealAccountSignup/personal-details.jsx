@@ -9,6 +9,7 @@ import {
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import React from 'react';
+import Checkbox from '@deriv/components/src/components/checkbox';
 import { FormSubHeader } from '@deriv/account';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
@@ -227,6 +228,27 @@ class PersonalDetails extends React.Component {
                                                             label={localize('Tax identification number')}
                                                             placeholder={localize('Tax identification number')}
                                                         />
+                                                    )}
+                                                    {'tax_identification_confirm' in this.props.value && (
+                                                        <Field name='tax_identification_confirm'>
+                                                            {field => (
+                                                                <Checkbox
+                                                                    {...field}
+                                                                    data-lpignore
+                                                                    onChange={() =>
+                                                                        setFieldValue(
+                                                                            field.name,
+                                                                            !values[field.name],
+                                                                            true
+                                                                        )
+                                                                    }
+                                                                    value={values[field.name]}
+                                                                    label={localize(
+                                                                        'I hereby confirm that the tax information i provided is true and complete.I will also inform Binary Investments ( Europe ) Ltd. about any changes to this information.'
+                                                                    )}
+                                                                />
+                                                            )}
+                                                        </Field>
                                                     )}
                                                 </>
                                             )}

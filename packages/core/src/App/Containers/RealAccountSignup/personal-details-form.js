@@ -6,7 +6,7 @@ import { generateValidationFunction, getDefaultFields } from './form-validations
 
 const personal_details_config = {
     account_opening_reason: {
-        supported_in: ['iom', 'malta'],
+        supported_in: ['iom', 'malta', 'maltainvest'],
         default_value: '',
         rules: [['req', localize('Account opening reason is required')]],
     },
@@ -68,9 +68,14 @@ const personal_details_config = {
         rules: [['req', localize('Tax residence is required')]],
     },
     tax_identification_number: {
-        default_Value: '',
+        default_value: '',
         supported_in: ['maltainvest'],
         rules: [['req', localize('Tax identification number is required')]],
+    },
+    tax_identification_confirm: {
+        default_value: '',
+        supported_in: ['maltainvest'],
+        rules: [['req', localize('Please confirm your tax information')]],
     },
 };
 

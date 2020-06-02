@@ -185,7 +185,11 @@ class AccountWizard extends React.Component {
     };
 
     submitForm = () => {
-        return this.props.realAccountSignup(this.form_values);
+        const filtered_values = Object.entries(this.form_values).filter(
+            ([key, _]) => key !== 'tax_identification_confirm'
+        );
+
+        return this.props.realAccountSignup(Object.fromEntries(filtered_values));
     };
 
     setAccountCurrency = () => this.props.setAccountCurrency(this.form_values.currency);

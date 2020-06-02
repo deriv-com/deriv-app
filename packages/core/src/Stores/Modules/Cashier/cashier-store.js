@@ -121,6 +121,7 @@ export default class CashierStore extends BaseStore {
     active_container = this.config.deposit.container;
     onRemount = () => {};
     is_populating_values = false;
+    has_subscribed_to_switch_account = false;
 
     containers = [this.config.deposit.container, this.config.withdraw.container];
 
@@ -140,7 +141,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onMountCommon() {
+    async onMountCommon(should_remount) {
         if (this.root_store.client.is_logged_in) {
             // avoid calling this again
             if (this.is_populating_values) {
@@ -149,11 +150,18 @@ export default class CashierStore extends BaseStore {
 
             this.is_populating_values = true;
 
-            // cashier inits once and tries to stay active until switching account
-            // since cashier calls take a long time to respond or display in iframe
-            // so we don't have any unmount function here and everything gets reset on switch instead
-            this.disposeSwitchAccount();
-            this.onSwitchAccount(this.accountSwitcherListener);
+            if (should_remount) {
+                this.onRemount = this.onMountCommon;
+            }
+
+            if (!this.has_subscribed_to_switch_account) {
+                // cashier inits once and tries to stay active until switching account
+                // since cashier calls take a long time to respond or display in iframe
+                // so we don't have any unmount function here and everything gets reset on switch instead
+                this.disposeSwitchAccount();
+                this.onSwitchAccount(this.accountSwitcherListener);
+                this.has_subscribed_to_switch_account = true;
+            }
 
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier

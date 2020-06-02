@@ -32,8 +32,8 @@ class MyAds extends React.Component {
         is_loading: true,
         show_form: false,
         is_pending: false,
-        is_identity_authenticated: false,
-        is_address_authenticated: false,
+        is_authenticated: false,
+        should_show_poa_link: false,
         show_popup: false,
     };
 
@@ -54,17 +54,13 @@ class MyAds extends React.Component {
 
                 this.setState({
                     is_pending: document_status === 'pending' || identity_status === 'pending',
-                    is_identity_authenticated: identity_status === 'verified',
-                    is_address_authenticated: document_status === 'verified',
+                    is_authenticated: identity_status === 'verified' && document_status === 'verified',
+                    should_show_poa_link: identity_status === 'pending' || identity_status === 'verified',
                 });
             }
 
             this.setState({ is_loading: false });
         });
-    }
-
-    get isAuthenticated() {
-        return this.state.is_identity_authenticated && this.state.is_address_authenticated;
     }
 
     applyAction = () => {
@@ -73,10 +69,10 @@ class MyAds extends React.Component {
         }
 
         // TODO: redirect without refresh
-        if (!this.state.is_identity_authenticated) {
-            window.location.href = '/account/proof-of-identity';
-        } else if (!this.state.is_address_authenticated) {
+        if (this.state.should_show_poa_link) {
             window.location.href = '/account/proof-of-address';
+        } else {
+            window.location.href = '/account/proof-of-identity';
         }
     };
 
@@ -93,13 +89,13 @@ class MyAds extends React.Component {
             return <MyAdsState message={localize('P2P cashier is unavailable in your country.')} />;
         }
 
-        if (!this.context.is_advertiser && this.isAuthenticated && this.context.nickname) {
+        if (!this.context.is_advertiser && this.state.is_authenticated && this.context.nickname) {
             return (
                 <MyAdsState message={localize('Your P2P cashier has been blocked. Please contact customer support')} />
             );
         }
 
-        if (this.isAuthenticated && !this.context.nickname) {
+        if (this.state.is_authenticated && !this.context.nickname) {
             return (
                 <MyAdsState
                     message={localize('To get started, you need a nickname.')}

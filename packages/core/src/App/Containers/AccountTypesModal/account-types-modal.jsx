@@ -260,7 +260,7 @@ const FinancialBox = ({ derivOnClick, is_demo = false, mt5OnClick }) => {
                     key={0}
                     title={localize('Trade on {{ website_name }}', { website_name })}
                     subtitle={localize('Option trading account')}
-                    button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
+                    button_text={is_demo ? localize('Trade on demo account') : localize('Add real account')}
                     // TODO: [deriv-eu] Add click handler
                     buttonOnClick={derivOnClick}
                     items={{
@@ -298,7 +298,7 @@ const FinancialBox = ({ derivOnClick, is_demo = false, mt5OnClick }) => {
                     key={1}
                     title={localize('Trade on MT5')}
                     subtitle={localize('Margin trading account')}
-                    button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
+                    button_text={is_demo ? localize('Trade on demo account') : localize('Add real account')}
                     buttonOnClick={mt5OnClick}
                     items={{
                         [localize('Leverage')]: localize('Up to 1:1000'),
@@ -339,7 +339,7 @@ const GamingBox = ({ is_demo = false, no_mt5 = false, mt5OnClick, derivOnClick }
             key={0}
             title={localize('Trade on {{website_name}}', { website_name })}
             subtitle={localize('Option trading account')}
-            button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
+            button_text={is_demo ? localize('Trade on demo account') : localize('Add real account')}
             // TODO: [deriv-eu] Add click handler
             buttonOnClick={derivOnClick}
             items={{
@@ -377,7 +377,7 @@ const GamingBox = ({ is_demo = false, no_mt5 = false, mt5OnClick, derivOnClick }
             key={1}
             title={localize('Trade on MT5')}
             subtitle={localize('Margin trading account')}
-            button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
+            button_text={is_demo ? localize('Trade on demo account') : localize('Add real account')}
             buttonOnClick={mt5OnClick}
             items={{
                 [localize('Leverage')]: localize('Up to 1:1000'),
@@ -451,7 +451,7 @@ const SyntheticBox = ({ is_demo = false, mt5OnClick }) => {
                     key={0}
                     title={localize('Trade on {{website_name}}', { website_name })}
                     subtitle={localize('Option trading account')}
-                    button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
+                    button_text={is_demo ? localize('Trade on demo account') : localize('Add real account')}
                     // TODO: [deriv-eu] Add click handler
                     buttonOnClick={() => {}}
                     items={{
@@ -489,7 +489,7 @@ const SyntheticBox = ({ is_demo = false, mt5OnClick }) => {
                     key={1}
                     title={localize('Trade on MT5')}
                     subtitle={localize('Margin trading account')}
-                    button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
+                    button_text={is_demo ? localize('Trade on demo account') : localize('Add real account')}
                     buttonOnClick={mt5OnClick}
                     items={{
                         [localize('Leverage')]: localize('Up to 1:1000'),

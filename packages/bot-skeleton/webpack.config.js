@@ -38,7 +38,10 @@ module.exports = function(env, argv) {
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
-                    loader: ['babel-loader'],
+                    loader: [
+                        '@deriv/shared/utils/react-import-loader.js',
+                        'babel-loader',
+                    ]
                 },
                 {
                     test: /\.xml$/,
@@ -64,7 +67,7 @@ module.exports = function(env, argv) {
                 formik: 'formik',
                 react: 'react',
                 'react-dom': 'react-dom',
-                'smartcharts-beta': 'smartcharts-beta',
+                '@deriv/deriv-charts': '@deriv/deriv-charts',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/translations\/.+$/,

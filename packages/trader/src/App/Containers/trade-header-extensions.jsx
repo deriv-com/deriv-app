@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { when } from 'mobx';
 import { MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared/utils/screen';
 import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggle-positions-mobile.jsx';
@@ -40,11 +41,16 @@ class TradeHeaderExtensions extends React.Component {
         populateHeaderExtensions(header_items);
     };
 
-    componentDidMount() {
-        if (isMobile() && this.props.is_logged_in) {
-            this.props.onMountPositions();
-            this.props.onMountCashier(true);
+    async componentDidMount() {
+        if (isMobile()) {
+            // Waits for login to complete
+            await when(() => !this.props.is_populating_account_list);
+            if (this.props.is_logged_in) {
+                this.props.onMountPositions();
+                this.props.onMountCashier(true);
+            }
         }
+
         this.populateHeader();
     }
 
@@ -71,6 +77,7 @@ TradeHeaderExtensions.propTypes = {
 export default connect(({ client, modules, ui }) => ({
     positions_currency: client.currency,
     is_logged_in: client.is_logged_in,
+    is_populating_account_list: client.is_populating_account_list,
     positions: modules.portfolio.all_positions_filtered,
     positions_error: modules.portfolio.error,
     is_positions_empty: modules.portfolio.is_empty,

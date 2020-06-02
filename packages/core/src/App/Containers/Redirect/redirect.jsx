@@ -65,6 +65,10 @@ const Redirect = ({
             window.location.href = Login.loginUrl();
             return null;
         }
+        case 'mt5_password_reset':
+            history.push(`${routes.mt5}?code=${url_params.get('code')}#reset-password`);
+            redirected_to_route = true;
+            break;
         default:
             break;
     }

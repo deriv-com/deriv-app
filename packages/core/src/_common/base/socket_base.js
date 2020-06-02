@@ -23,7 +23,9 @@ const BinarySocketBase = (() => {
     let is_disconnect_called = false;
     let is_connected_before = false;
 
-    const socket_url = `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
+    const getSocketUrl = () =>
+        `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
+
     const timeouts = {};
 
     const clearTimeouts = () => {
@@ -37,9 +39,18 @@ const BinarySocketBase = (() => {
 
     const isClose = () => !binary_socket || hasReadyState(2, 3);
 
+    const close = () => {
+        binary_socket.close();
+    };
+
+    const closeAndOpenNewConnection = token => {
+        close();
+        init({ config, is_switching_socket: true, token });
+    };
+
     const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
 
-    const init = options => {
+    const init = ({ options, is_switching_socket, token }) => {
         if (wrong_app_id === getAppId()) {
             return;
         }
@@ -47,11 +58,14 @@ const BinarySocketBase = (() => {
             config = options;
         }
         clearTimeouts();
-        config.wsEvent('init');
+
+        if (!is_switching_socket) {
+            config.wsEvent('init');
+        }
 
         if (isClose()) {
             is_disconnect_called = false;
-            binary_socket = new WebSocket(socket_url);
+            binary_socket = new WebSocket(getSocketUrl());
             deriv_api = new DerivAPIBasic({
                 connection: binary_socket,
                 storage: SocketCache,
@@ -61,8 +75,14 @@ const BinarySocketBase = (() => {
 
         deriv_api.onOpen().subscribe(() => {
             config.wsEvent('open');
+
+            wait('website_status');
+
             if (ClientBase.isLoggedIn()) {
-                deriv_api.authorize(ClientBase.get('token'));
+                // ClientBase is not up to date after first load
+                // TODO: remove this once ClientBase has been migrated to client-store
+                const authorize_token = token || ClientBase.get('token');
+                deriv_api.authorize(authorize_token);
             }
 
             if (typeof config.onOpen === 'function') {
@@ -95,7 +115,10 @@ const BinarySocketBase = (() => {
 
         deriv_api.onClose().subscribe(() => {
             clearTimeouts();
-            config.wsEvent('close');
+
+            if (!is_switching_socket) {
+                config.wsEvent('close');
+            }
 
             if (wrong_app_id !== getAppId() && typeof config.onDisconnect === 'function' && !is_disconnect_called) {
                 config.onDisconnect();
@@ -120,6 +143,8 @@ const BinarySocketBase = (() => {
     const balanceAll = () => deriv_api.send({ balance: 1, account: 'all' });
 
     const subscribeBalanceAll = cb => subscribe({ balance: 1, account: 'all' }, cb);
+
+    const subscribeBalanceActiveAccount = (cb, account) => subscribe({ balance: 1, account }, cb);
 
     const subscribeProposal = (req, cb) => subscribe({ proposal: 1, ...req }, cb);
 
@@ -189,6 +214,11 @@ const BinarySocketBase = (() => {
             new_password,
             password_type,
             ...values,
+        });
+    const mt5PasswordReset = payload =>
+        deriv_api.send({
+            ...payload,
+            mt5_password_reset: 1,
         });
 
     const profitTable = (limit, offset, date_boundaries) =>
@@ -291,10 +321,12 @@ const BinarySocketBase = (() => {
         sell,
         cashier,
         cancelContract,
+        close,
         contractUpdate,
         contractUpdateHistory,
         mt5NewAccount,
         mt5PasswordChange,
+        mt5PasswordReset,
         newAccountVirtual,
         newAccountReal,
         p2pAdvertiserInfo,
@@ -309,6 +341,7 @@ const BinarySocketBase = (() => {
         setAccountCurrency,
         balanceAll,
         subscribeBalanceAll,
+        subscribeBalanceActiveAccount,
         subscribeProposal,
         subscribeProposalOpenContract,
         subscribeTicks,
@@ -317,6 +350,7 @@ const BinarySocketBase = (() => {
         subscribeWebsiteStatus,
         tncApproval,
         transferBetweenAccounts,
+        closeAndOpenNewConnection,
     };
 })();
 

@@ -56,7 +56,11 @@ class MyAds extends React.Component {
                     {this.state.show_form ? (
                         <FormAds handleShowForm={this.handleShowForm} />
                     ) : (
-                        <MyAdsTable onClickCreate={this.onClickCreate} is_enabled={this.state.is_enabled} />
+                        <MyAdsTable
+                            onClickCreate={this.onClickCreate}
+                            is_enabled={this.state.is_enabled}
+                            onToggle={this.setEnabled}
+                        />
                     )}
                 </div>
             );

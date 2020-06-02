@@ -229,6 +229,12 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &__personal-details {
             @include mobile {
+                .account__scrollbars_container {
+                    &--grid-layout {
+                        display: flex;
+                        flex-direction: column;
+                    }
+                }
                 .account-form__footer-note {
                     font-size: 1rem;
                     height: auto;
@@ -238,9 +244,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     font-size: 1.2rem;
                 }
                 .dc-select-native {
-                    &--disabled {
-                        margin-top: 2.4rem;
-                    }
                     &__placeholder {
                         background-color: var(--general-main-1);
                     }
@@ -427,6 +430,141 @@ $MIN_HEIGHT_FLOATING: calc(
 
         @include desktop {
             max-width: 546px;
+        }
+    }
+    .api-token {
+        height: 100%;
+        width: 100%;
+
+        & .dc-timeline__container {
+            width: 100%;
+        }
+        & .dc-table__cell {
+            padding: 1.8rem 0;
+        }
+        & .dc-popover__target {
+            display: flex;
+        }
+        & .dc-dialog__content {
+            max-width: 100%;
+            width: 100%;
+            height: 100%;
+        }
+        & .dc-table__head {
+            @include typeface(--paragraph-left-bold-prominent, none);
+        }
+        &__wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+        &__input-group {
+            display: flex;
+            margin-top: 2.7rem;
+        }
+        &__input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: 0;
+        }
+        &__button {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            margin-left: -1px;
+        }
+        &__checkbox-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            grid-gap: 1.6rem;
+
+            @include mobile {
+                grid-template-columns: 1fr;
+            }
+        }
+        &__table-row {
+            grid-template-columns: 1fr 1.4fr 1.3fr 0.7fr 7.7rem;
+        }
+        &__clipboard {
+            margin: 0 1rem;
+            cursor: pointer;
+
+            &-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 95%;
+
+                > span {
+                    margin-right: 0.4rem;
+                }
+            }
+        }
+        &__timeline {
+            padding: 0 1.4rem;
+
+            @include mobile {
+                margin-left: 1.2rem;
+            }
+        }
+        &__article {
+            padding: 1.6rem 2.4rem;
+            background: var(--general-section-1);
+            width: 25.6rem;
+            height: fit-content;
+            margin-left: 1.2rem;
+            border-radius: 8px;
+
+            &-list {
+                @include typeface(--paragraph-left-bold-black, none);
+                padding-left: 1.6rem;
+                list-style-type: disc;
+            }
+            &-title {
+                @include typeface(--paragraph-left-bold-prominent, none);
+                margin-bottom: 0.8rem;
+            }
+            &-text {
+                @include typeface(--small-left-normal-black, none);
+            }
+            @include mobile {
+                width: auto;
+                margin: 1.6rem;
+            }
+        }
+        &__scope {
+            background: var(--general-section-1);
+            padding: 0.8rem;
+            margin-bottom: 1.6rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+            &-item {
+                margin-bottom: 0.8rem;
+                display: grid;
+                grid-template-columns: 1.6fr 0.4fr;
+
+                > div {
+                    min-width: 7.8rem;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+            &--title {
+                @include typeface(--small-left-bold-black, none);
+            }
+            &--text {
+                @include typeface(--paragraph-left-normal-black, none);
+            }
+        }
+        &__scrollbars {
+            height: 100%;
+            width: 100%;
         }
     }
     .account-limit-container {
@@ -855,6 +993,41 @@ $MIN_HEIGHT_FLOATING: calc(
 
         :first-child {
             margin-right: 0.8rem;
+        }
+    }
+}
+
+.dc-modal__container_api_token__modal {
+    .api-token {
+        &__popup {
+            display: flex;
+            width: 440px;
+            height: 312px;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+
+            &-header {
+                @include typeface(--title-center-bold-prominent, none);
+                margin: 1.6rem 0 2.4rem;
+            }
+            &-image {
+                width: 12.8rem;
+                height: 12.8rem;
+            }
+            &-buttons {
+                & > button:first-child {
+                    margin-right: 1.6rem;
+                }
+            }
+            &-error {
+                margin-top: 1.6rem;
+                @include typeface(--paragraph-center-bold-red, none);
+            }
+            @include mobile {
+                width: 300px;
+                height: 272px;
+            }
         }
     }
 }

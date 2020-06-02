@@ -279,8 +279,7 @@ class DBot {
         if (!hasAllRequiredBlocks(this.workspace)) {
             const error = new Error(
                 localize(
-                    'One or more mandatory blocks are missing from your workspace. ' +
-                        'Please add the required block(s) and then try again.'
+                    'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
                 )
             );
 

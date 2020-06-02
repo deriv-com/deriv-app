@@ -229,6 +229,12 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &__personal-details {
             @include mobile {
+                .account__scrollbars_container {
+                    &--grid-layout {
+                        display: flex;
+                        flex-direction: column;
+                    }
+                }
                 .account-form__footer-note {
                     font-size: 1rem;
                     height: auto;
@@ -238,9 +244,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     font-size: 1.2rem;
                 }
                 .dc-select-native {
-                    &--disabled {
-                        margin-top: 2.4rem;
-                    }
                     &__placeholder {
                         background-color: var(--general-main-1);
                     }

@@ -526,7 +526,7 @@ const SyntheticBox = ({ is_demo = false, mt5OnClick }) => {
 
 class AccountTypesModal extends React.Component {
     state = {
-        account_type_tab_index: 0,
+        account_type_tab_index: this.props.is_virtual ? 1 : 0,
     };
 
     setAccountTypeTabIndex = tab_index => {
@@ -607,6 +607,7 @@ AccountTypesModal.propTypes = {
     is_dismissible: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
+    is_virtual: PropTypes.bool,
     residence: PropTypes.string,
     standpoint: PropTypes.object,
     toggleAccountTypesModal: PropTypes.func,
@@ -623,6 +624,7 @@ export default withRouter(
         is_dismissible: !client.should_have_real_account,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,
+        is_virtual: client.is_virtual,
         openRealAccountSignup: ui.openRealAccountSignup,
         residence: client.residence,
         standpoint: client.standpoint,

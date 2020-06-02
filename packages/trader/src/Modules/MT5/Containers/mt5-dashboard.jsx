@@ -13,6 +13,7 @@ import MT5PasswordManagerModal from './mt5-password-manager-modal.jsx';
 import MT5PasswordModal from './mt5-password-modal.jsx';
 import MT5ServerErrorDialog from './mt5-server-error-dialog.jsx';
 import Mt5TopUpDemoModal from './mt5-top-up-demo-modal.jsx';
+import MT5ResetPasswordModal from './mt5-reset-password-modal.jsx';
 import Mt5FinancialStpPendingDialog from '../Components/mt5-financial-stp-pending-dialog.jsx';
 import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
 import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
@@ -25,11 +26,14 @@ class MT5Dashboard extends React.Component {
             is_visible: false,
             selected_login: '',
             selected_account: '',
+            selected_account_type: '',
+            selected_account_group: '',
         },
     };
 
     componentDidMount() {
         this.updateActiveIndex();
+        this.openResetPassword();
         this.props.onMount();
     }
 
@@ -44,6 +48,14 @@ class MT5Dashboard extends React.Component {
             this.history.push(routes.trade);
         }
     }
+
+    openResetPassword = () => {
+        if (!/reset-password/.test(this.props.location.hash)) {
+            return;
+        }
+
+        this.props.setMt5PasswordResetModal(true);
+    };
 
     updateActiveIndex = () => {
         const index_to_set = /demo/.test(this.props.location.hash) ? 1 : 0;
@@ -62,14 +74,15 @@ class MT5Dashboard extends React.Component {
         }
     };
 
-    togglePasswordManagerModal = (login, title, category) => {
+    togglePasswordManagerModal = (login, title, group, type) => {
         this.setState(prev_state => ({
             active_index: prev_state.active_index,
             password_manager: {
                 is_visible: !prev_state.password_manager.is_visible,
                 selected_login: typeof login === 'string' ? login : '',
                 selected_account: typeof title === 'string' ? title : '',
-                selected_type: typeof category === 'string' ? category : '',
+                selected_account_group: group,
+                selected_account_type: type,
             },
         }));
     };
@@ -104,7 +117,8 @@ class MT5Dashboard extends React.Component {
                             is_visible={this.state.password_manager.is_visible}
                             selected_login={this.state.password_manager.selected_login}
                             selected_account={this.state.password_manager.selected_account}
-                            selected_type={this.state.password_manager.selected_type}
+                            selected_account_group={this.state.password_manager.selected_account_group}
+                            selected_account_type={this.state.password_manager.selected_account_type}
                             toggleModal={this.togglePasswordManagerModal}
                         />
                         <Tabs active_index={this.state.active_index} top center>
@@ -191,6 +205,7 @@ class MT5Dashboard extends React.Component {
                     <MT5ServerErrorDialog />
                     <MT5AccountOpeningRealFinancialStpModal />
                     <Mt5FinancialStpPendingDialog />
+                    <MT5ResetPasswordModal />
                 </div>
             </div>
         );
@@ -216,6 +231,7 @@ export default withRouter(
         has_mt5_account: modules.mt5.has_mt5_account,
         has_real_account: client.has_active_real_account,
         setAccountType: modules.mt5.setAccountType,
+        setMt5PasswordResetModal: modules.mt5.setMt5PasswordResetModal,
         setCurrentAccount: modules.mt5.setCurrentAccount,
         toggleCompareAccounts: modules.mt5.toggleCompareAccountsModal,
         openTopUpModal: ui.openTopUpModal,

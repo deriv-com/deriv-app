@@ -16,6 +16,7 @@ import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
 import { processTradeParams } from './Helpers/process';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
+import { getBarrierPipSize } from './Helpers/barrier';
 import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
@@ -461,6 +462,11 @@ export default class TradeStore extends BaseStore {
     }
 
     @computed
+    get barrier_pipsize() {
+        return getBarrierPipSize(this.barrier_1);
+    }
+
+    @computed
     get main_barrier_flattened() {
         const is_digit_trade_type = isDigitTradeType(this.contract_type);
         return is_digit_trade_type ? null : toJS(this.main_barrier);
@@ -821,7 +827,9 @@ export default class TradeStore extends BaseStore {
             }
         }
 
-        this.setMainBarrier(response.echo_req);
+        if (!this.main_barrier) {
+            this.setMainBarrier(response.echo_req);
+        }
 
         if (this.hovered_contract_type === contract_type) {
             this.addTickByProposal(response);
@@ -985,20 +993,8 @@ export default class TradeStore extends BaseStore {
 
         await this.processNewValuesAsync({ currency: new_currency }, true, { currency: this.currency }, false);
         this.refresh();
-        WS.forgetAll('balance').then(() => {
-            // the first has to be without subscribe to quickly update current account's balance
-            WS.authorized.balance().then(this.handleResponseBalance);
-            // the second is to subscribe to balance and update all sibling accounts' balances too
-            WS.subscribeBalanceAll(this.handleResponseBalance);
-        });
         this.debouncedProposal();
     }
-
-    handleResponseBalance = response => {
-        if (response.balance) {
-            this.root_store.client.setBalance(response.balance);
-        }
-    };
 
     @action.bound
     onUnmount() {

@@ -20,7 +20,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         transaction_currency,
         is_expired,
     } = order_details;
-    let buttons_to_render = <div className='order-details__empty-space' />;
+    let buttons_to_render = null;
     const cancelOrder = () => {
         const cancel = async setFormStatus => {
             setFormStatus({ error_message: '' });

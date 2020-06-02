@@ -619,8 +619,8 @@
         }
     }
     &__drop-down {
-        margin-left: 8px;
-        width: auto;
+        margin-left: 8px !important;
+        width: auto !important;
         margin-bottom: 0 !important;
     }
     &__filter {
@@ -1035,6 +1035,18 @@
 }
 
 /* stylelint-disable plugin/selector-bem-pattern */
+#account_transfer_switch_modal {
+    .dc-modal-header__title {
+        padding: 2.4rem 2.4rem 0;
+    }
+    .dc-modal-body {
+        padding: 2.4rem;
+    }
+    .dc-modal-footer {
+        padding: 0 2.4rem 2.4rem;
+    }
+}
+
 /** @define payment-agent-transfer */
 div.payment-agent-transfer {
     // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)

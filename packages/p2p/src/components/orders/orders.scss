@@ -1,10 +1,4 @@
 .orders {
-    padding-top: 2.4rem;
-
-    &--order-view {
-        margin-bottom: 9.6rem;
-    }
-
     &__empty {
         width: fit-content;
         margin: 0 auto;
@@ -53,6 +47,7 @@
         & .dc-dialog__content {
             margin-bottom: 0;
             width: 100%;
+            max-width: 100%;
         }
     }
     &__popup {
@@ -119,7 +114,8 @@
         }
     }
     &__table {
-        margin-top: 16px;
+        margin-top: 1.6rem;
+
         &-row {
             cursor: pointer;
 

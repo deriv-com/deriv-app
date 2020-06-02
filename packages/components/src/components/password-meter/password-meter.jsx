@@ -4,10 +4,10 @@ import zxcvbn from '@contentpass/zxcvbn';
 import PropTypes from 'prop-types';
 import FieldError from 'Components/field-error';
 
-const PasswordMeter = ({ children, error, error_className, input }) => {
+const PasswordMeter = ({ children, has_error, input }) => {
     // 0 - 4 Score for password strength
     const { score, feedback } = zxcvbn(input);
-    const width_scale = error && input.length ? 0.25 : 0.25 * (input.length && score < 1 ? 1 : score);
+    const width_scale = has_error && input.length ? 0.25 : 0.25 * (input.length && score < 1 ? 1 : score);
 
     // const strength_map =  {
     //     1: 'Weak',
@@ -21,21 +21,18 @@ const PasswordMeter = ({ children, error, error_className, input }) => {
     return (
         <React.Fragment>
             <div className='dc-password-meter__container'>
-                {children}
+                {/* if child input field has hint, they should not show the hint while warning is shown */}
+                {typeof children === 'function' ? children({ has_warning: !!feedback.warning }) : children}
                 <div className='dc-password-meter__bg' />
                 <div
                     className={classNames('dc-password-meter', {
-                        'dc-password-meter--weak': error || (input.length && score < 3),
-                        'dc-password-meter--strong': !error && input.length && score >= 3,
+                        'dc-password-meter--weak': has_error || (input.length && score < 3),
+                        'dc-password-meter--strong': !has_error && input.length && score >= 3,
                     })}
                     style={{ transform: `scale(${width_scale}, 1)` }}
                 />
-                {error && <FieldError className='dc-password-meter__error' message={error} />}
-                {feedback.warning && !error && (
-                    <FieldError
-                        className={classNames('dc-password-meter__warning', error_className)}
-                        message={`${feedback.warning}.`}
-                    />
+                {feedback.warning && !has_error && (
+                    <FieldError className='dc-password-meter__warning' message={`${feedback.warning}.`} />
                 )}
             </div>
         </React.Fragment>
@@ -43,7 +40,7 @@ const PasswordMeter = ({ children, error, error_className, input }) => {
 };
 
 PasswordMeter.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node, PropTypes.func]),
     has_error: PropTypes.bool,
     input: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };

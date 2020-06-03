@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { PageError } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { Localize } from '@deriv/translations';
-import { routes } from 'Constants/index';
 
 const ErrorComponent = ({ header, message, redirect_label, redirectOnClick, should_show_refresh = true }) => {
     const refresh_message = should_show_refresh ? (
@@ -13,7 +13,7 @@ const ErrorComponent = ({ header, message, redirect_label, redirectOnClick, shou
 
     return (
         <PageError
-            header={header || <Localize i18n_default_text='Oops, something went wrong.' />}
+            header={header || <Localize i18n_default_text='Something’s not right' />}
             messages={
                 message
                     ? [message, refresh_message]

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { Checkbox, Popover } from '@deriv/components';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import InputField from './input-field.jsx';
@@ -23,15 +23,15 @@ const InputWithCheckbox = ({
     tooltip_label,
     value,
 }) => {
-    const checkboxRef = useRef();
-    const input_wrapper_ref = useRef();
+    const checkboxRef = React.useRef();
+    const input_wrapper_ref = React.useRef();
 
-    const [is_checked, setChecked] = useState(defaultChecked);
-    const [el_input, setInput] = useState(null);
+    const [is_checked, setChecked] = React.useState(defaultChecked);
+    const [el_input, setInput] = React.useState(null);
 
     const checkboxName = `has_${name}`;
 
-    useEffect(() => {
+    React.useEffect(() => {
         setChecked(defaultChecked);
         setInput(input_wrapper_ref.current.nextSibling.querySelector('input.input-wrapper__input'));
     }, [defaultChecked]);
@@ -105,6 +105,7 @@ const InputWithCheckbox = ({
                         is_bubble_hover_enabled
                         margin={2}
                         message={checkbox_tooltip_label}
+                        relative_render
                     >
                         {checkbox}
                     </Popover>
@@ -118,6 +119,7 @@ const InputWithCheckbox = ({
                         id={`dt_${name}-checkbox__tooltip`}
                         message={tooltip_label}
                         margin={210}
+                        relative_render
                     />
                 )}
             </div>

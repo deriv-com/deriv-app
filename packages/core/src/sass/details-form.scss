@@ -1,7 +1,5 @@
-@import 'app/_common/base/index';
-
 .details-form {
-    flex-grow: 1;
+    display: grid;
 
     &__elements {
         flex-grow: 1;
@@ -28,6 +26,28 @@
                     background-color: var(--general-section-2);
                 }
             }
+            @include desktop {
+                /* To get rid of ugly chrome autofill shadow dom-applied background color */
+                &__field {
+                    &:-webkit-autofill {
+                        -webkit-box-shadow: 0 0 0 30px var(--general-main-2) inset !important;
+
+                        &:hover,
+                        &:focus,
+                        &:active {
+                            -webkit-box-shadow: 0 0 0 30px var(--general-main-2) inset !important;
+                        }
+                    }
+                }
+            }
+        }
+        .dc-datepicker__input {
+            .dc-input__field {
+                background-color: var(--general-main-2);
+            }
+        }
+        .dc-select-native {
+            margin-bottom: 3.2rem;
         }
         .dc-dropdown__display {
             background-color: var(--general-main-2);
@@ -39,6 +59,7 @@
         @include mobile {
             width: 100%;
             margin: 0;
+            padding: 0 1.6rem;
         }
     }
     &__description {
@@ -55,8 +76,10 @@
         }
     }
     @include mobile {
-        margin-top: 70px;
         overflow-x: hidden;
         overflow-y: auto;
+    }
+    @include desktop {
+        grid-template-rows: 4rem minmax(10rem, 1fr);
     }
 }

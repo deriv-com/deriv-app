@@ -52,7 +52,9 @@ export const addComma = (num, decimal_points, is_crypto) => {
 };
 
 export const calcDecimalPlaces = currency => {
-    return isCryptocurrency(currency) ? 8 : 2;
+    return isCryptocurrency(currency)
+        ? ObjectUtils.getPropertyValue(CryptoConfig.get(), [currency, 'fractional_digits'])
+        : 2;
 };
 
 export const getDecimalPlaces = currency =>
@@ -78,13 +80,62 @@ export const CryptoConfig = (() => {
 
     // TODO: [use-shared-i18n] - Use translate function shared among apps or pass in translated names externally.
     const initCryptoConfig = () => ({
-        BTC: { name: 'Bitcoin', min_withdrawal: 0.002, pa_max_withdrawal: 5, pa_min_withdrawal: 0.002 },
-        BCH: { name: 'Bitcoin Cash', min_withdrawal: 0.002, pa_max_withdrawal: 5, pa_min_withdrawal: 0.002 },
-        ETH: { name: 'Ether', min_withdrawal: 0.002, pa_max_withdrawal: 5, pa_min_withdrawal: 0.002 },
-        ETC: { name: 'Ether Classic', min_withdrawal: 0.002, pa_max_withdrawal: 5, pa_min_withdrawal: 0.002 },
-        LTC: { name: 'Litecoin', min_withdrawal: 0.002, pa_max_withdrawal: 5, pa_min_withdrawal: 0.002 },
-        UST: { name: 'Tether', min_withdrawal: 0.02, pa_max_withdrawal: 2000, pa_min_withdrawal: 10 },
-        USB: { name: 'Binary Coin', min_withdrawal: 0.02, pa_max_withdrawal: 2000, pa_min_withdrawal: 10 },
+        BTC: {
+            display_code: 'BTC',
+            name: 'Bitcoin',
+            min_withdrawal: 0.002,
+            pa_max_withdrawal: 5,
+            pa_min_withdrawal: 0.002,
+            fractional_digits: 8,
+        },
+        BCH: {
+            display_code: 'BCH',
+            name: 'Bitcoin Cash',
+            min_withdrawal: 0.002,
+            pa_max_withdrawal: 5,
+            pa_min_withdrawal: 0.002,
+            fractional_digits: 8,
+        },
+        ETH: {
+            display_code: 'ETH',
+            name: 'Ether',
+            min_withdrawal: 0.002,
+            pa_max_withdrawal: 5,
+            pa_min_withdrawal: 0.002,
+            fractional_digits: 8,
+        },
+        ETC: {
+            display_code: 'ETC',
+            name: 'Ether Classic',
+            min_withdrawal: 0.002,
+            pa_max_withdrawal: 5,
+            pa_min_withdrawal: 0.002,
+            fractional_digits: 8,
+        },
+        LTC: {
+            display_code: 'LTC',
+            name: 'Litecoin',
+            min_withdrawal: 0.002,
+            pa_max_withdrawal: 5,
+            pa_min_withdrawal: 0.002,
+            fractional_digits: 8,
+        },
+        UST: {
+            display_code: 'USDT',
+            name: 'Tether',
+            min_withdrawal: 0.02,
+            pa_max_withdrawal: 2000,
+            pa_min_withdrawal: 10,
+            fractional_digits: 2,
+        },
+        USB: {
+            display_code: 'USB',
+            name: 'Binary Coin',
+            min_withdrawal: 0.02,
+            pa_max_withdrawal: 2000,
+            pa_min_withdrawal: 10,
+            fractional_digits: 2,
+        },
     });
 
     return {
@@ -143,6 +194,13 @@ export const getPaWithdrawalLimit = (currency, limit) => {
         return ObjectUtils.getPropertyValue(CryptoConfig.get(), [currency, `pa_${limit}_withdrawal`]); // pa_min_withdrawal and pa_max_withdrawal used here
     }
     return limit === 'max' ? 2000 : 10; // limits for fiat currency
+};
+
+export const getCurrencyDisplayCode = (currency = '') => {
+    return (
+        ObjectUtils.getPropertyValue(CryptoConfig.get(), [currency.toUpperCase(), 'display_code']) ||
+        currency.toUpperCase()
+    );
 };
 
 export const getCurrencyName = currency => {

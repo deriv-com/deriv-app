@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import routes from '@deriv/shared/utils/routes';
 import { isDesktop } from '@deriv/shared/utils/os';
 import { connect } from 'Stores/connect';
-import routes from '../../../Constants/routes';
+import Login from '_common/base/login';
 
 const Redirect = ({
     server_time,
@@ -51,8 +52,23 @@ const Redirect = ({
         }
         case 'add_account': {
             fetchResidenceList().then(openRealAccountSignup);
+
+            const ext_platform_url = url_params.get('ext_platform_url');
+            if (ext_platform_url) {
+                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
+                redirected_to_route = true;
+            }
             break;
         }
+        case 'document_verification': {
+            sessionStorage.setItem('redirect_url', routes.proof_of_identity);
+            window.location.href = Login.loginUrl();
+            return null;
+        }
+        case 'mt5_password_reset':
+            history.push(`${routes.mt5}?code=${url_params.get('code')}#reset-password`);
+            redirected_to_route = true;
+            break;
         default:
             break;
     }

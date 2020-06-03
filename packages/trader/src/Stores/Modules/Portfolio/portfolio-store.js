@@ -463,6 +463,12 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @computed
+    get all_positions_filtered() {
+        // TODO: remove this once Multiplier is supported in Mobile
+        return this.all_positions.filter(p => !(isMultiplierContract(p.contract_info.contract_type) && isMobile()));
+    }
+
+    @computed
     get active_positions_filtered() {
         // TODO: remove this once Multiplier is supported in Mobile
         return this.active_positions.filter(p => !(isMultiplierContract(p.contract_info.contract_type) && isMobile()));

@@ -17,6 +17,7 @@ const Button = ({
     is_disabled,
     is_loading,
     is_submit_success,
+    is_button_toggle,
     large,
     medium,
     onClick,
@@ -43,6 +44,7 @@ const Button = ({
             'dc-btn__large': large,
             'dc-btn__medium': medium,
             'dc-btn__small': small,
+            'dc-btn__toggle': is_button_toggle,
         },
         className
     );

@@ -3,11 +3,11 @@
     align-items: center;
     justify-content: flex-end;
     align-self: flex-end;
-    padding-top: 2.4rem;
+    padding: 2rem;
     width: 100%;
 
     .dc-btn:not(:last-child) {
-        margin: 0 1em;
+        margin: 0 0.8rem;
     }
     .dc-btn:last-child {
         margin: 0;

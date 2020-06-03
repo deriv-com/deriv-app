@@ -75,24 +75,20 @@
             margin-top: 0;
         }
         &-header {
-            height: 1.5rem;
             position: relative;
 
             &--inline {
-                /* postcss-bem-linter: ignore */
-                .dc-popover {
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                }
+                display: flex;
+                justify-content: flex-end;
             }
         }
         &-info {
             @include typeface(--paragraph-left-normal-black);
             color: var(--text-general);
+            margin: auto;
 
             &--left {
-                left: 5px;
+                transform: translateX(5px);
             }
             &--minor {
                 display: block;
@@ -104,7 +100,9 @@
         }
         &-wrapper {
             &--disabled {
-                opacity: 0.32;
+                .btn-purchase__box-shadow {
+                    opacity: 0;
+                }
             }
         }
         &-tooltip-text,
@@ -217,7 +215,13 @@
                     align-items: center;
                 }
             }
+            @include desktop {
+                height: 2.1rem;
+            }
 
+            &--disabled {
+                opacity: 0.32;
+            }
             &--slide {
                 width: 92px;
                 height: 8px;
@@ -510,7 +514,7 @@
     .dc-collapsible {
         position: absolute;
         bottom: 0;
-        z-index: 99999;
+        z-index: 999;
         margin: 0 auto;
         left: 0;
         width: calc(100vw - 1.6rem);

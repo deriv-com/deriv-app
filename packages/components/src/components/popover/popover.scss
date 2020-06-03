@@ -1,6 +1,19 @@
 @import '../icon/icon.scss';
 
 .dc-popover {
+    &__wrapper {
+        position: relative;
+    }
+    &__container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 280px;
+
+        &-relative {
+            position: relative;
+        }
+    }
     &__target {
         &__icon .info {
             @extend .dc-icon--secondary;
@@ -30,8 +43,8 @@
         @include typeface(--small-center-normal-active, none);
         cursor: help;
         position: relative;
-        padding: 0.7em;
-        max-width: 280px;
+        padding: 0.8rem;
+        max-width: 315px;
         border-radius: 4px;
         display: flex;
         flex-direction: row;
@@ -47,6 +60,7 @@
         &__text {
             flex-grow: 2;
             text-align: left;
+            line-height: 1.5;
 
             .bold {
                 font-weight: bold;

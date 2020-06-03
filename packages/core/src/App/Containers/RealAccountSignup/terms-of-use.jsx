@@ -1,7 +1,7 @@
 import { Div100vhContainer, ThemedScrollbars, FormSubmitButton } from '@deriv/components';
 import { Field, Formik } from 'formik';
 import React from 'react';
-import { getDerivComLink } from '_common/url';
+import { getDerivComLink } from '@deriv/shared/utils/url';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
 import { localize, Localize } from '@deriv/translations';
@@ -52,11 +52,7 @@ class TermsOfUse extends React.Component {
                                 <p>
                                     <Localize
                                         i18n_default_text={
-                                            'The financial trading services offered on this site are only suitable for customers who accept the ' +
-                                            'possibility of losing all the money they invest and who understand and have experience of the risk ' +
-                                            'involved in the purchase of financial contracts. Transactions in financial contracts carry a high ' +
-                                            'degree of risk. If the contracts you purchased expire as worthless, you will lose all your ' +
-                                            'investment, which includes the contract premium.'
+                                            'The financial trading services offered on this site are only suitable for customers who accept the possibility of losing all the money they invest and who understand and have experience of the risk involved in the purchase of financial contracts. Transactions in financial contracts carry a high degree of risk. If the contracts you purchased expire as worthless, you will lose all your investment, which includes the contract premium.'
                                         }
                                     />
                                 </p>
@@ -65,12 +61,7 @@ class TermsOfUse extends React.Component {
                                     <Localize i18n_default_text='Real accounts are not available to politically exposed persons (PEPs).' />
                                 </h4>
                                 <p>
-                                    <Localize
-                                        i18n_default_text='A politically exposed person (PEP) is someone
-                                        appointed with a prominent public position. Close
-                                    associates and family members of a PEP are also considered
-                                    to be PEPs.'
-                                    />
+                                    <Localize i18n_default_text='A politically exposed person (PEP) is someone appointed with a prominent public position. Close associates and family members of a PEP are also considered to be PEPs.' />
                                 </p>
                                 <Field
                                     component={CheckboxField}
@@ -94,7 +85,7 @@ class TermsOfUse extends React.Component {
                                                     className='link'
                                                     target='_blank'
                                                     rel='noopener noreferrer'
-                                                    href={getDerivComLink('/terms-and-conditions/#general')}
+                                                    href={getDerivComLink('/terms-and-conditions')}
                                                 />,
                                             ]}
                                         />

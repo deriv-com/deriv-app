@@ -1,15 +1,14 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Tabs, Modal, Money } from '@deriv/components';
+import { Div100vhContainer, Tabs, Modal, Money } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
 import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile.jsx';
-// import Barrier                        from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
+import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
 import ToastErrorPopup from 'Modules/Trading/Containers/toast-error-popup.jsx';
 import 'Sass/app/modules/trading-mobile.scss';
-import Div100vhContainer from '@deriv/components/src/components/div100vh-container';
 
 const DEFAULT_DURATION = Object.freeze({
     t: 5,
@@ -288,3 +287,7 @@ const TradeParamsMobileWrapper = connect(({ modules }) => ({
 export const LastDigitMobile = connect(({ modules }) => ({
     form_components: modules.trade.form_components,
 }))(({ form_components }) => form_components.includes('last_digit') && <LastDigit />);
+
+export const BarrierMobile = connect(({ modules }) => ({
+    form_components: modules.trade.form_components,
+}))(({ form_components }) => form_components.includes('barrier') && <Barrier />);

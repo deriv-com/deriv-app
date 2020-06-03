@@ -1,0 +1,22 @@
+.composite-checkbox {
+    border-radius: 0.4rem;
+    border: 1px solid var(--border-normal);
+    padding: 1.6rem;
+    height: 100%;
+    cursor: pointer;
+
+    &__description {
+        @include typeface(--xsmall-left-normal-black);
+        color: var(--text-general);
+        margin: 1.2rem 0 0;
+    }
+    &:hover:not(.composite-checkbox--active) {
+        border: 1px solid var(--border-hover);
+    }
+    &--active {
+        border: 1px solid var(--border-active);
+    }
+    & .dc-checkbox__box {
+        margin-left: 0;
+    }
+}

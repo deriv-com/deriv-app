@@ -258,3 +258,32 @@
         border-left-style: dashed;
     }
 }
+
+/** @define sc-toolbar-widget; weak */
+.sc-toolbar-widget {
+    &--bottom {
+        .ciq-menu {
+            margin: 0px;
+        }
+    }
+}
+
+/** @define smartcharts-mobile; weak */
+.smartcharts-mobile {
+    .cq-modal-dropdown {
+        left: 0px;
+        top: 0px;
+    }
+    .sc-chart-type,
+    .sc-interval {
+        .sc-tooltip__inner {
+            display: none;
+        }
+    }
+    .cq-chart-title .sc-dialog__body {
+        height: 100% !important;
+    }
+    .cq-categorical-display {
+        height: calc(100% - 38px) !important;
+    }
+}

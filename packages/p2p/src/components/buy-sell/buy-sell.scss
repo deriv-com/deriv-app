@@ -1,15 +1,14 @@
 .buy-sell {
-    margin-top: 1.6rem;
-    padding-top: 1.6rem;
-
     &__header {
-        background: var(--general-section-1);
+        background: var(--state-disabled);
         padding: 0.4rem;
+        margin-bottom: 1.6rem;
         width: fit-content;
         border-radius: 4px;
 
         &__filters {
-            width: 12rem;
+            width: 16.8rem;
+            height: 3.6rem;
         }
     }
     &__price {
@@ -29,12 +28,12 @@
             height: auto;
             padding: 0;
             max-height: initial;
-            min-width: 50rem;
+            min-width: 44rem;
         }
         & .dc-dialog__content {
             margin-bottom: 0;
             width: 100%;
-            max-width: 50rem;
+            max-width: 44rem;
         }
     }
     &__popup {
@@ -49,6 +48,10 @@
                 justify-content: space-between;
                 box-sizing: border-box;
             }
+            &_right {
+                justify-content: flex-end;
+                padding: 2.8rem 2.4rem 0;
+            }
             &--title {
                 font-weight: bold;
                 color: var(--text-prominent);
@@ -57,9 +60,31 @@
                     text-transform: uppercase;
                 }
             }
+            &--no-border {
+                border: none;
+            }
         }
         &-content {
             padding: 2.4rem;
+
+            &_centre {
+                padding: 0 8rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            &--title {
+                color: var(--text-general);
+                font-size: var(--text-size-s);
+                font-weight: bold;
+                margin: 1.4rem 0 0.8rem;
+            }
+            &--text {
+                color: var(--text-general);
+                font-size: var(--text-size-xs);
+                margin-bottom: 1.6rem;
+            }
         }
         &-field {
             margin-bottom: 0 !important;
@@ -77,6 +102,9 @@
                 margin-top: 4.3rem;
 
                 .dc-input__hint {
+                    top: 9.7rem;
+                }
+                .dc-input__counter {
                     top: 9.7rem;
                 }
             }
@@ -110,20 +138,37 @@
             }
         }
         &-footer {
-            height: 7.2rem;
+            min-height: 7.2rem;
             display: flex;
             align-items: center;
             justify-content: flex-end;
             padding: 0 2.4rem;
             border-top: 1px solid var(--general-section-2);
-
-            & > button:first-of-type {
-                margin-right: 0.8rem;
-            }
         }
         &-close_icon {
             cursor: pointer;
             fill: var(--text-general);
         }
+    }
+    &__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: var(--text-colored-background);
+        margin-right: 0.8rem;
+        font-size: 12px;
+        line-height: 1.33;
+        width: 2.4rem;
+        height: 2.4rem;
+        white-space: nowrap;
+    }
+    &__table-row {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+    }
+    &__button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }

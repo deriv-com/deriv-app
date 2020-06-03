@@ -16,7 +16,7 @@
     bottom: 0;
 
     &__wrapper {
-        position: absolute;
+        position: fixed;
         left: 0;
         top: 0;
         width: 100%;
@@ -41,11 +41,11 @@
     &__dialog {
         max-width: 560px;
         max-height: 320px;
-        min-width: 480px;
+        min-width: 440px;
         min-height: 176px;
         margin-top: -#{$HEADER_HEIGHT};
-        padding: 1.6em;
-        border-radius: 4px;
+        padding: 2.4rem;
+        border-radius: 8px;
         box-sizing: border-box;
         display: flex;
         justify-content: space-around;
@@ -57,15 +57,17 @@
     &__header {
         align-self: flex-start;
         @include typeface(--title-left-bold-black, none);
-        @include toEm(margin-bottom, 16px, 1.6em);
+        margin-bottom: 2.4rem;
+        line-height: 1.5;
         color: var(--text-prominent);
     }
     &__content {
         align-self: flex-start;
         @include typeface(--paragraph-left-normal-black, unset);
-        @include toEm(margin-bottom, 32px, 1.4em);
+        margin-bottom: 2.4rem;
+        line-height: 1.43;
         color: var(--text-general);
-        max-width: 448px;
+        max-width: calc(440px - 4.8rem);
 
         /* postcss-bem-linter: ignore */
         .dc-input__label {
@@ -85,16 +87,14 @@
         }
     }
     &__button {
-        margin: 0.4em;
+        margin-left: 0.8rem;
     }
 }
 
 @media screen and (max-width: 560px) {
     .dc-dialog {
         &__dialog {
-            width: 100vw;
-            height: 100vh;
-            min-width: 100vw;
+            min-width: auto;
 
             &--has-margin {
                 min-width: unset;

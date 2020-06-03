@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { getDecimalPlaces } from '@deriv/shared/utils/currency';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
@@ -14,23 +15,24 @@ import { clientNotifications } from 'Stores/Helpers/client-notifications';
 import { header_links } from 'App/Constants/header-links';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import routes from 'Constants/routes';
 
 class Header extends React.Component {
     toggle_menu_drawer_ref = React.createRef();
+
+    addUpdateNotification = () => {
+        this.props.addNotificationMessage(clientNotifications().new_version_available);
+    };
+
     onClickDeposit = () => {
         this.props.history.push(routes.cashier_deposit);
     };
 
-    // eslint-disable-next-line class-methods-use-this
     componentWillUnmount() {
-        document.removeEventListener('UpdateAvailable');
+        document.removeEventListener('UpdateAvailable', this.addUpdateNotification);
     }
 
     componentDidMount() {
-        document.addEventListener('UpdateAvailable', () => {
-            this.props.addNotificationMessage(clientNotifications().new_version_available);
-        });
+        document.addEventListener('UpdateAvailable', this.addUpdateNotification);
     }
 
     render() {
@@ -39,8 +41,6 @@ class Header extends React.Component {
             acc_switcher_disabled_message,
             app_routing_history,
             balance,
-            can_upgrade,
-            can_upgrade_to,
             currency,
             enableApp,
             header_extension,
@@ -137,9 +137,7 @@ class Header extends React.Component {
                             <AccountActions
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
                                 balance={balance}
-                                can_upgrade_to={can_upgrade_to}
                                 currency={currency}
-                                can_upgrade={can_upgrade}
                                 disableApp={disableApp}
                                 enableApp={enableApp}
                                 is_acc_switcher_on={is_acc_switcher_on}
@@ -168,8 +166,6 @@ Header.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
     app_routing_history: PropTypes.array,
     balance: PropTypes.string,
-    can_upgrade: PropTypes.bool,
-    can_upgrade_to: PropTypes.string,
     currency: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
@@ -201,8 +197,6 @@ export default connect(({ client, common, ui, modules }) => ({
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     balance: client.balance,
-    can_upgrade: client.can_upgrade,
-    can_upgrade_to: client.can_upgrade_to,
     currency: client.currency,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,

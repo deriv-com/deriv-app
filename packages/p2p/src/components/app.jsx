@@ -1,11 +1,12 @@
 import classNames from 'classnames';
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { Tabs } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
+import { orderToggleIndex } from 'Components/orders/order-info';
 import ServerTime from 'Utils/server-time';
-import { init, requestWS, getModifiedP2POrderList, subscribeWS } from 'Utils/websocket';
+import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
@@ -22,23 +23,64 @@ const path = {
     // my_profile: 3,
 };
 
-class App extends Component {
+class App extends React.Component {
     constructor(props) {
         super(props);
 
         setLanguage(this.props.lang);
-        init(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
+        WebsocketInit(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
         ServerTime.init(this.props.server_time);
 
+        this.ws_subscriptions = [];
         this.list_item_limit = 20;
         this.state = {
             active_index: 0,
+            order_table_type: orderToggleIndex.ACTIVE,
             order_offset: 0,
             orders: [],
             notification_count: 0,
             parameters: null,
             is_advertiser: false,
+            is_restricted: false,
+            chat_info: {
+                app_id: '',
+                user_id: '',
+                token: '',
+            },
         };
+    }
+
+    componentDidMount() {
+        this.ws_subscriptions.push(
+            ...[
+                subscribeWS(
+                    {
+                        p2p_advertiser_info: 1,
+                        subscribe: 1,
+                    },
+                    [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
+                ),
+                subscribeWS(
+                    {
+                        p2p_order_list: 1,
+                        subscribe: 1,
+                        offset: 0,
+                        limit: this.list_item_limit,
+                    },
+                    [this.setP2pOrderList]
+                ),
+            ]
+        );
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.order_id !== this.props.order_id && this.props.order_id) {
+            this.redirectTo('orders');
+        }
+    }
+
+    componentWillUnmount() {
+        this.ws_subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
     redirectTo = (path_name, params = null) => {
@@ -49,14 +91,50 @@ class App extends Component {
         this.setState({ active_index: idx, parameters: null });
     };
 
-    setIsAdvertiser = async () => {
-        const advertiser_info = await requestWS({ p2p_advertiser_info: 1 });
+    updateOrderToggleIndex = index => {
+        this.setState({ order_table_type: index });
+    };
 
-        /* if there is no error means it's an advertiser else it's a client */
-        if (!advertiser_info.error) {
-            await this.setState({ advertiser_id: advertiser_info.p2p_advertiser_info.id, is_advertiser: true });
+    setIsAdvertiser = response => {
+        const { p2p_advertiser_info } = response;
+        if (!response.error) {
+            this.setState({
+                advertiser_id: p2p_advertiser_info.id,
+                is_advertiser: !!p2p_advertiser_info.is_approved,
+                nickname: p2p_advertiser_info.name,
+            });
+        } else if (response.error.code === 'RestrictedCountry') {
+            this.setState({ is_restricted: true });
+        } else if (response.error.code === 'AdvertiserNotFound') {
+            this.setState({ is_advertiser: false });
         }
-        return true;
+    };
+
+    setChatInfoUsingAdvertiserInfo = response => {
+        const { p2p_advertiser_info } = response;
+        if (response.error) return;
+
+        const user_id = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
+        const token = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_token']);
+
+        this.setChatInfo(user_id, token);
+    };
+
+    setChatInfo = (user_id, token) => {
+        const chat_info = {
+            // This is using QA10 SendBird AppId, please change to production's SendBird AppId when we deploy to production.
+            app_id: '4E259BA5-C383-4624-89A6-8365E06D9D39',
+            user_id,
+            token,
+        };
+
+        if (!chat_info.token) {
+            requestWS({ service_token: 1, service: 'sendbird' }).then(response => {
+                chat_info.token = response.service_token.token;
+            });
+        }
+
+        this.setState({ chat_info });
     };
 
     handleNotifications = orders => {
@@ -106,25 +184,22 @@ class App extends Component {
         }
     };
 
-    componentDidMount() {
-        this.setIsAdvertiser();
-        subscribeWS(
-            {
-                p2p_order_list: 1,
-                subscribe: 1,
-                offset: 0,
-                limit: this.list_item_limit,
-            },
-            this.setP2pOrderList
-        );
-    }
-
     render() {
-        const { active_index, order_offset, orders, parameters, notification_count } = this.state;
+        const {
+            active_index,
+            order_offset,
+            orders,
+            parameters,
+            notification_count,
+            order_table_type,
+            chat_info,
+        } = this.state;
         const {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
             custom_strings,
+            order_id,
+            setOrderId,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -139,26 +214,41 @@ class App extends Component {
         return (
             <Dp2pProvider
                 value={{
+                    changeTab: this.handleTabClick,
+                    order_table_type,
+                    changeOrderToggle: this.updateOrderToggleIndex,
                     currency,
                     local_currency_config,
                     residence,
                     advertiser_id: this.state.advertiser_id,
                     is_advertiser: this.state.is_advertiser,
+                    nickname: this.state.nickname,
+                    setNickname: nickname => this.setState({ nickname }),
+                    setChatInfo: this.setChatInfo,
+                    is_restricted: this.state.is_restricted,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,
                     order_offset,
                     orders,
                     setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
                     setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
+                    order_id,
+                    setOrderId,
                 }}
             >
-                <main className={classNames('deriv-p2p', className)}>
-                    <Tabs onTabItemClick={this.handleTabClick} active_index={active_index} top>
-                        <div label={localize('Buy/Sell')}>
+                <main className={classNames('p2p-cashier', className)}>
+                    <Tabs
+                        onTabItemClick={this.handleTabClick}
+                        active_index={active_index}
+                        className='p2p-cashier'
+                        top
+                        header_fit_content
+                    >
+                        <div label={localize('Buy / Sell')}>
                             <BuySell navigate={this.redirectTo} params={parameters} />
                         </div>
                         <div count={notification_count} label={localize('Orders')}>
-                            <Orders navigate={this.redirectTo} params={parameters} />
+                            <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
                         </div>
                         <div label={localize('My ads')}>
                             <MyAds navigate={this.redirectTo} params={parameters} />
@@ -188,6 +278,7 @@ App.propTypes = {
         residence: PropTypes.string.isRequired,
     }),
     lang: PropTypes.string,
+    order_id: PropTypes.string,
     setNotificationCount: PropTypes.func,
     websocket_api: PropTypes.object.isRequired,
 };

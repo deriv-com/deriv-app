@@ -9,8 +9,8 @@ import {
     SwipeableWrapper,
     FadeWrapper,
 } from '@deriv/components';
-import ObjectUtils from '@deriv/shared/utils/object';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import ObjectUtils from '@deriv/shared/utils/object';
 import { localize } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
@@ -183,6 +183,7 @@ class Chart extends React.Component {
                 margin={this.props.margin || null}
                 isMobile={isMobile()}
                 enabledNavigationWidget={isDesktop()}
+                enabledChartFooter={false}
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}

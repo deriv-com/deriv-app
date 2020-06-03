@@ -2,15 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { getKebabCase } from '@deriv/shared/utils/string';
-
-// TODO: [move-to-shared]
-const getUrlBase = (path = '') => {
-    const l = window.location;
-
-    if (!/^\/(br_)/.test(l.pathname)) return path;
-
-    return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
-};
+import { getUrlBase } from '@deriv/shared/utils/url';
 
 const Icon = ({
     className,

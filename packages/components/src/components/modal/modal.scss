@@ -83,7 +83,7 @@
             @include typeface(--title-left-bold-black);
             color: var(--text-prominent);
             line-height: 24px;
-            padding: 1.2rem 1.6rem;
+            padding: 1.6rem 2.4rem;
             display: flex;
             align-items: center;
             height: 100%;
@@ -111,6 +111,14 @@
 
             @include mobile {
                 margin: 0.8rem;
+            }
+        }
+        // fix for safari bug with header being truncated
+        @media not all and (min-resolution: 0.001dpcm) {
+            // stylelint-disable-line
+            @supports (-webkit-appearance: none) {
+                /* postcss-bem-linter: ignore */
+                min-height: 4.8rem;
             }
         }
     }

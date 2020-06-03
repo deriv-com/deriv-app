@@ -11,6 +11,12 @@
                 .cq-top-ui-widgets {
                     transform: translate3d(248px, 0, 0);
                 }
+                .sc-toolbar-widget {
+                    transform: translate3d(248px, 0, 0);
+                }
+                .stx-panel-control {
+                    transform: translate3d(248px, 0, 0);
+                }
                 .cq-chart-controls {
                     transform: translate3d(130px, 0, 0) !important;
                 }
@@ -152,6 +158,12 @@ $FLOATING_HEADER_HEIGHT: 41px;
                                 display: none;
                             }
                         }
+                    }
+                    .sc-toolbar-widget {
+                        transition: transform 0.25s ease;
+                    }
+                    .stx-panel-control {
+                        transition: transform 0.25s ease;
                     }
                     .ciq-asset-information {
                         top: 75px;
@@ -330,6 +342,12 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 transform: translate3d(0, 0, 0);
             }
         }
+        .sc-toolbar-widget {
+            transform: translate3d(0, 0, 0);
+        }
+        .stx-panel-control {
+            transform: translate3d(0, 0, 0);
+        }
         .ciq-navigation-widget {
             transform: translate3d(0, 0, 0);
         }
@@ -376,16 +394,21 @@ $FLOATING_HEADER_HEIGHT: 41px;
             transition: max-width 0.25s ease, transform 0.25s ease;
         }
         .ciq-navigation-widget {
-            transform: translate3d(0, 0, 0);
+            transition: transform 0.25s ease;
         }
-        .ciq-toolbar-widget {
+        .stx-panel-control {
+            transition: transform 0.25s ease;
+        }
+        .sc-toolbar-widget {
+            transition: transform 0.25s ease;
+
             @include mobile {
                 background: transparent;
                 border-width: 0;
                 bottom: 2.8rem;
 
                 /* postcss-bem-linter: ignore */
-                .ciq-chart-mode {
+                .sc-chart-mode {
                     background: var(--general-section-1);
                     padding: 0.4rem 0.2rem;
                     width: 4rem;
@@ -494,7 +517,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 }
             }
             /** @define ciq-chart-type; weak */
-            .ciq-chart-type {
+            .sc-chart-type {
                 &__item {
                     /* postcss-bem-linter: ignore */
                     .sc-tooltip,
@@ -504,11 +527,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 }
             }
             /** @define ciq-chart-mode; weak */
-            .ciq-chart-mode {
+            .sc-chart-mode {
                 /* postcss-bem-linter: ignore */
                 &__section__item {
                     /* postcss-bem-linter: ignore */
-                    .cq-interval {
+                    .sc-interval {
                         display: grid;
                         padding: 1.6rem;
                         grid-template-columns: 1fr;

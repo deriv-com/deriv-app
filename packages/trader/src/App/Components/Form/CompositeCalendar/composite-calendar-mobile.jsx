@@ -58,6 +58,7 @@ class CompositeCalendarMobile extends React.PureComponent {
                 to: toMoment()
                     .endOf('day')
                     .unix(),
+                is_batch: true,
             },
             {
                 date_range: selected_date_range,
@@ -86,6 +87,7 @@ class CompositeCalendarMobile extends React.PureComponent {
                 to: toMoment(to, 'DD MMM YYYY')
                     .endOf('day')
                     .unix(),
+                is_batch: true,
             },
             {
                 date_range,
@@ -216,7 +218,7 @@ class CompositeCalendarMobile extends React.PureComponent {
                                 <DatePicker
                                     className='composite-calendar-modal__custom-date-range-start-date'
                                     is_nativepicker={true}
-                                    placeholder={localize('Start Date')}
+                                    placeholder={localize('Start date')}
                                     value={this.state.from}
                                     max_date={max_date}
                                     onChange={e => this.selectDate(e, 'from')}
@@ -224,7 +226,7 @@ class CompositeCalendarMobile extends React.PureComponent {
                                 <DatePicker
                                     className='composite-calendar-modal__custom-date-range-end-date'
                                     is_nativepicker={true}
-                                    placeholder={localize('End Date')}
+                                    placeholder={localize('End date')}
                                     value={this.state.to}
                                     max_date={today}
                                     min_date={min_date}

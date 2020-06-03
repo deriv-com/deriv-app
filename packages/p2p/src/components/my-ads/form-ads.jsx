@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
@@ -12,7 +12,7 @@ import { textValidator, lengthValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
 import AdSummary from './my-ads-summary.jsx';
 
-class FormAds extends Component {
+class FormAds extends React.Component {
     state = {
         error_message: '',
         is_loading: true,
@@ -33,7 +33,7 @@ class FormAds extends Component {
             amount: values.offer_amount,
             max_order_amount: values.max_transaction,
             min_order_amount: values.min_transaction,
-            payment_method: values.payment_method,
+            payment_method: 'bank_transfer', // TODO: Allow for other types of payment_method.
             rate: values.price_rate,
         };
         if (values.contact_info) {
@@ -69,7 +69,7 @@ class FormAds extends Component {
 
     render() {
         return (
-            <Fragment>
+            <>
                 <PageReturn onClick={() => this.props.handleShowForm(false)} page_title={localize('Create new ad')} />
                 {this.state.is_loading ? (
                     <Loading is_fullscreen={false} />
@@ -82,7 +82,7 @@ class FormAds extends Component {
                             min_transaction: '',
                             offer_amount: '',
                             payment_info: '',
-                            payment_method: 'bank_transfer',
+                            // payment_method: 'bank_transfer',
                             price_rate: '',
                             type: 'buy',
                         }}
@@ -132,7 +132,7 @@ class FormAds extends Component {
                                                         <Input
                                                             {...field}
                                                             data-lpignore='true'
-                                                            type='number'
+                                                            type='text'
                                                             error={touched.offer_amount && errors.offer_amount}
                                                             label={localize('Total amount')}
                                                             className='p2p-my-ads__form-field'
@@ -148,12 +148,26 @@ class FormAds extends Component {
                                                         />
                                                     )}
                                                 </Field>
+                                            </div>
+                                            <div className='p2p-my-ads__form-container'>
+                                                {/* <Field name='payment_method'>
+                                                    {({ field }) => (
+                                                        <Dropdown
+                                                            {...field}
+                                                            placeholder={localize('Payment method')}
+                                                            is_align_text_left
+                                                            className='p2p-my-ads__form-field'
+                                                            list={[{ text: 'Bank transfer', value: 'bank_transfer' }]}
+                                                            error={touched.payment_method && errors.payment_method}
+                                                        />
+                                                    )}
+                                                </Field> */}
                                                 <Field name='price_rate'>
                                                     {({ field }) => (
                                                         <Input
                                                             {...field}
                                                             data-lpignore='true'
-                                                            type='number'
+                                                            type='text'
                                                             error={touched.price_rate && errors.price_rate}
                                                             label={localize('Fixed price')}
                                                             hint={localize('Per 1 {{currency}}', {
@@ -172,26 +186,12 @@ class FormAds extends Component {
                                                         />
                                                     )}
                                                 </Field>
-                                            </div>
-                                            <div className='p2p-my-ads__form-container'>
-                                                <Field name='payment_method'>
-                                                    {({ field }) => (
-                                                        <Dropdown
-                                                            {...field}
-                                                            placeholder={localize('Payment method')}
-                                                            is_align_text_left
-                                                            className='p2p-my-ads__form-field'
-                                                            list={[{ text: 'Bank transfer', value: 'bank_transfer' }]}
-                                                            error={touched.payment_method && errors.payment_method}
-                                                        />
-                                                    )}
-                                                </Field>
                                                 <Field name='min_transaction'>
                                                     {({ field }) => (
                                                         <Input
                                                             {...field}
                                                             data-lpignore='true'
-                                                            type='number'
+                                                            type='text'
                                                             error={touched.min_transaction && errors.min_transaction}
                                                             label={localize('Min order')}
                                                             className='p2p-my-ads__form-field'
@@ -211,7 +211,7 @@ class FormAds extends Component {
                                                     {({ field }) => (
                                                         <Input
                                                             {...field}
-                                                            type='number'
+                                                            type='text'
                                                             error={touched.max_transaction && errors.max_transaction}
                                                             label={localize('Max order')}
                                                             className='p2p-my-ads__form-field'
@@ -240,8 +240,10 @@ class FormAds extends Component {
                                                                 'Bank name, account number, beneficiary name'
                                                             )}
                                                             className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            placeholder={localize('Bank details')}
+                                                            placeholder={localize('Payment instructions')}
                                                             required
+                                                            has_character_counter
+                                                            max_characters={300}
                                                         />
                                                     )}
                                                 </Field>
@@ -257,6 +259,8 @@ class FormAds extends Component {
                                                             className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
                                                             placeholder={localize('Contact details')}
                                                             required
+                                                            has_character_counter
+                                                            max_characters={300}
                                                         />
                                                     )}
                                                 </Field>
@@ -274,6 +278,8 @@ class FormAds extends Component {
                                                         hint={localize('This information will be visible to everyone')}
                                                         className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
                                                         placeholder={localize('Instructions (optional)')}
+                                                        has_character_counter
+                                                        max_characters={300}
                                                         required
                                                     />
                                                 )}
@@ -309,7 +315,7 @@ class FormAds extends Component {
                         }}
                     </Formik>
                 )}
-            </Fragment>
+            </>
         );
     }
 
@@ -320,27 +326,31 @@ class FormAds extends Component {
             default_advert_description: [v => !v || lengthValidator(v), v => !v || textValidator(v)],
             max_transaction: [
                 v => !!v,
+                v => !isNaN(v),
                 v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
-                v => (values.offer_amount ? v <= values.offer_amount : true),
-                v => (values.min_transaction ? v >= values.min_transaction : true),
+                v => (values.offer_amount ? +v <= values.offer_amount : true),
+                v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
             min_transaction: [
                 v => !!v,
+                v => !isNaN(v),
                 v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
-                v => (values.offer_amount ? v <= values.offer_amount : true),
-                v => (values.max_transaction ? v <= values.max_transaction : true),
+                v => (values.offer_amount ? +v <= values.offer_amount : true),
+                v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
             offer_amount: [
                 v => !!v,
                 // TODO: uncomment this when we have available_price
                 // v => v > available_price,
                 // TODO: remove v > 0 check when we have available_price
+                v => !isNaN(v),
                 v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
-                v => (values.min_transaction ? v >= values.min_transaction : true),
-                v => (values.max_transaction ? v >= values.max_transaction : true),
+                v => (values.min_transaction ? +v >= values.min_transaction : true),
+                v => (values.max_transaction ? +v >= values.max_transaction : true),
             ],
             price_rate: [
                 v => !!v,
+                v => !isNaN(v),
                 v => v > 0 && countDecimalPlaces(v) <= this.context.local_currency_config.decimal_places,
             ],
         };
@@ -356,7 +366,7 @@ class FormAds extends Component {
             max_transaction: localize('Max limit'),
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
-            payment_info: localize('Bank details'),
+            payment_info: localize('Payment instructions'),
             price_rate: localize('Fixed price'),
         };
 
@@ -384,12 +394,14 @@ class FormAds extends Component {
             // TODO: uncomment this when we have available_price
             // localize('Min is {{value}}', { value: available_price }),
             localize('Enter a valid amount'),
+            localize('Enter a valid amount'),
             localize('{{field_name}} should not be below Min limit', { field_name }),
             localize('{{field_name}} should not be below Max limit', { field_name }),
         ];
 
         const max_limit_messages = field_name => [
             localize('{{field_name}} is required', { field_name }),
+            localize('Enter a valid amount'),
             localize('Enter a valid amount'),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not be below Min limit', { field_name }),
@@ -398,12 +410,14 @@ class FormAds extends Component {
         const min_limit_messages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
+            localize('Enter a valid amount'),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not exceed Max limit', { field_name }),
         ];
 
         const price_rate_messages = field_name => [
             localize('{{field_name}} is required', { field_name }),
+            localize('Enter a valid amount'),
             localize('Enter a valid amount'),
         ];
 

@@ -1,6 +1,6 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { ButtonToggle } from '@deriv/components';
 import InputField from 'App/Components/Form/InputField';
 import RangeSlider from 'App/Components/Form/RangeSlider';
@@ -27,7 +27,7 @@ const SimpleDuration = ({
     const has_label = !duration_units_list.some(du => du.value === 't');
 
     return (
-        <Fragment>
+        <>
             {duration_units_list.length > 1 && (
                 <ButtonToggle
                     id='dt_simple_duration_toggle'
@@ -56,7 +56,7 @@ const SimpleDuration = ({
                     {...shared_input_props}
                 />
             )}
-        </Fragment>
+        </>
     );
 };
 

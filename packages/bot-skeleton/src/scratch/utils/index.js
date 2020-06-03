@@ -4,8 +4,24 @@ import BlockConversion from '../backward-compatibility';
 import { config } from '../../constants/config';
 import { observer as globalObserver } from '../../utils/observer';
 import { removeLimitedBlocks } from '../../utils/workspace';
-import DBotStore from '../dbot-store';
 import { saveWorkspaceToRecent } from '../../utils/local-storage';
+import DBotStore from '../dbot-store';
+import { log_types } from '../../constants/messages';
+
+export const updateWorkspaceName = () => {
+    const { save_modal } = DBotStore.instance;
+
+    const file_name = save_modal.bot_name ?? config.default_file_name;
+
+    if (document.title.indexOf('-') > -1) {
+        const string_to_replace = document.title.substr(document.title.indexOf('-'));
+        const new_document_title = document.title.replace(string_to_replace, `- ${file_name}`);
+
+        document.title = new_document_title;
+    } else {
+        document.title += ` - ${file_name}`;
+    }
+};
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 
@@ -48,7 +64,7 @@ export const load = ({
 }) => {
     const showInvalidStrategyError = () => {
         const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
-        globalObserver.emit('Error', error_message);
+        globalObserver.emit('ui.log.error', error_message);
     };
 
     // Check if XML can be parsed correctly.
@@ -108,9 +124,9 @@ export const load = ({
 
             const is_main_workspace = workspace === Blockly.derivWorkspace;
             if (is_main_workspace) {
-                const { onBotNameTyped } = DBotStore.instance;
-                onBotNameTyped(file_name);
+                const { save_modal } = DBotStore.instance;
 
+                save_modal.updateBotName(file_name);
                 workspace.clearUndo();
                 workspace.current_strategy_id = strategy_id || Blockly.utils.genUid();
                 saveWorkspaceToRecent(from);
@@ -127,7 +143,9 @@ export const load = ({
 
         // Dispatch resize event for comments.
         window.dispatchEvent(new Event('resize'));
-        globalObserver.emit('ui.log.success', localize('Blocks are loaded successfully'));
+        if (workspace === Blockly.derivWorkspace) {
+            globalObserver.emit('ui.log.success', { log_type: log_types.LOAD_BLOCK });
+        }
     } catch (e) {
         console.log(e); // eslint-disable-line
         return showInvalidStrategyError();

@@ -12,7 +12,7 @@
 
     &__list {
         width: 100%;
-        line-height: 35px;
+        line-height: 38px;
         display: flex;
         position: relative;
         @include mobile {
@@ -21,11 +21,20 @@
 
         &--top {
             order: 0;
-            border-bottom: 1px solid var(--general-section-1);
+            border-bottom: 2px solid var(--general-section-1);
         }
         &--bottom {
             order: 1;
-            border-top: 1px solid var(--general-section-1);
+            border-top: 2px solid var(--general-section-1);
+        }
+        &--center {
+            justify-content: center;
+            width: fit-content;
+            margin: auto;
+
+            .dc-tabs__item {
+                padding: 0 2.2rem;
+            }
         }
         &--fit-content {
             @include mobile {
@@ -44,11 +53,11 @@
         color: var(--text-general);
 
         &__counter {
-            margin-left: 1rem;
+            margin-top: -2rem;
             vertical-align: middle;
         }
         &--header-fit-content {
-            padding: 0px 24px;
+            padding: 0px 29px;
         }
         &--is-hidden {
             display: none;
@@ -74,10 +83,10 @@
         transition: all ease-in-out 0.3s;
 
         &--top {
-            bottom: 0;
+            bottom: -2px;
         }
         &--bottom {
-            bottom: 0;
+            top: -2px;
         }
         &--is-hidden {
             display: none;

@@ -4,8 +4,8 @@ import React from 'react';
 import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { Field, Formik, Form } from 'formik';
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import { website_name } from 'App/Constants/app-config';
 import { localize, Localize } from '@deriv/translations';
+import { website_name } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
 import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
 import Loading from '../../../../templates/_common/components/loading.jsx';
@@ -54,11 +54,11 @@ const AccountTransferNote = ({
         </AccountTransferBullet>
         <AccountTransferBullet>
             <Localize
-                i18n_default_text='We’ll charge a {{transfer_fee}}% transfer fee, or {{currency}} {{minimum_fee}}, whichever is higher.'
+                i18n_default_text='We’ll charge a {{transfer_fee}}% transfer fee, or {{minimum_fee}} {{currency}}, whichever is higher.'
                 values={{
                     transfer_fee,
-                    currency,
                     minimum_fee,
+                    currency: CurrencyUtils.getCurrencyDisplayCode(currency),
                 }}
             />
         </AccountTransferBullet>
@@ -102,9 +102,9 @@ class AccountTransferForm extends React.Component {
 
     onTransferPassthrough = async (values, actions) => {
         const transfer_between_accounts = await this.props.requestTransferBetweenAccounts({
-            amount: values.amount,
+            amount: +values.amount,
         });
-        if (transfer_between_accounts.error) {
+        if (transfer_between_accounts?.error) {
             actions.setSubmitting(false);
         }
     };
@@ -207,6 +207,7 @@ class AccountTransferForm extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     className='account-transfer__transfer-from'
                                                     classNameDisplay='cashier__drop-down-display'
                                                     label={localize('From')}
@@ -244,6 +245,7 @@ class AccountTransferForm extends React.Component {
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     className='account-transfer__transfer-to'
                                                     classNameDisplay='cashier__drop-down-display'
                                                     label={localize('To')}

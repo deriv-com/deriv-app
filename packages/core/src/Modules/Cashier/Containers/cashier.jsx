@@ -2,18 +2,20 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import {
-    PageOverlay,
     VerticalTab,
     DesktopWrapper,
     MobileWrapper,
     Div100vhContainer,
     FadeWrapper,
+    PageOverlay,
 } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import { getSelectedRoute } from '@deriv/shared/utils/route';
 import { isMobile, isTouchDevice } from '@deriv/shared/utils/screen';
-import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
+import 'Sass/app/modules/cashier.scss';
 
 const el_landscape_blocker = document.getElementById('landscape_blocker');
 
@@ -91,8 +93,11 @@ class Cashier extends React.Component {
             : null;
         const should_show_tab_headers_note =
             !this.props.is_virtual &&
+            !CurrencyUtils.isCryptocurrency(this.props.loggedin_currency) &&
             (location.pathname.startsWith(routes.cashier_deposit) ||
                 location.pathname.startsWith(routes.cashier_withdrawal));
+
+        const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
 
         return (
             <FadeWrapper
@@ -114,7 +119,7 @@ class Cashier extends React.Component {
                                 current_path={this.props.location.pathname}
                                 is_floating
                                 setVerticalTabIndex={this.props.setTabIndex}
-                                vertical_tab_index={this.props.tab_index}
+                                vertical_tab_index={is_default_route ? 0 : this.props.tab_index}
                                 is_full_width
                                 is_routed
                                 list={menu_options()}
@@ -173,6 +178,7 @@ export default connect(({ client, common, modules, ui }) => ({
     routeBackInApp: common.routeBackInApp,
     tab_index: modules.cashier.cashier_route_tab_index,
     setTabIndex: modules.cashier.setCashierTabIndex,
+    loggedin_currency: client.currency,
     is_p2p_visible: modules.cashier.is_p2p_visible,
     is_virtual: client.is_virtual,
     is_visible: ui.is_cashier_visible,

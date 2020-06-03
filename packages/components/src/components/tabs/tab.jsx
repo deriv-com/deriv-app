@@ -1,13 +1,23 @@
 import classNames from 'classnames';
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Counter from '../counter';
 
-class Tab extends Component {
+class Tab extends React.Component {
     onClick = () => {
         const { onClick } = this.props;
         onClick();
     };
+
+    componentDidUpdate(prev_props) {
+        if (
+            prev_props.count !== this.props.count ||
+            prev_props.label !== this.props.label ||
+            prev_props.header_content !== this.props.header_content
+        ) {
+            this.props.setActiveLineStyle();
+        }
+    }
 
     render() {
         const {

@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { getAllRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
-import routes from 'Constants/routes';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
@@ -44,7 +44,7 @@ class ToggleMenuDrawer extends React.Component {
         // TODO: find better fix for no-op issue
         this.is_mounted = false;
         this.state = {
-            is_high_risk_client: false,
+            needs_financial_assessment: false,
             is_open: false,
             needs_verification: false,
         };
@@ -54,12 +54,14 @@ class ToggleMenuDrawer extends React.Component {
         this.is_mounted = true;
         WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
-                const { authentication } = this.props.account_status;
-                const is_high_risk_client = this.props.is_high_risk;
+                const { authentication, status } = this.props.account_status;
+                const needs_financial_assessment =
+                    this.props.is_high_risk || status.includes('financial_information_not_complete');
                 const needs_verification =
                     authentication.needs_verification.includes('identity') ||
                     authentication.needs_verification.includes('document');
-                if (this.is_mounted) this.setState({ is_high_risk_client, needs_verification });
+
+                if (this.is_mounted) this.setState({ needs_financial_assessment, needs_verification });
             }
         });
     }
@@ -73,7 +75,7 @@ class ToggleMenuDrawer extends React.Component {
     };
 
     getRoutesWithSubMenu = route_config => {
-        const { is_high_risk_client, needs_verification } = this.state;
+        const { needs_financial_assessment, needs_verification } = this.state;
         const has_access = route_config.is_authenticated ? this.props.is_logged_in : true;
         if (!has_access) return null;
 
@@ -133,7 +135,7 @@ class ToggleMenuDrawer extends React.Component {
                                     key={subroute.title}
                                     is_disabled={
                                         (!needs_verification &&
-                                            !is_high_risk_client &&
+                                            !needs_financial_assessment &&
                                             /proof-of-identity|proof-of-address|financial-assessment/.test(
                                                 subroute.path
                                             )) ||
@@ -199,7 +201,7 @@ class ToggleMenuDrawer extends React.Component {
                                     })}
                                 >
                                     <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
-                                    <span className='header__menu-mobile-link-text'>{localize('Dark Theme')}</span>
+                                    <span className='header__menu-mobile-link-text'>{localize('Dark theme')}</span>
                                     <ToggleSwitch
                                         id='dt_mobile_drawer_theme_toggler'
                                         classNameLabel='header__menu-mobile-link-toggler-label'

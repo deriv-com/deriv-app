@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { toMoment } from '@deriv/shared/utils/date';
 import Icon from 'Components/icon';
 
@@ -17,10 +17,10 @@ const Native = ({
     onSelect,
     value,
 }) => {
-    const [is_focused, setIsFocused] = useState(0);
-    const input_ref = useRef();
+    const [is_focused, setIsFocused] = React.useState(0);
+    const input_ref = React.useRef();
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (input_ref.current) input_ref.current.value = value;
     }, [value]);
 

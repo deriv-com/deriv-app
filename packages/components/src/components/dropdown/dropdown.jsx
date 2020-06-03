@@ -4,18 +4,19 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { mobileOSDetect } from '@deriv/shared/utils/os';
 import ThemedScrollbars from 'Components/themed-scrollbars';
-import { getItemFromValue, getValueFromIndex, getPrevIndex, getNextIndex, listPropType } from './dropdown';
+import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from './dropdown';
 import Items from './items.jsx';
 import NativeSelect from './native-select.jsx';
 import DisplayText from './display-text.jsx';
 import Icon from '../icon';
 
 class Dropdown extends React.Component {
+    dropdown_ref = React.createRef();
     list_ref = React.createRef();
     native_select_ref = React.createRef();
+    nodes = new Map();
 
     state = {
-        curr_index: 0,
         is_list_visible: !!this.props.is_nativepicker_visible,
         list_height: 0,
         list_width: 0,
@@ -95,16 +96,12 @@ class Dropdown extends React.Component {
     }
 
     componentDidMount() {
-        this.updateSelected(this.props.value);
         document.addEventListener('mousedown', this.handleClickOutside, {
             passive: true,
         });
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.value !== this.props.value) {
-            this.updateSelected(this.props.value);
-        }
+    componentDidUpdate() {
         if (this.props.is_nativepicker && !this.props.is_nativepicker_visible && this.state.is_list_visible) {
             this.setState({ is_list_visible: false });
         }
@@ -119,16 +116,10 @@ class Dropdown extends React.Component {
             this.props.onChange({
                 target: { name: this.props.name, value: item.value },
             });
-            this.updateSelected(item.value);
         }
         this.handleVisibility();
+        this.dropdown_ref.current.focus();
     };
-
-    updateSelected(value) {
-        this.setState({
-            curr_index: getItemFromValue(this.props.list, value).number,
-        });
-    }
 
     setWrapperRef = node => (this.wrapper_ref = node);
 
@@ -157,56 +148,44 @@ class Dropdown extends React.Component {
             }
             this.setState({ is_list_visible: true });
         } else {
-            this.setState(state => ({ is_list_visible: !state.is_list_visible }));
+            this.setState(
+                state => ({ is_list_visible: !state.is_list_visible }),
+                () => {
+                    if (!this.state.is_list_visible) this.dropdown_ref.current.focus();
+                }
+            );
         }
     };
 
-    handleToggle = value => {
-        if (this.state.is_list_visible && this.props.value !== value) {
-            this.props.onChange({ target: { name: this.props.name, value } });
-        }
-        this.handleVisibility();
-    };
-
-    onKeyPressed = event => {
+    onKeyPressed = (event, item) => {
         if (this.is_single_option) return;
-        if (event.keyCode === 9) {
-            // Tab is pressed
-            if (this.state.is_list_visible) {
-                this.handleVisibility();
-            }
-            return;
-        }
+
+        // Tab -> before preventDefault() to be able to go to the next tabIndex
+        if (event.keyCode === 9 && !this.state.is_list_visible) return;
+
         event.preventDefault();
-        const index = this.props.value ? getItemFromValue(this.props.list, this.props.value) : 0;
-        const value = this.props.value ? getValueFromIndex(this.props.list, this.state.curr_index) : null;
 
         switch (event.keyCode) {
-            case 13: // Enter is pressed
-            case 32: // Space is pressed
-                if (value) this.handleToggle(value);
+            case 27: // esc
+                if (this.state.is_list_visible) this.handleVisibility();
                 break;
-            case 38: // Up Arrow is pressed
-                if (this.state.is_list_visible) {
-                    const prev_index = getPrevIndex(this.state.curr_index, index.length);
-                    this.setState({ curr_index: prev_index });
-                }
+            case 9: // Tab
+            case 13: // Enter
+            case 32: // Space
+                if (!item) return;
+                this.handleSelect(item);
                 break;
-            case 40: // Down Arrow is pressed
+            case 38: // Up Arrow
+            case 40: // Down Arrow
                 if (this.state.is_list_visible) {
-                    const next_index = getNextIndex(this.state.curr_index, index.length);
-                    this.setState({ curr_index: next_index });
+                    this.focusNextListItem(event.keyCode);
                 } else if (!this.props.is_alignment_left) {
                     this.handleVisibility();
                 }
                 break;
-            case 37: // Left arrow is pressed
-                if (!this.state.is_list_visible && this.props.is_alignment_left) {
-                    this.handleVisibility();
-                }
-                break;
-            case 39: // Right Arrow is pressed
-                if (this.state.is_list_visible && this.props.is_alignment_left) {
+            case 37: // Left arrow
+            case 39: // Right Arrow
+                if (this.props.is_alignment_left) {
                     this.handleVisibility();
                 }
                 break;
@@ -216,17 +195,30 @@ class Dropdown extends React.Component {
         // For char presses, we do a search for the item:
         if (event.key.length === 1 && this.props.list.length) {
             const char = event.key.toLowerCase();
-            const firstChars = this.props.list.map(x => typeof x === 'string' && x.text[0].toLowerCase());
-            let idx;
-            // Tapping the same character again jumps to the next match:
-            if (this.state.curr_index) {
-                idx = firstChars.indexOf(char, this.state.curr_index + 1);
-            }
-            if (idx === undefined || idx === -1) {
-                idx = firstChars.indexOf(char);
-            }
-            if (idx >= 0) {
-                this.setState({ curr_index: idx });
+            const item_starting_with_char = this.props.list.find(li => li.value && li.value[0].toLowerCase() === char);
+            if (!item_starting_with_char) return;
+
+            const item_ref = this.nodes.get(item_starting_with_char.value);
+            if (item_ref) item_ref.focus();
+        }
+    };
+
+    focusNextListItem = direction => {
+        const active_element = document.activeElement;
+
+        if (active_element.id === 'dropdown-display') {
+            Array.from(this.nodes.values())[0].focus();
+        } else {
+            const active_node = this.nodes.get(active_element.id);
+            if (active_node) {
+                if (direction === 40) {
+                    const next_node = findNextFocusableNode(active_node.nextSibling);
+                    if (next_node) next_node.focus();
+                }
+                if (direction === 38) {
+                    const prev_node = findPreviousFocusableNode(active_node.previousSibling);
+                    if (prev_node) prev_node.focus();
+                }
             }
         }
     };
@@ -270,6 +262,8 @@ class Dropdown extends React.Component {
                             tabIndex={this.is_single_option ? '-1' : '0'}
                             onClick={this.handleVisibility}
                             onKeyDown={this.onKeyPressed}
+                            id='dropdown-display'
+                            ref={this.dropdown_ref}
                         >
                             <DisplayText
                                 has_symbol={this.props.has_symbol}
@@ -286,6 +280,7 @@ class Dropdown extends React.Component {
                                 icon={this.props.is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
                                 className={classNames('dc-dropdown__select-arrow', {
                                     'dc-dropdown__select-arrow--left': this.props.is_alignment_left,
+                                    'dc-dropdown__select-arrow--up': this.state.is_list_visible,
                                 })}
                             />
                         )}
@@ -311,11 +306,15 @@ class Dropdown extends React.Component {
                                         className={this.list_class_names}
                                         ref={this.list_ref}
                                         style={getDropDownAlignment()}
+                                        aria-expanded={this.state.is_list_visible}
+                                        role='list'
                                     >
                                         <ThemedScrollbars
                                             autoHeight
                                             autoHide
-                                            autoHeightMax={404}
+                                            // TODO: remove this once tt-react-scrollbars have been replaced
+                                            // prevent focus handling from breaking
+                                            autoHeightMax={10000}
                                             renderTrackHorizontal={props => (
                                                 <div {...props} style={{ display: 'none' }} />
                                             )}
@@ -325,14 +324,15 @@ class Dropdown extends React.Component {
                                         >
                                             {Array.isArray(this.props.list) ? (
                                                 <Items
+                                                    onKeyPressed={this.onKeyPressed}
                                                     className={this.props.classNameItems}
-                                                    index={this.state.curr_index}
                                                     handleSelect={this.handleSelect}
                                                     has_symbol={this.props.has_symbol}
                                                     items={this.props.list}
                                                     name={this.props.name}
                                                     is_align_text_left={this.props.is_align_text_left}
                                                     value={this.props.value}
+                                                    nodes={this.nodes}
                                                 />
                                             ) : (
                                                 Object.keys(this.props.list).map((key, idx) => (
@@ -346,6 +346,7 @@ class Dropdown extends React.Component {
                                                             {key}
                                                         </div>
                                                         <Items
+                                                            onKeyPressed={this.onKeyPressed}
                                                             className={this.props.classNameItems}
                                                             handleSelect={this.handleSelect}
                                                             has_symbol={this.props.has_symbol}
@@ -353,6 +354,7 @@ class Dropdown extends React.Component {
                                                             name={this.props.name}
                                                             is_align_text_left={this.props.is_align_text_left}
                                                             value={this.props.value}
+                                                            nodes={this.nodes}
                                                         />
                                                         {idx !== Object.keys(this.props.list).length - 1 && (
                                                             <span className='dc-list__separator' />

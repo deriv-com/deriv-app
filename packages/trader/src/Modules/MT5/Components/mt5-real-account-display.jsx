@@ -2,20 +2,20 @@ import React from 'react';
 import { Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import {
-    real_advanced_specs,
-    real_standard_specs,
+    real_financial_stp_specs,
+    real_financial_specs,
     real_synthetic_specs,
 } from 'Modules/MT5/Constants/mt5-specifications';
 import { MT5AccountCard } from './mt5-account-card.jsx';
 
-const getRealAdvancedButtonLabel = (is_fully_authenticated, is_pending_authentication, has_required_credentials) => {
+const getRealFinancialStpBtnLbl = (is_fully_authenticated, is_pending_authentication, has_required_credentials) => {
     if (is_fully_authenticated && has_required_credentials) {
         return <Localize i18n_default_text='Set your password' />;
     } else if (is_pending_authentication) {
         return <Localize i18n_default_text='Pending verification' />;
     }
 
-    return <Localize i18n_default_text='Create account' />;
+    return <Localize i18n_default_text='Add real account' />;
 };
 
 const MT5RealAccountDisplay = ({
@@ -33,102 +33,107 @@ const MT5RealAccountDisplay = ({
     const has_required_credentials =
         account_settings.citizen && account_settings.tax_identification_number && account_settings.tax_residence;
 
-    const button_label = getRealAdvancedButtonLabel(
+    const button_label = getRealFinancialStpBtnLbl(
         is_fully_authenticated,
         is_pending_authentication,
         has_required_credentials
     );
 
-    const is_real_advanced_disabled = !has_real_account || is_pending_authentication;
+    const is_real_financial_stp_disabled = !has_real_account || is_pending_authentication;
 
-    const onSelectRealAdvanced = () => {
+    const onSelectRealSynthetic = () => onSelectAccount({ type: 'synthetic', category: 'real' });
+    const onSelectRealFinancial = () => onSelectAccount({ type: 'financial', category: 'real' });
+    const onSelectRealFinancialStp = () => {
         const account_type = {
             category: 'real',
-            type: 'advanced',
+            type: 'financial_stp',
         };
         if (is_fully_authenticated && has_required_credentials) {
             openPasswordModal(account_type);
-        } else if ((!is_fully_authenticated && !is_real_advanced_disabled) || !has_required_credentials) {
+        } else if ((!is_fully_authenticated && !is_real_financial_stp_disabled) || !has_required_credentials) {
             onSelectAccount(account_type);
         }
     };
-    const onSelectRealStandard = () => onSelectAccount({ type: 'standard', category: 'real' });
-    const onSelectRealSynthetic = () => onSelectAccount({ type: 'synthetic_indices', category: 'real' });
 
-    const onClickFundRealAdvanced = () =>
-        openAccountTransfer(current_list['real.advanced'], {
-            category: 'real',
-            type: 'advanced',
-        });
     const onClickFundRealSynthetic = () =>
-        openAccountTransfer(current_list['real.synthetic_indices'], {
+        openAccountTransfer(current_list['real.synthetic'], {
             category: 'real',
-            type: 'synthetic_indices',
+            type: 'synthetic',
         });
-    const onClickFundRealStandard = () =>
-        openAccountTransfer(current_list['real.standard'], {
+    const onClickFundRealFinancial = () =>
+        openAccountTransfer(current_list['real.financial'], {
             category: 'real',
-            type: 'standard',
+            type: 'financial',
+        });
+    const onClickFundRealFinancialStp = () =>
+        openAccountTransfer(current_list['real.financial_stp'], {
+            category: 'real',
+            type: 'financial_stp',
         });
 
     return (
         <div className='mt5-real-accounts-display'>
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}
-                is_disabled={!has_real_account}
-                icon={() => <Icon icon='IcMt5Standard' size={64} />}
-                title={localize('Standard')}
-                type={{
-                    category: 'real',
-                    type: 'standard',
-                }}
-                existing_data={current_list['real.standard']}
-                commission_message={
-                    <Localize
-                        i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
-                        components={[<span key={0} className='mt5-dashboard--hint' />]}
-                    />
-                }
-                onSelectAccount={onSelectRealStandard}
-                onPasswordManager={openPasswordManager}
-                onClickFund={onClickFundRealStandard}
-                descriptor={localize('Suitable for both new and experienced traders.')}
-                specs={real_standard_specs}
-            />
-            <MT5AccountCard
-                has_mt5_account={has_mt5_account}
-                icon={() => <Icon icon='IcMt5Advanced' size={64} />}
-                title={localize('Advanced')}
-                type={{
-                    category: 'real',
-                    type: 'advanced',
-                }}
-                existing_data={current_list['real.advanced']}
-                commission_message={<Localize i18n_default_text='No commission' />}
-                onSelectAccount={onSelectRealAdvanced}
-                button_label={button_label}
-                onPasswordManager={openPasswordManager}
-                onClickFund={onClickFundRealAdvanced}
-                descriptor={localize('Give you more products, tight spreads, and higher ticket size.')}
-                specs={real_advanced_specs}
-                is_disabled={is_real_advanced_disabled}
-            />
-            <MT5AccountCard
-                has_mt5_account={has_mt5_account}
-                icon={() => <Icon icon='IcMt5SyntheticIndices' size={64} />}
-                title={localize('Synthetic Indices')}
+                icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
+                title={localize('Synthetic')}
                 is_disabled={!has_real_account}
                 type={{
                     category: 'real',
-                    type: 'synthetic_indices',
+                    type: 'synthetic',
                 }}
-                existing_data={current_list['real.synthetic_indices']}
+                existing_data={current_list['real.synthetic']}
                 commission_message={<Localize i18n_default_text='No commission' />}
                 onSelectAccount={onSelectRealSynthetic}
                 onPasswordManager={openPasswordManager}
                 onClickFund={onClickFundRealSynthetic}
                 descriptor={localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.')}
                 specs={real_synthetic_specs}
+            />
+            <MT5AccountCard
+                has_mt5_account={has_mt5_account}
+                is_disabled={!has_real_account}
+                icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
+                title={localize('Financial')}
+                type={{
+                    category: 'real',
+                    type: 'financial',
+                }}
+                existing_data={current_list['real.financial']}
+                commission_message={
+                    <Localize
+                        i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
+                        components={[<span key={0} className='mt5-dashboard--hint' />]}
+                    />
+                }
+                onSelectAccount={onSelectRealFinancial}
+                onPasswordManager={openPasswordManager}
+                onClickFund={onClickFundRealFinancial}
+                descriptor={localize(
+                    'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
+                )}
+                specs={real_financial_specs}
+            />
+            <MT5AccountCard
+                has_mt5_account={has_mt5_account}
+                icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}
+                title={localize('Financial STP')}
+                type={{
+                    category: 'real',
+                    type: 'financial_stp',
+                }}
+                existing_data={current_list['real.financial_stp']}
+                commission_message={<Localize i18n_default_text='No commission' />}
+                onSelectAccount={onSelectRealFinancialStp}
+                button_label={button_label}
+                is_button_primary={is_pending_authentication}
+                onPasswordManager={openPasswordManager}
+                onClickFund={onClickFundRealFinancialStp}
+                descriptor={localize(
+                    'Trade major, minor, and exotic currency pairs with Straight-Through Processing (STP) of your orders direct to the market.'
+                )}
+                specs={real_financial_stp_specs}
+                is_disabled={is_real_financial_stp_disabled}
             />
         </div>
     );

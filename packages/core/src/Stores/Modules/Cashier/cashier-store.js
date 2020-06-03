@@ -1,9 +1,9 @@
 import { action, computed, observable, toJS } from 'mobx';
+import routes from '@deriv/shared/utils/routes';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import BinarySocket from '_common/base/socket_base';
 import { localize } from '@deriv/translations';
-import AppRoutes from 'Constants/routes';
 import { WS } from 'Services';
 import BaseStore from '../../base-store';
 import { getMT5AccountDisplay } from '../../Helpers/client';
@@ -140,50 +140,47 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async init() {
-        // show p2p if:
-        // 1. we have not already checked this before, and
-        // 2. client is not virtual, and
-        // 3. p2p call does not return error code `PermissionDenied`
-        await BinarySocket.wait('authorize');
-        if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
-            const advertiser_error = ObjectUtils.getPropertyValue(await WS.p2pAdvertiserInfo(), ['error', 'code']);
-            if (advertiser_error === 'PermissionDenied') return;
-
-            this.is_p2p_advertiser = !advertiser_error;
-            this.setIsP2pVisible(true);
-        }
-    }
-
-    @action.bound
     async onMountCommon() {
-        await BinarySocket.wait('authorize');
+        if (this.root_store.client.is_logged_in) {
+            // avoid calling this again
+            if (this.is_populating_values) {
+                return;
+            }
 
-        // avoid calling this again
-        if (this.is_populating_values) {
-            return;
-        }
+            this.is_populating_values = true;
 
-        this.is_populating_values = true;
+            // cashier inits once and tries to stay active until switching account
+            // since cashier calls take a long time to respond or display in iframe
+            // so we don't have any unmount function here and everything gets reset on switch instead
+            this.disposeSwitchAccount();
+            this.onSwitchAccount(this.accountSwitcherListener);
 
-        // cashier inits once and tries to stay active until switching account
-        // since cashier calls take a long time to respond or display in iframe
-        // so we don't have any unmount function here and everything gets reset on switch instead
-        this.disposeSwitchAccount();
-        this.onSwitchAccount(this.accountSwitcherListener);
+            // we need to see if client's country has PA
+            // if yes, we can show the PA tab in cashier
+            if (!this.config.payment_agent.list.length) {
+                this.setPaymentAgentList().then(this.filterPaymentAgentList);
+            }
 
-        // we need to see if client's country has PA
-        // if yes, we can show the PA tab in cashier
-        if (!this.config.payment_agent.list.length) {
-            this.setPaymentAgentList().then(this.filterPaymentAgentList);
-        }
+            if (!this.config.payment_agent_transfer.is_payment_agent) {
+                this.checkIsPaymentAgent();
+            }
 
-        if (!this.config.payment_agent_transfer.is_payment_agent) {
-            this.checkIsPaymentAgent();
-        }
+            if (!this.config.account_transfer.accounts_list.length) {
+                this.sortAccountsTransfer();
+            }
 
-        if (!this.config.account_transfer.accounts_list.length) {
-            this.sortAccountsTransfer();
+            // show p2p if:
+            // 1. we have not already checked this before, and
+            // 2. client is not virtual, and
+            // 3. p2p call does not return error code `PermissionDenied`
+            if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
+                const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
+                const advertiser_error = ObjectUtils.getPropertyValue(advertiser_info, ['error', 'code']);
+                if (advertiser_error === 'PermissionDenied') return;
+
+                this.is_p2p_advertiser = !advertiser_error;
+                this.setIsP2pVisible(true);
+            }
         }
     }
 
@@ -199,8 +196,8 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setIsP2pVisible(is_p2p_visible) {
         this.is_p2p_visible = is_p2p_visible;
-        if (!is_p2p_visible && window.location.pathname.startsWith(AppRoutes.cashier_p2p)) {
-            this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+        if (!is_p2p_visible && window.location.pathname.startsWith(routes.cashier_p2p)) {
+            this.root_store.common.routeTo(routes.cashier_deposit);
         }
     }
 
@@ -234,7 +231,7 @@ export default class CashierStore extends BaseStore {
             return;
         }
 
-        const response_cashier = await WS.cashier(this.active_container, verification_code);
+        const response_cashier = await WS.authorized.cashier(this.active_container, verification_code);
 
         // if tab changed while waiting for response, ignore it
         if (current_container !== this.active_container) {
@@ -458,7 +455,7 @@ export default class CashierStore extends BaseStore {
 
         const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
         const currency = this.root_store.client.currency;
-        return WS.paymentAgentList(residence, currency);
+        return WS.authorized.paymentAgentList(residence, currency);
     }
 
     @action.bound
@@ -530,8 +527,8 @@ export default class CashierStore extends BaseStore {
         } else {
             this.config.payment_agent.filtered_list = this.config.payment_agent.list;
         }
-        if (!this.is_payment_agent_visible && window.location.pathname.startsWith(AppRoutes.cashier_pa)) {
-            this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+        if (!this.is_payment_agent_visible && window.location.pathname.startsWith(routes.cashier_pa)) {
+            this.root_store.common.routeTo(routes.cashier_deposit);
         }
     }
 
@@ -559,9 +556,9 @@ export default class CashierStore extends BaseStore {
             });
             if (
                 !payment_agent_list.paymentagent_list.list.length &&
-                window.location.pathname.startsWith(AppRoutes.cashier_pa)
+                window.location.pathname.startsWith(routes.cashier_pa)
             ) {
-                this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+                this.root_store.common.routeTo(routes.cashier_deposit);
             }
         }
 
@@ -612,7 +609,12 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
-        const payment_agent_withdraw = await WS.paymentAgentWithdraw({ loginid, currency, amount, verification_code });
+        const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
+            loginid,
+            currency,
+            amount,
+            verification_code,
+        });
         if (+payment_agent_withdraw.paymentagent_withdraw === 1) {
             const selected_agent = this.config.payment_agent.agents.find(agent => agent.value === loginid);
             this.setReceipt({
@@ -664,25 +666,27 @@ export default class CashierStore extends BaseStore {
             this.setHasNoAccountsBalance(false);
         }
 
-        const transfer_between_accounts =
-            !this.config.account_transfer.accounts_list.length || has_updated_account_balance
-                ? await WS.transferBetweenAccounts()
-                : await WS.authorized.cache.transferBetweenAccounts({ accounts: 'all' }); // load from cache to get the latest updates
+        // various issues happen when loading from cache
+        // e.g. new account may have been created, transfer may have been done elsewhere, etc
+        // so on load of this page just call it again
+        if (this.root_store.client.is_logged_in) {
+            const transfer_between_accounts = await WS.authorized.transferBetweenAccounts();
 
-        if (transfer_between_accounts.error) {
-            this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
-            this.setLoading(false);
-            return;
+            if (transfer_between_accounts.error) {
+                this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
+                this.setLoading(false);
+                return;
+            }
+
+            if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
+                return;
+            }
+
+            this.sortAccountsTransfer(transfer_between_accounts);
+            this.setTransferFee();
+            this.setMinimumFee();
+            this.setTransferLimit();
         }
-
-        if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
-            return;
-        }
-
-        this.sortAccountsTransfer(transfer_between_accounts);
-        this.setTransferFee();
-        this.setMinimumFee();
-        this.setTransferLimit();
         this.setLoading(false);
     }
 
@@ -692,11 +696,15 @@ export default class CashierStore extends BaseStore {
         if (!accounts.find(account => +account.balance > 0)) {
             can_transfer = false;
             this.setHasNoAccountsBalance(true);
+        } else {
+            this.setHasNoAccountsBalance(false);
         }
         // should have at least two real-money accounts
         if (accounts.length <= 1) {
             can_transfer = false;
             this.setHasNoAccount(true);
+        } else {
+            this.setHasNoAccount(false);
         }
         if (!can_transfer) {
             this.setLoading(false);
@@ -749,7 +757,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async sortAccountsTransfer(response_accounts) {
-        const transfer_between_accounts = response_accounts || (await WS.transferBetweenAccounts());
+        const transfer_between_accounts = response_accounts || (await WS.authorized.transferBetweenAccounts());
         if (!this.config.account_transfer.accounts_list.length) {
             // should have more than one account
             if (transfer_between_accounts.error || transfer_between_accounts.accounts.length <= 1) {
@@ -759,7 +767,7 @@ export default class CashierStore extends BaseStore {
         // remove disabled mt5 accounts
         const accounts = transfer_between_accounts.accounts.filter(account => !/inactive/.test(account.mt5_group));
         // sort accounts as follows:
-        // for MT5, synthetic indices, standard, advanced
+        // for MT5, synthetic, financial, financial stp
         // for non-MT5, fiat, crypto (alphabetically by currency)
         accounts.sort((a, b) => {
             const a_is_mt = a.account_type === 'mt5';
@@ -769,11 +777,11 @@ export default class CashierStore extends BaseStore {
             const a_is_fiat = !a_is_mt && !a_is_crypto;
             const b_is_fiat = !b_is_mt && !b_is_crypto;
             if (a_is_mt && b_is_mt) {
-                if (/vanuatu/.test(a.mt5_group)) {
-                    return 1;
-                }
-                if (/svg/.test(a.mt5_group)) {
+                if (/svg$/.test(a.mt5_group)) {
                     return -1;
+                }
+                if (/vanuatu|svg_standard/.test(a.mt5_group)) {
+                    return /svg$/.test(b.mt5_group) ? 1 : -1;
                 }
                 return 1;
             } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
@@ -787,7 +795,9 @@ export default class CashierStore extends BaseStore {
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
         accounts.forEach(account => {
             const obj_values = {
-                text: account.mt5_group ? getMT5AccountDisplay(account.mt5_group) : account.currency.toUpperCase(),
+                text: account.mt5_group
+                    ? `${localize('DMT5')} ${getMT5AccountDisplay(account.mt5_group)}`
+                    : CurrencyUtils.getCurrencyDisplayCode(account.currency.toUpperCase()),
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,
@@ -870,9 +880,13 @@ export default class CashierStore extends BaseStore {
     }
 
     requestTransferBetweenAccounts = async ({ amount }) => {
+        if (!this.root_store.client.is_logged_in) {
+            return null;
+        }
+
         this.setErrorMessage('');
         const currency = this.config.account_transfer.selected_from.currency;
-        const transfer_between_accounts = await WS.transferBetweenAccounts(
+        const transfer_between_accounts = await WS.authorized.transferBetweenAccounts(
             this.config.account_transfer.selected_from.value,
             this.config.account_transfer.selected_to.value,
             currency,
@@ -895,7 +909,7 @@ export default class CashierStore extends BaseStore {
                     WS.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
                     // update total balance since MT5 total only comes in non-stream balance call
                     WS.balanceAll().then(response => {
-                        this.root_store.client.setBalance(response.balance);
+                        this.root_store.client.setBalanceOtherAccounts(response.balance);
                     });
                 }
             });
@@ -933,13 +947,13 @@ export default class CashierStore extends BaseStore {
 
     async checkIsPaymentAgent() {
         const get_settings = (await WS.authorized.storage.getSettings()).get_settings;
-        this.setIsPaymentAgent(get_settings.is_authenticated_payment_agent);
+        this.setIsPaymentAgent(get_settings?.is_authenticated_payment_agent ?? false);
     }
 
     @action.bound
     setIsPaymentAgent(is_payment_agent) {
-        if (!is_payment_agent && window.location.pathname.startsWith(AppRoutes.cashier_pa_transfer)) {
-            this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+        if (!is_payment_agent && window.location.pathname.startsWith(routes.cashier_pa_transfer)) {
+            this.root_store.common.routeTo(routes.cashier_deposit);
         }
         this.config.payment_agent_transfer.is_payment_agent = !!is_payment_agent;
     }
@@ -963,7 +977,12 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     requestPaymentAgentTransfer = async ({ amount, currency, description, transfer_to }) => {
-        const payment_agent_transfer = await WS.paymentAgentTransfer({ amount, currency, description, transfer_to });
+        const payment_agent_transfer = await WS.authorized.paymentAgentTransfer({
+            amount,
+            currency,
+            description,
+            transfer_to,
+        });
         if (+payment_agent_transfer.paymentagent_transfer === 1) {
             this.setReceiptPaymentAgentTransfer({
                 amount_transferred: amount,
@@ -999,7 +1018,6 @@ export default class CashierStore extends BaseStore {
         this.is_populating_values = false;
         this.setIsP2pVisible(false);
 
-        this.init();
         this.onRemount();
 
         return Promise.resolve();

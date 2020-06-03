@@ -123,7 +123,7 @@ class App extends React.Component {
     setChatInfo = (user_id, token) => {
         const chat_info = {
             // This is using QA10 SendBird AppId, please change to production's SendBird AppId when we deploy to production.
-            app_id: '0D7CB7BD-554A-43D0-A34E-945C299B49D4',
+            app_id: '4E259BA5-C383-4624-89A6-8365E06D9D39',
             user_id,
             token,
         };

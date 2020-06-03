@@ -98,7 +98,7 @@ const drawerFooter = ({
     );
 };
 
-const mobileDrawerFooter = ({
+const MobileDrawerFooter = ({
     onStopButtonClick,
     onRunButtonClick,
     is_stop_button_visible,
@@ -111,7 +111,7 @@ const mobileDrawerFooter = ({
                     <Button
                         className='controls__stop-button'
                         is_disabled={is_stop_button_disabled}
-                        text={localize('Stop bot')}
+                        text={localize('Stop')}
                         icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
                         onClick={onStopButtonClick}
                         has_effect
@@ -121,7 +121,7 @@ const mobileDrawerFooter = ({
                 ) : (
                     <Button
                         className='controls__run-button'
-                        text={localize('Run bot')}
+                        text={localize('Run')}
                         icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
                         onClick={onRunButtonClick}
                         has_effect
@@ -181,7 +181,7 @@ class RunPanel extends React.PureComponent {
                     {content}
                 </Drawer>
                 {is_mobile &&
-                    mobileDrawerFooter({
+                    MobileDrawerFooter({
                         onStopButtonClick,
                         onRunButtonClick,
                         is_stop_button_visible,
@@ -212,12 +212,12 @@ RunPanel.propTypes = {
 };
 
 export default connect(({ run_panel, ui }) => ({
-    is_mobile: ui.is_mobile,
     active_index: run_panel.active_index,
     dialog_options: run_panel.dialog_options,
     is_clear_stat_disabled: run_panel.is_clear_stat_disabled,
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
+    is_mobile: ui.is_mobile,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     is_stop_button_visible: run_panel.is_stop_button_visible,
     onCancelButtonClick: run_panel.onCancelButtonClick,

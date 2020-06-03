@@ -827,9 +827,7 @@ export default class TradeStore extends BaseStore {
             }
         }
 
-        if (!this.main_barrier) {
-            this.setMainBarrier(response.echo_req);
-        }
+        this.setMainBarrier(response.echo_req);
 
         if (this.hovered_contract_type === contract_type) {
             this.addTickByProposal(response);

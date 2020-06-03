@@ -11,7 +11,7 @@
         "lib"
     ],
     "scripts": {
-        "test": "eslint \"./src/**/*.?(js|jsx)\"",
+        "test": "eslint \"./src/**/*.?(js|jsx)\" && mocha ./scripts/**/**.spec.js",
         "build": "rimraf lib && webpack --optimize-minimize --progress",
         "build:travis": "rimraf lib && webpack --optimize-minimize",
         "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --progress --watch",
@@ -61,6 +61,7 @@
         "babel-eslint": "^10.0.2",
         "babel-jest": "^24.8.0",
         "babel-loader": "^8.0.6",
+        "chai": "^4.2.0",
         "classnames": "^2.2.6",
         "commander": "^3.0.2",
         "copy-webpack-plugin": "^5.0.4",
@@ -80,6 +81,7 @@
         "glob": "^7.1.5",
         "lint-staged": "^10.0.6",
         "mini-css-extract-plugin": "^0.8.0",
+        "mocha": "^7.1.1",
         "node-sass": "^4.12.0",
         "optimize-css-assets-webpack-plugin": "^5.0.3",
         "postcss-loader": "^3.0.0",

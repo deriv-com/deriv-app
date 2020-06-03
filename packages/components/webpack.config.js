@@ -25,6 +25,7 @@ module.exports = {
         'date-picker': 'Components/date-picker',
         'date-of-birth-picker': 'Components/date-of-birth-picker',
         'desktop-wrapper': 'Components/desktop-wrapper',
+        'data-list': 'Components/data-list',
         'data-table': 'Components/data-table',
         dialog: 'Components/dialog',
         'div100vh-container': 'Components/div100vh-container',

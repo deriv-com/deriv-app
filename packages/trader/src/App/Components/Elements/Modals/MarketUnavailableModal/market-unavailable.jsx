@@ -6,6 +6,7 @@ import { connect } from 'Stores/connect';
 
 const MarketUnavailableModal = ({ disableApp, enableApp, is_loading, is_visible, onCancel, onConfirm }) => (
     <Dialog
+        className='market-unavailable-modal'
         title={localize('We’re working on it')}
         confirm_button_text={localize('Stay on DTrader')}
         cancel_button_text={localize('Go to SmartTrader')}

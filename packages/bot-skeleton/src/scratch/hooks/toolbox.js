@@ -172,8 +172,6 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
                 // when some of search word match block's name or block's type
                 case 'block_term': {
                     if (
-                        block_type_terms.some(term => search_regex.test(term)) ||
-                        block_name_terms.some(term => search_regex.test(term)) ||
                         block_type_terms.some(term => search_words.some(word => term.includes(word))) ||
                         block_name_terms.some(term => search_words.some(word => term.includes(word)))
                     ) {
@@ -186,7 +184,10 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
                     Object.keys(block_definitions).forEach(key => {
                         const definition = block_definitions[key];
 
-                        if (definition_key_to_search.test(key) && search_regex.test(definition.toUpperCase())) {
+                        if (
+                            definition_key_to_search.test(key) &&
+                            search_words.some(word => definition.includes(word))
+                        ) {
                             pushIfNotExists(flyout_content, block_content);
                         }
 
@@ -197,7 +198,7 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
                                 if (
                                     def.type === 'field_dropdown' &&
                                     search_term.length > 2 &&
-                                    definition_strings.includes(search_term)
+                                    search_words.some(word => definition_strings.includes(word))
                                 ) {
                                     pushIfNotExists(flyout_content, block_content);
                                 }
@@ -216,7 +217,7 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
                                 .replace(/[^\w\s]/gi, '')
                                 .split(' ');
 
-                            return block_meta_strings.some(meta_string => search_regex.test(meta_string));
+                            return search_words.some(word => block_meta_strings.some(meta => meta.includes(word)));
                         });
 
                     if (matched_meta && matched_meta.length) {

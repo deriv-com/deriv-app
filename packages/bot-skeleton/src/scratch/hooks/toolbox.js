@@ -97,7 +97,6 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
         .replace(/\s+/g, ' ')
         .trim()
         .toUpperCase();
-    const search_regex = new RegExp(`^${search_term}`);
     const search_words = search_term.split(' ');
     const all_variables = workspace.getVariablesOfType('');
     const all_procedures = Blockly.Procedures.allProcedures(workspace);

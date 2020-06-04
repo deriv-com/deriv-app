@@ -105,7 +105,16 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
     flyout.setVisibility(false);
 
     // avoid general term which the result will return most of the blocks
-    const general_term = ['THE', 'OF', 'YOU', 'IS', 'THIS', 'THEN', 'A', 'AN'];
+    const general_term = [
+        localize('THE'),
+        localize('OF'),
+        localize('YOU'),
+        localize('IS'),
+        localize('THIS'),
+        localize('THEN'),
+        localize('A'),
+        localize('AN'),
+    ];
 
     if (search_term.length === 0) {
         return;

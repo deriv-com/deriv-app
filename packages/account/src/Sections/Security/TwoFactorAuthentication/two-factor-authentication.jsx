@@ -81,9 +81,7 @@ class TwoFactorAuthentication extends React.Component {
             secret_key,
             qr_secret_key,
         } = this.state;
-        const { is_virtual, is_switching } = this.props;
-
-        if (is_virtual) return <DemoMessage />;
+        const { is_switching } = this.props;
 
         if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account___intial-loader' />;
 
@@ -116,49 +114,66 @@ class TwoFactorAuthentication extends React.Component {
                             <h2 className='two-factor__title'>
                                 {localize('How to set up 2FA for your Deriv account')}
                             </h2>
+                            <div>
+                                <Timeline className='two-factor__timeline'>
+                                    <Timeline.Item
+                                        title={
+                                            <Localize
+                                                i18n_default_text='Scan the QR code below with your 2FA app. We recommend <0>Authy</0> or <1>Google Authenticator</1>. We do not support <2>Duo Mobile</2>.'
+                                                components={[
+                                                    <a
+                                                        className='link link--orange'
+                                                        href='https://authy.com/'
+                                                        key={0}
+                                                    />,
+                                                    <a
+                                                        className='link link--orange'
+                                                        href='https://github.com/google/google-authenticator/wiki#implementations'
+                                                        key={1}
+                                                    />,
+                                                    <a
+                                                        className='link link--orange'
+                                                        href='https://help.duo.com/s/article/2112?language=en_US'
+                                                        key={2}
+                                                    />,
+                                                ]}
+                                            />
+                                        }
+                                    >
+                                        <div className='two-factor__qr'>
+                                            {is_qr_loading ? (
+                                                <Loading is_fullscreen={false} />
+                                            ) : (
+                                                <>
+                                                    <div className='two-factor__qr--wrapper'>
+                                                        <QRCode value={qr_secret_key} />
+                                                    </div>
 
-                            <Timeline className='two-factor__timeline'>
-                                <Timeline.Item
-                                    title={
-                                        <Localize
-                                            i18n_default_text='Scan the QR code below with your 2FA app. We recommend <0>Authy</0> or <0>Google Authenticator</0>. We do not support <0>Duo Mobile</0>.'
-                                            components={[<strong key={0} />]}
-                                        />
-                                    }
-                                >
-                                    <div className='two-factor__qr'>
-                                        {is_qr_loading ? (
-                                            <Loading is_fullscreen={false} />
-                                        ) : (
-                                            <>
-                                                <div className='two-factor__qr--wrapper'>
-                                                    <QRCode value={qr_secret_key} />
-                                                </div>
-
-                                                <h4 className='two-factor__qr--message'>
-                                                    {localize(
-                                                        'If you are unable to scan the QR code, you can manually enter this code instead:'
-                                                    )}
-                                                </h4>
-                                                <div className='two-factor__qr--code'>
-                                                    <span>{secret_key}</span>
-                                                    <Clipboard
-                                                        text_copy={secret_key}
-                                                        info_message='Click here to copy key'
-                                                        success_message='Key copied!'
-                                                        className='two-factor__qr--clipboard'
-                                                    />
-                                                </div>
-                                            </>
-                                        )}
-                                    </div>
-                                </Timeline.Item>
-                                <Timeline.Item
-                                    title={localize('Enter the authentication code generated by your 2FA app:')}
-                                >
-                                    <DigitForm is_enabled={is_two_factor_enabled} setEnabled={this.setEnabled} />
-                                </Timeline.Item>
-                            </Timeline>
+                                                    <h4 className='two-factor__qr--message'>
+                                                        {localize(
+                                                            'If you are unable to scan the QR code, you can manually enter this code instead:'
+                                                        )}
+                                                    </h4>
+                                                    <div className='two-factor__qr--code'>
+                                                        <span>{secret_key}</span>
+                                                        <Clipboard
+                                                            text_copy={secret_key}
+                                                            info_message='Click here to copy key'
+                                                            success_message='Key copied!'
+                                                            className='two-factor__qr--clipboard'
+                                                        />
+                                                    </div>
+                                                </>
+                                            )}
+                                        </div>
+                                    </Timeline.Item>
+                                    <Timeline.Item
+                                        title={localize('Enter the authentication code generated by your 2FA app:')}
+                                    >
+                                        <DigitForm is_enabled={is_two_factor_enabled} setEnabled={this.setEnabled} />
+                                    </Timeline.Item>
+                                </Timeline>
+                            </div>
                         </ThemedScrollbars>
                         <DesktopWrapper>
                             <Article />
@@ -171,7 +186,6 @@ class TwoFactorAuthentication extends React.Component {
 }
 
 export default connect(({ client }) => ({
-    is_virtual: client.is_virtual,
     is_switching: client.is_switching,
     email_address: client.email_address,
 }))(TwoFactorAuthentication);

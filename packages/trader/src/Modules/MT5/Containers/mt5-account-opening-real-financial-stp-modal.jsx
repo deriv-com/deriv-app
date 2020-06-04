@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Modal, MobileDialog, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import MT5FinancialStpRealAccountSignup from 'Modules/MT5/Containers/mt5-financial-stp-real-account-signup.jsx';
 
-class MT5AccountOpeningRealFinancialStpModal extends Component {
+class MT5AccountOpeningRealFinancialStpModal extends React.Component {
     render() {
         const { disableApp, enableApp, is_mt5_financial_stp_modal_open, disableMt5FinancialStpModal } = this.props;
 

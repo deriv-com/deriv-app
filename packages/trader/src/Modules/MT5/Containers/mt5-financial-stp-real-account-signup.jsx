@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { FormProgress, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
 import { getPropertyValue } from '@deriv/shared/utils/object';
 import { isDesktop } from '@deriv/shared/utils/screen';
@@ -17,7 +17,9 @@ const index_lookup = {
     MT5PendingVerification: 3,
 };
 
-class MT5FinancialStpRealAccountSignup extends Component {
+const MT5_PERSONAL_DETAILS_CACHE_KEY = 'mt5_financial_stp_signup_personal_details';
+
+class MT5FinancialStpRealAccountSignup extends React.Component {
     state = {};
 
     constructor(props) {
@@ -39,6 +41,7 @@ class MT5FinancialStpRealAccountSignup extends Component {
                         citizen: '',
                         tax_residence: '',
                         tax_identification_number: '',
+                        account_opening_reason: '',
                     },
                     props: ['residence_list', 'is_fully_authenticated', 'is_loading'],
                 },
@@ -103,6 +106,7 @@ class MT5FinancialStpRealAccountSignup extends Component {
 
     finishWizard = setSubmitting => {
         setSubmitting(false);
+        sessionStorage.removeItem(MT5_PERSONAL_DETAILS_CACHE_KEY);
         this.props.openPendingDialog();
         this.props.toggleModal();
     };
@@ -178,6 +182,7 @@ class MT5FinancialStpRealAccountSignup extends Component {
     };
 
     componentDidMount() {
+        this.populateFromSessionStorage();
         if (this.state_index === index_lookup.MT5PersonalDetailsForm) {
             this.setState({
                 is_loading: true,
@@ -188,6 +193,26 @@ class MT5FinancialStpRealAccountSignup extends Component {
                 });
             });
         }
+    }
+
+    populateFromSessionStorage = () => {
+        const cached_form_fills = sessionStorage.getItem(MT5_PERSONAL_DETAILS_CACHE_KEY);
+        if (cached_form_fills) {
+            const cached_values = JSON.parse(cached_form_fills);
+            this.setState(({ items }) => {
+                const form_values = items[index_lookup.MT5PersonalDetailsForm].form_value;
+                Object.keys(form_values).forEach(key => (form_values[key] = cached_values[key]));
+
+                return items;
+            });
+        }
+    };
+
+    componentWillUnmount() {
+        sessionStorage.setItem(
+            MT5_PERSONAL_DETAILS_CACHE_KEY,
+            JSON.stringify(this.state.items[index_lookup.MT5PersonalDetailsForm].form_value)
+        );
     }
 
     getCurrent = key => {

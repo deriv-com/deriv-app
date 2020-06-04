@@ -34,9 +34,6 @@ export default class JournalStore {
 
     @action.bound
     onError(message) {
-        if (!this.journal_filters.some(filter => filter === message_types.ERROR)) {
-            this.journal_filters.push(message_types.ERROR);
-        }
         this.pushMessage(message, message_types.ERROR);
     }
 

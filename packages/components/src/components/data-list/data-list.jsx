@@ -4,7 +4,8 @@ import React from 'react';
 import { VariableSizeList as List } from 'react-window';
 import { NavLink } from 'react-router-dom';
 import { isMobile } from '@deriv/shared/utils/screen';
-import ThemedScrollbars from '../themed-scrollbars';
+import ThemedScrollbars from 'Components/themed-scrollbars';
+import DataListCell from './data-list-cell.jsx';
 
 const ThemedScrollbarsWrapper = React.forwardRef((props, ref) => (
     <ThemedScrollbars {...props} forwardedRef={ref}>
@@ -77,7 +78,7 @@ class DataList extends React.PureComponent {
                         itemCount={data_source.length}
                         itemSize={getRowSize}
                         width={this.state.width}
-                        outerElementType={ThemedScrollbarsWrapper}
+                        outerElementType={isMobile() ? null : ThemedScrollbarsWrapper}
                     >
                         {this.rowRenderer}
                     </List>
@@ -92,7 +93,7 @@ class DataList extends React.PureComponent {
         );
     }
 }
-
+DataList.Cell = DataListCell;
 DataList.propTypes = {
     className: PropTypes.string,
     data_source: PropTypes.array,

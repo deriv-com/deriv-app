@@ -15,7 +15,7 @@ const onfido_container_id = 'onfido';
 
 const OnfidoContainer = ({ height }) => {
     return (
-        <ThemedScrollbars is_native={isMobile()} height={height}>
+        <ThemedScrollbars is_bypassed={isMobile()} height={height}>
             <div className='onfido-container'>
                 <div id={onfido_container_id} />
             </div>

@@ -160,7 +160,7 @@ class PositionsDrawer extends React.Component {
 
     getListScrollbar() {
         const ListScrollbar = React.forwardRef((props, ref) => {
-            const { children, style, onScroll } = props;
+            const { children, onScroll } = props;
 
             const refCallback = forwardRef => {
                 this.scrollbar_ref = forwardRef;

@@ -242,7 +242,7 @@ class MT5POA extends React.Component {
                                         <Loading is_fullscreen={false} className='account___intial-loader' />
                                     )}
                                     {is_form_visible && (
-                                        <ThemedScrollbars height={height} is_native={isMobile()}>
+                                        <ThemedScrollbars height={height} is_bypassed={isMobile()}>
                                             <div className='mt5-proof-of-address__field-area'>
                                                 <FormSubHeader
                                                     subtitle={localize('(All fields are required)')}

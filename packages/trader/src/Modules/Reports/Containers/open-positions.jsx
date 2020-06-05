@@ -134,7 +134,7 @@ class OpenPositions extends React.Component {
 
     componentDidMount() {
         // For mobile, we show portfolio stepper in header even for reports pages.
-        // `onMount` in portfolio store will be invoked in `trade-header-extensions.jsx` which contains portfolio stepper.
+        // `onMount` in portfolio store will be invoked from portfolio stepper component in `trade-header-extensions.jsx`
         if (!isMobile()) {
             this.props.onMount();
         }

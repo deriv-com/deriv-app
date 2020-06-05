@@ -5,7 +5,8 @@ const path = require('path');
 const program = require('commander');
 const crc32 = require('crc-32').str;
 const fs = require('fs');
-const glob = require('glob');
+const getStringsFromInput = require('./extract-string').getStringsFromInput;
+const getTranslatableFiles = require('./extract-string').getTranslatableFiles;
 
 program
     .version('0.1.0')
@@ -16,8 +17,6 @@ program
 /** *********************************************
  * Common
  */
-
-const globs = ['**/*.js', '**/*.jsx'];
 const getKeyHash = string => crc32(string);
 
 /** **********************************************
@@ -25,16 +24,10 @@ const getKeyHash = string => crc32(string);
  */
 (async () => {
     try {
-        const file_paths = [];
+        const file_paths = getTranslatableFiles();
         const messages = [];
-        const i18n_marker = new RegExp(/(i18n_default_text={?|localize\()\s*(['"])\s*(.*?)(?<!\\)\2\s*/gs);
         const messages_json = {};
 
-        for (let j = 0; j < globs.length; j++) {
-            let files_found = glob.sync(`../src/${globs[j]}`);
-            files_found = files_found.filter(file_path => file_path.indexOf('__tests__') === -1);
-            file_paths.push(...files_found);
-        }
         // Iterate over files and extract all strings from the i18n marker
         for (let i = 0; i < file_paths.length; i++) {
             if (program.verbose) {
@@ -43,12 +36,7 @@ const getKeyHash = string => crc32(string);
 
             try {
                 const file = fs.readFileSync(file_paths[i], 'utf8');
-                let result = i18n_marker.exec(file);
-                while (result != null) {
-                    const extracted = result[3];
-                    messages.push(extracted.replace(/\\/g, ''));
-                    result = i18n_marker.exec(file);
-                }
+                messages.push(...getStringsFromInput(file));
             } catch (e) {
                 console.log(e);
             }

@@ -123,16 +123,22 @@ class TwoFactorAuthentication extends React.Component {
                                                     <a
                                                         className='link two-factor__link'
                                                         href='https://authy.com/'
+                                                        target='_blank'
+                                                        rel='noopener noreferrer'
                                                         key={0}
                                                     />,
                                                     <a
                                                         className='link two-factor__link'
                                                         href='https://github.com/google/google-authenticator/wiki#implementations'
+                                                        target='_blank'
+                                                        rel='noopener noreferrer'
                                                         key={1}
                                                     />,
                                                     <a
                                                         className='link two-factor__link'
                                                         href='https://help.duo.com/s/article/2112?language=en_US'
+                                                        target='_blank'
+                                                        rel='noopener noreferrer'
                                                         key={2}
                                                     />,
                                                 ]}

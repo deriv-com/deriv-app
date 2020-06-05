@@ -108,3 +108,27 @@
 .sendbird-fileviewer__header-delete {
     display: none !important;
 }
+
+.p2p-nickname {
+    &__dialog {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        background: var(--shadow-menu);
+
+        & .dc-dialog__dialog {
+            width: auto;
+            height: auto;
+            padding: 0;
+            max-height: initial;
+            min-width: 44rem;
+        }
+        & .dc-dialog__content {
+            margin-bottom: 0;
+            width: 100%;
+            max-width: 44rem;
+        }
+    }
+}

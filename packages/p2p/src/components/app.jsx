@@ -92,17 +92,12 @@ class App extends React.Component {
         this.setState({ show_popup: !this.state.show_popup });
     };
 
-    forceUpdateTab = () => {
-        this.setState({ show_popup: false, active_index: 1 });
+    onNicknamePopupClose = () => {
+        this.setState({ show_popup: false });
     };
 
     handleTabClick = idx => {
         this.setState({ active_index: idx, parameters: null });
-
-        // when user is verified but nickname not set
-        if (!this.state.nickname && idx === 2) {
-            this.toggleNicknamePopup();
-        }
     };
 
     updateOrderToggleIndex = index => {
@@ -121,12 +116,17 @@ class App extends React.Component {
             this.setState({ is_restricted: true });
         } else if (response.error.code === 'AdvertiserNotFound') {
             this.setState({ is_advertiser: false });
+        } else {
+            this.ws_subscriptions[0].unsubscribe();
         }
     };
 
     setChatInfoUsingAdvertiserInfo = response => {
         const { p2p_advertiser_info } = response;
-        if (response.error) return;
+        if (response.error) {
+            this.ws_subscriptions[0].unsubscribe();
+            return;
+        }
 
         const user_id = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
         const token = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_token']);
@@ -171,30 +171,31 @@ class App extends React.Component {
     };
 
     setP2pOrderList = order_response => {
-        // check if there is any error
-        if (!order_response.error) {
-            const { p2p_order_list } = order_response;
+        if (order_response.error) {
+            this.ws_subscriptions[1].unsubscribe();
+            return;
+        }
+        const { p2p_order_list } = order_response;
 
-            if (p2p_order_list) {
-                const { list } = p2p_order_list;
-                // it's an array of orders from p2p_order_list
-                this.setState({ order_offset: list.length, orders: getModifiedP2POrderList(list) });
-                this.handleNotifications(list);
+        if (p2p_order_list) {
+            const { list } = p2p_order_list;
+            // it's an array of orders from p2p_order_list
+            this.setState({ order_offset: list.length, orders: getModifiedP2POrderList(list) });
+            this.handleNotifications(list);
+        } else {
+            // it's a single order from p2p_order_info
+            const idx_order_to_update = this.state.orders.findIndex(order => order.id === order_response.id);
+            const updated_orders = [...this.state.orders];
+            // if it's a new order, add it to the top of the list
+            if (idx_order_to_update < 0) {
+                updated_orders.unshift(order_response);
             } else {
-                // it's a single order from p2p_order_info
-                const idx_order_to_update = this.state.orders.findIndex(order => order.id === order_response.id);
-                const updated_orders = [...this.state.orders];
-                // if it's a new order, add it to the top of the list
-                if (idx_order_to_update < 0) {
-                    updated_orders.unshift(order_response);
-                } else {
-                    // otherwise, update the correct order
-                    updated_orders[idx_order_to_update] = order_response;
-                }
-                // trigger re-rendering by setting orders again
-                this.setState({ order_offset: updated_orders.length, orders: updated_orders });
-                this.handleNotifications(updated_orders);
+                // otherwise, update the correct order
+                updated_orders[idx_order_to_update] = order_response;
             }
+            // trigger re-rendering by setting orders again
+            this.setState({ order_offset: updated_orders.length, orders: updated_orders });
+            this.handleNotifications(updated_orders);
         }
     };
 
@@ -250,6 +251,7 @@ class App extends React.Component {
                     setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     order_id,
                     setOrderId,
+                    toggleNicknamePopup: () => this.toggleNicknamePopup(),
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
@@ -268,22 +270,22 @@ class App extends React.Component {
                         </div>
                         <div label={localize('My ads')}>
                             <MyAds navigate={this.redirectTo} params={parameters} />
-                            {show_popup && (
-                                <div className='p2p-my-ads__dialog'>
-                                    <Dialog is_visible={show_popup}>
-                                        <NicknameForm
-                                            handleClose={this.forceUpdateTab}
-                                            handleConfirm={this.toggleNicknamePopup}
-                                        />
-                                    </Dialog>
-                                </div>
-                            )}
                         </div>
                         {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
                         {/* <div label={localize('My profile')}>
                             <MyProfile navigate={this.redirectTo} params={parameters} />
                         </div> */}
                     </Tabs>
+                    {show_popup && (
+                        <div className='p2p-nickname__dialog'>
+                            <Dialog is_visible={show_popup}>
+                                <NicknameForm
+                                    handleClose={this.onNicknamePopupClose}
+                                    handleConfirm={this.toggleNicknamePopup}
+                                />
+                            </Dialog>
+                        </div>
+                    )}
                 </main>
             </Dp2pProvider>
         );

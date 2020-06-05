@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
 import { urlFor } from '@deriv/shared/utils/url';
 import { localize, Localize } from '@deriv/translations';
 import { website_name } from 'App/Constants/app-config';
-import DataTable from 'App/Components/Elements/DataTable';
-import DataList from 'App/Components/Elements/DataList';
+import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { getContractDurationType } from 'Modules/Reports/Helpers/market-underlying';
@@ -174,6 +173,7 @@ class ProfitTable extends React.Component {
                                 getRowAction={this.getRowAction}
                                 custom_width={'100%'}
                                 getRowSize={() => 63}
+                                content_loader={ReportsTableRowLoader}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataTable>

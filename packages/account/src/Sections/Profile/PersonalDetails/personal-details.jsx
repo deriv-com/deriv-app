@@ -799,7 +799,6 @@ class PersonalDetailsForm extends React.Component {
                 'request_professional_status',
             ];
             const form_initial_values = removeObjProperties(hidden_settings, account_settings);
-
             this.setState({
                 changeable_fields: is_virtual ? [] : getChangeableFields(),
                 is_loading: false,

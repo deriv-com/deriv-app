@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
 import { Loading, Icon, Button } from '@deriv/components';
-import { localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS, getModifiedP2POrderList } from 'Utils/websocket';
@@ -27,56 +27,46 @@ const OrderRowLoader = () => (
     </ContentLoader>
 );
 
-const OrderEmptyStates = () => {
-    const { changeTab } = useContext(Dp2pContext);
-
-    return (
-        <div className='orders__empty'>
-            <Icon icon='IcNoOrder' size={128} />
-            <div className='orders__empty-text'>{localize('You have no orders')}</div>
-            <Button primary text={localize('Buy/Sell')} type='button' onClick={() => changeTab(0)} />
-        </div>
-    );
-};
-
 const OrderTableContent = ({ showDetails, is_active }) => {
-    const { list_item_limit, order_offset, orders, setOrders, setOrderOffset } = useContext(Dp2pContext);
-    const [is_mounted, setIsMounted] = useState(false);
-    const [has_more_items_to_load, setHasMoreItemsToLoad] = useState(false);
-    const [api_error_message, setApiErrorMessage] = useState('');
-    const [is_loading, setIsLoading] = useState(true);
+    const { changeTab, list_item_limit, order_offset, orders, setOrders, setOrderOffset } = React.useContext(
+        Dp2pContext
+    );
+    const [is_mounted, setIsMounted] = React.useState(false);
+    const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
+    const [api_error_message, setApiErrorMessage] = React.useState('');
+    const [is_loading, setIsLoading] = React.useState(true);
 
-    useEffect(() => {
+    React.useEffect(() => {
         setIsMounted(true);
         return () => setIsMounted(false);
     }, []);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (is_mounted) {
             setIsLoading(true);
-            loadMoreOrders(order_offset);
+            loadMoreOrders();
         }
     }, [is_mounted, is_active]);
 
-    const loadMoreOrders = start_idx => {
+    const loadMoreOrders = () => {
         return new Promise(resolve => {
             requestWS({
                 p2p_order_list: 1,
-                offset: start_idx,
+                offset: order_offset,
                 limit: list_item_limit,
             }).then(response => {
                 if (is_mounted) {
                     if (!response.error) {
                         const { list } = response.p2p_order_list;
                         setHasMoreItemsToLoad(list.length >= list_item_limit);
-                        setIsLoading(false);
                         setOrders(orders.concat(getModifiedP2POrderList(list)));
                         setOrderOffset(order_offset + list.length);
                     } else {
                         setApiErrorMessage(response.api_error_message);
                     }
-                    resolve();
                 }
+                setIsLoading(false);
+                resolve();
             });
         });
     };
@@ -101,8 +91,10 @@ const OrderTableContent = ({ showDetails, is_active }) => {
             page_overlay_header: '53px',
             page_overlay_content_padding: '2.4rem',
             tabs_height: '36px',
+            tabs_margin: '2.4rem',
+            filter_height: '44px',
             table_header_height: '50px',
-            table_header_top_padding: '2.4rem',
+            table_header_top_padding: '1.6rem',
             footer_size: '37px',
         };
 
@@ -121,14 +113,25 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                 </OrderTableHeader>
             );
         }
-
-        return <OrderEmptyStates />;
     }
 
-    return <OrderEmptyStates />;
+    return (
+        <div className='p2p-cashier__empty'>
+            <Icon icon='IcNoOrder' className='p2p-cashier__empty-icon' size={128} />
+            <div className='p2p-cashier__empty-title'>
+                <Localize i18n_default_text='You have no orders' />
+            </div>
+            {is_active && (
+                <Button primary large className='p2p-cashier__empty-button' onClick={() => changeTab(0)}>
+                    <Localize i18n_default_text='Buy/Sell' />
+                </Button>
+            )}
+        </div>
+    );
 };
 
 OrderTableContent.propTypes = {
+    is_active: PropTypes.bool,
     showDetails: PropTypes.func,
 };
 

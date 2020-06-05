@@ -7,13 +7,7 @@ import { connect } from 'Stores/connect';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import Test from './test.jsx';
-import {
-    ChartBottomWidgets,
-    ChartControlWidgets,
-    ChartToolbarWidgets,
-    ChartTopWidgets,
-    DigitsWidget,
-} from './chart-widgets.jsx';
+import { ChartBottomWidgets, ChartToolbarWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 
@@ -119,14 +113,18 @@ class Trade extends React.Component {
                 </Div100vhContainer>
                 <div className={form_wrapper_class}>
                     {this.props.is_market_closed && <MarketIsClosedOverlay />}
-                    <FormLayout is_market_closed={this.props.is_market_closed} is_trade_enabled={is_trade_enabled} />
+                    <FormLayout
+                        is_market_closed={this.props.is_market_closed}
+                        is_trade_enabled={is_trade_enabled && this.props.network_status.class === 'online'}
+                    />
                 </div>
             </div>
         );
     }
 }
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ common, modules, ui }) => ({
+    network_status: common.network_status,
     contract_type: modules.trade.contract_type,
     form_components: modules.trade.form_components,
     is_chart_loading: modules.trade.is_chart_loading,
@@ -171,6 +169,9 @@ const ChartMarkers = connect(({ modules, ui, client }) => ({
 }))(Markers);
 
 class ChartTradeClass extends React.Component {
+    state = {
+        active_markets: [],
+    };
     bottomWidgets = ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />;
     topWidgets = ({ ...props }) => {
         const { is_digits_widget_active } = this.props;
@@ -185,31 +186,56 @@ class ChartTradeClass extends React.Component {
 
     componentDidMount() {
         performance.mark('smart-charts-mounted');
+        this.setActiveMarkets();
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.should_refresh) this.props.resetRefresh();
+        if (this.props.active_symbols !== prevProps.active_symbols) this.setActiveMarkets();
+    }
+
+    setActiveMarkets() {
+        const { active_symbols } = this.props;
+        const synthetic_index = 'synthetic_index';
+
+        const has_synthetic_index = !!active_symbols.find(s => s.market === synthetic_index);
+        const active_markets = active_symbols
+            .sort((a, b) => (a.display_name < b.display_name ? -1 : 1))
+            .map(s => s.market)
+            .reduce(
+                (arr, market) => {
+                    if (arr.indexOf(market) === -1) arr.push(market);
+                    return arr;
+                },
+                has_synthetic_index ? [synthetic_index] : []
+            );
+        this.setState({ active_markets });
     }
 
     render() {
-        const { show_digits_stats, main_barrier, should_refresh, extra_barriers = [] } = this.props;
+        const { show_digits_stats, main_barrier, should_refresh, extra_barriers = [], symbol } = this.props;
+        const { active_markets } = this.state;
 
         const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
         // max ticks to display for mobile view for tick chart
         const max_ticks = this.props.granularity === 0 ? 8 : 24;
 
+        if (!symbol || active_markets.length === 0) return null;
+
         return (
             <SmartChart
                 ref={ref => (this.charts_ref = ref)}
                 barriers={barriers}
                 bottomWidgets={show_digits_stats && isDesktop() ? this.bottomWidgets : this.props.bottomWidgets}
-                crosshairState={isMobile() ? 0 : undefined}
+                crosshair={isMobile() ? 0 : undefined}
+                crosshairTooltipLeftAllow={560}
                 showLastDigitStats={isDesktop() ? show_digits_stats : false}
-                chartControlsWidgets={isDesktop() ? ChartControlWidgets : null}
+                chartControlsWidgets={null}
                 chartStatusListener={v => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}
                 enabledNavigationWidget={isDesktop()}
+                enabledChartFooter={false}
                 id='trade'
                 isMobile={isMobile()}
                 maxTick={isMobile() ? max_ticks : undefined}
@@ -223,13 +249,14 @@ class ChartTradeClass extends React.Component {
                 topWidgets={this.props.is_trade_enabled ? this.topWidgets : null}
                 isConnectionOpened={this.props.is_socket_opened}
                 clearChart={false}
-                toolbarWidget={isMobile() ? ChartToolbarWidgets : null}
+                toolbarWidget={ChartToolbarWidgets}
                 importedLayout={this.props.chart_layout}
                 onExportLayout={this.props.exportLayout}
                 shouldFetchTradingTimes={!this.props.end_epoch}
                 refreshActiveSymbols={should_refresh}
                 hasAlternativeSource={this.props.has_alternative_source}
                 refToAddTick={this.props.refToAddTick}
+                activeSymbols={active_markets}
             >
                 <ChartMarkers />
             </SmartChart>
@@ -266,6 +293,7 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     wsForgetStream: modules.trade.wsForgetStream,
     wsSendRequest: modules.trade.wsSendRequest,
     wsSubscribe: modules.trade.wsSubscribe,
+    active_symbols: modules.trade.active_symbols,
     should_refresh: modules.trade.should_refresh_active_symbols,
     resetRefresh: modules.trade.resetRefresh,
     has_alternative_source: modules.trade.has_alternative_source,

@@ -26,7 +26,7 @@
         /* postcss-bem-linter: ignore */
         span {
             @include typeface(--paragraph-left-normal-black, unset);
-            color: var(--text-less-prominent);
+            color: var(--text-general);
         }
         &--active {
             cursor: initial;

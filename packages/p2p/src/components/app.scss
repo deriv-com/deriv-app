@@ -15,6 +15,7 @@
             & .dc-tabs__list {
                 &--header-fit-content {
                     border-bottom: none;
+                    margin-bottom: 2.4rem;
                 }
             }
             & .dc-tabs__item {
@@ -59,6 +60,16 @@
                 &__button--active {
                     height: 100%;
                 }
+                &__button {
+                    span {
+                        color: var(--text-less-prominent);
+                    }
+                    &--active {
+                        span {
+                            color: var(--text-prominent);
+                        }
+                    }
+                }
             }
         }
         &--highlight {
@@ -82,4 +93,8 @@
     align-items: center;
     font-size: 1.4rem;
     color: var(--text-general);
+}
+
+.sendbird-fileviewer__header-delete {
+    display: none !important;
 }

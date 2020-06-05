@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { ButtonToggle } from '@deriv/components';
 import { localize } from 'Components/i18next';
@@ -18,7 +18,7 @@ const orders_filters = [
 ];
 
 const OrderTable = ({ showDetails }) => {
-    const { order_table_type, changeOrderToggle } = useContext(Dp2pContext);
+    const { order_table_type, changeOrderToggle } = React.useContext(Dp2pContext);
 
     return (
         <>

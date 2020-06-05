@@ -122,17 +122,17 @@ class TwoFactorAuthentication extends React.Component {
                                                 i18n_default_text='Scan the QR code below with your 2FA app. We recommend <0>Authy</0> or <1>Google Authenticator</1>. We do not support <2>Duo Mobile</2>.'
                                                 components={[
                                                     <a
-                                                        className='link link--orange'
+                                                        className='link two-factor__link'
                                                         href='https://authy.com/'
                                                         key={0}
                                                     />,
                                                     <a
-                                                        className='link link--orange'
+                                                        className='link two-factor__link'
                                                         href='https://github.com/google/google-authenticator/wiki#implementations'
                                                         key={1}
                                                     />,
                                                     <a
-                                                        className='link link--orange'
+                                                        className='link two-factor__link'
                                                         href='https://help.duo.com/s/article/2112?language=en_US'
                                                         key={2}
                                                     />,

@@ -620,6 +620,9 @@ $MIN_HEIGHT_FLOATING: calc(
             border-bottom-left-radius: 0;
             margin-left: -1px;
         }
+        &__link {
+            color: var(--text-general);
+        }
         &__timeline {
             padding: 0 1.4rem;
 

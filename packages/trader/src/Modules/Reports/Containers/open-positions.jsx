@@ -344,42 +344,30 @@ class OpenPositions extends React.Component {
                         'View all active trades on your account that can still incur a profit or a loss.'
                     )}
                 />
-                {// TODO: remove is_virtual check once Multiplier is available for real accounts
-                !is_virtual ? (
-                    <OpenPositionsTable className='open-positions' columns={this.columns} {...shared_props} />
-                ) : (
-                    <>
-                        {/** TODO: enabled open positions Tabs once Multiplier is mobile */}
-                        <DesktopWrapper>
-                            <Tabs
-                                active_index={this.state.active_index}
-                                className='open-positions'
-                                onTabItemClick={this.setActiveTabIndex}
-                                top
-                                header_fit_content
-                            >
-                                <div label={localize('Options')}>
-                                    <OpenPositionsTable
-                                        className='open-positions'
-                                        columns={this.columns}
-                                        {...shared_props}
-                                    />
-                                </div>
-                                <div label={localize('Multiplier options')}>
-                                    <OpenPositionsTable
-                                        className='open-positions-multiplier open-positions'
-                                        columns={this.columns}
-                                        action_column={this.getActionColumns}
-                                        {...shared_props}
-                                    />
-                                </div>
-                            </Tabs>
-                        </DesktopWrapper>
-                        <MobileWrapper>
+                <DesktopWrapper>
+                    <Tabs
+                        active_index={this.state.active_index}
+                        className='open-positions'
+                        onTabItemClick={this.setActiveTabIndex}
+                        top
+                        header_fit_content
+                    >
+                        <div label={localize('Options')}>
                             <OpenPositionsTable className='open-positions' columns={this.columns} {...shared_props} />
-                        </MobileWrapper>
-                    </>
-                )}
+                        </div>
+                        <div label={localize('Multiplier options')}>
+                            <OpenPositionsTable
+                                className='open-positions-multiplier open-positions'
+                                columns={this.columns}
+                                action_column={this.getActionColumns}
+                                {...shared_props}
+                            />
+                        </div>
+                    </Tabs>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <OpenPositionsTable className='open-positions' columns={this.columns} {...shared_props} />
+                </MobileWrapper>
             </React.Fragment>
         );
     }

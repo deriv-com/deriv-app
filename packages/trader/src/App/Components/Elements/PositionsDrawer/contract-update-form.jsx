@@ -105,7 +105,7 @@ class ContractUpdateForm extends React.Component {
         const take_profit_input = (
             <InputWithCheckbox
                 classNameInlinePrefix='trade-container__currency'
-                currency={currency}
+                currency={currency || this.props.currency}
                 error_messages={this.error_messages.take_profit}
                 is_single_currency={true}
                 is_negative_disabled={true}
@@ -121,7 +121,7 @@ class ContractUpdateForm extends React.Component {
         const stop_loss_input = (
             <InputWithCheckbox
                 classNameInlinePrefix='trade-container__currency'
-                currency={currency}
+                currency={currency || this.props.currency}
                 defaultChecked={has_contract_update_stop_loss}
                 error_messages={this.error_messages.stop_loss}
                 is_single_currency={true}
@@ -182,6 +182,7 @@ class ContractUpdateForm extends React.Component {
 
 ContractUpdateForm.propTypes = {
     contract_id: PropTypes.number,
+    currency: PropTypes.string,
     getContractById: PropTypes.func,
     resetContractUpdate: PropTypes.func,
     toggleDialog: PropTypes.func,
@@ -191,6 +192,7 @@ ContractUpdateForm.propTypes = {
 export default connect(({ modules }) => ({
     clearContractUpdateConfigValues: modules.contract_trade.clearContractUpdateConfigValues,
     getContractById: modules.contract_trade.getContractById,
+    currency: modules.trade.currency,
     onChange: modules.contract_trade.onChange,
     updateLimitOrder: modules.contract_trade.updateLimitOrder,
     validation_errors: modules.contract_trade.validation_errors,

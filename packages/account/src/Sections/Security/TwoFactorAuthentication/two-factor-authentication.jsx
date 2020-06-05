@@ -5,7 +5,6 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
-import DemoMessage from 'Components/demo-message';
 import LoadErrorMessage from 'Components/load-error-message';
 import Article from './article.jsx';
 import DigitForm from './digit-form.jsx';

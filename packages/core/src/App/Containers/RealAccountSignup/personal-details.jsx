@@ -84,9 +84,11 @@ class PersonalDetails extends React.Component {
                 initialValues={{ ...this.props.value }}
                 validate={this.props.validate}
                 onSubmit={(values, actions) => {
-                    values.tax_residence = this.props.residence_list.find(
-                        item => item.text === values.tax_residence
-                    ).value;
+                    if (values.tax_residence) {
+                        values.tax_residence = this.props.residence_list.find(
+                            item => item.text === values.tax_residence
+                        ).value;
+                    }
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
                 ref={this.form}

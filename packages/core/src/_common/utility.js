@@ -85,7 +85,7 @@ const eu_countries = [
     'gb',
 ];
 // check if client is from EU
-const isEuCountry = clients_country => eu_countries.includes(clients_country);
+const isEuCountry = country => eu_countries.includes(country);
 
 module.exports = {
     template,

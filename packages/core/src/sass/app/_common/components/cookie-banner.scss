@@ -1,4 +1,4 @@
-// animations
+/** @define animation */
 @keyframes FadeInDown {
     from {
         opacity: 0;
@@ -25,7 +25,7 @@
         }
     }
 }
-// main
+/** @define cookie-banner; weak */
 .cookie-banner {
     position: fixed;
     z-index: 10;
@@ -50,10 +50,11 @@
         height: 168px;
         padding: 2.4rem 0;
     }
-
+    /* postcss-bem-linter: ignore */
     &.is-open {
         animation-name: FadeInDown;
     }
+    /* postcss-bem-linter: ignore */
     &.is-closed {
         animation-name: FadeOutUp;
     }

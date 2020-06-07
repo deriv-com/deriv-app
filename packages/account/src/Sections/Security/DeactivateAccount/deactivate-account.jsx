@@ -20,11 +20,16 @@ class DeactivateAccount extends React.Component {
             render_deactivate_account_reason: true,
         });
     };
+    redirectToSteps = () => {
+        this.setState({
+            render_deactivate_account_reason: false,
+        });
+    };
     render() {
         return (
             <div className='deactivate-account'>
                 {this.state.render_deactivate_account_reason ? (
-                    <DeactivateAccountReason />
+                    <DeactivateAccountReason onBackClick={this.redirectToSteps} />
                 ) : (
                     <DeactivateAccountSteps redirectToReasons={this.redirectToReasons} />
                 )}

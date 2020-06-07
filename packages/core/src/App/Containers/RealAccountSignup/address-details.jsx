@@ -10,10 +10,11 @@ import {
     SelectNative,
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
-import React, { Component } from 'react';
+import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
+import { validLength, validPostCode } from 'Utils/Validator/declarative-validation-rules';
 
 const InputField = props => {
     return (
@@ -43,7 +44,7 @@ const getLocation = (location_list, value, type) => {
     return '';
 };
 
-class AddressDetails extends Component {
+class AddressDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = { has_fetched_states_list: false, address_state_to_display: '' };
@@ -196,9 +197,8 @@ class AddressDetails extends Component {
                                             )}
                                             <InputField
                                                 name='address_postcode'
-                                                required
-                                                label={localize('Postal/ZIP Code*')}
-                                                placeholder={localize('Postal/ZIP Code')}
+                                                label={localize('Postal/ZIP code')}
+                                                placeholder={localize('Postal/ZIP code')}
                                             />
                                         </div>
                                     </ThemedScrollbars>
@@ -228,7 +228,7 @@ class AddressDetails extends Component {
             address_line_2: [v => !v || /^[\w\W\s/-]{0,70}$/gu.exec(v) !== null],
             address_city: [v => !!v, v => /^[a-zA-Z\s\W'.-]{1,35}$/gu.exec(v) !== null],
             address_state: [v => /^[a-zA-Z\s\W'.-]{0,35}$/gu.exec(v) !== null],
-            address_postcode: [v => !!v, v => /^[^+]{0,20}$/gu.exec(v) !== null],
+            address_postcode: [v => validLength(v, { min: 0, max: 20 }), v => validPostCode(v)],
         };
 
         const mappedKey = {
@@ -236,12 +236,23 @@ class AddressDetails extends Component {
             address_line_2: localize('Second line of address'),
             address_city: `${localize('Town/City')}`,
             address_state: `${localize('State/Province')}`,
-            address_postcode: `${localize('Postal/ZIP Code')}`,
+            address_postcode: `${localize('Postal/ZIP code')}`,
         };
 
         const required_messages = ['{{field_name}} is required', '{{field_name}} is not in a proper format.'];
 
         const optional_messages = ['{{field_name}} is not in a proper format.'];
+
+        const custom_messages = {
+            address_postcode: [
+                localize('Please enter a {{field_name}} under {{max_number}} characters.', {
+                    field_name: localize('postal/ZIP code'),
+                    max_number: 20,
+                    interpolation: { escapeValue: false },
+                }),
+                localize('Only letters, numbers, space, and hyphen are allowed.'),
+            ],
+        };
 
         const errors = {};
 
@@ -260,6 +271,9 @@ class AddressDetails extends Component {
                                 options={{ interpolation: { escapeValue: false } }}
                             />
                         );
+                        break;
+                    case 'address_postcode':
+                        errors[key] = custom_messages.address_postcode[error_index];
                         break;
                     default:
                         errors[key] = (

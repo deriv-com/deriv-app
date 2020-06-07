@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import {
-    PageOverlay,
     VerticalTab,
     DesktopWrapper,
     MobileWrapper,
     Div100vhContainer,
     FadeWrapper,
+    PageOverlay,
 } from '@deriv/components';
 import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';
@@ -97,6 +97,8 @@ class Cashier extends React.Component {
             (location.pathname.startsWith(routes.cashier_deposit) ||
                 location.pathname.startsWith(routes.cashier_withdrawal));
 
+        const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
+
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}
@@ -117,7 +119,7 @@ class Cashier extends React.Component {
                                 current_path={this.props.location.pathname}
                                 is_floating
                                 setVerticalTabIndex={this.props.setTabIndex}
-                                vertical_tab_index={this.props.tab_index}
+                                vertical_tab_index={is_default_route ? 0 : this.props.tab_index}
                                 is_full_width
                                 is_routed
                                 list={menu_options()}

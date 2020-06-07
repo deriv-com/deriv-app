@@ -28,7 +28,7 @@ class DBot {
             ApiHelpers.setInstance(api_helpers_store);
             DBotStore.setInstance(store);
             const window_width = window.innerWidth;
-            let workspaceScale = 0.9;
+            let workspaceScale = 0.8;
 
             const { handleFileChange } = DBotStore.instance;
             if (window_width < 1640) {
@@ -279,8 +279,7 @@ class DBot {
         if (!hasAllRequiredBlocks(this.workspace)) {
             const error = new Error(
                 localize(
-                    'One or more mandatory blocks are missing from your workspace. ' +
-                        'Please add the required block(s) and then try again.'
+                    'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
                 )
             );
 

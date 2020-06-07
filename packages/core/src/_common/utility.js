@@ -89,7 +89,6 @@ const isEuCountry = clients_country => eu_countries.includes(clients_country);
 
 module.exports = {
     template,
-    copyToClipboard,
     createElement,
     getStaticHash,
     PromiseClass,

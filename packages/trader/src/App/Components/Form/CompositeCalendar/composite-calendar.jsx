@@ -132,10 +132,12 @@ class CompositeCalendar extends React.PureComponent {
 
     setFromDate(date) {
         this.updateState('from', date);
+        this.hideCalendar();
     }
 
     updateState(key, value) {
         this.apply(key, value);
+        this.hideCalendar();
     }
 
     applyBatch(values) {

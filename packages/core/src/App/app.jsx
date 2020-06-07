@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { autorun } from 'mobx';
-import Cookies from 'js-cookie';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
@@ -12,27 +10,23 @@ import { setUrlLanguage } from '@deriv/shared/utils/url';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import Client from '_common/base/client_base';
-import BinarySocket from '_common/base/socket_base';
-import { isEuCountry } from '_common/utility';
 import WS from 'Services/ws-methods';
 import { MobxProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
-import CookieBanner from './Components/Elements/CookieBanner/cookie-banner.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
 import Footer from './Containers/Layout/footer.jsx';
 import Header from './Containers/Layout/header.jsx';
 import AppNotificationMessages from './Containers/app-notification-messages.jsx';
 import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
+import { WindowContextWrapper } from './Containers/window-context';
 // eslint-disable-next-line import/extensions
 import initStore from './app.js';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 
 const App = ({ root_store }) => {
-    // state
-    const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
     // non-state vars
     const l = window.location;
     const base = l.pathname.split('/')[1];
@@ -44,24 +38,6 @@ const App = ({ root_store }) => {
         initializeTranslations();
         setUrlLanguage(getLanguage());
     }, []);
-
-    React.useEffect(() =>
-        autorun(async () => {
-            let clients_country = Cookies.get('clients_country');
-            if (!clients_country) {
-                const website_status = await BinarySocket.wait('website_status');
-                clients_country = website_status.website_status.clients_country;
-                Cookies.set('clients_country', clients_country, {
-                    expires: 7, // TODO: put it in constants or configs
-                });
-            }
-            setShowCookieBanner(
-                !root_store.client.loginid && // is not logged in
-                isEuCountry(clients_country) && // is from EU
-                    !(Cookies.get('has_cookie_accepted') === '1') // is not carrying cookie
-            );
-        })
-    );
 
     if (isMobile()) {
         React.useEffect(() => {
@@ -113,11 +89,6 @@ const App = ({ root_store }) => {
         WS,
         client_base: Client,
     };
-    // handle accept cookies
-    const onAccept = () => {
-        Cookies.set('has_cookie_accepted', 1);
-        setShowCookieBanner(false);
-    };
 
     return (
         <Router basename={has_base ? `/${base}` : null}>
@@ -125,17 +96,18 @@ const App = ({ root_store }) => {
                 <React.Fragment>
                     <Header />
                     <ErrorBoundary>
-                        <AppContents>
-                            {/* TODO: [trader-remove-client-base] */}
-                            <Routes passthrough={platform_passthrough} />
-                        </AppContents>
+                        <WindowContextWrapper>
+                            <AppContents>
+                                {/* TODO: [trader-remove-client-base] */}
+                                <Routes passthrough={platform_passthrough} />
+                            </AppContents>
+                        </WindowContextWrapper>
                     </ErrorBoundary>
                     <DesktopWrapper>
                         <Footer />
                     </DesktopWrapper>
                     <AppModals url_action_param={url_params.get('action')} />
                     <SmartTraderIFrame />
-                    {show_cookie_banner && <CookieBanner onAccept={onAccept} is_open={show_cookie_banner} />}
                 </React.Fragment>
             </MobxProvider>
         </Router>

@@ -93,4 +93,5 @@ module.exports = {
     getStaticHash,
     PromiseClass,
     isEuCountry,
+    copyToClipboard,
 };

@@ -311,6 +311,7 @@ class MT5POA extends React.Component {
                                                 <div className='mt5-proof-of-address__file-upload'>
                                                     <FileUploaderContainer
                                                         onRef={ref => this.setFileUploadRef(ref)}
+                                                        getSocket={WS.getSocket}
                                                         onFileDrop={({ document_file: df, file_error_message }) =>
                                                             this.onFileDrop(
                                                                 df,

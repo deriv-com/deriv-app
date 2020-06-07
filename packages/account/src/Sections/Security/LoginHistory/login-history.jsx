@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, MobileWrapper, Loading } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Loading, DataTable } from '@deriv/components';
 import { convertDateFormat } from '@deriv/shared/utils/date';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import DataTable from '@deriv/components';
 import { WS } from 'Services/ws-methods';
 import LoadErrorMessage from 'Components/load-error-message';
 

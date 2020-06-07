@@ -537,11 +537,25 @@ export default class ClientStore extends BaseStore {
     @action.bound
     realAccountSignup(form_values) {
         return new Promise(async (resolve, reject) => {
+            const is_maltainvest_account = this.root_store.ui.real_account_signup_target === 'maltainvest';
+            let currency = '';
             form_values.residence = this.residence;
-            const response = await WS.newAccountReal(form_values);
+            if (is_maltainvest_account) {
+                currency = form_values.currency;
+                delete form_values.currency;
+            }
+            const response = is_maltainvest_account
+                ? await WS.newAccountRealMaltaInvest(form_values)
+                : await WS.newAccountReal(form_values);
             if (!response.error) {
                 await this.accountRealReaction(response);
                 localStorage.removeItem('real_account_signup_wizard');
+
+                // Set currency after account is created
+                // Maltainvest only
+                if (is_maltainvest_account) {
+                    await WS.setAccountCurrency(currency);
+                }
                 resolve(response);
             } else {
                 reject(response.error);

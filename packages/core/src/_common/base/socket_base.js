@@ -175,6 +175,8 @@ const BinarySocketBase = (() => {
             ...values,
         });
 
+    const newAccountRealMaltaInvest = values => deriv_api.send({ new_account_maltainvest: 1, ...values });
+
     const mt5NewAccount = values =>
         deriv_api.send({
             mt5_new_account: 1,
@@ -297,6 +299,7 @@ const BinarySocketBase = (() => {
         mt5PasswordChange,
         newAccountVirtual,
         newAccountReal,
+        newAccountRealMaltaInvest,
         p2pAdvertiserInfo,
         p2pSubscribe,
         profitTable,

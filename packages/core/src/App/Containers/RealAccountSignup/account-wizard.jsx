@@ -66,22 +66,30 @@ class AccountWizard extends React.Component {
         super(props);
         this.state = {
             finished: undefined,
+            mounted: true,
             step: 0,
             form_error: '',
-            items: getItems(props),
+            items: [],
         };
     }
 
     componentDidMount() {
         this.fetchFromStorage();
         this.props.fetchStatesList();
-        if (!this.residence_list?.length) {
-            const items = this.state.items.slice(0);
-            this.getCountryCode().then(phone_idd => {
-                items[1].form_value.phone = phone_idd || '';
-                this.setState(items);
+        this.props.fetchResidenceList().then(() => {
+            this.setState({
+                items: getItems(this.props),
+                mounted: false,
             });
-        }
+
+            if (!this.residence_list?.length) {
+                const items = this.state.items.slice(0);
+                this.getCountryCode().then(phone_idd => {
+                    items[1].form_value.phone = phone_idd || '';
+                    this.setState(items);
+                });
+            }
+        });
     }
 
     fetchFromStorage = () => {
@@ -185,11 +193,10 @@ class AccountWizard extends React.Component {
     };
 
     submitForm = () => {
-        const filtered_values = Object.entries(this.form_values).filter(
-            ([key, _]) => key !== 'tax_identification_confirm'
-        );
+        const clone = { ...this.form_values };
+        delete clone?.tax_identification_confirm;
 
-        return this.props.realAccountSignup(Object.fromEntries(filtered_values));
+        return this.props.realAccountSignup(clone);
     };
 
     setAccountCurrency = () => this.props.setAccountCurrency(this.form_values.currency);
@@ -261,6 +268,7 @@ class AccountWizard extends React.Component {
     }
 
     render() {
+        if (this.state.mounted) return null;
         if (!this.state.finished) {
             const BodyComponent = this.getCurrent('body');
             const passthrough = this.getPropsForChild();

@@ -84,6 +84,9 @@ class PersonalDetails extends React.Component {
                 initialValues={{ ...this.props.value }}
                 validate={this.props.validate}
                 onSubmit={(values, actions) => {
+                    values.tax_residence = this.props.residence_list.find(
+                        item => item.text === values.tax_residence
+                    ).value;
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
                 ref={this.form}
@@ -195,7 +198,7 @@ class PersonalDetails extends React.Component {
                                             )}
                                             {('tax_residence' in this.props.value ||
                                                 'tax_identification_number' in this.props.value) && (
-                                                <>
+                                                <React.Fragment>
                                                     <FormSubHeader title={localize('Tax information')} />
                                                     {'tax_residence' in this.props.value && (
                                                         <Field name='tax_residence'>
@@ -230,31 +233,27 @@ class PersonalDetails extends React.Component {
                                                         />
                                                     )}
                                                     {'tax_identification_confirm' in this.props.value && (
-                                                        <Field name='tax_identification_confirm'>
-                                                            {field => (
-                                                                <Checkbox
-                                                                    {...field}
-                                                                    data-lpignore
-                                                                    onChange={() =>
-                                                                        setFieldValue(
-                                                                            field.name,
-                                                                            !values[field.name],
-                                                                            true
-                                                                        )
-                                                                    }
-                                                                    value={values[field.name]}
-                                                                    label={localize(
-                                                                        'I hereby confirm that the tax information i provided is true and complete.I will also inform Binary Investments ( Europe ) Ltd. about any changes to this information.'
-                                                                    )}
-                                                                />
+                                                        <Checkbox
+                                                            name='tax_identification_confirm'
+                                                            data-lpignore
+                                                            onChange={() =>
+                                                                setFieldValue(
+                                                                    'tax_identification_confirm',
+                                                                    !values.tax_identification_confirm,
+                                                                    true
+                                                                )
+                                                            }
+                                                            value={values.tax_identification_confirm}
+                                                            label={localize(
+                                                                'I hereby confirm that the tax information i provided is true and complete.I will also inform Binary Investments ( Europe ) Ltd. about any changes to this information.'
                                                             )}
-                                                        </Field>
+                                                        />
                                                     )}
-                                                </>
+                                                </React.Fragment>
                                             )}
                                             {/* TODO: [deriv-eu] Remove account opening reason once api is optional */}
                                             {'account_opening_reason' in this.props.value && (
-                                                <>
+                                                <React.Fragment>
                                                     <FormSubHeader title={localize('Account opening reason')} />
                                                     <Field name='account_opening_reason'>
                                                         {({ field }) => (
@@ -280,7 +279,7 @@ class PersonalDetails extends React.Component {
                                                             />
                                                         )}
                                                     </Field>
-                                                </>
+                                                </React.Fragment>
                                             )}
                                         </div>
                                     </ThemedScrollbars>

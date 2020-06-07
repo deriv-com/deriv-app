@@ -9,6 +9,7 @@ import {
     FinancialAssessment,
     ProofOfIdentity,
     ProofOfAddress,
+    ApiToken,
     Account,
     LoginHistory,
 } from 'Sections';
@@ -76,6 +77,11 @@ const initRoutesConfig = () => [
                         path: routes.login_history,
                         component: LoginHistory,
                         title: localize('Login history'),
+                    },
+                    {
+                        path: routes.api_token,
+                        component: ApiToken,
+                        title: localize('API token'),
                     },
                 ],
             },

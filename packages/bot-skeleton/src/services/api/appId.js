@@ -8,15 +8,10 @@ const getCustomEndpoint = () => ({
 });
 
 const isRealAccount = () => {
-    const accountList = JSON.parse(localStorage.getItem('tokenList') || '{}');
-    const activeToken = localStorage.getItem('activeToken') || [];
-    let activeAccount = null;
-    let isReal = false;
-    try {
-        activeAccount = accountList.filter(account => account.token === activeToken);
-        isReal = !activeAccount[0].accountName.startsWith('VRT');
-    } catch (e) {} // eslint-disable-line no-empty
-    return isReal;
+    const active_loginid = localStorage.getItem('active_loginid') || '';
+    const is_real = typeof active_loginid === 'string' && !active_loginid.startsWith('VRT');
+
+    return is_real;
 };
 
 const getDomainAppId = () => AppIds[document.location.hostname.replace(/^www./, '')];

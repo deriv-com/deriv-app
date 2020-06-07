@@ -4,6 +4,7 @@ import FinancialAssessment from 'Sections/Profile/FinancialAssessment';
 import ProofOfIdentity from 'Sections/Verification/ProofOfIdentity';
 import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
 import DerivPassword from 'Sections/Security/DerivPassword';
+import ApiToken from 'Sections/Security/ApiToken';
 import Account from 'Containers/account.jsx';
 import LoginHistory from 'Sections/Security/LoginHistory';
 
@@ -16,4 +17,5 @@ export {
     ProofOfAddress,
     Account,
     LoginHistory,
+    ApiToken,
 };

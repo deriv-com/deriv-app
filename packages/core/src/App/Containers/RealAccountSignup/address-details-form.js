@@ -47,7 +47,16 @@ const address_details_config = {
     address_postcode: {
         supported_in: ['svg', 'iom', 'malta'],
         default_value: '',
-        rules: [['postcode', localize('Postal/ZIP Code is not in a proper format')]],
+        rules: [
+            [
+                'postcode',
+                localize('Please enter a {{field_name}} under {{max_number}} characters.', {
+                    field_name: localize('postal/ZIP code'),
+                    max_number: 20,
+                    interpolation: { escapeValue: false },
+                }),
+            ],
+        ],
     },
 };
 
@@ -83,7 +92,7 @@ const transformForResidence = (rules, residence) => {
     }
     // GB residence are required to fill in the post code.
     if (residence === 'gb') {
-        rules.address_postcode.rules.splice(0, 0, ['req', localize('Postal/ZIP Code is required')]);
+        rules.address_postcode.rules.splice(0, 0, ['req', localize('Postal/ZIP code is required')]);
     }
 
     return rules;

@@ -247,14 +247,13 @@ class PersonalDetails extends React.Component {
                                                             }
                                                             value={values.tax_identification_confirm}
                                                             label={localize(
-                                                                'I hereby confirm that the tax information i provided is true and complete.I will also inform Binary Investments ( Europe ) Ltd. about any changes to this information.'
+                                                                'I hereby confirm that the tax information i provided is true and complete. I will also inform Binary Investments (Europe) Ltd. about any changes to this information.'
                                                             )}
                                                         />
                                                     )}
                                                 </React.Fragment>
                                             )}
-                                            {/* TODO: [deriv-eu] Remove account opening reason once api is optional */}
-                                            {'account_opening_reason' in this.props.value && (
+                                            {'account_opening_reason' in this.props.value && ( // TODO: [deriv-eu] Remove account opening reason once api is optional
                                                 <React.Fragment>
                                                     <FormSubHeader title={localize('Account opening reason')} />
                                                     <Field name='account_opening_reason'>

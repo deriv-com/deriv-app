@@ -19,9 +19,9 @@ const getLocation = (location_list, value, type) => {
 };
 
 const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, step }) => (
-    <>
+    <React.Fragment>
         {(!has_real_account || has_target) && (
-            <>
+            <React.Fragment>
                 <DesktopWrapper>
                     <FormProgress steps={items} current_step={step} />
                 </DesktopWrapper>
@@ -42,7 +42,7 @@ const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, 
                         )}
                     </div>
                 </MobileWrapper>
-            </>
+            </React.Fragment>
         )}
         <DesktopWrapper>
             {has_real_account && !has_target && (
@@ -58,7 +58,7 @@ const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, 
                 </div>
             )}
         </DesktopWrapper>
-    </>
+    </React.Fragment>
 );
 
 class AccountWizard extends React.Component {

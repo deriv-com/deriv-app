@@ -261,7 +261,6 @@ const FinancialBox = ({ derivOnClick, is_demo = false, mt5OnClick }) => {
                     title={localize('Trade on {{ website_name }}', { website_name })}
                     subtitle={localize('Option trading account')}
                     button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
-                    // TODO: [deriv-eu] Add click handler
                     buttonOnClick={derivOnClick}
                     items={{
                         [localize('Multiplier')]: localize('Up to X1000'),
@@ -340,7 +339,6 @@ const GamingBox = ({ is_demo = false, no_mt5 = false, mt5OnClick, derivOnClick }
             title={localize('Trade on {{website_name}}', { website_name })}
             subtitle={localize('Option trading account')}
             button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
-            // TODO: [deriv-eu] Add click handler
             buttonOnClick={derivOnClick}
             items={{
                 [localize('Trade type')]: localize('10+'),
@@ -557,7 +555,6 @@ class AccountTypesModal extends React.Component {
         this.redirectToMt5('demo');
     };
 
-    // TODO: [deriv-eu] Update and use it after EU account sign-up completion
     createRealAccount = (target = 'svg') => {
         this.props.toggleAccountTypesModal();
         this.props.openRealAccountSignup(target);

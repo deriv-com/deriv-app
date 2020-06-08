@@ -118,7 +118,7 @@ class AddressDetails extends React.Component {
                                             <InputField
                                                 name='address_line_1'
                                                 required
-                                                label={localize('First line of address*')}
+                                                label={localize('First line of address')}
                                                 placeholder={localize('First line of address')}
                                             />
                                             <InputField
@@ -129,7 +129,7 @@ class AddressDetails extends React.Component {
                                             <InputField
                                                 name='address_city'
                                                 required
-                                                label={localize('Town/City*')}
+                                                label={localize('Town/City')}
                                                 placeholder={localize('Town/City')}
                                             />
                                             {this.should_render_address_state && (
@@ -182,8 +182,8 @@ class AddressDetails extends React.Component {
                                             )}
                                             <InputField
                                                 name='address_postcode'
-                                                required
-                                                label={localize('Postal/ZIP Code*')}
+                                                required={this.props.is_gb_residence}
+                                                label={localize('Postal/ZIP Code')}
                                                 placeholder={localize('Postal/ZIP Code')}
                                             />
                                         </div>
@@ -210,6 +210,7 @@ class AddressDetails extends React.Component {
 }
 
 export default connect(({ client }) => ({
+    is_gb_residence: client.residence === 'gb',
     fetchStatesList: client.fetchStatesList,
     states_list: client.states_list,
 }))(AddressDetails);

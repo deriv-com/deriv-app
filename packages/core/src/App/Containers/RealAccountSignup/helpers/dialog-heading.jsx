@@ -30,7 +30,7 @@ export const DialogHeading = ({ status, landing_company_shortcode }) => {
         case 'svg':
             return (
                 <h2>
-                    <Localize i18n_default_text='Success!' />
+                    <Localize i18n_default_text='Account added!' />
                 </h2>
             );
         case 'iom':

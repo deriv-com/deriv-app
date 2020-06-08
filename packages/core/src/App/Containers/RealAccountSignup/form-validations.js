@@ -32,36 +32,44 @@ export const generateValidationFunction = (landing_company, schema) => {
 
     return values => {
         const errors = {};
+
         Object.entries(values).forEach(([field_name, value]) => {
-            rules[field_name].some(([rule, message, options]) =>
-                hasError({
-                    errors,
-                    field_name,
-                    value,
-                    rule,
-                    message,
-                    options,
-                })
-            );
+            if (field_name in rules) {
+                rules[field_name].some(([rule, message, options]) => {
+                    if (
+                        checkForErrors({
+                            field_name,
+                            value,
+                            rule,
+                            options,
+                            values,
+                        })
+                    ) {
+                        errors[field_name] = message;
+                        return true;
+                    }
+
+                    return false;
+                });
+            }
         });
 
         return errors;
     };
 };
 
-const hasError = ({ errors, field_name, value, rule, message, options }) => {
-    try {
-        const validate = getValidationFunction(rule);
-        if (validate(value, options)) {
-            return false;
-        }
-        errors[field_name] = message;
-        return true;
-    } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e);
-        return true;
-    }
+/**
+ * Returns true if the rule has error, false otherwise.
+ * @param value
+ * @param rule
+ * @param options
+ * @param values
+ * @return {boolean}
+ */
+const checkForErrors = ({ value, rule, options, values }) => {
+    const validate = getValidationFunction(rule);
+
+    return !validate(value, options, values);
 };
 
 /**
@@ -83,5 +91,5 @@ export const getValidationFunction = rule => {
     /**
      * Generated validation function from the DVRs.
      */
-    return (value, options) => !!func(value, options);
+    return (value, options, values) => !!func(value, options, values);
 };

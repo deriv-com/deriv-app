@@ -48,8 +48,14 @@ const address_details_config = {
         supported_in: ['svg', 'iom', 'malta'],
         default_value: '',
         rules: [
-            ['req', localize('Postal/ZIP Code is required')],
-            ['postcode', localize('Postal/ZIP Code is not in a proper format')],
+            [
+                'postcode',
+                localize('Please enter a {{field_name}} under {{max_number}} characters.', {
+                    field_name: localize('postal/ZIP code'),
+                    max_number: 20,
+                    interpolation: { escapeValue: false },
+                }),
+            ],
         ],
     },
 };
@@ -83,6 +89,10 @@ const transformForResidence = (rules, residence) => {
     // Isle of Man Clients do not need to fill out state since API states_list is empty.
     if (residence === 'im') {
         rules.address_state.rules.shift();
+    }
+    // GB residence are required to fill in the post code.
+    if (residence === 'gb') {
+        rules.address_postcode.rules.splice(0, 0, ['req', localize('Postal/ZIP code is required')]);
     }
 
     return rules;

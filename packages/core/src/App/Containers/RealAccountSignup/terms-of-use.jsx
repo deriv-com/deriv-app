@@ -90,6 +90,39 @@ const MaltaDescription = () => (
     </React.Fragment>
 );
 
+const MaltaInvestDescription = () => (
+    <React.Fragment>
+        <h4>
+            <Localize i18n_default_text={'Jurisdiction and choice of law'} />
+        </h4>
+        <p>
+            <Localize
+                i18n_default_text={
+                    'Your Deriv account will be opened with Binary (Investments) Europe Ltd, and will be subjected to the jurisdiction and laws of Malta financial service authority.'
+                }
+            />
+        </p>
+        <Hr />
+        <h4>
+            <Localize i18n_default_text='Risk warning' />
+        </h4>
+        <p>
+            <Localize
+                i18n_default_text={
+                    'The financial trading services offered on this site are only suitable for customers who accept the possibility of losing all the money they invest and who understand and have experience of the risk involved in the purchase of financial contracts. Transactions in financial contracts carry a high degree of risk. If the contracts you purchased expire as worthless, you will lose all your investment, which includes the contract premium.'
+                }
+            />
+        </p>
+        <Hr />
+        <h4>
+            <Localize i18n_default_text='Real accounts are not available to politically exposed persons (PEPs).' />
+        </h4>
+        <p>
+            <Localize i18n_default_text='A politically exposed person (PEP) is someone appointed with a prominent public position. Close associates and family members of a PEP are also considered to be PEPs.' />
+        </p>
+    </React.Fragment>
+);
+
 class TermsOfUse extends React.Component {
     render() {
         return (
@@ -117,6 +150,7 @@ class TermsOfUse extends React.Component {
                                 {this.props.real_account_signup_target === 'svg' && <SVGDescription />}
                                 {this.props.real_account_signup_target === 'iom' && <IOMDescription />}
                                 {this.props.real_account_signup_target === 'malta' && <MaltaDescription />}
+                                {this.props.real_account_signup_target === 'maltainvest' && <MaltaInvestDescription />}
                                 <Field
                                     component={CheckboxField}
                                     className='terms-of-use__checkbox'

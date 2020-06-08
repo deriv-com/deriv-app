@@ -9,6 +9,7 @@ import {
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import React from 'react';
+import Checkbox from '@deriv/components/src/components/checkbox';
 import { FormSubHeader } from '@deriv/account';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
@@ -83,6 +84,11 @@ class PersonalDetails extends React.Component {
                 initialValues={{ ...this.props.value }}
                 validate={this.props.validate}
                 onSubmit={(values, actions) => {
+                    if (values.tax_residence) {
+                        values.tax_residence = this.props.residence_list.find(
+                            item => item.text === values.tax_residence
+                        ).value;
+                    }
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
                 ref={this.form}
@@ -118,7 +124,7 @@ class PersonalDetails extends React.Component {
                                                             data-lpignore='true'
                                                             autoComplete='new-password' // prevent chrome autocomplete
                                                             type='text'
-                                                            label={localize('Title*')}
+                                                            label={localize('Title')}
                                                             error={touched.salutation && errors.salutation}
                                                             list_items={this.props.salutation_list}
                                                             onItemSelection={({ value, text }) =>
@@ -131,23 +137,23 @@ class PersonalDetails extends React.Component {
                                             )}
                                             <FormInputField
                                                 name='first_name'
-                                                label={localize('First name*')}
+                                                label={localize('First name')}
                                                 placeholder={localize('John')}
                                             />
                                             <FormInputField
                                                 name='last_name'
-                                                label={localize('Last name*')}
+                                                label={localize('Last name')}
                                                 placeholder={localize('Doe')}
                                             />
                                             <FormInputField
                                                 name='phone'
-                                                label={localize('Phone number*')}
+                                                label={localize('Phone number')}
                                                 placeholder={localize('Phone number')}
                                             />
                                             <FormSubHeader title={localize('Other details')} />
                                             <DateOfBirthField
                                                 name='date_of_birth'
-                                                label={localize('Date of birth*')}
+                                                label={localize('Date of birth')}
                                                 placeholder={localize('01-07-1999')}
                                             />
                                             {'place_of_birth' in this.props.value && (
@@ -158,7 +164,7 @@ class PersonalDetails extends React.Component {
                                                             data-lpignore='true'
                                                             autoComplete='new-password' // prevent chrome autocomplete
                                                             type='text'
-                                                            label={localize('Place of birth*')}
+                                                            label={localize('Place of birth')}
                                                             error={touched.place_of_birth && errors.place_of_birth}
                                                             list_items={this.props.residence_list}
                                                             onItemSelection={({ value, text }) =>
@@ -177,7 +183,7 @@ class PersonalDetails extends React.Component {
                                                             data-lpignore='true'
                                                             autoComplete='new-password' // prevent chrome autocomplete
                                                             type='text'
-                                                            label={localize('Citizenship*')}
+                                                            label={localize('Citizenship')}
                                                             error={touched.citizen && errors.citizen}
                                                             disabled={
                                                                 this.props.value.citizen &&
@@ -194,7 +200,7 @@ class PersonalDetails extends React.Component {
                                             )}
                                             {('tax_residence' in this.props.value ||
                                                 'tax_identification_number' in this.props.value) && (
-                                                <>
+                                                <React.Fragment>
                                                     <FormSubHeader title={localize('Tax information')} />
                                                     {'tax_residence' in this.props.value && (
                                                         <Field name='tax_residence'>
@@ -204,7 +210,7 @@ class PersonalDetails extends React.Component {
                                                                     data-lpignore='true'
                                                                     autoComplete='new-password' // prevent chrome autocomplete
                                                                     type='text'
-                                                                    label={localize('Tax residence*')}
+                                                                    label={localize('Tax residence')}
                                                                     error={
                                                                         touched.tax_residence && errors.tax_residence
                                                                     }
@@ -228,11 +234,27 @@ class PersonalDetails extends React.Component {
                                                             placeholder={localize('Tax identification number')}
                                                         />
                                                     )}
-                                                </>
+                                                    {'tax_identification_confirm' in this.props.value && (
+                                                        <Checkbox
+                                                            name='tax_identification_confirm'
+                                                            data-lpignore
+                                                            onChange={() =>
+                                                                setFieldValue(
+                                                                    'tax_identification_confirm',
+                                                                    !values.tax_identification_confirm,
+                                                                    true
+                                                                )
+                                                            }
+                                                            value={values.tax_identification_confirm}
+                                                            label={localize(
+                                                                'I hereby confirm that the tax information i provided is true and complete. I will also inform Binary Investments (Europe) Ltd. about any changes to this information.'
+                                                            )}
+                                                        />
+                                                    )}
+                                                </React.Fragment>
                                             )}
-                                            {/* TODO: [deriv-eu] Remove account opening reason once api is optional */}
-                                            {'account_opening_reason' in this.props.value && (
-                                                <>
+                                            {'account_opening_reason' in this.props.value && ( // TODO: [deriv-eu] Remove account opening reason once api is optional
+                                                <React.Fragment>
                                                     <FormSubHeader title={localize('Account opening reason')} />
                                                     <Field name='account_opening_reason'>
                                                         {({ field }) => (
@@ -241,7 +263,7 @@ class PersonalDetails extends React.Component {
                                                                 data-lpignore='true'
                                                                 autoComplete='new-password' // prevent chrome autocomplete
                                                                 type='text'
-                                                                label={localize('Account opening reason*')}
+                                                                label={localize('Account opening reason')}
                                                                 error={
                                                                     touched.account_opening_reason &&
                                                                     errors.account_opening_reason
@@ -258,7 +280,7 @@ class PersonalDetails extends React.Component {
                                                             />
                                                         )}
                                                     </Field>
-                                                </>
+                                                </React.Fragment>
                                             )}
                                         </div>
                                     </ThemedScrollbars>

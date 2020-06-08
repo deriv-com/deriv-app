@@ -45,19 +45,21 @@ class AppContents extends React.Component {
     }
 
     componentDidUpdate() {
-        const is_eu_country = isEuCountry(this.state.clients_country);
-        const tracking_status = Cookies.get('tracking_status');
+        if (!this.props.is_logged_in) {
+            const is_eu_country = isEuCountry(this.state.clients_country);
+            const tracking_status = Cookies.get('tracking_status');
 
-        if (is_eu_country && !tracking_status) {
-            this.setState({
-                show_cookie_banner: true,
-                is_window_loaded: true,
-            });
-        }
+            if (is_eu_country && !tracking_status) {
+                this.setState({
+                    show_cookie_banner: true,
+                    is_window_loaded: true,
+                });
+            }
 
-        const allow_tracking = (!is_eu_country || tracking_status === 'accepted') && has_dataLayer;
-        if (allow_tracking) {
-            window.dataLayer.push({ event: 'allow_tracking' });
+            const allow_tracking = (!is_eu_country || tracking_status === 'accepted') && has_dataLayer;
+            if (allow_tracking) {
+                window.dataLayer.push({ event: 'allow_tracking' });
+            }
         }
     }
 
@@ -125,7 +127,6 @@ class AppContents extends React.Component {
 }
 
 AppContents.propTypes = {
-    addNotificationBar: PropTypes.func,
     children: PropTypes.any,
     is_app_disabled: PropTypes.bool,
     is_cashier_visible: PropTypes.bool,
@@ -134,11 +135,10 @@ AppContents.propTypes = {
     is_positions_drawer_on: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     pwa_prompt_event: PropTypes.object,
-    setPWAPromptEvent: PropTypes.func,
 };
 
 export default withRouter(
-    connect(({ ui, segment }) => ({
+    connect(({ client, ui, segment }) => ({
         identifyEvent: segment.identifyEvent,
         is_app_disabled: ui.is_app_disabled,
         is_positions_drawer_on: ui.is_positions_drawer_on,
@@ -147,5 +147,6 @@ export default withRouter(
         pwa_prompt_event: ui.pwa_prompt_event,
         is_mt5_page: ui.is_mt5_page,
         is_cashier_visible: ui.is_cashier_visible,
+        is_logged_in: client.is_logged_in,
     }))(AppContents)
 );

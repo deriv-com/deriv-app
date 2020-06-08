@@ -2,8 +2,10 @@ import React from 'react';
 import { WS } from 'Services/ws-methods';
 import { localize, Localize } from '@deriv/translations';
 import { Formik, Field } from 'formik';
-import { Checkbox, Button, Input, FormSubmitButton, Modal, Icon } from '@deriv/components';
+import { Checkbox, Button, Input, FormSubmitButton, Modal, Icon, Money } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import CurrencyUtils from '@deriv/shared/utils/currency';
+import { object } from 'prop-types';
 
 const initial_form = {
     otherFinancialPriorities: false,
@@ -99,7 +101,7 @@ const WarningModal = (props) => {
         </div>
     );
 };
-const HaveOpenPositions = (accounts_with_open_positions_id, client_accounts) => {
+const HaveOpenPositions = (accounts_with_open_positions_id, client_accounts, onBackClick) => {
     const accounts_with_open_positions = Object.keys(accounts_with_open_positions_id).map((open_position_id) =>
         client_accounts.filter((account) => account.loginid === open_position_id)
     );
@@ -116,7 +118,68 @@ const HaveOpenPositions = (accounts_with_open_positions_id, client_accounts) => 
                     </div>
                 </div>
             ))}
-            <Button primary>{localize('OK')}</Button>
+            <Button className='have-open-positions__accounts-button' primary onClick={() => onBackClick()}>
+                {localize('OK')}
+            </Button>
+        </div>
+    );
+};
+const getMT5AccountType = (group) => (group ? group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP)/, '') : '');
+
+const getMT5AccountDisplay = (group) => {
+    if (!group) return {};
+
+    const value = getMT5AccountType(group);
+    let display_text = localize('MT5');
+    if (/svg$/.test(value)) {
+        display_text = localize('Synthetic');
+    } else if (/vanuatu/.test(value) || /svg_standard/.test(value)) {
+        display_text = localize('Financial');
+    } else if (/labuan/.test(value)) {
+        display_text = localize('Financial STP');
+    }
+
+    return display_text;
+};
+
+const ExistingAccountHasBalance = (accounts_with_balance, client_accounts, mt5_login_list, onBackClick) => {
+    const mt5_with_balance_id = Object.keys(accounts_with_balance).filter(
+        (account_id) => !accounts_with_balance[account_id].currency
+    );
+    // ADD MT5 ACCOUNT ********************************************
+    return (
+        <div>
+            {Object.keys(accounts_with_balance).map((account_id) => (
+                <div key={account_id}>
+                    {accounts_with_balance[account_id].currency ? (
+                        <div>
+                            <div>
+                                <Icon
+                                    icon={`IcCurrency-${accounts_with_balance[account_id].currency.toLowerCase()}`}
+                                    size={24}
+                                />
+                                <div>
+                                    <p>{accounts_with_balance[account_id].currency}</p>
+                                    <p>{account_id}</p>
+                                </div>
+                            </div>
+                            <div>
+                                <Money
+                                    currency={accounts_with_balance[account_id].currency}
+                                    amount={CurrencyUtils.formatMoney(
+                                        accounts_with_balance[account_id].currency,
+                                        accounts_with_balance[account_id].balance,
+                                        true
+                                    )}
+                                    should_format={false}
+                                />
+                            </div>
+                        </div>
+                    ) : (
+                        mt5_with_balance_id.map()
+                    )}
+                </div>
+            ))}
         </div>
     );
 };
@@ -305,10 +368,14 @@ class DeactivateAccountReason extends React.Component {
                         <WarningModal closeModal={this.closeModal} startDeactivating={this.startDeactivating} />
                     )}
                     {this.state.which_modal_should_render === 'AccountHasOpenPositions' &&
-                        HaveOpenPositions(this.state.accounts, this.props.accounts)}
-                    {this.state.which_modal_should_render === 'ExistingAccountHasBalance' && (
-                        <div>"ExistingAccountHasBalance"</div>
-                    )}
+                        HaveOpenPositions(this.state.accounts, this.props.client_accounts, this.props.onBackClick)}
+                    {this.state.which_modal_should_render === 'ExistingAccountHasBalance' &&
+                        ExistingAccountHasBalance(
+                            this.state.accounts,
+                            this.props.client_accounts,
+                            this.props.mt5_login_list,
+                            this.props.onBackClick
+                        )}
                 </Modal>
             </div>
         );
@@ -316,5 +383,6 @@ class DeactivateAccountReason extends React.Component {
 }
 
 export default connect(({ client }) => ({
-    accounts: client.account_list,
+    client_accounts: client.account_list,
+    mt5_login_list: client.mt5_login_list,
 }))(DeactivateAccountReason);

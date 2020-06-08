@@ -1089,6 +1089,9 @@ $MIN_HEIGHT_FLOATING: calc(
 
 /* stylelint-disable */
 .dc-modal__container_deactivate-account-reasons {
+    .dc-modal-header {
+        border: none;
+    }
     .account-closure-warning-modal {
         display: flex;
         flex-direction: column;
@@ -1148,6 +1151,10 @@ $MIN_HEIGHT_FLOATING: calc(
             color: var(--text-prominent);
             font-size: var(--text-size-xs);
             line-height: 1.43;
+        }
+        &__accounts-button {
+            margin-top: 16px;
+            float: right;
         }
     }
 }

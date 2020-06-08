@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
 import { getDerivComLink } from '@deriv/shared/utils/url';
 import { localize, Localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 
-const CookieBanner = ({ onAccept, onDecline, is_open }) => (
+const CookieBanner = ({ onAccept, onDecline, is_open, is_dark_mode_on }) => (
     <div
         className={classNames('cookie-banner', {
+            'theme-dark': is_dark_mode_on,
             'is-open': is_open,
             'is-closed': !is_open,
         })}
@@ -43,4 +45,6 @@ CookieBanner.prototype = {
     onDecline: PropTypes.func,
 };
 
-export default CookieBanner;
+export default connect(({ ui }) => ({
+    is_dark_mode_on: ui.is_dark_mode_on,
+}))(CookieBanner);

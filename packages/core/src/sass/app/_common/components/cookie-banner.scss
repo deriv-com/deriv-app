@@ -30,7 +30,7 @@
     position: fixed;
     z-index: 10;
     text-align: center;
-    background: var(--general-main-2);
+    background: $color-grey-2;
     color: var(--text-general);
     font-size: 16px;
     font-weight: normal;
@@ -49,6 +49,10 @@
         font-weight: bold;
         height: 168px;
         padding: 2.4rem 0;
+    }
+    /* postcss-bem-linter: ignore */
+    &.theme-dark {
+        background: $color-black-3;
     }
     /* postcss-bem-linter: ignore */
     &.is-open {

@@ -1,6 +1,4 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
-import { Modal } from '@deriv/components';
 // import { WS } from 'Services/ws-methods';
 import DeactivateAccountSteps from './deactivate-account-steps';
 import DeactivateAccountReason from './deactivate-account-reason';
@@ -33,14 +31,6 @@ class DeactivateAccount extends React.Component {
                 ) : (
                     <DeactivateAccountSteps redirectToReasons={this.redirectToReasons} />
                 )}
-                <Modal
-                    className='confirm-all-close'
-                    is_open={this.state.is_modal_open}
-                    toggleModal={() => this.setState({ is_modal_open: false })}
-                    title={localize('Action required')}
-                >
-                    <Modal.Body>{this.state.is_loading ? 'loading...' : 'modal content'}</Modal.Body>
-                </Modal>
             </div>
         );
     }

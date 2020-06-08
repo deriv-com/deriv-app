@@ -1038,7 +1038,7 @@ $MIN_HEIGHT_FLOATING: calc(
     height: 100%;
 }
 
-/** @define deactivate-account */
+/** @define deactivate-account; weak */
 .deactivate-account {
     max-width: 67.2rem;
 
@@ -1066,6 +1066,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
             &__content {
                 color: var(--text-general);
+
                 &__link {
                     color: var(--text-loss-danger);
                     font-weight: bold;
@@ -1085,19 +1086,40 @@ $MIN_HEIGHT_FLOATING: calc(
         font-weight: bold;
     }
 }
-.dc-modal__container_confirm-all-close {
-    .dc-modal-header--confirm-all-close {
-        border: none;
-        .dc-modal-header__title {
-            padding-left: 24px;
+
+/* stylelint-disable */
+.dc-modal__container_deactivate-account-reasons {
+    .account-closure-warning-modal {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 32px;
+
+        .dc-form-submit-button {
+            justify-content: center;
+            padding: 2rem 0 0 0;
         }
-    }
-    .dc-modal-body {
-        min-width: 430px;
-        .open-positions {
-            &__title {
-                font-weight: bold;
-            }
+        &__warning-message {
+            color: var(--brand-red-coral);
+            padding: 16px 0;
+            font-size: var(--text-size-s);
+            font-weight: bold;
+            line-height: 1.43;
+        }
+        &__content {
+            color: var(--text-general);
+            font-size: var(--text-size-xs);
+            line-height: 1.43;
+        }
+        &__content-wrapper {
+            display: flex;
+            align-items: center;
+            margin-top: 4px;
+        }
+        &__warning-icon {
+            margin-right: 2px;
         }
     }
 }
+/* stylelint-enable */

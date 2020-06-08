@@ -84,11 +84,6 @@ class PersonalDetails extends React.Component {
                 initialValues={{ ...this.props.value }}
                 validate={this.props.validate}
                 onSubmit={(values, actions) => {
-                    if (values.tax_residence) {
-                        values.tax_residence = this.props.residence_list.find(
-                            item => item.text === values.tax_residence
-                        ).value;
-                    }
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
                 ref={this.form}
@@ -122,7 +117,8 @@ class PersonalDetails extends React.Component {
                                                         <Autocomplete
                                                             {...field}
                                                             data-lpignore='true'
-                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                            disabled={this.props.disabled_items.includes('salutation')}
+                                                            autoComplete='off' // prevent chrome autocomplete
                                                             type='text'
                                                             label={localize('Title')}
                                                             error={touched.salutation && errors.salutation}
@@ -135,34 +131,47 @@ class PersonalDetails extends React.Component {
                                                     )}
                                                 </Field>
                                             )}
-                                            <FormInputField
-                                                name='first_name'
-                                                label={localize('First name')}
-                                                placeholder={localize('John')}
-                                            />
-                                            <FormInputField
-                                                name='last_name'
-                                                label={localize('Last name')}
-                                                placeholder={localize('Doe')}
-                                            />
-                                            <FormInputField
-                                                name='phone'
-                                                label={localize('Phone number')}
-                                                placeholder={localize('Phone number')}
-                                            />
+                                            {'first_name' in this.props.value && (
+                                                <FormInputField
+                                                    name='first_name'
+                                                    label={localize('First name')}
+                                                    disabled={this.props.disabled_items.includes('first_name')}
+                                                    placeholder={localize('John')}
+                                                />
+                                            )}
+                                            {'last_name' in this.props.value && (
+                                                <FormInputField
+                                                    name='last_name'
+                                                    label={localize('Last name')}
+                                                    disabled={this.props.disabled_items.includes('last_name')}
+                                                    placeholder={localize('Doe')}
+                                                />
+                                            )}
+                                            {'phone' in this.props.value && (
+                                                <FormInputField
+                                                    name='phone'
+                                                    label={localize('Phone number')}
+                                                    placeholder={localize('Phone number')}
+                                                />
+                                            )}
                                             <FormSubHeader title={localize('Other details')} />
-                                            <DateOfBirthField
-                                                name='date_of_birth'
-                                                label={localize('Date of birth')}
-                                                placeholder={localize('01-07-1999')}
-                                            />
+                                            {'date_of_birth' in this.props.value && (
+                                                <DateOfBirthField
+                                                    name='date_of_birth'
+                                                    label={localize('Date of birth')}
+                                                    placeholder={localize('01-07-1999')}
+                                                />
+                                            )}
                                             {'place_of_birth' in this.props.value && (
                                                 <Field name='place_of_birth'>
                                                     {({ field }) => (
                                                         <Autocomplete
                                                             {...field}
+                                                            disabled={this.props.disabled_items.includes(
+                                                                'place_of_birth'
+                                                            )}
                                                             data-lpignore='true'
-                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                            autoComplete='off' // prevent chrome autocomplete
                                                             type='text'
                                                             label={localize('Place of birth')}
                                                             error={touched.place_of_birth && errors.place_of_birth}
@@ -181,7 +190,7 @@ class PersonalDetails extends React.Component {
                                                         <Autocomplete
                                                             {...field}
                                                             data-lpignore='true'
-                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                            autoComplete='off' // prevent chrome autocomplete
                                                             type='text'
                                                             label={localize('Citizenship')}
                                                             error={touched.citizen && errors.citizen}
@@ -208,7 +217,7 @@ class PersonalDetails extends React.Component {
                                                                 <Autocomplete
                                                                     {...field}
                                                                     data-lpignore='true'
-                                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                                    autoComplete='off' // prevent chrome autocomplete
                                                                     type='text'
                                                                     label={localize('Tax residence')}
                                                                     error={
@@ -261,7 +270,7 @@ class PersonalDetails extends React.Component {
                                                             <Autocomplete
                                                                 {...field}
                                                                 data-lpignore='true'
-                                                                autoComplete='new-password' // prevent chrome autocomplete
+                                                                autoComplete='off' // prevent chrome autocomplete
                                                                 type='text'
                                                                 label={localize('Account opening reason')}
                                                                 error={

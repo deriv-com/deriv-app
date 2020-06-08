@@ -85,8 +85,10 @@ class AccountWizard extends React.Component {
             if (!this.residence_list?.length) {
                 const items = this.state.items.slice(0);
                 this.getCountryCode().then(phone_idd => {
-                    items[1].form_value.phone = phone_idd || '';
-                    this.setState(items);
+                    if ('phone' in items[1].form_value) {
+                        items[1].form_value.phone = phone_idd || '';
+                        this.setState(items);
+                    }
                 });
             }
         });
@@ -129,6 +131,12 @@ class AccountWizard extends React.Component {
                     values.citizen = values.citizen
                         ? getLocation(this.props.residence_list, values.citizen, 'value')
                         : '';
+                }
+
+                if (values.tax_residence) {
+                    values.tax_residence = values.tax_residence
+                        ? getLocation(this.props.residence_list, values.tax_residence, 'value')
+                        : values.tax_residence;
                 }
 
                 if (values.address_state) {
@@ -194,7 +202,7 @@ class AccountWizard extends React.Component {
 
     submitForm = () => {
         const clone = { ...this.form_values };
-        delete clone?.tax_identification_confirm;
+        delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
 
         return this.props.realAccountSignup(clone);
     };
@@ -246,7 +254,11 @@ class AccountWizard extends React.Component {
             this.submitForm()
                 .then(response => {
                     setSubmitting(false);
-                    this.props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
+                    if (this.props.real_account_signup_target === 'maltainvest') {
+                        this.props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
+                    } else {
+                        this.props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
+                    }
                 })
                 .catch(error => {
                     this.props.onError(error, this.state.items);

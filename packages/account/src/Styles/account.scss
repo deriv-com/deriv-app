@@ -1121,5 +1121,34 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-right: 2px;
         }
     }
+    .have-open-positions {
+        padding: 24px;
+
+        &__title {
+            color: var(--text-prominent);
+            font-size: var(--text-size-xs);
+            font-weight: bold;
+        }
+        &__accounts-wrapper {
+            display: flex;
+            padding: 8px 8px 8px 16px;
+            align-items: center;
+        }
+        &__accounts-data {
+            display: flex;
+            flex-direction: column;
+            margin-left: 8px;
+        }
+        &__accounts-loginid {
+            color: var(--text-prominent);
+            font-size: var(--text-size-xxxs);
+            line-height: 1.4;
+        }
+        &__accounts-currency {
+            color: var(--text-prominent);
+            font-size: var(--text-size-xs);
+            line-height: 1.43;
+        }
+    }
 }
 /* stylelint-enable */

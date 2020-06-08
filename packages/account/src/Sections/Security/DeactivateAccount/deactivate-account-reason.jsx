@@ -1,7 +1,9 @@
 import React from 'react';
+import { WS } from 'Services/ws-methods';
 import { localize, Localize } from '@deriv/translations';
 import { Formik, Field } from 'formik';
-import { Checkbox, Input, FormSubmitButton, Modal, Icon } from '@deriv/components';
+import { Checkbox, Button, Input, FormSubmitButton, Modal, Icon } from '@deriv/components';
+import { connect } from 'Stores/connect';
 
 const initial_form = {
     otherFinancialPriorities: false,
@@ -24,8 +26,11 @@ const preparingReason = (values) => {
     return `${selected_reasons}, ${values.otherTradingPlatforms}, ${values.doToImprove}`;
 };
 
-const selectedReasons = (values) =>
-    Object.entries(values).filter(([key, value]) => !['otherTradingPlatforms', 'doToImprove'].includes(key) && value);
+const selectedReasons = (values) => {
+    return Object.entries(values).filter(
+        ([key, value]) => !['otherTradingPlatforms', 'doToImprove'].includes(key) && value
+    );
+};
 
 const validateFields = (values) => {
     const error = {};
@@ -51,12 +56,13 @@ const validateFields = (values) => {
     return error;
 };
 
-const assertTotalCheckedItems = (should_check_for_limit, values) =>
-    !should_check_for_limit && selectedReasons(values).length === 3;
+const assertTotalCheckedItems = (should_check_for_limit, values) => {
+    return !should_check_for_limit && selectedReasons(values).length === 3;
+};
 
 const handleChangeCheckbox = (values, name, setFieldValue) => {
     if (assertTotalCheckedItems(values[name], values)) {
-        console.log(values);
+        alert('please select up to 3');
     } else {
         setFieldValue(name, !values[name]);
     }
@@ -87,26 +93,71 @@ const WarningModal = (props) => {
                 label={localize('Deactivate')}
                 has_cancel
                 cancel_label={localize('Back')}
-                onCancel={() => props.CloseWarningModal()}
-                onClick={() => console.log('clicked!')}
+                onCancel={() => props.closeModal()}
+                onClick={() => props.startDeactivating()}
             />
+        </div>
+    );
+};
+const HaveOpenPositions = (accounts_with_open_positions_id, client_accounts) => {
+    const accounts_with_open_positions = Object.keys(accounts_with_open_positions_id).map((open_position_id) =>
+        client_accounts.filter((account) => account.loginid === open_position_id)
+    );
+
+    return (
+        <div className='have-open-positions'>
+            <p className='have-open-positions__title'>{localize('You have open positions in these Deriv accounts:')}</p>
+            {accounts_with_open_positions.map((account) => (
+                <div key={account[0].loginid} className='have-open-positions__accounts-wrapper'>
+                    <Icon icon={`IcCurrency-${account[0].title.toLowerCase()}`} size={24} />
+                    <div className='have-open-positions__accounts-data'>
+                        <span className='have-open-positions__accounts-currency'>{account[0].title}</span>
+                        <span className='have-open-positions__accounts-loginid'>{account[0].loginid}</span>
+                    </div>
+                </div>
+            ))}
+            <Button primary>{localize('OK')}</Button>
         </div>
     );
 };
 class DeactivateAccountReason extends React.Component {
     state = {
-        is_warning_modal_open: false,
+        is_modal_open: false,
+        reason: null,
+        accounts: undefined,
+        which_modal_should_render: undefined,
     };
+
     handleSubmitForm = (values) => {
         const final_reason = preparingReason(values);
-        console.log(final_reason);
         this.setState({
-            is_warning_modal_open: true,
+            is_modal_open: true,
+            which_modal_should_render: 'warning_modal',
+            reason: final_reason,
         });
     };
-    closeWarningModal = () => {
-        this.setState({ is_warning_modal_open: false });
+
+    closeModal = () => {
+        this.setState({ is_modal_open: false });
     };
+
+    startDeactivating = () => {
+        this.closeModal();
+        WS.send({
+            account_closure: 1,
+            reason: this.state.reason,
+        })
+            .then((res) => {
+                console.log(res.error);
+                this.setState({
+                    which_modal_should_render: res.error.code,
+                    accounts: res.error.details.accounts,
+                    is_modal_open: true,
+                });
+            })
+            .catch((err) => console.log(err));
+    };
+
     render() {
         return (
             <div className='deactivate-account-reasons'>
@@ -242,13 +293,28 @@ class DeactivateAccountReason extends React.Component {
                 </Formik>
                 <Modal
                     className='deactivate-account-reasons'
-                    is_open={this.state.is_warning_modal_open}
-                    toggleModal={() => this.setState({ is_warning_modal_open: !this.state.is_warning_modal_open })}
+                    is_open={this.state.is_modal_open}
+                    toggleModal={() => this.setState({ is_modal_open: !this.state.is_modal_open })}
+                    title={
+                        this.state.which_modal_should_render !== 'warning_modal'
+                            ? localize('Action required')
+                            : undefined
+                    }
                 >
-                    <WarningModal CloseWarningModal={this.closeWarningModal} />
+                    {this.state.which_modal_should_render === 'warning_modal' && (
+                        <WarningModal closeModal={this.closeModal} startDeactivating={this.startDeactivating} />
+                    )}
+                    {this.state.which_modal_should_render === 'AccountHasOpenPositions' &&
+                        HaveOpenPositions(this.state.accounts, this.props.accounts)}
+                    {this.state.which_modal_should_render === 'ExistingAccountHasBalance' && (
+                        <div>"ExistingAccountHasBalance"</div>
+                    )}
                 </Modal>
             </div>
         );
     }
 }
-export default DeactivateAccountReason;
+
+export default connect(({ client }) => ({
+    accounts: client.account_list,
+}))(DeactivateAccountReason);

@@ -1,5 +1,4 @@
 import React from 'react';
-// import { WS } from 'Services/ws-methods';
 import DeactivateAccountSteps from './deactivate-account-steps';
 import DeactivateAccountReason from './deactivate-account-reason';
 class DeactivateAccount extends React.Component {
@@ -37,28 +36,3 @@ class DeactivateAccount extends React.Component {
 }
 
 export default DeactivateAccount;
-
-// WS.send(
-//     {
-//         "account_closure": 1,
-//         "reason": null
-//     })
-//     .then((res) => {
-//         console.log(res.error.code);
-//         this.setState({
-//             account_closure_message: res.error.code,
-//             is_loading: false
-//         })
-//     })
-//     .catch((err) => console.log(err));
-
-// const AccountsWithBalance = () => {
-//     return (
-//         <div className='open-positions'>
-//             <p className='open-positions__title'>{localize('You have funds in these Deriv accounts:')}</p>
-//         </div>
-//     )
-// }
-// const AccountsWithOpenPositions = () => {
-//     <div>open positions</div>
-// }

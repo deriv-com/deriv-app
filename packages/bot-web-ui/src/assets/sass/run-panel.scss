@@ -167,3 +167,43 @@
         }
     }
 }
+
+.self-exclusion {
+    font-size: var(--text-size-xs);
+    font-weight: normal;
+    line-height: 1.43;
+    color: var(--text-general);
+    margin: 1.6rem;
+
+    &__dialog {
+        max-height: 500px !important;
+        width: 460px;
+    }
+    &__footer {
+        float: right;
+    }
+    &__info {
+        margin: 1.5rem 0;
+    }
+    &__limit-status {
+        margin: 1rem 0;
+
+        &--bold {
+            font-weight: 700;
+            padding-left: 1rem;
+        }
+        &--danger {
+            font-weight: 700;
+            color: var(--status-danger);
+        }
+    }
+    &--danger {
+        color: var(--status-danger);
+    }
+}
+
+.dc-modal__container_self-exclusion__modal {
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+}

@@ -147,7 +147,6 @@ class RunPanel extends React.PureComponent {
     componentWillUnmount() {
         this.props.onUnmount();
     }
-
     render() {
         const {
             active_index,
@@ -232,7 +231,9 @@ export default connect(({ run_panel, core, ui }) => ({
     onMount: run_panel.onMount,
     onOkButtonClick: run_panel.onOkButtonClick,
     onUnmount: run_panel.onUnmount,
+    resetSelfExclusion: self_exclusion.resetSelfExclusion,
     setActiveTabIndex: run_panel.setActiveTabIndex,
+    setLimitations: self_exclusion.setLimitations,
     toggleDrawer: run_panel.toggleDrawer,
     currency: core.client.currency,
     lost_contracts: run_panel.statistics.lost_contracts,

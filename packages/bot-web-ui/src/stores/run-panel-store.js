@@ -1,4 +1,4 @@
-import { observable, action, reaction, computed } from 'mobx';
+import { observable, action, reaction, computed, runInAction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from '../constants/contract-stage';
@@ -52,8 +52,8 @@ export default class RunPanelStore {
     }
 
     @action.bound
-    onRunButtonClick = () => {
-        const { core, contract_card, route_prompt_dialog } = this.root_store;
+    async onRunButtonClick() {
+        const { core, contract_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
 
         this.dbot.unHighlightAllBlocks();
@@ -61,7 +61,10 @@ export default class RunPanelStore {
             this.showLoginDialog();
             return;
         }
-
+        await self_exclusion.checkRestriction();
+        if (self_exclusion.is_restricted) {
+            return;
+        }
         this.registerBotListeners();
 
         if (!this.dbot.shouldRunBot()) {
@@ -74,22 +77,26 @@ export default class RunPanelStore {
                 'Account switching is disabled while your bot is running. Please stop your bot before switching accounts.'
             )
         );
+        runInAction(() => {
+            this.is_stop_button_disabled = false;
+            this.is_running = true;
+            ui.setPromptHandler(true, route_prompt_dialog.shouldNavigateAfterPrompt);
+            this.toggleDrawer(true);
+            this.run_id = `run-${Date.now()}`;
 
-        this.is_running = true;
-        ui.setPromptHandler(true, route_prompt_dialog.shouldNavigateAfterPrompt);
-        this.toggleDrawer(true);
-        this.run_id = `run-${Date.now()}`;
-
-        contract_card.clear();
-        this.setContractStage(contract_stages.STARTING);
-        this.dbot.runBot();
-    };
+            contract_card.clear();
+            this.setContractStage(contract_stages.STARTING);
+            this.dbot.runBot();
+        });
+    }
 
     @action.bound
     onStopButtonClick() {
+        const { self_exclusion } = this.root_store;
         const { ui } = this.root_store.core;
         this.dbot.stopBot();
         ui.setPromptHandler(false);
+        self_exclusion.resetSelfExclusion();
 
         if (this.error_type) {
             // when user click stop button when there is a error but bot is retrying
@@ -225,10 +232,19 @@ export default class RunPanelStore {
         // prevent new version update
         const ignore_new_version = new Event('IgnorePWAUpdate');
         document.dispatchEvent(ignore_new_version);
+        this.is_stop_button_disabled = false;
+        const { self_exclusion } = this.root_store;
+        if (self_exclusion.run_limit !== '') {
+            self_exclusion.run_limit -= 1;
+            if (self_exclusion.run_limit < 0) {
+                this.onStopButtonClick();
+            }
+        }
     }
 
     @action.bound
     onBotStopEvent() {
+        const { self_exclusion } = this.root_store;
         const { ui } = this.root_store.core;
         const indicateBotStopped = () => {
             this.error_type = undefined;
@@ -249,11 +265,13 @@ export default class RunPanelStore {
                 this.setContractStage(contract_stages.PURCHASE_SENT);
             } else {
                 indicateBotStopped();
+                self_exclusion.resetSelfExclusion();
             }
         } else if (this.error_type === error_types.UNRECOVERABLE_ERRORS) {
             // Bot should indicate it stopped in below cases:
             // - When error happens and it's an unrecoverable error
             indicateBotStopped();
+            self_exclusion.resetSelfExclusion();
         } else if (this.has_open_contract) {
             // Bot should indicate the contract is closed in below cases:
             // - When bot was running and an error happens

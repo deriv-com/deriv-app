@@ -65,6 +65,8 @@ export default class ClientStore extends BaseStore {
     };
     @observable account_limits = {};
 
+    @observable self_exclusion = {};
+
     @observable local_currency_config = {
         currency: '',
         decimal_places: undefined,
@@ -449,6 +451,33 @@ export default class ClientStore extends BaseStore {
                         resolve(data);
                     }
                 });
+            });
+        });
+    }
+
+    @action.bound
+    getSelfExclusion() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getSelfExclusion().then(data => {
+                runInAction(() => {
+                    if (data.get_self_exclusion) {
+                        this.self_exclusion = data.get_self_exclusion;
+                    } else {
+                        this.self_exclusion = false;
+                    }
+                    resolve(data);
+                });
+            });
+        });
+    }
+    @action.bound
+    updateSelfExclusion(values) {
+        return new Promise(resolve => {
+            WS.authorized.storage.setSelfExclusion(values).then(data => {
+                if (!data.error) {
+                    this.getSelfExclusion();
+                }
+                resolve(data);
             });
         });
     }

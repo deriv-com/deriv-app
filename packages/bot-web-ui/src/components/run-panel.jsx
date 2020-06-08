@@ -1,4 +1,4 @@
-import { Button, Drawer, Icon, Popover, Tabs } from '@deriv/components';
+import { Button, Drawer, Icon, Popover, Tabs, Modal } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
@@ -7,6 +7,7 @@ import Journal from './journal.jsx';
 import Summary from './summary.jsx';
 import TradeAnimation from './trade-animation.jsx';
 import Transactions from './transactions.jsx';
+import SelfExclusion from './self-exclusion.jsx';
 import { connect } from '../stores/connect';
 import '../assets/sass/run-panel.scss';
 
@@ -106,22 +107,32 @@ class RunPanel extends React.PureComponent {
     componentWillUnmount() {
         this.props.onUnmount();
     }
-
     render() {
-        const { active_index, setActiveTabIndex } = this.props;
+        const { active_index, setActiveTabIndex, is_restricted, onRunButtonClick } = this.props;
         const content = drawerContent({ active_index, setActiveTabIndex });
         const footer = drawerFooter(this.props);
-
         return (
-            <Drawer
-                className='run-panel'
-                is_open={this.props.is_drawer_open}
-                toggleDrawer={this.props.toggleDrawer}
-                contentClassName='run-panel__content'
-                footer={footer}
-            >
-                {content}
-            </Drawer>
+            <>
+                <Drawer
+                    className='run-panel'
+                    is_open={this.props.is_drawer_open}
+                    toggleDrawer={this.props.toggleDrawer}
+                    contentClassName='run-panel__content'
+                    footer={footer}
+                >
+                    {content}
+                </Drawer>
+                <Modal
+                    is_open={is_restricted}
+                    has_close_icon
+                    width='500px'
+                    toggleModal={this.props.ToggleSelfExclusion}
+                    className='self-exclusion__modal'
+                    title={localize('Self exclusion limitations')}
+                >
+                    <SelfExclusion onRunButtonClick={onRunButtonClick} />
+                </Modal>
+            </>
         );
     }
 }
@@ -143,14 +154,19 @@ RunPanel.propTypes = {
     onUnmount: PropTypes.func,
     setActiveTabIndex: PropTypes.func,
     toggleDrawer: PropTypes.func,
+    setLimitations: PropTypes.func,
+    is_restricted: PropTypes.bool,
+    resetSelfExclusion: PropTypes.func,
+    ToggleSelfExclusion: PropTypes.func,
 };
 
-export default connect(({ run_panel }) => ({
+export default connect(({ run_panel, self_exclusion }) => ({
     active_index: run_panel.active_index,
     dialog_options: run_panel.dialog_options,
     is_clear_stat_disabled: run_panel.is_clear_stat_disabled,
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
+    is_restricted: self_exclusion.is_restricted,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     is_stop_button_visible: run_panel.is_stop_button_visible,
     onCancelButtonClick: run_panel.onCancelButtonClick,
@@ -160,6 +176,9 @@ export default connect(({ run_panel }) => ({
     onRunButtonClick: run_panel.onRunButtonClick,
     onStopButtonClick: run_panel.onStopButtonClick,
     onUnmount: run_panel.onUnmount,
+    resetSelfExclusion: self_exclusion.resetSelfExclusion,
     setActiveTabIndex: run_panel.setActiveTabIndex,
+    setLimitations: self_exclusion.setLimitations,
     toggleDrawer: run_panel.toggleDrawer,
+    ToggleSelfExclusion: self_exclusion.ToggleSelfExclusion,
 }))(RunPanel);

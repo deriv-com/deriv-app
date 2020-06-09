@@ -4,8 +4,8 @@ import PersonalDetails from 'App/Containers/RealAccountSignup/personal-details.j
 import { getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
 import { generateValidationFunction, getDefaultFields } from './form-validations';
 
-const personal_details_config = ({ residence_list }) => {
-    if (!residence_list) {
+const personal_details_config = ({ residence_list, account_settings }) => {
+    if (!residence_list || !account_settings) {
         return {};
     }
 
@@ -17,12 +17,12 @@ const personal_details_config = ({ residence_list }) => {
         },
         salutation: {
             supported_in: ['iom', 'malta', 'maltainvest'],
-            default_value: '',
+            default_value: account_settings.salutation ?? '',
             rules: [['req', localize('Salutation is required')]],
         },
         first_name: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
-            default_value: '',
+            default_value: account_settings.first_name ?? '',
             rules: [
                 ['req', localize('First name is required')],
                 ['letter_symbol', getPreBuildDVRs().letter_symbol.message],
@@ -31,7 +31,7 @@ const personal_details_config = ({ residence_list }) => {
         },
         last_name: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
-            default_value: '',
+            default_value: account_settings.last_name ?? '',
             rules: [
                 ['req', localize('Last name is required')],
                 ['letter_symbol', getPreBuildDVRs().letter_symbol.message],
@@ -40,7 +40,7 @@ const personal_details_config = ({ residence_list }) => {
         },
         date_of_birth: {
             supported_in: ['svg', 'iom', 'malta'],
-            default_value: '',
+            default_value: account_settings.date_of_birth ?? '',
             rules: [
                 ['req', localize('Date of birth is required')],
                 [
@@ -51,29 +51,31 @@ const personal_details_config = ({ residence_list }) => {
         },
         place_of_birth: {
             supported_in: ['maltainvest', 'iom', 'malta'],
-            default_value: '',
+            default_value: account_settings.place_of_birth
+                ? residence_list.find(item => item.value === account_settings.place_of_birth).text
+                : '',
             rules: [['req', localize('Place of birth is required')]],
         },
         citizen: {
             supported_in: ['iom', 'malta'],
-            default_value: '',
+            default_value: account_settings.citizen ?? '',
             rules: [['req', localize('Citizenship is required')]],
         },
         phone: {
             supported_in: ['svg', 'iom', 'malta'],
-            default_value: '',
+            default_value: account_settings.phone ?? '',
             rules: [
                 ['req', localize('Phone is required')],
                 ['phone', localize('Phone is not in a correct format.')],
             ],
         },
         tax_residence: {
-            default_value: '',
+            default_value: account_settings.tax_residence ?? '',
             supported_in: ['maltainvest'],
             rules: [['req', localize('Tax residence is required')]],
         },
         tax_identification_number: {
-            default_value: '',
+            default_value: account_settings.tax_identification_number ?? '',
             supported_in: ['maltainvest'],
             rules: [
                 ['req', localize('Tax identification number is required')],
@@ -101,18 +103,22 @@ const personal_details_config = ({ residence_list }) => {
     };
 };
 
-export const personalDetailsConfig = ({ real_account_signup_target, residence_list }) => {
-    window.pev = generateValidationFunction(real_account_signup_target, personal_details_config({ residence_list }));
-    window.vs = getDefaultFields(real_account_signup_target, personal_details_config({ residence_list }));
+export const personalDetailsConfig = ({ real_account_signup_target, residence_list, account_settings }) => {
     return {
         header: {
             active_title: localize('Complete your personal details'),
             title: localize('Personal details'),
         },
         body: PersonalDetails,
-        form_value: getDefaultFields(real_account_signup_target, personal_details_config({ residence_list })),
+        form_value: getDefaultFields(
+            real_account_signup_target,
+            personal_details_config({ residence_list, account_settings })
+        ),
         props: {
-            validate: window.pev,
+            validate: generateValidationFunction(
+                real_account_signup_target,
+                personal_details_config({ residence_list })
+            ),
             account_opening_reason_list: [
                 {
                     text: localize('Hedging'),

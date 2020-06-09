@@ -316,6 +316,7 @@ AccountWizard.propTypes = {
 };
 
 export default connect(({ client, ui }) => ({
+    account_settings: client.account_settings,
     is_fully_authenticated: client.is_fully_authenticated,
     realAccountSignup: client.realAccountSignup,
     has_real_account: client.has_active_real_account,

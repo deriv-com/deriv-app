@@ -16,6 +16,8 @@ import './cashier/ic-cashier-mastercard.svg';
 import './cashier/ic-cashier-no-ads.svg';
 import './cashier/ic-cashier-no-balance.svg';
 import './cashier/ic-cashier-no-orders.svg';
+import './cashier/ic-cashier-off-ramp.svg';
+import './cashier/ic-cashier-on-ramp.svg';
 import './cashier/ic-cashier-p2p-user.svg';
 import './cashier/ic-cashier-send-email.svg';
 import './cashier/ic-cashier-visa.svg';

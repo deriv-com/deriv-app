@@ -230,7 +230,7 @@ const initRoutesConfig = () => [
                 path: routes.cashier_onramp,
                 component: lazyLoadCashierComponent('OnRamp'),
                 title: localize('Fiat onramp'),
-                icon_component: 'IcDp2p',
+                icon_component: 'IcCashierOnRamp',
             },
         ],
     },

@@ -11,7 +11,7 @@ const OnRampProviderCard = ({ provider, setSelectedProvider }) => {
             </div>
             <h2 className='on-ramp__provider-name'>{provider.name}</h2>
             <div className='on-ramp__provider-description'>{provider.description}</div>
-            <a href={provider.website} className='on-ramp__provider-website link'>
+            <a href={provider.website} className='on-ramp__provider-website link' target='_blank'>
                 {provider.website}
             </a>
             {provider.payment_types.length && (

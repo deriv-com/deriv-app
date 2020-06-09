@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Icon } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
@@ -8,7 +8,7 @@ import FormAds from './form-ads.jsx';
 import MyAdsTable from './my-ads-table.jsx';
 import './my-ads.scss';
 
-class MyAds extends Component {
+class MyAds extends React.Component {
     // TODO: Find a better solution for handling no-op instead of using is_mounted flags
     is_mounted = false;
 
@@ -56,7 +56,11 @@ class MyAds extends Component {
                     {this.state.show_form ? (
                         <FormAds handleShowForm={this.handleShowForm} />
                     ) : (
-                        <MyAdsTable onClickCreate={this.onClickCreate} is_enabled={this.state.is_enabled} />
+                        <MyAdsTable
+                            onClickCreate={this.onClickCreate}
+                            is_enabled={this.state.is_enabled}
+                            onToggle={this.setEnabled}
+                        />
                     )}
                 </div>
             );

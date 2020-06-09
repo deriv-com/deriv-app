@@ -1,4 +1,5 @@
 import React from 'react';
+import { getUrlSmartTrader } from '@deriv/shared/utils/storage';
 import { urlFor } from '@deriv/shared/utils/url';
 import { connect } from 'Stores/connect';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
@@ -18,13 +19,19 @@ const TradeModals = ({
     resetPurchase,
     services_error,
 }) => {
-    const marketUnavailableOnConfirm = () => {
+    const resetToPreviousMarket = () => {
         setHasOnlyForwardingContracts(false);
         resetPreviousSymbol();
     };
 
-    const marketUnavailableOnCancel = () =>
-        window.open(urlFor('trading', { legacy: true })) && setHasOnlyForwardingContracts(false);
+    const marketUnavailableOnConfirm = () => {
+        resetToPreviousMarket();
+    };
+
+    const marketUnavailableOnCancel = () => {
+        window.open(getUrlSmartTrader());
+        resetToPreviousMarket();
+    };
 
     const servicesErrorModalOnConfirm = () => {
         toggleServicesErrorModal(false);
@@ -35,12 +42,12 @@ const TradeModals = ({
     };
 
     const unsupportedContractOnConfirm = () => {
-        window.open(urlFor('user/portfoliows', { legacy: true }), '_blank');
-        unsupportedContractOnClose();
+        toggleUnsupportedContractModal(false);
     };
 
     const unsupportedContractOnClose = () => {
-        toggleUnsupportedContractModal(false);
+        window.open(urlFor('user/portfoliows', { legacy: true }), '_blank');
+        unsupportedContractOnConfirm(false);
     };
 
     return (

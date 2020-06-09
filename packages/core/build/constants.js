@@ -44,7 +44,7 @@ const HOISTED_PACKAGES = {
     '@deriv/shared': path.resolve(__dirname, '../node_modules/@deriv/shared'),
     '@deriv/components': path.resolve(__dirname, '../node_modules/@deriv/components'),
     '@deriv/translations': path.resolve(__dirname, '../node_modules/@deriv/translations'),
-    'smartcharts-beta': path.resolve(__dirname, '../node_modules/smartcharts-beta'),
+    '@deriv/deriv-charts': path.resolve(__dirname, '../node_modules/@deriv/deriv-charts'),
 };
 
 const ALIASES = {
@@ -146,7 +146,7 @@ const plugins = (base, is_test_env, is_mocha_only) => [
         ? [new StylelintPlugin(stylelintConfig())]
         : [
               new GenerateSW(generateSWConfig()),
-              // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
+              // ...(!IS_RELEASE ? [new BundleAnalyzerPlugin({ analyzerMode: 'static' })] : []),
           ]),
 ];
 

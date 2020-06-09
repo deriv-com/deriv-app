@@ -61,6 +61,7 @@ const Login = (() => {
 
     return {
         redirectToLogin,
+        loginUrl,
         isLoginPages,
         initOneAll,
         redirectToSignUp,

@@ -108,6 +108,8 @@ export default class TradeStore extends BaseStore {
     @observable commission = 0;
     @observable cancellation_price = 0;
     @observable hovered_contract_type;
+    @observable cancellation_duration = '60m';
+    @observable cancellation_range_list = [];
 
     // Mobile
     @observable is_trade_params_expanded = true;

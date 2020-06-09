@@ -19,6 +19,7 @@ $MIN_HEIGHT_FLOATING: calc(
         &__header--active {
             border-left: 4px solid var(--brand-red-coral);
             padding-left: 4.4rem;
+            background-color: var(--content-bg-color);
         }
     }
     &__inset_header {

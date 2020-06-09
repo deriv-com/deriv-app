@@ -13,6 +13,8 @@ export const icons = {
         'IcCashierNoAds',
         'IcCashierNoBalance',
         'IcCashierNoOrders',
+        'IcCashierOffRamp',
+        'IcCashierOnRamp',
         'IcCashierP2pUser',
         'IcCashierSendEmail',
         'IcCashierVisa',

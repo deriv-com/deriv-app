@@ -665,11 +665,8 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin: 10px auto;
                 padding: 10px;
                 color: var(--text-general);
-                background-color: $color-grey-4;
+                background-color: var(--general-section-3);
 
-                &.theme-dark {
-                    background-color: $color-black-3;
-                }
                 .cell-title {
                     font-size: 12px;
                     font-weight: bold;

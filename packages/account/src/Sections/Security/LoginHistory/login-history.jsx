@@ -16,12 +16,8 @@ const Td = ({ title, text, className }) => (
     </td>
 );
 
-const LoginHistoryListView = ({ fields, login_history, is_dark_mode }) => (
-    <table
-        className={classNames('login-history-table', {
-            'theme-dark': is_dark_mode,
-        })}
-    >
+const LoginHistoryListView = ({ fields, login_history }) => (
+    <table className='login-history-table'>
         <tbody>
             <tr>
                 <Td title={fields.date} text={login_history.date} />
@@ -127,12 +123,7 @@ class LoginHistory extends React.Component {
                         </DesktopWrapper>
                         <MobileWrapper>
                             {this.state.data.map((item) => (
-                                <LoginHistoryListView
-                                    key={item.id}
-                                    fields={this.fields}
-                                    login_history={item}
-                                    is_dark_mode={this.props.is_dark_mode}
-                                />
+                                <LoginHistoryListView key={item.id} fields={this.fields} login_history={item} />
                             ))}
                         </MobileWrapper>
                     </>
@@ -146,7 +137,6 @@ LoginHistory.propTypes = {
     is_switching: PropTypes.bool,
 };
 
-export default connect(({ client, ui }) => ({
-    is_dark_mode: ui.is_dark_mode_on,
+export default connect(({ client }) => ({
     is_switching: client.is_switching,
 }))(LoginHistory);

@@ -2,11 +2,10 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
 import { urlFor } from '@deriv/shared/utils/url';
 import { localize, Localize } from '@deriv/translations';
-import DataTable from 'App/Components/Elements/DataTable';
-import DataList from 'App/Components/Elements/DataList';
+import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { website_name } from 'App/Constants/app-config';
@@ -152,6 +151,7 @@ class Statement extends React.Component {
                                 is_empty={is_empty}
                                 custom_width={'100%'}
                                 getRowSize={() => 63}
+                                content_loader={ReportsTableRowLoader}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataTable>

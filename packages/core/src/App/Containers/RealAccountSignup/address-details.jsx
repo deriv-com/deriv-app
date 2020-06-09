@@ -182,9 +182,8 @@ class AddressDetails extends React.Component {
                                             )}
                                             <InputField
                                                 name='address_postcode'
-                                                required
-                                                label={localize('Postal/ZIP Code*')}
-                                                placeholder={localize('Postal/ZIP Code')}
+                                                label={localize('Postal/ZIP code')}
+                                                placeholder={localize('Postal/ZIP code')}
                                             />
                                         </div>
                                     </ThemedScrollbars>

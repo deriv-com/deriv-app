@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import TableCell from './table-cell.jsx';
 import TableRowInfo from './table-row-info.jsx';
 
@@ -17,6 +16,7 @@ const TableRow = ({
     replace,
     row_obj = {},
     to,
+    content_loader,
 }) => {
     const action_columns = getActionColumns && getActionColumns({ row_obj, is_header, is_footer });
 
@@ -40,12 +40,9 @@ const TableRow = ({
         { 'table__row-link': to || replace },
         { [`${className}__row`]: className }
     );
+    const ContentLoader = content_loader;
     if (!is_footer && !is_header && show_preloader) {
-        return (
-            <div className='table__row--preloader'>
-                <ReportsTableRowLoader />
-            </div>
-        );
+        return <div className='table__row--preloader'>{content_loader ? <ContentLoader /> : null}</div>;
     }
     return to ? (
         <div className={`${className}__row_wrapper`}>
@@ -80,6 +77,7 @@ TableRow.propTypes = {
     replace: PropTypes.object,
     row_obj: PropTypes.object,
     to: PropTypes.string,
+    content_loader: PropTypes.elementType,
 };
 
 export default TableRow;

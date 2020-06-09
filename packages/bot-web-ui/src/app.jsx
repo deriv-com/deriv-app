@@ -53,7 +53,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store);
+        DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store, this.root_store.ui);
         this.registerCurrencyReaction();
         this.registerOnAccountSwitch();
         this.registerClickOutsideBlockly();

@@ -544,6 +544,7 @@ class FinancialAssessment extends React.Component {
                                             onClick={() => this.toggleConfirmationModal(true)}
                                             is_disabled={
                                                 isSubmitting ||
+                                                Object.keys(touched).length === 0 ||
                                                 !!(
                                                     errors.income_source ||
                                                     !values.income_source ||

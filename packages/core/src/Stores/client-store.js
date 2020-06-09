@@ -98,7 +98,8 @@ export default class ClientStore extends BaseStore {
             this.is_virtual ||
             this.accounts[this.loginid].landing_company_shortcode === 'svg' ||
             this.accounts[this.loginid].landing_company_shortcode === 'iom' ||
-            this.accounts[this.loginid].landing_company_shortcode === 'malta'
+            this.accounts[this.loginid].landing_company_shortcode === 'malta' ||
+            this.accounts[this.loginid].landing_company_shortcode === 'maltainvest'
         );
     }
 
@@ -506,7 +507,7 @@ export default class ClientStore extends BaseStore {
                 this.is_populating_account_list = true;
             });
             const client_accounts = JSON.parse(LocalStore.get(storage_key));
-            const { oauth_token, client_id } = response.new_account_real;
+            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
             const authorize_response = await BinarySocket.authorize(oauth_token);
 
             const new_data = {};
@@ -550,13 +551,12 @@ export default class ClientStore extends BaseStore {
                 : await WS.newAccountReal(form_values);
             if (!response.error) {
                 await this.accountRealReaction(response);
-                localStorage.removeItem('real_account_signup_wizard');
-
                 // Set currency after account is created
                 // Maltainvest only
                 if (is_maltainvest_account) {
-                    await WS.setAccountCurrency(currency);
+                    await this.setAccountCurrency(currency);
                 }
+                localStorage.removeItem('real_account_signup_wizard');
                 resolve(response);
             } else {
                 reject(response.error);

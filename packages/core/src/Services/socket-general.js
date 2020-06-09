@@ -50,7 +50,8 @@ const BinarySocketGeneral = (() => {
                     // In any other case, if the response loginid does not match the store's loginid, user must be logged out
                     if (
                         response.authorize.loginid !== client_store.loginid &&
-                        !client_store.is_populating_account_list
+                        !client_store.is_populating_account_list &&
+                        !client_store.is_switching
                     ) {
                         client_store.logout();
                     } else if (response.authorize.loginid === client_store.loginid) {
@@ -93,10 +94,14 @@ const BinarySocketGeneral = (() => {
         }
     };
 
-    const setBalance = flow(function*(obj_balance) {
+    const setBalanceActiveAccount = flow(function*(obj_balance) {
         yield BinarySocket.wait('website_status');
-        client_store.setBalance(obj_balance);
+        client_store.setBalanceActiveAccount(obj_balance);
     });
+
+    const setBalanceOtherAccounts = obj_balance => {
+        client_store.setBalanceOtherAccounts(obj_balance);
+    };
 
     const handleError = response => {
         const msg_type = response.msg_type;
@@ -109,14 +114,15 @@ const BinarySocketGeneral = (() => {
                         if (!mt5_list_response.error) {
                             client_store.responseMt5LoginList(mt5_list_response);
                             WS.balanceAll().then(balance_response => {
-                                if (!balance_response.error) client_store.setBalance(balance_response.balance);
+                                if (!balance_response.error)
+                                    client_store.setBalanceOtherAccounts(balance_response.balance);
                             });
                         } else {
                             client_store.resetMt5ListPopulatedState();
                         }
                     });
                 } else if (msg_type === 'balance') {
-                    forgetAndSubscribeBalance();
+                    WS.forgetAll('balance').then(subscribeBalances);
                 } else if (msg_type === 'get_account_status') {
                     WS.authorized.getAccountStatus().then(account_status_response => {
                         if (!account_status_response.error) {
@@ -154,8 +160,7 @@ const BinarySocketGeneral = (() => {
                 common_store.setError(true, { message: response.error.message });
                 break;
             case 'InvalidToken':
-                // if message type equals to cashier, there is no need to logout user
-                if (msg_type === 'cashier' || msg_type === 'paymentagent_withdraw') {
+                if (['cashier', 'paymentagent_withdraw', 'mt5_password_reset'].includes(msg_type)) {
                     return;
                 }
                 client_store.logout().then(() => {
@@ -191,18 +196,14 @@ const BinarySocketGeneral = (() => {
         };
     };
 
-    const forgetAndSubscribeBalance = () => {
-        WS.forgetAll('balance').then(() => {
-            // the first has to be without subscribe to quickly update current account's balance
-            WS.authorized.balance().then(ResponseHandlers.balance);
-            // the second is to subscribe to balance and update all sibling accounts' balances too
-            WS.subscribeBalanceAll(ResponseHandlers.balance);
-        });
+    const subscribeBalances = () => {
+        WS.subscribeBalanceAll(ResponseHandlers.balanceOtherAccounts);
+        WS.subscribeBalanceActiveAccount(ResponseHandlers.balanceActiveAccount, client_store.loginid);
     };
 
     const authorizeAccount = response => {
         client_store.responseAuthorize(response);
-        forgetAndSubscribeBalance();
+        subscribeBalances();
         WS.storage.getSettings();
         WS.getAccountStatus();
         WS.storage.payoutCurrencies();
@@ -225,7 +226,8 @@ const BinarySocketGeneral = (() => {
 
     return {
         init,
-        setBalance,
+        setBalanceActiveAccount,
+        setBalanceOtherAccounts,
         authorizeAccount,
     };
 })();
@@ -251,14 +253,21 @@ const ResponseHandlers = (() => {
         }
     };
 
-    const balance = response => {
+    const balanceActiveAccount = response => {
         if (!response.error) {
-            BinarySocketGeneral.setBalance(response.balance);
+            BinarySocketGeneral.setBalanceActiveAccount(response.balance);
+        }
+    };
+
+    const balanceOtherAccounts = response => {
+        if (!response.error) {
+            BinarySocketGeneral.setBalanceOtherAccounts(response.balance);
         }
     };
 
     return {
         websiteStatus,
-        balance,
+        balanceActiveAccount,
+        balanceOtherAccounts,
     };
 })();

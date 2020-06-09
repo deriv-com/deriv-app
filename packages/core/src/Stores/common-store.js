@@ -59,7 +59,7 @@ export default class CommonStore extends BaseStore {
     setIsSocketOpened(is_socket_opened) {
         // note that it's not for account switch that we're doing this,
         // but rather to reset account related stores like portfolio and contract-trade
-        const should_broadcast_account_change = this.was_socket_opened && !this.is_socket_opened && is_socket_opened;
+        const should_broadcast_account_change = this.was_socket_opened && is_socket_opened;
 
         this.is_socket_opened = is_socket_opened;
         this.was_socket_opened = this.was_socket_opened || is_socket_opened;

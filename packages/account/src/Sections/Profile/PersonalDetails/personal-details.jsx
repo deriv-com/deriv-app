@@ -701,7 +701,10 @@ class PersonalDetailsForm extends React.Component {
                                         <Checkbox
                                             name='email_consent'
                                             value={values.email_consent}
-                                            onChange={() => setFieldValue('email_consent', !values.email_consent)}
+                                            onChange={() => {
+                                                setFieldValue('email_consent', !values.email_consent);
+                                                setTouched('email_consent');
+                                            }}
                                             label={localize('Get updates about Deriv products, services and events.')}
                                             defaultChecked={!!values.email_consent}
                                         />
@@ -723,6 +726,7 @@ class PersonalDetailsForm extends React.Component {
                                         type='submit'
                                         is_disabled={
                                             isSubmitting ||
+                                            Object.keys(touched).length === 0 ||
                                             (this.props.is_virtual
                                                 ? false
                                                 : !!(

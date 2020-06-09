@@ -1,4 +1,4 @@
-import { action, computed, observable, toJS } from 'mobx';
+import { action, computed, observable, toJS, runInAction } from 'mobx';
 import routes from '@deriv/shared/utils/routes';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
@@ -30,6 +30,144 @@ class ConfigError {
     @observable fields = '';
     @observable is_show_full_page = false;
     @observable onClickButton = null;
+}
+
+class ConfigOnRamp {
+    providers = [
+        {
+            name: 'Changelly',
+            icon: 'IcCashierChangelly',
+            description: localize(
+                'The best instant cryptocurrency exchange platform with the best exchange rates for cryptocurrencies.'
+            ),
+            website: 'https://changelly.com',
+            payment_types: ['IcCashierVisa', 'IcCashierMastercard', 'IcCashierMaestro'],
+            widget: `<script src="https://widget.changelly.com/affiliate.js"></script><iframe src="https://widget.changelly.com?from=gbp,eur,usd&to=btc&amount=50&address=&fromDefault=usd&toDefault=btc&theme=danger&merchant_id=iiq3jdt2p44yrfbx&payment_id=&v=2" width="580px" height="420px" class="changelly" scrolling="no" onLoad="function at(t){var e=t.target,i=e.parentNode,n=e.contentWindow,r=function(){return n.postMessage({width:i.offsetWidth},it.url)};window.addEventListener('resize',r),r()};at.apply(this, arguments);" style="min-width: 100%; width: 580px; height: 420px; overflow-y: hidden; border: none">Can't load widget</iframe>`,
+            from_currencies: [''],
+            to_currencies: [],
+        },
+    ];
+
+    @observable is_disclaimer_checkbox_checked = false;
+    @observable deposit_address = null;
+    @observable deposit_address_ref = null;
+    @observable is_deposit_address_loading = true;
+    @observable is_deposit_address_popover_open = false;
+    @observable is_onramp_modal_open = false;
+    @observable selected_provider = null;
+    @observable should_show_widget = false;
+    @observable onramp_popup_modal_title = '';
+
+    @action.bound
+    onMountOnRampProvider() {
+        WS.authorized.cashier('deposit', { provider: 'crypto', type: 'api' }).then(response => {
+            if (response.error) {
+                // TODO:
+                this.setState({
+                    is_deposit_address_loading: false,
+                });
+            } else {
+                this.setState({
+                    deposit_address: response.cashier.deposit.address,
+                    is_deposit_address_loading: false,
+                });
+            }
+        });
+    }
+
+    @action.bound
+    initPopup() {
+        // TODO: Update this when other crypto addresses become available.
+        WS.authorized.cashier('deposit', { provider: 'crypto', type: 'api' }).then(response => {
+            runInAction(() => {
+                if (response.error) {
+                    // TODO.
+                } else {
+                    this.deposit_address = response.cashier.deposit.address;
+                }
+                this.is_deposit_address_loading = false;
+            });
+        });
+    }
+
+    @action.bound
+    resetPopup() {
+        this.is_disclaimer_checkbox_checked = false;
+        this.deposit_address = null;
+        this.deposit_address_ref = null;
+        this.is_deposit_address_loading = true;
+        this.is_deposit_address_popover_open = false;
+        this.should_show_widget = false;
+        this.onramp_popup_modal_title = '';
+        this.selected_provider = null;
+    }
+
+    @action.bound
+    onDisclaimerCheckboxChange(event) {
+        this.is_disclaimer_checkbox_checked = event.target.checked;
+    }
+
+    @action.bound
+    onClickCopyDepositAddress() {
+        navigator.clipboard.writeText(this.deposit_address).then(() => {
+            // Visual feedback to inform the user the address has been copied.
+            const range = document.createRange();
+            range.selectNodeContents(this.deposit_address_ref);
+
+            const selections = window.getSelection();
+            selections.removeAllRanges();
+            selections.addRange(range);
+
+            runInAction(() => {
+                this.setIsDepositAddressPopoverOpen(true);
+                setTimeout(() => this.setIsDepositAddressPopoverOpen(false), 500);
+            });
+        });
+    }
+
+    @action.bound
+    onClickDisclaimerContinue() {
+        this.should_show_widget = true;
+        this.setOnRampPopupModalTitle(localize('Payment channel'));
+    }
+
+    @action.bound
+    onOnRampPopupUnmount() {
+        this.resetPopup();
+    }
+
+    @action.bound
+    setDepositAddressRef(ref) {
+        this.deposit_address_ref = ref;
+    }
+
+    @action.bound
+    setIsDepositAddressPopoverOpen(is_open) {
+        this.is_deposit_address_popover_open = is_open;
+    }
+
+    @action.bound
+    setIsOnRampModalOpen(is_open) {
+        this.is_onramp_modal_open = is_open;
+    }
+
+    @action.bound
+    setSelectedProvider(provider) {
+        if (provider) {
+            this.selected_provider = provider;
+            this.setOnRampPopupModalTitle(' '); // Empty title.
+            this.setIsOnRampModalOpen(true);
+            this.initPopup();
+        } else {
+            this.setIsOnRampModalOpen(false);
+            this.selected_provider = null;
+        }
+    }
+
+    @action.bound
+    setOnRampPopupModalTitle(title) {
+        this.onramp_popup_modal_title = title;
+    }
 }
 
 class ConfigPaymentAgent {
@@ -109,6 +247,7 @@ export default class CashierStore extends BaseStore {
             ...toJS(new Config({ container: 'deposit' })),
             error: new ConfigError(),
         },
+        onramp: new ConfigOnRamp(),
         payment_agent: new ConfigPaymentAgent(),
         payment_agent_transfer: new ConfigPaymentAgentTransfer(),
         withdraw: {
@@ -237,7 +376,7 @@ export default class CashierStore extends BaseStore {
             return;
         }
 
-        const response_cashier = await WS.authorized.cashier(this.active_container, verification_code);
+        const response_cashier = await WS.authorized.cashier(this.active_container, { verification_code });
 
         // if tab changed while waiting for response, ignore it
         if (current_container !== this.active_container) {

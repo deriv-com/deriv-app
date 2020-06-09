@@ -11,7 +11,7 @@ const Card = ({ contract_type, onClick }) => (
             <TradeCategoriesGIF category={contract_type.value} />
         </div>
         <div className='contract-type-info__content'>
-            <ThemedScrollbars height='340px'>
+            <ThemedScrollbars height='340px' autohide={false}>
                 <TradeCategories category={contract_type.value} />
             </ThemedScrollbars>
         </div>

@@ -11,6 +11,7 @@ const doLogout = response => {
     Client.clearAllAccounts();
     Client.set('loginid', '');
     SocketCache.clear();
+    sessionStorage.clear();
 
     return response;
 };

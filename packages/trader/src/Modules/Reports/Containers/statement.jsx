@@ -17,10 +17,16 @@ import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 import Shortcode from '../Helpers/shortcode';
+import { WS } from 'Services/ws-methods';
 
+let total_deposits, total_withdrawals;
 class Statement extends React.Component {
     componentDidMount() {
         this.props.onMount();
+        WS.accountStatistics().then(data => {
+            total_deposits = data.account_statistics.total_deposits;
+            total_withdrawals = data.account_statistics.total_withdrawals;
+        });
     }
 
     componentWillUnmount() {
@@ -104,6 +110,21 @@ class Statement extends React.Component {
 
         if (error) return <p>{error}</p>;
 
+        const variable_component = (
+            <React.Fragment>
+                <div style={{ maxWidth: '16.4rem', width: '100%' }}>
+                    <span>Total Deposit :</span>
+                    <span> {total_deposits}</span>
+                </div>
+                <div>
+                    <span>Total Withdrawals</span>
+                </div>
+                <div>
+                    <span>Net Deposit</span>
+                </div>
+            </React.Fragment>
+        );
+
         const filter_component = (
             <React.Fragment>
                 <CompositeCalendar
@@ -123,6 +144,7 @@ class Statement extends React.Component {
 
         return (
             <React.Fragment>
+                {variable_component}
                 <ReportsMeta
                     i18n_heading={localize('Statement')}
                     i18n_message={localize(

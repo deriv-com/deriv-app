@@ -148,7 +148,7 @@ const Toolbar = props => {
                         icon={<Icon icon='IcPuzzle' color='active' />}
                         green
                     >
-                        {localize('Get started!')}
+                        {localize('Get started')}
                     </Button>
                 </Popover>
                 {active_tab === tabs_title.WORKSPACE && <SearchBox {...props} />}

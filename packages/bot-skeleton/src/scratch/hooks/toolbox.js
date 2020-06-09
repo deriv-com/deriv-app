@@ -114,6 +114,7 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
         localize('THEN'),
         localize('A'),
         localize('AN'),
+        localize('BLOCK'),
     ];
 
     if (search_term.length === 0) {

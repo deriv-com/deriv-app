@@ -18,7 +18,6 @@ const initStore = notification_messages => {
     // TODO: Re-enable and update browser checking
     // OutdatedBrowser.init(root_store);
     root_store.client.init();
-    root_store.modules.cashier.init();
     root_store.ui.init(notification_messages);
     // root_store.modules.trade.init();
 

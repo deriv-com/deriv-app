@@ -1,6 +1,7 @@
 .transactions {
     $transaction: &;
     $grid-template-columns: 40px 1fr 1fr; // 16px (icon) + 24px (spacing)
+    $grid-template-columns-mobile: 8rem 1fr 1fr;
 
     &-empty {
         display: flex;
@@ -52,10 +53,21 @@
 
         $header-grid-items: (unquote('spot'), unquote('profit'));
 
+        &-mobile {
+            grid-template-columns: $grid-template-columns-mobile;
+        }
+
         @each $item in $header-grid-items {
             &-#{$item} {
                 grid-column: $item;
             }
+        }
+
+        &-spot-mobile {
+            text-align: start;
+        }
+        &-profit-mobile {
+            text-align: end;
         }
     }
     &__content {
@@ -74,6 +86,9 @@
         grid-template-areas: ('trade-type entry-spot stake' 'trade-type exit-spot  profit');
         padding: 8px;
 
+        &-mobile {
+            grid-template-columns: $grid-template-columns-mobile;
+        }
         &-wrapper {
             padding: 0 16px;
             cursor: pointer;
@@ -101,6 +116,18 @@
         }
     }
 
+    &__exit-spot-mobile {
+        justify-content: flex-start;
+    }
+    &__entry-spot-mobile {
+        justify-content: flex-start;
+    }
+    &__stake-mobile {
+        justify-content: flex-end;
+    }
+    &__profit-mobile {
+        justify-content: flex-end;
+    }
     &__divider {
         border-top: 1px solid var(--general-section-1);
         margin: 0 16px;

@@ -35,7 +35,7 @@ const TransactionFieldLoader = () => (
     </ContentLoader>
 );
 
-const TransactionIconLoader = () => (
+const TransactionIconLoader = ({ is_mobile }) => (
     <ContentLoader
         className='transactions__loader-icon'
         speed={3}
@@ -44,7 +44,11 @@ const TransactionIconLoader = () => (
         primaryColor={'var(--general-section-1)'}
         secondaryColor={'var(--general-hover)'}
     >
-        <rect x='0' y='0' rx='5' ry='5' width='30' height='30' />
+        {is_mobile ? (
+            <rect x='0' y='0' rx='5' ry='5' width='24' height='24' />
+        ) : (
+            <rect x='0' y='0' rx='5' ry='5' width='30' height='30' />
+        )}
     </ContentLoader>
 );
 
@@ -121,7 +125,7 @@ const PopoverContent = ({ contract }) => (
     </div>
 );
 
-const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }) => (
+const Transaction = ({ active_transaction_id, contract, setActiveTransactionId, is_mobile }) => (
     <Popover
         zIndex={popover_zindex.TRANSACTION}
         alignment='left'
@@ -130,41 +134,62 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
         message={contract && <PopoverContent contract={contract} />}
     >
         <div
-            className='transactions__item'
+            className={classNames('transactions__item', {
+                'transactions__item-mobile': is_mobile,
+            })}
             onClick={contract && (() => setActiveTransactionId(contract.transaction_ids.buy))}
         >
-            {/* TODO: Re-enable when <Icon> is shared.
-        <div className='transactions__cell transactions__symbol'>
-            <TransactionIconWithText
-                icon={<UnderlyingIcon market={contract.underlying} />}
-                title={contract.display_name}
-            />
-        </div> */}
+            {/* TODO: Re-enable when <Icon> is shared. */}
             <div className='transactions__cell transactions__trade-type'>
-                {contract ? (
-                    <TransactionIconWithText
-                        icon={<IconTradeTypes type={contract.contract_type} />}
-                        title={getContractTypeName(contract)}
-                    />
-                ) : (
-                    <TransactionIconLoader />
-                )}
+                <div>
+                    {is_mobile &&
+                        (contract ? (
+                            <TransactionIconWithText
+                                icon={<Icon icon={`IcUnderlying${contract.underlying}`} />}
+                                title={'Underlying'}
+                            />
+                        ) : (
+                            <TransactionIconLoader is_mobile={is_mobile} />
+                        ))}
+                </div>
+                <div>
+                    {contract ? (
+                        <TransactionIconWithText
+                            icon={<IconTradeTypes type={contract.contract_type} />}
+                            title={getContractTypeName(contract)}
+                        />
+                    ) : (
+                        <TransactionIconLoader is_mobile={is_mobile} />
+                    )}
+                </div>
             </div>
-            <div className='transactions__cell transactions__entry-spot'>
+            <div
+                className={classNames('transactions__cell', 'transactions__entry-spot', {
+                    'transactions__entry-spot-mobile': is_mobile,
+                })}
+            >
                 <TransactionIconWithText
                     icon={<Icon icon='IcContractEntrySpot' />}
                     title={localize('Entry spot')}
                     message={(contract && contract.entry_tick) || <TransactionFieldLoader />}
                 />
             </div>
-            <div className='transactions__cell transactions__exit-spot'>
+            <div
+                className={classNames('transactions__cell', 'transactions__exit-spot', {
+                    'transactions__exit-spot-mobile': is_mobile,
+                })}
+            >
                 <TransactionIconWithText
                     icon={<Icon icon='IcContractExitSpot' />}
                     title={localize('Exit spot')}
                     message={(contract && contract.exit_tick) || <TransactionFieldLoader />}
                 />
             </div>
-            <div className='transactions__cell transactions__stake'>
+            <div
+                className={classNames('transactions__cell', 'transactions__stake', {
+                    'transactions__stake-mobile': is_mobile,
+                })}
+            >
                 <TransactionIconWithText
                     icon={<Icon icon='IcContractBuyPrice' />}
                     title={localize('Buy price')}
@@ -177,7 +202,11 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
                     }
                 />
             </div>
-            <div className='transactions__cell transactions__profit'>
+            <div
+                className={classNames('transactions__cell', 'transactions__profit', {
+                    'transactions__profit-mobile': is_mobile,
+                })}
+            >
                 {contract && contract.profit ? (
                     <div
                         className={classNames({
@@ -201,8 +230,9 @@ Transaction.propTypes = {
     setActiveTransactionId: PropTypes.func,
 };
 
-export default connect(({ transactions, run_panel }) => ({
-    contract_stage: run_panel.contract_stage,
+export default connect(({ transactions, run_panel, ui }) => ({
     active_transaction_id: transactions.active_transaction_id,
+    contract_stage: run_panel.contract_stage,
+    is_mobile: ui.is_mobile,
     setActiveTransactionId: transactions.setActiveTransactionId,
 }))(Transaction);

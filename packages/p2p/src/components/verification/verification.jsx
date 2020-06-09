@@ -15,7 +15,7 @@ const Verification = ({ poi_status }) => {
                 <Localize i18n_default_text='Choose your nickname' />
             ),
             status: nickname ? 'done' : 'action',
-            onClick: toggleNicknamePopup,
+            onClick: nickname ? () => {} : toggleNicknamePopup,
         },
         {
             content: (

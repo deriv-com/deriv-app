@@ -46,6 +46,7 @@ const Checklist = ({ items, className, itemClassName }) => (
 Checklist.propTypes = {
     items: PropTypes.array,
     className: PropTypes.string,
+    itemClassName: PropTypes.string,
 };
 
 export default Checklist;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Loading } from '@deriv/components';
+import { Loading } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { TableError } from 'Components/table/table-error.jsx';

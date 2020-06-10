@@ -106,7 +106,7 @@
             grid-column: $item;
             grid-row: $item;
 
-            @if $item == 'exit-spot' or $item == 'entry-spot' {
+            @if $item == 'exit-spot' or $item == 'entry-spot' or $item == 'trade-type' {
                 justify-content: flex-start;
             }
             @if $item == 'stake' or $item == 'profit' {
@@ -136,9 +136,16 @@
             width: 80px;
             height: 10px;
         }
+        &-container {
+            display: flex;
+            align-items: center;
+            width: 2.4rem;
+            height: 2.4rem;
+            margin-right: 0.8rem;
+        }
         &-icon {
-            width: 30px;
-            height: 30px;
+            width: 2.4rem;
+            height: 2.4rem;
         }
     }
     &__icon {

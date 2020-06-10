@@ -3,7 +3,6 @@ import { localize } from '@deriv/translations';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import classNames from 'classnames';
 import Transaction from './transaction.jsx';
 import { transaction_elements } from '../constants/transactions';
 import { connect } from '../stores/connect';
@@ -23,11 +22,11 @@ class Transactions extends React.PureComponent {
         const { contract_stage, elements } = this.props;
         return (
             <div className='transactions run-panel-tab__content'>
-                <div className={classNames('transactions__header')}>
-                    <span className={classNames('transactions__header-column', 'transactions__header-spot')}>
+                <div className='transactions__header'>
+                    <span className='transactions__header-column transactions__header-spot'>
                         {localize('Entry/Exit spot')}
                     </span>
-                    <span className={classNames('transactions__header-column transactions__header-profit')}>
+                    <span className='transactions__header-column transactions__header-profit'>
                         {localize('Buy price and P/L')}
                     </span>
                 </div>

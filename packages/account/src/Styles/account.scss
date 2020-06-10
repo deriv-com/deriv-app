@@ -1091,6 +1091,7 @@ $MIN_HEIGHT_FLOATING: calc(
 .dc-modal__container_deactivate-account-reasons {
     .dc-modal-header {
         border: none;
+        min-width: 430px;
     }
     .account-closure-warning-modal {
         display: flex;
@@ -1153,6 +1154,55 @@ $MIN_HEIGHT_FLOATING: calc(
             line-height: 1.43;
         }
         &__accounts-button {
+            margin-top: 16px;
+            float: right;
+        }
+    }
+    .existing-account-has-balance {
+        padding: 0 24px 24px 24px;
+
+        &__action {
+            padding: 8px 0;
+            color: var(--text-prominent);
+            font-size: var(--text-size-xs);
+            line-height: 1.43;
+            font-weight: bold;
+        }
+        &__container {
+            display: flex;
+            padding: 3px 16px;
+            justify-content: space-between;
+            align-items: center;
+
+            &__account-details {
+                display: flex;
+                align-items: center;
+
+                &__balance {
+                    margin-left: 8px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+
+                    &--currency {
+                        color: var(--text-prominent);
+                        font-size: var(--text-size-xs);
+                        line-height: 1.43;
+                    }
+                    &--id {
+                        color: var(--text-prominent);
+                        font-size: var(--text-size-xxxs);
+                        line-height: 1.4;
+                    }
+                }
+            }
+            &__money {
+                color: var(--text-prominent);
+                font-size: var(--text-size-xs);
+                line-height: 1.43;
+            }
+        }
+        &__button {
             margin-top: 16px;
             float: right;
         }

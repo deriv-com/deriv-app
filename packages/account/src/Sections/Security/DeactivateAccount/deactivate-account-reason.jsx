@@ -104,7 +104,6 @@ const HaveOpenPositions = (accounts_with_open_positions_id, client_accounts, onB
     const accounts_with_open_positions = Object.keys(accounts_with_open_positions_id).map((open_position_id) =>
         client_accounts.filter((account) => account.loginid === open_position_id)
     );
-
     return (
         <div className='have-open-positions'>
             <p className='have-open-positions__title'>{localize('You have open positions in these Deriv accounts:')}</p>
@@ -151,24 +150,31 @@ const ExistingAccountHasBalance = (accounts_with_balance, mt5_login_list, onBack
     );
     console.log(mt5_accounts);
     return (
-        <div>
+        <div className='existing-account-has-balance'>
+            <p className='existing-account-has-balance__action'>
+                {localize('You have funds or open positions in these DMT5 accounts:')}
+            </p>
             {Object.keys(accounts_with_balance).map((account_id) => (
                 <div key={account_id}>
                     {accounts_with_balance[account_id].currency && (
-                        <div>
-                            <div>
-                                <div>
+                        <div className='existing-account-has-balance__container'>
+                            <div className='existing-account-has-balance__container__account-details'>
+                                <div className='existing-account-has-balance__container__account-details__icon'>
                                     <Icon
                                         icon={`IcCurrency-${accounts_with_balance[account_id].currency.toLowerCase()}`}
                                         size={24}
                                     />
                                 </div>
-                                <div>
-                                    <span>{accounts_with_balance[account_id].currency}</span>
-                                    <span>{account_id}</span>
+                                <div className='existing-account-has-balance__container__account-details__balance'>
+                                    <span className='existing-account-has-balance__container__account-details__balance--currency'>
+                                        {accounts_with_balance[account_id].currency}
+                                    </span>
+                                    <span className='existing-account-has-balance__container__account-details__balance--id'>
+                                        {account_id}
+                                    </span>
                                 </div>
                             </div>
-                            <div>
+                            <div className='existing-account-has-balance__container__money'>
                                 <Money
                                     currency={accounts_with_balance[account_id].currency}
                                     amount={CurrencyUtils.formatMoney(
@@ -184,17 +190,21 @@ const ExistingAccountHasBalance = (accounts_with_balance, mt5_login_list, onBack
                 </div>
             ))}
             {mt5_accounts.map((account) => (
-                <div key={account.login}>
-                    <div>
-                        <div>
+                <div key={account.login} className='existing-account-has-balance__container'>
+                    <div className='existing-account-has-balance__container__account-details'>
+                        <div className='existing-account-has-balance__container__account-details__icon'>
                             <Icon icon={`IcMt5-${getMT5AccountDisplay(account.group)}`} size={24} />
                         </div>
-                        <div>
-                            <span>{getMT5AccountDisplay(account.group)}</span>
-                            <span>{account.login}</span>
+                        <div className='existing-account-has-balance__container__account-details__balance'>
+                            <span className='existing-account-has-balance__container__account-details__balance--currency'>
+                                {getMT5AccountDisplay(account.group)}
+                            </span>
+                            <span className='existing-account-has-balance__container__account-details__balance--id'>
+                                {account.login}
+                            </span>
                         </div>
                     </div>
-                    <div>
+                    <div className='existing-account-has-balance__container__money'>
                         <Money
                             currency={account.currency}
                             amount={CurrencyUtils.formatMoney(account.currency, account.balance, true)}
@@ -203,6 +213,9 @@ const ExistingAccountHasBalance = (accounts_with_balance, mt5_login_list, onBack
                     </div>
                 </div>
             ))}
+            <Button className='existing-account-has-balance__button' primary onClick={() => onBackClick()}>
+                {localize('OK')}
+            </Button>
         </div>
     );
 };

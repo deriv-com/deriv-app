@@ -613,6 +613,12 @@ export default class ClientStore extends BaseStore {
     async init(login_new_user) {
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
+
+        // On case of invalid token, no need to continue with additional api calls.
+        if (!authorize_response.loginid) {
+            this.setIsLoggingIn(false);
+            return false;
+        }
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');

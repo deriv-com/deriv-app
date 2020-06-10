@@ -5,7 +5,6 @@ import { Formik, Field } from 'formik';
 import { Checkbox, Button, Input, FormSubmitButton, Modal, Icon, Money } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import { object } from 'prop-types';
 
 const initial_form = {
     otherFinancialPriorities: false,
@@ -142,25 +141,31 @@ const getMT5AccountDisplay = (group) => {
     return display_text;
 };
 
-const ExistingAccountHasBalance = (accounts_with_balance, client_accounts, mt5_login_list, onBackClick) => {
+const ExistingAccountHasBalance = (accounts_with_balance, mt5_login_list, onBackClick) => {
     const mt5_with_balance_id = Object.keys(accounts_with_balance).filter(
         (account_id) => !accounts_with_balance[account_id].currency
     );
-    // ADD MT5 ACCOUNT ********************************************
+    const mt5_accounts = [];
+    mt5_with_balance_id.forEach((id) =>
+        mt5_login_list.forEach((account_obj) => account_obj.login === id && mt5_accounts.push(account_obj))
+    );
+    console.log(mt5_accounts);
     return (
         <div>
             {Object.keys(accounts_with_balance).map((account_id) => (
                 <div key={account_id}>
-                    {accounts_with_balance[account_id].currency ? (
+                    {accounts_with_balance[account_id].currency && (
                         <div>
                             <div>
-                                <Icon
-                                    icon={`IcCurrency-${accounts_with_balance[account_id].currency.toLowerCase()}`}
-                                    size={24}
-                                />
                                 <div>
-                                    <p>{accounts_with_balance[account_id].currency}</p>
-                                    <p>{account_id}</p>
+                                    <Icon
+                                        icon={`IcCurrency-${accounts_with_balance[account_id].currency.toLowerCase()}`}
+                                        size={24}
+                                    />
+                                </div>
+                                <div>
+                                    <span>{accounts_with_balance[account_id].currency}</span>
+                                    <span>{account_id}</span>
                                 </div>
                             </div>
                             <div>
@@ -175,9 +180,27 @@ const ExistingAccountHasBalance = (accounts_with_balance, client_accounts, mt5_l
                                 />
                             </div>
                         </div>
-                    ) : (
-                        mt5_with_balance_id.map()
                     )}
+                </div>
+            ))}
+            {mt5_accounts.map((account) => (
+                <div key={account.login}>
+                    <div>
+                        <div>
+                            <Icon icon={`IcMt5-${getMT5AccountDisplay(account.group)}`} size={24} />
+                        </div>
+                        <div>
+                            <span>{getMT5AccountDisplay(account.group)}</span>
+                            <span>{account.login}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <Money
+                            currency={account.currency}
+                            amount={CurrencyUtils.formatMoney(account.currency, account.balance, true)}
+                            should_format={false}
+                        />
+                    </div>
                 </div>
             ))}
         </div>
@@ -372,7 +395,6 @@ class DeactivateAccountReason extends React.Component {
                     {this.state.which_modal_should_render === 'ExistingAccountHasBalance' &&
                         ExistingAccountHasBalance(
                             this.state.accounts,
-                            this.props.client_accounts,
                             this.props.mt5_login_list,
                             this.props.onBackClick
                         )}

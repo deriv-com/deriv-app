@@ -54,6 +54,7 @@ class P2PCashier extends React.Component {
                 setNotificationCount={setNotificationCount}
                 order_id={order_id}
                 setOrderId={this.setQueryOrder}
+                poi_url='/account/proof-of-identity'
             />
         );
     }

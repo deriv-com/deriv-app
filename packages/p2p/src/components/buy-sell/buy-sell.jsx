@@ -6,8 +6,8 @@ import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import Popup from './popup.jsx';
 import BuySellTableContent from './buy-sell-table-content.jsx';
-import Verification from '../verification/verification.jsx';
 import PageReturn from '../page-return/page-return.jsx';
+import Verification from '../verification/verification.jsx';
 import './buy-sell.scss';
 
 const buy_sell_filters = [

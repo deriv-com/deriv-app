@@ -31,9 +31,10 @@ class App extends React.Component {
         WebsocketInit(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
         ServerTime.init(this.props.server_time);
 
-        this.ws_subscriptions = [];
+        this.ws_subscriptions = {};
         this.list_item_limit = 20;
         this.state = {
+            poi_url: this.props.poi_url,
             active_index: 0,
             order_table_type: orderToggleIndex.ACTIVE,
             order_offset: 0,
@@ -52,26 +53,24 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        this.ws_subscriptions.push(
-            ...[
-                subscribeWS(
-                    {
-                        p2p_advertiser_info: 1,
-                        subscribe: 1,
-                    },
-                    [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
-                ),
-                subscribeWS(
-                    {
-                        p2p_order_list: 1,
-                        subscribe: 1,
-                        offset: 0,
-                        limit: this.list_item_limit,
-                    },
-                    [this.setP2pOrderList]
-                ),
-            ]
-        );
+        this.ws_subscriptions = {
+            advertiser_subscription: subscribeWS(
+                {
+                    p2p_advertiser_info: 1,
+                    subscribe: 1,
+                },
+                [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
+            ),
+            order_list_subscription: subscribeWS(
+                {
+                    p2p_order_list: 1,
+                    subscribe: 1,
+                    offset: 0,
+                    limit: this.list_item_limit,
+                },
+                [this.setP2pOrderList]
+            ),
+        };
     }
 
     componentDidUpdate(prevProps) {
@@ -81,7 +80,7 @@ class App extends React.Component {
     }
 
     componentWillUnmount() {
-        this.ws_subscriptions.forEach(subscription => subscription.unsubscribe());
+        Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
     }
 
     redirectTo = (path_name, params = null) => {
@@ -112,19 +111,21 @@ class App extends React.Component {
                 is_advertiser: !!p2p_advertiser_info.is_approved,
                 nickname: p2p_advertiser_info.name,
             });
-        } else if (response.error.code === 'RestrictedCountry') {
-            this.setState({ is_restricted: true });
-        } else if (response.error.code === 'AdvertiserNotFound') {
-            this.setState({ is_advertiser: false });
         } else {
-            this.ws_subscriptions[0].unsubscribe();
+            this.ws_subscriptions['advertiser_subscription'].unsubscribe();
+
+            if (response.error.code === 'RestrictedCountry') {
+                this.setState({ is_restricted: true });
+            } else if (response.error.code === 'AdvertiserNotFound') {
+                this.setState({ is_advertiser: false });
+            }
         }
     };
 
     setChatInfoUsingAdvertiserInfo = response => {
         const { p2p_advertiser_info } = response;
         if (response.error) {
-            this.ws_subscriptions[0].unsubscribe();
+            this.ws_subscriptions['advertiser_subscription'].unsubscribe();
             return;
         }
 
@@ -172,7 +173,7 @@ class App extends React.Component {
 
     setP2pOrderList = order_response => {
         if (order_response.error) {
-            this.ws_subscriptions[1].unsubscribe();
+            this.ws_subscriptions['order_list_subscription'].unsubscribe();
             return;
         }
         const { p2p_order_list } = order_response;
@@ -209,6 +210,7 @@ class App extends React.Component {
             order_table_type,
             chat_info,
             show_popup,
+            poi_url,
         } = this.state;
         const {
             className,
@@ -252,6 +254,7 @@ class App extends React.Component {
                     order_id,
                     setOrderId,
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
+                    poi_url,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>

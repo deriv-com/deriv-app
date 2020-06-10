@@ -5,7 +5,7 @@ import { Localize, localize } from 'Components/i18next';
 import './verification.scss';
 
 const Verification = ({ poi_status }) => {
-    const { nickname, toggleNicknamePopup, is_advertiser } = React.useContext(Dp2pContext);
+    const { nickname, toggleNicknamePopup, is_advertiser, poi_url } = React.useContext(Dp2pContext);
 
     const items = [
         {
@@ -25,7 +25,7 @@ const Verification = ({ poi_status }) => {
                 />
             ),
             status: poi_status === 'verified' ? 'done' : 'action',
-            onClick: () => (window.location.href = '/account/proof-of-identity'),
+            onClick: () => (window.location.href = poi_url),
             is_disabled: !nickname,
         },
     ];

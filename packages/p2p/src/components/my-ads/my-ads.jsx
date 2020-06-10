@@ -9,18 +9,9 @@ import MyAdsTable from './my-ads-table.jsx';
 import Verification from '../verification/verification.jsx';
 import './my-ads.scss';
 
-const MyAdsState = ({ message, button_text, buttonOnClick }) => (
+const MyAdsState = ({ message }) => (
     <div className='p2p-my-ads__state'>
         <TableError message={message} />
-        {button_text && buttonOnClick && (
-            <Button
-                type='button'
-                className='p2p-my-ads__state-button'
-                text={button_text}
-                onClick={buttonOnClick}
-                primary
-            />
-        )}
     </div>
 );
 

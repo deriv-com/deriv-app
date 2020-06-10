@@ -137,7 +137,7 @@ commands:
 jobs:
   build_staging:
     docker:
-      - image: circleci/node:11.15.0-stretch
+      - image: circleci/node:12.18.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -147,7 +147,7 @@ jobs:
       NODE_ENV: staging
   build_production:
     docker:
-      - image: circleci/node:11.15.0-stretch
+      - image: circleci/node:12.18.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -161,12 +161,12 @@ jobs:
       NODE_ENV: staging
   deploy_staging:
     docker:
-      - image: circleci/node:11.15.0-stretch
+      - image: circleci/node:12.18.0-stretch
     steps:
       - k8s_deploy
   deploy_production:
     docker:
-      - image: circleci/node:11.15.0-stretch
+      - image: circleci/node:12.18.0-stretch
     steps:
       - k8s_deploy:
           k8s_svc_name: production-deriv-app

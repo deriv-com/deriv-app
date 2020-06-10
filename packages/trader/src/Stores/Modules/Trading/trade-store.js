@@ -775,7 +775,6 @@ export default class TradeStore extends BaseStore {
     @action.bound
     requestProposal() {
         const requests = createProposalRequests(this);
-
         if (Object.values(this.validation_errors).some(e => e.length)) {
             this.proposal_info = {};
             this.purchase_info = {};
@@ -786,7 +785,6 @@ export default class TradeStore extends BaseStore {
         if (!ObjectUtils.isEmptyObject(requests)) {
             this.proposal_requests = requests;
             this.purchase_info = {};
-
             Object.keys(this.proposal_requests).forEach(type => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
@@ -909,14 +907,13 @@ export default class TradeStore extends BaseStore {
             if (!this.is_symbol_in_active_symbols) this.setActiveSymbols();
         }
         this.setContractTypes();
+
         return this.processNewValuesAsync(
             { currency: this.root_store.client.currency || this.root_store.client.default_currency },
             true,
             { currency: this.currency },
             false
-        )
-            .then(this.refresh)
-            .then(this.requestProposal);
+        );
     }
 
     @action.bound

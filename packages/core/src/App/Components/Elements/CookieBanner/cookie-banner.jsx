@@ -4,14 +4,12 @@ import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
 import { getDerivComLink } from '@deriv/shared/utils/url';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 
-const CookieBanner = ({ onAccept, onDecline, is_open, is_dark_mode_on }) => (
+const CookieBanner = ({ onAccept, onDecline, is_open }) => (
     <div
         className={classNames('cookie-banner', {
-            'theme-dark': is_dark_mode_on,
-            'is-open': is_open,
-            'is-closed': !is_open,
+            'cookie-banner--is-open': is_open,
+            'cookie-banner--is-closed': !is_open,
         })}
     >
         <div className='description'>
@@ -29,10 +27,10 @@ const CookieBanner = ({ onAccept, onDecline, is_open, is_dark_mode_on }) => (
                     />,
                 ]}
             />
-            <Button className='btn-dont-accept' secondary onClick={onDecline}>
+            <Button className='cookie-banner__btn-dont-accept' secondary onClick={onDecline}>
                 {localize('Don’t accept')}
             </Button>
-            <Button className='btn-accept' secondary onClick={onAccept}>
+            <Button className='cookie-banner__btn-accept' secondary onClick={onAccept}>
                 {localize('Accept')}
             </Button>
         </div>
@@ -45,6 +43,4 @@ CookieBanner.prototype = {
     onDecline: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
-    is_dark_mode_on: ui.is_dark_mode_on,
-}))(CookieBanner);
+export default CookieBanner;

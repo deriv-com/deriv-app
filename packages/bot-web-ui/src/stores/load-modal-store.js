@@ -161,7 +161,16 @@ export default class LoadModalStore {
 
     // eslint-disable-next-line class-methods-use-this
     getSaveType(save_type) {
-        return save_type.replace(/\b\w/g, l => l.toUpperCase());
+        switch (save_type) {
+            case save_types.UNSAVED:
+                return localize('Unsaved');
+            case save_types.LOCAL:
+                return localize('Local');
+            case save_types.GOOGLE_DRIVE:
+                return localize('Google Drive');
+            default:
+                return localize('Unsaved');
+        }
     }
     /** --------- Recent Tab End --------- */
 

@@ -18,6 +18,7 @@ import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 import Shortcode from '../Helpers/shortcode';
 import { WS } from 'Services/ws-methods';
+import '../../../sass/app/modules/statement.scss';
 
 let total_deposits, total_withdrawals;
 class Statement extends React.Component {
@@ -110,17 +111,23 @@ class Statement extends React.Component {
 
         if (error) return <p>{error}</p>;
 
-        const variable_component = (
+        const account_statistics_component = (
             <React.Fragment>
-                <div style={{ maxWidth: '16.4rem', width: '100%' }}>
-                    <span>Total Deposit :</span>
-                    <span> {total_deposits}</span>
-                </div>
-                <div>
-                    <span>Total Withdrawals</span>
-                </div>
-                <div>
-                    <span>Net Deposit</span>
+                <div className='statement__accountStatistics'>
+                    <div className='statement__accountStatistics--Rectangle'>
+                        <span className='statement__accountStatistics--Rectangle--title'>Total Deposit</span>
+                        <span className='statement__accountStatistics--Rectangle--amount'> ${total_deposits}</span>
+                    </div>
+                    <div className='statement__accountStatistics--Rectangle'>
+                        <span className='statement__accountStatistics--Rectangle--title'>Total Withdrawals</span>
+                        <span className='statement__accountStatistics--Rectangle--amount'>${total_withdrawals}</span>
+                    </div>
+                    <div className='statement__accountStatistics--Rectangle'>
+                        <span className='statement__accountStatistics--Rectangle--title'>Net Deposit</span>
+                        <span className='statement__accountStatistics--Rectangle--amount'>
+                            ${total_deposits - total_withdrawals}
+                        </span>
+                    </div>
                 </div>
             </React.Fragment>
         );
@@ -144,12 +151,12 @@ class Statement extends React.Component {
 
         return (
             <React.Fragment>
-                {variable_component}
                 <ReportsMeta
                     i18n_heading={localize('Statement')}
                     i18n_message={localize(
                         'View all transactions on your account, including trades, deposits, and withdrawals.'
                     )}
+                    optional_component={account_statistics_component}
                     filter_component={filter_component}
                 />
                 {data.length === 0 || is_empty ? (

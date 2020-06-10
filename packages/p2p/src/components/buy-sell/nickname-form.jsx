@@ -75,7 +75,7 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
                                 <Icon icon='IcCashierP2pUser' width='128' height='128' />
                                 <h5 className='buy-sell__popup-content--title'>{localize('Choose a nickname')}</h5>
                                 <p className='buy-sell__popup-content--text'>
-                                    {localize('This is how you will appear to other users')}
+                                    {localize('You will appear to other users as:')}
                                 </p>
                                 <div className='buy-sell__popup-field_wrapper'>
                                     <Field name='nickname'>
@@ -92,6 +92,21 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
                                         )}
                                     </Field>
                                 </div>
+                                <div className='buy-sell__popup-content--text'>
+                                    {localize('Your nickname:')}
+                                    <div className='buy-sell__popup-content--list'>
+                                        <div>
+                                            {localize(
+                                                'Must be 2–24 characters and can contain letters, numbers, and special characters .- _ @'
+                                            )}
+                                        </div>
+                                        <div>{localize('Cannot repeat a character more than 5 times')}</div>
+                                        <div>{localize('Cannot start, end with, or repeat special characters')}</div>
+                                    </div>
+                                </div>
+                                <p className='buy-sell__popup-content--text'>
+                                    {localize('Once set, your nickname cannot be changed.')}
+                                </p>
                             </div>
                         </ThemedScrollbars>
                         <div className='buy-sell__popup-footer'>

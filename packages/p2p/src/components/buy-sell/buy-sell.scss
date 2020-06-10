@@ -85,6 +85,11 @@
                 font-size: var(--text-size-xs);
                 margin-bottom: 1.6rem;
             }
+            &--list {
+                & div {
+                    display: list-item;
+                }
+            }
         }
         &-field {
             margin-bottom: 0 !important;

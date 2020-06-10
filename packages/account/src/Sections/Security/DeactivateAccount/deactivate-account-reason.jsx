@@ -246,6 +246,10 @@ class DeactivateAccountReason extends React.Component {
             reason: this.state.reason,
         })
             .then((res) => {
+                if (res.account_closure === 1) {
+                    this.props.logout();
+                    return;
+                }
                 this.setState({
                     which_modal_should_render: res.error.code,
                     accounts: res.error.details.accounts,
@@ -433,4 +437,14 @@ class DeactivateAccountReason extends React.Component {
 export default connect(({ client }) => ({
     client_accounts: client.account_list,
     mt5_login_list: client.mt5_login_list,
+    logout: client.logout,
 }))(DeactivateAccountReason);
+
+// {this.state.which_modal_should_render === 'pageError' &&
+// <PageError
+//     header={localize('We’re sorry to see you leave.')}
+//     messages={[
+//         localize('Your account is now deactivated.'),
+//     ]}
+// />
+// }

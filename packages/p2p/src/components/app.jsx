@@ -112,7 +112,7 @@ class App extends React.Component {
                 nickname: p2p_advertiser_info.name,
             });
         } else {
-            this.ws_subscriptions['advertiser_subscription'].unsubscribe();
+            this.ws_subscriptions.advertiser_subscription.unsubscribe();
 
             if (response.error.code === 'RestrictedCountry') {
                 this.setState({ is_restricted: true });
@@ -125,7 +125,7 @@ class App extends React.Component {
     setChatInfoUsingAdvertiserInfo = response => {
         const { p2p_advertiser_info } = response;
         if (response.error) {
-            this.ws_subscriptions['advertiser_subscription'].unsubscribe();
+            this.ws_subscriptions.advertiser_subscription.unsubscribe();
             return;
         }
 
@@ -173,7 +173,7 @@ class App extends React.Component {
 
     setP2pOrderList = order_response => {
         if (order_response.error) {
-            this.ws_subscriptions['order_list_subscription'].unsubscribe();
+            this.ws_subscriptions.order_list_subscription.unsubscribe();
             return;
         }
         const { p2p_order_list } = order_response;

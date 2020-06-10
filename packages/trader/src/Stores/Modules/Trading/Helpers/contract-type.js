@@ -3,7 +3,7 @@ import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isTimeValid, minDate, toMoment } from '@deriv/shared/utils/date';
-import { unit_map } from 'Stores/Modules/Portfolio/Helpers/details';
+import { getUnitMap } from 'Stores/Modules/Portfolio/Helpers/details';
 import { buildBarriersConfig } from './barrier';
 import { buildDurationConfig, hasIntradayDurationUnit } from './duration';
 import { buildForwardStartingConfig, isSessionAvailable } from './start-date';
@@ -532,6 +532,7 @@ const ContractType = (() => {
         const regex = new RegExp('^([0-9]+)|([a-zA-Z]+)$', 'g');
         const getText = str => {
             const [duration, unit] = str.match(regex);
+            const unit_map = getUnitMap();
             return `${duration} ${unit_map[unit].name_plural}`;
         };
 

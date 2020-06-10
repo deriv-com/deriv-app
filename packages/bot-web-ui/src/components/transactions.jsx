@@ -20,26 +20,14 @@ class Transactions extends React.PureComponent {
     }
 
     render() {
-        const { contract_stage, elements, is_mobile } = this.props;
+        const { contract_stage, elements } = this.props;
         return (
             <div className='transactions run-panel-tab__content'>
-                <div
-                    className={classNames('transactions__header', {
-                        'transactions__header-mobile': is_mobile,
-                    })}
-                >
-                    <span
-                        className={classNames('transactions__header-column', 'transactions__header-spot', {
-                            'transactions__header-spot-mobile': is_mobile,
-                        })}
-                    >
+                <div className={classNames('transactions__header')}>
+                    <span className={classNames('transactions__header-column', 'transactions__header-spot')}>
                         {localize('Entry/Exit spot')}
                     </span>
-                    <span
-                        className={classNames('transactions__header-column transactions__header-profit', {
-                            'transactions__header-profit-mobile': is_mobile,
-                        })}
-                    >
+                    <span className={classNames('transactions__header-column transactions__header-profit')}>
                         {localize('Buy price and P/L')}
                     </span>
                 </div>
@@ -116,10 +104,9 @@ Transactions.propTypes = {
     onUnmount: PropTypes.func,
 };
 
-export default connect(({ transactions, run_panel, ui }) => ({
+export default connect(({ transactions, run_panel }) => ({
     contract_stage: run_panel.contract_stage,
     elements: transactions.elements,
-    is_mobile: ui.is_mobile,
     onMount: transactions.onMount,
     onUnmount: transactions.onUnmount,
 }))(Transactions);

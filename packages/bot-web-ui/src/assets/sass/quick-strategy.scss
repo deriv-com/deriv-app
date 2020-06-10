@@ -89,35 +89,50 @@
         margin: 2px;
         background-color: var(--general-section-1);
     }
-    &__wraper {
-        &--is-mobile {
-            @include mobile {
-                width: 100vw;
-                margin-top: 4rem;
+    &__leading {
+        .dc-input__field {
+            padding-left: 6rem;
+        }
+        .dc-input__leading-icon {
+            .dc-icon {
+                margin-left: 0.2rem;
+                margin-right: 0.3rem;
+            }
+        }
+    }
+    &__wrapper {
+        @include mobile {
+            opacity: 1;
+            position: fixed;
+            top: 0px;
+            z-index: 6;
+            margin-top: 40px;
+            background: var(--general-main-1);
 
-                .dc-collapsible {
-                    position: relative;
-                    background-color: var(--general-section-1);
-                    margin-bottom: 0.8rem;
-                    transform: none;
-                    width: 100%;
-                    z-index: 1;
-                }
-                .cashier__wrapper {
-                    width: calc(100% - 3.2rem);
-                    margin: 0 1.6rem;
-
-                    &-error {
-                        display: flex;
-                        align-items: center;
-                        justify-content: flex-start;
-                        flex-direction: column;
-                        padding-top: 2.4rem;
+            & .dc-dropdown-list {
+                &__group {
+                    &-header {
+                        padding: 0.6rem 2rem !important;
+                        color: var(--brand-dark-grey) !important;
+                        justify-content: start !important;
                     }
                 }
-                .barspinner {
-                    margin-top: 6rem;
-                }
+            }
+            & .quick-strategy__tabs {
+                padding: 0 0.5rem;
+            }
+            & .dc-tabs__content {
+                padding: 1.1rem;
+            }
+            & .dc-page-overlay__header {
+                position: fixed;
+                top: 4rem;
+                width: 100%;
+                height: 4rem;
+            }
+            & .dc-page-overlay__content {
+                margin-top: 40px;
+                z-index: 5;
             }
         }
     }
@@ -130,43 +145,3 @@
     }
 }
 /* stylelint-enable */
-.quick-strategy__wrapper {
-    @include mobile {
-        & .dc-dropdown-list {
-            &__group {
-                &-header {
-                    padding: 0.6rem 2rem !important;
-                    color: var(--brand-dark-grey) !important;
-                    justify-content: start !important;
-                }
-            }
-        }
-        & .quick-strategy__tabs {
-            padding: 0 0.5rem;
-        }
-        & .dc-tabs__content {
-            padding: 1.1rem;
-        }
-        & .dc-page-overlay__header {
-            position: fixed;
-            top: 4rem;
-            width: 100%;
-            height: 4rem;
-        }
-        & .dc-page-overlay__content {
-            margin-top: 40px;
-            z-index: 5;
-        }
-        & .quick-strategy__leading {
-            .dc-input__field {
-                padding-left: 6rem;
-            }
-            .dc-input__leading-icon {
-                .dc-icon {
-                    margin-left: 0.2rem;
-                    margin-right: 0.3rem;
-                }
-            }
-        }
-    }
-}

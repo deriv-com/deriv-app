@@ -173,10 +173,10 @@ class App extends React.Component {
             <Provider {...this.root_store}>
                 <div className='bot'>
                     <BotNotificationMessages />
-                    <QuickStrategy />
                     <Toolbar />
                     <MainContent />
                     <RunPanel />
+                    <QuickStrategy />
                     <FooterExtension />
                     <Audio />
                     <RoutePromptDialog />

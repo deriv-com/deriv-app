@@ -75,7 +75,6 @@ const QuickStrategyForm = ({
                                         }}
                                         onScrollStop={() => onScrollStopDropdownList('symbol')}
                                         leading_icon={
-                                            is_mobile &&
                                             selected_symbol.value && (
                                                 <Icon icon={`IcUnderlying${selected_symbol.value}`} size={24} />
                                             )
@@ -102,11 +101,10 @@ const QuickStrategyForm = ({
                                         }}
                                         onScrollStop={() => onScrollStopDropdownList('trade-type')}
                                         leading_icon={
-                                            is_mobile &&
                                             selected_trade_type.icon && (
                                                 <span className='quick_strategy__trade-type--icon'>
-                                                    <IconTradeTypes type={`${selected_trade_type.icon[0]}`} />
-                                                    <IconTradeTypes type={`${selected_trade_type.icon[1]}`} />
+                                                    <IconTradeTypes type={selected_trade_type.icon[0]} />
+                                                    <IconTradeTypes type={selected_trade_type.icon[1]} />
                                                 </span>
                                             )
                                         }
@@ -413,7 +411,7 @@ const QuickStrategy = props => {
                                 <ThemedScrollbars
                                     autohide
                                     style={{
-                                        height: 'calc(100vh - 120px)',
+                                        height: 'calc(100vh - 140px)',
                                         width: 'calc(100vw)',
                                     }}
                                 >

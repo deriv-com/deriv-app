@@ -775,6 +775,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     requestProposal() {
         const requests = createProposalRequests(this);
+
         if (Object.values(this.validation_errors).some(e => e.length)) {
             this.proposal_info = {};
             this.purchase_info = {};
@@ -785,6 +786,7 @@ export default class TradeStore extends BaseStore {
         if (!ObjectUtils.isEmptyObject(requests)) {
             this.proposal_requests = requests;
             this.purchase_info = {};
+
             Object.keys(this.proposal_requests).forEach(type => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });

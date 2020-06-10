@@ -22,7 +22,7 @@ class DBot {
     /**
      * Initialises the workspace and mounts it to a container element (app_contents).
      */
-    async initWorkspace(public_path, store, api_helpers_store, ui) {
+    async initWorkspace(public_path, store, api_helpers_store, is_mobile) {
         try {
             __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
             ApiHelpers.setInstance(api_helpers_store);
@@ -32,7 +32,7 @@ class DBot {
 
             const { handleFileChange } = DBotStore.instance;
             if (window_width < 1640) {
-                if (ui.is_mobile) {
+                if (is_mobile) {
                     workspaceScale = 0.7;
                 } else {
                     const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
@@ -45,7 +45,7 @@ class DBot {
                 grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
                 media: `${__webpack_public_path__}media/`,
                 toolbox: toolbox_xml,
-                trashcan: !ui.is_mobile,
+                trashcan: !is_mobile,
                 zoom: { wheel: true, startScale: workspaceScale },
             });
 

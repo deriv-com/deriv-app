@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { Localize } from '@deriv/translations';
 import ContractResultOverlay from './contract-result-overlay.jsx';
 import { connect } from '../stores/connect';
+import { contract_stages } from '../constants/contract-stage';
 import '../assets/sass/trade-animation.scss';
-import { contract_stages } from '../constants/contract-stage.js';
 
 const CircularWrapper = ({ className }) => (
     <div className={classNames('circular-wrapper', className)}>

@@ -1,4 +1,5 @@
 import { observable, action } from 'mobx';
+import { localize } from '@deriv/translations';
 import { load, config, save_types, getSavedWorkspaces, removeExistingWorkspace } from '@deriv/bot-skeleton';
 
 export default class LoadModalStore {

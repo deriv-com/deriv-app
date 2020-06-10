@@ -15,7 +15,7 @@ const getRealFinancialStpBtnLbl = (is_fully_authenticated, is_pending_authentica
         return <Localize i18n_default_text='Pending verification' />;
     }
 
-    return <Localize i18n_default_text='Create account' />;
+    return <Localize i18n_default_text='Add real account' />;
 };
 
 const MT5RealAccountDisplay = ({
@@ -126,6 +126,7 @@ const MT5RealAccountDisplay = ({
                 commission_message={<Localize i18n_default_text='No commission' />}
                 onSelectAccount={onSelectRealFinancialStp}
                 button_label={button_label}
+                is_button_primary={is_pending_authentication}
                 onPasswordManager={openPasswordManager}
                 onClickFund={onClickFundRealFinancialStp}
                 descriptor={localize(

@@ -1,0 +1,7 @@
+.container__table {
+    height: calc(100% - 42px);
+    flex: 1;
+}
+.container__row {
+    grid-template-columns: 1fr 1fr 1fr;
+}

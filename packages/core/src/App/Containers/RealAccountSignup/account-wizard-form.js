@@ -10,8 +10,8 @@ const shouldShowFinancialDetails = ({ real_account_signup_target }) => real_acco
 
 export const getItems = props => {
     return [
-        personalDetailsConfig(props),
         currencySelectorConfig(props),
+        personalDetailsConfig(props),
         ...(shouldShowFinancialDetails(props) ? [financialDetailsConfig(props)] : []),
         ...(shouldShowAddressDetails(props) ? [addressDetailsConfig(props)] : []),
         termsOfUseConfig(props),

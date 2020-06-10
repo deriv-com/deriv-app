@@ -44,15 +44,15 @@ const OrderTableContent = ({ showDetails, is_active }) => {
     React.useEffect(() => {
         if (is_mounted) {
             setIsLoading(true);
-            loadMoreOrders(order_offset);
+            loadMoreOrders();
         }
     }, [is_mounted, is_active]);
 
-    const loadMoreOrders = start_idx => {
+    const loadMoreOrders = () => {
         return new Promise(resolve => {
             requestWS({
                 p2p_order_list: 1,
-                offset: start_idx,
+                offset: order_offset,
                 limit: list_item_limit,
             }).then(response => {
                 if (is_mounted) {
@@ -64,9 +64,9 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                     } else {
                         setApiErrorMessage(response.api_error_message);
                     }
-                    setIsLoading(false);
-                    resolve();
                 }
+                setIsLoading(false);
+                resolve();
             });
         });
     };
@@ -91,8 +91,10 @@ const OrderTableContent = ({ showDetails, is_active }) => {
             page_overlay_header: '53px',
             page_overlay_content_padding: '2.4rem',
             tabs_height: '36px',
+            tabs_margin: '2.4rem',
+            filter_height: '44px',
             table_header_height: '50px',
-            table_header_top_padding: '2.4rem',
+            table_header_top_padding: '1.6rem',
             footer_size: '37px',
         };
 

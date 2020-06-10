@@ -100,6 +100,11 @@ const modules = [
                         component: Account,
                         title: localize('Account limits'),
                     },
+                    {
+                        path: routes.api_token,
+                        component: Account,
+                        title: localize('API token'),
+                    },
                 ],
             },
         ],

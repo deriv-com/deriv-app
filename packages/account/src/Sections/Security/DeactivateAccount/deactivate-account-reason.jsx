@@ -148,7 +148,6 @@ const ExistingAccountHasBalance = (accounts_with_balance, mt5_login_list, onBack
     mt5_with_balance_id.forEach((id) =>
         mt5_login_list.forEach((account_obj) => account_obj.login === id && mt5_accounts.push(account_obj))
     );
-    console.log(mt5_accounts);
     return (
         <div className='existing-account-has-balance'>
             <p className='existing-account-has-balance__action'>
@@ -247,7 +246,6 @@ class DeactivateAccountReason extends React.Component {
             reason: this.state.reason,
         })
             .then((res) => {
-                console.log(res.error);
                 this.setState({
                     which_modal_should_render: res.error.code,
                     accounts: res.error.details.accounts,
@@ -269,6 +267,7 @@ class DeactivateAccountReason extends React.Component {
                             <Field name='otherFinancialPriorities'>
                                 {({ field }) => (
                                     <Checkbox
+                                        className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('I have other financial priorities.')}
                                         onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
@@ -278,6 +277,7 @@ class DeactivateAccountReason extends React.Component {
                             <Field name='stopTrading'>
                                 {({ field }) => (
                                     <Checkbox
+                                        className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('I want to stop myself from trading.')}
                                         onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
@@ -287,6 +287,7 @@ class DeactivateAccountReason extends React.Component {
                             <Field name='notIntrested'>
                                 {({ field }) => (
                                     <Checkbox
+                                        className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('I’m no longer interested in trading.')}
                                         onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
@@ -296,6 +297,7 @@ class DeactivateAccountReason extends React.Component {
                             <Field name='anotherTradingWebsite'>
                                 {({ field }) => (
                                     <Checkbox
+                                        className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('I prefer another trading website.')}
                                         onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
@@ -305,6 +307,7 @@ class DeactivateAccountReason extends React.Component {
                             <Field name='notUserFriendly'>
                                 {({ field }) => (
                                     <Checkbox
+                                        className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('The platforms aren’t user-friendly.')}
                                         onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
@@ -314,6 +317,7 @@ class DeactivateAccountReason extends React.Component {
                             <Field name='isDifficult'>
                                 {({ field }) => (
                                     <Checkbox
+                                        className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('Making deposits and withdrawals is difficult.')}
                                         onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
@@ -323,6 +327,7 @@ class DeactivateAccountReason extends React.Component {
                             <Field name='lackFeaturesFunctionality'>
                                 {({ field }) => (
                                     <Checkbox
+                                        className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('The platforms lack key features or functionality.')}
                                         onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
@@ -332,6 +337,7 @@ class DeactivateAccountReason extends React.Component {
                             <Field name='unsatisfactoryCs'>
                                 {({ field }) => (
                                     <Checkbox
+                                        className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('Customer service was unsatisfactory.')}
                                         onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
@@ -341,6 +347,7 @@ class DeactivateAccountReason extends React.Component {
                             <Field name='otherReasons'>
                                 {({ field }) => (
                                     <Checkbox
+                                        className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('I’m deactivating my account for other reasons.')}
                                         onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
@@ -351,9 +358,10 @@ class DeactivateAccountReason extends React.Component {
                                 {({ field }) => (
                                     <Input
                                         {...field}
+                                        className='deactivate-account-reasons__input'
                                         data-lpignore='true'
                                         autoComplete='off' // prevent chrome autocomplete
-                                        type='text'
+                                        type='textarea'
                                         placeholder='If you don’t mind sharing, which other trading platforms do you use?'
                                         name='otherTradingPlatforms'
                                         value={values.otherTradingPlatforms}
@@ -365,9 +373,10 @@ class DeactivateAccountReason extends React.Component {
                                 {({ field }) => (
                                     <Input
                                         {...field}
+                                        className='deactivate-account-reasons__input'
                                         data-lpignore='true'
                                         autoComplete='off' // prevent chrome autocomplete
-                                        type='text'
+                                        type='textarea'
                                         placeholder='What could we do to improve?'
                                         name='doToImprove'
                                         value={values.doToImprove}
@@ -376,7 +385,11 @@ class DeactivateAccountReason extends React.Component {
                                 )}
                             </Field>
                             {Object.keys(errors).length > 0 &&
-                                Object.entries(errors).map(([key, value]) => <p key={key}>{value}</p>)}
+                                Object.entries(errors).map(([key, value]) => (
+                                    <p className='deactivate-account-reasons__error' key={key}>
+                                        {value}
+                                    </p>
+                                ))}
                             <FormSubmitButton
                                 is_disabled={
                                     // eslint-disable-next-line no-unused-vars

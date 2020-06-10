@@ -1084,6 +1084,30 @@ $MIN_HEIGHT_FLOATING: calc(
         font-size: var(--text-size-xs);
         line-height: 1.43;
         font-weight: bold;
+
+        &__title {
+            margin-bottom: 18px;
+        }
+        &__checkbox {
+            margin-top: 10px;
+            width: fit-content;
+
+            .dc-checkbox__label {
+                font-weight: normal;
+            }
+        }
+        &__input {
+            margin: 16px 0 0 0;
+            max-width: 400px;
+            text-overflow: ellipsis;
+
+            > input {
+                min-height: 96px;
+            }
+        }
+        &__error {
+            color: var(--purchase-main-2);
+        }
     }
 }
 

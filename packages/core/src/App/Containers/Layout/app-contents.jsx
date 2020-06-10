@@ -9,10 +9,9 @@ import { connect } from 'Stores/connect';
 import BinarySocket from '_common/base/socket_base';
 import { isEuCountry } from '_common/utility';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
-import { isBrowser, WindowContext } from '../window-context';
+import { WindowContext } from '../window-context';
 import { LocationProvider } from '../location-context';
 
-const has_dataLayer = isBrowser() && window.dataLayer;
 const cookie_expires = 7;
 
 class AppContents extends React.Component {
@@ -56,7 +55,7 @@ class AppContents extends React.Component {
                 });
             }
 
-            const allow_tracking = (!is_eu_country || tracking_status === 'accepted') && has_dataLayer;
+            const allow_tracking = (!is_eu_country || tracking_status === 'accepted') && window?.dataLayer;
             if (allow_tracking) {
                 window.dataLayer.push({ event: 'allow_tracking' });
             }
@@ -68,7 +67,7 @@ class AppContents extends React.Component {
         Cookies.set('tracking_status', 'accepted', {
             expires: cookie_expires,
         });
-        if (has_dataLayer) {
+        if (window?.dataLayer) {
             window.dataLayer.push({ event: 'allow_tracking' });
         }
         this.setState({ show_cookie_banner: false });

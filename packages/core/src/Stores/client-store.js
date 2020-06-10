@@ -1,4 +1,5 @@
 import moment from 'moment';
+import Cookies from 'js-cookie';
 import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
@@ -11,13 +12,16 @@ import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared/utils/date';
 import { isEmptyObject } from '@deriv/shared/src/utils/object/object';
 import { LocalStore, State } from '_common/storage';
+import { isEuCountry } from '_common/utility';
 import BinarySocketGeneral from 'Services/socket-general';
+import { cookie_expires } from 'App/Constants/app-config';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
 import { getClientAccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
+
 export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
@@ -340,6 +344,17 @@ export default class ClientStore extends BaseStore {
         return false;
     }
 
+    @computed({ keepAlive: true })
+    get is_eu_country() {
+        let clients_country = Cookies.get('clients_country');
+        if (!clients_country || clients_country === 'undefined') {
+            clients_country = this.website_status.clients_country;
+            Cookies.set('clients_country', clients_country, {
+                expires: cookie_expires,
+            });
+        }
+        return isEuCountry(clients_country);
+    }
     /**
      * Store Values relevant to the loginid to local storage.
      *

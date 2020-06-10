@@ -20,7 +20,6 @@ import Header from './Containers/Layout/header.jsx';
 import AppNotificationMessages from './Containers/app-notification-messages.jsx';
 import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
-import { WindowContextWrapper } from './Containers/window-context';
 // eslint-disable-next-line import/extensions
 import initStore from './app.js';
 // eslint-disable-next-line import/no-unresolved
@@ -96,12 +95,10 @@ const App = ({ root_store }) => {
                 <React.Fragment>
                     <Header />
                     <ErrorBoundary>
-                        <WindowContextWrapper>
-                            <AppContents>
-                                {/* TODO: [trader-remove-client-base] */}
-                                <Routes passthrough={platform_passthrough} />
-                            </AppContents>
-                        </WindowContextWrapper>
+                        <AppContents>
+                            {/* TODO: [trader-remove-client-base] */}
+                            <Routes passthrough={platform_passthrough} />
+                        </AppContents>
                     </ErrorBoundary>
                     <DesktopWrapper>
                         <Footer />

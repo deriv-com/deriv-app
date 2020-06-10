@@ -6,58 +6,55 @@ import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
-import BinarySocket from '_common/base/socket_base';
-import { isEuCountry } from '_common/utility';
+import { cookie_expires } from '../../Constants/app-config';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
-import { WindowContext } from '../window-context';
-import { LocationProvider } from '../location-context';
-
-const cookie_expires = 7;
 
 class AppContents extends React.Component {
-    static contextType = WindowContext;
     state = {
-        show_cookie_banner: false,
-        clients_country: Cookies.get('clients_country'),
-        is_window_loaded: false,
+        show_cookie_banner: localStorage.getItem('show_cookie_banner') === 'true',
     };
 
     async componentDidMount() {
         this.props.identifyEvent();
         this.props.pageView();
-        if (!this.state.clients_country) {
-            const website_status = await BinarySocket.wait('website_status');
-            const res = website_status.website_status.clients_country;
-            this.setState({ clients_country: res });
-            Cookies.set('clients_country', res, {
-                expires: cookie_expires,
+        /*
+        if (is_logged_in) {
+        TODO: uncomment these after the issues with showing the prompt too often and in the app are fixed
+        window.addEventListener('beforeinstallprompt', e => {
+            console.log('Going to show the installation prompt'); // eslint-disable-line no-console
+            e.preventDefault();
+            setPWAPromptEvent(e);
+            addNotificationBar({
+                content : <InstallPWA />,
+                autoShow: 10000, // show after 10 secs
+                msg_type: 'pwa',
             });
+        });
         }
+        */
     }
 
-    shouldComponentUpdate(next_props, next_state) {
-        return (
-            next_props !== this.props ||
-            JSON.stringify(next_state) !== JSON.stringify(this.state) ||
-            this.state.is_window_loaded !== this.context.is_window_loaded
-        );
-    }
+    componentDidUpdate(prev_props) {
+        const { is_eu_country, is_logged_in, is_window_loaded } = this.props;
 
-    componentDidUpdate() {
-        if (!this.props.is_logged_in) {
-            const is_eu_country = isEuCountry(this.state.clients_country);
-            const tracking_status = Cookies.get('tracking_status');
+        const tracking_status = Cookies.get('tracking_status');
+        const allow_tracking = (!is_eu_country || tracking_status === 'accepted') && window?.dataLayer;
+        if (allow_tracking) {
+            window.dataLayer.push({ event: 'allow_tracking' });
+        }
 
-            if (is_eu_country && !tracking_status) {
+        if (is_window_loaded !== prev_props.is_window_loaded || is_logged_in !== prev_props.is_logged_in) {
+            if (is_logged_in) {
+                if (this.state.show_cookie_banner === true) {
+                    this.setState({
+                        show_cookie_banner: false,
+                    });
+                }
+            } else if (is_eu_country && !tracking_status && this.state.show_cookie_banner !== true) {
+                localStorage.setItem('show_cookie_banner', 'true');
                 this.setState({
                     show_cookie_banner: true,
-                    is_window_loaded: true,
                 });
-            }
-
-            const allow_tracking = (!is_eu_country || tracking_status === 'accepted') && window?.dataLayer;
-            if (allow_tracking) {
-                window.dataLayer.push({ event: 'allow_tracking' });
             }
         }
     }
@@ -70,6 +67,7 @@ class AppContents extends React.Component {
         if (window?.dataLayer) {
             window.dataLayer.push({ event: 'allow_tracking' });
         }
+        localStorage.setItem('show_cookie_banner', 'false');
         this.setState({ show_cookie_banner: false });
     };
 
@@ -77,6 +75,7 @@ class AppContents extends React.Component {
         Cookies.set('tracking_status', 'declined', {
             expires: cookie_expires,
         });
+        localStorage.setItem('show_cookie_banner', 'false');
         this.setState({ show_cookie_banner: false });
     };
 
@@ -89,38 +88,32 @@ class AppContents extends React.Component {
             is_positions_drawer_on,
             is_route_modal_on,
         } = this.props;
-
         return (
-            <LocationProvider
-                is_eu_country={this.state.clients_country ? isEuCountry(this.state.clients_country) : undefined}
-                show_cookie_banner={this.state.show_cookie_banner}
+            <div
+                id='app_contents'
+                className={classNames('app-contents', {
+                    'app-contents--show-positions-drawer': is_positions_drawer_on,
+                    'app-contents--is-disabled': is_app_disabled,
+                    'app-contents--is-mobile': isMobile(),
+                    'app-contents--is-route-modal': is_route_modal_on,
+                    'app-contents--is-scrollable': is_mt5_page || is_cashier_visible,
+                })}
             >
-                <div
-                    id='app_contents'
-                    className={classNames('app-contents', {
-                        'app-contents--show-positions-drawer': is_positions_drawer_on,
-                        'app-contents--is-disabled': is_app_disabled,
-                        'app-contents--is-mobile': isMobile(),
-                        'app-contents--is-route-modal': is_route_modal_on,
-                        'app-contents--is-scrollable': is_mt5_page || is_cashier_visible,
-                    })}
-                >
-                    <MobileWrapper>{children}</MobileWrapper>
-                    <DesktopWrapper>
-                        {/* Calculate height of user screen and offset height of header and footer */}
-                        <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 83px)' }}>
-                            {children}
-                        </ThemedScrollbars>
-                    </DesktopWrapper>
-                    {this.state.show_cookie_banner && (
-                        <CookieBanner
-                            onAccept={this.onAccept}
-                            onDecline={this.onDecline}
-                            is_open={this.state.show_cookie_banner}
-                        />
-                    )}
-                </div>
-            </LocationProvider>
+                <MobileWrapper>{children}</MobileWrapper>
+                <DesktopWrapper>
+                    {/* Calculate height of user screen and offset height of header and footer */}
+                    <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 83px)' }}>
+                        {children}
+                    </ThemedScrollbars>
+                </DesktopWrapper>
+                {this.state.show_cookie_banner && (
+                    <CookieBanner
+                        onAccept={this.onAccept}
+                        onDecline={this.onDecline}
+                        is_open={this.state.show_cookie_banner}
+                    />
+                )}
+            </div>
         );
     }
 }
@@ -146,6 +139,8 @@ export default withRouter(
         pwa_prompt_event: ui.pwa_prompt_event,
         is_mt5_page: ui.is_mt5_page,
         is_cashier_visible: ui.is_cashier_visible,
+        is_window_loaded: ui.is_window_loaded,
         is_logged_in: client.is_logged_in,
+        is_eu_country: client.is_eu_country,
     }))(AppContents)
 );

@@ -121,7 +121,6 @@ export default class CashierStore extends BaseStore {
     active_container = this.config.deposit.container;
     onRemount = () => {};
     is_populating_values = false;
-    has_subscribed_to_switch_account = false;
 
     containers = [this.config.deposit.container, this.config.withdraw.container];
 

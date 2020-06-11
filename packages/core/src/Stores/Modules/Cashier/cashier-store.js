@@ -149,7 +149,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onMountCommon() {
+    async onMountCommon(should_remount) {
         if (this.root_store.client.is_logged_in) {
             // avoid calling this again
             if (this.is_populating_values) {
@@ -158,6 +158,9 @@ export default class CashierStore extends BaseStore {
 
             this.is_populating_values = true;
 
+            if (should_remount) {
+                this.onRemount = this.onMountCommon;
+            }
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
             if (!this.config.payment_agent.list.length) {

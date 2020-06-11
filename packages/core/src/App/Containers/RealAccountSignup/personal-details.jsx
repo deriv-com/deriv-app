@@ -1,17 +1,18 @@
 import {
     Autocomplete,
-    Div100vhContainer,
     AutoHeightWrapper,
-    Input,
-    ThemedScrollbars,
     DateOfBirthPicker,
+    Div100vhContainer,
     FormSubmitButton,
+    Input,
+    RadioGroup,
+    ThemedScrollbars,
 } from '@deriv/components';
-import { Formik, Field } from 'formik';
 import React from 'react';
+import { Field, Formik } from 'formik';
+import { toMoment } from '@deriv/shared/utils/date';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
-import { toMoment } from '@deriv/shared/utils/date';
 import 'Sass/details-form.scss';
 
 const DateOfBirthField = props => (
@@ -135,25 +136,21 @@ class PersonalDetails extends React.Component {
                                                 </Field>
                                             )}
                                             {/* TODO: [deriv-eu] Remove salutation once api is optional */}
+
                                             {'salutation' in this.props.value && (
-                                                <Field name='salutation'>
-                                                    {({ field }) => (
-                                                        <Autocomplete
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            autoComplete='new-password' // prevent chrome autocomplete
-                                                            type='text'
-                                                            label={localize('Title*')}
-                                                            error={touched.salutation && errors.salutation}
-                                                            list_items={this.props.salutation_list}
-                                                            onItemSelection={({ value, text }) =>
-                                                                setFieldValue('salutation', value ? text : '', true)
-                                                            }
-                                                            required
-                                                        />
-                                                    )}
-                                                </Field>
+                                                <RadioGroup
+                                                    className='dc-radio__input'
+                                                    name='salutation'
+                                                    items={this.props.salutation_list}
+                                                    selected={values.salutation}
+                                                    onToggle={e => {
+                                                        e.persist();
+                                                        setFieldValue('salutation', e.target.value);
+                                                    }}
+                                                    required
+                                                />
                                             )}
+
                                             <FormInputField
                                                 name='first_name'
                                                 label={localize('First name*')}

@@ -70,7 +70,7 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
             <Formik validate={validatePopup} initialValues={{ nickname: '' }} onSubmit={handleSubmit}>
                 {({ errors, isSubmitting, handleChange, status }) => (
                     <Form noValidate>
-                        <ThemedScrollbars autoHide style={{ height: '289px' }}>
+                        <ThemedScrollbars autoHide style={{ height: '437px' }}>
                             <div className='buy-sell__popup-content buy-sell__popup-content_centre'>
                                 <Icon icon='IcCashierP2pUser' width='128' height='128' />
                                 <h5 className='buy-sell__popup-content--title'>{localize('Choose a nickname')}</h5>
@@ -92,21 +92,18 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
                                         )}
                                     </Field>
                                 </div>
-                                <div className='buy-sell__popup-content--text'>
-                                    {localize('Your nickname:')}
-                                    <div className='buy-sell__popup-content--list'>
-                                        <div>
-                                            {localize(
-                                                'Must be 2–24 characters and can contain letters, numbers, and special characters .- _ @'
-                                            )}
-                                        </div>
-                                        <div>{localize('Cannot repeat a character more than 5 times')}</div>
-                                        <div>{localize('Cannot start, end with, or repeat special characters')}</div>
+                                <div className='buy-sell__popup-content--list'>
+                                    <div>
+                                        {localize(
+                                            'Must be 2–24 characters and can contain letters, numbers, and special characters .- _ @'
+                                        )}
                                     </div>
+                                    <div>{localize('Cannot repeat a character more than 5 times')}</div>
+                                    <div>{localize('Cannot start, end with, or repeat special characters')}</div>
                                 </div>
-                                <p className='buy-sell__popup-content--text'>
+                                <div className='buy-sell__popup-content--ps'>
                                     {localize('Once set, your nickname cannot be changed.')}
-                                </p>
+                                </div>
                             </div>
                         </ThemedScrollbars>
                         <div className='buy-sell__popup-footer'>

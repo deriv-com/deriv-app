@@ -365,7 +365,7 @@ class OpenPositions extends React.Component {
                                         {...shared_props}
                                     />
                                 </div>
-                                <div label={localize('Multiplier options')}>
+                                <div label={localize('Multipliers')}>
                                     <OpenPositionsTable
                                         className='open-positions-multiplier open-positions'
                                         columns={this.columns}

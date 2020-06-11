@@ -204,6 +204,13 @@ export default class TradeStore extends BaseStore {
                 }
             }
         );
+
+        reaction(
+            () => [this.is_trade_enabled],
+            () => {
+                console.trace(this.is_trade_enabled);
+            }
+        );
     }
 
     @computed

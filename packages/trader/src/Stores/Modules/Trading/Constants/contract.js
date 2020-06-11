@@ -103,7 +103,7 @@ export const getContractTypesConfig = () => ({
         components: [],
     },
     multiplier: {
-        title: localize('Multiplier'),
+        title: localize('Multipliers'),
         trade_types: ['MULTUP', 'MULTDOWN'],
         basis: ['stake'],
         components: ['multiplier', 'take_profit', 'stop_loss', 'cancellation'],
@@ -117,5 +117,5 @@ export const getContractCategoriesConfig = () => ({
     [localize('Ins & Outs')]: ['end', 'stay'],
     [localize('Look Backs')]: ['lb_high_low', 'lb_put', 'lb_call'],
     [localize('Digits')]: ['match_diff', 'even_odd', 'over_under'],
-    [localize('Multiplier options')]: ['multiplier'],
+    [localize('Multipliers')]: ['multiplier'],
 });

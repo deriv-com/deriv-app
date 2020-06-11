@@ -6,7 +6,6 @@ Blockly.Blocks.read_details = {
         this.jsonInit(this.definition());
     },
     definition() {
-        console.log('test');
         return {
             message0: localize('Contract Details: %1'),
             args0: [

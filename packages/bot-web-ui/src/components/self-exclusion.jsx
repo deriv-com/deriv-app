@@ -57,63 +57,79 @@ class SelfExclusion extends React.Component {
                 <ThemedScrollbars
                     autohide
                     style={{
-                        height: '250px',
-                        width: '480px',
+                        height: '260px',
+                        width: '456px',
                     }}
                 >
-                    <div className='self-exclusion__info'>
-                        <Localize
-                            i18n_default_text='<0> Please enter the following limits. Your bot will stop trading if either of these limits are met.</0> Daily limit on losses: <1>{{self_exclusion_status}}</1>'
-                            values={{ self_exclusion_status }}
-                            components={[
-                                <div key={0} />,
-                                <span className='self-exclusion__limit-status--bold' key={1} />,
-                            ]}
-                        />
-                        {this.state.limit_error && (
-                            <div className='self-exclusion--danger'>{localize(this.state.limit_error)}</div>
-                        )}
-                    </div>
-                    <Formik initialValues={initial_values}>
-                        {({ handleChange }) => {
-                            return (
-                                <Form>
-                                    <Field name='set_max_losses'>
-                                        {({ field }) => (
-                                            <Input
-                                                {...field}
-                                                className='self-exclusion__input'
-                                                type='number'
-                                                label={localize('Daily loss limit')}
-                                                onChange={e => {
-                                                    handleChange(e);
-                                                    onFormChange('set_max_losses', e);
-                                                }}
-                                                placeholder='10'
-                                            />
-                                        )}
-                                    </Field>
-                                    <Field name='run_limit'>
-                                        {({ field }) => {
-                                            return (
+                    <div className='self-exclusion__content'>
+                        <div className='self-exclusion__info'>
+                            <Localize
+                                i18n_default_text='<0> Please enter the following limits. Your bot will stop trading if either of these limits are met.</0> Daily limit on losses: <1> {{self_exclusion_status}}</1>'
+                                values={{ self_exclusion_status }}
+                                components={[
+                                    <div key={0} />,
+                                    <span className='self-exclusion__limit-status--bold' key={1} />,
+                                ]}
+                            />
+                            {this.state.limit_error && (
+                                <div className='self-exclusion--danger'>{localize(this.state.limit_error)}</div>
+                            )}
+                        </div>
+                        <Formik initialValues={initial_values}>
+                            {({ handleChange }) => {
+                                return (
+                                    <Form>
+                                        <Field name='set_max_losses'>
+                                            {({ field }) => (
                                                 <Input
                                                     {...field}
                                                     className='self-exclusion__input'
                                                     type='number'
-                                                    label={localize('Maximum consecutive trades')}
-                                                    placeholder='10'
+                                                    label={localize('Daily loss limit')}
                                                     onChange={e => {
                                                         handleChange(e);
-                                                        onFormChange('run_limit', e);
+                                                        onFormChange('set_max_losses', e);
                                                     }}
+                                                    placeholder='10'
+                                                    hint={
+                                                        <Localize
+                                                            i18n_default_text='This limits your potential losses for the day across all Deriv.com platforms. You may also set this limit in the <0>Self-exclusion facilities page.</0>'
+                                                            components={[
+                                                                <span
+                                                                    className='self-exclusion__limit-status--bold'
+                                                                    key={0}
+                                                                />,
+                                                            ]}
+                                                        />
+                                                    }
                                                 />
-                                            );
-                                        }}
-                                    </Field>
-                                </Form>
-                            );
-                        }}
-                    </Formik>
+                                            )}
+                                        </Field>
+                                        <Field name='run_limit'>
+                                            {({ field }) => {
+                                                return (
+                                                    <Input
+                                                        {...field}
+                                                        className='self-exclusion__input'
+                                                        type='number'
+                                                        label={localize('Maximum consecutive trades')}
+                                                        placeholder='10'
+                                                        onChange={e => {
+                                                            handleChange(e);
+                                                            onFormChange('run_limit', e);
+                                                        }}
+                                                        hint={localize(
+                                                            'This is the maximum number of trades that your bot will execute for this run.'
+                                                        )}
+                                                    />
+                                                );
+                                            }}
+                                        </Field>
+                                    </Form>
+                                );
+                            }}
+                        </Formik>
+                    </div>
                 </ThemedScrollbars>
 
                 <div className='self-exclusion__footer'>

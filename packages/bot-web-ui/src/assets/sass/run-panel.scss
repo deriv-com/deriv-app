@@ -173,8 +173,13 @@
     font-weight: normal;
     line-height: 1.43;
     color: var(--text-general);
-    margin: 1.6rem;
+    margin: 2.4rem;
+    margin-right: 1.4rem;
 
+    & .dc-themed-scrollbars__track--vertical {
+        right: -0.2rem;
+    }
+    // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
     &__dialog {
         max-height: 500px !important;
         width: 460px;
@@ -182,15 +187,17 @@
     &__footer {
         float: right;
     }
+    &__content {
+        padding-right: 1rem;
+    }
     &__info {
-        margin: 1.5rem 0;
+        margin-bottom: 2rem;
     }
     &__limit-status {
         margin: 1rem 0;
 
         &--bold {
             font-weight: 700;
-            padding-left: 1rem;
         }
         &--danger {
             font-weight: 700;
@@ -199,6 +206,12 @@
     }
     &--danger {
         color: var(--status-danger);
+    }
+    &__input {
+        margin-bottom: 4.8rem !important;
+    }
+    & .dc-btn {
+        margin-left: 0.8rem;
     }
 }
 

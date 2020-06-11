@@ -37,12 +37,12 @@ class AppContents extends React.Component {
     }
 
     componentDidUpdate(prev_props) {
-        const { is_eu_country, is_logged_in, is_window_loaded } = this.props;
+        const { is_eu_country, is_logged_in, is_window_loaded, is_tracking, pushDataLayer } = this.props;
 
         const tracking_status = Cookies.get('tracking_status');
-        const allow_tracking = (!is_eu_country || tracking_status === 'accepted') && window?.dataLayer;
-        if (allow_tracking) {
-            window.dataLayer.push({ event: 'allow_tracking' });
+        const allow_tracking = !is_eu_country || tracking_status === 'accepted';
+        if (allow_tracking && !is_tracking) {
+            pushDataLayer({ event: 'allow_tracking' });
         }
 
         if (is_window_loaded !== prev_props.is_window_loaded || is_logged_in !== prev_props.is_logged_in) {
@@ -66,9 +66,7 @@ class AppContents extends React.Component {
         Cookies.set('tracking_status', 'accepted', {
             expires: cookie_expires,
         });
-        if (window?.dataLayer) {
-            window.dataLayer.push({ event: 'allow_tracking' });
-        }
+        this.props.pushDataLayer({ event: 'allow_tracking' });
         localStorage.setItem('show_cookie_banner', 'false');
         this.setState({ show_cookie_banner: false });
     };
@@ -132,18 +130,20 @@ AppContents.propTypes = {
 };
 
 export default withRouter(
-    connect(({ client, ui, segment }) => ({
+    connect(({ client, gtm, segment, ui }) => ({
+        is_eu_country: client.is_eu_country,
+        is_logged_in: client.is_logged_in,
+        is_tracking: gtm.is_tracking,
+        pushDataLayer: gtm.pushDataLayer,
         identifyEvent: segment.identifyEvent,
+        pageView: segment.pageView,
         is_app_disabled: ui.is_app_disabled,
+        is_cashier_visible: ui.is_cashier_visible,
+        is_mt5_page: ui.is_mt5_page,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         is_route_modal_on: ui.is_route_modal_on,
-        pageView: segment.pageView,
-        pwa_prompt_event: ui.pwa_prompt_event,
-        is_mt5_page: ui.is_mt5_page,
-        is_cashier_visible: ui.is_cashier_visible,
         is_window_loaded: ui.is_window_loaded,
-        is_logged_in: client.is_logged_in,
-        is_eu_country: client.is_eu_country,
+        pwa_prompt_event: ui.pwa_prompt_event,
         // setPWAPromptEvent     : ui.setPWAPromptEvent,
         // addNotificationBar    : ui.addNotificationBar,
     }))(AppContents)

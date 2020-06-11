@@ -58,12 +58,7 @@ const IOMDescription = () => (
             <Localize i18n_default_text='Real accounts are not available to politically exposed persons (PEPs).' />
         </h4>
         <p>
-            <Localize
-                i18n_default_text='A politically exposed person (PEP) is someone
-                                        appointed with a prominent public position. Close
-                                    associates and family members of a PEP are also considered
-                                    to be PEPs.'
-            />
+            <Localize i18n_default_text='A politically exposed person (PEP) is someone appointed with a prominent public position. Close associates and family members of a PEP are also considered to be PEPs.' />
         </p>
     </React.Fragment>
 );

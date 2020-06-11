@@ -44,7 +44,8 @@ class ModalElement extends React.PureComponent {
             this.wrapper_ref &&
             !path.some(el => el === this.wrapper_ref) &&
             !(this.props.elements_to_ignore && path.find(el => this.props.elements_to_ignore.includes(el))) &&
-            !this.is_datepicker_visible
+            !this.is_datepicker_visible &&
+            this.props.is_open
         ) {
             this.props.toggleModal();
         }

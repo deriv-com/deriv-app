@@ -141,6 +141,15 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setAccountSwitchListener() {
+        // cashier inits once and tries to stay active until switching account
+        // since cashier calls take a long time to respond or display in iframe
+        // so we don't have any unmount function here and everything gets reset on switch instead
+        this.disposeSwitchAccount();
+        this.onSwitchAccount(this.accountSwitcherListener);
+    }
+
+    @action.bound
     async onMountCommon(should_remount) {
         if (this.root_store.client.is_logged_in) {
             // avoid calling this again
@@ -153,16 +162,6 @@ export default class CashierStore extends BaseStore {
             if (should_remount) {
                 this.onRemount = this.onMountCommon;
             }
-
-            if (!this.has_subscribed_to_switch_account) {
-                // cashier inits once and tries to stay active until switching account
-                // since cashier calls take a long time to respond or display in iframe
-                // so we don't have any unmount function here and everything gets reset on switch instead
-                this.disposeSwitchAccount();
-                this.onSwitchAccount(this.accountSwitcherListener);
-                this.has_subscribed_to_switch_account = true;
-            }
-
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
             if (!this.config.payment_agent.list.length) {

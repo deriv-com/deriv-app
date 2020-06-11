@@ -48,6 +48,7 @@ class TradeHeaderExtensions extends React.Component {
             if (this.props.is_logged_in) {
                 this.props.onMountPositions();
                 this.props.onMountCashier(true);
+                this.props.setAccountSwitchListener();
             }
         }
 
@@ -91,4 +92,5 @@ export default connect(({ client, modules, ui }) => ({
     enableApp: ui.enableApp,
     populateHeaderExtensions: ui.populateHeaderExtensions,
     toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
+    setAccountSwitchListener: modules.cashier.setAccountSwitchListener,
 }))(TradeHeaderExtensions);

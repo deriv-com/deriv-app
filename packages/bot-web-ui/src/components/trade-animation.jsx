@@ -75,7 +75,7 @@ const TradeAnimation = ({ className, contract_stage, is_contract_completed, prof
 
 TradeAnimation.propTypes = {
     className: PropTypes.string,
-    contract_stage: PropTypes.object,
+    contract_stage: PropTypes.number,
     is_contract_completed: PropTypes.bool,
     profit: PropTypes.number,
     should_show_overlay: PropTypes.bool,

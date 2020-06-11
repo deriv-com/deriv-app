@@ -20,7 +20,7 @@ const SaveModal = ({
     validateBotName,
 }) => (
     <Modal
-        title={'Save Strategy'}
+        title={localize('Save Strategy')}
         className='modal--save'
         width='384px'
         is_open={is_save_modal_open}

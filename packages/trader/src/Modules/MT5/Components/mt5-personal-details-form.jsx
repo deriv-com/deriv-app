@@ -37,58 +37,6 @@ const getAccountOpeningReasonList = () => [
         value: 'Peer-to-peer exchange',
     },
 ];
-
-class TaxIdentificationNumber extends React.Component {
-    softValidate = (v, { tax_residence }) => {
-        const { residence_list } = this.props;
-
-        const from_list = residence_list.filter(res => res.text === tax_residence && res?.tin_format);
-
-        const tax_regex = from_list[0]?.tin_format?.[0];
-
-        const has_notice = tax_regex ? new RegExp(tax_regex).test(v) : /^[\w-]{0,20}$/.test(v);
-
-        return has_notice ? (
-            <Localize i18n_default_text='This Tax Identification Number (TIN) is invalid. You may continue, but to facilitate future payment processes, valid tax information will be required.' />
-        ) : null;
-    };
-
-    render() {
-        const { name, optional, ...props } = this.props;
-        return (
-            <Field name={name}>
-                {({ field, form: { errors, touched, values } }) => {
-                    return (
-                        <React.Fragment>
-                            <Input
-                                type='text'
-                                required={!optional}
-                                name={name}
-                                autoComplete='off'
-                                maxLength='30'
-                                error={touched[field.name] && errors[field.name]}
-                                {...field}
-                                {...props}
-                            />
-                            <p className={classNames('tin-input--has-error')}>
-                                {this.softValidate(field.value, values)}
-                            </p>
-                        </React.Fragment>
-                    );
-                }}
-            </Field>
-        );
-    }
-}
-
-TaxIdentificationNumber.propTypes = {
-    name: PropTypes.any,
-    residence_list: PropTypes.array,
-    optional: PropTypes.bool,
-};
-
-TaxIdentificationNumber.defaultProps = { optional: false };
-
 export const InputField = ({ name, optional = false, ...props }) => (
     <Field name={name}>
         {({ field, form: { errors, touched } }) => (
@@ -122,7 +70,7 @@ class MT5PersonalDetailsForm extends React.Component {
         const validations = {
             citizen: [v => !!v, v => this.props.residence_list.map(i => i.text).includes(v)],
             tax_residence: [v => !!v, v => this.props.residence_list.map(i => i.text).includes(v)],
-            tax_identification_number: [v => !!v, (v, values) => !!values.tax_residence],
+            tax_identification_number: [v => !!v, v => /^[\w-]{0,20}$/.test(v)],
             account_opening_reason: [v => !!v, v => this.state.account_opening_reason.map(i => i.text).includes(v)],
         };
 
@@ -134,26 +82,15 @@ class MT5PersonalDetailsForm extends React.Component {
         };
 
         const common_messages = ['{{field_name}} is required', '{{field_name}} is not properly formatted.'];
-        const tax_identification_number_messages = ['{{field_name}} is required', 'Please fill-in tax residence.'];
 
         const errors = {};
 
         Object.entries(validations).forEach(([key, rules]) => {
-            const error_index = rules.findIndex(v => !v(values[key], values));
+            const error_index = rules.findIndex(v => !v(values[key]));
             if (error_index !== -1) {
                 switch (key) {
-                    case 'tax_identification_number':
-                        errors[key] = (
-                            <Localize
-                                i18n_default_text={tax_identification_number_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                            />
-                        );
-                        break;
                     default:
-                        errors[key] = (
+                        errors[key] = errors[key] = (
                             <Localize
                                 i18n_default_text={common_messages[error_index]}
                                 values={{
@@ -179,7 +116,6 @@ class MT5PersonalDetailsForm extends React.Component {
         };
         onSubmit(index, payload, actions.setSubmitting, is_dirty);
     };
-
     toggleAccOpeningDropdown = () => {
         this.setState({
             is_acc_op_focused: !this.state.is_acc_op_focused,
@@ -324,11 +260,10 @@ class MT5PersonalDetailsForm extends React.Component {
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
-                                            <TaxIdentificationNumber
+                                            <InputField
                                                 id='real_mt5_tax_identification_number'
                                                 name='tax_identification_number'
                                                 placeholder={localize('Tax identification number')}
-                                                residence_list={this.props.residence_list}
                                             />
                                             <FormSubHeader title={localize('Account opening reason')} />
                                             <Field name='account_opening_reason'>

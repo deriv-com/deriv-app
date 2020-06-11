@@ -187,6 +187,7 @@
     flex-grow: 1;
     background: inherit;
     height: 100%;
+    position: relative;
 
     &__table-row {
         grid-template-columns: 1.5fr 1fr 2fr 1fr;
@@ -222,7 +223,10 @@
 
     .dc-table {
         padding: 0 30px;
-        height: calc(100% + 100px);
+        @include desktop {
+            position: absolute;
+            height: 100%;
+        }
 
         &__header {
             border-bottom: none;
@@ -298,6 +302,10 @@
     @include mobile {
         padding: 1.6rem;
         border-top: 2px solid var(--border-disabled);
+    }
+    @include desktop {
+        position: absolute;
+        bottom: 0;
     }
 }
 

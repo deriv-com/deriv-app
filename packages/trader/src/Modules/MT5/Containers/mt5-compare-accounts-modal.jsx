@@ -186,7 +186,7 @@ const MT5CompareAccountHint = () => (
 
 const ModalContent = () => (
     <div className='mt5-compare-accounts'>
-        <Table fixed scroll_height={isMobile() ? 'calc(100vh - 362px)' : 'calc(100vh - 440px)'}>
+        <Table fixed scroll_height={isMobile() ? '100%' : 'calc(100% - 130px)'}>
             <Table.Header>
                 <Table.Row className='mt5-compare-accounts__table-row'>
                     <Table.Head fixed />

@@ -14,6 +14,8 @@ class Dialog extends React.PureComponent {
     scrollbar_ref = React.createRef();
     vertical_tab_headers = [];
     is_user_scroll = false;
+    scroll_timeout = null;
+    scrollTopPos = null;
 
     state = {
         is_filtered_list_empty: false,
@@ -70,10 +72,15 @@ class Dialog extends React.PureComponent {
                 },
             });
         }
-    };
 
-    onScrollStop = () => {
-        this.is_user_scroll = false;
+        const element = e.target;
+        this.scrollTopPos = element.scrollTop;
+        if (this.scrollTopPos === element.scrollTop) {
+            clearTimeout(this.scroll_timeout);
+        }
+        this.scroll_timeout = setTimeout(() => {
+            this.is_user_scroll = false;
+        }, 150);
     };
 
     onChangeInput = e => {
@@ -188,9 +195,8 @@ class Dialog extends React.PureComponent {
                                     {!is_info_dialog_open ? (
                                         <ThemedScrollbars
                                             refSetter={this.scrollbar_ref}
-                                            height='615px'
+                                            height='calc(100vh - 172px)'
                                             onScroll={this.onScroll}
-                                            onScrollStop={this.onScrollStop}
                                         >
                                             {children}
                                         </ThemedScrollbars>

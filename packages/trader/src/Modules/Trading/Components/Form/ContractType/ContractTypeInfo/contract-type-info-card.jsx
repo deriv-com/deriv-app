@@ -10,11 +10,11 @@ const Card = ({ contract_type, onClick }) => (
         <div className='contract-type-info__gif'>
             <TradeCategoriesGIF category={contract_type.value} />
         </div>
-        <div className='contract-type-info__content'>
-            <ThemedScrollbars height='340px' autohide={false}>
+        <ThemedScrollbars className='contract-type-info__scrollbars' height='340px' autohide={false}>
+            <div className='contract-type-info__content'>
                 <TradeCategories category={contract_type.value} />
-            </ThemedScrollbars>
-        </div>
+            </div>
+        </ThemedScrollbars>
         <Button
             id={`dt_contract_info_${contract_type.value}_btn`}
             onClick={e => onClick(contract_type, e)}

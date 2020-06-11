@@ -6,6 +6,7 @@ import {
     Autocomplete,
     AutoHeightWrapper,
     Div100vhContainer,
+    Dropdown,
     ThemedScrollbars,
     Input,
     Loading,
@@ -116,6 +117,7 @@ class MT5PersonalDetailsForm extends React.Component {
         };
         onSubmit(index, payload, actions.setSubmitting, is_dirty);
     };
+
     toggleAccOpeningDropdown = () => {
         this.setState({
             is_acc_op_focused: !this.state.is_acc_op_focused,
@@ -160,7 +162,7 @@ class MT5PersonalDetailsForm extends React.Component {
                 validate={this.validatePersonalDetails}
                 onSubmit={onSubmitForm}
             >
-                {({ handleSubmit, isSubmitting, errors, touched, values, setFieldValue, setFieldTouched }) => (
+                {({ handleSubmit, isSubmitting, handleChange, handleBlur, errors, touched, values, setFieldValue }) => (
                     <AutoHeightWrapper default_height={200}>
                         {({ height, setRef }) => (
                             <form
@@ -181,7 +183,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                             }
                                         />
                                     </p>
-                                    <ThemedScrollbars height={height} is_bypassed={isMobile()}>
+                                    <ThemedScrollbars height={`calc(${height}px - 100px)`} is_bypassed={isMobile()}>
                                         <div className='details-form__elements'>
                                             <FormSubHeader title={localize('Details')} />
                                             <fieldset className='account-form__fieldset'>
@@ -232,6 +234,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                                                 id='real_mt5_tax_residence'
                                                                 data-lpignore='true'
                                                                 type='text'
+                                                                list_height='160px'
                                                                 autoComplete='off'
                                                                 label={localize('Tax residence')}
                                                                 error={touched.tax_residence && errors.tax_residence}
@@ -268,37 +271,24 @@ class MT5PersonalDetailsForm extends React.Component {
                                             <FormSubHeader title={localize('Account opening reason')} />
                                             <Field name='account_opening_reason'>
                                                 {({ field }) => (
-                                                    <Autocomplete
-                                                        {...field}
-                                                        data-lpignore='true'
-                                                        autoComplete='off' // prevent chrome autocomplete
-                                                        type='text'
-                                                        label={localize('Account opening reason')}
+                                                    <Dropdown
+                                                        placeholder={localize('Account opening reason')}
+                                                        is_align_text_left
+                                                        is_alignment_top
+                                                        name={field.name}
+                                                        list={this.state.account_opening_reason}
+                                                        value={field.value}
+                                                        onChange={handleChange}
+                                                        handleBlur={handleBlur}
                                                         error={
                                                             touched.account_opening_reason &&
                                                             errors.account_opening_reason
                                                         }
-                                                        list_items={this.state.account_opening_reason}
-                                                        onItemSelection={({ value: v, text }) => {
-                                                            setFieldValue(
-                                                                'account_opening_reason',
-                                                                v ? text : '',
-                                                                true
-                                                            );
-                                                            setFieldTouched('account_opening_reason', true, true);
-                                                        }}
-                                                        onFocus={this.toggleAccOpeningDropdown}
-                                                        onBlur={this.toggleAccOpeningDropdown}
+                                                        {...field}
                                                         required
                                                     />
                                                 )}
                                             </Field>
-                                            {/* Extend the modal to allow the scrolling when dropdown is open */}
-                                            <div
-                                                style={{
-                                                    paddingBottom: this.state.is_acc_op_focused ? '14rem' : '0',
-                                                }}
-                                            />
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>

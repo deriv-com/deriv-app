@@ -196,14 +196,10 @@ const BinarySocketGeneral = (() => {
         };
     };
 
-    const subscribeBalances = () => {
-        WS.subscribeBalanceAll(ResponseHandlers.balanceOtherAccounts);
-        WS.subscribeBalanceActiveAccount(ResponseHandlers.balanceActiveAccount, client_store.loginid);
-    };
-
     const authorizeAccount = response => {
         client_store.responseAuthorize(response);
-        subscribeBalances();
+        WS.subscribeBalanceActiveAccount(ResponseHandlers.balanceActiveAccount, client_store.loginid);
+        client_store.updateOtherAccountBalance();
         WS.storage.getSettings();
         WS.getAccountStatus();
         WS.storage.payoutCurrencies();
@@ -259,15 +255,8 @@ const ResponseHandlers = (() => {
         }
     };
 
-    const balanceOtherAccounts = response => {
-        if (!response.error) {
-            BinarySocketGeneral.setBalanceOtherAccounts(response.balance);
-        }
-    };
-
     return {
         websiteStatus,
         balanceActiveAccount,
-        balanceOtherAccounts,
     };
 })();

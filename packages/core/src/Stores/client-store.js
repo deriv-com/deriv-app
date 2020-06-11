@@ -885,6 +885,14 @@ export default class ClientStore extends BaseStore {
         }
     }
 
+    @action.bound
+    updateOtherAccountBalance() {
+        Object.keys(this.accounts).forEach(account_id => {
+            if (account_id !== this.loginid) {
+                WS.balanceForAccount(account_id).then(res => this.setBalanceOtherAccounts(res.balance));
+            }
+        });
+    }
     // This callback is used for balance: all
     // Balance: all is very slow
     // --> so we keep a separate balance subscription for the active account

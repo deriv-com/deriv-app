@@ -142,6 +142,8 @@ const BinarySocketBase = (() => {
 
     const balanceAll = () => deriv_api.send({ balance: 1, account: 'all' });
 
+    const balanceForAccount = account => deriv_api.send({ balance: 1, account });
+
     const subscribeBalanceAll = cb => subscribe({ balance: 1, account: 'all' }, cb);
 
     const subscribeBalanceActiveAccount = (cb, account) => subscribe({ balance: 1, account }, cb);
@@ -316,6 +318,7 @@ const BinarySocketBase = (() => {
         },
         cache: delegateToObject({}, () => deriv_api.cache),
         storage: delegateToObject({}, () => deriv_api.storage),
+        balanceForAccount,
         buy,
         buyAndSubscribe,
         sell,

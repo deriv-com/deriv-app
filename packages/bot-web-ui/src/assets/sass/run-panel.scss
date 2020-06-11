@@ -55,6 +55,7 @@
         bottom: 0;
         width: 100%;
         background-color: var(--general-main-1);
+        border-top: solid 1px var(--border-normal);
     }
     &__buttons {
         display: flex;

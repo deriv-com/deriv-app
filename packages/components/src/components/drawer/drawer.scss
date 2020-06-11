@@ -56,7 +56,7 @@
             transition: 0.25s ease;
             transform: rotate(180deg);
         }
-        &-icon-mobile {
+        &-icon--mobile {
             width: 2.4rem;
             height: 0.8rem;
             transition: 0.25s ease;
@@ -65,7 +65,7 @@
         &--open > &-icon {
             transform: rotate(0);
         }
-        &--open > &-icon-mobile {
+        &--open > &-icon--mobile {
             transform: rotate(180deg);
         }
         &--mobile {
@@ -74,8 +74,14 @@
             height: 3.2rem;
             justify-content: center;
             background-color: var(--general-main-1);
-            border: solid 1px var(--border-normal);
+            border-top: solid 1px var(--border-normal);
         }
+    }
+    &__clear-button {
+        position: absolute;
+        right: 1.6rem;
+        height: 2.4rem;
+        width: 7.2rem;
     }
     &--open {
         transform: translateX(-366px);
@@ -91,5 +97,11 @@
         height: calc(100% - 8.8rem) !important;
         top: calc(100% - 8.8rem) !important;
         z-index: unset;
+    }
+}
+
+.dc-btn {
+    &__text {
+        font-size: 1.2rem;
     }
 }

@@ -28,14 +28,10 @@ const drawerContent = ({ active_index, setActiveTabIndex }) => {
 
 const drawerFooter = ({
     active_index,
-    dialog_options,
     is_clear_stat_disabled,
-    is_dialog_open,
     is_stop_button_disabled,
     is_stop_button_visible,
-    onCancelButtonClick,
     onClearStatClick,
-    onOkButtonClick,
     onRunButtonClick,
     onStopButtonClick,
 }) => {
@@ -84,16 +80,6 @@ const drawerFooter = ({
                     <Icon icon='IcInfoOutline' id='db-run-panel__clear-stat' className='run-panel__icon-info' />
                 </Popover>
             </div>
-            {is_dialog_open && (
-                <Dialog
-                    title={dialog_options.title}
-                    is_open={is_dialog_open}
-                    onOkButtonClick={onOkButtonClick}
-                    onCancelButtonClick={onCancelButtonClick}
-                >
-                    {dialog_options.message}
-                </Dialog>
-            )}
         </div>
     );
 };
@@ -158,12 +144,20 @@ class RunPanel extends React.PureComponent {
     render() {
         const {
             active_index,
-            setActiveTabIndex,
+            dialog_options,
+            is_clear_stat_disabled,
+            is_dialog_open,
+            is_drawer_open,
             is_mobile,
+            is_stop_button_disabled,
+            is_stop_button_visible,
+            onCancelButtonClick,
+            onClearStatClick,
+            onOkButtonClick,
             onStopButtonClick,
             onRunButtonClick,
-            is_stop_button_visible,
-            is_stop_button_disabled,
+            setActiveTabIndex,
+            toggleDrawer,
         } = this.props;
         const content = drawerContent({ active_index, setActiveTabIndex });
         const footer = drawerFooter(this.props);
@@ -172,11 +166,14 @@ class RunPanel extends React.PureComponent {
             <>
                 <Drawer
                     className='run-panel'
-                    is_open={this.props.is_drawer_open}
-                    toggleDrawer={this.props.toggleDrawer}
                     contentClassName='run-panel__content'
+                    clear_stat_button_text={localize('Clear stat')}
                     footer={!is_mobile && footer}
+                    is_clear_stat_disabled={is_clear_stat_disabled}
                     is_mobile={is_mobile}
+                    is_open={is_drawer_open}
+                    onClearStatClick={onClearStatClick}
+                    toggleDrawer={toggleDrawer}
                 >
                     {content}
                 </Drawer>
@@ -187,6 +184,16 @@ class RunPanel extends React.PureComponent {
                         is_stop_button_visible,
                         is_stop_button_disabled,
                     })}
+                {is_dialog_open && (
+                    <Dialog
+                        title={dialog_options.title}
+                        is_open={is_dialog_open}
+                        onOkButtonClick={onOkButtonClick}
+                        onCancelButtonClick={onCancelButtonClick}
+                    >
+                        {dialog_options.message}
+                    </Dialog>
+                )}
             </>
         );
     }

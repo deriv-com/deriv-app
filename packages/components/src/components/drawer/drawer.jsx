@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon';
+import Button from '../button';
 
 // TODO: use-from-shared - Use this icon from icons' shared package
 const IconDrawer = () => (
@@ -46,7 +47,17 @@ class Drawer extends React.PureComponent {
     };
 
     render() {
-        const { children, className, footer, header, contentClassName, is_mobile } = this.props;
+        const {
+            children,
+            className,
+            contentClassName,
+            clear_stat_button_text,
+            footer,
+            header,
+            is_clear_stat_disabled,
+            is_mobile,
+            onClearStatClick,
+        } = this.props;
 
         return (
             <div
@@ -63,7 +74,22 @@ class Drawer extends React.PureComponent {
                     })}
                     onClick={this.toggleDrawer}
                 >
-                    {is_mobile ? <Icon icon='IcChevronUp' className='dc-drawer__toggle-icon-mobile' /> : <IconDrawer />}
+                    {is_mobile ? (
+                        <Icon icon='IcChevronUp' className='dc-drawer__toggle-icon--mobile' />
+                    ) : (
+                        <IconDrawer />
+                    )}
+                    {is_mobile && this.state.is_open && (
+                        <Button
+                            id='db-run-panel__clear-button'
+                            className='dc-drawer__clear-button'
+                            is_disabled={is_clear_stat_disabled}
+                            text={clear_stat_button_text}
+                            onClick={onClearStatClick}
+                            has_effect
+                            secondary
+                        />
+                    )}
                 </div>
                 <div
                     className={classNames('dc-drawer__container', {
@@ -81,9 +107,16 @@ class Drawer extends React.PureComponent {
 
 Drawer.propTypes = {
     children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+    className: PropTypes.string,
+    contentClassName: PropTypes.string,
+    clear_stat_button_text: PropTypes.string,
     footer: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     header: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+    is_clear_stat_disabled: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     is_open: PropTypes.bool,
+    onClearStatClick: PropTypes.func,
+    toggleDrawer: PropTypes.func,
 };
 
 export default Drawer;

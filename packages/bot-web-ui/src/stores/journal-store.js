@@ -87,9 +87,7 @@ export default class JournalStore {
         // filter messages based on filtered-checkbox
         return this.unfiltered_messages.filter(
             message =>
-                !this.journal_filters.length ||
-                this.journal_filters.some(filter => message.message_type === filter) ||
-                message.message_type === message_types.COMPONENT
+                this.journal_filters.length && this.journal_filters.some(filter => message.message_type === filter)
         );
     }
 

@@ -4,8 +4,8 @@ import React from 'react';
 import { VariableSizeList as List } from 'react-window';
 import { NavLink } from 'react-router-dom';
 import { isMobile } from '@deriv/shared/utils/screen';
-import ThemedScrollbars from 'Components/themed-scrollbars';
 import DataListCell from './data-list-cell.jsx';
+import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 
 const ThemedScrollbarsWrapper = React.forwardRef((props, ref) => (
     <ThemedScrollbars {...props} forwardedRef={ref}>

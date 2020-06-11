@@ -49,13 +49,13 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        height: 5.6rem;
+        height: 6rem;
         padding: 0.8rem 2.4rem;
         position: fixed;
         bottom: 0;
         width: 100%;
         background-color: var(--general-main-1);
-        border-top: solid 1px var(--border-normal);
+        border-top: solid 2px var(--general-section-1);
     }
     &__buttons {
         display: flex;

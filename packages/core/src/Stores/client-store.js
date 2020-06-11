@@ -93,12 +93,12 @@ export default class ClientStore extends BaseStore {
      */
     @computed
     get is_client_allowed_to_visit() {
+        // TODO: [deriv-eu] Remove this after complete EU merge into production
         return !!(
+            this.is_eu_enabled ||
             !this.is_logged_in ||
             this.is_virtual ||
-            this.accounts[this.loginid].landing_company_shortcode === 'svg' ||
-            this.accounts[this.loginid].landing_company_shortcode === 'iom' ||
-            this.accounts[this.loginid].landing_company_shortcode === 'malta'
+            this.accounts[this.loginid].landing_company_shortcode === 'svg'
         );
     }
 
@@ -374,9 +374,12 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_mt5_allowed() {
         if (!this.landing_companies || !Object.keys(this.landing_companies).length) return false;
-        // TODO revert this when all landing companies are accepted.
-        // return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
-        if ('mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies) {
+        const has_mt5 =
+            'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
+        // TODO: [deriv-eu] Update this when all EU functionalities are merged into production and all landing companies are accepted.
+        // return has_mtf;
+        if (this.root_store.ui.is_eu_enabled) return has_mt5;
+        if (has_mt5) {
             const { gaming_company, financial_company } = this.landing_companies;
             // eslint-disable-next-line no-nested-ternary
             return gaming_company
@@ -1061,8 +1064,9 @@ export default class ClientStore extends BaseStore {
 
         let is_allowed_real = true;
         // Performs check to avoid login of landing companies that are currently not supported in app
+        // TODO: [deriv-eu] Remove this after full merging of EU. When EU is enabled all landing companies are allowed.
         account_list.forEach(function(account) {
-            if (!/^virtual|svg$/.test(account.landing_company_name)) {
+            if (!this.is_eu_enabled && !/^virtual|svg$/.test(account.landing_company_name)) {
                 is_allowed_real = false;
             }
         });
@@ -1331,7 +1335,9 @@ export default class ClientStore extends BaseStore {
     @action.bound
     getChangeableFields() {
         const landing_company = State.getResponse('landing_company');
-        const has_changeable_field = this.landing_company_shortcode === 'svg' && !this.is_fully_authenticated;
+        const has_changeable_field =
+            (this.root_store.ui.is_eu_enabled || this.landing_company_shortcode === 'svg') &&
+            !this.is_fully_authenticated;
         const changeable = ClientBase.getLandingCompanyValue(this.loginid, landing_company, 'changeable_fields');
         if (has_changeable_field) {
             let changeable_fields = [];

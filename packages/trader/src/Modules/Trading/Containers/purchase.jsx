@@ -11,7 +11,7 @@ const Purchase = ({
     contract_type,
     currency,
     has_cancellation,
-    is_client_allowed_to_visit,
+    is_client_allowed_to_visit, // TODO: [deriv-eu] Remove this after complete EU merge into production
     is_multiplier,
     is_mobile,
     is_purchase_enabled,

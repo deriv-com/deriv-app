@@ -1,7 +1,7 @@
 import { action, observable } from 'mobx';
 import routes from '@deriv/shared/utils/routes';
-import { getAllowedLocalStorageOrigin } from '@deriv/shared/utils/storage';
 import { toMoment } from '@deriv/shared/utils/date';
+import { getUrlSmartTrader } from '@deriv/shared/utils/storage';
 import ServerTime from '_common/base/server_time';
 import { currentLanguage } from 'Utils/Language/index';
 import BaseStore from './base-store';
@@ -38,7 +38,7 @@ export default class CommonStore extends BaseStore {
         if (window.location.href.indexOf('?ext_platform_url=') !== -1) {
             const ext_url = decodeURI(new URL(window.location.href).searchParams.get('ext_platform_url'));
 
-            if (ext_url?.indexOf(getAllowedLocalStorageOrigin()) === 0) {
+            if (ext_url?.indexOf(getUrlSmartTrader()) === 0) {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else {
                 this.addRouteHistoryItem({ ...location, action: 'PUSH' });
@@ -59,7 +59,7 @@ export default class CommonStore extends BaseStore {
     setIsSocketOpened(is_socket_opened) {
         // note that it's not for account switch that we're doing this,
         // but rather to reset account related stores like portfolio and contract-trade
-        const should_broadcast_account_change = this.was_socket_opened && !this.is_socket_opened && is_socket_opened;
+        const should_broadcast_account_change = this.was_socket_opened && is_socket_opened;
 
         this.is_socket_opened = is_socket_opened;
         this.was_socket_opened = this.was_socket_opened || is_socket_opened;

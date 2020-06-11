@@ -58,6 +58,7 @@ class CompositeCalendarMobile extends React.PureComponent {
                 to: toMoment()
                     .endOf('day')
                     .unix(),
+                is_batch: true,
             },
             {
                 date_range: selected_date_range,
@@ -86,6 +87,7 @@ class CompositeCalendarMobile extends React.PureComponent {
                 to: toMoment(to, 'DD MMM YYYY')
                     .endOf('day')
                     .unix(),
+                is_batch: true,
             },
             {
                 date_range,

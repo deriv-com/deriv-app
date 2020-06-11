@@ -1109,6 +1109,10 @@ $MIN_HEIGHT_FLOATING: calc(
             color: var(--purchase-main-2);
         }
     }
+    @include mobile {
+        width: 92%;
+        margin: 0 auto;
+    }
 }
 
 /* stylelint-disable */
@@ -1127,6 +1131,10 @@ $MIN_HEIGHT_FLOATING: calc(
         .dc-form-submit-button {
             justify-content: center;
             padding: 2rem 0 0 0;
+
+            @include mobile {
+                background: unset;
+            }
         }
         &__warning-message {
             color: var(--brand-red-coral);

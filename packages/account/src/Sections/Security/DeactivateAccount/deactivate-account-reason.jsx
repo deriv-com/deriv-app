@@ -239,24 +239,21 @@ class DeactivateAccountReason extends React.Component {
         this.setState({ is_modal_open: false });
     };
 
-    startDeactivating = () => {
+    startDeactivating = async () => {
         this.closeModal();
-        WS.send({
+        const account_closure_response = await WS.authorized.accountClosure({
             account_closure: 1,
             reason: this.state.reason,
-        })
-            .then((res) => {
-                if (res.account_closure === 1) {
-                    this.props.logout();
-                    return;
-                }
-                this.setState({
-                    which_modal_should_render: res.error.code,
-                    accounts: res.error.details.accounts,
-                    is_modal_open: true,
-                });
-            })
-            .catch((err) => console.log(err));
+        });
+        if (account_closure_response.account_closure === 1) {
+            this.props.logout();
+            return;
+        }
+        this.setState({
+            which_modal_should_render: account_closure_response.error.code,
+            accounts: account_closure_response.error.details.accounts,
+            is_modal_open: true,
+        });
     };
 
     render() {

@@ -196,10 +196,14 @@ const BinarySocketGeneral = (() => {
         };
     };
 
-    const authorizeAccount = response => {
-        client_store.responseAuthorize(response);
+    const subscribeBalances = () => {
         WS.subscribeBalanceActiveAccount(ResponseHandlers.balanceActiveAccount, client_store.loginid);
         client_store.updateOtherAccountBalance();
+    };
+
+    const authorizeAccount = response => {
+        client_store.responseAuthorize(response);
+        subscribeBalances();
         WS.storage.getSettings();
         WS.getAccountStatus();
         WS.storage.payoutCurrencies();

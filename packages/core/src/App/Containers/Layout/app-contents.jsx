@@ -8,6 +8,7 @@ import { isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
 import { cookie_expires } from '../../Constants/app-config';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
+// import InstallPWA    from './install-pwa.jsx';
 
 class AppContents extends React.Component {
     state = {
@@ -15,6 +16,7 @@ class AppContents extends React.Component {
     };
 
     async componentDidMount() {
+        // Segment page view trigger
         this.props.identifyEvent();
         this.props.pageView();
         /*
@@ -23,8 +25,8 @@ class AppContents extends React.Component {
         window.addEventListener('beforeinstallprompt', e => {
             console.log('Going to show the installation prompt'); // eslint-disable-line no-console
             e.preventDefault();
-            setPWAPromptEvent(e);
-            addNotificationBar({
+            this.props.setPWAPromptEvent(e);
+            this.props.addNotificationBar({
                 content : <InstallPWA />,
                 autoShow: 10000, // show after 10 secs
                 msg_type: 'pwa',
@@ -142,5 +144,7 @@ export default withRouter(
         is_window_loaded: ui.is_window_loaded,
         is_logged_in: client.is_logged_in,
         is_eu_country: client.is_eu_country,
+        // setPWAPromptEvent     : ui.setPWAPromptEvent,
+        // addNotificationBar    : ui.addNotificationBar,
     }))(AppContents)
 );

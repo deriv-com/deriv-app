@@ -46,8 +46,8 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     &__scrollbars_container {
         height: 100%;
-        padding-top: 24px;
-        padding-bottom: 64px; // allow empty space when scroll below
+        padding-top: 2.4rem;
+        padding-bottom: 6.4rem;
 
         &-wrapper {
             overflow-x: hidden;
@@ -155,7 +155,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
             .dc-input__label {
-                top: 1.2rem;
+                top: 0.9rem;
             }
             @include mobile {
                 .dc-checkbox {
@@ -229,6 +229,12 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__personal-details {
+            @include desktop {
+                .account__scrollbars_container {
+                    padding-top: 2.4rem;
+                    padding-bottom: 2.4rem;
+                }
+            }
             @include mobile {
                 .account__scrollbars_container {
                     &--grid-layout {
@@ -264,6 +270,12 @@ $MIN_HEIGHT_FLOATING: calc(
                 @include mobile {
                     display: flex;
                     flex-direction: column;
+                }
+            }
+            @include desktop {
+                .account__scrollbars_container {
+                    padding-top: 2.4rem;
+                    padding-bottom: 0;
                 }
             }
         }

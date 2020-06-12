@@ -34,6 +34,13 @@
         &--left {
             margin-right: auto;
         }
+        /* fix issue with rogue tiny-popover div generated in footer links */
+        div {
+            height: inherit;
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+        }
     }
     &__link {
         padding: 0 0.8em;

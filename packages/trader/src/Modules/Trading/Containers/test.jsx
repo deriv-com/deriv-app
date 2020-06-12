@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'Stores/connect';
 
 class Test extends React.Component {
-    state = { is_visible: false };
+    state = { is_visible: false, store: 'trade' };
     setVisibility = this.stateVisibility.bind(this);
     styles = {
         container: {
@@ -34,28 +34,35 @@ class Test extends React.Component {
     };
 
     stateVisibility(e) {
-        if (e.ctrlKey && e.keyCode === 83) {
-            // Ctrl + S
-            this.setState({ is_visible: !this.state.is_visible });
-        }
+        // Ctrl + T
+        if (e.ctrlKey && e.keyCode === 84) this.setState({ is_visible: !this.state.is_visible, store: 'trade' });
+        // Ctrl + C
+        if (e.ctrlKey && e.keyCode === 67) this.setState({ is_visible: !this.state.is_visible, store: 'client' });
+        // Ctrl + U
+        if (e.ctrlKey && e.keyCode === 85) this.setState({ is_visible: !this.state.is_visible, store: 'ui' });
     }
 
+    renderStoreContent = ([k, v]) => {
+        return (
+            k !== 'root_store' &&
+            typeof v !== 'function' && (
+                <div key={k}>
+                    <span style={this.styles.prop_name}>{k}:</span>{' '}
+                    {v && typeof v === 'object' ? JSON.stringify(toJS(v), null, 1) : v}
+                </div>
+            )
+        );
+    };
+
     render() {
+        const { store } = this.state;
+
         return (
             <code
                 id='state_info'
                 style={Object.assign({}, this.styles.container, { display: this.state.is_visible ? 'block' : 'none' })}
             >
-                {this.props.entries.sort().map(
-                    ([k, v]) =>
-                        k !== 'root_store' &&
-                        typeof v !== 'function' && (
-                            <div key={k}>
-                                <span style={this.styles.prop_name}>{k}:</span>{' '}
-                                {v && typeof v === 'object' ? JSON.stringify(toJS(v), null, 1) : v}
-                            </div>
-                        )
-                )}
+                {this.props[store].sort().map(this.renderStoreContent)}
             </code>
         );
     }
@@ -65,6 +72,8 @@ Test.propTypes = {
     entries: PropTypes.array,
 };
 
-export default connect(({ modules }) => ({
-    entries: Object.entries(modules.trade),
+export default connect(({ modules, client, ui }) => ({
+    trade: Object.entries(modules.trade),
+    client: Object.entries(client),
+    ui: Object.entries(ui),
 }))(Test);

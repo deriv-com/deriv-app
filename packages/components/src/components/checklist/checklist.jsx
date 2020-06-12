@@ -8,7 +8,7 @@ const checkStatus = (status, onClick) => {
         case 'done':
             return (
                 <div className='dc-checklist__item-status--done'>
-                    <Icon icon='IcCheckmark' color='green' onClick={onClick} size={16} />
+                    <Icon icon='IcCheckmark' color='green' size={16} />
                 </div>
             );
         case 'action':

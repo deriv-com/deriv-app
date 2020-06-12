@@ -89,7 +89,7 @@ class TwoFactorAuthentication extends React.Component {
         return (
             <section className='two-factor'>
                 {is_two_factor_enabled ? (
-                    <ThemedScrollbars autoHide className='two-factor__scrollbars' hideHorizontal={true}>
+                    <ThemedScrollbars className='two-factor__scrollbars'>
                         <div className='two-factor__wrapper--enabled'>
                             <Icon icon='IcQrPhone' className='two-factor__icon' />
                             <h3 className='two-factor__qr--title'>{localize('2FA enabled')}</h3>

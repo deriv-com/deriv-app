@@ -479,6 +479,7 @@ export default class ClientStore extends BaseStore {
             if (!response.error) {
                 await this.accountRealReaction(response);
                 localStorage.removeItem('real_account_signup_wizard');
+                this.root_store.gtm.pushDataLayer({ event: 'real_account_signup' });
                 resolve(response);
             } else {
                 reject(response.error);

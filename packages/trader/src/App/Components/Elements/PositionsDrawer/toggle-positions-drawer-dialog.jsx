@@ -49,10 +49,16 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
     };
 
     render() {
+        const { is_valid_to_cancel } = this.props;
         return (
             <React.Fragment>
                 <div ref={this.toggle_ref} className='positions-drawer-dialog-toggle' onClick={this.toggleDialog}>
-                    <Icon className='positions-drawer-dialog-toggle__icon' icon='IcEdit' size={16} />
+                    <Icon
+                        className='positions-drawer-dialog-toggle__icon'
+                        icon='IcEdit'
+                        color={is_valid_to_cancel && 'disabled'}
+                        size={16}
+                    />
                 </div>
                 <PositionsDrawerDialog
                     ref={this.dialog_ref}

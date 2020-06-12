@@ -21,27 +21,6 @@ import { connect } from 'Stores/connect';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 
-const getActionColumns = ({ onClickCancel, onClickSell, getPositionById }) => ({ row_obj, is_header, is_footer }) => {
-    if (is_header || is_footer) {
-        return <div className='open-positions__row-action' />;
-    }
-
-    const { contract_info } = row_obj;
-    const position = getPositionById(contract_info.contract_id);
-    const { is_sell_requested } = position || {};
-
-    return (
-        <div className='open-positions__row-action'>
-            <MultiplierCloseActions
-                contract_info={contract_info}
-                is_sell_requested={is_sell_requested}
-                onClickCancel={onClickCancel}
-                onClickSell={onClickSell}
-            />
-        </div>
-    );
-};
-
 const EmptyPlaceholderWrapper = props => (
     <React.Fragment>
         {props.is_empty ? (
@@ -67,7 +46,7 @@ const OpenPositionsTable = ({
     getRowAction,
     mobileRowRenderer,
     preloaderCheck,
-    action_column,
+    row_size,
     totals,
 }) => (
     <React.Fragment>
@@ -92,9 +71,8 @@ const OpenPositionsTable = ({
                                 preloaderCheck={preloaderCheck}
                                 footer={totals}
                                 data_source={active_positions}
-                                getActionColumns={action_column}
                                 getRowAction={getRowAction}
-                                getRowSize={() => 63}
+                                getRowSize={() => row_size}
                                 custom_width={'100%'}
                                 content_loader={ReportsTableRowLoader}
                             >
@@ -133,9 +111,6 @@ class OpenPositions extends React.Component {
 
     componentDidMount() {
         this.props.onMount();
-
-        const { getPositionById, onClickCancel, onClickSell } = this.props;
-        this.getActionColumns = getActionColumns({ getPositionById, onClickCancel, onClickSell });
     }
 
     componentWillUnmount() {
@@ -294,6 +269,9 @@ class OpenPositions extends React.Component {
             is_virtual,
             currency,
             NotificationMessages,
+            onClickCancel,
+            onClickSell,
+            getPositionById,
         } = this.props;
 
         if (error) {
@@ -327,7 +305,7 @@ class OpenPositions extends React.Component {
         };
         this.columns =
             this.state.active_index === 1 && this.props.is_virtual
-                ? getMultiplierOpenPositionsColumnsTemplate(currency)
+                ? getMultiplierOpenPositionsColumnsTemplate({ currency, onClickCancel, onClickSell, getPositionById })
                 : getOpenPositionsColumnsTemplate(currency);
 
         this.columns_map = this.columns.reduce((map, item) => {
@@ -362,6 +340,7 @@ class OpenPositions extends React.Component {
                                     <OpenPositionsTable
                                         className='open-positions'
                                         columns={this.columns}
+                                        row_size={63}
                                         {...shared_props}
                                     />
                                 </div>
@@ -369,7 +348,7 @@ class OpenPositions extends React.Component {
                                     <OpenPositionsTable
                                         className='open-positions-multiplier open-positions'
                                         columns={this.columns}
-                                        action_column={this.getActionColumns}
+                                        row_size={68}
                                         {...shared_props}
                                     />
                                 </div>

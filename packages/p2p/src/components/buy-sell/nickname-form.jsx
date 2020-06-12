@@ -95,11 +95,11 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
                                 <ul className='buy-sell__popup-content--list'>
                                     <li>
                                         {localize(
-                                            'Must be 2–24 characters and can contain letters, numbers, and special characters .- _ @'
+                                            'Must be 2–24 characters and can contain letters, numbers, and special characters .- _ @.'
                                         )}
                                     </li>
-                                    <li>{localize('Cannot repeat a character more than 5 times')}</li>
-                                    <li>{localize('Cannot start, end with, or repeat special characters')}</li>
+                                    <li>{localize('Cannot repeat a character more than 5 times.')}</li>
+                                    <li>{localize('Cannot start, end with, or repeat special characters.')}</li>
                                 </ul>
                                 <div className='buy-sell__popup-content--ps'>
                                     {localize('Once set, your nickname cannot be changed.')}

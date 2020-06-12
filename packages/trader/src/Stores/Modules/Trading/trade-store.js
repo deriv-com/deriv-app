@@ -916,14 +916,13 @@ export default class TradeStore extends BaseStore {
             if (!this.is_symbol_in_active_symbols) this.setActiveSymbols();
         }
         this.setContractTypes();
+
         return this.processNewValuesAsync(
             { currency: this.root_store.client.currency || this.root_store.client.default_currency },
             true,
             { currency: this.currency },
             false
-        )
-            .then(this.refresh)
-            .then(this.requestProposal);
+        );
     }
 
     @action.bound

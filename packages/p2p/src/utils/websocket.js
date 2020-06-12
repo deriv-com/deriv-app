@@ -94,7 +94,7 @@ const getModifiedP2PAdvertList = (response, is_original) => {
 };
 
 const getModifiedP2POrder = response => {
-    const { contact_info, payment_info } = response;
+    const { chat_channel_url, contact_info, is_incoming, payment_info } = response;
     const offer_currency = response.account_currency;
     const transaction_currency = response.local_currency;
 
@@ -102,7 +102,6 @@ const getModifiedP2POrder = response => {
     const price_rate = +response.rate;
     const transaction_amount = +response.price;
     const payment_method = map_payment_method.bank_transfer; // TODO: [p2p-replace-with-api] add payment method to order details once API has it
-    const { chat_channel_url } = response;
     // const payment_method = response.payment_method;
 
     return {
@@ -123,6 +122,7 @@ const getModifiedP2POrder = response => {
         display_transaction_amount: formatMoney(transaction_currency, transaction_amount),
         order_expiry_millis: convertToMillis(response.expiry_time),
         id: response.id,
+        is_incoming: !!is_incoming,
         order_purchase_datetime: getFormattedDateString(new Date(convertToMillis(response.created_time))),
         status: response.status,
         type: response.is_incoming ? ObjectUtils.getPropertyValue(response, ['advert_details', 'type']) : response.type,

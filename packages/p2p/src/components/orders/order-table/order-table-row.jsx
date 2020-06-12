@@ -3,12 +3,13 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from 'Components/i18next';
+import Dp2pContext from 'Components/context/dp2p-context';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
 
 const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active }) => {
     const {
-        advertiser_name,
+        // advertiser_name,
         display_transaction_amount,
         display_offer_amount,
         display_status,
@@ -26,7 +27,14 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
         is_refunded,
     } = data;
     const [remaining_time, setRemainingTime] = React.useState();
+    const { getLocalStorageSettings } = React.useContext(Dp2pContext);
+
     let interval;
+
+    const isOrderSeen = order_id => {
+        const { notifications } = getLocalStorageSettings();
+        return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
+    };
 
     const countDownTimer = () => {
         const distance = ServerTime.getDistanceToServerTime(order_expiry_millis);
@@ -47,15 +55,15 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
         return () => clearInterval(interval);
     }, []);
 
-    const max_word_count = 22;
-    let counter_party = '-';
+    // const max_word_count = 22;
+    // let counter_party = '-';
 
-    if (advertiser_name !== '') {
-        counter_party =
-            advertiser_name.length > max_word_count
-                ? `${advertiser_name.substring(0, max_word_count)}...`
-                : advertiser_name;
-    }
+    // if (advertiser_name !== '') {
+    //     counter_party =
+    //         advertiser_name.length > max_word_count
+    //             ? `${advertiser_name.substring(0, max_word_count)}...`
+    //             : advertiser_name;
+    // }
 
     const offer_amount = `${display_offer_amount} ${offer_currency}`;
     const transaction_amount = `${display_transaction_amount} ${transaction_currency}`;
@@ -64,12 +72,12 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
                     'orders__table-grid--active': is_active,
-                    'orders__table-row--attention': is_pending || (is_buyer_confirmed && !is_buyer),
+                    'orders__table-row--attention': !isOrderSeen(id),
                 })}
             >
                 <Table.Cell>{is_buyer ? localize('Buy') : localize('Sell')}</Table.Cell>
                 <Table.Cell>{id}</Table.Cell>
-                <Table.Cell>{counter_party}</Table.Cell>
+                {/* <Table.Cell>{counter_party}</Table.Cell> */}
                 <Table.Cell>
                     <div
                         className={classNames('orders__table-status', {

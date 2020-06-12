@@ -167,7 +167,8 @@ class App extends React.Component {
                 if (old_order.status !== new_order.status) {
                     if (notification) {
                         // If order status changed, notify the user.
-                        notification.is_seen = is_current_order;
+                        notification.is_seen =
+                            is_current_order || new_order.status === 'timed-out' || new_order.status === 'blocked';
                     } else {
                         // If we have an old_order, but for some reason don't have a copy in local storage.
                         notifications.push({ order_id: new_order.id, is_seen: is_current_order });

@@ -19,6 +19,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         setStatus,
         transaction_currency,
         is_expired,
+        is_blocked,
     } = order_details;
     let buttons_to_render = null;
     const cancelOrder = () => {
@@ -177,7 +178,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             </React.Fragment>
         );
     }
-    if (is_expired) {
+    if (is_expired || is_blocked) {
         buttons_to_render = (
             <React.Fragment>
                 <div className='order-details__separator' />

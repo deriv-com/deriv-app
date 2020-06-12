@@ -210,7 +210,7 @@ class App extends React.Component {
             return;
         }
         const { p2p_order_list } = order_response;
-      
+
         if (p2p_order_list) {
             const { list } = p2p_order_list;
             // it's an array of orders from p2p_order_list

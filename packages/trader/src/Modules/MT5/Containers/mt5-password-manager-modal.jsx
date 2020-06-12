@@ -409,24 +409,24 @@ class MT5PasswordManagerModal extends React.Component {
                 <Tabs active_index={this.state.active_tab_index} onTabItemClick={this.updateAccountTabIndex} top>
                     <div label={localize('Main password')}>
                         <DesktopWrapper>
-                            <ThemedScrollbars style={{ height: password_container_height }}>
+                            <ThemedScrollbars height={password_container_height}>
                                 <MainPasswordManager />
                             </ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 120px)' }}>
+                            <ThemedScrollbars height='calc(100vh - 120px)'>
                                 <MainPasswordManager />
                             </ThemedScrollbars>
                         </MobileWrapper>
                     </div>
                     <div label={localize('Investor password')}>
                         <DesktopWrapper>
-                            <ThemedScrollbars style={{ height: password_container_height }}>
+                            <ThemedScrollbars height={password_container_height}>
                                 <InvestorPasswordManager />
                             </ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 120px)' }}>
+                            <ThemedScrollbars height='calc(100vh - 120px)'>
                                 <InvestorPasswordManager />
                             </ThemedScrollbars>
                         </MobileWrapper>

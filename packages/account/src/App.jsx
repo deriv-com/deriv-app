@@ -10,6 +10,7 @@ class App extends React.Component {
         const {
             passthrough: { WS, root_store, client_base },
         } = props;
+
         this.root_store = initStore(root_store, WS, client_base);
         setWebsocket(WS);
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Popover } from '@deriv/components';
+import { Button } from '@deriv/components';
 import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -137,36 +137,8 @@ class ContractUpdateForm extends React.Component {
 
         return (
             <React.Fragment>
-                <div className='positions-drawer-dialog__input'>
-                    {is_valid_to_cancel ? (
-                        <Popover
-                            alignment='right'
-                            margin={4}
-                            message={localize(
-                                'You may update your take profit amount after deal cancellation has expired.'
-                            )}
-                        >
-                            {take_profit_input}
-                        </Popover>
-                    ) : (
-                        <React.Fragment>{take_profit_input}</React.Fragment>
-                    )}
-                </div>
-                <div className='positions-drawer-dialog__input'>
-                    {is_valid_to_cancel ? (
-                        <Popover
-                            alignment='right'
-                            margin={4}
-                            message={localize(
-                                'You may update your stop loss amount after deal cancellation has expired.'
-                            )}
-                        >
-                            {stop_loss_input}
-                        </Popover>
-                    ) : (
-                        <React.Fragment>{stop_loss_input}</React.Fragment>
-                    )}
-                </div>
+                <div className='positions-drawer-dialog__input'>{take_profit_input}</div>
+                <div className='positions-drawer-dialog__input'>{stop_loss_input}</div>
                 <div className='positions-drawer-dialog__button'>
                     <Button
                         text={localize('Apply')}

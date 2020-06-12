@@ -7,8 +7,8 @@ import Dialog from './dialog.jsx';
 import Journal from './journal.jsx';
 import Summary from './summary.jsx';
 import Transactions from './transactions.jsx';
-import { connect } from '../stores/connect';
 import { popover_zindex } from '../constants/z-indexes';
+import { connect } from '../stores/connect';
 import '../assets/sass/run-panel.scss';
 
 const drawerContent = ({ active_index, setActiveTabIndex }) => {

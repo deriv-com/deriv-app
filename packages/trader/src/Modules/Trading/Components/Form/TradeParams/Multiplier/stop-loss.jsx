@@ -37,6 +37,7 @@ const StopLoss = ({
                 error_messages={has_stop_loss ? validation_errors.stop_loss : undefined}
                 is_single_currency={is_single_currency}
                 is_negative_disabled={true}
+                is_input_hidden={!has_stop_loss}
                 label={localize('Stop loss')}
                 max_value={+amount}
                 name='stop_loss'

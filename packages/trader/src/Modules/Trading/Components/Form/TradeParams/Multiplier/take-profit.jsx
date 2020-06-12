@@ -16,6 +16,7 @@ const TakeProfit = ({ currency, has_take_profit, is_single_currency, onChange, t
                 error_messages={has_take_profit ? validation_errors.take_profit : undefined}
                 is_single_currency={is_single_currency}
                 is_negative_disabled={true}
+                is_input_hidden={!has_take_profit}
                 label={localize('Take profit')}
                 name='take_profit'
                 onChange={onChange}

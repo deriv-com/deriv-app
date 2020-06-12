@@ -15,6 +15,7 @@ const InputWithCheckbox = ({
     is_disabled,
     is_single_currency,
     is_negative_disabled,
+    is_input_hidden,
     label,
     name,
     max_value,
@@ -27,31 +28,22 @@ const InputWithCheckbox = ({
     const input_wrapper_ref = React.useRef();
 
     const [is_checked, setChecked] = React.useState(defaultChecked);
-    const [el_input, setInput] = React.useState(null);
 
     const checkboxName = `has_${name}`;
 
     React.useEffect(() => {
         setChecked(defaultChecked);
-        setInput(input_wrapper_ref.current.nextSibling.querySelector('input.input-wrapper__input'));
     }, [defaultChecked]);
 
     const changeValue = e => {
+        const new_is_checked = !is_checked;
         // e.target.checked is not reliable, we have to toggle its previous value
-        onChange({ target: { name: e.target.name, value: !is_checked } });
-        if (el_input && !is_checked) {
-            el_input.focus();
-        }
-    };
-
-    const enableInputOnClick = () => {
-        if (!is_checked) {
-            setChecked(true);
-            onChange({ target: { name: checkboxName, value: true } });
-
-            if (el_input) {
-                setTimeout(() => el_input.focus());
-            }
+        onChange({ target: { name: e.target.name, value: new_is_checked } });
+        if (new_is_checked) {
+            setTimeout(() => {
+                const el_input = input_wrapper_ref.current.nextSibling.querySelector('input.input-wrapper__input');
+                el_input.focus();
+            });
         }
     };
 
@@ -75,7 +67,6 @@ const InputWithCheckbox = ({
             max_value={max_value}
             name={name}
             onChange={onChange}
-            onClickInputWrapper={is_disabled ? undefined : enableInputOnClick}
             type='tel'
             value={value}
         />
@@ -123,7 +114,7 @@ const InputWithCheckbox = ({
                     />
                 )}
             </div>
-            {input}
+            {!is_input_hidden && input}
         </React.Fragment>
     );
 };
@@ -139,6 +130,7 @@ InputWithCheckbox.propTypes = {
     error_messages: MobxPropTypes.arrayOrObservableArray,
     is_negative_disabled: PropTypes.bool,
     is_single_currency: PropTypes.bool,
+    is_input_hidden: PropTypes.bool,
     label: PropTypes.string,
     max_value: PropTypes.number,
     name: PropTypes.string,

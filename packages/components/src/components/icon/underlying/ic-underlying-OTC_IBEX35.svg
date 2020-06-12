@@ -1,1 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28" height="22"><defs><rect id="a" width="24" height="16" rx="2"/><rect id="c" width="24" height="16" rx="2"/></defs><g fill="none" fill-rule="evenodd"><g transform="translate(0 6)"><mask id="b" fill="#fff"><use xlink:href="#a"/></mask><g mask="url(#b)"><mask id="d" fill="#fff"><use xlink:href="#c"/></mask><path fill="#DD172C" d="M0 0h24v4H0zm0 12h24v4H0z" mask="url(#d)"/><path fill="#FFD133" d="M0 4h24v8H0z" mask="url(#d)"/><g mask="url(#d)"><path fill="#FFEDB1" d="M5.333 7.333h1.334V8H5.333z"/><path stroke="#A41517" stroke-width=".667" d="M4.054 7.3l.167 2.007a1.138 1.138 0 001.112 1.026c.566 0 1.065-.461 1.112-1.026L6.613 7.3c.014-.174-.105-.3-.288-.3H4.341c-.176 0-.301.133-.287.3z"/><path fill="#A41517" d="M4 8h2.667v.667H6L5.333 10l-.666-1.333H4zM2 6h1.333v4.667H2zm5.333 0h1.333v4.667H7.333zM4 5.333c0-.368.306-.666.673-.666h1.32c.372 0 .674.296.674.666v.33A.33.33 0 016.34 6H4.327A.327.327 0 014 5.664v-.33z"/></g><rect width="23" height="15" x=".5" y=".5" stroke="#000" stroke-opacity=".04" mask="url(#d)" rx="2"/></g><rect width="23" height="15" x=".5" y=".5" stroke="#000" stroke-opacity=".04" mask="url(#b)" rx="2"/></g><path fill="#494C5A" fill-opacity=".4" fill-rule="nonzero" d="M17 0h9a2 2 0 012 2v5a2 2 0 01-2 2h-9a2 2 0 01-2-2V2a2 2 0 012-2z"/><path fill="#494C5A" d="M17 1a1 1 0 00-1 1v5a1 1 0 001 1h9a1 1 0 001-1V2a1 1 0 00-1-1h-9z"/><path fill="#FFF" d="M20.063 4.566c0 .288-.052.54-.157.756a1.16 1.16 0 01-.45.502 1.273 1.273 0 01-.67.176c-.25 0-.472-.058-.668-.174a1.171 1.171 0 01-.455-.499 1.67 1.67 0 01-.163-.745v-.144c0-.288.053-.54.16-.76.107-.218.258-.386.453-.503.195-.117.418-.175.669-.175.25 0 .473.058.668.175.195.117.346.285.453.504.107.218.16.47.16.757v.13zm-.628-.132c0-.306-.057-.539-.17-.698a.558.558 0 00-.483-.239.558.558 0 00-.482.236c-.113.157-.17.387-.172.69v.143c0 .298.057.53.17.694a.556.556 0 00.488.247c.208 0 .368-.08.48-.238.111-.158.168-.39.169-.693v-.142zm3.345-.907h-.922V5.96h-.62V3.527h-.91V3.04h2.452v.487zm2.716 1.46c-.024.314-.143.562-.359.742-.215.18-.5.271-.853.271-.385 0-.689-.126-.91-.378-.221-.252-.332-.598-.332-1.038v-.178c0-.281.051-.528.153-.742a1.13 1.13 0 01.437-.493c.19-.114.41-.171.66-.171.348 0 .628.09.84.27.212.181.335.435.368.76h-.62c-.015-.188-.07-.324-.162-.41-.093-.084-.235-.127-.425-.127-.207 0-.362.072-.464.216-.103.144-.156.367-.158.669v.22c0 .316.049.546.147.692.099.146.254.219.466.219.192 0 .335-.043.43-.128.094-.085.148-.216.162-.394h.62z"/></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>assets/otc/ic-otcspain</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="24.0000001" height="16.0000001" rx="2"></rect>
+    </defs>
+    <g id="assets/otc/ic-otcspain" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="assets/otc/ic-otc">
+            <g id="assets/flags/normal/ic-spain" transform="translate(4.000000, 8.000000)">
+                <g id="Group" transform="translate(-0.000000, -0.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="bg" fill="#DD172C" xlink:href="#path-1"></use>
+                    <rect id="center" fill="#FFD133" fill-rule="nonzero" mask="url(#mask-2)" x="0" y="4.00000002" width="24.0000001" height="8.00000003"></rect>
+                    <g id="emblem" mask="url(#mask-2)">
+                        <g transform="translate(2.000000, 4.000000)">
+                            <polygon id="Rectangle-139-Copy" stroke="none" fill="#FFEDB1" fill-rule="evenodd" points="3.33333334 3.33333334 4.66666669 3.33333334 4.66666669 4.00000002 3.33333334 4.00000002"></polygon>
+                            <path d="M2.05389182,3.2995035 L2.22118676,5.30704278 C2.26842018,5.87384381 2.76814425,6.33333336 3.33333334,6.33333336 C3.89937134,6.33333336 4.39839996,5.87200258 4.44547994,5.30704278 L4.61277488,3.2995035 C4.62723549,3.12597612 4.50798854,3.00000001 4.32545028,3.00000001 L2.34121642,3.00000001 C2.16543786,3.00000001 2.04000833,3.13290167 2.05389182,3.2995035 Z" id="Rectangle-137" stroke="#A41517" stroke-width="0.666666667" fill="none"></path>
+                            <polygon id="Rectangle-139" stroke="none" fill="#A41517" fill-rule="evenodd" points="2.00000001 4.00000002 4.66666669 4.00000002 4.66666669 4.66666669 4.00000002 4.66666669 3.33333334 6.00000003 2.66666668 4.66666669 2.00000001 4.66666669"></polygon>
+                            <rect id="Rectangle-135" stroke="none" fill="#A41517" fill-rule="evenodd" x="0" y="2.00000001" width="1.33333334" height="4.66666669"></rect>
+                            <rect id="Rectangle-135-Copy" stroke="none" fill="#A41517" fill-rule="evenodd" x="5.33333335" y="2.00000001" width="1.33333334" height="4.66666669"></rect>
+                            <path d="M2.00000001,1.33333334 C2.00000001,0.965143504 2.30590058,0.66666667 2.67291261,0.66666667 L3.99375409,0.66666667 C4.36539345,0.66666667 4.66666669,0.962576552 4.66666669,1.33333334 L4.66666669,1.66354371 C4.66666669,1.84936339 4.5232951,2.00000001 4.33968101,2.00000001 L2.32698569,2.00000001 C2.14639648,2.00000001 2.00000001,1.85730999 2.00000001,1.66354371 L2.00000001,1.33333334 Z" id="Rectangle-138" stroke="none" fill="#A41517" fill-rule="evenodd"></path>
+                        </g>
+                    </g>
+                    <rect id="border" stroke-opacity="0.04" stroke="#000000" fill-rule="nonzero" mask="url(#mask-2)" x="0.50000005" y="0.5" width="23" height="15" rx="1"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

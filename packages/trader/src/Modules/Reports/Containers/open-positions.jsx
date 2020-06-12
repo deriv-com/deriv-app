@@ -4,6 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable } from '@deriv/components';
 import { urlFor } from '@deriv/shared/utils/url';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import MultiplierCloseActions from 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard/multiplier-close-actions.jsx';
@@ -132,14 +133,20 @@ class OpenPositions extends React.Component {
     };
 
     componentDidMount() {
-        this.props.onMount();
+        // For mobile, we show portfolio stepper in header even for reports pages.
+        // `onMount` in portfolio store will be invoked from portfolio stepper component in `trade-header-extensions.jsx`
+        if (!isMobile()) {
+            this.props.onMount();
+        }
 
         const { getPositionById, onClickCancel, onClickSell } = this.props;
         this.getActionColumns = getActionColumns({ getPositionById, onClickCancel, onClickSell });
     }
 
     componentWillUnmount() {
-        this.props.onUnmount();
+        if (!isMobile()) {
+            this.props.onUnmount();
+        }
     }
 
     mobileRowRenderer = ({ row, is_footer }) => {

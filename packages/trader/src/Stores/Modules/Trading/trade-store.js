@@ -827,9 +827,7 @@ export default class TradeStore extends BaseStore {
             }
         }
 
-        if (!this.main_barrier) {
-            this.setMainBarrier(response.echo_req);
-        }
+        this.setMainBarrier(response.echo_req);
 
         if (this.hovered_contract_type === contract_type) {
             this.addTickByProposal(response);
@@ -911,14 +909,13 @@ export default class TradeStore extends BaseStore {
             if (!this.is_symbol_in_active_symbols) this.setActiveSymbols();
         }
         this.setContractTypes();
+
         return this.processNewValuesAsync(
             { currency: this.root_store.client.currency || this.root_store.client.default_currency },
             true,
             { currency: this.currency },
             false
-        )
-            .then(this.refresh)
-            .then(this.requestProposal);
+        );
     }
 
     @action.bound

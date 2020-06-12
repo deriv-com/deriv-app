@@ -121,6 +121,7 @@
     }
     &__small {
         height: 2.4rem;
+        min-width: 4.8rem;
         border-width: 1px;
 
         .dc-btn__text {
@@ -129,6 +130,7 @@
     }
     &__medium {
         height: 3.2rem;
+        min-width: 5.6rem;
         border-width: 1px;
 
         .dc-btn__text {
@@ -137,6 +139,7 @@
     }
     &__large {
         height: 4rem;
+        min-width: 6.4rem;
         border-width: 2px;
 
         .dc-btn__text {

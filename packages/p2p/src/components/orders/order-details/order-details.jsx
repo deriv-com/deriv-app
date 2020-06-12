@@ -28,7 +28,6 @@ const OrderDetails = ({ order_details, chat_info }) => {
         is_buyer,
         is_expired,
         is_completed,
-        is_blocked,
         is_buyer_cancelled,
         offer_currency,
         id,

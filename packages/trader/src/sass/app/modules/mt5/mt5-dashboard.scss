@@ -606,7 +606,6 @@
     display: grid;
     grid-template-rows: 13rem minmax(10rem, 1fr);
     height: 100%;
-    overflow: hidden;
     position: relative;
     width: 100%;
 
@@ -620,7 +619,11 @@
     &__form {
         grid-template-rows: minmax(20rem, 1fr) 7rem;
     }
+    @include desktop {
+        overflow: hidden;
+    }
     @include mobile {
+        overflow: auto;
         grid-template-rows: 7rem minmax(10rem, 1fr);
         &__heading {
             padding: unset;

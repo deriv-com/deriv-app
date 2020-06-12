@@ -78,6 +78,10 @@ export default class OrderInfo {
         );
     }
 
+    get is_blocked() {
+        return this.status === 'blocked';
+    }
+
     get is_pending() {
         return this.status === 'pending';
     }

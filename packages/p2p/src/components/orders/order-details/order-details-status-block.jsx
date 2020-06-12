@@ -10,6 +10,7 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
         is_buyer_confirmed,
         is_completed,
         is_expired,
+        is_blocked,
         is_pending,
         is_refunded,
     } = order_details;
@@ -29,7 +30,7 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
             {is_refunded && !is_buyer && localize('Buyer has been refunded')}
             {is_buyer_confirmed && is_buyer && localize('Wait for release')}
             {is_buyer_confirmed && !is_buyer && localize('Confirm payment')}
-            {is_expired && localize('Expired')}
+            {(is_expired || is_blocked) && localize('Expired')}
             {is_completed && localize('Completed')}
         </h2>
     );

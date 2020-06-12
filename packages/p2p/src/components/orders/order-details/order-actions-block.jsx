@@ -149,9 +149,6 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             <React.Fragment>
                 <div className='order-details__separator' />
                 <FooterActions className='order-details__justify-space  order-details__footer'>
-                    <Button className='order-details__complain-button' large tertiary onClick={showComplainPopup}>
-                        {localize('Complain')}
-                    </Button>
                     <Button
                         className='order-details__actions-button order-details__footer--right'
                         large
@@ -180,7 +177,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             </React.Fragment>
         );
     }
-    if (is_buyer && (is_expired || is_buyer_confirmed)) {
+    if (is_expired) {
         buttons_to_render = (
             <React.Fragment>
                 <div className='order-details__separator' />

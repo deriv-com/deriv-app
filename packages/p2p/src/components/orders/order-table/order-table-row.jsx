@@ -24,6 +24,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
         is_pending,
         is_completed,
         is_refunded,
+        is_blocked,
     } = data;
     const [remaining_time, setRemainingTime] = React.useState();
     let interval;
@@ -79,7 +80,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
                                 (!is_buyer && is_pending) || (is_buyer_confirmed && is_buyer),
                             'orders__table-status--success': is_completed,
                             'orders__table-status--info': is_refunded,
-                            'orders__table-status--disabled': is_buyer_cancelled || is_expired,
+                            'orders__table-status--disabled': is_buyer_cancelled || is_expired || is_blocked,
                         })}
                     >
                         {display_status}

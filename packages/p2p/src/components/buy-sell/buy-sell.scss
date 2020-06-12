@@ -89,8 +89,8 @@
                 font-size: var(--text-size-xs);
                 line-height: 1.43;
 
-                & div {
-                    display: list-item;
+                & li {
+                    list-style-type: disc;
                     margin-left: 1.8rem;
                 }
             }

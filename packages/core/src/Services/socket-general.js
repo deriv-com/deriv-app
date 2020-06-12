@@ -113,10 +113,7 @@ const BinarySocketGeneral = (() => {
                     WS.authorized.mt5LoginList().then(mt5_list_response => {
                         if (!mt5_list_response.error) {
                             client_store.responseMt5LoginList(mt5_list_response);
-                            WS.balanceAll().then(balance_response => {
-                                if (!balance_response.error)
-                                    client_store.setBalanceOtherAccounts(balance_response.balance);
-                            });
+                            client_store.updateOtherAccountBalance();
                         } else {
                             client_store.resetMt5ListPopulatedState();
                         }

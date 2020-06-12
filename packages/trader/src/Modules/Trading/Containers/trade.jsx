@@ -115,7 +115,9 @@ class Trade extends React.Component {
                     {this.props.is_market_closed && <MarketIsClosedOverlay />}
                     <FormLayout
                         is_market_closed={this.props.is_market_closed}
-                        is_trade_enabled={is_trade_enabled && this.props.network_status.class === 'online'}
+                        is_trade_enabled={
+                            is_trade_enabled && this.props.network_status.class === 'online' && !this.props.is_switching
+                        }
                     />
                 </div>
             </div>
@@ -123,7 +125,8 @@ class Trade extends React.Component {
     }
 }
 
-export default connect(({ common, modules, ui }) => ({
+export default connect(({ common, modules, ui, client }) => ({
+    is_switching: client.is_switching,
     network_status: common.network_status,
     contract_type: modules.trade.contract_type,
     form_components: modules.trade.form_components,

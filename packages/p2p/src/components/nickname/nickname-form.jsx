@@ -78,7 +78,7 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
             <Formik validate={validatePopup} initialValues={{ nickname: '' }} onSubmit={handleSubmit}>
                 {({ errors, isSubmitting, handleChange, status }) => (
                     <Form noValidate>
-                        <ThemedScrollbars autoHide style={{ height: '289px' }}>
+                        <ThemedScrollbars height='289px'>
                             <div className='nickname__form-content nickname__form-content_centre'>
                                 <Icon icon='IcCashierP2pUser' width='128' height='128' />
                                 <h5 className='nickname__form-content--title'>{localize('Choose a nickname')}</h5>

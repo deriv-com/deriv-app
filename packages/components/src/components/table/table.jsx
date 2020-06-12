@@ -5,7 +5,7 @@ import Header from './table-header.jsx';
 import Body from './table-body.jsx';
 import Row from './table-row.jsx';
 import Cell from './table-cell.jsx';
-import ThemedScrollbars from '../themed-scrollbars';
+import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 
 // TODO: update the <Table /> component to fit with the DataTable in Trader
 class Table extends React.Component {
@@ -17,7 +17,17 @@ class Table extends React.Component {
                     'dc-table--scroll': this.props.fixed,
                 })}
             >
-                {this.props.fixed ? <ThemedScrollbars>{this.props.children}</ThemedScrollbars> : this.props.children}
+                {this.props.fixed ? (
+                    <ThemedScrollbars
+                        has_horizontal
+                        width={this.props.scroll_width || '100%'}
+                        height={this.props.scroll_height}
+                    >
+                        {this.props.children}
+                    </ThemedScrollbars>
+                ) : (
+                    this.props.children
+                )}
             </div>
         );
     }

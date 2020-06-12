@@ -3,10 +3,11 @@
 
     &__container {
         &_#{$save-modal} {
-            width: 450px;
+            height: 462px !important;
+            min-width: 384px !important;
 
             .modal__content {
-                padding: 26px;
+                padding: 16px 24px;
             }
             .modal__footer {
                 text-align: right;
@@ -85,7 +86,7 @@ div.radio-group {
     &__input {
         // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
         width: 232px !important;
-        margin: 28px 0 0 !important;
+        margin: 12px 0 0 !important;
     }
     &__radio {
         text-align: center;
@@ -93,7 +94,6 @@ div.radio-group {
     &__radio-text {
         font-size: 14px;
         font-weight: bold;
-        margin-top: 8px;
         line-height: 1.43;
         letter-spacing: normal;
         color: var(--text-prominent);

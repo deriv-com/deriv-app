@@ -397,7 +397,7 @@ const TradeCategories = ({ category }) => {
                             </li>
                             <li>
                                 {localize(
-                                    'If you select “Deal cancellation”, you’ll be able to cancel your position within 1 hour if you find that the market is not moving in your favour. We’ll charge a small fee for this, but we’ll return your stake amount without profit or loss. If the stop-out amount is reached before the deal cancellation expires, your position will be cancelled automatically and we’ll return your stake amount without profit or loss. While “Deal cancellation” is active:'
+                                    'If you select “Deal cancellation”, you’ll be able to cancel your trade within a chosen time frame should the market move against your favour. We’ll charge a small fee for this, but we’ll return your stake amount without profit or loss. If the stop-out amount is reached before the deal cancellation expires, your position will be cancelled automatically and we’ll return your stake amount without profit or loss. While “Deal cancellation” is active:'
                                 )}
                             </li>
                             <ul>

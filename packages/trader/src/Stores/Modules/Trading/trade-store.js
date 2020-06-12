@@ -512,7 +512,7 @@ export default class TradeStore extends BaseStore {
             processPurchase(proposal_id, price).then(
                 action(response => {
                     const last_digit = +this.last_digit;
-                    if (this.proposal_info[type].id !== proposal_id) {
+                    if (this.proposal_info[type]?.id !== proposal_id) {
                         throw new Error('Proposal ID does not match.');
                     }
                     if (response.buy) {

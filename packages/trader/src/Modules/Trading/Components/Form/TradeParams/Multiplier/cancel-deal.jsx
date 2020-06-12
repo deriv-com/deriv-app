@@ -81,7 +81,9 @@ const CancelDeal = ({
                     alignment='left'
                     icon='info'
                     id='dt_cancellation-checkbox__tooltip'
-                    message={localize('Allows you to cancel this deal (within 1 hour) to avoid loss.')}
+                    message={localize(
+                        'Allows you to cancel your trade within a chosen time frame should the market move against your favour.'
+                    )}
                     margin={210}
                     relative_render
                 />

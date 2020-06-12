@@ -35,7 +35,7 @@ In order to work on your own version of the Deriv application, please **fork thi
 
 You will need to perform the following on your development machine:
 
-1. Node.js (v11.15.0 is recommended, v12 has compat issues currently) and NPM (see <https://nodejs.org/en/download/package-manager/>)
+1. Node.js (v12.18.0 is recommended) and NPM (see <https://nodejs.org/en/download/package-manager/>)
 2. Clone your own fork of this repo
 3. Run `npm run bootstrap` from the root folder
 4. If you have a custom domain that you use for GH Pages, add a file named `CNAME` in `packages/core/scripts/` to be used for your GH Pages deployments

@@ -38,7 +38,7 @@ Blockly.Blocks.console = {
         return {
             display_name: localize('Console'),
             description: localize(
-                'This block displays messages in the developer’s console with an input that can be either a string of text, a number, boolean, or an array of data.'
+                "This block displays messages in the developer's console with an input that can be either a string of text, a number, boolean, or an array of data."
             ),
         };
     },

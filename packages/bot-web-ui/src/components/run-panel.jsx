@@ -27,7 +27,7 @@ const drawerContent = ({ active_index, setActiveTabIndex }) => {
     );
 };
 
-const StatTile = props => (
+const StatisticsTile = props => (
     <div className='run-panel__tile'>
         <Popover
             className='run-panel__info'
@@ -62,7 +62,7 @@ const drawerFooter = ({
         <div className='run-panel__footer'>
             {!is_journal_tab && (
                 <div className='run-panel__stat'>
-                    <StatTile
+                    <StatisticsTile
                         title={localize('Total stake')}
                         alignment='top'
                         content={<Money amount={total_stake} currency={currency} />}
@@ -70,7 +70,7 @@ const drawerFooter = ({
                             'Total stake since you last cleared your stats. Refreshing the page will also clear your stats.'
                         )}
                     />
-                    <StatTile
+                    <StatisticsTile
                         title={localize('Total payout')}
                         alignment='top'
                         content={<Money amount={total_payout} currency={currency} />}
@@ -78,7 +78,7 @@ const drawerFooter = ({
                             'Total payout since you last cleared your stats. Refreshing the page will also clear your stats.'
                         )}
                     />
-                    <StatTile
+                    <StatisticsTile
                         title={localize('No. of runs')}
                         alignment='top'
                         content={number_of_runs}
@@ -86,7 +86,7 @@ const drawerFooter = ({
                             'The number of times your bot has run since you last cleared your stats. Each run includes the execution of all the root blocks. Refreshing the page will also clear your stats.'
                         )}
                     />
-                    <StatTile
+                    <StatisticsTile
                         title={localize('Contracts lost')}
                         alignment='bottom'
                         content={lost_contracts}
@@ -94,7 +94,7 @@ const drawerFooter = ({
                             'The number of contracts you have lost since you last cleared your stats. Refreshing the page will also clear your stats.'
                         )}
                     />
-                    <StatTile
+                    <StatisticsTile
                         title={localize('Contracts won')}
                         alignment='bottom'
                         content={won_contracts}
@@ -102,7 +102,7 @@ const drawerFooter = ({
                             'The number of contracts you have won since you last cleared your stats. Refreshing the page will also clear your stats.'
                         )}
                     />
-                    <StatTile
+                    <StatisticsTile
                         title={localize('Profit/Loss')}
                         content={<Money amount={total_profit} currency={currency} has_sign={true} />}
                         alignment='bottom'

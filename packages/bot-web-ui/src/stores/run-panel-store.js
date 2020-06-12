@@ -14,7 +14,7 @@ export default class RunPanelStore {
 
     run_id = '';
 
-    @observable state = {
+    @observable statistics = {
         lost_contracts: 0,
         number_of_runs: 0,
         total_profit: 0,
@@ -284,7 +284,7 @@ export default class RunPanelStore {
                 this.root_store.transactions.setActiveTransactionId(null);
 
                 const { buy } = contract_status;
-                this.state.total_stake += buy.buy_price;
+                this.statistics.total_stake += buy.buy_price;
                 const { is_virtual } = this.root_store.core.client;
                 if (!is_virtual) {
                     this.root_store.core.gtm.pushDataLayer({ event: 'dbot_purchase', buy_price: buy.buy_price });
@@ -296,25 +296,25 @@ export default class RunPanelStore {
                 this.setContractStage(contract_stages.CONTRACT_CLOSED);
 
                 const { contract } = contract_status;
-                this.state.total_profit += contract.profit;
-                this.state.number_of_runs += 1;
+                this.statistics.total_profit += contract.profit;
+                this.statistics.number_of_runs += 1;
 
                 switch (contract.status) {
                     case 'won': {
-                        this.state.won_contracts += 1;
-                        this.state.total_payout += contract.payout;
+                        this.statistics.won_contracts += 1;
+                        this.statistics.total_payout += contract.payout;
                         break;
                     }
                     case 'lost': {
-                        this.state.lost_contracts += 1;
+                        this.statistics.lost_contracts += 1;
                         break;
                     }
                     case 'sold': {
                         if (contract.profit > 0) {
-                            this.state.won_contracts += 1;
-                            this.state.total_payout += contract.profit;
+                            this.statistics.won_contracts += 1;
+                            this.statistics.total_payout += contract.profit;
                         } else {
-                            this.state.lost_contracts += 1;
+                            this.statistics.lost_contracts += 1;
                         }
                         break;
                     }
@@ -332,7 +332,7 @@ export default class RunPanelStore {
 
     @action.bound
     clear() {
-        this.state = {
+        this.statistics = {
             lost_contracts: 0,
             number_of_runs: 0,
             total_profit: 0,
@@ -340,7 +340,7 @@ export default class RunPanelStore {
             total_stake: 0,
             won_contracts: 0,
         };
-        observer.emit('state.clear');
+        observer.emit('statistics.clear');
     }
 
     @action.bound

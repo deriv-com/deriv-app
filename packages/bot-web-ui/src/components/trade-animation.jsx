@@ -89,6 +89,9 @@ TradeAnimation.propTypes = {
     className: PropTypes.string,
     contract_stage: PropTypes.object,
     is_contract_completed: PropTypes.bool,
+    is_stop_button_visible: PropTypes.bool,
+    onRunButtonClick: PropTypes.func,
+    onStopButtonClick: PropTypes.func,
     profit: PropTypes.number,
     should_show_overlay: PropTypes.bool,
 };

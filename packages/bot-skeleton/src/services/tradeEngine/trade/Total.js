@@ -23,7 +23,7 @@ export default Engine =>
             this.sessionRuns = 0;
             this.sessionProfit = 0;
 
-            globalObserver.register('state.clear', this.clearState.bind(this));
+            globalObserver.register('statistics.clear', this.clearState.bind(this));
         }
 
         clearState() {

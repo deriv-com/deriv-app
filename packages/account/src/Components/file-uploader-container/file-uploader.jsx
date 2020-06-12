@@ -1,9 +1,9 @@
-import DocumentUploader from '@binary-com/binary-document-uploader';
-import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
+import DocumentUploader from '@binary-com/binary-document-uploader';
 import { FileDropzone, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 import {
     compressImageFiles,
     readFiles,
@@ -78,7 +78,7 @@ class FileUploader extends React.PureComponent {
         if (!!file_error_message || document_file.length < 1) return 0;
 
         // File uploader instance connected to binary_socket
-        const uploader = new DocumentUploader({ connection: WS.getSocket() });
+        const uploader = new DocumentUploader({ connection: this.props.getSocket() });
 
         let is_any_file_error = false;
 
@@ -138,5 +138,7 @@ class FileUploader extends React.PureComponent {
         );
     }
 }
-
+FileUploader.propTypes = {
+    getSocket: PropTypes.func,
+};
 export default FileUploader;

@@ -479,6 +479,7 @@ export default class ClientStore extends BaseStore {
             if (!response.error) {
                 await this.accountRealReaction(response);
                 localStorage.removeItem('real_account_signup_wizard');
+                this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
                 resolve(response);
             } else {
                 reject(response.error);
@@ -1147,7 +1148,7 @@ export default class ClientStore extends BaseStore {
                 await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
 
                 // GTM Signup event
-                this.root_store.gtm.pushDataLayer({ event: 'signup' });
+                this.root_store.gtm.pushDataLayer({ event: 'virtual_signup' });
             }
         });
     }

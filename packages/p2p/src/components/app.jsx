@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { Tabs } from '@deriv/components';
+import { Tabs, Dialog } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import { orderToggleIndex } from 'Components/orders/order-info';
 import ServerTime from 'Utils/server-time';
@@ -10,8 +10,8 @@ import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS 
 import { localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
-// import MyProfile  from './my-profile/my-profile.jsx';
 import Orders from './orders/orders.jsx';
+import NicknameForm from './nickname/nickname-form.jsx';
 import './app.scss';
 
 const allowed_currency = 'USD';
@@ -42,6 +42,7 @@ class App extends React.Component {
             parameters: null,
             is_advertiser: false,
             is_restricted: false,
+            show_popup: false,
             chat_info: {
                 app_id: '',
                 user_id: '',
@@ -87,6 +88,14 @@ class App extends React.Component {
         this.setState({ active_index: path[path_name], parameters: params });
     };
 
+    toggleNicknamePopup = () => {
+        this.setState({ show_popup: !this.state.show_popup });
+    };
+
+    onNicknamePopupClose = () => {
+        this.setState({ show_popup: false });
+    };
+
     handleTabClick = idx => {
         this.setState({ active_index: idx, parameters: null });
     };
@@ -107,12 +116,17 @@ class App extends React.Component {
             this.setState({ is_restricted: true });
         } else if (response.error.code === 'AdvertiserNotFound') {
             this.setState({ is_advertiser: false });
+        } else {
+            this.ws_subscriptions[0].unsubscribe();
         }
     };
 
     setChatInfoUsingAdvertiserInfo = response => {
         const { p2p_advertiser_info } = response;
-        if (response.error) return;
+        if (response.error) {
+            this.ws_subscriptions[0].unsubscribe();
+            return;
+        }
 
         const user_id = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
         const token = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_token']);
@@ -191,30 +205,31 @@ class App extends React.Component {
     };
 
     setP2pOrderList = order_response => {
-        // check if there is any error
-        if (!order_response.error) {
-            const { p2p_order_list } = order_response;
-
-            if (p2p_order_list) {
-                const { list } = p2p_order_list;
-                // it's an array of orders from p2p_order_list
-                this.handleNotifications(this.state.orders, list);
-                this.setState({ order_offset: list.length, orders: getModifiedP2POrderList(list) });
+        if (order_response.error) {
+            this.ws_subscriptions[1].unsubscribe();
+            return;
+        }
+        const { p2p_order_list } = order_response;
+      
+        if (p2p_order_list) {
+            const { list } = p2p_order_list;
+            // it's an array of orders from p2p_order_list
+            this.handleNotifications(this.state.orders, list);
+            this.setState({ order_offset: list.length, orders: getModifiedP2POrderList(list) });
+        } else {
+            // it's a single order from p2p_order_info
+            const idx_order_to_update = this.state.orders.findIndex(order => order.id === order_response.id);
+            const updated_orders = [...this.state.orders];
+            // if it's a new order, add it to the top of the list
+            if (idx_order_to_update < 0) {
+                updated_orders.unshift(order_response);
             } else {
-                // it's a single order from p2p_order_info
-                const idx_order_to_update = this.state.orders.findIndex(order => order.id === order_response.id);
-                const updated_orders = [...this.state.orders];
-                // if it's a new order, add it to the top of the list
-                if (idx_order_to_update < 0) {
-                    updated_orders.unshift(order_response);
-                } else {
-                    // otherwise, update the correct order
-                    updated_orders[idx_order_to_update] = order_response;
-                }
-                // trigger re-rendering by setting orders again
-                this.handleNotifications(this.state.orders, updated_orders);
-                this.setState({ order_offset: updated_orders.length, orders: updated_orders });
+                // otherwise, update the correct order
+                updated_orders[idx_order_to_update] = order_response;
             }
+            // trigger re-rendering by setting orders again
+            this.handleNotifications(this.state.orders, updated_orders);
+            this.setState({ order_offset: updated_orders.length, orders: updated_orders });
         }
     };
 
@@ -227,6 +242,7 @@ class App extends React.Component {
             notification_count,
             order_table_type,
             chat_info,
+            show_popup,
         } = this.state;
         const {
             className,
@@ -256,6 +272,7 @@ class App extends React.Component {
                     residence,
                     advertiser_id: this.state.advertiser_id,
                     is_advertiser: this.state.is_advertiser,
+                    setIsAdvertiser: is_advertiser => this.setState({ is_advertiser }),
                     nickname: this.state.nickname,
                     setNickname: nickname => this.setState({ nickname }),
                     setChatInfo: this.setChatInfo,
@@ -268,6 +285,7 @@ class App extends React.Component {
                     setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     order_id,
                     setOrderId,
+                    toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
                     getLocalStorageSettings: this.getLocalStorageSettings.bind(this),
                 }}
@@ -294,6 +312,16 @@ class App extends React.Component {
                             <MyProfile navigate={this.redirectTo} params={parameters} />
                         </div> */}
                     </Tabs>
+                    {show_popup && (
+                        <div className='p2p-nickname__dialog'>
+                            <Dialog is_visible={show_popup}>
+                                <NicknameForm
+                                    handleClose={this.onNicknamePopupClose}
+                                    handleConfirm={this.toggleNicknamePopup}
+                                />
+                            </Dialog>
+                        </div>
+                    )}
                 </main>
             </Dp2pProvider>
         );

@@ -2,7 +2,7 @@ import React from 'react';
 import { WS } from 'Services/ws-methods';
 import { localize, Localize } from '@deriv/translations';
 import { Formik, Field } from 'formik';
-import { Checkbox, Button, Input, FormSubmitButton, Modal, Icon, Money } from '@deriv/components';
+import { Checkbox, Button, Input, FormSubmitButton, Modal, Icon, Money, Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 
@@ -220,6 +220,7 @@ const ExistingAccountHasBalance = (accounts_with_balance, mt5_login_list, onBack
 };
 class DeactivateAccountReason extends React.Component {
     state = {
+        is_loading: false,
         is_modal_open: false,
         reason: null,
         accounts: undefined,
@@ -241,10 +242,12 @@ class DeactivateAccountReason extends React.Component {
 
     startDeactivating = async () => {
         this.closeModal();
+        this.setState({ is_loading: true });
         const account_closure_response = await WS.authorized.accountClosure({
             account_closure: 1,
             reason: this.state.reason,
         });
+        this.setState({ is_loading: false });
         if (account_closure_response.account_closure === 1) {
             this.props.logout();
             return;
@@ -257,7 +260,9 @@ class DeactivateAccountReason extends React.Component {
     };
 
     render() {
-        return (
+        return this.state.is_loading ? (
+            <Loading is_fullscreen={false} />
+        ) : (
             <div className='deactivate-account-reasons'>
                 <p className='deactivate-account-reasons__title'>
                     {localize('Please tell us why you’re leaving. (Select up to 3 reasons.)')}
@@ -436,12 +441,3 @@ export default connect(({ client }) => ({
     mt5_login_list: client.mt5_login_list,
     logout: client.logout,
 }))(DeactivateAccountReason);
-
-// {this.state.which_modal_should_render === 'pageError' &&
-// <PageError
-//     header={localize('We’re sorry to see you leave.')}
-//     messages={[
-//         localize('Your account is now deactivated.'),
-//     ]}
-// />
-// }

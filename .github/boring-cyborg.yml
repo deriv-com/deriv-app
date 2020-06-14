@@ -1,4 +1,6 @@
 labelPRBasedOnFilePath:
+  Account:
+    - packages/account/**/*
   Bot:
     - packages/bot-*/**/*
   Components:

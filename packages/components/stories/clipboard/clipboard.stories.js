@@ -1,7 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import Clipboard from 'Components/clipboard';
-// import 'Components/dropdown/dropdown.scss';
 import notes from './README.md';
 
 storiesOf('Clipboard', module).add(

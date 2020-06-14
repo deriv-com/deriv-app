@@ -617,6 +617,8 @@ export default class ClientStore extends BaseStore {
         // On case of invalid token, no need to continue with additional api calls.
         if (authorize_response?.error) {
             this.setIsLoggingIn(false);
+            this.setInitialized(true);
+            this.setSwitched('');
             return false;
         }
 
@@ -1078,6 +1080,10 @@ export default class ClientStore extends BaseStore {
             if (login_new_user) {
                 // overwrite obj_params if login is for new virtual account
                 obj_params = login_new_user;
+            }
+
+            if (authorize_response.error) {
+                return authorize_response;
             }
 
             runInAction(() => {

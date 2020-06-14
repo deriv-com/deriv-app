@@ -110,6 +110,11 @@ const modules = [
                         component: Account,
                         title: localize('Deactivate Account'),
                     },
+                    {
+                        path: routes.two_factor_authentication,
+                        component: Account,
+                        title: localize('Two-factor authentication'),
+                    },
                 ],
             },
         ],

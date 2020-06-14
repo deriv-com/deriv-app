@@ -329,6 +329,7 @@ class ProofOfAddressForm extends React.Component {
                                     <FileUploaderContainer
                                         onRef={(ref) => (this.file_uploader_ref = ref)}
                                         onFileDrop={this.onFileDrop}
+                                        getSocket={WS.getSocket}
                                     />
                                 </FormBody>
                                 <FormFooter>

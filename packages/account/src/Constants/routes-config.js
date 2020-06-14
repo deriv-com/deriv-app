@@ -10,6 +10,7 @@ import {
     ProofOfIdentity,
     ProofOfAddress,
     ApiToken,
+    TwoFactorAuthentication,
     Account,
     DeactivateAccount,
 } from 'Sections';
@@ -82,6 +83,11 @@ const initRoutesConfig = () => [
                         path: routes.deactivate_account,
                         component: DeactivateAccount,
                         title: localize('Deactivate Account'),
+                    },
+                    {
+                        path: routes.two_factor_authentication,
+                        component: TwoFactorAuthentication,
+                        title: localize('Two-factor authentication'),
                     },
                 ],
             },

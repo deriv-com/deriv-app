@@ -19,6 +19,7 @@ $MIN_HEIGHT_FLOATING: calc(
         &__header--active {
             border-left: 4px solid var(--brand-red-coral);
             padding-left: 4.4rem;
+            background-color: var(--general-main-1);
         }
     }
     &__inset_header {
@@ -45,8 +46,8 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     &__scrollbars_container {
         height: 100%;
-        padding-top: 24px;
-        padding-bottom: 64px; // allow empty space when scroll below
+        padding-top: 2.4rem;
+        padding-bottom: 6.4rem;
 
         &-wrapper {
             overflow-x: hidden;
@@ -154,7 +155,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
             .dc-input__label {
-                top: 1.2rem;
+                top: 0.9rem;
             }
             @include mobile {
                 .dc-checkbox {
@@ -228,6 +229,12 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__personal-details {
+            @include desktop {
+                .account__scrollbars_container {
+                    padding-top: 2.4rem;
+                    padding-bottom: 2.4rem;
+                }
+            }
             @include mobile {
                 .account__scrollbars_container {
                     &--grid-layout {
@@ -263,6 +270,12 @@ $MIN_HEIGHT_FLOATING: calc(
                 @include mobile {
                     display: flex;
                     flex-direction: column;
+                }
+            }
+            @include desktop {
+                .account__scrollbars_container {
+                    padding-top: 2.4rem;
+                    padding-bottom: 0;
                 }
             }
         }
@@ -565,6 +578,138 @@ $MIN_HEIGHT_FLOATING: calc(
         &__scrollbars {
             height: 100%;
             width: 100%;
+        }
+    }
+    .two-factor {
+        height: 100%;
+        width: 100%;
+
+        & .dc-timeline__container {
+            width: 100%;
+        }
+        & .dc-dialog__content {
+            max-width: 100%;
+            width: 100%;
+            height: 100%;
+        }
+        & .dc-popover__target {
+            display: flex;
+        }
+        &__wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+
+            &--enabled {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                height: 100%;
+            }
+        }
+        &__title {
+            @include typeface(--title-left-bold-prominent, none);
+            margin-bottom: 1.5rem;
+            margin-left: 1.2rem;
+        }
+        &__input-group {
+            display: flex;
+            width: 40rem;
+            margin: 2.7rem auto 0;
+
+            @include mobile {
+                width: 100%;
+                max-width: 40rem;
+            }
+        }
+        &__input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: 0;
+        }
+        &__button {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            margin-left: -1px;
+        }
+        &__link {
+            color: var(--text-general);
+        }
+        &__timeline {
+            padding: 0 1.4rem;
+
+            @include mobile {
+                margin-left: 1.2rem;
+            }
+        }
+        &__article {
+            padding: 1.6rem 2.4rem;
+            background: var(--general-section-1);
+            max-width: 25.6rem;
+            height: fit-content;
+            margin-left: 1.2rem;
+            border-radius: 8px;
+
+            &-list {
+                @include typeface(--paragraph-left-bold-black, none);
+                padding-left: 1.6rem;
+                list-style-type: disc;
+            }
+            &-title {
+                @include typeface(--paragraph-left-bold-prominent, none);
+                margin-bottom: 0.8rem;
+            }
+            &-text {
+                @include typeface(--small-left-normal-black, none);
+            }
+            @include mobile {
+                max-width: 100%;
+                margin: 1.6rem;
+            }
+        }
+        &__scrollbars {
+            height: 100%;
+            width: 100%;
+            flex: 1;
+        }
+        &__qr {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            margin-bottom: 1.6rem;
+
+            &--wrapper {
+                background: var(--status-colored-background);
+                padding: 0.4rem;
+                width: auto;
+            }
+            &--title {
+                @include typeface(--title-center-bold-prominent, none);
+                margin-top: 2.4rem;
+            }
+            &--message {
+                @include typeface(--paragraph-center-normal-black, none);
+                margin: 1.6rem 0 0;
+            }
+            &--code {
+                @include typeface(--paragraph-left-normal-black, none);
+                padding: 1rem 1.6rem;
+                background: var(--general-section-1);
+                display: flex;
+                border-radius: 4px;
+                margin-top: 1.6rem;
+                align-items: center;
+
+                span {
+                    margin-right: 0.8rem;
+                }
+            }
+        }
+        &__icon {
+            width: 8.3rem;
+            height: 12.3rem;
+            margin-top: 6.4rem;
         }
     }
     .account-limit-container {

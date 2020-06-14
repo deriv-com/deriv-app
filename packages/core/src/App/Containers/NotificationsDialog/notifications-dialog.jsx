@@ -93,6 +93,7 @@ class NotificationsDialog extends React.Component {
             </React.Fragment>
         );
 
+        const is_empty = !(this.props.notifications && this.props.notifications.length);
         const notifications_dialog_el = (
             <div className='notifications-dialog' ref={this.setWrapperRef}>
                 <div className='notifications-dialog__header'>
@@ -100,15 +101,15 @@ class NotificationsDialog extends React.Component {
                 </div>
                 <div
                     className={classNames('notifications-dialog__content', {
-                        'notifications-dialog__content--empty': !(
-                            this.props.notifications && this.props.notifications.length
-                        ),
+                        'notifications-dialog__content--empty': is_empty,
                     })}
                 >
                     <DesktopWrapper>
-                        <ThemedScrollbars style={{ width: '100%', height: '100%' }} autoHide>
-                            {notifications_list_el}
-                        </ThemedScrollbars>
+                        {is_empty ? (
+                            notifications_list_el
+                        ) : (
+                            <ThemedScrollbars>{notifications_list_el}</ThemedScrollbars>
+                        )}
                     </DesktopWrapper>
                     <MobileWrapper>{notifications_list_el}</MobileWrapper>
                 </div>

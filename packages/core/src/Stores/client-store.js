@@ -5,6 +5,7 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import { getUrlSmartTrader } from '@deriv/shared/utils/storage';
 import { requestLogout, WS } from 'Services';
 import ClientBase from '_common/base/client_base';
+import * as Login from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
@@ -616,8 +617,16 @@ export default class ClientStore extends BaseStore {
 
         // On case of invalid token, no need to continue with additional api calls.
         if (authorize_response?.error) {
+            await this.logout();
+            this.root_store.common.setError(true, {
+                header: authorize_response.error.message,
+                message: localize('Please Log in'),
+                should_show_refresh: false,
+                redirect_label: localize('Log in'),
+                redirectOnClick: Login.redirectToLogin,
+            });
             this.setIsLoggingIn(false);
-            this.setInitialized(true);
+            this.setInitialized(false);
             this.setSwitched('');
             return false;
         }
@@ -1089,12 +1098,30 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
                 this.upgradeable_landing_companies = authorize_response.upgradeable_landing_companies;
-                if (account_list && ObjectUtils.isEmptyObject(this.accounts)) {
+                if (this.canStoreClientAccounts(obj_params, account_list)) {
                     this.storeClientAccounts(obj_params, account_list);
+                } else {
+                    // Since there is no API error, we have to add this to manually trigger checks in other parts of the code.
+                    authorize_response.error = {
+                        code: 'MismatchedAcct',
+                        message: localize('Invalid token'),
+                    };
                 }
             });
             return authorize_response;
         }
+    }
+
+    @action.bound
+    canStoreClientAccounts(obj_params, account_list) {
+        const is_ready_to_process = account_list && ObjectUtils.isEmptyObject(this.accounts);
+        const accts = Object.keys(obj_params).filter(value => /^acct./.test(value));
+
+        const is_cross_checked = accts.every(acct =>
+            account_list.some(account => account.loginid === obj_params[acct])
+        );
+
+        return is_ready_to_process && is_cross_checked;
     }
 
     @action.bound

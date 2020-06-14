@@ -45,7 +45,7 @@ class LoginHistory extends React.Component {
 
     state = {
         is_loading: true,
-        fetch_limit: 12, // TODO: put it in constants or configs
+        fetch_limit: 50, // TODO: put it in constants or configs
         error: '',
         data: [],
     };
@@ -66,7 +66,7 @@ class LoginHistory extends React.Component {
             data[i].action = login_history[i].action;
             const user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
             const ua = parseUA(user_agent);
-            data[i].browser = ua ? `${ua.name} ${ua.version}` : '';
+            data[i].browser = ua ? `${ua.name} ${ua.version}` : localize('Unknown');
             data[i].ip = environment_split[2].split('=')[1];
             data[i].status = login_history[i].status === 1 ? localize('Successful') : localize('Failed');
             data[i].id = i;

@@ -143,19 +143,19 @@ export const personalDetailsConfig = ({ real_account_signup_target, residence_li
             ],
             salutation_list: [
                 {
-                    text: localize('Mr'),
+                    label: localize('Mr'),
                     value: 'Mr',
                 },
                 {
-                    text: localize('Ms'),
+                    label: localize('Ms'),
                     value: 'Ms',
                 },
                 {
-                    text: localize('Mrs'),
+                    label: localize('Mrs'),
                     value: 'Mrs',
                 },
                 {
-                    text: localize('Miss'),
+                    label: localize('Miss'),
                     value: 'Miss',
                 },
             ],

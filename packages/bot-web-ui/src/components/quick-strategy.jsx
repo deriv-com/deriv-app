@@ -346,13 +346,7 @@ const QuickStrategy = props => {
             toggleModal={toggleStrategyModal}
             width={'460px'}
         >
-            <ThemedScrollbars
-                className='modal__scrollbar'
-                autohide
-                style={{
-                    height: 'calc(100vh - 250px)',
-                }}
-            >
+            <ThemedScrollbars className='modal__scrollbar' height='calc(100vh - 250px)'>
                 <div className='modal__content'>
                     <div className='quick-strategy__tabs'>
                         <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>

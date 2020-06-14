@@ -64,7 +64,6 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
         </>
     );
 };
-
 Clipboard.propTypes = {
     text_copy: PropTypes.string,
     info_message: PropTypes.string,
@@ -72,5 +71,4 @@ Clipboard.propTypes = {
     className: PropTypes.string,
     popoverClassName: PropTypes.string,
 };
-
 export default Clipboard;

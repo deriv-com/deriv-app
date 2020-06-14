@@ -79,7 +79,7 @@ const MobileDialog = props => {
                     </div>
                     <div
                         className='dc-mobile-dialog__content'
-                        style={footer_height ? { height: `calc(100vh - ${footer_height}px - 64px)` } : undefined}
+                        style={footer_height ? { height: `calc(100vh - ${footer_height}px)` } : undefined}
                     >
                         <div
                             className={classNames({

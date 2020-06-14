@@ -12,7 +12,7 @@ const Info = ({ handleNavigationClick, handleSelect, item, list }) => {
         <div id={`dt_contract_info_${item.value}`} className='contract-type-info'>
             <div
                 className='contract-type-info__wrapper'
-                style={{ transform: `translate3d(-${312 * active_index}px, 0, 0)` }}
+                style={{ transform: `translate3d(-${296 * active_index}px, 0, 0)` }}
             >
                 {contract_types.map((type, idx) => (
                     <Card key={idx} contract_type={type} onClick={handleSelect} />

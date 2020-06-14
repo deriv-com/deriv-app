@@ -109,11 +109,7 @@ class AddressDetails extends React.Component {
                                     <p className='details-form__description'>
                                         <Localize i18n_default_text='Please ensure that this address is the same as in your proof of address' />
                                     </p>
-                                    <ThemedScrollbars
-                                        is_native={isMobile()}
-                                        autoHide={!(window.innerHeight < 890)}
-                                        height={height}
-                                    >
+                                    <ThemedScrollbars is_bypassed={isMobile()} height={height}>
                                         <div
                                             className='details-form__elements'
                                             style={{ paddingBottom: isDesktop() ? padding_bottom : null }}

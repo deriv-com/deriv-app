@@ -9,6 +9,7 @@ import {
     UILoader,
 } from '@deriv/components';
 import React from 'react';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -169,7 +170,7 @@ const compareAccountsData = [
 ];
 
 const MT5CompareAccountHint = () => (
-    <p className='mt5-compare-account--hint'>
+    <div className='mt5-compare-account--hint'>
         <div className='mt5-compare-accounts__bullet-wrapper'>
             <span className='mt5-compare-accounts__bullet mt5-compare-accounts__bullet--circle' />
             <Localize i18n_default_text='At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
@@ -180,12 +181,12 @@ const MT5CompareAccountHint = () => (
             </span>
             <Localize i18n_default_text='To protect your portfolio from adverse market movements due to the market opening gap, we reserve the right to decrease leverage on all offered symbols for financial accounts before market close and increase it again after market open. Please make sure that you have enough funds available in your MT5 account to support your positions at all times.' />
         </div>
-    </p>
+    </div>
 );
 
 const ModalContent = () => (
     <div className='mt5-compare-accounts'>
-        <Table fixed>
+        <Table fixed scroll_height={isMobile() ? '100%' : 'calc(100% - 130px)'}>
             <Table.Header>
                 <Table.Row className='mt5-compare-accounts__table-row'>
                     <Table.Head fixed />

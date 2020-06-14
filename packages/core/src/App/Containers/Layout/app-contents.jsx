@@ -102,9 +102,7 @@ class AppContents extends React.Component {
                 <MobileWrapper>{children}</MobileWrapper>
                 <DesktopWrapper>
                     {/* Calculate height of user screen and offset height of header and footer */}
-                    <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 83px)' }}>
-                        {children}
-                    </ThemedScrollbars>
+                    <ThemedScrollbars height='calc(100vh - 84px)'>{children}</ThemedScrollbars>
                 </DesktopWrapper>
                 {this.state.show_cookie_banner && (
                     <CookieBanner

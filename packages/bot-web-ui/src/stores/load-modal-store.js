@@ -13,7 +13,7 @@ export default class LoadModalStore {
     recent_workspace;
     local_workspace;
     drop_zone;
-
+    abs_index;
     constructor(root_store) {
         this.root_store = root_store;
     }
@@ -30,30 +30,26 @@ export default class LoadModalStore {
     @action.bound
     setActiveTabIndex(index) {
         this.active_index = index;
+        this.abs_index = this.root_store.ui.is_mobile ? this.active_index + 1 : this.active_index;
 
         // dispose workspace in recent tab when switch tab
-        if (this.active_index !== 0 && this.recent_workspace && this.recent_workspace.rendered) {
+        if (this.abs_index !== 0 && this.recent_workspace && this.recent_workspace.rendered) {
             this.recent_workspace.dispose();
         }
 
         // preview workspace when switch to recent tab
-        if (this.active_index === 0 && this.recent_files.length) {
+        if (this.abs_index === 0 && this.recent_files.length) {
             this.previewWorkspace(this.selected_file_id);
         }
 
         // dispose workspace in local tab when switch tab
-        if (
-            this.active_index !== 1 &&
-            this.loaded_local_file &&
-            this.local_workspace &&
-            this.local_workspace.rendered
-        ) {
+        if (this.abs_index !== 1 && this.loaded_local_file && this.local_workspace && this.local_workspace.rendered) {
             this.local_workspace.dispose();
             this.loaded_local_file = null;
         }
 
         // add drag and drop event listerner when switch to local tab
-        if (this.active_index === 1) {
+        if (this.abs_index === 1) {
             this.drop_zone = document.getElementById('import_dragndrop');
             if (this.drop_zone) {
                 this.drop_zone.addEventListener('drop', e => this.handleFileChange(e, false));
@@ -66,7 +62,8 @@ export default class LoadModalStore {
     /** --------- Recent Tab Start --------- */
     @action.bound
     onMount() {
-        if (this.recent_files.length && this.active_index === 0) {
+        this.abs_index = this.root_store.ui.is_mobile ? this.active_index + 1 : this.active_index;
+        if (this.recent_files.length && this.abs_index === 0) {
             this.selected_file_id = this.recent_files[0].id;
             this.previewWorkspace(this.selected_file_id);
         }
@@ -112,9 +109,9 @@ export default class LoadModalStore {
     @action.bound
     onZoomInOutClick(is_zoom_in) {
         let workspace;
-        if (this.active_index === 0) {
+        if (this.abs_index === 0) {
             workspace = this.recent_workspace;
-        } else if (this.active_index === 1) {
+        } else if (this.abs_index === 1) {
             workspace = this.local_workspace;
         }
 

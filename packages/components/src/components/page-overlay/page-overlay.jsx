@@ -63,6 +63,7 @@ PageOverlay.propTypes = {
     onClickClose: PropTypes.func,
     portal_id: PropTypes.string,
     is_open: PropTypes.bool,
+    onMount: PropTypes.func,
 };
 
 export default PageOverlay;

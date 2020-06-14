@@ -1,12 +1,14 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { WS } from 'Services/ws-methods';
 import FileUploader from './file-uploader.jsx';
 
 class FileUploaderContainer extends React.Component {
     constructor(props) {
         super(props);
         this.ref = React.createRef();
+        this.getSocketFunc = props.getSocket ?? WS.getSocket;
     }
 
     componentDidMount() {
@@ -59,7 +61,7 @@ class FileUploaderContainer extends React.Component {
                     </ul>
                 )}
                 <div className='account-poa__upload-file'>
-                    <FileUploader ref={this.ref} onFileDrop={this.props.onFileDrop} />
+                    <FileUploader getSocket={this.getSocketFunc} ref={this.ref} onFileDrop={this.props.onFileDrop} />
                 </div>
             </div>
         );

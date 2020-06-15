@@ -7,7 +7,6 @@ const isServe = process.env.BUILD_MODE === 'serve';
 module.exports = {
     target: 'web',
     entry: {
-        browser: path.resolve(__dirname, 'src', 'utils/browser/index.js'),
         config: path.resolve(__dirname, 'src', 'utils/config/index.js'),
         currency: path.resolve(__dirname, 'src', 'utils/currency/index.js'),
         object: path.resolve(__dirname, 'src', 'utils/object/index.js'),

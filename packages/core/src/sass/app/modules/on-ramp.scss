@@ -76,16 +76,17 @@
                 padding: 1.2rem;
                 background-color: var(--general-section-2);
 
-                &-popover {
-                    display: flex;
-                    align-items: center;
-                }
                 &-text {
                     cursor: pointer;
                 }
                 &-icon {
                     margin-left: 0.8rem;
                     cursor: pointer;
+                }
+                .dc-popover__target {
+                    margin-top: 0.1rem;
+                    display: flex;
+                    align-items: center;
                 }
             }
             &-footer {
@@ -123,9 +124,15 @@
             margin-top: 2.4rem;
         }
     }
+    &__widget {
+        &-container {
+            padding: 0.8rem;
+            overflow: visible;
+        }
+    }
 }
 
-.cashier__wrapper-is-mobile {
+.cashier__wrapper--is-mobile {
     .on-ramp {
         padding: 2.4rem;
     }

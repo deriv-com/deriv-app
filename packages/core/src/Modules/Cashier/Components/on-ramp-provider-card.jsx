@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -11,12 +12,17 @@ const OnRampProviderCard = ({ provider, setSelectedProvider }) => {
             </div>
             <h2 className='on-ramp__provider-name'>{provider.name}</h2>
             <div className='on-ramp__provider-description'>{provider.description}</div>
-            <a href={provider.website} className='on-ramp__provider-website link' target='_blank'>
+            <a
+                href={provider.website}
+                className='on-ramp__provider-website link'
+                target='_blank'
+                rel='noopener noreferrer'
+            >
                 {provider.website}
             </a>
-            {provider.payment_types.length && (
+            {provider.payment_icons.length && (
                 <div className='on-ramp__provider-payment-types'>
-                    {provider.payment_types.map((payment_type, idx) => (
+                    {provider.payment_icons.map((payment_type, idx) => (
                         <Icon key={idx} size={40} icon={payment_type} />
                     ))}
                 </div>
@@ -33,6 +39,10 @@ const OnRampProviderCard = ({ provider, setSelectedProvider }) => {
     );
 };
 
+OnRampProviderCard.propTypes = {
+    setSelectedProvider: PropTypes.func,
+};
+
 export default connect(({ modules }) => ({
-    setSelectedProvider: modules.cashier.config.onramp.setSelectedProvider,
+    setSelectedProvider: modules.cashier.onramp.setSelectedProvider,
 }))(OnRampProviderCard);

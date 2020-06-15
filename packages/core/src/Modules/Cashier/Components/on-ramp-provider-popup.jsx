@@ -1,15 +1,16 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, Checkbox, Loading, Button, Popover } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Button, Checkbox, Clipboard, Icon, Loading, Popover } from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const OnRampProviderPopup = ({
     deposit_address,
     is_deposit_address_loading,
-    is_deposit_address_popover_open,
     is_disclaimer_checkbox_checked,
     onClickCopyDepositAddress,
     onDisclaimerCheckboxChange,
+    pollForDepositAddress,
     selected_provider,
     setDepositAddressRef,
     should_show_widget,
@@ -18,53 +19,56 @@ const OnRampProviderPopup = ({
         return <Loading is_fullscreen={false} />;
     }
     if (should_show_widget) {
-        return <div dangerouslySetInnerHTML={{ __html: selected_provider.widget }} />;
+        return (
+            <div className='on-ramp__widget-container'>
+                <div dangerouslySetInnerHTML={{ __html: selected_provider.getWidgetHtml() }} />
+            </div>
+        );
     }
-
+    if (!deposit_address) {
+        return (
+            <div className='on-ramp__popup-no-deposit-address'>
+                <Button text={localize('Go to Deposit page.')} onClick={pollForDepositAddress} primary large />
+            </div>
+        );
+    }
     return (
         <div className='on-ramp__popup'>
             <div className='on-ramp__popup-deposit'>
                 <div className='on-ramp__popup-deposit-intro'>
-                    {localize("Please copy the address you see below. You'll need it to deposit your cryptocurrency.")}
+                    <Localize i18n_default_text="Please copy the crypto address you see below. You'll need it to deposit your cryptocurrency." />
                 </div>
                 <div className='on-ramp__popup-deposit-address'>
-                    <Popover
-                        zIndex={9999}
-                        alignment='right'
-                        classNameTarget={'on-ramp__popup-deposit-address-popover'}
-                        message={localize('Copied!')}
-                        is_open={is_deposit_address_popover_open}
+                    <span
+                        className='on-ramp__popup-deposit-address-text'
+                        onClick={onClickCopyDepositAddress}
+                        ref={setDepositAddressRef}
                     >
-                        <span
-                            className='on-ramp__popup-deposit-address-text'
-                            onClick={onClickCopyDepositAddress}
-                            ref={setDepositAddressRef}
-                        >
-                            {deposit_address}
-                        </span>
-                        <Icon
-                            className='on-ramp__popup-deposit-address-icon'
-                            icon='IcCopy'
-                            onClick={onClickCopyDepositAddress}
-                            size={16}
-                        />
-                    </Popover>
+                        {deposit_address}
+                    </span>
+                    <Clipboard
+                        className='on-ramp__popup-deposit-address-icon'
+                        custom_colour_icon_copy='var(--text-prominent)'
+                        info_message={localize('Click here to copy your deposit address')}
+                        success_message={localize('Copied!')}
+                        text_copy='Copy me'
+                        onClickCopy={onClickCopyDepositAddress}
+                    />
                 </div>
                 <div className='on-ramp__popup-deposit-footer'>
-                    <p>{localize('This address can only be used once to make a deposit.')}</p>
-                    <p>{localize('For each deposit, you will have to visit here again to generate a new address.')}</p>
+                    <Localize i18n_default_text='This address can only be used ONCE. Please copy a new one for your next transaction.' />
                 </div>
             </div>
             <div className='on-ramp__popup-divider' />
             <div className='on-ramp__popup-disclaimer'>
-                <h2 className='on-ramp__popup-disclaimer-title'>{localize('Disclaimer')}</h2>
+                <h2 className='on-ramp__popup-disclaimer-title'>
+                    <Localize i18n_default_text='Disclaimer' />
+                </h2>
                 <div className='on-ramp__popup-disclaimer-text'>
-                    {localize(
-                        "Please note that by clicking 'Continue', you'll leave Deriv.app and go to the {{ service }} website, which is fully owned, operated, and controlled by a third-party payment service provider named {{ service }}. The processing of your payment will be subject to {{ service }}'s terms, conditions, and privacy policies. We do not control and cannot be held liable for {{ service }}'s security or performance.",
-                        {
-                            service: selected_provider.name,
-                        }
-                    )}
+                    <Localize
+                        i18n_default_text="Please note that by clicking 'Continue', you'll leave Deriv.app. Your payment will be processed by {{ service }}, a third-party payment service provider. We are not liable for {{ service }}'s security or performance."
+                        values={{ service: selected_provider.name }}
+                    />
                 </div>
                 <div className='on-ramp__popup-disclaimer-checkbox'>
                     <Checkbox
@@ -78,15 +82,28 @@ const OnRampProviderPopup = ({
     );
 };
 
+OnRampProviderPopup.propTypes = {
+    deposit_address: PropTypes.string,
+    is_deposit_address_loading: PropTypes.bool,
+    is_disclaimer_checkbox_checked: PropTypes.bool,
+    selected_provider: PropTypes.object,
+    setDepositAddressRef: PropTypes.func,
+    setSelectedProvider: PropTypes.func,
+    should_show_widget: PropTypes.bool,
+    onClickCopyDepositAddress: PropTypes.func,
+    onDisclaimerCheckboxChange: PropTypes.func,
+    pollForDepositAddress: PropTypes.func,
+};
+
 export default connect(({ modules }) => ({
-    deposit_address: modules.cashier.config.onramp.deposit_address,
-    is_deposit_address_loading: modules.cashier.config.onramp.is_deposit_address_loading,
-    is_deposit_address_popover_open: modules.cashier.config.onramp.is_deposit_address_popover_open,
-    is_disclaimer_checkbox_checked: modules.cashier.config.onramp.is_disclaimer_checkbox_checked,
-    selected_provider: modules.cashier.config.onramp.selected_provider,
-    setDepositAddressRef: modules.cashier.config.onramp.setDepositAddressRef,
-    setSelectedProvider: modules.cashier.config.onramp.setSelectedProvider,
-    should_show_widget: modules.cashier.config.onramp.should_show_widget,
-    onClickCopyDepositAddress: modules.cashier.config.onramp.onClickCopyDepositAddress,
-    onDisclaimerCheckboxChange: modules.cashier.config.onramp.onDisclaimerCheckboxChange,
+    deposit_address: modules.cashier.onramp.deposit_address,
+    is_deposit_address_loading: modules.cashier.onramp.is_deposit_address_loading,
+    is_disclaimer_checkbox_checked: modules.cashier.onramp.is_disclaimer_checkbox_checked,
+    selected_provider: modules.cashier.onramp.selected_provider,
+    setDepositAddressRef: modules.cashier.onramp.setDepositAddressRef,
+    setSelectedProvider: modules.cashier.onramp.setSelectedProvider,
+    should_show_widget: modules.cashier.onramp.should_show_widget,
+    onClickCopyDepositAddress: modules.cashier.onramp.onClickCopyDepositAddress,
+    onDisclaimerCheckboxChange: modules.cashier.onramp.onDisclaimerCheckboxChange,
+    pollForDepositAddress: modules.cashier.onramp.pollForDepositAddress,
 }))(OnRampProviderPopup);

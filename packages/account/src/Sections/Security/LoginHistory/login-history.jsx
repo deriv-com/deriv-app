@@ -1,48 +1,50 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, MobileWrapper, Loading, DataTable } from '@deriv/components';
-import { parseUA } from '@deriv/shared/utils/browser';
+import { DesktopWrapper, MobileWrapper, Loading, DataTable, Table } from '@deriv/components';
+import Bowser from 'bowser';
 import { convertDateFormat } from '@deriv/shared/utils/date';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import LoadErrorMessage from 'Components/load-error-message';
 
-const Td = ({ title, text, className }) => (
-    <td>
+const CellContent = ({ title, text, className }) => (
+    <>
         <h3 className='cell-title'>{title}</h3>
-        <span className={classNames('cell-value', className)}>{text}</span>
-    </td>
+        <p className={classNames('cell-value', className)}>{text}</p>
+    </>
 );
 
 const LoginHistoryListView = ({ fields, login_history }) => (
-    <table className='login-history-table'>
-        <tbody>
-            <tr>
-                <Td title={fields.date} text={login_history.date} />
-            </tr>
-            <tr>
-                <Td title={fields.browser} text={login_history.browser} />
-                <Td className='action' title={fields.action} text={login_history.action} />
-            </tr>
-            <tr>
-                <Td title={fields.ip} text={login_history.ip} />
-                <Td title={fields.status} text={login_history.status} />
-            </tr>
-        </tbody>
-    </table>
+    <Table className='login-history-table'>
+        <Table.Body>
+            <Table.Row className='with-margin'>
+                <Table.Cell>
+                    <CellContent title={fields.date} text={login_history.date} />
+                </Table.Cell>
+            </Table.Row>
+            <Table.Row className='with-margin'>
+                <Table.Cell>
+                    <CellContent title={fields.browser} text={login_history.browser} />
+                </Table.Cell>
+                <Table.Cell>
+                    <CellContent className='action' title={fields.action} text={login_history.action} />
+                </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+                <Table.Cell>
+                    <CellContent title={fields.ip} text={login_history.ip} />
+                </Table.Cell>
+                <Table.Cell>
+                    <CellContent title={fields.status} text={login_history.status} />
+                </Table.Cell>
+            </Table.Row>
+        </Table.Body>
+    </Table>
 );
 
 class LoginHistory extends React.Component {
-    fields = {
-        date: localize('Date and time'),
-        action: localize('Action'),
-        browser: localize('Browser'),
-        ip: localize('IP address'),
-        status: localize('Status'),
-    };
-
     state = {
         is_loading: true,
         fetch_limit: 50, // TODO: put it in constants or configs
@@ -50,8 +52,18 @@ class LoginHistory extends React.Component {
         data: [],
     };
 
-    getLoginHistoryColumnsTemplate = () =>
-        Object.keys(this.fields).map((key) => ({ title: this.fields[key], col_index: key }));
+    getFields = () => ({
+        date: localize('Date and time'),
+        action: localize('Action'),
+        browser: localize('Browser'),
+        ip: localize('IP address'),
+        status: localize('Status'),
+    });
+
+    getLoginHistoryColumnsTemplate = () => {
+        const fields = this.getFields();
+        return Object.keys(fields).map((key) => ({ title: fields[key], col_index: key }));
+    };
 
     getFormattedData(login_history) {
         const data = [];
@@ -65,8 +77,8 @@ class LoginHistory extends React.Component {
             data[i].date = `${date_time} GMT`;
             data[i].action = login_history[i].action;
             const user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
-            const ua = parseUA(user_agent);
-            data[i].browser = ua ? `${ua.name} ${ua.version}` : localize('Unknown');
+            const ua = Bowser.getParser(user_agent)?.getBrowser();
+            data[i].browser = ua ? `${ua.name} v${ua.version}` : localize('Unknown');
             data[i].ip = environment_split[2].split('=')[1];
             data[i].status = login_history[i].status === 1 ? localize('Successful') : localize('Failed');
             data[i].id = i;
@@ -91,10 +103,10 @@ class LoginHistory extends React.Component {
                 error: api_res.api_initial_load_error,
             });
         } else {
-            const formated_data = this.getFormattedData(api_res.login_history);
+            const formatted_data = this.getFormattedData(api_res.login_history);
             this.setState({
                 is_loading: false,
-                data: formated_data,
+                data: formatted_data,
             });
         }
     }
@@ -123,7 +135,7 @@ class LoginHistory extends React.Component {
                         </DesktopWrapper>
                         <MobileWrapper>
                             {this.state.data.map((item) => (
-                                <LoginHistoryListView key={item.id} fields={this.fields} login_history={item} />
+                                <LoginHistoryListView key={item.id} fields={this.getFields()} login_history={item} />
                             ))}
                         </MobileWrapper>
                     </>

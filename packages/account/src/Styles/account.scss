@@ -805,8 +805,17 @@ $MIN_HEIGHT_FLOATING: calc(
 
             @include mobile {
                 width: 90%;
-                border-collapse: separate;
-                border-spacing: 0 1em;
+
+                .dc-table__cell {
+                    display: block;
+                }
+                .dc-table__row {
+                    grid-template-columns: 3fr 1fr;
+                    border: none;
+                }
+                .dc-table__row.with-margin {
+                    margin-bottom: 10px;
+                }
                 margin: 10px auto;
                 padding: 10px;
                 color: var(--text-general);

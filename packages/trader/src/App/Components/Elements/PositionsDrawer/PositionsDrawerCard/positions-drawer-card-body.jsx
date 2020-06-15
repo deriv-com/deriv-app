@@ -8,7 +8,7 @@ import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-order
 import { getCancellationPrice, getIndicativePrice } from 'Stores/Modules/Contract/Helpers/logic';
 
 const MultiplierCardBody = ({ contract_info, contract_update, currency, status }) => {
-    const { buy_price, bid_price, is_sold, multiplier } = contract_info;
+    const { buy_price, bid_price, is_sold } = contract_info;
 
     const total_profit = bid_price - buy_price;
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_update);

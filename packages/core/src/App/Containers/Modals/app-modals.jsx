@@ -13,12 +13,18 @@ const ResetPasswordModal = React.lazy(() =>
 const SetResidenceModal = React.lazy(() =>
     import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal')
 );
+const AccountTypesModal = React.lazy(() =>
+    import(/* webpackChunkName: "account-types-modal"  */ '../AccountTypesModal')
+);
 
 const AppModals = ({
+    is_account_types_modal_visible,
     is_denial_of_service_modal_visible,
+    should_have_real_account,
     is_set_residence_modal_visible,
     url_action_param,
     switchAccount,
+    toggleAccountTypesModal,
     virtual_account_loginid,
 }) => {
     let ComponentToLoad = null;
@@ -30,6 +36,7 @@ const AppModals = ({
             ComponentToLoad = <AccountSignupModal />;
             break;
         default:
+            // TODO: [deriv-eu] Remove this pop up after EU merge into production
             if (is_denial_of_service_modal_visible) {
                 const denialOfServiceOnCancel = () => {
                     const trade_link = isMT5() ? 'user/metatrader' : 'trading';
@@ -53,13 +60,23 @@ const AppModals = ({
             }
             break;
     }
+    // Account Types modal
+    if (should_have_real_account) {
+        toggleAccountTypesModal(true);
+    }
+    if (is_account_types_modal_visible) {
+        ComponentToLoad = <AccountTypesModal />;
+    }
 
     return ComponentToLoad ? <React.Suspense fallback={<div />}>{ComponentToLoad}</React.Suspense> : null;
 };
 
 export default connect(({ client, ui }) => ({
+    is_account_types_modal_visible: ui.is_account_types_modal_visible,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_denial_of_service_modal_visible: !client.is_client_allowed_to_visit,
+    should_have_real_account: client.should_have_real_account,
     switchAccount: client.switchAccount,
+    toggleAccountTypesModal: ui.toggleAccountTypesModal,
     virtual_account_loginid: client.virtual_account_loginid,
 }))(AppModals);

@@ -142,6 +142,7 @@
     "react-tiny-popover": "^4.0.0",
     "react-transition-group": "^2.5.0",
     "react-window": "^1.8.4",
+    "styled-components": "^5.1.1",
     "web-push-notifications": "^3.2.15"
   }
 }

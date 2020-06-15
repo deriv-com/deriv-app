@@ -1,8 +1,59 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled, { css } from 'styled-components';
 import { getKebabCase } from '@deriv/shared/utils/string';
 import { getUrlBase } from '@deriv/shared/utils/url';
+import { colors } from 'Components/theme-provider/theme-config';
+
+const IconSvg = styled.svg`
+    --fill-color1: ${props => {
+        return props.theme.text.general;
+    }};
+    --fill-color2: ${props => props.theme.text.less_prominent};
+    --fill-color3: ${props => props.theme.general.section_1};
+
+    ${props => {
+        if (props.icon === 'IcProfit' || props.color === 'green')
+            return css`
+                --fill-color1: ${props.theme.text.profit_success};
+                --fill-color2: ${props.theme.text.profit_success};
+                --fill-color3: ${colors.white};
+            `;
+        if (props.icon === 'IcLoss' || props.color === 'red')
+            return css`
+                --fill-color1: ${props.theme.text.loss_danger};
+                --fill-color2: ${props.theme.text.loss_danger};
+                --fill-color3: ${colors.white};
+            `;
+
+        switch (props.color) {
+            case 'active':
+                return css`
+                    --fill-color1: ${colors.white};
+                    --fill-color2: ${colors.white};
+                `;
+            case 'disabled':
+                return css`
+                    --fill-color1: ${props.theme.text.loss_danger};
+                    --fill-color2: ${props.theme.text.loss_danger};
+                `;
+            case 'secondary':
+                return css`
+                    --fill-color1: ${props.theme.text.less_prominent};
+                    --fill-color2: ${props.theme.text.less_prominent};
+                    --fill-color3: ${colors.white};
+                `;
+            case 'brand':
+                return css`
+                    --fill-color1: ${props.theme.brand.red_coral};
+                    --fill-color2: ${props.theme.brand.secondary};
+                    --fill-color3: ${colors.white};
+                `;
+            default:
+                return '';
+        }
+    }}
+`;
 
 const Icon = ({
     className,
@@ -30,23 +81,18 @@ const Icon = ({
         : getKebabCase(icon);
 
     return (
-        <svg
+        <IconSvg
+            className={className}
             xmlns='http://www.w3.org/2000/svg'
             xmlnsXlink='http://www.w3.org/1999/xlink'
-            className={classNames('dc-icon', className, {
-                'dc-icon--active': color === 'active',
-                'dc-icon--disabled': color === 'disabled',
-                'dc-icon--green': color === 'green' || icon === 'IcProfit',
-                'dc-icon--red': color === 'red' || icon === 'IcLoss',
-                'dc-icon--secondary': color === 'secondary',
-                'dc-icon--brand': color === 'brand',
-            })}
             height={height || size}
             id={id}
             width={width || size}
             onClick={onClick}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            color={color}
+            icon={icon}
             style={
                 custom_color
                     ? {
@@ -56,7 +102,7 @@ const Icon = ({
             }
         >
             <use xlinkHref={`${getUrlBase(`/public/images/sprite/${filename}.svg`)}#${sprite_id}`} />
-        </svg>
+        </IconSvg>
     );
 };
 

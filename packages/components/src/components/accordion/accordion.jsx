@@ -1,7 +1,64 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled, { css } from 'styled-components';
 import Icon from '../icon';
+
+const AccordionWrapper = styled.div`
+    > div:first-child {
+        border-top-right-radius: 4px;
+        border-top-left-radius: 4px;
+    }
+    > div:last-child {
+        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+        border-bottom-width: 1px;
+    }
+`;
+
+const AccordionItem = styled.div`
+    border: 1px solid var(--general-section-1);
+    border-bottom-width: 0;
+    color: var(--text-general);
+    font-size: 1.4rem;
+    ${props =>
+        props.is_open
+            ? css`
+                  ${AccordionItemHeader} {
+                      border-bottom: 1px solid var(--general-section-1);
+                  }
+                  ${AccordionItemContent} {
+                      display: block;
+                  }
+              `
+            : css`
+                  ${AccordionItemContent} {
+                      display: none;
+                  }
+              `}
+`;
+
+const AccordionItemHeader = styled.div`
+    cursor: pointer;
+    line-height: 1.43;
+    padding: 8px 16px;
+`;
+
+const AccordionItemContent = styled.div`
+    padding: 16px;
+`;
+
+const AccordionIconWrapper = styled.div`
+    float: right;
+    padding-left: 16px;
+    ${Icon} {
+        vertical-align: middle;
+
+        path,
+        rect {
+            fill: var(--text-general);
+        }
+    }
+`;
 
 class Accordion extends React.Component {
     state = {
@@ -21,40 +78,22 @@ class Accordion extends React.Component {
 
     render() {
         const { list, className } = this.props;
+        const { open_idx } = this.state;
 
         return (
-            <div className={classNames('dc-accordion__wrapper', className)}>
+            <AccordionWrapper className={className}>
                 {list.map((item, idx) => (
-                    <div
-                        className={classNames(
-                            'dc-accordion__item',
-                            `dc-accordion__item--${this.state.open_idx === idx ? 'open' : 'close'}`,
-                            {
-                                [`dc-accordion__item--${idx === 0 ? 'first' : 'last'}`]:
-                                    idx === 0 || idx === list.length - 1,
-                            }
-                        )}
-                        key={idx}
-                    >
-                        <div
-                            className='dc-accordion__item-header'
-                            onClick={() => {
-                                this.onClick(idx);
-                            }}
-                        >
+                    <AccordionItem is_open={open_idx === idx} key={idx}>
+                        <AccordionItemHeader onClick={() => this.onClick(idx)}>
                             {item.header}
-                            <div className='dc-accordion__item-header-icon-wrapper'>
-                                {this.state.open_idx === idx ? (
-                                    <Icon icon='IcMinus' className='dc-accordion__item-header-icon' />
-                                ) : (
-                                    <Icon icon='IcAdd' className='dc-accordion__item-header-icon' />
-                                )}
-                            </div>
-                        </div>
-                        <div className='dc-accordion__item-content'>{item.content}</div>
-                    </div>
+                            <AccordionIconWrapper>
+                                {open_idx === idx ? <Icon icon='IcMinus' /> : <Icon icon='IcAdd' />}
+                            </AccordionIconWrapper>
+                        </AccordionItemHeader>
+                        <AccordionItemContent>{item.content}</AccordionItemContent>
+                    </AccordionItem>
                 ))}
-            </div>
+            </AccordionWrapper>
         );
     }
 }

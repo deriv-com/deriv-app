@@ -1,5 +1,3 @@
-@import '../icon/icon.scss';
-
 .dc-popover {
     &__wrapper {
         position: relative;
@@ -16,17 +14,23 @@
     }
     &__target {
         &__icon .info {
-            @extend .dc-icon--secondary;
+            --fill-color1: var(--text-less-prominent);
+            --fill-color2: var(--text-less-prominent);
+            --fill-color3: #{$color-white};
 
             &:hover {
-                @extend .dc-icon;
+                --fill-color1: var(--text-general);
+                --fill-color2: var(--text-less-prominent);
+                --fill-color3: var(--general-section-1);
             }
         }
         &__icon--disabled .info {
-            @extend .dc-icon--disabled;
+            --fill-color1: var(--text-disabled);
+            --fill-color2: var(--text-disabled);
 
             &:hover {
-                @extend .dc-icon--disabled;
+                --fill-color1: var(--text-disabled);
+                --fill-color2: var(--text-disabled);
             }
         }
         &__icon .counter {

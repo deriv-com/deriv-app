@@ -4,14 +4,14 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
-import { DesktopWrapper } from '@deriv/components';
+import { DesktopWrapper, ThemeProvider } from '@deriv/components';
 import { checkAndSetEndpointFromUrl } from '@deriv/shared/utils/config';
 import { setUrlLanguage } from '@deriv/shared/utils/url';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';
-import { MobxProvider } from 'Stores/connect';
+import { connect, MobxProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
@@ -24,6 +24,8 @@ import Routes from './Containers/Routes/routes.jsx';
 import initStore from './app.js';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
+
+const Theme = connect(({ ui }) => ({ is_dark: ui.is_dark_mode_on }))(ThemeProvider);
 
 const App = ({ root_store }) => {
     const l = window.location;
@@ -91,7 +93,7 @@ const App = ({ root_store }) => {
     return (
         <Router basename={has_base ? `/${base}` : null}>
             <MobxProvider store={root_store}>
-                <React.Fragment>
+                <Theme>
                     <Header />
                     <ErrorBoundary>
                         <AppContents>
@@ -104,7 +106,7 @@ const App = ({ root_store }) => {
                     </DesktopWrapper>
                     <AppModals url_action_param={url_params.get('action')} />
                     <SmartTraderIFrame />
-                </React.Fragment>
+                </Theme>
             </MobxProvider>
         </Router>
     );

@@ -67,6 +67,7 @@ module.exports = {
         table: 'Components/table',
         tabs: 'Components/tabs',
         'toast-error': 'Components/toast-error',
+        'theme-provider': 'Components/theme-provider',
         'themed-scrollbars': 'Components/themed-scrollbars',
         'toggle-switch': 'Components/toggle-switch',
         'tick-picker': 'Components/tick-picker',
@@ -189,6 +190,7 @@ module.exports = {
         {
             formik: 'formik',
             classnames: 'classnames',
+            'styled-components': 'styled-components',
             '@contentpass/zxcvbn': '@contentpass/zxcvbn',
             'react-div-100vh': 'react-div-100vh',
             'react-drag-drawer': 'react-drag-drawer',

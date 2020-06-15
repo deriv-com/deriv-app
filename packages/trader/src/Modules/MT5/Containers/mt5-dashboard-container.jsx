@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { getMT5WebTerminalLink } from '../Helpers/constants';
 
 const MT5DashboardContainer = () => (
     <div className='mt5-dashboard__download-center'>
@@ -13,11 +14,7 @@ const MT5DashboardContainer = () => (
                 <div className='mt5-dashboard__download-center-options--desktop-devices'>
                     <Icon icon='IcMt5DeviceDesktop' width={118} height={85} />
                     <Icon icon='IcMt5DeviceLaptop' width={75} height={51} />
-                    <a
-                        href='https://trade.mql5.com/trade?servers=Binary.com-Server&trade_server=Binary.com-Server'
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
+                    <a href={getMT5WebTerminalLink({ category: 'demo' })} target='_blank' rel='noopener noreferrer'>
                         <Icon icon='IcInstallationWebDemo' width={138} height={40} />
                     </a>
                 </div>
@@ -40,7 +37,7 @@ const MT5DashboardContainer = () => (
                     </a>
                     <a
                         className='mt5-dashboard__download-center-options--desktop-link--top'
-                        href='https://trade.mql5.com/trade?servers=Binary.com-Server&trade_server=Binary.com-Server'
+                        href={getMT5WebTerminalLink({ category: 'real' })}
                         target='_blank'
                         rel='noopener noreferrer'
                     >

@@ -19,9 +19,17 @@ class Test extends React.Component {
             display: 'none',
             overflowY: 'auto',
             height: '100%',
+            width: '100%',
         },
         prop_name: {
             color: 'yellowgreen',
+        },
+        tabs: { display: 'flex', textAlign: 'center', marginBottom: '10px' },
+        tab: {
+            fontSize: '18px',
+            border: '1px solid grey',
+            width: '100%',
+            padding: '10px',
         },
     };
 
@@ -34,12 +42,8 @@ class Test extends React.Component {
     };
 
     stateVisibility(e) {
-        // Ctrl + T
-        if (e.ctrlKey && e.keyCode === 84) this.setState({ is_visible: !this.state.is_visible, store: 'trade' });
-        // Ctrl + C
-        if (e.ctrlKey && e.keyCode === 67) this.setState({ is_visible: !this.state.is_visible, store: 'client' });
-        // Ctrl + U
-        if (e.ctrlKey && e.keyCode === 85) this.setState({ is_visible: !this.state.is_visible, store: 'ui' });
+        // Ctrl + s
+        if (e.ctrlKey && e.keyCode === 83) this.setState({ is_visible: !this.state.is_visible });
     }
 
     renderStoreContent = ([k, v]) => {
@@ -55,14 +59,23 @@ class Test extends React.Component {
     };
 
     render() {
-        const { store } = this.state;
+        const { container, tab, tabs } = this.styles;
+        const { is_visible, store: selected_store } = this.state;
 
         return (
-            <code
-                id='state_info'
-                style={Object.assign({}, this.styles.container, { display: this.state.is_visible ? 'block' : 'none' })}
-            >
-                {this.props[store].sort().map(this.renderStoreContent)}
+            <code id='state_info' style={Object.assign({}, container, { display: is_visible ? 'block' : 'none' })}>
+                <div style={tabs}>
+                    {Object.keys(this.props).map(store => (
+                        <p
+                            key={store}
+                            onClick={() => this.setState({ store })}
+                            style={{ ...tab, fontWeight: store === selected_store && 'bold' }}
+                        >
+                            {store}
+                        </p>
+                    ))}
+                </div>
+                {this.props[this.state.store].sort().map(this.renderStoreContent)}
             </code>
         );
     }
@@ -76,4 +89,5 @@ export default connect(({ modules, client, ui }) => ({
     trade: Object.entries(modules.trade),
     client: Object.entries(client),
     ui: Object.entries(ui),
+    portfolio: Object.entries(modules.portfolio),
 }))(Test);

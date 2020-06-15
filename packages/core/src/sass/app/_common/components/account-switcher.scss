@@ -224,11 +224,6 @@
             overflow-y: auto;
         }
     }
-    &__help-icon {
-        cursor: pointer;
-        margin-left: 0.8rem;
-        vertical-align: middle;
-    }
     &__accounts {
         border-radius: $BORDER_RADIUS;
         background: var(--general-main-2);

@@ -10,14 +10,14 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
     const IconWon = ({ className }) => <Icon className={className} icon='IcCheckmarkCircle' color='green' />;
 
     return (
-        <div className='status-dialog'>
-            <div className='status-dialog__icon-area'>
+        <div className='success-change'>
+            <div className='success-change__icon-area'>
                 <IconPrevCurrency />
                 <IconArrow />
                 <IconNextCurrency />
                 <IconWon className='bottom-right-overlay' />
             </div>
-            <div className='status-dialog__body-area'>
+            <div className='success-change__body-area'>
                 <h2>
                     <Localize i18n_default_text='Success!' />
                 </h2>
@@ -29,7 +29,7 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
                     components={[<p key={current} />]}
                 />
             </div>
-            <div className='status-dialog__btn-area'>
+            <div className='success-change__btn-area'>
                 <Button onClick={onCancel} text={localize('Maybe later')} secondary />
                 <Button onClick={onSubmit} text={localize('Deposit now')} primary />
             </div>

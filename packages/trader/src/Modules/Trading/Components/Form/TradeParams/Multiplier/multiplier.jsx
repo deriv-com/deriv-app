@@ -7,7 +7,7 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 
 const Multiplier = ({ amount, commission, currency, multiplier, multiplier_range_list, onChange }) => {
-    const commission_amount = (commission * multiplier * amount) / 100;
+    const commission_percentage = (commission * 100) / (multiplier * amount);
     return (
         <Fieldset
             className='trade-container__fieldset trade-container__fieldset__multiplier'
@@ -33,8 +33,8 @@ const Multiplier = ({ amount, commission, currency, multiplier, multiplier_range
                 id='dt_multiplier__tooltip'
                 message={
                     <Localize
-                        i18n_default_text='<0>{{commission}}%</0> of (<1/> * {{multiplier}})'
-                        values={{ commission, multiplier }}
+                        i18n_default_text='<0>{{commission_percentage}}%</0> of (<1/> * {{multiplier}})'
+                        values={{ commission_percentage, multiplier }}
                         components={[
                             <span className='bold' key={0} />,
                             <Money key={1} amount={amount} currency={currency} />,
@@ -46,7 +46,7 @@ const Multiplier = ({ amount, commission, currency, multiplier, multiplier_range
                 <p className='trade-container__fieldset-tooltip-text'>
                     <Localize
                         i18n_default_text='Commission: <0/>'
-                        components={[<Money key={0} amount={commission_amount} currency={currency} />]}
+                        components={[<Money key={0} amount={commission} currency={currency} />]}
                     />
                 </p>
             </Popover>

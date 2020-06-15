@@ -18,22 +18,16 @@ const NewVersionNotification = ({ onUpdate }) => {
             document.addEventListener('UpdateAvailable', onUpdate);
         };
 
+        document.addEventListener('UpdateAvailable', onUpdate);
         document.addEventListener('IgnorePWAUpdate', removeUpdateListener);
         document.addEventListener('ListenPWAUpdate', addUpdateListener);
 
         return () => {
             document.removeEventListener('IgnorePWAUpdate', removeUpdateListener);
             document.removeEventListener('ListenPWAUpdate', addUpdateListener);
-        };
-    });
-
-    React.useEffect(() => {
-        document.addEventListener('UpdateAvailable', onUpdate);
-
-        return () => {
             document.removeEventListener('UpdateAvailable', onUpdate);
         };
-    });
+    }, []);
 
     return null;
 };

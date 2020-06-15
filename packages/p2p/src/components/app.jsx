@@ -90,12 +90,17 @@ class App extends React.Component {
         this.setState({ show_popup: !this.state.show_popup });
     };
 
-    onNicknamePopupClose = () => {
-        this.setState({ show_popup: false });
+    forceUpdateTab = () => {
+        this.setState({ show_popup: false, active_index: 1 });
     };
 
     handleTabClick = idx => {
         this.setState({ active_index: idx, parameters: null });
+
+        // when user is verified but nickname not set
+        if (!this.state.nickname && idx === 2) {
+            this.toggleNicknamePopup();
+        }
     };
 
     setIsAdvertiser = response => {
@@ -110,17 +115,12 @@ class App extends React.Component {
             this.setState({ is_restricted: true });
         } else if (response.error.code === 'AdvertiserNotFound') {
             this.setState({ is_advertiser: false });
-        } else {
-            this.ws_subscriptions[0].unsubscribe();
         }
     };
 
     setChatInfoUsingAdvertiserInfo = response => {
         const { p2p_advertiser_info } = response;
-        if (response.error) {
-            this.ws_subscriptions[0].unsubscribe();
-            return;
-        }
+        if (response.error) return;
 
         const user_id = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
         const token = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_token']);
@@ -278,7 +278,6 @@ class App extends React.Component {
                     setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     order_id,
                     setOrderId,
-                    toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
                     getLocalStorageSettings: this.getLocalStorageSettings.bind(this),
                 }}
@@ -299,22 +298,22 @@ class App extends React.Component {
                         </div>
                         <div label={localize('My ads')}>
                             <MyAds navigate={this.redirectTo} params={parameters} />
+                            {show_popup && (
+                                <div className='p2p-my-ads__dialog'>
+                                    <Dialog is_visible={show_popup}>
+                                        <NicknameForm
+                                            handleClose={this.forceUpdateTab}
+                                            handleConfirm={this.toggleNicknamePopup}
+                                        />
+                                    </Dialog>
+                                </div>
+                            )}
                         </div>
                         {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
                         {/* <div label={localize('My profile')}>
                             <MyProfile navigate={this.redirectTo} params={parameters} />
                         </div> */}
                     </Tabs>
-                    {show_popup && (
-                        <div className='p2p-nickname__dialog'>
-                            <Dialog is_visible={show_popup}>
-                                <NicknameForm
-                                    handleClose={this.onNicknamePopupClose}
-                                    handleConfirm={this.toggleNicknamePopup}
-                                />
-                            </Dialog>
-                        </div>
-                    )}
                 </main>
             </Dp2pProvider>
         );

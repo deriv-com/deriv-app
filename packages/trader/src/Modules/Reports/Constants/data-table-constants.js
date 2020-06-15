@@ -216,10 +216,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
     {
         title: localize('Stake'),
         col_index: 'buy_price',
-        renderCellContent: ({ cell_value, row_obj, is_footer }) => {
-            if (is_footer) {
-                return <Money amount={cell_value} currency={currency} />;
-            }
+        renderCellContent: ({ row_obj }) => {
             if (row_obj.contract_info) {
                 const { ask_price: cancellation_price = 0 } = row_obj.contract_info.cancellation || {};
                 return <Money amount={row_obj.contract_info.buy_price - cancellation_price} currency={currency} />;
@@ -272,7 +269,11 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
     {
         title: localize('Current stake'),
         col_index: 'bid_price',
-        renderCellContent: ({ row_obj }) => {
+        renderCellContent: ({ row_obj, is_footer }) => {
+            if (is_footer) {
+                return '';
+            }
+
             if (!row_obj.contract_info || !row_obj.contract_info.bid_price) return '-';
 
             const total_profit = row_obj.contract_info.bid_price - row_obj.contract_info.buy_price;
@@ -292,7 +293,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         title: <Localize i18n_default_text='Total<0 />profit/loss' components={[<br key={0} />]} />,
         col_index: 'profit',
         renderCellContent: ({ row_obj }) => {
-            if (!row_obj.contract_info || !row_obj.contract_info.profit) return;
+            if (!row_obj.contract_info || !row_obj.contract_info.profit) return null;
             const total_profit = row_obj.contract_info.bid_price - row_obj.contract_info.buy_price;
             // eslint-disable-next-line consistent-return
             return (

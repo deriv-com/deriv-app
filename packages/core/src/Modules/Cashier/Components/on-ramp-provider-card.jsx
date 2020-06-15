@@ -15,9 +15,9 @@ const OnRampProviderCard = ({ provider, setSelectedProvider }) => (
             {provider.website}
         </a>
         {provider.payment_icons.length && (
-            <div className='on-ramp__provider-payment-types'>
-                {provider.payment_icons.map((payment_type, idx) => (
-                    <Icon key={idx} size={40} icon={payment_type} />
+            <div className='on-ramp__provider-payment-icons'>
+                {provider.payment_icons.map((payment_icon, idx) => (
+                    <Icon key={idx} size={40} icon={payment_icon} />
                 ))}
             </div>
         )}

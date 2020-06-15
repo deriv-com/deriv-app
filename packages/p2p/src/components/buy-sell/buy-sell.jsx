@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, ButtonToggle } from '@deriv/components';
+import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
+import { requestWS } from 'Utils/websocket';
 import Popup from './popup.jsx';
-import './buy-sell.scss';
 import BuySellTableContent from './buy-sell-table-content.jsx';
+import Verification from '../verification/verification.jsx';
+import PageReturn from '../page-return/page-return.jsx';
+import './buy-sell.scss';
 
 const buy_sell_filters = [
     {
@@ -18,14 +22,38 @@ const buy_sell_filters = [
 ];
 
 class BuySell extends React.Component {
+    is_mounted = false;
     state = {
         table_type: 'buy',
         selected_ad: {},
         show_popup: false,
+        show_verification: false,
     };
 
+    componentWillMount() {
+        this.is_mounted = true;
+
+        if (!this.context.is_advertiser) {
+            requestWS({ get_account_status: 1 }).then(response => {
+                if (this.is_mounted && !response.error) {
+                    const { get_account_status } = response;
+                    const { authentication } = get_account_status;
+                    const { identity } = authentication;
+
+                    this.setState({
+                        poi_status: identity.status,
+                    });
+                }
+            });
+        }
+    }
+
     setSelectedAd = selected_ad => {
-        this.setState({ selected_ad, show_popup: true });
+        if (!this.context.is_advertiser) {
+            this.setState({ show_verification: true });
+        } else {
+            this.setState({ selected_ad, show_popup: true });
+        }
     };
 
     onCancelClick = () => {
@@ -41,8 +69,18 @@ class BuySell extends React.Component {
         this.props.navigate('orders', { order_info, nav });
     };
 
+    hideVerification = () => this.setState({ show_verification: false });
+
     render() {
         const { table_type, selected_ad, show_popup } = this.state;
+
+        if (this.state.show_verification)
+            return (
+                <>
+                    <PageReturn onClick={this.hideVerification} page_title={localize('Back')} />
+                    <Verification poi_status={this.state.poi_status} />
+                </>
+            );
 
         return (
             <div className='buy-sell'>
@@ -84,3 +122,5 @@ BuySell.propTypes = {
 };
 
 export default BuySell;
+
+BuySell.contextType = Dp2pContext;

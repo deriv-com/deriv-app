@@ -35,15 +35,25 @@ const InputWithCheckbox = ({
         setChecked(defaultChecked);
     }, [defaultChecked]);
 
+    const focusInput = () => {
+        setTimeout(() => {
+            const el_input = input_wrapper_ref.current.nextSibling.querySelector('input.input-wrapper__input');
+            el_input.focus();
+        });
+    };
+
     const changeValue = e => {
         const new_is_checked = !is_checked;
         // e.target.checked is not reliable, we have to toggle its previous value
         onChange({ target: { name: e.target.name, value: new_is_checked } });
-        if (new_is_checked) {
-            setTimeout(() => {
-                const el_input = input_wrapper_ref.current.nextSibling.querySelector('input.input-wrapper__input');
-                el_input.focus();
-            });
+        if (new_is_checked) focusInput();
+    };
+
+    const enableInputOnClick = () => {
+        if (!is_checked) {
+            setChecked(true);
+            onChange({ target: { name: checkboxName, value: true } });
+            focusInput();
         }
     };
 
@@ -67,6 +77,7 @@ const InputWithCheckbox = ({
             max_value={max_value}
             name={name}
             onChange={onChange}
+            onClickInputWrapper={is_disabled ? undefined : enableInputOnClick}
             type='tel'
             value={value}
         />

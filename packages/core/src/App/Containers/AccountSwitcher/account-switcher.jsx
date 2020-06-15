@@ -127,7 +127,7 @@ class AccountSwitcher extends React.Component {
                 type: 'synthetic',
             },
             {
-                account_types: ['vanuatu', 'svg_standard'],
+                account_types: ['vanuatu', 'svg_financial'],
                 icon: 'Financial',
                 title: localize('Financial'),
                 type: 'financial',
@@ -202,7 +202,7 @@ class AccountSwitcher extends React.Component {
             if (/svg$/.test(a.group)) {
                 return -1;
             }
-            if (/vanuatu|svg_standard/.test(a.group)) {
+            if (/vanuatu|svg_financial/.test(a.group)) {
                 return /svg$/.test(b.group) ? 1 : -1;
             }
             return 1;

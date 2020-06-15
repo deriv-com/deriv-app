@@ -134,10 +134,10 @@ export default class MT5Store extends BaseStore {
                 tmp_type = 'svg';
                 break;
             case 'financial':
-                tmp_type = 'svg_standard';
+                tmp_type = 'svg_financial';
                 break;
             default:
-                tmp_type = 'labuan_advanced';
+                tmp_type = 'labuan_financial_stp';
         }
         const group = `${category}\\${tmp_type}`;
 

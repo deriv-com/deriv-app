@@ -4,7 +4,16 @@ import PropTypes from 'prop-types';
 import Popover from '../popover';
 import Icon from '../icon';
 
-const Clipboard = ({ text_copy, info_message, success_message, className, popoverClassName }) => {
+const Clipboard = ({
+    text_copy,
+    info_message,
+    success_message,
+    className,
+    popoverClassName,
+    custom_colour_icon_copy,
+    custom_colour_icon_success,
+    onClickCopy,
+}) => {
     const [is_copied, setIsCopied] = React.useState(false);
     let timeout_clipboard = null;
 
@@ -40,9 +49,14 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
                 >
                     <Icon
                         icon='IcClipboard'
-                        custom_color='var(--text-less-prominent)'
+                        custom_color={custom_colour_icon_copy || 'var(--text-less-prominent)'}
                         className={classNames('dc-clipboard', className)}
-                        onClick={onClick}
+                        onClick={() => {
+                            onClick();
+                            if (typeof onClickCopy === 'function') {
+                                onClickCopy();
+                            }
+                        }}
                     />
                 </Popover>
             )}
@@ -56,7 +70,7 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
                 >
                     <Icon
                         icon='IcCheckmarkCircle'
-                        custom_color='var(--status-success)'
+                        custom_color={custom_colour_icon_success || 'var(--status-success)'}
                         className={classNames('dc-clipboard', className)}
                     />
                 </Popover>

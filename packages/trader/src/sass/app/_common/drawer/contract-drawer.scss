@@ -59,7 +59,9 @@ $header-height: 4em;
         margin-right: 16px;
     }
     &__body {
-        height: calc(100% - 200px);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 }
 

@@ -140,7 +140,16 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onMountCommon() {
+    setAccountSwitchListener() {
+        // cashier inits once and tries to stay active until switching account
+        // since cashier calls take a long time to respond or display in iframe
+        // so we don't have any unmount function here and everything gets reset on switch instead
+        this.disposeSwitchAccount();
+        this.onSwitchAccount(this.accountSwitcherListener);
+    }
+
+    @action.bound
+    async onMountCommon(should_remount) {
         if (this.root_store.client.is_logged_in) {
             // avoid calling this again
             if (this.is_populating_values) {
@@ -149,12 +158,9 @@ export default class CashierStore extends BaseStore {
 
             this.is_populating_values = true;
 
-            // cashier inits once and tries to stay active until switching account
-            // since cashier calls take a long time to respond or display in iframe
-            // so we don't have any unmount function here and everything gets reset on switch instead
-            this.disposeSwitchAccount();
-            this.onSwitchAccount(this.accountSwitcherListener);
-
+            if (should_remount) {
+                this.onRemount = this.onMountCommon;
+            }
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
             if (!this.config.payment_agent.list.length) {
@@ -415,6 +421,11 @@ export default class CashierStore extends BaseStore {
     setCountDownResendVerification() {
         this.setVerificationResendTimeout(this.config[this.active_container].verification.resend_timeout - 1);
         const resend_interval = setInterval(() => {
+            if (!this.config[this.active_container] || !this.config[this.active_container].verification) {
+                clearInterval(resend_interval);
+                return;
+            }
+
             if (this.config[this.active_container].verification.resend_timeout === 1) {
                 this.setVerificationResendTimeout(60);
                 clearInterval(resend_interval);

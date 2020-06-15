@@ -35,7 +35,7 @@ const Summary = ({
 }) => {
     return (
         <div className='summary run-panel-tab__content'>
-            <ThemedScrollbars autoHide style={{ height: 'var(--drawer-scroll-height)' }}>
+            <ThemedScrollbars height='var(--drawer-scroll-height)'>
                 <ContractCard />
                 <div className='summary__tiles'>
                     <SummaryTile

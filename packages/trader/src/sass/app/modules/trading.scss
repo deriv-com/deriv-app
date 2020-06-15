@@ -528,3 +528,13 @@
         }
     }
 }
+
+/** @define market-unavailable-modal */
+@include mobile {
+    .market-unavailable-modal {
+        /* postcss-bem-linter: ignore */
+        .dc-dialog__footer {
+            flex-wrap: nowrap;
+        }
+    }
+}

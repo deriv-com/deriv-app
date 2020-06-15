@@ -67,24 +67,28 @@ class SelectNative extends React.Component {
                                         Added an empty option to avoid it from selecting first item 
                                         from list_items provided */}
                                     <option value=''>{placeholder}</option>
-                                    {list_items.map((option, idx) => (
-                                        <option key={idx} value={use_text ? option.text : option.value}>
-                                            {option.nativepicker_text || option.text}
-                                        </option>
-                                    ))}
+                                    {/* Safari on ios allows to select a disabled option. 
+                                        So, we should avoid showing it */}
+                                    {list_items
+                                        .filter(opt => !opt.disabled)
+                                        .map((option, idx) => (
+                                            <option key={idx} value={use_text ? option.text : option.value}>
+                                                {option.nativepicker_text || option.text}
+                                            </option>
+                                        ))}
                                 </React.Fragment>
                             ) : (
                                 Object.keys(list_items).map(key => (
                                     <optgroup key={key} label={key}>
-                                        {list_items[key].map((option, idx) => (
-                                            <option
-                                                key={idx}
-                                                value={use_text ? option.text : option.value}
-                                                disabled={option.disabled}
-                                            >
-                                                {option.nativepicker_text || option.text}
-                                            </option>
-                                        ))}
+                                        {/* Safari on ios allows to select a disabled option. 
+                                        So, we should avoid showing it */}
+                                        {list_items[key]
+                                            .filter(opt => !opt.disabled)
+                                            .map((option, idx) => (
+                                                <option key={idx} value={use_text ? option.text : option.value}>
+                                                    {option.nativepicker_text || option.text}
+                                                </option>
+                                            ))}
                                     </optgroup>
                                 ))
                             )}

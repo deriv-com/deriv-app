@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Checkbox, Clipboard, Icon, Loading, Popover } from '@deriv/components';
+import { Button, Checkbox, Clipboard, Loading } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 

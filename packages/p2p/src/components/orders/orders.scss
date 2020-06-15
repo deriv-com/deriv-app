@@ -41,6 +41,8 @@
             width: auto;
             height: auto;
             padding: 0;
+            max-width: 440px;
+            min-height: 240px;
             max-height: initial;
             min-width: 44rem;
         }
@@ -61,8 +63,10 @@
                 width: 100%;
                 justify-content: space-between;
                 box-sizing: border-box;
+                margin-bottom: 2.4rem;
             }
             &--title {
+                font-size: var(--text-size-s);
                 font-weight: bold;
                 color: var(--text-prominent);
 

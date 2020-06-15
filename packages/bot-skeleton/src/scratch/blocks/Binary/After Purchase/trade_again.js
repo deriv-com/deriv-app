@@ -24,6 +24,7 @@ Blockly.Blocks.trade_again = {
             description: localize(
                 'This block will transfer the control back to the Purchase conditions block, enabling you to purchase another contract.'
             ),
+            key_words: localize('restart'),
         };
     },
     restricted_parents: ['after_purchase'],

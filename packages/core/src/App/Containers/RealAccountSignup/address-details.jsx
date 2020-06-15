@@ -14,6 +14,7 @@ import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
+import { validLength, validPostCode } from 'Utils/Validator/declarative-validation-rules';
 
 const InputField = props => {
     return (
@@ -72,16 +73,18 @@ class AddressDetails extends React.Component {
         this.props.onCancel();
     };
 
-    get should_render_address_state() {
-        return this.state.has_fetched_states_list && this.props.states_list.length > 0;
-    }
-
     render() {
         const padding_bottom = window.innerHeight < 930 ? '10rem' : '12rem';
         return (
             <Formik
-                initialValues={{ ...this.props.value }}
-                validate={this.props.validate}
+                initialValues={{
+                    address_line_1: this.props.value.address_line_1,
+                    address_line_2: this.props.value.address_line_2,
+                    address_city: this.props.value.address_city,
+                    address_state: this.props.value.address_state,
+                    address_postcode: this.props.value.address_postcode,
+                }}
+                validate={this.validateAddressDetails}
                 onSubmit={(values, actions) => {
                     if (isDesktop() && values.address_state) {
                         values.address_state = this.props.states_list.length
@@ -128,53 +131,65 @@ class AddressDetails extends React.Component {
                                                 label={localize('Town/City*')}
                                                 placeholder={localize('Town/City')}
                                             />
-                                            {this.should_render_address_state && (
-                                                <Field name='address_state'>
-                                                    {({ field }) => (
-                                                        <>
-                                                            <DesktopWrapper>
-                                                                <Autocomplete
-                                                                    {...field}
-                                                                    {...(this.state.address_state_to_display && {
-                                                                        value: this.state.address_state_to_display,
-                                                                    })}
-                                                                    data-lpignore='true'
-                                                                    autoComplete='new-password' // prevent chrome autocomplete
-                                                                    dropdown_offset='3.2rem'
-                                                                    type='text'
-                                                                    label={localize('State/Province')}
-                                                                    list_items={this.props.states_list}
-                                                                    onItemSelection={({ value, text }) => {
-                                                                        setFieldValue(
-                                                                            'address_state',
-                                                                            value ? text : '',
-                                                                            true
-                                                                        );
-                                                                        this.setState({
-                                                                            address_state_to_display: '',
-                                                                        });
-                                                                    }}
-                                                                />
-                                                            </DesktopWrapper>
-                                                            <MobileWrapper>
-                                                                <SelectNative
-                                                                    placeholder={localize('Please select')}
-                                                                    label={localize('State/Province')}
-                                                                    value={values.address_state}
-                                                                    list_items={this.props.states_list}
-                                                                    use_text={true}
-                                                                    onChange={e =>
-                                                                        setFieldValue(
-                                                                            'address_state',
-                                                                            e.target.value,
-                                                                            true
-                                                                        )
-                                                                    }
-                                                                />
-                                                            </MobileWrapper>
-                                                        </>
+                                            {this.state.has_fetched_states_list && (
+                                                <React.Fragment>
+                                                    {this.props.states_list.length > 0 ? (
+                                                        <Field name='address_state'>
+                                                            {({ field }) => (
+                                                                <>
+                                                                    <DesktopWrapper>
+                                                                        <Autocomplete
+                                                                            {...field}
+                                                                            {...(this.state
+                                                                                .address_state_to_display && {
+                                                                                value: this.state
+                                                                                    .address_state_to_display,
+                                                                            })}
+                                                                            data-lpignore='true'
+                                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                                            dropdown_offset='3.2rem'
+                                                                            type='text'
+                                                                            label={localize('State/Province')}
+                                                                            list_items={this.props.states_list}
+                                                                            onItemSelection={({ value, text }) => {
+                                                                                setFieldValue(
+                                                                                    'address_state',
+                                                                                    value ? text : '',
+                                                                                    true
+                                                                                );
+                                                                                this.setState({
+                                                                                    address_state_to_display: '',
+                                                                                });
+                                                                            }}
+                                                                        />
+                                                                    </DesktopWrapper>
+                                                                    <MobileWrapper>
+                                                                        <SelectNative
+                                                                            placeholder={localize('Please select')}
+                                                                            label={localize('State/Province')}
+                                                                            value={values.address_state}
+                                                                            list_items={this.props.states_list}
+                                                                            use_text={true}
+                                                                            onChange={e =>
+                                                                                setFieldValue(
+                                                                                    'address_state',
+                                                                                    e.target.value,
+                                                                                    true
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                    </MobileWrapper>
+                                                                </>
+                                                            )}
+                                                        </Field>
+                                                    ) : (
+                                                        <InputField
+                                                            name='address_state'
+                                                            label={localize('State/Province')}
+                                                            placeholder={localize('State/Province')}
+                                                        />
                                                     )}
-                                                </Field>
+                                                </React.Fragment>
                                             )}
                                             <InputField
                                                 name='address_postcode'
@@ -202,6 +217,76 @@ class AddressDetails extends React.Component {
             </Formik>
         );
     }
+
+    validateAddressDetails = values => {
+        const validations = {
+            address_line_1: [v => !!v, v => /^[\w\W\s/-]{1,70}$/gu.exec(v) !== null],
+            address_line_2: [v => !v || /^[\w\W\s/-]{0,70}$/gu.exec(v) !== null],
+            address_city: [v => !!v, v => /^[a-zA-Z\s\W'.-]{1,35}$/gu.exec(v) !== null],
+            address_state: [v => /^[a-zA-Z\s\W'.-]{0,35}$/gu.exec(v) !== null],
+            address_postcode: [v => validLength(v, { min: 0, max: 20 }), v => validPostCode(v)],
+        };
+
+        const mappedKey = {
+            address_line_1: localize('First line of address'),
+            address_line_2: localize('Second line of address'),
+            address_city: `${localize('Town/City')}`,
+            address_state: `${localize('State/Province')}`,
+            address_postcode: `${localize('Postal/ZIP code')}`,
+        };
+
+        const required_messages = ['{{field_name}} is required', '{{field_name}} is not in a proper format.'];
+
+        const optional_messages = ['{{field_name}} is not in a proper format.'];
+
+        const custom_messages = {
+            address_postcode: [
+                localize('Please enter a {{field_name}} under {{max_number}} characters.', {
+                    field_name: localize('postal/ZIP code'),
+                    max_number: 20,
+                    interpolation: { escapeValue: false },
+                }),
+                localize('Only letters, numbers, space, and hyphen are allowed.'),
+            ],
+        };
+
+        const errors = {};
+
+        Object.entries(validations).forEach(([key, rules]) => {
+            const error_index = rules.findIndex(v => !v(values[key]));
+            if (error_index !== -1) {
+                switch (key) {
+                    case 'address_state':
+                    case 'address_line_2':
+                        errors[key] = (
+                            <Localize
+                                i18n_default_text={optional_messages[error_index]}
+                                values={{
+                                    field_name: mappedKey[key],
+                                }}
+                                options={{ interpolation: { escapeValue: false } }}
+                            />
+                        );
+                        break;
+                    case 'address_postcode':
+                        errors[key] = custom_messages.address_postcode[error_index];
+                        break;
+                    default:
+                        errors[key] = (
+                            <Localize
+                                i18n_default_text={required_messages[error_index]}
+                                values={{
+                                    field_name: mappedKey[key],
+                                }}
+                                options={{ interpolation: { escapeValue: false } }}
+                            />
+                        );
+                }
+            }
+        });
+
+        return errors;
+    };
 }
 
 export default connect(({ client }) => ({

@@ -16,21 +16,11 @@ import { urlFor } from '@deriv/shared/utils/url';
 import routes from '@deriv/shared/utils/routes';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
-import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
 import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
-
-const AccountTitle = ({ title, onIconClick, is_eu }) => {
-    return (
-        <React.Fragment>
-            <span>{title}</span>
-            {is_eu && <Icon className='acc-switcher__help-icon' icon='IcInfoOutline' onClick={onIconClick} />}
-        </React.Fragment>
-    );
-};
 
 class AccountSwitcher extends React.Component {
     constructor(props) {
@@ -116,14 +106,9 @@ class AccountSwitcher extends React.Component {
         this.props.toggleSetCurrencyModal();
     };
 
-    showAccountTypesModal = () => {
-        this.props.toggleAccountsDialog();
-        this.props.toggleAccountTypesModal(true);
-    };
-
-    onClickUpgrade = account => {
-        if (this.props.is_eu_enabled) {
-            this.props.openRealAccountSignup(account);
+    onClickUpgrade = () => {
+        if (this.props.can_upgrade_to === 'svg') {
+            this.props.openRealAccountSignup();
         } else {
             window.open(urlFor('new_account/maltainvestws', { legacy: true }));
         }
@@ -242,11 +227,6 @@ class AccountSwitcher extends React.Component {
         return this.getRemainingAccounts(existing_real_mt5_groups);
     }
 
-    // SVG clients can't upgrade.
-    get remaining_real_accounts() {
-        return this.can_open_multi ? [] : this.props.upgradeable_landing_companies;
-    }
-
     get has_set_currency() {
         return this.props.account_list.filter(account => !account.is_virtual).some(account => account.title !== 'Real');
     }
@@ -294,13 +274,7 @@ class AccountSwitcher extends React.Component {
         const demo_accounts = (
             <div className='acc-switcher__list-wrapper'>
                 <AccountWrapper
-                    header={
-                        <AccountTitle
-                            title={localize('Deriv Accounts')}
-                            is_eu={this.props.is_eu}
-                            onIconClick={this.showAccountTypesModal}
-                        />
-                    }
+                    header={<Localize i18n_default_text='Deriv Accounts' />}
                     is_visible={this.state.is_demo_deriv_visible}
                     toggleVisibility={() => {
                         this.toggleVisibility('demo_deriv');
@@ -332,13 +306,7 @@ class AccountSwitcher extends React.Component {
                     <React.Fragment>
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                         <AccountWrapper
-                            header={
-                                <AccountTitle
-                                    title={localize('DMT5 Accounts')}
-                                    is_eu={this.props.is_eu}
-                                    onIconClick={this.showAccountTypesModal}
-                                />
-                            }
+                            header={<Localize i18n_default_text='DMT5 Accounts' />}
                             is_visible={this.state.is_demo_dmt5_visible}
                             toggleVisibility={() => {
                                 this.toggleVisibility('demo_dmt5');
@@ -393,13 +361,7 @@ class AccountSwitcher extends React.Component {
             <div className='acc-switcher__list-wrapper' onMouseEnter={this.onListEnter} onMouseLeave={this.onListLeave}>
                 <React.Fragment>
                     <AccountWrapper
-                        header={
-                            <AccountTitle
-                                title={localize('Deriv Accounts')}
-                                is_eu={this.props.is_eu}
-                                onIconClick={this.showAccountTypesModal}
-                            />
-                        }
+                        header={<Localize i18n_default_text='Deriv Accounts' />}
                         is_visible={this.state.is_real_deriv_visible}
                         toggleVisibility={() => {
                             this.toggleVisibility('real_deriv');
@@ -426,12 +388,12 @@ class AccountSwitcher extends React.Component {
                                     />
                                 ))}
                         </div>
-                        {this.remaining_real_accounts.map((account, index) => (
-                            <div key={index} className='acc-switcher__new-account'>
+                        {this.can_upgrade && (
+                            <div className='acc-switcher__new-account'>
                                 <Icon icon='IcDeriv' size={24} />
-                                <span className='acc-switcher__new-account-text'>{getAccountTitle(account)}</span>
+                                <span className='acc-switcher__new-account-text'>{localize('Deriv account')}</span>
                                 <Button
-                                    onClick={() => this.onClickUpgrade(account)}
+                                    onClick={this.onClickUpgrade}
                                     className='acc-switcher__new-account-btn'
                                     secondary
                                     small
@@ -439,7 +401,7 @@ class AccountSwitcher extends React.Component {
                                     {localize('Add')}
                                 </Button>
                             </div>
-                        ))}
+                        )}
                         {!this.can_upgrade &&
                             (this.can_open_multi || this.props.can_change_fiat_currency || !this.has_set_currency) && (
                                 <Button
@@ -462,13 +424,7 @@ class AccountSwitcher extends React.Component {
                     <React.Fragment>
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                         <AccountWrapper
-                            header={
-                                <AccountTitle
-                                    title={localize('DMT5 Accounts')}
-                                    is_eu={this.props.is_eu}
-                                    onIconClick={this.showAccountTypesModal}
-                                />
-                            }
+                            header={<Localize i18n_default_text='DMT5 Accounts' />}
                             is_visible={this.state.is_real_dmt5_visible}
                             toggleVisibility={() => {
                                 this.toggleVisibility('real_dmt5');
@@ -602,8 +558,6 @@ AccountSwitcher.propTypes = {
     can_change_fiat_currency: PropTypes.bool,
     can_upgrade_to: PropTypes.string,
     has_any_real_account: PropTypes.bool,
-    is_eu: PropTypes.bool,
-    is_eu_enabled: PropTypes.bool,
     is_loading_mt5: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
@@ -617,7 +571,6 @@ AccountSwitcher.propTypes = {
     openRealAccountSignup: PropTypes.func,
     switchAccount: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
-    toggleAccountTypesModal: PropTypes.func,
     togglePositionsDrawer: PropTypes.func,
     toggleSetCurrencyModal: PropTypes.func,
     updateMt5LoginList: PropTypes.func,
@@ -631,8 +584,6 @@ const account_switcher = withRouter(
         can_change_fiat_currency: client.can_change_fiat_currency,
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,
-        is_eu: client.is_eu,
-        is_eu_enabled: ui.is_eu_enabled,
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,
@@ -643,13 +594,11 @@ const account_switcher = withRouter(
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,
         logoutClient: client.logout,
-        upgradeable_landing_companies: client.upgradeable_landing_companies,
         updateMt5LoginList: client.updateMt5LoginList,
         routeBackInApp: common.routeBackInApp,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup: ui.openRealAccountSignup,
         toggleAccountsDialog: ui.toggleAccountsDialog,
-        toggleAccountTypesModal: ui.toggleAccountTypesModal,
         togglePositionsDrawer: ui.togglePositionsDrawer,
         toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
     }))(AccountSwitcher)

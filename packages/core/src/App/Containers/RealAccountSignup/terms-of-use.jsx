@@ -8,88 +8,14 @@ import { localize, Localize } from '@deriv/translations';
 import { Hr } from './currency-selector.jsx';
 import 'Sass/terms-of-use.scss';
 
-const SVGDescription = () => (
-    <React.Fragment>
-        <h4>
-            <Localize i18n_default_text={'Jurisdiction and choice of law'} />
-        </h4>
-        <p>
-            <Localize
-                i18n_default_text={
-                    'Your account will be opened with Binary (SVG) Ltd., and will be subject to the jurisdiction and laws of Saint Vincent and the Grenadines.'
-                }
-            />
-        </p>
-        <Hr />
-        <h4>
-            <Localize i18n_default_text={'Risk warning'} />
-        </h4>
-        <p>
-            <Localize
-                i18n_default_text={
-                    'The financial trading services offered on this site are only suitable for customers who accept the possibility of losing all the money they invest and who understand and have experience of the risk involved in the purchase of financial contracts. Transactions in financial contracts carry a high degree of risk. If the contracts you purchased expire as worthless, you will lose all your investment, which includes the contract premium.'
-                }
-            />
-        </p>
-        <Hr />
-        <h4>
-            <Localize i18n_default_text='Real accounts are not available to politically exposed persons (PEPs).' />
-        </h4>
-        <p>
-            <Localize i18n_default_text='A politically exposed person (PEP) is someone appointed with a prominent public position. Close associates and family members of a PEP are also considered to be PEPs.' />
-        </p>
-    </React.Fragment>
-);
-
-const IOMDescription = () => (
-    <React.Fragment>
-        <h4>
-            <Localize i18n_default_text={'Jurisdiction and choice of law'} />
-        </h4>
-        <p>
-            <Localize
-                i18n_default_text={
-                    'Your account will be opened with Binary (IOM) Ltd, and will be subjected to the jurisdiction and laws of Isle of Man.'
-                }
-            />
-        </p>
-        <Hr />
-        <h4>
-            <Localize i18n_default_text='Real accounts are not available to politically exposed persons (PEPs).' />
-        </h4>
-        <p>
-            <Localize i18n_default_text='A politically exposed person (PEP) is someone appointed with a prominent public position. Close associates and family members of a PEP are also considered to be PEPs.' />
-        </p>
-    </React.Fragment>
-);
-
-const MaltaDescription = () => (
-    <React.Fragment>
-        <h4>
-            <Localize i18n_default_text={'Jurisdiction and choice of law'} />
-        </h4>
-        <p>
-            <Localize
-                i18n_default_text={
-                    'Your account will be opened with Binary (Europe) Ltd, and will be subjected to the jurisdiction and laws of Malta Gaming Authority.'
-                }
-            />
-        </p>
-        <Hr />
-        <h4>
-            <Localize i18n_default_text='Real accounts are not available to politically exposed persons (PEPs).' />
-        </h4>
-        <p>
-            <Localize i18n_default_text='A politically exposed person (PEP) is someone appointed with a prominent public position. Close associates and family members of a PEP are also considered to be PEPs.' />
-        </p>
-    </React.Fragment>
-);
-
 class TermsOfUse extends React.Component {
     render() {
         return (
             <Formik
-                initialValues={this.props.value}
+                initialValues={{
+                    agreed_tos: this.props.value.agreed_tos,
+                    agreed_tnc: this.props.value.agreed_tnc,
+                }}
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values.agreed_tos, actions.setSubmitting);
                 }}
@@ -103,9 +29,34 @@ class TermsOfUse extends React.Component {
                     <form onSubmit={handleSubmit}>
                         <ThemedScrollbars is_bypassed={isMobile()} height='calc(100% - 50px)'>
                             <Div100vhContainer className='terms-of-use' height_offset='169px' is_disabled={isDesktop()}>
-                                {this.props.can_upgrade_to === 'svg' && <SVGDescription />}
-                                {this.props.can_upgrade_to === 'iom' && <IOMDescription />}
-                                {this.props.can_upgrade_to === 'malta' && <MaltaDescription />}
+                                <h4>
+                                    <Localize i18n_default_text={'Jurisdiction and choice of law'} />
+                                </h4>
+                                <p>
+                                    <Localize
+                                        i18n_default_text={
+                                            'Your account will be opened with Binary (SVG) Ltd., and will be subject to the jurisdiction and laws of Saint Vincent and the Grenadines.'
+                                        }
+                                    />
+                                </p>
+                                <Hr />
+                                <h4>
+                                    <Localize i18n_default_text={'Risk warning'} />
+                                </h4>
+                                <p>
+                                    <Localize
+                                        i18n_default_text={
+                                            'The financial trading services offered on this site are only suitable for customers who accept the possibility of losing all the money they invest and who understand and have experience of the risk involved in the purchase of financial contracts. Transactions in financial contracts carry a high degree of risk. If the contracts you purchased expire as worthless, you will lose all your investment, which includes the contract premium.'
+                                        }
+                                    />
+                                </p>
+                                <Hr />
+                                <h4>
+                                    <Localize i18n_default_text='Real accounts are not available to politically exposed persons (PEPs).' />
+                                </h4>
+                                <p>
+                                    <Localize i18n_default_text='A politically exposed person (PEP) is someone appointed with a prominent public position. Close associates and family members of a PEP are also considered to be PEPs.' />
+                                </p>
                                 <Field
                                     component={CheckboxField}
                                     className='terms-of-use__checkbox'

@@ -71,7 +71,7 @@ const SaveModal = ({
                                                 }
                                             />
                                         ),
-                                        value: 'true',
+                                        value: true,
                                     },
                                     {
                                         id: 'drive',
@@ -83,14 +83,14 @@ const SaveModal = ({
                                                 onDriveConnect={onDriveConnect}
                                             />
                                         ),
-                                        value: 'false',
+                                        value: false,
                                         disabled: !is_authorised,
                                         className: classNames({
                                             'dc-radio-group__item-disabled': !is_authorised,
                                         }),
                                     },
                                 ]}
-                                selected={is_authorised ? is_local.toString() : 'true'}
+                                selected={is_authorised ? is_local : true}
                                 onToggle={() => setFieldValue('is_local', !is_local)}
                             />
                         </div>

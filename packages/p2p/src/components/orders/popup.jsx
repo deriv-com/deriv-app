@@ -61,7 +61,7 @@ class Popup extends React.Component {
                         >
                             {({ isSubmitting, setFieldValue, values, status }) => (
                                 <Form noValidate>
-                                    <ThemedScrollbars autoHide style={{ height: '90px' }}>
+                                    <ThemedScrollbars height='90px'>
                                         <div className='orders__popup-content'>
                                             {message}
                                             <div className='orders__popup-field'>
@@ -106,13 +106,7 @@ class Popup extends React.Component {
                         </Formik>
                     ) : (
                         <>
-                            <ThemedScrollbars
-                                autoHide
-                                autoHeight
-                                autoHeightMax={130}
-
-                                // style={{ height: '120px' }}
-                            >
+                            <ThemedScrollbars height='130px'>
                                 <div className='orders__popup-content'>
                                     {message}
                                     {payment_confirm ? (

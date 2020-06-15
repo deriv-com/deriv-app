@@ -16,7 +16,7 @@
     bottom: 0;
 
     &__wrapper {
-        position: fixed;
+        position: absolute;
         left: 0;
         top: 0;
         width: 100%;
@@ -98,7 +98,7 @@
 
             &--has-margin {
                 min-width: unset;
-                width: calc(100vw - 3.2rem);
+                width: calc(100vw - 4.8rem);
             }
         }
     }

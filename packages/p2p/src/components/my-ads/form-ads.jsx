@@ -94,14 +94,7 @@ class FormAds extends React.Component {
                             return (
                                 <div className='p2p-my-ads__form'>
                                     <Form noValidate>
-                                        <ThemedScrollbars
-                                            style={{
-                                                position: 'absolute',
-                                                height: 'calc(100% - 2.4rem - 72px - 92px)',
-                                                width: 'calc(100% - 4.8rem)',
-                                            }}
-                                            autoHeightMax={440}
-                                        >
+                                        <ThemedScrollbars className='p2p-my-ads__form-scrollbar' height='440px'>
                                             <p className='p2p-my-ads__form-summary'>
                                                 <AdSummary
                                                     offer_amount={errors.offer_amount ? '' : values.offer_amount}

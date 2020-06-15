@@ -9,6 +9,7 @@ export const routes = {
     proof_of_address: '/account/proof-of-address',
     deriv_password: '/account/deriv-password',
     account_limits: '/account/account-limits',
+    two_factor_authentication: '/account/two-factor-authentication',
     account_password: '/settings/account_password',
     api_token: '/account/api-token',
     apps: '/settings/apps',

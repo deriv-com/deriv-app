@@ -108,6 +108,8 @@ export default class TradeStore extends BaseStore {
     @observable commission = 0;
     @observable cancellation_price = 0;
     @observable hovered_contract_type;
+    @observable cancellation_duration = '60m';
+    @observable cancellation_range_list = [];
 
     // Mobile
     @observable is_trade_params_expanded = true;
@@ -510,7 +512,7 @@ export default class TradeStore extends BaseStore {
             processPurchase(proposal_id, price).then(
                 action(response => {
                     const last_digit = +this.last_digit;
-                    if (this.proposal_info[type].id !== proposal_id) {
+                    if (this.proposal_info[type]?.id !== proposal_id) {
                         throw new Error('Proposal ID does not match.');
                     }
                     if (response.buy) {
@@ -909,14 +911,13 @@ export default class TradeStore extends BaseStore {
             if (!this.is_symbol_in_active_symbols) this.setActiveSymbols();
         }
         this.setContractTypes();
+
         return this.processNewValuesAsync(
             { currency: this.root_store.client.currency || this.root_store.client.default_currency },
             true,
             { currency: this.currency },
             false
-        )
-            .then(this.refresh)
-            .then(this.requestProposal);
+        );
     }
 
     @action.bound

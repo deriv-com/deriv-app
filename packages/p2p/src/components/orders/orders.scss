@@ -145,11 +145,11 @@
             letter-spacing: 1px;
         }
         &-grid {
-            grid-template-columns: 1fr 1fr 1.2fr 160px 1.2fr 1.2fr 2fr;
+            grid-template-columns: 1fr 1fr 160px 1.2fr 1.2fr 2fr;
             grid-column-gap: 12px;
 
             &--active {
-                grid-template-columns: 1fr 1fr 1.2fr 160px 1.2fr 1.2fr 1fr;
+                grid-template-columns: 1fr 1fr 160px 1.2fr 1.2fr 1fr;
             }
         }
         &-status {

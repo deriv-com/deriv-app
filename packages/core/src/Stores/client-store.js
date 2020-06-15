@@ -5,7 +5,7 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import { getUrlSmartTrader } from '@deriv/shared/utils/storage';
 import { requestLogout, WS } from 'Services';
 import ClientBase from '_common/base/client_base';
-import * as Login from '_common/base/login';
+import { redirectToLogin } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
@@ -623,7 +623,7 @@ export default class ClientStore extends BaseStore {
                 message: localize('Please Log in'),
                 should_show_refresh: false,
                 redirect_label: localize('Log in'),
-                redirectOnClick: Login.redirectToLogin,
+                redirectOnClick: redirectToLogin,
             });
             this.setIsLoggingIn(false);
             this.setInitialized(false);

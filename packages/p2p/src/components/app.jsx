@@ -244,6 +244,7 @@ class App extends React.Component {
             custom_strings,
             order_id,
             setOrderId,
+            show_verification,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -283,39 +284,45 @@ class App extends React.Component {
                     getLocalStorageSettings: this.getLocalStorageSettings.bind(this),
                 }}
             >
-                <main className={classNames('p2p-cashier', className)}>
-                    <Tabs
-                        onTabItemClick={this.handleTabClick}
-                        active_index={active_index}
-                        className='p2p-cashier'
-                        top
-                        header_fit_content
-                    >
-                        <div label={localize('Buy / Sell')}>
-                            <BuySell navigate={this.redirectTo} params={parameters} />
-                        </div>
-                        <div count={notification_count} label={localize('Orders')}>
-                            <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
-                        </div>
-                        <div label={localize('My ads')}>
-                            <MyAds navigate={this.redirectTo} params={parameters} />
-                        </div>
-                        {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
-                        {/* <div label={localize('My profile')}>
-                            <MyProfile navigate={this.redirectTo} params={parameters} />
-                        </div> */}
-                    </Tabs>
-                    {show_popup && (
-                        <div className='p2p-nickname__dialog'>
-                            <Dialog is_visible={show_popup}>
-                                <NicknameForm
-                                    handleClose={this.onNicknamePopupClose}
-                                    handleConfirm={this.toggleNicknamePopup}
-                                />
-                            </Dialog>
-                        </div>
-                    )}
-                </main>
+                {show_verification ? (
+                    <div className='p2p-cashier--verification'>
+                        <div className='p2p-cashier--verification-text'>Test</div>
+                    </div>
+                ) : (
+                    <main className={classNames('p2p-cashier', className)}>
+                        <Tabs
+                            onTabItemClick={this.handleTabClick}
+                            active_index={active_index}
+                            className='p2p-cashier'
+                            top
+                            header_fit_content
+                        >
+                            <div label={localize('Buy / Sell')}>
+                                <BuySell navigate={this.redirectTo} params={parameters} />
+                            </div>
+                            <div count={notification_count} label={localize('Orders')}>
+                                <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
+                            </div>
+                            <div label={localize('My ads')}>
+                                <MyAds navigate={this.redirectTo} params={parameters} />
+                            </div>
+                            {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
+                            {/* <div label={localize('My profile')}>
+                                    <MyProfile navigate={this.redirectTo} params={parameters} />
+                                </div> */}
+                        </Tabs>
+                        {show_popup && (
+                            <div className='p2p-nickname__dialog'>
+                                <Dialog is_visible={show_popup}>
+                                    <NicknameForm
+                                        handleClose={this.onNicknamePopupClose}
+                                        handleConfirm={this.toggleNicknamePopup}
+                                    />
+                                </Dialog>
+                            </div>
+                        )}
+                    </main>
+                )}
             </Dp2pProvider>
         );
     }

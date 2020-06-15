@@ -80,7 +80,11 @@ export default class UIStore extends BaseStore {
 
     // real account signup
     @observable is_real_acc_signup_on = false;
+    @observable real_account_signup_target = 'svg';
     @observable has_real_account_signup_ended = false;
+
+    // account types modal
+    @observable is_account_types_modal_visible = false;
 
     // set currency modal
     @observable is_set_currency_modal_visible = false;
@@ -105,6 +109,9 @@ export default class UIStore extends BaseStore {
 
     // UI Focus retention
     @observable current_focus = null;
+
+    // Enabling EU users
+    @observable is_eu_enabled = true; // TODO: [deriv-eu] - Remove this constant when all EU sections are done.
 
     // Mobile
     @observable should_show_toast_error = false;
@@ -351,8 +358,9 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    openRealAccountSignup() {
+    openRealAccountSignup(target = 'svg') {
         this.is_real_acc_signup_on = true;
+        this.real_account_signup_target = target;
         this.is_accounts_switcher_on = false;
     }
 
@@ -590,5 +598,15 @@ export default class UIStore extends BaseStore {
     @action.bound
     setIsNativepickerVisible(is_nativepicker_visible) {
         this.is_nativepicker_visible = is_nativepicker_visible;
+    }
+
+    @action.bound
+    toggleAccountTypesModal(is_visible = !this.is_account_types_modal_visible) {
+        this.is_account_types_modal_visible = is_visible;
+    }
+
+    @action.bound
+    showAccountTypesModalForEuropean() {
+        this.toggleAccountTypesModal(this.root_store.client.is_eu);
     }
 }

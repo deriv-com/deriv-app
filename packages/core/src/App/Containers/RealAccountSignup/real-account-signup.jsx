@@ -1,20 +1,44 @@
 import classNames from 'classnames';
-import { Icon, Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
+import { Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import routes from '@deriv/shared/utils/routes';
 import { isNavigationFromPlatform } from '@deriv/shared/utils/platform';
-import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import ModalLoginPrompt from './modal-login-prompt.jsx';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
-import ModalLoginPrompt from './modal-login-prompt.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
-import SuccessDialog from '../Modals/success-dialog.jsx';
+import StatusDialogContainer from './status-dialog-container.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
+
+const LoadingModal = () => <Loading is_fullscreen={false} />;
+
+const WizardHeading = ({ can_upgrade_to, currency, is_isle_of_man_residence, is_belgium_residence }) => {
+    if (!currency) {
+        return <Localize i18n_default_text='Set a currency for your Real Account' />;
+    }
+
+    if (
+        (can_upgrade_to === 'iom' && is_isle_of_man_residence) ||
+        (can_upgrade_to === 'malta' && is_belgium_residence)
+    ) {
+        return <Localize i18n_default_text='Add a Real Synthetic account' />;
+    }
+
+    switch (this.props.real_account_signup_target) {
+        case 'malta':
+        case 'iom':
+            return <Localize i18n_default_text='Add a Real Gaming account' />;
+        case 'maltainvest':
+            return <Localize i18n_default_text='Add a Real Financial Account' />;
+        default:
+            return <Localize i18n_default_text='Add a Real Account' />;
+    }
+};
 
 class RealAccountSignup extends React.Component {
     constructor(props) {
@@ -22,27 +46,29 @@ class RealAccountSignup extends React.Component {
         this.state = {
             modal_content: [
                 {
-                    value: () => (
+                    body: () => (
                         <AccountWizard
-                            onSuccessAddCurrency={this.showAddCurrencySuccess}
+                            onFinishSuccess={this.showStatusDialog}
                             onLoading={this.showLoadingModal}
                             onError={this.showErrorModal}
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                         />
                     ),
+                    title: WizardHeading,
                 },
                 {
-                    value: () => (
+                    body: () => (
                         <AddOrManageAccounts
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
-                            onSuccessAddCurrency={this.showAddCurrencySuccess}
+                            onSuccessAddCurrency={this.showStatusDialog}
                             onLoading={this.showLoadingModal}
                             onError={this.showErrorModal}
                         />
                     ),
+                    title: () => localize('Add or manage account'),
                 },
                 {
-                    value: () => (
+                    body: () => (
                         <FinishedSetCurrency
                             prev={this.props.state_value.previous_currency}
                             current={this.props.state_value.current_currency}
@@ -52,34 +78,20 @@ class RealAccountSignup extends React.Component {
                     ),
                 },
                 {
-                    value: () => (
-                        <SuccessDialog
-                            has_cancel
-                            onCancel={this.closeModalWithHooks}
-                            onSubmit={this.closeModalThenOpenCashier}
-                            message={this.props.state_value.success_message}
-                            icon={
-                                <Icon
-                                    icon={`IcCurrency-${this.props.state_value.current_currency.toLowerCase()}`}
-                                    size={120}
-                                />
-                            }
-                            text_submit={localize('Deposit now')}
-                            text_cancel={RealAccountSignup.text_cancel()}
-                        />
-                    ),
+                    body: () => <StatusDialogContainer />,
                 },
                 {
-                    value: () => <Loading is_fullscreen={false} />,
+                    body: () => <LoadingModal />,
                 },
                 {
-                    value: () => (
+                    body: () => (
                         <SignupErrorContent
                             message={this.props.state_value.error_message}
                             code={this.props.state_value.error_code}
                             onConfirm={this.openPersonalDetails}
                         />
                     ),
+                    title: () => localize('Add a real account'),
                 },
             ],
         };
@@ -92,17 +104,11 @@ class RealAccountSignup extends React.Component {
         return '740px'; // Account wizard modal
     }
 
-    get labels() {
-        return [
-            this.props.currency ? localize('Add a real account') : localize('Set a currency for your Real Account'),
-            localize('Add or manage account'),
-            null,
-            null,
-            null,
-            localize('Add a real account'),
-            localize('Create a DMT5 real Financial STP account'),
-        ];
-    }
+    showStatusDialog = () => {
+        this.props.setParams({
+            active_modal_index: 3,
+        });
+    };
 
     closeModalThenOpenCashier = () => {
         this.props.closeRealAccountSignup();
@@ -115,26 +121,6 @@ class RealAccountSignup extends React.Component {
             current_currency,
             active_modal_index: 2,
         });
-    };
-
-    showAddCurrencySuccess = currency => {
-        this.props.setParams({
-            current_currency: currency,
-            active_modal_index: 3,
-            success_message: (
-                <Localize
-                    i18n_default_text='<0>You have added a Deriv {{currency}} account.</0><0>Make a deposit now to start trading.</0>'
-                    values={{
-                        currency: CurrencyUtils.getCurrencyDisplayCode(currency),
-                    }}
-                    components={[<p key={currency} />]}
-                />
-            ),
-        });
-    };
-
-    closeModalWithHooks = () => {
-        this.closeModal();
     };
 
     showLoadingModal = () => {
@@ -208,12 +194,13 @@ class RealAccountSignup extends React.Component {
 
     render() {
         const { is_real_acc_signup_on, is_logged_in } = this.props;
-        const title = this.labels[this.active_modal_index];
-        const Body = is_logged_in
-            ? this.state.modal_content[this.active_modal_index].value
-            : () => <ModalLoginPrompt />;
-        const has_close_icon =
-            this.active_modal_index < 2 || this.active_modal_index === 5 || this.active_modal_index === 6;
+        const { title: Title, body: ModalContent } = is_logged_in
+            ? this.state.modal_content[this.active_modal_index]
+            : {
+                  title: () => this.state.modal_content[this.active_modal_index].title,
+                  body: ModalLoginPrompt,
+              };
+        const has_close_icon = this.active_modal_index < 2 || this.active_modal_index === 5;
 
         return (
             <>
@@ -227,23 +214,28 @@ class RealAccountSignup extends React.Component {
                         })}
                         is_open={is_real_acc_signup_on}
                         has_close_icon={has_close_icon}
-                        title={title}
+                        renderTitle={() => {
+                            if (Title) {
+                                return <Title {...this.props} />;
+                            }
+                            return null;
+                        }}
                         toggleModal={this.closeModal}
                         height={this.modal_height}
                         width='904px'
                     >
-                        <Body />
+                        <ModalContent passthrough={this.props.state_index} />
                     </Modal>
                 </DesktopWrapper>
                 <MobileWrapper>
                     <MobileDialog
                         portal_element_id='modal_root'
-                        title={title}
                         wrapper_classname='account-signup-mobile-dialog'
                         visible={is_real_acc_signup_on}
                         onClose={this.closeModal}
+                        renderTitle={() => <Title {...this.props} />}
                     >
-                        <Body />
+                        <ModalContent />
                     </MobileDialog>
                 </MobileWrapper>
             </>
@@ -254,13 +246,18 @@ class RealAccountSignup extends React.Component {
 export default connect(({ ui, client, common }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,
+    can_upgrade_to: client.can_upgrade_to,
     has_real_account: client.has_active_real_account,
     currency: client.currency,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
+    real_account_signup_target: ui.real_account_signup_target,
     is_logged_in: client.is_logged_in,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     closeSignupAndOpenCashier: ui.closeSignupAndOpenCashier,
     setParams: ui.setRealAccountSignupParams,
+    residence: client.residence,
+    is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
+    is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
     state_value: ui.real_account_signup,
     routing_history: common.app_routing_history,
 }))(withRouter(RealAccountSignup));

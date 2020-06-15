@@ -103,6 +103,7 @@
     "@deriv/shared": "^1.0.0",
     "@storybook/addon-knobs": "^5.2.4",
     "@wapps/storybook-addon-state": "0.0.4",
+    "babel-plugin-styled-components": "^1.10.7",
     "classnames": "^2.2.6",
     "formik": "^1.5.8",
     "gh-pages": "^2.1.1",
@@ -117,6 +118,7 @@
     "react-swipeable": "^5.5.1",
     "react-tiny-popover": "^4.0.0",
     "react-transition-group": "^4.2.2",
-    "react-window": "^1.8.5"
+    "react-window": "^1.8.5",
+    "styled-components": "^5.1.1"
   }
 }

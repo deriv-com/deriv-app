@@ -74,6 +74,7 @@ class TogglePositionsDrawerDialog extends React.Component {
                             classNameBubble='trade-container__popover'
                             is_bubble_hover_enabled
                             margin={2}
+                            zIndex={2}
                             message={
                                 <PopoverMessageCheckbox
                                     defaultChecked={!should_show_cancellation_warning}

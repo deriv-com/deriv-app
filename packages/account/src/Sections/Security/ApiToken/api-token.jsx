@@ -135,8 +135,8 @@ class ApiToken extends React.Component {
         const token_response = await WS.authorized.apiToken({ api_token: 1, delete_token: token });
         this.populateTokenResponse(token_response);
         this.setState({ is_delete_loading: false, is_delete_success: true });
+        this.closeDialog();
         setTimeout(() => {
-            this.closeDialog();
             this.setState({ is_delete_success: false });
         }, 500);
     };
@@ -150,12 +150,7 @@ class ApiToken extends React.Component {
     };
 
     componentDidMount() {
-        const { is_virtual } = this.props;
-        if (is_virtual) {
-            this.setState({ is_loading: false });
-        } else {
-            this.getApiTokens();
-        }
+        this.getApiTokens();
     }
 
     componentWillUnmount() {
@@ -173,9 +168,7 @@ class ApiToken extends React.Component {
             is_delete_loading,
             is_delete_success,
         } = this.state;
-        const { is_virtual, is_switching } = this.props;
-
-        if (is_virtual) return <DemoMessage />;
+        const { is_switching } = this.props;
 
         if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account___intial-loader' />;
 
@@ -440,6 +433,5 @@ class ApiToken extends React.Component {
 }
 
 export default connect(({ client }) => ({
-    is_virtual: client.is_virtual,
     is_switching: client.is_switching,
 }))(ApiToken);

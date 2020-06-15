@@ -12,14 +12,6 @@ $HEIGHT: calc(100vh - 34em);
         color: var(--text-prominent);
         display: flex;
 
-        &-tabs {
-            &--active {
-                // max-height: calc(#{$HEIGHT} - 96px);
-            }
-            &--expired {
-                // max-height: calc(#{$HEIGHT} - 48px);
-            }
-        }
         /* postcss-bem-linter: ignore */
         .dc-tabs {
             height: 100%;

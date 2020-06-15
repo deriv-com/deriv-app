@@ -13,7 +13,7 @@ import { getCurrentTick } from 'Stores/Modules/Portfolio/Helpers/details';
 import { getDisplayStatus, getCancellationPrice, getIndicativePrice } from 'Stores/Modules/Contract/Helpers/logic';
 
 const MultiplierCardBody = ({ contract_info, contract_update, currency, status }) => {
-    const { buy_price, bid_price, is_sold, profit, multiplier, limit_order } = contract_info;
+    const { buy_price, bid_price, is_sold, limit_order } = contract_info;
 
     const total_profit = bid_price - buy_price;
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_update || limit_order);
@@ -63,7 +63,7 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, status }
                     <Money amount={total_profit} currency={currency} />
                     <div
                         className={classNames('contract-card__indicative--movement', {
-                            'contract-card__indicative--movement-complete': !!is_sold,
+                            'contract-card__indicative--movement-complete': is_sold,
                         })}
                     >
                         {status === 'profit' && <Icon icon='IcProfit' />}

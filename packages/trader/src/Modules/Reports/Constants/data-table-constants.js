@@ -243,17 +243,11 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         title: <Localize i18n_default_text='Take profit<0 />Stop loss' components={[<br key={0} />]} />,
         col_index: 'limit_order',
         renderCellContent: ({ row_obj, is_footer }) => {
-            let take_profit, stop_loss;
-
             if (is_footer) {
                 return '';
             }
-            if (row_obj.contract_info && row_obj.contract_info.limit_order) {
-                const limit_order = row_obj.contract_info.limit_order;
 
-                take_profit = limit_order.take_profit;
-                stop_loss = limit_order.stop_loss;
-            }
+            const { take_profit, stop_loss } = row_obj.contract_info?.limit_order || {};
             return (
                 <React.Fragment>
                     <div>

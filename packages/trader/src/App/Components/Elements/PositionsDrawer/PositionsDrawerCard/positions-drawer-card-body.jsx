@@ -80,7 +80,7 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, status }
                     <Money amount={total_profit} currency={currency} />
                     <div
                         className={classNames('positions-drawer-card__indicative--movement', {
-                            'positions-drawer-card__indicative--movement-complete': !!is_sold,
+                            'positions-drawer-card__indicative--movement-complete': is_sold,
                         })}
                     >
                         {status === 'profit' && <Icon icon='IcProfit' />}
@@ -136,7 +136,7 @@ const CardBody = ({ contract_info, contract_update, currency, is_multiplier, sta
                     <Money amount={Math.abs(profit)} currency={currency} />
                     <div
                         className={classNames('positions-drawer-card__indicative--movement', {
-                            'positions-drawer-card__indicative--movement-complete': !!is_sold,
+                            'positions-drawer-card__indicative--movement-complete': is_sold,
                         })}
                     >
                         {status === 'profit' && <Icon icon='IcProfit' />}
@@ -147,7 +147,7 @@ const CardBody = ({ contract_info, contract_update, currency, is_multiplier, sta
                     <Money amount={sell_price || indicative} currency={currency} />
                     <div
                         className={classNames('positions-drawer-card__indicative--movement', {
-                            'positions-drawer-card__indicative--movement-complete': !!is_sold,
+                            'positions-drawer-card__indicative--movement-complete': is_sold,
                         })}
                     >
                         {status === 'profit' && <Icon icon='IcProfit' />}

@@ -93,7 +93,7 @@ export default class ClientStore extends BaseStore {
     get is_client_allowed_to_visit() {
         // TODO: [deriv-eu] Remove this after complete EU merge into production
         return !!(
-            this.is_eu_enabled ||
+            this.root_store.ui.is_eu_enabled ||
             !this.is_logged_in ||
             this.is_virtual ||
             this.accounts[this.loginid].landing_company_shortcode === 'svg'
@@ -1064,8 +1064,8 @@ export default class ClientStore extends BaseStore {
         let is_allowed_real = true;
         // Performs check to avoid login of landing companies that are currently not supported in app
         // TODO: [deriv-eu] Remove this after full merging of EU. When EU is enabled all landing companies are allowed.
-        account_list.forEach(function(account) {
-            if (!this.is_eu_enabled && !/^virtual|svg$/.test(account.landing_company_name)) {
+        account_list.forEach(account => {
+            if (!this.root_store.ui.is_eu_enabled && !/^virtual|svg$/.test(account.landing_company_name)) {
                 is_allowed_real = false;
             }
         });

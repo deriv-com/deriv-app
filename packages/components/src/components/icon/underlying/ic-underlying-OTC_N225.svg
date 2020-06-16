@@ -1,17 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
-    <title>assets/otc/ic-otcjapanese</title>
-    <desc>Created with Sketch.</desc>
-    <g id="assets/otc/ic-otcjapanese" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="assets/otc/ic-otc">
-            <g id="assets/flags/normal/ic-japan-jpy" transform="translate(4.000000, 8.000000)">
-                <g id="Group" transform="translate(-0.000000, 0.000000)">
-                    <path d="M22.2025782,0.0130952381 L1.79742188,0.0130952381 C0.804703128,0.0130952381 0,0.830571432 0,1.83904763 L0,14.1609525 C0,15.1693811 0.804703128,15.9869049 1.79742188,15.9869049 L22.2025782,15.9869049 C23.1952501,15.9869049 24,15.1694287 24,14.1609525 L24,1.83904763 C24,0.830571432 23.195297,0.0130952381 22.2025782,0.0130952381 Z" id="White" fill="#FFFFFF" fill-rule="nonzero"></path>
-                    <ellipse id="Red" fill="#ED293F" fill-rule="nonzero" cx="12.0000001" cy="7.99995241" rx="4.55156252" ry="4.62380954"></ellipse>
-                    <rect id="border" stroke-opacity="0.04" stroke="#000000" fill-rule="nonzero" x="0.50000005" y="0.499999983" width="23" height="15" rx="1"></rect>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"><g transform="translate(4 8)" fill-rule="nonzero" fill="none"><path d="M22.203.013H1.797C.805.013 0 .831 0 1.84v12.322c0 1.008.805 1.826 1.797 1.826h20.406c.992 0 1.797-.818 1.797-1.826V1.839C24 .831 23.195.013 22.203.013z" fill="#FFF"/><ellipse fill="#ED293F" cx="12" cy="8" rx="4.552" ry="4.624"/><rect stroke-opacity=".04" stroke="#000" x=".5" y=".5" width="23" height="15" rx="1"/></g></svg>

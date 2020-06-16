@@ -1,17 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
-    <title>assets/otc/ic-otcswiss</title>
-    <desc>Created with Sketch.</desc>
-    <g id="assets/otc/ic-otcswiss" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="assets/otc/ic-otc">
-            <g id="assets/flags/normal/ic-switzerland-chf" transform="translate(4.000000, 8.000000)">
-                <g id="Group" transform="translate(-0.000000, -0.000000)">
-                    <rect id="bg" fill="#F44336" fill-rule="nonzero" x="4.99999828e-08" y="0" width="24" height="16" rx="2"></rect>
-                    <path d="M16.5517032,6.31857146 L13.6551564,6.31857146 L13.6551564,3.37604763 C13.6551564,3.14390477 13.4698595,2.95566668 13.2413439,2.95566668 L10.7585625,2.95566668 C10.5300469,2.95566668 10.34475,3.14390477 10.34475,3.37604763 L10.34475,6.31857146 L7.44820316,6.31857146 C7.21968753,6.31857146 7.03439066,6.50680955 7.03439066,6.73895241 L7.03439066,9.2611429 C7.03439066,9.49328575 7.21968753,9.68152385 7.44820316,9.68152385 L10.34475,9.68152385 L10.34475,12.6240477 C10.34475,12.8561906 10.5300469,13.0444287 10.7585625,13.0444287 L13.2413439,13.0444287 C13.4698595,13.0444287 13.6551564,12.8561906 13.6551564,12.6240477 L13.6551564,9.68142861 L16.5517032,9.68142861 C16.7802189,9.68142861 16.9655157,9.49319052 16.9655157,9.26104766 L16.9655157,6.73885717 C16.9655157,6.50676193 16.7802189,6.31857146 16.5517032,6.31857146 Z" id="white" fill="#FFFFFF" fill-rule="nonzero"></path>
-                    <rect id="border" stroke-opacity="0.04" stroke="#000000" fill-rule="nonzero" x="0.50000005" y="0.5" width="23" height="15" rx="1"></rect>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"><g transform="translate(4 8)" fill-rule="nonzero" fill="none"><rect fill="#F44336" width="24" height="16" rx="2"/><path d="M16.552 6.319h-2.897V3.376a.417.417 0 00-.414-.42H10.76a.417.417 0 00-.414.42v2.943H7.448a.417.417 0 00-.414.42v2.522c0 .232.186.42.414.42h2.897v2.943c0 .232.185.42.414.42h2.482a.417.417 0 00.414-.42V9.681h2.897a.417.417 0 00.414-.42V6.739a.417.417 0 00-.414-.42z" fill="#FFF"/><rect stroke-opacity=".04" stroke="#000" x=".5" y=".5" width="23" height="15" rx="1"/></g></svg>

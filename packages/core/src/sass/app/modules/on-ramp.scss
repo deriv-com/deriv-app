@@ -68,8 +68,9 @@
                 display: inline-flex;
                 border-radius: $BORDER_RADIUS;
                 align-self: center;
-                margin: 0.9rem 1.6rem 1.1rem 2.4rem;
+                align-items: center;
                 padding: 1.2rem;
+                margin: 1.6rem;
                 background-color: var(--general-section-2);
 
                 &-text {
@@ -84,10 +85,6 @@
                     display: flex;
                     align-items: center;
                 }
-            }
-            &-footer {
-                font-size: var(--text-size-xxs);
-                line-height: 1.8rem;
             }
         }
         &-divider {
@@ -119,6 +116,24 @@
             justify-content: flex-end;
             margin-top: 2.4rem;
         }
+        &-no-deposit-address {
+            display: flex;
+            flex-direction: column;
+
+            &-title {
+                font-size: var(--text-size-s);
+                font-weight: bold;
+                line-height: 2.4rem;
+            }
+            &-text {
+                font-size: var(--text-size-xs);
+                line-height: 2rem;
+                margin: 2.4rem 0;
+            }
+            &-buttons {
+                align-self: flex-end;
+            }
+        }
     }
     &__widget {
         &-container {
@@ -134,6 +149,6 @@
     }
 }
 
-.dc-modal__container_on-ramp__popup {
+.dc-modal__container_on-ramp__modal {
     width: 628px !important;
 }

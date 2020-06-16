@@ -1,18 +1,20 @@
 import { action, observable, computed } from 'mobx';
 import { localize } from '@deriv/translations';
+import { getCurrencyDisplayCode } from '@deriv/shared/utils/currency';
 import { WS } from 'Services';
 import BaseStore from '../../base-store';
 
 export default class OnRampStore extends BaseStore {
     @observable api_error = null;
     @observable deposit_address = null;
-    @observable deposit_address_ref = null;
     @observable is_deposit_address_loading = true;
+    @observable is_deposit_address_popover_open = false;
     @observable is_disclaimer_checkbox_checked = false;
     @observable is_onramp_modal_open = false;
     @observable selected_provider = null;
     @observable should_show_widget = false;
-    @observable onramp_popup_modal_title = '';
+
+    deposit_address_ref = null;
 
     constructor(root_store) {
         super({ root_store });
@@ -25,7 +27,7 @@ export default class OnRampStore extends BaseStore {
                 ),
                 from_currencies: ['usd', 'eur', 'gbp'],
                 getWidgetHtml() {
-                    const { currency } = root_store.client;
+                    const currency = getCurrencyDisplayCode(root_store.client.currency).toLowerCase();
                     return `<script src="https://widget.changelly.com/affiliate.js"></script><iframe src="https://widget.changelly.com?from=${this.from_currencies.join(
                         ','
                     )}&to=${currency}&amount=50&address=&fromDefault=${
@@ -35,7 +37,7 @@ export default class OnRampStore extends BaseStore {
                 icon: 'IcCashierChangelly',
                 name: 'Changelly',
                 payment_icons: ['IcCashierVisa', 'IcCashierMastercard', 'IcCashierMaestro'],
-                to_currencies: ['btc', 'eth', 'ltc'],
+                to_currencies: ['bch', 'btc', 'etc', 'eth', 'ltc', 'ust'],
                 type: 'widget',
             },
         ];
@@ -52,20 +54,29 @@ export default class OnRampStore extends BaseStore {
         return this.onramp_providers.filter(provider => provider.to_currencies.includes(currency.toLowerCase()));
     }
 
-    @action.bound
-    resetPopup() {
-        this.deposit_address = null;
-        this.deposit_address_ref = null;
-        this.is_deposit_address_loading = true;
-        this.is_disclaimer_checkbox_checked = false;
-        this.onramp_popup_modal_title = '';
-        this.selected_provider = null;
-        this.should_show_widget = false;
+    @computed
+    get onramp_popup_modal_title() {
+        if (this.should_show_widget) {
+            return localize('Payment channel');
+        } else if (this.selected_provider) {
+            if (this.should_show_dialog) {
+                return undefined;
+            } else {
+                return ' '; // Empty string to render header + close icon.
+            }
+        } else {
+            return undefined;
+        }
+    }
+
+    @computed
+    get should_show_dialog() {
+        return this.api_error || !this.deposit_address;
     }
 
     @action.bound
     onDisclaimerCheckboxChange(event) {
-        this.is_disclaimer_checkbox_checked = event.target.checked;
+        this.setIsDisclaimerCheckboxChecked(event.target.checked);
     }
 
     @action.bound
@@ -76,17 +87,22 @@ export default class OnRampStore extends BaseStore {
         const selections = window.getSelection();
         selections.removeAllRanges();
         selections.addRange(range);
+
+        navigator.clipboard.writeText(this.deposit_address).then(() => {
+            this.setIsDepositAddressPopoverOpen(true);
+            setTimeout(() => this.setIsDepositAddressPopoverOpen(false), 500);
+        });
     }
 
     @action.bound
     onClickDisclaimerContinue() {
         this.should_show_widget = true;
-        this.setOnRampPopupModalTitle(localize('Payment channel'));
     }
 
     @action.bound
     pollApiForDepositAddress() {
         this.setIsDepositAddressLoading(true);
+        this.setApiError(null);
 
         const deposit_address_interval = setInterval(() => getDepositAddressFromApi, 3000);
         const getDepositAddressFromApi = () => {
@@ -120,8 +136,24 @@ export default class OnRampStore extends BaseStore {
     }
 
     @action.bound
+    resetPopup() {
+        this.setApiError(null);
+        this.setDepositAddress(null);
+        this.setDepositAddressRef(null);
+        this.setIsDepositAddressLoading(true);
+        this.setIsDisclaimerCheckboxChecked(false);
+        this.setSelectedProvider(null);
+        this.setShouldShowWidget(false);
+    }
+
+    @action.bound
     setApiError(api_error) {
         this.api_error = api_error;
+    }
+
+    @action.bound
+    setCopyIconRef(ref) {
+        this.copy_icon_ref = ref;
     }
 
     @action.bound
@@ -140,15 +172,24 @@ export default class OnRampStore extends BaseStore {
     }
 
     @action.bound
+    setIsDisclaimerCheckboxChecked(is_checked) {
+        this.is_disclaimer_checkbox_checked = is_checked;
+    }
+
+    @action.bound
     setIsOnRampModalOpen(is_open) {
         this.is_onramp_modal_open = is_open;
+    }
+
+    @action.bound
+    setIsDepositAddressPopoverOpen(is_open) {
+        this.is_deposit_address_popover_open = is_open;
     }
 
     @action.bound
     setSelectedProvider(provider) {
         if (provider) {
             this.selected_provider = provider;
-            this.setOnRampPopupModalTitle(' '); // Empty title.
             this.setIsOnRampModalOpen(true);
             this.pollApiForDepositAddress();
         } else {
@@ -158,7 +199,7 @@ export default class OnRampStore extends BaseStore {
     }
 
     @action.bound
-    setOnRampPopupModalTitle(title) {
-        this.onramp_popup_modal_title = title;
+    setShouldShowWidget(should_show) {
+        this.should_show_widget = should_show;
     }
 }

@@ -5,15 +5,9 @@
             .chart-container {
                 width: 100%;
 
-                .ciq-navigation-widget {
-                    transform: translate3d(248px, 0, 0);
-                }
-                .cq-top-ui-widgets {
-                    transform: translate3d(248px, 0, 0);
-                }
-                .sc-toolbar-widget {
-                    transform: translate3d(248px, 0, 0);
-                }
+                .ciq-navigation-widget,
+                .cq-top-ui-widgets,
+                .sc-toolbar-widget,
                 .stx-panel-control {
                     transform: translate3d(248px, 0, 0);
                 }
@@ -84,7 +78,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
     position: relative;
     padding: 0.8em 1.2em 0;
     display: flex;
-    min-height: calc(100vh - 83px);
+    min-height: calc(100vh - 84px);
     transition: transform 0.25s ease;
     will-change: transform;
     overflow: hidden;
@@ -93,12 +87,12 @@ $FLOATING_HEADER_HEIGHT: 41px;
         width: 100%;
         display: flex;
         flex-direction: row;
-        height: calc(100vh - 108px - #{$FLOATING_HEADER_HEIGHT});
+        height: calc(100vh - 108px - #{$FLOATING_HEADER_HEIGHT + 12px});
         padding-bottom: 2.4rem;
 
         .contract-drawer {
             /* prettier-ignore */
-            height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - (#{$POSITIONS_DRAWER_MARGIN} * 6));
+            height: calc(100% + 2.4rem);
             border-bottom-right-radius: 0;
             border-top-right-radius: 0;
             z-index: 1;
@@ -159,10 +153,9 @@ $FLOATING_HEADER_HEIGHT: 41px;
                             }
                         }
                     }
-                    .sc-toolbar-widget {
-                        transition: transform 0.25s ease;
-                    }
-                    .stx-panel-control {
+                    .sc-toolbar-widget,
+                    .stx-panel-control,
+                    .ciq-navigation-widget {
                         transition: transform 0.25s ease;
                     }
                     .ciq-asset-information {
@@ -173,9 +166,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         left: 8px;
                         padding: 0;
                         position: absolute;
-                    }
-                    .ciq-navigation-widget {
-                        transition: transform 0.25s ease;
                     }
                     .cq-bottom-ui-widgets {
                         bottom: 30px !important;
@@ -291,7 +281,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         z-index: 0;
 
         div.ciq-chart {
-            height: calc(100% - 5em);
+            height: 100%;
             box-shadow: none;
 
             div.cq-last-digits {
@@ -331,7 +321,10 @@ $FLOATING_HEADER_HEIGHT: 41px;
         display: none;
     }
     .cq-chart-control-left {
-        .cq-chart-controls {
+        .cq-chart-controls,
+        .sc-toolbar-widget,
+        .stx-panel-control,
+        .ciq-navigation-widget {
             transform: translate3d(0, 0, 0);
             transition: transform 0.25s ease;
         }
@@ -341,15 +334,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
             .info-box {
                 transform: translate3d(0, 0, 0);
             }
-        }
-        .sc-toolbar-widget {
-            transform: translate3d(0, 0, 0);
-        }
-        .stx-panel-control {
-            transform: translate3d(0, 0, 0);
-        }
-        .ciq-navigation-widget {
-            transform: translate3d(0, 0, 0);
         }
     }
     .ciq-chart {
@@ -393,9 +377,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .cq-chart-controls {
             transition: max-width 0.25s ease, transform 0.25s ease;
         }
-        .ciq-navigation-widget {
-            transition: transform 0.25s ease;
-        }
+        .ciq-navigation-widget,
         .stx-panel-control {
             transition: transform 0.25s ease;
         }
@@ -430,6 +412,14 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         }
                     }
                 }
+            }
+        }
+        &--screenshot {
+            .sc-toolbar-widget,
+            .stx-panel-control,
+            .ciq-navigation-widget,
+            .cq-top-ui-widgets {
+                transform: translate3d(0, 0, 0) !important;
             }
         }
     }

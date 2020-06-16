@@ -61,8 +61,8 @@ RowComponent.propTypes = {
 };
 RowComponent.displayName = 'RowComponent';
 
-const MyAdsTable = ({ onClickCreate, is_enabled, onToggle }) => {
-    const { currency, list_item_limit } = React.useContext(Dp2pContext);
+const MyAdsTable = ({ onClickCreate }) => {
+    const { currency, list_item_limit, is_advertiser } = React.useContext(Dp2pContext);
     const mounted = React.useRef(false);
     const item_offset = React.useRef(0);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -71,10 +71,20 @@ const MyAdsTable = ({ onClickCreate, is_enabled, onToggle }) => {
     const [selected_ad_id, setSelectedAdId] = React.useState('');
     const [show_popup, setShowPopup] = React.useState(false);
     const [ads, setAds] = React.useState([]);
+    const [is_enabled, setEnabled] = React.useState(true);
 
     React.useEffect(() => {
         mounted.current = true;
         loadMoreAds(item_offset.current);
+
+        if (is_advertiser) {
+            requestWS({ p2p_advertiser_info: 1 }).then(response => {
+                if (mounted.current && !response.error) {
+                    setEnabled(!!response.p2p_advertiser_info.is_listed);
+                }
+            });
+        }
+
         return () => (mounted.current = false);
     }, []);
 
@@ -149,7 +159,7 @@ const MyAdsTable = ({ onClickCreate, is_enabled, onToggle }) => {
                     <Button large primary onClick={onClickCreate}>
                         {localize('Create new ad')}
                     </Button>
-                    <ToggleAds is_enabled={is_enabled} onToggle={onToggle} />
+                    <ToggleAds is_enabled={is_enabled} onToggle={enabled => setEnabled(enabled)} />
                 </div>
                 <Table
                     className={classNames('p2p-my-ads__table', {

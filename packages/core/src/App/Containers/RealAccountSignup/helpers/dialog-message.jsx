@@ -5,21 +5,33 @@ import { EXPERIAN } from './constants';
 
 /**
  *
+ * @param {String} landing_company_shortcode
  * @param {EXPERIAN} status
  */
-export const DialogMessage = ({ status = EXPERIAN.SUCCESS }) => {
-    switch (status) {
-        case EXPERIAN.WARN:
-            return (
-                <Localize i18n_default_text="We couldn't verify your proof of address document. You can upload a new document to try again" />
-            );
-        case EXPERIAN.DANGER:
-            return (
-                <Localize i18n_default_text='We were unable to verify your proof of identity and address documents. You can upload new documents to try again.' />
-            );
-        default:
-            return <Localize i18n_default_text='Fund your account to start trading.' />;
+export const DialogMessage = ({ status = EXPERIAN.SUCCESS, landing_company_shortcode }) => {
+    let message = '';
+    if (landing_company_shortcode === 'maltainvest') {
+        message = (
+            <Localize i18n_default_text='We need proofs of your identity and address before you can start trading' />
+        );
+    } else {
+        switch (status && landing_company_shortcode) {
+            case EXPERIAN.WARN:
+                message = (
+                    <Localize i18n_default_text="We couldn't verify your proof of address document. You can upload a new document to try again" />
+                );
+                break;
+            case EXPERIAN.DANGER:
+                message = (
+                    <Localize i18n_default_text='We were unable to verify your proof of identity and address documents. You can upload new documents to try again.' />
+                );
+                break;
+            default:
+                message = <Localize i18n_default_text='Fund your account to start trading.' />;
+        }
     }
+
+    return <p className='status-dialog__text'>{message}</p>;
 };
 
 DialogMessage.propTypes = {

@@ -26,18 +26,14 @@ const IOMHeading = ({ status }) => (
  */
 export const DialogHeading = ({ status, landing_company_shortcode }) => {
     switch (landing_company_shortcode) {
-        case 'malta':
-        case 'svg':
+        case 'iom':
+            return <IOMHeading status={status} />;
+        default:
             return (
                 <h2>
                     <Localize i18n_default_text='Your account is ready!' />
                 </h2>
             );
-        case 'iom':
-            return <IOMHeading status={status} />;
-
-        default:
-            return null;
     }
 };
 

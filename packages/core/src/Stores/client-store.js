@@ -558,7 +558,17 @@ export default class ClientStore extends BaseStore {
                 }
                 localStorage.removeItem('real_account_signup_wizard');
                 this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
-                resolve(response);
+                resolve({
+                    ...response,
+                    ...(is_maltainvest_account
+                        ? {
+                              new_account_maltainvest: {
+                                  ...response.new_account_maltainvest,
+                                  currency,
+                              },
+                          }
+                        : {}),
+                });
             } else {
                 reject(response.error);
             }

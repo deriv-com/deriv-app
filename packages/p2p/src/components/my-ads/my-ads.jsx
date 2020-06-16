@@ -55,6 +55,8 @@ class MyAds extends React.Component {
 
                 this.setState({ is_loading: false });
             });
+        } else {
+            this.setState({ is_loading: false });
         }
     }
 

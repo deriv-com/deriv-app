@@ -30,7 +30,7 @@ const Verification = ({ poi_status }) => {
         },
     ];
 
-    if (!is_advertiser && poi_status === 'verified' && this.context.nickname) {
+    if (!is_advertiser && poi_status === 'verified' && nickname) {
         return <div>{localize('Your P2P cashier has been blocked. Please contact customer support')}</div>;
     }
 

@@ -49,7 +49,12 @@ const OnRampProviderPopup = ({
                 </div>
                 <Button.Group className='on-ramp__popup-no-deposit-address-buttons'>
                     <Button text={localize('Cancel')} onClick={() => setIsOnRampModalOpen(false)} secondary large />
-                    <Button text={localize('Go to Deposit page')} onClick={pollApiForDepositAddress} primary large />
+                    <Button
+                        text={localize('Go to Deposit page')}
+                        onClick={() => pollApiForDepositAddress(false)}
+                        primary
+                        large
+                    />
                 </Button.Group>
             </div>
         );

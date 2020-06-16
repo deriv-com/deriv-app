@@ -100,7 +100,7 @@ export default class OnRampStore extends BaseStore {
     }
 
     @action.bound
-    pollApiForDepositAddress() {
+    pollApiForDepositAddress(should_allow_empty_address) {
         this.setIsDepositAddressLoading(true);
         this.setApiError(null);
 
@@ -115,7 +115,7 @@ export default class OnRampStore extends BaseStore {
                 } else {
                     const { address } = response.cashier.deposit;
 
-                    if (address) {
+                    if (address || should_allow_empty_address) {
                         this.setDepositAddress(address);
                         should_clear_interval = true;
                     }
@@ -191,7 +191,7 @@ export default class OnRampStore extends BaseStore {
         if (provider) {
             this.selected_provider = provider;
             this.setIsOnRampModalOpen(true);
-            this.pollApiForDepositAddress();
+            this.pollApiForDepositAddress(true);
         } else {
             this.setIsOnRampModalOpen(false);
             this.selected_provider = null;

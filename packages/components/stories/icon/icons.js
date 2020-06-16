@@ -136,6 +136,7 @@ export const icons = {
         'IcProfit',
         'IcPurchase',
         'IcPuzzle',
+        'IcQrPhone',
         'IcRedo',
         'IcRemoveToken',
         'IcReports',

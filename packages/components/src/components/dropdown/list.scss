@@ -1,8 +1,6 @@
 .dc-list {
     position: absolute;
     width: 100%;
-    max-height: 200px;
-    overflow-y: auto;
     z-index: 2;
     border-radius: $BORDER_RADIUS;
     box-shadow: 0 8px 16px 0 var(--shadow-menu);

@@ -28,7 +28,7 @@ Blockly.Blocks.math_number = {
     },
     meta() {
         return {
-            display_name: localize('Number block'),
+            display_name: localize('Number'),
             description: localize(
                 'Enter an integer or fractional number into this block. Please use `.` as a decimal separator for fractional numbers.'
             ),

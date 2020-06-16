@@ -267,6 +267,7 @@ class FinancialAssessment extends React.Component {
                         handleBlur,
                         handleSubmit,
                         isSubmitting,
+                        dirty,
                         // validateField,
                     }) => (
                         <>
@@ -544,6 +545,7 @@ class FinancialAssessment extends React.Component {
                                             onClick={() => this.toggleConfirmationModal(true)}
                                             is_disabled={
                                                 isSubmitting ||
+                                                !dirty ||
                                                 !!(
                                                     errors.income_source ||
                                                     !values.income_source ||

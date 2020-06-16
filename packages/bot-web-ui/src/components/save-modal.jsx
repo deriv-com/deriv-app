@@ -28,6 +28,7 @@ const SaveModalForm = ({
     onDriveConnect,
     validateBotName,
     toggleSaveModal,
+    is_mobile,
 }) => (
     <Formik
         initialValues={{
@@ -48,9 +49,9 @@ const SaveModalForm = ({
                                     {...field}
                                     className='save-type__input'
                                     type='text'
-                                    placeholder={localize('Untitled Bot')}
+                                    placeholder={localize('Untitled Strategy')}
                                     error={touched[field.name] && errors[field.name]}
-                                    label={localize('Bot name')}
+                                    label={localize('Strategy name')}
                                 />
                             )}
                         </Field>
@@ -66,7 +67,11 @@ const SaveModalForm = ({
                                         <IconRadio
                                             text={localize('Local')}
                                             icon={
-                                                <Icon icon='IcDesktop' size={48} custom_color='#{$COLOR_DARK_BLUE_5}' />
+                                                <Icon
+                                                    icon={is_mobile ? 'IcMobile' : 'IcDesktop'}
+                                                    size={48}
+                                                    custom_color='#{$COLOR_DARK_BLUE_5}'
+                                                />
                                             }
                                         />
                                     ),
@@ -77,7 +82,12 @@ const SaveModalForm = ({
                                     label: (
                                         <IconRadio
                                             text={'Google Drive'}
-                                            icon={<Icon icon='IcGoogleDrive' size={48} />}
+                                            icon={
+                                                <Icon
+                                                    icon={is_authorised ? 'IcGoogleDriveEnabled' : 'IcGoogleDrive'}
+                                                    size={48}
+                                                />
+                                            }
                                             google_drive_connected={is_authorised}
                                             onDriveConnect={onDriveConnect}
                                         />
@@ -157,6 +167,7 @@ const SaveModal = ({
                             onDriveConnect={onDriveConnect}
                             validateBotName={validateBotName}
                             toggleSaveModal={toggleSaveModal}
+                            is_mobile={is_mobile}
                         />
                     </Div100vhContainer>
                 </MobileWrapper>

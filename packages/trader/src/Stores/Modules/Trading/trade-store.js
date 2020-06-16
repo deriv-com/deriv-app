@@ -278,15 +278,12 @@ export default class TradeStore extends BaseStore {
         if (this.symbol && this.is_symbol_in_active_symbols) {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
-                this.processNewValuesAsync(
-                    {
-                        ...ContractType.getContractValues(this),
-                        ...ContractType.getContractCategories(),
-                    },
-                    false,
-                    {},
-                    false
-                );
+                const contract_categories = ContractType.getContractCategories();
+                this.processNewValuesAsync({
+                    ...contract_categories,
+                    ...ContractType.getContractType(contract_categories.contract_types_list, this.contract_type),
+                });
+                this.processNewValuesAsync(ContractType.getContractValues(this));
             });
         }
     }
@@ -905,11 +902,6 @@ export default class TradeStore extends BaseStore {
     @action.bound
     accountSwitcherListener() {
         this.resetErrorServices();
-        // TODO: remove this, once multiplier is avaible for real accounts
-        if (this.is_multiplier && this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
-            this.processNewValuesAsync({ contract_type: 'rise_fall' }, false, {}, false);
-            if (!this.is_symbol_in_active_symbols) this.setActiveSymbols();
-        }
         this.setContractTypes();
 
         return this.processNewValuesAsync(

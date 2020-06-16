@@ -10,10 +10,10 @@ import { WS } from 'Services/ws-methods';
 import LoadErrorMessage from 'Components/load-error-message';
 
 const CellContent = ({ title, text, className }) => (
-    <>
+    <React.Fragment>
         <h3 className='cell-title'>{title}</h3>
         <p className={classNames('cell-value', className)}>{text}</p>
-    </>
+    </React.Fragment>
 );
 
 const LoginHistoryListView = ({ fields, login_history }) => (
@@ -44,10 +44,11 @@ const LoginHistoryListView = ({ fields, login_history }) => (
     </Table>
 );
 
+const fetch_limit = 50;
+
 class LoginHistory extends React.Component {
     state = {
         is_loading: true,
-        fetch_limit: 50, // TODO: put it in constants or configs
         error: '',
         data: [],
     };
@@ -65,9 +66,9 @@ class LoginHistory extends React.Component {
         return Object.keys(fields).map((key) => ({ title: fields[key], col_index: key }));
     };
 
-    getFormattedData(login_history) {
+    static getFormattedData(login_history) {
         const data = [];
-        for (let i = 0; i < this.state.fetch_limit; i++) {
+        for (let i = 0; i < fetch_limit; i++) {
             data[i] = {};
             const environment = login_history[i].environment;
             const environment_split = environment.split(' ');
@@ -96,14 +97,14 @@ class LoginHistory extends React.Component {
     }
 
     async componentDidMount() {
-        const api_res = await LoginHistory.getLoginHistory(this.state.fetch_limit);
+        const api_res = await LoginHistory.getLoginHistory(fetch_limit);
         if (api_res.api_initial_load_error) {
             this.setState({
                 is_loading: false,
                 error: api_res.api_initial_load_error,
             });
         } else {
-            const formatted_data = this.getFormattedData(api_res.login_history);
+            const formatted_data = LoginHistory.getFormattedData(api_res.login_history);
             this.setState({
                 is_loading: false,
                 data: formatted_data,

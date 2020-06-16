@@ -805,6 +805,10 @@ $MIN_HEIGHT_FLOATING: calc(
 
             @include mobile {
                 width: 90%;
+                margin: 10px auto;
+                padding: 10px;
+                color: var(--text-general);
+                background-color: var(--general-main-2);
 
                 .dc-table__cell {
                     display: block;
@@ -816,11 +820,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 .dc-table__row.with-margin {
                     margin-bottom: 10px;
                 }
-                margin: 10px auto;
-                padding: 10px;
-                color: var(--text-general);
-                background-color: var(--general-section-3);
-
                 .cell-title {
                     font-size: 12px;
                     font-weight: bold;

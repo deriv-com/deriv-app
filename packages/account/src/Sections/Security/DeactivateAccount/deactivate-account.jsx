@@ -1,6 +1,7 @@
 import React from 'react';
-import DeactivateAccountSteps from './deactivate-account-steps';
-import DeactivateAccountReason from './deactivate-account-reason';
+import DeactivateAccountSteps from './deactivate-account-steps.jsx';
+import DeactivateAccountReason from './deactivate-account-reason.jsx';
+
 class DeactivateAccount extends React.Component {
     state = {
         is_modal_open: false,
@@ -8,9 +9,6 @@ class DeactivateAccount extends React.Component {
         account_closure_message: '',
         is_loading: false,
         render_deactivate_account_reason: false,
-    };
-    startDeactivatingProcesses = () => {
-        this.setState;
     };
     redirectToReasons = () => {
         this.setState({

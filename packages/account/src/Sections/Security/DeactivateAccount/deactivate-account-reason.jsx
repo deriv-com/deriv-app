@@ -1,10 +1,10 @@
 import React from 'react';
-import { WS } from 'Services/ws-methods';
 import { localize, Localize } from '@deriv/translations';
 import { Formik, Field } from 'formik';
 import { Checkbox, Button, Input, FormSubmitButton, Modal, Icon, Money, Loading } from '@deriv/components';
-import { connect } from 'Stores/connect';
 import CurrencyUtils from '@deriv/shared/utils/currency';
+import { connect } from 'Stores/connect';
+import { WS } from 'Services/ws-methods';
 
 const initial_form = {
     otherFinancialPriorities: false,
@@ -38,36 +38,23 @@ const validateFields = (values) => {
     const selected_reason_count = selectedReasons(values).length;
     if (selected_reason_count === 0 && values.otherTradingPlatforms.length === 0 && values.doToImprove.length === 0) {
         error.empty_reason = 'please select at least one reason or share your opinion';
-    } else {
-        if (selected_reason_count > 0 && (values.otherTradingPlatforms + values.doToImprove).length === 0) {
-            return error;
-        } else if ((values.otherTradingPlatforms + values.doToImprove).length > 0) {
-            const max_letter = 250;
-            const selected_reasons = selectedReasons(values)
-                .map((val) => val[0])
-                .toString();
-            const max_letter_can_use = max_letter - selected_reasons.length;
-            const final_value = `${selected_reasons}, ${values.otherTradingPlatforms}, ${values.doToImprove}`;
-            const regex_rule = `^[0-9A-Za-z .,'-]{9,${max_letter}}$`;
-            if (!new RegExp(regex_rule).test(final_value)) {
-                error.letter_limits = `please insert between 5-${max_letter_can_use} characters combine both fields.`;
-            }
+    } else if (selected_reason_count > 0 && (values.otherTradingPlatforms + values.doToImprove).length === 0) {
+        return error;
+    } else if ((values.otherTradingPlatforms + values.doToImprove).length > 0) {
+        const max_letter = 250;
+        const selected_reasons = selectedReasons(values)
+            .map((val) => val[0])
+            .toString();
+        const max_letter_can_use = max_letter - selected_reasons.length;
+        const final_value = `${selected_reasons}, ${values.otherTradingPlatforms}, ${values.doToImprove}`;
+        const regex_rule = `^[0-9A-Za-z .,'-]{9,${max_letter}}$`;
+        if (!new RegExp(regex_rule).test(final_value)) {
+            error.letter_limits = `please insert between 5-${max_letter_can_use} characters combine both fields.`;
         }
     }
     return error;
 };
 
-const assertTotalCheckedItems = (should_check_for_limit, values) => {
-    return !should_check_for_limit && selectedReasons(values).length === 3;
-};
-
-const handleChangeCheckbox = (values, name, setFieldValue) => {
-    if (assertTotalCheckedItems(values[name], values)) {
-        alert('please select up to 3');
-    } else {
-        setFieldValue(name, !values[name]);
-    }
-};
 const WarningModal = (props) => {
     return (
         <div className='account-closure-warning-modal'>
@@ -225,6 +212,8 @@ class DeactivateAccountReason extends React.Component {
         reason: null,
         accounts: undefined,
         which_modal_should_render: undefined,
+        is_checkbox_disabled: false,
+        total_checkbox_checked: 0,
     };
 
     handleSubmitForm = (values) => {
@@ -234,6 +223,20 @@ class DeactivateAccountReason extends React.Component {
             which_modal_should_render: 'warning_modal',
             reason: final_reason,
         });
+    };
+
+    handleChangeCheckbox = (values, name, setFieldValue) => {
+        if (!values[name]) {
+            this.setState({ total_checkbox_checked: this.state.total_checkbox_checked + 1 }, () => {
+                setFieldValue(name, !values[name]);
+                if (this.state.total_checkbox_checked === 3) this.setState({ is_checkbox_disabled: true });
+            });
+        } else {
+            this.setState({ total_checkbox_checked: this.state.total_checkbox_checked - 1 }, () => {
+                setFieldValue(name, !values[name]);
+                if (this.state.is_checkbox_disabled) this.setState({ is_checkbox_disabled: false });
+            });
+        }
     };
 
     closeModal = () => {
@@ -273,90 +276,99 @@ class DeactivateAccountReason extends React.Component {
                             <Field name='otherFinancialPriorities'>
                                 {({ field }) => (
                                     <Checkbox
+                                        disabled={this.state.is_checkbox_disabled && !values[field.name]}
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('I have other financial priorities.')}
-                                        onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
                                     />
                                 )}
                             </Field>
                             <Field name='stopTrading'>
                                 {({ field }) => (
                                     <Checkbox
+                                        disabled={this.state.is_checkbox_disabled && !values[field.name]}
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('I want to stop myself from trading.')}
-                                        onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
                                     />
                                 )}
                             </Field>
                             <Field name='notIntrested'>
                                 {({ field }) => (
                                     <Checkbox
+                                        disabled={this.state.is_checkbox_disabled && !values[field.name]}
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('I’m no longer interested in trading.')}
-                                        onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
                                     />
                                 )}
                             </Field>
                             <Field name='anotherTradingWebsite'>
                                 {({ field }) => (
                                     <Checkbox
+                                        disabled={this.state.is_checkbox_disabled && !values[field.name]}
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('I prefer another trading website.')}
-                                        onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
                                     />
                                 )}
                             </Field>
                             <Field name='notUserFriendly'>
                                 {({ field }) => (
                                     <Checkbox
+                                        disabled={this.state.is_checkbox_disabled && !values[field.name]}
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('The platforms aren’t user-friendly.')}
-                                        onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
                                     />
                                 )}
                             </Field>
                             <Field name='isDifficult'>
                                 {({ field }) => (
                                     <Checkbox
+                                        disabled={this.state.is_checkbox_disabled && !values[field.name]}
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('Making deposits and withdrawals is difficult.')}
-                                        onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
                                     />
                                 )}
                             </Field>
                             <Field name='lackFeaturesFunctionality'>
                                 {({ field }) => (
                                     <Checkbox
+                                        disabled={this.state.is_checkbox_disabled && !values[field.name]}
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('The platforms lack key features or functionality.')}
-                                        onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
                                     />
                                 )}
                             </Field>
                             <Field name='unsatisfactoryCs'>
                                 {({ field }) => (
                                     <Checkbox
+                                        disabled={this.state.is_checkbox_disabled && !values[field.name]}
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('Customer service was unsatisfactory.')}
-                                        onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
                                     />
                                 )}
                             </Field>
                             <Field name='otherReasons'>
                                 {({ field }) => (
                                     <Checkbox
+                                        disabled={this.state.is_checkbox_disabled && !values[field.name]}
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('I’m deactivating my account for other reasons.')}
-                                        onChange={() => handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
                                     />
                                 )}
                             </Field>

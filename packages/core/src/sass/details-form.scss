@@ -1,5 +1,8 @@
 .details-form {
     display: grid;
+    @include desktop {
+        padding: 0 0.4rem;
+    }
 
     &__elements {
         flex-grow: 1;
@@ -18,8 +21,11 @@
             }
         }
         .dc-input {
+            &__label {
+                top: 0.9rem;
+            }
             label {
-                top: 1.2rem;
+                top: 0.9rem;
                 background-color: var(--general-main-2);
 
                 @include mobile {
@@ -61,6 +67,9 @@
             margin: 0;
             padding: 0 1.6rem;
         }
+    }
+    .dc-page-error__container {
+        height: 100%;
     }
     &__description {
         text-align: center;

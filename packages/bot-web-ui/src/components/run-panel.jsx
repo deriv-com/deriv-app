@@ -28,14 +28,10 @@ const drawerContent = ({ active_index, setActiveTabIndex }) => {
 
 const drawerFooter = ({
     active_index,
-    dialog_options,
     is_clear_stat_disabled,
-    is_dialog_open,
     is_stop_button_disabled,
     is_stop_button_visible,
-    onCancelButtonClick,
     onClearStatClick,
-    onOkButtonClick,
     onRunButtonClick,
     onStopButtonClick,
 }) => {
@@ -84,16 +80,54 @@ const drawerFooter = ({
                     <Icon icon='IcInfoOutline' id='db-run-panel__clear-stat' className='run-panel__icon-info' />
                 </Popover>
             </div>
-            {is_dialog_open && (
-                <Dialog
-                    title={dialog_options.title}
-                    is_open={is_dialog_open}
-                    onOkButtonClick={onOkButtonClick}
-                    onCancelButtonClick={onCancelButtonClick}
-                >
-                    {dialog_options.message}
-                </Dialog>
-            )}
+        </div>
+    );
+};
+
+const MobileDrawerFooter = ({
+    onStopButtonClick,
+    onRunButtonClick,
+    is_stop_button_visible,
+    is_stop_button_disabled,
+}) => {
+    return (
+        <div className='controls__section'>
+            <div className='controls__buttons'>
+                {is_stop_button_visible ? (
+                    <Button
+                        className='controls__stop-button'
+                        is_disabled={is_stop_button_disabled}
+                        text={localize('Stop')}
+                        icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
+                        onClick={onStopButtonClick}
+                        has_effect
+                        primary
+                        large
+                    />
+                ) : (
+                    <Button
+                        className='controls__run-button'
+                        text={localize('Run')}
+                        icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
+                        onClick={onRunButtonClick}
+                        has_effect
+                        large
+                        green
+                    />
+                )}
+                <TradeAnimation className='controls__animation' should_show_overlay={true} />
+            </div>
+            <Popover
+                className='run-panel__info'
+                classNameBubble='run-panel__info--bubble'
+                alignment='top'
+                message={localize(
+                    'Stopping the bot will prevent further trades. Any ongoing trades will be completed by our system. Please be aware that some completed transactions may not be displayed in the transaction table if the bot is stopped while placing trades. You may refer to the statement page for details of all completed transactions.'
+                )}
+                zIndex={5}
+            >
+                <Icon icon='IcInfoOutline' id='db-run-panel__clear-stat' className='run-panel__icon-info' />
+            </Popover>
         </div>
     );
 };
@@ -108,20 +142,59 @@ class RunPanel extends React.PureComponent {
     }
 
     render() {
-        const { active_index, setActiveTabIndex } = this.props;
+        const {
+            active_index,
+            dialog_options,
+            is_clear_stat_disabled,
+            is_dialog_open,
+            is_drawer_open,
+            is_mobile,
+            is_stop_button_disabled,
+            is_stop_button_visible,
+            onCancelButtonClick,
+            onClearStatClick,
+            onOkButtonClick,
+            onStopButtonClick,
+            onRunButtonClick,
+            setActiveTabIndex,
+            toggleDrawer,
+        } = this.props;
         const content = drawerContent({ active_index, setActiveTabIndex });
         const footer = drawerFooter(this.props);
 
         return (
-            <Drawer
-                className='run-panel'
-                is_open={this.props.is_drawer_open}
-                toggleDrawer={this.props.toggleDrawer}
-                contentClassName='run-panel__content'
-                footer={footer}
-            >
-                {content}
-            </Drawer>
+            <>
+                <Drawer
+                    className='run-panel'
+                    contentClassName='run-panel__content'
+                    clear_stat_button_text={localize('Clear stat')}
+                    footer={!is_mobile && footer}
+                    is_clear_stat_disabled={is_clear_stat_disabled}
+                    is_mobile={is_mobile}
+                    is_open={is_drawer_open}
+                    onClearStatClick={onClearStatClick}
+                    toggleDrawer={toggleDrawer}
+                >
+                    {content}
+                </Drawer>
+                {is_mobile &&
+                    MobileDrawerFooter({
+                        onStopButtonClick,
+                        onRunButtonClick,
+                        is_stop_button_visible,
+                        is_stop_button_disabled,
+                    })}
+                {is_dialog_open && (
+                    <Dialog
+                        title={dialog_options.title}
+                        is_open={is_dialog_open}
+                        onOkButtonClick={onOkButtonClick}
+                        onCancelButtonClick={onCancelButtonClick}
+                    >
+                        {dialog_options.message}
+                    </Dialog>
+                )}
+            </>
         );
     }
 }
@@ -145,12 +218,13 @@ RunPanel.propTypes = {
     toggleDrawer: PropTypes.func,
 };
 
-export default connect(({ run_panel }) => ({
+export default connect(({ run_panel, ui }) => ({
     active_index: run_panel.active_index,
     dialog_options: run_panel.dialog_options,
     is_clear_stat_disabled: run_panel.is_clear_stat_disabled,
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
+    is_mobile: ui.is_mobile,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     is_stop_button_visible: run_panel.is_stop_button_visible,
     onCancelButtonClick: run_panel.onCancelButtonClick,

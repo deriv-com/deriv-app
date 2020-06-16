@@ -80,6 +80,7 @@
         --status-colored-background: #{$color-white};
         // Transparentize
         --transparent-success: #{$alpha-color-green-1};
+        --transparent-info: #{$alpha-color-blue-1};
         /* TODO: change to styleguide later */
         // Gradient
         --gradient-success: #{$gradient-color-green-1};
@@ -146,6 +147,7 @@
         --status-colored-background: #{$color-white};
         // Transparentize
         --transparent-success: #{$alpha-color-green-2};
+        --transparent-info: #{$alpha-color-blue-1};
         /* TODO: change to styleguide later */
         // Gradient
         --gradient-success: #{$gradient-color-green-2};

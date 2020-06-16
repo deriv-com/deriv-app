@@ -12,8 +12,8 @@ const OnRampProviderPopup = ({
     is_disclaimer_checkbox_checked,
     onClickCopyDepositAddress,
     onClickDisclaimerContinue,
+    onClickGoToDepositPage,
     onDisclaimerCheckboxChange,
-    pollApiForDepositAddress,
     selected_provider,
     setDepositAddressRef,
     setIsOnRampModalOpen,
@@ -49,12 +49,7 @@ const OnRampProviderPopup = ({
                 </div>
                 <Button.Group className='on-ramp__popup-no-deposit-address-buttons'>
                     <Button text={localize('Cancel')} onClick={() => setIsOnRampModalOpen(false)} secondary large />
-                    <Button
-                        text={localize('Go to Deposit page')}
-                        onClick={() => pollApiForDepositAddress(false)}
-                        primary
-                        large
-                    />
+                    <Button text={localize('Go to Deposit page')} onClick={onClickGoToDepositPage} primary large />
                 </Button.Group>
             </div>
         );
@@ -147,6 +142,7 @@ OnRampProviderPopup.propTypes = {
     should_show_widget: PropTypes.bool,
     onClickCopyDepositAddress: PropTypes.func,
     onClickDisclaimerContinue: PropTypes.func,
+    onClickGoToDepositPage: PropTypes.func,
     onDisclaimerCheckboxChange: PropTypes.func,
     pollApiForDepositAddress: PropTypes.func,
 };
@@ -164,6 +160,7 @@ export default connect(({ modules }) => ({
     should_show_widget: modules.cashier.onramp.should_show_widget,
     onClickCopyDepositAddress: modules.cashier.onramp.onClickCopyDepositAddress,
     onClickDisclaimerContinue: modules.cashier.onramp.onClickDisclaimerContinue,
+    onClickGoToDepositPage: modules.cashier.onramp.onClickGoToDepositPage,
     onDisclaimerCheckboxChange: modules.cashier.onramp.onDisclaimerCheckboxChange,
     pollApiForDepositAddress: modules.cashier.onramp.pollApiForDepositAddress,
 }))(OnRampProviderPopup);

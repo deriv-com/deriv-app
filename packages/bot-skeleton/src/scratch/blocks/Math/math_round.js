@@ -66,5 +66,5 @@ Blockly.JavaScript.math_round = block => {
         code = `Math.floor(${argument0})`;
     }
 
-    return [code, Blockly.JavaScript.FUNCTION_CALL];
+    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };

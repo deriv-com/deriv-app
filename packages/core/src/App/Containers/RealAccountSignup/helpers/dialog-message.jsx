@@ -15,7 +15,7 @@ export const DialogMessage = ({ status = EXPERIAN.SUCCESS, landing_company_short
             <Localize i18n_default_text='We need proofs of your identity and address before you can start trading' />
         );
     } else {
-        switch (status && landing_company_shortcode) {
+        switch (status) {
             case EXPERIAN.WARN:
                 message = (
                     <Localize i18n_default_text="We couldn't verify your proof of address document. You can upload a new document to try again" />

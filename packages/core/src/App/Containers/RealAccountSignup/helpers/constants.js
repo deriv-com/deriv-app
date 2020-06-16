@@ -8,13 +8,14 @@ import { localize } from '@deriv/translations';
  *   - Success: Client can trade
  *   - Warn: POI/POA Validity partially failed, trade in demo possible
  *   - Danger: POI/POA validation failed. Trade is locked until this resolved.
- *
+ *   - Pending: POI/POA is in pending state.
  * @enum {EXPERIAN}
  */
 export const EXPERIAN = {
     SUCCESS: 1,
     WARN: 0,
     DANGER: -1,
+    PENDING: -2,
 };
 
 /**

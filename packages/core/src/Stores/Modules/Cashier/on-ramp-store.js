@@ -65,9 +65,8 @@ export default class OnRampStore extends BaseStore {
                 return undefined;
             }
             return ' '; // Empty string to render header + close icon.
-        } else {
-            return undefined;
         }
+        return undefined;
     }
 
     @computed

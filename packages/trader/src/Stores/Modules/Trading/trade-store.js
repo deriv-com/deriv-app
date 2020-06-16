@@ -900,16 +900,19 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    accountSwitcherListener() {
+    async accountSwitcherListener() {
         this.resetErrorServices();
-        this.setContractTypes();
+        await this.setContractTypes();
 
-        return this.processNewValuesAsync(
-            { currency: this.root_store.client.currency || this.root_store.client.default_currency },
-            true,
-            { currency: this.currency },
-            false
-        );
+        runInAction(async () => {
+            this.processNewValuesAsync(
+                { currency: this.root_store.client.currency || this.root_store.client.default_currency },
+                true,
+                { currency: this.currency },
+                false
+            );
+        });
+        return Promise.resolve();
     }
 
     @action.bound

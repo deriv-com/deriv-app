@@ -63,9 +63,8 @@ export default class OnRampStore extends BaseStore {
         } else if (this.selected_provider) {
             if (this.should_show_dialog) {
                 return undefined;
-            } else {
-                return ' '; // Empty string to render header + close icon.
             }
+            return ' '; // Empty string to render header + close icon.
         } else {
             return undefined;
         }

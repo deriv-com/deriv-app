@@ -101,13 +101,7 @@ class TermsOfUse extends React.Component {
                     isSubmitting,
                 }) => (
                     <form onSubmit={handleSubmit}>
-                        <ThemedScrollbars
-                            is_native={isMobile()}
-                            autohide
-                            style={{
-                                height: 'calc(100% - 50px)',
-                            }}
-                        >
+                        <ThemedScrollbars is_bypassed={isMobile()} height='calc(100% - 50px)'>
                             <Div100vhContainer className='terms-of-use' height_offset='169px' is_disabled={isDesktop()}>
                                 {this.props.can_upgrade_to === 'svg' && <SVGDescription />}
                                 {this.props.can_upgrade_to === 'iom' && <IOMDescription />}

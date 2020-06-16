@@ -63,6 +63,14 @@ export const clientNotifications = (ui = {}) => {
             ),
             type: 'warning',
         },
+        withdrawal_locked_review: {
+            key: 'withdrawal_locked_review',
+            header: localize('Withdrawal disabled'),
+            message: localize(
+                'Withdrawals have been disabled on your account. Please wait until your uploaded documents are verified.'
+            ),
+            type: 'warning',
+        },
         withdrawal_locked: {
             key: 'withdrawal_locked',
             header: localize('Withdrawal disabled'),
@@ -351,11 +359,14 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     const {
-        authentication: { document, identity, needs_verification, prompt_client_to_authenticate },
+        authentication: { document, identity, needs_verification },
+        prompt_client_to_authenticate,
+        risk_classification,
         status,
     } = account_status;
 
     const {
+        authenticated,
         cashier_locked,
         withdrawal_locked,
         mt5_withdrawal_locked,
@@ -386,7 +397,19 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     if (needs_poa) addNotificationMessage(clientNotifications().needs_poa);
     if (needs_poi) addNotificationMessage(clientNotifications().needs_poi);
     if (cashier_locked) addNotificationMessage(clientNotifications().cashier_locked);
-    if (withdrawal_locked) addNotificationMessage(clientNotifications().withdrawal_locked);
+    if (withdrawal_locked) {
+        // if client is withdrawal locked but it's because they need to authenticate
+        // and they have submitted verification documents,
+        // we should wait for review of documents to be done and show a different message
+        const is_high_risk = risk_classification === 'high';
+        const should_authenticate = !authenticated || prompt_client_to_authenticate;
+        const doc_is_under_review = document.status === 'pending';
+        if (is_high_risk && should_authenticate && doc_is_under_review) {
+            addNotificationMessage(clientNotifications().withdrawal_locked_review);
+        } else {
+            addNotificationMessage(clientNotifications().withdrawal_locked);
+        }
+    }
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
     if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
     if (unwelcome) addNotificationMessage(clientNotifications().unwelcome);

@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 
 export const useLongPress = (callback = () => {}, ms = 300) => {
-    const [startLongPress, setStartLongPress] = useState(false);
+    const [startLongPress, setStartLongPress] = React.useState(false);
 
     const preventDefaults = e => {
         e.preventDefault();
         e.stopPropagation();
     };
 
-    useEffect(() => {
+    React.useEffect(() => {
         let timer;
         if (startLongPress) {
             timer = setTimeout(callback, ms);

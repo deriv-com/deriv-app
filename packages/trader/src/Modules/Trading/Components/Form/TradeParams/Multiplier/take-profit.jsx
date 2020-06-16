@@ -5,7 +5,27 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
 import { connect } from 'Stores/connect';
 
-const TakeProfit = ({ currency, has_take_profit, is_single_currency, onChange, take_profit, validation_errors }) => {
+const TakeProfit = ({
+    currency,
+    has_take_profit,
+    is_single_currency,
+    onChange,
+    onChangeMultiple,
+    take_profit,
+    validation_errors,
+}) => {
+    const changeValue = e => {
+        if (e.target.name === 'has_take_profit') {
+            const new_val = e.target.value;
+            onChangeMultiple({
+                [e.target.name]: new_val,
+                ...(new_val ? { has_cancellation: false } : {}),
+            });
+        } else {
+            onChange(e);
+        }
+    };
+
     return (
         <Fieldset className='trade-container__fieldset'>
             <InputWithCheckbox
@@ -19,7 +39,7 @@ const TakeProfit = ({ currency, has_take_profit, is_single_currency, onChange, t
                 is_input_hidden={!has_take_profit}
                 label={localize('Take profit')}
                 name='take_profit'
-                onChange={onChange}
+                onChange={changeValue}
                 tooltip_label={localize(
                     'Your contract is closed automatically when your profit is more than or equals to this amount.'
                 )}
@@ -34,6 +54,7 @@ TakeProfit.propTypes = {
     has_take_profit: PropTypes.bool,
     is_single_currency: PropTypes.bool,
     onChange: PropTypes.func,
+    onChangeMultiple: PropTypes.func,
     take_profit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     validation_errors: PropTypes.object,
 };
@@ -43,6 +64,7 @@ export default connect(({ modules, client }) => ({
     currency: modules.trade.currency,
     has_take_profit: modules.trade.has_take_profit,
     onChange: modules.trade.onChange,
+    onChangeMultiple: modules.trade.onChangeMultiple,
     take_profit: modules.trade.take_profit,
     validation_errors: modules.trade.validation_errors,
 }))(TakeProfit);

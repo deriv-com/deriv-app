@@ -11,7 +11,12 @@ const HintBox = ({ className, icon, is_info, message }) => {
                 className: !!className,
             })}
         >
-            <Icon className='dc-hint-box__icon' custom_color='var(--status-info)' icon={icon} size={16} />
+            <Icon
+                className='dc-hint-box__icon'
+                custom_color={is_info ? 'var(--status-info)' : undefined}
+                icon={icon}
+                size={16}
+            />
             <div className='dc-hint-box__message'>{message}</div>
         </div>
     );

@@ -11,22 +11,22 @@ export const countDecimalPlaces = value => {
 
 export const generateHexColourFromNickname = nickname => {
     const colours = [
-        '#f43f83',
-        'var(--brand-secondary)',
-        '#9ed178',
-        'var(--brand-orange)',
+        '#fc4400',
+        '#ff8c00',
         '#092694',
         '#527bb5',
         '#3f6fe5',
         '#6b4bb6',
         '#db69e1',
         '#ca0051',
+        '#3f6fe5',
+        '#f43f83',
+        '#6aba8d',
         '#3fdce5',
         '#1fb8bf',
-        '#6aba8d',
+        '#9ed178',
         '#71bd0e',
-        '#ff8c00',
-        '#fc4400',
+        '#ff6444',
     ];
     const colour_hash = nickname.split().reduce((hash, char, idx) => {
         // https://gist.github.com/0x263b/2bdd90886c2036a1ad5bcf06d6e6fb37

@@ -1,29 +1,40 @@
 /** @define dc-themed-scrollbars */
 .dc-themed-scrollbars {
-    &__track {
-        &--horizontal {
-            height: 6px;
-            right: 2px;
-            bottom: 2px;
-            left: 2px;
-            border-radius: 3px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    /* Firefox only */
+    scrollbar-color: var(--state-active) var(--general-main-1);
+    scrollbar-width: thin;
+
+    &__autohide {
+        &::-webkit-scrollbar-thumb {
+            display: none;
         }
-        &--vertical {
-            width: 6px;
-            right: 2px;
-            bottom: 2px;
-            top: 2px;
-            border-radius: 3px;
+        &--is-hovered {
+            &::-webkit-scrollbar-thumb {
+                display: unset;
+            }
         }
     }
-    &__thumb {
-        &--horizontal {
-            border-radius: inherit;
-            background-color: var(--state-active);
-        }
-        &--vertical {
-            border-radius: inherit;
-            background-color: var(--state-active);
-        }
+    &--has-horizontal {
+        overflow-x: auto;
+    }
+    &--only-horizontal {
+        overflow-y: hidden;
+        overflow-x: auto;
+    }
+    &::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+        background-color: transparent;
+        border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: var(--state-active);
     }
 }

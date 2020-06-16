@@ -3,9 +3,10 @@
     $grid-template-columns: 40px 1fr 1fr; // 16px (icon) + 24px (spacing)
 
     &-empty {
+        height: calc(100vh - 365px);
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
+        justify-content: center;
 
         &__container {
             box-flex: 1;
@@ -17,7 +18,6 @@
             align-items: center;
             box-pack: center;
             width: 345px;
-            margin-top: 50%;
         }
         &__header {
             font-size: 1.4rem;

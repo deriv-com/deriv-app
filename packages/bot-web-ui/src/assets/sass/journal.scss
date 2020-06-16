@@ -3,9 +3,10 @@
  */
 .journal {
     &-empty {
+        height: calc(100vh - 365px);
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
+        justify-content: center;
 
         &__container {
             -webkit-box-flex: 1;
@@ -17,7 +18,6 @@
             align-items: center;
             -webkit-box-pack: center;
             width: 345px;
-            margin-top: 50%;
         }
         &__header {
             font-size: 1.4rem;

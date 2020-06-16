@@ -48,6 +48,11 @@ const getActionButton = ({ status, landing_company_shortcode, closeModalAndOpenC
                 label: localize('Deposit now'),
                 action: closeModalAndOpenCashier,
             };
+        case 'maltainvest':
+            return {
+                label: localize('Submit proof'),
+                action: closeModalAndOpenPOI,
+            };
         case 'svg':
         case 'malta':
         default:

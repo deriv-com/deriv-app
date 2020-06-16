@@ -10,7 +10,9 @@ import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
 const Orders = ({ params, navigate, chat_info }) => {
-    const { orders, order_id, setOrderId } = React.useContext(Dp2pContext);
+    const { orders, order_id, setOrderId, updateP2pNotifications, getLocalStorageSettings } = React.useContext(
+        Dp2pContext
+    );
     const [order_details, setDetails] = React.useState(null);
     const [nav, setNav] = React.useState(params?.nav);
     const is_mounted = React.useRef(false);
@@ -25,6 +27,17 @@ const Orders = ({ params, navigate, chat_info }) => {
     const setQueryDetails = input_order => {
         setOrderId(input_order.id);
         setDetails(input_order);
+
+        const { notifications } = getLocalStorageSettings();
+
+        if (notifications.length) {
+            const notification = notifications.find(n => n.order_id === input_order.id);
+
+            if (notification) {
+                notification.is_seen = true;
+                updateP2pNotifications(notifications);
+            }
+        }
     };
 
     React.useEffect(() => {
@@ -32,8 +45,9 @@ const Orders = ({ params, navigate, chat_info }) => {
     }, [params]);
 
     React.useEffect(() => {
+        is_mounted.current = true;
+
         if (params && params.order_info) {
-            is_mounted.current = true;
             const order_info = new OrderInfo(params.order_info);
             setQueryDetails(order_info);
         }

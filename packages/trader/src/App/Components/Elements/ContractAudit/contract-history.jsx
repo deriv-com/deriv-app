@@ -18,7 +18,7 @@ const ContractHistory = ({ currency, history = [] }) => {
         );
     }
     return (
-        <ThemedScrollbars autoHide renderView={props => <div {...props} className='contract-audit__tabs-content' />}>
+        <ThemedScrollbars className='contract-audit__tabs-content'>
             {history.map((item, key) => (
                 <ContractAuditItem
                     key={key}

@@ -214,6 +214,15 @@
                         }
                     }
 
+                    &-notification {
+                        margin: 0 1.6rem 1.6rem;
+                        background-color: var(--button-primary-default);
+
+                        &:hover {
+                            background-color: var(--button-primary-hover);
+                        }
+                    }
+
                     &-chat-footer {
                         &--textarea {
                             &__character-count {
@@ -275,7 +284,6 @@
         padding: 1.6rem;
     }
     &__header {
-        max-height: 108px;
         display: flex;
         justify-content: space-between;
         color: var(--text-general);

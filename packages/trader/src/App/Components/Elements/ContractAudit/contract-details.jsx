@@ -39,7 +39,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
     };
 
     return (
-        <ThemedScrollbars autoHide renderView={props => <div {...props} className='contract-audit__tabs-content' />}>
+        <ThemedScrollbars className='contract-audit__tabs-content'>
             <ContractAuditItem
                 id='dt_id_label'
                 icon={<Icon icon='IcContractId' size={24} />}

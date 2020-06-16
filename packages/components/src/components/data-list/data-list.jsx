@@ -4,37 +4,17 @@ import React from 'react';
 import { VariableSizeList as List } from 'react-window';
 import { NavLink } from 'react-router-dom';
 import { isMobile } from '@deriv/shared/utils/screen';
-import ThemedScrollbars from '../themed-scrollbars';
+import DataListCell from './data-list-cell.jsx';
+import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 
-const ListScrollbar = React.forwardRef((props, ref) => <ExtendedScrollbars {...props} forwardedRef={ref} />);
-
+const ThemedScrollbarsWrapper = React.forwardRef((props, ref) => (
+    <ThemedScrollbars {...props} forwardedRef={ref}>
+        {props.children}
+    </ThemedScrollbars>
+));
 // Display name is required by Developer Tools to give a name to the components we use.
 // If a component doesn't have a displayName is will be shown as <Unknown />. Hence, name is set.
-ListScrollbar.displayName = 'ListScrollbar';
-
-const ExtendedScrollbars = ({ onScroll, forwardedRef, style, children }) => {
-    const refSetter = React.useCallback(scrollbarsRef => {
-        if (scrollbarsRef) {
-            forwardedRef(scrollbarsRef.view);
-        } else {
-            forwardedRef(null);
-        }
-    }, []);
-
-    return (
-        <ThemedScrollbars
-            ref={refSetter}
-            style={{
-                ...style,
-                overflow: 'hidden',
-            }}
-            onScroll={onScroll}
-            autoHide
-        >
-            {children}
-        </ThemedScrollbars>
-    );
-};
+ThemedScrollbarsWrapper.displayName = 'ThemedScrollbars';
 
 class DataList extends React.PureComponent {
     constructor(props) {
@@ -84,7 +64,7 @@ class DataList extends React.PureComponent {
     };
 
     render() {
-        const { className, children, data_source, getRowSize, is_empty, onScroll, footer } = this.props;
+        const { className, children, data_source, getRowSize, onScroll, footer } = this.props;
 
         return (
             <div className={classNames(className, 'data-list', `${className}__data-list`)} onScroll={onScroll}>
@@ -98,7 +78,7 @@ class DataList extends React.PureComponent {
                         itemCount={data_source.length}
                         itemSize={getRowSize}
                         width={this.state.width}
-                        outerElementType={is_empty || isMobile() ? null : ListScrollbar}
+                        outerElementType={isMobile() ? null : ThemedScrollbarsWrapper}
                     >
                         {this.rowRenderer}
                     </List>
@@ -113,7 +93,7 @@ class DataList extends React.PureComponent {
         );
     }
 }
-
+DataList.Cell = DataListCell;
 DataList.propTypes = {
     className: PropTypes.string,
     data_source: PropTypes.array,

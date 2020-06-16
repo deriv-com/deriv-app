@@ -21,6 +21,7 @@ const MT5_PERSONAL_DETAILS_CACHE_KEY = 'mt5_financial_stp_signup_personal_detail
 
 class MT5FinancialStpRealAccountSignup extends React.Component {
     state = {};
+    should_retain_cache = true;
 
     constructor(props) {
         super(props);
@@ -107,6 +108,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
     finishWizard = setSubmitting => {
         setSubmitting(false);
         sessionStorage.removeItem(MT5_PERSONAL_DETAILS_CACHE_KEY);
+        this.should_retain_cache = false;
         this.props.openPendingDialog();
         this.props.toggleModal();
     };
@@ -209,10 +211,12 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
     };
 
     componentWillUnmount() {
-        sessionStorage.setItem(
-            MT5_PERSONAL_DETAILS_CACHE_KEY,
-            JSON.stringify(this.state.items[index_lookup.MT5PersonalDetailsForm].form_value)
-        );
+        if (this.should_retain_cache) {
+            sessionStorage.setItem(
+                MT5_PERSONAL_DETAILS_CACHE_KEY,
+                JSON.stringify(this.state.items[index_lookup.MT5PersonalDetailsForm].form_value)
+            );
+        }
     }
 
     getCurrent = key => {

@@ -1,15 +1,15 @@
 /** @define barspinner */
 .barspinner {
     margin: auto;
-    width: 6em;
-    height: 2em;
+    width: 6rem;
+    height: 2rem;
     white-space: nowrap;
 
     &__rect {
-        margin: 0.4em;
+        margin: 0.4rem;
         border-radius: 20px;
         height: 60%;
-        width: 0.6em;
+        width: 0.6rem;
         display: inline-block;
         @include createBarspinnerAnimation(5, 1.2s, 0.1);
     }
@@ -42,9 +42,16 @@
     &--fullscreen {
         width: 100vw;
         height: 100vh;
+
+        @include desktop {
+            height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+        }
+        @include mobile {
+            height: calc(100vh - #{$MOBILE_HEADER_HEIGHT});
+        }
     }
     &__barspinner {
-        margin: 5em auto;
+        margin: 5rem auto;
 
         &--rect {
             background-color: var(--brand-secondary);

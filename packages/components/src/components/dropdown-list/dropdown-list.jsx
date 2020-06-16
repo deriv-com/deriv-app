@@ -2,17 +2,26 @@ import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
-import ThemedScrollbars from 'Components/themed-scrollbars';
+import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 
-const trackHorizontal = props => <div {...props} style={{ display: 'none' }} />;
-const thumbHorizontal = props => <div {...props} style={{ display: 'none' }} />;
-
-const ListItem = ({ is_active, is_disabled, item, child_ref, onItemSelection, is_object_list }) => {
+const ListItem = ({
+    is_active,
+    is_disabled,
+    index,
+    item,
+    child_ref,
+    onItemSelection,
+    is_object_list,
+    setActiveIndex,
+}) => {
     return (
         <div
             ref={child_ref}
             // onMouseDown ensures the click handler runs before the onBlur event of Input
-            onMouseDown={() => onItemSelection(item)}
+            onMouseDown={() => {
+                onItemSelection(item);
+                setActiveIndex(index);
+            }}
             className={classNames('dc-dropdown-list__item', {
                 'dc-dropdown-list__item--active': is_active,
                 'dc-dropdown-list__item--disabled': is_disabled,
@@ -25,7 +34,7 @@ const ListItem = ({ is_active, is_disabled, item, child_ref, onItemSelection, is
 };
 
 const ListItems = React.forwardRef((props, ref) => {
-    const { active_index, list_items, is_object_list, onItemSelection, not_found_text } = props;
+    const { active_index, list_items, is_object_list, onItemSelection, setActiveIndex, not_found_text } = props;
     const is_grouped_list = list_items.some(list_item => !!list_item.group);
 
     if (is_grouped_list) {
@@ -56,8 +65,10 @@ const ListItems = React.forwardRef((props, ref) => {
                                     <ListItem
                                         key={item_idx}
                                         item={item}
+                                        index={item_idx}
                                         is_active={item_idx === active_index}
                                         onItemSelection={onItemSelection}
+                                        setActiveIndex={setActiveIndex}
                                         is_object_list={is_object_list}
                                         is_disabled={item.disabled === 'DISABLED'}
                                         child_ref={item_idx === active_index ? ref : null}
@@ -79,9 +90,11 @@ const ListItems = React.forwardRef((props, ref) => {
                     <ListItem
                         key={item_idx}
                         item={item}
+                        index={item_idx}
                         is_active={item_idx === active_index}
                         onItemSelection={onItemSelection}
                         is_object_list={is_object_list}
+                        setActiveIndex={setActiveIndex}
                         child_ref={item_idx === active_index ? ref : null}
                     />
                 ))
@@ -95,7 +108,17 @@ ListItems.displayName = 'ListItems';
 
 const DropdownList = React.forwardRef((props, ref) => {
     const { dropdown_ref, list_item_ref, list_wrapper_ref } = ref;
-    const { active_index, is_visible, list_items, onItemSelection, style, not_found_text } = props;
+    const {
+        active_index,
+        is_visible,
+        list_items,
+        list_height,
+        onScrollStop,
+        onItemSelection,
+        setActiveIndex,
+        style,
+        not_found_text,
+    } = props;
     if (list_items.length && typeof list_items[0] !== 'string' && typeof list_items[0] !== 'object') {
         throw Error('Dropdown received wrong data structure');
     }
@@ -115,19 +138,7 @@ const DropdownList = React.forwardRef((props, ref) => {
             unmountOnExit
         >
             <div style={style} className='dc-dropdown-list' ref={list_wrapper_ref}>
-                <ThemedScrollbars
-                    list_ref={dropdown_ref}
-                    autoHeight
-                    autoHide
-                    autoHeightMax={220} // As specified by design spec
-                    onScrollStop={() => {
-                        if (typeof props.onScrollStop === 'function') {
-                            props.onScrollStop();
-                        }
-                    }}
-                    renderTrackHorizontal={trackHorizontal}
-                    renderThumbHorizontal={thumbHorizontal}
-                >
+                <ThemedScrollbars height={list_height || '220px'} refSetter={dropdown_ref} onScroll={onScrollStop}>
                     {is_object ? (
                         Object.keys(list_items).map((items, idx) => (
                             <ListItems
@@ -137,6 +148,7 @@ const DropdownList = React.forwardRef((props, ref) => {
                                 list_items={list_items[items]}
                                 ref={list_item_ref}
                                 onItemSelection={onItemSelection}
+                                setActiveIndex={setActiveIndex}
                             />
                         ))
                     ) : (
@@ -147,6 +159,7 @@ const DropdownList = React.forwardRef((props, ref) => {
                             ref={list_item_ref}
                             onItemSelection={onItemSelection}
                             is_object_list={!is_string_array}
+                            setActiveIndex={setActiveIndex}
                         />
                     )}
                 </ThemedScrollbars>
@@ -173,6 +186,7 @@ DropdownList.propTypes = {
         list_items_shape,
         PropTypes.objectOf(list_items_shape),
     ]),
+    list_height: PropTypes.string,
     not_found_text: PropTypes.string,
     onItemSelection: PropTypes.func,
     style: PropTypes.object,

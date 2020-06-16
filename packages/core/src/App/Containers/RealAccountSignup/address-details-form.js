@@ -4,7 +4,7 @@ import { generateValidationFunction, getDefaultFields } from './form-validations
 
 const address_details_config = {
     address_line_1: {
-        supported_in: ['svg', 'iom', 'malta'],
+        supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
         default_value: '',
         rules: [
             ['req', localize('Address line 1 is required')],
@@ -12,12 +12,12 @@ const address_details_config = {
         ],
     },
     address_line_2: {
-        supported_in: ['svg', 'iom', 'malta'],
+        supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
         default_value: '',
         rules: [['length', localize('Address line 2 is not in a proper format'), { min: 0, max: 30 }]],
     },
     address_city: {
-        supported_in: ['svg', 'iom', 'malta'],
+        supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
         default_value: '',
         rules: [
             ['req', localize('City is required')],
@@ -31,7 +31,7 @@ const address_details_config = {
         ],
     },
     address_state: {
-        supported_in: ['svg', 'iom', 'malta'],
+        supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
         default_value: '',
         rules: [
             ['req', localize('State is required')],
@@ -45,7 +45,7 @@ const address_details_config = {
         ],
     },
     address_postcode: {
-        supported_in: ['svg', 'iom', 'malta'],
+        supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
         default_value: '',
         rules: [
             [

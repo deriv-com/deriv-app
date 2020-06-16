@@ -9,8 +9,8 @@ import {
     RadioGroup,
     ThemedScrollbars,
 } from '@deriv/components';
-import React from 'react';
 import { Field, Formik } from 'formik';
+import React from 'react';
 import { FormSubHeader } from '@deriv/account';
 import { toMoment } from '@deriv/shared/utils/date';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
@@ -142,13 +142,6 @@ class PersonalDetails extends React.Component {
                                                     placeholder={localize('Doe')}
                                                 />
                                             )}
-                                            {'phone' in this.props.value && (
-                                                <FormInputField
-                                                    name='phone'
-                                                    label={localize('Phone number')}
-                                                    placeholder={localize('Phone number')}
-                                                />
-                                            )}
                                             <FormSubHeader title={localize('Other details')} />
                                             {'date_of_birth' in this.props.value && (
                                                 <DateOfBirthField
@@ -190,8 +183,9 @@ class PersonalDetails extends React.Component {
                                                             label={localize('Citizenship')}
                                                             error={touched.citizen && errors.citizen}
                                                             disabled={
-                                                                this.props.value.citizen &&
-                                                                this.props.is_fully_authenticated
+                                                                (this.props.value.citizen &&
+                                                                    this.props.is_fully_authenticated) ||
+                                                                this.props.disabled_items.includes('citizen')
                                                             }
                                                             list_items={this.props.residence_list}
                                                             onItemSelection={({ value, text }) =>
@@ -201,6 +195,13 @@ class PersonalDetails extends React.Component {
                                                         />
                                                     )}
                                                 </Field>
+                                            )}
+                                            {'phone' in this.props.value && (
+                                                <FormInputField
+                                                    name='phone'
+                                                    label={localize('Phone number')}
+                                                    placeholder={localize('Phone number')}
+                                                />
                                             )}
                                             {('tax_residence' in this.props.value ||
                                                 'tax_identification_number' in this.props.value) && (
@@ -226,7 +227,6 @@ class PersonalDetails extends React.Component {
                                                                             true
                                                                         )
                                                                     }
-                                                                    required
                                                                 />
                                                             )}
                                                         </Field>

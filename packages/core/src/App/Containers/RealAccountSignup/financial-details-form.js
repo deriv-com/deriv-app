@@ -3,61 +3,27 @@ import FinancialDetails from 'App/Containers/RealAccountSignup/financial-details
 import { generateValidationFunction, getDefaultFields } from './form-validations';
 
 const financial_details_config = {
-    address_line_1: {
+    account_turnover: {
         supported_in: ['maltainvest'],
         default_value: '',
-        rules: [
-            ['req', localize('Address line 1 is required')],
-            ['address', localize('Address is not in a proper format')],
-        ],
-    },
-    address_line_2: {
-        supported_in: ['maltainvest'],
-        default_value: '',
-        rules: [['length', localize('Address line 2 is not in a proper format'), { min: 0, max: 30 }]],
-    },
-    address_city: {
-        supported_in: ['maltainvest'],
-        default_value: '',
-        rules: [
-            ['req', localize('City is required')],
-            [
-                'regular',
-                localize('City field is not in a proper format'),
-                {
-                    regex: /^[a-zA-Z\s\W'.-]{1,35}$/,
-                },
-            ],
-        ],
-    },
-    address_state: {
-        supported_in: ['maltainvest'],
-        default_value: '',
-        rules: [
-            [
-                'regular',
-                localize('State is not in a proper format'),
-                {
-                    regex: /^[\w\s\W'.-;,]{0,60}$/,
-                },
-            ],
-        ],
-    },
-    address_postcode: {
-        supported_in: ['maltainvest'],
-        default_value: '',
-        rules: [
-            [
-                'postcode',
-                localize('Please enter a {{field_name}} under {{max_number}} characters.', {
-                    field_name: localize('postal/ZIP code'),
-                    max_number: 20,
-                    interpolation: { escapeValue: false },
-                }),
-            ],
-        ],
+        rules: [['req', localize('Please select an option')]],
     },
     binary_options_trading_experience: {
+        supported_in: ['maltainvest'],
+        default_value: '',
+        rules: [['req', localize('Please select an option')]],
+    },
+    binary_options_trading_frequency: {
+        supported_in: ['maltainvest'],
+        default_value: '',
+        rules: [['req', localize('Please select an option')]],
+    },
+    cfd_trading_experience: {
+        supported_in: ['maltainvest'],
+        default_value: '',
+        rules: [['req', localize('Please select an option')]],
+    },
+    cfd_trading_frequency: {
         supported_in: ['maltainvest'],
         default_value: '',
         rules: [['req', localize('Please select an option')]],
@@ -67,10 +33,25 @@ const financial_details_config = {
         default_value: '',
         rules: [['req', localize('Please select an option')]],
     },
+    forex_trading_experience: {
+        supported_in: ['maltainvest'],
+        default_value: '',
+        rules: [['req', localize('Please select an option')]],
+    },
+    forex_trading_frequency: {
+        supported_in: ['maltainvest'],
+        default_value: '',
+        rules: [['req', localize('Please select an option')]],
+    },
     employment_industry: {
         default_value: '',
         supported_in: ['maltainvest'],
         rules: [['req']],
+    },
+    employment_status: {
+        default_value: '',
+        supported_in: ['maltainvest'],
+        rules: [],
     },
     estimated_worth: {
         default_value: '',
@@ -92,111 +73,55 @@ const financial_details_config = {
         supported_in: ['maltainvest'],
         rules: [['req']],
     },
+    other_instruments_trading_experience: {
+        default_value: '',
+        supported_in: ['maltainvest'],
+        rules: [['req']],
+    },
+    other_instruments_trading_frequency: {
+        default_value: '',
+        supported_in: ['maltainvest'],
+        rules: [['req']],
+    },
+    source_of_wealth: {
+        default_value: '',
+        supported_in: ['maltainvest'],
+        rules: [],
+    },
 };
 
 export const financialDetailsConfig = ({ real_account_signup_target }) => {
     return {
         header: {
-            active_title: localize('Complete your financial details'),
-            title: localize('Financial details'),
+            active_title: localize('Complete your financial assessment'),
+            title: localize('Financial assessment'),
         },
         body: FinancialDetails,
         form_value: getDefaultFields(real_account_signup_target, financial_details_config),
         props: {
             validate: generateValidationFunction(real_account_signup_target, financial_details_config),
-            occupation_enum: occupation_enum(),
-            income_source_enum: income_source_enum(),
-            net_income_enum: net_income_enum(),
-            estimated_worth_enum: estimated_worth_enum(),
+            account_turnover_enum: account_turnover_enum(),
             binary_options_trading_experience_enum: binary_options_trading_experience_enum(),
+            binary_options_trading_frequency_enum: binary_options_trading_frequency_enum(),
+            cfd_trading_experience_enum: cfd_trading_experience_enum(),
+            cfd_trading_frequency_enum: cfd_trading_frequency_enum(),
             education_level_enum: education_level_enum(),
             employment_industry_enum: employment_industry_enum(),
+            employment_status_enum: employment_status_enum(),
+            forex_trading_experience_enum: forex_trading_experience_enum(),
+            forex_trading_frequency_enum: forex_trading_frequency_enum(),
+            estimated_worth_enum: estimated_worth_enum(),
+            income_source_enum: income_source_enum(),
+            net_income_enum: net_income_enum(),
+            occupation_enum: occupation_enum(),
+            other_instruments_trading_experience_enum: other_instruments_trading_experience_enum(),
+            other_instruments_trading_frequency_enum: other_instruments_trading_frequency_enum(),
+            source_of_wealth_enum: source_of_wealth_enum(),
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
     };
 };
-
-const occupation_enum = () => [
-    {
-        value: 'Chief Executives, Senior Officials and Legislators',
-        text: localize('Chief Executives, Senior Officials and Legislators'),
-    },
-    {
-        value: 'Managers',
-        text: localize('Managers'),
-    },
-    {
-        value: 'Professionals',
-        text: localize('Professionals'),
-    },
-    {
-        value: 'Clerks',
-        text: localize('Clerks'),
-    },
-    {
-        value: 'Personal Care, Sales and Service Workers',
-        text: localize('Personal Care, Sales and Service Workers'),
-    },
-    {
-        value: 'Agricultural, Forestry and Fishery Workers',
-        text: localize('Agricultural, Forestry and Fishery Workers'),
-    },
-    {
-        value: 'Craft, Metal, Electrical and Electronics Workers',
-        text: localize('Craft, Metal, Electrical and Electronics Workers'),
-    },
-    {
-        value: 'Plant and Machine Operators and Assemblers',
-        text: localize('Plant and Machine Operators and Assemblers'),
-    },
-    {
-        value: 'Cleaners and Helpers',
-        text: localize('Cleaners and Helpers'),
-    },
-    {
-        value: 'Mining, Construction, Manufacturing and Transport Workers',
-        text: localize('Mining, Construction, Manufacturing and Transport Workers'),
-    },
-    {
-        value: 'Armed Forces',
-        text: localize('Armed Forces'),
-    },
-    {
-        value: 'Government Officers',
-        text: localize('Students'),
-    },
-    {
-        value: 'Unemployed',
-        text: localize('Unemployed'),
-    },
-];
-const income_source_enum = () => [
-    {
-        value: 'Salaried Employee',
-        text: localize('Salaried Employee'),
-    },
-    {
-        value: 'Self-Employed',
-        text: localize('Self-Employed'),
-    },
-    {
-        value: 'Investments & Dividends',
-        text: localize('Investments & Dividends'),
-    },
-    {
-        value: 'Pension',
-        text: localize('Pension'),
-    },
-    {
-        value: 'State Benefits',
-        text: localize('State Benefits'),
-    },
-    {
-        value: 'Savings & Inheritance',
-        text: localize('Savings & Inheritance'),
-    },
-];
-const net_income_enum = () => [
+const account_turnover_enum = () => [
     {
         value: 'Less than $25,000',
         text: localize('Less than $25,000'),
@@ -218,28 +143,6 @@ const net_income_enum = () => [
         text: localize('Over $500,000'),
     },
 ];
-const estimated_worth_enum = () => [
-    {
-        value: 'Less than $100,000',
-        text: localize('Less than $100,000'),
-    },
-    {
-        value: '$100,000 - $250,000',
-        text: localize('$100,000 - $250,000'),
-    },
-    {
-        value: '$250,001 - $500,000',
-        text: localize('$250,001 - $500,000'),
-    },
-    {
-        value: '$500,001 - $1,000,000',
-        text: localize('$500,001 - $1,000,000'),
-    },
-    {
-        value: 'Over $1,000,000',
-        text: localize('Over $1,000,000'),
-    },
-];
 const binary_options_trading_experience_enum = () => [
     {
         value: '0-1 year',
@@ -254,6 +157,26 @@ const binary_options_trading_experience_enum = () => [
         text: localize('Over 3 years'),
     },
 ];
+const binary_options_trading_frequency_enum = () => [
+    {
+        value: '0-5 transactions in the past 12 months',
+        text: localize('0-5 transactions in the past 12 months'),
+    },
+    {
+        value: '6-10 transactions in the past 12 months',
+        text: localize('6-10 transactions in the past 12 months'),
+    },
+    {
+        value: '11-39 transactions in the past 12 months',
+        text: localize('11-39 transactions in the past 12 months'),
+    },
+    {
+        value: '40 transactions or more in the past 12 months',
+        text: localize('40 transactions or more in the past 12 months'),
+    },
+];
+const cfd_trading_experience_enum = binary_options_trading_experience_enum; // Keeping alias to have a uniform readability
+const cfd_trading_frequency_enum = binary_options_trading_frequency_enum;
 const education_level_enum = () => [
     {
         value: 'Primary',
@@ -324,5 +247,164 @@ const employment_industry_enum = () => [
     {
         value: 'Unemployed',
         text: localize('Unemployed'),
+    },
+];
+const employment_status_enum = () => [
+    {
+        value: 'Employed',
+        text: localize('Employed'),
+    },
+    {
+        value: 'Pensioner',
+        text: localize('Pensioner'),
+    },
+    {
+        value: 'Self-Employed',
+        text: localize('Self-Employed'),
+    },
+    {
+        value: 'Student',
+        text: localize('Student'),
+    },
+    {
+        value: 'Unemployed',
+        text: localize('Unemployed'),
+    },
+];
+const estimated_worth_enum = () => [
+    {
+        value: 'Less than $100,000',
+        text: localize('Less than $100,000'),
+    },
+    {
+        value: '$100,000 - $250,000',
+        text: localize('$100,000 - $250,000'),
+    },
+    {
+        value: '$250,001 - $500,000',
+        text: localize('$250,001 - $500,000'),
+    },
+    {
+        value: '$500,001 - $1,000,000',
+        text: localize('$500,001 - $1,000,000'),
+    },
+    {
+        value: 'Over $1,000,000',
+        text: localize('Over $1,000,000'),
+    },
+];
+const forex_trading_experience_enum = binary_options_trading_experience_enum; // Keeping alias to have a uniform readability
+const forex_trading_frequency_enum = binary_options_trading_frequency_enum;
+const income_source_enum = () => [
+    {
+        value: 'Salaried Employee',
+        text: localize('Salaried Employee'),
+    },
+    {
+        value: 'Self-Employed',
+        text: localize('Self-Employed'),
+    },
+    {
+        value: 'Investments & Dividends',
+        text: localize('Investments & Dividends'),
+    },
+    {
+        value: 'Pension',
+        text: localize('Pension'),
+    },
+    {
+        value: 'State Benefits',
+        text: localize('State Benefits'),
+    },
+    {
+        value: 'Savings & Inheritance',
+        text: localize('Savings & Inheritance'),
+    },
+];
+const net_income_enum = account_turnover_enum;
+const occupation_enum = () => [
+    {
+        value: 'Chief Executives, Senior Officials and Legislators',
+        text: localize('Chief Executives, Senior Officials and Legislators'),
+    },
+    {
+        value: 'Managers',
+        text: localize('Managers'),
+    },
+    {
+        value: 'Professionals',
+        text: localize('Professionals'),
+    },
+    {
+        value: 'Clerks',
+        text: localize('Clerks'),
+    },
+    {
+        value: 'Personal Care, Sales and Service Workers',
+        text: localize('Personal Care, Sales and Service Workers'),
+    },
+    {
+        value: 'Agricultural, Forestry and Fishery Workers',
+        text: localize('Agricultural, Forestry and Fishery Workers'),
+    },
+    {
+        value: 'Craft, Metal, Electrical and Electronics Workers',
+        text: localize('Craft, Metal, Electrical and Electronics Workers'),
+    },
+    {
+        value: 'Plant and Machine Operators and Assemblers',
+        text: localize('Plant and Machine Operators and Assemblers'),
+    },
+    {
+        value: 'Cleaners and Helpers',
+        text: localize('Cleaners and Helpers'),
+    },
+    {
+        value: 'Mining, Construction, Manufacturing and Transport Workers',
+        text: localize('Mining, Construction, Manufacturing and Transport Workers'),
+    },
+    {
+        value: 'Armed Forces',
+        text: localize('Armed Forces'),
+    },
+    {
+        value: 'Government Officers',
+        text: localize('Students'),
+    },
+    {
+        value: 'Unemployed',
+        text: localize('Unemployed'),
+    },
+];
+const other_instruments_trading_experience_enum = binary_options_trading_experience_enum; // Keeping alias to have a uniform readability
+const other_instruments_trading_frequency_enum = binary_options_trading_frequency_enum;
+const source_of_wealth_enum = () => [
+    {
+        value: 'Accumulation of Income/Savings',
+        text: localize('Accumulation of Income/Savings'),
+    },
+    {
+        value: 'Cash Business',
+        text: localize('Cash Business'),
+    },
+    {
+        value: 'Company Ownership',
+        text: localize('Company Ownership'),
+    },
+    {
+        value: 'Divorce Settlement',
+        text: localize('Divorce Settlement'),
+    },
+    {
+        value: 'Inheritance',
+        text: localize('Inheritance'),
+    },
+    {
+        value: 'Investment Income',
+        text: localize('Investment Income'),
+    },
+    {
+        value: 'Sale of Property',
+        text: localize('Sale of Property'),
     },
 ];

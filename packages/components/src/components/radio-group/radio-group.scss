@@ -9,6 +9,8 @@
     }
     &__item {
         display: flex;
+        @include typeface(--paragraph-left-normal-prominent);
+
         cursor: pointer;
     }
     &__item:not(:last-child) {

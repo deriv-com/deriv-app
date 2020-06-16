@@ -4,7 +4,6 @@ import {
     DesktopWrapper,
     Div100vhContainer,
     FormSubmitButton,
-    Input,
     MobileWrapper,
     ThemedScrollbars,
     SelectNative,
@@ -16,52 +15,10 @@ import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
 
-const InputField = props => {
-    return (
-        <Field name={props.name}>
-            {({ field, form: { errors, touched } }) => (
-                <React.Fragment>
-                    <Input
-                        type='text'
-                        autoComplete='off'
-                        maxLength='30'
-                        error={touched[field.name] && errors[field.name]}
-                        {...field}
-                        {...props}
-                    />
-                </React.Fragment>
-            )}
-        </Field>
-    );
-};
-
-const getLocation = (location_list, value, type) => {
-    const location_obj = location_list.find(
-        location => location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase()
-    );
-
-    if (location_obj) return location_obj[type];
-    return '';
-};
-
 class FinancialDetails extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { has_fetched_states_list: false, address_state_to_display: '' };
-        this.form = React.createRef();
-        // TODO: Find a better solution for handling no-op instead of using is_mounted flags
-        this.is_mounted = false;
-    }
-
+    form = React.createRef();
     async componentDidMount() {
-        this.is_mounted = true;
-        await this.props.fetchStatesList();
-        if (this.is_mounted)
-            this.setState({
-                has_fetched_states_list: true,
-                address_state_to_display: getLocation(this.props.states_list, this.props.value.address_state, 'text'),
-            });
-        this.form.current.getFormikActions().validateForm();
+        await this.form.current.getFormikActions().validateForm();
     }
 
     componentWillUnmount() {
@@ -73,10 +30,6 @@ class FinancialDetails extends React.Component {
         this.props.onCancel();
     };
 
-    get should_render_address_state() {
-        return this.state.has_fetched_states_list && this.props.states_list.length > 0;
-    }
-
     render() {
         const padding_bottom = window.innerHeight < 930 ? '10rem' : '12rem';
         return (
@@ -84,13 +37,6 @@ class FinancialDetails extends React.Component {
                 initialValues={{ ...this.props.value }}
                 validate={this.props.validate}
                 onSubmit={(values, actions) => {
-                    if (isDesktop() && values.address_state) {
-                        values.address_state = this.props.states_list.length
-                            ? this.state.address_state_to_display
-                                ? getLocation(this.props.states_list, this.state.address_state_to_display, 'value')
-                                : getLocation(this.props.states_list, values.address_state, 'value')
-                            : values.address_state;
-                    }
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
                 ref={this.form}
@@ -105,7 +51,7 @@ class FinancialDetails extends React.Component {
                                     is_disabled={isDesktop()}
                                 >
                                     <p className='details-form__description'>
-                                        <Localize i18n_default_text='Please ensure that this address is the same as in your proof of address' />
+                                        <Localize i18n_default_text="We're legally obliged to ask for your financial information." />
                                     </p>
                                     <ThemedScrollbars
                                         is_native={isMobile()}
@@ -116,80 +62,8 @@ class FinancialDetails extends React.Component {
                                             className='details-form__elements'
                                             style={{ paddingBottom: isDesktop() ? padding_bottom : null }}
                                         >
-                                            <FormSubHeader title={localize('Address details')} />
-                                            <InputField
-                                                name='address_line_1'
-                                                required
-                                                label={localize('First line of address')}
-                                                placeholder={localize('First line of address')}
-                                            />
-                                            <InputField
-                                                name='address_line_2'
-                                                label={localize('Second line of address')}
-                                                placeholder={localize('Second line of address')}
-                                            />
-                                            <InputField
-                                                name='address_city'
-                                                required
-                                                label={localize('Town/City')}
-                                                placeholder={localize('Town/City')}
-                                            />
-                                            {this.should_render_address_state && (
-                                                <Field name='address_state'>
-                                                    {({ field }) => (
-                                                        <React.Fragment>
-                                                            <DesktopWrapper>
-                                                                <Autocomplete
-                                                                    {...field}
-                                                                    {...(this.state.address_state_to_display && {
-                                                                        value: this.state.address_state_to_display,
-                                                                    })}
-                                                                    data-lpignore='true'
-                                                                    autoComplete='new-password' // prevent chrome autocomplete
-                                                                    dropdown_offset='3.2rem'
-                                                                    type='text'
-                                                                    label={localize('State/Province')}
-                                                                    list_items={this.props.states_list}
-                                                                    onItemSelection={({ value, text }) => {
-                                                                        setFieldValue(
-                                                                            'address_state',
-                                                                            value ? text : '',
-                                                                            true
-                                                                        );
-                                                                        this.setState({
-                                                                            address_state_to_display: '',
-                                                                        });
-                                                                    }}
-                                                                />
-                                                            </DesktopWrapper>
-                                                            <MobileWrapper>
-                                                                <SelectNative
-                                                                    placeholder={localize('Please select')}
-                                                                    label={localize('State/Province')}
-                                                                    value={values.address_state}
-                                                                    list_items={this.props.states_list}
-                                                                    use_text={true}
-                                                                    onChange={e =>
-                                                                        setFieldValue(
-                                                                            'address_state',
-                                                                            e.target.value,
-                                                                            true
-                                                                        )
-                                                                    }
-                                                                />
-                                                            </MobileWrapper>
-                                                        </React.Fragment>
-                                                    )}
-                                                </Field>
-                                            )}
-                                            <InputField
-                                                name='address_postcode'
-                                                required={this.props.is_gb_residence}
-                                                label={localize('Postal/ZIP Code')}
-                                                placeholder={localize('Postal/ZIP Code')}
-                                            />
-                                            <FormSubHeader title={localize('Trading experience')} />
-                                            <Field name='binary_options_trading_experience'>
+                                            <FormSubHeader title={localize('Financial information')} />
+                                            <Field name='income_source'>
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
@@ -199,13 +73,11 @@ class FinancialDetails extends React.Component {
                                                                 autoComplete='off' // prevent chrome autocomplete
                                                                 dropdown_offset='3.2rem'
                                                                 type='text'
-                                                                label={localize('Binary options trading experience')}
-                                                                list_items={
-                                                                    this.props.binary_options_trading_experience_enum
-                                                                }
+                                                                label={localize('Source of income')}
+                                                                list_items={this.props.income_source_enum}
                                                                 onItemSelection={({ value, text }) => {
                                                                     setFieldValue(
-                                                                        'binary_options_trading_experience',
+                                                                        'income_source',
                                                                         value ? text : '',
                                                                         true
                                                                     );
@@ -215,15 +87,49 @@ class FinancialDetails extends React.Component {
                                                         <MobileWrapper>
                                                             <SelectNative
                                                                 placeholder={localize('Please select')}
-                                                                label={localize('Binary options trading experience')}
+                                                                label={localize('Source of income')}
                                                                 {...field}
-                                                                list_items={
-                                                                    this.props.binary_options_trading_experience_enum
+                                                                list_items={this.props.income_source_enum}
+                                                                use_text={true}
+                                                                onChange={e =>
+                                                                    setFieldValue('income_source', e.target.value, true)
                                                                 }
+                                                            />
+                                                        </MobileWrapper>
+                                                    </React.Fragment>
+                                                )}
+                                            </Field>
+                                            <Field name='employment_status'>
+                                                {({ field }) => (
+                                                    <React.Fragment>
+                                                        <DesktopWrapper>
+                                                            <Autocomplete
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                autoComplete='off' // prevent chrome autocomplete
+                                                                dropdown_offset='3.2rem'
+                                                                type='text'
+                                                                label={localize('Employment Status')}
+                                                                list_items={this.props.employment_status_enum}
+                                                                onItemSelection={({ value, text }) => {
+                                                                    setFieldValue(
+                                                                        'employment_status',
+                                                                        value ? text : '',
+                                                                        true
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                placeholder={localize('Please select')}
+                                                                label={localize('Employment Status')}
+                                                                {...field}
+                                                                list_items={this.props.employment_status_enum}
                                                                 use_text={true}
                                                                 onChange={e =>
                                                                     setFieldValue(
-                                                                        'binary_options_trading_experience',
+                                                                        'employment_status',
                                                                         e.target.value,
                                                                         true
                                                                     )
@@ -273,7 +179,82 @@ class FinancialDetails extends React.Component {
                                                     </React.Fragment>
                                                 )}
                                             </Field>
-                                            <FormSubHeader title={localize('Financial information')} />
+                                            <Field name='occupation'>
+                                                {({ field }) => (
+                                                    <React.Fragment>
+                                                        <DesktopWrapper>
+                                                            <Autocomplete
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                autoComplete='off' // prevent chrome autocomplete
+                                                                dropdown_offset='3.2rem'
+                                                                type='text'
+                                                                label={localize('Occupation')}
+                                                                list_items={this.props.occupation_enum}
+                                                                onItemSelection={({ value, text }) => {
+                                                                    setFieldValue(
+                                                                        'occupation',
+                                                                        value ? text : '',
+                                                                        true
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                placeholder={localize('Please select')}
+                                                                label={localize('Occupation')}
+                                                                {...field}
+                                                                list_items={this.props.occupation_enum}
+                                                                use_text={true}
+                                                                onChange={e =>
+                                                                    setFieldValue('occupation', e.target.value, true)
+                                                                }
+                                                            />
+                                                        </MobileWrapper>
+                                                    </React.Fragment>
+                                                )}
+                                            </Field>
+                                            <Field name='source_of_wealth'>
+                                                {({ field }) => (
+                                                    <React.Fragment>
+                                                        <DesktopWrapper>
+                                                            <Autocomplete
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                autoComplete='off' // prevent chrome autocomplete
+                                                                dropdown_offset='3.2rem'
+                                                                type='text'
+                                                                label={localize('Source of wealth')}
+                                                                list_items={this.props.source_of_wealth_enum}
+                                                                onItemSelection={({ value, text }) => {
+                                                                    setFieldValue(
+                                                                        'source_of_wealth',
+                                                                        value ? text : '',
+                                                                        true
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                placeholder={localize('Please select')}
+                                                                label={localize('Source of wealth')}
+                                                                {...field}
+                                                                list_items={this.props.source_of_wealth_enum}
+                                                                use_text={true}
+                                                                onChange={e =>
+                                                                    setFieldValue(
+                                                                        'source_of_wealth',
+                                                                        e.target.value,
+                                                                        true
+                                                                    )
+                                                                }
+                                                            />
+                                                        </MobileWrapper>
+                                                    </React.Fragment>
+                                                )}
+                                            </Field>
                                             <Field name='education_level'>
                                                 {({ field }) => (
                                                     <React.Fragment>
@@ -308,6 +289,42 @@ class FinancialDetails extends React.Component {
                                                                         e.target.value,
                                                                         true
                                                                     )
+                                                                }
+                                                            />
+                                                        </MobileWrapper>
+                                                    </React.Fragment>
+                                                )}
+                                            </Field>
+                                            <Field name='net_income'>
+                                                {({ field }) => (
+                                                    <React.Fragment>
+                                                        <DesktopWrapper>
+                                                            <Autocomplete
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                autoComplete='off' // prevent chrome autocomplete
+                                                                dropdown_offset='3.2rem'
+                                                                type='text'
+                                                                label={localize('Net annual income')}
+                                                                list_items={this.props.net_income_enum}
+                                                                onItemSelection={({ value, text }) => {
+                                                                    setFieldValue(
+                                                                        'net_income',
+                                                                        value ? text : '',
+                                                                        true
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                placeholder={localize('Please select')}
+                                                                label={localize('Net annual income')}
+                                                                {...field}
+                                                                list_items={this.props.net_income_enum}
+                                                                use_text={true}
+                                                                onChange={e =>
+                                                                    setFieldValue('net_income', e.target.value, true)
                                                                 }
                                                             />
                                                         </MobileWrapper>
@@ -354,7 +371,7 @@ class FinancialDetails extends React.Component {
                                                     </React.Fragment>
                                                 )}
                                             </Field>
-                                            <Field name='income_source'>
+                                            <Field name='account_turnover'>
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
@@ -364,11 +381,11 @@ class FinancialDetails extends React.Component {
                                                                 autoComplete='off' // prevent chrome autocomplete
                                                                 dropdown_offset='3.2rem'
                                                                 type='text'
-                                                                label={localize('Source of income')}
-                                                                list_items={this.props.income_source_enum}
+                                                                label={localize('Anticipated account turnover')}
+                                                                list_items={this.props.account_turnover_enum}
                                                                 onItemSelection={({ value, text }) => {
                                                                     setFieldValue(
-                                                                        'income_source',
+                                                                        'account_turnover',
                                                                         value ? text : '',
                                                                         true
                                                                     );
@@ -378,19 +395,24 @@ class FinancialDetails extends React.Component {
                                                         <MobileWrapper>
                                                             <SelectNative
                                                                 placeholder={localize('Please select')}
-                                                                label={localize('Source of income')}
+                                                                label={localize('Anticipated account turnover')}
                                                                 {...field}
-                                                                list_items={this.props.income_source_enum}
+                                                                list_items={this.props.account_turnover_enum}
                                                                 use_text={true}
                                                                 onChange={e =>
-                                                                    setFieldValue('income_source', e.target.value, true)
+                                                                    setFieldValue(
+                                                                        'account_turnover',
+                                                                        e.target.value,
+                                                                        true
+                                                                    )
                                                                 }
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
                                                 )}
                                             </Field>
-                                            <Field name='net_income'>
+                                            <FormSubHeader title={localize('Trading experience')} />
+                                            <Field name='forex_trading_experience'>
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
@@ -400,11 +422,11 @@ class FinancialDetails extends React.Component {
                                                                 autoComplete='off' // prevent chrome autocomplete
                                                                 dropdown_offset='3.2rem'
                                                                 type='text'
-                                                                label={localize('Net annual income')}
-                                                                list_items={this.props.net_income_enum}
+                                                                label={localize('Forex trading experience')}
+                                                                list_items={this.props.forex_trading_experience_enum}
                                                                 onItemSelection={({ value, text }) => {
                                                                     setFieldValue(
-                                                                        'net_income',
+                                                                        'forex_trading_experience',
                                                                         value ? text : '',
                                                                         true
                                                                     );
@@ -414,19 +436,23 @@ class FinancialDetails extends React.Component {
                                                         <MobileWrapper>
                                                             <SelectNative
                                                                 placeholder={localize('Please select')}
-                                                                label={localize('Net annual income')}
+                                                                label={localize('Forex trading experience')}
                                                                 {...field}
-                                                                list_items={this.props.net_income_enum}
+                                                                list_items={this.props.forex_trading_experience_enum}
                                                                 use_text={true}
                                                                 onChange={e =>
-                                                                    setFieldValue('net_income', e.target.value, true)
+                                                                    setFieldValue(
+                                                                        'forex_trading_experience',
+                                                                        e.target.value,
+                                                                        true
+                                                                    )
                                                                 }
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
                                                 )}
                                             </Field>
-                                            <Field name='occupation'>
+                                            <Field name='forex_trading_frequency'>
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
@@ -436,11 +462,11 @@ class FinancialDetails extends React.Component {
                                                                 autoComplete='off' // prevent chrome autocomplete
                                                                 dropdown_offset='3.2rem'
                                                                 type='text'
-                                                                label={localize('Occupation')}
-                                                                list_items={this.props.occupation_enum}
+                                                                label={localize('Forex trading frequency')}
+                                                                list_items={this.props.forex_trading_frequency_enum}
                                                                 onItemSelection={({ value, text }) => {
                                                                     setFieldValue(
-                                                                        'occupation',
+                                                                        'forex_trading_frequency',
                                                                         value ? text : '',
                                                                         true
                                                                     );
@@ -450,12 +476,280 @@ class FinancialDetails extends React.Component {
                                                         <MobileWrapper>
                                                             <SelectNative
                                                                 placeholder={localize('Please select')}
-                                                                label={localize('Occupation')}
+                                                                label={localize('Forex trading frequency')}
                                                                 {...field}
-                                                                list_items={this.props.occupation_enum}
+                                                                list_items={this.props.forex_trading_frequency_enum}
                                                                 use_text={true}
                                                                 onChange={e =>
-                                                                    setFieldValue('occupation', e.target.value, true)
+                                                                    setFieldValue(
+                                                                        'forex_trading_frequency',
+                                                                        e.target.value,
+                                                                        true
+                                                                    )
+                                                                }
+                                                            />
+                                                        </MobileWrapper>
+                                                    </React.Fragment>
+                                                )}
+                                            </Field>
+                                            <Field name='binary_options_trading_experience'>
+                                                {({ field }) => (
+                                                    <React.Fragment>
+                                                        <DesktopWrapper>
+                                                            <Autocomplete
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                autoComplete='off' // prevent chrome autocomplete
+                                                                dropdown_offset='3.2rem'
+                                                                type='text'
+                                                                label={localize('Binary options trading experience')}
+                                                                list_items={
+                                                                    this.props.binary_options_trading_experience_enum
+                                                                }
+                                                                onItemSelection={({ value, text }) => {
+                                                                    setFieldValue(
+                                                                        'binary_options_trading_experience',
+                                                                        value ? text : '',
+                                                                        true
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                placeholder={localize('Please select')}
+                                                                label={localize('Binary options trading experience')}
+                                                                {...field}
+                                                                list_items={
+                                                                    this.props.binary_options_trading_experience_enum
+                                                                }
+                                                                use_text={true}
+                                                                onChange={e =>
+                                                                    setFieldValue(
+                                                                        'binary_options_trading_experience',
+                                                                        e.target.value,
+                                                                        true
+                                                                    )
+                                                                }
+                                                            />
+                                                        </MobileWrapper>
+                                                    </React.Fragment>
+                                                )}
+                                            </Field>
+                                            <Field name='binary_options_trading_frequency'>
+                                                {({ field }) => (
+                                                    <React.Fragment>
+                                                        <DesktopWrapper>
+                                                            <Autocomplete
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                autoComplete='off' // prevent chrome autocomplete
+                                                                dropdown_offset='3.2rem'
+                                                                type='text'
+                                                                label={localize('Binary options trading frequency')}
+                                                                list_items={
+                                                                    this.props.binary_options_trading_frequency_enum
+                                                                }
+                                                                onItemSelection={({ value, text }) => {
+                                                                    setFieldValue(
+                                                                        'binary_options_trading_frequency',
+                                                                        value ? text : '',
+                                                                        true
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                placeholder={localize('Please select')}
+                                                                label={localize('Binary options trading frequency')}
+                                                                {...field}
+                                                                list_items={
+                                                                    this.props.binary_options_trading_frequency_enum
+                                                                }
+                                                                use_text={true}
+                                                                onChange={e =>
+                                                                    setFieldValue(
+                                                                        'binary_options_trading_frequency',
+                                                                        e.target.value,
+                                                                        true
+                                                                    )
+                                                                }
+                                                            />
+                                                        </MobileWrapper>
+                                                    </React.Fragment>
+                                                )}
+                                            </Field>
+                                            <Field name='cfd_trading_experience'>
+                                                {({ field }) => (
+                                                    <React.Fragment>
+                                                        <DesktopWrapper>
+                                                            <Autocomplete
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                autoComplete='off' // prevent chrome autocomplete
+                                                                dropdown_offset='3.2rem'
+                                                                type='text'
+                                                                label={localize('CFDs trading experience')}
+                                                                list_items={this.props.cfd_trading_experience_enum}
+                                                                onItemSelection={({ value, text }) => {
+                                                                    setFieldValue(
+                                                                        'cfd_trading_experience',
+                                                                        value ? text : '',
+                                                                        true
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                placeholder={localize('Please select')}
+                                                                label={localize('CFDs trading experience')}
+                                                                {...field}
+                                                                list_items={this.props.cfd_trading_experience_enum}
+                                                                use_text={true}
+                                                                onChange={e =>
+                                                                    setFieldValue(
+                                                                        'cfd_trading_experience',
+                                                                        e.target.value,
+                                                                        true
+                                                                    )
+                                                                }
+                                                            />
+                                                        </MobileWrapper>
+                                                    </React.Fragment>
+                                                )}
+                                            </Field>
+                                            <Field name='cfd_trading_frequency'>
+                                                {({ field }) => (
+                                                    <React.Fragment>
+                                                        <DesktopWrapper>
+                                                            <Autocomplete
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                autoComplete='off' // prevent chrome autocomplete
+                                                                dropdown_offset='3.2rem'
+                                                                type='text'
+                                                                label={localize('CFDs trading frequency')}
+                                                                list_items={this.props.cfd_trading_frequency_enum}
+                                                                onItemSelection={({ value, text }) => {
+                                                                    setFieldValue(
+                                                                        'cfd_trading_frequency',
+                                                                        value ? text : '',
+                                                                        true
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                placeholder={localize('Please select')}
+                                                                label={localize('CFDs trading frequency')}
+                                                                {...field}
+                                                                list_items={this.props.cfd_trading_frequency_enum}
+                                                                use_text={true}
+                                                                onChange={e =>
+                                                                    setFieldValue(
+                                                                        'cfd_trading_frequency',
+                                                                        e.target.value,
+                                                                        true
+                                                                    )
+                                                                }
+                                                            />
+                                                        </MobileWrapper>
+                                                    </React.Fragment>
+                                                )}
+                                            </Field>
+                                            <Field name='other_instruments_trading_experience'>
+                                                {({ field }) => (
+                                                    <React.Fragment>
+                                                        <DesktopWrapper>
+                                                            <Autocomplete
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                autoComplete='off' // prevent chrome autocomplete
+                                                                dropdown_offset='3.2rem'
+                                                                type='text'
+                                                                label={localize(
+                                                                    'Experience with trading other financial instruments'
+                                                                )}
+                                                                list_items={
+                                                                    this.props.other_instruments_trading_experience_enum
+                                                                }
+                                                                onItemSelection={({ value, text }) => {
+                                                                    setFieldValue(
+                                                                        'other_instruments_trading_experience',
+                                                                        value ? text : '',
+                                                                        true
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                placeholder={localize('Please select')}
+                                                                label={localize(
+                                                                    'Experience with trading other financial instruments'
+                                                                )}
+                                                                {...field}
+                                                                list_items={
+                                                                    this.props.other_instruments_trading_experience_enum
+                                                                }
+                                                                use_text={true}
+                                                                onChange={e =>
+                                                                    setFieldValue(
+                                                                        'other_instruments_trading_experience',
+                                                                        e.target.value,
+                                                                        true
+                                                                    )
+                                                                }
+                                                            />
+                                                        </MobileWrapper>
+                                                    </React.Fragment>
+                                                )}
+                                            </Field>
+                                            <Field name='other_instruments_trading_frequency'>
+                                                {({ field }) => (
+                                                    <React.Fragment>
+                                                        <DesktopWrapper>
+                                                            <Autocomplete
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                autoComplete='off' // prevent chrome autocomplete
+                                                                dropdown_offset='3.2rem'
+                                                                type='text'
+                                                                label={localize(
+                                                                    'Experience with trading other financial instruments'
+                                                                )}
+                                                                list_items={
+                                                                    this.props.other_instruments_trading_frequency_enum
+                                                                }
+                                                                onItemSelection={({ value, text }) => {
+                                                                    setFieldValue(
+                                                                        'other_instruments_trading_frequency',
+                                                                        value ? text : '',
+                                                                        true
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                placeholder={localize('Please select')}
+                                                                label={localize(
+                                                                    'Experience with trading other financial instruments'
+                                                                )}
+                                                                {...field}
+                                                                list_items={
+                                                                    this.props.other_instruments_trading_frequency_enum
+                                                                }
+                                                                use_text={true}
+                                                                onChange={e =>
+                                                                    setFieldValue(
+                                                                        'other_instruments_trading_frequency',
+                                                                        e.target.value,
+                                                                        true
+                                                                    )
                                                                 }
                                                             />
                                                         </MobileWrapper>

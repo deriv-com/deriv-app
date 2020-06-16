@@ -51,19 +51,6 @@ class MyAds extends React.Component {
         }
     }
 
-    applyAction = () => {
-        if (!this.context.nickname) {
-            return;
-        }
-
-        // TODO: redirect without refresh
-        if (this.state.should_show_poa_link) {
-            window.location.href = '/account/proof-of-address';
-        } else {
-            window.location.href = '/account/proof-of-identity';
-        }
-    };
-
     onClickCreate = () => {
         this.setState({ show_form: true });
     };

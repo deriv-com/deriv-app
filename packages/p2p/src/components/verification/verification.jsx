@@ -1,11 +1,30 @@
 import React from 'react';
-import { Icon, Checklist } from '@deriv/components';
+import { Icon, Checklist, Loading } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { Localize, localize } from 'Components/i18next';
+import { requestWS } from 'Utils/websocket';
 import './verification.scss';
 
 const Verification = ({ poi_status }) => {
-    const { nickname, toggleNicknamePopup, is_advertiser, poi_url } = React.useContext(Dp2pContext);
+    const { nickname, toggleNicknamePopup, setIsAdvertiser, is_advertiser, poi_url } = React.useContext(Dp2pContext);
+    const [is_loading, setIsLoading] = React.useState(false);
+
+    const checkVerified = () => {
+        setIsLoading(true);
+
+        requestWS({ p2p_advertiser_info: 1 }).then(response => {
+            if (!response.error) {
+                const { p2p_advertiser_info } = response;
+
+                if (!p2p_advertiser_info.is_approved) {
+                    window.location.href = poi_url;
+                } else {
+                    setIsAdvertiser(p2p_advertiser_info.is_approved);
+                    setIsLoading(false);
+                }
+            }
+        });
+    };
 
     const items = [
         {
@@ -28,13 +47,17 @@ const Verification = ({ poi_status }) => {
                     />
                 ),
             status: poi_status === 'verified' ? 'done' : 'action',
-            onClick: () => (window.location.href = poi_url),
-            is_disabled: !nickname,
+            onClick: poi_status === 'verified' ? () => {} : checkVerified,
+            is_disabled: poi_status !== 'verified' && !nickname,
         },
     ];
 
     if (!is_advertiser && poi_status === 'verified' && this.context.nickname) {
         return <div>{localize('Your P2P cashier has been blocked. Please contact customer support')}</div>;
+    }
+
+    if (is_loading) {
+        return <Loading is_fullscreen={false} />;
     }
 
     return (

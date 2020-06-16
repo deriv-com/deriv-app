@@ -267,6 +267,9 @@ export const icons = {
     underlying: [
         'IcUnderlying1HZ100V',
         'IcUnderlying1HZ10V',
+        'IcUnderlying1HZ25V',
+        'IcUnderlying1HZ50V',
+        'IcUnderlying1HZ75V',
         'IcUnderlyingFRXAUDCAD',
         'IcUnderlyingFRXAUDCHF',
         'IcUnderlyingFRXAUDJPY',

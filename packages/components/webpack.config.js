@@ -18,7 +18,6 @@ module.exports = {
         calendar: 'Components/calendar',
         clipboard: 'Components/clipboard',
         checkbox: 'Components/checkbox',
-        checklist: 'Components/checklist',
         'circular-progress': 'Components/circular-progress',
         collapsible: 'Components/collapsible',
         counter: 'Components/counter',
@@ -175,7 +174,10 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader: ['@deriv/shared/utils/react-import-loader.js', 'babel-loader'],
+                loader: [
+                  '@deriv/shared/utils/react-import-loader.js',
+                  'babel-loader',
+                ]
             },
         ],
     },

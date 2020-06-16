@@ -125,6 +125,7 @@ class ApiToken extends React.Component {
     };
 
     getApiTokens = async () => {
+        this.setState({ is_loading: true });
         const token_response = await WS.authorized.apiToken({ api_token: 1 });
         this.populateTokenResponse(token_response);
     };
@@ -150,6 +151,12 @@ class ApiToken extends React.Component {
 
     componentDidMount() {
         this.getApiTokens();
+    }
+
+    componentDidUpdate(prev_props) {
+        if (prev_props.is_switching !== this.props.is_switching && prev_props.is_switching) {
+            this.getApiTokens();
+        }
     }
 
     componentWillUnmount() {

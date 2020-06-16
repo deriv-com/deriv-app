@@ -17,6 +17,7 @@ const Verification = ({ poi_status }) => {
                 const { p2p_advertiser_info } = response;
 
                 if (!p2p_advertiser_info.is_approved) {
+                    // TODO: redirect wihtout refresh
                     window.location.href = poi_url;
                 } else {
                     setIsAdvertiser(p2p_advertiser_info.is_approved);

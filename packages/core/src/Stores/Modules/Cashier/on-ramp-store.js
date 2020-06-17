@@ -11,7 +11,6 @@ export default class OnRampStore extends BaseStore {
     @observable deposit_address = null;
     @observable is_deposit_address_loading = true;
     @observable is_deposit_address_popover_open = false;
-    @observable is_disclaimer_checkbox_checked = false;
     @observable is_onramp_modal_open = false;
     @observable selected_provider = null;
     @observable should_show_widget = false;
@@ -72,11 +71,6 @@ export default class OnRampStore extends BaseStore {
     @computed
     get should_show_dialog() {
         return this.api_error || !this.deposit_address;
-    }
-
-    @action.bound
-    onDisclaimerCheckboxChange(event) {
-        this.setIsDisclaimerCheckboxChecked(event.target.checked);
     }
 
     @action.bound
@@ -147,7 +141,6 @@ export default class OnRampStore extends BaseStore {
         this.setDepositAddress(null);
         this.setDepositAddressRef(null);
         this.setIsDepositAddressLoading(true);
-        this.setIsDisclaimerCheckboxChecked(false);
         this.setSelectedProvider(null);
         this.setShouldShowWidget(false);
     }
@@ -175,11 +168,6 @@ export default class OnRampStore extends BaseStore {
     @action.bound
     setIsDepositAddressLoading(is_loading) {
         this.is_deposit_address_loading = is_loading;
-    }
-
-    @action.bound
-    setIsDisclaimerCheckboxChecked(is_checked) {
-        this.is_disclaimer_checkbox_checked = is_checked;
     }
 
     @action.bound

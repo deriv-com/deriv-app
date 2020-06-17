@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Checkbox, HintBox, Icon, Loading, Popover } from '@deriv/components';
+import { Button, HintBox, Icon, Loading, Popover } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -9,17 +9,18 @@ const OnRampProviderPopup = ({
     deposit_address,
     is_deposit_address_loading,
     is_deposit_address_popover_open,
-    is_disclaimer_checkbox_checked,
     onClickCopyDepositAddress,
     onClickDisclaimerContinue,
     onClickGoToDepositPage,
-    onDisclaimerCheckboxChange,
     selected_provider,
     setDepositAddressRef,
     setIsOnRampModalOpen,
     should_show_dialog,
     should_show_widget,
 }) => {
+    if (selected_provider === null) {
+        return null;
+    }
     if (is_deposit_address_loading) {
         return <Loading is_fullscreen={false} />;
     }
@@ -103,25 +104,12 @@ const OnRampProviderPopup = ({
                         values={{ service: selected_provider.name }}
                     />
                 </div>
-                <div className='on-ramp__popup-disclaimer-checkbox'>
-                    <Checkbox
-                        label={localize("I've read the disclaimer, and I agree to the above terms.")}
-                        onChange={onDisclaimerCheckboxChange}
-                        defaultChecked={is_disclaimer_checkbox_checked}
-                    />
-                </div>
             </div>
             {!should_show_widget && deposit_address && (
                 <div className='on-ramp__popup-buttons'>
                     <Button.Group>
                         <Button large onClick={() => setIsOnRampModalOpen(false)} secondary text={localize('Cancel')} />
-                        <Button
-                            disabled={!is_disclaimer_checkbox_checked}
-                            large
-                            onClick={onClickDisclaimerContinue}
-                            primary
-                            text={localize('Continue')}
-                        />
+                        <Button large onClick={onClickDisclaimerContinue} primary text={localize('Continue')} />
                     </Button.Group>
                 </div>
             )}
@@ -134,7 +122,6 @@ OnRampProviderPopup.propTypes = {
     deposit_address: PropTypes.string,
     is_deposit_address_loading: PropTypes.bool,
     is_deposit_address_popover_open: PropTypes.bool,
-    is_disclaimer_checkbox_checked: PropTypes.bool,
     selected_provider: PropTypes.object,
     setDepositAddressRef: PropTypes.func,
     setIsOnRampModalOpen: PropTypes.func,
@@ -143,7 +130,6 @@ OnRampProviderPopup.propTypes = {
     onClickCopyDepositAddress: PropTypes.func,
     onClickDisclaimerContinue: PropTypes.func,
     onClickGoToDepositPage: PropTypes.func,
-    onDisclaimerCheckboxChange: PropTypes.func,
     pollApiForDepositAddress: PropTypes.func,
 };
 
@@ -152,7 +138,6 @@ export default connect(({ modules }) => ({
     deposit_address: modules.cashier.onramp.deposit_address,
     is_deposit_address_loading: modules.cashier.onramp.is_deposit_address_loading,
     is_deposit_address_popover_open: modules.cashier.onramp.is_deposit_address_popover_open,
-    is_disclaimer_checkbox_checked: modules.cashier.onramp.is_disclaimer_checkbox_checked,
     selected_provider: modules.cashier.onramp.selected_provider,
     setDepositAddressRef: modules.cashier.onramp.setDepositAddressRef,
     setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
@@ -161,6 +146,5 @@ export default connect(({ modules }) => ({
     onClickCopyDepositAddress: modules.cashier.onramp.onClickCopyDepositAddress,
     onClickDisclaimerContinue: modules.cashier.onramp.onClickDisclaimerContinue,
     onClickGoToDepositPage: modules.cashier.onramp.onClickGoToDepositPage,
-    onDisclaimerCheckboxChange: modules.cashier.onramp.onDisclaimerCheckboxChange,
     pollApiForDepositAddress: modules.cashier.onramp.pollApiForDepositAddress,
 }))(OnRampProviderPopup);

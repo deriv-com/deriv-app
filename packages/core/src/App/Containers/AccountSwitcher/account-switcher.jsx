@@ -17,7 +17,7 @@ import routes from '@deriv/shared/utils/routes';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { getMT5AccountDisplay } from 'Stores/Helpers/client';
+import { getMT5AccountDisplay, getMT5AccountType } from 'Stores/Helpers/client';
 import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
@@ -141,7 +141,7 @@ class AccountSwitcher extends React.Component {
         ];
 
         existing_mt5_groups.forEach(group => {
-            const type = group.split('\\')[1];
+            const type = group.split(/[demo|real]_/)[1];
             const index_to_remove = mt5_config.findIndex(account => account.account_types.indexOf(type) > -1);
             mt5_config.splice(index_to_remove, 1);
         });
@@ -192,7 +192,13 @@ class AccountSwitcher extends React.Component {
 
     get sorted_mt5_list() {
         // for MT5, synthetic, financial, financial stp
-        return this.props.mt5_login_list.slice().sort((a, b) => {
+        const mt5_login_list = [];
+        this.props.mt5_login_list.slice().forEach(account => {
+            const updated_account = { ...account };
+            updated_account.group = getMT5AccountType(account.group);
+            mt5_login_list.push(updated_account);
+        });
+        return mt5_login_list.sort((a, b) => {
             if (/demo/.test(a.group) && !/demo/.test(b.group)) {
                 return 1;
             }

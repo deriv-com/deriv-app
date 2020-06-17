@@ -24,7 +24,7 @@ export default class OnRampStore extends BaseStore {
             {
                 default_from_currency: 'usd',
                 description: localize(
-                    'The best instant cryptocurrency exchange platform with the best exchange rates for cryptocurrencies.'
+                    'Your simple access to crypto. Fast and secure way to exchange and purchase 150+ cryptocurrencies. 24/7 live-chat support.'
                 ),
                 from_currencies: ['usd', 'eur', 'gbp'],
                 getWidgetHtml() {
@@ -37,7 +37,7 @@ export default class OnRampStore extends BaseStore {
                 },
                 icon: 'IcCashierChangelly',
                 name: 'Changelly',
-                payment_icons: ['IcCashierVisa', 'IcCashierMastercard', 'IcCashierMaestro'],
+                payment_icons: ['IcCashierVisa', 'IcCashierMastercard'],
                 to_currencies: ['bch', 'btc', 'etc', 'eth', 'ltc', 'ust'],
                 type: 'widget',
             },

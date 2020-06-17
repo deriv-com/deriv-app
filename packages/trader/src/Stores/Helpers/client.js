@@ -10,7 +10,8 @@ export const getClientAccountType = loginid => {
 };
 
 // TODO: [move-to-shared] - Remove the implementation in ClientBase and add this to shared utils
-export const getMT5AccountType = group => (group ? group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP)/, '') : '');
+export const getMT5AccountType = group =>
+    group ? group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP|Bbook|HighRisk)/, '') : '';
 
 export const getMT5AccountDisplay = group => {
     if (!group) return {};

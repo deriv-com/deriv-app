@@ -27,7 +27,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
         is_refunded,
     } = data;
     const [remaining_time, setRemainingTime] = React.useState();
-    const { getLocalStorageSettingsForLoginId, loginid } = React.useContext(Dp2pContext);
+    const { getLocalStorageSettingsForLoginId } = React.useContext(Dp2pContext);
 
     let interval;
 

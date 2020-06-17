@@ -108,6 +108,12 @@
     &--red:before {
         background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(227, 28, 75, 0.16));
     }
+    &--loss {
+        color: var(--text-loss-danger);
+    }
+    &--profit {
+        color: var(--text-profit-success);
+    }
     &:before {
         content: '';
         position: absolute;
@@ -293,7 +299,6 @@
         }
         .remaining-time {
             border-radius: 0.4rem;
-            color: var(--text-loss-danger);
             font-size: 1.2rem;
             margin-left: 0.8rem;
             padding-top: 0.2rem;

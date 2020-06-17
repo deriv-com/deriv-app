@@ -13,7 +13,7 @@ import { getCurrentTick } from 'Stores/Modules/Portfolio/Helpers/details';
 import { getDisplayStatus, getCancellationPrice, getIndicativePrice } from 'Stores/Modules/Contract/Helpers/logic';
 
 const MultiplierCardBody = ({ contract_info, contract_update, currency, status }) => {
-    const { buy_price, bid_price, is_sold, limit_order } = contract_info;
+    const { buy_price, bid_price, is_sold, limit_order, profit } = contract_info;
 
     const total_profit = bid_price - buy_price;
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_update || limit_order);
@@ -27,7 +27,14 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, status }
                         <Money amount={buy_price - cancellation_price} currency={currency} />
                     </ContractCardItem>
                     <ContractCardItem header={localize('Current stake')}>
-                        <Money amount={bid_price} currency={currency} />
+                        <div
+                            className={classNames({
+                                'contract-card--profit': +profit > 0,
+                                'contract-card--loss': +profit < 0,
+                            })}
+                        >
+                            <Money amount={bid_price} currency={currency} />
+                        </div>
                     </ContractCardItem>
                     <ContractCardItem header={localize('Deal cancel. fee:')}>
                         {cancellation_price ? (

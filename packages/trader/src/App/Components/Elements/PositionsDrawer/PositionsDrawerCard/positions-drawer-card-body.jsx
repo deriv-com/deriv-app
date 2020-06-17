@@ -24,7 +24,7 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, status }
                     </span>
                 </div>
                 <div className='positions-drawer-card__item'>
-                    <span className='positions-drawer-card__item-label'>{localize('Current stake')}</span>
+                    <span className='positions-drawer-card__item-label'>{localize('Current stake:')}</span>
                     <span
                         className={classNames('positions-drawer-card__item-value', {
                             'positions-drawer-card__profit-loss--is-crypto': CurrencyUtils.isCryptocurrency(currency),

@@ -26,7 +26,7 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, status }
                     <ContractCardItem header={localize('Stake:')}>
                         <Money amount={buy_price - cancellation_price} currency={currency} />
                     </ContractCardItem>
-                    <ContractCardItem header={localize('Current stake')}>
+                    <ContractCardItem header={localize('Current stake:')}>
                         <div
                             className={classNames({
                                 'contract-card--profit': +profit > 0,

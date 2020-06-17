@@ -81,6 +81,17 @@ class App extends React.Component {
         Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
     }
 
+    createAdvertiser(name, setStatus) {
+        this.ws_subscriptions.advertiser_subscription = subscribeWS({ p2p_advertiser_create: 1, name, subscribe: 1 }, [
+            this.setCreateAdvertiser,
+            response => {
+                if (response.error) {
+                    setStatus({ error_message: response.error.message });
+                }
+            },
+        ]);
+    }
+
     redirectTo = (path_name, params = null) => {
         this.setState({ active_index: path[path_name], parameters: params });
     };
@@ -95,6 +106,18 @@ class App extends React.Component {
 
     handleTabClick = idx => {
         this.setState({ active_index: idx, parameters: null });
+    };
+
+    setCreateAdvertiser = response => {
+        const { p2p_advertiser_create } = response;
+
+        this.setState({
+            advertiser_id: p2p_advertiser_create.id,
+            is_advertiser: !!p2p_advertiser_create.is_approved,
+            nickname: p2p_advertiser_create.name,
+        });
+        this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
+        this.toggleNicknamePopup();
     };
 
     setIsAdvertiser = response => {
@@ -285,6 +308,7 @@ class App extends React.Component {
                     poi_url,
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
                     getLocalStorageSettings: this.getLocalStorageSettings.bind(this),
+                    createAdvertiser: this.createAdvertiser.bind(this),
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
@@ -312,10 +336,7 @@ class App extends React.Component {
                     {show_popup && (
                         <div className='p2p-nickname__dialog'>
                             <Dialog is_visible={show_popup}>
-                                <NicknameForm
-                                    handleClose={this.onNicknamePopupClose}
-                                    handleConfirm={this.toggleNicknamePopup}
-                                />
+                                <NicknameForm handleClose={this.onNicknamePopupClose} />
                             </Dialog>
                         </div>
                     )}

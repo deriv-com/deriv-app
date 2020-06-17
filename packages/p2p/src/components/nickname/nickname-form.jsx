@@ -9,27 +9,10 @@ import IconClose from 'Assets/icon-close.jsx';
 import FormError from '../form/error.jsx';
 import './nickname-form.scss';
 
-const NicknameForm = ({ handleClose, handleConfirm }) => {
-    const { setNickname, setIsAdvertiser, setChatInfo } = React.useContext(Dp2pContext);
+const NicknameForm = ({ handleClose }) => {
+    const { createAdvertiser } = React.useContext(Dp2pContext);
 
-    const handleSubmit = (values, { setStatus, setSubmitting }) => {
-        requestWS({ p2p_advertiser_create: 1, name: values.nickname }).then(response => {
-            if (response.error) {
-                setStatus({ error_message: response.error.message });
-            } else {
-                const { p2p_advertiser_create } = response;
-
-                setNickname(p2p_advertiser_create.name);
-                setIsAdvertiser(p2p_advertiser_create.is_approved);
-                setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
-                if (typeof handleConfirm === 'function') {
-                    handleConfirm();
-                }
-            }
-
-            setSubmitting(false);
-        });
-    };
+    const handleSubmit = (values, { setStatus }) => createAdvertiser(values.nickname, setStatus);
 
     const validatePopup = values => {
         const validations = {

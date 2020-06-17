@@ -38,6 +38,7 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
                 v => v.length >= 2,
                 v => v.length <= 24,
                 v => /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9-_@.]{2,24}$/.test(v),
+                v => Array.from(v).every(word => (v.match(new RegExp(word, 'g')) || []).length <= 5),
             ],
         };
 
@@ -45,6 +46,7 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
             localize('Nickname is required'),
             localize('Nickname is too short'),
             localize('Nickname is too long'),
+            localize('Nickname is in incorrect format'),
             localize('Nickname is in incorrect format'),
         ];
 
@@ -57,6 +59,7 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
 
             if (error_index !== -1) {
                 switch (key) {
+                    case 'nickname':
                     default: {
                         errors[key] = nickname_messages[error_index];
                         break;

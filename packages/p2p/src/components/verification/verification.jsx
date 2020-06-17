@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Checklist } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
-import { Localize, localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
 import './verification.scss';
 
 const Verification = ({ poi_status }) => {

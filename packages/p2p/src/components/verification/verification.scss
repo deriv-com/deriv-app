@@ -17,8 +17,10 @@
             font-weight: bold;
             margin-bottom: 1rem;
             line-height: 1.5;
+            color: var(--text-general);
         }
         &-description {
+            color: var(--text-general);
             font-size: var(--text-size-xs);
             margin-bottom: 2.4rem;
             line-height: 1.43;

@@ -8,6 +8,7 @@ import {
     ToggleFullScreen,
     ToggleSettings,
     HelpCentre,
+    ComplaintsPolicy,
 } from 'App/Components/Layout/Footer';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
@@ -41,6 +42,7 @@ const Footer = ({
                 enableApp={enableApp}
                 settings_extension={settings_extension}
             />
+            <ComplaintsPolicy />
             <ToggleFullScreen />
         </div>
     </footer>

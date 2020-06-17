@@ -4,3 +4,4 @@ export * from './endpoint-note.jsx';
 export * from './toggle-fullscreen.jsx';
 export * from './toggle-settings.jsx';
 export * from './help-centre.jsx';
+export * from './complaints-policy.jsx';

@@ -106,7 +106,7 @@ class PersonalDetails extends React.Component {
                                             }
                                         />
                                     </p>
-                                    <ThemedScrollbars is_native={isMobile()} autoHide height={height}>
+                                    <ThemedScrollbars is_bypassed={isMobile()} height={height}>
                                         <div
                                             className='details-form__elements'
                                             style={{ paddingBottom: this.state.paddingBottom }}

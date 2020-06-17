@@ -31,7 +31,7 @@ class Transactions extends React.PureComponent {
                     </span>
                 </div>
                 <div className='transactions__content'>
-                    <ThemedScrollbars autoHide>
+                    <ThemedScrollbars height='calc(100% - 8px)'>
                         {elements.length ? (
                             <TransitionGroup>
                                 {elements.map(element => {

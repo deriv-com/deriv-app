@@ -2,12 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Input, Button, ThemedScrollbars, Icon } from '@deriv/components';
+import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import IconClose from 'Assets/icon-close.jsx';
 import FormError from '../form/error.jsx';
+import './nickname-form.scss';
 
-const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
+const NicknameForm = ({ handleClose, handleConfirm }) => {
+    const { setNickname, setIsAdvertiser, setChatInfo } = React.useContext(Dp2pContext);
+
     const handleSubmit = (values, { setStatus, setSubmitting }) => {
         requestWS({ p2p_advertiser_create: 1, name: values.nickname }).then(response => {
             if (response.error) {
@@ -16,7 +20,11 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
                 const { p2p_advertiser_create } = response;
 
                 setNickname(p2p_advertiser_create.name);
+                setIsAdvertiser(p2p_advertiser_create.is_approved);
                 setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
+                if (typeof handleConfirm === 'function') {
+                    handleConfirm();
+                }
             }
 
             setSubmitting(false);
@@ -62,9 +70,9 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
 
     return (
         <>
-            <div className='buy-sell__popup-header buy-sell__popup-header--no-border'>
-                <div className='buy-sell__popup-header_wrapper buy-sell__popup-header_right'>
-                    <IconClose className='buy-sell__popup-close_icon' onClick={handleClose} />
+            <div className='nickname__form-header nickname__form-header--no-border'>
+                <div className='nickname__form-header_wrapper nickname__form-header_right'>
+                    <IconClose className='nickname__form-close_icon' onClick={handleClose} />
                 </div>
             </div>
             <Formik validate={validatePopup} initialValues={{ nickname: '' }} onSubmit={handleSubmit}>
@@ -75,9 +83,9 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
                                 <Icon icon='IcCashierP2pUser' width='128' height='128' />
                                 <h5 className='buy-sell__popup-content--title'>{localize('Choose a nickname')}</h5>
                                 <p className='buy-sell__popup-content--text'>
-                                    {localize('You will appear to other users as:')}
+                                    {localize('You will appear to other users as')}
                                 </p>
-                                <div className='buy-sell__popup-field_wrapper'>
+                                <div className='nickname__form-field_wrapper'>
                                     <Field name='nickname'>
                                         {({ field }) => (
                                             <Input
@@ -85,7 +93,7 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
                                                 data-lpignore='true'
                                                 error={errors.nickname}
                                                 label={localize('Your nickname')}
-                                                className='buy-sell__popup-field'
+                                                className='nickname__form-field'
                                                 onChange={handleChange}
                                                 required
                                             />
@@ -106,13 +114,13 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
                                 </div>
                             </div>
                         </ThemedScrollbars>
-                        <div className='buy-sell__popup-footer'>
+                        <div className='nickname__form-footer'>
                             {status && status.error_message && <FormError message={status.error_message} />}
                             <Button.Group>
                                 <Button secondary type='button' onClick={handleClose} large>
                                     {localize('Cancel')}
                                 </Button>
-                                <Button type='submit' is_disabled={!!(isSubmitting || errors.amount)} primary large>
+                                <Button type='submit' is_disabled={!!(isSubmitting || errors.nickname)} primary large>
                                     {localize('Confirm')}
                                 </Button>
                             </Button.Group>

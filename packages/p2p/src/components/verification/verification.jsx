@@ -31,7 +31,11 @@ const Verification = ({ poi_status }) => {
     ];
 
     if (!is_advertiser && poi_status === 'verified' && nickname) {
-        return <div>{localize('Your P2P cashier has been blocked. Please contact customer support')}</div>;
+        return (
+            <div className='p2p-blocked-user'>
+                <Localize i18n_default_text='Your P2P cashier has been blocked. Please contact customer support.' />
+            </div>
+        );
     }
 
     return (

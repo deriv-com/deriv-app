@@ -33,7 +33,7 @@ class ToggleAds extends React.Component {
                 this.setState({ error: response.error.message });
             } else {
                 const { p2p_advertiser_update } = response;
-                setIsListed(p2p_advertiser_update.is_listed === 1 ? true : false);
+                this.context.setIsListed(p2p_advertiser_update.is_listed === 1);
             }
         });
     };

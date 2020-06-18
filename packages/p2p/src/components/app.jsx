@@ -104,7 +104,7 @@ class App extends React.Component {
             this.setState({
                 advertiser_id: p2p_advertiser_info.id,
                 is_advertiser: !!p2p_advertiser_info.is_approved,
-                is_listed: p2p_advertiser_info.is_listed === 1 ? true : false,
+                is_listed: p2p_advertiser_info.is_listed === 1,
                 nickname: p2p_advertiser_info.name,
             });
         } else if (response.error.code === 'RestrictedCountry') {

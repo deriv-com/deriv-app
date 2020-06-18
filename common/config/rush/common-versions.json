@@ -55,9 +55,22 @@
      * For example, allow some projects to use an older TypeScript compiler
      * (in addition to whatever "usual" version is being used by other projects in the repo):
      */
-    // "typescript": [
-      // "~2.4.0"
-      //
-    // ]
+     "mobx": [
+       "^5.0.3",
+       "^5.9.4",
+     ],
+     "react-transition-group": [
+       "^4.0.1",
+       "^4.2.2",
+       "^2.5.0",
+     ],
+     "mocha": [
+       "^6.1.4",
+       "^7.1.1",
+     ],
+     "terser-webpack-plugin": [
+       "^1.3.0",
+       "^2.2.2",
+     ],
   }
 }

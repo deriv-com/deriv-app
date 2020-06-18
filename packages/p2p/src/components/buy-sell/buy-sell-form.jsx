@@ -143,7 +143,7 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
                     const is_valid = is_buyer ? Object.keys(errors).length === 0 : isValid;
                     return (
                         <Form noValidate>
-                            <ThemedScrollbars style={{ height: '307px' }}>
+                            <ThemedScrollbars height='307px'>
                                 <div className='buy-sell__popup-content'>
                                     <div className='buy-sell__popup-info'>
                                         <span className='buy-sell__popup-info--title'>{localize('Price')}</span>

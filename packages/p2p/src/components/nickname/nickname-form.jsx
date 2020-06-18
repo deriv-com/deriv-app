@@ -39,10 +39,9 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
                 v => v.length <= 24,
                 v => /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
                 v =>
-                    Array.from(v).every(word => {
-                        if (word === '.') word = `\\${word}`;
-                        return (v.match(new RegExp(word, 'g')) || []).length <= 5;
-                    }),
+                    Array.from(v).every(
+                        word => (v.match(new RegExp(word === '.' ? `\\${word}` : word, 'g')) || []).length <= 5
+                    ),
             ],
         };
 

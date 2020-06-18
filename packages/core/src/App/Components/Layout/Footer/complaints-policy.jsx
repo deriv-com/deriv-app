@@ -1,5 +1,3 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Modal, ThemedScrollbars, Popover } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
@@ -119,12 +117,12 @@ const ComplaintsPolicy = ({ landing_company_shortcode } = {}) => {
                     components={[<span className='complaints-policy__list-item-prefix' key={0} />]}
                 />,
                 <Localize
-                    key={0}
+                    key={1}
                     i18n_default_text='<0>b.</0>The Head of the Dispute Resolution Committee (DRC) will contact both you and us within 5 business days to obtain all necessary information and see if there is a chance to settle the complaint during the investigation phase.'
                     components={[<span className='complaints-policy__list-item-prefix' key={0} />]}
                 />,
                 <Localize
-                    key={0}
+                    key={2}
                     i18n_default_text='<0>c.</0>If no settlement opportunity can be found, the complaint will proceed to the determination phase to be handled by the DRC.'
                     components={[<span className='complaints-policy__list-item-prefix' key={0} />]}
                 />,
@@ -148,7 +146,7 @@ const ComplaintsPolicy = ({ landing_company_shortcode } = {}) => {
                     ]}
                 />,
                 <Localize
-                    key={0}
+                    key={1}
                     i18n_default_text='<0>b.</0>The DRC may request additional information from you or us, who must then provide the requested information within 7 days.'
                     components={[<span className='complaints-policy__list-item-prefix' key={0} />]}
                 />,
@@ -163,17 +161,17 @@ const ComplaintsPolicy = ({ landing_company_shortcode } = {}) => {
                     components={[<span className='complaints-policy__list-item-prefix' key={0} />]}
                 />,
                 <Localize
-                    key={0}
+                    key={1}
                     i18n_default_text='<0>b.</0>If you agree with a DRC decision, you will need to accept it within 14 days. If you do not respond to the DRC decision within 14 days, the complaint is considered closed.'
                     components={[<span className='complaints-policy__list-item-prefix' key={0} />]}
                 />,
                 <Localize
-                    key={0}
+                    key={2}
                     i18n_default_text='<0>c.</0>We must award the settlement within 28 days of when the decision is reached.'
                     components={[<span className='complaints-policy__list-item-prefix' key={0} />]}
                 />,
                 <Localize
-                    key={0}
+                    key={3}
                     i18n_default_text='<0>d.</0>If the decision is made in our favour, you must provide a release for us within 7 days of when the decision is made, and the complaint will be considered closed.'
                     components={[<span className='complaints-policy__list-item-prefix' key={0} />]}
                 />,

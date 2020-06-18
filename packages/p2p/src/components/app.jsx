@@ -11,6 +11,7 @@ import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
 import NicknameForm from './nickname/nickname-form.jsx';
+import Verification from './verification/verification.jsx';
 import './app.scss';
 
 const allowed_currency = 'USD';
@@ -23,6 +24,8 @@ const path = {
 };
 
 class App extends React.Component {
+    is_mounted = false;
+
     constructor(props) {
         super(props);
 
@@ -50,6 +53,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        this.is_mounted = true;
         this.ws_subscriptions.push(
             ...[
                 subscribeWS(
@@ -79,6 +83,7 @@ class App extends React.Component {
     }
 
     componentWillUnmount() {
+        this.is_mounted = false;
         this.ws_subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
@@ -112,6 +117,20 @@ class App extends React.Component {
             this.setState({ is_advertiser: false });
         } else {
             this.ws_subscriptions[0].unsubscribe();
+        }
+
+        if (!this.state.is_advertiser) {
+            requestWS({ get_account_status: 1 }).then(response => {
+                if (this.is_mounted && !response.error) {
+                    const { get_account_status } = response;
+                    const { authentication } = get_account_status;
+                    const { identity } = authentication;
+
+                    this.setState({
+                        poi_status: identity.status,
+                    });
+                }
+            });
         }
     };
 
@@ -282,14 +301,16 @@ class App extends React.Component {
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
                     getLocalStorageSettings: this.getLocalStorageSettings.bind(this),
+                    poi_status: this.state.poi_status,
                 }}
             >
-                {show_verification ? (
-                    <div className='p2p-cashier--verification'>
-                        <div className='p2p-cashier--verification-text'>Test</div>
-                    </div>
-                ) : (
-                    <main className={classNames('p2p-cashier', className)}>
+                <main className={classNames('p2p-cashier', className)}>
+                    {show_verification && (
+                        <div className='p2p-cashier--verification'>
+                            <Verification />
+                        </div>
+                    )}
+                    {!show_verification && (
                         <Tabs
                             onTabItemClick={this.handleTabClick}
                             active_index={active_index}
@@ -311,18 +332,18 @@ class App extends React.Component {
                                     <MyProfile navigate={this.redirectTo} params={parameters} />
                                 </div> */}
                         </Tabs>
-                        {show_popup && (
-                            <div className='p2p-nickname__dialog'>
-                                <Dialog is_visible={show_popup}>
-                                    <NicknameForm
-                                        handleClose={this.onNicknamePopupClose}
-                                        handleConfirm={this.toggleNicknamePopup}
-                                    />
-                                </Dialog>
-                            </div>
-                        )}
-                    </main>
-                )}
+                    )}
+                    {show_popup && (
+                        <div className='p2p-nickname__dialog'>
+                            <Dialog is_visible={show_popup}>
+                                <NicknameForm
+                                    handleClose={this.onNicknamePopupClose}
+                                    handleConfirm={this.toggleNicknamePopup}
+                                />
+                            </Dialog>
+                        </div>
+                    )}
+                </main>
             </Dp2pProvider>
         );
     }

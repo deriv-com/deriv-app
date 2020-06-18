@@ -22,31 +22,12 @@ const buy_sell_filters = [
 ];
 
 class BuySell extends React.Component {
-    is_mounted = false;
     state = {
         table_type: 'buy',
         selected_ad: {},
         show_popup: false,
         show_verification: false,
     };
-
-    componentWillMount() {
-        this.is_mounted = true;
-
-        if (!this.context.is_advertiser) {
-            requestWS({ get_account_status: 1 }).then(response => {
-                if (this.is_mounted && !response.error) {
-                    const { get_account_status } = response;
-                    const { authentication } = get_account_status;
-                    const { identity } = authentication;
-
-                    this.setState({
-                        poi_status: identity.status,
-                    });
-                }
-            });
-        }
-    }
 
     setSelectedAd = selected_ad => {
         if (!this.context.is_advertiser) {
@@ -78,7 +59,7 @@ class BuySell extends React.Component {
             return (
                 <>
                     <PageReturn onClick={this.hideVerification} page_title={localize('Back')} />
-                    <Verification poi_status={this.state.poi_status} />
+                    <Verification />
                 </>
             );
 

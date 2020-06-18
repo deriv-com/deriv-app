@@ -60,11 +60,6 @@ const Redirect = ({
             }
             break;
         }
-        case 'document_verification': {
-            sessionStorage.setItem('redirect_url', routes.proof_of_identity);
-            window.location.href = Login.loginUrl();
-            return null;
-        }
         case 'verification': {
             sessionStorage.setItem('redirect_url', `${routes.cashier_p2p}#verification`);
             window.location.href = Login.loginUrl();

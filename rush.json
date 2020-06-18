@@ -359,6 +359,38 @@
     {
       "packageName": "@deriv/shared",
       "projectFolder": "packages/shared"
+    },
+    {
+      "packageName": "@deriv/core",
+      "projectFolder": "packages/core"
+    },
+    {
+      "packageName": "@deriv/bot-web-ui",
+      "projectFolder": "packages/bot-web-ui"
+    },
+    {
+      "packageName": "@deriv/bot-skeleton",
+      "projectFolder": "packages/bot-skeleton"
+    },
+    {
+      "packageName": "@deriv/components",
+      "projectFolder": "packages/components"
+    },
+    {
+      "packageName": "@deriv/account",
+      "projectFolder": "packages/account"
+    },
+    {
+      "packageName": "@deriv/p2p",
+      "projectFolder": "packages/p2p"
+    },
+    {
+      "packageName": "@deriv/trader",
+      "projectFolder": "packages/trader"
+    },
+    {
+      "packageName": "@deriv/translations",
+      "projectFolder": "packages/translations"
     }
     // {
     //   /**

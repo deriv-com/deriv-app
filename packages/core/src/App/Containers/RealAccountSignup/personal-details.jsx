@@ -1,19 +1,20 @@
 import {
     Autocomplete,
-    Div100vhContainer,
     AutoHeightWrapper,
-    Input,
-    ThemedScrollbars,
+    Checkbox,
     DateOfBirthPicker,
+    Div100vhContainer,
     FormSubmitButton,
+    Input,
+    RadioGroup,
+    ThemedScrollbars,
 } from '@deriv/components';
-import { Formik, Field } from 'formik';
+import { Field, Formik } from 'formik';
 import React from 'react';
-import Checkbox from '@deriv/components/src/components/checkbox';
 import { FormSubHeader } from '@deriv/account';
+import { toMoment } from '@deriv/shared/utils/date';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
-import { toMoment } from '@deriv/shared/utils/date';
 import 'Sass/details-form.scss';
 
 const DateOfBirthField = props => (
@@ -104,32 +105,26 @@ class PersonalDetails extends React.Component {
                                             }
                                         />
                                     </p>
-                                    <ThemedScrollbars is_native={isMobile()} autoHide height={height}>
+                                    <ThemedScrollbars is_bypassed={isMobile()} height={height}>
                                         <div
                                             className='details-form__elements'
                                             style={{ paddingBottom: this.state.paddingBottom }}
                                         >
                                             <FormSubHeader title={localize('Title and name')} />
                                             {/* TODO: [deriv-eu] Remove salutation once api is optional */}
+
                                             {'salutation' in this.props.value && (
-                                                <Field name='salutation'>
-                                                    {({ field }) => (
-                                                        <Autocomplete
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            disabled={this.props.disabled_items.includes('salutation')}
-                                                            autoComplete='off' // prevent chrome autocomplete
-                                                            type='text'
-                                                            label={localize('Title')}
-                                                            error={touched.salutation && errors.salutation}
-                                                            list_items={this.props.salutation_list}
-                                                            onItemSelection={({ value, text }) =>
-                                                                setFieldValue('salutation', value ? text : '', true)
-                                                            }
-                                                            required
-                                                        />
-                                                    )}
-                                                </Field>
+                                                <RadioGroup
+                                                    className='dc-radio__input'
+                                                    name='salutation'
+                                                    items={this.props.salutation_list}
+                                                    selected={values.salutation}
+                                                    onToggle={e => {
+                                                        e.persist();
+                                                        setFieldValue('salutation', e.target.value);
+                                                    }}
+                                                    required
+                                                />
                                             )}
                                             {'first_name' in this.props.value && (
                                                 <FormInputField
@@ -145,13 +140,6 @@ class PersonalDetails extends React.Component {
                                                     label={localize('Last name')}
                                                     disabled={this.props.disabled_items.includes('last_name')}
                                                     placeholder={localize('Doe')}
-                                                />
-                                            )}
-                                            {'phone' in this.props.value && (
-                                                <FormInputField
-                                                    name='phone'
-                                                    label={localize('Phone number')}
-                                                    placeholder={localize('Phone number')}
                                                 />
                                             )}
                                             <FormSubHeader title={localize('Other details')} />
@@ -195,8 +183,9 @@ class PersonalDetails extends React.Component {
                                                             label={localize('Citizenship')}
                                                             error={touched.citizen && errors.citizen}
                                                             disabled={
-                                                                this.props.value.citizen &&
-                                                                this.props.is_fully_authenticated
+                                                                (this.props.value.citizen &&
+                                                                    this.props.is_fully_authenticated) ||
+                                                                this.props.disabled_items.includes('citizen')
                                                             }
                                                             list_items={this.props.residence_list}
                                                             onItemSelection={({ value, text }) =>
@@ -206,6 +195,13 @@ class PersonalDetails extends React.Component {
                                                         />
                                                     )}
                                                 </Field>
+                                            )}
+                                            {'phone' in this.props.value && (
+                                                <FormInputField
+                                                    name='phone'
+                                                    label={localize('Phone number')}
+                                                    placeholder={localize('Phone number')}
+                                                />
                                             )}
                                             {('tax_residence' in this.props.value ||
                                                 'tax_identification_number' in this.props.value) && (
@@ -231,7 +227,6 @@ class PersonalDetails extends React.Component {
                                                                             true
                                                                         )
                                                                     }
-                                                                    required
                                                                 />
                                                             )}
                                                         </Field>

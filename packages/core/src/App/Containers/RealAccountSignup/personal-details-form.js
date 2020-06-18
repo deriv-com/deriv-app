@@ -63,7 +63,9 @@ const personal_details_config = ({ residence_list, account_settings }) => {
             },
             citizen: {
                 supported_in: ['iom', 'malta', 'maltainvest'],
-                default_value: account_settings.citizen ?? '',
+                default_value: account_settings.citizen
+                    ? residence_list.find(item => item.value === account_settings.citizen).text
+                    : '',
                 rules: [['req', localize('Citizenship is required')]],
             },
             phone: {
@@ -75,8 +77,10 @@ const personal_details_config = ({ residence_list, account_settings }) => {
                 ],
             },
             tax_residence: {
-                default_value: account_settings.tax_residence ?? '',
-                supported_in: ['maltainvest'],
+                default_value: account_settings.tax_residence
+                    ? residence_list.find(item => item.value === account_settings.tax_residence).text
+                    : '',
+                supported_in: ['maltainvest', 'iom', 'malta'],
                 rules: [['req', localize('Tax residence is required')]],
             },
             tax_identification_number: {
@@ -122,7 +126,10 @@ export const personalDetailsConfig = ({ real_account_signup_target, residence_li
         body: PersonalDetails,
         form_value: getDefaultFields(real_account_signup_target, config),
         props: {
-            validate: generateValidationFunction(real_account_signup_target, config),
+            validate: generateValidationFunction(
+                real_account_signup_target,
+                transformConfig(config, { real_account_signup_target })
+            ),
             account_opening_reason_list: [
                 {
                     text: localize('Hedging'),
@@ -143,19 +150,19 @@ export const personalDetailsConfig = ({ real_account_signup_target, residence_li
             ],
             salutation_list: [
                 {
-                    text: localize('Mr'),
+                    label: localize('Mr'),
                     value: 'Mr',
                 },
                 {
-                    text: localize('Ms'),
+                    label: localize('Ms'),
                     value: 'Ms',
                 },
                 {
-                    text: localize('Mrs'),
+                    label: localize('Mrs'),
                     value: 'Mrs',
                 },
                 {
-                    text: localize('Miss'),
+                    label: localize('Miss'),
                     value: 'Miss',
                 },
             ],
@@ -163,4 +170,12 @@ export const personalDetailsConfig = ({ real_account_signup_target, residence_li
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
     };
+};
+
+const transformConfig = (config, { real_account_signup_target }) => {
+    // Remove required rule for malta and iom
+    if (['malta', 'iom'].includes(real_account_signup_target)) {
+        config.tax_residence.rules.shift();
+    }
+    return config;
 };

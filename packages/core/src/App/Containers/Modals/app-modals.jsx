@@ -36,6 +36,7 @@ const AppModals = ({
             ComponentToLoad = <AccountSignupModal />;
             break;
         default:
+            // TODO: [deriv-eu] Remove this pop up after EU merge into production
             if (is_denial_of_service_modal_visible) {
                 const denialOfServiceOnCancel = () => {
                     const trade_link = isMT5() ? 'user/metatrader' : 'trading';

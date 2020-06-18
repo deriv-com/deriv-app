@@ -204,7 +204,7 @@ class ApiToken extends React.Component {
                     </div>
                 </Modal>
                 <div className='api-token__wrapper'>
-                    <ThemedScrollbars autoHide className='api-token__scrollbars' hideHorizontal={true}>
+                    <ThemedScrollbars className='api-token__scrollbars'>
                         <MobileWrapper>
                             <Article />
                         </MobileWrapper>

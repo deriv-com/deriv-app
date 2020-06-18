@@ -17,12 +17,20 @@ import { getContractTypesConfig } from 'Stores/Modules/Trading/Constants/contrac
 import { isCallPut } from 'Stores/Modules/Contract/Helpers/contract-type';
 import PositionsDrawerCard from './PositionsDrawerCard';
 
+const ThemedScrollbarsWrapper = React.forwardRef((props, ref) => (
+    <ThemedScrollbars {...props} height='calc(100vh - 220px)' forwardedRef={ref}>
+        {props.children}
+    </ThemedScrollbars>
+));
+// Display name is required by Developer Tools to give a name to the components we use.
+// If a component doesn't have a displayName is will be shown as <Unknown />. Hence, name is set.
+ThemedScrollbarsWrapper.displayName = 'ThemedScrollbars';
+
 class PositionsDrawer extends React.Component {
     state = {};
 
     componentDidMount() {
         this.props.onMount();
-        this.ListScrollbar = this.getListScrollbar();
 
         // Todo: Handle Resizing
         this.setState({
@@ -158,33 +166,6 @@ class PositionsDrawer extends React.Component {
         return is_multiplier_contract ? 238 : classic_contract_height;
     };
 
-    getListScrollbar() {
-        const ListScrollbar = React.forwardRef((props, ref) => {
-            const { children, style, onScroll } = props;
-
-            const refCallback = forwardRef => {
-                this.scrollbar_ref = forwardRef;
-                ref.call(this, forwardRef);
-            };
-
-            return (
-                <ThemedScrollbars
-                    list_ref={refCallback}
-                    style={{ ...style, overflow: 'hidden' }}
-                    onScroll={onScroll}
-                    autoHide
-                >
-                    {children}
-                </ThemedScrollbars>
-            );
-        });
-        // Display name is required by Developer Tools to give a name to the components we use.
-        // If a component doesn't have a displayName is will be shown as <Unknown />. Hence, name is set.
-        ListScrollbar.displayName = 'ListScrollbar';
-
-        return ListScrollbar;
-    }
-
     render() {
         const { all_positions, error, is_empty, is_positions_drawer_on, symbol, toggleDrawer } = this.props;
 
@@ -203,7 +184,7 @@ class PositionsDrawer extends React.Component {
                                 itemData={this.positions}
                                 itemSize={this.getCachedPositionHeight}
                                 height={this.state.drawer_height}
-                                outerElementType={is_empty ? null : this.ListScrollbar}
+                                outerElementType={is_empty ? null : ThemedScrollbarsWrapper}
                                 ref={el => (this.list_ref = el)}
                                 useIsScrolling
                             >

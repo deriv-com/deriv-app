@@ -46,7 +46,7 @@ const Verification = () => {
                         <Localize i18n_default_text='Register with us here' />
                     </p>
                     <p>
-                        <Localize i18n_default_text='We’ll need you to upload your documents to verify your identity and address.' />
+                        <Localize i18n_default_text='To use DP2P, you need to choose a display name (a nickname) and verify your identity.' />
                     </p>
                 </div>
             </div>

@@ -120,9 +120,9 @@ class App extends React.Component {
         }
 
         if (!this.state.is_advertiser) {
-            requestWS({ get_account_status: 1 }).then(response => {
-                if (this.is_mounted && !response.error) {
-                    const { get_account_status } = response;
+            requestWS({ get_account_status: 1 }).then(account_response => {
+                if (this.is_mounted && !account_response.error) {
+                    const { get_account_status } = account_response;
                     const { authentication } = get_account_status;
                     const { identity } = authentication;
 

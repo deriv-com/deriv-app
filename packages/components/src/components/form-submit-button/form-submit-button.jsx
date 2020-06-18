@@ -13,6 +13,7 @@ const FormSubmitButton = ({
     is_loading,
     label,
     onCancel,
+    ...props
 }) => {
     return (
         <div
@@ -32,6 +33,7 @@ const FormSubmitButton = ({
                 is_loading={is_loading}
                 primary
                 large
+                {...props}
             />
         </div>
     );

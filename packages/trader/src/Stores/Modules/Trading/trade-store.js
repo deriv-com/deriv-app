@@ -16,6 +16,7 @@ import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
 import { processTradeParams } from './Helpers/process';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
+import { getBarrierPipSize } from './Helpers/barrier';
 import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
@@ -107,6 +108,8 @@ export default class TradeStore extends BaseStore {
     @observable commission = 0;
     @observable cancellation_price = 0;
     @observable hovered_contract_type;
+    @observable cancellation_duration = '60m';
+    @observable cancellation_range_list = [];
 
     // Mobile
     @observable is_trade_params_expanded = true;
@@ -461,6 +464,11 @@ export default class TradeStore extends BaseStore {
     }
 
     @computed
+    get barrier_pipsize() {
+        return getBarrierPipSize(this.barrier_1);
+    }
+
+    @computed
     get main_barrier_flattened() {
         const is_digit_trade_type = isDigitTradeType(this.contract_type);
         return is_digit_trade_type ? null : toJS(this.main_barrier);
@@ -504,7 +512,7 @@ export default class TradeStore extends BaseStore {
             processPurchase(proposal_id, price).then(
                 action(response => {
                     const last_digit = +this.last_digit;
-                    if (this.proposal_info[type].id !== proposal_id) {
+                    if (this.proposal_info[type]?.id !== proposal_id) {
                         throw new Error('Proposal ID does not match.');
                     }
                     if (response.buy) {
@@ -903,14 +911,13 @@ export default class TradeStore extends BaseStore {
             if (!this.is_symbol_in_active_symbols) this.setActiveSymbols();
         }
         this.setContractTypes();
+
         return this.processNewValuesAsync(
             { currency: this.root_store.client.currency || this.root_store.client.default_currency },
             true,
             { currency: this.currency },
             false
-        )
-            .then(this.refresh)
-            .then(this.requestProposal);
+        );
     }
 
     @action.bound
@@ -985,20 +992,8 @@ export default class TradeStore extends BaseStore {
 
         await this.processNewValuesAsync({ currency: new_currency }, true, { currency: this.currency }, false);
         this.refresh();
-        WS.forgetAll('balance').then(() => {
-            // the first has to be without subscribe to quickly update current account's balance
-            WS.authorized.balance().then(this.handleResponseBalance);
-            // the second is to subscribe to balance and update all sibling accounts' balances too
-            WS.subscribeBalanceAll(this.handleResponseBalance);
-        });
         this.debouncedProposal();
     }
-
-    handleResponseBalance = response => {
-        if (response.balance) {
-            this.root_store.client.setBalance(response.balance);
-        }
-    };
 
     @action.bound
     onUnmount() {

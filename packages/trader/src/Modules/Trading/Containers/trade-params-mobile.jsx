@@ -5,7 +5,7 @@ import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
 import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile.jsx';
-// import Barrier                        from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
+import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
 import ToastErrorPopup from 'Modules/Trading/Containers/toast-error-popup.jsx';
 import 'Sass/app/modules/trading-mobile.scss';
@@ -57,6 +57,14 @@ class TradeParamsModal extends React.Component {
 
     componentDidMount() {
         document.addEventListener('touchstart', event => this.preventIOSZoom(event), { passive: false });
+    }
+
+    componentDidUpdate(prev_props) {
+        // duration and duration_unit can be changed in trade-store when contract type is changed
+        if (this.props.duration !== prev_props.duration || this.props.duration_unit !== prev_props.duration_unit) {
+            this.setSelectedDuration(this.props.duration_unit, this.props.duration);
+            this.setState({ duration_tab_idx: undefined });
+        }
     }
 
     componentWillUnmount() {
@@ -287,3 +295,7 @@ const TradeParamsMobileWrapper = connect(({ modules }) => ({
 export const LastDigitMobile = connect(({ modules }) => ({
     form_components: modules.trade.form_components,
 }))(({ form_components }) => form_components.includes('last_digit') && <LastDigit />);
+
+export const BarrierMobile = connect(({ modules }) => ({
+    form_components: modules.trade.form_components,
+}))(({ form_components }) => form_components.includes('barrier') && <Barrier />);

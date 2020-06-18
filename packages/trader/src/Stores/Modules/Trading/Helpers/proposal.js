@@ -75,10 +75,9 @@ export const createProposalRequests = store => {
 
 const setProposalMultiplier = (store, obj_multiplier) => {
     obj_multiplier.multiplier = store.multiplier;
-    // TODO: add support for different cancellation time once API is ready
-    obj_multiplier.cancellation = store.has_cancellation ? '1h' : 0;
+    obj_multiplier.cancellation = store.has_cancellation ? store.cancellation_duration : undefined;
 
-    obj_multiplier.limit_order = {};
+    obj_multiplier.limit_order = store.has_take_profit || store.has_stop_loss ? {} : undefined;
 
     if (store.has_take_profit && store.take_profit) {
         obj_multiplier.limit_order.take_profit = +store.take_profit || 0; // send positive take_profit to API

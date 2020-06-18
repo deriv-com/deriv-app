@@ -39,7 +39,7 @@ const Verification = ({ poi_status }) => {
             <Icon icon='IcCashierSendEmail' className='p2p-verification__icon' size={102} />
             <div className='p2p-verification__text'>
                 <div className='p2p-verification__text-title'>
-                    <Localize i18n_default_text='Want to post ads?' />
+                    <Localize i18n_default_text='Would you like to post P2P ads?' />
                 </div>
                 <div className='p2p-verification__text-description'>
                     <p>

@@ -11,12 +11,12 @@ import { getContractPath } from 'App/Components/Routes/helpers';
 import { website_name } from 'App/Constants/app-config';
 import { getSupportedContracts } from 'Constants';
 import { connect } from 'Stores/connect';
+import { WS } from 'Services/ws-methods';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 import Shortcode from '../Helpers/shortcode';
-import { WS } from 'Services/ws-methods';
 import '../../../sass/app/modules/statement.scss';
 
 let total_deposits, total_withdrawals;

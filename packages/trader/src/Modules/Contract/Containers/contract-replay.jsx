@@ -198,7 +198,7 @@ class Chart extends React.Component {
                 shouldFetchTradingTimes={!this.props.end_epoch}
                 yAxisMargin={{
                     top: isMobile() ? 116 : 136,
-                    bottom: this.is_bottom_widget_visible ? 128 : 112
+                    bottom: this.is_bottom_widget_visible ? 128 : 112,
                 }}
             >
                 {this.props.markers_array.map(marker => (

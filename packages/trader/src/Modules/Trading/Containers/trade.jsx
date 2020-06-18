@@ -272,6 +272,9 @@ class ChartTradeClass extends React.Component {
                 hasAlternativeSource={this.props.has_alternative_source}
                 refToAddTick={this.props.refToAddTick}
                 activeSymbols={active_markets}
+                yAxisMargin={{
+                    top: isMobile() ? 76 : 106,
+                }}
             >
                 <ChartMarkers />
             </SmartChart>

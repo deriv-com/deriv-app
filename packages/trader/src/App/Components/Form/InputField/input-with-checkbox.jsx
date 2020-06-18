@@ -21,6 +21,7 @@ const InputWithCheckbox = ({
     max_value,
     onChange,
     checkbox_tooltip_label,
+    error_message_alignment,
     tooltip_label,
     value,
 }) => {
@@ -64,6 +65,7 @@ const InputWithCheckbox = ({
             classNameInput={classNameInput}
             currency={currency}
             error_messages={error_messages}
+            error_message_alignment={error_message_alignment}
             is_disabled={is_disabled ? 'disabled' : undefined}
             fractional_digits={CurrencyUtils.getDecimalPlaces(currency)}
             id={`dt_${name}_input`}
@@ -102,7 +104,6 @@ const InputWithCheckbox = ({
             <div ref={input_wrapper_ref} className='input-wrapper--inline'>
                 {checkbox_tooltip_label ? (
                     <Popover
-                        alignment='left'
                         classNameBubble='trade-container__popover'
                         is_bubble_hover_enabled
                         margin={2}
@@ -116,7 +117,6 @@ const InputWithCheckbox = ({
                 )}
                 {tooltip_label && (
                     <Popover
-                        alignment='left'
                         icon='info'
                         id={`dt_${name}-checkbox__tooltip`}
                         message={tooltip_label}
@@ -147,6 +147,7 @@ InputWithCheckbox.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func,
     tooltip_label: PropTypes.string,
+    error_message_alignment: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 

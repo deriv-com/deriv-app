@@ -113,6 +113,7 @@ class ContractUpdateForm extends React.Component {
                 label={localize('Take profit')}
                 name='contract_update_take_profit'
                 onChange={this.onChange}
+                error_message_alignment='right'
                 value={contract_update_take_profit}
                 is_disabled={!!is_valid_to_cancel}
             />
@@ -130,6 +131,7 @@ class ContractUpdateForm extends React.Component {
                 max_value={buy_price - cancellation_price}
                 name='contract_update_stop_loss'
                 onChange={this.onChange}
+                error_message_alignment='right'
                 value={contract_update_stop_loss}
                 is_disabled={!!is_valid_to_cancel}
             />

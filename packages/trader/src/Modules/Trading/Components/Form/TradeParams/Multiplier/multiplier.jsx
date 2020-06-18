@@ -7,7 +7,7 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 
 const Multiplier = ({ amount, commission, currency, multiplier, multiplier_range_list, onChange }) => {
-    const commission_percentage = Number((commission * 100) / (multiplier * amount)).toFixed(3);
+    const commission_percentage = Number((commission * 100) / (multiplier * amount)).toFixed(4);
     return (
         <Fieldset
             className='trade-container__fieldset trade-container__fieldset__multiplier'

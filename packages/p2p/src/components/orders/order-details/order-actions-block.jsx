@@ -9,6 +9,7 @@ import Dp2pContext from 'Components/context/dp2p-context';
 const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     const { email_domain } = React.useContext(Dp2pContext);
     const {
+        advertiser_name,
         display_offer_amount,
         display_transaction_amount,
         is_buyer,
@@ -34,9 +35,9 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             }
         };
         const options = {
-            title: localize('Cancel this order?'),
+            title: localize('Do you want to cancel this order?'),
             className: 'order-details__popup-no-border',
-            message: localize('If you have paid, please do not cancel the order.'),
+            message: localize('Do NOT cancel if you have made payment.'),
             confirm_text: localize('Cancel this order'),
             has_cancel: true,
             cancel_text: localize('Do not cancel'),
@@ -91,16 +92,18 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         const options = {
             title: localize('Confirm this payment?'),
             className: 'order-details__popup-no-border',
-            message: localize(
-                'Make sure you have successfully sent the funds to the seller’s bank account or e-wallet mentioned above.'
-            ),
+            message: localize("Please make sure that you've paid {{amount}} {{currency}} to {{advertiser_name}}.", {
+                amount: display_transaction_amount,
+                currency: transaction_currency,
+                advertiser_name,
+            }),
             payment_confirm: true,
             order: {
                 transaction_currency,
                 display_transaction_amount,
             },
             has_cancel: true,
-            cancel_text: localize("I didn't pay yet"),
+            cancel_text: localize("I haven't paid yet"),
             confirm_text: localize("I've paid"),
             onClickConfirm: payOrder,
         };
@@ -123,11 +126,9 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             }
         };
         const options = {
-            title: localize('Have you received funds?'),
+            title: localize('Have you received payment?'),
             className: 'order-details__popup-no-border',
-            message: localize(
-                'Make sure that you have logged in your bank account or other e-wallet to check the receipt.'
-            ),
+            message: localize('Please check your bank account or e-wallet to make sure you have received payment.'),
             need_confirmation: true,
             order: {
                 display_offer_amount,

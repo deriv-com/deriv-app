@@ -42,7 +42,6 @@
             height: auto;
             padding: 0;
             max-width: 440px;
-            min-height: 240px;
             max-height: initial;
             min-width: 44rem;
         }
@@ -54,8 +53,6 @@
     }
     &__popup {
         &-header {
-            border-bottom: 1px solid var(--general-section-2);
-
             &_wrapper {
                 padding: 1.6rem 2.4rem;
                 display: flex;
@@ -63,7 +60,6 @@
                 width: 100%;
                 justify-content: space-between;
                 box-sizing: border-box;
-                margin-bottom: 2.4rem;
             }
             &--title {
                 font-size: var(--text-size-s);
@@ -101,12 +97,10 @@
             }
         }
         &-footer {
-            height: 7.2rem;
             display: flex;
             align-items: center;
             justify-content: flex-end;
             padding: 0 2.4rem;
-            border-top: 1px solid var(--general-section-2);
 
             & > button:first-of-type {
                 margin-right: 0.8rem;

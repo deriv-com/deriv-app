@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, Modal, ThemedScrollbars } from '@deriv/components';
+import { Icon, Modal, ThemedScrollbars, Popover } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import 'Sass/app/modules/complaints-policy.scss';
 
-const ComplaintsPolicy = () => {
+const ComplaintsPolicy = ({ landing_company_shortcode } = {}) => {
     const [is_modal_visible, setModalVisibility] = React.useState(false);
 
     const policy_content = [
@@ -216,11 +216,15 @@ const ComplaintsPolicy = () => {
         </div>
     ));
 
+    if (!landing_company_shortcode) return null;
+
     return (
         <React.Fragment>
-            <a id='dt_complaints-policy_toggle' onClick={() => setModalVisibility(true)}>
-                <Icon icon='IcGear' className='footer__icon ic-settings__icon' />
-            </a>
+            <Popover className='footer__link' alignment='top' message={localize('Complaints policy')}>
+                <a id='dt_complaints-policy_toggle' onClick={() => setModalVisibility(true)}>
+                    <Icon icon='IcComplaintsPolicy' className='footer__icon' />
+                </a>
+            </Popover>
             <Modal
                 id='dt_complaints-policy_modal'
                 className='complaints-policy'
@@ -237,7 +241,5 @@ const ComplaintsPolicy = () => {
         </React.Fragment>
     );
 };
-
-ComplaintsPolicy.propTypes = {};
 
 export { ComplaintsPolicy };

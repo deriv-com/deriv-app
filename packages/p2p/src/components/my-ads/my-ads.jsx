@@ -6,8 +6,8 @@ import { TableError } from 'Components/table/table-error.jsx';
 import { requestWS } from 'Utils/websocket';
 import FormAds from './form-ads.jsx';
 import MyAdsTable from './my-ads-table.jsx';
-import './my-ads.scss';
 import Verification from '../verification/verification.jsx';
+import './my-ads.scss';
 
 const MyAdsState = ({ message, button_text, buttonOnClick }) => (
     <div className='p2p-my-ads__state'>

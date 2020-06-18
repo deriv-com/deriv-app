@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Dialog, ButtonToggle } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
-import { requestWS } from 'Utils/websocket';
 import Popup from './popup.jsx';
 import BuySellTableContent from './buy-sell-table-content.jsx';
 import Verification from '../verification/verification.jsx';

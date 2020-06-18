@@ -846,6 +846,16 @@ export default class TradeStore extends BaseStore {
             if (error_id) {
                 this.setValidationErrorMessages(error_id, [response.error.message]);
             }
+            // Commission for multipliers is normally set from proposal response.
+            // But when we change the multiplier and if it is invalid, we don't get the proposal response to set the commission. We only get error property.
+            // This is a work around to set the commission from error message:.
+            if (this.is_multiplier) {
+                const { message, details } = response.error;
+                const commission_match = (message || '').match(/\((\d+\.*\d*)\)/);
+                if (details.field === 'stop_loss' && commission_match && commission_match[1]) {
+                    this.commission = commission_match[1];
+                }
+            }
         } else {
             this.validateAllProperties();
         }

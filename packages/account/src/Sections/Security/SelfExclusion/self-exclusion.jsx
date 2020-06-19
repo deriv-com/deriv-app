@@ -1,6 +1,9 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import ObjectUtils from '@deriv/shared/utils/object';
+import { localize } from '@deriv/translations';
+import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
 import LoadErrorMessage from 'Components/load-error-message';
 
@@ -112,7 +115,7 @@ class SelfExclusion extends React.Component {
     getSelfExclusion = async () => {
         this.setState({ is_loading: true });
         const get_self_exclusion_response = await WS.authorized.getSelfExclusion({ get_self_exclusion: 1 });
-        populateExclusionResponse(get_self_exclusion_response);
+        this.populateExclusionResponse(get_self_exclusion_response);
     };
 
     componentDidMount() {

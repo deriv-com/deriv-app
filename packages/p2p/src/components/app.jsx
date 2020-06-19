@@ -263,7 +263,7 @@ class App extends React.Component {
             custom_strings,
             order_id,
             setOrderId,
-            show_verification,
+            should_show_verification,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -305,12 +305,12 @@ class App extends React.Component {
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
-                    {show_verification && (
+                    {should_show_verification && (
                         <div className='p2p-cashier--verification'>
                             <Verification />
                         </div>
                     )}
-                    {!show_verification && (
+                    {!should_show_verification && (
                         <Tabs
                             onTabItemClick={this.handleTabClick}
                             active_index={active_index}

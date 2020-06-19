@@ -47,7 +47,7 @@ class P2PCashier extends React.Component {
         const { order_id } = this.state;
         return (
             <P2P
-                {...(/verification/.test(location.hash) && { show_verification: true })}
+                should_show_verification={/verification/.test(location.hash)}
                 websocket_api={WS}
                 lang={getLanguage()}
                 client={{ currency, local_currency_config, is_virtual, residence }}

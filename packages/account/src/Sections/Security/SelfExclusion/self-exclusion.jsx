@@ -6,80 +6,113 @@ import LoadErrorMessage from 'Components/load-error-message';
 
 class SelfExclusion extends React.Component {
     state = {
+        is_loading: true,
+        is_success: false,
         error_message: '',
+        submit_error_message: '',
+        self_exclusions: this.exclusion_data,
     };
 
-    // initial_form = {
-    //     token_name: '',
-    //     read: true,
-    //     trade: false,
-    //     payments: false,
-    //     admin: false,
-    //     trading_information: false,
-    // };
+    exclusion_data = {
+        max_turnover: null,
+        max_losses: null,
+        max_7day_turnover: null,
+        max_7day_losses: null,
+        max_30day_turnover: null,
+        max_30day_losses: null,
+        session_duration_limit: null,
+        timeout_until: null,
+        exclude_until: null,
+        max_balance: null,
+        max_open_bets: null,
+    };
 
-    // validateFields = (values) => {
-    //     const errors = {};
+    validateFields = (values) => {
+        const errors = {};
+        // Regex
+        const is_number = /^\d+(\.\d+)?$/;
+        const is_integer = /^\d+$/;
+        const is_minutes = /^[0-9]|99999/;
 
-    //     const token_name = values.token_name && values.token_name.trim();
+        // Messages
+        const valid_number_message = localize('Should be a valid number');
 
-    //     if (!token_name) {
-    //         errors.token_name = localize('Please enter a token name.');
-    //     } else if (token_name.length < 2 || token_name.length > 32) {
-    //         errors.token_name = localize('Length of token name must be between 2 and 32 characters.');
-    //     } else if (!/^[A-Za-z0-9\s_]+$/g.test(token_name)) {
-    //         errors.token_name = localize('Only letters, numbers, and underscores are allowed.');
-    //     }
+        const only_numbers = [
+            'max_turnover',
+            'max_losses',
+            'max_7day_turnover',
+            'max_7day_losses',
+            'max_30day_turnover',
+            'max_30day_losses',
+            'max_balance',
+        ];
+        const only_integers = ['session_duration_limit', 'max_open_bets'];
 
-    //     return errors;
-    // };
+        only_numbers.forEach((item) => {
+            if (!is_number.test(values[item])) {
+                errors[item] = valid_number_message;
+            }
+        });
 
-    // handleSubmit = async (values, { setSubmitting, setFieldError, resetForm }) => {
-    //     const new_token_scopes = Object.keys(values).filter((item) => item !== 'token_name' && values[item]);
-    //     if (new_token_scopes.length) {
-    //         const request = {
-    //             api_token: 1,
-    //             new_token: values.token_name,
-    //             new_token_scopes,
-    //         };
+        only_integers.forEach((item) => {
+            if (!is_integer.test(values[item])) {
+                errors[item] = valid_number_message;
+            }
+        });
 
-    //         const token_response = await WS.apiToken(request);
-    //         if (token_response.error) {
-    //             setFieldError('token_name', token_response.error.message);
-    //         } else {
-    //             this.setState({
-    //                 is_success: true,
-    //                 api_tokens: ObjectUtils.getPropertyValue(token_response, ['api_token', 'tokens']),
-    //             });
-    //             setTimeout(() => {
-    //                 this.setState({ is_success: false });
-    //             }, 500);
-    //         }
-    //         resetForm();
-    //     } else {
-    //         setFieldError('token_name', localize('Must choose at least one scope'));
-    //     }
+        if (!is_minutes.test(values.session_duration_limit)) {
+            errors.session_duration_limit = localize('Reached maximum amount of session duration limit.');
+        }
 
-    //     setSubmitting(false);
-    // };
+        // TODO: handle timout until and exclude until using date/moment format
 
-    // populateTokenResponse = (response) => {
-    //     if (response.error) {
-    //         this.setState({
-    //             is_loading: false,
-    //             error_message: ObjectUtils.getPropertyValue(response, ['error', 'message']),
-    //         });
-    //     } else {
-    //         this.setState({
-    //             is_loading: false,
-    //             api_tokens: ObjectUtils.getPropertyValue(response, ['api_token', 'tokens']),
-    //         });
-    //     }
-    // };
+        return errors;
+    };
+
+    handleSubmit = async (values, { setSubmitting }) => {
+        const is_changed = JSON.stringify(this.state.self_exclusions) !== JSON.stringify(values);
+        if (is_changed) {
+            const request = {
+                set_self_exclusion: 1,
+                ...values,
+            };
+
+            const set_self_exclusion_response = await WS.authorized.setSelfExclusion(request);
+            if (set_self_exclusion_response.error) {
+                this.setState({ submit_error_message: set_self_exclusion_response.error.message });
+            } else {
+                this.setState({
+                    is_success: true,
+                });
+                setTimeout(() => {
+                    this.setState({ is_success: false });
+                }, 500);
+            }
+        } else {
+            this.setState({ submit_error_message: localize('You did not change anything.') });
+        }
+
+        setSubmitting(false);
+    };
+
+    populateExclusionResponse = (response) => {
+        if (response.error) {
+            this.setState({
+                is_loading: false,
+                error_message: ObjectUtils.getPropertyValue(response, ['error', 'message']),
+            });
+        } else {
+            this.setState({
+                is_loading: false,
+                self_exclusions: ObjectUtils.getPropertyValue(response, ['self_exclusions', 'tokens']),
+            });
+        }
+    };
 
     getSelfExclusion = async () => {
-        // TODO: get exclusion get api
-        this.setState({ is_loading: false });
+        this.setState({ is_loading: true });
+        const get_self_exclusion_response = await WS.authorized.getSelfExclusion({ get_self_exclusion: 1 });
+        populateExclusionResponse(get_self_exclusion_response);
     };
 
     componentDidMount() {
@@ -87,12 +120,12 @@ class SelfExclusion extends React.Component {
         if (is_virtual) {
             this.setState({ is_loading: false });
         } else {
-            this.getApiTokens();
+            this.populateExclusionResponse();
         }
     }
 
     render() {
-        const { error_message } = this.state;
+        const { error_message, is_loading } = this.state;
         const { is_virtual, is_switching } = this.props;
 
         if (is_virtual) return <DemoMessage />;

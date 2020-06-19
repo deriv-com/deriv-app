@@ -1338,7 +1338,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get has_residence() {
-        return !!this.accounts[this.loginid].residence;
+        return !!this.accounts[this.loginid]?.residence;
     }
 }
 /* eslint-enable */

@@ -59,7 +59,9 @@ $header-height: 4em;
         margin-right: 16px;
     }
     &__body {
-        height: calc(100% - 200px);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 }
 
@@ -94,6 +96,12 @@ $header-height: 4em;
     }
     &--red:before {
         background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(227, 28, 75, 0.16));
+    }
+    &--loss {
+        color: var(--text-loss-danger);
+    }
+    &--profit {
+        color: var(--text-profit-success);
     }
     &__grid {
         display: grid;
@@ -205,9 +213,13 @@ $header-height: 4em;
     &__body {
         border-radius: $BORDER_RADIUS;
         width: 100%;
-        padding: 4px 12px 8px;
+        padding: 0.8rem 0.4rem;
         color: var(--text-prominent);
         display: flex;
+
+        &-wrapper {
+            width: 100%;
+        }
 
         @include mobile {
             padding: 0 8px;
@@ -236,7 +248,6 @@ $header-height: 4em;
         justify-content: center;
         transition: transform 0.25s ease, opacity 0.25s linear;
         padding-top: 8px;
-        padding-bottom: 4px;
         border-top: 1px solid var(--general-section-1);
 
         &--enter-done {
@@ -257,7 +268,6 @@ $header-height: 4em;
         }
         .remaining-time {
             border-radius: 0.4rem;
-            color: var(--text-loss-danger);
             font-size: 1.2rem;
             margin-left: 0.8rem;
             padding-top: 0.2rem;
@@ -270,8 +280,9 @@ $header-height: 4em;
             }
         }
         .positions-drawer-dialog-toggle {
-            bottom: 60px;
-            width: 116px;
+            top: 103px;
+            right: 6px;
+            width: 108px;
         }
     }
     &-items-wrapper {
@@ -307,6 +318,21 @@ $header-height: 4em;
 
             &:before {
                 content: '+';
+            }
+        }
+        &__total-profit-loss {
+            padding: 0.4rem 0.8rem 0;
+            border-top: 1px solid var(--general-section-1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 0.8rem;
+
+            .contract-card-item__header,
+            .contract-card-item__body {
+                font-size: 1.4rem;
+                line-height: 2rem;
+                align-self: center;
             }
         }
     }

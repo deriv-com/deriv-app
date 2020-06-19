@@ -7,7 +7,6 @@ import { urlFor } from '@deriv/shared/utils/url';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
-import MultiplierCloseActions from 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard/multiplier-close-actions.jsx';
 import { getTimePercentage } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { website_name } from 'App/Constants/app-config';
 import { getContractPath } from 'App/Components/Routes/helpers';
@@ -21,27 +20,6 @@ import PlaceholderComponent from 'Modules/Reports/Components/placeholder-compone
 import { connect } from 'Stores/connect';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
-
-const getActionColumns = ({ onClickCancel, onClickSell, getPositionById }) => ({ row_obj, is_header, is_footer }) => {
-    if (is_header || is_footer) {
-        return <div className='open-positions__row-action' />;
-    }
-
-    const { contract_info } = row_obj;
-    const position = getPositionById(contract_info.contract_id);
-    const { is_sell_requested } = position || {};
-
-    return (
-        <div className='open-positions__row-action'>
-            <MultiplierCloseActions
-                contract_info={contract_info}
-                is_sell_requested={is_sell_requested}
-                onClickCancel={onClickCancel}
-                onClickSell={onClickSell}
-            />
-        </div>
-    );
-};
 
 const EmptyPlaceholderWrapper = props => (
     <React.Fragment>
@@ -68,7 +46,7 @@ const OpenPositionsTable = ({
     getRowAction,
     mobileRowRenderer,
     preloaderCheck,
-    action_column,
+    row_size,
     totals,
 }) => (
     <React.Fragment>
@@ -93,9 +71,8 @@ const OpenPositionsTable = ({
                                 preloaderCheck={preloaderCheck}
                                 footer={totals}
                                 data_source={active_positions}
-                                getActionColumns={action_column}
                                 getRowAction={getRowAction}
-                                getRowSize={() => 63}
+                                getRowSize={() => row_size}
                                 custom_width={'100%'}
                                 content_loader={ReportsTableRowLoader}
                             >
@@ -138,9 +115,6 @@ class OpenPositions extends React.Component {
         if (!isMobile()) {
             this.props.onMount();
         }
-
-        const { getPositionById, onClickCancel, onClickSell } = this.props;
-        this.getActionColumns = getActionColumns({ getPositionById, onClickCancel, onClickSell });
     }
 
     componentWillUnmount() {
@@ -242,23 +216,28 @@ class OpenPositions extends React.Component {
             let ask_price = 0;
             let profit = 0;
             let buy_price = 0;
+            let bid_price = 0;
+            let purchase = 0;
 
             active_positions_filtered.forEach(portfolio_pos => {
-                buy_price += +portfolio_pos.purchase;
+                buy_price += +portfolio_pos.contract_info.buy_price;
+                bid_price += +portfolio_pos.contract_info.bid_price;
+                purchase += +portfolio_pos.purchase;
                 if (portfolio_pos.contract_info) {
-                    profit += portfolio_pos.contract_info.profit;
+                    profit += portfolio_pos.contract_info.bid_price - portfolio_pos.contract_info.buy_price;
 
                     if (portfolio_pos.contract_info.cancellation) {
                         ask_price += portfolio_pos.contract_info.cancellation.ask_price || 0;
-                        buy_price -= portfolio_pos.contract_info.cancellation.ask_price;
                     }
                 }
             });
             totals = {
                 contract_info: {
                     profit,
+                    buy_price,
+                    bid_price,
                 },
-                buy_price,
+                purchase,
             };
 
             if (ask_price > 0) {
@@ -293,7 +272,17 @@ class OpenPositions extends React.Component {
     };
 
     render() {
-        const { active_positions, component_icon, is_loading, error, currency, NotificationMessages } = this.props;
+        const {
+            active_positions,
+            component_icon,
+            is_loading,
+            error,
+            currency,
+            NotificationMessages,
+            onClickCancel,
+            onClickSell,
+            getPositionById,
+        } = this.props;
 
         if (error) {
             return <p>{error}</p>;
@@ -324,7 +313,7 @@ class OpenPositions extends React.Component {
         };
         this.columns =
             this.state.active_index === 1
-                ? getMultiplierOpenPositionsColumnsTemplate(currency)
+                ? getMultiplierOpenPositionsColumnsTemplate({ currency, onClickCancel, onClickSell, getPositionById })
                 : getOpenPositionsColumnsTemplate(currency);
 
         this.columns_map = this.columns.reduce((map, item) => {
@@ -350,13 +339,18 @@ class OpenPositions extends React.Component {
                         header_fit_content
                     >
                         <div label={localize('Options')}>
-                            <OpenPositionsTable className='open-positions' columns={this.columns} {...shared_props} />
+                            <OpenPositionsTable
+                                className='open-positions'
+                                columns={this.columns}
+                                {...shared_props}
+                                row_size={63}
+                            />
                         </div>
-                        <div label={localize('Multiplier options')}>
+                        <div label={localize('Multipliers')}>
                             <OpenPositionsTable
                                 className='open-positions-multiplier open-positions'
                                 columns={this.columns}
-                                action_column={this.getActionColumns}
+                                row_size={68}
                                 {...shared_props}
                             />
                         </div>

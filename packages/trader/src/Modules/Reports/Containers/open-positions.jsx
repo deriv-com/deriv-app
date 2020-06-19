@@ -2,11 +2,11 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable } from '@deriv/components';
+import { urlFor } from '@deriv/shared/utils/url';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
-import { urlFor } from '_common/url';
-import DataList from 'App/Components/Elements/DataList';
-import DataTable from 'App/Components/Elements/DataTable';
+import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import MultiplierCloseActions from 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard/multiplier-close-actions.jsx';
 import { getTimePercentage } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { website_name } from 'App/Constants/app-config';
@@ -97,6 +97,7 @@ const OpenPositionsTable = ({
                                 getRowAction={getRowAction}
                                 getRowSize={() => 63}
                                 custom_width={'100%'}
+                                content_loader={ReportsTableRowLoader}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataTable>
@@ -132,14 +133,20 @@ class OpenPositions extends React.Component {
     };
 
     componentDidMount() {
-        this.props.onMount();
+        // For mobile, we show portfolio stepper in header even for reports pages.
+        // `onMount` in portfolio store will be invoked from portfolio stepper component in `trade-header-extensions.jsx`
+        if (!isMobile()) {
+            this.props.onMount();
+        }
 
         const { getPositionById, onClickCancel, onClickSell } = this.props;
         this.getActionColumns = getActionColumns({ getPositionById, onClickCancel, onClickSell });
     }
 
     componentWillUnmount() {
-        this.props.onUnmount();
+        if (!isMobile()) {
+            this.props.onUnmount();
+        }
     }
 
     mobileRowRenderer = ({ row, is_footer }) => {
@@ -215,7 +222,7 @@ class OpenPositions extends React.Component {
                                   className='link link--orange'
                                   rel='noopener noreferrer'
                                   target='_blank'
-                                  href={urlFor('user/portfoliows', undefined, undefined, true)}
+                                  href={urlFor('user/portfoliows', { legacy: true })}
                               />,
                           ]}
                       />

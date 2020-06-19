@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useRef } from 'react';
+import React from 'react';
 import { Button, Modal, Tabs, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { timeSince } from '@deriv/bot-skeleton';
@@ -96,7 +96,9 @@ const Recent = ({
                     })}
                 >
                     <div>
-                        {localize("If you've recently used bots but don't see them in this list. It may because you:")}
+                        {localize(
+                            "If you've recently used bots but don't see them in this list, it may be because you:"
+                        )}
                     </div>
                     <ol className='load-recent__explain-list'>
                         <li>{localize('1. Logged in from a different device')}</li>
@@ -117,7 +119,7 @@ const Local = ({
     loadFileFromLocal,
     ...props
 }) => {
-    let file_input_ref = useRef(null);
+    let file_input_ref = React.useRef(null);
     return (
         <div className='load-local__container'>
             <div
@@ -232,6 +234,7 @@ const LoadModal = ({
         toggleModal={toggleLoadModal}
         onMount={onMount}
         onUnmount={onUnmount}
+        elements_to_ignore={[document.querySelector('.injectionDiv')]}
     >
         <div className='load__container'>
             <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top fit_content header_fit_content>

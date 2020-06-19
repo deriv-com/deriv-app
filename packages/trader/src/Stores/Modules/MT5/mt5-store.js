@@ -16,8 +16,9 @@ export default class MT5Store extends BaseStore {
     @observable error_message = '';
 
     @observable is_mt5_success_dialog_enabled = false;
-    @observable is_mt5_advanced_modal_open = false;
+    @observable is_mt5_financial_stp_modal_open = false;
     @observable is_mt5_password_modal_enabled = false;
+    @observable is_mt5_reset_password_modal_enabled = false;
 
     @observable is_mt5_pending_dialog_open = false;
 
@@ -129,10 +130,10 @@ export default class MT5Store extends BaseStore {
     getLoginDetails({ category, type }) {
         let tmp_type = '';
         switch (type) {
-            case 'synthetic_indices':
+            case 'synthetic':
                 tmp_type = 'svg';
                 break;
-            case 'standard':
+            case 'financial':
                 tmp_type = 'svg_standard';
                 break;
             default:
@@ -175,16 +176,16 @@ export default class MT5Store extends BaseStore {
 
     realMt5Signup() {
         switch (this.account_type.type) {
-            case 'standard':
+            case 'financial':
                 this.enableMt5PasswordModal();
                 break;
-            case 'advanced':
+            case 'financial_stp':
                 this.root_store.client.fetchResidenceList();
                 this.root_store.client.fetchStatesList();
                 this.root_store.client.fetchAccountSettings();
-                this.enableMt5AdvancedModal();
+                this.enableMt5FinancialStpModal();
                 break;
-            case 'synthetic_indices':
+            case 'synthetic':
                 this.enableMt5PasswordModal();
                 break;
             default:
@@ -193,9 +194,9 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
-    enableMt5AdvancedModal() {
-        if (this.account_type.category === 'real' && this.account_type.type === 'advanced') {
-            this.is_mt5_advanced_modal_open = true;
+    enableMt5FinancialStpModal() {
+        if (this.account_type.category === 'real' && this.account_type.type === 'financial_stp') {
+            this.is_mt5_financial_stp_modal_open = true;
         }
     }
 
@@ -290,8 +291,8 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
-    setMT5AdvancedModalState(state = false) {
-        this.is_mt5_advanced_modal_open = state;
+    disableMt5FinancialStpModal() {
+        this.is_mt5_financial_stp_modal_open = false;
     }
 
     @action.bound
@@ -333,6 +334,16 @@ export default class MT5Store extends BaseStore {
             }),
             300
         );
+    }
+
+    @action.bound
+    sendVerifyEmail() {
+        return WS.verifyEmail(this.root_store.client.email, 'mt5_password_reset');
+    }
+
+    @action.bound
+    setMt5PasswordResetModal(val) {
+        this.is_mt5_reset_password_modal_enabled = !!val;
     }
 
     static async changePassword({ login, old_password, new_password, password_type }) {

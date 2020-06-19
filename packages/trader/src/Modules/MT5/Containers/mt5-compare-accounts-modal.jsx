@@ -8,7 +8,8 @@ import {
     Table,
     UILoader,
 } from '@deriv/components';
-import React, { useState } from 'react';
+import React from 'react';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -22,7 +23,7 @@ const MT5AttributeDescriberModal = ({ is_visible, toggleModal, message }) => (
 );
 
 const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
-    const [is_visible, setIsVisible] = useState(false);
+    const [is_visible, setIsVisible] = React.useState(false);
     const toggleModal = () => setIsVisible(!is_visible);
 
     return tooltip ? (
@@ -48,9 +49,9 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
 const compareAccountsData = [
     {
         attribute: <MT5AttributeDescriber name={localize('Account currency')} />,
-        standard: localize('USD'),
-        advanced: localize('USD'),
         synthetic: localize('USD'),
+        financial: localize('USD'),
+        financial_stp: localize('USD'),
     },
     {
         attribute: (
@@ -62,9 +63,9 @@ const compareAccountsData = [
                 )}
             />
         ),
-        standard: localize('Up to 1:1000'),
-        advanced: localize('Up to 1:100'),
         synthetic: localize('Up to 1:1000'),
+        financial: localize('Up to 1:1000'),
+        financial_stp: localize('Up to 1:100'),
     },
     {
         attribute: (
@@ -76,9 +77,9 @@ const compareAccountsData = [
                 )}
             />
         ),
-        standard: localize('Market'),
-        advanced: localize('Market'),
         synthetic: localize('Market'),
+        financial: localize('Market'),
+        financial_stp: localize('Market'),
     },
     {
         attribute: (
@@ -90,9 +91,9 @@ const compareAccountsData = [
                 )}
             />
         ),
-        standard: localize('Variable'),
-        advanced: localize('Variable'),
         synthetic: localize('Fixed/Variable'),
+        financial: localize('Variable'),
+        financial_stp: localize('Variable'),
     },
     {
         attribute: (
@@ -104,15 +105,15 @@ const compareAccountsData = [
                 )}
             />
         ),
-        standard: localize('No'),
-        advanced: localize('No'),
         synthetic: localize('No'),
+        financial: localize('No'),
+        financial_stp: localize('No'),
     },
     {
         attribute: <MT5AttributeDescriber name={localize('Minimum deposit')} />,
-        standard: localize('No'),
-        advanced: localize('No'),
         synthetic: localize('No'),
+        financial: localize('No'),
+        financial_stp: localize('No'),
     },
     {
         attribute: (
@@ -124,9 +125,9 @@ const compareAccountsData = [
                 )}
             />
         ),
-        standard: localize('150%'),
-        advanced: localize('150%'),
         synthetic: localize('100%'),
+        financial: localize('150%'),
+        financial_stp: localize('150%'),
     },
     {
         attribute: (
@@ -138,15 +139,15 @@ const compareAccountsData = [
                 )}
             />
         ),
-        standard: localize('75%'),
-        advanced: localize('75%'),
         synthetic: localize('50%'),
+        financial: localize('75%'),
+        financial_stp: localize('75%'),
     },
     {
         attribute: <MT5AttributeDescriber name={localize('Number of assets')} />,
-        standard: localize('50+'),
-        advanced: localize('50+'),
         synthetic: localize('10+'),
+        financial: localize('50+'),
+        financial_stp: localize('50+'),
     },
     {
         attribute: (
@@ -156,38 +157,53 @@ const compareAccountsData = [
                 tooltip={localize('Indicates the availability of cryptocurrency trading on a particular account.')}
             />
         ),
-        standard: localize('24/7'),
-        advanced: localize('N/A'),
         synthetic: localize('N/A'),
+        financial: localize('24/7'),
+        financial_stp: localize('N/A'),
     },
     {
         attribute: <MT5AttributeDescriber name={localize('Trading instruments')} />,
-        standard: localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
-        advanced: localize('FX-majors, FX-minors, FX-exotics'),
         synthetic: localize('Synthetics'),
+        financial: localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
+        financial_stp: localize('FX-majors, FX-minors, FX-exotics'),
     },
 ];
 
 const MT5CompareAccountHint = () => (
-    <p className='mt5-compare-account--hint'>
-        <Localize i18n_default_text='Note: At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
-    </p>
+    <div className='mt5-compare-account--hint'>
+        <div className='mt5-compare-accounts__bullet-wrapper'>
+            <span className='mt5-compare-accounts__bullet mt5-compare-accounts__bullet--circle' />
+            <Localize i18n_default_text='At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
+        </div>
+        <div className='mt5-compare-accounts__bullet-wrapper'>
+            <span className='mt5-compare-accounts__bullet mt5-compare-accounts__bullet--star mt5-compare-accounts__star'>
+                *
+            </span>
+            <Localize i18n_default_text='To protect your portfolio from adverse market movements due to the market opening gap, we reserve the right to decrease leverage on all offered symbols for financial accounts before market close and increase it again after market open. Please make sure that you have enough funds available in your MT5 account to support your positions at all times.' />
+        </div>
+    </div>
 );
 
 const ModalContent = () => (
     <div className='mt5-compare-accounts'>
-        <Table fixed>
+        <Table fixed scroll_height={isMobile() ? '100%' : 'calc(100% - 130px)'}>
             <Table.Header>
-                <Table.Row>
+                <Table.Row className='mt5-compare-accounts__table-row'>
                     <Table.Head fixed />
-                    <Table.Head>{localize('Standard')}</Table.Head>
-                    <Table.Head>{localize('Advanced')}</Table.Head>
-                    <Table.Head>{localize('Synthetic Indices')}</Table.Head>
+                    <Table.Head>{localize('Synthetic')}</Table.Head>
+                    <Table.Head>
+                        {localize('Financial')}
+                        <span className='mt5-compare-accounts__star'>*</span>
+                    </Table.Head>
+                    <Table.Head>
+                        {localize('Financial STP')}
+                        <span className='mt5-compare-accounts__star'>*</span>
+                    </Table.Head>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
                 {compareAccountsData.map((row, i) => (
-                    <Table.Row key={i}>
+                    <Table.Row key={i} className='mt5-compare-accounts__table-row'>
                         {Object.keys(row).map((col, j) => (
                             <Table.Cell key={j} fixed={j === 0}>
                                 {row[col]}
@@ -210,7 +226,7 @@ const CompareAccountsModal = ({ disableApp, enableApp, is_compare_accounts_visib
             has_effect
             text={localize('Compare accounts')}
             onClick={toggleCompareAccounts}
-            tertiary
+            secondary
         />
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
@@ -222,8 +238,8 @@ const CompareAccountsModal = ({ disableApp, enableApp, is_compare_accounts_visib
                     title={localize('Compare accounts')}
                     toggleModal={toggleCompareAccounts}
                     type='button'
-                    height='580px'
-                    width='904px'
+                    height='696px'
+                    width='903px'
                 >
                     <ModalContent />
                 </Modal>

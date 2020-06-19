@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Tab from './tab.jsx';
 
-class Tabs extends Component {
+class Tabs extends React.Component {
     constructor(props) {
         super(props);
 
@@ -56,6 +56,7 @@ class Tabs extends Component {
             className,
             top,
             bottom,
+            center,
             fit_content,
             header_fit_content,
             single_tab_has_no_label,
@@ -74,6 +75,7 @@ class Tabs extends Component {
                     className={classNames('dc-tabs__list', {
                         'dc-tabs__list--top': top,
                         'dc-tabs__list--bottom': bottom,
+                        'dc-tabs__list--center': center,
                         'dc-tabs__list--header-fit-content': header_fit_content,
                     })}
                     ref={this.setTabsWrapperRef}
@@ -94,6 +96,7 @@ class Tabs extends Component {
                                 active_tab_ref={index === active_index ? this.setActiveTabRef : null}
                                 header_content={header_content}
                                 onClick={() => this.onTabItemClick(index)}
+                                setActiveLineStyle={this.setActiveLineStyle}
                             />
                         );
                     })}

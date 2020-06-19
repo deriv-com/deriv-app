@@ -1,0 +1,1184 @@
+$FLOATING_PADDING: 2.4rem;
+$FLOATING_HEADER_HEIGHT: 53px;
+$MIN_HEIGHT_FLOATING: calc(
+    100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - #{$FLOATING_PADDING}
+);
+
+.account {
+    margin: 0 16px;
+
+    .multi-step {
+        @include mobile {
+            width: 100%;
+        }
+    }
+    .dc-vertical-tab {
+        &__content {
+            height: $MIN_HEIGHT_FLOATING;
+        }
+        &__header--active {
+            border-left: 4px solid var(--brand-red-coral);
+            padding-left: 4.4rem;
+            background-color: var(--general-main-1);
+        }
+    }
+    &__inset_header {
+        box-shadow: inset 0 -1px 0 0 var(--general-section-1);
+
+        &-subheading {
+            font-size: var(--text-size-xs);
+            line-height: 1.5;
+            margin-right: 8px;
+            color: var(--text-less-prominent);
+        }
+    }
+    &__inset_header-icon {
+        width: 24px;
+        height: 24px;
+
+        @extend %inline-icon;
+    }
+    &__tab_container {
+        padding: 0 8px;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+    &__scrollbars_container {
+        height: 100%;
+        padding-top: 2.4rem;
+        padding-bottom: 6.4rem;
+
+        &-wrapper {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        &--grid-layout {
+            display: grid;
+            grid-gap: 4px;
+
+            .dc-input {
+                margin-bottom: 0;
+            }
+            .dc-dropdown-container {
+                margin-top: 0;
+
+                .dc-dropdown__display-text,
+                .dc-list__item-text {
+                    text-transform: unset;
+                }
+            }
+            @include mobile {
+                padding: 0 1.6rem;
+                overflow-x: hidden;
+                overflow-y: auto;
+                grid-template-rows: 5rem 1fr 4rem 1fr;
+            }
+        }
+        @include desktop {
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+        @include mobile {
+            height: unset;
+            padding-top: unset;
+            padding-bottom: unset;
+        }
+    }
+    &-form {
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+
+        &__header {
+            position: relative;
+            font-size: var(--text-size-xs);
+            font-weight: bold;
+            margin-bottom: 1.6em;
+
+            &:not(:first-child) {
+                margin-top: 1.6em;
+            }
+            &:before {
+                content: '';
+                position: absolute;
+                top: 0.5em;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border-top: 1px solid var(--general-section-1);
+            }
+            @include mobile {
+                margin-top: 1.6rem;
+            }
+        }
+        &__title {
+            position: absolute;
+            padding-right: 8px;
+            color: var(--text-prominent);
+            background: var(--general-main-1);
+        }
+        &__subtitle {
+            padding-left: 8px;
+            font-weight: normal;
+            color: var(--text-prominent);
+        }
+        &__fieldset {
+            position: relative;
+            max-width: 400px;
+            margin-top: 9px;
+            margin-bottom: 18px;
+
+            &--2-cols {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 8px;
+            }
+            .datepicker {
+                max-width: unset;
+
+                &__picker {
+                    margin-top: 8px;
+                }
+                .icon-datepicker {
+                    position: absolute;
+                    top: 1.2rem;
+                    right: 1rem;
+                }
+                .calendar__cell {
+                    &--disabled {
+                        color: var(--text-disabled) !important;
+                    }
+                    &--other:not(.calendar__cell--today) {
+                        color: var(--text-prominent);
+                    }
+                }
+            }
+            .dc-input__label {
+                top: 0.9rem;
+            }
+            @include mobile {
+                .dc-checkbox {
+                    &__box,
+                    & .dc-icon {
+                        width: 2.4rem;
+                        height: 2.4rem;
+                    }
+                }
+                .dc-field-error {
+                    top: 4.2rem;
+                }
+            }
+        }
+        &__footer {
+            height: 80px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            width: 100%;
+            padding: 16px 24px;
+            align-items: center;
+            justify-content: flex-end;
+            z-index: 4;
+            border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
+            border-top: 1px solid var(--general-section-1);
+            border-width: 1px;
+            background-color: var(--general-main-1);
+
+            &-note {
+                color: var(--text-prominent);
+                font-size: var(--text-size-xxs);
+                height: 4rem;
+                line-height: 1.5;
+                text-align: right;
+                width: 27.6rem;
+                @include mobile {
+                    width: auto;
+                    text-align: center;
+                }
+            }
+            &-btn {
+                height: 4rem;
+                margin-top: 0;
+                margin-bottom: 0;
+                @include desktop {
+                    margin-left: 1.6rem;
+                }
+                @include mobile {
+                    margin: 0 1.6rem;
+
+                    &--has-bottom-margin {
+                        margin-bottom: 1.6rem;
+                    }
+                }
+            }
+            &-all-fields-required {
+                color: var(--text-general);
+                text-align: center;
+                padding-bottom: 2.4rem;
+                padding-top: 0.8rem;
+                font-size: 1.2rem;
+            }
+            @include mobile {
+                padding: 16px 0px;
+                flex-direction: column;
+                height: auto;
+                align-items: initial;
+                border-top: 2px solid var(--general-section-1);
+            }
+        }
+        &__personal-details {
+            @include desktop {
+                .account__scrollbars_container {
+                    padding-top: 2.4rem;
+                    padding-bottom: 2.4rem;
+                }
+            }
+            @include mobile {
+                .account__scrollbars_container {
+                    &--grid-layout {
+                        display: flex;
+                        flex-direction: column;
+                    }
+                }
+                .account-form__footer-note {
+                    font-size: 1rem;
+                    height: auto;
+                    margin-bottom: 1.6rem;
+                }
+                .dc-checkbox__label {
+                    font-size: 1.2rem;
+                }
+                .dc-select-native {
+                    &__placeholder {
+                        background-color: var(--general-main-1);
+                    }
+                }
+                .date-of-birth-datepicker {
+                    .datepicker-native__input {
+                        height: 3.8rem;
+                    }
+                }
+            }
+        }
+        &__financial-assessment {
+            .dc-select-native__placeholder {
+                background-color: var(--general-main-1);
+            }
+            .account__scrollbars_container--grid-layout {
+                @include mobile {
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+            @include desktop {
+                .account__scrollbars_container {
+                    padding-top: 2.4rem;
+                    padding-bottom: 0;
+                }
+            }
+        }
+        &__occupation {
+            .dc-native-select__select,
+            .dc-dropdown__display-text {
+                line-height: 1.6rem;
+                text-align: left;
+            }
+        }
+    }
+    &__intial-loader {
+        height: calc(100vh - 240px);
+    }
+    &__password-wrapper {
+        & .account__scrollbars_container--grid-layout {
+            @include mobile {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+    &__text {
+        @include typeface(--paragraph-left-normal-black, none);
+        color: var(--text-general);
+
+        &--small {
+            @include typeface(--small-left-normal-black, none);
+        }
+        &--xsmall {
+            @include typeface(--xsmall-left-normal-black, none);
+        }
+        &--grey {
+            color: var(--text-less-prominent);
+        }
+    }
+    .account-management__message {
+        margin-top: 1em;
+        font-weight: bold;
+        font-size: var(--text-size-s);
+        color: var(--text-general);
+
+        &-content {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            margin: 0 16px;
+            align-items: center;
+            flex-direction: column;
+
+            .dc-btn {
+                height: 4rem;
+                margin-top: 3.2rem;
+
+                @include mobile {
+                    margin: 1.6rem 0;
+                    padding: 1.6rem;
+                    width: 100%;
+                }
+            }
+        }
+        &-icon {
+            width: 128px;
+            height: 128px;
+            margin-top: 80px;
+
+            @include mobile {
+                margin-top: 4rem;
+
+                /* iPhone SE screen height fixes due to UI space restrictions */
+                @media only screen and (max-height: 480px) {
+                    margin-top: 3.2rem;
+                }
+            }
+        }
+        &-title {
+            font-size: var(--text-size-xs);
+            margin-bottom: 1em;
+            text-align: center;
+        }
+        &-subtitle {
+            font-size: var(--text-size-xxs);
+            font-weight: 400;
+            text-align: center;
+            line-height: 1.5;
+        }
+        &-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+
+            @include mobile {
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+        }
+        @include mobile {
+            line-height: 20px;
+            text-align: center;
+        }
+    }
+    .account-management__text {
+        text-align: center;
+        color: var(--text-general);
+        font-size: var(--text-size-xs);
+        line-height: 1.5;
+    }
+    .account-management__text-container {
+        margin-top: 10px;
+        max-width: 467px;
+        margin-bottom: 2em;
+    }
+    .account-management-flex-wrapper {
+        display: flex;
+
+        &--space-between {
+            justify-content: space-between;
+        }
+    }
+    .account-management-leave-confirm,
+    .account-management-submit-success {
+        @include desktop {
+            .dc-btn--primary {
+                width: 130px;
+                margin-left: 0.8rem;
+            }
+        }
+        @include mobile {
+            flex-direction: column;
+            width: 100%;
+            margin-top: 1.2rem;
+
+            .dc-btn {
+                padding: 0rem;
+                margin-bottom: 0rem;
+            }
+        }
+    }
+    .account__text_container {
+        margin-top: 12px;
+    }
+    .account-management-table {
+        width: 100%;
+
+        thead {
+            position: relative;
+
+            tr {
+                padding-bottom: 8px;
+            }
+            th {
+                @include typeface(--paragraph-left-bold-black, none);
+                color: var(--text-prominent);
+                @include mobile {
+                    font-size: 1.2rem;
+                    color: var(--text-general);
+                }
+            }
+        }
+        tbody {
+            tr td {
+                border-bottom: 1px solid var(--general-section-1);
+            }
+        }
+
+        @include desktop {
+            max-width: 546px;
+        }
+    }
+    .api-token {
+        height: 100%;
+        width: 100%;
+
+        & .dc-timeline__container {
+            width: 100%;
+        }
+        & .dc-table__cell {
+            padding: 1.8rem 0;
+        }
+        & .dc-popover__target {
+            display: flex;
+        }
+        & .dc-dialog__content {
+            max-width: 100%;
+            width: 100%;
+            height: 100%;
+        }
+        & .dc-table__head {
+            @include typeface(--paragraph-left-bold-prominent, none);
+        }
+        &__wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+        &__input-group {
+            display: flex;
+            margin-top: 2.7rem;
+        }
+        &__input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: 0;
+        }
+        &__button {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            margin-left: -1px;
+        }
+        &__checkbox-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            grid-gap: 1.6rem;
+
+            @include mobile {
+                grid-template-columns: 1fr;
+            }
+        }
+        &__table-row {
+            grid-template-columns: 1fr 1.4fr 1.3fr 0.7fr 7.7rem;
+        }
+        &__clipboard {
+            margin: 0 1rem;
+            cursor: pointer;
+
+            &-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 95%;
+
+                > span {
+                    margin-right: 0.4rem;
+                }
+            }
+        }
+        &__timeline {
+            padding: 0 1.4rem;
+
+            @include mobile {
+                margin-left: 1.2rem;
+            }
+        }
+        &__article {
+            padding: 1.6rem 2.4rem;
+            background: var(--general-section-1);
+            width: 25.6rem;
+            height: fit-content;
+            margin-left: 1.2rem;
+            border-radius: 8px;
+
+            &-list {
+                @include typeface(--paragraph-left-bold-black, none);
+                padding-left: 1.6rem;
+                list-style-type: disc;
+            }
+            &-title {
+                @include typeface(--paragraph-left-bold-prominent, none);
+                margin-bottom: 0.8rem;
+            }
+            &-text {
+                @include typeface(--small-left-normal-black, none);
+            }
+            @include mobile {
+                width: auto;
+                margin: 1.6rem;
+            }
+        }
+        &__scope {
+            background: var(--general-section-1);
+            padding: 0.8rem;
+            margin-bottom: 1.6rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+            &-item {
+                margin-bottom: 0.8rem;
+                display: grid;
+                grid-template-columns: 1.6fr 0.4fr;
+
+                > div {
+                    min-width: 7.8rem;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+            &--title {
+                @include typeface(--small-left-bold-black, none);
+            }
+            &--text {
+                @include typeface(--paragraph-left-normal-black, none);
+            }
+        }
+        &__scrollbars {
+            height: 100%;
+            width: 100%;
+        }
+    }
+    .two-factor {
+        height: 100%;
+        width: 100%;
+
+        & .dc-timeline__container {
+            width: 100%;
+        }
+        & .dc-dialog__content {
+            max-width: 100%;
+            width: 100%;
+            height: 100%;
+        }
+        & .dc-popover__target {
+            display: flex;
+        }
+        &__wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+
+            &--enabled {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                height: 100%;
+            }
+        }
+        &__title {
+            @include typeface(--title-left-bold-prominent, none);
+            margin-bottom: 1.5rem;
+            margin-left: 1.2rem;
+        }
+        &__input-group {
+            display: flex;
+            width: 40rem;
+            margin: 2.7rem auto 0;
+
+            @include mobile {
+                width: 100%;
+                max-width: 40rem;
+            }
+        }
+        &__input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: 0;
+        }
+        &__button {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            margin-left: -1px;
+        }
+        &__link {
+            color: var(--text-general);
+        }
+        &__timeline {
+            padding: 0 1.4rem;
+
+            @include mobile {
+                margin-left: 1.2rem;
+            }
+        }
+        &__article {
+            padding: 1.6rem 2.4rem;
+            background: var(--general-section-1);
+            max-width: 25.6rem;
+            height: fit-content;
+            margin-left: 1.2rem;
+            border-radius: 8px;
+
+            &-list {
+                @include typeface(--paragraph-left-bold-black, none);
+                padding-left: 1.6rem;
+                list-style-type: disc;
+            }
+            &-title {
+                @include typeface(--paragraph-left-bold-prominent, none);
+                margin-bottom: 0.8rem;
+            }
+            &-text {
+                @include typeface(--small-left-normal-black, none);
+            }
+            @include mobile {
+                max-width: 100%;
+                margin: 1.6rem;
+            }
+        }
+        &__scrollbars {
+            height: 100%;
+            width: 100%;
+            flex: 1;
+        }
+        &__qr {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            margin-bottom: 1.6rem;
+
+            &--wrapper {
+                background: var(--status-colored-background);
+                padding: 0.4rem;
+                width: auto;
+            }
+            &--title {
+                @include typeface(--title-center-bold-prominent, none);
+                margin-top: 2.4rem;
+            }
+            &--message {
+                @include typeface(--paragraph-center-normal-black, none);
+                margin: 1.6rem 0 0;
+            }
+            &--code {
+                @include typeface(--paragraph-left-normal-black, none);
+                padding: 1rem 1.6rem;
+                background: var(--general-section-1);
+                display: flex;
+                border-radius: 4px;
+                margin-top: 1.6rem;
+                align-items: center;
+
+                span {
+                    margin-right: 0.8rem;
+                }
+            }
+        }
+        &__icon {
+            width: 8.3rem;
+            height: 12.3rem;
+            margin-top: 6.4rem;
+        }
+    }
+    .account-limit-container {
+        height: 100%;
+        width: 100%;
+
+        &-title {
+            @include mobile {
+                padding-bottom: 0.8rem;
+            }
+        }
+        .account-management-table {
+            tr th:nth-child(2),
+            tr td:nth-child(2) {
+                text-align: right;
+            }
+            th {
+                padding: 2rem 0 0.8rem;
+                border-bottom: 2px solid var(--general-section-1);
+            }
+            td {
+                line-height: 3.6rem;
+
+                .account-limit-container__extra-info {
+                    padding-bottom: 0.8rem;
+                }
+                @include mobile {
+                    line-height: 2.4rem;
+                }
+            }
+        }
+        .account-management-flex-wrapper {
+            @include desktop {
+                align-items: center;
+            }
+            @include mobile {
+                flex-direction: column;
+            }
+        }
+        &__extra-info {
+            line-height: 1.4rem;
+            color: var(--text-less-prominent);
+            font-size: 1rem;
+            font-weight: normal;
+        }
+        @include mobile {
+            &__main-text {
+                margin-top: 2.4rem;
+                font-size: 1.2rem;
+            }
+            &__content {
+                padding: 0 0.8rem;
+            }
+            .account__text {
+                font-size: 1rem;
+            }
+        }
+    }
+    .account-limit-popover {
+        display: flex;
+        align-content: center;
+        padding-left: 4px;
+        @extend %inline-icon;
+    }
+    .account-limit-popover-target {
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+    .account-limit-info {
+        &__inset_header {
+            display: flex;
+            align-items: center;
+        }
+        * {
+            padding-left: 8px;
+        }
+    }
+    .leave-confirm {
+        @include mobile {
+            &__message-icon {
+                width: 93px;
+            }
+            &__message {
+                color: var(--text-prominent);
+            }
+            &__text {
+                padding: 0 1.9rem;
+            }
+        }
+    }
+    .submit-success {
+        margin-top: 100px;
+        @include mobile {
+            &__message-icon {
+                width: 96px;
+                height: 90px;
+            }
+            &__message {
+                font-size: 1.4rem;
+                text-align: center;
+                margin-top: 1.6rem;
+            }
+            &__text {
+                padding: 0 1.9rem;
+                font-size: 1rem;
+            }
+        }
+    }
+    &-address {
+        &__details {
+            &-section {
+                margin-top: 0.5em;
+
+                .account-form__fieldset {
+                    margin-bottom: 3em;
+                }
+            }
+        }
+    }
+    &-page-wrapper {
+        @include mobile {
+            height: 100%;
+        }
+    }
+    &__confirmation-page {
+        padding: 2.4rem 1.6rem 0;
+
+        &-title {
+            color: var(--brand-red-coral);
+            height: 20px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 0.8rem;
+        }
+        &-content {
+            margin-top: 0.8rem;
+            color: var(--text-general);
+            line-height: 1.4rem;
+        }
+        &-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 1.6rem;
+            z-index: 4;
+            border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
+            border-top: 2px solid var(--general-section-1);
+
+            .dc-btn:first-child {
+                margin-bottom: 1.6rem;
+            }
+        }
+    }
+    @include mobile {
+        height: 100%;
+        margin: 0;
+    }
+}
+
+/** @define account-poa; weak */
+.account-poa {
+    &__upload {
+        &-icon {
+            width: 25px;
+        }
+        &-section {
+            margin-top: 1em;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        &-list {
+            width: 100%;
+            flex: 1;
+            margin-right: 16px;
+
+            @include mobile {
+                flex: unset;
+                margin-right: 0;
+            }
+        }
+        &-file {
+            width: 100%;
+            flex: 1;
+            height: 240px;
+            position: relative;
+
+            .dc-file-dropzone {
+                max-width: 400px;
+            }
+            @include mobile {
+                flex: unset;
+                margin-bottom: 2.4rem;
+            }
+        }
+        &-remove-btn {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 8px;
+            right: 8px;
+            cursor: pointer;
+            transition: transform 0.25s linear;
+
+            &:hover {
+                transform: scale(1.25, 1.25);
+            }
+            &--error {
+                circle {
+                    fill: var(--status-danger);
+                }
+            }
+            &-container {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+        &-box {
+            display: flex;
+            margin-bottom: 2em;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        &-item {
+            min-width: 238px;
+            width: 100%;
+            margin-left: 1em;
+            font-size: var(--text-size-xxs);
+            line-height: 1.5;
+            color: var(--text-prominent);
+        }
+    }
+    &__details {
+        &-section {
+            margin-top: 1em;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        &-description {
+            width: 100%;
+            margin-right: 0.5em;
+            flex: 1;
+
+            @include mobile {
+                margin-bottom: 2.4rem;
+            }
+        }
+        &-text {
+            font-size: var(--text-size-xs);
+            line-height: 1.5;
+            color: var(--text-general);
+
+            @include mobile {
+                font-size: 1.2rem;
+            }
+        }
+        &-fields {
+            width: 100%;
+            min-width: 400px;
+            flex: 1;
+
+            .account-form__fieldset {
+                margin-bottom: 3em;
+            }
+            @include mobile {
+                min-width: 100%;
+            }
+        }
+    }
+}
+
+/** @define forgot-password; weak */
+.forgot-password {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-row-gap: 16px;
+    max-width: 400px;
+    margin: 24px auto 0;
+    color: var(--text-prominent);
+    font-size: var(--text-size-xxs);
+    line-height: 1.5;
+
+    &__content {
+        display: grid;
+        grid-template-columns: 32px auto;
+        grid-gap: 8px;
+
+        .inline-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 8px;
+        }
+    }
+}
+
+/** @define form-submit-error-message; weak */
+.form-submit-error-message {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    font-size: var(--text-size-xxs);
+    font-weight: bold;
+    flex: 1;
+    color: var(--text-prominent);
+
+    p {
+        padding-left: 16px;
+
+        @include mobile {
+            line-height: 20px;
+        }
+    }
+
+    @include mobile {
+        padding: 0 1.6rem 1rem;
+    }
+}
+
+/** @define initial-loader; weak */
+.initial-loader--btn {
+    .initial-loader__barspinner--rect {
+        background-color: var(--text-colored-background);
+    }
+    .barspinner {
+        margin: 0 4px 0 -4px;
+    }
+}
+
+/** @define poi-icon-row; weak */
+.poi-icon-row {
+    display: flex;
+    margin-bottom: 16px;
+
+    &__icon-container {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        color: var(--text-less-prominent);
+
+        &:not(:first-child):not(:last-child) {
+            margin: 0 40px;
+        }
+        p {
+            font-size: var(--text-size-xxs);
+        }
+        p:first-of-type {
+            line-height: 1.5;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+        @include mobile {
+            &:not(:first-child):not(:last-child) {
+                margin: 0;
+            }
+            & .dc-icon {
+                width: 8.8rem;
+                height: auto;
+            }
+            p {
+                line-height: 20px;
+            }
+        }
+    }
+    @include mobile {
+        display: grid;
+        grid-gap: 2.4rem;
+        grid-template-columns: 1fr 1fr 1fr;
+        margin-top: 4rem;
+    }
+}
+
+/** @define onfido-container; weak */
+.onfido-container {
+    margin-top: 24px;
+    @include mobile {
+        margin-top: 0;
+
+        .onfido-sdk-ui-PageTitle {
+            &-titleWrapper {
+                margin: 0 1.5em 0.4em;
+            }
+            &-title {
+                text-align: left;
+            }
+            &-subTitle {
+                text-align: left;
+            }
+        }
+    }
+}
+
+/* stylelint-disable */
+.dc-modal {
+    &__container {
+        &_financial-assessment-confirmation {
+            width: 440px;
+            .dc-modal-body {
+                padding-top: 1.2rem;
+            }
+        }
+    }
+    .leave-confirm {
+        &__message-content {
+            text-align: center;
+        }
+        &__message-icon {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2.4rem;
+        }
+        &__message {
+            margin-bottom: 0.8rem;
+            font-weight: bold;
+        }
+    }
+    .account-management-leave-confirm {
+        display: flex;
+        justify-content: center;
+        margin-top: 2.4rem;
+
+        :first-child {
+            margin-right: 0.8rem;
+        }
+    }
+}
+
+.dc-modal__container_api_token__modal {
+    .api-token {
+        &__popup {
+            display: flex;
+            width: 440px;
+            height: 312px;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+
+            &-header {
+                @include typeface(--title-center-bold-prominent, none);
+                margin: 1.6rem 0 2.4rem;
+            }
+            &-image {
+                width: 12.8rem;
+                height: 12.8rem;
+            }
+            &-buttons {
+                & > button:first-child {
+                    margin-right: 1.6rem;
+                }
+            }
+            &-error {
+                margin-top: 1.6rem;
+                @include typeface(--paragraph-center-bold-red, none);
+            }
+            @include mobile {
+                width: 300px;
+                height: 272px;
+            }
+        }
+    }
+}
+/* stylelint-enable */
+
+/** @define proof-of-identity */
+.proof-of-identity {
+    height: 100%;
+}

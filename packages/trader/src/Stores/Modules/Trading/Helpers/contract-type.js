@@ -3,10 +3,16 @@ import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isTimeValid, minDate, toMoment } from '@deriv/shared/utils/date';
+import { getUnitMap } from 'Stores/Modules/Portfolio/Helpers/details';
 import { buildBarriersConfig } from './barrier';
 import { buildDurationConfig, hasIntradayDurationUnit } from './duration';
 import { buildForwardStartingConfig, isSessionAvailable } from './start-date';
-import { getContractCategoriesConfig, getContractTypesConfig, getLocalizedBasis } from '../Constants/contract';
+import {
+    unsupported_contract_types_list,
+    getContractCategoriesConfig,
+    getContractTypesConfig,
+    getLocalizedBasis,
+} from '../Constants/contract';
 
 const ContractType = (() => {
     let available_contract_types = {};
@@ -110,6 +116,8 @@ const ContractType = (() => {
                 config.barriers = buildBarriersConfig(contract, config.barriers);
                 config.forward_starting_dates = buildForwardStartingConfig(contract, config.forward_starting_dates);
                 config.multiplier_range = contract.multiplier_range;
+                config.cancellation_range = contract.cancellation_range;
+
                 available_contract_types[type].config = config;
             });
 
@@ -155,6 +163,7 @@ const ContractType = (() => {
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
 
         const obj_multiplier_range_list = getMultiplierRange(contract_type, multiplier);
+        const obj_cancellation_range_list = getCancellationRange(contract_type);
         const obj_expiry_type = getExpiryType(obj_duration_units_list, expiry_type);
 
         return {
@@ -169,11 +178,14 @@ const ContractType = (() => {
             ...obj_duration_units_min_max,
             ...obj_expiry_type,
             ...obj_multiplier_range_list,
+            ...obj_cancellation_range_list,
         };
     };
 
     const getContractType = (list, contract_type) => {
-        const arr_list = Object.keys(list || {}).reduce((k, l) => [...k, ...list[l].map(ct => ct.value)], []);
+        const arr_list = Object.keys(list || {})
+            .reduce((k, l) => [...k, ...list[l].map(ct => ct.value)], [])
+            .filter(type => unsupported_contract_types_list.indexOf(type) === -1);
         return {
             contract_type: getArrayDefaultValue(arr_list, contract_type),
         };
@@ -516,6 +528,23 @@ const ContractType = (() => {
         return {
             multiplier_range_list: arr_multiplier.map(m => ({ text: `x${m}`, value: m })),
             multiplier: getArrayDefaultValue(arr_multiplier, multiplier),
+        };
+    };
+
+    const getCancellationRange = contract_type => {
+        const arr_cancellation_range =
+            ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'cancellation_range']) ||
+            [];
+
+        const regex = new RegExp('^([0-9]+)|([a-zA-Z]+)$', 'g');
+        const getText = str => {
+            const [duration, unit] = str.match(regex);
+            const unit_map = getUnitMap();
+            return `${duration} ${unit_map[unit].name_plural}`;
+        };
+
+        return {
+            cancellation_range_list: arr_cancellation_range.map(d => ({ text: `${getText(d)}`, value: d })),
         };
     };
 

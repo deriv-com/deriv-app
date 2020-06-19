@@ -1,8 +1,6 @@
 .dc-list {
     position: absolute;
     width: 100%;
-    max-height: 200px;
-    overflow-y: auto;
     z-index: 2;
     border-radius: $BORDER_RADIUS;
     box-shadow: 0 8px 16px 0 var(--shadow-menu);
@@ -36,7 +34,8 @@
                     padding: 1rem 1.6rem;
                     margin: 0 0.8rem;
                 }
-                &:not(&--disabled):not(&--selected):hover {
+                &:not(&--disabled):not(&--selected):hover,
+                &:not(&--disabled):not(&--selected):focus {
                     border-radius: $BORDER_RADIUS;
                     width: calc(100% - 1.6rem);
                     margin: 0 0.8rem;
@@ -97,9 +96,10 @@
             background: var(--state-active);
             border-radius: $BORDER_RADIUS;
         }
-        &--highlighted:not(&--disabled) {
+        &:focus:not(&--disabled) {
             background-color: var(--state-hover);
             color: var(--text-general);
+            outline: none;
         }
         &--disabled {
             color: var(--text-disabled);

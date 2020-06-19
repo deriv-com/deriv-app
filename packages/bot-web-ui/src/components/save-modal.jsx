@@ -1,34 +1,57 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Checkbox, Icon, Modal, RadioGroup } from '@deriv/components';
+import { Button, Checkbox, Icon, Modal, RadioGroup, Input } from '@deriv/components';
 import { Formik, Form, Field } from 'formik';
 import { localize } from '@deriv/translations';
+import { config } from '@deriv/bot-skeleton';
 import { connect } from '../stores/connect';
 import '../assets/sass/google-drive.scss';
 import '../assets/sass/save-modal.scss';
 
-const initial_option = { is_local: true, save_as_collection: false };
-
 const SaveModal = ({
+    bot_name,
     button_status,
     is_authorised,
     is_save_modal_open,
     onConfirmSave,
     onDriveConnect,
     toggleSaveModal,
+    validateBotName,
 }) => (
     <Modal
-        title={'Save Strategy'}
+        title={'Save bot'}
         className='modal--save'
         width='384px'
         is_open={is_save_modal_open}
         toggleModal={toggleSaveModal}
     >
-        <Formik initialValues={initial_option} onSubmit={onConfirmSave}>
-            {({ values: { is_local, save_as_collection }, setFieldValue }) => (
+        <Formik
+            initialValues={{
+                is_local: true,
+                save_as_collection: false,
+                bot_name: bot_name === config.default_file_name ? '' : bot_name,
+            }}
+            validate={validateBotName}
+            onSubmit={onConfirmSave}
+        >
+            {({ values: { is_local, save_as_collection }, setFieldValue, touched, errors }) => (
                 <Form>
                     <div className='modal__content'>
+                        <div className='modal__content-row'>
+                            <Field name='bot_name'>
+                                {({ field }) => (
+                                    <Input
+                                        {...field}
+                                        className='save-type__input'
+                                        type='text'
+                                        placeholder={'Untitled Bot'}
+                                        error={touched[field.name] && errors[field.name]}
+                                        label={localize('Bot name')}
+                                    />
+                                )}
+                            </Field>
+                        </div>
                         <div className='modal__content-row'>
                             <RadioGroup
                                 className='radio-group__save-type'
@@ -71,7 +94,6 @@ const SaveModal = ({
                                 onToggle={() => setFieldValue('is_local', !is_local)}
                             />
                         </div>
-
                         <>
                             <Field name='save_as_collection'>
                                 {({ field }) => (
@@ -86,7 +108,7 @@ const SaveModal = ({
                             </Field>
                             <div className='save-type__checkbox-description'>
                                 {localize(
-                                    'This option allows you to save your strategy as a collection of individual blocks which you can add to other strategies.'
+                                    'Enabling this allows you to save your blocks as one collection which can be easily integrated into other bots.'
                                 )}
                             </div>
                         </>
@@ -155,6 +177,7 @@ SaveModal.propTypes = {
     onConfirmSave: PropTypes.func,
     onDriveConnect: PropTypes.func,
     toggleSaveModal: PropTypes.func,
+    bot_name: PropTypes.string,
 };
 
 export default connect(({ save_modal, google_drive }) => ({
@@ -164,4 +187,6 @@ export default connect(({ save_modal, google_drive }) => ({
     onConfirmSave: save_modal.onConfirmSave,
     onDriveConnect: save_modal.onDriveConnect,
     toggleSaveModal: save_modal.toggleSaveModal,
+    validateBotName: save_modal.validateBotName,
+    bot_name: save_modal.bot_name,
 }))(SaveModal);

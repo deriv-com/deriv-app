@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import Icon from 'Components/icon';
 import Input from 'Components/input';
 
@@ -25,7 +25,7 @@ const DatePickerInput = ({
     value,
     required,
 }) => {
-    const [is_clear_btn_visible, setIsClearBtnVisible] = useState(false);
+    const [is_clear_btn_visible, setIsClearBtnVisible] = React.useState(false);
 
     const onMouseEnter = () => {
         if (is_clearable) {

@@ -1,9 +1,9 @@
 import * as PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { Button, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { localize } from '@deriv/translations';
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import routes from 'Constants/routes';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
 import ToggleNotifications from './toggle-notifications.jsx';
@@ -14,7 +14,7 @@ const AccountInfo = React.lazy(() =>
     import(/* webpackChunkName: "account-info", webpackPreload: true */ 'App/Components/Layout/Header/account-info.jsx')
 );
 
-export class AccountActions extends Component {
+export class AccountActions extends React.Component {
     shouldComponentUpdate(nextProps) {
         return (
             nextProps.is_acc_switcher_disabled !== this.props.is_acc_switcher_disabled ||

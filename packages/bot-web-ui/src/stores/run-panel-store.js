@@ -44,7 +44,7 @@ export default class RunPanelStore {
 
     @action.bound
     onRunButtonClick = () => {
-        const { core, contract_card } = this.root_store;
+        const { core, contract_card, route_prompt_dialog } = this.root_store;
         const { client, ui } = core;
 
         this.dbot.unHighlightAllBlocks();
@@ -67,6 +67,7 @@ export default class RunPanelStore {
         );
 
         this.is_running = true;
+        ui.setPromptHandler(true, route_prompt_dialog.shouldNavigateAfterPrompt);
         this.toggleDrawer(true);
         this.run_id = `run-${Date.now()}`;
 
@@ -77,10 +78,10 @@ export default class RunPanelStore {
 
     @action.bound
     onStopButtonClick() {
+        const { ui } = this.root_store.core;
         this.dbot.stopBot();
         this.is_running = false;
-
-        const { ui } = this.root_store.core;
+        ui.setPromptHandler(false);
 
         if (this.error_type) {
             // when user click stop button when there is a error but bot is retrying
@@ -217,27 +218,40 @@ export default class RunPanelStore {
 
     @action.bound
     onBotStopEvent() {
-        if (this.error_type === error_types.RECOVERABLE_ERRORS) {
-            // When error happens but its recoverable_errors, why we emit bot.stop here?
-            this.setContractStage(contract_stages.PURCHASE_SENT);
-            this.error_type = undefined;
-        } else if (this.error_type === error_types.UNRECOVERABLE_ERRORS) {
-            // When error happens and its recoverable_errors, bot should stop
-            const { ui } = this.root_store.core;
+        const { ui } = this.root_store.core;
+        const indicateBotStopped = () => {
             this.error_type = undefined;
             this.is_running = false;
-
             this.setContractStage(contract_stages.NOT_RUNNING);
             ui.setAccountSwitcherDisabledMessage(false);
             RunPanelStore.unregisterBotListeners();
-        } else if (this.has_open_contract) {
-            // When bot was running and it closes now
-            this.setContractStage(contract_stages.CONTRACT_CLOSED);
-            RunPanelStore.unregisterBotListeners();
+        };
 
-            const { ui } = this.root_store.core;
+        if (this.error_type === error_types.RECOVERABLE_ERRORS) {
+            // Bot should indicate it started in below cases:
+            // - When error happens it's a recoverable error
+            const { shouldRestartOnError, timeMachineEnabled } = this.dbot.interpreter.bot.tradeEngine.options;
+            const is_bot_recoverable = shouldRestartOnError || timeMachineEnabled;
+
+            if (is_bot_recoverable) {
+                this.error_type = undefined;
+                this.setContractStage(contract_stages.PURCHASE_SENT);
+            } else {
+                indicateBotStopped();
+            }
+        } else if (this.error_type === error_types.UNRECOVERABLE_ERRORS) {
+            // Bot should indicate it stopped in below cases:
+            // - When error happens and it's an unrecoverable error
+            indicateBotStopped();
+        } else if (this.has_open_contract) {
+            // Bot should indicate the contract is closed in below cases:
+            // - When bot was running and an error happens
+            this.error_type = undefined;
+            this.setContractStage(contract_stages.CONTRACT_CLOSED);
             ui.setAccountSwitcherDisabledMessage(false);
+            RunPanelStore.unregisterBotListeners();
         }
+
         this.has_open_contract = false;
     }
 

@@ -1,7 +1,7 @@
 import { action, computed, observable, toJS } from 'mobx';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import { WS } from 'Services/ws-methods';
 import { LocalStore } from '_common/storage';
-import { isDesktop } from '@deriv/shared/utils/screen';
 import { switch_to_tick_chart } from './Helpers/chart-notifications';
 import ContractStore from './contract-store';
 import getValidationRules from './Constants/validation-rules';
@@ -51,12 +51,8 @@ export default class ContractTradeStore extends BaseStore {
     @action.bound
     updateGranularity(granularity) {
         const tick_chart_types = ['mountain', 'line', 'colored_line', 'spline', 'baseline'];
-        // TODO: fix this in smartcharts
         if (granularity === 0 && tick_chart_types.indexOf(this.chart_type) === -1) {
             this.chart_type = 'mountain';
-        }
-        if (granularity !== 0 && tick_chart_types.indexOf(this.chart_type) !== -1) {
-            this.chart_type = 'candle';
         }
         LocalStore.set('contract_trade.granularity', granularity);
         this.granularity = granularity;

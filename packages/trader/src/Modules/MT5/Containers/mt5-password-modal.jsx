@@ -3,33 +3,32 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { FormSubmitButton, Icon, Modal, PasswordInput, PasswordMeter } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
-import routes from 'Constants/routes';
 import 'Sass/app/modules/mt5/mt5.scss';
 import { connect } from 'Stores/connect';
 import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
-import AdvancedDescription from './advanced-description.jsx';
 
 const getSubmitText = (account_title, category) => {
     if (category === 'real') {
         return localize(
             'You have created a DMT5 {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.',
-            { account_title: account_title[0].toLowerCase() + account_title.substr(1) }
+            { account_title }
         );
     }
 
-    return localize('You have created a Deriv {{account_title}}.', { account_title });
+    return localize('You have created a DMT5 {{account_title}} account.', { account_title });
 };
 
 const getIconFromType = type => {
     switch (type) {
-        case 'synthetic_indices':
-            return <Icon icon='IcMt5SyntheticIndices' size={64} />;
-        case 'standard':
-            return <Icon icon='IcMt5Standard' size={64} />;
+        case 'synthetic':
+            return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
+        case 'financial':
+            return <Icon icon='IcMt5FinancialPlatform' size={128} />;
         default:
-            return <Icon icon='IcMt5Advanced' size={64} />;
+            return <Icon icon='IcMt5FinancialStpPlatform' size={128} />;
     }
 };
 
@@ -48,15 +47,19 @@ const MT5PasswordModal = ({
     submitMt5Password,
 }) => {
     const validatePassword = values => {
-        const is_valid =
-            validPassword(values.password) &&
-            validLength(values.password, {
-                min: 8,
-                max: 25,
-            });
         const errors = {};
 
-        if (!is_valid) {
+        if (
+            !validLength(values.password, {
+                min: 8,
+                max: 25,
+            })
+        ) {
+            errors.password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+                min_number: 8,
+                max_number: 25,
+            });
+        } else if (!validPassword(values.password)) {
             errors.password = localize('You need to include uppercase and lowercase letters, and numbers.');
         }
 
@@ -84,7 +87,7 @@ const MT5PasswordModal = ({
     const IconType = () => getIconFromType(account_type.type);
     const should_show_password = is_mt5_password_modal_enabled && !has_mt5_error && !is_mt5_success_dialog_enabled;
     const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
-    const is_real_advanced = [account_type.category, account_type.type].join('_') === 'real_advanced';
+    const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
 
     return (
         <React.Fragment>
@@ -92,7 +95,6 @@ const MT5PasswordModal = ({
                 className='mt5-password-modal'
                 is_open={should_show_password}
                 toggleModal={closeModal}
-                width={is_real_advanced ? '360px' : 'auto'}
                 has_close_icon
             >
                 <Formik
@@ -125,31 +127,41 @@ const MT5PasswordModal = ({
                             </h2>
                             <div className='dc-modal__container_mt5-password-modal__body'>
                                 <div className='input-element'>
-                                    <PasswordMeter input={values.password} error={touched.password && errors.password}>
-                                        <PasswordInput
-                                            autoComplete='password'
-                                            label={localize('MT5 Password')}
-                                            name='password'
-                                            value={values.password}
-                                            onBlur={handleBlur}
-                                            onChange={e => {
-                                                setFieldTouched('password', true);
-                                                handleChange(e);
-                                            }}
-                                        />
+                                    <PasswordMeter
+                                        input={values.password}
+                                        has_error={!!(touched.password && errors.password)}
+                                    >
+                                        {({ has_warning }) => (
+                                            <PasswordInput
+                                                autoComplete='password'
+                                                label={localize('Create a password')}
+                                                error={touched.password && errors.password}
+                                                hint={
+                                                    !has_warning &&
+                                                    localize(
+                                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                                    )
+                                                }
+                                                name='password'
+                                                value={values.password}
+                                                onBlur={handleBlur}
+                                                onChange={e => {
+                                                    setFieldTouched('password', true);
+                                                    handleChange(e);
+                                                }}
+                                            />
+                                        )}
                                     </PasswordMeter>
                                 </div>
-                                <div className='dc-modal__container_mt5-password-modal__description'>
-                                    <p>
-                                        <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters with numbers' />
-                                    </p>
-                                    <AdvancedDescription is_real_advanced={is_real_advanced} />
-                                </div>
+                                {is_real_financial_stp && (
+                                    <div className='dc-modal__container_mt5-password-modal__description'>
+                                        <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Binary (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA). All other accounts, including your Deriv account, are not subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA).' />
+                                    </div>
+                                )}
                             </div>
                             <FormSubmitButton
-                                is_center={is_real_advanced}
                                 is_disabled={isSubmitting || !values.password || Object.keys(errors).length > 0}
-                                has_cancel={!is_real_advanced}
+                                has_cancel
                                 cancel_label={localize('Cancel')}
                                 onCancel={closeModal}
                                 is_loading={isSubmitting}
@@ -165,6 +177,7 @@ const MT5PasswordModal = ({
                 toggleModal={closeModal}
                 onCancel={closeModal}
                 onSubmit={closeOpenSuccess}
+                classNameMessage='mt5-password-modal__message'
                 message={getSubmitText(account_title, account_type.category)}
                 // message={error_message}
                 icon={<IconType />}

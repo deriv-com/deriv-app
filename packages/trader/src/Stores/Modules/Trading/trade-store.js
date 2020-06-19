@@ -1,8 +1,8 @@
 import debounce from 'lodash.debounce';
-import { action, computed, observable, reaction, runInAction, toJS } from 'mobx';
+import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -16,6 +16,7 @@ import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
 import { processTradeParams } from './Helpers/process';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
+import { getBarrierPipSize } from './Helpers/barrier';
 import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
@@ -107,6 +108,8 @@ export default class TradeStore extends BaseStore {
     @observable commission = 0;
     @observable cancellation_price = 0;
     @observable hovered_contract_type;
+    @observable cancellation_duration = '60m';
+    @observable cancellation_range_list = [];
 
     // Mobile
     @observable is_trade_params_expanded = true;
@@ -118,14 +121,14 @@ export default class TradeStore extends BaseStore {
     initial_barriers;
     is_initial_barrier_applied = false;
 
-    proposal_req_id = {};
-
     @observable should_skip_prepost_lifecycle = false;
 
     @action.bound
     init = async () => {
         // To be sure that the website_status response has been received before processing trading page.
         await WS.wait('authorize', 'website_status');
+        // This is to wait when the client is logging in via OAuth redirect
+        await when(() => !this.root_store.client.is_populating_account_list);
         WS.storage.activeSymbols('brief').then(({ active_symbols }) => {
             runInAction(() => {
                 this.active_symbols = active_symbols;
@@ -275,15 +278,12 @@ export default class TradeStore extends BaseStore {
         if (this.symbol && this.is_symbol_in_active_symbols) {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
-                this.processNewValuesAsync(
-                    {
-                        ...ContractType.getContractValues(this),
-                        ...ContractType.getContractCategories(),
-                    },
-                    false,
-                    {},
-                    false
-                );
+                const contract_categories = ContractType.getContractCategories();
+                this.processNewValuesAsync({
+                    ...contract_categories,
+                    ...ContractType.getContractType(contract_categories.contract_types_list, this.contract_type),
+                });
+                this.processNewValuesAsync(ContractType.getContractValues(this));
             });
         }
     }
@@ -295,6 +295,7 @@ export default class TradeStore extends BaseStore {
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
         await WS.wait('authorize');
+        await when(() => !this.root_store.client.is_populating_account_list);
         await this.setActiveSymbols();
         runInAction(async () => {
             await WS.storage.contractsFor(this.symbol).then(async r => {
@@ -380,7 +381,11 @@ export default class TradeStore extends BaseStore {
     @action.bound
     async resetPreviousSymbol() {
         this.setMarketStatus(isMarketClosed(this.active_symbols, this.previous_symbol));
+
         await Symbol.onChangeSymbolAsync(this.previous_symbol);
+        await this.updateSymbol(this.symbol);
+
+        this.setChartStatus(false);
         runInAction(() => {
             this.previous_symbol = ''; // reset the symbol to default
         });
@@ -456,6 +461,11 @@ export default class TradeStore extends BaseStore {
     }
 
     @computed
+    get barrier_pipsize() {
+        return getBarrierPipSize(this.barrier_1);
+    }
+
+    @computed
     get main_barrier_flattened() {
         const is_digit_trade_type = isDigitTradeType(this.contract_type);
         return is_digit_trade_type ? null : toJS(this.main_barrier);
@@ -499,7 +509,7 @@ export default class TradeStore extends BaseStore {
             processPurchase(proposal_id, price).then(
                 action(response => {
                     const last_digit = +this.last_digit;
-                    if (this.proposal_info[type].id !== proposal_id) {
+                    if (this.proposal_info[type]?.id !== proposal_id) {
                         throw new Error('Proposal ID does not match.');
                     }
                     if (response.buy) {
@@ -777,9 +787,6 @@ export default class TradeStore extends BaseStore {
             this.purchase_info = {};
 
             Object.keys(this.proposal_requests).forEach(type => {
-                // to keep track of proposal req_id that is set by subscription manager in deriv-api,
-                // we need to initialize it to 0 every time a new request is being sent
-                this.proposal_req_id[type] = 0;
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
         }
@@ -802,20 +809,6 @@ export default class TradeStore extends BaseStore {
         const contract_type = response.echo_req.contract_type;
         const prev_proposal_info = ObjectUtils.getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = ObjectUtils.getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
-
-        // Sometimes the API doesn't forget old 'proposal' response and returns them with new 'proposal' response, so here
-        // we need to send 'forget' req for old proposal subscriptions and store the latest proposal req_id
-        if (this.proposal_req_id[contract_type] < response.echo_req.req_id) {
-            // if not the first proposal response and if an old proposal subscription exist, send 'forget'
-            if (
-                this.proposal_req_id[contract_type] &&
-                this.proposal_info[contract_type] &&
-                this.proposal_info[contract_type].id
-            ) {
-                WS.forget(this.proposal_info[contract_type].id);
-            }
-            this.proposal_req_id[contract_type] = response.echo_req.req_id;
-        }
 
         this.proposal_info = {
             ...this.proposal_info,
@@ -907,22 +900,19 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    accountSwitcherListener() {
+    async accountSwitcherListener() {
         this.resetErrorServices();
-        // TODO: remove this, once multiplier is avaible for real accounts
-        if (this.is_multiplier && this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
-            this.processNewValuesAsync({ contract_type: 'rise_fall' }, false, {}, false);
-            if (!this.is_symbol_in_active_symbols) this.setActiveSymbols();
-        }
-        this.setContractTypes();
-        return this.processNewValuesAsync(
-            { currency: this.root_store.client.currency || this.root_store.client.default_currency },
-            true,
-            { currency: this.currency },
-            false
-        )
-            .then(this.refresh)
-            .then(this.requestProposal);
+        await this.setContractTypes();
+
+        runInAction(async () => {
+            this.processNewValuesAsync(
+                { currency: this.root_store.client.currency || this.root_store.client.default_currency },
+                true,
+                { currency: this.currency },
+                false
+            );
+        });
+        return Promise.resolve();
     }
 
     @action.bound
@@ -997,20 +987,8 @@ export default class TradeStore extends BaseStore {
 
         await this.processNewValuesAsync({ currency: new_currency }, true, { currency: this.currency }, false);
         this.refresh();
-        WS.forgetAll('balance').then(() => {
-            // the first has to be without subscribe to quickly update current account's balance
-            WS.authorized.balance().then(this.handleResponseBalance);
-            // the second is to subscribe to balance and update all sibling accounts' balances too
-            WS.subscribeBalanceAll(this.handleResponseBalance);
-        });
         this.debouncedProposal();
     }
-
-    handleResponseBalance = response => {
-        if (response.balance) {
-            this.root_store.client.setBalance(response.balance);
-        }
-    };
 
     @action.bound
     onUnmount() {

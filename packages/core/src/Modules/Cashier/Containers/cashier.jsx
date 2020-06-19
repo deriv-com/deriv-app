@@ -2,19 +2,20 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import {
-    PageOverlay,
     VerticalTab,
     DesktopWrapper,
     MobileWrapper,
     Div100vhContainer,
     FadeWrapper,
+    PageOverlay,
 } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { getSelectedRoute } from '@deriv/shared/utils/route';
 import { isMobile, isTouchDevice } from '@deriv/shared/utils/screen';
-import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
+import 'Sass/app/modules/cashier.scss';
 
 const el_landscape_blocker = document.getElementById('landscape_blocker');
 
@@ -25,6 +26,7 @@ class Cashier extends React.Component {
         this.props.toggleCashier();
         // we still need to populate the tabs shown on cashier
         this.props.onMount();
+        this.props.setAccountSwitchListener();
 
         // TODO: Remove L21, L31, and L38 code blocks once landscape design is ready
         // doughflow iframe inconjunction with android's virtual keyboard causes issues with css screen height calculation (thus falsely triggering landscape blocker in Android)
@@ -96,6 +98,8 @@ class Cashier extends React.Component {
             (location.pathname.startsWith(routes.cashier_deposit) ||
                 location.pathname.startsWith(routes.cashier_withdrawal));
 
+        const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
+
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}
@@ -116,7 +120,7 @@ class Cashier extends React.Component {
                                 current_path={this.props.location.pathname}
                                 is_floating
                                 setVerticalTabIndex={this.props.setTabIndex}
-                                vertical_tab_index={this.props.tab_index}
+                                vertical_tab_index={is_default_route ? 0 : this.props.tab_index}
                                 is_full_width
                                 is_routed
                                 list={menu_options()}
@@ -183,5 +187,6 @@ export default connect(({ client, common, modules, ui }) => ({
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     onMount: modules.cashier.onMountCommon,
     p2p_notification_count: modules.cashier.p2p_notification_count,
+    setAccountSwitchListener: modules.cashier.setAccountSwitchListener,
     toggleCashier: ui.toggleCashier,
 }))(withRouter(Cashier));

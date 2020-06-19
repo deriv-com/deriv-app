@@ -1,15 +1,15 @@
 import React from 'react';
 import { Button } from '@deriv/components';
+import { urlFor, getDerivComLink } from '@deriv/shared/utils/url';
+import routes from '@deriv/shared/utils/routes';
+import { isMobile } from '@deriv/shared/utils/screen';
+import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { formatDate } from '@deriv/shared/utils/date';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { isMobile } from '@deriv/shared/utils/screen';
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
-import { localize, Localize } from '@deriv/translations';
-import routes from 'Constants/routes';
 import { LocalStore, State } from '_common/storage';
-import { urlFor, getDerivComLink } from '_common/url';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
@@ -39,12 +39,7 @@ export const clientNotifications = (ui = {}) => {
                         interpolation: { escapeValue: false },
                     }}
                     components={[
-                        <a
-                            key={0}
-                            className='link'
-                            target='_blank'
-                            href={urlFor('contact', undefined, undefined, true)}
-                        />,
+                        <a key={0} className='link' target='_blank' href={urlFor('contact', { legacy: true })} />,
                     ]}
                 />
             ),
@@ -65,6 +60,14 @@ export const clientNotifications = (ui = {}) => {
             header: localize('Cashier disabled'),
             message: localize(
                 'Deposits and withdrawals have been disabled on your account. Please check your email for more details.'
+            ),
+            type: 'warning',
+        },
+        withdrawal_locked_review: {
+            key: 'withdrawal_locked_review',
+            header: localize('Withdrawal disabled'),
+            message: localize(
+                'Withdrawals have been disabled on your account. Please wait until your uploaded documents are verified.'
             ),
             type: 'warning',
         },
@@ -152,7 +155,7 @@ export const clientNotifications = (ui = {}) => {
                             key={0}
                             className='link'
                             target='_blank'
-                            href={urlFor('user/security/self_exclusionws', undefined, undefined, true)}
+                            href={urlFor('user/security/self_exclusionws', { legacy: true })}
                         />,
                     ]}
                 />
@@ -356,11 +359,14 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     const {
-        authentication: { document, identity, needs_verification, prompt_client_to_authenticate },
+        authentication: { document, identity, needs_verification },
+        prompt_client_to_authenticate,
+        risk_classification,
         status,
     } = account_status;
 
     const {
+        authenticated,
         cashier_locked,
         withdrawal_locked,
         mt5_withdrawal_locked,
@@ -391,7 +397,19 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     if (needs_poa) addNotificationMessage(clientNotifications().needs_poa);
     if (needs_poi) addNotificationMessage(clientNotifications().needs_poi);
     if (cashier_locked) addNotificationMessage(clientNotifications().cashier_locked);
-    if (withdrawal_locked) addNotificationMessage(clientNotifications().withdrawal_locked);
+    if (withdrawal_locked) {
+        // if client is withdrawal locked but it's because they need to authenticate
+        // and they have submitted verification documents,
+        // we should wait for review of documents to be done and show a different message
+        const is_high_risk = risk_classification === 'high';
+        const should_authenticate = !authenticated || prompt_client_to_authenticate;
+        const doc_is_under_review = document.status === 'pending';
+        if (is_high_risk && should_authenticate && doc_is_under_review) {
+            addNotificationMessage(clientNotifications().withdrawal_locked_review);
+        } else {
+            addNotificationMessage(clientNotifications().withdrawal_locked);
+        }
+    }
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
     if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
     if (unwelcome) addNotificationMessage(clientNotifications().unwelcome);

@@ -1,7 +1,8 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import {
+    AutoHeightWrapper,
     FormSubmitButton,
     ThemedScrollbars,
     Dropdown,
@@ -11,25 +12,25 @@ import {
     DesktopWrapper,
     MobileWrapper,
 } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
-import { localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
-import { FormSubHeader } from 'Modules/Account/Components/layout-components.jsx';
-import FileUploaderContainer from 'Modules/Account/Sections/Verification/ProofOfAddress/file-uploader-container.jsx';
-import { poa_status_codes } from 'Modules/Account/Sections/Verification/ProofOfAddress/proof-of-address-container.jsx';
 import {
-    Expired,
-    NeedsReview,
-    Unverified,
-    Verified,
-    Submitted,
-} from 'Modules/Account/Sections/Verification/ProofOfAddress/proof-of-address-messages.jsx';
+    FileUploaderContainer,
+    FormSubHeader,
+    PoaExpired,
+    PoaNeedsReview,
+    PoaVerified,
+    PoaUnverified,
+    PoaSubmitted,
+    PoaStatusCodes,
+} from '@deriv/account';
+import { WS } from 'Services/ws-methods';
+import { localize } from '@deriv/translations';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { validAddress, validLength, validPostCode } from 'Utils/Validator/declarative-validation-rules';
 import { InputField } from './mt5-personal-details-form.jsx';
 
 const form = React.createRef();
 
-class MT5POA extends Component {
+class MT5POA extends React.Component {
     file_uploader_ref = undefined;
     state = {
         document_file: undefined,
@@ -43,7 +44,7 @@ class MT5POA extends Component {
 
     validateForm = values => {
         // No need to validate if we are waiting for confirmation.
-        if ([poa_status_codes.verified, poa_status_codes.pending].includes(this.state.poa_status)) {
+        if ([PoaStatusCodes.verified, PoaStatusCodes.pending].includes(this.state.poa_status)) {
             return {};
         }
 
@@ -52,7 +53,7 @@ class MT5POA extends Component {
             address_line_2: [v => !v || validAddress(v)],
             address_city: [v => !!v, v => validLength(v, { min: 1, max: 35 })],
             address_state: [v => !!v, v => !v || validLength(v, { min: 1, max: 35 })],
-            address_postcode: [v => !!v, v => validPostCode(v)],
+            address_postcode: [v => validLength(v, { min: 1, max: 20 }), v => validPostCode(v)],
             document_file: [v => !!v, ([file]) => !!file.name],
         };
 
@@ -68,8 +69,12 @@ class MT5POA extends Component {
                 localize('State/Province is not in a proper format.'),
             ],
             address_postcode: [
-                localize('Postal/Zip Code is required'),
-                localize('Postal/Zip Code is not in a proper format.'),
+                localize('Please enter a {{field_name}} under {{max_number}} characters.', {
+                    field_name: localize('postal/ZIP code'),
+                    max_number: 20,
+                    interpolation: { escapeValue: false },
+                }),
+                localize('Only letters, numbers, space, and hyphen are allowed.'),
             ],
             document_file: [localize('Document file is not in a proper format.')],
         };
@@ -198,189 +203,178 @@ class MT5POA extends Component {
 
         const { is_loading, resubmit_poa, submitted_poa } = this.state;
 
-        const is_form_visible = !is_loading && (resubmit_poa || this.state.poa_status === poa_status_codes.none);
+        const is_form_visible = !is_loading && (resubmit_poa || this.state.poa_status === PoaStatusCodes.none);
 
         return (
-            <div id='real_mt5_poa'>
-                <Formik
-                    initialValues={{
-                        address_line_1,
-                        address_line_2,
-                        address_city,
-                        address_state,
-                        address_postcode,
-                        document_file: this.state.document_file,
-                    }}
-                    isInitialValid={({ initialValues }) => this.validateForm(initialValues)}
-                    validate={this.validateForm}
-                    onSubmit={this.onSubmit}
-                    ref={form}
-                >
-                    {({
-                        errors,
-                        handleSubmit,
-                        isSubmitting,
-                        handleChange,
-                        setFieldTouched,
-                        setFieldValue,
-                        values,
-                        touched,
-                    }) => {
-                        return (
-                            <form onSubmit={handleSubmit}>
+            <Formik
+                initialValues={{
+                    address_line_1,
+                    address_line_2,
+                    address_city,
+                    address_state,
+                    address_postcode,
+                    document_file: this.state.document_file,
+                }}
+                isInitialValid={({ initialValues }) => this.validateForm(initialValues)}
+                validate={this.validateForm}
+                onSubmit={this.onSubmit}
+                ref={form}
+            >
+                {({
+                    errors,
+                    handleSubmit,
+                    isSubmitting,
+                    handleChange,
+                    setFieldTouched,
+                    setFieldValue,
+                    values,
+                    touched,
+                }) => (
+                    <AutoHeightWrapper default_height={200}>
+                        {({ setRef, height }) => (
+                            <form ref={setRef} onSubmit={handleSubmit} className='mt5-proof-of-address'>
                                 <Div100vhContainer
                                     className='details-form'
-                                    height_offset='199px'
+                                    height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
                                     {is_loading && (
                                         <Loading is_fullscreen={false} className='account___intial-loader' />
                                     )}
                                     {is_form_visible && (
-                                        <div className='account-form mt5-proof-of-address'>
-                                            <ThemedScrollbars
-                                                autohide
-                                                style={{
-                                                    height: '420px',
-                                                }}
-                                                is_native={isMobile()}
-                                            >
-                                                <div className='mt5-proof-of-address__field-area'>
-                                                    <FormSubHeader
-                                                        subtitle={localize('(All fields are required)')}
-                                                        title={localize('Address information')}
-                                                    />
-                                                    <InputField
-                                                        name='address_line_1'
-                                                        required
-                                                        label={localize('First line of address')}
-                                                        placeholder={localize('First line of address')}
-                                                    />
-                                                    <InputField
-                                                        name='address_line_2'
-                                                        label={localize('Second line of address (optional)')}
-                                                        optional
-                                                        placeholder={localize('Second line of address')}
-                                                    />
-                                                    <div className='mt5-proof-of-address__inline-fields'>
-                                                        <InputField
-                                                            name='address_city'
-                                                            required
-                                                            label={localize('Town/City')}
-                                                            placeholder={localize('Town/City')}
-                                                        />
-                                                        <fieldset className='address-state__fieldset'>
-                                                            <DesktopWrapper>
-                                                                <Field name='address_state'>
-                                                                    {({ field }) => (
-                                                                        <Dropdown
-                                                                            is_alignment_top={window.innerHeight < 930}
-                                                                            id='address_state'
-                                                                            required
-                                                                            className='address_state-dropdown'
-                                                                            is_align_text_left
-                                                                            list={states_list}
-                                                                            error={
-                                                                                touched[field.name] &&
-                                                                                errors[field.name]
-                                                                            }
-                                                                            name='address_state'
-                                                                            value={values.address_state}
-                                                                            onChange={handleChange}
-                                                                            placeholder={localize('State/Province')}
-                                                                        />
-                                                                    )}
-                                                                </Field>
-                                                            </DesktopWrapper>
-                                                            <MobileWrapper>
-                                                                <SelectNative
-                                                                    label={localize('State/Province')}
-                                                                    value={values.address_state}
-                                                                    list_items={states_list}
-                                                                    error={
-                                                                        touched.address_state && errors.address_state
-                                                                    }
-                                                                    use_text={true}
-                                                                    onChange={e =>
-                                                                        setFieldValue(
-                                                                            'address_state',
-                                                                            e.target.value,
-                                                                            true
-                                                                        )
-                                                                    }
-                                                                />
-                                                            </MobileWrapper>
-                                                        </fieldset>
-                                                        <InputField
-                                                            name='address_postcode'
-                                                            required
-                                                            label={localize('Postal/ZIP Code')}
-                                                            placeholder={localize('Postal/ZIP Code')}
-                                                        />
-                                                    </div>
-                                                    <div className='mt5-proof-of-address__file-upload'>
-                                                        <FileUploaderContainer
-                                                            onRef={ref => this.setFileUploadRef(ref)}
-                                                            onFileDrop={({ document_file: df, file_error_message }) =>
-                                                                this.onFileDrop(
-                                                                    df,
-                                                                    file_error_message,
-                                                                    setFieldTouched,
-                                                                    setFieldValue
-                                                                )
-                                                            }
-                                                        />
-                                                        {errors.document_file && touched.document_file && (
-                                                            <p className='dc-field-error'>{errors.document_file}</p>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </ThemedScrollbars>
-                                        </div>
-                                    )}
-                                    {this.state.poa_status !== poa_status_codes.none && !resubmit_poa && (
                                         <ThemedScrollbars
-                                            autohide
-                                            style={{
-                                                height: '420px',
-                                            }}
+                                            autohide={false}
+                                            height={`calc(${height}px - 100px)`}
+                                            is_bypassed={isMobile()}
                                         >
+                                            <div className='mt5-proof-of-address__field-area'>
+                                                <FormSubHeader
+                                                    subtitle={localize('(All fields are required)')}
+                                                    title={localize('Address information')}
+                                                />
+                                                <InputField
+                                                    name='address_line_1'
+                                                    required
+                                                    label={localize('First line of address')}
+                                                    placeholder={localize('First line of address')}
+                                                />
+                                                <InputField
+                                                    name='address_line_2'
+                                                    label={localize('Second line of address (optional)')}
+                                                    optional
+                                                    placeholder={localize('Second line of address')}
+                                                />
+                                                <div className='mt5-proof-of-address__inline-fields'>
+                                                    <InputField
+                                                        name='address_city'
+                                                        required
+                                                        label={localize('Town/City')}
+                                                        placeholder={localize('Town/City')}
+                                                    />
+                                                    <fieldset className='address-state__fieldset'>
+                                                        <DesktopWrapper>
+                                                            <Field name='address_state'>
+                                                                {({ field }) => (
+                                                                    <Dropdown
+                                                                        is_alignment_top={window.innerHeight < 930}
+                                                                        id='address_state'
+                                                                        required
+                                                                        className='address_state-dropdown'
+                                                                        is_align_text_left
+                                                                        list={states_list}
+                                                                        error={
+                                                                            touched[field.name] && errors[field.name]
+                                                                        }
+                                                                        name='address_state'
+                                                                        value={values.address_state}
+                                                                        onChange={handleChange}
+                                                                        placeholder={localize('State/Province')}
+                                                                    />
+                                                                )}
+                                                            </Field>
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                label={localize('State/Province')}
+                                                                value={values.address_state}
+                                                                list_items={states_list}
+                                                                error={touched.address_state && errors.address_state}
+                                                                use_text={true}
+                                                                onChange={e =>
+                                                                    setFieldValue('address_state', e.target.value, true)
+                                                                }
+                                                            />
+                                                        </MobileWrapper>
+                                                    </fieldset>
+                                                    <InputField
+                                                        name='address_postcode'
+                                                        label={localize('Postal/ZIP code')}
+                                                        placeholder={localize('Postal/ZIP code')}
+                                                    />
+                                                </div>
+                                                <div className='mt5-proof-of-address__file-upload'>
+                                                    <FileUploaderContainer
+                                                        onRef={ref => this.setFileUploadRef(ref)}
+                                                        getSocket={WS.getSocket}
+                                                        onFileDrop={({ document_file: df, file_error_message }) =>
+                                                            this.onFileDrop(
+                                                                df,
+                                                                file_error_message,
+                                                                setFieldTouched,
+                                                                setFieldValue
+                                                            )
+                                                        }
+                                                    />
+                                                    {errors.document_file && touched.document_file && (
+                                                        <p className='dc-field-error'>{errors.document_file}</p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </ThemedScrollbars>
+                                    )}
+                                    {this.state.poa_status !== PoaStatusCodes.none && !resubmit_poa && (
+                                        <ThemedScrollbars height={height}>
                                             {submitted_poa && (
-                                                <Submitted
+                                                <PoaSubmitted
                                                     is_description_disabled={true}
                                                     has_poi={this.state.has_poi}
                                                 />
                                             )}
-                                            {this.state.poa_status === poa_status_codes.pending && (
-                                                <NeedsReview is_description_disabled={true} />
+                                            {this.state.poa_status === PoaStatusCodes.pending && (
+                                                <PoaNeedsReview is_description_disabled={true} />
                                             )}
-                                            {this.state.poa_status === poa_status_codes.verified && (
-                                                <Verified is_description_disabled={true} has_poi={this.state.has_poi} />
+                                            {this.state.poa_status === PoaStatusCodes.verified && (
+                                                <PoaVerified
+                                                    is_description_disabled={true}
+                                                    has_poi={this.state.has_poi}
+                                                />
                                             )}
-                                            {this.state.poa_status === poa_status_codes.expired && (
-                                                <Expired onClick={this.handleResubmit} />
+                                            {this.state.poa_status === PoaStatusCodes.expired && (
+                                                <PoaExpired onClick={this.handleResubmit} />
                                             )}
-                                            {(this.state.poa_status === poa_status_codes.rejected ||
-                                                this.state.poa_status === poa_status_codes.suspected) && <Unverified />}
+                                            {(this.state.poa_status === PoaStatusCodes.rejected ||
+                                                this.state.poa_status === PoaStatusCodes.suspected) && (
+                                                <PoaUnverified />
+                                            )}
                                         </ThemedScrollbars>
                                     )}
+                                    {is_form_visible && (
+                                        <FormSubmitButton
+                                            has_cancel
+                                            cancel_label={localize('Previous')}
+                                            is_disabled={!!Object.keys(errors).length || isSubmitting}
+                                            label={localize('Next')}
+                                            is_loading={isSubmitting}
+                                            form_error={this.state.form_error}
+                                            onCancel={() => this.handleCancel(values)}
+                                        />
+                                    )}
                                 </Div100vhContainer>
-                                {is_form_visible && (
-                                    <FormSubmitButton
-                                        has_cancel
-                                        cancel_label={localize('Previous')}
-                                        is_disabled={!!Object.keys(errors).length || isSubmitting}
-                                        label={localize('Next')}
-                                        is_loading={isSubmitting}
-                                        form_error={this.state.form_error}
-                                        onCancel={() => this.handleCancel(values)}
-                                    />
-                                )}
                             </form>
-                        );
-                    }}
-                </Formik>
-            </div>
+                        )}
+                    </AutoHeightWrapper>
+                )}
+            </Formik>
         );
     }
 }

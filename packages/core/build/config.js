@@ -32,6 +32,9 @@ const copyConfig = base => [
             return context.split('node_modules/@deriv/trader/dist/')[1];
         },
     },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/js/**'), to: 'account/js', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/css/**'), to: 'account/css/', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/*.*'), to: 'account/js', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/trader.*.js'), to: 'js', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/**'), to: 'css', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/*.*'), to: 'js', flatten: true },
@@ -51,6 +54,11 @@ const copyConfig = base => [
     { from: path.resolve(__dirname, '../src/root_files/sitemap.xml'), to: 'sitemap.xml', toType: 'file' },
     { from: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'), to: 'favicon.ico', toType: 'file' },
     { from: path.resolve(__dirname, '../src/public/images/favicons/**') },
+    {
+        from: path.resolve(__dirname, '../src/public/images/common/static_images/**'),
+        to: 'public/images/common',
+        flatten: true,
+    },
     { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
     { from: path.resolve(__dirname, '../src/public/images/app/header/**') },
     {

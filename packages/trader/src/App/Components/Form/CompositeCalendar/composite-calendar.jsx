@@ -1,12 +1,21 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Loadable from 'react-loadable';
 import { Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import InputField from 'App/Components/Form/InputField/input-field.jsx';
-import Lazy from 'App/Containers/Lazy';
 import { daysFromTodayTo, epochToMoment, toMoment } from '@deriv/shared/utils/date';
+import InputField from 'App/Components/Form/InputField/input-field.jsx';
 import CompositeCalendarMobile from './composite-calendar-mobile.jsx';
 import SideList from './side-list.jsx';
+
+const TwoMonthPicker = Loadable({
+    loader: () => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx'),
+    loading: () => null,
+    render(loaded, props) {
+        const Component = loaded.default;
+        return <Component {...props} />;
+    },
+});
 
 class CompositeCalendar extends React.PureComponent {
     constructor(props) {
@@ -123,10 +132,12 @@ class CompositeCalendar extends React.PureComponent {
 
     setFromDate(date) {
         this.updateState('from', date);
+        this.hideCalendar();
     }
 
     updateState(key, value) {
         this.apply(key, value);
+        this.hideCalendar();
     }
 
     applyBatch(values) {
@@ -182,10 +193,7 @@ class CompositeCalendar extends React.PureComponent {
                     {show_to && (
                         <div className='composite-calendar' ref={this.setWrapperRef}>
                             <SideList from={from} to={to} items={list} />
-                            <Lazy
-                                ctor={() => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx')}
-                                should_load={true}
-                                has_progress={false}
+                            <TwoMonthPicker
                                 value={to}
                                 onChange={this.setToDate.bind(this)}
                                 isPeriodDisabled={this.isPeriodDisabledTo.bind(this)}
@@ -195,10 +203,7 @@ class CompositeCalendar extends React.PureComponent {
                     {show_from && (
                         <div className='composite-calendar' ref={this.setWrapperRef}>
                             <SideList from={from} to={to} items={list} />
-                            <Lazy
-                                ctor={() => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx')}
-                                should_load={true}
-                                has_progress={false}
+                            <TwoMonthPicker
                                 value={from}
                                 onChange={this.setFromDate.bind(this)}
                                 isPeriodDisabled={this.isPeriodDisabledFrom.bind(this)}

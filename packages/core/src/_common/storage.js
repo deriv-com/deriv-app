@@ -1,6 +1,6 @@
 const Cookies = require('js-cookie');
+const { isProduction } = require('@deriv/shared/utils/config');
 const ObjectUtils = require('@deriv/shared/utils/object');
-const isProduction = require('../config').isProduction;
 
 const getObject = function(key) {
     return JSON.parse(this.getItem(key) || '{}');

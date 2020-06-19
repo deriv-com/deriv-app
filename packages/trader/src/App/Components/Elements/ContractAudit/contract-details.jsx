@@ -39,7 +39,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
     };
 
     return (
-        <ThemedScrollbars autoHide renderView={props => <div {...props} className='contract-audit__tabs-content' />}>
+        <ThemedScrollbars className='contract-audit__tabs-content'>
             <ContractAuditItem
                 id='dt_id_label'
                 icon={<Icon icon='IcContractId' size={24} />}
@@ -118,7 +118,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                 <ContractAuditItem
                     id='dt_exit_time_label'
                     icon={<Icon icon='IcContractExitTime' color={is_profit ? 'green' : 'red'} size={24} />}
-                    label={localize('Exit Time')}
+                    label={localize('Exit time')}
                     value={toGMTFormat(epochToMoment(contract_end_time)) || ' - '}
                 />
             )}

@@ -9,8 +9,8 @@ import {
     SwipeableWrapper,
     FadeWrapper,
 } from '@deriv/components';
-import ObjectUtils from '@deriv/shared/utils/object';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import ObjectUtils from '@deriv/shared/utils/object';
 import { localize } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
@@ -179,6 +179,7 @@ class Chart extends React.Component {
                 margin={this.props.margin || null}
                 isMobile={isMobile()}
                 enabledNavigationWidget={isDesktop()}
+                enabledChartFooter={false}
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}
@@ -195,6 +196,10 @@ class Chart extends React.Component {
                 isConnectionOpened={this.props.is_socket_opened}
                 isStaticChart={false}
                 shouldFetchTradingTimes={!this.props.end_epoch}
+                yAxisMargin={{
+                    top: isMobile() ? 116 : 136,
+                    bottom: this.is_bottom_widget_visible ? 128 : 112,
+                }}
             >
                 {this.props.markers_array.map(marker => (
                     <ChartMarker

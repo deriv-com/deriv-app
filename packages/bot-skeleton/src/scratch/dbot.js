@@ -22,26 +22,30 @@ class DBot {
     /**
      * Initialises the workspace and mounts it to a container element (app_contents).
      */
-    async initWorkspace(public_path, store, api_helpers_store) {
+    async initWorkspace(public_path, store, api_helpers_store, is_mobile) {
         try {
             __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
             ApiHelpers.setInstance(api_helpers_store);
             DBotStore.setInstance(store);
             const window_width = window.innerWidth;
-            let workspaceScale = 0.9;
+            let workspaceScale = 0.8;
 
-            const { handleFileChange, onBotNameTyped } = DBotStore.instance;
+            const { handleFileChange } = DBotStore.instance;
             if (window_width < 1640) {
-                const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
-                const zoom_scale = scratch_div_width / window_width;
-                workspaceScale = zoom_scale;
+                if (is_mobile) {
+                    workspaceScale = 0.7;
+                } else {
+                    const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
+                    const zoom_scale = scratch_div_width / window_width;
+                    workspaceScale = zoom_scale;
+                }
             }
             const el_scratch_div = document.getElementById('scratch_div');
             this.workspace = Blockly.inject(el_scratch_div, {
                 grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
                 media: `${__webpack_public_path__}media/`,
                 toolbox: toolbox_xml,
-                trashcan: true,
+                trashcan: !is_mobile,
                 zoom: { wheel: true, startScale: workspaceScale },
             });
 
@@ -73,8 +77,9 @@ class DBot {
             const event_group = `dbot-load${Date.now()}`;
             Blockly.Events.setGroup(event_group);
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
+            const { save_modal } = DBotStore.instance;
 
-            onBotNameTyped(file_name);
+            save_modal.updateBotName(file_name);
             this.workspace.cleanUp();
             this.workspace.clearUndo();
 
@@ -278,8 +283,7 @@ class DBot {
         if (!hasAllRequiredBlocks(this.workspace)) {
             const error = new Error(
                 localize(
-                    'One or more mandatory blocks are missing from your workspace. ' +
-                        'Please add the required block(s) and then try again.'
+                    'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
                 )
             );
 

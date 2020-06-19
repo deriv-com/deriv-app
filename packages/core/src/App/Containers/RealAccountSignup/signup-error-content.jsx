@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon } from '@deriv/components';
-import { getDerivComLink } from '_common/url';
+import { getDerivComLink } from '@deriv/shared/utils/url';
 import { Localize } from '@deriv/translations';
 
 const SignupErrorContent = ({ message, code, onConfirm }) => {
@@ -9,10 +9,18 @@ const SignupErrorContent = ({ message, code, onConfirm }) => {
         <div className='account-wizard--error'>
             <Icon icon='IcAccountError' size={115} />
             <h1>
-                <Localize i18n_default_text='Whoops!' />
+                {code === 'InvalidPhone' ? (
+                    <Localize i18n_default_text='Let’s try that again' />
+                ) : (
+                    <Localize i18n_default_text='Something’s not right' />
+                )}
             </h1>
             <p>{message}</p>
-            {code !== 'InvalidPhone' && (
+            {code === 'InvalidPhone' ? (
+                <Button primary onClick={onConfirm} large>
+                    <Localize i18n_default_text='Try again using a different phone number' />
+                </Button>
+            ) : (
                 <a
                     href={getDerivComLink('help-centre')}
                     type='button'
@@ -21,14 +29,9 @@ const SignupErrorContent = ({ message, code, onConfirm }) => {
                     rel='noopener noreferrer'
                 >
                     <span className='dc-btn__text'>
-                        <Localize i18n_default_text='Go To Help Centre' />
+                        <Localize i18n_default_text='OK' />
                     </span>
                 </a>
-            )}
-            {code === 'InvalidPhone' && (
-                <Button primary onClick={onConfirm}>
-                    <Localize i18n_default_text='Try again using a different number' />
-                </Button>
             )}
         </div>
     );

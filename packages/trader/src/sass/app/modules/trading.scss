@@ -208,6 +208,9 @@
                     align-items: center;
                 }
             }
+            @include desktop {
+                height: 2.1rem;
+            }
 
             &--disabled {
                 opacity: 0.32;
@@ -522,6 +525,16 @@
         .dc-toast-error {
             z-index: 9999;
             top: 2em;
+        }
+    }
+}
+
+/** @define market-unavailable-modal */
+@include mobile {
+    .market-unavailable-modal {
+        /* postcss-bem-linter: ignore */
+        .dc-dialog__footer {
+            flex-wrap: nowrap;
         }
     }
 }

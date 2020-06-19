@@ -2,9 +2,9 @@ import { Button, Modal } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import routes from '@deriv/shared/utils/routes';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared/utils/screen';
-import routes from 'Constants/routes';
 
 const InsufficientBalanceModal = ({ history, is_virtual, is_visible, message, toggleModal }) => (
     <Modal

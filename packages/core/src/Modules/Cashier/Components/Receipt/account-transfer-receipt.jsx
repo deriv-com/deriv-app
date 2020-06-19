@@ -95,7 +95,7 @@ class AccountTransferReceipt extends React.Component {
                         </div>
                     </span>
                 </div>
-                <div className='account-transfer__form-submit'>
+                <div className='account-transfer__receipt-form-submit'>
                     <Button
                         className='account-transfer__button'
                         has_effect

@@ -110,7 +110,6 @@ class Cashier extends React.Component {
                     <PageOverlay
                         header={isMobile() ? selected_route.title : localize('Cashier')}
                         onClickClose={this.onClickClose}
-                        has_side_note
                     >
                         <DesktopWrapper>
                             <VerticalTab

@@ -208,6 +208,15 @@ $MIN_HEIGHT_FLOATING: calc(
         &-side-note {
             min-width: 256px;
             margin-left: 2.4rem;
+
+            &-wrapper {
+                background-color: var(--general-section-1);
+                border-radius: 8px;
+                padding: 1.6rem 2.4rem;
+                color: var(--text-general);
+                font-size: var(--text-size-xxs);
+                line-height: 1.5;
+            }
         }
         &.dc-vertical-tab:not(.dc-vertical-tab--full-screen) {
             padding: 2.4rem;

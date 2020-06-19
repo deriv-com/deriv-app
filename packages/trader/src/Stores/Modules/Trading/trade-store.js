@@ -108,6 +108,8 @@ export default class TradeStore extends BaseStore {
     @observable commission = 0;
     @observable cancellation_price = 0;
     @observable hovered_contract_type;
+    @observable cancellation_duration = '60m';
+    @observable cancellation_range_list = [];
 
     // Mobile
     @observable is_trade_params_expanded = true;
@@ -276,15 +278,12 @@ export default class TradeStore extends BaseStore {
         if (this.symbol && this.is_symbol_in_active_symbols) {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
-                this.processNewValuesAsync(
-                    {
-                        ...ContractType.getContractValues(this),
-                        ...ContractType.getContractCategories(),
-                    },
-                    false,
-                    {},
-                    false
-                );
+                const contract_categories = ContractType.getContractCategories();
+                this.processNewValuesAsync({
+                    ...contract_categories,
+                    ...ContractType.getContractType(contract_categories.contract_types_list, this.contract_type),
+                });
+                this.processNewValuesAsync(ContractType.getContractValues(this));
             });
         }
     }
@@ -510,7 +509,7 @@ export default class TradeStore extends BaseStore {
             processPurchase(proposal_id, price).then(
                 action(response => {
                     const last_digit = +this.last_digit;
-                    if (this.proposal_info[type].id !== proposal_id) {
+                    if (this.proposal_info[type]?.id !== proposal_id) {
                         throw new Error('Proposal ID does not match.');
                     }
                     if (response.buy) {
@@ -901,21 +900,19 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    accountSwitcherListener() {
+    async accountSwitcherListener() {
         this.resetErrorServices();
-        // TODO: remove this, once multiplier is avaible for real accounts
-        if (this.is_multiplier && this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
-            this.processNewValuesAsync({ contract_type: 'rise_fall' }, false, {}, false);
-            if (!this.is_symbol_in_active_symbols) this.setActiveSymbols();
-        }
-        this.setContractTypes();
+        await this.setContractTypes();
 
-        return this.processNewValuesAsync(
-            { currency: this.root_store.client.currency || this.root_store.client.default_currency },
-            true,
-            { currency: this.currency },
-            false
-        );
+        runInAction(async () => {
+            this.processNewValuesAsync(
+                { currency: this.root_store.client.currency || this.root_store.client.default_currency },
+                true,
+                { currency: this.currency },
+                false
+            );
+        });
+        return Promise.resolve();
     }
 
     @action.bound

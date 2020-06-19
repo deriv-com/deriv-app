@@ -217,5 +217,5 @@ Blockly.JavaScript.math_on_list = block => {
         code = `${functionName}(${list})`;
     }
 
-    return [code, Blockly.JavaScript.FUNCTION_CALL];
+    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };

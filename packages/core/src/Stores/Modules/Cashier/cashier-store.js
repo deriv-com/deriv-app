@@ -421,6 +421,11 @@ export default class CashierStore extends BaseStore {
     setCountDownResendVerification() {
         this.setVerificationResendTimeout(this.config[this.active_container].verification.resend_timeout - 1);
         const resend_interval = setInterval(() => {
+            if (!this.config[this.active_container] || !this.config[this.active_container].verification) {
+                clearInterval(resend_interval);
+                return;
+            }
+
             if (this.config[this.active_container].verification.resend_timeout === 1) {
                 this.setVerificationResendTimeout(60);
                 clearInterval(resend_interval);

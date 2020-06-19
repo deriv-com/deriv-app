@@ -2,12 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Input, Button, ThemedScrollbars, Icon } from '@deriv/components';
+import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import IconClose from 'Assets/icon-close.jsx';
 import FormError from '../form/error.jsx';
+import './nickname-form.scss';
 
-const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
+const NicknameForm = ({ handleClose, handleConfirm }) => {
+    const { setNickname, setIsAdvertiser, setChatInfo } = React.useContext(Dp2pContext);
+
     const handleSubmit = (values, { setStatus, setSubmitting }) => {
         requestWS({ p2p_advertiser_create: 1, name: values.nickname }).then(response => {
             if (response.error) {
@@ -16,7 +20,11 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
                 const { p2p_advertiser_create } = response;
 
                 setNickname(p2p_advertiser_create.name);
+                setIsAdvertiser(p2p_advertiser_create.is_approved);
                 setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
+                if (typeof handleConfirm === 'function') {
+                    handleConfirm();
+                }
             }
 
             setSubmitting(false);
@@ -29,7 +37,11 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
                 v => !!v,
                 v => v.length >= 2,
                 v => v.length <= 24,
-                v => /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9-_@.]{2,24}$/.test(v),
+                v => /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
+                v =>
+                    Array.from(v).every(
+                        word => (v.match(new RegExp(word === '.' ? `\\${word}` : word, 'g')) || []).length <= 5
+                    ),
             ],
         };
 
@@ -37,6 +49,7 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
             localize('Nickname is required'),
             localize('Nickname is too short'),
             localize('Nickname is too long'),
+            localize('Nickname is in incorrect format'),
             localize('Nickname is in incorrect format'),
         ];
 
@@ -49,6 +62,7 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
 
             if (error_index !== -1) {
                 switch (key) {
+                    case 'nickname':
                     default: {
                         errors[key] = nickname_messages[error_index];
                         break;
@@ -62,22 +76,22 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
 
     return (
         <>
-            <div className='buy-sell__popup-header buy-sell__popup-header--no-border'>
-                <div className='buy-sell__popup-header_wrapper buy-sell__popup-header_right'>
-                    <IconClose className='buy-sell__popup-close_icon' onClick={handleClose} />
+            <div className='nickname__form-header nickname__form-header--no-border'>
+                <div className='nickname__form-header_wrapper nickname__form-header_right'>
+                    <IconClose className='nickname__form-close_icon' onClick={handleClose} />
                 </div>
             </div>
             <Formik validate={validatePopup} initialValues={{ nickname: '' }} onSubmit={handleSubmit}>
                 {({ errors, isSubmitting, handleChange, status }) => (
                     <Form noValidate>
-                        <ThemedScrollbars autoHide style={{ height: '289px' }}>
+                        <ThemedScrollbars autoHide style={{ height: '437px' }}>
                             <div className='buy-sell__popup-content buy-sell__popup-content_centre'>
                                 <Icon icon='IcCashierP2pUser' width='128' height='128' />
                                 <h5 className='buy-sell__popup-content--title'>{localize('Choose a nickname')}</h5>
                                 <p className='buy-sell__popup-content--text'>
-                                    {localize('This is how you will appear to other users')}
+                                    {localize('You will appear to other users as')}
                                 </p>
-                                <div className='buy-sell__popup-field_wrapper'>
+                                <div className='nickname__form-field_wrapper'>
                                     <Field name='nickname'>
                                         {({ field }) => (
                                             <Input
@@ -85,22 +99,34 @@ const NicknameForm = ({ handleClose, setNickname, setChatInfo }) => {
                                                 data-lpignore='true'
                                                 error={errors.nickname}
                                                 label={localize('Your nickname')}
-                                                className='buy-sell__popup-field'
+                                                className='nickname__form-field'
                                                 onChange={handleChange}
                                                 required
                                             />
                                         )}
                                     </Field>
                                 </div>
+                                <ul className='buy-sell__popup-content--list'>
+                                    <li>
+                                        {localize(
+                                            'Must be 2–24 characters and can contain letters, numbers, and special characters .- _ @.'
+                                        )}
+                                    </li>
+                                    <li>{localize('Cannot repeat a character more than 5 times.')}</li>
+                                    <li>{localize('Cannot start, end with, or repeat special characters.')}</li>
+                                </ul>
+                                <div className='buy-sell__popup-content--ps'>
+                                    {localize('Once set, your nickname cannot be changed.')}
+                                </div>
                             </div>
                         </ThemedScrollbars>
-                        <div className='buy-sell__popup-footer'>
+                        <div className='nickname__form-footer'>
                             {status && status.error_message && <FormError message={status.error_message} />}
                             <Button.Group>
                                 <Button secondary type='button' onClick={handleClose} large>
                                     {localize('Cancel')}
                                 </Button>
-                                <Button type='submit' is_disabled={!!(isSubmitting || errors.amount)} primary large>
+                                <Button type='submit' is_disabled={!!(isSubmitting || errors.nickname)} primary large>
                                     {localize('Confirm')}
                                 </Button>
                             </Button.Group>

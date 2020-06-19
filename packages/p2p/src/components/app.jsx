@@ -7,6 +7,7 @@ import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
+import { orderToggleIndex } from './orders/order-info';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
@@ -41,6 +42,7 @@ class App extends React.Component {
             is_advertiser: false,
             is_restricted: false,
             show_popup: false,
+            order_table_type: orderToggleIndex.ACTIVE,
             chat_info: {
                 app_id: '',
                 user_id: '',
@@ -227,6 +229,10 @@ class App extends React.Component {
         }
     };
 
+    changeOrderToggle = value => {
+        this.setState({ order_table_type: value });
+    };
+
     render() {
         const {
             active_index,
@@ -281,6 +287,8 @@ class App extends React.Component {
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
                     getLocalStorageSettings: this.getLocalStorageSettings.bind(this),
+                    order_table_type: this.state.order_table_type,
+                    changeOrderToggle: this.changeOrderToggle,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>

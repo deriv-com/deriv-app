@@ -9,6 +9,6 @@ export default {
         localize("1. 'Log' displays a regular message."),
         localize("2. 'Warn' displays a message in yellow to highlight something that needs attention."),
         localize("3. 'Error' displays a message in red to highlight something that needs to be resolved immediately."),
-        localize("4. 'Table' akes an array of data, such as a list of candles, and displays it in a table format."),
+        localize("4. 'Table' takes an array of data, such as a list of candles, and displays it in a table format."),
     ],
 };

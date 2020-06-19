@@ -9,7 +9,9 @@ import { removeLimitedBlocks } from '../../utils/workspace';
  */
 Blockly.WorkspaceSvg.prototype.onMouseDown_ = function(e) {
     // Bubble mousedown event up for some Core elements to react correctly.
-    Blockly.derivWorkspace.cachedParentSvg_.dispatchEvent(new e.constructor(e.type, e));
+    if (e instanceof MouseEvent) {
+        Blockly.derivWorkspace.cachedParentSvg_.dispatchEvent(new e.constructor(e.type, e));
+    }
     const gesture = this.getGesture(e);
     if (gesture) {
         gesture.handleWsStart(e, this);

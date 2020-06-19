@@ -193,8 +193,8 @@ class App extends React.Component {
         localStorage.setItem('dp2p_settings', dp2p_settings);
         this.setState({ notification_count });
 
-        if (typeof this.props.setNotificationCount === 'function') {
-            this.props.setNotificationCount(notification_count);
+        if (typeof this.props.setP2pOrderNotificationCount === 'function') {
+            this.props.setP2pOrderNotificationCount(notification_count);
         }
     };
 
@@ -233,15 +233,16 @@ class App extends React.Component {
             order_offset,
             orders,
             parameters,
-            notification_count,
             order_table_type,
             chat_info,
             show_popup,
+            notification_count: state_notification_count,
         } = this.state;
         const {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
             custom_strings,
+            notification_count: props_notification_count,
             order_id,
             setOrderId,
         } = this.props;
@@ -294,7 +295,14 @@ class App extends React.Component {
                         <div label={localize('Buy / Sell')}>
                             <BuySell navigate={this.redirectTo} params={parameters} />
                         </div>
-                        <div count={notification_count} label={localize('Orders')}>
+                        <div
+                            count={
+                                props_notification_count === undefined
+                                    ? state_notification_count
+                                    : props_notification_count
+                            }
+                            label={localize('Orders')}
+                        >
                             <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
                         </div>
                         <div label={localize('My ads')}>
@@ -335,8 +343,9 @@ App.propTypes = {
         residence: PropTypes.string.isRequired,
     }),
     lang: PropTypes.string,
+    notification_count: PropTypes.number,
     order_id: PropTypes.string,
-    setNotificationCount: PropTypes.func,
+    setP2pOrderNotificationCount: PropTypes.func,
     websocket_api: PropTypes.object.isRequired,
 };
 

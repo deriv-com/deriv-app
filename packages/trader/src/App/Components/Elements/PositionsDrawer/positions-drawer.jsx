@@ -178,7 +178,10 @@ class PositionsDrawer extends React.Component {
             <React.Fragment>
                 <div style={{ height: '100%' }}>
                     {this.state.drawer_height > 0 && (
-                        <TransitionGroup component='div'>
+                        <TransitionGroup
+                            component='div'
+                            style={{ position: 'relative', height: '100%', width: '100%' }}
+                        >
                             <List
                                 itemCount={this.positions.length}
                                 itemData={this.positions}

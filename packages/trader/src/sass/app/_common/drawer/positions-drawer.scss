@@ -70,6 +70,10 @@ $header-height: 3.6em;
         overflow: hidden;
         align-self: center;
         color: var(--text-general);
+
+        & .dc-themed-scrollbars {
+            height: 100%;
+        }
     }
     &__footer {
         position: relative;

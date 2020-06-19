@@ -9,11 +9,7 @@ const Verification = ({ poi_status }) => {
 
     const items = [
         {
-            content: nickname ? (
-                <Localize i18n_default_text='Nickname: {{nickname}}' values={{ nickname }} />
-            ) : (
-                <Localize i18n_default_text='Choose your nickname' />
-            ),
+            content: nickname ? <p>{nickname}</p> : <Localize i18n_default_text='Choose your nickname' />,
             status: nickname ? 'done' : 'action',
             onClick: nickname ? () => {} : toggleNicknamePopup,
         },
@@ -43,13 +39,7 @@ const Verification = ({ poi_status }) => {
                 </div>
                 <div className='p2p-verification__text-description'>
                     <p>
-                        <Localize i18n_default_text='Would you like to post P2P ads?' />
-                    </p>
-                    <p>
-                        <Localize
-                            i18n_default_text="It's easy! You just need to send us some documents to verify your identity and address.
-Start your application process here and now."
-                        />
+                        <Localize i18n_default_text='To use DP2P, you need to choose a display name (a nickname) and verify your identity.' />
                     </p>
                 </div>
             </div>

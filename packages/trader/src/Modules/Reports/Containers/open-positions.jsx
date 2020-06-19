@@ -309,16 +309,14 @@ class OpenPositions extends React.Component {
 
         const is_multiplier_selected = this.state.active_index === 1;
 
-        const active_positions_filtered = is_virtual
-            ? active_positions.filter(p => {
-                  if (p.contract_info) {
-                      return is_multiplier_selected
-                          ? isMultiplierContract(p.contract_info.contract_type)
-                          : !isMultiplierContract(p.contract_info.contract_type);
-                  }
-                  return true;
-              })
-            : active_positions;
+        const active_positions_filtered = active_positions.filter(p => {
+            if (p.contract_info) {
+                return is_multiplier_selected
+                    ? isMultiplierContract(p.contract_info.contract_type)
+                    : !isMultiplierContract(p.contract_info.contract_type);
+            }
+            return true;
+        });
 
         const active_positions_filtered_totals = this.getTotals(active_positions_filtered, is_multiplier_selected);
 

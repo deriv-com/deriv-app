@@ -92,10 +92,9 @@ class ContractUpdateForm extends React.Component {
     };
 
     render() {
-        const { buy_price, is_valid_to_cancel } = this.contract_info;
+        const { buy_price, currency, is_valid_to_cancel } = this.contract_info;
         const cancellation_price = getCancellationPrice(this.contract_info);
         const {
-            currency,
             has_contract_update_stop_loss,
             has_contract_update_take_profit,
             contract_update_stop_loss,
@@ -105,7 +104,7 @@ class ContractUpdateForm extends React.Component {
         const take_profit_input = (
             <InputWithCheckbox
                 classNameInlinePrefix='trade-container__currency'
-                currency={currency || this.props.currency}
+                currency={currency}
                 error_messages={this.error_messages.take_profit}
                 is_single_currency={true}
                 is_negative_disabled={true}
@@ -121,7 +120,7 @@ class ContractUpdateForm extends React.Component {
         const stop_loss_input = (
             <InputWithCheckbox
                 classNameInlinePrefix='trade-container__currency'
-                currency={currency || this.props.currency}
+                currency={currency}
                 defaultChecked={has_contract_update_stop_loss}
                 error_messages={this.error_messages.stop_loss}
                 is_single_currency={true}
@@ -192,7 +191,6 @@ ContractUpdateForm.propTypes = {
 export default connect(({ modules }) => ({
     clearContractUpdateConfigValues: modules.contract_trade.clearContractUpdateConfigValues,
     getContractById: modules.contract_trade.getContractById,
-    currency: modules.trade.currency,
     onChange: modules.contract_trade.onChange,
     updateLimitOrder: modules.contract_trade.updateLimitOrder,
     validation_errors: modules.contract_trade.validation_errors,

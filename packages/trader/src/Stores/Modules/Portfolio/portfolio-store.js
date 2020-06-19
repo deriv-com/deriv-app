@@ -181,11 +181,6 @@ export default class PortfolioStore extends BaseStore {
 
         if (portfolio_position.contract_info.is_sold === 1) {
             this.populateResultDetails(response);
-
-            if (this.remove_position_after_sell) {
-                this.removePositionById(proposal.contract_id);
-                this.remove_position_after_sell = false;
-            }
         }
     }
 

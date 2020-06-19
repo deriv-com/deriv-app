@@ -110,6 +110,11 @@ const modules = [
                         component: Account,
                         title: localize('Two-factor authentication'),
                     },
+                    {
+                        path: routes.self_exclusion,
+                        component: Account,
+                        title: localize('Two-factor authentication'),
+                    },
                 ],
             },
         ],

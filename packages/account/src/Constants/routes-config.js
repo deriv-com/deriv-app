@@ -11,6 +11,7 @@ import {
     ProofOfAddress,
     ApiToken,
     TwoFactorAuthentication,
+    SelfExclusion,
     Account,
 } from 'Sections';
 
@@ -81,6 +82,11 @@ const initRoutesConfig = () => [
                     {
                         path: routes.two_factor_authentication,
                         component: TwoFactorAuthentication,
+                        title: localize('Two-factor authentication'),
+                    },
+                    {
+                        path: routes.self_exclusion,
+                        component: SelfExclusion,
                         title: localize('Two-factor authentication'),
                     },
                 ],

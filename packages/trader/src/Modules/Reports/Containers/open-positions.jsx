@@ -293,15 +293,7 @@ class OpenPositions extends React.Component {
     };
 
     render() {
-        const {
-            active_positions,
-            component_icon,
-            is_loading,
-            error,
-            is_virtual,
-            currency,
-            NotificationMessages,
-        } = this.props;
+        const { active_positions, component_icon, is_loading, error, currency, NotificationMessages } = this.props;
 
         if (error) {
             return <p>{error}</p>;
@@ -331,7 +323,7 @@ class OpenPositions extends React.Component {
             totals: active_positions_filtered_totals,
         };
         this.columns =
-            this.state.active_index === 1 && this.props.is_virtual
+            this.state.active_index === 1
                 ? getMultiplierOpenPositionsColumnsTemplate(currency)
                 : getOpenPositionsColumnsTemplate(currency);
 
@@ -395,7 +387,6 @@ OpenPositions.propTypes = {
 
 export default connect(({ modules, client, common, ui }) => ({
     currency: client.currency,
-    is_virtual: client.is_virtual,
     active_positions: modules.portfolio.active_positions_filtered,
     error: modules.portfolio.error,
     getPositionById: modules.portfolio.getPositionById,

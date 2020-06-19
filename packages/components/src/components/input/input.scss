@@ -117,6 +117,15 @@
             }
         }
     }
+    &__textarea {
+        &:not(.dc-input--no-placeholder):not(:focus):empty {
+            & ~ label {
+                transform: none;
+                color: var(--text-less-prominent);
+                padding: 0 4px;
+            }
+        }
+    }
     &__leading-icon {
         margin-left: 1rem;
         top: 1rem;

@@ -99,7 +99,8 @@ class ConfigVerification {
 export default class CashierStore extends BaseStore {
     @observable is_loading = false;
     @observable is_p2p_visible = false;
-    @observable p2p_notification_count = 0;
+    @observable p2p_chat_notification_count = 0;
+    @observable p2p_order_notification_count = 0;
     @observable is_p2p_advertiser = false;
     @observable cashier_route_tab_index = 0;
 
@@ -137,6 +138,14 @@ export default class CashierStore extends BaseStore {
     @computed
     get is_payment_agent_transfer_visible() {
         return this.config.payment_agent_transfer.is_payment_agent;
+    }
+
+    @computed
+    get p2p_notification_count() {
+        const { sendbird } = this.root_store.modules;
+        return sendbird.has_synced_channels
+            ? sendbird.total_unread_message_count + this.p2p_order_notification_count
+            : 0; // Avoid jumpy notification counts by waiting for channels to synced.
     }
 
     @action.bound
@@ -194,9 +203,15 @@ export default class CashierStore extends BaseStore {
     setCashierTabIndex(index) {
         this.cashier_route_tab_index = index;
     }
+
     @action.bound
-    setNotificationCount(notification_count) {
-        this.p2p_notification_count = notification_count;
+    setP2pChatNotificationCount(notification_count) {
+        this.p2p_chat_notification_count = notification_count;
+    }
+
+    @action.bound
+    setP2pOrderNotificationCount(notification_count) {
+        this.p2p_order_notification_count = notification_count;
     }
 
     @action.bound

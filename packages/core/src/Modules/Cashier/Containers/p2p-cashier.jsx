@@ -43,15 +43,23 @@ class P2PCashier extends React.Component {
         }
     }
     render() {
-        const { currency, local_currency_config, is_virtual, residence, setNotificationCount } = this.props;
+        const {
+            currency,
+            local_currency_config,
+            is_virtual,
+            p2p_notification_count,
+            residence,
+            setP2pOrderNotificationCount,
+        } = this.props;
         const { order_id } = this.state;
         return (
             <P2P
                 websocket_api={WS}
                 lang={getLanguage()}
                 client={{ currency, local_currency_config, is_virtual, residence }}
+                notification_count={p2p_notification_count}
                 server_time={ServerTime}
-                setNotificationCount={setNotificationCount}
+                setP2pOrderNotificationCount={setP2pOrderNotificationCount}
                 order_id={order_id}
                 setOrderId={this.setQueryOrder}
             />
@@ -63,8 +71,9 @@ P2PCashier.propTypes = {
     currency: PropTypes.string,
     local_currency_config: PropTypes.object,
     is_virtual: PropTypes.bool,
+    p2p_notification_count: PropTypes.number,
     residence: PropTypes.string,
-    setNotificationCount: PropTypes.func,
+    setP2pOrderNotificationCount: PropTypes.func,
 };
 
 export default withRouter(
@@ -72,7 +81,8 @@ export default withRouter(
         currency: client.currency,
         local_currency_config: client.local_currency_config,
         is_virtual: client.is_virtual,
+        p2p_notification_count: modules.cashier.p2p_notification_count,
         residence: client.residence,
-        setNotificationCount: modules.cashier.setNotificationCount,
+        setP2pOrderNotificationCount: modules.cashier.setP2pOrderNotificationCount,
     }))(P2PCashier)
 );

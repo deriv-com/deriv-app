@@ -12,7 +12,7 @@ import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.j
 
 class AppContents extends React.Component {
     state = {
-        show_cookie_banner: localStorage.getItem('show_cookie_banner') === 'true',
+        show_cookie_banner: false,
     };
 
     async componentDidMount() {
@@ -46,14 +46,7 @@ class AppContents extends React.Component {
         }
 
         if (is_window_loaded !== prev_props.is_window_loaded || is_logged_in !== prev_props.is_logged_in) {
-            if (is_logged_in) {
-                if (this.state.show_cookie_banner === true) {
-                    this.setState({
-                        show_cookie_banner: false,
-                    });
-                }
-            } else if (is_eu_country && !tracking_status && this.state.show_cookie_banner !== true) {
-                localStorage.setItem('show_cookie_banner', 'true');
+            if (!is_logged_in && is_eu_country && !tracking_status) {
                 this.setState({
                     show_cookie_banner: true,
                 });
@@ -67,7 +60,6 @@ class AppContents extends React.Component {
             expires: cookie_expires,
         });
         this.props.pushDataLayer({ event: 'allow_tracking' });
-        localStorage.setItem('show_cookie_banner', 'false');
         this.setState({ show_cookie_banner: false });
     };
 
@@ -75,7 +67,6 @@ class AppContents extends React.Component {
         Cookies.set('tracking_status', 'declined', {
             expires: cookie_expires,
         });
-        localStorage.setItem('show_cookie_banner', 'false');
         this.setState({ show_cookie_banner: false });
     };
 

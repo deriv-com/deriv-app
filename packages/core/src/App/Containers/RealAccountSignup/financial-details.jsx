@@ -1,10 +1,10 @@
 import {
-    Autocomplete,
     AutoHeightWrapper,
     DesktopWrapper,
     Div100vhContainer,
     FormSubmitButton,
     MobileWrapper,
+    Dropdown,
     ThemedScrollbars,
     SelectNative,
 } from '@deriv/components';
@@ -41,7 +41,7 @@ class FinancialDetails extends React.Component {
                 }}
                 ref={this.form}
             >
-                {({ handleSubmit, isSubmitting, errors, values, setFieldValue }) => (
+                {({ handleSubmit, isSubmitting, errors, values, setFieldValue, handleChange, handleBlur, touched }) => (
                     <AutoHeightWrapper default_height={200}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
@@ -67,33 +67,37 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
+                                                            <Dropdown
+                                                                placeholder={localize('Source of income')}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={this.props.income_source_enum}
+                                                                value={values.income_source}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={touched.income_source && errors.income_source}
                                                                 {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('Source of income')}
-                                                                list_items={this.props.income_source_enum}
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'income_source',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
+                                                                name={field.name}
                                                                 label={localize('Source of income')}
-                                                                {...field}
                                                                 list_items={this.props.income_source_enum}
+                                                                value={values.income_source}
                                                                 use_text={true}
-                                                                onChange={e =>
-                                                                    setFieldValue('income_source', e.target.value, true)
-                                                                }
+                                                                error={touched.income_source && errors.income_source}
+                                                                onChange={e => {
+                                                                    handleChange(e);
+                                                                    setFieldValue(
+                                                                        'income_source',
+                                                                        e.target.value,
+                                                                        true
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -103,37 +107,43 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
+                                                            <Dropdown
+                                                                placeholder={localize('Employment Status')}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={this.props.employment_status_enum}
+                                                                value={values.employment_status}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.employment_status &&
+                                                                    errors.employment_status
+                                                                }
                                                                 {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('Employment Status')}
-                                                                list_items={this.props.employment_status_enum}
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'employment_status',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
+                                                                name={field.name}
                                                                 label={localize('Employment Status')}
-                                                                {...field}
                                                                 list_items={this.props.employment_status_enum}
+                                                                value={values.employment_status}
                                                                 use_text={true}
-                                                                onChange={e =>
+                                                                error={
+                                                                    touched.employment_status &&
+                                                                    errors.employment_status
+                                                                }
+                                                                onChange={e => {
+                                                                    handleChange(e);
                                                                     setFieldValue(
                                                                         'employment_status',
                                                                         e.target.value,
                                                                         true
-                                                                    )
-                                                                }
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -143,37 +153,43 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
+                                                            <Dropdown
+                                                                placeholder={localize('Industry of employment')}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={this.props.employment_industry_enum}
+                                                                value={values.employment_industry}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.employment_industry &&
+                                                                    errors.employment_industry
+                                                                }
                                                                 {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('Industry of employment')}
-                                                                list_items={this.props.employment_industry_enum}
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'employment_industry',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
+                                                                name={field.name}
                                                                 label={localize('Industry of employment')}
-                                                                {...field}
                                                                 list_items={this.props.employment_industry_enum}
+                                                                value={values.employment_industry}
                                                                 use_text={true}
-                                                                onChange={e =>
+                                                                error={
+                                                                    touched.employment_industry &&
+                                                                    errors.employment_industry
+                                                                }
+                                                                onChange={e => {
+                                                                    handleChange(e);
                                                                     setFieldValue(
                                                                         'employment_industry',
                                                                         e.target.value,
                                                                         true
-                                                                    )
-                                                                }
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -183,33 +199,33 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
+                                                            <Dropdown
+                                                                placeholder={localize('Occupation')}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={this.props.occupation_enum}
+                                                                value={values.occupation}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={touched.occupation && errors.occupation}
                                                                 {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('Occupation')}
-                                                                list_items={this.props.occupation_enum}
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'occupation',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
+                                                                name={field.name}
                                                                 label={localize('Occupation')}
-                                                                {...field}
                                                                 list_items={this.props.occupation_enum}
+                                                                value={values.occupation}
                                                                 use_text={true}
-                                                                onChange={e =>
-                                                                    setFieldValue('occupation', e.target.value, true)
-                                                                }
+                                                                error={touched.occupation && errors.occupation}
+                                                                onChange={e => {
+                                                                    handleChange(e);
+                                                                    setFieldValue('occupation', e.target.value, true);
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -219,37 +235,41 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
+                                                            <Dropdown
+                                                                placeholder={localize('Source of wealth')}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={this.props.source_of_wealth_enum}
+                                                                value={values.source_of_wealth}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.source_of_wealth && errors.source_of_wealth
+                                                                }
                                                                 {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('Source of wealth')}
-                                                                list_items={this.props.source_of_wealth_enum}
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'source_of_wealth',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
+                                                                name={field.name}
                                                                 label={localize('Source of wealth')}
-                                                                {...field}
                                                                 list_items={this.props.source_of_wealth_enum}
+                                                                value={values.source_of_wealth}
                                                                 use_text={true}
-                                                                onChange={e =>
+                                                                error={
+                                                                    touched.source_of_wealth && errors.source_of_wealth
+                                                                }
+                                                                onChange={e => {
+                                                                    handleChange(e);
                                                                     setFieldValue(
                                                                         'source_of_wealth',
                                                                         e.target.value,
                                                                         true
-                                                                    )
-                                                                }
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -259,37 +279,41 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
+                                                            <Dropdown
+                                                                placeholder={localize('Level of education')}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={this.props.education_level_enum}
+                                                                value={values.education_level}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.education_level && errors.education_level
+                                                                }
                                                                 {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('Level of education')}
-                                                                list_items={this.props.education_level_enum}
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'education_level',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
+                                                                name={field.name}
                                                                 label={localize('Level of education')}
-                                                                {...field}
                                                                 list_items={this.props.education_level_enum}
+                                                                value={values.education_level}
                                                                 use_text={true}
-                                                                onChange={e =>
+                                                                error={
+                                                                    touched.education_level && errors.education_level
+                                                                }
+                                                                onChange={e => {
+                                                                    handleChange(e);
                                                                     setFieldValue(
                                                                         'education_level',
                                                                         e.target.value,
                                                                         true
-                                                                    )
-                                                                }
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -299,33 +323,33 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
+                                                            <Dropdown
+                                                                placeholder={localize('Net annual income')}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={this.props.net_income_enum}
+                                                                value={values.net_income}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={touched.net_income && errors.net_income}
                                                                 {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('Net annual income')}
-                                                                list_items={this.props.net_income_enum}
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'net_income',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
+                                                                name={field.name}
                                                                 label={localize('Net annual income')}
-                                                                {...field}
                                                                 list_items={this.props.net_income_enum}
+                                                                value={values.net_income}
                                                                 use_text={true}
-                                                                onChange={e =>
-                                                                    setFieldValue('net_income', e.target.value, true)
-                                                                }
+                                                                error={touched.net_income && errors.net_income}
+                                                                onChange={e => {
+                                                                    handleChange(e);
+                                                                    setFieldValue('net_income', e.target.value, true);
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -335,37 +359,41 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
+                                                            <Dropdown
+                                                                placeholder={localize('Estimated net worth')}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={this.props.estimated_worth_enum}
+                                                                value={values.estimated_worth}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.estimated_worth && errors.estimated_worth
+                                                                }
                                                                 {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('Estimated net worth')}
-                                                                list_items={this.props.estimated_worth_enum}
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'estimated_worth',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
+                                                                name={field.name}
                                                                 label={localize('Estimated net worth')}
-                                                                {...field}
                                                                 list_items={this.props.estimated_worth_enum}
+                                                                value={values.estimated_worth}
                                                                 use_text={true}
-                                                                onChange={e =>
+                                                                error={
+                                                                    touched.estimated_worth && errors.estimated_worth
+                                                                }
+                                                                onChange={e => {
+                                                                    handleChange(e);
                                                                     setFieldValue(
                                                                         'estimated_worth',
                                                                         e.target.value,
                                                                         true
-                                                                    )
-                                                                }
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -375,37 +403,41 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
+                                                            <Dropdown
+                                                                placeholder={localize('Anticipated annual turnover')}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={this.props.account_turnover_enum}
+                                                                value={values.account_turnover}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.account_turnover && errors.account_turnover
+                                                                }
                                                                 {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('Anticipated account turnover')}
-                                                                list_items={this.props.account_turnover_enum}
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'account_turnover',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
-                                                                label={localize('Anticipated account turnover')}
-                                                                {...field}
+                                                                name={field.name}
+                                                                label={localize('Anticipated annual turnover')}
                                                                 list_items={this.props.account_turnover_enum}
+                                                                value={values.account_turnover}
                                                                 use_text={true}
-                                                                onChange={e =>
+                                                                error={
+                                                                    touched.account_turnover && errors.account_turnover
+                                                                }
+                                                                onChange={e => {
+                                                                    handleChange(e);
                                                                     setFieldValue(
                                                                         'account_turnover',
                                                                         e.target.value,
                                                                         true
-                                                                    )
-                                                                }
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -416,37 +448,43 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
+                                                            <Dropdown
+                                                                placeholder={localize('Forex trading experience')}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={this.props.forex_trading_experience_enum}
+                                                                value={values.forex_trading_experience}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.forex_trading_experience &&
+                                                                    errors.forex_trading_experience
+                                                                }
                                                                 {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('Forex trading experience')}
-                                                                list_items={this.props.forex_trading_experience_enum}
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'forex_trading_experience',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
+                                                                name={field.name}
                                                                 label={localize('Forex trading experience')}
-                                                                {...field}
                                                                 list_items={this.props.forex_trading_experience_enum}
+                                                                value={values.forex_trading_experience}
                                                                 use_text={true}
-                                                                onChange={e =>
+                                                                error={
+                                                                    touched.forex_trading_experience &&
+                                                                    errors.forex_trading_experience
+                                                                }
+                                                                onChange={e => {
+                                                                    handleChange(e);
                                                                     setFieldValue(
                                                                         'forex_trading_experience',
                                                                         e.target.value,
                                                                         true
-                                                                    )
-                                                                }
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -456,37 +494,43 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
+                                                            <Dropdown
+                                                                placeholder={localize('Forex trading frequency')}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={this.props.forex_trading_frequency_enum}
+                                                                value={values.forex_trading_frequency}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.forex_trading_frequency &&
+                                                                    errors.forex_trading_frequency
+                                                                }
                                                                 {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('Forex trading frequency')}
-                                                                list_items={this.props.forex_trading_frequency_enum}
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'forex_trading_frequency',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
+                                                                name={field.name}
                                                                 label={localize('Forex trading frequency')}
-                                                                {...field}
                                                                 list_items={this.props.forex_trading_frequency_enum}
+                                                                value={values.forex_trading_frequency}
                                                                 use_text={true}
-                                                                onChange={e =>
+                                                                error={
+                                                                    touched.forex_trading_frequency &&
+                                                                    errors.forex_trading_frequency
+                                                                }
+                                                                onChange={e => {
+                                                                    handleChange(e);
                                                                     setFieldValue(
                                                                         'forex_trading_frequency',
                                                                         e.target.value,
                                                                         true
-                                                                    )
-                                                                }
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -496,41 +540,47 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
-                                                                {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('Binary options trading experience')}
-                                                                list_items={
-                                                                    this.props.binary_options_trading_experience_enum
+                                                            <Dropdown
+                                                                placeholder={localize(
+                                                                    'Binary options trading experience'
+                                                                )}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={this.props.binary_options_trading_experience_enum}
+                                                                value={values.binary_options_trading_experience}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.binary_options_trading_experience &&
+                                                                    errors.binary_options_trading_experience
                                                                 }
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'binary_options_trading_experience',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
+                                                                name={field.name}
                                                                 label={localize('Binary options trading experience')}
-                                                                {...field}
                                                                 list_items={
                                                                     this.props.binary_options_trading_experience_enum
                                                                 }
+                                                                value={values.binary_options_trading_experience}
                                                                 use_text={true}
-                                                                onChange={e =>
+                                                                error={
+                                                                    touched.binary_options_trading_experience &&
+                                                                    errors.binary_options_trading_experience
+                                                                }
+                                                                onChange={e => {
+                                                                    handleChange(e);
                                                                     setFieldValue(
                                                                         'binary_options_trading_experience',
                                                                         e.target.value,
                                                                         true
-                                                                    )
-                                                                }
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -540,41 +590,47 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
-                                                                {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('Binary options trading frequency')}
-                                                                list_items={
-                                                                    this.props.binary_options_trading_frequency_enum
+                                                            <Dropdown
+                                                                placeholder={localize(
+                                                                    'Binary options trading frequency'
+                                                                )}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={this.props.binary_options_trading_frequency_enum}
+                                                                value={values.binary_options_trading_frequency}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.binary_options_trading_frequency &&
+                                                                    errors.binary_options_trading_frequency
                                                                 }
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'binary_options_trading_frequency',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
+                                                                name={field.name}
                                                                 label={localize('Binary options trading frequency')}
-                                                                {...field}
                                                                 list_items={
                                                                     this.props.binary_options_trading_frequency_enum
                                                                 }
+                                                                value={values.binary_options_trading_frequency}
                                                                 use_text={true}
-                                                                onChange={e =>
+                                                                error={
+                                                                    touched.binary_options_trading_frequency &&
+                                                                    errors.binary_options_trading_frequency
+                                                                }
+                                                                onChange={e => {
+                                                                    handleChange(e);
                                                                     setFieldValue(
                                                                         'binary_options_trading_frequency',
                                                                         e.target.value,
                                                                         true
-                                                                    )
-                                                                }
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -584,37 +640,43 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
+                                                            <Dropdown
+                                                                placeholder={localize('CFDs trading experience')}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={this.props.cfd_trading_experience_enum}
+                                                                value={values.cfd_trading_experience}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.cfd_trading_experience &&
+                                                                    errors.cfd_trading_experience
+                                                                }
                                                                 {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('CFDs trading experience')}
-                                                                list_items={this.props.cfd_trading_experience_enum}
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'cfd_trading_experience',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
+                                                                name={field.name}
                                                                 label={localize('CFDs trading experience')}
-                                                                {...field}
                                                                 list_items={this.props.cfd_trading_experience_enum}
+                                                                value={values.cfd_trading_experience}
                                                                 use_text={true}
-                                                                onChange={e =>
+                                                                error={
+                                                                    touched.cfd_trading_experience &&
+                                                                    errors.cfd_trading_experience
+                                                                }
+                                                                onChange={e => {
+                                                                    handleChange(e);
                                                                     setFieldValue(
                                                                         'cfd_trading_experience',
                                                                         e.target.value,
                                                                         true
-                                                                    )
-                                                                }
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -624,37 +686,43 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
+                                                            <Dropdown
+                                                                placeholder={localize('CFDs trading frequency')}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={this.props.cfd_trading_frequency_enum}
+                                                                value={values.cfd_trading_frequency}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.cfd_trading_frequency &&
+                                                                    errors.cfd_trading_frequency
+                                                                }
                                                                 {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize('CFDs trading frequency')}
-                                                                list_items={this.props.cfd_trading_frequency_enum}
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'cfd_trading_frequency',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
+                                                                name={field.name}
                                                                 label={localize('CFDs trading frequency')}
-                                                                {...field}
                                                                 list_items={this.props.cfd_trading_frequency_enum}
+                                                                value={values.cfd_trading_frequency}
                                                                 use_text={true}
-                                                                onChange={e =>
+                                                                error={
+                                                                    touched.cfd_trading_frequency &&
+                                                                    errors.cfd_trading_frequency
+                                                                }
+                                                                onChange={e => {
+                                                                    handleChange(e);
                                                                     setFieldValue(
                                                                         'cfd_trading_frequency',
                                                                         e.target.value,
                                                                         true
-                                                                    )
-                                                                }
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -664,45 +732,49 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
-                                                                {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize(
-                                                                    'Experience with trading other financial instruments'
+                                                            <Dropdown
+                                                                placeholder={localize(
+                                                                    'Other instruments trading experience'
                                                                 )}
-                                                                list_items={
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={
                                                                     this.props.other_instruments_trading_experience_enum
                                                                 }
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'other_instruments_trading_experience',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                value={values.other_instruments_trading_experience}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.other_instruments_trading_experience &&
+                                                                    errors.other_instruments_trading_experience
+                                                                }
+                                                                {...field}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
-                                                                label={localize(
-                                                                    'Experience with trading other financial instruments'
-                                                                )}
-                                                                {...field}
+                                                                name={field.name}
+                                                                label={localize('Other instruments trading experience')}
                                                                 list_items={
                                                                     this.props.other_instruments_trading_experience_enum
                                                                 }
+                                                                value={values.other_instruments_trading_experience}
                                                                 use_text={true}
-                                                                onChange={e =>
+                                                                error={
+                                                                    touched.other_instruments_trading_experience &&
+                                                                    errors.other_instruments_trading_experience
+                                                                }
+                                                                onChange={e => {
+                                                                    handleChange(e);
                                                                     setFieldValue(
                                                                         'other_instruments_trading_experience',
                                                                         e.target.value,
                                                                         true
-                                                                    )
-                                                                }
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -712,45 +784,49 @@ class FinancialDetails extends React.Component {
                                                 {({ field }) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
-                                                            <Autocomplete
-                                                                {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                dropdown_offset='3.2rem'
-                                                                type='text'
-                                                                label={localize(
-                                                                    'Experience with trading other financial instruments'
+                                                            <Dropdown
+                                                                placeholder={localize(
+                                                                    'Other instruments trading frequency'
                                                                 )}
-                                                                list_items={
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={
                                                                     this.props.other_instruments_trading_frequency_enum
                                                                 }
-                                                                onItemSelection={({ value, text }) => {
-                                                                    setFieldValue(
-                                                                        'other_instruments_trading_frequency',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                }}
+                                                                value={values.other_instruments_trading_frequency}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.other_instruments_trading_frequency &&
+                                                                    errors.other_instruments_trading_frequency
+                                                                }
+                                                                {...field}
+                                                                required
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Please select')}
-                                                                label={localize(
-                                                                    'Experience with trading other financial instruments'
-                                                                )}
-                                                                {...field}
+                                                                name={field.name}
+                                                                label={localize('Other instruments trading frequency')}
                                                                 list_items={
                                                                     this.props.other_instruments_trading_frequency_enum
                                                                 }
+                                                                value={values.other_instruments_trading_frequency}
                                                                 use_text={true}
-                                                                onChange={e =>
+                                                                error={
+                                                                    touched.other_instruments_trading_frequency &&
+                                                                    errors.other_instruments_trading_frequency
+                                                                }
+                                                                onChange={e => {
+                                                                    handleChange(e);
                                                                     setFieldValue(
                                                                         'other_instruments_trading_frequency',
                                                                         e.target.value,
                                                                         true
-                                                                    )
-                                                                }
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>

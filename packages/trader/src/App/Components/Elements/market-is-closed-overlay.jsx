@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import MarketCountdownTimer from './market-countdown-timer.jsx';
 
 const toggleFade = ({ node, opacity, direction, color }) => {
     const sub_or_add = direction === -1 && opacity > 0.1 ? -1 : 1;
@@ -111,6 +112,7 @@ const onClick = async () => {
 
 const MarketIsClosedOverlay = () => (
     <div className='market-is-closed-overlay'>
+        <MarketCountdownTimer target_date='2020-07-29' />
         <p>
             <Localize i18n_default_text='Market is closed.' />
         </p>

@@ -17,8 +17,15 @@
         @include typeface(--paragraph-center-normal-black);
         color: var(--text-prominent);
         text-transform: none;
+
+        &.market-is-closed-overlay__timer {
+            font-weight: bold;
+            font-size: 1.6rem;
+            margin-bottom: 4rem;
+        }
     }
     &__button {
         @include toEm('height', 40px);
+        margin-top: 1rem;
     }
 }

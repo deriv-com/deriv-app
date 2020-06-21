@@ -91,7 +91,7 @@ const transformForResidence = (rules, residence) => {
         rules.address_state.rules.shift();
     }
     // GB residence are required to fill in the post code.
-    if (residence === 'gb') {
+    if (residence === 'gb' || residence === 'im') {
         rules.address_postcode.rules.splice(0, 0, ['req', localize('Postal/ZIP code is required')]);
     }
 

@@ -17,6 +17,7 @@ import MT5ResetPasswordModal from './mt5-reset-password-modal.jsx';
 import Mt5FinancialStpPendingDialog from '../Components/mt5-financial-stp-pending-dialog.jsx';
 import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
 import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
+import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
 class MT5Dashboard extends React.Component {
@@ -183,14 +184,14 @@ class MT5Dashboard extends React.Component {
                                 </div>
                                 <div className='mt5-dashboard__download-center-options--mobile-links'>
                                     <a
-                                        href='https://download.mql5.com/cdn/mobile/mt5/android?server=Binary.com-Server'
+                                        href={getPlatformMt5DownloadLink('android')}
                                         target='_blank'
                                         rel='noopener noreferrer'
                                     >
                                         <Icon icon='IcInstallationGoogle' width={135} height={40} />
                                     </a>
                                     <a
-                                        href='https://download.mql5.com/cdn/mobile/mt5/ios?server=Binary.com-Server'
+                                        href={getPlatformMt5DownloadLink('ios')}
                                         target='_blank'
                                         rel='noopener noreferrer'
                                     >

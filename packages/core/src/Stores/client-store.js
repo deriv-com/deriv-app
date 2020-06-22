@@ -1146,7 +1146,7 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    setDeviceData(device_data) {
+    setDeviceData() {
         // Set client URL params on init
         const url_params = new URLSearchParams(window.location.search);
         const device_data = {
@@ -1165,7 +1165,7 @@ export default class ClientStore extends BaseStore {
                 utm_source: url_params.get('utm_source') || '',
             }),
         };
-        this.device_data = { ...this.device_data, device_data };
+        this.device_data = { ...this.device_data, ...device_data };
     }
 
     @action.bound

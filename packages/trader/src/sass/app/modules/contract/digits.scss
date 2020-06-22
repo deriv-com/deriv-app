@@ -237,10 +237,28 @@
                 &-last {
                     padding: 0 8px;
                 }
-                /* iPhone SE screen height fixes due to UI space restrictions */
+                &:not(&--is-trading) {
+                    position: relative;
+                }
+                /* iPhone 8 screen height fixes due to UI space restrictions */
+                @media only screen and (max-height: 580px) {
+                    &--is-trading {
+                        &-value,
+                        &-last {
+                            font-size: 1.4rem;
+                        }
+                        &-last {
+                            padding: 0 7px;
+                        }
+                    }
+                }
+                @media only screen and (max-height: 540px) {
+                    position: relative;
+                }
                 @media only screen and (max-height: 480px) {
                     position: relative;
                     top: 0;
+                    margin-top: 1.6rem;
 
                     &--is-trading {
                         margin-top: auto;

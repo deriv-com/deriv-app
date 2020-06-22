@@ -75,7 +75,7 @@ Redirect.propTypes = {
 };
 
 export default withRouter(
-    connect(({ client, ui, common }) => ({
+    connect(({ client, ui }) => ({
         setVerificationCode: client.setVerificationCode,
         fetchResidenceList: client.fetchResidenceList,
         openRealAccountSignup: ui.openRealAccountSignup,

@@ -71,7 +71,8 @@ export default class ClientStore extends BaseStore {
     is_mt5_account_list_updated = false;
 
     constructor(root_store) {
-        super({ root_store });
+        const local_storage_properties = ['device_data'];
+        super({ root_store, local_storage_properties });
     }
 
     @computed

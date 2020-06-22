@@ -8,7 +8,7 @@ const getPlatformMt5DownloadLink = (platform = undefined) => {
         case 'linux':
             return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
         case 'ios':
-            return 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-ServerMobile';
+            return 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server';
         case 'android':
             return 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server';
         default:
@@ -18,7 +18,7 @@ const getPlatformMt5DownloadLink = (platform = undefined) => {
 
 const getMT5WebTerminalLink = ({ category, loginid }) => {
     const is_demo = category === 'demo';
-    const server = is_demo ? 'Binary.com-Demo' : 'Binary.com-Server';
+    const server = is_demo ? 'Deriv-Demo' : 'Deriv-Server';
     const login = loginid ?? '';
 
     return `https://trade.mql5.com/trade?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;

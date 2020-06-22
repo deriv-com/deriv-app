@@ -249,7 +249,6 @@ class FormAds extends React.Component {
                                                             label={localize('Your contact details')}
                                                             error={touched.contact_info && errors.contact_info}
                                                             className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            placeholder={localize('Your Contact details')}
                                                             required
                                                             has_character_counter
                                                             max_characters={300}
@@ -270,7 +269,6 @@ class FormAds extends React.Component {
                                                         label={localize('Instructions (optional)')}
                                                         hint={localize('This information will be visible to everyone')}
                                                         className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                        placeholder={localize('Instructions (optional)')}
                                                         has_character_counter
                                                         max_characters={300}
                                                         required

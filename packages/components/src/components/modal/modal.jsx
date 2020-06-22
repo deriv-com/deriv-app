@@ -31,8 +31,6 @@ const ModalElement = ({
     const modal_root_ref = React.useRef(document.getElementById('modal_root'));
     const wrapper_ref = React.useRef();
 
-    useOnClickOutside(wrapper_ref, toggleModal, validateClickOutside);
-
     const is_datepicker_visible = () => modal_root_ref.current.querySelectorAll('.dc-datepicker__picker').length;
 
     const validateClickOutside = e =>
@@ -40,6 +38,8 @@ const ModalElement = ({
         !is_datepicker_visible() &&
         is_open &&
         !(elements_to_ignore && e?.path.find(el => elements_to_ignore.includes(el)));
+
+    useOnClickOutside(wrapper_ref, toggleModal, validateClickOutside);
 
     React.useEffect(() => {
         el_ref.current.classList.add('dc-modal');

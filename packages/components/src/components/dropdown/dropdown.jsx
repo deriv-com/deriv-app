@@ -44,16 +44,12 @@ const Dropdown = ({
     const [is_list_visible, setIsListVisible] = React.useState(!!is_nativepicker_visible);
     const [list_dimensions, setListDimensions] = React.useState([0, 0]);
 
-    useOnClickOutside(
-        wrapper_ref,
-        () => {
-            if (typeof handleBlur === 'function') {
-                handleBlur({ target: { name } });
-            }
-            setIsListVisible(false);
-        },
-        () => is_list_visible
-    );
+    const onClickOutSide = () => {
+        if (typeof handleBlur === 'function') handleBlur({ target: { name } });
+        setIsListVisible(false);
+    };
+
+    useOnClickOutside(wrapper_ref, onClickOutSide, () => is_list_visible);
 
     /**
      * Calculate the offset for the dropdown list based on its width

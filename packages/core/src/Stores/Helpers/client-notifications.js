@@ -100,8 +100,10 @@ export const clientNotifications = (ui = {}) => {
         unwelcome: {
             ...(isMobile() && {
                 action: {
-                    route: getDerivComLink('contact-us'),
                     text: localize('Contact us'),
+                    onClick: () => {
+                        window.open(getDerivComLink('contact-us'));
+                    },
                 },
             }),
             key: 'unwelcome',
@@ -119,8 +121,10 @@ export const clientNotifications = (ui = {}) => {
         mf_retail: {
             ...(isMobile() && {
                 action: {
-                    route: getDerivComLink('contact-us'),
                     text: localize('Contact us'),
+                    onClick: () => {
+                        window.open(getDerivComLink('contact-us'));
+                    },
                 },
             }),
             key: 'mf_retail',

@@ -42,7 +42,7 @@
             height: auto;
             padding: 0;
             max-width: 440px;
-            max-height: initial;
+            min-height: 0;
             min-width: 44rem;
         }
         & .dc-dialog__content {

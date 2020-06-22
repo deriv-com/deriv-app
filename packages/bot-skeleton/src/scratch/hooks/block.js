@@ -67,6 +67,14 @@ Blockly.Block.prototype.getLastConnectionInStatement = function(statement_input_
     return statement_input.connection;
 };
 
+/**
+ * Get whether this block is enabled or not.
+ * @return {boolean} True if enabled.
+ */
+Blockly.Block.prototype.isEnabled = function() {
+    return !this.disabled;
+};
+
 Blockly.Block.prototype.isDescendantOf = function(type) {
     let parentBlock = this.getParent();
     while (parentBlock !== null) {

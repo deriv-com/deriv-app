@@ -37,6 +37,6 @@ Blockly.Blocks.text_statement = {
 };
 
 Blockly.JavaScript.text_statement = block => {
-    const code = `String(${Blockly.JavaScript.valueToCode(block, 'TEXT')})`;
+    const code = `String(${Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_ATOMIC)})`;
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

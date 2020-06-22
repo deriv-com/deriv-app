@@ -52,7 +52,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             className: 'order-details__popup-no-border',
             message: (
                 <Localize
-                    i18n_default_text='If you have a problem in using the app or if you have a dispute with the other party that the two of you havent been able to resolve, please email <0>{{support_email}}</0>. Describe your situation, and include your order <1>ID ({{id}})</1>.'
+                    i18n_default_text="If you have a problem in using the app or if you have a dispute with the other party that the two of you haven't been able to resolve, please email <0>{{support_email}}</0>. Describe your situation, and include your order <1>ID ({{id}})</1>."
                     values={{ support_email: `p2p-support@${email_domain}`, id }}
                     components={[
                         <a

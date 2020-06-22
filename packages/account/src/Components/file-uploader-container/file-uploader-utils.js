@@ -32,7 +32,7 @@ export const readFiles = (files) => {
                 const file_obj = {
                     filename: f.name,
                     buffer: fr.result,
-                    documentType: 'proofaddress',
+                    documentType: 'utility_bill',
                     documentFormat: getFormatFromMIME(f),
                     file_size: f.size,
                 };

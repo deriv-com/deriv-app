@@ -43,7 +43,7 @@ Blockly.Blocks.read_ohlc_obj = {
 
 Blockly.JavaScript.read_ohlc_obj = block => {
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST');
-    const ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ') || '{}';
+    const ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC) || '{}';
 
     const code = `Bot.candleField(${ohlcObj}, '${ohlcField}')`;
     return [code, Blockly.JavaScript.ORDER_ATOMIC];

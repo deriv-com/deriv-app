@@ -258,7 +258,7 @@ class ChartTradeClass extends React.Component {
                 refToAddTick={this.props.refToAddTick}
                 activeSymbols={active_markets}
                 yAxisMargin={{
-                    top: isMobile() ? 76 : 106
+                    top: isMobile() ? 76 : 106,
                 }}
             >
                 <ChartMarkers />

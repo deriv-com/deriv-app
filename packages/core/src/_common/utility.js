@@ -83,6 +83,7 @@ const eu_countries = [
     'ie',
     'im',
     'gb',
+    'mt',
 ];
 // check if client is from EU
 const isEuCountry = country => eu_countries.includes(country);

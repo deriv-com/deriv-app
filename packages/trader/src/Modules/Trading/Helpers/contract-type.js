@@ -1,22 +1,5 @@
 import React from 'react';
-import { isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
-
-export const unsupported_contract_types_list = [
-    // TODO: remove these once all contract types are supported
-    'callputspread',
-    'run_high_low',
-    'reset',
-    'asian',
-    'tick_high_low',
-    'end',
-    'stay',
-    'lb_call',
-    'lb_put',
-    'lb_high_low',
-    // TODO: Remove the conditional values below once barrier and path dependent contracts are ready for mobile
-    isMobile() ? 'multiplier' : null,
-];
 
 export const contract_category_icon = {
     [localize('Ups & Downs')]: 'IcUpsDowns',

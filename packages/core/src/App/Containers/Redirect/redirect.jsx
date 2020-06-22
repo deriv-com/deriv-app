@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import routes from '@deriv/shared/utils/routes';
-import { isDesktop } from '@deriv/shared/utils/os';
 import { connect } from 'Stores/connect';
 import Login from '_common/base/login';
 
@@ -19,17 +18,6 @@ const Redirect = ({
     let redirected_to_route = false;
 
     setVerificationCode(url_params.get('code'), url_params.get('action'));
-    const device_data = {
-        affiliate_token: url_params.get('affiliate_token') || '',
-        date_first_contact: url_params.get('date_first_contact') || server_time.format('YYYY-MM-DD'),
-        gclid_url: url_params.get('gclid_url') || '',
-        signup_device: url_params.get('signup_device') || isDesktop() ? 'desktop' : 'mobile',
-        utm_campaign: url_params.get('utm_campaign') || '',
-        utm_medium: url_params.get('utm_medium') || '',
-        utm_source: url_params.get('utm_source') || '',
-    };
-
-    setDeviceData(device_data);
 
     switch (url_params.get('action')) {
         case 'signup': {

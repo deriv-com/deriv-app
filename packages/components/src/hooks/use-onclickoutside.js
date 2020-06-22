@@ -7,20 +7,17 @@ function useOnClickOutside(ref, handler, validationFn) {
 
             if (
                 ref &&
-                (!ref.contains(event.target) && !ref.contains(path[0])) // When component is isolated (e.g, iframe, shadow DOM) event.target refers to whole container not the component. path[0] is the node that the event originated from, it does not need to walk the array
+                (!ref.current.contains(event.target) && !ref.current.contains(path && path[0])) // When component is isolated (e.g, iframe, shadow DOM) event.target refers to whole container not the component. path[0] is the node that the event originated from, it does not need to walk the array
             ) {
-                if (validationFn && validationFn()) {
-                    handler(event);
-                }
+                if (validationFn && !validationFn(event)) return;
+                handler(event);
             }
         };
 
         document.addEventListener('mousedown', listener);
-        document.addEventListener('touchstart', listener);
 
         return () => {
             document.removeEventListener('mousedown', listener);
-            document.removeEventListener('touchstart', listener);
         };
     }, [ref, handler]);
 }

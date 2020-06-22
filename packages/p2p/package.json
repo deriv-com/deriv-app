@@ -45,7 +45,9 @@
         "react-window": "^1.8.5",
         "react-window-infinite-loader": "^1.0.5",
         "sendbird": "^3.0.122",
-        "sendbird-uikit": "^1.0.1"
+        "sendbird-uikit": "^1.0.1",
+        "moment": "^2.25.3",
+        "@babel/runtime": "^7.10.2"
     },
     "devDependencies": {
         "@babel/plugin-proposal-class-properties": "^7.4.4",
@@ -57,7 +59,7 @@
         "@babel/plugin-proposal-optional-chaining": "^7.8.3",
         "@babel/plugin-proposal-unicode-property-regex": "^7.7.7",
         "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-        "@babel/preset-env": "^7.4.5",
+        "@babel/preset-env": "^7.9.6",
         "@babel/preset-react": "^7.0.0",
         "babel-core": "^6.26.3",
         "babel-eslint": "^10.0.2",

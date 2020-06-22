@@ -69,7 +69,7 @@ const FileDropzone = ({ className, ...props }) => (
                             <div className='dc-file-dropzone__message'>{props.hover_message}</div>
                         </FadeInMessage>
                         {/* Handle cases for displaying multiple files and single filenames */}
-                        {props.multiple && (props.value.length > 0 && !props.validation_error_message)
+                        {props.multiple && props.value.length > 0 && !props.validation_error_message
                             ? props.value.map((file, idx) => (
                                   <span key={idx} className='dc-file-dropzone__filename'>
                                       {file.name}

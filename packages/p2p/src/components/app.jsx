@@ -285,7 +285,6 @@ class App extends React.Component {
             <Dp2pProvider
                 value={{
                     changeTab: this.handleTabClick,
-                    order_table_type,
                     currency,
                     local_currency_config,
                     residence,
@@ -307,7 +306,7 @@ class App extends React.Component {
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
                     getLocalStorageSettings: this.getLocalStorageSettings.bind(this),
-                    order_table_type: this.state.order_table_type,
+                    order_table_type,
                     changeOrderToggle: this.changeOrderToggle,
                     poi_status: this.state.poi_status,
                 }}

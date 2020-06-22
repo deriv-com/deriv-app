@@ -9,15 +9,7 @@ import { useOnClickOutside } from '../../hooks/use-onclickoutside';
 const PageOverlay = ({ portal_id, children, header, id, onClickClose, is_open }) => {
     const page_overlay_ref = React.useRef();
 
-    useOnClickOutside(
-        page_overlay_ref,
-        () => {
-            if (portal_id) {
-                onClickClose();
-            }
-        },
-        () => is_open
-    );
+    useOnClickOutside(page_overlay_ref, onClickClose, () => is_open && portal_id);
 
     const el_page_overlay = (
         <div

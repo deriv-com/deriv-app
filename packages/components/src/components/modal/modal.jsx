@@ -33,6 +33,8 @@ const ModalElement = ({
 
     useOnClickOutside(wrapper_ref, toggleModal, validateClickOutside);
 
+    const is_datepicker_visible = () => modal_root_ref.current.querySelectorAll('.dc-datepicker__picker').length;
+
     const validateClickOutside = e =>
         has_close_icon &&
         !is_datepicker_visible() &&
@@ -49,8 +51,6 @@ const ModalElement = ({
             if (typeof onUnmount === 'function') onUnmount();
         };
     }, []);
-
-    const is_datepicker_visible = () => modal_root_ref.current.querySelectorAll('.dc-datepicker__picker').length;
 
     return ReactDOM.createPortal(
         <div

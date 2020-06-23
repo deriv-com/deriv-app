@@ -9,6 +9,7 @@ Blockly.Blocks.text_prompt_ext = {
             if (value === 'TEXT') {
                 this.setOutput(true, 'String');
             } else if (value === 'NUMBER') {
+                console.log('test');
                 this.setOutput(true, 'Number');
             }
             this.initSvg();
@@ -33,7 +34,7 @@ Blockly.Blocks.text_prompt_ext = {
                     name: 'TEXT',
                 },
             ],
-            output: 'String',
+            output: this.getFieldValue('TYPE') === 'TEXT' ? 'String' : 'Number',
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Special3.colour,
             colourSecondary: Blockly.Colours.Special3.colourSecondary,

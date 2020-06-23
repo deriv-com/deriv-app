@@ -271,17 +271,8 @@ $modal_container_height: calc(100vh - 210px);
             margin-top: 16px;
         }
         &__icon {
-            &--active {
-                // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
-                --fill-color1: #ffcf45 !important;
-                --fill-color2: #1ca362 !important;
-                --fill-color3: #4686f5 !important;
-            }
             &--disabled {
-                // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
-                --fill-color1: #{$color-grey-8} !important;
-                --fill-color2: #{$color_grey-9} !important;
-                --fill-color3: #{$color-grey-10} !important;
+                opacity: 0.32;
             }
         }
     }
@@ -300,8 +291,15 @@ $modal_container_height: calc(100vh - 210px);
                 width: 100%;
             }
             & .dc {
+                &-tabs__list {
+                    width: 100%;
+                }
                 &-btn {
                     height: 4rem;
+
+                    &--secondary {
+                        border-width: 0.2rem;
+                    }
                 }
                 &-tabs__item {
                     width: 50%;
@@ -342,12 +340,15 @@ $modal_container_height: calc(100vh - 210px);
                 &__container {
                     width: calc(100vw - 3.2rem);
                     margin: 1.6rem;
-                    border: dashed 0.3rem var(--border-normal);
+                    border: dashed 0.2rem var(--border-normal);
                     height: calc(100vh - 166px);
                 }
                 &__buttons > * {
                     margin: 0rem 0.4rem;
                 }
+            }
+            .preview__workspace {
+                width: 100vw;
             }
         }
     }

@@ -205,7 +205,7 @@ const Local = ({
 const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, onDriveOpen, is_mobile }) => (
     <div className='load-google-drive__container'>
         <Icon
-            icon={is_authorised ? 'IcGoogleDriveEnabled' : 'IcGoogleDrive'}
+            icon={'IcGoogleDrive'}
             className={classnames({
                 'load-google-drive__icon--active': is_authorised,
                 'load-google-drive__icon--disabled': !is_authorised,
@@ -213,10 +213,17 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
             size={is_mobile ? 96 : 116}
         />
         <div className='load-google-drive__text'>
-            {is_authorised ? localize('You are connected to Google Drive') : localize('Google Drive')}
+            {is_authorised ? localize('You are connected to Google Drive') : 'Google Drive'}
         </div>
         {is_authorised ? (
             <div className='load-google-drive__buttons'>
+                <Button
+                    className='load-google-drive__disconnect'
+                    text={localize('Disconnect')}
+                    onClick={onDriveConnect}
+                    has_effect
+                    secondary
+                />
                 <Button
                     className='load-google-drive__open'
                     text={localize('Open')}
@@ -224,13 +231,6 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                     is_loading={is_open_button_loading}
                     has_effect
                     primary
-                />
-                <Button
-                    className='load-google-drive__disconnect'
-                    text={localize('Disconnect')}
-                    onClick={onDriveConnect}
-                    has_effect
-                    secondary
                 />
             </div>
         ) : (
@@ -270,7 +270,7 @@ const LoadModal = ({
                             <div label={localize('Local')}>
                                 <Local is_mobile={is_mobile} {...props} />
                             </div>
-                            <div label={localize('Google Drive')}>
+                            <div label='Google Drive'>
                                 <GoogleDrive is_mobile={is_mobile} {...props} />
                             </div>
                         </Tabs>
@@ -296,7 +296,7 @@ const LoadModal = ({
                 <div label={localize('Local')}>
                     <Local {...props} />
                 </div>
-                <div label={localize('Google Drive')}>
+                <div label='Google Drive'>
                     <GoogleDrive {...props} />
                 </div>
             </Tabs>

@@ -5,15 +5,9 @@
             .chart-container {
                 width: 100%;
 
-                .ciq-navigation-widget {
-                    transform: translate3d(248px, 0, 0);
-                }
-                .cq-top-ui-widgets {
-                    transform: translate3d(248px, 0, 0);
-                }
-                .sc-toolbar-widget {
-                    transform: translate3d(248px, 0, 0);
-                }
+                .ciq-navigation-widget,
+                .cq-top-ui-widgets,
+                .sc-toolbar-widget,
                 .stx-panel-control {
                     transform: translate3d(248px, 0, 0);
                 }
@@ -122,9 +116,18 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 .contract-card__grid-underlying-trade,
                 .contract-card__footer-wrapper {
                     grid-template-columns: 1fr 1fr 0.7fr;
+
+                    @media only screen and (max-height: 480px) {
+                        grid-template-columns: 1fr 1fr;
+                    }
                 }
                 &--with-collapsible-btn {
                     padding-top: 0;
+                }
+                @media only screen and (max-height: 480px) {
+                    .contract-card__body-wrapper {
+                        padding-top: 0.2rem;
+                    }
                 }
             }
         }
@@ -159,10 +162,9 @@ $FLOATING_HEADER_HEIGHT: 41px;
                             }
                         }
                     }
-                    .sc-toolbar-widget {
-                        transition: transform 0.25s ease;
-                    }
-                    .stx-panel-control {
+                    .sc-toolbar-widget,
+                    .stx-panel-control,
+                    .ciq-navigation-widget {
                         transition: transform 0.25s ease;
                     }
                     .ciq-asset-information {
@@ -173,9 +175,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         left: 8px;
                         padding: 0;
                         position: absolute;
-                    }
-                    .ciq-navigation-widget {
-                        transition: transform 0.25s ease;
                     }
                     .cq-bottom-ui-widgets {
                         bottom: 30px !important;
@@ -291,7 +290,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         z-index: 0;
 
         div.ciq-chart {
-            height: calc(100% - 5em);
+            height: 100%;
             box-shadow: none;
 
             div.cq-last-digits {
@@ -331,7 +330,10 @@ $FLOATING_HEADER_HEIGHT: 41px;
         display: none;
     }
     .cq-chart-control-left {
-        .cq-chart-controls {
+        .cq-chart-controls,
+        .sc-toolbar-widget,
+        .stx-panel-control,
+        .ciq-navigation-widget {
             transform: translate3d(0, 0, 0);
             transition: transform 0.25s ease;
         }
@@ -341,15 +343,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
             .info-box {
                 transform: translate3d(0, 0, 0);
             }
-        }
-        .sc-toolbar-widget {
-            transform: translate3d(0, 0, 0);
-        }
-        .stx-panel-control {
-            transform: translate3d(0, 0, 0);
-        }
-        .ciq-navigation-widget {
-            transform: translate3d(0, 0, 0);
         }
     }
     .ciq-chart {
@@ -393,9 +386,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .cq-chart-controls {
             transition: max-width 0.25s ease, transform 0.25s ease;
         }
-        .ciq-navigation-widget {
-            transition: transform 0.25s ease;
-        }
+        .ciq-navigation-widget,
         .stx-panel-control {
             transition: transform 0.25s ease;
         }
@@ -430,6 +421,14 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         }
                     }
                 }
+            }
+        }
+        &--screenshot {
+            .sc-toolbar-widget,
+            .stx-panel-control,
+            .ciq-navigation-widget,
+            .cq-top-ui-widgets {
+                transform: translate3d(0, 0, 0) !important;
             }
         }
     }

@@ -33,28 +33,6 @@ const selectedReasons = (values) => {
     );
 };
 
-const validateFields = (values) => {
-    const error = {};
-    const selected_reason_count = selectedReasons(values).length;
-    if (selected_reason_count === 0 && values.otherTradingPlatforms.length === 0 && values.doToImprove.length === 0) {
-        error.empty_reason = 'please select at least one reason or share your opinion';
-    } else if (selected_reason_count > 0 && (values.otherTradingPlatforms + values.doToImprove).length === 0) {
-        return error;
-    } else if ((values.otherTradingPlatforms + values.doToImprove).length > 0) {
-        const max_letter = 250;
-        const selected_reasons = selectedReasons(values)
-            .map((val) => val[0])
-            .toString();
-        const max_letter_can_use = max_letter - selected_reasons.length;
-        const final_value = `${selected_reasons}, ${values.otherTradingPlatforms}, ${values.doToImprove}`;
-        const regex_rule = `^[0-9A-Za-z .,'-]{9,${max_letter}}$`;
-        if (!new RegExp(regex_rule).test(final_value)) {
-            error.letter_limits = `please insert between 5-${max_letter_can_use} characters combine both fields.`;
-        }
-    }
-    return error;
-};
-
 const WarningModal = (props) => {
     return (
         <div className='account-closure-warning-modal'>
@@ -62,13 +40,11 @@ const WarningModal = (props) => {
             <p className='account-closure-warning-modal__warning-message'>{localize('Warning!')}</p>
             <span className='account-closure-warning-modal__content'>{localize('if you deactivate:')}</span>
             <div className='account-closure-warning-modal__content-wrapper'>
-                <Icon icon='IcRedWarning' className='account-closure-warning-modal__warning-icon' size={16} />
                 <p className='account-closure-warning-modal__content'>
                     {localize('You’ll be logged out automatically.')}
                 </p>
             </div>
             <div className='account-closure-warning-modal__content-wrapper'>
-                <Icon icon='IcRedWarning' className='account-closure-warning-modal__warning-icon' size={16} />
                 <p className='account-closure-warning-modal__content'>
                     <Localize
                         i18n_default_text='You will NOT be able to log in again.'
@@ -214,8 +190,36 @@ class DeactivateAccountReason extends React.Component {
         which_modal_should_render: undefined,
         is_checkbox_disabled: false,
         total_checkbox_checked: 0,
+        remaining_characters: undefined,
     };
-
+    validateFields = (values) => {
+        const error = {};
+        const selected_reason_count = selectedReasons(values).length;
+        if (!selected_reason_count) {
+            error.empty_reason = 'please select at least one reason';
+        }
+        if ((values.otherTradingPlatforms + values.doToImprove).length > 0) {
+            const max_characters = 250;
+            const selected_reasons = selectedReasons(values)
+                .map((val) => val[0])
+                .toString();
+            const max_characters_can_use = max_characters - selected_reasons.length;
+            // The nuumber 4 subtraction is for two commas and two spaces on the final result
+            const remaining_characters =
+                max_characters_can_use - values.otherTradingPlatforms.length - values.doToImprove.length - 4;
+            if (remaining_characters >= 0) {
+                this.setState({ remaining_characters });
+            } else {
+                this.setState({ remaining_characters: undefined });
+            }
+            const final_value = `${selected_reasons}, ${values.otherTradingPlatforms}, ${values.doToImprove}`;
+            const regex_rule = `^[0-9A-Za-z .,'-]{0,${max_characters}}$`;
+            if (!new RegExp(regex_rule).test(final_value)) {
+                error.characters_limits = `please insert up to ${max_characters_can_use} characters combine both fields.`;
+            }
+        }
+        return error;
+    };
     handleSubmitForm = (values) => {
         const final_reason = preparingReason(values);
         this.setState({
@@ -270,7 +274,7 @@ class DeactivateAccountReason extends React.Component {
                 <p className='deactivate-account-reasons__title'>
                     {localize('Please tell us why you’re leaving. (Select up to 3 reasons.)')}
                 </p>
-                <Formik initialValues={initial_form} validate={validateFields} onSubmit={this.handleSubmitForm}>
+                <Formik initialValues={initial_form} validate={this.validateFields} onSubmit={this.handleSubmitForm}>
                     {({ values, setFieldValue, errors, handleChange, handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
                             <Field name='otherFinancialPriorities'>
@@ -402,12 +406,20 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
+                            {this.state.remaining_characters >= 0 && (
+                                <p>{`Remaining characters: ${this.state.remaining_characters}`}</p>
+                            )}
                             {Object.keys(errors).length > 0 &&
                                 Object.entries(errors).map(([key, value]) => (
                                     <p className='deactivate-account-reasons__error' key={key}>
                                         {value}
                                     </p>
                                 ))}
+                            {errors.characters_limits && (
+                                <p className='deactivate-account-reasons__error'>
+                                    {localize("Must be numbers, letters, and special characters . , ' -")}
+                                </p>
+                            )}
                             <FormSubmitButton
                                 is_disabled={
                                     // eslint-disable-next-line no-unused-vars

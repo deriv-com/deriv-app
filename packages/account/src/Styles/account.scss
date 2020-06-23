@@ -1189,8 +1189,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
     .confirm-all-close {
         &__information {
-            color: var(--text-prominent);
-            font-size: var(--text-size-xs);
+            @include typeface(--paragraph-left-normal-prominent, none);
             line-height: 1.43;
             margin-bottom: 8px;
 
@@ -1202,8 +1201,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &__steps {
             margin-top: 16px;
-            color: var(--text-prominent);
-            font-size: var(--text-size-xs);
+            @include typeface(--paragraph-left-normal-prominent, none);
             line-height: 1.43;
 
             &__title {
@@ -1251,7 +1249,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__error {
-            color: var(--purchase-main-2);
+            color: var(--text-loss-danger);
         }
     }
     @include mobile {
@@ -1271,35 +1269,31 @@ $MIN_HEIGHT_FLOATING: calc(
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 32px;
+        padding: 3.2rem;
 
         .dc-form-submit-button {
             justify-content: center;
-            padding: 2rem 0 0 0;
+            padding: 2rem 0 0;
 
             @include mobile {
                 background: unset;
             }
         }
         &__warning-message {
-            color: var(--brand-red-coral);
+            color: var(--text-loss-danger);
             padding: 16px 0;
             font-size: var(--text-size-s);
             font-weight: bold;
             line-height: 1.43;
         }
         &__content {
-            color: var(--text-general);
-            font-size: var(--text-size-xs);
+            @include typeface(--paragraph-left-normal-prominent, none);
             line-height: 1.43;
         }
         &__content-wrapper {
             display: flex;
             align-items: center;
             margin-top: 4px;
-        }
-        &__warning-icon {
-            margin-right: 2px;
         }
     }
     .have-open-positions {

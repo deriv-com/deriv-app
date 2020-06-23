@@ -7,9 +7,7 @@ const DeactivateAccountSteps = ({ redirectToReasons }) => (
     <div className='confirm-all-close'>
         <div className='confirm-all-close__information'>
             <p className='confirm-all-close__information--bold'>{localize('Deactivate account')}</p>
-            <p className='confirm-all-close__information'>
-                {localize('Before you deactivate your account, you need to do the following:')}
-            </p>
+            <p>{localize('Before you deactivate your account, you need to do the following:')}</p>
         </div>
         <div className='confirm-all-close__steps'>
             <p className='confirm-all-close__steps__title'>{localize('1. Close all open positions')}</p>

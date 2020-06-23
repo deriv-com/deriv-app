@@ -114,9 +114,18 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 .contract-card__grid-underlying-trade,
                 .contract-card__footer-wrapper {
                     grid-template-columns: 1fr 1fr 0.7fr;
+
+                    @media only screen and (max-height: 480px) {
+                        grid-template-columns: 1fr 1fr;
+                    }
                 }
                 &--with-collapsible-btn {
                     padding-top: 0;
+                }
+                @media only screen and (max-height: 480px) {
+                    .contract-card__body-wrapper {
+                        padding-top: 0.2rem;
+                    }
                 }
             }
         }

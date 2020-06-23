@@ -21,11 +21,14 @@
     &__container {
         position: relative;
 
-        /* iPhone SE screen height fixes due to UI space restrictions */
-        @media only screen and (max-height: 480px) {
-            transform: scale(0.75);
+        /* Screen height fixes due to UI space restrictions */
+        @media only screen and (max-height: 520px) {
+            transform: scale(0.85);
             transform-origin: bottom;
             padding: 0 0.8rem !important;
+        }
+        @media only screen and (max-height: 480px) {
+            transform: scale(0.75);
         }
     }
     &__tooltip-container {
@@ -237,10 +240,33 @@
                 &-last {
                     padding: 0 8px;
                 }
-                /* iPhone SE screen height fixes due to UI space restrictions */
-                @media only screen and (max-height: 480px) {
+                &:not(&--is-trading) {
+                    position: relative;
+                    top: 0.8rem;
+                }
+                /* iPhone 8 screen height fixes due to UI space restrictions */
+                @media only screen and (max-height: 580px) {
+                    &--is-trading {
+                        &-value,
+                        &-last {
+                            font-size: 1.4rem;
+                        }
+                        &-last {
+                            padding: 0 7px;
+                        }
+                    }
+                }
+                @media only screen and (max-height: 580px) {
+                    position: relative;
+
+                    &:not(&--is-trading) {
+                        top: 1.4rem;
+                    }
+                }
+                @media only screen and (max-height: 520px) {
                     position: relative;
                     top: 0;
+                    margin-top: 1.6rem;
 
                     &--is-trading {
                         margin-top: auto;

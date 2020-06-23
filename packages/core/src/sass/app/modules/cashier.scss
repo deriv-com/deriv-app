@@ -381,12 +381,9 @@
     }
     &__virtual {
         &-header {
+            @include typeface(--title-center-bold-prominent);
             margin-top: 0;
             margin-bottom: 1.6rem;
-            color: var(--text-prominent);
-            font-weight: bold;
-            font-size: 1.6rem;
-            line-height: 1.5;
 
             @include mobile {
                 padding-top: 2.4rem;

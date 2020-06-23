@@ -1,7 +1,6 @@
 import { localize } from '@deriv/translations';
 import DBotStore from '../dbot-store';
 import { save } from '../utils';
-import dbot from '../dbot';
 
 /**
  * Select this block.  Highlight it visually.
@@ -189,7 +188,7 @@ Blockly.BlockSvg.prototype.setErrorHighlighted = function(
 };
 
 // Highlight the block that is being executed
-Blockly.BlockSvg.prototype.highlightedForExecution = function(block) {
+Blockly.BlockSvg.prototype.highlightedForExecution = function() {
     const highlight_execution_class = 'block--execution-highlighted';
     Blockly.utils.addClass(this.svgGroup_, highlight_execution_class);
     setTimeout(() => {

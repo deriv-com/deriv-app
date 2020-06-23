@@ -50,7 +50,7 @@ Blockly.JavaScript.controls_repeat_ext = block => {
     if (block.getField('TIMES')) {
         repeats = String(Number(block.getFieldValue('TIMES')));
     } else {
-        repeats = Blockly.JavaScript.valueToCode(block, 'TIMES') || '0';
+        repeats = Blockly.JavaScript.valueToCode(block, 'TIMES', Blockly.JavaScript.ORDER_ATOMIC) || '0';
     }
 
     const branch = Blockly.JavaScript.statementToCode(block, 'DO');

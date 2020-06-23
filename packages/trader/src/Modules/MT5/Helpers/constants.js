@@ -18,7 +18,9 @@ const getPlatformMt5DownloadLink = (platform = undefined) => {
 
 const getMT5WebTerminalLink = ({ category, loginid }) => {
     const is_demo = category === 'demo';
-    const server = is_demo ? 'Deriv-Demo' : 'Deriv-Server';
+    // TODO: update to the deriv server once real transition is done
+    // const server = is_demo ? 'Deriv-Demo' : 'Deriv-Server';
+    const server = is_demo ? 'Deriv-Demo' : 'Binary.com-Server';
     const login = loginid ?? '';
 
     return `https://trade.mql5.com/trade?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;

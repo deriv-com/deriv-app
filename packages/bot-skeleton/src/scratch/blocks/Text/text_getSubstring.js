@@ -4,13 +4,13 @@ import { emptyTextValidator } from '../../utils';
 Blockly.Blocks.text_getSubstring = {
     init() {
         this.WHERE_OPTIONS_1 = [
-            [localize('letter\u00A0#'), 'FROM_START'],
-            [localize('letter\u00A0#\u00A0from end'), 'FROM_END'],
+            [localize('letter #'), 'FROM_START'],
+            [localize('letter # from end'), 'FROM_END'],
             [localize('first'), 'FIRST'],
         ];
         this.WHERE_OPTIONS_2 = [
-            [localize('letter\u00A0#'), 'FROM_START'],
-            [localize('letter\u00A0#\u00A0from end'), 'FROM_END'],
+            [localize('letter #'), 'FROM_START'],
+            [localize('letter # from end'), 'FROM_END'],
             [localize('last'), 'LAST'],
         ];
 

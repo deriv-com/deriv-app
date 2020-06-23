@@ -37,7 +37,11 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
                 v => !!v,
                 v => v.length >= 2,
                 v => v.length <= 24,
-                v => /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9-_@.]{2,24}$/.test(v),
+                v => /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
+                v =>
+                    Array.from(v).every(
+                        word => (v.match(new RegExp(word === '.' ? `\\${word}` : word, 'g')) || []).length <= 5
+                    ),
             ],
         };
 
@@ -45,6 +49,7 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
             localize('Nickname is required'),
             localize('Nickname is too short'),
             localize('Nickname is too long'),
+            localize('Nickname is in incorrect format'),
             localize('Nickname is in incorrect format'),
         ];
 
@@ -57,6 +62,7 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
 
             if (error_index !== -1) {
                 switch (key) {
+                    case 'nickname':
                     default: {
                         errors[key] = nickname_messages[error_index];
                         break;
@@ -78,12 +84,12 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
             <Formik validate={validatePopup} initialValues={{ nickname: '' }} onSubmit={handleSubmit}>
                 {({ errors, isSubmitting, handleChange, status }) => (
                     <Form noValidate>
-                        <ThemedScrollbars height='289px'>
-                            <div className='nickname__form-content nickname__form-content_centre'>
+                        <ThemedScrollbars autoHide style={{ height: '437px' }}>
+                            <div className='buy-sell__popup-content buy-sell__popup-content_centre'>
                                 <Icon icon='IcCashierP2pUser' width='128' height='128' />
-                                <h5 className='nickname__form-content--title'>{localize('Choose a nickname')}</h5>
-                                <p className='nickname__form-content--text'>
-                                    {localize('This is how you will appear to other users')}
+                                <h5 className='buy-sell__popup-content--title'>{localize('Choose a nickname')}</h5>
+                                <p className='buy-sell__popup-content--text'>
+                                    {localize('You will appear to other users as')}
                                 </p>
                                 <div className='nickname__form-field_wrapper'>
                                     <Field name='nickname'>
@@ -99,6 +105,18 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
                                             />
                                         )}
                                     </Field>
+                                </div>
+                                <ul className='buy-sell__popup-content--list'>
+                                    <li>
+                                        {localize(
+                                            'Must be 2–24 characters and can contain letters, numbers, and special characters .- _ @.'
+                                        )}
+                                    </li>
+                                    <li>{localize('Cannot repeat a character more than 5 times.')}</li>
+                                    <li>{localize('Cannot start, end with, or repeat special characters.')}</li>
+                                </ul>
+                                <div className='buy-sell__popup-content--ps'>
+                                    {localize('Once set, your nickname cannot be changed.')}
                                 </div>
                             </div>
                         </ThemedScrollbars>

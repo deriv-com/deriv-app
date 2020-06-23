@@ -52,6 +52,7 @@ const PositionsModalCard = ({
                 </div>
                 <div className='positions-modal-card__type'>
                     <ContractTypeCell
+                        multiplier={contract_info.multiplier}
                         type={type}
                         is_high_low={Shortcode.isHighLow({ shortcode: contract_info.shortcode })}
                     />

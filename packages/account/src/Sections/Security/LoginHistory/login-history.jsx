@@ -26,7 +26,7 @@ const LoginHistoryListView = ({ fields, login_history }) => (
             </Table.Row>
             <Table.Row className='with-margin'>
                 <Table.Cell>
-                    <CellContent title={fields.browser} text={login_history.browser} />
+                    <CellContent className='browser' title={fields.browser} text={login_history.browser} />
                 </Table.Cell>
                 <Table.Cell>
                     <CellContent className='action' title={fields.action} text={login_history.action} />

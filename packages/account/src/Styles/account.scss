@@ -840,6 +840,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 .action {
                     text-transform: capitalize;
                 }
+                .browser {
+                    padding-right: 1.5rem;
+                }
             }
 
             &__table {
@@ -848,7 +851,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
             &__row {
                 /* Date-Action-Browser-IP-Status */
-                grid-template-columns: 210px 85px 185px 130px 90px;
+                grid-template-columns: 210px 85px 225px 130px 90px;
                 padding: 0px;
             }
             .table__cell {

@@ -228,7 +228,7 @@ class RealAccountSignup extends React.Component {
                         }}
                         toggleModal={this.closeModal}
                         height={this.modal_height}
-                        width='904px'
+                        width={!has_close_icon ? 'auto' : '904px'}
                     >
                         <ModalContent passthrough={this.props.state_index} />
                     </Modal>

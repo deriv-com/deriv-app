@@ -84,6 +84,6 @@ Blockly.Blocks.lists_statement = {
 };
 
 Blockly.JavaScript.lists_statement = block => {
-    const code = Blockly.JavaScript.valueToCode(block, 'VALUE') || 'null';
+    const code = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

@@ -84,6 +84,9 @@ $side-padding: 1.2em;
             padding: 1.12em;
         }
     }
+    .dc-vertical-tab__content--floating {
+        margin-right: 0rem;
+    }
 }
 
 /** @define reports-page-wrapper; weak */
@@ -516,7 +519,7 @@ $side-padding: 1.2em;
             }
         }
         &--positive {
-            color: var(--brand-secondary);
+            color: var(--text-profit-success);
 
             &:before {
                 content: '+';
@@ -611,14 +614,17 @@ $side-padding: 1.2em;
             }
         }
     }
+    .table__row {
+        padding: 0 0.8rem;
+    }
 }
 
 /** @define open-positions-multiplier; weak */
 .open-positions-multiplier {
     .open-positions {
         &__row {
-            /*                     icon   multiplier stake cancellation buy_price  limit_order current_stake total_profit_loss action */
-            grid-template-columns: 0.7fr 0.7fr 0.6fr 1.1fr 0.7fr 0.9fr 1fr 1fr 10.9rem;
+            /*                     icon multiplier stake cancellation buy_price  limit_order current_stake total_profit_loss action */
+            grid-template-columns: 5.5rem 6rem 1fr 1fr 1fr 1fr 1fr 1.1fr 10rem;
 
             &-action {
                 display: flex;
@@ -667,7 +673,7 @@ $side-padding: 1.2em;
                 color: var(--text-loss-danger);
             }
             &--positive {
-                color: var(--brand-secondary);
+                color: var(--text-profit-success);
             }
         }
     }

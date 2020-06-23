@@ -14,15 +14,17 @@ const Verification = () => {
             onClick: nickname ? () => {} : toggleNicknamePopup,
         },
         {
-            content:
-                poi_status === 'verified' ? (
-                    <Localize
-                        i18n_default_text='We’ll need you to upload your documents to verify 
+            content: (
+                <>
+                    {poi_status === 'none' && (
+                        <Localize
+                            i18n_default_text='We’ll need you to upload your documents to verify 
             your identity'
-                    />
-                ) : (
-                    <Localize i18n_default_text='Check your verification status' />
-                ),
+                        />
+                    )}
+                    {poi_status === 'pending' && <Localize i18n_default_text='Check your verification status' />}
+                </>
+            ),
             status: poi_status === 'verified' ? 'done' : 'action',
             onClick: () => (window.location.href = '/account/proof-of-identity'),
             is_disabled: !nickname,

@@ -60,10 +60,10 @@ const Redirect = ({
             }
             break;
         }
-        case 'document_verification': {
-            sessionStorage.setItem('redirect_url', routes.proof_of_identity);
+        case 'verification': {
+            sessionStorage.setItem('redirect_url', `${routes.cashier_p2p}#verification`);
             window.location.href = Login.loginUrl();
-            return null;
+            break;
         }
         case 'mt5_password_reset':
             history.push(`${routes.mt5}?code=${url_params.get('code')}#reset-password`);

@@ -27,10 +27,8 @@
         }
     }
     &-content {
-        padding: 2.4rem;
-
-        &_centre {
-            padding: 0 8rem;
+        &__centre {
+            padding: 0 4rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -46,6 +44,22 @@
             color: var(--text-general);
             font-size: var(--text-size-xs);
             margin-bottom: 1.6rem;
+        }
+        &--list {
+            color: var(--text-general);
+            font-size: var(--text-size-xs);
+            line-height: 1.43;
+
+            & li {
+                list-style-type: disc;
+                margin: 0.8rem 1.8rem 0;
+            }
+        }
+        &--ps {
+            color: var(--text-general);
+            margin: 1.6rem 0;
+            font-size: var(--text-size-xs);
+            align-self: flex-start;
         }
     }
     &-field {

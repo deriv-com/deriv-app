@@ -85,10 +85,10 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
                 {({ errors, isSubmitting, handleChange, status }) => (
                     <Form noValidate>
                         <ThemedScrollbars autoHide style={{ height: '437px' }}>
-                            <div className='buy-sell__popup-content buy-sell__popup-content_centre'>
+                            <div className='nickname__form-content nickname__form-content__centre'>
                                 <Icon icon='IcCashierP2pUser' width='128' height='128' />
-                                <h5 className='buy-sell__popup-content--title'>{localize('Choose a nickname')}</h5>
-                                <p className='buy-sell__popup-content--text'>
+                                <h5 className='nickname__form-content--title'>{localize('Choose a nickname')}</h5>
+                                <p className='nickname__form-content--text'>
                                     {localize('You will appear to other users as')}
                                 </p>
                                 <div className='nickname__form-field_wrapper'>
@@ -106,7 +106,7 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
                                         )}
                                     </Field>
                                 </div>
-                                <ul className='buy-sell__popup-content--list'>
+                                <ul className='nickname__form-content--list'>
                                     <li>
                                         {localize(
                                             'Must be 2–24 characters and can contain letters, numbers, and special characters .- _ @.'
@@ -115,7 +115,7 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
                                     <li>{localize('Cannot repeat a character more than 5 times.')}</li>
                                     <li>{localize('Cannot start, end with, or repeat special characters.')}</li>
                                 </ul>
-                                <div className='buy-sell__popup-content--ps'>
+                                <div className='nickname__form-content--ps'>
                                     {localize('Once set, your nickname cannot be changed.')}
                                 </div>
                             </div>

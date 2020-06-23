@@ -94,8 +94,12 @@
         margin-left: auto;
         margin-right: 1.6rem;
     }
-    &--verification {
+    &__verification {
         margin-top: 3.5rem;
+
+        &--mobile {
+            padding: 0 2.5rem;
+        }
     }
 }
 
@@ -120,26 +124,19 @@
     display: none !important;
 }
 
-.p2p-nickname {
+.dc-modal__container_p2p-nickname {
     &__dialog {
-        position: absolute;
-        height: 100%;
+        width: auto;
+        height: auto;
+        padding: 0;
+        max-height: initial;
+        min-width: 44rem;
+        max-width: 44rem;
+        margin-bottom: 0;
         width: 100%;
-        top: 0;
-        left: 0;
-        background: var(--shadow-menu);
 
-        & .dc-dialog__dialog {
-            width: auto;
-            height: auto;
-            padding: 0;
-            max-height: initial;
-            min-width: 44rem;
-        }
-        & .dc-dialog__content {
-            margin-bottom: 0;
-            width: 100%;
-            max-width: 44rem;
+        @include mobile {
+            min-width: 0;
         }
     }
 }

@@ -5,7 +5,7 @@ import { Localize } from 'Components/i18next';
 import './verification.scss';
 
 const Verification = () => {
-    const { nickname, toggleNicknamePopup, is_advertiser, poi_status } = React.useContext(Dp2pContext);
+    const { nickname, toggleNicknamePopup, is_advertiser, poi_status, is_mobile } = React.useContext(Dp2pContext);
 
     const items = [
         {

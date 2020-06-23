@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { Tabs, Dialog } from '@deriv/components';
+import { Tabs, Modal } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
@@ -272,6 +272,7 @@ class App extends React.Component {
             order_id,
             setOrderId,
             should_show_verification,
+            is_mobile,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -311,12 +312,19 @@ class App extends React.Component {
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
                     getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId.bind(this),
+                    order_table_type,
+                    changeOrderToggle: this.changeOrderToggle,
                     poi_status: this.state.poi_status,
+                    is_mobile,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
                     {should_show_verification && (
-                        <div className='p2p-cashier--verification'>
+                        <div
+                            className={classNames('p2p-cashier__verification', {
+                                'p2p-cashier__verification--mobile': is_mobile,
+                            })}
+                        >
                             <Verification />
                         </div>
                     )}
@@ -344,14 +352,17 @@ class App extends React.Component {
                         </Tabs>
                     )}
                     {show_popup && (
-                        <div className='p2p-nickname__dialog'>
-                            <Dialog is_visible={show_popup}>
-                                <NicknameForm
-                                    handleClose={this.onNicknamePopupClose}
-                                    handleConfirm={this.toggleNicknamePopup}
-                                />
-                            </Dialog>
-                        </div>
+                        <Modal
+                            is_open={show_popup}
+                            className={classNames('p2p-nickname__dialog', {
+                                'p2p-nickname__dialog--mobile': is_mobile,
+                            })}
+                        >
+                            <NicknameForm
+                                handleClose={this.onNicknamePopupClose}
+                                handleConfirm={this.toggleNicknamePopup}
+                            />
+                        </Modal>
                     )}
                 </main>
             </Dp2pProvider>
@@ -368,7 +379,7 @@ App.propTypes = {
         is_virtual: PropTypes.bool.isRequired,
         local_currency_config: PropTypes.shape({
             currency: PropTypes.string.isRequired,
-            decimal_places: PropTypes.number.isRequired,
+            decimal_places: PropTypes.number,
         }).isRequired,
         loginid: PropTypes.string.isRequired,
         residence: PropTypes.string.isRequired,

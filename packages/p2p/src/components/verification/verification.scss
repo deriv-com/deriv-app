@@ -34,4 +34,9 @@
             }
         }
     }
+    &__checklist {
+        & .dc-checklist__item {
+            min-width: 40rem;
+        }
+    }
 }

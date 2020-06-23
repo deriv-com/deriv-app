@@ -121,7 +121,7 @@ class Popup extends React.Component {
                                                     });
                                                 }}
                                                 defaultChecked={!disable_confirm}
-                                                label={localize('I have paid {{amount}} {{currency}}', {
+                                                label={localize('I have paid {{amount}} {{currency}}.', {
                                                     amount: order.display_transaction_amount,
                                                     currency: order.transaction_currency,
                                                 })}

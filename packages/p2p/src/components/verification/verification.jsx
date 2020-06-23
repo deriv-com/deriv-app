@@ -14,12 +14,15 @@ const Verification = () => {
             onClick: nickname ? () => {} : toggleNicknamePopup,
         },
         {
-            content: (
-                <Localize
-                    i18n_default_text='We’ll need you to upload your documents to verify 
+            content:
+                poi_status === 'verified' ? (
+                    <Localize
+                        i18n_default_text='We’ll need you to upload your documents to verify 
             your identity'
-                />
-            ),
+                    />
+                ) : (
+                    <Localize i18n_default_text='Check your verification status' />
+                ),
             status: poi_status === 'verified' ? 'done' : 'action',
             onClick: () => (window.location.href = '/account/proof-of-identity'),
             is_disabled: !nickname,
@@ -43,7 +46,7 @@ const Verification = () => {
                     </p>
                 </div>
             </div>
-            <Checklist items={items} />
+            <Checklist className='p2p-verification__checklist' items={items} />
         </div>
     );
 };

@@ -1166,7 +1166,7 @@ export default class ClientStore extends BaseStore {
             ...(url_params.get('utm_source') && {
                 utm_campaign: url_params.get('utm_campaign') || '',
                 utm_medium: url_params.get('utm_medium') || '',
-                utm_source: url_params.get('utm_source') || '',
+                utm_source: url_params.get('utm_source'), // since the check is done previously
             }),
         };
         this.device_data = { ...this.device_data, ...device_data };

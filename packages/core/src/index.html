@@ -10,25 +10,6 @@
                     applicationId: '34461589-53a5-4f9f-aa85-5d0e994ee1a4',
                 });
         </script>
-        <script>
-            try {
-                performance.mark('started');
-                const observer = new PerformanceObserver(function(list) {
-                    const perfEntries = list.getEntries();
-                    for (let i = 0; i < perfEntries.length; i++) {
-                        const time = Math.round(perfEntries[i].startTime + perfEntries[i].duration);
-                        dataLayer.push({
-                            event: perfEntries[i].name,
-                            duration: time,
-                        });
-                    }
-                });
-                // register observer for paint timing notifications
-                observer.observe({ entryTypes: ['paint'] });
-            } catch (error) {
-                // ignore error to pervent showing on console
-            }
-        </script>
         <!-- Set skeleton theme color properties -->
         <style>
             :root {
@@ -315,8 +296,5 @@
             </div>
         </div>
         <!-- End Temporary Mobile Landscape UI Blocker -->
-        <script>
-            performance.mark('first-contentful-paint');
-        </script>
     </body>
 </html>

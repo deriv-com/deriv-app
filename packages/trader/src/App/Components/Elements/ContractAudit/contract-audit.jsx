@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Tabs } from '@deriv/components';
@@ -47,12 +46,7 @@ class ContractAudit extends React.Component {
         }
 
         return (
-            <div
-                className={classNames('contract-audit__wrapper', {
-                    'contract-audit__wrapper-tabs--active': !contract_info.is_sold,
-                    'contract-audit__wrapper-tabs--expired': contract_info.is_sold,
-                })}
-            >
+            <div className='contract-audit__wrapper'>
                 <Tabs top className='contract-audit__tabs' onTabItemClick={this.onTabItemClick}>
                     <div label={localize('Details')}>
                         <ContractDetails {...this.props} />

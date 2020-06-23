@@ -34,7 +34,11 @@ const ContractStageText = ({ contract_stage }) => {
 
 const TradeAnimation = ({ className, contract_stage, is_contract_completed, profit, should_show_overlay }) => {
     const status_classes = ['', '', ''];
-    let progress_status = contract_stage - (contract_stage === 2 || contract_stage === 3 ? 2 : 3);
+    let progress_status =
+        contract_stage -
+        (contract_stage === contract_stages.PURCHASE_SENT || contract_stage === contract_stages.PURCHASE_RECEIVED
+            ? 2
+            : 3);
 
     if (progress_status >= 0) {
         if (progress_status < status_classes.length) {

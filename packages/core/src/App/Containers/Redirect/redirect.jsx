@@ -12,7 +12,8 @@ const Redirect = ({
     toggleAccountSignupModal,
     toggleResetPasswordModal,
 }) => {
-    const url_params = new URLSearchParams(window.location.search);
+    const url_query_string = window.location.search;
+    const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
 
     setVerificationCode(url_params.get('code'), url_params.get('action'));
@@ -60,7 +61,10 @@ const Redirect = ({
     }
 
     if (!redirected_to_route) {
-        history.push(routes.root);
+        history.push({
+            pathname: routes.root,
+            search: url_query_string,
+        });
     }
 
     return null;

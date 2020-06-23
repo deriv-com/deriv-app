@@ -59,6 +59,7 @@ const copyConfig = base => [
         to: 'public/images/common',
         flatten: true,
     },
+    // { from: path.resolve(__dirname, '../src/public/images/common/og_image.gif'), to: 'images/common/og_image.gif' }, // Once the design for og_image is ready, bring this back.
     { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
     { from: path.resolve(__dirname, '../src/public/images/app/header/**') },
     {

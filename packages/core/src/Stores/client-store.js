@@ -1151,8 +1151,13 @@ export default class ClientStore extends BaseStore {
         const url_params = new URLSearchParams(window.location.search);
         const device_data = {
             ...(url_params.get('affiliate_token') && { affiliate_token: url_params.get('affiliate_token') }),
-            ...(url_params.get('date_first_contact') && { date_first_contact: url_params.get('date_first_contact') }),
             ...(url_params.get('gclid_url') && { gclid_url: url_params.get('gclid_url') }),
+
+            // date_first_contact should be preserved to the first client contact
+            ...(!this.device_data.date_first_contact && {
+                date_first_contact:
+                    url_params.get('date_first_contact') || this.root_store.common.server_time.format('YYYY-MM-DD'),
+            }),
 
             // signup device can be set anytime even if there is no url parameter by using isDesktop function
             signup_device: url_params.get('signup_device') || isDesktop() ? 'desktop' : 'mobile',

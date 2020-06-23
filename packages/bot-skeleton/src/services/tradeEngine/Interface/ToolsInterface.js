@@ -44,10 +44,19 @@ export default Interface => class extends IndicatorsInterface(
     
                 return invalid_msg;
             },
+
             getTime: () => parseInt(new Date().getTime() / 1000),
             ...this.getCandleInterface(),
             ...this.getMiscInterface(),
             ...this.getIndicatorsInterface(),
+
+            // Highlight the block that is being executed
+            highlightedDuringExecution: ( block_id) => {
+                const block = Blockly.derivWorkspace.getBlockById(block_id);
+                if(block){
+                    block.highlightedForExecution(block);
+                }
+            },
         };
     }
 };

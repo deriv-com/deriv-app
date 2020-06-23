@@ -22,6 +22,11 @@ Blockly.Css.CONTENT = [
     'stroke-width: 5px;',
     '}',
 
+    '.block--execution-highlighted > .blocklyPath {',
+    'stroke: #ff444f;',
+    'animation: fade-in-out 1.5s ease-in',
+    '}',
+
     '.block--blink > .blocklyPath {',
     'animation: blinkEffect 1s infinite;',
     '}',

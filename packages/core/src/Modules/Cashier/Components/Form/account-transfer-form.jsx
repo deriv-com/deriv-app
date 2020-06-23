@@ -322,7 +322,7 @@ class AccountTransferForm extends React.Component {
                                             {this.props.error.message && (
                                                 <React.Fragment>
                                                     <DesktopWrapper>
-                                                        <div className='cashier__form-error-wrapper'>
+                                                        <div className='cashier__form-error-wrapper account-transfer__form-error'>
                                                             <Icon
                                                                 icon='IcAlertDanger'
                                                                 className='cashier__form-error-icon'

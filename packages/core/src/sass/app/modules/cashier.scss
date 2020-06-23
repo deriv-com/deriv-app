@@ -23,7 +23,7 @@
         text-align: center;
 
         @include desktop {
-            min-width: 672px;
+            max-width: 672px;
         }
 
         &,
@@ -989,6 +989,12 @@
             &__transferred-amount {
                 color: var(--text-profit-success);
             }
+        }
+    }
+    &__form-error {
+        .cashier__form-error-icon {
+            bottom: 0;
+            left: 10px;
         }
     }
     @include desktop {

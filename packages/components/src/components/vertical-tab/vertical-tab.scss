@@ -206,7 +206,7 @@ $MIN_HEIGHT_FLOATING: calc(
         background-color: var(--general-main-1);
 
         &-side-note {
-            min-width: 256px;
+            max-width: 256px;
             margin-left: 2.4rem;
 
             &-wrapper {
@@ -225,7 +225,7 @@ $MIN_HEIGHT_FLOATING: calc(
         &--floating {
             max-width: 952px;
             min-width: 672px;
-            margin: 0 2.4rem;
+            margin-left: 2.4rem;
         }
     }
 }

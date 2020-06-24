@@ -155,7 +155,7 @@ class ToggleMenuDrawer extends React.Component {
     render() {
         const all_routes_config = getAllRoutesConfig();
         const subroutes_config = [].concat(...all_routes_config.map(i => i.routes || []));
-        const allowed_routes = [routes.reports, routes.account, routes.cashier];
+        const allowed_routes = [routes.reports, routes.account, routes.cashier, routes.complaints_policy];
         const routes_config = allowed_routes
             .map(path => all_routes_config.find(r => r.path === path) || subroutes_config.find(r => r.path === path))
             .filter(route => route);

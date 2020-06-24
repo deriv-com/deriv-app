@@ -8,7 +8,7 @@ import {
     ToggleFullScreen,
     ToggleSettings,
     HelpCentre,
-    ComplaintsPolicy,
+    ToggleComplaintsPolicy,
 } from 'App/Components/Layout/Footer';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
@@ -36,7 +36,7 @@ const Footer = ({
 
         {landing_company_shortcode && (
             <div className='footer__links footer__links-extras'>
-                <ComplaintsPolicy landing_company_shortcode={landing_company_shortcode} />
+                <ToggleComplaintsPolicy landing_company_shortcode={landing_company_shortcode} />
             </div>
         )}
         <div className='footer__links'>

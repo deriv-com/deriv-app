@@ -6,6 +6,10 @@
         padding: 0 1.4rem 2.4rem;
         color: var(--text-prominent);
 
+        @include mobile {
+            padding: 0 0.6rem 2.4rem;
+        }
+
         .link--orange {
             font-weight: normal;
         }
@@ -16,11 +20,22 @@
             line-height: 2.4rem;
             font-weight: bold;
             padding-top: 2.4rem;
+
+            @include mobile {
+                font-size: 1.4rem;
+                line-height: 2rem;
+                padding-top: 1.6rem;
+            }
         }
         &-content {
             font-size: 1.4rem;
             padding: 0.8rem 0 0 1.8rem;
             line-height: 2rem;
+
+            @include mobile {
+                font-size: 1rem;
+                line-height: 1.4rem;
+            }
         }
     }
     &__subsection {
@@ -29,17 +44,34 @@
             font-weight: bold;
             padding-top: 1.6rem;
             line-height: 2.4rem;
+
+            @include mobile {
+                font-size: 1.4rem;
+                line-height: 2rem;
+                padding-top: 0.8rem;
+            }
         }
         &-content {
             font-size: 1.4rem;
             padding: 0.8rem 0 0 3.2rem;
             line-height: 2rem;
+            @include mobile {
+                font-size: 1rem;
+                line-height: 1.4rem;
+                padding-left: 0rem;
+            }
         }
     }
     &__list {
         padding: 0.8rem 0 0 1.8rem;
         font-size: 1.4rem;
         line-height: 2rem;
+
+        @include mobile {
+            padding-left: 0rem;
+            font-size: 1rem;
+            line-height: 1.4rem;
+        }
 
         &-item {
             padding-top: 0.8rem;

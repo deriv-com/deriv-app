@@ -41,4 +41,5 @@ export const routes = {
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
     smarttrader: getUrlSmartTrader(),
     endpoint: '/endpoint',
+    complaints_policy: '/complaints-policy',
 };

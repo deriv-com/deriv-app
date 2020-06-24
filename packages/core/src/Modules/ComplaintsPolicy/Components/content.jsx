@@ -1,11 +1,9 @@
 import React from 'react';
-import { Icon, Modal, ThemedScrollbars, Popover } from '@deriv/components';
+import { ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import 'Sass/app/modules/complaints-policy.scss';
 
-const ComplaintsPolicy = ({ landing_company_shortcode } = {}) => {
-    const [is_modal_visible, setModalVisibility] = React.useState(false);
-
+const Content = () => {
     const policy_content = [
         {
             title: localize('1. Introduction'),
@@ -131,20 +129,23 @@ const ComplaintsPolicy = ({ landing_company_shortcode } = {}) => {
         {
             title: localize('3. Determination phase'),
             list: [
-                <Localize
-                    key={0}
-                    i18n_default_text='<0>a.</0>The DRC will make a <1>decision on the complaint</1> (please note that the DRC mentions no timeframe for announcing its decision).'
-                    components={[
-                        <span className='complaints-policy__list-item-prefix' key={0} />,
-                        <a
-                            key={0}
-                            className='link link--orange'
-                            rel='noopener noreferrer'
-                            target='_blank'
-                            href='https://financialcommission.org/resolving-a-dispute/dispute-resolution/'
-                        />,
-                    ]}
-                />,
+                <React.Fragment key={0}>
+                    <span className='complaints-policy__list-item-prefix'>a.</span>
+                    <span className='complaints-policy__list-item-text'>
+                        <Localize
+                            i18n_default_text='The DRC will make a <0>decision on the complaint</0> (please note that the DRC mentions no timeframe for announcing its decision).'
+                            components={[
+                                <a
+                                    key={0}
+                                    className='link link--orange'
+                                    rel='noopener noreferrer'
+                                    target='_blank'
+                                    href='https://financialcommission.org/resolving-a-dispute/dispute-resolution/'
+                                />,
+                            ]}
+                        />
+                    </span>
+                </React.Fragment>,
                 <Localize
                     key={1}
                     i18n_default_text='<0>b.</0>The DRC may request additional information from you or us, who must then provide the requested information within 7 days.'
@@ -214,30 +215,11 @@ const ComplaintsPolicy = ({ landing_company_shortcode } = {}) => {
         </div>
     ));
 
-    if (!landing_company_shortcode) return null;
-
     return (
-        <React.Fragment>
-            <Popover className='footer__link' alignment='top' message={localize('Complaints policy')}>
-                <a id='dt_complaints-policy_toggle' onClick={() => setModalVisibility(true)}>
-                    <Icon icon='IcComplaintsPolicy' className='footer__icon' />
-                </a>
-            </Popover>
-            <Modal
-                id='dt_complaints-policy_modal'
-                className='complaints-policy'
-                is_open={is_modal_visible}
-                title={localize('Complaints policy')}
-                toggleModal={() => setModalVisibility(false)}
-                height='616px'
-                width='904px'
-            >
-                <ThemedScrollbars className='complaints-policy__scrollbars'>
-                    <div className='complaints-policy__wrapper'>{modal_content}</div>
-                </ThemedScrollbars>
-            </Modal>
-        </React.Fragment>
+        <ThemedScrollbars className='complaints-policy__scrollbars'>
+            <div className='complaints-policy__wrapper'>{modal_content}</div>
+        </ThemedScrollbars>
     );
 };
 
-export { ComplaintsPolicy };
+export default Content;

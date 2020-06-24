@@ -156,6 +156,7 @@ Blockly.JavaScript.trade_definition = block => {
     const trade_options_statement = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
 
     const code = `  
+    ${block.highlightedForExecution(block)}
     BinaryBotPrivateInit = function BinaryBotPrivateInit() {
         Bot.init('${account}', {
           symbol              : '${symbol}',

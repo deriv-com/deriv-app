@@ -43,7 +43,7 @@ Blockly.Blocks.ohlc_values_in_list = {
 
 Blockly.JavaScript.ohlc_values_in_list = block => {
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST') || 'open';
-    const ohlcList = Blockly.JavaScript.valueToCode(block, 'OHLCLIST') || '[]';
+    const ohlcList = Blockly.JavaScript.valueToCode(block, 'OHLCLIST', Blockly.JavaScript.ORDER_ATOMIC) || '[]';
 
     const code = `Bot.candleValues(${ohlcList}, '${ohlcField}')`;
     return [code, Blockly.JavaScript.ORDER_ATOMIC];

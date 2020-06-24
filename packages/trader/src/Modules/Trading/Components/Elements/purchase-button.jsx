@@ -60,6 +60,7 @@ const PurchaseButton = ({
                 'btn-purchase--swoosh': !!purchased_states_arr[index],
                 'btn-purchase--1': index === 0,
                 'btn-purchase--2': index === 1,
+                'btn-purchase--multiplier': is_multiplier,
             })}
             onClick={() => {
                 setPurchaseState(index);

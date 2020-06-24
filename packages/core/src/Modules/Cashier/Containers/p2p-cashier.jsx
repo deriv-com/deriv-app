@@ -43,10 +43,11 @@ class P2PCashier extends React.Component {
         }
     }
     render() {
-        const { currency, local_currency_config, is_virtual, residence, setNotificationCount } = this.props;
+        const { currency, local_currency_config, is_virtual, residence, setNotificationCount, location } = this.props;
         const { order_id } = this.state;
         return (
             <P2P
+                should_show_verification={/verification/.test(location.hash)}
                 websocket_api={WS}
                 lang={getLanguage()}
                 client={{ currency, local_currency_config, is_virtual, residence }}

@@ -22,6 +22,7 @@ const MT5RealAccountDisplay = ({
     has_real_account,
     is_fully_authenticated,
     is_pending_authentication,
+    landing_companies,
     onSelectAccount,
     openAccountTransfer,
     openPasswordModal,
@@ -73,68 +74,76 @@ const MT5RealAccountDisplay = ({
 
     return (
         <div className='mt5-real-accounts-display'>
-            <MT5AccountCard
-                has_mt5_account={has_mt5_account}
-                icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
-                title={localize('Synthetic')}
-                is_disabled={!has_real_account}
-                type={{
-                    category: 'real',
-                    type: 'synthetic',
-                }}
-                existing_data={current_list['real.synthetic']}
-                commission_message={<Localize i18n_default_text='No commission' />}
-                onSelectAccount={onSelectRealSynthetic}
-                onPasswordManager={openPasswordManager}
-                onClickFund={onClickFundRealSynthetic}
-                descriptor={localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.')}
-                specs={real_synthetic_specs}
-            />
-            <MT5AccountCard
-                has_mt5_account={has_mt5_account}
-                is_disabled={!has_real_account}
-                icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
-                title={localize('Financial')}
-                type={{
-                    category: 'real',
-                    type: 'financial',
-                }}
-                existing_data={current_list['real.financial']}
-                commission_message={
-                    <Localize
-                        i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
-                        components={[<span key={0} className='mt5-dashboard--hint' />]}
-                    />
-                }
-                onSelectAccount={onSelectRealFinancial}
-                onPasswordManager={openPasswordManager}
-                onClickFund={onClickFundRealFinancial}
-                descriptor={localize(
-                    'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
-                )}
-                specs={real_financial_specs}
-            />
-            <MT5AccountCard
-                has_mt5_account={has_mt5_account}
-                icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}
-                title={localize('Financial STP')}
-                type={{
-                    category: 'real',
-                    type: 'financial_stp',
-                }}
-                existing_data={current_list['real.financial_stp']}
-                commission_message={<Localize i18n_default_text='No commission' />}
-                onSelectAccount={onSelectRealFinancialStp}
-                button_label={button_label}
-                is_button_primary={is_pending_authentication}
-                onPasswordManager={openPasswordManager}
-                onClickFund={onClickFundRealFinancialStp}
-                descriptor={localize(
-                    'Trade major, minor, and exotic currency pairs with Straight-Through Processing (STP) of your orders direct to the market.'
-                )}
-                specs={real_financial_stp_specs}
-                is_disabled={is_real_financial_stp_disabled}
-            />
+            {landing_companies?.mt_gaming_company?.standard && (
+                <MT5AccountCard
+                    has_mt5_account={has_mt5_account}
+                    icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
+                    title={localize('Synthetic')}
+                    is_disabled={!has_real_account}
+                    type={{
+                        category: 'real',
+                        type: 'synthetic',
+                    }}
+                    existing_data={current_list['real.synthetic']}
+                    commission_message={<Localize i18n_default_text='No commission' />}
+                    onSelectAccount={onSelectRealSynthetic}
+                    onPasswordManager={openPasswordManager}
+                    onClickFund={onClickFundRealSynthetic}
+                    descriptor={localize(
+                        'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
+                    )}
+                    specs={real_synthetic_specs}
+                />
+            )}
+            {landing_companies?.mt_financial_company?.standard && (
+                <MT5AccountCard
+                    has_mt5_account={has_mt5_account}
+                    is_disabled={!has_real_account}
+                    icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
+                    title={localize('Financial')}
+                    type={{
+                        category: 'real',
+                        type: 'financial',
+                    }}
+                    existing_data={current_list['real.financial']}
+                    commission_message={
+                        <Localize
+                            i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
+                            components={[<span key={0} className='mt5-dashboard--hint' />]}
+                        />
+                    }
+                    onSelectAccount={onSelectRealFinancial}
+                    onPasswordManager={openPasswordManager}
+                    onClickFund={onClickFundRealFinancial}
+                    descriptor={localize(
+                        'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
+                    )}
+                    specs={real_financial_specs}
+                />
+            )}
+            {landing_companies?.mt_financial_company?.advanced && (
+                <MT5AccountCard
+                    has_mt5_account={has_mt5_account}
+                    icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}
+                    title={localize('Financial STP')}
+                    type={{
+                        category: 'real',
+                        type: 'financial_stp',
+                    }}
+                    existing_data={current_list['real.financial_stp']}
+                    commission_message={<Localize i18n_default_text='No commission' />}
+                    onSelectAccount={onSelectRealFinancialStp}
+                    button_label={button_label}
+                    is_button_primary={is_pending_authentication}
+                    onPasswordManager={openPasswordManager}
+                    onClickFund={onClickFundRealFinancialStp}
+                    descriptor={localize(
+                        'Trade major, minor, and exotic currency pairs with Straight-Through Processing (STP) of your orders direct to the market.'
+                    )}
+                    specs={real_financial_stp_specs}
+                    is_disabled={is_real_financial_stp_disabled}
+                />
+            )}
         </div>
     );
 };

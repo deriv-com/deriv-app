@@ -134,24 +134,32 @@ class AccountSwitcher extends React.Component {
     isReal = account => !this.isDemo(account);
 
     getRemainingAccounts = existing_mt5_groups => {
+        const byAvailableCompanies = config_item => {
+            const [company, type] = config_item.api_key.split('.');
+            return !!this.props.landing_companies?.[company]?.[type];
+        };
+
         const mt5_config = [
             {
                 account_types: ['svg'],
                 icon: 'Synthetic',
                 title: localize('Synthetic'),
                 type: 'synthetic',
+                api_key: 'mt_gaming_company.standard',
             },
             {
                 account_types: ['vanuatu', 'svg_standard'],
                 icon: 'Financial',
                 title: localize('Financial'),
                 type: 'financial',
+                api_key: 'mt_financial_company.standard',
             },
             {
                 account_types: ['labuan'],
                 icon: 'Financial STP',
                 title: localize('Financial STP'),
                 type: 'financial_stp',
+                api_key: 'mt_financial_company.advanced',
             },
         ];
 
@@ -161,7 +169,7 @@ class AccountSwitcher extends React.Component {
             mt5_config.splice(index_to_remove, 1);
         });
 
-        return mt5_config;
+        return mt5_config.filter(byAvailableCompanies);
     };
 
     componentDidMount() {
@@ -643,6 +651,7 @@ const account_switcher = withRouter(
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,
         logoutClient: client.logout,
+        landing_companies: client.landing_companies,
         upgradeable_landing_companies: client.upgradeable_landing_companies,
         updateMt5LoginList: client.updateMt5LoginList,
         routeBackInApp: common.routeBackInApp,

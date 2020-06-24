@@ -312,6 +312,7 @@
 .mt5-real-accounts-display,
 .mt5-demo-accounts-display {
     display: flex;
+    justify-content: center;
     margin-top: 2.4em;
 
     @include mobile {

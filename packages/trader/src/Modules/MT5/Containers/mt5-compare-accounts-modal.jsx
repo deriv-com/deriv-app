@@ -46,12 +46,12 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
     );
 };
 
-const compareAccountsData = [
+const compareAccountsData = ({ landing_companies }) => [
     {
         attribute: <MT5AttributeDescriber name={localize('Account currency')} />,
-        synthetic: localize('USD'),
-        financial: localize('USD'),
-        financial_stp: localize('USD'),
+        ...(landing_companies?.mt_gaming_company?.standard ? { synthetic: localize('USD') } : {}),
+        ...(landing_companies?.mt_financial_company?.standard ? { financial: localize('USD') } : {}),
+        ...(landing_companies?.mt_financial_company?.advanced ? { financial_stp: localize('USD') } : {}),
     },
     {
         attribute: (
@@ -63,9 +63,9 @@ const compareAccountsData = [
                 )}
             />
         ),
-        synthetic: localize('Up to 1:1000'),
-        financial: localize('Up to 1:1000'),
-        financial_stp: localize('Up to 1:100'),
+        ...(landing_companies?.mt_gaming_company?.standard ? { synthetic: localize('Up to 1:1000') } : {}),
+        ...(landing_companies?.mt_financial_company?.standard ? { financial: localize('Up to 1:1000') } : {}),
+        ...(landing_companies?.mt_financial_company?.advanced ? { financial_stp: localize('Up to 1:100') } : {}),
     },
     {
         attribute: (
@@ -77,9 +77,9 @@ const compareAccountsData = [
                 )}
             />
         ),
-        synthetic: localize('Market'),
-        financial: localize('Market'),
-        financial_stp: localize('Market'),
+        ...(landing_companies?.mt_gaming_company?.standard ? { synthetic: localize('Market') } : {}),
+        ...(landing_companies?.mt_financial_company?.standard ? { financial: localize('Market') } : {}),
+        ...(landing_companies?.mt_financial_company?.advanced ? { financial_stp: localize('Market') } : {}),
     },
     {
         attribute: (
@@ -91,9 +91,9 @@ const compareAccountsData = [
                 )}
             />
         ),
-        synthetic: localize('Fixed/Variable'),
-        financial: localize('Variable'),
-        financial_stp: localize('Variable'),
+        ...(landing_companies?.mt_gaming_company?.standard ? { synthetic: localize('Fixed/Variable') } : {}),
+        ...(landing_companies?.mt_financial_company?.standard ? { financial: localize('Variable') } : {}),
+        ...(landing_companies?.mt_financial_company?.advanced ? { financial_stp: localize('Variable') } : {}),
     },
     {
         attribute: (
@@ -105,15 +105,15 @@ const compareAccountsData = [
                 )}
             />
         ),
-        synthetic: localize('No'),
-        financial: localize('No'),
-        financial_stp: localize('No'),
+        ...(landing_companies?.mt_gaming_company?.standard ? { synthetic: localize('No') } : {}),
+        ...(landing_companies?.mt_financial_company?.standard ? { financial: localize('No') } : {}),
+        ...(landing_companies?.mt_financial_company?.advanced ? { financial_stp: localize('No') } : {}),
     },
     {
         attribute: <MT5AttributeDescriber name={localize('Minimum deposit')} />,
-        synthetic: localize('No'),
-        financial: localize('No'),
-        financial_stp: localize('No'),
+        ...(landing_companies?.mt_gaming_company?.standard ? { synthetic: localize('No') } : {}),
+        ...(landing_companies?.mt_financial_company?.standard ? { financial: localize('No') } : {}),
+        ...(landing_companies?.mt_financial_company?.advanced ? { financial_stp: localize('No') } : {}),
     },
     {
         attribute: (
@@ -125,9 +125,9 @@ const compareAccountsData = [
                 )}
             />
         ),
-        synthetic: localize('100%'),
-        financial: localize('150%'),
-        financial_stp: localize('150%'),
+        ...(landing_companies?.mt_gaming_company?.standard ? { synthetic: localize('100%') } : {}),
+        ...(landing_companies?.mt_financial_company?.standard ? { financial: localize('150%') } : {}),
+        ...(landing_companies?.mt_financial_company?.advanced ? { financial_stp: localize('150%') } : {}),
     },
     {
         attribute: (
@@ -139,15 +139,15 @@ const compareAccountsData = [
                 )}
             />
         ),
-        synthetic: localize('50%'),
-        financial: localize('75%'),
-        financial_stp: localize('75%'),
+        ...(landing_companies?.mt_gaming_company?.standard ? { synthetic: localize('50%') } : {}),
+        ...(landing_companies?.mt_financial_company?.standard ? { financial: localize('75%') } : {}),
+        ...(landing_companies?.mt_financial_company?.advanced ? { financial_stp: localize('75%') } : {}),
     },
     {
         attribute: <MT5AttributeDescriber name={localize('Number of assets')} />,
-        synthetic: localize('10+'),
-        financial: localize('50+'),
-        financial_stp: localize('50+'),
+        ...(landing_companies?.mt_gaming_company?.standard ? { synthetic: localize('10+') } : {}),
+        ...(landing_companies?.mt_financial_company?.standard ? { financial: localize('50+') } : {}),
+        ...(landing_companies?.mt_financial_company?.advanced ? { financial_stp: localize('50+') } : {}),
     },
     {
         attribute: (
@@ -157,15 +157,23 @@ const compareAccountsData = [
                 tooltip={localize('Indicates the availability of cryptocurrency trading on a particular account.')}
             />
         ),
-        synthetic: localize('N/A'),
-        financial: localize('24/7'),
-        financial_stp: localize('N/A'),
+        ...(landing_companies?.mt_gaming_company?.standard ? { synthetic: localize('N/A') } : {}),
+        ...(landing_companies?.mt_financial_company?.standard ? { financial: localize('24/7') } : {}),
+        ...(landing_companies?.mt_financial_company?.advanced ? { financial_stp: localize('N/A') } : {}),
     },
     {
         attribute: <MT5AttributeDescriber name={localize('Trading instruments')} />,
-        synthetic: localize('Synthetics'),
-        financial: localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
-        financial_stp: localize('FX-majors, FX-minors, FX-exotics'),
+        ...(landing_companies?.mt_gaming_company?.standard ? { synthetic: localize('Synthetics') } : {}),
+        ...(landing_companies?.mt_financial_company?.standard
+            ? {
+                  financial: localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
+              }
+            : {}),
+        ...(landing_companies?.mt_financial_company?.advanced
+            ? {
+                  financial_stp: localize('FX-majors, FX-minors, FX-exotics'),
+              }
+            : {}),
     },
 ];
 
@@ -184,42 +192,61 @@ const MT5CompareAccountHint = () => (
     </div>
 );
 
-const ModalContent = () => (
-    <div className='mt5-compare-accounts'>
-        <Table fixed scroll_height={isMobile() ? '100%' : 'calc(100% - 130px)'}>
-            <Table.Header>
-                <Table.Row className='mt5-compare-accounts__table-row'>
-                    <Table.Head fixed />
-                    <Table.Head>{localize('Synthetic')}</Table.Head>
-                    <Table.Head>
-                        {localize('Financial')}
-                        <span className='mt5-compare-accounts__star'>*</span>
-                    </Table.Head>
-                    <Table.Head>
-                        {localize('Financial STP')}
-                        <span className='mt5-compare-accounts__star'>*</span>
-                    </Table.Head>
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-                {compareAccountsData.map((row, i) => (
-                    <Table.Row key={i} className='mt5-compare-accounts__table-row'>
-                        {Object.keys(row).map((col, j) => (
-                            <Table.Cell key={j} fixed={j === 0}>
-                                {row[col]}
-                            </Table.Cell>
-                        ))}
-                    </Table.Row>
-                ))}
-            </Table.Body>
-        </Table>
-        <DesktopWrapper>
-            <MT5CompareAccountHint />
-        </DesktopWrapper>
-    </div>
-);
+const ModalContent = ({ landing_companies }) => {
+    const [cols, setCols] = React.useState([]);
+    React.useEffect(() => {
+        setCols(compareAccountsData({ landing_companies }));
+    }, [landing_companies.mt_financial_company, landing_companies.mt_gaming_company]);
 
-const CompareAccountsModal = ({ disableApp, enableApp, is_compare_accounts_visible, toggleCompareAccounts }) => (
+    return (
+        <div className='mt5-compare-accounts'>
+            <Table fixed scroll_height={isMobile() ? '100%' : 'calc(100% - 130px)'}>
+                <Table.Header>
+                    <Table.Row className='mt5-compare-accounts__table-row'>
+                        <Table.Head fixed />
+                        {landing_companies?.mt_gaming_company?.standard && (
+                            <Table.Head>{localize('Synthetic')}</Table.Head>
+                        )}
+                        {landing_companies?.mt_financial_company?.standard && (
+                            <Table.Head>
+                                {localize('Financial')}
+                                <span className='mt5-compare-accounts__star'>*</span>
+                            </Table.Head>
+                        )}
+                        {landing_companies?.mt_financial_company?.advanced && (
+                            <Table.Head>
+                                {localize('Financial STP')}
+                                <span className='mt5-compare-accounts__star'>*</span>
+                            </Table.Head>
+                        )}
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                    {cols.map((row, i) => (
+                        <Table.Row key={i} className='mt5-compare-accounts__table-row'>
+                            {Object.keys(row).map((col, j) => (
+                                <Table.Cell key={j} fixed={j === 0}>
+                                    {row[col]}
+                                </Table.Cell>
+                            ))}
+                        </Table.Row>
+                    ))}
+                </Table.Body>
+            </Table>
+            <DesktopWrapper>
+                <MT5CompareAccountHint />
+            </DesktopWrapper>
+        </div>
+    );
+};
+
+const CompareAccountsModal = ({
+    disableApp,
+    enableApp,
+    is_compare_accounts_visible,
+    landing_companies,
+    toggleCompareAccounts,
+}) => (
     <div className='mt5-compare-accounts-modal__wrapper'>
         <Button
             className='mt5-dashboard__welcome-message--button'
@@ -241,7 +268,7 @@ const CompareAccountsModal = ({ disableApp, enableApp, is_compare_accounts_visib
                     height='696px'
                     width='903px'
                 >
-                    <ModalContent />
+                    <ModalContent landing_companies={landing_companies} />
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -253,16 +280,17 @@ const CompareAccountsModal = ({ disableApp, enableApp, is_compare_accounts_visib
                     onClose={toggleCompareAccounts}
                     footer={<MT5CompareAccountHint />}
                 >
-                    <ModalContent />
+                    <ModalContent landing_companies={landing_companies} />
                 </MobileDialog>
             </MobileWrapper>
         </React.Suspense>
     </div>
 );
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules, ui, client }) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
+    landing_companies: client.landing_companies,
     toggleCompareAccounts: modules.mt5.toggleCompareAccountsModal,
 }))(CompareAccountsModal);

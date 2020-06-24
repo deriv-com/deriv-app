@@ -136,6 +136,7 @@ class MT5Dashboard extends React.Component {
                                             has_mt5_account={has_mt5_account}
                                             onSelectAccount={createMT5Account}
                                             account_settings={account_settings}
+                                            landing_companies={this.props.landing_companies}
                                             is_pending_authentication={this.props.is_pending_authentication}
                                             is_fully_authenticated={this.props.is_fully_authenticated}
                                             openAccountTransfer={this.openAccountTransfer}
@@ -152,6 +153,7 @@ class MT5Dashboard extends React.Component {
                                     has_mt5_account={has_mt5_account}
                                     current_list={this.props.current_list}
                                     onSelectAccount={createMT5Account}
+                                    landing_companies={this.props.landing_companies}
                                     openAccountTransfer={this.openAccountTransfer}
                                     openPasswordManager={this.togglePasswordManagerModal}
                                 />
@@ -219,6 +221,7 @@ export default withRouter(
         checkShouldOpenAccount: modules.mt5.checkShouldOpenAccount,
         createMT5Account: modules.mt5.createMT5Account,
         current_list: modules.mt5.current_list,
+        landing_companies: client.landing_companies,
         is_logged_in: client.is_logged_in,
         can_upgrade_to: client.can_upgrade_to,
         account_settings: client.account_settings,

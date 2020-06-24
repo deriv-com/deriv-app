@@ -63,35 +63,35 @@ export const getMtCompanies = () => {
 
 export const getMt5GroupConfig = (group = undefined) => {
     const map_mode = {
-        'real\\svg': {
+        real_svg: {
             type: 'synthetic',
             category: 'real',
         },
-        'real\\svg_financial': {
+        real_svg_financial: {
             type: 'financial',
             category: 'real',
         },
-        'real\\vanuatu_financial': {
+        real_vanuatu_financial: {
             type: 'financial',
             category: 'real',
         },
-        'real\\labuan_financial_stp': {
+        real_labuan_financial_stp: {
             type: 'financial_stp',
             category: 'real',
         },
-        'demo\\svg': {
+        demo_svg: {
             type: 'synthetic',
             category: 'demo',
         },
-        'demo\\svg_financial': {
+        demo_svg_financial: {
             type: 'financial',
             category: 'demo',
         },
-        'demo\\vanuatu_financial': {
+        demo_vanuatu_financial: {
             type: 'financial',
             category: 'demo',
         },
-        'demo\\labuan_financial_stp': {
+        demo_labuan_financial_stp: {
             type: 'financial_stp',
             category: 'demo',
         },

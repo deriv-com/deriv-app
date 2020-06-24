@@ -127,7 +127,8 @@ class AccountSwitcher extends React.Component {
                 type: 'synthetic',
             },
             {
-                account_types: ['vanuatu', 'svg_financial'],
+                // TODO: [remove-standard-advanced] remove standard when API groups are updated
+                account_types: ['vanuatu', 'svg_standard', 'svg_financial'],
                 icon: 'Financial',
                 title: localize('Financial'),
                 type: 'financial',
@@ -141,7 +142,7 @@ class AccountSwitcher extends React.Component {
         ];
 
         existing_mt5_groups.forEach(group => {
-            const type = group.split('\\')[1];
+            const type = group.split(/[demo|real]_/)[1];
             const index_to_remove = mt5_config.findIndex(account => account.account_types.indexOf(type) > -1);
             mt5_config.splice(index_to_remove, 1);
         });
@@ -202,7 +203,8 @@ class AccountSwitcher extends React.Component {
             if (/svg$/.test(a.group)) {
                 return -1;
             }
-            if (/vanuatu|svg_financial/.test(a.group)) {
+            // TODO: [remove-standard-advanced] remove standard when API groups are updated
+            if (/vanuatu|svg_(standard|financial)/.test(a.group)) {
                 return /svg$/.test(b.group) ? 1 : -1;
             }
             return 1;

@@ -127,24 +127,6 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
-    getLoginDetails({ category, type }) {
-        let tmp_type = '';
-        switch (type) {
-            case 'synthetic':
-                tmp_type = 'svg';
-                break;
-            case 'financial':
-                tmp_type = 'svg_financial';
-                break;
-            default:
-                tmp_type = 'labuan_financial_stp';
-        }
-        const group = `${category}\\${tmp_type}`;
-
-        return this.current_list.filter(item => item.group === group);
-    }
-
-    @action.bound
     getName() {
         const { first_name } = this.root_store.client.account_settings && this.root_store.client.account_settings;
         const title = this.mt5_companies[this.account_type.category][this.account_type.type].title;

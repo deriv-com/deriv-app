@@ -28,7 +28,7 @@ const getKeyHash = string => crc32(string);
         const file_paths = getTranslatableFiles();
         const messages = [];
         const messages_json = {};
-        
+
         // Iterate over files and extract all strings from the i18n marker
         for (let i = 0; i < file_paths.length; i++) {
             if (program.verbose) {

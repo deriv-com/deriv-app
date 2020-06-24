@@ -79,8 +79,10 @@ class Trade extends React.Component {
                         }
                     >
                         <DesktopWrapper>
-                            <ChartLoader is_visible={this.props.is_chart_loading} />
-                            <ChartTrade />
+                            <div className='chart-container__wrapper'>
+                                <ChartLoader is_visible={this.props.is_chart_loading} />
+                                <ChartTrade />
+                            </div>
                         </DesktopWrapper>
                         <MobileWrapper>
                             <ChartLoader
@@ -113,14 +115,18 @@ class Trade extends React.Component {
                 </Div100vhContainer>
                 <div className={form_wrapper_class}>
                     {this.props.is_market_closed && <MarketIsClosedOverlay />}
-                    <FormLayout is_market_closed={this.props.is_market_closed} is_trade_enabled={is_trade_enabled} />
+                    <FormLayout
+                        is_market_closed={this.props.is_market_closed}
+                        is_trade_enabled={is_trade_enabled && this.props.network_status.class === 'online'}
+                    />
                 </div>
             </div>
         );
     }
 }
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ common, modules, ui }) => ({
+    network_status: common.network_status,
     contract_type: modules.trade.contract_type,
     form_components: modules.trade.form_components,
     is_chart_loading: modules.trade.is_chart_loading,
@@ -224,7 +230,7 @@ class ChartTradeClass extends React.Component {
                 ref={ref => (this.charts_ref = ref)}
                 barriers={barriers}
                 bottomWidgets={show_digits_stats && isDesktop() ? this.bottomWidgets : this.props.bottomWidgets}
-                crosshairState={isMobile() ? 0 : undefined}
+                crosshair={isMobile() ? 0 : undefined}
                 crosshairTooltipLeftAllow={560}
                 showLastDigitStats={isDesktop() ? show_digits_stats : false}
                 chartControlsWidgets={null}
@@ -253,6 +259,9 @@ class ChartTradeClass extends React.Component {
                 hasAlternativeSource={this.props.has_alternative_source}
                 refToAddTick={this.props.refToAddTick}
                 activeSymbols={active_markets}
+                yAxisMargin={{
+                    top: isMobile() ? 76 : 106,
+                }}
             >
                 <ChartMarkers />
             </SmartChart>

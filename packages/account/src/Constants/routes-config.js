@@ -10,6 +10,7 @@ import {
     ProofOfIdentity,
     ProofOfAddress,
     ApiToken,
+    TwoFactorAuthentication,
     Account,
     ConnectedApps,
 } from 'Sections';
@@ -82,6 +83,11 @@ const initRoutesConfig = () => [
                         path: routes.connected_apps,
                         component: ConnectedApps,
                         title: localize('Connected Apps'),
+                    },
+                    {
+                        path: routes.two_factor_authentication,
+                        component: TwoFactorAuthentication,
+                        title: localize('Two-factor authentication'),
                     },
                 ],
             },

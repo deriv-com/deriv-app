@@ -284,7 +284,9 @@ class PersonalDetailsForm extends React.Component {
                     handleSubmit,
                     isSubmitting,
                     setFieldValue,
+                    setFieldTouched,
                     setTouched,
+                    dirty,
                 }) => (
                     <>
                         <LeaveConfirm onDirty={isMobile() ? this.showForm : null} />
@@ -701,7 +703,10 @@ class PersonalDetailsForm extends React.Component {
                                         <Checkbox
                                             name='email_consent'
                                             value={values.email_consent}
-                                            onChange={() => setFieldValue('email_consent', !values.email_consent)}
+                                            onChange={() => {
+                                                setFieldValue('email_consent', !values.email_consent);
+                                                setFieldTouched('email_consent', true, true);
+                                            }}
                                             label={localize('Get updates about Deriv products, services and events.')}
                                             defaultChecked={!!values.email_consent}
                                         />
@@ -723,6 +728,7 @@ class PersonalDetailsForm extends React.Component {
                                         type='submit'
                                         is_disabled={
                                             isSubmitting ||
+                                            !dirty ||
                                             (this.props.is_virtual
                                                 ? false
                                                 : !!(
@@ -785,6 +791,9 @@ class PersonalDetailsForm extends React.Component {
         WS.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
             const { getChangeableFields, is_virtual, account_settings } = this.props;
 
+            // Convert to boolean
+            account_settings.email_consent = !!account_settings.email_consent;
+
             const hidden_settings = [
                 'account_opening_reason',
                 'tax_residence',
@@ -799,7 +808,6 @@ class PersonalDetailsForm extends React.Component {
                 'request_professional_status',
             ];
             const form_initial_values = removeObjProperties(hidden_settings, account_settings);
-
             this.setState({
                 changeable_fields: is_virtual ? [] : getChangeableFields(),
                 is_loading: false,

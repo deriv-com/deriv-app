@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ThemedScrollbars } from '@deriv/components';
+import ThemedScrollbars from '../themed-scrollbars';
 
 export default class TableRowInfo extends React.Component {
     constructor(props) {
@@ -25,7 +25,7 @@ export default class TableRowInfo extends React.Component {
                 className={classNames(this.props.className, { 'statement__row--detail': this.state.showDetails })}
             >
                 {this.state.showDetails ? (
-                    <ThemedScrollbars autoHeight autoHide autoHeightMax='63px'>
+                    <ThemedScrollbars height='63px'>
                         <div>
                             {this.props.replace.component ? (
                                 this.props.replace.component

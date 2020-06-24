@@ -1,5 +1,3 @@
-@import '../../_common/components/data-table';
-
 /*
 *  [Work In Progress]
 *  This file is a WIP and will be broken down into different files for different components before the module is enabled
@@ -11,7 +9,6 @@
 .mt5-dashboard {
     padding: 4.8em 0;
     max-width: 960px;
-    height: 100vh;
     margin: 0 auto;
 
     &--hint {
@@ -179,6 +176,9 @@
         line-height: 1.43;
         vertical-align: top;
     }
+    @include mobile {
+        font-size: 1.2rem;
+    }
 }
 
 .mt5-compare-accounts {
@@ -187,6 +187,7 @@
     flex-grow: 1;
     background: inherit;
     height: 100%;
+    position: relative;
 
     &__table-row {
         grid-template-columns: 1.5fr 1fr 2fr 1fr;
@@ -222,7 +223,10 @@
 
     .dc-table {
         padding: 0 30px;
-        height: calc(100% + 100px);
+        @include desktop {
+            position: absolute;
+            height: 100%;
+        }
 
         &__header {
             border-bottom: none;
@@ -277,10 +281,12 @@
                 font-size: 1.2rem;
                 border-bottom: 2px solid var(--border-disabled);
                 background-color: var(--general-section-2);
+                margin-top: -1px;
             }
             &__header,
             &__row {
                 width: 150vw;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
             }
         }
     }
@@ -295,6 +301,11 @@
 
     @include mobile {
         padding: 1.6rem;
+        border-top: 2px solid var(--border-disabled);
+    }
+    @include desktop {
+        position: absolute;
+        bottom: 0;
     }
 }
 
@@ -500,6 +511,7 @@
 
         &:not(:last-child) {
             margin-bottom: 2.4rem;
+            margin-right: 0;
         }
     }
 }
@@ -594,7 +606,6 @@
     display: grid;
     grid-template-rows: 13rem minmax(10rem, 1fr);
     height: 100%;
-    overflow: auto;
     position: relative;
     width: 100%;
 
@@ -608,7 +619,11 @@
     &__form {
         grid-template-rows: minmax(20rem, 1fr) 7rem;
     }
+    @include desktop {
+        overflow: hidden;
+    }
     @include mobile {
+        overflow: auto;
         grid-template-rows: 7rem minmax(10rem, 1fr);
         &__heading {
             padding: unset;

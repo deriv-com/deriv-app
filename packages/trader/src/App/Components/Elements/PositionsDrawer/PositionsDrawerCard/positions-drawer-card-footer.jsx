@@ -40,7 +40,10 @@ const CardFooter = ({ contract_info, is_multiplier, is_sell_requested, onClickCa
                         onClickSell={onClickSell}
                     />
                     {(is_valid_to_sell || is_valid_to_cancel) && (
-                        <TogglePositionsDrawerDialog contract_id={contract_info.contract_id} />
+                        <TogglePositionsDrawerDialog
+                            is_valid_to_cancel={is_valid_to_cancel}
+                            contract_id={contract_info.contract_id}
+                        />
                     )}
                 </div>
             ) : (

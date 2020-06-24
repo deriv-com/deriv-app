@@ -10,6 +10,7 @@ export const routes = {
     deriv_password: '/account/deriv-password',
     account_limits: '/account/account-limits',
     connected_apps: '/account/connected-apps',
+    two_factor_authentication: '/account/two-factor-authentication',
     account_password: '/settings/account_password',
     api_token: '/account/api-token',
     apps: '/settings/apps',

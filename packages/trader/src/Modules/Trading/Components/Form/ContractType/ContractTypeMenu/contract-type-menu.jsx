@@ -14,6 +14,8 @@ class Dialog extends React.PureComponent {
     scrollbar_ref = React.createRef();
     vertical_tab_headers = [];
     is_user_scroll = false;
+    scroll_timeout = null;
+    scrollTopPos = null;
 
     state = {
         is_filtered_list_empty: false,
@@ -57,14 +59,9 @@ class Dialog extends React.PureComponent {
         if (this.state.input_value) {
             this.onClickClearInput();
         }
-        this.setState(
-            {
-                selected: e,
-            },
-            () => {
-                this.scroll();
-            }
-        );
+        this.setState({
+            selected: e,
+        });
     };
 
     onScroll = e => {
@@ -78,10 +75,15 @@ class Dialog extends React.PureComponent {
                 },
             });
         }
-    };
 
-    onScrollStop = () => {
-        this.is_user_scroll = false;
+        const element = e.target;
+        this.scrollTopPos = element.scrollTop;
+        if (this.scrollTopPos === element.scrollTop) {
+            clearTimeout(this.scroll_timeout);
+        }
+        this.scroll_timeout = setTimeout(() => {
+            this.is_user_scroll = false;
+        }, 150);
     };
 
     onChangeInput = e => {
@@ -123,7 +125,7 @@ class Dialog extends React.PureComponent {
     };
 
     scroll() {
-        this.scrollbar_ref.current.scrollTop(this.offset_top); // scroll to selected contract category label
+        this.scrollbar_ref.current.scrollTo({ top: this.offset_top, behavior: 'smooth' }); // scroll to selected contract category label
     }
 
     get contracts_list() {
@@ -149,8 +151,7 @@ class Dialog extends React.PureComponent {
 
     get should_scroll() {
         if (!this.state.selected) return true;
-
-        return this.offset_top !== Math.ceil(this.scrollbar_ref.current.getScrollTop());
+        return this.offset_top !== Math.ceil(this.scrollbar_ref.current.scrollTop);
     }
 
     render() {
@@ -195,12 +196,9 @@ class Dialog extends React.PureComponent {
                                     )}
                                     {!is_info_dialog_open ? (
                                         <ThemedScrollbars
-                                            list_ref={this.scrollbar_ref}
+                                            refSetter={this.scrollbar_ref}
+                                            height='calc(100vh - 172px)'
                                             onScroll={this.onScroll}
-                                            onScrollStop={this.onScrollStop}
-                                            renderView={props => (
-                                                <div style={{ paddingBottom: 'calc(100% + 140px)', ...props.style }} />
-                                            )}
                                         >
                                             {children}
                                         </ThemedScrollbars>

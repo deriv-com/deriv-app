@@ -1,37 +1,23 @@
 import classNames from 'classnames';
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { VariableSizeList as List } from 'react-window';
-import { ThemedScrollbars } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TableRow from './table-row.jsx';
+import ThemedScrollbars from '../themed-scrollbars';
 
 /* TODO:
       1. implement sorting by column (ASC/DESC)
       2. implement filtering per column
 */
 
-const ListScrollbar = React.forwardRef((props, ref) => <ExtendedScrollbars {...props} forwardedRef={ref} />);
-
+const ThemedScrollbarsWrapper = React.forwardRef((props, ref) => (
+    <ThemedScrollbars {...props} forwardedRef={ref}>
+        {props.children}
+    </ThemedScrollbars>
+));
 // Display name is required by Developer Tools to give a name to the components we use.
 // If a component doesn't have a displayName is will be shown as <Unknown />. Hence, name is set.
-ListScrollbar.displayName = 'ListScrollbar';
-
-const ExtendedScrollbars = ({ onScroll, forwardedRef, style, children }) => {
-    const refSetter = React.useCallback(scrollbarsRef => {
-        if (scrollbarsRef) {
-            forwardedRef(scrollbarsRef.view);
-        } else {
-            forwardedRef(null);
-        }
-    }, []);
-
-    return (
-        <ThemedScrollbars ref={refSetter} style={{ ...style, overflow: 'hidden' }} onScroll={onScroll} autoHide>
-            {children}
-        </ThemedScrollbars>
-    );
-};
+ThemedScrollbarsWrapper.displayName = 'ThemedScrollbars';
 
 class DataTable extends React.PureComponent {
     constructor(props) {
@@ -56,7 +42,7 @@ class DataTable extends React.PureComponent {
         index, // Index of row
         style, // Style object to be applied to row (to position it);
     }) => {
-        const { className, getRowAction, columns, preloaderCheck, id, getActionColumns } = this.props;
+        const { className, getRowAction, columns, preloaderCheck, id, getActionColumns, content_loader } = this.props;
         const item = data[index];
         const action = getRowAction && getRowAction(item);
         const contract_id = data[index].contract_id || data[index].id;
@@ -73,6 +59,7 @@ class DataTable extends React.PureComponent {
                 show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : null}
                 replace={typeof action === 'object' ? action : undefined}
                 getActionColumns={getActionColumns}
+                content_loader={content_loader}
             />
         );
 
@@ -88,8 +75,8 @@ class DataTable extends React.PureComponent {
             footer,
             getActionColumns,
             getRowSize,
-            is_empty,
             onScroll,
+            content_loader,
         } = this.props;
 
         const TableData = (
@@ -101,7 +88,7 @@ class DataTable extends React.PureComponent {
                     itemData={data_source}
                     itemSize={getRowSize}
                     width={this.state.width}
-                    outerElementType={is_empty ? null : ListScrollbar}
+                    outerElementType={ThemedScrollbarsWrapper}
                 >
                     {this.rowRenderer}
                 </List>
@@ -123,7 +110,13 @@ class DataTable extends React.PureComponent {
                         this.el_table_head = el;
                     }}
                 >
-                    <TableRow className={className} columns={columns} is_header getActionColumns={getActionColumns} />
+                    <TableRow
+                        className={className}
+                        columns={columns}
+                        is_header
+                        getActionColumns={getActionColumns}
+                        content_loader={content_loader}
+                    />
                 </div>
                 <div
                     className='table__body'
@@ -143,6 +136,7 @@ class DataTable extends React.PureComponent {
                             columns={columns}
                             is_footer
                             getActionColumns={getActionColumns}
+                            content_loader={content_loader}
                         />
                     </div>
                 )}
@@ -155,7 +149,7 @@ DataTable.propTypes = {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
     className: PropTypes.string,
     columns: PropTypes.array,
-    data_source: MobxPropTypes.arrayOrObservableArray,
+    data_source: PropTypes.array,
     footer: PropTypes.object,
     getRowAction: PropTypes.func,
     getRowSize: PropTypes.func,

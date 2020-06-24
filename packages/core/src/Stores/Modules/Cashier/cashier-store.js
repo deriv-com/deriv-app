@@ -140,7 +140,16 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onMountCommon() {
+    setAccountSwitchListener() {
+        // cashier inits once and tries to stay active until switching account
+        // since cashier calls take a long time to respond or display in iframe
+        // so we don't have any unmount function here and everything gets reset on switch instead
+        this.disposeSwitchAccount();
+        this.onSwitchAccount(this.accountSwitcherListener);
+    }
+
+    @action.bound
+    async onMountCommon(should_remount) {
         if (this.root_store.client.is_logged_in) {
             // avoid calling this again
             if (this.is_populating_values) {
@@ -149,12 +158,9 @@ export default class CashierStore extends BaseStore {
 
             this.is_populating_values = true;
 
-            // cashier inits once and tries to stay active until switching account
-            // since cashier calls take a long time to respond or display in iframe
-            // so we don't have any unmount function here and everything gets reset on switch instead
-            this.disposeSwitchAccount();
-            this.onSwitchAccount(this.accountSwitcherListener);
-
+            if (should_remount) {
+                this.onRemount = this.onMountCommon;
+            }
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
             if (!this.config.payment_agent.list.length) {
@@ -231,7 +237,7 @@ export default class CashierStore extends BaseStore {
             return;
         }
 
-        const response_cashier = await WS.cashier(this.active_container, verification_code);
+        const response_cashier = await WS.authorized.cashier(this.active_container, verification_code);
 
         // if tab changed while waiting for response, ignore it
         if (current_container !== this.active_container) {
@@ -415,6 +421,11 @@ export default class CashierStore extends BaseStore {
     setCountDownResendVerification() {
         this.setVerificationResendTimeout(this.config[this.active_container].verification.resend_timeout - 1);
         const resend_interval = setInterval(() => {
+            if (!this.config[this.active_container] || !this.config[this.active_container].verification) {
+                clearInterval(resend_interval);
+                return;
+            }
+
             if (this.config[this.active_container].verification.resend_timeout === 1) {
                 this.setVerificationResendTimeout(60);
                 clearInterval(resend_interval);
@@ -455,7 +466,7 @@ export default class CashierStore extends BaseStore {
 
         const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
         const currency = this.root_store.client.currency;
-        return WS.paymentAgentList(residence, currency);
+        return WS.authorized.paymentAgentList(residence, currency);
     }
 
     @action.bound
@@ -609,7 +620,12 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
-        const payment_agent_withdraw = await WS.paymentAgentWithdraw({ loginid, currency, amount, verification_code });
+        const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
+            loginid,
+            currency,
+            amount,
+            verification_code,
+        });
         if (+payment_agent_withdraw.paymentagent_withdraw === 1) {
             const selected_agent = this.config.payment_agent.agents.find(agent => agent.value === loginid);
             this.setReceipt({
@@ -904,7 +920,7 @@ export default class CashierStore extends BaseStore {
                     WS.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
                     // update total balance since MT5 total only comes in non-stream balance call
                     WS.balanceAll().then(response => {
-                        this.root_store.client.setBalance(response.balance);
+                        this.root_store.client.setBalanceOtherAccounts(response.balance);
                     });
                 }
             });
@@ -972,7 +988,12 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     requestPaymentAgentTransfer = async ({ amount, currency, description, transfer_to }) => {
-        const payment_agent_transfer = await WS.paymentAgentTransfer({ amount, currency, description, transfer_to });
+        const payment_agent_transfer = await WS.authorized.paymentAgentTransfer({
+            amount,
+            currency,
+            description,
+            transfer_to,
+        });
         if (+payment_agent_transfer.paymentagent_transfer === 1) {
             this.setReceiptPaymentAgentTransfer({
                 amount_transferred: amount,
@@ -1008,7 +1029,6 @@ export default class CashierStore extends BaseStore {
         this.is_populating_values = false;
         this.setIsP2pVisible(false);
 
-        this.init();
         this.onRemount();
 
         return Promise.resolve();

@@ -15,30 +15,99 @@ import {
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { urlFor } from '@deriv/shared/utils/url';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
 import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
 
-// TODO: remove this once MT5 main password reset is supported in Deriv.app
-const MT5PasswordResetUnavailable = () => (
-    <>
-        <p className='mt5-password-manager--paragraph'>
-            {localize(
-                "We're currently only able to reset your MT5 password on Binary.com. While we fix this, please log in to Binary.com MT5 to reset your password."
+const CountdownComponent = ({ count_from = 60, onTimeout }) => {
+    const [count, setCount] = React.useState(count_from);
+
+    React.useEffect(() => {
+        if (count !== 0) {
+            const interval = setTimeout(() => {
+                setCount(count - 1);
+            }, 1000);
+
+            return () => clearTimeout(interval);
+        }
+
+        onTimeout();
+
+        return () => {};
+    }, [count]);
+    return <span className='countdown'>{count}</span>;
+};
+
+const MT5PasswordReset = ({ sendVerifyEmail, password_type, account_type, account_group }) => {
+    const [is_resend_verification_requested, setResendVerification] = React.useState(false);
+    const [is_resend_verification_sent, setResendVerificationSent] = React.useState(false);
+
+    React.useEffect(() => {
+        localStorage.setItem('mt5_reset_password_intent', [account_group, account_type].join('.'));
+        localStorage.setItem('mt5_reset_password_type', password_type);
+        sendVerifyEmail();
+    }, []);
+
+    const onClickVerification = () => {
+        setResendVerification(true);
+    };
+
+    const resendVerification = () => {
+        sendVerifyEmail();
+        setResendVerificationSent(true);
+    };
+
+    return (
+        <div className='mt5-verification-email-sent'>
+            <Icon icon='IcEmailSent' size={128} />
+            <h2 className='mt5-verification-email-sent__title'>
+                <Localize i18n_default_text="We've sent you an email" />
+            </h2>
+            <p className='mt5-verification-email-sent__description'>
+                <Localize i18n_default_text='Please click on the link in the email to reset your password.' />
+            </p>
+            {!is_resend_verification_requested && (
+                <Button className='mt5-verification-email-sent__resend-button' primary onClick={onClickVerification}>
+                    <Localize i18n_default_text="Didn't receive the email?" />
+                </Button>
             )}
-        </p>
-        <Button
-            className='mt5-password-manager--button'
-            has_effect
-            text={localize('Take me to Binary.com MT5')}
-            onClick={() => window.open(urlFor('user/metatrader', { legacy: true }))}
-            primary
-            large
-        />
-    </>
-);
+            {is_resend_verification_requested && (
+                <>
+                    <p className='mt5-verification-email-sent__title mt5-verification-email-sent__title--sub'>
+                        <Localize i18n_default_text={"Didn't receive the email?"} />
+                    </p>
+                    <p className='mt5-verification-email-sent__description'>
+                        <Localize i18n_default_text="Check your spam or junk folder. If it's not there, try resending the email." />
+                    </p>
+                    <Button
+                        className='mt5-verification-email-sent__resend-button'
+                        large
+                        primary
+                        disabled={is_resend_verification_sent}
+                        onClick={resendVerification}
+                    >
+                        {!is_resend_verification_sent && <Localize i18n_default_text='Resend email' />}
+                        {is_resend_verification_sent && (
+                            <>
+                                <Localize
+                                    i18n_default_text='Resend in <0 /> seconds'
+                                    components={[
+                                        <CountdownComponent
+                                            key={0}
+                                            onTimeout={() => setResendVerificationSent(false)}
+                                            count_from={60}
+                                        />,
+                                    ]}
+                                />
+                            </>
+                        )}
+                    </Button>
+                </>
+            )}
+        </div>
+    );
+};
 
 const MT5PasswordSuccessMessage = ({ toggleModal, is_investor }) => (
     <div className='mt5-password-manager__success'>
@@ -111,8 +180,9 @@ class MT5PasswordManagerModal extends React.Component {
             is_visible,
             selected_login,
             selected_account,
-            selected_type,
             toggleModal,
+            selected_account_type,
+            selected_account_group,
         } = this.props;
 
         const validatePassword = values => {
@@ -220,7 +290,14 @@ class MT5PasswordManagerModal extends React.Component {
                                 <Button
                                     className='mt5-password-manager--button'
                                     type='button'
-                                    onClick={() => this.multi_step_ref.current?.nextStep()}
+                                    onClick={() => {
+                                        this.setState(
+                                            {
+                                                password_type: 'main',
+                                            },
+                                            () => this.multi_step_ref.current?.nextStep()
+                                        );
+                                    }}
                                     text={localize('Reset main password')}
                                     tertiary
                                     large
@@ -304,7 +381,14 @@ class MT5PasswordManagerModal extends React.Component {
                                     <Button
                                         className='mt5-password-manager--button'
                                         type='button'
-                                        onClick={() => this.multi_step_ref.current?.nextStep()}
+                                        onClick={() => {
+                                            this.setState(
+                                                {
+                                                    password_type: 'investor',
+                                                },
+                                                () => this.multi_step_ref.current?.nextStep()
+                                            );
+                                        }}
                                         text={localize('Create or reset investor password')}
                                         tertiary
                                         large
@@ -325,24 +409,24 @@ class MT5PasswordManagerModal extends React.Component {
                 <Tabs active_index={this.state.active_tab_index} onTabItemClick={this.updateAccountTabIndex} top>
                     <div label={localize('Main password')}>
                         <DesktopWrapper>
-                            <ThemedScrollbars style={{ height: password_container_height }}>
+                            <ThemedScrollbars height={password_container_height}>
                                 <MainPasswordManager />
                             </ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 120px)' }}>
+                            <ThemedScrollbars height='calc(100vh - 120px)'>
                                 <MainPasswordManager />
                             </ThemedScrollbars>
                         </MobileWrapper>
                     </div>
                     <div label={localize('Investor password')}>
                         <DesktopWrapper>
-                            <ThemedScrollbars style={{ height: password_container_height }}>
+                            <ThemedScrollbars height={password_container_height}>
                                 <InvestorPasswordManager />
                             </ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 120px)' }}>
+                            <ThemedScrollbars height='calc(100vh - 120px)'>
                                 <InvestorPasswordManager />
                             </ThemedScrollbars>
                         </MobileWrapper>
@@ -356,7 +440,14 @@ class MT5PasswordManagerModal extends React.Component {
                 component: <MT5PasswordManagerTabContent />,
             },
             {
-                component: <MT5PasswordResetUnavailable />,
+                component: (
+                    <MT5PasswordReset
+                        sendVerifyEmail={this.props.sendVerifyEmail}
+                        password_type={this.state.password_type}
+                        account_type={selected_account_type}
+                        account_group={selected_account_group}
+                    />
+                ),
             },
         ];
 
@@ -378,7 +469,7 @@ class MT5PasswordManagerModal extends React.Component {
                         enableApp={enableApp}
                         is_open={is_visible}
                         title={
-                            selected_type === 'real'
+                            selected_account_type === 'real'
                                 ? localize('Manage DMT5 Real {{account_title}} account password', {
                                       account_title: selected_account,
                                   })
@@ -415,7 +506,8 @@ MT5PasswordManagerModal.propTypes = {
     toggleModal: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
+export default connect(({ modules: { mt5 }, ui }) => ({
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
+    sendVerifyEmail: mt5.sendVerifyEmail,
 }))(MT5PasswordManagerModal);

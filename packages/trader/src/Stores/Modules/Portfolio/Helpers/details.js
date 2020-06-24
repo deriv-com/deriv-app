@@ -37,13 +37,17 @@ export const getDurationUnitValue = obj_duration => {
 
 export const isEndTime = duration => duration % 1 !== 0;
 
-export const getDurationUnitText = obj_duration => {
-    const unit_map = {
+export const getUnitMap = () => {
+    return {
         d: { name_plural: localize('days'), name_singular: localize('day') },
         h: { name_plural: localize('hours'), name_singular: localize('hour') },
         m: { name_plural: localize('minutes'), name_singular: localize('minute') },
         s: { name: localize('seconds') },
     };
+};
+
+export const getDurationUnitText = obj_duration => {
+    const unit_map = getUnitMap();
     const duration_ms = obj_duration.asMilliseconds() / 1000;
     // return empty suffix string if duration is End Time set except for days and seconds, refer to L18 and L19
 

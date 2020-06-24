@@ -48,7 +48,6 @@
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.6",
-    "binary-live-api": "^29.0.0",
     "chai": "^4.2.0",
     "circular-dependency-plugin": "^5.0.2",
     "clean-webpack-plugin": "^3.0.0",
@@ -99,15 +98,14 @@
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.4",
     "webpack-manifest-plugin": "^2.0.4",
-    "webpack-node-externals": "^1.7.2",
-    "ws": "^7.0.1"
+    "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@deriv/account": "^1.0.0",
     "@deriv/components": "^1.0.0",
-    "@deriv/deriv-api": "^1.0.5",
-    "@deriv/deriv-charts": "^0.2.1",
+    "@deriv/deriv-api": "^1.0.6",
+    "@deriv/deriv-charts": "^0.2.4",
     "@deriv/shared": "^1.0.0",
     "@deriv/translations": "^1.0.0",
     "acorn": "^6.1.1",

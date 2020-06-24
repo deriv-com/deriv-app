@@ -36,7 +36,7 @@ Blockly.Css.CONTENT = [
 
     '.block--execution-highlighted > .blocklyPath {',
     'stroke: #ff444f;',
-    'animation: fade-in-out 1.5s ease-in',
+    'animation: fade-in-out 1.5s',
     '}',
 
     '.block--blink > .blocklyPath {',

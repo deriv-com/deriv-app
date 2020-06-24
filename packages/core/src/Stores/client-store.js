@@ -2,6 +2,7 @@ import moment from 'moment';
 import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
+import { isDesktop } from '@deriv/shared/utils/os';
 import { getUrlSmartTrader } from '@deriv/shared/utils/storage';
 import { requestLogout, WS } from 'Services';
 import ClientBase from '_common/base/client_base';
@@ -19,6 +20,8 @@ import { getClientAccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
+
+const store_name = 'client_store';
 export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
@@ -71,7 +74,8 @@ export default class ClientStore extends BaseStore {
     is_mt5_account_list_updated = false;
 
     constructor(root_store) {
-        super({ root_store });
+        const local_storage_properties = ['device_data'];
+        super({ root_store, local_storage_properties, store_name });
     }
 
     @computed
@@ -616,6 +620,8 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
 
+        this.setDeviceData();
+
         // On case of invalid token, no need to continue with additional api calls.
         if (authorize_response?.error) {
             await this.logout();
@@ -1140,8 +1146,30 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    setDeviceData(device_data) {
-        this.device_data = device_data;
+    setDeviceData() {
+        // Set client URL params on init
+        const url_params = new URLSearchParams(window.location.search);
+        const device_data = {
+            ...(url_params.get('affiliate_token') && { affiliate_token: url_params.get('affiliate_token') }),
+            ...(url_params.get('gclid_url') && { gclid_url: url_params.get('gclid_url') }),
+
+            // date_first_contact should be preserved to the first client contact
+            ...(!this.device_data.date_first_contact && {
+                date_first_contact:
+                    url_params.get('date_first_contact') || this.root_store.common.server_time.format('YYYY-MM-DD'),
+            }),
+
+            // signup device can be set anytime even if there is no url parameter by using isDesktop function
+            signup_device: url_params.get('signup_device') || isDesktop() ? 'desktop' : 'mobile',
+
+            // url params can be stored only if utm_source is available
+            ...(url_params.get('utm_source') && {
+                utm_campaign: url_params.get('utm_campaign') || '',
+                utm_medium: url_params.get('utm_medium') || '',
+                utm_source: url_params.get('utm_source'), // since the check is done previously
+            }),
+        };
+        this.device_data = { ...this.device_data, ...device_data };
     }
 
     @action.bound

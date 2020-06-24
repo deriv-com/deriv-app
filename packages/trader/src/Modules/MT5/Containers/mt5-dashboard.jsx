@@ -20,7 +20,12 @@ import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.js
 import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
-const TabOrFlex = ({ landing_companies, children, ...props }) => {
+const TabOrFlex = ({ landing_companies, children, is_loading, loading_component, ...props }) => {
+    const LoadingComponent = loading_component;
+    if (is_loading) {
+        return <LoadingComponent />;
+    }
+
     const should_show_tab =
         [
             ...(landing_companies?.mt_financial_company?.standard ? [true] : []),
@@ -31,6 +36,7 @@ const TabOrFlex = ({ landing_companies, children, ...props }) => {
     if (should_show_tab) {
         return <Tabs {...props}>{children}</Tabs>;
     }
+
     return <div className='mt5-single-row'>{children}</div>;
 };
 
@@ -141,30 +147,27 @@ class MT5Dashboard extends React.Component {
                             active_index={this.state.active_index}
                             top
                             center
+                            is_loading={is_loading}
+                            loading_component={LoadingMT5RealAccountDisplay}
                         >
                             <div label={localize('Real account')}>
-                                {is_loading && <LoadingMT5RealAccountDisplay />}
-                                {!is_loading && (
-                                    <>
-                                        {!has_real_account && (
-                                            <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
-                                        )}
-                                        <MT5RealAccountDisplay
-                                            current_list={this.props.current_list}
-                                            account_status={this.props.account_status}
-                                            has_mt5_account={has_mt5_account}
-                                            onSelectAccount={createMT5Account}
-                                            account_settings={account_settings}
-                                            landing_companies={this.props.landing_companies}
-                                            is_pending_authentication={this.props.is_pending_authentication}
-                                            is_fully_authenticated={this.props.is_fully_authenticated}
-                                            openAccountTransfer={this.openAccountTransfer}
-                                            openPasswordManager={this.togglePasswordManagerModal}
-                                            openPasswordModal={this.openRealPasswordModal}
-                                            has_real_account={has_real_account}
-                                        />
-                                    </>
-                                )}
+                                <React.Fragment>
+                                    {!has_real_account && <MissingRealAccount onClickSignup={beginRealSignupForMt5} />}
+                                    <MT5RealAccountDisplay
+                                        current_list={this.props.current_list}
+                                        account_status={this.props.account_status}
+                                        has_mt5_account={has_mt5_account}
+                                        onSelectAccount={createMT5Account}
+                                        account_settings={account_settings}
+                                        landing_companies={this.props.landing_companies}
+                                        is_pending_authentication={this.props.is_pending_authentication}
+                                        is_fully_authenticated={this.props.is_fully_authenticated}
+                                        openAccountTransfer={this.openAccountTransfer}
+                                        openPasswordManager={this.togglePasswordManagerModal}
+                                        openPasswordModal={this.openRealPasswordModal}
+                                        has_real_account={has_real_account}
+                                    />
+                                </React.Fragment>
                             </div>
                             <div label={localize('Demo account')}>
                                 <MT5DemoAccountDisplay

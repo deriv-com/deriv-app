@@ -1029,7 +1029,11 @@
 }
 
 .mt5-single-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    justify-content: center;
+
+    & > div {
+        margin: 0 1.2rem;
+    }
 }
 /* stylelint-enable */

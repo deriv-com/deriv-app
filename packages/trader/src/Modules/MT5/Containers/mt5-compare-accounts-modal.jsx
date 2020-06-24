@@ -258,6 +258,7 @@ const CompareAccountsModal = ({
     enableApp,
     is_compare_accounts_visible,
     landing_companies,
+    is_loading,
     toggleCompareAccounts,
 }) => (
     <div className='mt5-compare-accounts-modal__wrapper'>
@@ -267,6 +268,7 @@ const CompareAccountsModal = ({
             text={localize('Compare accounts')}
             onClick={toggleCompareAccounts}
             secondary
+            disabled={is_loading}
         />
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
@@ -304,6 +306,7 @@ export default connect(({ modules, ui, client }) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
+    is_loading: client.is_populating_mt5_account_list,
     landing_companies: client.landing_companies,
     toggleCompareAccounts: modules.mt5.toggleCompareAccountsModal,
 }))(CompareAccountsModal);

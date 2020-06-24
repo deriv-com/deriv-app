@@ -9,7 +9,6 @@ Blockly.Blocks.text_prompt_ext = {
             if (value === 'TEXT') {
                 this.setOutput(true, 'String');
             } else if (value === 'NUMBER') {
-                console.log('test');
                 this.setOutput(true, 'Number');
             }
             this.initSvg();

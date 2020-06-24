@@ -916,24 +916,25 @@
         }
     }
     &__drop-down {
-        min-width: 36rem;
-        width: fit-content;
-        margin: 0 auto 5.1rem;
         text-align: left;
+        width: fit-content;
+        min-width: 36rem;
+        margin: 0 auto 5.1rem;
 
         @include mobile {
             width: 100%;
+            min-width: auto;
             margin-bottom: 2.4rem;
         }
     }
     &__input {
         margin-bottom: -0.8rem !important;
+        width: fit-content;
+        min-width: 36rem;
 
-        @include desktop {
-            width: fit-content;
-            min-width: 36rem;
-        }
         @include mobile {
+            width: 100%;
+            min-width: auto;
             margin-bottom: 2.6rem !important;
         }
     }
@@ -993,8 +994,8 @@
     }
     &__form-error {
         .cashier__form-error-icon {
-            bottom: 0;
-            left: 10px;
+            bottom: -1rem;
+            left: 7.5rem;
         }
     }
     @include desktop {

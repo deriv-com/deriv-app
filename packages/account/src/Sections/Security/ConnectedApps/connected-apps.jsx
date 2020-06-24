@@ -1,9 +1,7 @@
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Button, Modal, Icon } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Button, Modal, Icon, DataTable, DataList } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import ErrorComponent from 'App/Components/Elements/Errors';
-import DataTable from 'App/Components/Elements/DataTable';
-import DataList from 'App/Components/Elements/DataList';
+import ErrorComponent from 'Components/error-component';
 import { WS } from 'Services/ws-methods';
 import getConnectedAppsColumnsTemplate from './data-table-template';
 

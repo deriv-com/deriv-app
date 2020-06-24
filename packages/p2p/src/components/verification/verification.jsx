@@ -4,8 +4,8 @@ import Dp2pContext from 'Components/context/dp2p-context';
 import { Localize, localize } from 'Components/i18next';
 import './verification.scss';
 
-const Verification = ({ poi_status }) => {
-    const { nickname, toggleNicknamePopup, is_advertiser, poi_url } = React.useContext(Dp2pContext);
+const Verification = () => {
+    const { nickname, toggleNicknamePopup, is_advertiser, poi_status, poi_url } = React.useContext(Dp2pContext);
 
     const items = [
         {

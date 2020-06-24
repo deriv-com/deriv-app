@@ -131,7 +131,6 @@ class App extends React.Component {
                 is_advertiser: !!p2p_advertiser_info.is_approved,
                 nickname: p2p_advertiser_info.name,
             });
-            console.log(!!p2p_advertiser_info.is_approved);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
 

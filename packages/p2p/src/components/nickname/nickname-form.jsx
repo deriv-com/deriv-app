@@ -4,7 +4,6 @@ import { Formik, Field, Form } from 'formik';
 import { Input, Button, ThemedScrollbars, Icon } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
-import { requestWS } from 'Utils/websocket';
 import IconClose from 'Assets/icon-close.jsx';
 import FormError from '../form/error.jsx';
 import './nickname-form.scss';

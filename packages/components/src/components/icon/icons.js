@@ -83,7 +83,6 @@ import './common/ic-folder-open.svg';
 import './common/ic-full-screen-restore.svg';
 import './common/ic-full-screen.svg';
 import './common/ic-gear.svg';
-import './common/ic-google-drive-enabled.svg';
 import './common/ic-google-drive.svg';
 import './common/ic-hamburger.svg';
 import './common/ic-help-centre.svg';

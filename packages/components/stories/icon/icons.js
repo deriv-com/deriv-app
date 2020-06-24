@@ -83,7 +83,6 @@ export const icons = {
         'IcFullScreenRestore',
         'IcFullScreen',
         'IcGear',
-        'IcGoogleDriveEnabled',
         'IcGoogleDrive',
         'IcHamburger',
         'IcHelpCentre',

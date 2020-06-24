@@ -76,12 +76,7 @@ const SaveModalForm = ({
                                     label: (
                                         <IconRadio
                                             text={'Google Drive'}
-                                            icon={
-                                                <Icon
-                                                    icon={is_authorised ? 'IcGoogleDriveEnabled' : 'IcGoogleDrive'}
-                                                    size={48}
-                                                />
-                                            }
+                                            icon={<Icon icon={'IcGoogleDrive'} size={48} />}
                                             google_drive_connected={is_authorised}
                                             onDriveConnect={onDriveConnect}
                                         />

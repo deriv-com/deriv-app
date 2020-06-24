@@ -3,7 +3,10 @@ import { Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getMT5WebTerminalLink } from '../Helpers/constants';
 
-const MT5DashboardContainer = () => (
+const MT5DashboardContainer = ({
+    is_eu_enabled, // TODO [deriv-eu] remove this once EU is ready to ship.
+    is_eu,
+}) => (
     <div className='mt5-dashboard__download-center'>
         <h1 className='mt5-dashboard__download-center--heading'>
             <Localize i18n_default_text='Run MT5 from your browser or download the MT5 app for your devices' />
@@ -21,7 +24,11 @@ const MT5DashboardContainer = () => (
                 <div className='mt5-dashboard__download-center-options--desktop-links'>
                     <a
                         className='mt5-dashboard__download-center-options--desktop-link'
-                        href='https://s3.amazonaws.com/binary-mt5/binarycom_mt5.exe'
+                        href={
+                            is_eu_enabled && is_eu
+                                ? 'https://download.mql5.com/cdn/web/16177/mt5/binarycom5setup.exe'
+                                : 'https://download.mql5.com/cdn/web/deriv.limited/mt5/deriv5setup.exe'
+                        }
                         target='_blank'
                         rel='noopener noreferrer'
                     >

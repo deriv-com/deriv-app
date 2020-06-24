@@ -169,7 +169,7 @@ class MT5Dashboard extends React.Component {
                     </div>
 
                     <DesktopWrapper>
-                        <MT5DashboardContainer />
+                        <MT5DashboardContainer is_eu={this.props.is_eu} is_eu_enabled={this.props.is_eu_enabled} />
                     </DesktopWrapper>
                     <MobileWrapper>
                         <div className='mt5-dashboard__download-center'>
@@ -218,6 +218,8 @@ export default withRouter(
         checkShouldOpenAccount: modules.mt5.checkShouldOpenAccount,
         createMT5Account: modules.mt5.createMT5Account,
         current_list: modules.mt5.current_list,
+        is_eu: client.is_eu,
+        is_eu_enabled: ui.is_eu_enabled,
         is_logged_in: client.is_logged_in,
         can_upgrade_to: client.can_upgrade_to,
         account_settings: client.account_settings,

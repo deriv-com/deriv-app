@@ -6,24 +6,23 @@ $HEIGHT: calc(100vh - 34em);
         margin-top: 1em;
         border-radius: $BORDER_RADIUS;
         opacity: 1;
-        height: calc(100vh - 34em);
-        max-height: calc(100vh - 34em);
+        flex: 1;
         overflow: hidden;
         background-color: var(--general-main-1);
         color: var(--text-prominent);
+        display: flex;
 
-        &-tabs {
-            &--active {
-                max-height: calc(#{$HEIGHT} - 96px);
-            }
-            &--expired {
-                max-height: calc(#{$HEIGHT} - 48px);
-            }
-        }
         /* postcss-bem-linter: ignore */
         .dc-tabs {
             height: 100%;
-            grid-template-rows: 1fr 20fr;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            /* postcss-bem-linter: ignore */
+            &__content {
+                display: flex;
+                height: calc(100% - 4rem);
+            }
         }
     }
     &__grid {
@@ -98,6 +97,7 @@ $HEIGHT: calc(100vh - 34em);
     &__tabs {
         &-content {
             padding: 0.8rem 1.6rem;
+            flex: 1;
         }
     }
 }

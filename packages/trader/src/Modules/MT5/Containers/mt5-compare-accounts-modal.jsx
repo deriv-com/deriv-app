@@ -194,12 +194,25 @@ const MT5CompareAccountHint = () => (
 
 const ModalContent = ({ landing_companies }) => {
     const [cols, setCols] = React.useState([]);
+    const [template_columns, updateColumnsStyle] = React.useState('1.5fr 1fr 2fr 1fr');
+
     React.useEffect(() => {
         setCols(compareAccountsData({ landing_companies }));
+
+        updateColumnsStyle(
+            `1.5fr ${landing_companies?.mt_gaming_company?.standard ? '1fr' : ''} ${
+                landing_companies?.mt_financial_company?.standard ? '2fr' : ''
+            } ${landing_companies?.mt_financial_company?.advanced ? ' 1fr ' : ''}`
+        );
     }, [landing_companies.mt_financial_company, landing_companies.mt_gaming_company]);
 
     return (
-        <div className='mt5-compare-accounts'>
+        <div
+            className='mt5-compare-accounts'
+            style={{
+                '--mt5-compare-accounts-template-columns': template_columns,
+            }}
+        >
             <Table fixed scroll_height={isMobile() ? '100%' : 'calc(100% - 130px)'}>
                 <Table.Header>
                     <Table.Row className='mt5-compare-accounts__table-row'>

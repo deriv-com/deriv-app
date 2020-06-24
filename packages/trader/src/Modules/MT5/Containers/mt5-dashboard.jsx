@@ -20,6 +20,20 @@ import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.js
 import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
+const TabOrFlex = ({ landing_companies, children, ...props }) => {
+    const should_show_tab =
+        [
+            ...(landing_companies?.mt_financial_company?.standard ? [true] : []),
+            ...(landing_companies?.mt_financial_company?.advanced ? [true] : []),
+            ...(landing_companies?.mt_gaming_company?.standard ? [true] : []),
+        ].length > 1;
+
+    if (should_show_tab) {
+        return <Tabs {...props}>{children}</Tabs>;
+    }
+    return <div className='mt5-single-row'>{children}</div>;
+};
+
 class MT5Dashboard extends React.Component {
     state = {
         active_index: 0,
@@ -122,7 +136,12 @@ class MT5Dashboard extends React.Component {
                             selected_account_type={this.state.password_manager.selected_account_type}
                             toggleModal={this.togglePasswordManagerModal}
                         />
-                        <Tabs active_index={this.state.active_index} top center>
+                        <TabOrFlex
+                            landing_companies={this.props.landing_companies}
+                            active_index={this.state.active_index}
+                            top
+                            center
+                        >
                             <div label={localize('Real account')}>
                                 {is_loading && <LoadingMT5RealAccountDisplay />}
                                 {!is_loading && (
@@ -158,7 +177,7 @@ class MT5Dashboard extends React.Component {
                                     openPasswordManager={this.togglePasswordManagerModal}
                                 />
                             </div>
-                        </Tabs>
+                        </TabOrFlex>
                         <CompareAccountsModal />
                         <div className='mt5-dashboard__maintenance'>
                             <Icon icon='IcAlertWarning' className='mt5-dashboard__maintenance-icon' />

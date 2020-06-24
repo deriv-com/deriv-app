@@ -61,8 +61,8 @@ Blockly.JavaScript.logic_operation = block => {
         order = Blockly.JavaScript.ORDER_LOGICAL_OR;
     }
 
-    const argument0 = Blockly.JavaScript.valueToCode(block, 'A') || 'false';
-    const argument1 = Blockly.JavaScript.valueToCode(block, 'B') || 'false';
+    const argument0 = Blockly.JavaScript.valueToCode(block, 'A', Blockly.JavaScript.ORDER_ATOMIC) || 'false';
+    const argument1 = Blockly.JavaScript.valueToCode(block, 'B', Blockly.JavaScript.ORDER_ATOMIC) || 'false';
 
     const code = `${argument0} ${operator} ${argument1}`;
     return [code, order];

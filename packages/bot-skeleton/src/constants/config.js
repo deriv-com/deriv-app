@@ -166,8 +166,8 @@ export const config = {
         ],
     },
     BARRIER_TYPES: [
-        ['Offset\u00A0+', '+'],
-        ['Offset\u00A0-', '-'],
+        ['Offset +', '+'],
+        ['Offset -', '-'],
     ],
     ohlcFields: [
         [localize('Open'), 'open'],

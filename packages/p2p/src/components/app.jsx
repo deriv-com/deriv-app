@@ -11,6 +11,7 @@ import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
 import NicknameForm from './nickname/nickname-form.jsx';
+import Verification from './verification/verification.jsx';
 import './app.scss';
 
 const allowed_currency = 'USD';
@@ -23,6 +24,8 @@ const path = {
 };
 
 class App extends React.Component {
+    is_mounted = false;
+
     constructor(props) {
         super(props);
 
@@ -137,6 +140,20 @@ class App extends React.Component {
             } else if (response.error.code === 'AdvertiserNotFound') {
                 this.setState({ is_advertiser: false });
             }
+        }
+
+        if (!this.state.is_advertiser) {
+            requestWS({ get_account_status: 1 }).then(account_response => {
+                if (this.is_mounted && !account_response.error) {
+                    const { get_account_status } = account_response;
+                    const { authentication } = get_account_status;
+                    const { identity } = authentication;
+
+                    this.setState({
+                        poi_status: identity.status,
+                    });
+                }
+            });
         }
     };
 
@@ -270,6 +287,7 @@ class App extends React.Component {
             custom_strings,
             order_id,
             setOrderId,
+            should_show_verification,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -309,30 +327,38 @@ class App extends React.Component {
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
                     getLocalStorageSettings: this.getLocalStorageSettings.bind(this),
                     createAdvertiser: this.createAdvertiser.bind(this),
+                    poi_status: this.state.poi_status,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
-                    <Tabs
-                        onTabItemClick={this.handleTabClick}
-                        active_index={active_index}
-                        className='p2p-cashier'
-                        top
-                        header_fit_content
-                    >
-                        <div label={localize('Buy / Sell')}>
-                            <BuySell navigate={this.redirectTo} params={parameters} />
+                    {should_show_verification && (
+                        <div className='p2p-cashier--verification'>
+                            <Verification />
                         </div>
-                        <div count={notification_count} label={localize('Orders')}>
-                            <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
-                        </div>
-                        <div label={localize('My ads')}>
-                            <MyAds navigate={this.redirectTo} params={parameters} />
-                        </div>
-                        {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
-                        {/* <div label={localize('My profile')}>
-                            <MyProfile navigate={this.redirectTo} params={parameters} />
-                        </div> */}
-                    </Tabs>
+                    )}
+                    {!should_show_verification && (
+                        <Tabs
+                            onTabItemClick={this.handleTabClick}
+                            active_index={active_index}
+                            className='p2p-cashier'
+                            top
+                            header_fit_content
+                        >
+                            <div label={localize('Buy / Sell')}>
+                                <BuySell navigate={this.redirectTo} params={parameters} />
+                            </div>
+                            <div count={notification_count} label={localize('Orders')}>
+                                <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
+                            </div>
+                            <div label={localize('My ads')}>
+                                <MyAds navigate={this.redirectTo} params={parameters} />
+                            </div>
+                            {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
+                            {/* <div label={localize('My profile')}>
+                                    <MyProfile navigate={this.redirectTo} params={parameters} />
+                                </div> */}
+                        </Tabs>
+                    )}
                     {show_popup && (
                         <div className='p2p-nickname__dialog'>
                             <Dialog is_visible={show_popup}>

@@ -1,10 +1,13 @@
-import { Icon } from '@deriv/components';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Icon, Popover } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
+import PopoverMessageCheckbox from 'Modules/Trading/Components/Elements/popover-message-checkbox.jsx';
 import PositionsDrawerDialog from './positions-drawer-dialog.jsx';
 import ContractUpdateForm from './contract-update-form.jsx';
 
-class TogglePositionsDrawerDialog extends React.PureComponent {
+class TogglePositionsDrawerDialog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,6 +20,8 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
     }
 
     toggleDialog = () => {
+        if (this.props.is_valid_to_cancel) return;
+
         this.setState(
             state => ({ is_visible: !state.is_visible }),
             () => {
@@ -49,10 +54,43 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
     };
 
     render() {
+        const { is_valid_to_cancel, should_show_cancellation_warning, toggleCancellationWarning } = this.props;
+
+        const edit_icon = (
+            <Icon
+                className='positions-drawer-dialog-toggle__icon'
+                icon='IcEdit'
+                color={is_valid_to_cancel && 'disabled'}
+                size={16}
+            />
+        );
+
         return (
             <React.Fragment>
                 <div ref={this.toggle_ref} className='positions-drawer-dialog-toggle' onClick={this.toggleDialog}>
-                    <Icon className='positions-drawer-dialog-toggle__icon' icon='IcEdit' size={16} />
+                    {is_valid_to_cancel ? (
+                        <Popover
+                            alignment='right'
+                            classNameBubble='trade-container__popover'
+                            is_bubble_hover_enabled
+                            margin={2}
+                            zIndex={2}
+                            message={
+                                <PopoverMessageCheckbox
+                                    defaultChecked={!should_show_cancellation_warning}
+                                    message={localize(
+                                        'Take profit and/or stop loss are not available while deal cancellation is active.'
+                                    )}
+                                    name='should_show_cancellation_warning'
+                                    onChange={() => toggleCancellationWarning()}
+                                />
+                            }
+                        >
+                            <div className='positions-drawer-dialog-toggle__wrapper'>{edit_icon}</div>
+                        </Popover>
+                    ) : (
+                        edit_icon
+                    )}
                 </div>
                 <PositionsDrawerDialog
                     ref={this.dialog_ref}
@@ -70,15 +108,11 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
 }
 
 PropTypes.TogglePositionsDrawerDialog = {
-    currency: PropTypes.string,
+    is_valid_to_cancel: PropTypes.bool,
     contract_id: PropTypes.string,
-    has_stop_loss: PropTypes.bool,
-    has_take_profit: PropTypes.bool,
-    stop_loss: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    take_profit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    onChangeContractUpdate: PropTypes.func,
-    onClickContractUpdate: PropTypes.func,
-    validation_errors: PropTypes.object,
 };
 
-export default TogglePositionsDrawerDialog;
+export default connect(({ ui }) => ({
+    toggleCancellationWarning: ui.toggleCancellationWarning,
+    should_show_cancellation_warning: ui.should_show_cancellation_warning,
+}))(TogglePositionsDrawerDialog);

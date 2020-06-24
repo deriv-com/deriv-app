@@ -1,5 +1,4 @@
 import React from 'react';
-import { Loading } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { TableError } from 'Components/table/table-error.jsx';
@@ -16,11 +15,7 @@ const MyAdsState = ({ message }) => (
 );
 
 class MyAds extends React.Component {
-    // TODO: Find a better solution for handling no-op instead of using is_mounted flags
-    is_mounted = false;
-
     state = {
-        is_loading: true,
         show_form: false,
     };
 
@@ -56,10 +51,6 @@ class MyAds extends React.Component {
     };
 
     render() {
-        if (this.state.is_loading) {
-            return <Loading is_fullscreen={false} />;
-        }
-
         if (this.context.is_restricted) {
             return <MyAdsState message={localize('P2P cashier is unavailable in your country.')} />;
         }
@@ -76,7 +67,7 @@ class MyAds extends React.Component {
             );
         }
 
-        return <Verification poi_status={this.state.poi_status} />;
+        return <Verification />;
     }
 }
 

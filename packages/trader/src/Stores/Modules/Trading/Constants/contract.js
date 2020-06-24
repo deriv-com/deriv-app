@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared/utils/screen';
 
 export const getLocalizedBasis = () => ({
     payout: localize('Payout'),
@@ -103,7 +104,7 @@ export const getContractTypesConfig = () => ({
         components: [],
     },
     multiplier: {
-        title: localize('Multiplier'),
+        title: localize('Multipliers'),
         trade_types: ['MULTUP', 'MULTDOWN'],
         basis: ['stake'],
         components: ['multiplier', 'take_profit', 'stop_loss', 'cancellation'],
@@ -117,5 +118,21 @@ export const getContractCategoriesConfig = () => ({
     [localize('Ins & Outs')]: ['end', 'stay'],
     [localize('Look Backs')]: ['lb_high_low', 'lb_put', 'lb_call'],
     [localize('Digits')]: ['match_diff', 'even_odd', 'over_under'],
-    [localize('Multiplier options')]: ['multiplier'],
+    [localize('Multipliers')]: ['multiplier'],
 });
+
+export const unsupported_contract_types_list = [
+    // TODO: remove these once all contract types are supported
+    'callputspread',
+    'run_high_low',
+    'reset',
+    'asian',
+    'tick_high_low',
+    'end',
+    'stay',
+    'lb_call',
+    'lb_put',
+    'lb_high_low',
+    // TODO: Remove the conditional values below once barrier and path dependent contracts are ready for mobile
+    isMobile() ? 'multiplier' : null,
+];

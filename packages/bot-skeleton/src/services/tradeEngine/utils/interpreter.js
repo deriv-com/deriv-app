@@ -1,4 +1,4 @@
-import clone from 'clone';
+import ObjectUtils from '@deriv/shared/utils/object';
 import JSInterpreter from 'js-interpreter';
 import { createScope } from './cliTools';
 import Interface from '../Interface';
@@ -6,12 +6,12 @@ import { unrecoverable_errors } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 
 JSInterpreter.prototype.takeStateSnapshot = function() {
-    const newStateStack = clone(this.stateStack, undefined, undefined, undefined, true);
+    const newStateStack = ObjectUtils.cloneThorough(this.stateStack, undefined, undefined, undefined, true);
     return newStateStack;
 };
 
 JSInterpreter.prototype.restoreStateSnapshot = function(snapshot) {
-    this.stateStack = clone(snapshot, undefined, undefined, undefined, true);
+    this.stateStack = ObjectUtils.cloneThorough(snapshot, undefined, undefined, undefined, true);
     this.global = this.stateStack[0].scope.object || this.stateStack[0].scope;
     this.initFunc_(this, this.global);
 };

@@ -48,6 +48,15 @@ export default Interface => class extends IndicatorsInterface(
             ...this.getCandleInterface(),
             ...this.getMiscInterface(),
             ...this.getIndicatorsInterface(),
+
+            // Highlight the block that is being executed
+            highlightedDuringExecution: ( block_id) => {
+                const block = Blockly.derivWorkspace.getBlockById(block_id);
+                const root = block.getRootBlock();
+                if(root){
+                    root.highlightedForExecution(root);
+                }
+            },
         };
     }
 };

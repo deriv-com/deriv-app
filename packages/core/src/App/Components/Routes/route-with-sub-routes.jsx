@@ -4,7 +4,6 @@ import { removeBranchName } from '@deriv/shared/utils/url';
 import routes from '@deriv/shared/utils/routes';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { redirectToLogin, redirectToSignUp } from '_common/base/login';
-import BinarySocket from '_common/base/socket_base';
 import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
 import { default_title } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';

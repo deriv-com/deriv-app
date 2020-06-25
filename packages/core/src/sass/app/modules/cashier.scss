@@ -992,12 +992,6 @@
             }
         }
     }
-    &__form-error {
-        .cashier__form-error-icon {
-            bottom: -1rem;
-            left: 7.5rem;
-        }
-    }
     @include desktop {
         &__form-submit {
             min-width: 36rem;

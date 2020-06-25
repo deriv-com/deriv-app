@@ -325,11 +325,6 @@ class AccountTransferForm extends React.Component {
                                                         <div className='cashier__form-error-wrapper account-transfer__form-error'>
                                                             <Icon
                                                                 icon='IcAlertDanger'
-                                                                className='cashier__form-error-icon'
-                                                                size={80}
-                                                            />
-                                                            <Icon
-                                                                icon='IcAlertDanger'
                                                                 className='cashier__form-error-small-icon'
                                                             />
                                                             <p className='cashier__form-error'>

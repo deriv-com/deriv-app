@@ -22,6 +22,7 @@ const CardHeader = ({ contract_info, has_progress_slider }) => {
                 </div>
                 <div className='positions-drawer-card__type'>
                     <ContractTypeCell
+                        multiplier={contract_info.multiplier}
                         type={contract_info.contract_type}
                         is_high_low={Shortcode.isHighLow({ shortcode: contract_info.shortcode })}
                     />

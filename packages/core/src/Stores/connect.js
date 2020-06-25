@@ -1,80 +1,29 @@
-import { inject, Provider, observer } from 'mobx-react';
-import PropTypes from 'prop-types';
+import { useObserver } from 'mobx-react';
 import React from 'react';
 
-const SPECIAL_REACT_KEYS = { children: true, key: true, ref: true };
+const isClassComponent = Component =>
+    !!(typeof Component === 'function' && Component.prototype && Component.prototype.isReactComponent);
 
-export class MobxProvider extends Provider {
-    getChildContext() {
-        const stores = {};
+export const MobxContent = React.createContext(null);
 
-        // inherit stores
-        const baseStores = this.context.mobxStores;
-        if (baseStores) {
-            // eslint-disable-next-line guard-for-in,no-restricted-syntax
-            for (const key in baseStores) {
-                // eslint-disable-line
-                stores[key] = baseStores[key];
-            }
+function injectStorePropsToComponent(propsToSelectFn, BaseComponent) {
+    const component = own_props => {
+        const store = React.useContext(MobxContent);
+
+        if (!isClassComponent(BaseComponent)) {
+            return useObserver(() => BaseComponent({ ...own_props, ...propsToSelectFn(store, own_props) }));
         }
 
-        // add own stores
-        // eslint-disable-next-line no-restricted-syntax
-        for (const key in this.props.store) {
-            // eslint-disable-line
-            if (!SPECIAL_REACT_KEYS[key]) {
-                stores[key] = this.props.store[key];
-            }
-        }
-
-        return {
-            mobxStores: stores,
-            ...stores,
-        };
-    }
-
-    static childContextTypes = {
-        mobxStores: PropTypes.object,
-        client: PropTypes.object,
-        common: PropTypes.object,
-        gtm: PropTypes.object,
-        segment: PropTypes.object,
-        modules: PropTypes.object,
-        ui: PropTypes.object,
+        const FunctionalWrapperComponent = props => <BaseComponent {...props} />;
+        return useObserver(() => FunctionalWrapperComponent({ ...own_props, ...propsToSelectFn(store, own_props) }));
     };
+
+    component.displayName = BaseComponent.name;
+    return component;
 }
 
-const connect_global_store = mapper => Component => inject(mapper)(observer(Component));
-
-export const connect = (StoreClass, mapper) => Component => {
-    if (!mapper) {
-        return connect_global_store(StoreClass)(Component);
-    }
-
-    const observed = observer(Component);
-
-    class StoredComponent extends Component {
-        store = new StoreClass();
-
-        render() {
-            return React.createElement(
-                observed,
-                {
-                    ...this.props,
-                    store: this.store,
-                },
-                this.props.children
-            );
-        }
-
-        propTypes = {
-            children: PropTypes.object,
-        };
-    }
-
-    const wrappedDisplayName =
-        Component.displayName || Component.name || (Component.constructor && Component.constructor.name) || 'Unknown';
-    StoredComponent.displayName = `store-${wrappedDisplayName}`;
-
-    return inject(mapper)(StoredComponent);
+export const MobxContentProvider = ({ store, children }) => {
+    return <MobxContent.Provider value={{ ...store, mobxStores: store }}>{children}</MobxContent.Provider>;
 };
+
+export const connect = propsToSelectFn => Component => injectStorePropsToComponent(propsToSelectFn, Component);

@@ -261,6 +261,12 @@
         width: 3.8rem;
         line-height: 1.5;
         text-align: left;
+
+        &-multiplier {
+            font-size: 1rem;
+            line-height: 1rem;
+            color: var(--text-less-prominent);
+        }
     }
 }
 

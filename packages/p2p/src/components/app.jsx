@@ -353,7 +353,7 @@ class App extends React.Component {
                     setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications,
-                    getLocalStorageSettings: this.getLocalStorageSettings,
+                    getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId,
                     createAdvertiser: this.createAdvertiser.bind(this),
                 }}
             >

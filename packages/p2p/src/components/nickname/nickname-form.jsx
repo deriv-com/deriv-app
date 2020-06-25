@@ -64,7 +64,7 @@ const NicknameForm = ({ handleClose }) => {
                 </div>
             </div>
             <Formik validate={validatePopup} initialValues={{ nickname: '' }} onSubmit={handleSubmit}>
-                {({ errors, handleChange, status, values }) => (
+                {({ errors, handleChange, values }) => (
                     <Form noValidate>
                         <ThemedScrollbars autoHide style={{ height: '437px' }}>
                             <div className='buy-sell__popup-content buy-sell__popup-content_centre'>

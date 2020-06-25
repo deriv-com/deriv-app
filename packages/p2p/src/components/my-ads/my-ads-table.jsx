@@ -62,7 +62,7 @@ RowComponent.propTypes = {
 RowComponent.displayName = 'RowComponent';
 
 const MyAdsTable = ({ onClickCreate }) => {
-    const { currency, list_item_limit, is_advertiser, is_listed } = React.useContext(Dp2pContext);
+    const { currency, list_item_limit, is_listed } = React.useContext(Dp2pContext);
     const is_mounted = React.useRef(false);
     const item_offset = React.useRef(0);
     const [is_loading, setIsLoading] = React.useState(true);

@@ -21,6 +21,11 @@
         top: -48px;
         left: 0;
     }
+    &__menu-mobile-theme {
+        border-bottom: 1px solid var(--general-section-1);
+        padding-bottom: 1.6rem;
+        margin-bottom: 1.6rem;
+    }
     &__menu-mobile-link {
         text-decoration: none;
         display: flex;

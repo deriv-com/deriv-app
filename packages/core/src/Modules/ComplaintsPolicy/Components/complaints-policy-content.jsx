@@ -203,13 +203,13 @@ const Content = () => {
             {row.content && (
                 <div className='complaints-policy__section-content'>
                     {row.content.text && row.content.text}
-                    {row.content.subcontent &&
-                        row.content.subcontent.map((item, i) => (
-                            <div key={i} className='complaints-policy__subsection'>
-                                <div className='complaints-policy__subsection-title'>{item.title}</div>
-                                <div className='complaints-policy__subsection-content'>{item.text}</div>
-                            </div>
-                        ))}
+                    {/* eslint-disable-next-line react/display-name */}
+                    {row.content.subcontent?.map((item, i) => (
+                        <div key={i} className='complaints-policy__subsection'>
+                            <div className='complaints-policy__subsection-title'>{item.title}</div>
+                            <div className='complaints-policy__subsection-content'>{item.text}</div>
+                        </div>
+                    ))}
                 </div>
             )}
         </div>

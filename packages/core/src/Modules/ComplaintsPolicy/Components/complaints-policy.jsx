@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { FadeWrapper, PageOverlay, Div100vhContainer } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import ComplaintsPolicyContent from './content.jsx';
+import ComplaintsPolicyContent from './complaints-policy-content.jsx';
 import 'Sass/app/modules/complaints-policy.scss';
 
 class ComplaintsPolicy extends React.Component {

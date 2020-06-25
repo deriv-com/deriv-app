@@ -74,6 +74,14 @@ class ToggleMenuDrawer extends React.Component {
         this.setState({ is_open: !this.state.is_open });
     };
 
+    getFilteredRoutesConfig = (all_routes_config, routes_to_filter) => {
+        const subroutes_config = all_routes_config.flatMap(i => i.routes || []);
+
+        return routes_to_filter
+            .map(path => all_routes_config.find(r => r.path === path) || subroutes_config.find(r => r.path === path))
+            .filter(route => route);
+    };
+
     getRoutesWithSubMenu = route_config => {
         const { needs_financial_assessment, needs_verification } = this.state;
         const has_access = route_config.is_authenticated ? this.props.is_logged_in : true;
@@ -154,11 +162,11 @@ class ToggleMenuDrawer extends React.Component {
 
     render() {
         const all_routes_config = getAllRoutesConfig();
-        const subroutes_config = [].concat(...all_routes_config.map(i => i.routes || []));
-        const allowed_routes = [routes.reports, routes.account, routes.cashier, routes.complaints_policy];
-        const routes_config = allowed_routes
-            .map(path => all_routes_config.find(r => r.path === path) || subroutes_config.find(r => r.path === path))
-            .filter(route => route);
+        const primary_routes = [routes.reports, routes.account, routes.cashier];
+        const primary_routes_config = this.getFilteredRoutesConfig(all_routes_config, primary_routes);
+        const secondary_routes = [routes.complaints_policy];
+        const secondary_routes_config = this.getFilteredRoutesConfig(all_routes_config, secondary_routes);
+
         return (
             <React.Fragment>
                 <a id='dt_mobile_drawer_toggle' onClick={this.toggleDrawer} className='header__mobile-drawer-toggle'>
@@ -188,17 +196,22 @@ class ToggleMenuDrawer extends React.Component {
                                     onClickLink={this.toggleDrawer}
                                 />
                             </MobileDrawer.Item>
-                            {routes_config.map(route_config => this.getRoutesWithSubMenu(route_config))}
+                            {primary_routes_config.map(route_config => this.getRoutesWithSubMenu(route_config))}
                             <MobileDrawer.Item
+                                className='header__menu-mobile-theme'
                                 onClick={e => {
                                     e.preventDefault();
                                     this.props.toggleTheme(!this.props.is_dark_mode);
                                 }}
                             >
                                 <div
-                                    className={classNames('header__menu-mobile-link', {
-                                        'header__menu-mobile-link--active': this.props.is_dark_mode,
-                                    })}
+                                    className={classNames(
+                                        'header__menu-mobile-link',
+                                        'header__menu-mobile-link--divider',
+                                        {
+                                            'header__menu-mobile-link--active': this.props.is_dark_mode,
+                                        }
+                                    )}
                                 >
                                     <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
                                     <span className='header__menu-mobile-link-text'>{localize('Dark theme')}</span>
@@ -213,6 +226,7 @@ class ToggleMenuDrawer extends React.Component {
                                     />
                                 </div>
                             </MobileDrawer.Item>
+                            {secondary_routes_config.map(route_config => this.getRoutesWithSubMenu(route_config))}
                             {this.props.is_logged_in && (
                                 <MobileDrawer.Item
                                     onClick={() => {

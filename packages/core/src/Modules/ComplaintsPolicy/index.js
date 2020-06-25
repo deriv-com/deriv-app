@@ -1,4 +1,4 @@
-import ComplaintsPolicyContent from './Components/content.jsx';
+import ComplaintsPolicyContent from './Components/complaints-policy-content.jsx';
 
 export default from './Components/complaints-policy.jsx';
 export { ComplaintsPolicyContent };

@@ -31,7 +31,7 @@
         flex-direction: row;
         height: 100%;
 
-        &-extras {
+        &-extras:not(:empty) {
             padding: 0 0.8rem;
 
             &:before,

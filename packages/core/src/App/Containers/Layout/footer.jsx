@@ -33,12 +33,9 @@ const Footer = ({
         <EndpointNote />
         <NetworkStatus />
         <ServerTime />
-
-        {landing_company_shortcode && (
-            <div className='footer__links footer__links-extras'>
-                <ToggleComplaintsPolicy landing_company_shortcode={landing_company_shortcode} />
-            </div>
-        )}
+        <div className='footer__links footer__links-extras'>
+            <ToggleComplaintsPolicy landing_company_shortcode={landing_company_shortcode} />
+        </div>
         <div className='footer__links'>
             <HelpCentre />
             <ToggleSettings

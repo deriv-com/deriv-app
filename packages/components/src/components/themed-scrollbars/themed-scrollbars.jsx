@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { useHover } from './themed-scrollbars';
+import { useHover } from '../../hooks/use-hover';
 
 const ThemedScrollbars = ({
     children,

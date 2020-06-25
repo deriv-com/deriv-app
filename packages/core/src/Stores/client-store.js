@@ -699,12 +699,12 @@ export default class ClientStore extends BaseStore {
                     statement: 1,
                 })
             );
-            const account_settings = await WS.wait('get_settings').get_settings;
+            const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
             if (account_settings && !account_settings.residence) {
                 await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
-            WS.wait('landing_company').then(this.responseLandingCompany);
+            WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             this.getLimits();
         }
         this.responseWebsiteStatus(await WS.wait('website_status'));

@@ -24,7 +24,7 @@ export default class JournalStore {
     ];
 
     @observable unfiltered_messages = [];
-    @observable checked_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
+    @observable journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
 
     @action.bound
     onLogSuccess(message) {
@@ -87,26 +87,28 @@ export default class JournalStore {
         // filter messages based on filtered-checkbox
         return this.unfiltered_messages.filter(
             message =>
-                !this.checked_filters.length ||
-                this.checked_filters.some(filter => message.message_type === filter) ||
-                message.message_type === message_types.COMPONENT
+                this.journal_filters.length && this.journal_filters.some(filter => message.message_type === filter)
         );
+    }
+
+    @computed
+    get checked_filters() {
+        return this.journal_filters.filter(filter => filter != null);
     }
 
     @action.bound
     filterMessage(checked, item_id) {
         if (checked) {
-            this.checked_filters.push(item_id);
+            this.journal_filters.push(item_id);
         } else {
-            this.checked_filters.splice(this.checked_filters.indexOf(item_id), 1);
+            this.journal_filters.splice(this.journal_filters.indexOf(item_id), 1);
         }
 
-        storeSetting('journal_filter', this.checked_filters);
+        storeSetting('journal_filter', this.journal_filters);
     }
 
     @action.bound
     clear() {
-        this.unfiltered_messages = [];
-        this.filterMessage(this.checked_filters);
+        this.unfiltered_messages.clear();
     }
 }

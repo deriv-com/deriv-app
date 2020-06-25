@@ -22,6 +22,10 @@
     &__wrapper {
         text-align: center;
 
+        @include desktop {
+            max-width: 672px;
+        }
+
         &,
         &--align-left {
             color: var(--text-general);
@@ -197,13 +201,10 @@
 
         &-wrapper {
             display: flex;
+            flex-direction: column;
 
             .dc-select-native__placeholder {
                 background-color: var(--general-main-1);
-            }
-
-            @include mobile {
-                flex-direction: column;
             }
         }
         &-display {
@@ -888,13 +889,16 @@
 /** @define account-transfer; weak */
 .account-transfer {
     &__notes {
-        color: var(--text-general);
-        padding: 1.6rem 0;
-        font-size: var(--text-size-xs);
-        line-height: 1.5;
+        text-align: left;
 
+        .account-transfer__notes-header {
+            margin-top: 0;
+        }
         @include mobile {
+            color: var(--text-general);
+            padding: 1.6rem 0;
             font-size: var(--text-size-xxs);
+            line-height: 1.5;
         }
     }
     &__bullet {
@@ -912,19 +916,25 @@
         }
     }
     &__drop-down {
-        min-width: calc(calc(100% - calc(16px + 3.2rem)) / 2);
-        width: auto;
-        margin-bottom: 1.7rem;
+        text-align: left;
+        width: fit-content;
+        min-width: 36rem;
+        margin: 0 auto 5.1rem;
 
         @include mobile {
             width: 100%;
+            min-width: auto;
             margin-bottom: 2.4rem;
         }
     }
     &__input {
         margin-bottom: -0.8rem !important;
+        width: fit-content;
+        min-width: 36rem;
 
         @include mobile {
+            width: 100%;
+            min-width: auto;
             margin-bottom: 2.6rem !important;
         }
     }
@@ -943,16 +953,16 @@
         margin-left: auto;
     }
     &__transfer {
-        &-icon {
-            vertical-align: initial;
-            margin: 1rem 1.6rem 0;
-        }
         &-details {
             &-from,
             &-to {
                 display: flex;
                 align-items: center;
             }
+        }
+        &-from,
+        &-to {
+            text-align: left;
         }
         &-from {
             margin-bottom: 3.5rem;
@@ -980,6 +990,13 @@
             &__transferred-amount {
                 color: var(--text-profit-success);
             }
+        }
+    }
+    @include desktop {
+        &__form-submit {
+            min-width: 36rem;
+            width: fit-content;
+            margin: 2rem auto 0;
         }
     }
     @include mobile {
@@ -1014,19 +1031,19 @@
                     text-align: center;
                 }
             }
-        }
-        &__form-submit {
-            display: flex;
-            flex-flow: row;
-            justify-content: center;
+            &-form-submit {
+                display: flex;
+                flex-flow: row;
+                justify-content: center;
 
-            .account-transfer__button {
-                margin: 1.6rem 0.4rem 0;
-                width: 100%;
+                .account-transfer__button {
+                    margin: 1.6rem 0.4rem 0;
+                    width: 100%;
 
-                @media only screen and (max-width: 340px) {
-                    & .dc-btn__text {
-                        font-size: 1.2rem;
+                    @media only screen and (max-width: 340px) {
+                        & .dc-btn__text {
+                            font-size: 1.2rem;
+                        }
                     }
                 }
             }

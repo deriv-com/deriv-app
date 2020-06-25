@@ -102,6 +102,16 @@ const onClick = async () => {
     const nativeInputSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
     nativeInputSetter.call(input_search, 'Volatility');
 
+    // Sets the vertical tabs in markets dropdown to Synthetic group
+    const cq_panel = document.getElementsByClassName('cq-filter');
+    if (cq_panel instanceof HTMLCollection) {
+        [...cq_panel].forEach((cq_item, index) => {
+            cq_item.classList.remove('cq-active-filter');
+            // Synthetic group is first item after favourites
+            if (index === 1) cq_item.classList.add('cq-active-filter');
+        });
+    }
+
     const input_event = new Event('input', { bubbles: true });
     input_search.dispatchEvent(input_event);
 

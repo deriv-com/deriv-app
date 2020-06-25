@@ -37,9 +37,6 @@ const RouteWithSubRoutes = route => {
 
         const title = route.title ? `${route.title} | ` : '';
         document.title = `${title}${default_title}`;
-        BinarySocket.wait('website_status').then(() => {
-            route.pushDataLayer({ event: 'page_load' });
-        });
         return result;
     };
 

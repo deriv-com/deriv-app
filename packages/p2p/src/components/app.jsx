@@ -11,6 +11,7 @@ import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
 import NicknameForm from './nickname/nickname-form.jsx';
+import Verification from './verification/verification.jsx';
 import './app.scss';
 
 const allowed_currency = 'USD';
@@ -23,6 +24,8 @@ const path = {
 };
 
 class App extends React.Component {
+    is_mounted = false;
+
     constructor(props) {
         super(props);
 
@@ -51,6 +54,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        this.is_mounted = true;
         this.ws_subscriptions.push(
             ...[
                 subscribeWS(
@@ -80,6 +84,7 @@ class App extends React.Component {
     }
 
     componentWillUnmount() {
+        this.is_mounted = false;
         this.ws_subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
@@ -105,6 +110,7 @@ class App extends React.Component {
             this.setState({
                 advertiser_id: p2p_advertiser_info.id,
                 is_advertiser: !!p2p_advertiser_info.is_approved,
+                is_listed: p2p_advertiser_info.is_listed === 1,
                 nickname: p2p_advertiser_info.name,
             });
         } else if (response.error.code === 'RestrictedCountry') {
@@ -113,6 +119,20 @@ class App extends React.Component {
             this.setState({ is_advertiser: false });
         } else {
             this.ws_subscriptions[0].unsubscribe();
+        }
+
+        if (!this.state.is_advertiser) {
+            requestWS({ get_account_status: 1 }).then(account_response => {
+                if (this.is_mounted && !account_response.error) {
+                    const { get_account_status } = account_response;
+                    const { authentication } = get_account_status;
+                    const { identity } = authentication;
+
+                    this.setState({
+                        poi_status: identity.status,
+                    });
+                }
+            });
         }
     };
 
@@ -251,6 +271,7 @@ class App extends React.Component {
             custom_strings,
             order_id,
             setOrderId,
+            should_show_verification,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -272,6 +293,8 @@ class App extends React.Component {
                     residence,
                     advertiser_id: this.state.advertiser_id,
                     is_advertiser: this.state.is_advertiser,
+                    is_listed: this.state.is_listed,
+                    setIsListed: is_listed => this.setState({ is_listed }),
                     setIsAdvertiser: is_advertiser => this.setState({ is_advertiser }),
                     nickname: this.state.nickname,
                     setNickname: nickname => this.setState({ nickname }),
@@ -288,30 +311,38 @@ class App extends React.Component {
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
                     getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId.bind(this),
+                    poi_status: this.state.poi_status,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
-                    <Tabs
-                        onTabItemClick={this.handleTabClick}
-                        active_index={active_index}
-                        className='p2p-cashier'
-                        top
-                        header_fit_content
-                    >
-                        <div label={localize('Buy / Sell')}>
-                            <BuySell navigate={this.redirectTo} params={parameters} />
+                    {should_show_verification && (
+                        <div className='p2p-cashier--verification'>
+                            <Verification />
                         </div>
-                        <div count={notification_count} label={localize('Orders')}>
-                            <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
-                        </div>
-                        <div label={localize('My ads')}>
-                            <MyAds navigate={this.redirectTo} params={parameters} />
-                        </div>
-                        {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
-                        {/* <div label={localize('My profile')}>
-                            <MyProfile navigate={this.redirectTo} params={parameters} />
-                        </div> */}
-                    </Tabs>
+                    )}
+                    {!should_show_verification && (
+                        <Tabs
+                            onTabItemClick={this.handleTabClick}
+                            active_index={active_index}
+                            className='p2p-cashier'
+                            top
+                            header_fit_content
+                        >
+                            <div label={localize('Buy / Sell')}>
+                                <BuySell navigate={this.redirectTo} params={parameters} />
+                            </div>
+                            <div count={notification_count} label={localize('Orders')}>
+                                <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
+                            </div>
+                            <div label={localize('My ads')}>
+                                <MyAds navigate={this.redirectTo} params={parameters} />
+                            </div>
+                            {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
+                            {/* <div label={localize('My profile')}>
+                                    <MyProfile navigate={this.redirectTo} params={parameters} />
+                                </div> */}
+                        </Tabs>
+                    )}
                     {show_popup && (
                         <div className='p2p-nickname__dialog'>
                             <Dialog is_visible={show_popup}>

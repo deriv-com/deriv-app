@@ -4,8 +4,8 @@ import Dp2pContext from 'Components/context/dp2p-context';
 import { Localize } from 'Components/i18next';
 import './verification.scss';
 
-const Verification = ({ poi_status }) => {
-    const { nickname, toggleNicknamePopup, is_advertiser } = React.useContext(Dp2pContext);
+const Verification = () => {
+    const { nickname, toggleNicknamePopup, is_advertiser, poi_status } = React.useContext(Dp2pContext);
 
     const items = [
         {
@@ -50,7 +50,7 @@ const Verification = ({ poi_status }) => {
                         <Localize i18n_default_text='Register with us here' />
                     </p>
                     <p>
-                        <Localize i18n_default_text='We’ll need you to upload your documents to verify your identity and address.' />
+                        <Localize i18n_default_text='To use DP2P, you need to choose a display name (a nickname) and verify your identity.' />
                     </p>
                 </div>
             </div>

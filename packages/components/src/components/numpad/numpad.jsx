@@ -32,6 +32,7 @@ const Numpad = ({
     const formatted_value = formatNumber(value);
     const [is_float, setFloat] = React.useState(isFloat(formatted_value));
     const [default_value, setValue] = React.useState(formatted_value);
+    const [has_error, setHasError] = React.useState(false);
 
     React.useEffect(() => {
         if (formatted_value !== formatNumber(default_value)) {
@@ -40,17 +41,17 @@ const Numpad = ({
         }
     }, [value]);
 
+    React.useEffect(() => {
+        const is_error = !onValidate(default_value) || onValidate(default_value) === 'error';
+        setHasError(is_error);
+    }, [default_value, value]);
+
     const updateValue = val => {
         setValue(val);
         if (onValueChange) onValueChange(val);
     };
 
     const onSelect = num => {
-        if (typeof onValidate === 'function' && default_value !== '') {
-            const passes = onValidate(concatenate(num, default_value));
-            if (!passes) return;
-        }
-
         switch (num) {
             // backspace
             case -1:
@@ -122,8 +123,6 @@ const Numpad = ({
     };
     const backspaceLongPress = useLongPress(clearValue, reset_press_interval);
 
-    const has_error = !onValidate(default_value) || onValidate(default_value) === 'error';
-
     return (
         <div
             className={classNames('dc-numpad', className, {
@@ -139,14 +138,8 @@ const Numpad = ({
                 render={render}
                 onChange={v => {
                     const amount = Number(v).toFixed(getDecimals(default_value));
-                    if (typeof onValidate === 'function') {
-                        setFloat(isFloat(amount));
-                        updateValue(amount);
-                        onValidate(formatNumber(default_value));
-                    } else {
-                        setFloat(isFloat(amount));
-                        updateValue(amount);
-                    }
+                    setFloat(isFloat(amount));
+                    updateValue(amount);
                 }}
                 min={min}
                 max={max}
@@ -165,12 +158,7 @@ const Numpad = ({
                     has_effect
                     className='dc-numpad__number'
                     onClick={() => {
-                        if (typeof onValidate === 'function') {
-                            onSelect(-1);
-                            onValidate(formatNumber(default_value));
-                        } else {
-                            onSelect(-1);
-                        }
+                        onSelect(-1);
                     }}
                     is_disabled={is_backspace_disabled}
                 >
@@ -185,18 +173,12 @@ const Numpad = ({
                         'dc-numpad__number--is-disabled':
                             is_submit_disabled ||
                             !default_value.toString().length ||
-                            (min && formatNumber(default_value) < min) ||
-                            (typeof onValidate === 'function' ? !onValidate(default_value) : false),
+                            (min && formatNumber(default_value) < min),
                     })}
                     onClick={() => {
                         if (!default_value.toString().length) return;
                         if (min && formatNumber(default_value) < min) return;
-                        if (typeof onValidate === 'function') {
-                            onValidate(formatNumber(default_value));
-                            onSubmit(formatNumber(default_value));
-                        } else {
-                            onSubmit(formatNumber(default_value));
-                        }
+                        onSubmit(formatNumber(default_value));
                     }}
                     is_disabled={
                         is_submit_disabled ||

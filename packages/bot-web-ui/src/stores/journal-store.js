@@ -5,7 +5,7 @@ import { message_types } from '@deriv/bot-skeleton';
 
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
-import { messageWithButton } from '../components/notify-item.jsx';
+import { isCustomJournalMessage } from '../utils/journal-notifications';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -24,7 +24,7 @@ export default class JournalStore {
     ];
 
     @observable unfiltered_messages = [];
-    @observable checked_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
+    @observable journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
 
     @action.bound
     onLogSuccess(message) {
@@ -41,31 +41,19 @@ export default class JournalStore {
     onNotify(data) {
         const { run_panel } = this.root_store;
         const { message, className, message_type, sound, block_id, variable_name } = data;
-        let message_string = message;
 
-        // when notify undefined variable block
-        if (message === undefined && variable_name != null) {
-            run_panel.showErrorMessage(
-                messageWithButton({
-                    unique_id: block_id,
-                    type: 'error',
-                    message: localize(
-                        "Variable '{{variable_name}}' has no value. Please set a value for variable '{{variable_name}}' to notify.",
-                        { variable_name }
-                    ),
-                    btn_text: localize('Go to block'),
-                    onClick: () => {
-                        this.dbot.centerAndHighlightBlock(block_id, true);
-                    },
-                })
-            );
+        if (
+            isCustomJournalMessage(
+                { message, block_id, variable_name },
+                run_panel.showErrorMessage,
+                () => this.dbot.centerAndHighlightBlock(block_id, true),
+                parsed_message => this.pushMessage(parsed_message, message_type || message_types.NOTIFY, className)
+            )
+        ) {
             return;
         }
 
-        if (typeof message === 'boolean') {
-            message_string = message.toString();
-        }
-        this.pushMessage(message_string, message_type || message_types.NOTIFY, className);
+        this.pushMessage(message, message_type || message_types.NOTIFY, className);
 
         if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
             const audio = document.getElementById(sound);
@@ -87,26 +75,28 @@ export default class JournalStore {
         // filter messages based on filtered-checkbox
         return this.unfiltered_messages.filter(
             message =>
-                !this.checked_filters.length ||
-                this.checked_filters.some(filter => message.message_type === filter) ||
-                message.message_type === message_types.COMPONENT
+                this.journal_filters.length && this.journal_filters.some(filter => message.message_type === filter)
         );
+    }
+
+    @computed
+    get checked_filters() {
+        return this.journal_filters.filter(filter => filter != null);
     }
 
     @action.bound
     filterMessage(checked, item_id) {
         if (checked) {
-            this.checked_filters.push(item_id);
+            this.journal_filters.push(item_id);
         } else {
-            this.checked_filters.splice(this.checked_filters.indexOf(item_id), 1);
+            this.journal_filters.splice(this.journal_filters.indexOf(item_id), 1);
         }
 
-        storeSetting('journal_filter', this.checked_filters);
+        storeSetting('journal_filter', this.journal_filters);
     }
 
     @action.bound
     clear() {
-        this.unfiltered_messages = [];
-        this.filterMessage(this.checked_filters);
+        this.unfiltered_messages.clear();
     }
 }

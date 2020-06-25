@@ -1,22 +1,5 @@
 import React from 'react';
-import { isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
-
-export const unsupported_contract_types_list = [
-    // TODO: remove these once all contract types are supported
-    'callputspread',
-    'run_high_low',
-    'reset',
-    'asian',
-    'tick_high_low',
-    'end',
-    'stay',
-    'lb_call',
-    'lb_put',
-    'lb_high_low',
-    // TODO: Remove the conditional values below once barrier and path dependent contracts are ready for mobile
-    isMobile() ? 'multiplier' : null,
-];
 
 export const contract_category_icon = {
     [localize('Ups & Downs')]: 'IcUpsDowns',
@@ -24,7 +7,7 @@ export const contract_category_icon = {
     [localize('Ins & Outs')]: 'IcInsOuts',
     [localize('Look Backs')]: 'IcLookbacks',
     [localize('Digits')]: 'IcDigits',
-    [localize('Multiplier options')]: 'IcMultiplier',
+    [localize('Multipliers')]: 'IcMultiplier',
 };
 
 /**
@@ -55,7 +38,7 @@ export const getAvailableContractTypes = (contract_types_list, unsupported_list)
                     contract_types: available_contract_types,
                     icon: contract_category_icon[key],
                     component:
-                        key === localize('Multiplier options') ? (
+                        key === localize('Multipliers') ? (
                             <span className='dc-vertical-tab__header--new'>{localize('NEW!')}</span>
                         ) : null,
                 };

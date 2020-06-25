@@ -60,7 +60,7 @@ class App extends React.Component {
         // force safari refresh on back/forward
         window.onpageshow = function(event) {
             if (event.persisted) {
-                window.location.reload();
+                window.location.reload(true);
             }
         };
 

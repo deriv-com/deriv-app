@@ -337,7 +337,7 @@ class App extends React.Component {
                     nickname_error,
                     list_item_limit: this.list_item_limit,
                     changeTab: this.handleTabClick,
-                    setIsListed: is_listed => this.setState({ is_listed }),
+                    setIsListed: is_listed_result => this.setState({ is_listed: is_listed_result }),
                     setIsAdvertiser: is_advertiser_result => this.setState({ is_advertiser: is_advertiser_result }),
                     setNickname: nickname_result => this.setState({ nickname: nickname_result }),
                     setChatInfo: this.setChatInfo,

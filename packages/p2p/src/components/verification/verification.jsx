@@ -7,8 +7,8 @@ import './verification.scss';
 const Verification = () => {
     const { nickname, toggleNicknamePopup, is_advertiser, poi_status, poi_url } = React.useContext(Dp2pContext);
 
-    const poiStatusText = poi_status => {
-        switch (poi_status) {
+    const poiStatusText = status => {
+        switch (status) {
             case 'pending':
             case 'rejected':
                 return <Localize i18n_default_text='Check your verification status.' />;

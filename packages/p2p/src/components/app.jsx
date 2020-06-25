@@ -38,6 +38,7 @@ class App extends React.Component {
         this.state = {
             poi_url: this.props.poi_url,
             active_index: 0,
+            loginid: this.props.client.loginid,
             order_offset: 0,
             orders: [],
             notification_count: 0,
@@ -132,6 +133,7 @@ class App extends React.Component {
             this.setState({
                 advertiser_id: p2p_advertiser_info.id,
                 is_advertiser: !!p2p_advertiser_info.is_approved,
+                is_listed: p2p_advertiser_info.is_listed === 1,
                 nickname: p2p_advertiser_info.name,
             });
         } else {
@@ -189,12 +191,13 @@ class App extends React.Component {
         this.setState({ chat_info });
     };
 
-    getLocalStorageSettings = () => {
-        return JSON.parse(localStorage.getItem('dp2p_settings') || '{ "is_cached": false, "notifications": [] }');
-    };
+    getLocalStorageSettings = () => JSON.parse(localStorage.getItem('p2p_settings') || '{}');
+
+    getLocalStorageSettingsForLoginId = () =>
+        this.getLocalStorageSettings()[this.state.loginid] || { is_cached: false, notifications: [] };
 
     handleNotifications = (old_orders, new_orders) => {
-        const { is_cached, notifications } = this.getLocalStorageSettings();
+        const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
 
         new_orders.forEach(new_order => {
             const old_order = old_orders.find(o => o.id === new_order.id);
@@ -232,9 +235,14 @@ class App extends React.Component {
 
     updateP2pNotifications = notifications => {
         const notification_count = notifications.filter(notification => notification.is_seen === false).length;
-        const dp2p_settings = JSON.stringify({ is_cached: true, notifications });
+        const user_settings = this.getLocalStorageSettingsForLoginId();
+        user_settings.is_cached = true;
+        user_settings.notifications = notifications;
 
-        localStorage.setItem('dp2p_settings', dp2p_settings);
+        const p2p_settings = this.getLocalStorageSettings();
+        p2p_settings[this.state.loginid] = user_settings;
+
+        localStorage.setItem('p2p_settings', JSON.stringify(p2p_settings));
         this.setState({ notification_count });
 
         if (typeof this.props.setNotificationCount === 'function') {
@@ -327,6 +335,7 @@ class App extends React.Component {
                     nickname_error,
                     list_item_limit: this.list_item_limit,
                     changeTab: this.handleTabClick,
+                    setIsListed: is_listed => this.setState({ is_listed }),
                     setIsAdvertiser: is_advertiser => this.setState({ is_advertiser }),
                     setNickname: nickname => this.setState({ nickname }),
                     setChatInfo: this.setChatInfo,
@@ -392,6 +401,7 @@ App.propTypes = {
             currency: PropTypes.string.isRequired,
             decimal_places: PropTypes.number.isRequired,
         }).isRequired,
+        loginid: PropTypes.string.isRequired,
         residence: PropTypes.string.isRequired,
     }),
     lang: PropTypes.string,

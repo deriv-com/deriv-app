@@ -48,9 +48,11 @@ const DigitsWrapper = ({
         }
     }
 
-    if (props.onChangeStatus) {
-        props.onChangeStatus({ status, current_tick: tick ? tick.current_tick : null });
-    }
+    React.useEffect(() => {
+        if (props.onChangeStatus) {
+            props.onChangeStatus({ status, current_tick: tick ? tick.current_tick : null });
+        }
+    }, [tick, is_trade_page, display_status]);
 
     return (
         <LastDigitPrediction

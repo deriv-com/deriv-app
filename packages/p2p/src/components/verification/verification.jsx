@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Checklist } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
-import { Localize, localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
 import './verification.scss';
 
 const Verification = () => {
@@ -34,7 +34,11 @@ const Verification = () => {
     ];
 
     if (!is_advertiser && poi_status === 'verified' && nickname) {
-        return <div>{localize('Your P2P cashier has been blocked. Please contact customer support')}</div>;
+        return (
+            <div className='p2p-blocked-user'>
+                <Localize i18n_default_text='Your P2P cashier has been blocked. Please contact customer support.' />
+            </div>
+        );
     }
 
     return (

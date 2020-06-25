@@ -355,12 +355,19 @@
         }
     }
     &__account-switch-icon {
-        background-image: url('~Images/app/cashier/account_switcher.png');
-        width: 400px;
-        height: 360px;
+        box-sizing: border-box;
+        width: 299px;
+        height: 200px;
         background-repeat: no-repeat;
         background-size: 100%;
-        margin: 2.4rem auto;
+        margin: 0 auto 1rem;
+
+        &--light {
+            background-image: url('~Images/app/cashier/cashier-demo-light.svg');
+        }
+        &--dark {
+            background-image: url('~Images/app/cashier/cashier-demo-dark.svg');
+        }
 
         @include mobile {
             width: 100%;
@@ -368,10 +375,16 @@
             height: 320px;
         }
     }
+    &__account-switch-text {
+        color: var(--text-loss-danger);
+        cursor: pointer;
+        font-weight: bold;
+    }
     &__virtual {
         &-header {
+            @include typeface(--title-center-bold-prominent);
             margin-top: 0;
-            margin-bottom: 0.8rem;
+            margin-bottom: 1.6rem;
 
             @include mobile {
                 padding-top: 2.4rem;

@@ -8,7 +8,6 @@ import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';
 
-/* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
 class P2PCashier extends React.Component {
     state = {
         order_id: null,
@@ -43,25 +42,16 @@ class P2PCashier extends React.Component {
         }
     }
     render() {
-        const {
-            currency,
-            local_currency_config,
-            is_virtual,
-            p2p_notification_count,
-            residence,
-            setP2pOrderNotificationCount,
-        } = this.props;
+        const { currency, is_virtual, local_currency_config, residence } = this.props;
         const { order_id } = this.state;
         return (
             <P2P
-                websocket_api={WS}
-                lang={getLanguage()}
                 client={{ currency, local_currency_config, is_virtual, residence }}
-                notification_count={p2p_notification_count}
-                server_time={ServerTime}
-                setP2pOrderNotificationCount={setP2pOrderNotificationCount}
+                lang={getLanguage()}
                 order_id={order_id}
+                server_time={ServerTime}
                 setOrderId={this.setQueryOrder}
+                websocket_api={WS}
             />
         );
     }
@@ -69,20 +59,16 @@ class P2PCashier extends React.Component {
 
 P2PCashier.propTypes = {
     currency: PropTypes.string,
-    local_currency_config: PropTypes.object,
     is_virtual: PropTypes.bool,
-    p2p_notification_count: PropTypes.number,
+    local_currency_config: PropTypes.object,
     residence: PropTypes.string,
-    setP2pOrderNotificationCount: PropTypes.func,
 };
 
 export default withRouter(
-    connect(({ client, modules }) => ({
+    connect(({ client }) => ({
         currency: client.currency,
         local_currency_config: client.local_currency_config,
         is_virtual: client.is_virtual,
-        p2p_notification_count: modules.cashier.p2p_notification_count,
         residence: client.residence,
-        setP2pOrderNotificationCount: modules.cashier.setP2pOrderNotificationCount,
     }))(P2PCashier)
 );

@@ -87,8 +87,12 @@ class TradeParamsModal extends React.Component {
         });
     };
 
-    setAmountError = has_error => this.setState({ has_amount_error: has_error });
-    setDurationError = has_error => this.setState({ has_duration_error: has_error });
+    setAmountError = has_error => {
+        this.setState({ has_amount_error: has_error });
+    };
+    setDurationError = has_error => {
+        this.setState({ has_duration_error: has_error });
+    };
 
     isVisible = component_key => this.props.form_components.includes(component_key);
 

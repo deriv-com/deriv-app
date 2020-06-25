@@ -141,7 +141,7 @@ class AccountSwitcher extends React.Component {
         ];
 
         existing_mt5_groups.forEach(group => {
-            const type = group.split('\\')[1];
+            const type = group.split(/[demo|real]_/)[1];
             const index_to_remove = mt5_config.findIndex(account => account.account_types.indexOf(type) > -1);
             mt5_config.splice(index_to_remove, 1);
         });

@@ -2,7 +2,6 @@ import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
-import ComplaintsPolicy from 'Modules/ComplaintsPolicy/Components/complaints-policy.jsx';
 import { getUrlBase } from '@deriv/shared/utils/url';
 import { isMobile } from '@deriv/shared/utils/screen';
 import routes from '@deriv/shared/utils/routes';
@@ -10,6 +9,7 @@ import { addRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
 import { Redirect } from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
+import ComplaintsPolicy from 'Modules/ComplaintsPolicy';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
@@ -237,6 +237,7 @@ const initRoutesConfig = () => [
                   component: ComplaintsPolicy,
                   title: localize('Complaints policy'),
                   icon_component: 'IcComplaintsPolicy',
+                  is_authenticated: true,
               },
           ]
         : []),

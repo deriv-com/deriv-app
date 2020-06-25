@@ -57,6 +57,13 @@ class App extends React.Component {
     componentDidMount() {
         this.is_mounted = true;
 
+        // force safari refresh on back/forward
+        window.onpageshow = function(event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        };
+
         this.ws_subscriptions = {
             advertiser_subscription: subscribeWS(
                 {

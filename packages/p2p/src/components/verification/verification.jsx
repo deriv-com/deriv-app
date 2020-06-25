@@ -21,7 +21,7 @@ const Verification = () => {
                     />
                 );
             case 'verified':
-                return <Localize i18n_default_text='Your identity is verified.' />;
+                return <Localize i18n_default_text='Identity verification is complete.' />;
         }
     };
 

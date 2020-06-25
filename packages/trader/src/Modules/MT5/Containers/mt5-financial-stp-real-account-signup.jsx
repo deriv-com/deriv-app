@@ -17,8 +17,6 @@ const index_lookup = {
     MT5PendingVerification: 3,
 };
 
-const MT5_PERSONAL_DETAILS_CACHE_KEY = 'mt5_financial_stp_signup_personal_details';
-
 class MT5FinancialStpRealAccountSignup extends React.Component {
     state = {};
 
@@ -106,7 +104,6 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
 
     finishWizard = setSubmitting => {
         setSubmitting(false);
-        sessionStorage.removeItem(MT5_PERSONAL_DETAILS_CACHE_KEY);
         this.props.openPendingDialog();
         this.props.toggleModal();
     };
@@ -162,6 +159,10 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
             cloned[index_lookup.MT5PersonalDetailsForm].form_value.tax_identification_number =
                 response.get_settings.tax_identification_number;
         }
+        if (response.get_settings.account_opening_reason) {
+            cloned[index_lookup.MT5PersonalDetailsForm].form_value.account_opening_reason =
+                response.get_settings.account_opening_reason;
+        }
         this.setState(
             {
                 items: cloned,
@@ -182,7 +183,6 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
     };
 
     componentDidMount() {
-        this.populateFromSessionStorage();
         if (this.state_index === index_lookup.MT5PersonalDetailsForm) {
             this.setState({
                 is_loading: true,
@@ -193,26 +193,6 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                 });
             });
         }
-    }
-
-    populateFromSessionStorage = () => {
-        const cached_form_fills = sessionStorage.getItem(MT5_PERSONAL_DETAILS_CACHE_KEY);
-        if (cached_form_fills) {
-            const cached_values = JSON.parse(cached_form_fills);
-            this.setState(({ items }) => {
-                const form_values = items[index_lookup.MT5PersonalDetailsForm].form_value;
-                Object.keys(form_values).forEach(key => (form_values[key] = cached_values[key]));
-
-                return items;
-            });
-        }
-    };
-
-    componentWillUnmount() {
-        sessionStorage.setItem(
-            MT5_PERSONAL_DETAILS_CACHE_KEY,
-            JSON.stringify(this.state.items[index_lookup.MT5PersonalDetailsForm].form_value)
-        );
     }
 
     getCurrent = key => {

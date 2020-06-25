@@ -85,9 +85,10 @@ const Tools = ({ checked_filters, filters, filterMessage }) => (
                     <Checkbox
                         key={item.id}
                         classNameLabel='journal-tools__text'
+                        value={checked_filters.includes(item.id)}
                         defaultChecked={checked_filters.includes(item.id)}
                         label={item.label}
-                        onChange={e => filterMessage(e.target.checked, item.id)}
+                        onChange={() => filterMessage(!checked_filters.includes(item.id), item.id)}
                     />
                 );
             })}
@@ -128,16 +129,11 @@ const JournalLoader = () => (
     </ContentLoader>
 );
 
-const Journal = ({ filtered_messages, contract_stage, ...props }) => {
+const Journal = ({ filtered_messages, contract_stage, is_stop_button_visible, ...props }) => {
     return (
         <div className='journal run-panel-tab__content'>
             <Tools {...props} />
-            <ThemedScrollbars
-                autoHide
-                className='journal__scrollbars'
-                style={{ height: 'calc(100% - 42px)' }}
-                hideHorizontal={true}
-            >
+            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 50px)'}>
                 <div className='journal__item-list'>
                     {filtered_messages.length ? (
                         <TransitionGroup>
@@ -159,7 +155,9 @@ const Journal = ({ filtered_messages, contract_stage, ...props }) => {
                         </TransitionGroup>
                     ) : (
                         <>
-                            {contract_stage.index >= contract_stages.STARTING.index ? (
+                            {contract_stage.index >= contract_stages.STARTING.index &&
+                            !!props.checked_filters.length &&
+                            is_stop_button_visible ? (
                                 <JournalLoader />
                             ) : (
                                 <div className='journal-empty__container'>
@@ -206,4 +204,5 @@ export default connect(({ journal, run_panel }) => ({
     filterMessage: journal.filterMessage,
     filters: journal.filters,
     filtered_messages: journal.filtered_messages,
+    is_stop_button_visible: run_panel.is_stop_button_visible,
 }))(Journal);

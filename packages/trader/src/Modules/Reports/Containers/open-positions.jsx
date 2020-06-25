@@ -4,9 +4,9 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable } from '@deriv/components';
 import { urlFor } from '@deriv/shared/utils/url';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
-import MultiplierCloseActions from 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard/multiplier-close-actions.jsx';
 import { getTimePercentage } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { website_name } from 'App/Constants/app-config';
 import { getContractPath } from 'App/Components/Routes/helpers';
@@ -20,27 +20,6 @@ import PlaceholderComponent from 'Modules/Reports/Components/placeholder-compone
 import { connect } from 'Stores/connect';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
-
-const getActionColumns = ({ onClickCancel, onClickSell, getPositionById }) => ({ row_obj, is_header, is_footer }) => {
-    if (is_header || is_footer) {
-        return <div className='open-positions__row-action' />;
-    }
-
-    const { contract_info } = row_obj;
-    const position = getPositionById(contract_info.contract_id);
-    const { is_sell_requested } = position || {};
-
-    return (
-        <div className='open-positions__row-action'>
-            <MultiplierCloseActions
-                contract_info={contract_info}
-                is_sell_requested={is_sell_requested}
-                onClickCancel={onClickCancel}
-                onClickSell={onClickSell}
-            />
-        </div>
-    );
-};
 
 const EmptyPlaceholderWrapper = props => (
     <React.Fragment>
@@ -67,7 +46,7 @@ const OpenPositionsTable = ({
     getRowAction,
     mobileRowRenderer,
     preloaderCheck,
-    action_column,
+    row_size,
     totals,
 }) => (
     <React.Fragment>
@@ -92,9 +71,8 @@ const OpenPositionsTable = ({
                                 preloaderCheck={preloaderCheck}
                                 footer={totals}
                                 data_source={active_positions}
-                                getActionColumns={action_column}
                                 getRowAction={getRowAction}
-                                getRowSize={() => 63}
+                                getRowSize={() => row_size}
                                 custom_width={'100%'}
                                 content_loader={ReportsTableRowLoader}
                             >
@@ -132,14 +110,17 @@ class OpenPositions extends React.Component {
     };
 
     componentDidMount() {
-        this.props.onMount();
-
-        const { getPositionById, onClickCancel, onClickSell } = this.props;
-        this.getActionColumns = getActionColumns({ getPositionById, onClickCancel, onClickSell });
+        // For mobile, we show portfolio stepper in header even for reports pages.
+        // `onMount` in portfolio store will be invoked from portfolio stepper component in `trade-header-extensions.jsx`
+        if (!isMobile()) {
+            this.props.onMount();
+        }
     }
 
     componentWillUnmount() {
-        this.props.onUnmount();
+        if (!isMobile()) {
+            this.props.onUnmount();
+        }
     }
 
     mobileRowRenderer = ({ row, is_footer }) => {
@@ -235,23 +216,28 @@ class OpenPositions extends React.Component {
             let ask_price = 0;
             let profit = 0;
             let buy_price = 0;
+            let bid_price = 0;
+            let purchase = 0;
 
             active_positions_filtered.forEach(portfolio_pos => {
-                buy_price += +portfolio_pos.purchase;
+                buy_price += +portfolio_pos.contract_info.buy_price;
+                bid_price += +portfolio_pos.contract_info.bid_price;
+                purchase += +portfolio_pos.purchase;
                 if (portfolio_pos.contract_info) {
-                    profit += portfolio_pos.contract_info.profit;
+                    profit += portfolio_pos.contract_info.bid_price - portfolio_pos.contract_info.buy_price;
 
                     if (portfolio_pos.contract_info.cancellation) {
                         ask_price += portfolio_pos.contract_info.cancellation.ask_price || 0;
-                        buy_price -= portfolio_pos.contract_info.cancellation.ask_price;
                     }
                 }
             });
             totals = {
                 contract_info: {
                     profit,
+                    buy_price,
+                    bid_price,
                 },
-                buy_price,
+                purchase,
             };
 
             if (ask_price > 0) {
@@ -291,9 +277,11 @@ class OpenPositions extends React.Component {
             component_icon,
             is_loading,
             error,
-            is_virtual,
             currency,
             NotificationMessages,
+            onClickCancel,
+            onClickSell,
+            getPositionById,
         } = this.props;
 
         if (error) {
@@ -302,16 +290,14 @@ class OpenPositions extends React.Component {
 
         const is_multiplier_selected = this.state.active_index === 1;
 
-        const active_positions_filtered = is_virtual
-            ? active_positions.filter(p => {
-                  if (p.contract_info) {
-                      return is_multiplier_selected
-                          ? isMultiplierContract(p.contract_info.contract_type)
-                          : !isMultiplierContract(p.contract_info.contract_type);
-                  }
-                  return true;
-              })
-            : active_positions;
+        const active_positions_filtered = active_positions.filter(p => {
+            if (p.contract_info) {
+                return is_multiplier_selected
+                    ? isMultiplierContract(p.contract_info.contract_type)
+                    : !isMultiplierContract(p.contract_info.contract_type);
+            }
+            return true;
+        });
 
         const active_positions_filtered_totals = this.getTotals(active_positions_filtered, is_multiplier_selected);
 
@@ -326,8 +312,8 @@ class OpenPositions extends React.Component {
             totals: active_positions_filtered_totals,
         };
         this.columns =
-            this.state.active_index === 1 && this.props.is_virtual
-                ? getMultiplierOpenPositionsColumnsTemplate(currency)
+            this.state.active_index === 1
+                ? getMultiplierOpenPositionsColumnsTemplate({ currency, onClickCancel, onClickSell, getPositionById })
                 : getOpenPositionsColumnsTemplate(currency);
 
         this.columns_map = this.columns.reduce((map, item) => {
@@ -344,42 +330,35 @@ class OpenPositions extends React.Component {
                         'View all active trades on your account that can still incur a profit or a loss.'
                     )}
                 />
-                {// TODO: remove is_virtual check once Multiplier is available for real accounts
-                !is_virtual ? (
-                    <OpenPositionsTable className='open-positions' columns={this.columns} {...shared_props} />
-                ) : (
-                    <>
-                        {/** TODO: enabled open positions Tabs once Multiplier is mobile */}
-                        <DesktopWrapper>
-                            <Tabs
-                                active_index={this.state.active_index}
+                <DesktopWrapper>
+                    <Tabs
+                        active_index={this.state.active_index}
+                        className='open-positions'
+                        onTabItemClick={this.setActiveTabIndex}
+                        top
+                        header_fit_content
+                    >
+                        <div label={localize('Options')}>
+                            <OpenPositionsTable
                                 className='open-positions'
-                                onTabItemClick={this.setActiveTabIndex}
-                                top
-                                header_fit_content
-                            >
-                                <div label={localize('Options')}>
-                                    <OpenPositionsTable
-                                        className='open-positions'
-                                        columns={this.columns}
-                                        {...shared_props}
-                                    />
-                                </div>
-                                <div label={localize('Multiplier options')}>
-                                    <OpenPositionsTable
-                                        className='open-positions-multiplier open-positions'
-                                        columns={this.columns}
-                                        action_column={this.getActionColumns}
-                                        {...shared_props}
-                                    />
-                                </div>
-                            </Tabs>
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <OpenPositionsTable className='open-positions' columns={this.columns} {...shared_props} />
-                        </MobileWrapper>
-                    </>
-                )}
+                                columns={this.columns}
+                                {...shared_props}
+                                row_size={63}
+                            />
+                        </div>
+                        <div label={localize('Multipliers')}>
+                            <OpenPositionsTable
+                                className='open-positions-multiplier open-positions'
+                                columns={this.columns}
+                                row_size={68}
+                                {...shared_props}
+                            />
+                        </div>
+                    </Tabs>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <OpenPositionsTable className='open-positions' columns={this.columns} {...shared_props} />
+                </MobileWrapper>
             </React.Fragment>
         );
     }
@@ -402,7 +381,6 @@ OpenPositions.propTypes = {
 
 export default connect(({ modules, client, common, ui }) => ({
     currency: client.currency,
-    is_virtual: client.is_virtual,
     active_positions: modules.portfolio.active_positions_filtered,
     error: modules.portfolio.error,
     getPositionById: modules.portfolio.getPositionById,

@@ -79,8 +79,10 @@ class Trade extends React.Component {
                         }
                     >
                         <DesktopWrapper>
-                            <ChartLoader is_visible={this.props.is_chart_loading} />
-                            <ChartTrade />
+                            <div className='chart-container__wrapper'>
+                                <ChartLoader is_visible={this.props.is_chart_loading} />
+                                <ChartTrade />
+                            </div>
                         </DesktopWrapper>
                         <MobileWrapper>
                             <ChartLoader
@@ -257,6 +259,9 @@ class ChartTradeClass extends React.Component {
                 hasAlternativeSource={this.props.has_alternative_source}
                 refToAddTick={this.props.refToAddTick}
                 activeSymbols={active_markets}
+                yAxisMargin={{
+                    top: isMobile() ? 76 : 106,
+                }}
             >
                 <ChartMarkers />
             </SmartChart>

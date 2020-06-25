@@ -6,13 +6,15 @@ $header-height: 3.6em;
 }
 
 .positions-drawer {
+    $MARGIN_TOP: #{$POSITIONS_DRAWER_MARGIN * 2};
+    $MARGIN_BOTTOM: #{$POSITIONS_DRAWER_MARGIN * 2};
+
     width: $POSITIONS_DRAWER_WIDTH;
-    // removing 2px below for borders
-    height: calc(100% - 32px);
-    margin-top: #{$POSITIONS_DRAWER_MARGIN * 2};
-    position: absolute;
+    height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$MARGIN_TOP} - #{$MARGIN_BOTTOM});
+    margin-top: #{$MARGIN_TOP};
+    position: fixed;
     z-index: 2;
-    top: 0;
+    top: #{$HEADER_HEIGHT};
     left: 4px;
     box-sizing: border-box;
     opacity: 0;
@@ -70,6 +72,10 @@ $header-height: 3.6em;
         overflow: hidden;
         align-self: center;
         color: var(--text-general);
+
+        & .dc-themed-scrollbars {
+            height: 100%;
+        }
     }
     &__footer {
         position: relative;

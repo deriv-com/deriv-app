@@ -173,7 +173,7 @@ class CurrencySelector extends React.Component {
                                             </div>
                                         )}
                                     </MobileWrapper>
-                                    <ThemedScrollbars is_native={isMobile()} autohide height={height}>
+                                    <ThemedScrollbars is_bypassed={isMobile()} height={`${height - 70}px`}>
                                         <RadioButtonGroup
                                             id='currency'
                                             className='currency-selector__radio-group'

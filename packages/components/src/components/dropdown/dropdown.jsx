@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { mobileOSDetect } from '@deriv/shared/utils/os';
-import ThemedScrollbars from 'Components/themed-scrollbars';
 import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from './dropdown';
 import Items from './items.jsx';
 import NativeSelect from './native-select.jsx';
 import DisplayText from './display-text.jsx';
+import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 import Icon from '../icon';
 
 class Dropdown extends React.Component {
@@ -164,6 +164,7 @@ class Dropdown extends React.Component {
         if (event.keyCode === 9 && !this.state.is_list_visible) return;
 
         event.preventDefault();
+        event.stopPropagation();
 
         switch (event.keyCode) {
             case 27: // esc
@@ -309,19 +310,7 @@ class Dropdown extends React.Component {
                                         aria-expanded={this.state.is_list_visible}
                                         role='list'
                                     >
-                                        <ThemedScrollbars
-                                            autoHeight
-                                            autoHide
-                                            // TODO: remove this once tt-react-scrollbars have been replaced
-                                            // prevent focus handling from breaking
-                                            autoHeightMax={10000}
-                                            renderTrackHorizontal={props => (
-                                                <div {...props} style={{ display: 'none' }} />
-                                            )}
-                                            renderThumbHorizontal={props => (
-                                                <div {...props} style={{ display: 'none' }} />
-                                            )}
-                                        >
+                                        <ThemedScrollbars height={this.props.list_height || '200px'}>
                                             {Array.isArray(this.props.list) ? (
                                                 <Items
                                                     onKeyPressed={this.onKeyPressed}
@@ -388,6 +377,7 @@ Dropdown.propTypes = {
     is_nativepicker_visible: PropTypes.bool,
     label: PropTypes.string,
     list: listPropType(),
+    list_height: PropTypes.string,
     name: PropTypes.string,
     no_border: PropTypes.bool,
     onChange: PropTypes.func,

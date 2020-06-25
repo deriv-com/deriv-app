@@ -37,7 +37,9 @@ Blockly.Blocks.console = {
     meta() {
         return {
             display_name: localize('Console'),
-            description: localize('This block console a message. You can see the message in console developer tool.'),
+            description: localize(
+                "This block displays messages in the developer's console with an input that can be either a string of text, a number, boolean, or an array of data."
+            ),
         };
     },
     getRequiredValueInputs() {
@@ -49,7 +51,9 @@ Blockly.Blocks.console = {
 
 Blockly.JavaScript.console = block => {
     const console_type = block.getFieldValue('CONSOLE_TYPE') || 'log';
-    const message = Blockly.JavaScript.valueToCode(block, 'MESSAGE') || `"${localize('<empty message>')}"`;
+    const message =
+        Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC) ||
+        `"${localize('<empty message>')}"`;
 
     const code = `Bot.console({ type: '${console_type}', message: ${message}});\n`;
     return code;

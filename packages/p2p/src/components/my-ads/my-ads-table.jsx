@@ -61,8 +61,8 @@ RowComponent.propTypes = {
 };
 RowComponent.displayName = 'RowComponent';
 
-const MyAdsTable = ({ onClickCreate, is_enabled, onToggle }) => {
-    const { currency, list_item_limit } = React.useContext(Dp2pContext);
+const MyAdsTable = ({ onClickCreate }) => {
+    const { currency, list_item_limit, is_listed } = React.useContext(Dp2pContext);
     const mounted = React.useRef(false);
     const item_offset = React.useRef(0);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -75,6 +75,7 @@ const MyAdsTable = ({ onClickCreate, is_enabled, onToggle }) => {
     React.useEffect(() => {
         mounted.current = true;
         loadMoreAds(item_offset.current);
+
         return () => (mounted.current = false);
     }, []);
 
@@ -149,11 +150,11 @@ const MyAdsTable = ({ onClickCreate, is_enabled, onToggle }) => {
                     <Button large primary onClick={onClickCreate}>
                         {localize('Create new ad')}
                     </Button>
-                    <ToggleAds is_enabled={is_enabled} onToggle={onToggle} />
+                    <ToggleAds />
                 </div>
                 <Table
                     className={classNames('p2p-my-ads__table', {
-                        'p2p-my-ads__table--disabled': !is_enabled,
+                        'p2p-my-ads__table--disabled': !is_listed,
                     })}
                 >
                     <Table.Header>

@@ -54,7 +54,7 @@ Blockly.Blocks.math_round = {
 
 Blockly.JavaScript.math_round = block => {
     const operation = block.getFieldValue('OP');
-    const argument0 = Blockly.JavaScript.valueToCode(block, 'NUM') || '0';
+    const argument0 = Blockly.JavaScript.valueToCode(block, 'NUM', Blockly.JavaScript.ORDER_ATOMIC) || '0';
 
     let code;
 
@@ -66,5 +66,5 @@ Blockly.JavaScript.math_round = block => {
         code = `Math.floor(${argument0})`;
     }
 
-    return [code, Blockly.JavaScript.FUNCTION_CALL];
+    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };

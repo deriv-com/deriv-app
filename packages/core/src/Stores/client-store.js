@@ -16,7 +16,7 @@ import { LocalStore, State } from '_common/storage';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import { getClientAccountType } from './Helpers/client';
+import { getClientAccountType, getMT5AccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
@@ -1306,6 +1306,7 @@ export default class ClientStore extends BaseStore {
                 .filter(account => !/inactive/.test(account.group)) // remove disabled mt5 accounts
                 .map(account => ({
                     ...account,
+                    group: getMT5AccountType(account.group),
                     display_login: account.login.replace(/^(MT[DR]?)/i, ''),
                 }));
         }

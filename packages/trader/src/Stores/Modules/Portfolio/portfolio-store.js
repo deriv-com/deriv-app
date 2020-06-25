@@ -108,10 +108,6 @@ export default class PortfolioStore extends BaseStore {
                 this.updateContractTradeStore(poc);
                 this.populateResultDetails(poc);
                 subscriber.unsubscribe();
-                if (this.remove_position_after_sell) {
-                    this.removePositionById(contract_id);
-                    this.remove_position_after_sell = false;
-                }
             });
         }
     }
@@ -204,9 +200,8 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
-    onClickCancel(contract_id, remove_position_after_sell = false) {
+    onClickCancel(contract_id) {
         const i = this.getPositionIndexById(contract_id);
-        this.remove_position_after_sell = remove_position_after_sell;
         this.positions[i].is_sell_requested = true;
         if (contract_id) {
             WS.cancelContract(contract_id).then(response => {
@@ -224,9 +219,8 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
-    onClickSell(contract_id, remove_position_after_sell = false) {
+    onClickSell(contract_id) {
         const i = this.getPositionIndexById(contract_id);
-        this.remove_position_after_sell = remove_position_after_sell;
         const { bid_price } = this.positions[i].contract_info;
         this.positions[i].is_sell_requested = true;
         if (contract_id && bid_price) {

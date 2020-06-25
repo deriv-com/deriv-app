@@ -18,13 +18,19 @@ export default class JournalStore {
     }
 
     filters = [
-        { id: message_types.ERROR, label: localize('Errors') },
-        { id: message_types.NOTIFY, label: localize('Notifications') },
         { id: message_types.SUCCESS, label: localize('System') },
+        { id: message_types.NOTIFY, label: localize('Notifications') },
+        { id: message_types.ERROR, label: localize('Errors') },
     ];
 
+    @observable is_filter_dialog_visible = false;
     @observable unfiltered_messages = [];
     @observable checked_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
+
+    @action.bound
+    toggleFilterDialog() {
+        this.is_filter_dialog_visible = !this.is_filter_dialog_visible;
+    }
 
     @action.bound
     onLogSuccess(message) {

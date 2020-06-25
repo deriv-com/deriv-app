@@ -77,26 +77,45 @@ const FormatMessage = ({ logType, className, extra }) => {
     return <div className={classnames('journal__text', className)}>{getLogMessage()}</div>;
 };
 
-const Tools = ({ checked_filters, filters, filterMessage }) => (
+const Tools = ({ toggleFilterDialog }) => (
     <div className='journal-tools__container'>
         <div className='journal-tools__container-filter'>
-            {filters.map(item => {
-                return (
-                    <Checkbox
-                        key={item.id}
-                        classNameLabel='journal-tools__text'
-                        defaultChecked={checked_filters.includes(item.id)}
-                        label={item.label}
-                        onChange={e => filterMessage(e.target.checked, item.id)}
-                    />
-                );
-            })}
+            <Icon className='filter-dialog-toggle__icon' icon='IcEdit' size={16} onClick={toggleFilterDialog} />
         </div>
         {/* <div className='tools__container-download'>
             <Icon icon='IcDownload' />
         </div> */}
     </div>
 );
+
+const FilterDialog = ({ checked_filters, filters, filterMessage, is_filter_dialog_visible }) => {
+    return (
+        <CSSTransition
+            in={is_filter_dialog_visible}
+            classNames={{
+                enter: 'filter-dialog--enter',
+                enterDone: 'filter-dialog--enter-done',
+                exit: 'filter-dialog--exit',
+            }}
+            timeout={150}
+            unmountOnExit
+        >
+            <div className='filter-dialog' style={{ top, right: '2rem' }}>
+                {filters.map(item => {
+                    return (
+                        <Checkbox
+                            key={item.id}
+                            classNameLabel='journal-tools__text'
+                            defaultChecked={checked_filters.includes(item.id)}
+                            label={item.label}
+                            onChange={e => filterMessage(e.target.checked, item.id)}
+                        />
+                    );
+                })}
+            </div>
+        </CSSTransition>
+    );
+};
 
 const getJournalItemContent = (message, type, className, extra) => {
     switch (type) {
@@ -132,6 +151,7 @@ const Journal = ({ filtered_messages, contract_stage, ...props }) => {
     return (
         <div className='journal run-panel-tab__content'>
             <Tools {...props} />
+            <FilterDialog {...props} />
             <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 50px)'}>
                 <div className='journal__item-list'>
                     {filtered_messages.length ? (
@@ -193,6 +213,8 @@ Journal.propTypes = {
     filtered_messages: PropTypes.array,
     filterMessage: PropTypes.func,
     filters: PropTypes.array,
+    is_filter_dialog_visible: PropTypes.bool,
+    toggleFilterDialog: PropTypes.func,
 };
 
 export default connect(({ journal, run_panel }) => ({
@@ -201,4 +223,6 @@ export default connect(({ journal, run_panel }) => ({
     filterMessage: journal.filterMessage,
     filters: journal.filters,
     filtered_messages: journal.filtered_messages,
+    is_filter_dialog_visible: journal.is_filter_dialog_visible,
+    toggleFilterDialog: journal.toggleFilterDialog,
 }))(Journal);

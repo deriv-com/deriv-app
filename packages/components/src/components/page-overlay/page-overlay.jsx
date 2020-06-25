@@ -84,10 +84,6 @@ class PageOverlay extends React.Component {
     }
 }
 
-PageOverlay.defaultProps = {
-    has_side_note: false,
-};
-
 PageOverlay.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),

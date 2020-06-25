@@ -142,10 +142,8 @@ export default class CashierStore extends BaseStore {
 
     @computed
     get p2p_notification_count() {
-        const { sendbird } = this.root_store.modules;
-        return sendbird.has_synced_channels
-            ? sendbird.total_unread_message_count + this.p2p_order_notification_count
-            : 0; // Avoid jumpy notification counts by waiting for channels to synced.
+        const { p2p } = this.root_store.modules;
+        return p2p.unread_chat_message_count;
     }
 
     @action.bound
@@ -202,16 +200,6 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setCashierTabIndex(index) {
         this.cashier_route_tab_index = index;
-    }
-
-    @action.bound
-    setP2pChatNotificationCount(notification_count) {
-        this.p2p_chat_notification_count = notification_count;
-    }
-
-    @action.bound
-    setP2pOrderNotificationCount(notification_count) {
-        this.p2p_order_notification_count = notification_count;
     }
 
     @action.bound

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Modal, Popover } from '@deriv/components';
-import { ComplaintsPolicyContent } from 'Modules/ComplaintsPolicy';
 import { localize } from '@deriv/translations';
+import { ComplaintsPolicyContent } from 'Modules/ComplaintsPolicy';
 
 const ToggleComplaintsPolicy = ({ landing_company_shortcode } = {}) => {
     const [is_modal_visible, setModalVisibility] = React.useState(false);

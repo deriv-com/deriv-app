@@ -205,13 +205,9 @@ class ToggleMenuDrawer extends React.Component {
                                 }}
                             >
                                 <div
-                                    className={classNames(
-                                        'header__menu-mobile-link',
-                                        'header__menu-mobile-link--divider',
-                                        {
-                                            'header__menu-mobile-link--active': this.props.is_dark_mode,
-                                        }
-                                    )}
+                                    className={classNames('header__menu-mobile-link', {
+                                        'header__menu-mobile-link--active': this.props.is_dark_mode,
+                                    })}
                                 >
                                     <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
                                     <span className='header__menu-mobile-link-text'>{localize('Dark theme')}</span>

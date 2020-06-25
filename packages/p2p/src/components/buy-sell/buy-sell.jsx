@@ -57,7 +57,7 @@ class BuySell extends React.Component {
         if (this.state.show_verification)
             return (
                 <>
-                    <PageReturn onClick={this.hideVerification} page_title={localize('verification')} />
+                    <PageReturn onClick={this.hideVerification} page_title={localize('Verification')} />
                     <Verification />
                 </>
             );

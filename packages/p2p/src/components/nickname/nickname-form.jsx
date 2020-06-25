@@ -9,9 +9,9 @@ import FormError from '../form/error.jsx';
 import './nickname-form.scss';
 
 const NicknameForm = ({ handleClose }) => {
-    const { createAdvertiser } = React.useContext(Dp2pContext);
+    const { createAdvertiser, nickname_error } = React.useContext(Dp2pContext);
 
-    const handleSubmit = (values, { setStatus }) => createAdvertiser(values.nickname, setStatus);
+    const handleSubmit = values => createAdvertiser(values.nickname);
 
     const validatePopup = values => {
         const validations = {
@@ -64,7 +64,7 @@ const NicknameForm = ({ handleClose }) => {
                 </div>
             </div>
             <Formik validate={validatePopup} initialValues={{ nickname: '' }} onSubmit={handleSubmit}>
-                {({ errors, isSubmitting, handleChange, status }) => (
+                {({ errors, handleChange, status, values }) => (
                     <Form noValidate>
                         <ThemedScrollbars autoHide style={{ height: '437px' }}>
                             <div className='buy-sell__popup-content buy-sell__popup-content_centre'>
@@ -103,12 +103,17 @@ const NicknameForm = ({ handleClose }) => {
                             </div>
                         </ThemedScrollbars>
                         <div className='nickname__form-footer'>
-                            {status && status.error_message && <FormError message={status.error_message} />}
+                            {nickname_error && <FormError message={nickname_error} />}
                             <Button.Group>
                                 <Button secondary type='button' onClick={handleClose} large>
                                     {localize('Cancel')}
                                 </Button>
-                                <Button type='submit' is_disabled={!!(isSubmitting || errors.nickname)} primary large>
+                                <Button
+                                    type='submit'
+                                    is_disabled={!!errors.nickname || values.nickname === ''}
+                                    primary
+                                    large
+                                >
                                     {localize('Confirm')}
                                 </Button>
                             </Button.Group>

@@ -19,7 +19,7 @@ const Verification = () => {
         },
         {
             content:
-                poi_status === 'pending' ? (
+                poi_status === 'pending' || poi_status === 'rejected' ? (
                     <Localize i18n_default_text='Check your verification status' />
                 ) : (
                     <Localize

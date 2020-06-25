@@ -54,6 +54,8 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        this.is_mounted = true;
+
         this.ws_subscriptions = {
             advertiser_subscription: subscribeWS(
                 {
@@ -81,17 +83,13 @@ class App extends React.Component {
     }
 
     componentWillUnmount() {
+        this.is_mounted = false;
         Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
     }
 
-    createAdvertiser(name, setStatus) {
+    createAdvertiser(name) {
         this.ws_subscriptions.advertiser_subscription = subscribeWS({ p2p_advertiser_create: 1, name, subscribe: 1 }, [
             this.setCreateAdvertiser,
-            response => {
-                if (response.error) {
-                    setStatus({ error_message: response.error.message });
-                }
-            },
         ]);
     }
 
@@ -114,13 +112,18 @@ class App extends React.Component {
     setCreateAdvertiser = response => {
         const { p2p_advertiser_create } = response;
 
-        this.setState({
-            advertiser_id: p2p_advertiser_create.id,
-            is_advertiser: !!p2p_advertiser_create.is_approved,
-            nickname: p2p_advertiser_create.name,
-        });
-        this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
-        this.toggleNicknamePopup();
+        if (response.error) {
+            this.setState({ nickname_error: response.error.message });
+        } else {
+            this.setState({
+                advertiser_id: p2p_advertiser_create.id,
+                is_advertiser: !!p2p_advertiser_create.is_approved,
+                nickname: p2p_advertiser_create.name,
+                nickname_error: undefined,
+            });
+            this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
+            this.toggleNicknamePopup();
+        }
     };
 
     setIsAdvertiser = response => {
@@ -273,12 +276,18 @@ class App extends React.Component {
             active_index,
             order_offset,
             orders,
+            advertiser_id,
+            nickname,
+            is_advertiser,
             parameters,
             notification_count,
             order_table_type,
             chat_info,
             show_popup,
             poi_url,
+            poi_status,
+            is_restricted,
+            nickname_error,
         } = this.state;
         const {
             className,
@@ -301,32 +310,33 @@ class App extends React.Component {
         return (
             <Dp2pProvider
                 value={{
-                    changeTab: this.handleTabClick,
+                    nickname,
                     order_table_type,
                     currency,
                     local_currency_config,
                     residence,
-                    advertiser_id: this.state.advertiser_id,
-                    is_advertiser: this.state.is_advertiser,
-                    setIsAdvertiser: is_advertiser => this.setState({ is_advertiser }),
-                    nickname: this.state.nickname,
-                    setNickname: nickname => this.setState({ nickname }),
-                    setChatInfo: this.setChatInfo,
-                    is_restricted: this.state.is_restricted,
-                    email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
-                    list_item_limit: this.list_item_limit,
+                    advertiser_id,
+                    is_advertiser,
+                    is_restricted,
                     order_offset,
                     orders,
-                    setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
-                    setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     order_id,
                     setOrderId,
-                    toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     poi_url,
-                    updateP2pNotifications: this.updateP2pNotifications.bind(this),
-                    getLocalStorageSettings: this.getLocalStorageSettings.bind(this),
+                    poi_status,
+                    nickname_error,
+                    list_item_limit: this.list_item_limit,
+                    changeTab: this.handleTabClick,
+                    setIsAdvertiser: is_advertiser => this.setState({ is_advertiser }),
+                    setNickname: nickname => this.setState({ nickname }),
+                    setChatInfo: this.setChatInfo,
+                    email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
+                    setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
+                    setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
+                    toggleNicknamePopup: () => this.toggleNicknamePopup(),
+                    updateP2pNotifications: this.updateP2pNotifications,
+                    getLocalStorageSettings: this.getLocalStorageSettings,
                     createAdvertiser: this.createAdvertiser.bind(this),
-                    poi_status: this.state.poi_status,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>

@@ -111,17 +111,62 @@ div.radio-group {
         width: 80px;
     }
     &__icon {
-        &--active {
-            // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
-            --fill-color1: #ffcf45 !important;
-            --fill-color2: #1ca362 !important;
-            --fill-color3: #4686f5 !important;
-        }
         &--disabled {
-            // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
-            --fill-color1: var(--text-disabled) !important;
-            --fill-color2: var(--text-disabled) !important;
-            --fill-color3: var(--text-disabled) !important;
+            opacity: 0.32;
+        }
+    }
+}
+
+.save-modal__wrapper {
+    @include mobile {
+        position: fixed;
+        z-index: 5;
+        width: 100%;
+        left: 0px;
+        background: var(--general-main-1);
+
+        & form {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        & .dc-page-overlay__header {
+            position: fixed;
+            top: 4rem;
+            width: 100%;
+            height: 4rem;
+        }
+        & .dc-page-overlay__content {
+            margin-top: 40px;
+
+            & .modal__content {
+                padding: 1.6rem;
+            }
+        }
+        & .dc-input {
+            width: 100% !important;
+        }
+        & .dc-radio-group__item {
+            width: calc(50vw - 24px) !important;
+            height: 35vw;
+        }
+        & .save-type__drive-status {
+            position: relative;
+            bottom: -30px;
+        }
+        & .modal__footer {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            padding: 1.4rem;
+            height: 72px;
+            border-top: solid 0.1em var(--general-section-1);
+
+            &--button {
+                float: right;
+                margin-left: 0.8rem;
+            }
         }
     }
 }

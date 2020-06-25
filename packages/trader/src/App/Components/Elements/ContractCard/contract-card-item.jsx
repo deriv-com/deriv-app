@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 
-const ContractCardItem = ({ children, content, header, is_crypto, is_loss, is_won }) => {
+const ContractCardItem = ({ className, children, content, header, is_crypto, is_loss, is_won }) => {
     return (
-        <div className='contract-card-item'>
+        <div className={classNames('contract-card-item', className)}>
             <div className='contract-card-item__header'>{header}</div>
             <div
                 className={classNames('contract-card-item__body', {

@@ -58,6 +58,7 @@ export default class SelfExclusionStore {
             }
         });
     }
+
     @action.bound
     ToggleSelfExclusion = () => {
         this.resetSelfExclusion();

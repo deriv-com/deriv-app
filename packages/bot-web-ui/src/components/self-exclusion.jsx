@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Input, ThemedScrollbars, Button } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { Formik, Form, Field } from 'formik';
 import { connect } from '../stores/connect';
 
@@ -9,7 +9,7 @@ class SelfExclusion extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            limit_error: '',
+            errors: '',
         };
     }
     render() {
@@ -20,28 +20,33 @@ class SelfExclusion extends React.Component {
             updateSelfExclusion,
             setLimitations,
             onRunButtonClick,
+            ToggleSelfExclusion,
             run_limit,
         } = this.props;
-        const self_exclusion_status = max_losses || localize('Not set');
-
-        const onSwitchAccount = async () => {
-            const { switchAccount, virtual_account_loginid, checkClientRestriction } = this.props;
-            await switchAccount(virtual_account_loginid);
-            checkClientRestriction();
-        };
-        const onSubmitLimits = async () => {
+        const form_errors = this.state.errors;
+        const setErrors = () => {
+            const errors = {};
             if (!max_losses && !set_max_losses) {
-                this.setState({ limit_error: 'Daily limit on losses should set' });
-                return;
+                errors.set_max_losses = 'Daily limit on losses should set';
             }
             if (!run_limit) {
-                this.setState({ limit_error: 'Maximum consecutive trade should set' });
-                return;
+                errors.run_limit = 'Maximum consecutive trade should set';
             }
+            this.setState({ errors: errors });
+        };
+
+        const onSubmitLimits = async () => {
+            this.setState({ errors: {} });
+            setErrors();
             if (set_max_losses && set_max_losses !== max_losses) {
                 const set_losses = await updateSelfExclusion({ max_losses: set_max_losses });
                 if (set_losses?.error) {
-                    this.setState({ limit_error: set_losses.error.message });
+                    this.setState(pre => ({
+                        errors: {
+                            ...pre.errors,
+                            set_max_losses: set_losses.error.message,
+                        },
+                    }));
                     return;
                 }
                 setLimitations('max_losses', set_max_losses);
@@ -49,34 +54,25 @@ class SelfExclusion extends React.Component {
             onRunButtonClick();
         };
         const onFormChange = (type, e) => {
-            this.setState({ limit_error: '' });
             setLimitations(type, e.currentTarget.value);
         };
         return (
             <div className='self-exclusion'>
-                <ThemedScrollbars
-                    autohide
-                    style={{
-                        height: '260px',
-                        width: '456px',
-                    }}
-                >
-                    <div className='self-exclusion__content'>
+                <div className='self-exclusion__content'>
+                    <ThemedScrollbars
+                        autohide
+                        style={{
+                            height: '246px',
+                            width: '392px',
+                        }}
+                    >
                         <div className='self-exclusion__info'>
-                            <Localize
-                                i18n_default_text='<0> Please enter the following limits. Your bot will stop trading if either of these limits are met.</0> Daily limit on losses: <1> {{self_exclusion_status}}</1>'
-                                values={{ self_exclusion_status }}
-                                components={[
-                                    <div key={0} />,
-                                    <span className='self-exclusion__limit-status--bold' key={1} />,
-                                ]}
-                            />
-                            {this.state.limit_error && (
-                                <div className='self-exclusion--danger'>{localize(this.state.limit_error)}</div>
+                            {localize(
+                                ' Enter limits to stop your bot from trading when any of these conditions are met.'
                             )}
                         </div>
                         <Formik initialValues={initial_values}>
-                            {({ handleChange }) => {
+                            {({ errors, handleChange }) => {
                                 return (
                                     <Form>
                                         <Field name='set_max_losses'>
@@ -90,18 +86,11 @@ class SelfExclusion extends React.Component {
                                                         handleChange(e);
                                                         onFormChange('set_max_losses', e);
                                                     }}
+                                                    error={errors[field.name] || form_errors[field.name]}
                                                     placeholder='10'
-                                                    hint={
-                                                        <Localize
-                                                            i18n_default_text='This limits your potential losses for the day across all Deriv.com platforms. You may also set this limit in the <0>Self-exclusion facilities page.</0>'
-                                                            components={[
-                                                                <span
-                                                                    className='self-exclusion__limit-status--bold'
-                                                                    key={0}
-                                                                />,
-                                                            ]}
-                                                        />
-                                                    }
+                                                    hint={localize(
+                                                        'Maximum number of trades your bot will execute for this run.'
+                                                    )}
                                                 />
                                             )}
                                         </Field>
@@ -118,8 +107,9 @@ class SelfExclusion extends React.Component {
                                                             handleChange(e);
                                                             onFormChange('run_limit', e);
                                                         }}
+                                                        error={errors[field.name] || form_errors[field.name]}
                                                         hint={localize(
-                                                            'This is the maximum number of trades that your bot will execute for this run.'
+                                                            'Maximum number of trades your bot will execute for this run.'
                                                         )}
                                                     />
                                                 );
@@ -129,17 +119,12 @@ class SelfExclusion extends React.Component {
                                 );
                             }}
                         </Formik>
-                    </div>
-                </ThemedScrollbars>
+                    </ThemedScrollbars>
+                </div>
 
                 <div className='self-exclusion__footer'>
-                    <Button
-                        large
-                        text={localize('Continue with demo account')}
-                        onClick={() => onSwitchAccount()}
-                        secondary
-                    />
-                    <Button large text={localize('Apply limits')} onClick={() => onSubmitLimits()} primary />
+                    <Button large text={localize('Cancel')} onClick={ToggleSelfExclusion} secondary />
+                    <Button large text={localize('Apply run and bot')} onClick={() => onSubmitLimits()} primary />
                 </div>
             </div>
         );
@@ -148,7 +133,6 @@ class SelfExclusion extends React.Component {
 SelfExclusion.propTypes = {
     setLimitations: PropTypes.func,
     checkClientRestriction: PropTypes.func,
-    switchAccount: PropTypes.func,
     virtual_account_loginid: PropTypes.string,
     updateSelfExclusion: PropTypes.func,
     initial_values: PropTypes.object,
@@ -160,7 +144,6 @@ SelfExclusion.propTypes = {
 export default connect(({ client, self_exclusion }) => ({
     setLimitations: self_exclusion.setLimitations,
     checkClientRestriction: self_exclusion.checkClientRestriction,
-    switchAccount: client.switchAccount,
     virtual_account_loginid: client.virtual_account_loginid,
     updateSelfExclusion: client.updateSelfExclusion,
     initial_values: self_exclusion.initial_values,

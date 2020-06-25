@@ -109,7 +109,7 @@ Purchase.propTypes = {
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ client, modules, ui, gtm }) => ({
+export default connect(({ client, modules, ui }) => ({
     currency: client.currency,
     is_client_allowed_to_visit: client.is_client_allowed_to_visit,
     basis: modules.trade.basis,

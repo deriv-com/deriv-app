@@ -76,10 +76,6 @@ export default class ClientStore extends BaseStore {
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
-
-        window.addEventListener('load', () => {
-            this.root_store.gtm.pushDataLayer({ event: 'page_load' });
-        });
     }
 
     @computed

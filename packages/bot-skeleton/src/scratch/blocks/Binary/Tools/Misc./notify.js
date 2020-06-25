@@ -61,7 +61,9 @@ Blockly.JavaScript.notify = block => {
         variable_name = Blockly.derivWorkspace.getVariableById(variable_id).name;
     }
 
-    const message = Blockly.JavaScript.valueToCode(block, 'MESSAGE') || `"${localize('<empty message>')}"`;
+    const message =
+        Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC) ||
+        `"${localize('<empty message>')}"`;
 
     const code = `Bot.notify({ className: 'journal__text--${notificationType}', message: ${message}, sound: '${sound}', block_id: '${block.id}', variable_name: '${variable_name}' });\n`;
     return code;

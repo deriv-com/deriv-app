@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon, ExpansionPanel } from '@deriv/components';
 import '../assets/sass/notify-item.scss';
 
 const getIcon = type => {
@@ -40,3 +40,5 @@ export const messageWithImage = (message, image) => (
         <img src={image} style={{ width: '100%' }} />
     </>
 );
+
+export const arrayAsMessage = parsedArray => <ExpansionPanel message={parsedArray} />;

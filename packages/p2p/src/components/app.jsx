@@ -109,6 +109,7 @@ class App extends React.Component {
             this.setState({
                 advertiser_id: p2p_advertiser_info.id,
                 is_advertiser: !!p2p_advertiser_info.is_approved,
+                is_listed: p2p_advertiser_info.is_listed === 1,
                 nickname: p2p_advertiser_info.name,
             });
         } else if (response.error.code === 'RestrictedCountry') {
@@ -285,6 +286,8 @@ class App extends React.Component {
                     residence,
                     advertiser_id: this.state.advertiser_id,
                     is_advertiser: this.state.is_advertiser,
+                    is_listed: this.state.is_listed,
+                    setIsListed: is_listed => this.setState({ is_listed }),
                     setIsAdvertiser: is_advertiser => this.setState({ is_advertiser }),
                     nickname: this.state.nickname,
                     setNickname: nickname => this.setState({ nickname }),

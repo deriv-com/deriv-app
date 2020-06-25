@@ -147,6 +147,7 @@ const ContractType = (() => {
             expiry_type,
             multiplier,
             start_date,
+            cancellation_duration,
         } = store;
 
         if (!contract_type) return {};
@@ -163,7 +164,7 @@ const ContractType = (() => {
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
 
         const obj_multiplier_range_list = getMultiplierRange(contract_type, multiplier);
-        const obj_cancellation_range_list = getCancellationRange(contract_type);
+        const obj_cancellation_range_list = getCancellationRange(contract_type, cancellation_duration);
         const obj_expiry_type = getExpiryType(obj_duration_units_list, expiry_type);
 
         return {
@@ -531,7 +532,7 @@ const ContractType = (() => {
         };
     };
 
-    const getCancellationRange = contract_type => {
+    const getCancellationRange = (contract_type, cancellation_duration) => {
         const arr_cancellation_range =
             ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'cancellation_range']) ||
             [];
@@ -544,6 +545,7 @@ const ContractType = (() => {
         };
 
         return {
+            cancellation_duration: getArrayDefaultValue(arr_cancellation_range, cancellation_duration),
             cancellation_range_list: arr_cancellation_range.map(d => ({ text: `${getText(d)}`, value: d })),
         };
     };

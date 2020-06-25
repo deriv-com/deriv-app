@@ -124,6 +124,16 @@
     display: none !important;
 }
 
+.p2p-nickname {
+    &__dialog {
+        @include mobile {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
 .dc-modal__container_p2p-nickname {
     &__dialog {
         width: auto;

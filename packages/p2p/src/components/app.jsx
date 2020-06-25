@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { Tabs, Modal } from '@deriv/components';
+import { Tabs, Modal, Loading } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
@@ -11,6 +11,7 @@ import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
 import NicknameForm from './nickname/nickname-form.jsx';
+import Download from './verification/download.jsx';
 import Verification from './verification/verification.jsx';
 import './app.scss';
 
@@ -44,12 +45,13 @@ class App extends React.Component {
             parameters: null,
             is_advertiser: false,
             is_restricted: false,
-            show_popup: false,
+            show_popup: true,
             chat_info: {
                 app_id: '',
                 user_id: '',
                 token: '',
             },
+            is_loading: true,
         };
     }
 
@@ -130,9 +132,12 @@ class App extends React.Component {
 
                     this.setState({
                         poi_status: identity.status,
+                        is_loading: false,
                     });
                 }
             });
+        } else {
+            this.setState({ is_loading: false });
         }
     };
 
@@ -258,12 +263,16 @@ class App extends React.Component {
         const {
             active_index,
             order_offset,
+            advertiser_id,
+            is_advertiser,
             orders,
             parameters,
             notification_count,
             order_table_type,
             chat_info,
             show_popup,
+            nickname,
+            is_loading,
         } = this.state;
         const {
             className,
@@ -319,50 +328,62 @@ class App extends React.Component {
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
-                    {should_show_verification && (
-                        <div
-                            className={classNames('p2p-cashier__verification', {
-                                'p2p-cashier__verification--mobile': is_mobile,
-                            })}
-                        >
-                            <Verification />
-                        </div>
-                    )}
-                    {!should_show_verification && (
-                        <Tabs
-                            onTabItemClick={this.handleTabClick}
-                            active_index={active_index}
-                            className='p2p-cashier'
-                            top
-                            header_fit_content
-                        >
-                            <div label={localize('Buy / Sell')}>
-                                <BuySell navigate={this.redirectTo} params={parameters} />
-                            </div>
-                            <div count={notification_count} label={localize('Orders')}>
-                                <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
-                            </div>
-                            <div label={localize('My ads')}>
-                                <MyAds navigate={this.redirectTo} params={parameters} />
-                            </div>
-                            {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
-                            {/* <div label={localize('My profile')}>
+                    {show_popup ? (
+                        <>
+                            {is_mobile ? (
+                                <div className='p2p-nickname__dialog'>
+                                    <NicknameForm
+                                        handleClose={this.onNicknamePopupClose}
+                                        handleConfirm={this.toggleNicknamePopup}
+                                        is_mobile
+                                    />
+                                </div>
+                            ) : (
+                                <Modal is_open={show_popup} className='p2p-nickname__dialog'>
+                                    <NicknameForm
+                                        handleClose={this.onNicknamePopupClose}
+                                        handleConfirm={this.toggleNicknamePopup}
+                                    />
+                                </Modal>
+                            )}
+                        </>
+                    ) : (
+                        <>
+                            {is_loading && <Loading is_fullscreen={false} />}
+                            {should_show_verification && !is_advertiser && (
+                                <div
+                                    className={classNames('p2p-cashier__verification', {
+                                        'p2p-cashier__verification--mobile': is_mobile,
+                                    })}
+                                >
+                                    <Verification />
+                                </div>
+                            )}
+                            {should_show_verification && is_advertiser && <Download />}
+                            {!should_show_verification && (
+                                <Tabs
+                                    onTabItemClick={this.handleTabClick}
+                                    active_index={active_index}
+                                    className='p2p-cashier'
+                                    top
+                                    header_fit_content
+                                >
+                                    <div label={localize('Buy / Sell')}>
+                                        <BuySell navigate={this.redirectTo} params={parameters} />
+                                    </div>
+                                    <div count={notification_count} label={localize('Orders')}>
+                                        <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
+                                    </div>
+                                    <div label={localize('My ads')}>
+                                        <MyAds navigate={this.redirectTo} params={parameters} />
+                                    </div>
+                                    {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
+                                    {/* <div label={localize('My profile')}>
                                     <MyProfile navigate={this.redirectTo} params={parameters} />
                                 </div> */}
-                        </Tabs>
-                    )}
-                    {show_popup && (
-                        <Modal
-                            is_open={show_popup}
-                            className={classNames('p2p-nickname__dialog', {
-                                'p2p-nickname__dialog--mobile': is_mobile,
-                            })}
-                        >
-                            <NicknameForm
-                                handleClose={this.onNicknamePopupClose}
-                                handleConfirm={this.toggleNicknamePopup}
-                            />
-                        </Modal>
+                                </Tabs>
+                            )}
+                        </>
                     )}
                 </main>
             </Dp2pProvider>

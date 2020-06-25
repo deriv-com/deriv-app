@@ -9,7 +9,7 @@ import IconClose from 'Assets/icon-close.jsx';
 import FormError from '../form/error.jsx';
 import './nickname-form.scss';
 
-const NicknameForm = ({ handleClose, handleConfirm }) => {
+const NicknameForm = ({ handleClose, handleConfirm, is_mobile }) => {
     const { setNickname, setIsAdvertiser, setChatInfo } = React.useContext(Dp2pContext);
 
     const handleSubmit = (values, { setStatus, setSubmitting }) => {
@@ -76,11 +76,13 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
 
     return (
         <>
-            <div className='nickname__form-header nickname__form-header--no-border'>
-                <div className='nickname__form-header_wrapper nickname__form-header_right'>
-                    <IconClose className='nickname__form-close_icon' onClick={handleClose} />
+            {!is_mobile && (
+                <div className='nickname__form-header nickname__form-header--no-border'>
+                    <div className='nickname__form-header_wrapper nickname__form-header_right'>
+                        <IconClose className='nickname__form-close_icon' onClick={handleClose} />
+                    </div>
                 </div>
-            </div>
+            )}
             <Formik validate={validatePopup} initialValues={{ nickname: '' }} onSubmit={handleSubmit}>
                 {({ errors, isSubmitting, handleChange, status }) => (
                     <Form noValidate>

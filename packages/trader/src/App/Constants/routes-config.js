@@ -2,7 +2,6 @@ import React from 'react';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
 import routes from '@deriv/shared/utils/routes';
-import { addRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
 import Trade from 'Modules/Trading';
 
@@ -80,7 +79,6 @@ const getRoutesConfig = () => {
     if (!routesConfig) {
         routesConfig = initRoutesConfig();
         routesConfig.push(route_default);
-        addRoutesConfig(routesConfig);
     }
     return routesConfig;
 };

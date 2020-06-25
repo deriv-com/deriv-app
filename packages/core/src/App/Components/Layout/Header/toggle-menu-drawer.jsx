@@ -2,12 +2,12 @@ import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import routes from '@deriv/shared/utils/routes';
-import { getAllRoutesConfig } from '@deriv/shared/utils/route';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
+import getRoutesConfig from 'App/Constants/routes-config';
 
 const MenuLink = ({ link_to, icon, is_disabled, suffix_icon, text, onClickLink }) => (
     <React.Fragment>
@@ -47,6 +47,8 @@ class ToggleMenuDrawer extends React.Component {
             needs_financial_assessment: false,
             is_open: false,
             needs_verification: false,
+            primary_routes_config: [],
+            secondary_routes_config: [],
         };
     }
 
@@ -64,6 +66,7 @@ class ToggleMenuDrawer extends React.Component {
                 if (this.is_mounted) this.setState({ needs_financial_assessment, needs_verification });
             }
         });
+        this.processRoutes();
     }
 
     componentWillUnmount() {
@@ -160,12 +163,19 @@ class ToggleMenuDrawer extends React.Component {
         );
     };
 
-    render() {
-        const all_routes_config = getAllRoutesConfig();
+    processRoutes() {
+        const routes_config = getRoutesConfig();
         const primary_routes = [routes.reports, routes.account, routes.cashier];
-        const primary_routes_config = this.getFilteredRoutesConfig(all_routes_config, primary_routes);
         const secondary_routes = [routes.complaints_policy];
-        const secondary_routes_config = this.getFilteredRoutesConfig(all_routes_config, secondary_routes);
+
+        this.setState({
+            primary_routes_config: this.getFilteredRoutesConfig(routes_config, primary_routes),
+            secondary_routes_config: this.getFilteredRoutesConfig(routes_config, secondary_routes),
+        });
+    }
+
+    render() {
+        const { primary_routes_config, secondary_routes_config } = this.state;
 
         return (
             <React.Fragment>

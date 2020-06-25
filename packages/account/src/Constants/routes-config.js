@@ -1,5 +1,4 @@
 import React from 'react';
-import { addRoutesConfig } from '@deriv/shared/utils/route';
 import routes from '@deriv/shared/utils/routes';
 import { localize } from '@deriv/translations';
 import {
@@ -98,7 +97,6 @@ const getRoutesConfig = () => {
     if (!routesConfig) {
         routesConfig = initRoutesConfig();
         routesConfig.push(route_default);
-        addRoutesConfig(routesConfig);
     }
     return routesConfig;
 };

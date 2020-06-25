@@ -125,7 +125,7 @@ Blockly.Blocks.trade_definition = {
 
 Blockly.JavaScript.trade_definition = block => {
     const { client } = DBotStore.instance;
-
+    const block_id = block.id;
     if (!client || !client.is_logged_in) {
         throw new Error('Please login');
     }
@@ -154,9 +154,19 @@ Blockly.JavaScript.trade_definition = block => {
 
     const initialization = Blockly.JavaScript.statementToCode(block, 'INITIALIZATION');
     const trade_options_statement = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
+    const highlightedForExecution = () => {
+        const highlight_execution_class = 'block--execution-highlighted';
 
+        if (block) {
+            Blockly.utils.addClass(this.svgGroup_, highlight_execution_class);
+            setTimeout(() => {
+                Blockly.utils.removeClass(this.svgGroup_, highlight_execution_class);
+            }, 1505);
+        }
+    };
     const code = `  
-    ${block.highlightedForExecution(block)}
+    console.log(Bot);
+    
     BinaryBotPrivateInit = function BinaryBotPrivateInit() {
         Bot.init('${account}', {
           symbol              : '${symbol}',
@@ -168,6 +178,7 @@ Blockly.JavaScript.trade_definition = block => {
         ${initialization.trim()}
     };
       BinaryBotPrivateStart = function BinaryBotPrivateStart() {
+        Bot.highlightedDuringExecution('${block.id}');
         ${trade_options_statement.trim()}
       };\n`;
     return code;

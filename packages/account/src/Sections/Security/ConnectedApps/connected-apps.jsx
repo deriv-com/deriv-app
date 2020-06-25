@@ -49,6 +49,7 @@ class ConnectedApps extends React.Component {
     };
 
     fetchConnectedApps = () => {
+        // eslint-disable-next-line
         return new Promise(async (resolve, reject) => {
             const response_connected_apps = await WS.send({ oauth_apps: 1 });
             if (!response_connected_apps.error) {
@@ -60,6 +61,7 @@ class ConnectedApps extends React.Component {
     };
 
     revokeConnectedApp = (app_id) => {
+        // eslint-disable-next-line
         return new Promise(async (resolve, reject) => {
             const response = await WS.send({ revoke_oauth_app: app_id });
             if (!response.error) {

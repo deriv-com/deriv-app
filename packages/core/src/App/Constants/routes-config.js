@@ -110,6 +110,11 @@ const modules = [
                         component: Account,
                         title: localize('Two-factor authentication'),
                     },
+                    {
+                        path: routes.connected_apps,
+                        component: Account,
+                        title: localize('Connected Apps'),
+                    },
                 ],
             },
         ],

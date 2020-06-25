@@ -17,9 +17,10 @@ const getPlatformMt5DownloadLink = () => {
     }
 };
 
-const getMT5WebTerminalLink = ({ category, loginid }) => {
+const getMT5WebTerminalLink = ({ is_eu, category, loginid }) => {
     const is_demo = category === 'demo';
-    const server = is_demo ? 'Binary.com-Demo' : 'Binary.com-Server';
+    const host = is_eu ? 'Binary.com' : 'Deriv.com'; // User deriv when migration is done
+    const server = is_demo ? `${host}-Demo` : `${host}-Server`;
     const login = loginid ?? '';
 
     return `https://trade.mql5.com/trade?servers=${server}&trade_server=${server}${login ? '&login=' : ''}${login}`;

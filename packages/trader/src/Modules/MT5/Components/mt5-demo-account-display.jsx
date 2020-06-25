@@ -5,6 +5,7 @@ import { MT5AccountCard } from './mt5-account-card.jsx';
 import Loading from '../../../templates/_common/components/loading.jsx';
 
 const MT5DemoAccountDisplay = ({
+    is_eu,
     is_loading,
     onSelectAccount,
     openAccountTransfer,
@@ -20,6 +21,7 @@ const MT5DemoAccountDisplay = ({
         <div className='mt5-demo-accounts-display'>
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}
+                is_eu={is_eu}
                 icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
                 title={localize('Synthetic')}
                 type={{
@@ -51,6 +53,7 @@ const MT5DemoAccountDisplay = ({
             />
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}
+                is_eu={is_eu}
                 icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
                 title={localize('Financial')}
                 type={{
@@ -89,6 +92,7 @@ const MT5DemoAccountDisplay = ({
             />
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}
+                is_eu={is_eu}
                 icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}
                 title={localize('Financial STP')}
                 type={{

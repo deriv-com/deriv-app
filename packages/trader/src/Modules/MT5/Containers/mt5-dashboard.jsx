@@ -97,6 +97,7 @@ class MT5Dashboard extends React.Component {
             beginRealSignupForMt5,
             createMT5Account,
             is_loading,
+            is_eu,
             has_mt5_account,
             has_real_account,
             NotificationMessages,
@@ -130,6 +131,7 @@ class MT5Dashboard extends React.Component {
                                             <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
                                         )}
                                         <MT5RealAccountDisplay
+                                            is_eu={is_eu}
                                             current_list={this.props.current_list}
                                             account_status={this.props.account_status}
                                             has_mt5_account={has_mt5_account}
@@ -147,6 +149,7 @@ class MT5Dashboard extends React.Component {
                             </div>
                             <div label={localize('Demo account')}>
                                 <MT5DemoAccountDisplay
+                                    is_eu={is_eu}
                                     is_loading={is_loading}
                                     has_mt5_account={has_mt5_account}
                                     current_list={this.props.current_list}

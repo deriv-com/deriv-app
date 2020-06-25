@@ -17,7 +17,11 @@ const MT5DashboardContainer = ({
                 <div className='mt5-dashboard__download-center-options--desktop-devices'>
                     <Icon icon='IcMt5DeviceDesktop' width={118} height={85} />
                     <Icon icon='IcMt5DeviceLaptop' width={75} height={51} />
-                    <a href={getMT5WebTerminalLink({ category: 'demo' })} target='_blank' rel='noopener noreferrer'>
+                    <a
+                        href={getMT5WebTerminalLink({ is_eu, category: 'demo' })}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                    >
                         <Icon icon='IcInstallationWebDemo' width={138} height={40} />
                     </a>
                 </div>
@@ -44,7 +48,7 @@ const MT5DashboardContainer = ({
                     </a>
                     <a
                         className='mt5-dashboard__download-center-options--desktop-link--top'
-                        href={getMT5WebTerminalLink({ category: 'real' })}
+                        href={getMT5WebTerminalLink({ is_eu, category: 'real' })}
                         target='_blank'
                         rel='noopener noreferrer'
                     >

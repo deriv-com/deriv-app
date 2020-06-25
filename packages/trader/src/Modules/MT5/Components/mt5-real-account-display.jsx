@@ -20,6 +20,7 @@ const getRealFinancialStpBtnLbl = (is_fully_authenticated, is_pending_authentica
 
 const MT5RealAccountDisplay = ({
     has_real_account,
+    is_eu,
     is_fully_authenticated,
     is_pending_authentication,
     onSelectAccount,
@@ -74,6 +75,7 @@ const MT5RealAccountDisplay = ({
     return (
         <div className='mt5-real-accounts-display'>
             <MT5AccountCard
+                is_eu={is_eu}
                 has_mt5_account={has_mt5_account}
                 icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
                 title={localize('Synthetic')}
@@ -91,6 +93,7 @@ const MT5RealAccountDisplay = ({
                 specs={real_synthetic_specs}
             />
             <MT5AccountCard
+                is_eu={is_eu}
                 has_mt5_account={has_mt5_account}
                 is_disabled={!has_real_account}
                 icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
@@ -115,6 +118,7 @@ const MT5RealAccountDisplay = ({
                 specs={real_financial_specs}
             />
             <MT5AccountCard
+                is_eu={is_eu}
                 has_mt5_account={has_mt5_account}
                 icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}
                 title={localize('Financial STP')}

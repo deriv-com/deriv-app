@@ -6,6 +6,7 @@ import { Mt5AccountCopy } from './mt5-account-copy.jsx';
 import { getMT5WebTerminalLink } from '../Helpers/constants';
 
 const MT5AccountCard = ({
+    is_eu,
     button_label,
     commission_message,
     descriptor,
@@ -123,7 +124,11 @@ const MT5AccountCard = ({
                     <a
                         className='dc-btn mt5-account-card__account-selection mt5-account-card__account-selection--primary'
                         type='button'
-                        href={getMT5WebTerminalLink({ category: type.category, loginid: existing_data.display_login })}
+                        href={getMT5WebTerminalLink({
+                            is_eu,
+                            category: type.category,
+                            loginid: existing_data.display_login,
+                        })}
                         target='_blank'
                         rel='noopener noreferrer'
                     >

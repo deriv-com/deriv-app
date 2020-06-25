@@ -147,7 +147,7 @@ const JournalLoader = () => (
     </ContentLoader>
 );
 
-const Journal = ({ filtered_messages, contract_stage, ...props }) => {
+const Journal = ({ filtered_messages, contract_stage, is_stop_button_visible, ...props }) => {
     return (
         <div className='journal run-panel-tab__content'>
             <Tools {...props} />
@@ -174,7 +174,9 @@ const Journal = ({ filtered_messages, contract_stage, ...props }) => {
                         </TransitionGroup>
                     ) : (
                         <>
-                            {contract_stage.index >= contract_stages.STARTING.index ? (
+                            {contract_stage.index >= contract_stages.STARTING.index &&
+                            !!props.checked_filters.length &&
+                            is_stop_button_visible ? (
                                 <JournalLoader />
                             ) : (
                                 <div className='journal-empty__container'>
@@ -224,5 +226,6 @@ export default connect(({ journal, run_panel }) => ({
     filters: journal.filters,
     filtered_messages: journal.filtered_messages,
     is_filter_dialog_visible: journal.is_filter_dialog_visible,
+    is_stop_button_visible: run_panel.is_stop_button_visible,
     toggleFilterDialog: journal.toggleFilterDialog,
 }))(Journal);

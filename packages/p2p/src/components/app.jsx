@@ -299,7 +299,7 @@ class App extends React.Component {
                     currency,
                     local_currency_config,
                     residence,
-                    advertiser_id: this.state.advertiser_id,
+                    advertiser_id,
                     is_advertiser: this.state.is_advertiser,
                     is_listed: this.state.is_listed,
                     setIsListed: is_listed => this.setState({ is_listed }),
@@ -319,7 +319,6 @@ class App extends React.Component {
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
                     getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId.bind(this),
-                    order_table_type,
                     changeOrderToggle: this.changeOrderToggle,
                     poi_status: this.state.poi_status,
                     is_mobile,
@@ -348,7 +347,7 @@ class App extends React.Component {
                     ) : (
                         <>
                             {is_loading && <Loading is_fullscreen={false} />}
-                            {should_show_verification && !is_advertiser && (
+                            {should_show_verification && !this.state.is_advertiser && (
                                 <div
                                     className={classNames('p2p-cashier__verification', {
                                         'p2p-cashier__verification--mobile': is_mobile,
@@ -357,7 +356,7 @@ class App extends React.Component {
                                     <Verification />
                                 </div>
                             )}
-                            {should_show_verification && is_advertiser && <Download />}
+                            {should_show_verification && this.state.is_advertiser && <Download />}
                             {!should_show_verification && (
                                 <Tabs
                                     onTabItemClick={this.handleTabClick}

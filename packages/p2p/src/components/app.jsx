@@ -45,7 +45,7 @@ class App extends React.Component {
             parameters: null,
             is_advertiser: false,
             is_restricted: false,
-            show_popup: true,
+            show_popup: false,
             chat_info: {
                 app_id: '',
                 user_id: '',
@@ -264,14 +264,12 @@ class App extends React.Component {
             active_index,
             order_offset,
             advertiser_id,
-            is_advertiser,
             orders,
             parameters,
             notification_count,
             order_table_type,
             chat_info,
             show_popup,
-            nickname,
             is_loading,
         } = this.state;
         const {

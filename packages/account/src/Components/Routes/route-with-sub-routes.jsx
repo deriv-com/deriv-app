@@ -6,7 +6,6 @@ import { removeBranchName } from '@deriv/shared/utils/url';
 import { redirectToLogin, redirectToSignUp } from 'Duplicated/_common/base/login';
 import LoginPrompt from 'Duplicated/App/Components/Elements/login-prompt.jsx';
 import { default_title } from 'Duplicated/App/Constants/app-config';
-import { connect } from 'Stores/connect';
 
 const RouteWithSubRoutes = (route) => {
     const renderFactory = (props) => {

@@ -198,7 +198,7 @@ const AccountTransferForm = ({
     }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNote]);
 
     return (
-        <div className='cashier__wrapper'>
+        <div className='cashier__wrapper account-transfer__wrapper'>
             <React.Fragment>
                 <h2 className='cashier__header cashier__content-header'>
                     {localize('Transfer between your accounts in Deriv')}
@@ -217,7 +217,7 @@ const AccountTransferForm = ({
                                 </div>
                             ) : (
                                 <Form>
-                                    <div className='cashier__drop-down-wrapper'>
+                                    <div className='cashier__drop-down-wrapper account-transfer__drop-down-wrapper'>
                                         <DesktopWrapper>
                                             <Dropdown
                                                 id='transfer_from'

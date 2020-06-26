@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { IconTradeTypes } from '@deriv/components';
 import { getContractTypeDisplay } from 'Constants/contract';
 
-const ContractTypeCell = ({ type, is_high_low }) => (
+const ContractTypeCell = ({ multiplier, type, is_high_low }) => (
     <div className='contract-type'>
         <div className='contract-type__type-wrapper'>
             <IconTradeTypes
@@ -12,7 +12,10 @@ const ContractTypeCell = ({ type, is_high_low }) => (
                 size={24}
             />
         </div>
-        <span className='contract-type__type-label'>{getContractTypeDisplay(type, is_high_low) || ''}</span>
+        <div className='contract-type__type-label'>
+            <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>
+            {multiplier && <div className='contract-type__type-label-multiplier'>x{multiplier}</div>}
+        </div>
     </div>
 );
 

@@ -6,7 +6,6 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import { redirectToLogin, redirectToSignUp } from '_common/base/login';
 import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
 import { default_title } from 'App/Constants/app-config';
-import { connect } from 'Stores/connect';
 
 const RouteWithSubRoutes = route => {
     const renderFactory = props => {
@@ -50,6 +49,4 @@ const RouteWithSubRoutes = route => {
 
 export { RouteWithSubRoutes as RouteWithSubRoutesRender }; // For tests
 
-export default connect(({ gtm }) => ({
-    pushDataLayer: gtm.pushDataLayer,
-}))(RouteWithSubRoutes);
+export default RouteWithSubRoutes;

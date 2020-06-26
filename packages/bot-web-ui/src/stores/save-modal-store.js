@@ -25,7 +25,7 @@ export default class SaveModalStore {
         const errors = {};
 
         if (values.bot_name.trim() === '') {
-            errors.bot_name = localize('Field name cannot be empty');
+            errors.bot_name = localize('Strategy name cannot be empty');
         }
 
         return errors;

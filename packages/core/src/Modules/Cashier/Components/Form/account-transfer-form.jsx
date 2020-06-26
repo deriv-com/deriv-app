@@ -40,6 +40,11 @@ const AccountTransferNote = ({
     mt5_total_transfers,
 }) => (
     <div className='account-transfer__notes'>
+        <DesktopWrapper>
+            <div className='cashier__header account-transfer__notes-header'>
+                <Localize i18n_default_text='Notes' />
+            </div>
+        </DesktopWrapper>
         <AccountTransferBullet>
             <Localize
                 i18n_default_text='Daily transfer limits: up to {{number_deriv}} times for Deriv accounts, and up to {{number_dmt5}} times for DMT5 accounts.'
@@ -164,8 +169,20 @@ class AccountTransferForm extends React.Component {
                 ? localize('You have {{number}} transfer remaining for today.', { number: remaining_transfers })
                 : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
 
+        if (Object.keys(from_accounts).length && typeof this.props.setSideNote === 'function') {
+            this.props.setSideNote(
+                <AccountTransferNote
+                    mt5_total_transfers={mt5_total_transfers}
+                    internal_total_transfers={internal_total_transfers}
+                    transfer_fee={this.props.transfer_fee}
+                    currency={this.props.selected_from.currency}
+                    minimum_fee={this.props.minimum_fee}
+                />
+            );
+        }
+
         return (
-            <div className='cashier__wrapper cashier__wrapper--align-left'>
+            <div className='cashier__wrapper'>
                 <React.Fragment>
                     <h2 className='cashier__header cashier__content-header'>
                         {localize('Transfer between your accounts in Deriv')}
@@ -196,6 +213,7 @@ class AccountTransferForm extends React.Component {
                                                     is_large
                                                     label={localize('From')}
                                                     list={from_accounts}
+                                                    list_height='404'
                                                     name='transfer_from'
                                                     value={this.props.selected_from.value}
                                                     onChange={e => {
@@ -221,12 +239,6 @@ class AccountTransferForm extends React.Component {
                                                 />
                                             </MobileWrapper>
                                             <DesktopWrapper>
-                                                <Icon
-                                                    className='cashier__transferred-icon account-transfer__transfer-icon'
-                                                    icon='IcArrowLeftBold'
-                                                />
-                                            </DesktopWrapper>
-                                            <DesktopWrapper>
                                                 <Dropdown
                                                     id='transfer_to'
                                                     className='cashier__drop-down account-transfer__drop-down'
@@ -237,6 +249,7 @@ class AccountTransferForm extends React.Component {
                                                     is_large
                                                     label={localize('To')}
                                                     list={to_accounts}
+                                                    list_height='404'
                                                     name='transfer_to'
                                                     value={this.props.selected_to.value}
                                                     onChange={this.props.onChangeTransferTo}
@@ -264,7 +277,7 @@ class AccountTransferForm extends React.Component {
                                                         this.props.setErrorMessage('');
                                                         handleChange(e);
                                                     }}
-                                                    className='cashier__input cashier__input--long dc-input--no-placeholder account-transfer__input'
+                                                    className='cashier__input dc-input--no-placeholder account-transfer__input'
                                                     type='text'
                                                     label={localize('Amount')}
                                                     error={touched.amount && errors.amount}
@@ -305,16 +318,11 @@ class AccountTransferForm extends React.Component {
                                                 />
                                             )}
                                         </Field>
-                                        <div className='cashier__form-submit  cashier__form-submit--align-end'>
+                                        <div className='cashier__form-submit cashier__form-submit--align-end account-transfer__form-submit'>
                                             {this.props.error.message && (
                                                 <React.Fragment>
                                                     <DesktopWrapper>
-                                                        <div className='cashier__form-error-wrapper'>
-                                                            <Icon
-                                                                icon='IcAlertDanger'
-                                                                className='cashier__form-error-icon'
-                                                                size={80}
-                                                            />
+                                                        <div className='cashier__form-error-wrapper account-transfer__form-error'>
                                                             <Icon
                                                                 icon='IcAlertDanger'
                                                                 className='cashier__form-error-small-icon'
@@ -347,13 +355,15 @@ class AccountTransferForm extends React.Component {
                                                 <Localize i18n_default_text='Transfer' />
                                             </Button>
                                         </div>
-                                        <AccountTransferNote
-                                            mt5_total_transfers={mt5_total_transfers}
-                                            internal_total_transfers={internal_total_transfers}
-                                            transfer_fee={this.props.transfer_fee}
-                                            currency={this.props.selected_from.currency}
-                                            minimum_fee={this.props.minimum_fee}
-                                        />
+                                        <MobileWrapper>
+                                            <AccountTransferNote
+                                                mt5_total_transfers={mt5_total_transfers}
+                                                internal_total_transfers={internal_total_transfers}
+                                                transfer_fee={this.props.transfer_fee}
+                                                currency={this.props.selected_from.currency}
+                                                minimum_fee={this.props.minimum_fee}
+                                            />
+                                        </MobileWrapper>
                                     </Form>
                                 )}
                             </React.Fragment>
@@ -377,6 +387,7 @@ AccountTransferForm.propTypes = {
     selected_from: PropTypes.object,
     selected_to: PropTypes.object,
     setErrorMessage: PropTypes.func,
+    setSideNote: PropTypes.func,
     transfer_fee: PropTypes.number,
     transfer_limit: PropTypes.object,
 };

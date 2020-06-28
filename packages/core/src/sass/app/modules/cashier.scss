@@ -192,7 +192,8 @@
             margin-bottom: 3.2rem !important;
         }
     }
-    &__drop-down {
+    &__drop-down,
+    &__drop-down-wrapper .cashier__drop-down {
         display: inline-block;
         min-width: 20.3rem;
         min-height: 4rem;
@@ -928,7 +929,7 @@
             margin-bottom: 0.8rem;
         }
     }
-    &__drop-down {
+    &__drop-down-wrapper .account-transfer__drop-down {
         text-align: left;
         width: fit-content;
         min-width: 36rem;
@@ -940,7 +941,7 @@
             margin-bottom: 2.4rem;
         }
     }
-    &__input {
+    &__wrapper .account-transfer__input {
         margin-bottom: -0.8rem !important;
         width: fit-content;
         min-width: 36rem;

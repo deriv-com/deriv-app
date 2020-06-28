@@ -3,13 +3,10 @@ import fromEntries from 'object.fromentries';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Div100vhContainer, FormProgress } from '@deriv/components';
 import { isDesktop } from '@deriv/shared/utils/screen';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { toMoment } from '@deriv/shared/utils/date';
-import CurrencySelector from './currency-selector.jsx';
-import { addressDetailsConfig } from './address-details-form';
-import { personalDetailsConfig } from './personal-details-form';
-import { termsOfUseConfig } from './terms-of-use-form';
+import { getItems } from './account-wizard-form';
 
 // TODO: [deriv-eu] remove and merge this with the original function in PersonalDetails
 const getLocation = (location_list, value, type) => {
@@ -21,41 +18,80 @@ const getLocation = (location_list, value, type) => {
     return '';
 };
 
+const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, step }) => (
+    <React.Fragment>
+        {(!has_real_account || has_target) && (
+            <React.Fragment>
+                <DesktopWrapper>
+                    <FormProgress steps={items} current_step={step} />
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <div className='account-wizard__header-steps'>
+                        <h4 className='account-wizard__header-steps-title'>
+                            <Localize
+                                i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
+                                values={{
+                                    step: step + 1,
+                                    steps: items.length,
+                                    step_title: items[step].header.title,
+                                }}
+                            />
+                        </h4>
+                        {items[step].header.active_title && (
+                            <h4 className='account-wizard__header-steps-subtitle'>{items[step].header.active_title}</h4>
+                        )}
+                    </div>
+                </MobileWrapper>
+            </React.Fragment>
+        )}
+        <DesktopWrapper>
+            {has_real_account && !has_target && (
+                <div className='account-wizard__set-currency'>
+                    {!has_currency && (
+                        <p>
+                            <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
+                        </p>
+                    )}
+                    <h2>
+                        <Localize i18n_default_text='Please choose your currency' />
+                    </h2>
+                </div>
+            )}
+        </DesktopWrapper>
+    </React.Fragment>
+);
+
 class AccountWizard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             finished: undefined,
+            mounted: true,
             step: 0,
             form_error: '',
-            items: [
-                {
-                    header: {
-                        active_title: localize('Please choose your currency'),
-                        title: localize('Account currency'),
-                    },
-                    body: CurrencySelector,
-                    form_value: {
-                        currency: '',
-                    },
-                },
-                personalDetailsConfig(props),
-                addressDetailsConfig(props),
-                termsOfUseConfig(props),
-            ],
+            items: [],
         };
     }
 
     componentDidMount() {
         this.fetchFromStorage();
         this.props.fetchStatesList();
-        if (!this.residence_list?.length) {
-            const items = this.state.items.slice(0);
-            this.getCountryCode().then(phone_idd => {
-                items[1].form_value.phone = phone_idd || '';
-                this.setState(items);
+        this.props.fetchResidenceList().then(() => {
+            this.setState({
+                items: getItems(this.props),
+                mounted: false,
             });
-        }
+
+            if (!this.residence_list?.length) {
+                const items = this.state.items.slice(0);
+                this.getCountryCode().then(phone_idd => {
+                    if ('phone' in items[1].form_value) {
+                        items[1].form_value.phone = phone_idd || '';
+                        this.setState(items);
+                    }
+                });
+            }
+        });
     }
 
     fetchFromStorage = () => {
@@ -97,6 +133,12 @@ class AccountWizard extends React.Component {
                         : '';
                 }
 
+                if (values.tax_residence) {
+                    values.tax_residence = values.tax_residence
+                        ? getLocation(this.props.residence_list, values.tax_residence, 'value')
+                        : values.tax_residence;
+                }
+
                 if (values.address_state) {
                     values.address_state = this.props.states_list.length
                         ? getLocation(this.props.states_list, values.address_state, 'value')
@@ -112,6 +154,10 @@ class AccountWizard extends React.Component {
 
     get state_index() {
         return this.state.step;
+    }
+
+    get has_target() {
+        return this.props.real_account_signup_target !== 'manage';
     }
 
     getCountryCode = async () => {
@@ -155,7 +201,10 @@ class AccountWizard extends React.Component {
     };
 
     submitForm = () => {
-        return this.props.realAccountSignup(this.form_values);
+        const clone = { ...this.form_values };
+        delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
+
+        return this.props.realAccountSignup(clone);
     };
 
     setAccountCurrency = () => this.props.setAccountCurrency(this.form_values.currency);
@@ -205,7 +254,11 @@ class AccountWizard extends React.Component {
             this.submitForm()
                 .then(response => {
                     setSubmitting(false);
-                    this.props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
+                    if (this.props.real_account_signup_target === 'maltainvest') {
+                        this.props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
+                    } else {
+                        this.props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
+                    }
                 })
                 .catch(error => {
                     this.props.onError(error, this.state.items);
@@ -227,51 +280,19 @@ class AccountWizard extends React.Component {
     }
 
     render() {
+        if (this.state.mounted) return null;
         if (!this.state.finished) {
             const BodyComponent = this.getCurrent('body');
             const passthrough = this.getPropsForChild();
             return (
                 <div className='account-wizard'>
-                    {!this.props.has_real_account && (
-                        <>
-                            <DesktopWrapper>
-                                <FormProgress steps={this.state.items} current_step={this.state.step} />
-                            </DesktopWrapper>
-                            <MobileWrapper>
-                                <div className='account-wizard__header-steps'>
-                                    <h4 className='account-wizard__header-steps-title'>
-                                        <Localize
-                                            i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
-                                            values={{
-                                                step: this.state.step + 1,
-                                                steps: this.state.items.length,
-                                                step_title: this.state.items[this.state.step].header.title,
-                                            }}
-                                        />
-                                    </h4>
-                                    {this.state.items[this.state.step].header.active_title && (
-                                        <h4 className='account-wizard__header-steps-subtitle'>
-                                            {this.state.items[this.state.step].header.active_title}
-                                        </h4>
-                                    )}
-                                </div>
-                            </MobileWrapper>
-                        </>
-                    )}
-                    <DesktopWrapper>
-                        {this.props.has_real_account && (
-                            <div className='account-wizard__set-currency'>
-                                {!this.props.has_currency && (
-                                    <p>
-                                        <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
-                                    </p>
-                                )}
-                                <h2>
-                                    <Localize i18n_default_text='Please choose your currency' />
-                                </h2>
-                            </div>
-                        )}
-                    </DesktopWrapper>
+                    <SetCurrencyHeader
+                        has_real_account={this.props.has_real_account}
+                        step={this.state.step}
+                        items={this.state.items}
+                        has_currency={this.props.has_currency}
+                        has_target={this.has_target}
+                    />
                     <Div100vhContainer className='account-wizard__body' is_disabled={isDesktop()} height_offset='110px'>
                         <BodyComponent
                             value={this.getCurrent('form_value')}
@@ -306,16 +327,18 @@ AccountWizard.propTypes = {
     setAccountCurrency: PropTypes.func,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
+    account_settings: client.account_settings,
     is_fully_authenticated: client.is_fully_authenticated,
     realAccountSignup: client.realAccountSignup,
     has_real_account: client.has_active_real_account,
+    real_account_signup_target: ui.real_account_signup_target,
     has_currency: !!client.currency,
     setAccountCurrency: client.setAccountCurrency,
-    can_upgrade_to: client.can_upgrade_to,
     residence: client.residence,
     residence_list: client.residence_list,
     states_list: client.states_list,
     fetchStatesList: client.fetchStatesList,
     fetchResidenceList: client.fetchResidenceList,
+    refreshNotifications: client.refreshNotifications,
 }))(AccountWizard);

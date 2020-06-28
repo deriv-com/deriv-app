@@ -447,7 +447,7 @@ class AccountSwitcher extends React.Component {
                                     secondary
                                     onClick={
                                         this.has_set_currency
-                                            ? this.props.openRealAccountSignup
+                                            ? () => this.props.openRealAccountSignup('manage')
                                             : this.setAccountCurrency
                                     }
                                 >

@@ -313,7 +313,12 @@ export default class ClientStore extends BaseStore {
     // this is true when a user needs to have a active real account for trading
     @computed
     get should_have_real_account() {
-        return this.standpoint.iom && !this.has_any_real_account && this.residence === 'gb';
+        return (
+            this.standpoint.iom &&
+            !this.has_any_real_account &&
+            this.residence === 'gb' &&
+            this.root_store.ui.is_real_acc_signup_on === false
+        );
     }
 
     // Shows all possible landing companies of user between all
@@ -324,17 +329,21 @@ export default class ClientStore extends BaseStore {
             svg: false,
             malta: false,
             maltainvest: false,
+            gaming_company: false,
+            financial_company: false,
         };
         if (!this.landing_companies) return result;
         const { gaming_company, financial_company } = this.landing_companies;
         if (gaming_company?.shortcode) {
             Object.assign(result, {
                 [gaming_company.shortcode]: !!gaming_company?.shortcode,
+                gaming_company: gaming_company?.shortcode ?? false,
             });
         }
         if (financial_company?.shortcode) {
             Object.assign(result, {
                 [financial_company.shortcode]: !!financial_company?.shortcode,
+                financial_company: financial_company?.shortcode ?? false,
             });
         }
 
@@ -499,7 +508,7 @@ export default class ClientStore extends BaseStore {
                 this.is_populating_account_list = true;
             });
             const client_accounts = JSON.parse(LocalStore.get(storage_key));
-            const { oauth_token, client_id } = response.new_account_real;
+            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
             const authorize_response = await BinarySocket.authorize(oauth_token);
 
             const new_data = {};
@@ -530,13 +539,37 @@ export default class ClientStore extends BaseStore {
     @action.bound
     realAccountSignup(form_values) {
         return new Promise(async (resolve, reject) => {
+            const is_maltainvest_account = this.root_store.ui.real_account_signup_target === 'maltainvest';
+            let currency = '';
             form_values.residence = this.residence;
-            const response = await WS.newAccountReal(form_values);
+            if (is_maltainvest_account) {
+                currency = form_values.currency;
+                form_values.accept_risk = 1;
+                delete form_values.currency;
+            }
+            const response = is_maltainvest_account
+                ? await WS.newAccountRealMaltaInvest(form_values)
+                : await WS.newAccountReal(form_values);
             if (!response.error) {
                 await this.accountRealReaction(response);
+                // Set currency after account is created
+                // Maltainvest only
+                if (is_maltainvest_account) {
+                    await this.setAccountCurrency(currency);
+                }
                 localStorage.removeItem('real_account_signup_wizard');
                 this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
-                resolve(response);
+                resolve({
+                    ...response,
+                    ...(is_maltainvest_account
+                        ? {
+                              new_account_maltainvest: {
+                                  ...response.new_account_maltainvest,
+                                  currency,
+                              },
+                          }
+                        : {}),
+                });
             } else {
                 reject(response.error);
             }

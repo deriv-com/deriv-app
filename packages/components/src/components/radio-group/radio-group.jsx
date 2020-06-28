@@ -53,7 +53,7 @@ RadioGroup.propTypes = {
     items: PropTypes.arrayOf(
         PropTypes.shape({
             label: PropTypes.node.isRequired,
-            value: PropTypes.bool.isRequired,
+            value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number]),
         })
     ),
     onToggle: PropTypes.func,

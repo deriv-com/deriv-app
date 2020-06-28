@@ -6,8 +6,8 @@ import {
     DesktopWrapper,
     MobileWrapper,
     Div100vhContainer,
-    FadeWrapper,
     PageOverlay,
+    FadeWrapper,
 } from '@deriv/components';
 import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';

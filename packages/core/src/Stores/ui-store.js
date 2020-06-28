@@ -142,9 +142,6 @@ export default class UIStore extends BaseStore {
 
         super({ root_store, local_storage_properties, store_name });
 
-        window.addEventListener('load', () => {
-            this.root_store.gtm.pushDataLayer({ event: 'page_load' });
-        });
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
             // TODO: [disable-dark-bot] Delete this condition when Bot is ready

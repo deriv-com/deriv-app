@@ -186,20 +186,8 @@ export default class GTMStore extends BaseStore {
 
     @action.bound
     setLoginFlag(event_name) {
-        if (this.is_gtm_applicable) {
+        if (this.is_gtm_applicable && event_name) {
             localStorage.setItem('GTM_login', event_name);
         }
-    }
-
-    @action.bound
-    pushLoadPerformance(performance_metric, duration) {
-        const data = {
-            event: performance_metric,
-            duration,
-        };
-        dataLayer.push({
-            ...this.common_variables,
-            ...data,
-        });
     }
 }

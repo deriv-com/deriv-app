@@ -286,4 +286,16 @@
     &__shadow-wrapper:hover:after {
         opacity: 0;
     }
+    &--multiplier {
+        .btn-purchase__info--left {
+            width: 35%;
+            flex: none;
+        }
+        .btn-purchase__effect-detail--arrow {
+            left: 40px;
+        }
+        &:not(.btn-purchase--swoosh) .btn-purchase__effect-detail {
+            width: 72px;
+        }
+    }
 }

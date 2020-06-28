@@ -11,6 +11,19 @@ import { ChartBottomWidgets, ChartToolbarWidgets, ChartTopWidgets, DigitsWidget 
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 
+const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
+    React.useEffect(() => {
+        setTick(tick);
+    }, [tick]);
+
+    React.useEffect(() => {
+        setDigits(digits);
+    }, digits);
+
+    // render nothing for bottom widgets on chart in mobile
+    return null;
+};
+
 class Trade extends React.Component {
     state = {
         digits: [],
@@ -32,12 +45,14 @@ class Trade extends React.Component {
     }
 
     bottomWidgets = ({ digits, tick }) => {
-        this.setState({
-            digits,
-            tick,
-        });
-
-        return null; // render nothing for bottom widgets on chart in mobile
+        return (
+            <BottomWidgetsMobile
+                digits={digits}
+                tick={tick}
+                setTick={t => this.setState({ tick: t })}
+                setDigits={d => this.setState({ digits: d })}
+            />
+        );
     };
 
     onChangeSwipeableIndex = index => {
@@ -79,8 +94,10 @@ class Trade extends React.Component {
                         }
                     >
                         <DesktopWrapper>
-                            <ChartLoader is_visible={this.props.is_chart_loading} />
-                            <ChartTrade />
+                            <div className='chart-container__wrapper'>
+                                <ChartLoader is_visible={this.props.is_chart_loading} />
+                                <ChartTrade />
+                            </div>
                         </DesktopWrapper>
                         <MobileWrapper>
                             <ChartLoader
@@ -185,7 +202,6 @@ class ChartTradeClass extends React.Component {
     };
 
     componentDidMount() {
-        performance.mark('smart-charts-mounted');
         this.setActiveMarkets();
     }
 
@@ -257,6 +273,9 @@ class ChartTradeClass extends React.Component {
                 hasAlternativeSource={this.props.has_alternative_source}
                 refToAddTick={this.props.refToAddTick}
                 activeSymbols={active_markets}
+                yAxisMargin={{
+                    top: isMobile() ? 76 : 106,
+                }}
             >
                 <ChartMarkers />
             </SmartChart>

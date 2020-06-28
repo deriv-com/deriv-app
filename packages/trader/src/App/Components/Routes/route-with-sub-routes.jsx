@@ -4,7 +4,6 @@ import { removeBranchName } from '@deriv/shared/utils/url';
 import routes from '@deriv/shared/utils/routes';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { redirectToLogin, redirectToSignUp } from '_common/base/login';
-import { WS } from 'Services/ws-methods';
 import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
 import { default_title } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
@@ -43,9 +42,6 @@ const RouteWithSubRoutes = route => {
 
         const title = route.title ? `${route.title} | ` : '';
         document.title = `${title}${default_title}`;
-        WS.wait('website_status').then(() => {
-            route.pushDataLayer({ event: 'page_load' });
-        });
         return result;
     };
 

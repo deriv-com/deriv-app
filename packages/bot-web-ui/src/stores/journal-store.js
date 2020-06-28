@@ -16,12 +16,12 @@ export default class JournalStore {
         return this.root_store.core.common.server_time.get();
     }
 
-    playAudio(sound) {
+    playAudio = sound => {
         if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
             const audio = document.getElementById(sound);
             audio.play();
         }
-    }
+    };
 
     filters = [
         { id: message_types.ERROR, label: localize('Errors') },

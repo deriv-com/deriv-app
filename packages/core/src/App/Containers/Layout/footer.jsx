@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {
     AccountLimits,
-    ComplaintsPolicy,
     EndpointNote,
     GoToDeriv,
     HelpCentre,
@@ -47,7 +46,6 @@ const Footer = ({
             <ResponsibleTrading />
             <AccountLimits />
             {is_eu_enabled && <RegulatoryInformation standpoint={standpoint} is_eu={is_eu} />}
-            <ComplaintsPolicy standpoint={standpoint} />
             <FooterIconSeparator />
             <HelpCentre />
             <ToggleSettings

@@ -4,19 +4,15 @@ import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
 import { connect } from 'Stores/connect';
-import PopoverMessageCheckbox from 'Modules/Trading/Components/Elements/popover-message-checkbox.jsx';
 
 const StopLoss = ({
     amount,
     currency,
-    has_cancellation,
     has_stop_loss,
     is_single_currency,
-    should_show_stop_loss_warning,
     onChange,
     onChangeMultiple,
     stop_loss,
-    toggleStopLossWarning,
     validation_errors,
 }) => {
     const changeValue = e => {
@@ -31,19 +27,6 @@ const StopLoss = ({
         }
     };
 
-    const should_show_popover = has_cancellation && should_show_stop_loss_warning;
-
-    const checkbox_tooltip_label = (
-        <PopoverMessageCheckbox
-            defaultChecked={!should_show_stop_loss_warning}
-            message={localize(
-                'You may choose either stop loss or deal cancellation. You may set a stop loss amount after deal cancellation has expired.'
-            )}
-            name='should_show_stop_loss_warning'
-            onChange={() => toggleStopLossWarning()}
-        />
-    );
-
     return (
         <Fieldset className='trade-container__fieldset'>
             <InputWithCheckbox
@@ -54,11 +37,11 @@ const StopLoss = ({
                 error_messages={has_stop_loss ? validation_errors.stop_loss : undefined}
                 is_single_currency={is_single_currency}
                 is_negative_disabled={true}
+                is_input_hidden={!has_stop_loss}
                 label={localize('Stop loss')}
                 max_value={+amount}
                 name='stop_loss'
                 onChange={changeValue}
-                checkbox_tooltip_label={should_show_popover ? checkbox_tooltip_label : undefined}
                 tooltip_label={localize(
                     'Your contract is closed automatically when your loss is more than or equals to this amount.'
                 )}
@@ -75,13 +58,11 @@ StopLoss.propTypes = {
     is_single_currency: PropTypes.bool,
     onChange: PropTypes.func,
     onChangeMultiple: PropTypes.func,
-    should_show_stop_loss_warning: PropTypes.bool,
     stop_loss: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    toggleStopLossWarning: PropTypes.func,
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules, client, ui }) => ({
+export default connect(({ modules, client }) => ({
     is_single_currency: client.is_single_currency,
     amount: modules.trade.amount,
     currency: modules.trade.currency,
@@ -91,6 +72,4 @@ export default connect(({ modules, client, ui }) => ({
     onChangeMultiple: modules.trade.onChangeMultiple,
     stop_loss: modules.trade.stop_loss,
     validation_errors: modules.trade.validation_errors,
-    should_show_stop_loss_warning: ui.should_show_stop_loss_warning,
-    toggleStopLossWarning: ui.toggleStopLossWarning,
 }))(StopLoss);

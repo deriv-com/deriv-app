@@ -8,7 +8,7 @@ export const ComplaintsPolicy = ({ standpoint }) => {
     return (
         <div className='footer__link'>
             <a onClick={() => showModal(true)}>
-                <Popover alignment='bottom' message={localize('Regulatory Information')}>
+                <Popover alignment='bottom' message={localize('Complaints policy')}>
                     <Icon icon='IcComplaintsPolicy' className='footer__icon ic-deriv__icon' />
                 </Popover>
             </a>

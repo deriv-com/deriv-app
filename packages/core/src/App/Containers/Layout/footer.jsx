@@ -17,6 +17,8 @@ import {
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
 
+const FooterIconSeparator = () => <div className='footer-icon-separator' />;
+
 const Footer = ({
     enableApp,
     footer_extension,
@@ -39,14 +41,14 @@ const Footer = ({
         <EndpointNote />
         <NetworkStatus />
         <ServerTime />
-
         <div className='footer__links'>
+            <FooterIconSeparator />
             <GoToDeriv />
             <ResponsibleTrading />
             <AccountLimits />
             {is_eu_enabled && <RegulatoryInformation standpoint={standpoint} is_eu={is_eu} />}
             <ComplaintsPolicy standpoint={standpoint} />
-
+            <FooterIconSeparator />
             <HelpCentre />
             <ToggleSettings
                 is_settings_visible={is_settings_modal_on}

@@ -120,23 +120,21 @@ const ExistingAccountHasBalance = (accounts_with_balance, mt5_login_list, onBack
                 <div key={account_id}>
                     {accounts_with_balance[account_id].currency && (
                         <div className='existing-account-has-balance__container'>
-                            <div className='existing-account-has-balance__container__account-details'>
-                                <div className='existing-account-has-balance__container__account-details__icon'>
+                            <div className='existing-account-has-balance__account-details'>
+                                <div className='existing-account-has-balance__account-details__icon'>
                                     <Icon
                                         icon={`IcCurrency-${accounts_with_balance[account_id].currency.toLowerCase()}`}
                                         size={24}
                                     />
                                 </div>
-                                <div className='existing-account-has-balance__container__account-details__balance'>
-                                    <span className='existing-account-has-balance__container__account-details__balance--currency'>
+                                <div className='existing-account-has-balance__balance'>
+                                    <span className='existing-account-has-balance__balance--currency'>
                                         {accounts_with_balance[account_id].currency}
                                     </span>
-                                    <span className='existing-account-has-balance__container__account-details__balance--id'>
-                                        {account_id}
-                                    </span>
+                                    <span className='existing-account-has-balance__balance--id'>{account_id}</span>
                                 </div>
                             </div>
-                            <div className='existing-account-has-balance__container__money'>
+                            <div className='existing-account-has-balance__money'>
                                 <Money
                                     currency={accounts_with_balance[account_id].currency}
                                     amount={CurrencyUtils.formatMoney(
@@ -153,20 +151,18 @@ const ExistingAccountHasBalance = (accounts_with_balance, mt5_login_list, onBack
             ))}
             {mt5_accounts.map((account) => (
                 <div key={account.login} className='existing-account-has-balance__container'>
-                    <div className='existing-account-has-balance__container__account-details'>
+                    <div className='existing-account-has-balance__account-details'>
                         <div className='existing-account-has-balance__container__account-details__icon'>
                             <Icon icon={`IcMt5-${getMT5AccountDisplay(account.group)}`} size={24} />
                         </div>
-                        <div className='existing-account-has-balance__container__account-details__balance'>
-                            <span className='existing-account-has-balance__container__account-details__balance--currency'>
+                        <div className='existing-account-has-balance__balance'>
+                            <span className='existing-account-has-balance__balance--currency'>
                                 {getMT5AccountDisplay(account.group)}
                             </span>
-                            <span className='existing-account-has-balance__container__account-details__balance--id'>
-                                {account.login}
-                            </span>
+                            <span className='existing-account-has-balance__balance--id'>{account.login}</span>
                         </div>
                     </div>
-                    <div className='existing-account-has-balance__container__money'>
+                    <div className='existing-account-has-balance__money'>
                         <Money
                             currency={account.currency}
                             amount={CurrencyUtils.formatMoney(account.currency, account.balance, true)}

@@ -1187,40 +1187,36 @@ $MIN_HEIGHT_FLOATING: calc(
 .deactivate-account {
     max-width: 67.2rem;
 
-    .confirm-all-close {
-        &__information {
-            @include typeface(--paragraph-left-normal-prominent, none);
-            line-height: 1.43;
+    &__information {
+        @include typeface(--paragraph-left-normal-prominent, none);
+        line-height: 1.43;
+        margin-bottom: 8px;
+
+        &--bold {
+            font-weight: bold;
             margin-bottom: 8px;
-
-            &--bold {
-                font-weight: bold;
-                margin-bottom: 8px;
-                margin-top: 5px;
-            }
+            margin-top: 5px;
         }
-        &__steps {
-            margin-top: 16px;
-            @include typeface(--paragraph-left-normal-prominent, none);
-            line-height: 1.43;
-
-            &__title {
-                font-weight: bold;
-            }
-            &__content {
-                color: var(--text-general);
-
-                &__link {
-                    color: var(--text-loss-danger);
-                    font-weight: bold;
-                    text-decoration: none;
-                }
-            }
-        }
-        &__button {
-            margin-top: 24px;
-            float: right;
-        }
+    }
+    &__steps {
+        margin-top: 16px;
+        @include typeface(--paragraph-left-normal-prominent, none);
+        line-height: 1.43;
+    }
+    &__title {
+        font-weight: bold;
+    }
+    &__content {
+        color: var(--text-general);
+    }
+    &__link {
+        color: var(--text-loss-danger);
+        font-weight: bold;
+        text-decoration: none;
+    }
+    &__button {
+        margin-top: 24px;
+        float: right;
     }
     .deactivate-account-reasons {
         color: var(--text-prominent);
@@ -1255,6 +1251,10 @@ $MIN_HEIGHT_FLOATING: calc(
     @include mobile {
         width: 92%;
         margin: 0 auto;
+
+        .dc-form-submit-button {
+            background-color: var(--general-main-1);
+        }
     }
 }
 
@@ -1339,39 +1339,38 @@ $MIN_HEIGHT_FLOATING: calc(
             line-height: 1.43;
             font-weight: bold;
         }
+        &__account-details {
+            display: flex;
+            align-items: center;
+        }
+        &__balance {
+            margin-left: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            &--currency {
+                color: var(--text-prominent);
+                font-size: var(--text-size-xs);
+                line-height: 1.43;
+            }
+            &--id {
+                color: var(--text-prominent);
+                font-size: var(--text-size-xxxs);
+                line-height: 1.4;
+            }
+        }
+
         &__container {
             display: flex;
             padding: 3px 16px;
             justify-content: space-between;
             align-items: center;
-
-            &__account-details {
-                display: flex;
-                align-items: center;
-
-                &__balance {
-                    margin-left: 8px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-
-                    &--currency {
-                        color: var(--text-prominent);
-                        font-size: var(--text-size-xs);
-                        line-height: 1.43;
-                    }
-                    &--id {
-                        color: var(--text-prominent);
-                        font-size: var(--text-size-xxxs);
-                        line-height: 1.4;
-                    }
-                }
-            }
-            &__money {
-                color: var(--text-prominent);
-                font-size: var(--text-size-xs);
-                line-height: 1.43;
-            }
+        }
+        &__money {
+            color: var(--text-prominent);
+            font-size: var(--text-size-xs);
+            line-height: 1.43;
         }
         &__button {
             margin-top: 16px;

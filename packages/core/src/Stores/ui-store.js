@@ -78,7 +78,7 @@ export default class UIStore extends BaseStore {
 
     // real account signup
     @observable is_real_acc_signup_on = false;
-    @observable real_account_signup_target = 'svg';
+    @observable real_account_signup_target = undefined;
     @observable has_real_account_signup_ended = false;
 
     // account types modal
@@ -355,7 +355,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    openRealAccountSignup(target = 'svg') {
+    openRealAccountSignup(target) {
         this.is_real_acc_signup_on = true;
         this.real_account_signup_target = target;
         this.is_accounts_switcher_on = false;

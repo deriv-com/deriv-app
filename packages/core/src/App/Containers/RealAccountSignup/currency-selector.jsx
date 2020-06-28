@@ -117,27 +117,15 @@ class CurrencySelector extends React.Component {
         };
     }
 
-    validateCurrencies = values => {
-        const errors = {};
-
-        if (!values.currency) {
-            errors.currency = localize('Select an item');
-        }
-
-        return errors;
-    };
-
     render() {
         const { has_currency, has_real_account } = this.props;
         return (
             <Formik
-                initialValues={{
-                    currency: this.props.value.currency,
-                }}
+                initialValues={this.props.value}
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
-                validate={this.validateCurrencies}
+                validate={this.props.validate}
             >
                 {({
                     handleSubmit,

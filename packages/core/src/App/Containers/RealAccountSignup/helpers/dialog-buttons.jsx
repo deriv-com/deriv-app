@@ -34,19 +34,36 @@ const getDismissButton = ({ status, landing_company_shortcode, closeModal, switc
             };
     }
 };
-const getActionButton = ({ status, landing_company_shortcode, closeModalAndOpenCashier, closeModalAndOpenPOI }) => {
+
+const getActionButton = ({
+    status,
+    landing_company_shortcode,
+    closeModalAndOpenCashier,
+    closeModalAndOpenPOI,
+    closeModalAndOpenPOA,
+}) => {
     switch (landing_company_shortcode) {
         case 'iom':
-            if (status === EXPERIAN.DANGER || status === EXPERIAN.WARN) {
+            if (status === EXPERIAN.DANGER) {
+                return {
+                    label: localize('Submit proofs'),
+                    action: closeModalAndOpenPOI,
+                };
+            } else if (status === EXPERIAN.WARN) {
                 return {
                     label: localize('Upload documents'),
-                    action: closeModalAndOpenPOI,
+                    action: closeModalAndOpenPOA,
                 };
             }
 
             return {
                 label: localize('Deposit now'),
                 action: closeModalAndOpenCashier,
+            };
+        case 'maltainvest':
+            return {
+                label: localize('Submit proof'),
+                action: closeModalAndOpenPOI,
             };
         case 'svg':
         case 'malta':
@@ -57,7 +74,13 @@ const getActionButton = ({ status, landing_company_shortcode, closeModalAndOpenC
             };
     }
 };
-const DialogPrimaryButton = ({ status, landing_company_shortcode, closeModalAndOpenCashier, closeModalAndOpenPOI }) => {
+const DialogPrimaryButton = ({
+    status,
+    landing_company_shortcode,
+    closeModalAndOpenCashier,
+    closeModalAndOpenPOI,
+    closeModalAndOpenPOA,
+}) => {
     // Check if the button is necessary
     // Fetch proper action from store based on status + landing_company_shortcode
     const { label, action } = getActionButton({
@@ -65,6 +88,7 @@ const DialogPrimaryButton = ({ status, landing_company_shortcode, closeModalAndO
         landing_company_shortcode,
         closeModalAndOpenCashier,
         closeModalAndOpenPOI,
+        closeModalAndOpenPOA,
     });
 
     return <Button primary text={label} onClick={action} />;
@@ -84,6 +108,7 @@ export const DialogButtons = ({
     landing_company_shortcode,
     closeModal,
     closeModalAndOpenCashier,
+    closeModalAndOpenPOA,
     closeModalAndOpenPOI,
     switchToVirtual,
 }) => {
@@ -100,6 +125,7 @@ export const DialogButtons = ({
                 landing_company_shortcode={landing_company_shortcode}
                 closeModalAndOpenCashier={closeModalAndOpenCashier}
                 closeModalAndOpenPOI={closeModalAndOpenPOI}
+                closeModalAndOpenPOA={closeModalAndOpenPOA}
             />
         </div>
     );

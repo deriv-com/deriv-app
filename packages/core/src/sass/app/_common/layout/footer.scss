@@ -149,3 +149,17 @@
         }
     }
 }
+
+/** @define footer-regulatory-information */
+.footer-regulatory-information {
+    padding: 2rem;
+
+    p {
+        @include typeface(--paragraph-left-normal-prominent);
+    }
+    &__link {
+        @include typeface(--paragraph-left-bold-prominent);
+        color: var(--brand-red-coral);
+        text-decoration: none;
+    }
+}

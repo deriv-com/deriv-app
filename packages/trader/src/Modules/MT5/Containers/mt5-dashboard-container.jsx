@@ -3,10 +3,7 @@ import { Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getMT5WebTerminalLink, getPlatformMt5DownloadLink } from '../Helpers/constants';
 
-const MT5DashboardContainer = ({
-    is_eu_enabled, // TODO [deriv-eu] remove this once EU is ready to ship.
-    is_eu,
-}) => (
+const MT5DashboardContainer = ({ is_eu }) => (
     <div className='mt5-dashboard__download-center'>
         <h1 className='mt5-dashboard__download-center--heading'>
             <Localize i18n_default_text='Run MT5 from your browser or download the MT5 app for your devices' />

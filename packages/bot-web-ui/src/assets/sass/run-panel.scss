@@ -217,6 +217,31 @@
     }
 }
 
+.limits__wrapper {
+    @include mobile {
+        position: fixed;
+        z-index: 5;
+        width: 100%;
+        left: 0px;
+        top: 0px;
+        background: var(--general-main-1);
+
+        .self-exclusion {
+            height: calc(100vh - 40px);
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+
+            &__content {
+                margin-top: 56px;
+            }
+            &__input {
+                margin-bottom: 4rem;
+            }
+        }
+    }
+}
+
 .dc-modal__container_self-exclusion__modal {
     display: flex;
     flex-direction: row;

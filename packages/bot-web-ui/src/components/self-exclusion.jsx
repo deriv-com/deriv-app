@@ -1,11 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, ThemedScrollbars, Button } from '@deriv/components';
+import {
+    Input,
+    ThemedScrollbars,
+    Button,
+    Modal,
+    MobileWrapper,
+    Div100vhContainer,
+    FadeWrapper,
+    PageOverlay,
+} from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { Formik, Form, Field } from 'formik';
 import { connect } from '../stores/connect';
 
-class SelfExclusion extends React.Component {
+class SelfExclustionForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,14 +23,15 @@ class SelfExclusion extends React.Component {
     }
     render() {
         const {
-            max_losses,
-            set_max_losses,
             initial_values,
-            updateSelfExclusion,
-            setLimitations,
+            max_losses,
             onRunButtonClick,
-            ToggleSelfExclusion,
             run_limit,
+            set_max_losses,
+            setLimitations,
+            ToggleSelfExclusion,
+            updateSelfExclusion,
+            is_mobile,
         } = this.props;
         const form_errors = this.state.errors;
         const setErrors = () => {
@@ -32,7 +42,7 @@ class SelfExclusion extends React.Component {
             if (!run_limit) {
                 errors.run_limit = 'Maximum consecutive trade should set';
             }
-            this.setState({ errors: errors });
+            this.setState({ errors });
         };
 
         const onSubmitLimits = async () => {
@@ -53,6 +63,7 @@ class SelfExclusion extends React.Component {
             }
             onRunButtonClick();
         };
+
         const onFormChange = (type, e) => {
             setLimitations(type, e.currentTarget.value);
         };
@@ -62,7 +73,7 @@ class SelfExclusion extends React.Component {
                     <ThemedScrollbars
                         autohide
                         style={{
-                            height: '246px',
+                            height: is_mobile ? 'calc(100vh - 250px)' : '246',
                             width: '392px',
                         }}
                     >
@@ -124,30 +135,68 @@ class SelfExclusion extends React.Component {
 
                 <div className='self-exclusion__footer'>
                     <Button large text={localize('Cancel')} onClick={ToggleSelfExclusion} secondary />
-                    <Button large text={localize('Apply run and bot')} onClick={() => onSubmitLimits()} primary />
+                    <Button large text={localize('Apply and run')} onClick={() => onSubmitLimits()} primary />
                 </div>
             </div>
         );
     }
 }
+
+class SelfExclusion extends React.PureComponent {
+    render() {
+        const { is_restricted, ToggleSelfExclusion, is_mobile } = this.props;
+        return (
+            <>
+                {is_mobile ? (
+                    <FadeWrapper is_visible={is_restricted} className='limits__wrapper' keyname='limitis__wrapper'>
+                        <PageOverlay header={localize('Limits')} onClickClose={ToggleSelfExclusion}>
+                            <MobileWrapper>
+                                <Div100vhContainer className='limits__wrapper--is-mobile' height_offset='80px'>
+                                    <SelfExclustionForm {...this.props} />
+                                </Div100vhContainer>
+                            </MobileWrapper>
+                        </PageOverlay>
+                    </FadeWrapper>
+                ) : (
+                    <Modal
+                        is_open={is_restricted}
+                        has_close_icon
+                        width='500px'
+                        toggleModal={ToggleSelfExclusion}
+                        className='self-exclusion__modal'
+                        title={localize('Limits')}
+                    >
+                        <SelfExclustionForm {...this.props} />
+                    </Modal>
+                )}
+            </>
+        );
+    }
+}
 SelfExclusion.propTypes = {
-    setLimitations: PropTypes.func,
     checkClientRestriction: PropTypes.func,
-    virtual_account_loginid: PropTypes.string,
-    updateSelfExclusion: PropTypes.func,
+    is_mobile: PropTypes.bool,
+    is_restricted: PropTypes.bool,
     initial_values: PropTypes.object,
     max_losses: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     run_limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     set_max_losses: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    setLimitations: PropTypes.func,
+    ToggleSelfExclusion: PropTypes.func,
+    updateSelfExclusion: PropTypes.func,
+    virtual_account_loginid: PropTypes.string,
 };
 
-export default connect(({ client, self_exclusion }) => ({
-    setLimitations: self_exclusion.setLimitations,
+export default connect(({ client, self_exclusion, ui }) => ({
     checkClientRestriction: self_exclusion.checkClientRestriction,
-    virtual_account_loginid: client.virtual_account_loginid,
-    updateSelfExclusion: client.updateSelfExclusion,
     initial_values: self_exclusion.initial_values,
+    is_mobile: ui.is_mobile,
+    is_restricted: self_exclusion.is_restricted,
     max_losses: self_exclusion.max_losses,
-    run_limit: self_exclusion.run_limit,
     set_max_losses: self_exclusion.set_max_losses,
+    run_limit: self_exclusion.run_limit,
+    setLimitations: self_exclusion.setLimitations,
+    ToggleSelfExclusion: self_exclusion.ToggleSelfExclusion,
+    updateSelfExclusion: client.updateSelfExclusion,
+    virtual_account_loginid: client.virtual_account_loginid,
 }))(SelfExclusion);

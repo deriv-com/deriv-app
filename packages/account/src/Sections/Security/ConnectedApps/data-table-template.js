@@ -30,8 +30,8 @@ const prepareConnectedAppsAction = (app_id, handleToggleModal) => (
     </Button>
 );
 
-const prepareConnectedAppsLastLogin = (las_used) => (
-    <p className='last_used_content'>{moment(las_used).format('YYYY-MM-DD HH:mm:ss')}</p>
+const prepareConnectedAppsLastLogin = (last_used) => (
+    <p className='last_used_content'>{moment(last_used).format('YYYY-MM-DD HH:mm:ss')}</p>
 );
 
 const oauth_apps_list_map = {

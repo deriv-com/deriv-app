@@ -1020,6 +1020,9 @@ $MIN_HEIGHT_FLOATING: calc(
         padding-left: 8px;
         padding-right: 8px;
     }
+    &__loading {
+        height: calc(100vh - 240px);
+    }
     &__title {
         color: var(--text-prominent);
         font-size: var(--text-size-s);

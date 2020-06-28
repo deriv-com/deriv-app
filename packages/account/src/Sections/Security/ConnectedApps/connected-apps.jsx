@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Button, Modal, Icon, DataTable, DataList } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Button, Modal, Icon, DataTable, DataList, Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import ErrorComponent from 'Components/error-component';
 import { WS } from 'Services/ws-methods';
@@ -19,25 +19,12 @@ class ConnectedApps extends React.Component {
     }, {});
 
     componentDidMount() {
-        this.updateApp();
+        this.fetchConnectedApps();
     }
-
-    updateApp = () => {
-        this.fetchConnectedApps()
-            .then((response) => {
-                this.setState({
-                    is_loading: false,
-                    connected_apps: response,
-                });
-            })
-            .catch(() => {
-                this.setState({ is_error: true });
-            });
-    };
 
     handleRevokeAccess = () => {
         this.setState({ is_modal_open: false, is_loading: true });
-        this.revokeConnectedApp(this.state.selected_app_id).then(this.updateApp);
+        this.revokeConnectedApp(this.state.selected_app_id);
     };
 
     handleToggleModal = (app_id = null) => {
@@ -48,28 +35,26 @@ class ConnectedApps extends React.Component {
         }
     };
 
-    fetchConnectedApps = () => {
-        // eslint-disable-next-line
-        return new Promise(async (resolve, reject) => {
-            const response_connected_apps = await WS.send({ oauth_apps: 1 });
-            if (!response_connected_apps.error) {
-                resolve(response_connected_apps.oauth_apps);
-            } else {
-                reject(response_connected_apps.error);
-            }
-        });
+    fetchConnectedApps = async () => {
+        const response_connected_apps = await WS.send({ oauth_apps: 1 });
+        if (!response_connected_apps.error) {
+            this.setState({
+                is_loading: false,
+                connected_apps: response_connected_apps.oauth_apps,
+            });
+        } else {
+            this.setState({ is_error: true });
+        }
     };
 
-    revokeConnectedApp = (app_id) => {
-        // eslint-disable-next-line
-        return new Promise(async (resolve, reject) => {
-            const response = await WS.send({ revoke_oauth_app: app_id });
-            if (!response.error) {
-                resolve(response.revoke_oauth_app);
-            } else {
-                reject(response.error);
-            }
-        });
+    revokeConnectedApp = async (app_id) => {
+        this.setState({ is_loading: true });
+        const response = await WS.send({ revoke_oauth_app: app_id });
+        if (!response.error) {
+            this.fetchConnectedApps();
+        } else {
+            this.setState({ is_error: true });
+        }
     };
 
     mobileRowRenderer = ({ row }) => {
@@ -116,7 +101,7 @@ class ConnectedApps extends React.Component {
                                 is_empty={false}
                                 rowRenderer={this.mobileRowRenderer}
                             >
-                                {this.state.is_loading && <>loading</>}
+                                {this.state.is_loading && <Loading is_fullscreen={true} />}
                             </DataList>
                         </MobileWrapper>
                         )

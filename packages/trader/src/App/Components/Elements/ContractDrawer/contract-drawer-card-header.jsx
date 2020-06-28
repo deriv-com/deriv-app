@@ -11,6 +11,7 @@ import { getCurrentTick } from 'Stores/Modules/Portfolio/Helpers/details';
 const CardHeader = ({ contract_info, has_progress_slider }) => {
     const {
         contract_type,
+        multiplier,
         date_expiry,
         display_name,
         is_sold,
@@ -30,7 +31,11 @@ const CardHeader = ({ contract_info, has_progress_slider }) => {
                     <span className='contract-card__symbol'>{display_name}</span>
                 </div>
                 <div id='dt_contract_type_label' className='contract-card__type'>
-                    <ContractTypeCell type={contract_type} is_high_low={Shortcode.isHighLow({ shortcode })} />
+                    <ContractTypeCell
+                        multiplier={multiplier}
+                        type={contract_type}
+                        is_high_low={Shortcode.isHighLow({ shortcode })}
+                    />
                 </div>
             </div>
             <DesktopWrapper>

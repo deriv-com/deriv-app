@@ -6,7 +6,7 @@ import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
-import { cookie_expires } from '../../Constants/app-config';
+import { cookie_banner_expires_in_days } from '../../Constants/app-config';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 // import InstallPWA    from './install-pwa.jsx';
 
@@ -57,7 +57,7 @@ class AppContents extends React.Component {
     // handle accept/decline cookies
     onAccept = () => {
         Cookies.set('tracking_status', 'accepted', {
-            expires: cookie_expires,
+            expires: cookie_banner_expires_in_days,
         });
         this.props.pushDataLayer({ event: 'allow_tracking' });
         this.setState({ show_cookie_banner: false });
@@ -65,7 +65,7 @@ class AppContents extends React.Component {
 
     onDecline = () => {
         Cookies.set('tracking_status', 'declined', {
-            expires: cookie_expires,
+            expires: cookie_banner_expires_in_days,
         });
         this.setState({ show_cookie_banner: false });
     };

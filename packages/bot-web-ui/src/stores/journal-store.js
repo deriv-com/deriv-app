@@ -16,6 +16,13 @@ export default class JournalStore {
         return this.root_store.core.common.server_time.get();
     }
 
+    playAudio(sound) {
+        if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
+            const audio = document.getElementById(sound);
+            audio.play();
+        }
+    }
+
     filters = [
         { id: message_types.ERROR, label: localize('Errors') },
         { id: message_types.NOTIFY, label: localize('Notifications') },
@@ -49,15 +56,11 @@ export default class JournalStore {
                 parsed_message => this.pushMessage(parsed_message, message_type || message_types.NOTIFY, className)
             )
         ) {
+            this.playAudio(sound);
             return;
         }
-
         this.pushMessage(message, message_type || message_types.NOTIFY, className);
-
-        if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
-            const audio = document.getElementById(sound);
-            audio.play();
-        }
+        this.playAudio(sound);
     }
 
     @action.bound

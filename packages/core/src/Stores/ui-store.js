@@ -19,8 +19,6 @@ export default class UIStore extends BaseStore {
 
     // TODO: [cleanup ui-store]
     // Take profit, Stop loss & Deal cancellation checkbox
-    @observable should_show_take_profit_warning = true;
-    @observable should_show_stop_loss_warning = true;
     @observable should_show_cancellation_warning = true;
 
     // Extensions
@@ -80,7 +78,7 @@ export default class UIStore extends BaseStore {
 
     // real account signup
     @observable is_real_acc_signup_on = false;
-    @observable real_account_signup_target = 'svg';
+    @observable real_account_signup_target = undefined;
     @observable has_real_account_signup_ended = false;
 
     // account types modal
@@ -146,12 +144,11 @@ export default class UIStore extends BaseStore {
             'is_reports_visible',
             // 'is_purchase_confirm_on',
             // 'is_purchase_lock_on',
-            'should_show_stop_loss_warning',
-            'should_show_take_profit_warning',
             'should_show_cancellation_warning',
         ];
 
         super({ root_store, local_storage_properties, store_name });
+
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
             // TODO: [disable-dark-bot] Delete this condition when Bot is ready
@@ -358,7 +355,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    openRealAccountSignup(target = 'svg') {
+    openRealAccountSignup(target) {
         this.is_real_acc_signup_on = true;
         this.real_account_signup_target = target;
         this.is_accounts_switcher_on = false;
@@ -513,16 +510,6 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleSetResidenceModal(state_change = !this.is_set_residence_modal_visible) {
         this.is_set_residence_modal_visible = state_change;
-    }
-
-    @action.bound
-    toggleTakeProfitWarning(state_change = !this.should_show_take_profit_warning) {
-        this.should_show_take_profit_warning = state_change;
-    }
-
-    @action.bound
-    toggleStopLossWarning(state_change = !this.should_show_stop_loss_warning) {
-        this.should_show_stop_loss_warning = state_change;
     }
 
     @action.bound

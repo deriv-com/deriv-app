@@ -33,6 +33,11 @@ class StatusDialogContainer extends React.Component {
         this.props.history.push(routes.proof_of_identity);
     };
 
+    closeModalAndOpenPOA = () => {
+        this.props.closeModal();
+        this.props.history.push(routes.proof_of_address);
+    };
+
     /**
      * Get the status for the current account
      *
@@ -96,6 +101,7 @@ class StatusDialogContainer extends React.Component {
                     status={this.status}
                     closeModal={closeModal}
                     closeModalAndOpenPOI={this.closeModalAndOpenPOI}
+                    closeModalAndOpenPOA={this.closeModalAndOpenPOA}
                     closeModalAndOpenCashier={this.closeModalAndOpenCashier}
                     switchToVirtual={switchToVirtual}
                 />

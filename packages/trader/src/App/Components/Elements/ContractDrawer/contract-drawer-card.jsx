@@ -43,7 +43,12 @@ const ContractDrawerCard = ({
     );
 
     const contract_card = (
-        <ContractCard contract_info={contract_info} profit_loss={profit} is_sold={!!is_sold}>
+        <ContractCard
+            is_multiplier={is_multiplier}
+            contract_info={contract_info}
+            profit_loss={profit}
+            is_sold={!!is_sold}
+        >
             <CardHeader contract_info={contract_info} has_progress_slider={!is_multiplier} />
             {card_body_wrapper}
             <CardFooter

@@ -1,15 +1,21 @@
 import {
     Autocomplete,
     AutoHeightWrapper,
+    Checkbox,
+    Dropdown,
+    DesktopWrapper,
+    MobileWrapper,
     DateOfBirthPicker,
     Div100vhContainer,
     FormSubmitButton,
     Input,
     RadioGroup,
+    SelectNative,
     ThemedScrollbars,
 } from '@deriv/components';
-import React from 'react';
 import { Field, Formik } from 'formik';
+import React from 'react';
+import { FormSubHeader } from '@deriv/account';
 import { toMoment } from '@deriv/shared/utils/date';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
@@ -87,7 +93,7 @@ class PersonalDetails extends React.Component {
                 }}
                 ref={this.form}
             >
-                {({ handleSubmit, isSubmitting, errors, setFieldValue, touched, values }) => (
+                {({ handleSubmit, isSubmitting, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
                     <AutoHeightWrapper default_height={200}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit} autoComplete='off'>
@@ -108,33 +114,7 @@ class PersonalDetails extends React.Component {
                                             className='details-form__elements'
                                             style={{ paddingBottom: this.state.paddingBottom }}
                                         >
-                                            {/* TODO: [deriv-eu] Remove account opening reason once api is optional */}
-                                            {'account_opening_reason' in this.props.value && (
-                                                <Field name='account_opening_reason'>
-                                                    {({ field }) => (
-                                                        <Autocomplete
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            autoComplete='new-password' // prevent chrome autocomplete
-                                                            type='text'
-                                                            label={localize('Account opening reason*')}
-                                                            error={
-                                                                touched.account_opening_reason &&
-                                                                errors.account_opening_reason
-                                                            }
-                                                            list_items={this.props.account_opening_reason_list}
-                                                            onItemSelection={({ value, text }) =>
-                                                                setFieldValue(
-                                                                    'account_opening_reason',
-                                                                    value ? text : '',
-                                                                    true
-                                                                )
-                                                            }
-                                                            required
-                                                        />
-                                                    )}
-                                                </Field>
-                                            )}
+                                            <FormSubHeader title={localize('Title and name')} />
                                             {/* TODO: [deriv-eu] Remove salutation once api is optional */}
 
                                             {'salutation' in this.props.value && (
@@ -150,31 +130,42 @@ class PersonalDetails extends React.Component {
                                                     required
                                                 />
                                             )}
-
-                                            <FormInputField
-                                                name='first_name'
-                                                label={localize('First name*')}
-                                                placeholder={localize('John')}
-                                            />
-                                            <FormInputField
-                                                name='last_name'
-                                                label={localize('Last name*')}
-                                                placeholder={localize('Doe')}
-                                            />
-                                            <DateOfBirthField
-                                                name='date_of_birth'
-                                                label={localize('Date of birth*')}
-                                                placeholder={localize('01-07-1999')}
-                                            />
+                                            {'first_name' in this.props.value && (
+                                                <FormInputField
+                                                    name='first_name'
+                                                    label={localize('First name')}
+                                                    disabled={this.props.disabled_items.includes('first_name')}
+                                                    placeholder={localize('John')}
+                                                />
+                                            )}
+                                            {'last_name' in this.props.value && (
+                                                <FormInputField
+                                                    name='last_name'
+                                                    label={localize('Last name')}
+                                                    disabled={this.props.disabled_items.includes('last_name')}
+                                                    placeholder={localize('Doe')}
+                                                />
+                                            )}
+                                            <FormSubHeader title={localize('Other details')} />
+                                            {'date_of_birth' in this.props.value && (
+                                                <DateOfBirthField
+                                                    name='date_of_birth'
+                                                    label={localize('Date of birth')}
+                                                    placeholder={localize('01-07-1999')}
+                                                />
+                                            )}
                                             {'place_of_birth' in this.props.value && (
                                                 <Field name='place_of_birth'>
                                                     {({ field }) => (
                                                         <Autocomplete
                                                             {...field}
+                                                            disabled={this.props.disabled_items.includes(
+                                                                'place_of_birth'
+                                                            )}
                                                             data-lpignore='true'
-                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                            autoComplete='off' // prevent chrome autocomplete
                                                             type='text'
-                                                            label={localize('Place of birth*')}
+                                                            label={localize('Place of birth')}
                                                             error={touched.place_of_birth && errors.place_of_birth}
                                                             list_items={this.props.residence_list}
                                                             onItemSelection={({ value, text }) =>
@@ -191,13 +182,14 @@ class PersonalDetails extends React.Component {
                                                         <Autocomplete
                                                             {...field}
                                                             data-lpignore='true'
-                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                            autoComplete='off' // prevent chrome autocomplete
                                                             type='text'
-                                                            label={localize('Citizenship*')}
+                                                            label={localize('Citizenship')}
                                                             error={touched.citizen && errors.citizen}
                                                             disabled={
-                                                                this.props.value.citizen &&
-                                                                this.props.is_fully_authenticated
+                                                                (this.props.value.citizen &&
+                                                                    this.props.is_fully_authenticated) ||
+                                                                this.props.disabled_items.includes('citizen')
                                                             }
                                                             list_items={this.props.residence_list}
                                                             onItemSelection={({ value, text }) =>
@@ -208,11 +200,119 @@ class PersonalDetails extends React.Component {
                                                     )}
                                                 </Field>
                                             )}
-                                            <FormInputField
-                                                name='phone'
-                                                label={localize('Phone number*')}
-                                                placeholder={localize('Phone number')}
-                                            />
+                                            {'phone' in this.props.value && (
+                                                <FormInputField
+                                                    name='phone'
+                                                    label={localize('Phone number')}
+                                                    placeholder={localize('Phone number')}
+                                                />
+                                            )}
+                                            {('tax_residence' in this.props.value ||
+                                                'tax_identification_number' in this.props.value) && (
+                                                <React.Fragment>
+                                                    <FormSubHeader title={localize('Tax information')} />
+                                                    {'tax_residence' in this.props.value && (
+                                                        <Field name='tax_residence'>
+                                                            {({ field }) => (
+                                                                <Autocomplete
+                                                                    {...field}
+                                                                    data-lpignore='true'
+                                                                    autoComplete='off' // prevent chrome autocomplete
+                                                                    type='text'
+                                                                    label={localize('Tax residence')}
+                                                                    error={
+                                                                        touched.tax_residence && errors.tax_residence
+                                                                    }
+                                                                    list_items={this.props.residence_list}
+                                                                    onItemSelection={({ value, text }) =>
+                                                                        setFieldValue(
+                                                                            'tax_residence',
+                                                                            value ? text : '',
+                                                                            true
+                                                                        )
+                                                                    }
+                                                                />
+                                                            )}
+                                                        </Field>
+                                                    )}
+                                                    {'tax_identification_number' in this.props.value && (
+                                                        <FormInputField
+                                                            name='tax_identification_number'
+                                                            label={localize('Tax identification number')}
+                                                            placeholder={localize('Tax identification number')}
+                                                        />
+                                                    )}
+                                                    {'tax_identification_confirm' in this.props.value && (
+                                                        <Checkbox
+                                                            name='tax_identification_confirm'
+                                                            data-lpignore
+                                                            onChange={() =>
+                                                                setFieldValue(
+                                                                    'tax_identification_confirm',
+                                                                    !values.tax_identification_confirm,
+                                                                    true
+                                                                )
+                                                            }
+                                                            value={values.tax_identification_confirm}
+                                                            label={localize(
+                                                                'I hereby confirm that the tax information i provided is true and complete. I will also inform Binary Investments (Europe) Ltd. about any changes to this information.'
+                                                            )}
+                                                        />
+                                                    )}
+                                                </React.Fragment>
+                                            )}
+                                            {'account_opening_reason' in this.props.value && ( // TODO: [deriv-eu] Remove account opening reason once api is optional
+                                                <React.Fragment>
+                                                    <FormSubHeader title={localize('Account opening reason')} />
+                                                    <Field name='account_opening_reason'>
+                                                        {({ field }) => (
+                                                            <React.Fragment>
+                                                                <DesktopWrapper>
+                                                                    <Dropdown
+                                                                        placeholder={localize('Account opening reason')}
+                                                                        is_align_text_left
+                                                                        is_alignment_top
+                                                                        name={field.name}
+                                                                        list={this.props.account_opening_reason_list}
+                                                                        value={values.account_opening_reason}
+                                                                        onChange={handleChange}
+                                                                        handleBlur={handleBlur}
+                                                                        error={
+                                                                            touched.account_opening_reason &&
+                                                                            errors.account_opening_reason
+                                                                        }
+                                                                        {...field}
+                                                                        required
+                                                                    />
+                                                                </DesktopWrapper>
+                                                                <MobileWrapper>
+                                                                    <SelectNative
+                                                                        name={field.name}
+                                                                        label={localize('Account opening reason')}
+                                                                        list_items={this.state.account_opening_reason}
+                                                                        value={values.account_opening_reason}
+                                                                        use_text={true}
+                                                                        error={
+                                                                            touched.account_opening_reason &&
+                                                                            errors.account_opening_reason
+                                                                        }
+                                                                        onChange={e => {
+                                                                            handleChange(e);
+                                                                            setFieldValue(
+                                                                                'account_opening_reason',
+                                                                                e.target.value,
+                                                                                true
+                                                                            );
+                                                                        }}
+                                                                        {...field}
+                                                                        required
+                                                                    />
+                                                                </MobileWrapper>
+                                                            </React.Fragment>
+                                                        )}
+                                                    </Field>
+                                                </React.Fragment>
+                                            )}
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>

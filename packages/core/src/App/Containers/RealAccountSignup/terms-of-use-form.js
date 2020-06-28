@@ -14,16 +14,16 @@ const terms_of_use_config = {
     },
 };
 
-export const termsOfUseConfig = ({ can_upgrade_to }) => {
+export const termsOfUseConfig = ({ real_account_signup_target }) => {
     return {
         header: {
             active_title: isDesktop() ? localize('Terms of use') : null,
             title: localize('Terms of use'),
         },
         body: TermsOfUse,
-        form_value: getDefaultFields(can_upgrade_to, terms_of_use_config),
+        form_value: getDefaultFields(real_account_signup_target, terms_of_use_config),
         props: {
-            can_upgrade_to,
+            real_account_signup_target,
         },
     };
 };

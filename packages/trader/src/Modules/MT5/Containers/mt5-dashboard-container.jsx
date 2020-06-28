@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getMT5WebTerminalLink } from '../Helpers/constants';
+import { getMT5WebTerminalLink, getPlatformMt5DownloadLink } from '../Helpers/constants';
 
 const MT5DashboardContainer = ({
     is_eu_enabled, // TODO [deriv-eu] remove this once EU is ready to ship.
@@ -28,11 +28,7 @@ const MT5DashboardContainer = ({
                 <div className='mt5-dashboard__download-center-options--desktop-links'>
                     <a
                         className='mt5-dashboard__download-center-options--desktop-link'
-                        href={
-                            is_eu_enabled && is_eu
-                                ? 'https://download.mql5.com/cdn/web/16177/mt5/binarycom5setup.exe'
-                                : 'https://download.mql5.com/cdn/web/deriv.limited/mt5/deriv5setup.exe'
-                        }
+                        href={getPlatformMt5DownloadLink('windows', is_eu)}
                         target='_blank'
                         rel='noopener noreferrer'
                     >
@@ -40,7 +36,7 @@ const MT5DashboardContainer = ({
                     </a>
                     <a
                         className='mt5-dashboard__download-center-options--desktop-link'
-                        href='https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux'
+                        href={getPlatformMt5DownloadLink('linux')}
                         target='_blank'
                         rel='noopener noreferrer'
                     >
@@ -67,7 +63,7 @@ const MT5DashboardContainer = ({
                 <div className='mt5-dashboard__download-center-options--mobile-links'>
                     <a
                         className='mt5-dashboard__download-center-options--mobile-link'
-                        href='https://download.mql5.com/cdn/mobile/mt5/android?server=Binary.com-Server'
+                        href={getPlatformMt5DownloadLink('android')}
                         target='_blank'
                         rel='noopener noreferrer'
                     >
@@ -75,7 +71,7 @@ const MT5DashboardContainer = ({
                     </a>
                     <a
                         className='mt5-dashboard__download-center-options--mobile-link'
-                        href='https://download.mql5.com/cdn/mobile/mt5/ios?server=Binary.com-Server'
+                        href={getPlatformMt5DownloadLink('ios')}
                         target='_blank'
                         rel='noopener noreferrer'
                     >

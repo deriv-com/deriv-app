@@ -10,8 +10,14 @@ import { EXPERIAN } from './constants';
  */
 const IOMHeading = ({ status }) => (
     <h2>
-        {status === EXPERIAN.SUCCESS && <Localize i18n_default_text='Success!' />}
-        {[EXPERIAN.WARN, EXPERIAN.DANGER].includes(status) && <Localize i18n_default_text='Verification failed!' />}
+        {status === EXPERIAN.SUCCESS && <Localize i18n_default_text='Your account is ready!' />}
+        {status === EXPERIAN.WARN && <Localize i18n_default_text='Proof of address verification failed' />}
+        {status === EXPERIAN.DANGER && (
+            <Localize i18n_default_text='Proofs of identity and address verification failed' />
+        )}
+        {status === EXPERIAN.PENDING && (
+            <Localize i18n_default_text='Your proofs of identity and address were submitted successfully' />
+        )}
     </h2>
 );
 
@@ -26,18 +32,14 @@ const IOMHeading = ({ status }) => (
  */
 export const DialogHeading = ({ status, landing_company_shortcode }) => {
     switch (landing_company_shortcode) {
-        case 'malta':
-        case 'svg':
-            return (
-                <h2>
-                    <Localize i18n_default_text='Success!' />
-                </h2>
-            );
         case 'iom':
             return <IOMHeading status={status} />;
-
         default:
-            return null;
+            return (
+                <h2>
+                    <Localize i18n_default_text='Your account is ready!' />
+                </h2>
+            );
     }
 };
 

@@ -8,19 +8,20 @@ import { localize } from '@deriv/translations';
  *   - Success: Client can trade
  *   - Warn: POI/POA Validity partially failed, trade in demo possible
  *   - Danger: POI/POA validation failed. Trade is locked until this resolved.
- *
+ *   - Pending: POI/POA is in pending state.
  * @enum {EXPERIAN}
  */
 export const EXPERIAN = {
     SUCCESS: 1,
     WARN: 0,
     DANGER: -1,
+    PENDING: -2,
 };
 
 /**
  * Return account title for the given landing company
  * - Example:
- * getAccountTitle('malta') => 'Real Gaming'
+ * getAccountTitle('malta') => 'Real Synthetic'
  *
  * @param {string} short_code - Landing company shortcode
  * @param {object} options
@@ -40,7 +41,7 @@ export const getAccountTitle = (
             return localize('Deriv account');
         case 'iom':
         case 'malta':
-            return localize('Real Gaming');
+            return localize('Real Synthetic');
         case 'maltainvest':
             return localize('Real Financial');
         default:

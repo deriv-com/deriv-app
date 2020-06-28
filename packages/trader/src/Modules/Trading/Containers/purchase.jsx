@@ -116,7 +116,6 @@ export default connect(({ client, modules, ui }) => ({
     basis: modules.trade.basis,
     contract_type: modules.trade.contract_type,
     has_cancellation: modules.trade.has_cancellation,
-    pushLoadPerformance: gtm.pushLoadPerformance,
     is_purchase_enabled: modules.trade.is_purchase_enabled,
     is_trade_enabled: modules.trade.is_trade_enabled,
     is_multiplier: modules.trade.is_multiplier,

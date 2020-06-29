@@ -17,15 +17,22 @@ import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 import Shortcode from '../Helpers/shortcode';
-import '../../../sass/app/modules/statement.scss';
+import 'Sass/app/modules/statement.scss';
 
 let total_deposits, total_withdrawals;
 class Statement extends React.Component {
     componentDidMount() {
         this.props.onMount();
-        WS.accountStatistics().then(data => {
-            total_deposits = data.account_statistics.total_deposits;
-            total_withdrawals = data.account_statistics.total_withdrawals;
+        const { landing_company_shortcode } = client;
+        const is_svg = landing_company_shortcode === 'svg' || landing_company_shortcode === 'costarica';
+
+        WS.accountStatistics().then(response => {
+            if (response.error) {
+                this.setState({ api_error: response.error.message });
+                return;
+            }
+            total_deposits = response.account_statistics.total_deposits;
+            total_withdrawals = response.account_statistics.total_withdrawals;
         });
     }
 
@@ -112,18 +119,18 @@ class Statement extends React.Component {
 
         const account_statistics_component = (
             <React.Fragment>
-                <div className='statement__accountStatistics'>
-                    <div className='statement__accountStatistics--Rectangle'>
-                        <span className='statement__accountStatistics--Rectangle--title'>Total Deposit</span>
-                        <span className='statement__accountStatistics--Rectangle--amount'> ${total_deposits}</span>
+                <div className='statement__account-statistics'>
+                    <div className='statement__account-statistics--is-rectangle'>
+                        <span className='statement__account-statistics--title'>{localize('Total Deposit')}</span>
+                        <span className='statement__account-statistics--amount'> ${total_deposits}</span>
                     </div>
-                    <div className='statement__accountStatistics--Rectangle'>
-                        <span className='statement__accountStatistics--Rectangle--title'>Total Withdrawals</span>
-                        <span className='statement__accountStatistics--Rectangle--amount'>${total_withdrawals}</span>
+                    <div className='statement__account-statistics--is-rectangle'>
+                        <span className='statement__account-statistics--title'>{localize('Total Withdrawals')}</span>
+                        <span className='statement__accoun-statistics--amount'>${total_withdrawals}</span>
                     </div>
-                    <div className='statement__accountStatistics--Rectangle'>
-                        <span className='statement__accountStatistics--Rectangle--title'>Net Deposit</span>
-                        <span className='statement__accountStatistics--Rectangle--amount'>
+                    <div className='statement__account-statistics--is-rectangle'>
+                        <span className='statement__account-statistics--title'>{localize('Net Deposit')}</span>
+                        <span className='statement__account-statistics--amount'>
                             ${total_deposits - total_withdrawals}
                         </span>
                     </div>

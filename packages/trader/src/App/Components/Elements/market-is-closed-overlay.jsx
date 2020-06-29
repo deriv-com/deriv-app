@@ -112,7 +112,7 @@ const onClick = async () => {
 
 const MarketIsClosedOverlay = () => (
     <div className='market-is-closed-overlay'>
-        <MarketCountdownTimer target_date='2020-07-29' />
+        <MarketCountdownTimer />
         <p>
             <Localize i18n_default_text='Market is closed.' />
         </p>

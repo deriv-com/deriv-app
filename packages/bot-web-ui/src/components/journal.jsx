@@ -87,7 +87,7 @@ const Filters = ({ wrapper_ref, checked_filters, filters, filterMessage, classNa
                         classNameLabel={classNameLabel}
                         defaultChecked={checked_filters.includes(item.id)}
                         label={item.label}
-                        onChange={e => filterMessage(e.target.checked, item.id)}
+                        onChange={() => filterMessage(!checked_filters.includes(item.id), item.id)}
                     />
                 );
             })}

@@ -17,14 +17,14 @@ while read -r line; do
 done <<< "$(sed -n '/VERIFY_CACHE_FOLDERS_START/,/VERIFY_CACHE_FOLDERS_END/p' '../.circleci/config.yml')"
 
 # Compare list in config.yml with required packages
-start_idx=1                            # Filter out VERIFY_CACHE_FOLDERS_START
-end_idx="${#required_packages[@]} - 1" # Filter out VERIFY_CACHE_FOLDERS_END
+start_idx=1                          # Filter out VERIFY_CACHE_FOLDERS_START
+end_idx="${#config_packages[@]} - 1" # Filter out VERIFY_CACHE_FOLDERS_END
 has_required_packages=True
 
-for (( i=$start_idx; i < $end_idx; i++ )); do
+for (( i=0; i < ${#required_packages}; i++ )); do
     has_found_entry=False
 
-    for (( j=0; j < ${#config_packages[@]}; j++ )); do
+    for (( j=$start_idx; j < $end_idx; j++ )); do
         if [[ "${required_packages[i]}" == "${config_packages[j]}" ]]; then
             has_found_entry=True
             break;
@@ -41,5 +41,5 @@ done
 if [[ ! $has_required_packages == False ]]; then
     exit 1;
 else
-    exit 1;
+    exit 0;
 fi

@@ -138,6 +138,7 @@ const WorkspaceGroup = ({
 
 const Toolbar = props => {
     const {
+        is_drawer_open,
         is_mobile,
         active_tab,
         is_dialog_open,
@@ -150,46 +151,54 @@ const Toolbar = props => {
     } = props;
 
     return (
-        <div className='toolbar'>
+        <>
             {is_mobile ? (
-                <div className='toolbar__section'>
-                    <ToolbarButton
-                        button_id='db-toolbar__import-button--mobile'
-                        button_classname='toolbar__btn--icon'
-                        buttonOnClick={toggleLoadModal}
-                        icon={<Icon icon='IcFolderOpen' color='active' />}
-                        button_text={localize('Load')}
-                    />
-                    <ToolbarButton
-                        button_id='db-toolbar__quick-strategy-button--mobile'
-                        button_classname='toolbar__btn--icon'
-                        buttonOnClick={toggleStrategyModal}
-                        icon={<Icon icon='IcPuzzle' color='active' />}
-                        button_text={localize('Quick')}
-                    />
-                    <ToolbarButton
-                        button_id='db-toolbar__save-button--mobile'
-                        button_classname='toolbar__btn--icon'
-                        buttonOnClick={toggleSaveModal}
-                        icon={<Icon icon='IcSave' color='active' />}
-                        button_text={localize('Save')}
-                    />
+                <div className='toolbar'>
+                    <div className='toolbar__section'>
+                        <ToolbarButton
+                            button_id='db-toolbar__import-button--mobile'
+                            button_classname='toolbar__btn--icon'
+                            buttonOnClick={toggleLoadModal}
+                            icon={<Icon icon='IcFolderOpenFilled' color='active' size={16} />}
+                            button_text={localize('Load')}
+                        />
+                        <ToolbarButton
+                            button_id='db-toolbar__quick-strategy-button--mobile'
+                            button_classname='toolbar__btn--icon'
+                            buttonOnClick={toggleStrategyModal}
+                            icon={<Icon icon='IcPuzzle' color='active' size={16} />}
+                            button_text={localize('Quick')}
+                        />
+                        <ToolbarButton
+                            button_id='db-toolbar__save-button--mobile'
+                            button_classname='toolbar__btn--icon'
+                            buttonOnClick={toggleSaveModal}
+                            icon={<Icon icon='IcSaveFilled' color='active' size={16} />}
+                            button_text={localize('Save')}
+                        />
+                    </div>
                 </div>
             ) : (
                 <ThemedScrollbars height='56px' is_only_horizontal width='100%'>
-                    <div className='toolbar__section'>
-                        <ToolbarButton
-                            popover_message={localize('Click here to start building your DBot.')}
-                            button_id='db-toolbar__get-started-button'
-                            button_classname='toolbar__btn--icon toolbar__btn--start'
-                            buttonOnClick={onToolboxToggle}
-                            icon={<Icon icon='IcPuzzle' color='active' />}
-                            button_text={localize('Get started')}
-                        />
-                        {active_tab === tabs_title.WORKSPACE && <SearchBox {...props} />}
-                        {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...props} />}
+                    <div className='toolbar'>
+                        <div className='toolbar__section'>
+                            <ToolbarButton
+                                popover_message={localize('Click here to start building your DBot.')}
+                                button_id='db-toolbar__get-started-button'
+                                button_classname='toolbar__btn--icon toolbar__btn--start'
+                                buttonOnClick={onToolboxToggle}
+                                icon={<Icon icon='IcPuzzle' color='active' />}
+                                button_text={localize('Get started')}
+                            />
+                            {active_tab === tabs_title.WORKSPACE && <SearchBox {...props} />}
+                            {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...props} />}
+                        </div>
+                        {!is_drawer_open && (
+                            <div className='toolbar__section'>
+                                <TradeAnimation className='toolbar__animation' should_show_overlay />
+                            </div>
+                        )}
                     </div>
-                    {!is_drawer_open && <TradeAnimation className='toolbar__animation' should_show_overlay />}
                 </ThemedScrollbars>
             )}
             <SaveModal />
@@ -202,7 +211,7 @@ const Toolbar = props => {
             >
                 {localize('Any unsaved changes will be lost.')}
             </Dialog>
-        </div>
+        </>
     );
 };
 

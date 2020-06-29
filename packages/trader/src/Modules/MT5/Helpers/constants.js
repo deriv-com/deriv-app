@@ -1,6 +1,7 @@
 import { OSDetect } from '@deriv/shared/utils/os';
 
 const getPlatformMt5DownloadLink = (platform = undefined, is_eu = false) => {
+    const server = is_eu ? 'Binary.com' : 'Deriv';
     switch (platform || OSDetect()) {
         case 'windows':
             if (is_eu) {
@@ -10,9 +11,9 @@ const getPlatformMt5DownloadLink = (platform = undefined, is_eu = false) => {
         case 'linux':
             return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
         case 'ios':
-            return 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server';
+            return `https://download.mql5.com/cdn/mobile/mt5/ios?server=${server}-Demo,${server}-Server`;
         case 'android':
-            return 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server';
+            return `https://download.mql5.com/cdn/mobile/mt5/android?server=${server}-Demo,${server}-Server`;
         default:
             return getMT5WebTerminalLink({ category: 'real' }); // Web
     }

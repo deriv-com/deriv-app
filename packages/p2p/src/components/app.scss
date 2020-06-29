@@ -127,9 +127,7 @@
 .p2p-nickname {
     &__dialog {
         @include mobile {
-            height: 100%;
-            display: flex;
-            align-items: center;
+            padding-top: 4rem;
         }
     }
 }

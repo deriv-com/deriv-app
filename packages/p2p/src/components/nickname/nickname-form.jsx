@@ -37,6 +37,7 @@ const NicknameForm = ({ handleClose, handleConfirm, is_mobile }) => {
                 v => !!v,
                 v => v.length >= 2,
                 v => v.length <= 24,
+                v => /^[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
                 v => /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
                 v =>
                     Array.from(v).every(
@@ -49,8 +50,9 @@ const NicknameForm = ({ handleClose, handleConfirm, is_mobile }) => {
             localize('Nickname is required'),
             localize('Nickname is too short'),
             localize('Nickname is too long'),
-            localize('Nickname is in incorrect format'),
-            localize('Nickname is in incorrect format'),
+            localize('Can only contain letters, numbers, and special characters .- _ @.'),
+            localize('Cannot start, end with, or repeat special characters.'),
+            localize('Cannot repeat a character more than 5 times.'),
         ];
 
         const errors = {};
@@ -108,15 +110,6 @@ const NicknameForm = ({ handleClose, handleConfirm, is_mobile }) => {
                                         )}
                                     </Field>
                                 </div>
-                                <ul className='nickname__form-content--list'>
-                                    <li>
-                                        {localize(
-                                            'Must be 2–24 characters and can contain letters, numbers, and special characters .- _ @.'
-                                        )}
-                                    </li>
-                                    <li>{localize('Cannot repeat a character more than 5 times.')}</li>
-                                    <li>{localize('Cannot start, end with, or repeat special characters.')}</li>
-                                </ul>
                                 <div className='nickname__form-content--ps'>
                                     {localize('Once set, your nickname cannot be changed.')}
                                 </div>

@@ -37,7 +37,7 @@ const prepareConnectedAppsLastLogin = (last_used) => (
 const oauth_apps_list_map = {
     read: localize('Read'),
     trade: localize('Trade'),
-    trading_information: localize('Trading Information'),
+    trading_information: localize('Trading information'),
     payments: localize('Payments'),
     admin: localize('Admin'),
 };

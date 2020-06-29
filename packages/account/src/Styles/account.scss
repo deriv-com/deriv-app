@@ -1027,6 +1027,8 @@ $MIN_HEIGHT_FLOATING: calc(
         color: var(--text-prominent);
         font-size: var(--text-size-s);
         font-weight: bold;
+        line-height: 1.5;
+        margin-bottom: 1.6rem;
     }
     &__table {
         height: calc(100% - 42px);

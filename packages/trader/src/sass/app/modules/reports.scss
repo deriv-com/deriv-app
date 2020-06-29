@@ -10,7 +10,7 @@ $side-padding: 1.2em;
         width: 100%;
         display: flex;
         justify-content: space-between;
-        padding: 0 24px 16px;
+        padding: 0 24px 16px 0;
 
         &-description {
             &--heading {
@@ -33,6 +33,9 @@ $side-padding: 1.2em;
         &-filter {
             position: relative;
             display: flex;
+        }
+        &--date-filter {
+            margin-left: 61.6rem;
         }
 
         @include desktop {

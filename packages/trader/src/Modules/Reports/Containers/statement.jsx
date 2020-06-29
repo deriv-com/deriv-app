@@ -23,17 +23,20 @@ let total_deposits, total_withdrawals;
 class Statement extends React.Component {
     componentDidMount() {
         this.props.onMount();
-        const { landing_company_shortcode } = client;
-        const is_svg = landing_company_shortcode === 'svg' || landing_company_shortcode === 'costarica';
+        console.log('landing_company_shortcode:', this.props.landing_company_shortcode);
+        const is_mx_mlt =
+            this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'malta';
 
-        WS.accountStatistics().then(response => {
-            if (response.error) {
-                this.setState({ api_error: response.error.message });
-                return;
-            }
-            total_deposits = response.account_statistics.total_deposits;
-            total_withdrawals = response.account_statistics.total_withdrawals;
-        });
+        is_mx_mlt
+            ? WS.accountStatistics().then(response => {
+                  if (response.error) {
+                      this.setState({ api_error: response.error.message });
+                      return;
+                  }
+                  total_deposits = response.account_statistics.total_deposits;
+                  total_withdrawals = response.account_statistics.total_withdrawals;
+              })
+            : undefined;
     }
 
     componentWillUnmount() {
@@ -158,11 +161,12 @@ class Statement extends React.Component {
         return (
             <React.Fragment>
                 <ReportsMeta
-                    i18n_heading={localize('Statement')}
-                    i18n_message={localize(
-                        'View all transactions on your account, including trades, deposits, and withdrawals.'
-                    )}
-                    optional_component={account_statistics_component}
+                    optional_component={
+                        this.props.landing_company_shortcode === 'iom' ||
+                        this.props.landing_company_shortcode === 'malta'
+                            ? account_statistics_component
+                            : undefined
+                    }
                     filter_component={filter_component}
                 />
                 {data.length === 0 || is_empty ? (
@@ -224,6 +228,7 @@ Statement.propTypes = {
     history: PropTypes.object,
     is_empty: PropTypes.bool,
     is_loading: PropTypes.bool,
+    landing_company_shortcode: PropTypes.string,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
 };
@@ -240,6 +245,7 @@ export default connect(({ modules, client }) => ({
     has_selected_date: modules.statement.has_selected_date,
     is_empty: modules.statement.is_empty,
     is_loading: modules.statement.is_loading,
+    landing_company_shortcode: client.landing_company_shortcode,
     onMount: modules.statement.onMount,
     onUnmount: modules.statement.onUnmount,
 }))(withRouter(Statement));

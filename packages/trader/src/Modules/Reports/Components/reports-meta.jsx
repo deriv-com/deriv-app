@@ -3,12 +3,25 @@ import React from 'react';
 
 const ReportsMeta = ({ i18n_heading, i18n_message, filter_component, className, optional_component }) => (
     <div className={classNames('reports__meta', className)}>
-        <div className='reports__meta-description'>
-            <h1 className='reports__meta-description--heading'>{i18n_heading}</h1>
-            <p className='reports__meta-description--paragraph'>{i18n_message}</p>
-        </div>
+        {i18n_heading ? (
+            <div className='reports__meta-description'>
+                <h1 className='reports__meta-description--heading'>{i18n_heading}</h1>
+                <p className='reports__meta-description--paragraph'>{i18n_message}</p>
+            </div>
+        ) : (
+            undefined
+        )}
+
         {optional_component}
-        {filter_component && <div className='reports__meta-filter'>{filter_component}</div>}
+        {filter_component && (
+            <div
+                className={classNames('reports__meta-filter', {
+                    'reports__meta--date-filter': !i18n_heading,
+                })}
+            >
+                {filter_component}
+            </div>
+        )}
     </div>
 );
 

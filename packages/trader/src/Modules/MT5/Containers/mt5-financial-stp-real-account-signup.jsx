@@ -39,6 +39,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                         citizen: '',
                         tax_residence: '',
                         tax_identification_number: '',
+                        account_opening_reason: '',
                     },
                     props: ['residence_list', 'is_fully_authenticated', 'is_loading'],
                 },
@@ -157,6 +158,10 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
         if (response.get_settings.tax_identification_number) {
             cloned[index_lookup.MT5PersonalDetailsForm].form_value.tax_identification_number =
                 response.get_settings.tax_identification_number;
+        }
+        if (response.get_settings.account_opening_reason) {
+            cloned[index_lookup.MT5PersonalDetailsForm].form_value.account_opening_reason =
+                response.get_settings.account_opening_reason;
         }
         this.setState(
             {

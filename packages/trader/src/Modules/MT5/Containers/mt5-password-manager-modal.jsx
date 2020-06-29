@@ -15,18 +15,48 @@ import {
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { getDerivComLink } from '@deriv/shared/utils/url';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
 import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
 
+const CountdownComponent = ({ count_from = 60, onTimeout }) => {
+    const [count, setCount] = React.useState(count_from);
+
+    React.useEffect(() => {
+        if (count !== 0) {
+            const interval = setTimeout(() => {
+                setCount(count - 1);
+            }, 1000);
+
+            return () => clearTimeout(interval);
+        }
+
+        onTimeout();
+
+        return () => {};
+    }, [count]);
+    return <span className='countdown'>{count}</span>;
+};
+
 const MT5PasswordReset = ({ sendVerifyEmail, password_type, account_type, account_group }) => {
+    const [is_resend_verification_requested, setResendVerification] = React.useState(false);
+    const [is_resend_verification_sent, setResendVerificationSent] = React.useState(false);
+
     React.useEffect(() => {
         localStorage.setItem('mt5_reset_password_intent', [account_group, account_type].join('.'));
         localStorage.setItem('mt5_reset_password_type', password_type);
         sendVerifyEmail();
     }, []);
+
+    const onClickVerification = () => {
+        setResendVerification(true);
+    };
+
+    const resendVerification = () => {
+        sendVerifyEmail();
+        setResendVerificationSent(true);
+    };
 
     return (
         <div className='mt5-verification-email-sent'>
@@ -37,9 +67,44 @@ const MT5PasswordReset = ({ sendVerifyEmail, password_type, account_type, accoun
             <p className='mt5-verification-email-sent__description'>
                 <Localize i18n_default_text='Please click on the link in the email to reset your password.' />
             </p>
-            <a className='mt5-verification-email-sent__help-centre' href={getDerivComLink('help-centre')}>
-                <Localize i18n_default_text="Didn't receive the email?" />
-            </a>
+            {!is_resend_verification_requested && (
+                <Button className='mt5-verification-email-sent__resend-button' primary onClick={onClickVerification}>
+                    <Localize i18n_default_text="Didn't receive the email?" />
+                </Button>
+            )}
+            {is_resend_verification_requested && (
+                <>
+                    <p className='mt5-verification-email-sent__title mt5-verification-email-sent__title--sub'>
+                        <Localize i18n_default_text={"Didn't receive the email?"} />
+                    </p>
+                    <p className='mt5-verification-email-sent__description'>
+                        <Localize i18n_default_text="Check your spam or junk folder. If it's not there, try resending the email." />
+                    </p>
+                    <Button
+                        className='mt5-verification-email-sent__resend-button'
+                        large
+                        primary
+                        disabled={is_resend_verification_sent}
+                        onClick={resendVerification}
+                    >
+                        {!is_resend_verification_sent && <Localize i18n_default_text='Resend email' />}
+                        {is_resend_verification_sent && (
+                            <>
+                                <Localize
+                                    i18n_default_text='Resend in <0 /> seconds'
+                                    components={[
+                                        <CountdownComponent
+                                            key={0}
+                                            onTimeout={() => setResendVerificationSent(false)}
+                                            count_from={60}
+                                        />,
+                                    ]}
+                                />
+                            </>
+                        )}
+                    </Button>
+                </>
+            )}
         </div>
     );
 };
@@ -344,24 +409,24 @@ class MT5PasswordManagerModal extends React.Component {
                 <Tabs active_index={this.state.active_tab_index} onTabItemClick={this.updateAccountTabIndex} top>
                     <div label={localize('Main password')}>
                         <DesktopWrapper>
-                            <ThemedScrollbars style={{ height: password_container_height }}>
+                            <ThemedScrollbars height={password_container_height}>
                                 <MainPasswordManager />
                             </ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 120px)' }}>
+                            <ThemedScrollbars height='calc(100vh - 120px)'>
                                 <MainPasswordManager />
                             </ThemedScrollbars>
                         </MobileWrapper>
                     </div>
                     <div label={localize('Investor password')}>
                         <DesktopWrapper>
-                            <ThemedScrollbars style={{ height: password_container_height }}>
+                            <ThemedScrollbars height={password_container_height}>
                                 <InvestorPasswordManager />
                             </ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 120px)' }}>
+                            <ThemedScrollbars height='calc(100vh - 120px)'>
                                 <InvestorPasswordManager />
                             </ThemedScrollbars>
                         </MobileWrapper>

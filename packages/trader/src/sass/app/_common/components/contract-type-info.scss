@@ -15,22 +15,21 @@
         height: 100%;
     }
     &__card {
-        min-height: calc(100vh - 268px);
+        min-height: calc(100vh - 210px);
+        max-height: calc(100vh - 268px);
+        width: 272px;
+        margin-right: 2.4rem;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 0.8rem;
         @media screen and (min-height: 768px) and (max-height: 820px) {
             min-height: calc(100vh - 288px);
         }
         @media screen and (min-height: 821px) {
             min-height: 535px;
         }
-        width: 272px;
-        margin-right: 2.4rem;
-        display: flex;
-        flex-direction: column;
-        padding-bottom: 0.8rem;
     }
     &__content {
-        margin-top: 2.4rem;
-        margin-bottom: auto;
         overflow: hidden;
 
         /* postcss-bem-linter: ignore */
@@ -109,5 +108,9 @@
     }
     &__icon {
         cursor: pointer;
+    }
+    &__scrollbars {
+        margin-top: 2.4rem;
+        margin-bottom: auto;
     }
 }

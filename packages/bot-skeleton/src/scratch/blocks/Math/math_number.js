@@ -28,14 +28,14 @@ Blockly.Blocks.math_number = {
     },
     meta() {
         return {
-            display_name: localize('Number block'),
+            display_name: localize('Number'),
             description: localize(
                 'Enter an integer or fractional number into this block. Please use `.` as a decimal separator for fractional numbers.'
             ),
         };
     },
     numberValidator(input) {
-        if (/^-?([0][.]|[1-9]+[.])?([0]|[1-9]){1,}$/.test(input)) {
+        if (/^-?([0][.]|[1-9]+[.])?([0]|[1-9]){1,}$/.test(input) && input < Number.MAX_SAFE_INTEGER) {
             return undefined;
         }
         return null;

@@ -141,7 +141,7 @@ class AccountSwitcher extends React.Component {
         ];
 
         existing_mt5_groups.forEach(group => {
-            const type = group.split('\\')[1];
+            const type = group.split(/[demo|real]_/)[1];
             const index_to_remove = mt5_config.findIndex(account => account.account_types.indexOf(type) > -1);
             mt5_config.splice(index_to_remove, 1);
         });
@@ -491,19 +491,7 @@ class AccountSwitcher extends React.Component {
                         into a single reusable AccountListItem component */}
                     <div label={localize('Real')}>
                         <DesktopWrapper>
-                            <ThemedScrollbars
-                                autoHeight
-                                autoHide={this.state.has_autohide}
-                                autoHeightMax={354}
-                                renderTrackHorizontal={props => (
-                                    <div {...props} className='track-horizontal' style={{ display: 'none' }} />
-                                )}
-                                renderThumbHorizontal={props => (
-                                    <div {...props} className='thumb-horizontal' style={{ display: 'none' }} />
-                                )}
-                            >
-                                {real_accounts}
-                            </ThemedScrollbars>
+                            <ThemedScrollbars height='354px'>{real_accounts}</ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
                             <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='204px'>
@@ -513,19 +501,7 @@ class AccountSwitcher extends React.Component {
                     </div>
                     <div label={localize('Demo')}>
                         <DesktopWrapper>
-                            <ThemedScrollbars
-                                autoHeight
-                                autoHide
-                                autoHeightMax={354}
-                                renderTrackHorizontal={props => (
-                                    <div {...props} className='track-horizontal' style={{ display: 'none' }} />
-                                )}
-                                renderThumbHorizontal={props => (
-                                    <div {...props} className='thumb-horizontal' style={{ display: 'none' }} />
-                                )}
-                            >
-                                {demo_accounts}
-                            </ThemedScrollbars>
+                            <ThemedScrollbars height='354px'>{demo_accounts}</ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
                             <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='204px'>

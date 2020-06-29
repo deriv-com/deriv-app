@@ -1,4 +1,4 @@
-import { Button, Icon, Input, Popover } from '@deriv/components';
+import { Button, Icon, Input, ThemedScrollbars, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
@@ -176,7 +176,7 @@ const Toolbar = props => {
                     />
                 </div>
             ) : (
-                <>
+                <ThemedScrollbars height='56px' is_only_horizontal width='100%'>
                     <div className='toolbar__section'>
                         <ToolbarButton
                             popover_message={localize('Click here to start building your DBot.')}
@@ -189,8 +189,8 @@ const Toolbar = props => {
                         {active_tab === tabs_title.WORKSPACE && <SearchBox {...props} />}
                         {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...props} />}
                     </div>
-                    <TradeAnimation className='toolbar__animation' should_show_overlay />
-                </>
+                    {!is_drawer_open && <TradeAnimation className='toolbar__animation' should_show_overlay />}
+                </ThemedScrollbars>
             )}
             <SaveModal />
             <LoadModal />

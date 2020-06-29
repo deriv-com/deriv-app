@@ -66,7 +66,7 @@ Blockly.JavaScript.lists_sort = block => {
                     return parseFloat(a) - parseFloat(b);
                 },
                 TEXT: function(a, b) {
-                    return a.toString().toLowerCase() > b.toString().toLowerCase() ? 1 : -1;
+                    return a.toString() > b.toString() ? 1 : -1;
                 }
             };
 

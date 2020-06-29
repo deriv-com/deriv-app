@@ -6,8 +6,8 @@ import {
     DesktopWrapper,
     MobileWrapper,
     Div100vhContainer,
-    FadeWrapper,
     PageOverlay,
+    FadeWrapper,
 } from '@deriv/components';
 import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';
@@ -26,6 +26,7 @@ class Cashier extends React.Component {
         this.props.toggleCashier();
         // we still need to populate the tabs shown on cashier
         this.props.onMount();
+        this.props.setAccountSwitchListener();
 
         // TODO: Remove L21, L31, and L38 code blocks once landscape design is ready
         // doughflow iframe inconjunction with android's virtual keyboard causes issues with css screen height calculation (thus falsely triggering landscape blocker in Android)
@@ -70,7 +71,7 @@ class Cashier extends React.Component {
                     (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible) &&
                     (route.path !== routes.cashier_p2p ||
-                        (this.props.is_p2p_visible && /show_p2p/.test(this.props.location.hash)))
+                        (this.props.is_p2p_visible && /(show_p2p|verification)/.test(this.props.location.hash)))
                 ) {
                     options.push({
                         ...(route.path === routes.cashier_p2p && { count: this.props.p2p_notification_count }),
@@ -109,7 +110,6 @@ class Cashier extends React.Component {
                     <PageOverlay
                         header={isMobile() ? selected_route.title : localize('Cashier')}
                         onClickClose={this.onClickClose}
-                        has_side_note
                     >
                         <DesktopWrapper>
                             <VerticalTab
@@ -186,5 +186,6 @@ export default connect(({ client, common, modules, ui }) => ({
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     onMount: modules.cashier.onMountCommon,
     p2p_notification_count: modules.cashier.p2p_notification_count,
+    setAccountSwitchListener: modules.cashier.setAccountSwitchListener,
     toggleCashier: ui.toggleCashier,
 }))(withRouter(Cashier));

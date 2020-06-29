@@ -33,21 +33,14 @@ const ConfirmationContent = ({ className }) => {
         <React.Fragment>
             <p className={className}>
                 <Localize
-                    i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess
-                whether a given product or service is appropriate for you (that is, whether you possess the experience
-                and knowledge to understand the risks involved).<0/><1/>'
+                    i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you (that is, whether you possess the experience and knowledge to understand the risks involved).<0/><1/>'
                     components={[<br key={0} />, <br key={1} />]}
                 />
                 <Localize
-                    i18n_default_text='On the basis of the information provided in relation to your knowledge and experience, we consider that
-                    the investments available via this website are not appropriate for you.<0/><1/>'
+                    i18n_default_text='On the basis of the information provided in relation to your knowledge and experience, we consider that the investments available via this website are not appropriate for you.<0/><1/>'
                     components={[<br key={0} />, <br key={1} />]}
                 />
-                <Localize
-                    i18n_default_text='By clicking Accept below and proceeding with the Account Opening you should note that you may be
-                    exposing yourself to risks (which may be significant, including the risk of loss of the entire sum
-                    invested) that you may not have the knowledge and experience to properly assess or mitigate.'
-                />
+                <Localize i18n_default_text='By clicking Accept below and proceeding with the Account Opening you should note that you may be exposing yourself to risks (which may be significant, including the risk of loss of the entire sum invested) that you may not have the knowledge and experience to properly assess or mitigate.' />
             </p>
         </React.Fragment>
     );
@@ -274,6 +267,7 @@ class FinancialAssessment extends React.Component {
                         handleBlur,
                         handleSubmit,
                         isSubmitting,
+                        dirty,
                         // validateField,
                     }) => (
                         <>
@@ -551,6 +545,7 @@ class FinancialAssessment extends React.Component {
                                             onClick={() => this.toggleConfirmationModal(true)}
                                             is_disabled={
                                                 isSubmitting ||
+                                                !dirty ||
                                                 !!(
                                                     errors.income_source ||
                                                     !values.income_source ||

@@ -1,28 +1,39 @@
+import classNames from 'classnames';
 import React from 'react';
-import { Scrollbars } from 'tt-react-custom-scrollbars';
+import { useHover } from '../../hooks/use-hover';
 
-class ThemedScrollbars extends React.Component {
-    render() {
-        if (this.props.is_native) return this.props.children;
-        return (
-            <Scrollbars
-                ref={this.props.list_ref}
-                renderTrackHorizontal={props => (
-                    <div
-                        {...props}
-                        className='dc-themed-scrollbars__track--horizontal'
-                        style={{ display: this.props.hideHorizontal ? 'none' : 'block' }}
-                    />
-                )}
-                renderTrackVertical={props => <div {...props} className='dc-themed-scrollbars__track--vertical' />}
-                renderThumbHorizontal={props => <div {...props} className='dc-themed-scrollbars__thumb--horizontal' />}
-                renderThumbVertical={props => <div {...props} className='dc-themed-scrollbars__thumb--vertical' />}
-                {...this.props}
-            >
-                {this.props.children}
-            </Scrollbars>
-        );
-    }
-}
+const ThemedScrollbars = ({
+    children,
+    className,
+    height,
+    width,
+    autohide = true,
+    is_bypassed,
+    is_only_horizontal,
+    has_horizontal,
+    onScroll,
+    refSetter,
+}) => {
+    if (is_bypassed) return children;
+    const [hoverRef, isHovered] = useHover(refSetter);
+    return (
+        <div
+            ref={hoverRef}
+            className={classNames('dc-themed-scrollbars', className, {
+                'dc-themed-scrollbars__autohide': autohide,
+                'dc-themed-scrollbars__autohide--is-hovered': autohide && isHovered,
+                'dc-themed-scrollbars--has-horizontal': has_horizontal,
+                'dc-themed-scrollbars--only-horizontal': is_only_horizontal,
+            })}
+            style={{
+                maxHeight: height || '100%',
+                maxWidth: width || 'none',
+            }}
+            onScroll={onScroll}
+        >
+            {children}
+        </div>
+    );
+};
 
 export default ThemedScrollbars;

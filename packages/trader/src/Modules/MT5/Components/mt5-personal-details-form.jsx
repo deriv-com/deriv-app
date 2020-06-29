@@ -6,6 +6,7 @@ import {
     Autocomplete,
     AutoHeightWrapper,
     Div100vhContainer,
+    Dropdown,
     ThemedScrollbars,
     Input,
     Loading,
@@ -19,6 +20,24 @@ import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { Localize, localize } from '@deriv/translations';
 import { isDeepEqual } from '@deriv/shared/utils/object';
 
+const getAccountOpeningReasonList = () => [
+    {
+        text: localize('Hedging'),
+        value: 'Hedging',
+    },
+    {
+        text: localize('Income Earning'),
+        value: 'Income Earning',
+    },
+    {
+        text: localize('Speculative'),
+        value: 'Speculative',
+    },
+    {
+        text: localize('Peer-to-peer exchange'),
+        value: 'Peer-to-peer exchange',
+    },
+];
 export const InputField = ({ name, optional = false, ...props }) => (
     <Field name={name}>
         {({ field, form: { errors, touched } }) => (
@@ -26,7 +45,7 @@ export const InputField = ({ name, optional = false, ...props }) => (
                 type='text'
                 required={!optional}
                 name={name}
-                autoComplete='new-password'
+                autoComplete='off'
                 maxLength='30'
                 error={touched[field.name] && errors[field.name]}
                 {...field}
@@ -38,6 +57,10 @@ export const InputField = ({ name, optional = false, ...props }) => (
 
 class MT5PersonalDetailsForm extends React.Component {
     is_initial_valid = false;
+    state = {
+        is_acc_op_focused: false,
+        account_opening_reason: getAccountOpeningReasonList(),
+    };
 
     handleCancel = values => {
         this.props.onSave(this.props.index, values);
@@ -49,12 +72,14 @@ class MT5PersonalDetailsForm extends React.Component {
             citizen: [v => !!v, v => this.props.residence_list.map(i => i.text).includes(v)],
             tax_residence: [v => !!v, v => this.props.residence_list.map(i => i.text).includes(v)],
             tax_identification_number: [v => !!v, v => /^[\w-]{0,20}$/.test(v)],
+            account_opening_reason: [v => !!v, v => this.state.account_opening_reason.map(i => i.text).includes(v)],
         };
 
         const mappedKey = {
             citizen: localize('Citizenship'),
             tax_residence: localize('Tax residence'),
             tax_identification_number: localize('Tax identification number'),
+            account_opening_reason: localize('Account opening reason'),
         };
 
         const common_messages = ['{{field_name}} is required', '{{field_name}} is not properly formatted.'];
@@ -93,6 +118,12 @@ class MT5PersonalDetailsForm extends React.Component {
         onSubmit(index, payload, actions.setSubmitting, is_dirty);
     };
 
+    toggleAccOpeningDropdown = () => {
+        this.setState({
+            is_acc_op_focused: !this.state.is_acc_op_focused,
+        });
+    };
+
     findDefaultValuesInResidenceList = (citizen_text, tax_residence_text) => {
         let citizen, tax_residence;
         this.props.residence_list.forEach(item => {
@@ -119,6 +150,7 @@ class MT5PersonalDetailsForm extends React.Component {
                     citizen: value.citizen,
                     tax_residence: value.tax_residence,
                     tax_identification_number: value.tax_identification_number,
+                    account_opening_reason: value.account_opening_reason,
                 }}
                 enableReinitialize={true}
                 isInitialValid={({ initialValues }) => {
@@ -130,7 +162,7 @@ class MT5PersonalDetailsForm extends React.Component {
                 validate={this.validatePersonalDetails}
                 onSubmit={onSubmitForm}
             >
-                {({ handleSubmit, isSubmitting, errors, touched, values, setFieldValue }) => (
+                {({ handleSubmit, isSubmitting, handleChange, handleBlur, errors, touched, values, setFieldValue }) => (
                     <AutoHeightWrapper default_height={200}>
                         {({ height, setRef }) => (
                             <form
@@ -151,7 +183,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                             }
                                         />
                                     </p>
-                                    <ThemedScrollbars autoHide height={height} is_native={isMobile()}>
+                                    <ThemedScrollbars height={`calc(${height}px - 120px)`} is_bypassed={isMobile()}>
                                         <div className='details-form__elements'>
                                             <FormSubHeader title={localize('Details')} />
                                             <fieldset className='account-form__fieldset'>
@@ -162,7 +194,7 @@ class MT5PersonalDetailsForm extends React.Component {
                                                                 {...field}
                                                                 id='real_mt5_citizenship'
                                                                 data-lpignore='true'
-                                                                autoComplete='new-password'
+                                                                autoComplete='off'
                                                                 type='text'
                                                                 label={localize('Citizenship')}
                                                                 error={touched.citizen && errors.citizen}
@@ -202,7 +234,8 @@ class MT5PersonalDetailsForm extends React.Component {
                                                                 id='real_mt5_tax_residence'
                                                                 data-lpignore='true'
                                                                 type='text'
-                                                                autoComplete='new-password'
+                                                                list_height='160px'
+                                                                autoComplete='off'
                                                                 label={localize('Tax residence')}
                                                                 error={touched.tax_residence && errors.tax_residence}
                                                                 disabled={value.tax_residence && is_fully_authenticated}
@@ -234,7 +267,57 @@ class MT5PersonalDetailsForm extends React.Component {
                                                 id='real_mt5_tax_identification_number'
                                                 name='tax_identification_number'
                                                 placeholder={localize('Tax identification number')}
+                                                value={values.tax_identification_number}
+                                                onBlur={handleBlur}
                                             />
+                                            <FormSubHeader title={localize('Account opening reason')} />
+                                            <Field name='account_opening_reason'>
+                                                {({ field }) => (
+                                                    <React.Fragment>
+                                                        <DesktopWrapper>
+                                                            <Dropdown
+                                                                placeholder={localize('Account opening reason')}
+                                                                is_align_text_left
+                                                                is_alignment_top
+                                                                name={field.name}
+                                                                list={this.state.account_opening_reason}
+                                                                value={values.account_opening_reason}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.account_opening_reason &&
+                                                                    errors.account_opening_reason
+                                                                }
+                                                                {...field}
+                                                                required
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                name={field.name}
+                                                                label={localize('Account opening reason')}
+                                                                list_items={this.state.account_opening_reason}
+                                                                value={values.account_opening_reason}
+                                                                use_text={true}
+                                                                error={
+                                                                    touched.account_opening_reason &&
+                                                                    errors.account_opening_reason
+                                                                }
+                                                                onChange={e => {
+                                                                    handleChange(e);
+                                                                    setFieldValue(
+                                                                        'account_opening_reason',
+                                                                        e.target.value,
+                                                                        true
+                                                                    );
+                                                                }}
+                                                                {...field}
+                                                                required
+                                                            />
+                                                        </MobileWrapper>
+                                                    </React.Fragment>
+                                                )}
+                                            </Field>
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>

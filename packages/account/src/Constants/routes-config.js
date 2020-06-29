@@ -87,7 +87,7 @@ const initRoutesConfig = () => [
                     {
                         path: routes.self_exclusion,
                         component: SelfExclusion,
-                        title: localize('Two-factor authentication'),
+                        title: localize('Self exclusion'),
                     },
                 ],
             },

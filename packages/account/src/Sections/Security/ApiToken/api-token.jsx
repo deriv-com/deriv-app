@@ -20,7 +20,7 @@ import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import LoadErrorMessage from 'Components/load-error-message';
-import Article from './article.jsx';
+import Article from 'Components/article';
 import Card from './card.jsx';
 
 class ApiToken extends React.Component {

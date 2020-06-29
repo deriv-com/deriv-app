@@ -1,10 +1,13 @@
 import React from 'react';
-import { Loading } from '@deriv/components';
+import { Formik, Form, Field } from 'formik';
+import { Loading, ThemedScrollbars, DesktopWrapper, MobileWrapper, Input, Button, DatePicker } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import ObjectUtils from '@deriv/shared/utils/object';
+import { toMoment } from '@deriv/shared/utils/date';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
+import Article from './article';
 import LoadErrorMessage from 'Components/load-error-message';
 
 class SelfExclusion extends React.Component {
@@ -17,15 +20,15 @@ class SelfExclusion extends React.Component {
     };
 
     exclusion_data = {
-        max_turnover: null,
-        max_losses: null,
-        max_7day_turnover: null,
-        max_7day_losses: null,
-        max_30day_turnover: null,
-        max_30day_losses: null,
-        session_duration_limit: null,
-        timeout_until: null,
-        exclude_until: null,
+        max_turnover: '',
+        max_losses: '',
+        max_7day_turnover: '',
+        max_7day_losses: '',
+        max_30day_turnover: '',
+        max_30day_losses: '',
+        session_duration_limit: '',
+        timeout_until: '',
+        exclude_until: '',
         max_balance: null,
         max_open_bets: null,
     };
@@ -107,8 +110,9 @@ class SelfExclusion extends React.Component {
         } else {
             this.setState({
                 is_loading: false,
-                self_exclusions: ObjectUtils.getPropertyValue(response, ['self_exclusions', 'tokens']),
+                self_exclusions: ObjectUtils.getPropertyValue(response, ['get_self_exclusion']),
             });
+            console.log(ObjectUtils.getPropertyValue(response, ['get_self_exclusion']));
         }
     };
 
@@ -123,7 +127,7 @@ class SelfExclusion extends React.Component {
         if (is_virtual) {
             this.setState({ is_loading: false });
         } else {
-            this.populateExclusionResponse();
+            this.getSelfExclusion();
         }
     }
 
@@ -137,7 +141,247 @@ class SelfExclusion extends React.Component {
 
         if (error_message) return <LoadErrorMessage error_message={error_message} />;
 
-        return <section className='self-exclusion'>Hello self exclusion</section>;
+        return (
+            <section className='self-exclusion'>
+                <div className='self-exclusion__wrapper'>
+                    <ThemedScrollbars autoHide className='self-exclusion__scrollbars' hideHorizontal={true}>
+                        <MobileWrapper>
+                            <Article />
+                        </MobileWrapper>
+
+                        <Formik
+                            initialValues={this.state.self_exclusions}
+                            onSubmit={this.handleSubmit}
+                            validate={this.validateFields}
+                        >
+                            {({
+                                values,
+                                errors,
+                                isValid,
+                                touched,
+                                handleChange,
+                                handleBlur,
+                                isSubmitting,
+                                setTouched,
+                                setFieldValue,
+                            }) => (
+                                <Form noValidate>
+                                    <h2 className='self-exclusion__header'>{localize('Your stake and loss limits')}</h2>
+                                    <div className='self-exclusion__item-wrapper'>
+                                        <div className='self-exclusion__item'>
+                                            <h3 className='self-exclusion__item-title'>{localize('Daily')}</h3>
+                                            <p className='self-exclusion__item-field'>{localize('Max. total stake')}</p>
+                                            <Field name='max_turnover'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        className='self-exclusion__input'
+                                                        label={localize('USD')}
+                                                        value={values.max_turnover}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        error={touched.max_turnover && errors.max_turnover}
+                                                    />
+                                                )}
+                                            </Field>
+                                            <p className='self-exclusion__item-field'>{localize('Max. total loss')}</p>
+                                            <Field name='max_losses'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        className='self-exclusion__input'
+                                                        label={localize('USD')}
+                                                        value={values.max_losses}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        error={touched.max_losses && errors.max_losses}
+                                                    />
+                                                )}
+                                            </Field>
+                                        </div>
+                                        <div className='self-exclusion__item'>
+                                            <h3 className='self-exclusion__item-title'>{localize('7 days')}</h3>
+                                            <p className='self-exclusion__item-field'>{localize('Max. total stake')}</p>
+                                            <Field name='max_7day_turnover'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        className='self-exclusion__input'
+                                                        label={localize('USD')}
+                                                        value={values.max_7day_turnover}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        error={touched.max_7day_turnover && errors.max_7day_turnover}
+                                                    />
+                                                )}
+                                            </Field>
+                                            <p className='self-exclusion__item-field'>{localize('Max. total loss')}</p>
+                                            <Field name='max_7day_losses'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        className='self-exclusion__input'
+                                                        label={localize('USD')}
+                                                        value={values.max_7day_losses}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        error={touched.max_7day_losses && errors.max_7day_losses}
+                                                    />
+                                                )}
+                                            </Field>
+                                        </div>
+                                        <div className='self-exclusion__item'>
+                                            <h3 className='self-exclusion__item-title'>{localize('30 days')}</h3>
+                                            <p className='self-exclusion__item-field'>{localize('Max. total stake')}</p>
+                                            <Field name='max_30day_turnover'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        className='self-exclusion__input'
+                                                        label={localize('USD')}
+                                                        value={values.max_30day_turnover}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        error={touched.max_30day_turnover && errors.max_7day_turnover}
+                                                    />
+                                                )}
+                                            </Field>
+                                            <p className='self-exclusion__item-field'>{localize('Max. total loss')}</p>
+                                            <Field name='max_30day_losses'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        className='self-exclusion__input'
+                                                        label={localize('USD')}
+                                                        value={values.max_30day_losses}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        error={touched.max_30day_losses && errors.max_30day_losses}
+                                                    />
+                                                )}
+                                            </Field>
+                                        </div>
+                                    </div>
+                                    <h2 className='self-exclusion__header'>
+                                        {localize('Your session and login limits')}
+                                    </h2>
+                                    <div className='self-exclusion__item-wrapper'>
+                                        <div className='self-exclusion__item'>
+                                            <p className='self-exclusion__item-field'>
+                                                {localize(
+                                                    'You will be automatically logged out from each session after this time limit.'
+                                                )}
+                                            </p>
+                                            <Field name='session_duration_limit'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='number'
+                                                        className='self-exclusion__input'
+                                                        label={localize('Minutes')}
+                                                        value={values.session_duration_limit}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        error={
+                                                            touched.session_duration_limit &&
+                                                            errors.session_duration_limit
+                                                        }
+                                                    />
+                                                )}
+                                            </Field>
+                                        </div>
+                                        <div className='self-exclusion__item'>
+                                            <p className='self-exclusion__item-field'>
+                                                {localize(
+                                                    'You will not be able to log in to your account until this date (up to 6 weeks from today).'
+                                                )}
+                                            </p>
+                                            <Field name='timeout_until'>
+                                                {({ field }) => (
+                                                    <DatePicker
+                                                        {...field}
+                                                        className='self-exclusion__input'
+                                                        label={localize('Date')}
+                                                        type='text'
+                                                        value={values.timeout_until}
+                                                        onBlur={() => setTouched({ timeout_until: true })}
+                                                        onChange={({ target }) =>
+                                                            setFieldValue(
+                                                                'timeout_until',
+                                                                target?.value
+                                                                    ? toMoment(target.value).format('YYYY-MM-DD')
+                                                                    : '',
+                                                                true
+                                                            )
+                                                        }
+                                                        required
+                                                        error={touched.timeout_until && errors.timeout_until}
+                                                    />
+                                                )}
+                                            </Field>
+                                        </div>
+                                        <div className='self-exclusion__item'>
+                                            <p className='self-exclusion__item-field'>
+                                                {localize(
+                                                    'You will not be able to log in to your account until this date (up to 6 weeks from today).'
+                                                )}
+                                            </p>
+                                            <Field name='exclude_until'>
+                                                {({ field }) => (
+                                                    <DatePicker
+                                                        {...field}
+                                                        alignment='left'
+                                                        type='text'
+                                                        className='self-exclusion__input'
+                                                        label={localize('Date')}
+                                                        value={values.exclude_until}
+                                                        onBlur={() => setTouched({ exclude_until: true })}
+                                                        onChange={({ target }) =>
+                                                            setFieldValue(
+                                                                'exclude_until',
+                                                                target?.value
+                                                                    ? toMoment(target.value).format('YYYY-MM-DD')
+                                                                    : '',
+                                                                true
+                                                            )
+                                                        }
+                                                        required
+                                                        error={touched.exclude_until && errors.exclude_until}
+                                                    />
+                                                )}
+                                            </Field>
+                                        </div>
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
+                    </ThemedScrollbars>
+                    <DesktopWrapper>
+                        <Article />
+                    </DesktopWrapper>
+                </div>
+            </section>
+        );
     }
 }
 

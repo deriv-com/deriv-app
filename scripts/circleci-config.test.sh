@@ -39,7 +39,9 @@ for (( i=0; i < ${#required_packages[@]}; i++ )); do
 done
 
 if [[ $has_required_packages == False ]]; then
+    echo 'CircleCI config is not OK! ✗'
     exit 1;
 else
+    echo 'CircleCI config looks OK! ✓'
     exit 0;
 fi

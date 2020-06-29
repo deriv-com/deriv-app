@@ -35,7 +35,7 @@ commands:
     description: "npm install and save cache"
     steps:
       - run:
-          name: "create cache key"
+          name: "Create cache key"
           command: echo $(find . ./packages/ -maxdepth 2 -name package-lock.json -type f -exec md5sum {} \; | md5sum | cut -d' ' -f1) >> CACHE_KEY1
       - restore_cache:
           keys:
@@ -51,7 +51,7 @@ commands:
       - save_cache:
           key: node-{{ checksum "CACHE_KEY1" }}
           paths:
-            # VERIFY_CACHE_FOLDERS_START
+            # VERIFY_CACHE_FOLDERS_START (DO NOT REMOVE)
             - "node_modules"
             - "packages/account/node_modules"
             - "packages/bot-skeleton/node_modules"
@@ -62,7 +62,7 @@ commands:
             - "packages/shared/node_modules"
             - "packages/trader/node_modules"
             - "packages/translations/node_modules"
-            # VERIFY_CACHE_FOLDERS_END
+            # VERIFY_CACHE_FOLDERS_END (DO NOT REMOVE)
   build:
     description: "Build"
     steps:

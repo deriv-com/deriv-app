@@ -21,7 +21,7 @@ start_idx=1                          # Filter out VERIFY_CACHE_FOLDERS_START
 end_idx="${#config_packages[@]} - 1" # Filter out VERIFY_CACHE_FOLDERS_END
 has_required_packages=True
 
-for (( i=0; i < ${#required_packages}; i++ )); do
+for (( i=0; i < ${#required_packages[@]}; i++ )); do
     has_found_entry=False
 
     for (( j=$start_idx; j < $end_idx; j++ )); do

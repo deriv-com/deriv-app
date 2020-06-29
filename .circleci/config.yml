@@ -34,20 +34,35 @@ commands:
   npm_install_from_cache:
     description: "npm install and save cache"
     steps:
-      - restore_cache:
-          keys:
-            - node-
-      - run:
-          name: Install npm packages
-          command: npm run bootstrap
       - run:
           name: "create cache key"
-          command: echo $(find ./packages/ -name package-lock.json -type f -exec md5sum {} \; | md5sum | cut -d' ' -f1) >> CACHE_KEY1
+          command: echo $(find ./packages/ -maxdepth 2 -name package-lock.json -type f -exec md5sum {} \; | md5sum | cut -d' ' -f1) >> CACHE_KEY1
+      - restore_cache:
+          keys:
+            - node-{{ checksum "CACHE_KEY1" }}
+      - run:
+          name: Install npm packages
+          command: |
+            if [ -d "./node_modules" ]; then
+              echo "Found cache. Using cached dependencies."
+            else
+              npm run bootstrap             
+            fi
       - save_cache:
           key: node-{{ checksum "CACHE_KEY1" }}
           paths:
+            # VERIFY_CACHE_FOLDERS_START
             - "node_modules"
-            - "packages/*/node_modules"
+            - "packages/account/node_modules"
+            - "packages/bot-skeleton/node_modules"
+            - "packages/bot-web-ui/node_modules"
+            - "packages/components/node_modules"
+            - "packages/core/node_modules"
+            - "packages/p2p/node_modules"
+            - "packages/shared/node_modules"
+            - "packages/trader/node_modules"
+            - "packages/translations/node_modules"
+            # VERIFY_CACHE_FOLDERS_END
   build:
     description: "Build"
     steps:
@@ -175,9 +190,6 @@ workflows:
     jobs:
       - build_staging:
           context: binary-frontend-artifact-upload
-          filters:
-            branches:
-              only: /^dev$/
       - deploy_staging:
           context: binary-frontend-artifact-upload
           filters:

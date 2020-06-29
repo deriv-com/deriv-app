@@ -38,7 +38,7 @@ for (( i=0; i < ${#required_packages[@]}; i++ )); do
     fi
 done
 
-if [[ ! $has_required_packages == False ]]; then
+if [[ $has_required_packages == False ]]; then
     exit 1;
 else
     exit 0;

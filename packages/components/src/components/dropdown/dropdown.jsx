@@ -130,7 +130,7 @@ const Dropdown = ({
 
     React.useEffect(() => {
         if (!is_list_visible) dropdown_ref.current.focus();
-    });
+    }, [is_list_visible]);
 
     const handleSelect = item => {
         if (item.value !== value) onChange({ target: { name, value: item.value } });

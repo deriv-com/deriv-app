@@ -18,6 +18,7 @@ import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 import Shortcode from '../Helpers/shortcode';
 import 'Sass/app/modules/statement.scss';
+
 class Statement extends React.Component {
     constructor(props) {
         super(props);
@@ -29,18 +30,17 @@ class Statement extends React.Component {
         const is_mx_mlt =
             this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'malta';
 
-        is_mx_mlt
-            ? WS.accountStatistics().then(response => {
-                  if (response.error) {
-                      this.setState({ api_error: response.error.message });
-                      return;
-                  }
-                  this.setState({
-                      total_deposits: response.account_statistics.total_deposits,
-                      total_withdrawals: response.account_statistics.total_withdrawals,
-                  });
-              })
-            : undefined;
+        if (is_mx_mlt)
+            WS.accountStatistics().then(response => {
+                if (response.error) {
+                    this.setState({ api_error: response.error.message });
+                    return;
+                }
+                this.setState({
+                    total_deposits: response.account_statistics.total_deposits,
+                    total_withdrawals: response.account_statistics.total_withdrawals,
+                });
+            });
     }
 
     componentWillUnmount() {

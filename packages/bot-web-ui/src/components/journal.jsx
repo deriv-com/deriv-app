@@ -77,43 +77,86 @@ const FormatMessage = ({ logType, className, extra }) => {
     return <div className={classnames('journal__text', className)}>{getLogMessage()}</div>;
 };
 
-const Tools = ({ toggleFilterDialog }) => (
-    <div className='journal-tools__container'>
-        <div className='journal-tools__container-filter'>
-            <Icon className='filter-dialog-toggle__icon' icon='IcEdit' size={16} onClick={toggleFilterDialog} />
-        </div>
-        {/* <div className='tools__container-download'>
-            <Icon icon='IcDownload' />
-        </div> */}
-    </div>
-);
+const Tools = ({ checked_filters, filters, filterMessage, is_filter_dialog_visible, toggleFilterDialog }) => {
+    const toggle_ref = React.useRef();
 
-const FilterDialog = ({ checked_filters, filters, filterMessage, is_filter_dialog_visible }) => {
     return (
-        <CSSTransition
-            in={is_filter_dialog_visible}
-            classNames={{
-                enter: 'filter-dialog--enter',
-                enterDone: 'filter-dialog--enter-done',
-                exit: 'filter-dialog--exit',
-            }}
-            timeout={150}
-            unmountOnExit
-        >
-            <div className='filter-dialog' style={{ top, right: '2rem' }}>
-                {filters.map(item => {
-                    return (
-                        <Checkbox
-                            key={item.id}
-                            classNameLabel='journal-tools__text'
-                            defaultChecked={checked_filters.includes(item.id)}
-                            label={item.label}
-                            onChange={e => filterMessage(e.target.checked, item.id)}
-                        />
-                    );
-                })}
+        <>
+            <div className='journal-tools__container'>
+                <div ref={toggle_ref} className='journal-tools__container-filter' onClick={toggleFilterDialog}>
+                    <Icon icon='IcFilter' size={16} />
+                </div>
+                {/* <div className='tools__container-download'>
+                    <Icon icon='IcDownload' />
+                </div> */}
             </div>
-        </CSSTransition>
+            <CSSTransition
+                in={is_filter_dialog_visible}
+                classNames={{
+                    enter: 'filter-dialog--enter',
+                    enterDone: 'filter-dialog--enter-done',
+                    exit: 'filter-dialog--exit',
+                }}
+                timeout={150}
+                unmountOnExit
+            >
+                <FilterDialog
+                    toggle_ref={toggle_ref}
+                    checked_filters={checked_filters}
+                    filters={filters}
+                    filterMessage={filterMessage}
+                    is_filter_dialog_visible={is_filter_dialog_visible}
+                    toggleFilterDialog={toggleFilterDialog}
+                />
+            </CSSTransition>
+        </>
+    );
+};
+
+const FilterDialog = ({
+    toggle_ref,
+    checked_filters,
+    filters,
+    filterMessage,
+    is_filter_dialog_visible,
+    toggleFilterDialog,
+}) => {
+    const wrapper_ref = React.useRef();
+
+    React.useEffect(() => {
+        const clickOutsideListener = event => {
+            const path = event.path ?? event.composedPath?.();
+            if (
+                wrapper_ref &&
+                !wrapper_ref.current.contains(event.target) &&
+                !wrapper_ref.current.contains(path && path[0])
+            ) {
+                if (is_filter_dialog_visible && toggle_ref.current.contains(event.target)) return;
+                toggleFilterDialog();
+            }
+        };
+
+        document.addEventListener('mousedown', clickOutsideListener);
+
+        return () => {
+            document.removeEventListener('mousedown', clickOutsideListener);
+        };
+    }, [toggle_ref]);
+
+    return (
+        <div ref={wrapper_ref} className='filter-dialog' style={{ top, right: '2rem' }}>
+            {filters.map(item => {
+                return (
+                    <Checkbox
+                        key={item.id}
+                        classNameLabel='journal-tools__text'
+                        defaultChecked={checked_filters.includes(item.id)}
+                        label={item.label}
+                        onChange={e => filterMessage(e.target.checked, item.id)}
+                    />
+                );
+            })}
+        </div>
     );
 };
 
@@ -151,7 +194,6 @@ const Journal = ({ filtered_messages, contract_stage, is_stop_button_visible, ..
     return (
         <div className='journal run-panel-tab__content'>
             <Tools {...props} />
-            <FilterDialog {...props} />
             <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 50px)'}>
                 <div className='journal__item-list'>
                     {filtered_messages.length ? (

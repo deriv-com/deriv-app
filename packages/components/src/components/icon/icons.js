@@ -79,6 +79,7 @@ import './common/ic-email-typo.svg';
 import './common/ic-email.svg';
 import './common/ic-empty-folder.svg';
 import './common/ic-eye.svg';
+import './common/ic-filter.svg';
 import './common/ic-folder-open.svg';
 import './common/ic-full-screen-restore.svg';
 import './common/ic-full-screen.svg';

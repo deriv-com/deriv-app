@@ -112,7 +112,7 @@
     border-radius: $BORDER_RADIUS;
     box-shadow: 0 4px 16px 0 var(--shadow-menu);
     transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
-    padding: 1.6rem 1.6rem 1.6rem 0.8rem;
+    padding: 1.6rem 3.6rem 1.6rem 0.8rem;
     z-index: 99;
 
     &--enter-done {

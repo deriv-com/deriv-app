@@ -164,7 +164,7 @@ class App extends React.Component {
 
         if (!chat_info.token) {
             requestWS({ service_token: 1, service: 'sendbird' }).then(response => {
-                chat_info.token = response.service_token.token;
+                chat_info.token = response.service_token.sendbird.token;
             });
         }
 

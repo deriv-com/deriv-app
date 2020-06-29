@@ -7,6 +7,10 @@
     align-items: center;
     margin-top: 6.8rem;
 
+    @include mobile {
+        transform: none;
+    }
+
     &__icon {
         margin-bottom: 3.4rem;
     }

@@ -5,16 +5,16 @@ import { connect } from 'Stores/connect';
 import getRoutesConfig from 'App/Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 
-const BinaryRoutes = props => {
+const BinaryRoutes = ({ pushDataLayer, promptFn, prompt_when, ...props }) => {
     const location = useLocation();
 
     React.useEffect(() => {
-        props.pushDataLayer({ event: 'page_load' });
-    }, [location]);
+        pushDataLayer({ event: 'page_load' });
+    }, [pushDataLayer, location]);
 
     return (
         <React.Suspense fallback={<Loading />}>
-            <Prompt when={props.prompt_when} message={props.promptFn} />
+            <Prompt when={prompt_when} message={promptFn} />
             <Switch>
                 {getRoutesConfig().map((route, idx) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />

@@ -181,7 +181,7 @@ const AccountTransferForm = ({
 
     React.useEffect(() => {
         onMount();
-    }, []);
+    }, [onMount]);
 
     React.useEffect(() => {
         if (Object.keys(from_accounts).length && typeof setSideNote === 'function') {
@@ -195,6 +195,7 @@ const AccountTransferForm = ({
                 />
             );
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNote]);
 
     return (

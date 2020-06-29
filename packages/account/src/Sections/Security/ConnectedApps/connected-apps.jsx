@@ -71,7 +71,6 @@ class ConnectedApps extends React.Component {
             </div>
         );
     };
-
     render() {
         return (
             <section className='connected-apps'>

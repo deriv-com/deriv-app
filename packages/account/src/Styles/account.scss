@@ -1014,7 +1014,8 @@ $MIN_HEIGHT_FLOATING: calc(
 .connected-apps {
     width: 100%;
     max-width: 728px;
-    min-height: 400px;
+    max-height: 560px;
+    height: 100%;
 
     .revoke_access {
         padding-left: 8px;
@@ -1065,6 +1066,9 @@ $MIN_HEIGHT_FLOATING: calc(
         &__data-list-body {
             min-height: calc(100vh - 50px);
 
+            .connected-apps {
+                max-height: calc(100vh - 150px);
+            }
             .data-list__item {
                 padding: 8px;
             }

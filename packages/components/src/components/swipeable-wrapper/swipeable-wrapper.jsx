@@ -13,6 +13,7 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }) => {
             // Makes an empty callback when unmounted so that we can reset
             if (typeof onChange === 'function') onChange();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_index]);
 
     const swipedLeft = () => {

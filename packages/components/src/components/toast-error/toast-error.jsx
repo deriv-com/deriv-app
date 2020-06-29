@@ -15,6 +15,7 @@ const ToastError = ({ children, className, is_open = true, onClose, onClick, tim
         }
 
         return undefined;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_open]);
 
     return (

@@ -126,7 +126,7 @@ const Dropdown = ({
         if (is_nativepicker && !is_nativepicker_visible && is_list_visible) {
             setIsListVisible(false);
         }
-    }, [is_nativepicker, is_nativepicker_visible]);
+    }, [is_nativepicker, is_nativepicker_visible, is_list_visible]);
 
     React.useEffect(() => {
         if (!is_list_visible) dropdown_ref.current.focus();

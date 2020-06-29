@@ -13,6 +13,7 @@ describe('UILoader', () => {
     });
     it('should have className passed in props', () => {
         const wrapper = shallow(<UILoader className='a-cool-classname' />);
+        // eslint-disable-next-line no-unused-expressions
         expect(wrapper.find('.a-cool-classname').exists()).to.be.true;
     });
 });

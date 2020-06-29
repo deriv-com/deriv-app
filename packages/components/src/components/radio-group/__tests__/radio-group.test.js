@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 // import sinon      from 'sinon';
-import RadioGroup from '../radio-group.jsx';
 import '@testing-library/jest-dom/extend-expect';
+import RadioGroup from '../radio-group.jsx';
 
 // Tests WIP
 
@@ -40,6 +40,7 @@ describe('<RadioGroup />', () => {
 
     it('should load radio buttons based on input', () => {
         const { container } = render(<RadioGroup items={valid_items} selected={true} onToggle={() => ({})} />);
+        // eslint-disable-next-line no-undef
         expect(container.querySelectorAll('label.dc-radio-group__item')).toHaveLength(2);
     });
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { CSSTransition } from 'react-transition-group';
 import Modal from '../modal.jsx';
 
 describe('Modal', () => {

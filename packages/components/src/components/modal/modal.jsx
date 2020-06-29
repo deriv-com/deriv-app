@@ -42,15 +42,19 @@ const ModalElement = ({
     useOnClickOutside(wrapper_ref, toggleModal, validateClickOutside);
 
     React.useEffect(() => {
-        el_ref.current.classList.add('dc-modal');
-        modal_root_ref.current.appendChild(el_ref.current);
+        const { current: modal_root } = modal_root_ref;
+        const { current: el } = el_ref;
+
+        el.classList.add('dc-modal');
+        modal_root.appendChild(el);
+
         if (typeof onMount === 'function') onMount();
 
         return () => {
-            modal_root_ref.current.removeChild(el_ref.current);
+            modal_root.removeChild(el);
             if (typeof onUnmount === 'function') onUnmount();
         };
-    }, []);
+    }, [onMount, onUnmount]);
 
     return ReactDOM.createPortal(
         <div

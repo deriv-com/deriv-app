@@ -4,16 +4,18 @@ import React from 'react';
 import VerticalTab from '../vertical-tab.jsx';
 
 describe('<VerticalTab />', () => {
+    const SvgElement = () => <svg />;
+
     const valid_tab_items = [
         {
             icon: '',
             label: 'Label 1',
-            value: () => <svg />,
+            value: SvgElement,
         },
         {
             icon: '',
             label: 'Label 2',
-            value: () => <svg />,
+            value: SvgElement,
         },
     ];
     // TODO: fix these

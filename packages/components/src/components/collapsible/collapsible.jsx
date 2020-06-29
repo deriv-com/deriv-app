@@ -25,11 +25,7 @@ const Collapsible = ({ as, is_collapsed, position = 'top', children, onClick, ti
     React.useEffect(() => {
         expand(!is_collapsed);
         setShouldShowCollapsible(React.Children.toArray(children).some(({ props }) => 'collapsible' in props));
-    }, [is_collapsed]);
-
-    React.useEffect(() =>
-        setShouldShowCollapsible(React.Children.toArray(children).some(({ props }) => 'collapsible' in props))
-    );
+    }, [is_collapsed, children]);
 
     const swipe_handlers = useSwipeable({
         onSwipedUp: () => !is_open && should_show_collapsible && expand(true),

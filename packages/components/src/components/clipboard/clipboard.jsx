@@ -27,6 +27,7 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
 
     React.useEffect(() => {
         return () => clearTimeout(timeout_clipboard);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

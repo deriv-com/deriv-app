@@ -2,7 +2,7 @@ import React from 'react';
 
 export const useHover = refSetter => {
     const [value, setValue] = React.useState(false);
-
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const ref = refSetter || React.useRef(null);
 
     const handleMouseOver = () => setValue(true);
@@ -20,7 +20,7 @@ export const useHover = refSetter => {
             };
         }
         return null;
-    }, [ref.current]);
+    }, [ref]);
 
     return [ref, value];
 };

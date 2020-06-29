@@ -18,8 +18,6 @@ import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 import Shortcode from '../Helpers/shortcode';
 import 'Sass/app/modules/statement.scss';
-
-let total_deposits, total_withdrawals;
 class Statement extends React.Component {
     constructor(props) {
         super(props);
@@ -28,7 +26,6 @@ class Statement extends React.Component {
 
     componentDidMount() {
         this.props.onMount();
-        console.log('landing_company_shortcode:', this.props.landing_company_shortcode);
         const is_mx_mlt =
             this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'malta';
 

@@ -52,7 +52,8 @@ const DigitsWrapper = ({
         if (props.onChangeStatus) {
             props.onChangeStatus({ status, current_tick: tick ? tick.current_tick : null });
         }
-    }, [tick, is_trade_page, display_status]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [tick, is_trade_page, display_status, props.onChangeStatus]);
 
     return (
         <LastDigitPrediction

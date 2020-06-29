@@ -14,11 +14,15 @@ import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
     React.useEffect(() => {
         setTick(tick);
+        // We only want the effect to occur when the tick value changes
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tick]);
 
     React.useEffect(() => {
         setDigits(digits);
-    }, digits);
+        // We only want the effect to occur when the digits value changes
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [digits]);
 
     // render nothing for bottom widgets on chart in mobile
     return null;

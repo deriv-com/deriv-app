@@ -85,6 +85,7 @@ const Filters = ({ wrapper_ref, checked_filters, filters, filterMessage, classNa
                     <Checkbox
                         key={item.id}
                         classNameLabel={classNameLabel}
+                        value={checked_filters.includes(item.id)}
                         defaultChecked={checked_filters.includes(item.id)}
                         label={item.label}
                         onChange={() => filterMessage(!checked_filters.includes(item.id), item.id)}

@@ -37,10 +37,10 @@ class SelfExclustionForm extends React.Component {
         const setErrors = () => {
             const errors = {};
             if (!max_losses && !set_max_losses) {
-                errors.set_max_losses = 'Daily limit on losses should set';
+                errors.set_max_losses = localize('This field is required.');
             }
             if (!run_limit) {
-                errors.run_limit = 'Maximum consecutive trade should set';
+                errors.run_limit = localize('This field is required.');
             }
             this.setState({ errors });
         };
@@ -54,7 +54,7 @@ class SelfExclustionForm extends React.Component {
                     this.setState(pre => ({
                         errors: {
                             ...pre.errors,
-                            set_max_losses: set_losses.error.message,
+                            set_max_losses: localize(set_losses.error.message),
                         },
                     }));
                     return;

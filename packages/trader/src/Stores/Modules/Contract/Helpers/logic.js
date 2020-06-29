@@ -128,7 +128,7 @@ export const getProfit = modules_store => {
     const contract_id = contract_trade.contract_id;
     const contract_info = contract_trade.getContractById(contract_id).contract_info;
 
-    return contract_info.profit;
+    return contract_info.bid_price - contract_info.buy_price;
 };
 
 export const getBuyPrice = modules_store => {
@@ -136,9 +136,7 @@ export const getBuyPrice = modules_store => {
     const contract_id = contract_trade.contract_id;
     const contract_info = contract_trade.getContractById(contract_id).contract_info;
 
-    const cancellation_price = getCancellationPrice(contract_info);
-
-    return contract_info.buy_price - cancellation_price;
+    return contract_info.buy_price;
 };
 
 /**

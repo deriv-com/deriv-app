@@ -86,7 +86,7 @@ class DurationWrapper extends React.Component {
     }
 
     // intercept changes to contract duration and check that trade_store and ui_store are aligned.
-    componentWillReact() {
+    componentDidUpdate() {
         const {
             advanced_expiry_type,
             duration,

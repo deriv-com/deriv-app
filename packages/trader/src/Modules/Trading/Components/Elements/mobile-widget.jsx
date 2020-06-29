@@ -14,7 +14,7 @@ class MobileWidget extends React.Component {
         };
     }
 
-    componentWillReact() {
+    componentDidUpdate() {
         this.assertDurationIsWithinBoundary();
     }
 
@@ -23,11 +23,11 @@ class MobileWidget extends React.Component {
 
         const contract_expiry_type = getExpiryType(trade_store);
         const [min_value, max_value] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
+
         if (contract_expiry_type === 'tick' && duration < min_value) {
             onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
             onChange({ target: { name: 'duration', value: min_value } });
         }
-
         if (!(duration < min_value) && duration > max_value) {
             onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
             onChange({ target: { name: 'duration', value: max_value } });

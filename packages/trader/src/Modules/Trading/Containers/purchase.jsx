@@ -3,7 +3,6 @@ import React from 'react';
 import ObjectUtils from '@deriv/shared/utils/object';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
-import { measurePerformance } from 'Services/performance-checker';
 import { connect } from 'Stores/connect';
 
 const Purchase = ({
@@ -23,7 +22,6 @@ const Purchase = ({
     onHoverPurchase,
     // togglePurchaseLock,
     purchase_info,
-    pushLoadPerformance,
     proposal_info,
     setPurchaseState,
     trade_types,
@@ -88,11 +86,6 @@ const Purchase = ({
                 break;
         }
     });
-
-    if (components && components.length === 2 && !components[0].props.is_disabled && !components[1].props.is_disabled) {
-        // the moment that both purchase buttons are enabled
-        measurePerformance(pushLoadPerformance);
-    }
     return components;
 };
 
@@ -111,20 +104,18 @@ Purchase.propTypes = {
     proposal_info: PropTypes.object,
     purchase_info: PropTypes.object,
     purchased_states_arr: PropTypes.array,
-    pushLoadPerformance: PropTypes.func,
     setPurchaseState: PropTypes.func,
     // togglePurchaseLock        : PropTypes.func,
     trade_types: PropTypes.object,
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ client, modules, ui, gtm }) => ({
+export default connect(({ client, modules, ui }) => ({
     currency: client.currency,
     is_client_allowed_to_visit: client.is_client_allowed_to_visit,
     basis: modules.trade.basis,
     contract_type: modules.trade.contract_type,
     has_cancellation: modules.trade.has_cancellation,
-    pushLoadPerformance: gtm.pushLoadPerformance,
     is_purchase_enabled: modules.trade.is_purchase_enabled,
     is_trade_enabled: modules.trade.is_trade_enabled,
     is_multiplier: modules.trade.is_multiplier,

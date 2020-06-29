@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Checkbox, Icon, ThemedScrollbars } from '@deriv/components';
+import { Checkbox, Icon, ThemedScrollbars, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
@@ -77,39 +77,21 @@ const FormatMessage = ({ logType, className, extra }) => {
     return <div className={classnames('journal__text', className)}>{getLogMessage()}</div>;
 };
 
-const Tools = ({ checked_filters, filters, filterMessage, is_filter_dialog_visible, toggleFilterDialog }) => {
-    const toggle_ref = React.useRef();
-
+const Filters = ({ wrapper_ref, checked_filters, filters, filterMessage, className, classNameLabel }) => {
     return (
-        <>
-            <div className='journal-tools__container'>
-                <div ref={toggle_ref} className='journal-tools__container-filter' onClick={toggleFilterDialog}>
-                    <Icon icon='IcFilter' size={16} />
-                </div>
-                {/* <div className='tools__container-download'>
-                    <Icon icon='IcDownload' />
-                </div> */}
-            </div>
-            <CSSTransition
-                in={is_filter_dialog_visible}
-                classNames={{
-                    enter: 'filter-dialog--enter',
-                    enterDone: 'filter-dialog--enter-done',
-                    exit: 'filter-dialog--exit',
-                }}
-                timeout={150}
-                unmountOnExit
-            >
-                <FilterDialog
-                    toggle_ref={toggle_ref}
-                    checked_filters={checked_filters}
-                    filters={filters}
-                    filterMessage={filterMessage}
-                    is_filter_dialog_visible={is_filter_dialog_visible}
-                    toggleFilterDialog={toggleFilterDialog}
-                />
-            </CSSTransition>
-        </>
+        <div ref={wrapper_ref} className={className}>
+            {filters.map(item => {
+                return (
+                    <Checkbox
+                        key={item.id}
+                        classNameLabel={classNameLabel}
+                        defaultChecked={checked_filters.includes(item.id)}
+                        label={item.label}
+                        onChange={e => filterMessage(e.target.checked, item.id)}
+                    />
+                );
+            })}
+        </div>
     );
 };
 
@@ -144,19 +126,66 @@ const FilterDialog = ({
     }, [toggle_ref]);
 
     return (
-        <div ref={wrapper_ref} className='filter-dialog' style={{ top, right: '2rem' }}>
-            {filters.map(item => {
-                return (
-                    <Checkbox
-                        key={item.id}
+        <Filters
+            wrapper_ref={wrapper_ref}
+            checked_filters={checked_filters}
+            filters={filters}
+            filterMessage={filterMessage}
+            className='filter-dialog'
+        />
+    );
+};
+
+const Tools = ({ checked_filters, filters, filterMessage, is_filter_dialog_visible, toggleFilterDialog }) => {
+    const toggle_ref = React.useRef();
+
+    return (
+        <>
+            <div className='journal-tools__container'>
+                <MobileWrapper>
+                    <div
+                        ref={toggle_ref}
+                        className='journal-tools__container-filter--mobile'
+                        onClick={toggleFilterDialog}
+                    >
+                        <Icon icon='IcFilter' size={16} />
+                    </div>
+                </MobileWrapper>
+                <DesktopWrapper>
+                    <Filters
+                        checked_filters={checked_filters}
+                        filters={filters}
+                        filterMessage={filterMessage}
+                        className='journal-tools__container-filter'
                         classNameLabel='journal-tools__text'
-                        defaultChecked={checked_filters.includes(item.id)}
-                        label={item.label}
-                        onChange={e => filterMessage(e.target.checked, item.id)}
                     />
-                );
-            })}
-        </div>
+                </DesktopWrapper>
+                {/* <div className='tools__container-download'>
+                    <Icon icon='IcDownload' />
+                </div> */}
+            </div>
+            <MobileWrapper>
+                <CSSTransition
+                    in={is_filter_dialog_visible}
+                    classNames={{
+                        enter: 'filter-dialog--enter',
+                        enterDone: 'filter-dialog--enter-done',
+                        exit: 'filter-dialog--exit',
+                    }}
+                    timeout={150}
+                    unmountOnExit
+                >
+                    <FilterDialog
+                        toggle_ref={toggle_ref}
+                        checked_filters={checked_filters}
+                        filters={filters}
+                        filterMessage={filterMessage}
+                        is_filter_dialog_visible={is_filter_dialog_visible}
+                        toggleFilterDialog={toggleFilterDialog}
+                    />
+                </CSSTransition>
+            </MobileWrapper>
+        </>
     );
 };
 

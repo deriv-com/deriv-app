@@ -16,7 +16,7 @@ const ReportsMeta = ({ i18n_heading, i18n_message, filter_component, className, 
         {filter_component && (
             <div
                 className={classNames('reports__meta-filter', {
-                    'reports__meta--date-filter': !i18n_heading,
+                    'reports__meta--date-filter': !optional_component,
                 })}
             >
                 {filter_component}

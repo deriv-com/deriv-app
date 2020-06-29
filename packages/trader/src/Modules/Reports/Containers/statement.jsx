@@ -21,6 +21,11 @@ import 'Sass/app/modules/statement.scss';
 
 let total_deposits, total_withdrawals;
 class Statement extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { total_deposits: 0, total_withdrawals: 0 };
+    }
+
     componentDidMount() {
         this.props.onMount();
         console.log('landing_company_shortcode:', this.props.landing_company_shortcode);
@@ -33,8 +38,10 @@ class Statement extends React.Component {
                       this.setState({ api_error: response.error.message });
                       return;
                   }
-                  total_deposits = response.account_statistics.total_deposits;
-                  total_withdrawals = response.account_statistics.total_withdrawals;
+                  this.setState({
+                      total_deposits: response.account_statistics.total_deposits,
+                      total_withdrawals: response.account_statistics.total_withdrawals,
+                  });
               })
             : undefined;
     }
@@ -125,16 +132,16 @@ class Statement extends React.Component {
                 <div className='statement__account-statistics'>
                     <div className='statement__account-statistics--is-rectangle'>
                         <span className='statement__account-statistics--title'>{localize('Total Deposit')}</span>
-                        <span className='statement__account-statistics--amount'> ${total_deposits}</span>
+                        <span className='statement__account-statistics--amount'> ${this.state.total_deposits}</span>
                     </div>
                     <div className='statement__account-statistics--is-rectangle'>
                         <span className='statement__account-statistics--title'>{localize('Total Withdrawals')}</span>
-                        <span className='statement__accoun-statistics--amount'>${total_withdrawals}</span>
+                        <span className='statement__account-statistics--amount'>${this.state.total_withdrawals}</span>
                     </div>
                     <div className='statement__account-statistics--is-rectangle'>
                         <span className='statement__account-statistics--title'>{localize('Net Deposit')}</span>
                         <span className='statement__account-statistics--amount'>
-                            ${total_deposits - total_withdrawals}
+                            ${this.state.total_deposits - this.state.total_withdrawals}
                         </span>
                     </div>
                 </div>

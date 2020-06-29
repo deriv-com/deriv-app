@@ -1,7 +1,7 @@
 import React from 'react';
 import Routes from 'Containers/routes.jsx';
 import { setWebsocket } from 'Services/ws-methods';
-import { MobxProvider } from 'Stores/connect';
+import { MobxContentProvider } from 'Stores/connect';
 import initStore from 'Stores/init-store';
 
 class App extends React.Component {
@@ -16,9 +16,9 @@ class App extends React.Component {
 
     render() {
         return (
-            <MobxProvider store={this.props.passthrough.root_store}>
+            <MobxContentProvider store={this.props.passthrough.root_store}>
                 <Routes />
-            </MobxProvider>
+            </MobxContentProvider>
         );
     }
 }

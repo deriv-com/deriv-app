@@ -24,6 +24,7 @@ class InputField extends React.Component {
             data_tip,
             data_value,
             error_messages,
+            error_message_alignment,
             fractional_digits,
             helper,
             id,
@@ -266,7 +267,7 @@ class InputField extends React.Component {
         const input_tooltip = (
             <Tooltip
                 className={classNames('trade-container__tooltip', { 'dc-tooltip--with-label': label })}
-                alignment='left'
+                alignment={error_message_alignment || 'left'}
                 message={has_error ? error_messages[0] : null}
                 has_error={has_error}
             >
@@ -326,6 +327,7 @@ InputField.propTypes = {
     currency: PropTypes.string,
     current_focus: PropTypes.string,
     error_messages: MobxPropTypes.arrayOrObservableArray,
+    error_message_alignment: PropTypes.string,
     fractional_digits: PropTypes.number,
     helper: PropTypes.string,
     icon: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),

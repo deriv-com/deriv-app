@@ -101,12 +101,10 @@
         }
     }
     &-footer {
-        min-height: 7.2rem;
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        padding: 0 2.4rem;
-        border-top: 1px solid var(--general-section-2);
+        padding: 2.4rem;
     }
     &-close_icon {
         cursor: pointer;

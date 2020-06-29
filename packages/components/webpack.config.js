@@ -33,6 +33,7 @@ module.exports = {
         'div100vh-container': 'Components/div100vh-container',
         drawer: 'Components/drawer',
         dropdown: 'Components/dropdown',
+        'expansion-panel': 'Components/expansion-panel',
         'fade-wrapper': 'Components/fade-wrapper',
         'field-error': 'Components/field-error',
         'file-dropzone': 'Components/file-dropzone',

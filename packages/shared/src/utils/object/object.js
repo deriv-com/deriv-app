@@ -12,6 +12,7 @@ export const isEmptyObject = obj => {
 
 export const cloneObject = obj => (!isEmptyObject(obj) ? extend(true, Array.isArray(obj) ? [] : {}, obj) : obj);
 
+// Note that this function breaks on objects with circular references.
 export const isDeepEqual = (a, b) => {
     if (typeof a !== typeof b) {
         return false;
@@ -19,6 +20,8 @@ export const isDeepEqual = (a, b) => {
         return isEqualArray(a, b);
     } else if (a && b && typeof a === 'object') {
         return isEqualObject(a, b);
+    } else if (typeof a === 'number' && typeof b === 'number' && isNaN(a) && isNaN(b)) {
+        return true;
     }
     // else
     return a === b;

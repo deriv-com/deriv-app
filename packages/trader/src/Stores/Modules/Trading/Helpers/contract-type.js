@@ -7,7 +7,12 @@ import { getUnitMap } from 'Stores/Modules/Portfolio/Helpers/details';
 import { buildBarriersConfig } from './barrier';
 import { buildDurationConfig, hasIntradayDurationUnit } from './duration';
 import { buildForwardStartingConfig, isSessionAvailable } from './start-date';
-import { getContractCategoriesConfig, getContractTypesConfig, getLocalizedBasis } from '../Constants/contract';
+import {
+    unsupported_contract_types_list,
+    getContractCategoriesConfig,
+    getContractTypesConfig,
+    getLocalizedBasis,
+} from '../Constants/contract';
 
 const ContractType = (() => {
     let available_contract_types = {};
@@ -178,7 +183,9 @@ const ContractType = (() => {
     };
 
     const getContractType = (list, contract_type) => {
-        const arr_list = Object.keys(list || {}).reduce((k, l) => [...k, ...list[l].map(ct => ct.value)], []);
+        const arr_list = Object.keys(list || {})
+            .reduce((k, l) => [...k, ...list[l].map(ct => ct.value)], [])
+            .filter(type => unsupported_contract_types_list.indexOf(type) === -1);
         return {
             contract_type: getArrayDefaultValue(arr_list, contract_type),
         };

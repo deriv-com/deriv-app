@@ -6,8 +6,8 @@ import {
     DesktopWrapper,
     MobileWrapper,
     Div100vhContainer,
-    FadeWrapper,
     PageOverlay,
+    FadeWrapper,
 } from '@deriv/components';
 import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';
@@ -111,7 +111,6 @@ class Cashier extends React.Component {
                     <PageOverlay
                         header={isMobile() ? selected_route.title : localize('Cashier')}
                         onClickClose={this.onClickClose}
-                        has_side_note
                     >
                         <DesktopWrapper>
                             <VerticalTab

@@ -4,7 +4,7 @@ import { formatDate } from '@deriv/shared/utils/date';
 import { message_types } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
-import { messageWithButton } from '../components/notify-item.jsx';
+import { isCustomJournalMessage } from '../utils/journal-notifications';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -15,6 +15,13 @@ export default class JournalStore {
     getServerTime() {
         return this.root_store.core.common.server_time.get();
     }
+
+    playAudio = sound => {
+        if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
+            const audio = document.getElementById(sound);
+            audio.play();
+        }
+    };
 
     filters = [
         { id: message_types.ERROR, label: localize('Errors') },
@@ -41,31 +48,19 @@ export default class JournalStore {
         const { run_panel } = this.root_store;
         const { message, className, message_type, sound, block_id, variable_name } = data;
 
-        // when notify undefined variable block
-        if (message === undefined && variable_name != null) {
-            run_panel.showErrorMessage(
-                messageWithButton({
-                    unique_id: block_id,
-                    type: 'error',
-                    message: localize(
-                        "Variable '{{variable_name}}' has no value. Please set a value for variable '{{variable_name}}' to notify.",
-                        { variable_name }
-                    ),
-                    btn_text: localize('Go to block'),
-                    onClick: () => {
-                        this.dbot.centerAndHighlightBlock(block_id, true);
-                    },
-                })
-            );
+        if (
+            isCustomJournalMessage(
+                { message, block_id, variable_name },
+                run_panel.showErrorMessage,
+                () => this.dbot.centerAndHighlightBlock(block_id, true),
+                parsed_message => this.pushMessage(parsed_message, message_type || message_types.NOTIFY, className)
+            )
+        ) {
+            this.playAudio(sound);
             return;
         }
-
         this.pushMessage(message, message_type || message_types.NOTIFY, className);
-
-        if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
-            const audio = document.getElementById(sound);
-            audio.play();
-        }
+        this.playAudio(sound);
     }
 
     @action.bound

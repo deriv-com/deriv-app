@@ -19,7 +19,8 @@ class TermsOfUse extends React.Component {
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values.agreed_tos, actions.setSubmitting);
                 }}
-                render={({
+            >
+                {({
                     handleSubmit,
                     // setFieldValue,
                     // setFieldTouched,
@@ -98,7 +99,7 @@ class TermsOfUse extends React.Component {
                         />
                     </form>
                 )}
-            />
+            </Formik>
         );
     }
 }

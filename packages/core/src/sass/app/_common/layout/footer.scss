@@ -163,6 +163,12 @@
         color: var(--brand-red-coral);
         text-decoration: none;
     }
+    &__icon {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        margin-bottom: 2.4rem;
+    }
 }
 
 /** @define footer-icon-separator */

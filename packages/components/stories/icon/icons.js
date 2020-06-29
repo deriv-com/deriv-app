@@ -61,7 +61,6 @@ export const icons = {
         'IcClock',
         'IcCloseCircle',
         'IcCloudUpload',
-        'IcComplaintsPolicy',
         'IcCrossCircle',
         'IcCross',
         'IcDelete',

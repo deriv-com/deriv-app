@@ -61,7 +61,6 @@ import './common/ic-clock-outline.svg';
 import './common/ic-clock.svg';
 import './common/ic-close-circle.svg';
 import './common/ic-cloud-upload.svg';
-import './common/ic-complaints-policy.svg';
 import './common/ic-cross-circle.svg';
 import './common/ic-cross.svg';
 import './common/ic-delete.svg';

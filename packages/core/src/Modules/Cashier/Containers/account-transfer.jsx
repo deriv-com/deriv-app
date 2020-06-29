@@ -34,9 +34,12 @@ class AccountTransfer extends React.Component {
             return <NoBalance />;
         }
         if (this.props.is_transfer_successful) {
+            if (typeof this.props.setSideNote === 'function') {
+                this.props.setSideNote(null);
+            }
             return <AccountTransferReceipt />;
         }
-        return <AccountTransferForm error={this.props.error} />;
+        return <AccountTransferForm error={this.props.error} setSideNote={this.props.setSideNote} />;
     }
 }
 
@@ -51,6 +54,7 @@ AccountTransfer.propTypes = {
     is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
     setActiveTab: PropTypes.func,
+    setSideNote: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({

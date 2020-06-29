@@ -3,7 +3,7 @@ import React from 'react';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { connect, MobxContentProvider } from 'Stores/connect';
 
 const ChartSettingContainer = Loadable({
     loader: () =>
@@ -27,7 +27,11 @@ class TradeSettingsExtensions extends React.Component {
             {
                 icon: 'IcChart',
                 label: localize('Charts'),
-                value: ChartSettingContainer,
+                value: ({ ...props }) => (
+                    <MobxContentProvider store={this.props.store}>
+                        <ChartSettingContainer {...props} />
+                    </MobxContentProvider>
+                ),
                 // uncomment below lines to bring back purchase lock and purchase confirmation}
                 // }, {
                 //     icon : IconPurchase,

@@ -15,7 +15,7 @@ const OnRamp = ({
     should_show_dialog,
     resetPopup,
 }) => (
-    <div className='on-ramp'>
+    <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
         <h2 className='on-ramp__page-header'>
             <Localize i18n_default_text='Select payment channel' />
         </h2>

@@ -1,67 +1,29 @@
-import { inject } from 'mobx-react';
+import { useObserver } from 'mobx-react';
 import React from 'react';
 
-function connectMainStore(mapperFunction) {
-    // Combine both stores and props, with props taking precedence
-    const mapStoresAndProps = (root_store, props /* , context */) => ({
-        ...mapperFunction(root_store),
-        ...props,
-    });
+const isClassComponent = Component =>
+    !!(typeof Component === 'function' && Component.prototype && Component.prototype.isReactComponent);
 
-    return WrappedComponent => inject(mapStoresAndProps)(WrappedComponent);
-}
+export const MobxContent = React.createContext(null);
 
-function connectCustomStore(mapperFunction, CustomStore) {
-    return WrappedComponent => {
-        class StoredComponent extends React.Component {
-            constructor(props) {
-                super(props);
-                const { root_store } = this.props;
-                this.store = new CustomStore(root_store);
-                const mapStoresAndProps = (_rootStore, nextProps) => ({
-                    ...mapperFunction(this.store),
-                    ...nextProps,
-                });
-                if (this.store.updateProps) {
-                    this.store.updateProps(props);
-                }
-                this.injectedComponent = inject(mapStoresAndProps)(WrappedComponent);
-            }
+function injectStorePropsToComponent(propsToSelectFn, BaseComponent) {
+    const component = own_props => {
+        const store = React.useContext(MobxContent);
 
-            getDerivedStateFromProps(nextProps) {
-                if (this.store.updateProps) {
-                    this.store.updateProps(nextProps);
-                }
-            }
-
-            componentWillUnmount() {
-                if (this.store.destructor) {
-                    this.store.destructor();
-                }
-            }
-
-            render() {
-                return React.createElement(this.injectedComponent);
-            }
+        if (!isClassComponent(BaseComponent)) {
+            return useObserver(() => BaseComponent({ ...own_props, ...propsToSelectFn(store, own_props) }));
         }
 
-        // make some nice names that will show up in the React Devtools
-        const wrappedDisplayName =
-            WrappedComponent.displayName ||
-            WrappedComponent.name ||
-            (WrappedComponent.constructor && WrappedComponent.constructor.name) ||
-            'Unknown';
-        StoredComponent.displayName = `unbox-${wrappedDisplayName}`;
-
-        return inject(root_store => ({ root_store }))(StoredComponent);
+        const FunctionalWrapperComponent = props => <BaseComponent {...props} />;
+        return useObserver(() => FunctionalWrapperComponent({ ...own_props, ...propsToSelectFn(store, own_props) }));
     };
+
+    component.displayName = BaseComponent.name;
+    return component;
 }
 
-// if store is not defined, root store is used
-export function connect(mapperFunction, CustomStore) {
-    if (CustomStore === undefined) {
-        return connectMainStore(mapperFunction);
-    }
+export const MobxContentProvider = ({ store, children }) => {
+    return <MobxContent.Provider value={{ ...store, ...store.core }}>{children}</MobxContent.Provider>;
+};
 
-    return connectCustomStore(mapperFunction, CustomStore);
-}
+export const connect = propsToSelectFn => Component => injectStorePropsToComponent(propsToSelectFn, Component);

@@ -5,11 +5,11 @@ import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import MarketCountdownTimer from '../market-countdown-timer.jsx';
 
-const ContractCard = ({ children, profit_loss, is_sold, is_dark_mode_on }) => (
+const ContractCard = ({ is_multiplier, children, profit_loss, is_sold, is_dark_mode_on }) => (
     <div
         className={classNames('contract-card', {
-            'contract-card--green': profit_loss > 0 && !is_sold,
-            'contract-card--red': profit_loss < 0 && !is_sold,
+            'contract-card--green': !is_multiplier && profit_loss > 0 && !is_sold,
+            'contract-card--red': !is_multiplier && profit_loss < 0 && !is_sold,
         })}
     >
         {children}
@@ -29,6 +29,7 @@ const ContractCard = ({ children, profit_loss, is_sold, is_dark_mode_on }) => (
 ContractCard.propTypes = {
     children: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     is_sold: PropTypes.bool,
+    is_multiplier: PropTypes.bool,
     profit_loss: PropTypes.number,
 };
 

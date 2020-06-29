@@ -126,7 +126,7 @@
             &-text {
                 font-size: var(--text-size-xs);
                 line-height: 2rem;
-                margin: 2.4rem 0;
+                margin-bottom: 2.4rem;
             }
             &-buttons {
                 align-self: flex-end;
@@ -147,6 +147,20 @@
     }
 }
 
-.dc-modal__container_on-ramp__modal {
-    width: 628px !important;
+.dc-modal {
+    &-body {
+        padding-top: 0.8rem;
+    }
+    &-header {
+        &__title {
+            padding-top: 2.4rem !important;
+        }
+    }
+    &__container {
+        width: 440px !important;
+
+        &_on-ramp__modal {
+            width: 628px !important;
+        }
+    }
 }

@@ -34,13 +34,6 @@ const OnRampProviderPopup = ({
     if (should_show_dialog) {
         return (
             <div className='on-ramp__popup-no-deposit-address'>
-                <h2 className='on-ramp__popup-no-deposit-address-title'>
-                    {api_error ? (
-                        <Localize i18n_default_text='Our server cannot retrieve an address.' />
-                    ) : (
-                        <Localize i18n_default_text="You don't have a crypto address yet." />
-                    )}
-                </h2>
                 <div className='on-ramp__popup-no-deposit-address-text'>
                     {api_error ? (
                         <Localize i18n_default_text='Please go to the Deposit page to get an address.' />

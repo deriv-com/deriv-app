@@ -71,11 +71,8 @@ commands:
     description: "Build"
     steps:
       - run:
-          name: "build packages"
-          command: npm run build:local
-      - run:
-          name: "build core"
-          command: node_modules/lerna/cli.js exec --scope @deriv/core -- npm run build
+          name: "Build all packages"
+          command: npm run build
   compress:
     description: "Compress"
     steps:

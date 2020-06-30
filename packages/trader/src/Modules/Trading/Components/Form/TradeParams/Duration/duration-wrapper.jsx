@@ -17,17 +17,19 @@ class DurationWrapper extends React.Component {
     };
 
     setDurationUnit() {
-        const new_duration_unit = this.props.duration_units_list[0].value;
-        const new_duration_value = this.props.getDurationFromUnit(new_duration_unit);
+        if (this.props.duration_units_list.length > 0) {
+            const new_duration_unit = this.props.duration_units_list[0].value;
+            const new_duration_value = this.props.getDurationFromUnit(new_duration_unit);
 
-        this.props.onChangeUiStore({
-            name: `${this.props.is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`,
-            value: new_duration_unit,
-        });
-        this.props.onChangeMultiple({
-            duration_unit: new_duration_unit,
-            duration: +new_duration_value,
-        });
+            this.props.onChangeUiStore({
+                name: `${this.props.is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`,
+                value: new_duration_unit,
+            });
+            this.props.onChangeMultiple({
+                duration_unit: new_duration_unit,
+                duration: +new_duration_value,
+            });
+        }
     }
 
     advancedHasWrongExpiry = () =>

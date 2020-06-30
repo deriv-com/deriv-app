@@ -14,6 +14,19 @@ const CircularWrapper = ({ className }) => (
     </div>
 );
 
+const AnimationInfo = () => (
+    <Popover
+        className='animation__info'
+        alignment='bottom'
+        message={localize(
+            'Stopping the bot will prevent further trades. Any ongoing trades will be completed by our system. Please be aware that some completed transactions may not be displayed in the transaction table if the bot is stopped while placing trades. You may refer to the statement page for details of all completed transactions.'
+        )}
+        zIndex={5}
+    >
+        <Icon icon='IcInfoOutline' id='db-animation__clear-stat' />
+    </Popover>
+);
+
 const TradeAnimation = ({
     className,
     contract_stage,
@@ -23,6 +36,7 @@ const TradeAnimation = ({
     should_show_overlay,
     onRunButtonClick,
     onStopButtonClick,
+    info_direction,
 }) => {
     const { index, text } = contract_stage;
     const status_classes = ['', '', ''];
@@ -44,16 +58,7 @@ const TradeAnimation = ({
 
     return (
         <div className={classNames('animation__wrapper', className)}>
-            <Popover
-                className='animation__info'
-                alignment='bottom'
-                message={localize(
-                    'Stopping the bot will prevent further trades. Any ongoing trades will be completed by our system. Please be aware that some completed transactions may not be displayed in the transaction table if the bot is stopped while placing trades. You may refer to the statement page for details of all completed transactions.'
-                )}
-                zIndex={5}
-            >
-                <Icon icon='IcInfoOutline' id='db-animation__clear-stat' />
-            </Popover>
+            {info_direction === 'left' && <AnimationInfo />}
             <Button
                 className='animation__button'
                 id={is_stop_button_visible ? 'db-animation__stop-button' : 'db-animation__run-button'}
@@ -81,6 +86,7 @@ const TradeAnimation = ({
                     ))}
                 </div>
             </div>
+            {info_direction === 'right' && <AnimationInfo />}
         </div>
     );
 };

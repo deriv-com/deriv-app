@@ -40,7 +40,6 @@ commands:
       - restore_cache:
           keys:
             - node-{{ checksum "CACHE_KEY1" }}
-            - node-
       - run:
           name: Install npm packages
           command: |

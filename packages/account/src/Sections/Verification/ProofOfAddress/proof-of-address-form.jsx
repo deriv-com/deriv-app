@@ -27,6 +27,7 @@ const validate = (errors, values) => (fn, arr, err_msg) => {
 };
 
 const ProofOfAddressForm = (props) => {
+    const [api_initial_load_error, setAPIInitialLoadError] = React.useState(null);
     const [form_values, setFormValues] = React.useState({});
     const [document_file, setDocumentFile] = React.useState([]);
     const [file_error_message, setFileErrorMessage] = React.useState(null);
@@ -124,7 +125,7 @@ const ProofOfAddressForm = (props) => {
                     .getSettings()
                     .then(({ error, get_settings }) => {
                         if (error) {
-                            // this.setState({ api_initial_load_error: error.message });
+                            setAPIInitialLoadError(error.message);
                             return;
                         }
                         const {
@@ -198,9 +199,9 @@ const ProofOfAddressForm = (props) => {
         });
     };
 
-    // if (api_initial_load_error) {
-    //     return <LoadErrorMessage error_message={api_initial_load_error} />;
-    // }
+    if (api_initial_load_error) {
+        return <LoadErrorMessage error_message={api_initial_load_error} />;
+    }
     if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
     const mobile_scroll_offset = status && status.msg ? '200px' : '154px';
 
@@ -218,7 +219,7 @@ const ProofOfAddressForm = (props) => {
         >
             {({ values, errors, status, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
                 <>
-                    <LeaveConfirm onDirty={isMobile() ? this.showForm : null} />
+                    <LeaveConfirm onDirty={isMobile() ? setShowForm : null} />
                     {show_form && (
                         <form noValidate className='account-form' onSubmit={handleSubmit}>
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
@@ -307,7 +308,7 @@ const ProofOfAddressForm = (props) => {
                                 </div>
                                 <FormSubHeader title={localize('Please upload one of the following:')} />
                                 <FileUploaderContainer
-                                    onRef={(ref) => (this.file_uploader_ref = ref)}
+                                    // onRef={(ref) => (this.file_uploader_ref = ref)}
                                     onFileDrop={onFileDrop}
                                     getSocket={WS.getSocket}
                                 />

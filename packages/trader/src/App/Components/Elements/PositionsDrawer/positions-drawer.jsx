@@ -11,18 +11,26 @@ import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { connect } from 'Stores/connect';
-import { isEnded, isValidToSell } from 'Stores/Modules/Contract/Helpers/logic';
+import { isValidToSell } from 'Stores/Modules/Contract/Helpers/logic';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { getContractTypesConfig } from 'Stores/Modules/Trading/Constants/contract';
 import { isCallPut } from 'Stores/Modules/Contract/Helpers/contract-type';
 import PositionsDrawerCard from './PositionsDrawerCard';
+
+const ThemedScrollbarsWrapper = React.forwardRef((props, ref) => (
+    <ThemedScrollbars {...props} height='calc(100vh - 220px)' forwardedRef={ref}>
+        {props.children}
+    </ThemedScrollbars>
+));
+// Display name is required by Developer Tools to give a name to the components we use.
+// If a component doesn't have a displayName is will be shown as <Unknown />. Hence, name is set.
+ThemedScrollbarsWrapper.displayName = 'ThemedScrollbars';
 
 class PositionsDrawer extends React.Component {
     state = {};
 
     componentDidMount() {
         this.props.onMount();
-        this.ListScrollbar = this.getListScrollbar();
 
         // Todo: Handle Resizing
         this.setState({
@@ -143,47 +151,19 @@ class PositionsDrawer extends React.Component {
     getPositionHeight = position => {
         // React window doesn't work with dynamic height. This is a work around to get height of a position based on different combinations.
         const { contract_info } = position;
-        const has_ended = isEnded(contract_info);
         const is_valid_to_sell = isValidToSell(contract_info);
         const is_multiplier_contract = isMultiplierContract(contract_info.contract_type);
         const is_tick_contract = contract_info.tick_count > 0;
 
-        if (has_ended) {
-            return is_multiplier_contract ? 198 : 158;
+        if (contract_info.is_sold) {
+            return is_multiplier_contract ? 250 : 158;
         } else if (is_tick_contract) {
             return 202;
         }
 
         const classic_contract_height = is_valid_to_sell ? 228 : 188;
-        return is_multiplier_contract ? 238 : classic_contract_height;
+        return is_multiplier_contract ? 290 : classic_contract_height;
     };
-
-    getListScrollbar() {
-        const ListScrollbar = React.forwardRef((props, ref) => {
-            const { children, style, onScroll } = props;
-
-            const refCallback = forwardRef => {
-                this.scrollbar_ref = forwardRef;
-                ref.call(this, forwardRef);
-            };
-
-            return (
-                <ThemedScrollbars
-                    list_ref={refCallback}
-                    style={{ ...style, overflow: 'hidden' }}
-                    onScroll={onScroll}
-                    autoHide
-                >
-                    {children}
-                </ThemedScrollbars>
-            );
-        });
-        // Display name is required by Developer Tools to give a name to the components we use.
-        // If a component doesn't have a displayName is will be shown as <Unknown />. Hence, name is set.
-        ListScrollbar.displayName = 'ListScrollbar';
-
-        return ListScrollbar;
-    }
 
     render() {
         const { all_positions, error, is_empty, is_positions_drawer_on, symbol, toggleDrawer } = this.props;
@@ -197,13 +177,16 @@ class PositionsDrawer extends React.Component {
             <React.Fragment>
                 <div style={{ height: '100%' }}>
                     {this.state.drawer_height > 0 && (
-                        <TransitionGroup component='div'>
+                        <TransitionGroup
+                            component='div'
+                            style={{ position: 'relative', height: '100%', width: '100%' }}
+                        >
                             <List
                                 itemCount={this.positions.length}
                                 itemData={this.positions}
                                 itemSize={this.getCachedPositionHeight}
                                 height={this.state.drawer_height}
-                                outerElementType={is_empty ? null : this.ListScrollbar}
+                                outerElementType={is_empty ? null : ThemedScrollbarsWrapper}
                                 ref={el => (this.list_ref = el)}
                                 useIsScrolling
                             >

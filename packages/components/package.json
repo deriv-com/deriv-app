@@ -104,7 +104,7 @@
     "@storybook/addon-knobs": "^5.2.4",
     "@wapps/storybook-addon-state": "0.0.4",
     "classnames": "^2.2.6",
-    "formik": "^1.5.8",
+    "formik": "^2.1.4",
     "gh-pages": "^2.1.1",
     "prop-types": "^15.7.2",
     "react": "~16.8.6",
@@ -117,7 +117,6 @@
     "react-swipeable": "^5.5.1",
     "react-tiny-popover": "^4.0.0",
     "react-transition-group": "^4.2.2",
-    "react-window": "^1.8.5",
-    "tt-react-custom-scrollbars": "^4.2.1-tt2"
+    "react-window": "^1.8.5"
   }
 }

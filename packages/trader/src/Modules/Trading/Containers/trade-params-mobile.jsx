@@ -59,6 +59,14 @@ class TradeParamsModal extends React.Component {
         document.addEventListener('touchstart', event => this.preventIOSZoom(event), { passive: false });
     }
 
+    componentDidUpdate(prev_props) {
+        // duration and duration_unit can be changed in trade-store when contract type is changed
+        if (this.props.duration !== prev_props.duration || this.props.duration_unit !== prev_props.duration_unit) {
+            this.setSelectedDuration(this.props.duration_unit, this.props.duration);
+            this.setState({ duration_tab_idx: undefined });
+        }
+    }
+
     componentWillUnmount() {
         document.removeEventListener('touchstart', event => this.preventIOSZoom(event));
     }
@@ -79,8 +87,12 @@ class TradeParamsModal extends React.Component {
         });
     };
 
-    setAmountError = has_error => this.setState({ has_amount_error: has_error });
-    setDurationError = has_error => this.setState({ has_duration_error: has_error });
+    setAmountError = has_error => {
+        this.setState({ has_amount_error: has_error });
+    };
+    setDurationError = has_error => {
+        this.setState({ has_duration_error: has_error });
+    };
 
     isVisible = component_key => this.props.form_components.includes(component_key);
 

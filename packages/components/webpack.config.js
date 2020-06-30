@@ -18,6 +18,7 @@ module.exports = {
         calendar: 'Components/calendar',
         clipboard: 'Components/clipboard',
         checkbox: 'Components/checkbox',
+        checklist: 'Components/checklist',
         'circular-progress': 'Components/circular-progress',
         collapsible: 'Components/collapsible',
         counter: 'Components/counter',
@@ -31,6 +32,7 @@ module.exports = {
         'div100vh-container': 'Components/div100vh-container',
         drawer: 'Components/drawer',
         dropdown: 'Components/dropdown',
+        'expansion-panel': 'Components/expansion-panel',
         'fade-wrapper': 'Components/fade-wrapper',
         'field-error': 'Components/field-error',
         'file-dropzone': 'Components/file-dropzone',
@@ -174,10 +176,7 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader: [
-                  '@deriv/shared/utils/react-import-loader.js',
-                  'babel-loader',
-                ]
+                loader: ['@deriv/shared/utils/react-import-loader.js', 'babel-loader'],
             },
         ],
     },
@@ -198,7 +197,6 @@ module.exports = {
             'babel-polyfill': 'babel-polyfill',
             'prop-types': 'prop-types',
             'react-transition-group': 'react-transition-group',
-            'tt-react-custom-scrollbars': 'tt-react-custom-scrollbars',
             react: 'react',
             'react-dom': 'react-dom',
             '@deriv/shared': '@deriv/shared',

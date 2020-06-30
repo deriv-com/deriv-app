@@ -34,6 +34,7 @@ class Dialog extends React.Component {
     render() {
         const {
             cancel_button_text,
+            className,
             children,
             confirm_button_text,
             onCancel,
@@ -62,7 +63,7 @@ class Dialog extends React.Component {
                     }}
                     unmountOnExit
                 >
-                    <div className='dc-dialog__wrapper'>
+                    <div className={classNames('dc-dialog__wrapper', className)}>
                         <div
                             className={classNames('dc-dialog__dialog', {
                                 'dc-dialog__dialog--has-margin': !is_mobile_full_width,

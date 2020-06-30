@@ -1,4 +1,4 @@
-import { Button, Icon, Input, Popover } from '@deriv/components';
+import { Button, Icon, Input, ThemedScrollbars, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
@@ -119,42 +119,81 @@ const WorkspaceGroup = ({
 );
 
 const Toolbar = props => {
-    const { active_tab, is_dialog_open, onOkButtonClick, onCancelButtonClick, onToolboxToggle } = props;
+    const {
+        active_tab,
+        is_dialog_open,
+        onOkButtonClick,
+        onCancelButtonClick,
+        onToolboxToggle,
+        is_drawer_open,
+        is_stop_button_visible,
+        is_stop_button_disabled,
+        onStopButtonClick,
+        onRunButtonClick,
+    } = props;
 
     return (
-        <div className='toolbar'>
-            <div className='toolbar__section'>
-                <Popover
-                    alignment='bottom'
-                    classNameBubble='toolbar__bubble'
-                    message={localize('Click here to start building your DBot.')}
-                >
-                    <Button
-                        id='db-toolbar__get-started-button'
-                        className='toolbar__btn--icon toolbar__btn--start'
-                        has_effect
-                        onClick={onToolboxToggle}
-                        icon={<Icon icon='IcPuzzle' color='active' />}
-                        green
+        <ThemedScrollbars height='56px' is_only_horizontal width='100%'>
+            <div className='toolbar'>
+                <div className='toolbar__section'>
+                    <Popover
+                        alignment='bottom'
+                        classNameBubble='toolbar__bubble'
+                        message={localize('Click here to start building your DBot.')}
                     >
-                        {localize('Get started')}
-                    </Button>
-                </Popover>
-                {active_tab === tabs_title.WORKSPACE && <SearchBox {...props} />}
-                {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...props} />}
+                        <Button
+                            id='db-toolbar__get-started-button'
+                            className='toolbar__btn--icon toolbar__btn--start'
+                            has_effect
+                            onClick={onToolboxToggle}
+                            icon={<Icon icon='IcPuzzle' color='active' />}
+                            green
+                        >
+                            {localize('Get started')}
+                        </Button>
+                    </Popover>
+                    {active_tab === tabs_title.WORKSPACE && <SearchBox {...props} />}
+                    {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...props} />}
+                </div>
+                {!is_drawer_open && (
+                    <div className='toolbar__section'>
+                        {is_stop_button_visible ? (
+                            <Button
+                                className='db-toolbar__stop-button'
+                                is_disabled={is_stop_button_disabled}
+                                text={localize('Stop bot')}
+                                icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
+                                onClick={onStopButtonClick}
+                                has_effect
+                                primary
+                                large
+                            />
+                        ) : (
+                            <Button
+                                className='db-toolbar__run-button'
+                                text={localize('Run bot')}
+                                icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
+                                onClick={onRunButtonClick}
+                                has_effect
+                                large
+                                green
+                            />
+                        )}
+                        <TradeAnimation className='toolbar__animation' should_show_overlay={true} />
+                    </div>
+                )}
+                <SaveModal />
+                <LoadModal />
+                <Dialog
+                    title={localize('Are you sure?')}
+                    is_open={is_dialog_open}
+                    onOkButtonClick={onOkButtonClick}
+                    onCancelButtonClick={onCancelButtonClick}
+                >
+                    {localize('Any unsaved changes will be lost.')}
+                </Dialog>
             </div>
-            <TradeAnimation className='toolbar__animation' should_show_overlay />
-            <SaveModal />
-            <LoadModal />
-            <Dialog
-                title={localize('Are you sure?')}
-                is_open={is_dialog_open}
-                onOkButtonClick={onOkButtonClick}
-                onCancelButtonClick={onCancelButtonClick}
-            >
-                {localize('Any unsaved changes will be lost.')}
-            </Dialog>
-        </div>
+        </ThemedScrollbars>
     );
 };
 

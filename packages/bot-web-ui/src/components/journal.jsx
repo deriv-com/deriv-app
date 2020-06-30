@@ -85,9 +85,10 @@ const Tools = ({ checked_filters, filters, filterMessage }) => (
                     <Checkbox
                         key={item.id}
                         classNameLabel='journal-tools__text'
+                        value={checked_filters.includes(item.id)}
                         defaultChecked={checked_filters.includes(item.id)}
                         label={item.label}
-                        onChange={e => filterMessage(e.target.checked, item.id)}
+                        onChange={() => filterMessage(!checked_filters.includes(item.id), item.id)}
                     />
                 );
             })}
@@ -199,4 +200,5 @@ export default connect(({ journal, run_panel }) => ({
     filterMessage: journal.filterMessage,
     filters: journal.filters,
     filtered_messages: journal.filtered_messages,
+    is_stop_button_visible: run_panel.is_stop_button_visible,
 }))(Journal);

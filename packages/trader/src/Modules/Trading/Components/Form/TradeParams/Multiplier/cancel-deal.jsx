@@ -1,13 +1,16 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Checkbox, Popover } from '@deriv/components';
+import { Checkbox, Popover, Dropdown } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import PopoverMessageCheckbox from 'Modules/Trading/Components/Elements/popover-message-checkbox.jsx';
 
 const CancelDeal = ({
+    cancellation_range_list,
+    cancellation_duration,
     has_cancellation,
+    has_take_profit,
     has_stop_loss,
     onChangeMultiple,
     should_show_cancellation_warning,
@@ -26,11 +29,22 @@ const CancelDeal = ({
                 : {
                       // unchecked Stop loss
                       has_stop_loss: false,
+                      has_take_profit: false,
                   }),
         });
     };
 
-    const should_show_popover = has_stop_loss && should_show_cancellation_warning;
+    const changeDuration = e => {
+        const { name, value } = e.target;
+        onChangeMultiple({
+            has_cancellation: true,
+            has_take_profit: false,
+            has_stop_loss: false,
+            [name]: value,
+        });
+    };
+
+    const should_show_popover = (has_take_profit || has_stop_loss) && should_show_cancellation_warning;
 
     const input = (
         <Checkbox
@@ -54,7 +68,9 @@ const CancelDeal = ({
                         message={
                             <PopoverMessageCheckbox
                                 defaultChecked={!should_show_cancellation_warning}
-                                message={localize('You may choose either stop loss or deal cancellation.')}
+                                message={localize(
+                                    'Take profit and/or stop loss are not available while deal cancellation is active.'
+                                )}
                                 name='should_show_cancellation_warning'
                                 onChange={() => toggleCancellationWarning()}
                             />
@@ -70,26 +86,47 @@ const CancelDeal = ({
                     alignment='left'
                     icon='info'
                     id='dt_cancellation-checkbox__tooltip'
-                    message={localize('Allows you to cancel this deal (within 1 hour) to avoid loss.')}
+                    message={localize(
+                        'Allows you to cancel your trade within a chosen time frame should the market move against your favour.'
+                    )}
                     margin={210}
                     relative_render
                 />
             </div>
+            {has_cancellation && (
+                <Dropdown
+                    id='dt_cancellation_range'
+                    className='trade-container__multiplier-dropdown'
+                    is_alignment_left
+                    is_nativepicker={false}
+                    list={cancellation_range_list}
+                    name='cancellation_duration'
+                    no_border={true}
+                    value={cancellation_duration}
+                    onChange={changeDuration}
+                />
+            )}
         </Fieldset>
     );
 };
 
 CancelDeal.propTypes = {
+    cancellation_range_list: PropTypes.array,
+    cancellation_duration: PropTypes.string,
     has_cancellation: PropTypes.bool,
     has_stop_loss: PropTypes.bool,
+    has_take_profit: PropTypes.bool,
     onChangeMultiple: PropTypes.func,
     should_show_cancellation_warning: PropTypes.bool,
     toggleCancellationWarning: PropTypes.func,
 };
 
 export default connect(({ modules, ui }) => ({
+    cancellation_range_list: modules.trade.cancellation_range_list,
+    cancellation_duration: modules.trade.cancellation_duration,
     has_cancellation: modules.trade.has_cancellation,
     has_stop_loss: modules.trade.has_stop_loss,
+    has_take_profit: modules.trade.has_take_profit,
     onChangeMultiple: modules.trade.onChangeMultiple,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,
     toggleCancellationWarning: ui.toggleCancellationWarning,

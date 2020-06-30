@@ -19,7 +19,8 @@ class TermsOfUse extends React.Component {
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values.agreed_tos, actions.setSubmitting);
                 }}
-                render={({
+            >
+                {({
                     handleSubmit,
                     // setFieldValue,
                     // setFieldTouched,
@@ -27,13 +28,7 @@ class TermsOfUse extends React.Component {
                     isSubmitting,
                 }) => (
                     <form onSubmit={handleSubmit}>
-                        <ThemedScrollbars
-                            is_native={isMobile()}
-                            autohide
-                            style={{
-                                height: 'calc(100% - 50px)',
-                            }}
-                        >
+                        <ThemedScrollbars is_bypassed={isMobile()} height='calc(100% - 50px)'>
                             <Div100vhContainer className='terms-of-use' height_offset='169px' is_disabled={isDesktop()}>
                                 <h4>
                                     <Localize i18n_default_text={'Jurisdiction and choice of law'} />
@@ -104,7 +99,7 @@ class TermsOfUse extends React.Component {
                         />
                     </form>
                 )}
-            />
+            </Formik>
         );
     }
 }

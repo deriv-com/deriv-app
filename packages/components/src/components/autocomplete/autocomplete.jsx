@@ -24,6 +24,8 @@ class Autocomplete extends React.PureComponent {
     dropdown_ref = React.createRef();
     list_wrapper_ref = React.createRef();
     list_item_ref = React.createRef();
+    scroll_timeout = null;
+    scrollTopPos = null;
 
     state = {
         should_show_list: false,
@@ -41,6 +43,19 @@ class Autocomplete extends React.PureComponent {
             });
         }
     }
+
+    handleScrollStop = e => {
+        // pass onScrollStop func callback when scrolling stops
+        if (typeof this.props.onScrollStop !== 'function') return;
+        const element = e.target;
+        this.scrollTopPos = element.scrollTop;
+        if (this.scrollTopPos === element.scrollTop) {
+            clearTimeout(this.scroll_timeout);
+        }
+        this.scroll_timeout = setTimeout(() => {
+            this.props.onScrollStop();
+        }, 150);
+    };
 
     setInputWrapperRef = node => (this.input_wrapper_ref = node);
 
@@ -77,37 +92,39 @@ class Autocomplete extends React.PureComponent {
         }
     };
 
+    setActiveIndex = index => this.setState({ active_index: index });
+
     setActiveUp = () => {
         const { active_index, filtered_items } = this.state;
 
         if (typeof active_index === 'number') {
-            const next = active_index - 1;
-            const should_scroll_to_last = next < 0;
+            const up = active_index - 1;
+            const should_scroll_to_last = up < 0;
 
             if (should_scroll_to_last) {
+                const list_height = this.dropdown_ref.current.clientHeight;
                 this.setState({ active_index: filtered_items.length - 1 });
-                this.dropdown_ref.current.scrollToBottom();
+                this.dropdown_ref.current.scrollTo({ top: list_height, behavior: 'smooth' });
             } else {
                 const item_height = this.list_item_ref.current.getBoundingClientRect().height;
                 const item_top = Math.floor(this.list_item_ref.current.getBoundingClientRect().top) - item_height;
 
                 if (!this.isListItemWithinView(item_top)) {
                     const top_of_list = this.list_item_ref.current.offsetTop - item_height;
-                    this.dropdown_ref.current.scrollTop(top_of_list);
+                    this.dropdown_ref.current.scrollTo({ top: top_of_list, behavior: 'smooth' });
                 }
-                this.setState({ active_index: next });
+                this.setState({ active_index: up });
             }
         }
     };
 
     isListItemWithinView(item_top) {
-        const list_height = this.dropdown_ref.current.getClientHeight();
+        const list_height = this.dropdown_ref.current.clientHeight;
         const wrapper_top = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top);
         const wrapper_bottom = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top) + list_height;
 
         if (item_top >= wrapper_bottom) return false;
-        if (item_top <= wrapper_top) return false;
-        return true;
+        return item_top > wrapper_top;
     }
 
     setActiveDown = () => {
@@ -116,30 +133,30 @@ class Autocomplete extends React.PureComponent {
         if (active_index === null || !this.list_item_ref.current) {
             this.setState({ active_index: 0 });
         } else if (typeof active_index === 'number') {
-            const next = active_index + 1;
-            const should_scroll_to_first = next >= filtered_items.length;
+            const down = active_index + 1;
+            const should_scroll_to_first = down >= filtered_items.length;
 
             if (should_scroll_to_first) {
                 this.setState({ active_index: 0 });
-                this.dropdown_ref.current.scrollTop();
+                this.dropdown_ref.current.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 const item_height = this.list_item_ref.current.getBoundingClientRect().height;
                 const item_top =
                     Math.floor(this.list_item_ref.current.getBoundingClientRect().top) + item_height + item_height / 2;
-                const list_height = this.dropdown_ref.current.getClientHeight();
+                const list_height = this.dropdown_ref.current.clientHeight;
 
                 if (!this.isListItemWithinView(item_top)) {
                     const items_above = list_height / item_height - 2;
                     const bottom_of_list = this.list_item_ref.current.offsetTop - items_above * item_height;
-                    this.dropdown_ref.current.scrollTop(bottom_of_list);
+                    this.dropdown_ref.current.scrollTo({ top: bottom_of_list, behavior: 'smooth' });
                 }
-                this.setState({ active_index: next });
+                this.setState({ active_index: down });
             }
         }
     };
 
     onBlur = e => {
-        event.preventDefault();
+        e.preventDefault();
         this.hideDropdownList();
 
         this.setState({ filtered_items: this.props.list_items });
@@ -169,7 +186,7 @@ class Autocomplete extends React.PureComponent {
         this.setState({ should_show_list: true }, () => {
             if (this.state.active_index && this.list_item_ref.current) {
                 const item = this.list_item_ref.current.offsetTop;
-                this.dropdown_ref.current.scrollTop(item);
+                this.dropdown_ref.current.scrollTo({ top: item, behavior: 'smooth' });
             }
         });
 
@@ -250,9 +267,11 @@ class Autocomplete extends React.PureComponent {
                     }}
                     is_visible={this.state.should_show_list}
                     list_items={this.state.filtered_items}
+                    list_height={this.props.list_height}
                     // Autocomplete must use the `text` property and not the `value`, however DropdownList provides access to both
                     onItemSelection={this.onItemSelection}
-                    onScrollStop={onScrollStop}
+                    setActiveIndex={this.setActiveIndex}
+                    onScrollStop={this.handleScrollStop}
                     not_found_text={this.props.not_found_text}
                 />
             </div>
@@ -275,6 +294,7 @@ Autocomplete.propTypes = {
             })
         ),
     ]),
+    list_height: PropTypes.string,
     not_found_text: PropTypes.string,
     onHideDropdownList: PropTypes.func,
     onItemSelection: PropTypes.func,

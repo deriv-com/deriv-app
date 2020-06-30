@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import P2P from '@deriv/p2p';
 import { getLanguage } from '@deriv/translations';
+import routes from '@deriv/shared/utils/routes';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';
@@ -65,6 +66,7 @@ class P2PCashier extends React.Component {
                 order_id={order_id}
                 setOrderId={this.setQueryOrder}
                 is_mobile={is_mobile}
+                poi_url={routes.proof_of_identity}
             />
         );
     }

@@ -8,7 +8,6 @@ import routes from '@deriv/shared/utils/routes';
 import { localize } from '@deriv/translations';
 import { Redirect } from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
-import ComplaintsPolicy from 'Modules/ComplaintsPolicy';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
@@ -176,6 +175,19 @@ const lazyLoadCashierComponent = component => {
     });
 };
 
+const lazyLoadComplaintsPolicy = () => {
+    return Loadable.Map({
+        loader: {
+            ComplaintsPolicy: () => import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy'),
+        },
+        render(loaded, props) {
+            const ComplaintsPolicyLazy = loaded.ComplaintsPolicy.default;
+            return <ComplaintsPolicyLazy {...props} />;
+        },
+        loading: handleLoading,
+    });
+};
+
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
 const initRoutesConfig = () => [
@@ -233,7 +245,7 @@ const initRoutesConfig = () => [
         ? [
               {
                   path: routes.complaints_policy,
-                  component: ComplaintsPolicy,
+                  component: lazyLoadComplaintsPolicy(),
                   title: localize('Complaints policy'),
                   icon_component: 'IcComplaintsPolicy',
                   is_authenticated: true,

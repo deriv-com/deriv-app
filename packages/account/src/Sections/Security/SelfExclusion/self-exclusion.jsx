@@ -22,7 +22,6 @@ import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
 import Article from './article';
 import LoadErrorMessage from 'Components/load-error-message';
-import { setTime } from '@deriv/shared/src/utils/date/date-time';
 
 class SelfExclusion extends React.Component {
     exclusion_data = {
@@ -130,7 +129,6 @@ class SelfExclusion extends React.Component {
             }
         }
 
-        // TODO: handle timout until and exclude until using date/moment format
         return errors;
     };
 
@@ -294,7 +292,6 @@ class SelfExclusion extends React.Component {
                                                     <h4 className='self-exclusion__popup-header'>
                                                         {localize('Save new limits?')}
                                                     </h4>
-                                                    {/* TODO: will include this text once the requirement confirmed */}
                                                     <p className='self-exclusion__popup-desc'>
                                                         {localize(
                                                             'Remember: You cannot log in to your account until the selected date.'

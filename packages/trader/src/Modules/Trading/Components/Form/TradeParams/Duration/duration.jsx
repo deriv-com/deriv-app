@@ -36,7 +36,7 @@ const Duration = ({
 }) => {
     const expiry_list = [{ text: localize('Duration'), value: 'duration' }];
 
-    const has_end_time = expiry_list.find(expiry => expiry.value === 'endtime');
+    const has_end_time = expiry_list.find((expiry) => expiry.value === 'endtime');
     if (duration_units_list.length === 1 && duration_unit === 't') {
         if (has_end_time) {
             expiry_list.pop(); // remove end time for contracts with only tick duration
@@ -47,7 +47,7 @@ const Duration = ({
 
     if (is_minimized) {
         const moment_expiry = toMoment(expiry_date);
-        const duration_unit_text = (duration_units_list.find(o => o.value === duration_unit) || {}).text;
+        const duration_unit_text = (duration_units_list.find((o) => o.value === duration_unit) || {}).text;
         return (
             <div className='fieldset-minimized fieldset-minimized__duration'>
                 {expiry_type === 'duration'

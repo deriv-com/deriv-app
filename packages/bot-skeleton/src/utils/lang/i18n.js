@@ -16,9 +16,9 @@ export const translateLangToLang = (str /* fromLang, toLang */) => {
 };
 
 // TODO: fix this for translating category names supplied to Blockly.
-export const xml = dom => {
+export const xml = (dom) => {
     const categories = Array.from(dom.getElementsByTagName('category') || []);
-    categories.forEach(child => {
+    categories.forEach((child) => {
         const text = child.getAttribute('i18n-text');
         if (text) {
             child.setAttribute('name', localize(text));

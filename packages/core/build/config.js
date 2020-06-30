@@ -3,7 +3,7 @@ const stylelintFormatter = require('stylelint-formatter-pretty');
 const { IS_RELEASE } = require('./constants');
 const { transformContentUrlBase } = require('./helpers');
 
-const copyConfig = base => [
+const copyConfig = (base) => [
     {
         from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot-web-ui.main.css*'),
         to: 'css/',

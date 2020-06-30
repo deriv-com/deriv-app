@@ -14,7 +14,7 @@ const TakeProfit = ({
     take_profit,
     validation_errors,
 }) => {
-    const changeValue = e => {
+    const changeValue = (e) => {
         if (e.target.name === 'has_take_profit') {
             const new_val = e.target.value;
             onChangeMultiple({

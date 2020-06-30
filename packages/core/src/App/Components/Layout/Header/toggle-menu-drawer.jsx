@@ -74,7 +74,7 @@ class ToggleMenuDrawer extends React.Component {
         this.setState({ is_open: !this.state.is_open });
     };
 
-    getRoutesWithSubMenu = route_config => {
+    getRoutesWithSubMenu = (route_config) => {
         const { needs_financial_assessment, needs_verification } = this.state;
         const has_access = route_config.is_authenticated ? this.props.is_logged_in : true;
         if (!has_access) return null;
@@ -92,7 +92,7 @@ class ToggleMenuDrawer extends React.Component {
             );
         }
 
-        const has_subroutes = route_config.routes.some(route => route.subroutes);
+        const has_subroutes = route_config.routes.some((route) => route.subroutes);
         return (
             <MobileDrawer.SubMenu
                 key={route_config.title}
@@ -102,7 +102,7 @@ class ToggleMenuDrawer extends React.Component {
                 submenu_suffix_icon='IcChevronRight'
             >
                 {!has_subroutes &&
-                    route_config.routes.map(route => {
+                    route_config.routes.map((route) => {
                         if (
                             (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                             (route.path !== routes.cashier_pa_transfer ||
@@ -124,13 +124,13 @@ class ToggleMenuDrawer extends React.Component {
                         return undefined;
                     })}
                 {has_subroutes &&
-                    route_config.routes.map(route => (
+                    route_config.routes.map((route) => (
                         <MobileDrawer.SubMenuSection
                             key={route.title}
                             section_icon={route.icon}
                             section_title={route.title}
                         >
-                            {route.subroutes.map(subroute => (
+                            {route.subroutes.map((subroute) => (
                                 <MenuLink
                                     key={subroute.title}
                                     is_disabled={
@@ -154,11 +154,14 @@ class ToggleMenuDrawer extends React.Component {
 
     render() {
         const all_routes_config = getAllRoutesConfig();
-        const subroutes_config = [].concat(...all_routes_config.map(i => i.routes || []));
+        const subroutes_config = [].concat(...all_routes_config.map((i) => i.routes || []));
         const allowed_routes = [routes.reports, routes.account, routes.cashier];
         const routes_config = allowed_routes
-            .map(path => all_routes_config.find(r => r.path === path) || subroutes_config.find(r => r.path === path))
-            .filter(route => route);
+            .map(
+                (path) =>
+                    all_routes_config.find((r) => r.path === path) || subroutes_config.find((r) => r.path === path)
+            )
+            .filter((route) => route);
         return (
             <React.Fragment>
                 <a id='dt_mobile_drawer_toggle' onClick={this.toggleDrawer} className='header__mobile-drawer-toggle'>
@@ -188,9 +191,9 @@ class ToggleMenuDrawer extends React.Component {
                                     onClickLink={this.toggleDrawer}
                                 />
                             </MobileDrawer.Item>
-                            {routes_config.map(route_config => this.getRoutesWithSubMenu(route_config))}
+                            {routes_config.map((route_config) => this.getRoutesWithSubMenu(route_config))}
                             <MobileDrawer.Item
-                                onClick={e => {
+                                onClick={(e) => {
                                     e.preventDefault();
                                     this.props.toggleTheme(!this.props.is_dark_mode);
                                 }}

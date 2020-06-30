@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Icon, ExpansionPanel } from '@deriv/components';
 import '../assets/sass/notify-item.scss';
 
-const getIcon = type => {
+const getIcon = (type) => {
     switch (type) {
         case 'error':
             return 'IcAlertDanger';
@@ -41,4 +41,4 @@ export const messageWithImage = (message, image) => (
     </>
 );
 
-export const arrayAsMessage = parsedArray => <ExpansionPanel message={parsedArray} />;
+export const arrayAsMessage = (parsedArray) => <ExpansionPanel message={parsedArray} />;

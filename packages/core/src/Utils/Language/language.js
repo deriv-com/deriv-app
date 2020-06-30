@@ -7,7 +7,7 @@ export const getAllowedLanguages = () => {
     const exclude_languages = ['ACH'];
     // TODO Change language_list to const when design is ready.
     let language_list = Object.keys(getAllLanguages())
-        .filter(key => !exclude_languages.includes(key))
+        .filter((key) => !exclude_languages.includes(key))
         .reduce((obj, key) => {
             obj[key] = getAllLanguages()[key];
             return obj;
@@ -18,4 +18,4 @@ export const getAllowedLanguages = () => {
     return language_list;
 };
 
-export const getURL = lang => urlForLanguage(lang);
+export const getURL = (lang) => urlForLanguage(lang);

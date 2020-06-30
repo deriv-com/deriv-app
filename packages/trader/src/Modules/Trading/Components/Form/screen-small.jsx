@@ -29,7 +29,7 @@ const CollapsibleTradeParams = ({
 
     const is_collapsed = !is_trade_params_expanded;
 
-    const onClick = e => {
+    const onClick = (e) => {
         setIsTradeParamsExpanded(e);
     };
 
@@ -37,7 +37,7 @@ const CollapsibleTradeParams = ({
         setIsTradeParamsExpanded(true);
     };
 
-    const isVisible = component => form_components.includes(component);
+    const isVisible = (component) => form_components.includes(component);
 
     return (
         <Collapsible position='top' is_collapsed={is_collapsed} onClick={onClick}>

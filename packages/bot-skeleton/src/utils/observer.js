@@ -48,10 +48,10 @@ export default class Observer {
         if (unregisterAllBefore) {
             this.unregisterAll(event);
         }
-        const apiError = error => {
+        const apiError = (error) => {
             if (error.type === unregisterIfError.type) {
                 this.unregister('api.error', apiError);
-                unregisterIfError.unregister.forEach(unreg => {
+                unregisterIfError.unregister.forEach((unreg) => {
                     if (unreg instanceof Array) {
                         this.unregister(...unreg);
                     } else {
@@ -83,7 +83,7 @@ export default class Observer {
     unregister(event, f) {
         this.eam = this.eam.set(
             event,
-            this.eam.get(event).filter(r => r.searchBy !== f)
+            this.eam.get(event).filter((r) => r.searchBy !== f)
         );
     }
 
@@ -97,7 +97,7 @@ export default class Observer {
 
     emit(event, data) {
         if (this.eam.has(event)) {
-            this.eam.get(event).forEach(action => action.action(data));
+            this.eam.get(event).forEach((action) => action.action(data));
         }
     }
 }

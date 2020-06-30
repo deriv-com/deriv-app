@@ -49,12 +49,12 @@ const OrderTableContent = ({ showDetails, is_active }) => {
     }, [is_mounted, is_active]);
 
     const loadMoreOrders = () => {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             requestWS({
                 p2p_order_list: 1,
                 offset: order_offset,
                 limit: list_item_limit,
-            }).then(response => {
+            }).then((response) => {
                 if (is_mounted) {
                     if (!response.error) {
                         const { list } = response.p2p_order_list;
@@ -78,12 +78,12 @@ const OrderTableContent = ({ showDetails, is_active }) => {
         return <TableError message={api_error_message} />;
     }
 
-    const Row = row_props => <OrderRowComponent {...row_props} onOpenDetails={showDetails} is_active={is_active} />;
+    const Row = (row_props) => <OrderRowComponent {...row_props} onOpenDetails={showDetails} is_active={is_active} />;
 
     if (orders.length) {
         const modified_list = orders
-            .map(list => new OrderInfo(list))
-            .filter(order => (is_active ? order.is_active : order.is_inactive));
+            .map((list) => new OrderInfo(list))
+            .filter((order) => (is_active ? order.is_active : order.is_inactive));
         const item_height = 72;
         const height_values = {
             screen_size: '100vh',

@@ -3,7 +3,7 @@ import { runAndGetResult, expectResultTypes } from '../tools';
 describe('Before Purchase Blocks', () => {
     let result;
 
-    beforeAll(done => {
+    beforeAll((done) => {
         runAndGetResult(
             undefined,
             `
@@ -12,7 +12,7 @@ describe('Before Purchase Blocks', () => {
       result.askPrice = Bot.getAskPrice('CALL');
       Bot.purchase('CALL');
     `
-        ).then(v => {
+        ).then((v) => {
             result = v;
             done();
         });

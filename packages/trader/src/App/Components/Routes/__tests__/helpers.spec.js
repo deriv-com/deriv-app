@@ -31,7 +31,7 @@ describe('Helpers', () => {
             });
         });
         it('should return route_info of parent route when path is in routes_config child level and is nested', () => {
-            const reports_routes_length = getRoutesConfig().find(r => r.path === routes.reports).routes.length;
+            const reports_routes_length = getRoutesConfig().find((r) => r.path === routes.reports).routes.length;
             expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig())).to.have.all.keys(
                 'path',
                 'component',

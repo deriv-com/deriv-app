@@ -1,6 +1,6 @@
 import React from 'react';
 
-const convertObjectToReactElement = props => {
+const convertObjectToReactElement = (props) => {
     const { tagName, ...other_props } = props;
 
     if (!tagName) throw new Error('Missing tagName');

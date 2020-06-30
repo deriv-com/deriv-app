@@ -6,7 +6,7 @@ import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const AllowEquals = ({ onChange, is_allow_equal, className }) => {
-    const handleOnChange = e => {
+    const handleOnChange = (e) => {
         e.persist();
         const { name, checked } = e.target;
         onChange({ target: { name, value: Number(checked) } });

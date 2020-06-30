@@ -7,12 +7,10 @@ Blockly.Blocks.lists_split = {
                 [localize('make list from text'), 'SPLIT'],
                 [localize('make text from list'), 'JOIN'],
             ],
-            newMode => this.updateType(newMode)
+            (newMode) => this.updateType(newMode)
         );
 
-        this.appendValueInput('INPUT')
-            .setCheck('String')
-            .appendField(dropdown, 'MODE');
+        this.appendValueInput('INPUT').setCheck('String').appendField(dropdown, 'MODE');
         this.appendValueInput('DELIM')
             .setCheck('String')
             .appendField('', 'SPACE1')
@@ -77,7 +75,7 @@ Blockly.Blocks.lists_split = {
     },
 };
 
-Blockly.JavaScript.lists_split = block => {
+Blockly.JavaScript.lists_split = (block) => {
     const input = Blockly.JavaScript.valueToCode(block, 'INPUT', Blockly.JavaScript.ORDER_MEMBER);
     const delimiter = Blockly.JavaScript.valueToCode(block, 'DELIM', Blockly.JavaScript.ORDER_NONE) || "''";
     const mode = block.getFieldValue('MODE');

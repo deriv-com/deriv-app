@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Views from './views';
 
-const Body = props => {
+const Body = (props) => {
     const calendar_body = {
         date: <Views.Days {...props} />,
         month: <Views.Months {...props} />,

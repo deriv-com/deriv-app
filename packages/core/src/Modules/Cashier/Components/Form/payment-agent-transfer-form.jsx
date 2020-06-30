@@ -40,7 +40,7 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
 };
 
 class PaymentAgentTransferForm extends React.Component {
-    validateTransferPassthrough = values =>
+    validateTransferPassthrough = (values) =>
         validateTransfer(values, {
             balance: this.props.balance,
             currency: this.props.currency,
@@ -81,7 +81,7 @@ class PaymentAgentTransferForm extends React.Component {
                                     {({ field }) => (
                                         <Input
                                             {...field}
-                                            onChange={e => {
+                                            onChange={(e) => {
                                                 this.props.setErrorMessage('');
                                                 handleChange(e);
                                             }}
@@ -99,7 +99,7 @@ class PaymentAgentTransferForm extends React.Component {
                                     {({ field }) => (
                                         <Input
                                             {...field}
-                                            onChange={e => {
+                                            onChange={(e) => {
                                                 this.props.setErrorMessage('');
                                                 handleChange(e);
                                             }}
@@ -126,7 +126,7 @@ class PaymentAgentTransferForm extends React.Component {
                                 {({ field }) => (
                                     <Input
                                         {...field}
-                                        onChange={e => {
+                                        onChange={(e) => {
                                             this.props.setErrorMessage('');
                                             handleChange(e);
                                         }}

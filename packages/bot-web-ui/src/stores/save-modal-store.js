@@ -21,7 +21,7 @@ export default class SaveModalStore {
         this.is_save_modal_open = !this.is_save_modal_open;
     }
 
-    validateBotName = values => {
+    validateBotName = (values) => {
         const errors = {};
 
         if (values.bot_name.trim() === '') {

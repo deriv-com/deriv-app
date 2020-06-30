@@ -7,7 +7,7 @@ import React from 'react';
 // but [[1, 2, 3], [4, 5, 6]] will be two rows:
 // first row with the first three numbers and second row with the last three numbers
 const NumberSelector = ({ arr_arr_numbers, name, onChange, selected_number }) => {
-    const handleSelect = item => {
+    const handleSelect = (item) => {
         if (+item.target.getAttribute('data-value') !== selected_number) {
             onChange({ target: { name, value: +item.target.getAttribute('data-value') } });
         }
@@ -17,7 +17,7 @@ const NumberSelector = ({ arr_arr_numbers, name, onChange, selected_number }) =>
         <div className='number-selector'>
             {arr_arr_numbers.map((arr_numbers, idx) => (
                 <div className='number-selector__row' key={idx}>
-                    {arr_numbers.map(i => (
+                    {arr_numbers.map((i) => (
                         <span
                             key={i}
                             className={classNames('number-selector__selection', {

@@ -7,15 +7,15 @@
  * @param {!Blockly.Workspace} ws The workspace to search for variables.
  * @return {!Array.<!Blockly.VariableModel>} Array of variable models.
  */
-Blockly.Variables.allUsedVarModels = function(ws) {
+Blockly.Variables.allUsedVarModels = function (ws) {
     const blocks = ws.getAllBlocks(false);
     const variableHash = Object.create(null);
 
     // Iterate through every block and add each variable to the hash.
-    blocks.forEach(block => {
+    blocks.forEach((block) => {
         const blockVariables = block.getVarModels();
         if (blockVariables) {
-            blockVariables.forEach(blockVariable => {
+            blockVariables.forEach((blockVariable) => {
                 const id = blockVariable.getId();
                 if (id) {
                     variableHash[id] = blockVariable;
@@ -26,7 +26,7 @@ Blockly.Variables.allUsedVarModels = function(ws) {
 
     // Flatten the hash into a list.
     const variableList = [];
-    Object.keys(variableHash).forEach(id => {
+    Object.keys(variableHash).forEach((id) => {
         variableList.push(variableHash[id]);
     });
 
@@ -40,7 +40,7 @@ Blockly.Variables.allUsedVarModels = function(ws) {
  * @return {Element} The generated DOM.
  * @public
  */
-Blockly.Variables.generateVariableFieldDom = function(variableModel) {
+Blockly.Variables.generateVariableFieldDom = function (variableModel) {
     /* Generates the following XML:
      * <field name="VAR" id="goKTKmYJ8DhVHpruv" variabletype="int">foo</field>
      */

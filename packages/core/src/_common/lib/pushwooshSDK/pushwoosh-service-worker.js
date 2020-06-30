@@ -1,4 +1,4 @@
-!(function(e) {
+!(function (e) {
     var t = {};
     function n(r) {
         if (t[r]) return t[r].exports;
@@ -7,42 +7,42 @@
     }
     (n.m = e),
         (n.c = t),
-        (n.d = function(e, t, r) {
+        (n.d = function (e, t, r) {
             n.o(e, t) || Object.defineProperty(e, t, { configurable: !1, enumerable: !0, get: r });
         }),
-        (n.r = function(e) {
+        (n.r = function (e) {
             Object.defineProperty(e, '__esModule', { value: !0 });
         }),
-        (n.n = function(e) {
+        (n.n = function (e) {
             var t =
                 e && e.__esModule
-                    ? function() {
+                    ? function () {
                           return e.default;
                       }
-                    : function() {
+                    : function () {
                           return e;
                       };
             return n.d(t, 'a', t), t;
         }),
-        (n.o = function(e, t) {
+        (n.o = function (e, t) {
             return Object.prototype.hasOwnProperty.call(e, t);
         }),
         (n.p = ''),
         n((n.s = 18));
 })([
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         var r =
                 (this && this.__assign) ||
                 Object.assign ||
-                function(e) {
+                function (e) {
                     for (var t, n = 1, r = arguments.length; r > n; n++)
                         for (var o in (t = arguments[n])) Object.prototype.hasOwnProperty.call(t, o) && (e[o] = t[o]);
                     return e;
                 },
             o =
                 (this && this.__rest) ||
-                function(e, t) {
+                function (e, t) {
                     var n = {};
                     for (var r in e) Object.prototype.hasOwnProperty.call(e, r) && 0 > t.indexOf(r) && (n[r] = e[r]);
                     if (null != e && 'function' == typeof Object.getOwnPropertySymbols) {
@@ -98,7 +98,7 @@
             return localStorage.getItem(a.KEY_FAKE_PUSH_TOKEN);
         }
         function _() {
-            var e = (function(e) {
+            var e = (function (e) {
                 e = e || 32;
                 for (
                     var t = '', n = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', r = 0;
@@ -118,17 +118,17 @@
             return 'Promise' in s();
         }
         (t.getGlobal = s),
-            (t.getVersion = function() {
+            (t.getVersion = function () {
                 return '3.2.15';
             }),
             (t.isSafariBrowser = u),
-            (t.isOperaBrowser = function() {
+            (t.isOperaBrowser = function () {
                 return -1 !== navigator.userAgent.indexOf('Opera') || -1 !== navigator.userAgent.indexOf('OPR');
             }),
             (t.canUseServiceWorkers = c),
             (t.isSupportSDK = l),
             (t.getBrowserType = f),
-            (t.getBrowserVersion = function() {
+            (t.getBrowserVersion = function () {
                 var e = navigator.userAgent,
                     t = e.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [],
                     n = null;
@@ -140,7 +140,7 @@
                       null !== (n = e.match(/version\/([.\d]+)/i)) && t.splice(1, 1, n[1]),
                       t.join(' '));
             }),
-            (t.urlB64ToUint8Array = function(e) {
+            (t.urlB64ToUint8Array = function (e) {
                 for (
                     var t = (e + '='.repeat((4 - (e.length % 4)) % 4)).replace(/-/g, '+').replace(/_/g, '/'),
                         n = window.atob(t),
@@ -154,12 +154,12 @@
             }),
             (t.getDeviceName = h),
             (t.createUUID = p),
-            (t.generateHwid = function(e, t) {
+            (t.generateHwid = function (e, t) {
                 return e + '_' + p((t = d() || t || _()));
             }),
             (t.getFakePushToken = d),
             (t.generateFakePushToken = _),
-            (t.getPushToken = function(e) {
+            (t.getPushToken = function (e) {
                 return e
                     ? e.subscriptionId
                         ? e.subscriptionId
@@ -168,45 +168,45 @@
                         : e.endpoint.split('/').pop() || ''
                     : '';
             }),
-            (t.getFcmKey = function(e, t) {
+            (t.getFcmKey = function (e, t) {
                 return e
-                    ? new Promise(function(e) {
+                    ? new Promise(function (e) {
                           i.keyValue
                               .get(a.KEY_FCM_SUBSCRIPTION)
-                              .then(function(n) {
+                              .then(function (n) {
                                   e((n && n[t]) || '');
                               })
-                              .catch(function() {
+                              .catch(function () {
                                   e('');
                               });
                       })
                     : Promise.resolve('');
             }),
-            (t.getAuthToken = function(e) {
+            (t.getAuthToken = function (e) {
                 return E(e, 'auth');
             }),
-            (t.getPublicKey = function(e) {
+            (t.getPublicKey = function (e) {
                 return E(e, 'p256dh');
             }),
-            (t.getPushwooshUrl = function(e, t) {
+            (t.getPushwooshUrl = function (e, t) {
                 var n = 'cp';
                 u() || !e || ~e.indexOf('.') || (n = e + '.api');
                 var r = 'https://' + (t || n + '.pushwoosh.com') + '/json/1.3/';
-                return new Promise(function(e) {
+                return new Promise(function (e) {
                     i.keyValue
                         .get(a.KEY_API_BASE_URL)
-                        .then(function(t) {
+                        .then(function (t) {
                             void 0 === t && (t = null), e(t || r);
                         })
-                        .catch(function() {
+                        .catch(function () {
                             e(r);
                         });
                 });
             }),
-            (t.patchConsole = function() {
+            (t.patchConsole = function () {
                 for (
                     var e,
-                        t = function() {},
+                        t = function () {},
                         n = [
                             'assert',
                             'clear',
@@ -239,27 +239,27 @@
                 )
                     i[(e = n[r])] || (i[e] = t);
             }),
-            (t.patchPromise = function() {
+            (t.patchPromise = function () {
                 var e = s();
                 !g() &&
                     l() &&
-                    (e.Promise = function() {
-                        return { then: function() {}, catch: function() {} };
+                    (e.Promise = function () {
+                        return { then: function () {}, catch: function () {} };
                     });
             }),
             (t.canUsePromise = g),
-            (t.clearLocationHash = function() {
+            (t.clearLocationHash = function () {
                 'history' in s() && history.pushState ? history.pushState(null, '', '#') : (location.hash = '#');
             }),
-            (t.prepareDuration = function(e) {
+            (t.prepareDuration = function (e) {
                 return isNaN(e) ? 20 : Math.min(60, 0 > (e = Math.round(e)) ? 20 : e);
             }),
-            (t.validateParams = function(e) {
+            (t.validateParams = function (e) {
                 var t = o(e, []);
                 return !t.userId || ('user_id' !== t.userId && 0 != !!t.userId) || delete t.userId, t;
             }),
-            (t.sendInternalPostEvent = function(e) {
-                i.keyValue.get(a.KEY_INTERNAL_EVENTS).then(function(t) {
+            (t.sendInternalPostEvent = function (e) {
+                i.keyValue.get(a.KEY_INTERNAL_EVENTS).then(function (t) {
                     void 0 === t && (t = {}), 0 === Object.keys(t).length && i.keyValue.set(a.KEY_INTERNAL_EVENTS, {});
                     var n,
                         o = new Date().setHours(0, 0, 0, 0),
@@ -275,7 +275,7 @@
                 });
             });
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         Object.defineProperty(t, '__esModule', { value: !0 }),
             (t.DEFAULT_SERVICE_WORKER_URL = 'pushwoosh-service-worker.js'),
@@ -328,7 +328,7 @@
             (t.EVENT_GDPR_CONSENT = 'GDPRConsent'),
             (t.EVENT_GDPR_DELETE = 'GDPRDelete');
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         var r,
             o =
@@ -336,13 +336,13 @@
                 ((r =
                     Object.setPrototypeOf ||
                     ({ __proto__: [] } instanceof Array &&
-                        function(e, t) {
+                        function (e, t) {
                             e.__proto__ = t;
                         }) ||
-                    function(e, t) {
+                    function (e, t) {
                         for (var n in t) t.hasOwnProperty(n) && (e[n] = t[n]);
                     }),
-                function(e, t) {
+                function (e, t) {
                     function n() {
                         this.constructor = e;
                     }
@@ -351,15 +351,15 @@
             i =
                 (this && this.__assign) ||
                 Object.assign ||
-                function(e) {
+                function (e) {
                     for (var t, n = 1, r = arguments.length; r > n; n++)
                         for (var o in (t = arguments[n])) Object.prototype.hasOwnProperty.call(t, o) && (e[o] = t[o]);
                     return e;
                 },
             a =
                 (this && this.__awaiter) ||
-                function(e, t, n, r) {
-                    return new (n || (n = Promise))(function(o, i) {
+                function (e, t, n, r) {
+                    return new (n || (n = Promise))(function (o, i) {
                         function a(e) {
                             try {
                                 u(r.next(e));
@@ -377,7 +377,7 @@
                         function u(e) {
                             e.done
                                 ? o(e.value)
-                                : new n(function(t) {
+                                : new n(function (t) {
                                       t(e.value);
                                   }).then(a, s);
                         }
@@ -386,14 +386,14 @@
                 },
             s =
                 (this && this.__generator) ||
-                function(e, t) {
+                function (e, t) {
                     var n,
                         r,
                         o,
                         i,
                         a = {
                             label: 0,
-                            sent: function() {
+                            sent: function () {
                                 if (1 & o[0]) throw o[1];
                                 return o[1];
                             },
@@ -403,14 +403,14 @@
                     return (
                         (i = { next: s(0), throw: s(1), return: s(2) }),
                         'function' == typeof Symbol &&
-                            (i[Symbol.iterator] = function() {
+                            (i[Symbol.iterator] = function () {
                                 return this;
                             }),
                         i
                     );
                     function s(i) {
-                        return function(s) {
-                            return (function(i) {
+                        return function (s) {
+                            return (function (i) {
                                 if (n) throw new TypeError('Generator is already executing.');
                                 for (; a; )
                                     try {
@@ -471,7 +471,7 @@
                 },
             u =
                 (this && this.__rest) ||
-                function(e, t) {
+                function (e, t) {
                     var n = {};
                     for (var r in e) Object.prototype.hasOwnProperty.call(e, r) && 0 > t.indexOf(r) && (n[r] = e[r]);
                     if (null != e && 'function' == typeof Object.getOwnPropertySymbols) {
@@ -491,16 +491,16 @@
         }
         function d(e) {
             return (c ||
-                (c = new Promise(function(e, t) {
+                (c = new Promise(function (e, t) {
                     var n = indexedDB.open('PUSHWOOSH_SDK_STORE', 6);
-                    (n.onsuccess = function(t) {
+                    (n.onsuccess = function (t) {
                         var n = t.target.result;
                         (n.onversionchange = p), e(n);
                     }),
-                        (n.onerror = function() {
+                        (n.onerror = function () {
                             return t(n.error);
                         }),
-                        (n.onupgradeneeded = function(e) {
+                        (n.onupgradeneeded = function (e) {
                             var t = e.target.result;
                             (t.onversionchange = p),
                                 t.objectStoreNames.contains(l) || t.createObjectStore(l, { keyPath: 'key' });
@@ -515,44 +515,41 @@
                             t.objectStoreNames.contains(h) || t.createObjectStore(h, n).createIndex('date', 'date', r);
                         });
                 })),
-            c).then(function(t) {
-                return new Promise(function(n, r) {
+            c).then(function (t) {
+                return new Promise(function (n, r) {
                     return e(t, n, r);
                 });
             });
         }
-        var _ = (function() {
+        var _ = (function () {
             function e() {}
             return (
-                (e.prototype._add = function(e) {
+                (e.prototype._add = function (e) {
                     var t = this;
-                    return d(function(n, r, o) {
-                        var i = n
-                            .transaction([t.name], 'readwrite')
-                            .objectStore(t.name)
-                            .add(e);
-                        (i.onsuccess = function() {
+                    return d(function (n, r, o) {
+                        var i = n.transaction([t.name], 'readwrite').objectStore(t.name).add(e);
+                        (i.onsuccess = function () {
                             r(e);
                         }),
-                            (i.onerror = function() {
+                            (i.onerror = function () {
                                 o(i.error);
                             });
-                    }).then(function(e) {
-                        return t.getAll().then(function(n) {
+                    }).then(function (e) {
+                        return t.getAll().then(function (n) {
                             if (Array.isArray(n)) {
                                 var r = n
-                                    .map(function(e) {
+                                    .map(function (e) {
                                         return e.id;
                                     })
-                                    .sort(function(e, t) {
+                                    .sort(function (e, t) {
                                         return e == t ? 0 : t > e ? 1 : -1;
                                     });
                                 if (r.length > t.maxItems)
                                     return Promise.all(
-                                        r.slice(t.maxItems).map(function(e) {
+                                        r.slice(t.maxItems).map(function (e) {
                                             return t.delete(e);
                                         })
-                                    ).then(function() {
+                                    ).then(function () {
                                         return e;
                                     });
                             }
@@ -560,34 +557,28 @@
                         });
                     });
                 }),
-                (e.prototype.delete = function(e) {
+                (e.prototype.delete = function (e) {
                     var t = this;
-                    return d(function(n, r, o) {
-                        var i = n
-                            .transaction([t.name], 'readwrite')
-                            .objectStore(t.name)
-                            .delete(e);
-                        (i.onsuccess = function() {
+                    return d(function (n, r, o) {
+                        var i = n.transaction([t.name], 'readwrite').objectStore(t.name).delete(e);
+                        (i.onsuccess = function () {
                             r(i.result);
                         }),
-                            (i.onerror = function() {
+                            (i.onerror = function () {
                                 o(i.error);
                             });
                     });
                 }),
-                (e.prototype.getAll = function() {
+                (e.prototype.getAll = function () {
                     var e = this;
-                    return d(function(t, n, r) {
+                    return d(function (t, n, r) {
                         var o = [],
-                            i = t
-                                .transaction(e.name)
-                                .objectStore(e.name)
-                                .openCursor();
-                        (i.onsuccess = function(e) {
+                            i = t.transaction(e.name).objectStore(e.name).openCursor();
+                        (i.onsuccess = function (e) {
                             var t = e.target.result;
                             t ? (o.push(t.value), t.continue()) : n(o);
                         }),
-                            (i.onerror = function() {
+                            (i.onerror = function () {
                                 r(i.error);
                             });
                     });
@@ -596,7 +587,7 @@
             );
         })();
         t.LogBase = _;
-        var E = (function(e) {
+        var E = (function (e) {
             function t() {
                 var t = (null !== e && e.apply(this, arguments)) || this;
                 return (
@@ -608,7 +599,7 @@
             }
             return (
                 o(t, e),
-                (t.prototype.add = function(e, t, n) {
+                (t.prototype.add = function (e, t, n) {
                     var r = { type: e, environment: this.environment, message: '' + t, date: new Date() };
                     return t instanceof Error && (r.stack = t.stack), n && (r.additional = n), this._add(r);
                 }),
@@ -617,14 +608,14 @@
         })(_);
         t.LogLog = E;
         var g,
-            v = (function(e) {
+            v = (function (e) {
                 function t() {
                     var t = (null !== e && e.apply(this, arguments)) || this;
                     return (t.name = h), (t.maxItems = 25), t;
                 }
                 return (
                     o(t, e),
-                    (t.prototype.add = function(e) {
+                    (t.prototype.add = function (e) {
                         return this._add(i({}, e, { date: new Date() }));
                     }),
                     t
@@ -634,41 +625,35 @@
             (t.keyValue =
                 ((g = l),
                 {
-                    get: function(e) {
-                        return d(function(t, n, r) {
-                            var o = t
-                                .transaction(g)
-                                .objectStore(g)
-                                .get(e);
-                            (o.onsuccess = function() {
+                    get: function (e) {
+                        return d(function (t, n, r) {
+                            var o = t.transaction(g).objectStore(g).get(e);
+                            (o.onsuccess = function () {
                                 var e = o.result;
                                 n(e && e.value);
                             }),
-                                (o.onerror = function() {
+                                (o.onerror = function () {
                                     r(o.error);
                                 });
                         });
                     },
-                    getAll: function() {
-                        return d(function(e, t, n) {
+                    getAll: function () {
+                        return d(function (e, t, n) {
                             var r = {},
-                                o = e
-                                    .transaction(g)
-                                    .objectStore(g)
-                                    .openCursor();
-                            (o.onsuccess = function(e) {
+                                o = e.transaction(g).objectStore(g).openCursor();
+                            (o.onsuccess = function (e) {
                                 var n = e.target.result;
                                 n ? ((r[n.key] = n.value.value), n.continue()) : t(r);
                             }),
-                                (o.onerror = function() {
+                                (o.onerror = function () {
                                     n(o.error);
                                 });
                         });
                     },
-                    extend: function(e, t) {
-                        return a(this, void 0, void 0, function() {
+                    extend: function (e, t) {
+                        return a(this, void 0, void 0, function () {
                             var n, r;
-                            return s(this, function(o) {
+                            return s(this, function (o) {
                                 switch (o.label) {
                                     case 0:
                                         return [4, this.get(e)];
@@ -680,16 +665,13 @@
                             });
                         });
                     },
-                    set: function(e, t) {
-                        return d(function(n, r, o) {
-                            var i = n
-                                .transaction([g], 'readwrite')
-                                .objectStore(g)
-                                .put({ key: e, value: t });
-                            (i.onsuccess = function() {
+                    set: function (e, t) {
+                        return d(function (n, r, o) {
+                            var i = n.transaction([g], 'readwrite').objectStore(g).put({ key: e, value: t });
+                            (i.onsuccess = function () {
                                 r(e);
                             }),
-                                (i.onerror = function() {
+                                (i.onerror = function () {
                                     o(i.error);
                                 });
                         });
@@ -698,7 +680,7 @@
             (t.log = new E()),
             (t.message = new v());
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         Object.defineProperty(t, '__esModule', { value: !0 });
         var r = n(2),
@@ -706,16 +688,16 @@
             i = 3;
         n(0).patchConsole();
         var a = {
-            setLevel: function(e) {
+            setLevel: function (e) {
                 o[e] || (e = 'error'), (i = o[e]);
             },
-            write: function(e, t, n) {
+            write: function (e, t, n) {
                 return 'error' === e ? this.error(t) : this.info(t), r.log.add(e, t, n);
             },
         };
-        Object.keys(o).forEach(function(e) {
+        Object.keys(o).forEach(function (e) {
             var t = o[e];
-            a[e] = function() {
+            a[e] = function () {
                 for (var n = [], r = 0; arguments.length > r; r++) n[r] = arguments[r];
                 t > i ||
                     (console.groupCollapsed(e),
@@ -724,30 +706,30 @@
                     console.groupEnd());
             };
         }),
-            (t.logAndThrowError = function(e) {
+            (t.logAndThrowError = function (e) {
                 var t = Error(e);
                 throw (a.write('error', t, 'logAndThrowError'), t);
             }),
-            (t.logAndRejectError = function(e, t) {
+            (t.logAndRejectError = function (e, t) {
                 var n = Error(e);
                 a.write('error', n, 'logAndRejectError'), t(n);
             }),
             (t.default = a);
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         var r =
                 (this && this.__assign) ||
                 Object.assign ||
-                function(e) {
+                function (e) {
                     for (var t, n = 1, r = arguments.length; r > n; n++)
                         for (var o in (t = arguments[n])) Object.prototype.hasOwnProperty.call(t, o) && (e[o] = t[o]);
                     return e;
                 },
             o =
                 (this && this.__awaiter) ||
-                function(e, t, n, r) {
-                    return new (n || (n = Promise))(function(o, i) {
+                function (e, t, n, r) {
+                    return new (n || (n = Promise))(function (o, i) {
                         function a(e) {
                             try {
                                 u(r.next(e));
@@ -765,7 +747,7 @@
                         function u(e) {
                             e.done
                                 ? o(e.value)
-                                : new n(function(t) {
+                                : new n(function (t) {
                                       t(e.value);
                                   }).then(a, s);
                         }
@@ -774,14 +756,14 @@
                 },
             i =
                 (this && this.__generator) ||
-                function(e, t) {
+                function (e, t) {
                     var n,
                         r,
                         o,
                         i,
                         a = {
                             label: 0,
-                            sent: function() {
+                            sent: function () {
                                 if (1 & o[0]) throw o[1];
                                 return o[1];
                             },
@@ -791,14 +773,14 @@
                     return (
                         (i = { next: s(0), throw: s(1), return: s(2) }),
                         'function' == typeof Symbol &&
-                            (i[Symbol.iterator] = function() {
+                            (i[Symbol.iterator] = function () {
                                 return this;
                             }),
                         i
                     );
                     function s(i) {
-                        return function(s) {
-                            return (function(i) {
+                        return function (s) {
+                            return (function (i) {
                                 if (n) throw new TypeError('Generator is already executing.');
                                 for (; a; )
                                     try {
@@ -862,7 +844,7 @@
             s = n(0),
             u = n(2),
             c = n(3),
-            l = (function() {
+            l = (function () {
                 function e(e, t, n) {
                     (this.doPushwooshApiMethod = e),
                         (this.apiParams = t),
@@ -871,7 +853,7 @@
                 }
                 return (
                     Object.defineProperty(e.prototype, 'params', {
-                        get: function() {
+                        get: function () {
                             return (
                                 console.error(
                                     'Property "Pushwoosh.api.params" will be deprecated in next minor version. Instead, use the async method "Pushwoosh.api.getParams()"'
@@ -897,16 +879,16 @@
                         configurable: !0,
                     }),
                     Object.defineProperty(e.prototype, 'isSafari', {
-                        get: function() {
+                        get: function () {
                             return s.isSafariBrowser();
                         },
                         enumerable: !0,
                         configurable: !0,
                     }),
-                    (e.prototype.getParams = function() {
-                        return o(this, void 0, void 0, function() {
+                    (e.prototype.getParams = function () {
+                        return o(this, void 0, void 0, function () {
                             var e;
-                            return i(this, function(t) {
+                            return i(this, function (t) {
                                 switch (t.label) {
                                     case 0:
                                         return [4, u.keyValue.getAll()];
@@ -916,10 +898,10 @@
                             });
                         });
                     }),
-                    (e.prototype.callAPI = function(e, t) {
-                        return o(this, void 0, void 0, function() {
+                    (e.prototype.callAPI = function (e, t) {
+                        return o(this, void 0, void 0, function () {
                             var n, o, l, f, h, p, d, _;
-                            return i(this, function(i) {
+                            return i(this, function (i) {
                                 switch (i.label) {
                                     case 0:
                                         return [4, this.getParams()];
@@ -945,10 +927,10 @@
                             });
                         });
                     }),
-                    (e.prototype.registerDevice = function() {
-                        return o(this, void 0, void 0, function() {
+                    (e.prototype.registerDevice = function () {
+                        return o(this, void 0, void 0, function () {
                             var e, t;
-                            return i(this, function(n) {
+                            return i(this, function (n) {
                                 switch (n.label) {
                                     case 0:
                                         return [4, this.getParams()];
@@ -992,10 +974,10 @@
                             });
                         });
                     }),
-                    (e.prototype.unregisterDevice = function() {
-                        return o(this, void 0, void 0, function() {
+                    (e.prototype.unregisterDevice = function () {
+                        return o(this, void 0, void 0, function () {
                             var e;
-                            return i(this, function(t) {
+                            return i(this, function (t) {
                                 switch (t.label) {
                                     case 0:
                                         if (this.isSafari) return [2];
@@ -1019,10 +1001,10 @@
                             });
                         });
                     }),
-                    (e.prototype.registerUser = function(e) {
-                        return o(this, void 0, void 0, function() {
+                    (e.prototype.registerUser = function (e) {
+                        return o(this, void 0, void 0, function () {
                             var t, n;
-                            return i(this, function(r) {
+                            return i(this, function (r) {
                                 switch (r.label) {
                                     case 0:
                                         return [4, this.getParams()];
@@ -1044,10 +1026,10 @@
                             });
                         });
                     }),
-                    (e.prototype.applicationOpen = function() {
-                        return o(this, void 0, void 0, function() {
+                    (e.prototype.applicationOpen = function () {
+                        return o(this, void 0, void 0, function () {
                             var e;
-                            return i(this, function(t) {
+                            return i(this, function (t) {
                                 switch (t.label) {
                                     case 0:
                                         return [4, this.getParams()];
@@ -1064,19 +1046,19 @@
                             });
                         });
                     }),
-                    (e.prototype.setTags = function(e) {
+                    (e.prototype.setTags = function (e) {
                         return this.callAPI('setTags', { tags: e });
                     }),
-                    (e.prototype.getTags = function() {
+                    (e.prototype.getTags = function () {
                         return this.callAPI('getTags');
                     }),
-                    (e.prototype.pushStat = function(e) {
+                    (e.prototype.pushStat = function (e) {
                         return this.callAPI('pushStat', { hash: e });
                     }),
-                    (e.prototype.messageDeliveryEvent = function(e) {
+                    (e.prototype.messageDeliveryEvent = function (e) {
                         return this.callAPI('messageDeliveryEvent', { hash: e });
                     }),
-                    (e.prototype.postEvent = function(e, t) {
+                    (e.prototype.postEvent = function (e, t) {
                         var n = this.lastOpenMessage,
                             o = new Date(),
                             i = o.getTime(),
@@ -1093,10 +1075,10 @@
                             timestampCurrent: s,
                         });
                     }),
-                    (e.prototype.triggerEvent = function(e, t) {
-                        return o(this, void 0, void 0, function() {
+                    (e.prototype.triggerEvent = function (e, t) {
+                        return o(this, void 0, void 0, function () {
                             var n;
-                            return i(this, function(r) {
+                            return i(this, function (r) {
                                 switch (r.label) {
                                     case 0:
                                         return t ? [4, u.keyValue.get(t)] : [3, 2];
@@ -1130,20 +1112,20 @@
     ,
     ,
     ,
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         var r =
                 (this && this.__assign) ||
                 Object.assign ||
-                function(e) {
+                function (e) {
                     for (var t, n = 1, r = arguments.length; r > n; n++)
                         for (var o in (t = arguments[n])) Object.prototype.hasOwnProperty.call(t, o) && (e[o] = t[o]);
                     return e;
                 },
             o =
                 (this && this.__awaiter) ||
-                function(e, t, n, r) {
-                    return new (n || (n = Promise))(function(o, i) {
+                function (e, t, n, r) {
+                    return new (n || (n = Promise))(function (o, i) {
                         function a(e) {
                             try {
                                 u(r.next(e));
@@ -1161,7 +1143,7 @@
                         function u(e) {
                             e.done
                                 ? o(e.value)
-                                : new n(function(t) {
+                                : new n(function (t) {
                                       t(e.value);
                                   }).then(a, s);
                         }
@@ -1170,14 +1152,14 @@
                 },
             i =
                 (this && this.__generator) ||
-                function(e, t) {
+                function (e, t) {
                     var n,
                         r,
                         o,
                         i,
                         a = {
                             label: 0,
-                            sent: function() {
+                            sent: function () {
                                 if (1 & o[0]) throw o[1];
                                 return o[1];
                             },
@@ -1187,14 +1169,14 @@
                     return (
                         (i = { next: s(0), throw: s(1), return: s(2) }),
                         'function' == typeof Symbol &&
-                            (i[Symbol.iterator] = function() {
+                            (i[Symbol.iterator] = function () {
                                 return this;
                             }),
                         i
                     );
                     function s(i) {
-                        return function(s) {
-                            return (function(i) {
+                        return function (s) {
+                            return (function (i) {
                                 if (n) throw new TypeError('Generator is already executing.');
                                 for (; a; )
                                     try {
@@ -1263,14 +1245,14 @@
             h = (self.Pushwoosh = new l.default()),
             p = [];
         function d(e) {
-            return o(this, void 0, void 0, function() {
-                return i(this, function(t) {
+            return o(this, void 0, void 0, function () {
+                return i(this, function (t) {
                     switch (t.label) {
                         case 0:
                             return [4, self.clients.matchAll()];
                         case 1:
                             return (
-                                t.sent().forEach(function(t) {
+                                t.sent().forEach(function (t) {
                                     t.postMessage(e);
                                 }),
                                 [2]
@@ -1280,9 +1262,9 @@
             });
         }
         function _(e, t) {
-            return o(this, void 0, void 0, function() {
+            return o(this, void 0, void 0, function () {
                 var n;
-                return i(this, function(r) {
+                return i(this, function (r) {
                     switch (r.label) {
                         case 0:
                             if ('string' != typeof e) return [3, 4];
@@ -1302,9 +1284,9 @@
             });
         }
         function E(e) {
-            return o(this, void 0, void 0, function() {
+            return o(this, void 0, void 0, function () {
                 var t, n, l, p, E;
-                return i(this, function(g) {
+                return i(this, function (g) {
                     switch (g.label) {
                         case 0:
                             return g.trys.push([0, 5, , 6]), [4, a.keyValue.get(s.KEY_INIT_PARAMS)];
@@ -1313,10 +1295,10 @@
                                 (t = g.sent()),
                                 [
                                     4,
-                                    (function(e, t) {
-                                        return o(this, void 0, void 0, function() {
+                                    (function (e, t) {
+                                        return o(this, void 0, void 0, function () {
                                             var n, r, o, a;
-                                            return i(this, function(i) {
+                                            return i(this, function (i) {
                                                 switch (i.label) {
                                                     case 0:
                                                         return [4, e.data.json()];
@@ -1368,8 +1350,8 @@
                                 (p = new f.default(n)),
                                 [
                                     4,
-                                    h.getListeners('onPush').reduce(function(e, t) {
-                                        return e.then(function() {
+                                    h.getListeners('onPush').reduce(function (e, t) {
+                                        return e.then(function () {
                                             return t(p);
                                         });
                                     }, Promise.resolve()),
@@ -1383,7 +1365,7 @@
                                     Promise.all([
                                         p.show(),
                                         l &&
-                                            h.initApi().then(function() {
+                                            h.initApi().then(function () {
                                                 return h.api.messageDeliveryEvent(l);
                                             }),
                                         a.message.add(r({}, p._forLog(), { payload: n })),
@@ -1403,9 +1385,9 @@
             });
         }
         function g(e) {
-            return o(this, void 0, void 0, function() {
+            return o(this, void 0, void 0, function () {
                 var t, n, r, o, a, s;
-                return i(this, function(i) {
+                return i(this, function (i) {
                     switch (i.label) {
                         case 0:
                             return (r = (n = void 0 === (t = e.notification) ? {} : t).data), [4, _(n.tag, {})];
@@ -1415,7 +1397,7 @@
                                 (a = ''),
                                 e.action && Array.isArray(r.buttons)
                                     ? ((s =
-                                          r.buttons.find(function(t) {
+                                          r.buttons.find(function (t) {
                                               return t.action === e.action;
                                           }) || {}),
                                       (a = s.url))
@@ -1445,9 +1427,9 @@
             });
         }
         function v(e) {
-            return o(this, void 0, void 0, function() {
+            return o(this, void 0, void 0, function () {
                 var t, n, r, u, c;
-                return i(this, function(l) {
+                return i(this, function (l) {
                     switch (l.label) {
                         case 0:
                             return [4, g(e)];
@@ -1463,11 +1445,11 @@
                                     ? [
                                           4,
                                           e.waitUntil(
-                                              self.clients.matchAll({ type: 'window' }).then(function(e) {
-                                                  return (function(e, t, n) {
-                                                      return o(this, void 0, void 0, function() {
+                                              self.clients.matchAll({ type: 'window' }).then(function (e) {
+                                                  return (function (e, t, n) {
+                                                      return o(this, void 0, void 0, function () {
                                                           var r, o;
-                                                          return i(this, function(i) {
+                                                          return i(this, function (i) {
                                                               switch (i.label) {
                                                                   case 0:
                                                                       for (r = e.length - 1; r > -1; --r)
@@ -1498,7 +1480,7 @@
                             return [
                                 2,
                                 Promise.all([
-                                    h.initApi().then(function() {
+                                    h.initApi().then(function () {
                                         return h.api.pushStat(n);
                                     }),
                                     a.keyValue.set(s.KEY_LAST_OPEN_MESSAGE, {
@@ -1513,47 +1495,47 @@
                 });
             });
         }
-        self.addEventListener('install', function(e) {
+        self.addEventListener('install', function (e) {
             e.waitUntil(
                 Promise.all([
                     a.keyValue.set(s.KEY_WORKER_VERSION, u.getVersion()),
                     c.default.write('info', 'install'),
-                ]).then(function() {
+                ]).then(function () {
                     return self.skipWaiting();
                 })
             );
         }),
-            self.addEventListener('activate', function(e) {
+            self.addEventListener('activate', function (e) {
                 e.waitUntil(
-                    Promise.all([c.default.write('info', 'activate')]).then(function() {
+                    Promise.all([c.default.write('info', 'activate')]).then(function () {
                         return self.clients.claim();
                     })
                 );
             }),
-            self.addEventListener('push', function(e) {
+            self.addEventListener('push', function (e) {
                 e.waitUntil(
-                    Promise.resolve(self.clients.claim()).then(function() {
-                        return E(e).catch(function(e) {
+                    Promise.resolve(self.clients.claim()).then(function () {
+                        return E(e).catch(function (e) {
                             return console.log(e);
                         });
                     })
                 );
             }),
-            self.addEventListener('notificationclick', function(e) {
+            self.addEventListener('notificationclick', function (e) {
                 e.waitUntil(
-                    Promise.resolve(self.clients.claim()).then(function() {
-                        return v(e).catch(function(e) {
+                    Promise.resolve(self.clients.claim()).then(function () {
+                        return v(e).catch(function (e) {
                             return console.log(e);
                         });
                     })
                 );
             }),
-            self.addEventListener('notificationclose', function(e) {
+            self.addEventListener('notificationclose', function (e) {
                 e.waitUntil(
-                    (function(e) {
-                        return o(this, void 0, void 0, function() {
+                    (function (e) {
+                        return o(this, void 0, void 0, function () {
                             var t, n, r;
-                            return i(this, function(o) {
+                            return i(this, function (o) {
                                 switch (o.label) {
                                     case 0:
                                         return [4, g(e)];
@@ -1571,26 +1553,26 @@
                                 }
                             });
                         });
-                    })(e).catch(function(e) {
+                    })(e).catch(function (e) {
                         return console.log(e);
                     })
                 );
             });
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         var r =
                 (this && this.__assign) ||
                 Object.assign ||
-                function(e) {
+                function (e) {
                     for (var t, n = 1, r = arguments.length; r > n; n++)
                         for (var o in (t = arguments[n])) Object.prototype.hasOwnProperty.call(t, o) && (e[o] = t[o]);
                     return e;
                 },
             o =
                 (this && this.__awaiter) ||
-                function(e, t, n, r) {
-                    return new (n || (n = Promise))(function(o, i) {
+                function (e, t, n, r) {
+                    return new (n || (n = Promise))(function (o, i) {
                         function a(e) {
                             try {
                                 u(r.next(e));
@@ -1608,7 +1590,7 @@
                         function u(e) {
                             e.done
                                 ? o(e.value)
-                                : new n(function(t) {
+                                : new n(function (t) {
                                       t(e.value);
                                   }).then(a, s);
                         }
@@ -1617,14 +1599,14 @@
                 },
             i =
                 (this && this.__generator) ||
-                function(e, t) {
+                function (e, t) {
                     var n,
                         r,
                         o,
                         i,
                         a = {
                             label: 0,
-                            sent: function() {
+                            sent: function () {
                                 if (1 & o[0]) throw o[1];
                                 return o[1];
                             },
@@ -1634,14 +1616,14 @@
                     return (
                         (i = { next: s(0), throw: s(1), return: s(2) }),
                         'function' == typeof Symbol &&
-                            (i[Symbol.iterator] = function() {
+                            (i[Symbol.iterator] = function () {
                                 return this;
                             }),
                         i
                     );
                     function s(i) {
-                        return function(s) {
-                            return (function(i) {
+                        return function (s) {
+                            return (function (i) {
                                 if (n) throw new TypeError('Generator is already executing.');
                                 for (; a; )
                                     try {
@@ -1705,24 +1687,24 @@
             s = n(1),
             u = n(4),
             c = n(20),
-            l = (function() {
+            l = (function () {
                 function e() {
                     this._listeners = {};
                 }
                 return (
-                    (e.prototype.push = function(e) {
+                    (e.prototype.push = function (e) {
                         Array.isArray(e) &&
                             'onPush' === e[0] &&
                             'function' == typeof e[1] &&
                             (this._listeners[e[0]] || (this._listeners[e[0]] = []), this._listeners[e[0]].push(e[1]));
                     }),
-                    (e.prototype.getListeners = function(e) {
+                    (e.prototype.getListeners = function (e) {
                         return this._listeners[e] || [];
                     }),
-                    (e.prototype.initApi = function() {
-                        return o(this, void 0, void 0, function() {
+                    (e.prototype.initApi = function () {
+                        return o(this, void 0, void 0, function () {
                             var e, t, n, o, l;
-                            return i(this, function(i) {
+                            return i(this, function (i) {
                                 switch (i.label) {
                                     case 0:
                                         return [4, a.keyValue.getAll()];
@@ -1752,23 +1734,23 @@
             })();
         t.default = l;
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         Object.defineProperty(t, '__esModule', { value: !0 });
         var r = n(3),
             o = n(0);
-        t.default = function(e, t) {
-            return function(n, i) {
-                return new Promise(function(a, s) {
-                    o.getPushwooshUrl(e, t).then(function(e) {
+        t.default = function (e, t) {
+            return function (n, i) {
+                return new Promise(function (a, s) {
+                    o.getPushwooshUrl(e, t).then(function (e) {
                         try {
                             fetch('' + e + n, {
                                 method: 'post',
                                 headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
                                 body: JSON.stringify({ request: i }),
-                            }).then(function(e) {
+                            }).then(function (e) {
                                 e.ok
-                                    ? e.json().then(function(e) {
+                                    ? e.json().then(function (e) {
                                           200 != e.status_code
                                               ? r.logAndRejectError(
                                                     'Error occurred during the ' +
@@ -1798,20 +1780,20 @@
             };
         };
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         var r =
                 (this && this.__assign) ||
                 Object.assign ||
-                function(e) {
+                function (e) {
                     for (var t, n = 1, r = arguments.length; r > n; n++)
                         for (var o in (t = arguments[n])) Object.prototype.hasOwnProperty.call(t, o) && (e[o] = t[o]);
                     return e;
                 },
             o =
                 (this && this.__awaiter) ||
-                function(e, t, n, r) {
-                    return new (n || (n = Promise))(function(o, i) {
+                function (e, t, n, r) {
+                    return new (n || (n = Promise))(function (o, i) {
                         function a(e) {
                             try {
                                 u(r.next(e));
@@ -1829,7 +1811,7 @@
                         function u(e) {
                             e.done
                                 ? o(e.value)
-                                : new n(function(t) {
+                                : new n(function (t) {
                                       t(e.value);
                                   }).then(a, s);
                         }
@@ -1838,14 +1820,14 @@
                 },
             i =
                 (this && this.__generator) ||
-                function(e, t) {
+                function (e, t) {
                     var n,
                         r,
                         o,
                         i,
                         a = {
                             label: 0,
-                            sent: function() {
+                            sent: function () {
                                 if (1 & o[0]) throw o[1];
                                 return o[1];
                             },
@@ -1855,14 +1837,14 @@
                     return (
                         (i = { next: s(0), throw: s(1), return: s(2) }),
                         'function' == typeof Symbol &&
-                            (i[Symbol.iterator] = function() {
+                            (i[Symbol.iterator] = function () {
                                 return this;
                             }),
                         i
                     );
                     function s(i) {
-                        return function(s) {
-                            return (function(i) {
+                        return function (s) {
+                            return (function (i) {
                                 if (n) throw new TypeError('Generator is already executing.');
                                 for (; a; )
                                     try {
@@ -1922,99 +1904,99 @@
                     }
                 };
         Object.defineProperty(t, '__esModule', { value: !0 });
-        var a = (function() {
+        var a = (function () {
             function e(e) {
                 (this._canceled = !1), (this._origMess = e), (this._changedMess = r({}, e));
             }
             return (
                 Object.defineProperty(e.prototype, 'title', {
-                    get: function() {
+                    get: function () {
                         return this._changedMess.title;
                     },
-                    set: function(e) {
+                    set: function (e) {
                         this._changedMess.title = e;
                     },
                     enumerable: !0,
                     configurable: !0,
                 }),
                 Object.defineProperty(e.prototype, 'body', {
-                    get: function() {
+                    get: function () {
                         return this._changedMess.body || '';
                     },
-                    set: function(e) {
+                    set: function (e) {
                         this._changedMess.body = e;
                     },
                     enumerable: !0,
                     configurable: !0,
                 }),
                 Object.defineProperty(e.prototype, 'icon', {
-                    get: function() {
+                    get: function () {
                         return this._changedMess.icon;
                     },
-                    set: function(e) {
+                    set: function (e) {
                         this._changedMess.icon = e;
                     },
                     enumerable: !0,
                     configurable: !0,
                 }),
                 Object.defineProperty(e.prototype, 'openUrl', {
-                    get: function() {
+                    get: function () {
                         return this._changedMess.openUrl;
                     },
-                    set: function(e) {
+                    set: function (e) {
                         this._changedMess.openUrl = e;
                     },
                     enumerable: !0,
                     configurable: !0,
                 }),
                 Object.defineProperty(e.prototype, 'duration', {
-                    get: function() {
+                    get: function () {
                         return this._changedMess.duration;
                     },
-                    set: function(e) {
+                    set: function (e) {
                         this._changedMess.duration = e;
                     },
                     enumerable: !0,
                     configurable: !0,
                 }),
                 Object.defineProperty(e.prototype, 'messageHash', {
-                    get: function() {
+                    get: function () {
                         return this._changedMess.messageHash;
                     },
-                    set: function(e) {
+                    set: function (e) {
                         this._changedMess.messageHash = e;
                     },
                     enumerable: !0,
                     configurable: !0,
                 }),
                 Object.defineProperty(e.prototype, 'customData', {
-                    get: function() {
+                    get: function () {
                         return this._changedMess.customData;
                     },
-                    set: function(e) {
+                    set: function (e) {
                         this._changedMess.customData = e;
                     },
                     enumerable: !0,
                     configurable: !0,
                 }),
                 Object.defineProperty(e.prototype, 'campaignCode', {
-                    get: function() {
+                    get: function () {
                         return this._changedMess.campaignCode;
                     },
-                    set: function(e) {
+                    set: function (e) {
                         this._changedMess.campaignCode = e;
                     },
                     enumerable: !0,
                     configurable: !0,
                 }),
-                (e.prototype.show = function() {
-                    return o(this, void 0, void 0, function() {
+                (e.prototype.show = function () {
+                    return o(this, void 0, void 0, function () {
                         var e,
                             t,
                             n,
                             r,
                             o = this;
-                        return i(this, function(i) {
+                        return i(this, function (i) {
                             switch (i.label) {
                                 case 0:
                                     return this._canceled
@@ -2023,7 +2005,7 @@
                                           (t = this._changedMess.image),
                                           (n = this._changedMess.buttons) &&
                                               Array.isArray(n) &&
-                                              n.forEach(function(e, t) {
+                                              n.forEach(function (e, t) {
                                                   e.action = 'action-' + t;
                                               }),
                                           (r = {
@@ -2049,11 +2031,11 @@
                                 case 1:
                                     return i.sent(), [4, self.registration.getNotifications()];
                                 case 2:
-                                    i.sent().forEach(function(t) {
+                                    i.sent().forEach(function (t) {
                                         t.data &&
                                             t.data.code === e &&
                                             o.duration &&
-                                            setTimeout(function() {
+                                            setTimeout(function () {
                                                 return t.close();
                                             }, 1e3 * o.duration);
                                     }),
@@ -2064,10 +2046,10 @@
                         });
                     });
                 }),
-                (e.prototype.cancel = function() {
+                (e.prototype.cancel = function () {
                     this._canceled = !0;
                 }),
-                (e.prototype._forLog = function() {
+                (e.prototype._forLog = function () {
                     return { orig: this._origMess, changed: this._changedMess, canceled: this._canceled };
                 }),
                 e

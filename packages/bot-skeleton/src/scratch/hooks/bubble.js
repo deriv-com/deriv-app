@@ -3,7 +3,7 @@
  * deriv-bot: Initialise anchorXY if there are no values.
  * @private
  */
-Blockly.Bubble.prototype.positionBubble_ = function() {
+Blockly.Bubble.prototype.positionBubble_ = function () {
     if (!this.anchorXY_) {
         this.anchorXY_ = { x: 0, y: 0 };
     }

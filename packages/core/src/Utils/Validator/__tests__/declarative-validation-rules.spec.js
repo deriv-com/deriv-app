@@ -24,7 +24,7 @@ describe('declarative_validation_rules.js', () => {
     describe('.validEmail', () => {
         it('should return false if username contains restricted characters', () => {
             let restricted_characters = '`!@#$%^&*=(){}[]:;"<>,?/~|\'\\'.split('');
-            restricted_characters.forEach(restricted_character => {
+            restricted_characters.forEach((restricted_character) => {
                 let mockvalue = `user${restricted_character}name@proper.test`;
                 expect(rules['email'].func(mockvalue)).to.be.false;
             });
@@ -34,14 +34,14 @@ describe('declarative_validation_rules.js', () => {
         });
         it('should return false if domain name contains restricted characters', () => {
             let restricted_characters = '`!@#$%^&*=(){}[]:;"<>,?/~|\'\\_+'.split('');
-            restricted_characters.forEach(restricted_character => {
+            restricted_characters.forEach((restricted_character) => {
                 let mockvalue = `username@pro${restricted_character}per.test`;
                 expect(rules['email'].func(mockvalue)).to.be.false;
             });
         });
         it('should return false if top level domain contains restricted characters', () => {
             let restricted_characters = '0123456789`~!@#$%^&*()_+-={}[]|:";<>?,/\\\''.split('');
-            restricted_characters.forEach(restricted_character => {
+            restricted_characters.forEach((restricted_character) => {
                 let mockvalue = `username@proper.te${restricted_character}st`;
                 expect(rules['email'].func(mockvalue)).to.be.false;
             });
@@ -59,7 +59,7 @@ describe('declarative_validation_rules.js', () => {
     describe('.validPassword', () => {
         it('should return false if password contains characters that are not alphabets or numerals', () => {
             let restricted_characters = '`!@#$%^&*=(){}[]:;"<>,?/~|\'\\_+'.split('');
-            restricted_characters.forEach(restricted_character => {
+            restricted_characters.forEach((restricted_character) => {
                 let mockvalue = `pass${restricted_character}word`;
                 expect(rules['password'].func(mockvalue)).to.be.false;
             });
@@ -69,7 +69,7 @@ describe('declarative_validation_rules.js', () => {
     describe('.validLetterSymbol', () => {
         it('should return false if value contains restricted characters', () => {
             let restricted_characters = '`~!@#$%^&*)(_=+[}{]\\/";:?><,|d'.split('');
-            restricted_characters.forEach(restricted_character => {
+            restricted_characters.forEach((restricted_character) => {
                 let mockvalue = `test_${restricted_character}`;
                 expect(rules['letter_symbol'].func(mockvalue)).to.be.false;
             });
@@ -79,7 +79,7 @@ describe('declarative_validation_rules.js', () => {
     describe('.validGeneral', () => {
         it('should return false if value contains restricted characters', () => {
             let restricted_characters = '`~!@#$%^&*)(_=+[}{]\\/";:?><|'.split('');
-            restricted_characters.forEach(restricted_character => {
+            restricted_characters.forEach((restricted_character) => {
                 let mockvalue = `test_${restricted_character}`;
                 expect(rules['general'].func(mockvalue)).to.be.false;
             });
@@ -89,7 +89,7 @@ describe('declarative_validation_rules.js', () => {
     describe('.validAddress', () => {
         it('should return false if value contains restricted characters', () => {
             let restricted_characters = '`~!$%^&*_=+[}{]\\"?><|'.split('');
-            restricted_characters.forEach(restricted_character => {
+            restricted_characters.forEach((restricted_character) => {
                 let mockvalue = `test_${restricted_character}`;
                 expect(rules['address'].func(mockvalue)).to.be.false;
             });
@@ -99,7 +99,7 @@ describe('declarative_validation_rules.js', () => {
     describe('.validPostCode', () => {
         it('should return false if value contains characters that is not alphabets or numerals', () => {
             let non_alpha_nums = '`~!@#$%^&*()_+={}|[]\\:;"\'<>?,./'.split('');
-            non_alpha_nums.forEach(non_char_num => {
+            non_alpha_nums.forEach((non_char_num) => {
                 let mockvalue = `00${non_char_num}00`;
                 expect(rules['postcode'].func(mockvalue)).to.be.false;
             });
@@ -111,7 +111,7 @@ describe('declarative_validation_rules.js', () => {
             let non_numbers = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`~!@#$%^&*()_+={}|[]\\:;"\'<>?,./'.split(
                 ''
             );
-            non_numbers.forEach(non_number => {
+            non_numbers.forEach((non_number) => {
                 let mockvalue = `000 000${non_number} 0000`;
                 expect(rules['phone'].func(mockvalue)).to.be.false;
             });
@@ -130,7 +130,7 @@ describe('declarative_validation_rules.js', () => {
     describe('.validTaxID', () => {
         it('should return false if value is not allowed', () => {
             let not_valid_charaters = '~!@#$%^&*()+`={}|[]\\:\'";<>?/.,'.split('');
-            not_valid_charaters.forEach(not_valid_charater => {
+            not_valid_charaters.forEach((not_valid_charater) => {
                 let mockvalue = `10${not_valid_charater}01`;
                 expect(rules['tax_id'].func(mockvalue)).to.be.false;
             });
@@ -142,7 +142,7 @@ describe('declarative_validation_rules.js', () => {
             let not_valid_charaters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#$%^&*()_+-=`{}|[]\\:";\'<>?/,'.split(
                 ''
             );
-            not_valid_charaters.forEach(not_valid_charater => {
+            not_valid_charaters.forEach((not_valid_charater) => {
                 let mockvalue = `0.${not_valid_charater}001`;
                 expect(rules['barrier'].func(mockvalue)).to.be.false;
             });

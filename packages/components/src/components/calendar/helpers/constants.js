@@ -36,7 +36,7 @@ export const week_headers_abbr = {
     Sunday: 'S',
 };
 
-export const getDaysOfTheWeek = day => {
+export const getDaysOfTheWeek = (day) => {
     const days_of_the_week = {
         Mondays: 1,
         Tuesdays: 2,
@@ -50,13 +50,13 @@ export const getDaysOfTheWeek = day => {
     return days_of_the_week[day];
 };
 
-export const getDecade = moment_date => {
+export const getDecade = (moment_date) => {
     const year = toMoment(moment_date).year();
     const decade_start_year = year - (year % 10) + 1;
     return `${decade_start_year}-${decade_start_year + 9}`;
 };
 
-export const getCentury = moment_date => {
+export const getCentury = (moment_date) => {
     const year = toMoment(moment_date).year();
     const decade_start_year = year - (year % 10) + 1;
     return `${decade_start_year}-${decade_start_year + 99}`;

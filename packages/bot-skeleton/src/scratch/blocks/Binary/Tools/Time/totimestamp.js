@@ -44,7 +44,7 @@ Blockly.Blocks.totimestamp = {
     },
 };
 
-Blockly.JavaScript.totimestamp = block => {
+Blockly.JavaScript.totimestamp = (block) => {
     const datetime_string = Blockly.JavaScript.valueToCode(block, 'DATETIME', Blockly.JavaScript.ORDER_ATOMIC);
     const code = `Bot.dateTimeStringToTimestamp(${datetime_string})`;
     return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];

@@ -12,7 +12,7 @@ const Firestore = (() => {
         return root_store.server_time.unix();
     };
 
-    const init = _root_store => {
+    const init = (_root_store) => {
         try {
             root_store = _root_store;
             // Initialize Cloud Firestore through Firebase
@@ -77,11 +77,11 @@ const Firestore = (() => {
                     account_id: login_id,
                     xml: strategy,
                 })
-                .then(docRef => {
+                .then((docRef) => {
                     doc_id = docRef.id;
                     onSummaryChanged(login_id, summary);
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.warn('Error adding document to firestore ', error); // eslint-disable-line no-console
                     doc_id = Math.floor(1000 + Math.random() * 9000);
                 });
@@ -90,18 +90,14 @@ const Firestore = (() => {
         }
     };
 
-    const onStopBot = login_id => {
+    const onStopBot = (login_id) => {
         try {
-            users
-                .doc(login_id)
-                .collection('Runs')
-                .doc(doc_id)
-                .set(
-                    {
-                        end_time: getServerTime(),
-                    },
-                    { merge: true }
-                );
+            users.doc(login_id).collection('Runs').doc(doc_id).set(
+                {
+                    end_time: getServerTime(),
+                },
+                { merge: true }
+            );
         } catch (error) {
             console.warn('Error adding document to firestore when bot stops ', error); // eslint-disable-line no-console
         }
@@ -110,20 +106,15 @@ const Firestore = (() => {
     const onSummaryChanged = (login_id, summary) => {
         try {
             if (summary) {
-                users
-                    .doc(login_id)
-                    .collection('Runs')
-                    .doc(doc_id)
-                    .collection('Summaries')
-                    .add({
-                        lost_contracts: summary.lost_contracts,
-                        number_of_runs: summary.number_of_runs,
-                        total_profit: summary.total_profit,
-                        total_payout: summary.total_payout,
-                        total_stake: summary.total_stake,
-                        won_contracts: summary.won_contracts,
-                        time_stamp: getServerTime(),
-                    });
+                users.doc(login_id).collection('Runs').doc(doc_id).collection('Summaries').add({
+                    lost_contracts: summary.lost_contracts,
+                    number_of_runs: summary.number_of_runs,
+                    total_profit: summary.total_profit,
+                    total_payout: summary.total_payout,
+                    total_stake: summary.total_stake,
+                    won_contracts: summary.won_contracts,
+                    time_stamp: getServerTime(),
+                });
             }
         } catch (error) {
             console.warn('Error adding document to firestore when summary changes ', error); // eslint-disable-line no-console
@@ -134,21 +125,16 @@ const Firestore = (() => {
         try {
             const contract = contracts.length > 0 && contracts[0];
             if (contract && contract.is_completed) {
-                users
-                    .doc(login_id)
-                    .collection('Runs')
-                    .doc(doc_id)
-                    .collection('Transactions')
-                    .add({
-                        buy_price: contract.buy_price,
-                        contract_type: contract.contract_type,
-                        currency: contract.currency,
-                        reference_id: contract.reference_id,
-                        entry_spot: contract.entry_spot,
-                        exit_spot: contract.exit_spot,
-                        profit: contract.profit,
-                        time_stamp: getServerTime(),
-                    });
+                users.doc(login_id).collection('Runs').doc(doc_id).collection('Transactions').add({
+                    buy_price: contract.buy_price,
+                    contract_type: contract.contract_type,
+                    currency: contract.currency,
+                    reference_id: contract.reference_id,
+                    entry_spot: contract.entry_spot,
+                    exit_spot: contract.exit_spot,
+                    profit: contract.profit,
+                    time_stamp: getServerTime(),
+                });
             }
         } catch (error) {
             console.warn('Error adding document to firestore when transaction closes', error); // eslint-disable-line no-console
@@ -159,17 +145,12 @@ const Firestore = (() => {
         try {
             const message = messages.length > 0 && messages[0];
             if (message && message.message_type === message_types.ERROR) {
-                users
-                    .doc(login_id)
-                    .collection('Runs')
-                    .doc(doc_id)
-                    .collection('Errors')
-                    .add({
-                        date: message.date,
-                        time: message.time,
-                        message: message.message,
-                        time_stamp: getServerTime(),
-                    });
+                users.doc(login_id).collection('Runs').doc(doc_id).collection('Errors').add({
+                    date: message.date,
+                    time: message.time,
+                    message: message.message,
+                    time_stamp: getServerTime(),
+                });
             }
         } catch (error) {
             console.warn('Error adding document to firestore when error happens in bot ', error); // eslint-disable-line no-console

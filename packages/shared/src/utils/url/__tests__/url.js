@@ -23,7 +23,7 @@ function mockLocation(url) {
 }
 
 describe('Url', () => {
-    urls.forEach(url => {
+    urls.forEach((url) => {
         describe(url, () => {
             let home_url, website_url, query_string, params_obj, url_no_qs, url_with_qs;
             beforeAll(() => {
@@ -46,7 +46,7 @@ describe('Url', () => {
             });
             describe('.urlFor()', () => {
                 it('returns home as default', () => {
-                    [undefined, null, '', '/', 'home'].forEach(path => {
+                    [undefined, null, '', '/', 'home'].forEach((path) => {
                         expect(urlFor(path)).to.eq(home_url);
                     });
                 });
@@ -77,9 +77,7 @@ describe('Url', () => {
                         .and.to.deep.equal(params_obj);
                 });
                 it('returns empty object when there is no query string', () => {
-                    expect(paramsHash(url_no_qs))
-                        .to.be.an('Object')
-                        .and.to.deep.equal({});
+                    expect(paramsHash(url_no_qs)).to.be.an('Object').and.to.deep.equal({});
                     expect(paramsHash(`${url_no_qs}?`))
                         .to.be.an('Object')
                         .and.to.deep.equal({});
@@ -100,7 +98,7 @@ describe('Url', () => {
                     });
                     it('updates host maps correctly', () => {
                         const host_map = getHostMap();
-                        Object.keys(host_map).forEach(host => {
+                        Object.keys(host_map).forEach((host) => {
                             expect(urlForCurrentDomain(`https://${host}/`)).to.eq(`https://${host_map[host]}/`);
                             expect(urlForCurrentDomain(`https://${host}/${path_query_hash}`)).to.eq(
                                 `https://${host_map[host]}/${path_query_hash}`
@@ -108,7 +106,7 @@ describe('Url', () => {
                         });
                     });
                     it("doesn't update email links", () => {
-                        ['mailto:affiliates@binary.com', 'mailto:email@otherdomain.com'].forEach(email_link => {
+                        ['mailto:affiliates@binary.com', 'mailto:email@otherdomain.com'].forEach((email_link) => {
                             expect(urlForCurrentDomain(email_link)).to.eq(email_link);
                         });
                     });
@@ -131,7 +129,7 @@ describe('Url', () => {
                             'https://www.deriv.app/',
                             'https://bot.binary.com',
                             'mailto:affiliates@binary.com',
-                        ].forEach(u => {
+                        ].forEach((u) => {
                             expect(urlForCurrentDomain(u)).to.eq(u);
                         });
                         setURL(url); // reset for the next test
@@ -160,12 +158,8 @@ describe('Url', () => {
                     expect(param()).to.eq(undefined);
                 });
                 it('returns expected parameter', () => {
-                    expect(param('duration_amount'))
-                        .to.be.a('string')
-                        .and.eq('5');
-                    expect(param('no_value'))
-                        .to.be.a('string')
-                        .and.eq('');
+                    expect(param('duration_amount')).to.be.a('string').and.eq('5');
+                    expect(param('no_value')).to.be.a('string').and.eq('');
                 });
             });
 

@@ -22,7 +22,7 @@ const Months = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected
                             'dc-calendar__cell--active': is_active,
                             'dc-calendar__cell--disabled': is_disabled,
                         })}
-                        onClick={is_disabled ? undefined : e => updateSelected(e, 'month')}
+                        onClick={is_disabled ? undefined : (e) => updateSelected(e, 'month')}
                         data-month={month}
                     >
                         {month_headers[month]}

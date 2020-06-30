@@ -5,7 +5,7 @@ import CurrencyUtils from '@deriv/shared/utils/currency';
 import Input from 'Components/input/input.jsx';
 import Button from 'Components/button/button.jsx';
 
-const getDecimals = val => {
+const getDecimals = (val) => {
     const array_value = typeof val === 'string' ? val.split('.') : val.toString().split('.');
     return array_value && array_value.length > 1 ? array_value[1].length : 0;
 };

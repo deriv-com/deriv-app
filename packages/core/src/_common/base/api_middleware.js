@@ -37,7 +37,7 @@ class APIMiddleware {
 
 // Delegate error handling to the callback
 function promiseRejectToResolve(promise) {
-    return new Promise(r => {
+    return new Promise((r) => {
         promise.then(r, r);
     });
 }

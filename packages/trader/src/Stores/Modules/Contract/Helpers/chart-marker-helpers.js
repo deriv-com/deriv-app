@@ -18,7 +18,7 @@ export const getSpotCount = (contract_info, spot_count) =>
     isDigitContract(contract_info.contract_type) ? spot_count + 1 : spot_count;
 
 // -------------------- Lines --------------------
-export const createMarkerEndTime = contract_info => {
+export const createMarkerEndTime = (contract_info) => {
     const end_time = getEndTime(contract_info);
     if (!end_time) return false;
 
@@ -28,7 +28,7 @@ export const createMarkerEndTime = contract_info => {
     });
 };
 
-export const createMarkerPurchaseTime = contract_info => {
+export const createMarkerPurchaseTime = (contract_info) => {
     if (
         !contract_info.purchase_time ||
         !contract_info.date_start ||
@@ -39,7 +39,7 @@ export const createMarkerPurchaseTime = contract_info => {
     return createMarkerConfig(MARKER_TYPES_CONFIG.LINE_PURCHASE.type, +contract_info.purchase_time);
 };
 
-export const createMarkerStartTime = contract_info => {
+export const createMarkerStartTime = (contract_info) => {
     if (!contract_info.date_start) return false;
 
     return createMarkerConfig(MARKER_TYPES_CONFIG.LINE_START.type, +contract_info.date_start, null, {
@@ -48,7 +48,7 @@ export const createMarkerStartTime = contract_info => {
 };
 
 // -------------------- Spots --------------------
-export const createMarkerSpotEntry = contract_info => {
+export const createMarkerSpotEntry = (contract_info) => {
     if (!contract_info.entry_tick_time) return false;
 
     let marker_type = MARKER_TYPES_CONFIG.SPOT_ENTRY.type;

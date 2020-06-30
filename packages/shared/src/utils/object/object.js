@@ -1,16 +1,16 @@
 const extend = require('extend');
 
-export const isEmptyObject = obj => {
+export const isEmptyObject = (obj) => {
     let is_empty = true;
     if (obj && obj instanceof Object) {
-        Object.keys(obj).forEach(key => {
+        Object.keys(obj).forEach((key) => {
             if (Object.prototype.hasOwnProperty.call(obj, key)) is_empty = false;
         });
     }
     return is_empty;
 };
 
-export const cloneObject = obj => (!isEmptyObject(obj) ? extend(true, Array.isArray(obj) ? [] : {}, obj) : obj);
+export const cloneObject = (obj) => (!isEmptyObject(obj) ? extend(true, Array.isArray(obj) ? [] : {}, obj) : obj);
 
 // Note that this function breaks on objects with circular references.
 export const isDeepEqual = (a, b) => {
@@ -33,7 +33,7 @@ export const isEqualArray = (arr1, arr2) =>
 export const isEqualObject = (obj1, obj2) =>
     obj1 === obj2 ||
     (Object.keys(obj1).length === Object.keys(obj2).length &&
-        Object.keys(obj1).every(key => isDeepEqual(obj1[key], obj2[key])));
+        Object.keys(obj1).every((key) => isDeepEqual(obj1[key], obj2[key])));
 
 // Filters out duplicates in an array of objects by key
 export const unique = (array, key) =>
@@ -49,10 +49,10 @@ export const getPropertyValue = (obj, k) => {
     return obj ? cloneObject(obj[keys[0]]) : undefined;
 };
 
-export const removeEmptyPropertiesFromObject = obj => {
+export const removeEmptyPropertiesFromObject = (obj) => {
     const clone = { ...obj };
 
-    Object.getOwnPropertyNames(obj).forEach(key => {
+    Object.getOwnPropertyNames(obj).forEach((key) => {
         if (!obj[key]) {
             delete clone[key];
         }

@@ -22,8 +22,8 @@ export default class SegmentStore extends BaseStore {
      * @param {object} data
      */
     @action.bound
-    identifyEvent = async data =>
-        new Promise(resolve => {
+    identifyEvent = async (data) =>
+        new Promise((resolve) => {
             if (this.is_applicable && !isLoginPages() && !this.has_identified) {
                 BinarySocket.wait('authorize').then(() => {
                     const user_id = this.root_store.client.user_id;

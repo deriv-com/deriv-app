@@ -7,7 +7,7 @@ import './verification.scss';
 const Verification = () => {
     const { nickname, toggleNicknamePopup, is_advertiser, poi_status, poi_url } = React.useContext(Dp2pContext);
 
-    const poiStatusText = status => {
+    const poiStatusText = (status) => {
         switch (status) {
             case 'pending':
             case 'rejected':

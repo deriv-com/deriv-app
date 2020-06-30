@@ -17,7 +17,7 @@ const Item = ({ contract_types, handleInfoClick, handleSelect, is_equal, name, v
             })}
             name={name}
             value={type.value}
-            onClick={e => handleSelect(type, e)}
+            onClick={(e) => handleSelect(type, e)}
         >
             <IconTradeCategory category={type.value} className='contract-type-item__icon-wrapper' />
             <span className='contract-type-item__title'>{type.text}</span>

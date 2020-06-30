@@ -105,7 +105,7 @@ class Error extends React.Component {
                                         i18n_default_text={'Please update your {{details}} to continue.'}
                                         values={{
                                             details: this.props.error.fields
-                                                .map(field => this.error_fields[field] || field)
+                                                .map((field) => this.error_fields[field] || field)
                                                 .join(', '),
                                             interpolation: { escapeValue: false },
                                         }}

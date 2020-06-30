@@ -1,5 +1,5 @@
 const Shortcode = (() => {
-    const extractInfoFromShortcode = shortcode => {
+    const extractInfoFromShortcode = (shortcode) => {
         const info_from_shortcode = {
             category: '',
             underlying: '',

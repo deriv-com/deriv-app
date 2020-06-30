@@ -28,7 +28,7 @@ function buildIcons() {
     const buffer = ['// auto-generated file. DO NOT MODIFY.', ''];
 
     const categories = {};
-    const emitModule = file => {
+    const emitModule = (file) => {
         const pathname = entries_object[file].replace('.svg', '').replace('./src/components/icon/', '');
         const dirname = path.dirname(pathname);
 
@@ -44,7 +44,7 @@ function buildIcons() {
     };
 
     const files = Object.keys(entries_object);
-    files.forEach(f => {
+    files.forEach((f) => {
         const stats = fs.statSync(entries_object[f]);
         if (stats.isFile()) {
             emitModule(f);

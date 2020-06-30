@@ -4,7 +4,7 @@ import { connect } from '../stores/connect';
 
 class FlyoutBlock extends React.PureComponent {
     render() {
-        return <div ref={el => (this.el_block_workspace = el)} className='flyout__block-workspace' />;
+        return <div ref={(el) => (this.el_block_workspace = el)} className='flyout__block-workspace' />;
     }
 
     componentDidMount() {

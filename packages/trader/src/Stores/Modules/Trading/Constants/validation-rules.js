@@ -14,11 +14,11 @@ const getValidationRules = () => ({
             [
                 'req',
                 {
-                    condition: store => store.barrier_count && store.form_components.indexOf('barrier') > -1,
+                    condition: (store) => store.barrier_count && store.form_components.indexOf('barrier') > -1,
                     message: localize('Barrier is a required field.'),
                 },
             ],
-            ['barrier', { condition: store => store.barrier_count }],
+            ['barrier', { condition: (store) => store.barrier_count }],
             [
                 'custom',
                 {
@@ -35,11 +35,11 @@ const getValidationRules = () => ({
             [
                 'req',
                 {
-                    condition: store => store.barrier_count > 1 && store.form_components.indexOf('barrier') > -1,
+                    condition: (store) => store.barrier_count > 1 && store.form_components.indexOf('barrier') > -1,
                     message: localize('Barrier is a required field.'),
                 },
             ],
-            ['barrier', { condition: store => store.barrier_count }],
+            ['barrier', { condition: (store) => store.barrier_count }],
             [
                 'custom',
                 {
@@ -155,7 +155,7 @@ export const getMultiplierValidationRules = () => ({
             [
                 'req',
                 {
-                    condition: store => store.has_stop_loss && !store.stop_loss,
+                    condition: (store) => store.has_stop_loss && !store.stop_loss,
                     message: localize('Please enter a stop loss amount.'),
                 },
             ],
@@ -166,7 +166,7 @@ export const getMultiplierValidationRules = () => ({
             [
                 'req',
                 {
-                    condition: store => store.has_take_profit && !store.take_profit,
+                    condition: (store) => store.has_take_profit && !store.take_profit,
                     message: localize('Please enter a take profit amount.'),
                 },
             ],

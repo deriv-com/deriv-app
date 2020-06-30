@@ -13,7 +13,7 @@ import { localize, Localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared/utils/date';
 import 'Sass/details-form.scss';
 
-const DateOfBirthField = props => (
+const DateOfBirthField = (props) => (
     <Field name={props.name}>
         {({ field: { value }, form: { setFieldValue, errors, touched, setTouched } }) => (
             <DateOfBirthPicker
@@ -61,12 +61,12 @@ class PersonalDetails extends React.Component {
         };
     }
 
-    handleCancel = values => {
+    handleCancel = (values) => {
         this.props.onSave(this.props.index, values);
         this.props.onCancel();
     };
 
-    onFocus = is_active => {
+    onFocus = (is_active) => {
         this.setState({ paddingBottom: is_active ? '18rem' : 'unset' });
     };
 
@@ -147,29 +147,23 @@ class PersonalDetails extends React.Component {
         );
     }
 
-    validatePersonalDetails = values => {
+    validatePersonalDetails = (values) => {
         const max_date = toMoment().subtract(18, 'years');
         const validations = {
             first_name: [
-                v => !!v,
-                v => v.length > 2,
-                v => v.length < 30,
-                v => /^[a-zA-Z\s\W'.-]{2,50}$/gu.exec(v) !== null,
+                (v) => !!v,
+                (v) => v.length > 2,
+                (v) => v.length < 30,
+                (v) => /^[a-zA-Z\s\W'.-]{2,50}$/gu.exec(v) !== null,
             ],
             last_name: [
-                v => !!v,
-                v => v.length >= 2,
-                v => v.length <= 50,
-                v => /^[a-zA-Z\s\W'.-]{2,50}$/gu.exec(v) !== null,
+                (v) => !!v,
+                (v) => v.length >= 2,
+                (v) => v.length <= 50,
+                (v) => /^[a-zA-Z\s\W'.-]{2,50}$/gu.exec(v) !== null,
             ],
-            date_of_birth: [
-                v => !!v,
-                v =>
-                    toMoment(v)
-                        .clone()
-                        .isValid() && toMoment(v).isBefore(max_date),
-            ],
-            phone: [v => !!v, v => /^\+?((-|\s)*[0-9]){8,35}$/.exec(v) !== null],
+            date_of_birth: [(v) => !!v, (v) => toMoment(v).clone().isValid() && toMoment(v).isBefore(max_date)],
+            phone: [(v) => !!v, (v) => /^\+?((-|\s)*[0-9]){8,35}$/.exec(v) !== null],
         };
 
         const mappedKey = {
@@ -179,14 +173,14 @@ class PersonalDetails extends React.Component {
             phone: localize('Phone'),
         };
 
-        const common_messages = field_name => [
+        const common_messages = (field_name) => [
             localize('{{field_name}} is required', { field_name }),
             localize('{{field_name}} is too short', { field_name }),
             localize('{{field_name}} is too long', { field_name }),
             localize('{{field_name}} is not in a proper format.', { field_name }),
         ];
 
-        const alt_messages = field_name => ({
+        const alt_messages = (field_name) => ({
             phone: [
                 localize('{{field_name}} is required', { field_name }),
                 localize('{{field_name}} is not in a proper format.', { field_name }),
@@ -200,7 +194,7 @@ class PersonalDetails extends React.Component {
         const errors = {};
 
         Object.entries(validations).forEach(([key, rules]) => {
-            const error_index = rules.findIndex(v => !v(values[key]));
+            const error_index = rules.findIndex((v) => !v(values[key]));
             if (error_index !== -1) {
                 switch (key) {
                     case 'date_of_birth':

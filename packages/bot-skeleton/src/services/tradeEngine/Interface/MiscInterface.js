@@ -2,11 +2,11 @@ import { localize } from '@deriv/translations';
 import { notify } from '../utils/broadcast';
 import { observer as globalObserver } from '../../../utils/observer';
 
-export default Interface =>
+export default (Interface) =>
     class extends Interface {
         getMiscInterface() {
             return {
-                notify: args => globalObserver.emit('ui.log.notify', args),
+                notify: (args) => globalObserver.emit('ui.log.notify', args),
                 console: ({ type, message }) => console[type](message), // eslint-disable-line no-console
                 notifyTelegram: (access_token, chat_id, text) => {
                     const url = `https://api.telegram.org/bot${access_token}/sendMessage`;
@@ -18,7 +18,7 @@ export default Interface =>
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ chat_id, text }),
                     })
-                        .then(response => {
+                        .then((response) => {
                             if (!response.ok) {
                                 onError();
                             }
@@ -26,8 +26,8 @@ export default Interface =>
                         .catch(onError);
                 },
                 getTotalRuns: () => this.tradeEngine.getTotalRuns(),
-                getBalance: type => this.tradeEngine.getBalance(type),
-                getTotalProfit: toString =>
+                getBalance: (type) => this.tradeEngine.getBalance(type),
+                getTotalProfit: (toString) =>
                     this.tradeEngine.getTotalProfit(toString, this.tradeEngine.tradeOptions.currency),
             };
         }

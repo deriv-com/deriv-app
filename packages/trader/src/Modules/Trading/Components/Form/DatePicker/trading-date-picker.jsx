@@ -37,9 +37,7 @@ class TradingDatePicker extends React.Component {
 
         return this.has_intraday_unit
             ? toMoment(server_time).clone()
-            : toMoment(server_time)
-                  .clone()
-                  .add(duration_min_max.daily.min, 'second');
+            : toMoment(server_time).clone().add(duration_min_max.daily.min, 'second');
     }
 
     get moment_contract_start_date_time() {
@@ -90,13 +88,11 @@ class TradingDatePicker extends React.Component {
 
     get datepicker_value() {
         return this.has_range_selection
-            ? toMoment()
-                  .add(this.state.duration, 'days')
-                  .format('YYYY-MM-DD')
+            ? toMoment().add(this.state.duration, 'days').format('YYYY-MM-DD')
             : this.state.selected_date || this.min_date_expiry;
     }
 
-    onChange = e => {
+    onChange = (e) => {
         if (this.is_mounted) {
             if (this.has_range_selection) {
                 this.setState({
@@ -125,7 +121,7 @@ class TradingDatePicker extends React.Component {
         let disabled_days = [];
 
         const events = await ContractType.getTradingEvents(e, this.props.symbol);
-        events.forEach(evt => {
+        events.forEach((evt) => {
             const dates = evt.dates.split(', '); // convert dates str into array
             const idx = dates.indexOf('Fridays');
             if (idx !== -1) {

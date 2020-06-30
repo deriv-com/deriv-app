@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 
-export const timeSince = timestamp => {
+export const timeSince = (timestamp) => {
     const now = new Date();
     const secondPast = (now.getTime() - timestamp) / 1000;
 

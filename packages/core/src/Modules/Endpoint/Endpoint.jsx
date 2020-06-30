@@ -4,7 +4,7 @@ import { Button, Input } from '@deriv/components';
 import { getAppId, getSocketURL } from '@deriv/shared/utils/config';
 // eslint-disable-next-line import/extensions
 
-const InputField = props => {
+const InputField = (props) => {
     return (
         <Field name={props.name}>
             {({ field, form: { errors, touched } }) => (
@@ -30,7 +30,7 @@ const Endpoint = () => (
             app_id: getAppId(),
             server: getSocketURL(),
         }}
-        validate={values => {
+        validate={(values) => {
             const errors = {};
 
             if (!values.app_id) {
@@ -47,7 +47,7 @@ const Endpoint = () => (
 
             return errors;
         }}
-        onSubmit={values => {
+        onSubmit={(values) => {
             localStorage.setItem('config.app_id', values.app_id);
             localStorage.setItem('config.server_url', values.server);
             location.reload();

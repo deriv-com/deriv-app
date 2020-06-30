@@ -48,7 +48,7 @@ Blockly.Blocks.logic_operation = {
     },
 };
 
-Blockly.JavaScript.logic_operation = block => {
+Blockly.JavaScript.logic_operation = (block) => {
     const selectedOperator = block.getFieldValue('OP');
 
     let operator, order;

@@ -23,8 +23,9 @@ class FormProgress extends React.PureComponent {
         };
         const each = 100 / this.props.steps.length;
         this.el_completed_bar.current.style.width = `${this.props.current_step * each}%`;
-        this.el_completed_bar.current.style.transform = `translateX(${el_first_identifier.offsetLeft +
-            el_first_identifier.clientWidth / 2}px)`;
+        this.el_completed_bar.current.style.transform = `translateX(${
+            el_first_identifier.offsetLeft + el_first_identifier.clientWidth / 2
+        }px)`;
     }
 
     render() {

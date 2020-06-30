@@ -73,9 +73,7 @@ const SocketCache = (() => {
             return;
         }
 
-        const expires = moment()
-            .add(config[msg_type].expire, 'm')
-            .valueOf();
+        const expires = moment().add(config[msg_type].expire, 'm').valueOf();
 
         if (!data_obj.static_hash) {
             data_obj.static_hash = getStaticHash();
@@ -85,7 +83,7 @@ const SocketCache = (() => {
         LocalStore.setObject(storage_key, data_obj);
     };
 
-    const isEmptyValue = data => {
+    const isEmptyValue = (data) => {
         let is_empty_data = false;
         if (Array.isArray(data)) {
             if (!data.length) {
@@ -111,9 +109,9 @@ const SocketCache = (() => {
         }
     };
 
-    const getData = key => ObjectUtils.getPropertyValue(data_obj, key) || {};
+    const getData = (key) => ObjectUtils.getPropertyValue(data_obj, key) || {};
 
-    const get = key => {
+    const get = (key) => {
         reloadDataObj();
 
         const response_obj = getData(key);
@@ -129,10 +127,10 @@ const SocketCache = (() => {
         return response;
     };
 
-    const getByMsgType = msg_type => {
+    const getByMsgType = (msg_type) => {
         reloadDataObj();
 
-        const key = Object.keys(data_obj).find(k => getData(k).msg_type === msg_type);
+        const key = Object.keys(data_obj).find((k) => getData(k).msg_type === msg_type);
 
         if (!key) return undefined;
 
@@ -149,13 +147,13 @@ const SocketCache = (() => {
         return response;
     };
 
-    const has = key => {
+    const has = (key) => {
         return !!get(key);
     };
 
     const remove = (key, should_match_all) => {
         if (should_match_all) {
-            Object.keys(data_obj).forEach(data_key => {
+            Object.keys(data_obj).forEach((data_key) => {
                 if (data_key.indexOf(key) !== -1) {
                     delete data_obj[data_key];
                 }

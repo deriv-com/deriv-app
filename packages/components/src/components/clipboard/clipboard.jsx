@@ -8,7 +8,7 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
     const [is_copied, setIsCopied] = React.useState(false);
     let timeout_clipboard = null;
 
-    const copyToClipboard = text => {
+    const copyToClipboard = (text) => {
         const textField = document.createElement('textarea');
         textField.innerText = text;
         document.body.appendChild(textField);

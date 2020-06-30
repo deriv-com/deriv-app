@@ -21,7 +21,7 @@ import { connect } from 'Stores/connect';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 
-const EmptyPlaceholderWrapper = props => (
+const EmptyPlaceholderWrapper = (props) => (
     <React.Fragment>
         {props.is_empty ? (
             <PlaceholderComponent
@@ -181,7 +181,7 @@ class OpenPositions extends React.Component {
         );
     };
 
-    getRowAction = row_obj =>
+    getRowAction = (row_obj) =>
         row_obj.is_unsupported
             ? {
                   component: (
@@ -207,7 +207,7 @@ class OpenPositions extends React.Component {
     // After refactoring transactionHandler for creating positions,
     // purchase property in contract positions object is somehow NaN or undefined in the first few responses.
     // So we set it to true in these cases to show a preloader for the data-table-row until the correct value is set.
-    isPurchaseReceived = item => isNaN(item.purchase) || !item.purchase;
+    isPurchaseReceived = (item) => isNaN(item.purchase) || !item.purchase;
 
     getTotals = (active_positions_filtered, is_multiplier_selected) => {
         let totals;
@@ -219,7 +219,7 @@ class OpenPositions extends React.Component {
             let bid_price = 0;
             let purchase = 0;
 
-            active_positions_filtered.forEach(portfolio_pos => {
+            active_positions_filtered.forEach((portfolio_pos) => {
                 buy_price += +portfolio_pos.contract_info.buy_price;
                 bid_price += +portfolio_pos.contract_info.bid_price;
                 purchase += +portfolio_pos.purchase;
@@ -251,7 +251,7 @@ class OpenPositions extends React.Component {
             let profit_loss = 0;
             let payout = 0;
 
-            active_positions_filtered.forEach(portfolio_pos => {
+            active_positions_filtered.forEach((portfolio_pos) => {
                 indicative += +portfolio_pos.indicative;
                 purchase += +portfolio_pos.purchase;
                 profit_loss += portfolio_pos.profit_loss;
@@ -267,7 +267,7 @@ class OpenPositions extends React.Component {
         return totals;
     };
 
-    setActiveTabIndex = index => {
+    setActiveTabIndex = (index) => {
         this.setState({ active_index: index });
     };
 
@@ -290,7 +290,7 @@ class OpenPositions extends React.Component {
 
         const is_multiplier_selected = this.state.active_index === 1;
 
-        const active_positions_filtered = active_positions.filter(p => {
+        const active_positions_filtered = active_positions.filter((p) => {
             if (p.contract_info) {
                 return is_multiplier_selected
                     ? isMultiplierContract(p.contract_info.contract_type)

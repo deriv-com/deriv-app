@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
  * @param {!Blockly.Workspace} workspace The workspace containing variables.
  * @return {!Array.<!Element>} Array of XML block elements.
  */
-Blockly.DataCategory = function(workspace) {
+Blockly.DataCategory = function (workspace) {
     const variableModelList = workspace.getVariablesOfType('');
     let xmlList = [];
 
@@ -18,10 +18,10 @@ Blockly.DataCategory = function(workspace) {
     return xmlList;
 };
 
-Blockly.DataCategory.search = function(variableModelList) {
+Blockly.DataCategory.search = function (variableModelList) {
     const xmlList = [];
     if (variableModelList.length > 0) {
-        const generateVariableFieldXmlString = variableModel => {
+        const generateVariableFieldXmlString = (variableModel) => {
             // The variable name may be user input, so it may contain characters that
             // need to be escaped to create valid XML.
             const escapedText = `<field name="VAR" id="${variableModel.getId()}" variabletype="${goog.string.htmlEscape(
@@ -56,7 +56,7 @@ Blockly.DataCategory.search = function(variableModelList) {
         if (Blockly.Blocks.variables_get) {
             variableModelList.sort(Blockly.VariableModel.compareByName);
 
-            variableModelList.forEach(variable => {
+            variableModelList.forEach((variable) => {
                 const getBlockText = `<xml><block type="variables_get">${generateVariableFieldXmlString(
                     variable
                 )}</block></xml>`;
@@ -75,12 +75,12 @@ Blockly.DataCategory.search = function(variableModelList) {
  * @param {Blockly.Workspace} workspace Workspace to register callback to.
  * @deriv/bot: We only use a single type of variable, so `type` arg was removed.
  */
-Blockly.DataCategory.addCreateButton = function(xmlList, workspace) {
+Blockly.DataCategory.addCreateButton = function (xmlList, workspace) {
     const buttonXml = goog.dom.createDom('button');
     // Set default msg, callbackKey, and callback values for type 'VARIABLE'
     const msg = localize('Create variable');
     const callbackKey = 'CREATE_VARIABLE';
-    const callback = function(button) {
+    const callback = function (button) {
         const buttonWorkspace = button.getTargetWorkspace();
         Blockly.Variables.createVariable(buttonWorkspace, null, '');
 

@@ -35,7 +35,7 @@ class Drawer extends React.PureComponent {
 
     toggleDrawer = () => {
         this.setState(
-            prev_state => ({
+            (prev_state) => ({
                 is_open: !prev_state.is_open,
             }),
             () => {

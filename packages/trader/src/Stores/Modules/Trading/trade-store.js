@@ -211,7 +211,7 @@ export default class TradeStore extends BaseStore {
     @computed
     get is_symbol_in_active_symbols() {
         return this.active_symbols.some(
-            symbol_info => symbol_info.symbol === this.symbol && symbol_info.exchange_is_open === 1
+            (symbol_info) => symbol_info.symbol === this.symbol && symbol_info.exchange_is_open === 1
         );
     }
 
@@ -298,7 +298,7 @@ export default class TradeStore extends BaseStore {
         await when(() => !this.root_store.client.is_populating_account_list);
         await this.setActiveSymbols();
         runInAction(async () => {
-            await WS.storage.contractsFor(this.symbol).then(async r => {
+            await WS.storage.contractsFor(this.symbol).then(async (r) => {
                 if (r.error && r.error.code === 'InvalidSymbol') {
                     await this.resetRefresh();
                     await this.setActiveSymbols();
@@ -321,7 +321,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async onChangeMultiple(values) {
-        Object.keys(values).forEach(name => {
+        Object.keys(values).forEach((name) => {
             if (!(name in this)) {
                 throw new Error(`Invalid Argument: ${name}`);
             }
@@ -420,7 +420,7 @@ export default class TradeStore extends BaseStore {
             return;
         }
 
-        let purchase_spot_barrier = this.barriers.find(b => b.key === key);
+        let purchase_spot_barrier = this.barriers.find((b) => b.key === key);
         if (purchase_spot_barrier) {
             if (purchase_spot_barrier.high !== +position.contract_info.entry_spot) {
                 purchase_spot_barrier.onChange({
@@ -476,7 +476,7 @@ export default class TradeStore extends BaseStore {
         return this.barriers && toJS(this.barriers);
     }
 
-    setMainBarrier = proposal_info => {
+    setMainBarrier = (proposal_info) => {
         if (!proposal_info) {
             return;
         }
@@ -506,7 +506,7 @@ export default class TradeStore extends BaseStore {
             this.is_purchase_enabled = false;
             const is_tick_contract = this.duration_unit === 't';
             processPurchase(proposal_id, price).then(
-                action(response => {
+                action((response) => {
                     const last_digit = +this.last_digit;
                     if (this.proposal_info[type]?.id !== proposal_id) {
                         throw new Error('Proposal ID does not match.');
@@ -577,10 +577,10 @@ export default class TradeStore extends BaseStore {
     disablePurchaseButtons = () => {
         const el_purchase_value = document.getElementsByClassName('trade-container__price-info');
         const el_purchase_buttons = document.getElementsByClassName('btn-purchase');
-        [].forEach.bind(el_purchase_buttons, el => {
+        [].forEach.bind(el_purchase_buttons, (el) => {
             el.classList.add('btn-purchase--disabled');
         })();
-        [].forEach.bind(el_purchase_value, el => {
+        [].forEach.bind(el_purchase_value, (el) => {
             el.classList.add('trade-container__price-info--fade');
         })();
     };
@@ -592,7 +592,7 @@ export default class TradeStore extends BaseStore {
      */
     @action.bound
     updateStore(new_state) {
-        Object.keys(ObjectUtils.cloneObject(new_state)).forEach(key => {
+        Object.keys(ObjectUtils.cloneObject(new_state)).forEach((key) => {
             if (key === 'root_store' || ['validation_rules', 'validation_errors', 'currency'].indexOf(key) > -1) return;
             if (JSON.stringify(this[key]) === JSON.stringify(new_state[key])) {
                 delete new_state[key];
@@ -773,7 +773,7 @@ export default class TradeStore extends BaseStore {
     requestProposal() {
         const requests = createProposalRequests(this);
 
-        if (Object.values(this.validation_errors).some(e => e.length)) {
+        if (Object.values(this.validation_errors).some((e) => e.length)) {
             this.proposal_info = {};
             this.purchase_info = {};
             this.forgetAllProposal();
@@ -784,7 +784,7 @@ export default class TradeStore extends BaseStore {
             this.proposal_requests = requests;
             this.purchase_info = {};
 
-            Object.keys(this.proposal_requests).forEach(type => {
+            Object.keys(this.proposal_requests).forEach((type) => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
         }
@@ -888,7 +888,7 @@ export default class TradeStore extends BaseStore {
 
         if (!this.validation_rules.duration) return;
 
-        const index = this.validation_rules.duration.rules.findIndex(item => item[0] === 'number');
+        const index = this.validation_rules.duration.rules.findIndex((item) => item[0] === 'number');
         const limits = this.duration_min_max[this.contract_expiry_type] || false;
 
         if (limits) {
@@ -1050,7 +1050,7 @@ export default class TradeStore extends BaseStore {
         }
     };
 
-    wsForget = req => {
+    wsForget = (req) => {
         const key = JSON.stringify(req);
         if (g_subscribers_map[key]) {
             g_subscribers_map[key].unsubscribe();
@@ -1059,13 +1059,13 @@ export default class TradeStore extends BaseStore {
         // WS.forget('ticks_history', callback, match);
     };
 
-    wsForgetStream = stream_id => {
+    wsForgetStream = (stream_id) => {
         WS.forgetStream(stream_id);
     };
 
-    wsSendRequest = req => {
+    wsSendRequest = (req) => {
         if (req.time) {
-            return ServerTime.timePromise().then(server_time => {
+            return ServerTime.timePromise().then((server_time) => {
                 if (server_time) {
                     return {
                         msg_type: 'time',
@@ -1086,7 +1086,7 @@ export default class TradeStore extends BaseStore {
         this.should_refresh_active_symbols = false;
     }
 
-    refToAddTick = ref => {
+    refToAddTick = (ref) => {
         this.addTickByProposal = ref;
     };
 

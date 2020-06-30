@@ -16,7 +16,7 @@ stories.add('basic usage', () => (
             <TickPicker
                 min_value={text('min value', '2')}
                 max_value={text('max value', '7')}
-                onSubmit={action(e => e.target.value)}
+                onSubmit={action((e) => e.target.value)}
                 submit_label='OK'
                 singular_label='Tick'
                 plural_label='Ticks'

@@ -28,7 +28,7 @@ class BuySell extends React.Component {
         show_verification: false,
     };
 
-    setSelectedAd = selected_ad => {
+    setSelectedAd = (selected_ad) => {
         if (!this.context.is_advertiser) {
             this.setState({ show_verification: true });
         } else {
@@ -40,11 +40,11 @@ class BuySell extends React.Component {
         this.setState({ show_popup: false });
     };
 
-    onChangeTableType = event => {
+    onChangeTableType = (event) => {
         this.setState({ table_type: event.target.value });
     };
 
-    onConfirmClick = order_info => {
+    onConfirmClick = (order_info) => {
         const nav = { location: 'buy_sell' };
         this.props.navigate('orders', { order_info, nav });
     };

@@ -16,8 +16,8 @@ const available_modes = [
 const available_sizes = ['regular', 'large'];
 
 const Label = ({ mode, children, size = 'regular', className }) => {
-    const type = available_modes.some(m => m === mode) ? mode : 'default';
-    const scale = available_sizes.some(s => s === size) ? size : 'regular';
+    const type = available_modes.some((m) => m === mode) ? mode : 'default';
+    const scale = available_sizes.some((s) => s === size) ? size : 'regular';
 
     return (
         <span

@@ -18,7 +18,7 @@ const validateResidence = (values, residence_list) => {
     if (!values.residence) {
         errors.residence = true;
     } else {
-        const index_of_selection = residence_list.findIndex(item => isResidenceText(item, values));
+        const index_of_selection = residence_list.findIndex((item) => isResidenceText(item, values));
 
         if (index_of_selection === -1 || residence_list[index_of_selection].disabled === 'DISABLED') {
             errors.residence = localize('Unfortunately, {{website_name}} is not available in your country.', {
@@ -31,7 +31,7 @@ const validateResidence = (values, residence_list) => {
 };
 
 class SetResidence extends React.Component {
-    onSetResidenceComplete = error => {
+    onSetResidenceComplete = (error) => {
         // TODO: Proper error handling (currently we have no place to put the message)
         if (error) {
             throw Error(error);
@@ -43,8 +43,8 @@ class SetResidence extends React.Component {
 
     render() {
         const { onSetResidence, residence_list } = this.props;
-        const onSetResidencePassthrough = values => {
-            const index_of_selection = residence_list.findIndex(item => isResidenceText(item, values));
+        const onSetResidencePassthrough = (values) => {
+            const index_of_selection = residence_list.findIndex((item) => isResidenceText(item, values));
             const modded_values = { ...values, residence: residence_list[index_of_selection].value };
             onSetResidence(modded_values, this.onSetResidenceComplete);
         };
@@ -52,7 +52,7 @@ class SetResidence extends React.Component {
             <div className='set-residence'>
                 <Formik
                     initialValues={{ residence: '' }}
-                    validate={values => validateResidence(values, residence_list)}
+                    validate={(values) => validateResidence(values, residence_list)}
                     onSubmit={onSetResidencePassthrough}
                 >
                     {({ isSubmitting, errors, values, setFieldValue, touched }) => (

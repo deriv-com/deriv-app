@@ -16,7 +16,7 @@ const IncrementButtons = ({
     const timeout_ref = React.useRef();
     const is_long_press_ref = React.useRef();
 
-    const handleButtonPress = onChange => ev => {
+    const handleButtonPress = (onChange) => (ev) => {
         timeout_ref.current = setTimeout(() => {
             is_long_press_ref.current = true;
             let step = 1;
@@ -36,10 +36,10 @@ const IncrementButtons = ({
         is_long_press_ref.current = false;
     };
 
-    const getPressEvents = onChange => {
+    const getPressEvents = (onChange) => {
         if (!is_incrementable_on_long_press) return {};
         return {
-            onContextMenu: e => e.preventDefault(),
+            onContextMenu: (e) => e.preventDefault(),
             onTouchStart: handleButtonPress(onChange),
             onTouchEnd: handleButtonRelease,
             onMouseDown: handleButtonPress(onChange),

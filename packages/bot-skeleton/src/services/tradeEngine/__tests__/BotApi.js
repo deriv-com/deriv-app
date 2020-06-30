@@ -20,7 +20,7 @@ describe('Interface', () => {
     describe('Bot can be started correctly', () => {
         let stay;
 
-        beforeAll(done => {
+        beforeAll((done) => {
             Bot.init('Xkq6oGFEHh6hJH8', {
                 candleInterval: 60,
                 contractTypes: ['DIGITODD', 'DIGITEVEN'],
@@ -35,7 +35,7 @@ describe('Interface', () => {
                 basis: 'stake',
             });
 
-            watch('before').then(c => {
+            watch('before').then((c) => {
                 stay = c;
                 done();
             });

@@ -15,7 +15,7 @@ const template = (string, content) => {
  */
 const createElement = (tag_name, attributes = {}) => {
     const el = document.createElement(tag_name);
-    Object.keys(attributes).forEach(attr => {
+    Object.keys(attributes).forEach((attr) => {
         const value = attributes[attr];
         if (attr === 'text') {
             el.textContent = value;

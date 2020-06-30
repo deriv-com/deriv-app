@@ -58,10 +58,10 @@ export const InputField = ({ name, optional = false, ...props }) => (
 
 const validatePersonalDetails = (values, residence_list, account_opening_reason) => {
     const validations = {
-        citizen: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
-        tax_residence: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
-        tax_identification_number: [v => !!v, v => /^[\w-]{0,20}$/.test(v)],
-        account_opening_reason: [v => !!v, v => account_opening_reason.map(i => i.text).includes(v)],
+        citizen: [(v) => !!v, (v) => residence_list.map((i) => i.text).includes(v)],
+        tax_residence: [(v) => !!v, (v) => residence_list.map((i) => i.text).includes(v)],
+        tax_identification_number: [(v) => !!v, (v) => /^[\w-]{0,20}$/.test(v)],
+        account_opening_reason: [(v) => !!v, (v) => account_opening_reason.map((i) => i.text).includes(v)],
     };
 
     const mappedKey = {
@@ -79,7 +79,7 @@ const validatePersonalDetails = (values, residence_list, account_opening_reason)
     const errors = {};
 
     Object.entries(validations).forEach(([key, rules]) => {
-        const error_index = rules.findIndex(v => !v(values[key]));
+        const error_index = rules.findIndex((v) => !v(values[key]));
         if (error_index !== -1) {
             switch (key) {
                 default:
@@ -100,7 +100,7 @@ const validatePersonalDetails = (values, residence_list, account_opening_reason)
 
 const findDefaultValuesInResidenceList = (citizen_text, tax_residence_text, residence_list) => {
     let citizen, tax_residence;
-    residence_list.forEach(item => {
+    residence_list.forEach((item) => {
         if (item.text === citizen_text) {
             citizen = item;
         }
@@ -138,7 +138,7 @@ const MT5PersonalDetailsForm = ({
 }) => {
     let is_initial_valid = false;
     const account_opening_reason = getAccountOpeningReasonList();
-    const handleCancel = values => {
+    const handleCancel = (values) => {
         onSave(index, values);
         onCancel();
     };
@@ -162,7 +162,7 @@ const MT5PersonalDetailsForm = ({
                 is_initial_valid = Object.entries(initial_errors).length === 0 && initial_errors.constructor === Object;
                 return initial_errors;
             }}
-            validate={values => validatePersonalDetails(values, residence_list, account_opening_reason)}
+            validate={(values) => validatePersonalDetails(values, residence_list, account_opening_reason)}
             onSubmit={onSubmitForm}
         >
             {({ handleSubmit, isSubmitting, handleChange, handleBlur, errors, touched, values, setFieldValue }) => (
@@ -203,7 +203,7 @@ const MT5PersonalDetailsForm = ({
                                                             error={touched.citizen && errors.citizen}
                                                             disabled={value.citizen && is_fully_authenticated}
                                                             list_items={residence_list}
-                                                            onItemSelection={item =>
+                                                            onItemSelection={(item) =>
                                                                 setFieldValue(
                                                                     'citizen',
                                                                     item.value ? item.text : '',
@@ -223,7 +223,7 @@ const MT5PersonalDetailsForm = ({
                                                     error={touched.citizen && errors.citizen}
                                                     disabled={value.citizen && is_fully_authenticated}
                                                     use_text={true}
-                                                    onChange={e => setFieldValue('citizen', e.target.value, true)}
+                                                    onChange={(e) => setFieldValue('citizen', e.target.value, true)}
                                                     required
                                                 />
                                             </MobileWrapper>
@@ -259,7 +259,9 @@ const MT5PersonalDetailsForm = ({
                                                     disabled={value.tax_residence && is_fully_authenticated}
                                                     list_items={residence_list}
                                                     use_text={true}
-                                                    onChange={e => setFieldValue('tax_residence', e.target.value, true)}
+                                                    onChange={(e) =>
+                                                        setFieldValue('tax_residence', e.target.value, true)
+                                                    }
                                                     required
                                                 />
                                             </MobileWrapper>
@@ -304,7 +306,7 @@ const MT5PersonalDetailsForm = ({
                                                                 touched.account_opening_reason &&
                                                                 errors.account_opening_reason
                                                             }
-                                                            onChange={e => {
+                                                            onChange={(e) => {
                                                                 handleChange(e);
                                                                 setFieldValue(
                                                                     'account_opening_reason',

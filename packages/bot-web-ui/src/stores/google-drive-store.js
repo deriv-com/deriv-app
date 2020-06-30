@@ -35,10 +35,10 @@ export default class GoogleDriveStore {
                     .then(
                         () => {
                             this.google_auth = gapi.auth2.getAuthInstance();
-                            this.google_auth.isSignedIn.listen(is_signed_in => this.updateSigninStatus(is_signed_in));
+                            this.google_auth.isSignedIn.listen((is_signed_in) => this.updateSigninStatus(is_signed_in));
                             this.updateSigninStatus(this.google_auth.isSignedIn.get());
                         },
-                        error => {
+                        (error) => {
                             // TODO
                             console.warn(error); // eslint-disable-line
                         }
@@ -58,7 +58,7 @@ export default class GoogleDriveStore {
             return Promise.resolve();
         }
 
-        return this.google_auth.signIn({ prompt: 'select_account' }).catch(response => {
+        return this.google_auth.signIn({ prompt: 'select_account' }).catch((response) => {
             if (response.error === 'access_denied') {
                 // TODO
                 console.error('Please grant permission to view and manage Google Drive folders created with Deriv Bot'); // eslint-disable-line
@@ -108,7 +108,7 @@ export default class GoogleDriveStore {
         const { files } = gapi.client.drive;
         const response = await files.list({ q: 'trashed=false' });
         const mime_type = 'application/vnd.google-apps.folder';
-        const folder = response.result.files.find(file => file.mimeType === mime_type);
+        const folder = response.result.files.find((file) => file.mimeType === mime_type);
 
         if (folder) {
             return;
@@ -125,8 +125,8 @@ export default class GoogleDriveStore {
 
     createSaveFilePicker(mime_type, title, options) {
         const { setButtonStatus } = this.root_store.save_modal;
-        return new Promise(resolve => {
-            const savePickerCallback = data => {
+        return new Promise((resolve) => {
+            const savePickerCallback = (data) => {
                 if (data.action === google.picker.Action.PICKED) {
                     const folder_id = data.docs[0].id;
                     const strategy_file = new Blob([options.content], { type: options.mimeType });
@@ -163,8 +163,8 @@ export default class GoogleDriveStore {
     }
 
     createLoadFilePicker(mime_type, title) {
-        return new Promise(resolve => {
-            const loadPickerCallback = async data => {
+        return new Promise((resolve) => {
+            const loadPickerCallback = async (data) => {
                 if (data.action === google.picker.Action.PICKED) {
                     const file = data.docs[0];
                     const file_name = file.name;

@@ -83,7 +83,7 @@ class ProfitTable extends React.Component {
         );
     };
 
-    getRowAction = row_obj =>
+    getRowAction = (row_obj) =>
         getSupportedContracts()[Shortcode.extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()]
             ? getContractPath(row_obj.contract_id)
             : {

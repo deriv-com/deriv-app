@@ -85,7 +85,7 @@ export default class ContractTradeStore extends BaseStore {
         const contract = this.getContractById(contract_id);
         const limit_order = getLimitOrder(contract.contract_update_config);
 
-        WS.contractUpdate(contract_id, limit_order).then(response => {
+        WS.contractUpdate(contract_id, limit_order).then((response) => {
             if (response.error) {
                 this.root_store.common.setServicesError({
                     type: response.msg_type,
@@ -118,15 +118,15 @@ export default class ContractTradeStore extends BaseStore {
             trade_types = ['CALLE', 'PUTE', 'CALL', 'PUT'];
         }
         return this.contracts
-            .filter(c => c.contract_info.underlying === underlying)
-            .filter(c => {
+            .filter((c) => c.contract_info.underlying === underlying)
+            .filter((c) => {
                 const info = c.contract_info;
                 const has_multiplier_contract_ended =
                     isMultiplierContract(info.contract_type) && isEnded(c.contract_info);
                 // filter multiplier contract which has ended
                 return !has_multiplier_contract_ended;
             })
-            .filter(c => {
+            .filter((c) => {
                 const info = c.contract_info;
 
                 const trade_type_is_supported = trade_types.indexOf(info.contract_type) !== -1;
@@ -145,9 +145,9 @@ export default class ContractTradeStore extends BaseStore {
     @computed
     get markers_array() {
         const markers = this.applicable_contracts()
-            .map(c => c.marker)
-            .filter(m => m)
-            .map(m => toJS(m));
+            .map((c) => c.marker)
+            .filter((m) => m)
+            .map((m) => toJS(m));
         if (markers.length) {
             markers[markers.length - 1].is_last_contract = true;
         }
@@ -207,7 +207,7 @@ export default class ContractTradeStore extends BaseStore {
 
     @action.bound
     removeContract({ contract_id }) {
-        this.contracts = this.contracts.filter(c => c.contract_id !== contract_id);
+        this.contracts = this.contracts.filter((c) => c.contract_id !== contract_id);
         delete this.contracts_map[contract_id];
     }
 

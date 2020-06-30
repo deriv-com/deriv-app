@@ -31,9 +31,11 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
 
     let interval;
 
-    const isOrderSeen = order_id => {
+    const isOrderSeen = (order_id) => {
         const { notifications } = getLocalStorageSettingsForLoginId();
-        return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
+        return notifications.some(
+            (notification) => notification.order_id === order_id && notification.is_seen === true
+        );
     };
 
     const countDownTimer = () => {

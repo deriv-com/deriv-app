@@ -17,7 +17,7 @@ const NetworkMonitorBase = (() => {
 
     const init = (socket_general_functions, fncUpdateUI) => {
         let last_status, last_is_online;
-        setNetworkStatus = status => {
+        setNetworkStatus = (status) => {
             const is_online = isOnline();
             if (status !== last_status || is_online !== last_is_online) {
                 last_status = status;
@@ -77,7 +77,7 @@ const NetworkMonitorBase = (() => {
         },
     };
 
-    const wsEvent = event => {
+    const wsEvent = (event) => {
         events[event] && events[event](); // eslint-disable-line
     };
 

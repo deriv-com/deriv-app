@@ -30,11 +30,11 @@ class Calendar extends React.PureComponent {
         }
     }
 
-    switchView = view => {
+    switchView = (view) => {
         this.setState({ calendar_view: view });
     };
 
-    navigateTo = new_date => {
+    navigateTo = (new_date) => {
         this.setState(
             {
                 calendar_date: toMoment(new_date).format(this.props.date_format),
@@ -48,7 +48,7 @@ class Calendar extends React.PureComponent {
         );
     };
 
-    onMouseOver = event => {
+    onMouseOver = (event) => {
         const target = event.currentTarget;
 
         if (
@@ -69,7 +69,7 @@ class Calendar extends React.PureComponent {
         }
     };
 
-    onMouseLeave = event => {
+    onMouseLeave = (event) => {
         const target = event.currentTarget;
 
         if (target.classList.contains('dc-calendar__cell--hover')) {
@@ -88,7 +88,7 @@ class Calendar extends React.PureComponent {
         }
     };
 
-    updateSelectedDate = e => {
+    updateSelectedDate = (e) => {
         const { date_format, max_date, min_date, onSelect } = this.props;
 
         const moment_date = toMoment(e.target.dataset.date).startOf('day');
@@ -143,7 +143,7 @@ class Calendar extends React.PureComponent {
         );
     };
 
-    setSelectedDate = date => {
+    setSelectedDate = (date) => {
         const moment_date = toMoment(date).startOf('day');
         const formatted_date = moment_date.format(this.props.date_format);
         this.setState({
@@ -181,12 +181,8 @@ class Calendar extends React.PureComponent {
     isPeriodDisabled = (date, unit) => {
         const { max_date, min_date } = this.props;
 
-        const start_of_period = toMoment(date)
-            .clone()
-            .startOf(unit);
-        const end_of_period = toMoment(date)
-            .clone()
-            .endOf(unit);
+        const start_of_period = toMoment(date).clone().startOf(unit);
+        const end_of_period = toMoment(date).clone().endOf(unit);
         return end_of_period.isBefore(toMoment(min_date)) || start_of_period.isAfter(toMoment(max_date));
     };
 
@@ -239,9 +235,7 @@ Calendar.Footer = Footer;
 Calendar.defaultProps = {
     date_format: 'YYYY-MM-DD',
     min_date: '1970-01-01', // by default, min_date is set to Unix Epoch (January 1st 1970)
-    max_date: toMoment()
-        .add(120, 'y')
-        .format('YYYY-MM-DD'), // by default, max_date is set to 120 years after today
+    max_date: toMoment().add(120, 'y').format('YYYY-MM-DD'), // by default, max_date is set to 120 years after today
 };
 
 Calendar.propTypes = {

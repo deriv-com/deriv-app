@@ -34,7 +34,7 @@ const Recent = ({
                     <div className='load-recent__files load__content-with-footer'>
                         <div className='load-recent__title'>{localize('Recent')}</div>
                         <div className='load-recent__list'>
-                            {recent_files.map(file => {
+                            {recent_files.map((file) => {
                                 return (
                                     <div
                                         className={classnames('load-recent__item', {
@@ -139,10 +139,10 @@ const Local = ({
                 <>
                     <input
                         type='file'
-                        ref={el => (file_input_ref = el)}
+                        ref={(el) => (file_input_ref = el)}
                         accept='.xml'
                         style={{ display: 'none' }}
-                        onChange={e => handleFileChange(e, false)}
+                        onChange={(e) => handleFileChange(e, false)}
                     />
                     <div id='import_dragndrop' className='load-local__dragndrop'>
                         <Icon icon={'IcPc'} className='load-local__icon' size={116} />

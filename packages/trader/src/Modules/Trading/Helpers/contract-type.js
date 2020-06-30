@@ -22,9 +22,9 @@ export const contract_category_icon = {
  */
 export const getAvailableContractTypes = (contract_types_list, unsupported_list) => {
     const list = Object.keys(contract_types_list)
-        .map(key => {
+        .map((key) => {
             const contract_types = contract_types_list[key];
-            const available_contract_types = contract_types.filter(type =>
+            const available_contract_types = contract_types.filter((type) =>
                 type.value &&
                 // TODO: remove this check once all contract types are supported
                 !unsupported_list.includes(type.value)
@@ -57,10 +57,10 @@ export const getAvailableContractTypes = (contract_types_list, unsupported_list)
  */
 export const getFilteredList = (contract_types_list, filtered_items_array) => {
     const filtered_list = Object.keys(contract_types_list)
-        .map(key => {
+        .map((key) => {
             const { label, contract_types, icon } = contract_types_list[key];
 
-            const filtered_by_contract_types = contract_types.filter(c =>
+            const filtered_by_contract_types = contract_types.filter((c) =>
                 filtered_items_array.includes(c.text.toLowerCase())
             );
 
@@ -86,23 +86,23 @@ export const getFilteredList = (contract_types_list, filtered_items_array) => {
     return filtered_list;
 };
 
-const flatten = arr => [].concat(...arr);
+const flatten = (arr) => [].concat(...arr);
 /**
  * Flatten list object into an array of contract category label and contract types names
  * @param {object} list
  */
-export const getContractsList = list =>
+export const getContractsList = (list) =>
     flatten(
         Object.keys(list).map(
-            k => [
+            (k) => [
                 list[k].label.toLowerCase(), // contract category names
-                ...list[k].contract_types.map(c => c.text.toLowerCase()),
+                ...list[k].contract_types.map((c) => c.text.toLowerCase()),
             ] // contract types names
         )
     );
 
 export const findContractCategory = (list, item) =>
-    list.find(list_item => list_item.contract_types.some(i => i.value === item.value)) || {};
+    list.find((list_item) => list_item.contract_types.some((i) => i.value === item.value)) || {};
 
 export const getContractCategoryLabel = (list, item) => findContractCategory(list, item).label;
 

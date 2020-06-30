@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 let common_store;
 
 const OutdatedBrowser = (() => {
-    const init = store => {
+    const init = (store) => {
         common_store = store.common;
 
         const src = '//browser-update.org/update.min.js';

@@ -60,7 +60,7 @@ export default class GTMStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener() {
-        return new Promise(async resolve => resolve(this.pushDataLayer({ event: 'account switch' })));
+        return new Promise(async (resolve) => resolve(this.pushDataLayer({ event: 'account switch' })));
     }
 
     /**
@@ -162,8 +162,8 @@ export default class GTMStore extends BaseStore {
 
         if (login_event) {
             data.event = login_event;
-            BinarySocket.wait('mt5_login_list').then(response => {
-                (response.mt5_login_list || []).forEach(obj => {
+            BinarySocket.wait('mt5_login_list').then((response) => {
+                (response.mt5_login_list || []).forEach((obj) => {
                     const acc_type = (getMT5AccountType(obj.group) || '')
                         .replace('real_vanuatu', 'financial')
                         .replace('vanuatu_', '')

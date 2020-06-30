@@ -26,7 +26,7 @@ const ToggleButtonGroup = ({ children, className, multiple, onChange, value, ...
 
         onChange(event, new_value);
     };
-    const toggle_buttons = React.Children.map(children, button => {
+    const toggle_buttons = React.Children.map(children, (button) => {
         if (!React.isValidElement(button)) {
             return null;
         }

@@ -30,7 +30,7 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }) => {
         }
     };
 
-    const childrenWithWrapperDiv = React.Children.map(children, child => {
+    const childrenWithWrapperDiv = React.Children.map(children, (child) => {
         return <div className='dc-swipeable__item'>{child}</div>;
     });
 

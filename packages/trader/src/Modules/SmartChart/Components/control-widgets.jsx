@@ -8,8 +8,8 @@ const ControlWidgets = ({ updateChartType, updateGranularity }) => (
         <DesktopWrapper>
             <ChartMode
                 portalNodeId='modal_root'
-                onChartType={type => updateChartType(type)}
-                onGranularity={granularity => updateGranularity(granularity)}
+                onChartType={(type) => updateChartType(type)}
+                onGranularity={(granularity) => updateGranularity(granularity)}
             />
             <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
             <DrawTools portalNodeId='modal_root' />

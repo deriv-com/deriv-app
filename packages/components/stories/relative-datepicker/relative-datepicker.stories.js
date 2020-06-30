@@ -13,6 +13,6 @@ stories.addDecorator(withKnobs).addDecorator(withInfo);
 
 stories.add('basic usage', () => (
     <Theme is_dark={boolean('Theme', true)}>
-        <RelativeDatepicker onChange={action(date => date)} min_date={toMoment()} title='Pick an end date' />
+        <RelativeDatepicker onChange={action((date) => date)} min_date={toMoment()} title='Pick an end date' />
     </Theme>
 ));

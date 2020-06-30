@@ -28,14 +28,14 @@ const Orders = ({ params, navigate, chat_info }) => {
         setOrderId(null);
     };
 
-    const setQueryDetails = input_order => {
+    const setQueryDetails = (input_order) => {
         setOrderId(input_order.id);
         setDetails(input_order);
 
         const { notifications } = getLocalStorageSettingsForLoginId();
 
         if (notifications.length) {
-            const notification = notifications.find(n => n.order_id === input_order.id);
+            const notification = notifications.find((n) => n.order_id === input_order.id);
 
             if (notification) {
                 notification.is_seen = true;
@@ -66,7 +66,7 @@ const Orders = ({ params, navigate, chat_info }) => {
         if (!is_mounted.current) return;
 
         if (orders.length && order_id) {
-            const order_payload = orders.find(order => order.id === order_id);
+            const order_payload = orders.find((order) => order.id === order_id);
             if (order_payload) {
                 const order_info = new OrderInfo(order_payload);
                 setQueryDetails(order_info);
@@ -75,7 +75,7 @@ const Orders = ({ params, navigate, chat_info }) => {
             }
         }
         if (order_details) {
-            const updated_order = orders.find(order => order.id === order_details.id);
+            const updated_order = orders.find((order) => order.id === order_details.id);
             if (updated_order.status !== order_details.status) {
                 const updated_order_info = new OrderInfo(updated_order);
                 setQueryDetails(updated_order_info);

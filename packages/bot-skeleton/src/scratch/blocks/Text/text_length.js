@@ -38,7 +38,7 @@ Blockly.Blocks.text_length = {
     },
 };
 
-Blockly.JavaScript.text_length = block => {
+Blockly.JavaScript.text_length = (block) => {
     const text = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_FUNCTION_CALL) || "''";
 
     const code = `${text}.length`;

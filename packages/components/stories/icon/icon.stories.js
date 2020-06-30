@@ -23,7 +23,7 @@ const grid_style = {
 };
 
 stories
-    .addDecorator(story => <div>{story()}</div>)
+    .addDecorator((story) => <div>{story()}</div>)
     .add(
         'Deriv Icons',
         () => (

@@ -23,7 +23,7 @@ const StartDate = ({
     const is_today = start_date === Number(0);
     let current_date_config = '';
     if (!is_today) {
-        current_date_config = start_dates_list.find(o => o.value === +start_date) || {};
+        current_date_config = start_dates_list.find((o) => o.value === +start_date) || {};
     }
     if (is_minimized) {
         return (

@@ -17,7 +17,7 @@ Blockly.BlockSvg.EDITABLE_FIELD_PADDING = 16;
  * and possibly the size of the input.
  * @param {!Array.<!Array.<!Object>>} input_rows Partially calculated rows.
  */
-Blockly.BlockSvg.prototype.computeOutputPadding_ = function(input_rows) {
+Blockly.BlockSvg.prototype.computeOutputPadding_ = function (input_rows) {
     // Only apply to blocks with outputs and not single fields (shadows).
     if (
         !this.getOutputShape() ||

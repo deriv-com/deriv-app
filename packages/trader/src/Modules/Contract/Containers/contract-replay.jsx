@@ -201,7 +201,7 @@ class Chart extends React.Component {
                     bottom: this.is_bottom_widget_visible ? 128 : 112,
                 }}
             >
-                {this.props.markers_array.map(marker => (
+                {this.props.markers_array.map((marker) => (
                     <ChartMarker
                         key={marker.react_key}
                         marker_config={marker.marker_config}

@@ -28,7 +28,7 @@ export const clientNotifications = (ui = {}) => {
             message: localize('Please set the currency of your account to enable trading.'),
             type: 'danger',
         },
-        self_exclusion: excluded_until => ({
+        self_exclusion: (excluded_until) => ({
             key: 'self_exclusion',
             header: localize('Self-exclusion detected'),
             message: (
@@ -286,7 +286,7 @@ export const clientNotifications = (ui = {}) => {
             type: 'warning',
             should_hide_close_btn: true,
             timeout: 300000,
-            timeoutMessage: remaining => localize('Auto update in {{ remaining }} seconds', { remaining }),
+            timeoutMessage: (remaining) => localize('Auto update in {{ remaining }} seconds', { remaining }),
         },
     };
     return notifications;
@@ -305,7 +305,7 @@ const hasMissingRequiredField = (account_settings, client) => {
         required_fields = getRequiredFields();
     }
 
-    return required_fields.some(field => !account_settings[field]);
+    return required_fields.some((field) => !account_settings[field]);
 
     function getSVGRequiredFields() {
         const necessary_withdrawal_fields = State.getResponse(
@@ -313,7 +313,7 @@ const hasMissingRequiredField = (account_settings, client) => {
         );
         const necessary_signup_fields = State.getResponse(
             'landing_company.financial_company.requirements.signup'
-        ).map(field => (field === 'residence' ? 'country' : field));
+        ).map((field) => (field === 'residence' ? 'country' : field));
 
         return [...necessary_withdrawal_fields, ...necessary_signup_fields];
     }
@@ -337,7 +337,7 @@ const hasMissingRequiredField = (account_settings, client) => {
     }
 };
 
-const getStatusValidations = status_arr =>
+const getStatusValidations = (status_arr) =>
     status_arr.reduce((validations, stats) => {
         validations[stats] = true;
         return validations;

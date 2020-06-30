@@ -42,22 +42,22 @@ class ContractTypeWidget extends React.PureComponent {
         }
     };
 
-    handleInfoClick = item => {
-        this.setState(state => ({
+    handleInfoClick = (item) => {
+        this.setState((state) => ({
             is_info_dialog_open: !state.is_info_dialog_open,
             item,
         }));
     };
 
-    handleNavigationClick = item => {
+    handleNavigationClick = (item) => {
         this.setState({ item });
     };
 
-    setWrapperRef = node => {
+    setWrapperRef = (node) => {
         this.wrapper_ref = node;
     };
 
-    handleClickOutside = event => {
+    handleClickOutside = (event) => {
         if (isMobile()) return;
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target)) {
             this.setState({
@@ -69,11 +69,11 @@ class ContractTypeWidget extends React.PureComponent {
     };
 
     handleVisibility = () => {
-        this.setState(state => ({ is_dialog_open: !state.is_dialog_open }));
+        this.setState((state) => ({ is_dialog_open: !state.is_dialog_open }));
     };
 
     onWidgetClick = () => {
-        this.setState(state => ({
+        this.setState((state) => ({
             is_dialog_open: !state.is_dialog_open,
             is_info_dialog_open: false,
             item: { value: this.props.value },
@@ -84,7 +84,7 @@ class ContractTypeWidget extends React.PureComponent {
         this.setState({ is_info_dialog_open: false, item: { value: this.props.value } });
     };
 
-    onChangeInput = list => {
+    onChangeInput = (list) => {
         this.setState({ on_input_change: true, list });
     };
 

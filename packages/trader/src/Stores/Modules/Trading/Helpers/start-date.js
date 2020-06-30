@@ -5,8 +5,8 @@ export const buildForwardStartingConfig = (contract, forward_starting_dates) => 
     const forward_starting_config = [];
 
     if ((contract.forward_starting_options || []).length) {
-        contract.forward_starting_options.forEach(option => {
-            const duplicated_option = forward_starting_config.find(opt => opt.value === parseInt(option.date));
+        contract.forward_starting_options.forEach((option) => {
+            const duplicated_option = forward_starting_config.find((opt) => opt.value === parseInt(option.date));
             const current_session = { open: toMoment(option.open), close: toMoment(option.close) };
             if (duplicated_option) {
                 duplicated_option.sessions.push(current_session);
@@ -41,6 +41,6 @@ export const isSessionAvailable = (
     !isBeforeDate(compare_moment, ServerTime.get(), should_only_check_hour) &&
     !isBeforeDate(compare_moment, start_moment, should_only_check_hour) &&
     (!sessions.length ||
-        !!sessions.find(session =>
+        !!sessions.find((session) =>
             compare_moment.isBetween(session.open, session.close, should_only_check_hour ? 'hour' : null, '[]')
         ));

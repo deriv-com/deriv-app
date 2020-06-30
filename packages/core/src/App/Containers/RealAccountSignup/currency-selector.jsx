@@ -80,7 +80,7 @@ RadioButtonGroup.defaultProps = {
 
 export const Hr = () => <div className='currency-hr' />;
 
-export const reorderFiatCurrencies = list => {
+export const reorderFiatCurrencies = (list) => {
     // The order should be custom
     // [USD, EUR, GBP, AUD]
     const order = ['USD', 'EUR', 'GBP', 'AUD'];
@@ -108,8 +108,8 @@ class CurrencySelector extends React.Component {
         if (next_props.legal_allowed_currencies.length === 0) {
             return next_state;
         }
-        const crypto = next_props.legal_allowed_currencies.filter(currency => currency.type === 'crypto');
-        const fiat = next_props.legal_allowed_currencies.filter(currency => currency.type === 'fiat');
+        const crypto = next_props.legal_allowed_currencies.filter((currency) => currency.type === 'crypto');
+        const fiat = next_props.legal_allowed_currencies.filter((currency) => currency.type === 'fiat');
 
         return {
             fiat_currencies: reorderFiatCurrencies(fiat),
@@ -117,7 +117,7 @@ class CurrencySelector extends React.Component {
         };
     }
 
-    validateCurrencies = values => {
+    validateCurrencies = (values) => {
         const errors = {};
 
         if (!values.currency) {
@@ -182,7 +182,7 @@ class CurrencySelector extends React.Component {
                                             error={errors.currency}
                                             touched={touched.currency}
                                         >
-                                            {this.state.fiat_currencies.map(currency => (
+                                            {this.state.fiat_currencies.map((currency) => (
                                                 <Field
                                                     key={currency.value}
                                                     component={RadioButton}
@@ -203,7 +203,7 @@ class CurrencySelector extends React.Component {
                                                     error={errors.currency}
                                                     touched={touched.currency}
                                                 >
-                                                    {this.state.crypto_currencies.map(currency => (
+                                                    {this.state.crypto_currencies.map((currency) => (
                                                         <Field
                                                             key={currency.value}
                                                             component={RadioButton}

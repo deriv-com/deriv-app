@@ -105,7 +105,8 @@ const MT5PasswordModal = ({
                     onSubmit={(values, actions) => {
                         submitMt5Password(values.password, actions.setSubmitting);
                     }}
-                    render={({
+                >
+                    {({
                         handleSubmit,
                         // setFieldValue,
                         setFieldTouched,
@@ -170,7 +171,7 @@ const MT5PasswordModal = ({
                             />
                         </form>
                     )}
-                />
+                </Formik>
             </Modal>
             <SuccessDialog
                 is_open={should_show_success}

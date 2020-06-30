@@ -35,12 +35,12 @@ const ListItem = ({
 
 const ListItems = React.forwardRef((props, ref) => {
     const { active_index, list_items, is_object_list, onItemSelection, setActiveIndex, not_found_text } = props;
-    const is_grouped_list = list_items.some((list_item) => !!list_item.group);
+    const is_grouped_list = list_items.some(list_item => !!list_item.group);
 
     if (is_grouped_list) {
         const groups = {};
 
-        list_items.forEach((list_item) => {
+        list_items.forEach(list_item => {
             const group = list_item.group || '?';
             if (!groups[group]) {
                 groups[group] = [];
@@ -59,7 +59,7 @@ const ListItems = React.forwardRef((props, ref) => {
                     return (
                         <React.Fragment key={`group${group_idx}`}>
                             <div className='dc-dropdown-list__group-header'>{group_name}</div>
-                            {group.map((item) => {
+                            {group.map(item => {
                                 item_idx++;
                                 return (
                                     <ListItem

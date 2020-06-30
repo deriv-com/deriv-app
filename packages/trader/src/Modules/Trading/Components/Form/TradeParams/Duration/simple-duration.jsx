@@ -18,13 +18,13 @@ const SimpleDuration = ({
     simple_duration_unit,
     validation_errors,
 }) => {
-    const filterMinutesAndTicks = (arr) => {
-        const filtered_arr = arr.filter((du) => du.value === 't' || du.value === 'm');
+    const filterMinutesAndTicks = arr => {
+        const filtered_arr = arr.filter(du => du.value === 't' || du.value === 'm');
         if (filtered_arr.length <= 1) return [];
 
         return filtered_arr;
     };
-    const has_label = !duration_units_list.some((du) => du.value === 't');
+    const has_label = !duration_units_list.some(du => du.value === 't');
 
     return (
         <>

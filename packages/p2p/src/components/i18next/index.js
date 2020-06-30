@@ -20,7 +20,7 @@ import zh_tw from 'Translations/zh_tw.json';
 const DEFAULT_LANGUAGE = 'EN';
 let CURRENT_LANGUAGE = 'EN';
 
-export const setLanguage = (lang) => {
+export const setLanguage = lang => {
     CURRENT_LANGUAGE = lang || DEFAULT_LANGUAGE;
 };
 

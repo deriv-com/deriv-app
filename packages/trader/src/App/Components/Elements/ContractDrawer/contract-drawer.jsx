@@ -19,12 +19,12 @@ class ContractDrawer extends React.Component {
         should_show_contract_audit: false,
     };
 
-    handleShade = (shade) => {
+    handleShade = shade => {
         this.setState({ is_shade_on: shade });
     };
 
     toggleContractAuditDrawer = () => {
-        this.setState((state) => ({ should_show_contract_audit: !state.should_show_contract_audit }));
+        this.setState(state => ({ should_show_contract_audit: !state.should_show_contract_audit }));
     };
 
     onSwipedDown = () => this.setState({ should_show_contract_audit: false });

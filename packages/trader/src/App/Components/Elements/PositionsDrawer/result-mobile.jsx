@@ -6,7 +6,7 @@ import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 class ResultMobile extends React.PureComponent {
-    handleClick = (e) => {
+    handleClick = e => {
         if (this.props.is_unsupported) {
             e.preventDefault();
             this.props.onClick();

@@ -56,7 +56,7 @@ Blockly.Blocks.logic_ternary = {
     },
 };
 
-Blockly.JavaScript.logic_ternary = (block) => {
+Blockly.JavaScript.logic_ternary = block => {
     const valueIf = Blockly.JavaScript.valueToCode(block, 'IF', Blockly.JavaScript.ORDER_CONDITIONAL) || 'false';
     const valueThen = Blockly.JavaScript.valueToCode(block, 'THEN', Blockly.JavaScript.ORDER_CONDITIONAL) || 'null';
     const valueElse = Blockly.JavaScript.valueToCode(block, 'ELSE', Blockly.JavaScript.ORDER_CONDITIONAL) || 'null';

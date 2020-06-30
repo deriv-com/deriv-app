@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const jsdom = require('jsdom');
 const Url = require('../utils/url/url.js');
 
-const setURL = (url) => {
+const setURL = url => {
     jsdom.changeURL(window, url);
     Url.reset();
 };

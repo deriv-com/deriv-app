@@ -33,7 +33,7 @@ const Decades = ({ calendar_date, isPeriodDisabled, selected_date, updateSelecte
                             'dc-calendar__cell--disabled': is_disabled,
                             'dc-calendar__cell--other': is_other_century,
                         })}
-                        onClick={is_disabled ? undefined : (e) => updateSelected(e, 'decade')}
+                        onClick={is_disabled ? undefined : e => updateSelected(e, 'decade')}
                         data-decade={decade}
                     >
                         {decade}

@@ -66,7 +66,7 @@ class Cashier extends React.Component {
             const options = [];
 
             // TODO: remove show_dp2p hash check once released
-            this.props.routes.forEach((route) => {
+            this.props.routes.forEach(route => {
                 if (
                     (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible) &&
@@ -139,7 +139,9 @@ class Cashier extends React.Component {
                                                 ]}
                                             />
                                         </p>
-                                    ) : undefined
+                                    ) : (
+                                        undefined
+                                    )
                                 }
                             />
                         </DesktopWrapper>

@@ -14,7 +14,9 @@ Blockly.Blocks.lists_setIndex = {
             [localize('random'), 'RANDOM'],
         ];
 
-        this.appendValueInput('LIST').setCheck('Array').appendField(localize('in list'));
+        this.appendValueInput('LIST')
+            .setCheck('Array')
+            .appendField(localize('in list'));
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(this.MODE_OPTIONS), 'MODE');
         this.appendDummyInput('AT');
         this.appendValueInput('TO').appendField(localize('as'));
@@ -63,7 +65,7 @@ Blockly.Blocks.lists_setIndex = {
             this.appendDummyInput('AT');
         }
 
-        const menu = new Blockly.FieldDropdown(this.WHERE_OPTIONS, (value) => {
+        const menu = new Blockly.FieldDropdown(this.WHERE_OPTIONS, value => {
             const newAt = ['FROM_START', 'FROM_END'].includes(value);
             if (newAt !== isAt) {
                 this.updateAt(newAt);
@@ -80,7 +82,7 @@ Blockly.Blocks.lists_setIndex = {
     },
 };
 
-Blockly.JavaScript.lists_setIndex = (block) => {
+Blockly.JavaScript.lists_setIndex = block => {
     const mode = block.getFieldValue('MODE') || 'SET';
     const where = block.getFieldValue('WHERE') || 'FIRST';
     const value = Blockly.JavaScript.valueToCode(block, 'TO', Blockly.JavaScript.ORDER_ASSIGNMENT) || 'null';

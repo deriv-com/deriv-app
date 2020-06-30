@@ -60,8 +60,8 @@ class Header extends React.Component {
             openRealAccountSignup,
         } = this.props;
 
-        const filterPlatformsForClients = (payload) =>
-            payload.filter((config) => {
+        const filterPlatformsForClients = payload =>
+            payload.filter(config => {
                 // non-CR clients cannot open MT5 account
                 const is_mt5_eligible = !(is_logged_in && config.link_to === routes.mt5 && !is_mt5_allowed);
                 return is_mt5_eligible;

@@ -5,8 +5,8 @@ import Nav from './contract-type-info-nav.jsx';
 import { getContractTypes } from '../../../../Helpers/contract-type';
 
 const Info = ({ handleNavigationClick, handleSelect, item, list }) => {
-    const contract_types = getContractTypes(list, item).filter((i) => i.value !== 'rise_fall_equal');
-    const active_index = contract_types.findIndex((i) => i.value === item.value);
+    const contract_types = getContractTypes(list, item).filter(i => i.value !== 'rise_fall_equal');
+    const active_index = contract_types.findIndex(i => i.value === item.value);
 
     return (
         <div id={`dt_contract_info_${item.value}`} className='contract-type-info'>

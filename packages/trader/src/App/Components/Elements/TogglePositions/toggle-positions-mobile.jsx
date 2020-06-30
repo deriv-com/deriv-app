@@ -25,7 +25,7 @@ class TogglePositionsMobile extends React.Component {
         const body_content = (
             <React.Fragment>
                 <TransitionGroup component='div'>
-                    {all_positions.slice(0, 5).map((portfolio_position) => (
+                    {all_positions.slice(0, 5).map(portfolio_position => (
                         <CSSTransition
                             appear
                             key={portfolio_position.id}

@@ -11,7 +11,7 @@ const stories = storiesOf('Button', module);
 
 stories.addDecorator(withKnobs).addDecorator(withInfo);
 
-const getButtonObject = (type) => ({
+const getButtonObject = type => ({
     small: [
         {
             text: `${type} small`,

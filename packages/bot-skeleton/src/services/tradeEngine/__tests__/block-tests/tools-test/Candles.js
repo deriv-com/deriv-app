@@ -4,7 +4,7 @@ import { runAndGetResult } from '../../tools';
 describe('Candle Blocks in tools', () => {
     let result;
 
-    beforeAll((done) => {
+    beforeAll(done => {
         runAndGetResult(
             undefined,
             `
@@ -13,7 +13,7 @@ describe('Candle Blocks in tools', () => {
       result.isCandleBlack = Bot.isCandleBlack({ open: 1, high: 2.2, low: 0.5, close: 2, epoch: 123 });
       result.candleField = Bot.candleField({ open: 1, high: 2.2, low: 0.5, close: 2, epoch: 123 }, 'open');
     `
-        ).then((v) => {
+        ).then(v => {
             result = v;
             done();
         });
@@ -28,7 +28,7 @@ describe('Candle Blocks in tools', () => {
     it('is candle black', () => {
         const { ohlc } = result;
 
-        expect(ohlc).satisfy((o) => o && o.length && Number.isFinite(o[0]));
+        expect(ohlc).satisfy(o => o && o.length && Number.isFinite(o[0]));
     });
 
     it('candle field', () => {

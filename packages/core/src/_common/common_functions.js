@@ -4,7 +4,7 @@ const createElement = require('./utility').createElement;
  * function to check if element is visible or not
  *
  */
-const isVisible = (elem) => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
+const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 
 /*
  * @param  {String}  id_selector   the selector for the element

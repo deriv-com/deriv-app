@@ -49,7 +49,7 @@ Blockly.Blocks.procedures_callreturn = {
     defType: 'procedures_defreturn',
 };
 
-Blockly.JavaScript.procedures_callreturn = (block) => {
+Blockly.JavaScript.procedures_callreturn = block => {
     // eslint-disable-next-line no-underscore-dangle
     const functionName = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('NAME'),

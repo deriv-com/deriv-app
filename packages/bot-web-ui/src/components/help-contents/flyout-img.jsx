@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-const FlyoutImage = (props) => {
+const FlyoutImage = props => {
     const { width, url } = props;
     const style = { width };
 

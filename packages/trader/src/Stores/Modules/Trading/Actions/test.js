@@ -4,14 +4,14 @@ import { WS } from 'Services/ws-methods';
  * The payload will be the callback that get's called for each tick
  */
 let cb;
-const ticksCallback = (response) => {
+const ticksCallback = response => {
     const data = response.error
         ? response.error.message
         : `${new Date(response.tick.epoch * 1000).toUTCString()}: ${response.tick.quote}`;
     cb(data);
 };
 
-export const getTicks = function ({ symbol }, callback) {
+export const getTicks = function({ symbol }, callback) {
     cb = callback;
     WS.forgetAll('ticks').then(() => {
         WS.subscribeTicks(symbol, ticksCallback);

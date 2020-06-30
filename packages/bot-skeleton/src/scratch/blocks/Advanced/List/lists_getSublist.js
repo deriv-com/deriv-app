@@ -65,7 +65,7 @@ Blockly.Blocks.lists_getSublist = {
             this.appendDummyInput(`AT${n}`);
         }
 
-        const menu = new Blockly.FieldDropdown(this[`WHERE_OPTIONS_${n}`], (value) => {
+        const menu = new Blockly.FieldDropdown(this[`WHERE_OPTIONS_${n}`], value => {
             const newAt = ['FROM_START', 'FROM_END'].includes(value);
             if (newAt !== isAt) {
                 this.updateAt(n, newAt);
@@ -86,7 +86,7 @@ Blockly.Blocks.lists_getSublist = {
     },
 };
 
-Blockly.JavaScript.lists_getSublist = (block) => {
+Blockly.JavaScript.lists_getSublist = block => {
     const list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_MEMBER) || '[]';
     const where1 = block.getFieldValue('WHERE1');
     const where2 = block.getFieldValue('WHERE2');

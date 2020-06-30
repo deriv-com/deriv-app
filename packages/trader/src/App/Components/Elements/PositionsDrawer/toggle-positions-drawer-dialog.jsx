@@ -23,7 +23,7 @@ class TogglePositionsDrawerDialog extends React.Component {
         if (this.props.is_valid_to_cancel) return;
 
         this.setState(
-            (state) => ({ is_visible: !state.is_visible }),
+            state => ({ is_visible: !state.is_visible }),
             () => {
                 if (
                     this.state.is_visible &&

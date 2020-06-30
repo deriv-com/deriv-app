@@ -26,7 +26,7 @@ const Years = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected 
                             'dc-calendar__cell--other': is_other_decade,
                             'dc-calendar__cell--disabled': is_disabled,
                         })}
-                        onClick={is_disabled ? undefined : (e) => updateSelected(e, 'year')}
+                        onClick={is_disabled ? undefined : e => updateSelected(e, 'year')}
                         data-year={year}
                     >
                         {year}

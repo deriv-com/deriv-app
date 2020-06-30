@@ -6,7 +6,7 @@ import { createError } from '../../../utils/error';
 
 let delay_index = 0;
 
-export default (Engine) =>
+export default Engine =>
     class Sell extends Engine {
         isSellAtMarketAvailable() {
             return this.contractId && !this.isSold && this.isSellAvailable && !this.isExpired;
@@ -23,7 +23,7 @@ export default (Engine) =>
                 return Promise.resolve();
             }
 
-            const onSuccess = (sold_for) => {
+            const onSuccess = sold_for => {
                 delay_index = 0;
                 contractStatus('purchase.sold');
                 log(log_types.SELL, { sold_for });
@@ -33,10 +33,10 @@ export default (Engine) =>
             const action = () =>
                 this.api
                     .sellContract(this.contractId, 0)
-                    .then((response) => {
+                    .then(response => {
                         onSuccess(response.sell.sold_for);
                     })
-                    .catch((response) => {
+                    .catch(response => {
                         const {
                             error: { error },
                         } = response;

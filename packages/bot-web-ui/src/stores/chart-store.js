@@ -48,7 +48,7 @@ export default class ChartStore {
     @action.bound
     updateSymbol() {
         const workspace = Blockly.derivWorkspace;
-        const market_block = workspace.getAllBlocks().find((block) => {
+        const market_block = workspace.getAllBlocks().find(block => {
             return block.type === 'trade_definition_market';
         });
 
@@ -87,7 +87,7 @@ export default class ChartStore {
         }
     };
 
-    wsForget = (req) => {
+    wsForget = req => {
         const key = JSON.stringify(req);
         if (g_subscribers_map[key]) {
             g_subscribers_map[key].unsubscribe();
@@ -95,11 +95,11 @@ export default class ChartStore {
         }
     };
 
-    wsForgetStream = (stream_id) => {
+    wsForgetStream = stream_id => {
         WS.forgetStream(stream_id);
     };
 
-    wsSendRequest = (req) => {
+    wsSendRequest = req => {
         if (req.time) {
             return ServerTime.timePromise().then(() => {
                 return {

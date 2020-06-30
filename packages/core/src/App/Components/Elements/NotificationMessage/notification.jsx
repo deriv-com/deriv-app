@@ -9,7 +9,7 @@ import { default_delay, types } from './constants';
 import { BinaryLink } from '../../Routes';
 
 const Notification = ({ data, removeNotificationMessage }) => {
-    const destroy = (is_closed_by_user) => {
+    const destroy = is_closed_by_user => {
         removeNotificationMessage(data);
 
         if (data.closeOnClick) {

@@ -9,7 +9,7 @@ import IndicativeCell from '../Components/indicative-cell.jsx';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row.jsx';
 import ProfitLossCell from '../Components/profit_loss_cell.jsx';
 
-const getModeFromValue = (key) => {
+const getModeFromValue = key => {
     const map = {
         deposit: 'warn',
         withdrawal: 'info',
@@ -19,7 +19,7 @@ const getModeFromValue = (key) => {
         escrow: 'default-invert',
     };
 
-    if (Object.keys(map).find((x) => x === key)) {
+    if (Object.keys(map).find(x => x === key)) {
         return map[key];
     }
 
@@ -27,7 +27,7 @@ const getModeFromValue = (key) => {
 };
 
 /* eslint-disable react/display-name, react/prop-types */
-export const getStatementTableColumnsTemplate = (currency) => [
+export const getStatementTableColumnsTemplate = currency => [
     {
         key: 'icon',
         title: '',
@@ -127,7 +127,7 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
         ),
     },
 ];
-export const getOpenPositionsColumnsTemplate = (currency) => [
+export const getOpenPositionsColumnsTemplate = currency => [
     {
         title: 'Type',
         col_index: 'type',

@@ -4,7 +4,7 @@ const EVERY_HOUR = 3600000; // 1000 * 60 * 60
 let interval_id;
 
 function refreshOnUpdate() {
-    return (swRegistrationObject) => {
+    return swRegistrationObject => {
         swRegistrationObject.onupdatefound = () => {
             const updatingWorker = swRegistrationObject.installing;
             updatingWorker.onstatechange = () => {
@@ -25,7 +25,7 @@ export default function register() {
             const sw_url = `${window.location.origin}${getUrlBase('/service-worker.js')}`;
             navigator.serviceWorker
                 .register(sw_url)
-                .then((registration) => {
+                .then(registration => {
                     interval_id = setInterval(() => {
                         registration.update().then(refreshOnUpdate);
                     }, EVERY_HOUR);
@@ -53,7 +53,7 @@ export default function register() {
                         };
                     };
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.error('Error during service worker registration:', error); // eslint-disable-line no-console
                 });
         });
@@ -62,7 +62,7 @@ export default function register() {
 
 export function unregister() {
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.ready.then((registration) => {
+        navigator.serviceWorker.ready.then(registration => {
             registration.unregister();
         });
     }

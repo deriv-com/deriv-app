@@ -37,8 +37,8 @@ export default class FlyoutStore {
     @action.bound setContents(xml_list, search_term = '') {
         const text_limit = 20;
         const processed_xml = xml_list;
-        this.block_listeners.forEach((listener) => Blockly.unbindEvent_(listener));
-        this.block_workspaces.forEach((workspace) => workspace.dispose());
+        this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
+        this.block_workspaces.forEach(workspace => workspace.dispose());
         this.block_listeners = [];
         this.block_workspaces = [];
         this.is_help_content = false;
@@ -54,7 +54,7 @@ export default class FlyoutStore {
         // using setTimeout is a workaround to solve this issue
         // TODO: Find a proper solution
         const self = this;
-        setTimeout(function () {
+        setTimeout(function() {
             self.setFlyoutWidth(processed_xml);
         }, 50);
     }
@@ -114,7 +114,7 @@ export default class FlyoutStore {
         const block_svg_root = block.getSvgRoot();
 
         this.block_listeners.push(
-            Blockly.bindEventWithChecks_(block_svg_root, 'mousedown', null, (event) => {
+            Blockly.bindEventWithChecks_(block_svg_root, 'mousedown', null, event => {
                 GTM.pushDataLayer({
                     event: 'dbot_drag_block',
                     block_type: block.type,
@@ -138,7 +138,7 @@ export default class FlyoutStore {
     @action.bound setFlyoutWidth(xmlList) {
         let longest_block_width = 0;
 
-        xmlList.forEach((node) => {
+        xmlList.forEach(node => {
             const tag_name = node.tagName.toUpperCase();
 
             if (tag_name === Blockly.Xml.NODE_BLOCK) {
@@ -169,7 +169,7 @@ export default class FlyoutStore {
 
         const toolbox = workspace.getToolbox();
         const path = event.path || (event.composedPath && event.composedPath());
-        const is_flyout_click = path.some((el) => el.classList && el.classList.contains('flyout'));
+        const is_flyout_click = path.some(el => el.classList && el.classList.contains('flyout'));
         const is_search_focus = this.root_store.toolbar.is_search_focus;
         const isToolboxClick = () => toolbox.HtmlDiv.contains(event.target);
 

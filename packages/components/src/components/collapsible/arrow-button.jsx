@@ -4,7 +4,7 @@ import React from 'react';
 import { positionPropType } from './utils';
 import Icon from '../icon';
 
-const IconArrow = (props) => <Icon width={30} height={9} icon='IcChevronUp' {...props} />;
+const IconArrow = props => <Icon width={30} height={9} icon='IcChevronUp' {...props} />;
 const IconArrowWithTitle = ({ title, ...props }) => (
     <>
         <span className='dc-collapsible__title'>{title}</span>

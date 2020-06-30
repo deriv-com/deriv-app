@@ -43,7 +43,7 @@ const InputWithCheckbox = ({
         });
     };
 
-    const changeValue = (e) => {
+    const changeValue = e => {
         const new_is_checked = !is_checked;
         // e.target.checked is not reliable, we have to toggle its previous value
         onChange({ target: { name: e.target.name, value: new_is_checked } });

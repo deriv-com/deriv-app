@@ -16,7 +16,7 @@ class MarkerSpotLabel extends React.Component {
     }
 
     handleHoverToggle = () => {
-        this.setState((state) => ({ show_label: !state.show_label }));
+        this.setState(state => ({ show_label: !state.show_label }));
     };
 
     render() {

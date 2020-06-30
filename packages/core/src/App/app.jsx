@@ -45,7 +45,7 @@ const App = ({ root_store }) => {
                 root_store.ui.setIsNativepickerVisible(true);
             };
 
-            const onFocusOut = (e) => {
+            const onFocusOut = e => {
                 if (e.target.classList.contains('dc-dropdown__display')) {
                     // if the next target is a dropdown, keep native picker open
                     return;

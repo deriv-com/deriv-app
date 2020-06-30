@@ -13,11 +13,11 @@ export const getContractTypeOptions = (contract_type, trade_type) => {
         return config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
     }
 
-    const contract_options = trade_types.map((type) => Object.entries(type)[0].reverse());
+    const contract_options = trade_types.map(type => Object.entries(type)[0].reverse());
 
     // When user selected a specific contract, only return the contract type they selected.
     if (contract_type !== 'both') {
-        return contract_options.filter((option) => option[1] === contract_type);
+        return contract_options.filter(option => option[1] === contract_type);
     }
 
     return contract_options;

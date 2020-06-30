@@ -42,19 +42,19 @@ class MT5POA extends React.Component {
         has_poi: false,
     };
 
-    validateForm = (values) => {
+    validateForm = values => {
         // No need to validate if we are waiting for confirmation.
         if ([PoaStatusCodes.verified, PoaStatusCodes.pending].includes(this.state.poa_status)) {
             return {};
         }
 
         const validations = {
-            address_line_1: [(v) => !!v, (v) => validAddress(v)],
-            address_line_2: [(v) => !v || validAddress(v)],
-            address_city: [(v) => !!v, (v) => validLength(v, { min: 1, max: 35 })],
-            address_state: [(v) => !!v, (v) => !v || validLength(v, { min: 1, max: 35 })],
-            address_postcode: [(v) => validLength(v, { min: 1, max: 20 }), (v) => validPostCode(v)],
-            document_file: [(v) => !!v, ([file]) => !!file.name],
+            address_line_1: [v => !!v, v => validAddress(v)],
+            address_line_2: [v => !v || validAddress(v)],
+            address_city: [v => !!v, v => validLength(v, { min: 1, max: 35 })],
+            address_state: [v => !!v, v => !v || validLength(v, { min: 1, max: 35 })],
+            address_postcode: [v => validLength(v, { min: 1, max: 20 }), v => validPostCode(v)],
+            document_file: [v => !!v, ([file]) => !!file.name],
         };
 
         const validation_errors = {
@@ -82,7 +82,7 @@ class MT5POA extends React.Component {
         const errors = {};
 
         Object.entries(validations).forEach(([key, rules]) => {
-            const error_index = rules.findIndex((v) => !v(values[key]));
+            const error_index = rules.findIndex(v => !v(values[key]));
             if (error_index !== -1) {
                 errors[key] = validation_errors[key][error_index];
             }
@@ -91,7 +91,7 @@ class MT5POA extends React.Component {
         return errors;
     };
 
-    handleCancel = (values) => {
+    handleCancel = values => {
         this.props.onSave(this.props.index, values);
         this.props.onCancel();
     };
@@ -178,7 +178,7 @@ class MT5POA extends React.Component {
     };
 
     componentDidMount() {
-        WS.authorized.getAccountStatus().then((response) => {
+        WS.authorized.getAccountStatus().then(response => {
             const { get_account_status } = response;
             const { document, identity } = get_account_status.authentication;
             const has_poi = !!(identity && identity.status === 'none');
@@ -191,7 +191,7 @@ class MT5POA extends React.Component {
         this.setState({ resubmit_poa: true });
     };
 
-    setFileUploadRef = (ref) => {
+    setFileUploadRef = ref => {
         this.file_uploader_ref = ref;
     };
 
@@ -300,7 +300,7 @@ class MT5POA extends React.Component {
                                                                 list_items={states_list}
                                                                 error={touched.address_state && errors.address_state}
                                                                 use_text={true}
-                                                                onChange={(e) =>
+                                                                onChange={e =>
                                                                     setFieldValue('address_state', e.target.value, true)
                                                                 }
                                                             />
@@ -314,7 +314,7 @@ class MT5POA extends React.Component {
                                                 </div>
                                                 <div className='mt5-proof-of-address__file-upload'>
                                                     <FileUploaderContainer
-                                                        onRef={(ref) => this.setFileUploadRef(ref)}
+                                                        onRef={ref => this.setFileUploadRef(ref)}
                                                         getSocket={WS.getSocket}
                                                         onFileDrop={({ document_file: df, file_error_message }) =>
                                                             this.onFileDrop(

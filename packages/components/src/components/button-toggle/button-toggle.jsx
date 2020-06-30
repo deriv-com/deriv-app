@@ -5,7 +5,7 @@ import Button from 'Components/button/button.jsx';
 import HighlightWrapper from './button-highlight-wrapper.jsx';
 
 const ButtonToggle = ({ buttons_arr, className, id, is_animated, name, onChange, value, has_rounded_button }) => {
-    const changeValue = (selected_value) => {
+    const changeValue = selected_value => {
         if (value === selected_value) return;
         onChange({ target: { value: selected_value, name } });
     };

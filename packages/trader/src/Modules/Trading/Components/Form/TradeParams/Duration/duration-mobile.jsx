@@ -50,7 +50,7 @@ class Ticks extends React.Component {
 
         const [min_tick, max_tick] = getDurationMinMaxValues(duration_min_max, 'tick', 't');
 
-        const setTickDuration = (value) => {
+        const setTickDuration = value => {
             const { value: duration } = value.target;
             const on_change_obj = {};
 
@@ -67,7 +67,7 @@ class Ticks extends React.Component {
             toggleModal();
         };
 
-        const onTickChange = (tick) => setSelectedDuration('t', tick);
+        const onTickChange = tick => setSelectedDuration('t', tick);
         const should_reset_tick_value = trade_duration_unit === 't' && trade_duration >= min_tick;
         const tick_duration = trade_duration < min_tick && selected_duration < min_tick ? min_tick : selected_duration;
         return (
@@ -119,7 +119,7 @@ const Numbers = ({
     const { value: duration_unit } = duration_unit_option;
     const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry, duration_unit);
 
-    const validateDuration = (value) => {
+    const validateDuration = value => {
         const localized_message = (
             <Localize
                 i18n_default_text='Should be between {{min}} and {{max}}'
@@ -150,7 +150,7 @@ const Numbers = ({
         return true;
     };
 
-    const setDuration = (duration) => {
+    const setDuration = duration => {
         const on_change_obj = {};
 
         // check for any amount changes from Amount trade params tab before submitting onChange object
@@ -167,7 +167,7 @@ const Numbers = ({
         toggleModal();
     };
 
-    const onNumberChange = (num) => {
+    const onNumberChange = num => {
         setSelectedDuration(duration_unit, num);
         validateDuration(num);
     };
@@ -234,9 +234,9 @@ const Duration = ({
     const has_selected_tab_idx = typeof duration_tab_idx !== 'undefined';
     const active_index = has_selected_tab_idx
         ? duration_tab_idx
-        : duration_units_list.findIndex((d) => d.value === duration_unit);
+        : duration_units_list.findIndex(d => d.value === duration_unit);
     const [min, max] = getDurationMinMaxValues(duration_min_max, 'daily', 'd');
-    const handleRelativeChange = (date) => {
+    const handleRelativeChange = date => {
         setSelectedDuration('d', date);
     };
     const selected_basis_option = () => {
@@ -248,7 +248,7 @@ const Duration = ({
         return trade_basis;
     };
 
-    const onTabChange = (index) => {
+    const onTabChange = index => {
         setDurationTabIdx(index);
         const { value: unit } = duration_units_list[index];
         setSelectedDuration(unit, duration_values[`${unit}_duration`]);
@@ -256,8 +256,8 @@ const Duration = ({
 
     return (
         <div>
-            <Tabs active_index={active_index} onTabItemClick={(num) => onTabChange(num)} single_tab_has_no_label top>
-                {duration_units_list.map((duration_unit_option) => {
+            <Tabs active_index={active_index} onTabItemClick={num => onTabChange(num)} single_tab_has_no_label top>
+                {duration_units_list.map(duration_unit_option => {
                     switch (duration_unit_option.value) {
                         case 't':
                             return (

@@ -95,7 +95,7 @@ const AccountTransferForm = ({
     setErrorMessage,
     error,
 }) => {
-    const validateAmount = (amount) => {
+    const validateAmount = amount => {
         let error_message;
 
         if (!amount) {
@@ -232,7 +232,7 @@ const AccountTransferForm = ({
                                                 list_height='404'
                                                 name='transfer_from'
                                                 value={selected_from.value}
-                                                onChange={(e) => {
+                                                onChange={e => {
                                                     onChangeTransferFrom(e);
                                                     handleChange(e);
                                                     validateField('amount');
@@ -247,7 +247,7 @@ const AccountTransferForm = ({
                                                 label={localize('From')}
                                                 value={selected_from.value}
                                                 list_items={from_accounts}
-                                                onChange={(e) => {
+                                                onChange={e => {
                                                     onChangeTransferFrom(e);
                                                     handleChange(e);
                                                     validateField('amount');
@@ -289,7 +289,7 @@ const AccountTransferForm = ({
                                         {({ field }) => (
                                             <Input
                                                 {...field}
-                                                onChange={(e) => {
+                                                onChange={e => {
                                                     setErrorMessage('');
                                                     handleChange(e);
                                                 }}
@@ -306,7 +306,9 @@ const AccountTransferForm = ({
                                                                 `symbols--${selected_from.currency.toLowerCase()}`
                                                             )}
                                                         />
-                                                    ) : undefined
+                                                    ) : (
+                                                        undefined
+                                                    )
                                                 }
                                                 autoComplete='off'
                                                 maxLength='30'

@@ -11,11 +11,11 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
 class NotificationsDialog extends React.Component {
-    setWrapperRef = (node) => {
+    setWrapperRef = node => {
         this.wrapper_ref = node;
     };
 
-    handleClickOutside = (event) => {
+    handleClickOutside = event => {
         const notifications_toggle_btn = !event.target.classList.contains('notifications-toggle__icon-wrapper');
         if (
             this.wrapper_ref &&

@@ -27,7 +27,7 @@ const AllowEquals = ({
     const has_allow_equals =
         isRiseFallEqual(contract_type) && (has_callputequal_duration || expiry_type === 'endtime') && has_callputequal;
 
-    const changeValue = (e) => {
+    const changeValue = e => {
         e.persist();
         const { name, checked } = e.target;
         onChange({ target: { name, value: Number(checked) } });

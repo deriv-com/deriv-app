@@ -6,7 +6,7 @@ import { log_types } from '../../../constants/messages';
 
 let delayIndex = 0;
 
-export default (Engine) =>
+export default Engine =>
     class Purchase extends Engine {
         purchase(contractType) {
             // Prevent calling purchase twice
@@ -16,7 +16,7 @@ export default (Engine) =>
 
             const { id, askPrice } = this.selectProposal(contractType);
 
-            const onSuccess = (r) => {
+            const onSuccess = r => {
                 const { buy } = r;
                 contractStatus({
                     id: 'contract.purchase_received',

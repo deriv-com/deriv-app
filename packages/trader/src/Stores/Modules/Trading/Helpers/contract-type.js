@@ -22,11 +22,11 @@ const ContractType = (() => {
     const trading_times = {};
     let has_only_forward_starting_contracts = false;
 
-    const buildContractTypesConfig = (symbol) =>
-        WS.storage.contractsFor(symbol).then((r) => {
+    const buildContractTypesConfig = symbol =>
+        WS.storage.contractsFor(symbol).then(r => {
             const has_contracts = ObjectUtils.getPropertyValue(r, ['contracts_for']);
             has_only_forward_starting_contracts =
-                has_contracts && !r.contracts_for.available.find((contract) => contract.start_type !== 'forward');
+                has_contracts && !r.contracts_for.available.find(contract => contract.start_type !== 'forward');
             if (!has_contracts || has_only_forward_starting_contracts) return;
             const contract_categories = getContractCategoriesConfig();
             contract_types = getContractTypesConfig();
@@ -34,9 +34,9 @@ const ContractType = (() => {
             available_contract_types = {};
             available_categories = ObjectUtils.cloneObject(contract_categories); // To preserve the order (will clean the extra items later in this function)
 
-            r.contracts_for.available.forEach((contract) => {
+            r.contracts_for.available.forEach(contract => {
                 const type = Object.keys(contract_types).find(
-                    (key) =>
+                    key =>
                         contract_types[key].trade_types.indexOf(contract.contract_type) !== -1 &&
                         (typeof contract_types[key].barrier_count === 'undefined' ||
                             +contract_types[key].barrier_count === contract.barriers) // To distinguish betweeen Rise/Fall & Higher/Lower
@@ -96,7 +96,7 @@ const ContractType = (() => {
                     const sub_cats =
                         available_categories[
                             Object.keys(available_categories).find(
-                                (key) => available_categories[key].indexOf(type) !== -1
+                                key => available_categories[key].indexOf(type) !== -1
                             )
                         ];
 
@@ -122,8 +122,8 @@ const ContractType = (() => {
             });
 
             // cleanup categories
-            Object.keys(available_categories).forEach((key) => {
-                available_categories[key] = available_categories[key].filter((item) => typeof item === 'object');
+            Object.keys(available_categories).forEach(key => {
+                available_categories[key] = available_categories[key].filter(item => typeof item === 'object');
                 if (available_categories[key].length === 0) {
                     delete available_categories[key];
                 }
@@ -138,7 +138,7 @@ const ContractType = (() => {
     const getArrayDefaultValue = (arr_new_values, value) =>
         arr_new_values.indexOf(value) !== -1 ? value : arr_new_values[0];
 
-    const getContractValues = (store) => {
+    const getContractValues = store => {
         const {
             contract_expiry_type,
             contract_type,
@@ -184,16 +184,16 @@ const ContractType = (() => {
 
     const getContractType = (list, contract_type) => {
         const arr_list = Object.keys(list || {})
-            .reduce((k, l) => [...k, ...list[l].map((ct) => ct.value)], [])
-            .filter((type) => unsupported_contract_types_list.indexOf(type) === -1);
+            .reduce((k, l) => [...k, ...list[l].map(ct => ct.value)], [])
+            .filter(type => unsupported_contract_types_list.indexOf(type) === -1);
         return {
             contract_type: getArrayDefaultValue(arr_list, contract_type),
         };
     };
 
-    const getComponents = (c_type) => ({
+    const getComponents = c_type => ({
         form_components: ['duration', 'amount', ...contract_types[c_type].components].filter(
-            (component) =>
+            component =>
                 !(
                     component === 'duration' &&
                     contract_types[c_type].config &&
@@ -223,7 +223,7 @@ const ContractType = (() => {
                 contract_start_type,
             ]) || [];
         const arr_units = [];
-        duration_units.forEach((obj) => {
+        duration_units.forEach(obj => {
             arr_units.push(obj.value);
         });
 
@@ -251,7 +251,7 @@ const ContractType = (() => {
 
     const getFullContractTypes = () => available_contract_types;
 
-    const getStartType = (start_date) => ({
+    const getStartType = start_date => ({
         // Number(0) refers to 'now'
         contract_start_type: start_date === Number(0) ? 'spot' : 'forward',
     });
@@ -268,7 +268,7 @@ const ContractType = (() => {
             start_dates_list.push(...config.forward_starting_dates);
         }
 
-        const start_date = start_dates_list.find((item) => item.value === current_start_date)
+        const start_date = start_dates_list.find(item => item.value === current_start_date)
             ? current_start_date
             : start_dates_list[0].value;
 
@@ -277,30 +277,29 @@ const ContractType = (() => {
 
     const getSessions = (contract_type, start_date) => {
         const config = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config']) || {};
-        const sessions = ((config.forward_starting_dates || []).find((option) => option.value === start_date) || {})
+        const sessions = ((config.forward_starting_dates || []).find(option => option.value === start_date) || {})
             .sessions;
         return { sessions };
     };
 
-    const hours = [...Array(24).keys()].map((a) => `0${a}`.slice(-2));
-    const minutes = [...Array(12).keys()].map((a) => `0${a * 5}`.slice(-2));
+    const hours = [...Array(24).keys()].map(a => `0${a}`.slice(-2));
+    const minutes = [...Array(12).keys()].map(a => `0${a * 5}`.slice(-2));
 
     const getValidTime = (sessions, compare_moment, start_moment) => {
         if (sessions && !isSessionAvailable(sessions, compare_moment)) {
             // first see if changing the minute brings it to the right session
             compare_moment.minute(
-                minutes.find((m) => isSessionAvailable(sessions, compare_moment.minute(m))) ||
-                    compare_moment.format('mm')
+                minutes.find(m => isSessionAvailable(sessions, compare_moment.minute(m))) || compare_moment.format('mm')
             );
             // if not, also change the hour
             if (!isSessionAvailable(sessions, compare_moment)) {
                 compare_moment.minute(0);
                 compare_moment.hour(
-                    hours.find((h) => isSessionAvailable(sessions, compare_moment.hour(h), start_moment, true)) ||
+                    hours.find(h => isSessionAvailable(sessions, compare_moment.hour(h), start_moment, true)) ||
                         compare_moment.format('HH')
                 );
                 compare_moment.minute(
-                    minutes.find((m) => isSessionAvailable(sessions, compare_moment.minute(m))) ||
+                    minutes.find(m => isSessionAvailable(sessions, compare_moment.minute(m))) ||
                         compare_moment.format('mm')
                 );
             }
@@ -482,16 +481,19 @@ const ContractType = (() => {
                 }
                 // Set the expiry_time to 5 minute less than start_time for forwading contracts when the expiry_time is null and the expiry_date is tomorrow.
                 if (end_time === '00:00' && start_moment.isBefore(end_moment, 'day')) {
-                    end_time = start_moment.clone().subtract(5, 'minute').format('HH:mm');
+                    end_time = start_moment
+                        .clone()
+                        .subtract(5, 'minute')
+                        .format('HH:mm');
                 }
             }
         }
         return { expiry_time: end_time };
     };
 
-    const setMinuteMultipleByFive = (moment_obj) => moment_obj.minute(Math.ceil(moment_obj.minute() / 5) * 5);
+    const setMinuteMultipleByFive = moment_obj => moment_obj.minute(Math.ceil(moment_obj.minute() / 5) * 5);
 
-    const getTradeTypes = (contract_type) => ({
+    const getTradeTypes = contract_type => ({
         trade_types: ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'trade_types']),
     });
 
@@ -524,25 +526,25 @@ const ContractType = (() => {
             ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'multiplier_range']) || [];
 
         return {
-            multiplier_range_list: arr_multiplier.map((m) => ({ text: `x${m}`, value: m })),
+            multiplier_range_list: arr_multiplier.map(m => ({ text: `x${m}`, value: m })),
             multiplier: getArrayDefaultValue(arr_multiplier, multiplier),
         };
     };
 
-    const getCancellationRange = (contract_type) => {
+    const getCancellationRange = contract_type => {
         const arr_cancellation_range =
             ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'cancellation_range']) ||
             [];
 
         const regex = new RegExp('^([0-9]+)|([a-zA-Z]+)$', 'g');
-        const getText = (str) => {
+        const getText = str => {
             const [duration, unit] = str.match(regex);
             const unit_map = getUnitMap();
             return `${duration} ${unit_map[unit].name_plural}`;
         };
 
         return {
-            cancellation_range_list: arr_cancellation_range.map((d) => ({ text: `${getText(d)}`, value: d })),
+            cancellation_range_list: arr_cancellation_range.map(d => ({ text: `${getText(d)}`, value: d })),
         };
     };
 

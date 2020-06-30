@@ -8,7 +8,7 @@ import { connect } from '../stores/connect';
 import '../assets/sass/summary.scss';
 import { popover_zindex } from '../constants/z-indexes';
 
-const SummaryTile = (props) => (
+const SummaryTile = props => (
     <div className={'summary__tile'}>
         <Popover
             className='run-panel__info'

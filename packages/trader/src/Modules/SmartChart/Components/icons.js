@@ -3,7 +3,7 @@
 // All path commands *MUST* be absolute (MCLVQZ).
 // Use figma.com which by default exports paths as absolute.
 // Only <path /> tags is supported.
-const parse_svg = (markup) => {
+const parse_svg = markup => {
     // make tests pass
     if (!window.DOMParser) {
         return null;
@@ -16,13 +16,13 @@ const parse_svg = (markup) => {
     height = height.value * 1;
 
     const paths = [];
-    [].forEach.call(svg.children, (p) => {
+    [].forEach.call(svg.children, p => {
         const { d, fill, stroke } = p.attributes;
         paths.push({
             points: d.value
                 .match(/M|C|H|A|L|V|-?\d*(\.\d+)?/g)
-                .filter((e) => e)
-                .map((e) => ('MCHALV'.indexOf(e) === -1 ? e * 1 : e)),
+                .filter(e => e)
+                .map(e => ('MCHALV'.indexOf(e) === -1 ? e * 1 : e)),
             fill: fill && fill.value,
             stroke: stroke && stroke.value,
         });

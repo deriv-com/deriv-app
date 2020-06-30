@@ -17,22 +17,22 @@ class ToggleFullScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.fullscreen_map.event.forEach((event) => {
+        this.fullscreen_map.event.forEach(event => {
             document.addEventListener(event, this.onFullScreen, false);
         });
     }
 
     onFullScreen = () => {
-        const is_full_screen = this.fullscreen_map.element.some((el) => document[el]);
+        const is_full_screen = this.fullscreen_map.element.some(el => document[el]);
         this.setState({ is_full_screen });
     };
 
-    toggleFullScreen = (e) => {
+    toggleFullScreen = e => {
         e.stopPropagation();
 
         const to_exit = this.state.is_full_screen;
         const el = to_exit ? document : document.documentElement;
-        const fncToCall = this.fullscreen_map[to_exit ? 'fnc_exit' : 'fnc_enter'].find((fnc) => el[fnc]);
+        const fncToCall = this.fullscreen_map[to_exit ? 'fnc_exit' : 'fnc_enter'].find(fnc => el[fnc]);
 
         if (fncToCall) {
             el[fncToCall]();

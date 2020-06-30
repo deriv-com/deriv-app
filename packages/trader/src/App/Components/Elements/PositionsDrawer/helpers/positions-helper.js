@@ -24,23 +24,23 @@ export const getTimePercentage = (server_time, start_time, expiry_time) => {
     return Math.round(percentage);
 };
 
-export const getBarrierLabel = (contract_info) => {
+export const getBarrierLabel = contract_info => {
     if (isDigitType(contract_info.contract_type)) {
         return localize('Target');
     }
     return localize('Barrier');
 };
 
-export const getBarrierValue = (contract_info) => {
+export const getBarrierValue = contract_info => {
     if (isDigitType(contract_info.contract_type)) {
         return digitTypeMap(contract_info)[contract_info.contract_type];
     }
     return addCommaToNumber(contract_info.barrier);
 };
 
-export const isDigitType = (contract_type) => /digit/.test(contract_type.toLowerCase());
+export const isDigitType = contract_type => /digit/.test(contract_type.toLowerCase());
 
-const digitTypeMap = (contract_info) => ({
+const digitTypeMap = contract_info => ({
     DIGITDIFF: localize('Not {{barrier}}', { barrier: contract_info.barrier }),
     DIGITEVEN: localize('Even'),
     DIGITMATCH: localize('Equals {{barrier}}', { barrier: contract_info.barrier }),

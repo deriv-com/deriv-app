@@ -70,7 +70,7 @@ class DataList extends React.PureComponent {
             <div className={classNames(className, 'data-list', `${className}__data-list`)} onScroll={onScroll}>
                 <div
                     className={classNames('data-list__body', `${className}__data-list-body`)}
-                    ref={(ref) => (this.el_list_body = ref)}
+                    ref={ref => (this.el_list_body = ref)}
                 >
                     <List
                         className={className}

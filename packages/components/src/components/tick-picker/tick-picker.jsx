@@ -18,7 +18,7 @@ const TickPicker = ({
     plural_label,
     onValueChange,
 }) => {
-    const normalizedTick = (tick) => `${tick}`.padStart(2, 0);
+    const normalizedTick = tick => `${tick}`.padStart(2, 0);
     const [tick_value, setTickValue] = React.useState(parseInt(default_value));
 
     const handleDecrease = () => {

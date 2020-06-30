@@ -4,7 +4,7 @@ import React from 'react';
 import { Button } from '@deriv/components';
 
 const ToggleButton = ({ children, className, is_disabled, is_selected, onChange, onClick, value, ...others }) => {
-    const handleChange = (e) => {
+    const handleChange = e => {
         if (onClick) {
             onClick(e, value);
             if (e.isDefaultPrevented()) {

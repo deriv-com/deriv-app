@@ -154,7 +154,7 @@ const modules = [
     },
 ];
 
-const handleLoading = (props) => {
+const handleLoading = props => {
     // 200ms default
     if (props.pastDelay) {
         return <Loading />;
@@ -162,7 +162,7 @@ const handleLoading = (props) => {
     return null;
 };
 
-const lazyLoadCashierComponent = (component) => {
+const lazyLoadCashierComponent = component => {
     return Loadable.Map({
         loader: {
             Cashier: () => import(/* webpackChunkName: "cashier" */ 'Modules/Cashier'),

@@ -115,7 +115,7 @@ export default class UIStore extends BaseStore {
     @observable prompt_when = false;
     @observable promptFn = () => {};
 
-    getDurationFromUnit = (unit) => this[`duration_${unit}`];
+    getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
         const local_storage_properties = [
@@ -268,7 +268,7 @@ export default class UIStore extends BaseStore {
         }
         // UI/UX wants button to remain green until transition is finished and only then disable buttons
         setTimeout(() => {
-            [].forEach.bind(el_purchase_buttons, (el) => {
+            [].forEach.bind(el_purchase_buttons, el => {
                 el.classList.add('btn-purchase--disabled');
             })();
         }, 250);
@@ -400,7 +400,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     updateNotifications(notifications_array) {
-        this.notifications = notifications_array.filter((message) => !excluded_notifications.includes(message.key));
+        this.notifications = notifications_array.filter(message => !excluded_notifications.includes(message.key));
     }
 
     @action.bound
@@ -410,7 +410,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     removeNotificationByKey({ key }) {
-        this.notifications = this.notifications.filter((n) => n.key !== key);
+        this.notifications = this.notifications.filter(n => n.key !== key);
     }
 
     @action.bound
@@ -426,7 +426,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     addNotificationMessage(notification) {
         if (!notification) return;
-        if (!this.notification_messages.find((item) => item.header === notification.header)) {
+        if (!this.notification_messages.find(item => item.header === notification.header)) {
             this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
             if (!excluded_notifications.includes(notification.key)) {
                 this.updateNotifications(this.notification_messages);
@@ -449,7 +449,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     removeNotificationMessage({ key } = {}) {
         if (!key) return;
-        this.notification_messages = this.notification_messages.filter((n) => n.key !== key);
+        this.notification_messages = this.notification_messages.filter(n => n.key !== key);
         // Add notification messages to LocalStore when user closes, check for redundancy
         const active_loginid = LocalStore.get('active_loginid');
         if (!excluded_notifications.includes(key) && active_loginid) {
@@ -475,7 +475,7 @@ export default class UIStore extends BaseStore {
     removeAllNotificationMessages(should_close_persistent) {
         this.notification_messages = should_close_persistent
             ? []
-            : [...this.notification_messages.filter((notifs) => notifs.is_persistent)];
+            : [...this.notification_messages.filter(notifs => notifs.is_persistent)];
     }
 
     @action.bound

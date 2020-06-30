@@ -182,7 +182,7 @@ Blockly.Blocks.controls_if = {
                 // Determine which label it is, has to be done inside this function.
                 const input_names = ['IF_LABEL', 'IF', 'THEN_LABEL', 'DELETE_ICON', 'DO'];
 
-                input_names.forEach((input_name) => {
+                input_names.forEach(input_name => {
                     this.removeInput(`${input_name}${index}`);
 
                     // Re-number inputs w/ indexes larger than this one, e.g. when removing `IF5` becomes `IF4`
@@ -229,14 +229,14 @@ Blockly.Blocks.controls_if = {
     getRequiredValueInputs() {
         const required_inputs = {};
         this.inputList
-            .filter((input) => /^IF[0-9]*?$/.test(input.name))
-            .forEach((input) => (required_inputs[input.name] = null));
+            .filter(input => /^IF[0-9]*?$/.test(input.name))
+            .forEach(input => (required_inputs[input.name] = null));
 
         return required_inputs;
     },
 };
 
-Blockly.JavaScript.controls_if = (block) => {
+Blockly.JavaScript.controls_if = block => {
     // If/elseif/else condition.
     let n = 0;
     let code = '';

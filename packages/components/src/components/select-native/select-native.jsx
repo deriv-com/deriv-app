@@ -5,10 +5,10 @@ import FieldError from 'Components/field-error';
 import Icon from 'Components/icon/icon.jsx';
 
 class SelectNative extends React.Component {
-    getDisplayText = (value) => {
+    getDisplayText = value => {
         const { list_items } = this.props;
         const dropdown_items = Array.isArray(list_items) ? list_items : [].concat(...Object.values(list_items));
-        const list_obj = dropdown_items.find((item) => {
+        const list_obj = dropdown_items.find(item => {
             if (typeof item.value !== 'string') return item.value === value;
             return item.value.toLowerCase() === value.toLowerCase();
         });
@@ -70,7 +70,7 @@ class SelectNative extends React.Component {
                                     {/* Safari on ios allows to select a disabled option. 
                                         So, we should avoid showing it */}
                                     {list_items
-                                        .filter((opt) => !opt.disabled)
+                                        .filter(opt => !opt.disabled)
                                         .map((option, idx) => (
                                             <option key={idx} value={use_text ? option.text : option.value}>
                                                 {option.nativepicker_text || option.text}
@@ -78,12 +78,12 @@ class SelectNative extends React.Component {
                                         ))}
                                 </React.Fragment>
                             ) : (
-                                Object.keys(list_items).map((key) => (
+                                Object.keys(list_items).map(key => (
                                     <optgroup key={key} label={key}>
                                         {/* Safari on ios allows to select a disabled option. 
                                         So, we should avoid showing it */}
                                         {list_items[key]
-                                            .filter((opt) => !opt.disabled)
+                                            .filter(opt => !opt.disabled)
                                             .map((option, idx) => (
                                                 <option key={idx} value={use_text ? option.text : option.value}>
                                                     {option.nativepicker_text || option.text}

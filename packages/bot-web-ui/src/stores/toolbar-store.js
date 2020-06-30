@@ -72,7 +72,7 @@ export default class ToolbarStore {
         this.is_search_focus = false;
     }
 
-    onSearchClear = (setFieldValue) => {
+    onSearchClear = setFieldValue => {
         const toolbox = Blockly.derivWorkspace.getToolbox();
         setFieldValue('search', '');
         toolbox.showSearch('');
@@ -122,7 +122,7 @@ export default class ToolbarStore {
         Blockly.Events.setGroup(false);
     }
 
-    onZoomInOutClick = (is_zoom_in) => {
+    onZoomInOutClick = is_zoom_in => {
         const workspace = Blockly.derivWorkspace;
         const metrics = workspace.getMetrics();
         const addition = is_zoom_in ? 1 : -1;

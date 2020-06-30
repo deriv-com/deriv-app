@@ -112,12 +112,12 @@ class InputField extends React.Component {
             }
         };
 
-        const getDecimals = (val) => {
+        const getDecimals = val => {
             const array_value = typeof val === 'string' ? val.split('.') : val.toString().split('.');
             return array_value && array_value.length > 1 ? array_value[1].length : 0;
         };
 
-        const getClampedValue = (val) => {
+        const getClampedValue = val => {
             let new_value = val;
             if (min_value) {
                 new_value = Math.max(new_value, min_value);
@@ -153,7 +153,7 @@ class InputField extends React.Component {
             updateValue(increment_value, !!long_press_step);
         };
 
-        const calculateDecrementedValue = (long_press_step) => {
+        const calculateDecrementedValue = long_press_step => {
             let decrement_value;
 
             const current_value = this.state.local_value || value;
@@ -200,7 +200,7 @@ class InputField extends React.Component {
             this.setState({ local_value: undefined });
         };
 
-        const onKeyPressed = (e) => {
+        const onKeyPressed = e => {
             if (e.keyCode === 38) incrementValue(); // up-arrow pressed
             if (e.keyCode === 40) decrementValue(); // down-arrow pressed
         };

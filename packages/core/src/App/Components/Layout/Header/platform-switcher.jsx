@@ -17,7 +17,7 @@ class PlatformSwitcher extends React.PureComponent {
         this.state = { is_open: false };
     }
 
-    toggleDrawer = () => this.setState((state) => ({ is_open: !state.is_open }));
+    toggleDrawer = () => this.setState(state => ({ is_open: !state.is_open }));
     closeDrawer = () => {
         this.setState({ is_open: false }, () => {
             if (typeof this.props.toggleDrawer === 'function') {

@@ -9,7 +9,7 @@ const map_error_field = {
     date_expiry: 'expiry_date',
 };
 
-export const getProposalErrorField = (response) => {
+export const getProposalErrorField = response => {
     const error_field = ObjectUtils.getPropertyValue(response, ['error', 'details', 'field']);
     if (!error_field) {
         return null;
@@ -26,7 +26,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     const stake = proposal.display_value;
     const basis_list = store.basis_list;
 
-    const contract_basis = basis_list.find((o) => o.value !== store.basis) || {};
+    const contract_basis = basis_list.find(o => o.value !== store.basis) || {};
     const is_stake = contract_basis.text === 'Stake';
     const price = is_stake ? stake : proposal[contract_basis.value];
     let has_increased = price > obj_prev_contract_basis.value;
@@ -62,10 +62,10 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     };
 };
 
-export const createProposalRequests = (store) => {
+export const createProposalRequests = store => {
     const requests = {};
 
-    Object.keys(store.trade_types).forEach((type) => {
+    Object.keys(store.trade_types).forEach(type => {
         const new_req = createProposalRequestForContract(store, type);
         requests[type] = new_req;
     });

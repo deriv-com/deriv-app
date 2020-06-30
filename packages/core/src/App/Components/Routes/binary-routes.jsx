@@ -5,7 +5,7 @@ import { connect } from 'Stores/connect';
 import getRoutesConfig from 'App/Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 
-const BinaryRoutes = (props) => {
+const BinaryRoutes = props => {
     const location = useLocation();
 
     React.useEffect(() => {

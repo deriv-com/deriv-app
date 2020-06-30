@@ -25,7 +25,7 @@ describe('ClientBase', () => {
 
     describe('.validateLoginid()', () => {
         it('can detect a valid loginid', () => {
-            [loginid_virtual, loginid_real].forEach((id) => {
+            [loginid_virtual, loginid_real].forEach(id => {
                 Client.set('loginid', id, id);
                 Client.set('token', 'test', id);
                 expect(Client.isValidLoginid()).to.eq(true);
@@ -50,14 +50,22 @@ describe('ClientBase', () => {
         });
         it('returns expected data types', () => {
             Client.set('number', 1, loginid_real);
-            expect(Client.get('number', loginid_real)).to.be.a('Number').and.to.eq(1);
+            expect(Client.get('number', loginid_real))
+                .to.be.a('Number')
+                .and.to.eq(1);
             Client.set('float', 1.12345, loginid_real);
-            expect(Client.get('float', loginid_real)).to.be.a('Number').and.to.eq(1.12345);
+            expect(Client.get('float', loginid_real))
+                .to.be.a('Number')
+                .and.to.eq(1.12345);
             const obj_nested = { a: { b: 'test' } };
             Client.set('object', obj_nested, loginid_real);
-            expect(Client.get('object', loginid_real)).to.be.an('Object').and.to.deep.eq(obj_nested);
+            expect(Client.get('object', loginid_real))
+                .to.be.an('Object')
+                .and.to.deep.eq(obj_nested);
             Client.set('bool', true, loginid_real);
-            expect(Client.get('bool', loginid_real)).to.be.a('boolean').and.to.eq(true);
+            expect(Client.get('bool', loginid_real))
+                .to.be.a('boolean')
+                .and.to.eq(true);
             Client.set('undef', undefined, loginid_real);
             expect(Client.get('undef', loginid_real)).to.eq(undefined);
         });
@@ -156,7 +164,7 @@ describe('ClientBase', () => {
             expect(Client.getBasicUpgradeInfo().can_upgrade).to.eq(false);
         });
         it('returns as expected for accounts that can upgrade to real', () => {
-            ['svg', 'malta', 'iom'].forEach((lc) => {
+            ['svg', 'malta', 'iom'].forEach(lc => {
                 State.set(['response', 'authorize', 'authorize', 'upgradeable_landing_companies'], [lc]);
                 const ugprade_info = Client.getBasicUpgradeInfo();
                 expect(ugprade_info.can_upgrade).to.eq(true);
@@ -196,16 +204,16 @@ describe('ClientBase', () => {
     });
 
     describe('.canTransferFunds()', () => {
-        before(function (done) {
+        before(function(done) {
             this.timeout(5000);
-            api.getWebsiteStatus().then((response) => {
+            api.getWebsiteStatus().then(response => {
                 CurrencyUtils.setCurrencies(response.website_status);
                 done();
             });
         });
         it('fails if client has maltainvest and malta accounts with one missing currency', () => {
             Client.clearAllAccounts();
-            [loginid_gaming, loginid_financial].forEach((id) => {
+            [loginid_gaming, loginid_financial].forEach(id => {
                 Client.set('loginid', id, id);
             });
             Client.set('landing_company_shortcode', 'maltainvest', loginid_financial);
@@ -229,7 +237,7 @@ describe('ClientBase', () => {
         });
         it('fails if maltainvest and non-malta client even if same currency', () => {
             Client.clearAllAccounts();
-            [loginid_real_iom, loginid_financial].forEach((id) => {
+            [loginid_real_iom, loginid_financial].forEach(id => {
                 Client.set('loginid', id, id);
             });
             Client.set('landing_company_shortcode', 'iom', loginid_real_iom);
@@ -242,7 +250,7 @@ describe('ClientBase', () => {
         });
         it('fails if non-maltainvest client only has fiat accounts', () => {
             Client.clearAllAccounts();
-            [loginid_real, loginid_real_2].forEach((id) => {
+            [loginid_real, loginid_real_2].forEach(id => {
                 Client.set('loginid', id, id);
             });
             Client.set('currency', 'USD', loginid_real);

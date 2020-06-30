@@ -29,7 +29,7 @@ const BinarySocketBase = (() => {
     const timeouts = {};
 
     const clearTimeouts = () => {
-        Object.keys(timeouts).forEach((key) => {
+        Object.keys(timeouts).forEach(key => {
             clearTimeout(timeouts[key]);
             delete timeouts[key];
         });
@@ -43,12 +43,12 @@ const BinarySocketBase = (() => {
         binary_socket.close();
     };
 
-    const closeAndOpenNewConnection = (token) => {
+    const closeAndOpenNewConnection = token => {
         close();
         init({ config, is_switching_socket: true, token });
     };
 
-    const hasReadyState = (...states) => binary_socket && states.some((s) => binary_socket.readyState === s);
+    const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
 
     const init = ({ options, is_switching_socket, token }) => {
         if (wrong_app_id === getAppId()) {
@@ -127,14 +127,14 @@ const BinarySocketBase = (() => {
         });
     };
 
-    const availability = (status) => {
+    const availability = status => {
         if (typeof status !== 'undefined') {
             is_available = !!status;
         }
         return is_available;
     };
 
-    const excludeAuthorize = (type) => !(type === 'authorize' && !ClientBase.isLoggedIn());
+    const excludeAuthorize = type => !(type === 'authorize' && !ClientBase.isLoggedIn());
 
     const wait = (...responses) => deriv_api.expectResponse(...responses.filter(excludeAuthorize));
 
@@ -142,7 +142,7 @@ const BinarySocketBase = (() => {
 
     const balanceAll = () => deriv_api.send({ balance: 1, account: 'all' });
 
-    const subscribeBalanceAll = (cb) => subscribe({ balance: 1, account: 'all' }, cb);
+    const subscribeBalanceAll = cb => subscribe({ balance: 1, account: 'all' }, cb);
 
     const subscribeBalanceActiveAccount = (cb, account) => subscribe({ balance: 1, account }, cb);
 
@@ -155,14 +155,14 @@ const BinarySocketBase = (() => {
 
     const subscribeTicksHistory = (request_object, cb) => subscribe(request_object, cb);
 
-    const subscribeTransaction = (cb) => subscribe({ transaction: 1 }, cb);
+    const subscribeTransaction = cb => subscribe({ transaction: 1 }, cb);
 
-    const subscribeWebsiteStatus = (cb) => subscribe({ website_status: 1 }, cb);
+    const subscribeWebsiteStatus = cb => subscribe({ website_status: 1 }, cb);
 
-    const buyAndSubscribe = (request) => {
-        return new Promise((resolve) => {
+    const buyAndSubscribe = request => {
+        return new Promise(resolve => {
             let called = false;
-            const subscriber = subscribe(request, (response) => {
+            const subscriber = subscribe(request, response => {
                 if (!called) {
                     called = true;
                     subscriber.unsubscribe();
@@ -194,13 +194,13 @@ const BinarySocketBase = (() => {
             ...(passthrough && { passthrough }),
         });
 
-    const newAccountReal = (values) =>
+    const newAccountReal = values =>
         deriv_api.send({
             new_account_real: 1,
             ...values,
         });
 
-    const mt5NewAccount = (values) =>
+    const mt5NewAccount = values =>
         deriv_api.send({
             mt5_new_account: 1,
             ...values,
@@ -215,7 +215,7 @@ const BinarySocketBase = (() => {
             password_type,
             ...values,
         });
-    const mt5PasswordReset = (payload) =>
+    const mt5PasswordReset = payload =>
         deriv_api.send({
             ...payload,
             mt5_password_reset: 1,
@@ -266,7 +266,7 @@ const BinarySocketBase = (() => {
             }),
         });
 
-    const forgetStream = (id) => deriv_api.forget(id);
+    const forgetStream = id => deriv_api.forget(id);
 
     const tncApproval = () => deriv_api.send({ tnc_approval: '1' });
 
@@ -277,13 +277,13 @@ const BinarySocketBase = (() => {
             limit_order,
         });
 
-    const contractUpdateHistory = (contract_id) =>
+    const contractUpdateHistory = contract_id =>
         deriv_api.send({
             contract_update_history: 1,
             contract_id,
         });
 
-    const cancelContract = (contract_id) => deriv_api.send({ cancel: contract_id });
+    const cancelContract = contract_id => deriv_api.send({ cancel: contract_id });
 
     const p2pAdvertiserInfo = () => deriv_api.send({ p2p_advertiser_info: 1 });
 
@@ -302,10 +302,10 @@ const BinarySocketBase = (() => {
         sendBuffered: () => {},
         getSocket: () => binary_socket,
         get: () => deriv_api,
-        setOnDisconnect: (onDisconnect) => {
+        setOnDisconnect: onDisconnect => {
             config.onDisconnect = onDisconnect;
         },
-        setOnReconnect: (onReconnect) => {
+        setOnReconnect: onReconnect => {
             config.onReconnect = onReconnect;
         },
         removeOnReconnect: () => {
@@ -379,7 +379,7 @@ function delegateToObject(base_obj, extending_obj_getter) {
 
 const proxied_socket_base = delegateToObject(BinarySocketBase, () => BinarySocketBase.get());
 
-const proxyForAuthorize = (obj) =>
+const proxyForAuthorize = obj =>
     new Proxy(obj, {
         get(target, field) {
             if (typeof target[field] !== 'function') {

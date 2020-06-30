@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const useHover = (refSetter) => {
+export const useHover = refSetter => {
     const [value, setValue] = React.useState(false);
 
     const ref = refSetter || React.useRef(null);

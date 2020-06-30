@@ -135,7 +135,7 @@ class PositionsDrawer extends React.Component {
     };
 
     calculatePositionsHeight() {
-        const newPositionsHeight = this.positions.map((position) => this.getPositionHeight(position));
+        const newPositionsHeight = this.positions.map(position => this.getPositionHeight(position));
         if (this.list_ref && this.hasPositionsHeightChanged(newPositionsHeight, this.positionsHeight)) {
             // When there is a change in height of an item, this recalculates scroll height of the list and reapplies styles.
             setTimeout(() => (this.list_ref ? this.list_ref.resetAfterIndex(0) : undefined));
@@ -144,11 +144,11 @@ class PositionsDrawer extends React.Component {
         this.positionsHeight = newPositionsHeight;
     }
 
-    getCachedPositionHeight = (index) => {
+    getCachedPositionHeight = index => {
         return this.positionsHeight[index];
     };
 
-    getPositionHeight = (position) => {
+    getPositionHeight = position => {
         // React window doesn't work with dynamic height. This is a work around to get height of a position based on different combinations.
         const { contract_info } = position;
         const is_valid_to_sell = isValidToSell(contract_info);
@@ -169,8 +169,7 @@ class PositionsDrawer extends React.Component {
         const { all_positions, error, is_empty, is_positions_drawer_on, symbol, toggleDrawer } = this.props;
 
         this.positions = all_positions.filter(
-            (p) =>
-                p.contract_info && symbol === p.contract_info.underlying && this.filterByContractType(p.contract_info)
+            p => p.contract_info && symbol === p.contract_info.underlying && this.filterByContractType(p.contract_info)
         );
         this.calculatePositionsHeight();
 
@@ -188,7 +187,7 @@ class PositionsDrawer extends React.Component {
                                 itemSize={this.getCachedPositionHeight}
                                 height={this.state.drawer_height}
                                 outerElementType={is_empty ? null : ThemedScrollbarsWrapper}
-                                ref={(el) => (this.list_ref = el)}
+                                ref={el => (this.list_ref = el)}
                                 useIsScrolling
                             >
                                 {this.itemRender}
@@ -224,7 +223,7 @@ class PositionsDrawer extends React.Component {
                     </div>
                     <div
                         className='positions-drawer__body'
-                        ref={(el) => {
+                        ref={el => {
                             this.drawer_ref = el;
                         }}
                     >

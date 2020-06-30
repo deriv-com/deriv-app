@@ -16,7 +16,11 @@ export default class StatementStore extends BaseStore {
     @observable is_loading = false;
     @observable has_loaded_all = false;
     @observable date_from = null;
-    @observable date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
+    @observable date_to = toMoment()
+        .startOf('day')
+        .add(1, 'd')
+        .subtract(1, 's')
+        .unix();
     @observable error = '';
     @observable filtered_date_range;
 
@@ -37,9 +41,7 @@ export default class StatementStore extends BaseStore {
     @computed
     get data_source() {
         // TODO: remove this getter once Multiplier is supported in mobile
-        return isDesktop()
-            ? this.data
-            : this.data.filter((row) => !Shortcode.isMultiplier({ shortcode: row.shortcode }));
+        return isDesktop() ? this.data : this.data.filter(row => !Shortcode.isMultiplier({ shortcode: row.shortcode }));
     }
 
     @action.bound
@@ -52,13 +54,21 @@ export default class StatementStore extends BaseStore {
     @action.bound
     clearDateFilter() {
         this.date_from = null;
-        this.date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
+        this.date_to = toMoment()
+            .startOf('day')
+            .add(1, 'd')
+            .subtract(1, 's')
+            .unix();
         this.partial_fetch_time = 0;
     }
 
     shouldFetchNextBatch(should_load_partially) {
         if (!should_load_partially && (this.has_loaded_all || this.is_loading)) return false;
-        const today = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
+        const today = toMoment()
+            .startOf('day')
+            .add(1, 'd')
+            .subtract(1, 's')
+            .unix();
         if (this.date_to < today) return !should_load_partially && this.partial_fetch_time;
         return true;
     }
@@ -83,7 +93,7 @@ export default class StatementStore extends BaseStore {
             return;
         }
 
-        const formatted_transactions = response.statement.transactions.map((transaction) =>
+        const formatted_transactions = response.statement.transactions.map(transaction =>
             formatStatementTransaction(
                 transaction,
                 this.root_store.client.currency,
@@ -112,7 +122,7 @@ export default class StatementStore extends BaseStore {
         this.fetchNextBatch();
     }
 
-    fetchOnScroll = debounce((left) => {
+    fetchOnScroll = debounce(left => {
         if (left < 2000) {
             this.fetchNextBatch();
         }
@@ -128,7 +138,7 @@ export default class StatementStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener() {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             this.clearTable();
             this.clearDateFilter();
             return resolve(this.fetchNextBatch());

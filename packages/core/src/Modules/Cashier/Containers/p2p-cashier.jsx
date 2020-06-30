@@ -52,6 +52,7 @@ class P2PCashier extends React.Component {
             residence,
             setNotificationCount,
             location,
+            is_mobile,
         } = this.props;
         const { order_id } = this.state;
         return (
@@ -64,6 +65,7 @@ class P2PCashier extends React.Component {
                 setNotificationCount={setNotificationCount}
                 order_id={order_id}
                 setOrderId={this.setQueryOrder}
+                is_mobile={is_mobile}
                 poi_url={routes.proof_of_identity}
             />
         );
@@ -77,15 +79,17 @@ P2PCashier.propTypes = {
     is_virtual: PropTypes.bool,
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
+    is_mobile: PropTypes.bool,
 };
 
 export default withRouter(
-    connect(({ client, modules }) => ({
+    connect(({ client, modules, ui }) => ({
         currency: client.currency,
         local_currency_config: client.local_currency_config,
         loginid: client.loginid,
         is_virtual: client.is_virtual,
         residence: client.residence,
         setNotificationCount: modules.cashier.setNotificationCount,
+        is_mobile: ui.is_mobile,
     }))(P2PCashier)
 );

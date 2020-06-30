@@ -1,11 +1,10 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
-import Loadable from 'react-loadable';
-import { Loading } from '@deriv/components';
 import { getUrlBase } from '@deriv/shared/utils/url';
 import { isMobile } from '@deriv/shared/utils/screen';
 import routes from '@deriv/shared/utils/routes';
 import { localize } from '@deriv/translations';
+import { makeLazyLoader } from '_common/lazy-load';
 import { Redirect } from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
 
@@ -154,39 +153,11 @@ const modules = [
     },
 ];
 
-const handleLoading = props => {
-    // 200ms default
-    if (props.pastDelay) {
-        return <Loading />;
-    }
-    return null;
-};
+const lazyLoadCashierComponent = makeLazyLoader(() => import(/* webpackChunkName: "cashier" */ 'Modules/Cashier'));
 
-const lazyLoadCashierComponent = component => {
-    return Loadable.Map({
-        loader: {
-            Cashier: () => import(/* webpackChunkName: "cashier" */ 'Modules/Cashier'),
-        },
-        render(loaded, props) {
-            const CashierLazy = loaded.Cashier.default[component];
-            return <CashierLazy {...props} />;
-        },
-        loading: handleLoading,
-    });
-};
-
-const lazyLoadComplaintsPolicy = () => {
-    return Loadable.Map({
-        loader: {
-            ComplaintsPolicy: () => import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy'),
-        },
-        render(loaded, props) {
-            const ComplaintsPolicyLazy = loaded.ComplaintsPolicy.default;
-            return <ComplaintsPolicyLazy {...props} />;
-        },
-        loading: handleLoading,
-    });
-};
+const lazyLoadComplaintsPolicy = makeLazyLoader(() =>
+    import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy')
+);
 
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes

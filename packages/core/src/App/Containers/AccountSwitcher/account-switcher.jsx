@@ -546,15 +546,27 @@ class AccountSwitcher extends React.Component {
                     <span>{total_assets_message}</span>
                 </div>
                 <div className='acc-switcher__separator' />
-                <div id='dt_logout_button' className='acc-switcher__logout'>
-                    <span className='acc-switcher__logout-text' onClick={this.handleLogout}>
-                        {localize('Log out')}
-                    </span>
-                    <Icon
-                        icon='IcLogout'
-                        className='acc-switcher__logout-icon drawer__icon'
-                        onClick={this.handleLogout}
-                    />
+                <div className='acc-switcher__footer'>
+                    {this.props.is_uk && this.props.has_any_real_account && (
+                        <Button
+                            className='acc-switcher__compare'
+                            type='button'
+                            has_effect
+                            onClick={this.showAccountTypesModal}
+                            text={localize('Compare')}
+                            secondary
+                        />
+                    )}
+                    <div id='dt_logout_button' className='acc-switcher__logout'>
+                        <span className='acc-switcher__logout-text' onClick={this.handleLogout}>
+                            {localize('Log out')}
+                        </span>
+                        <Icon
+                            icon='IcLogout'
+                            className='acc-switcher__logout-icon drawer__icon'
+                            onClick={this.handleLogout}
+                        />
+                    </div>
                 </div>
             </div>
         );
@@ -569,13 +581,13 @@ AccountSwitcher.propTypes = {
     can_change_fiat_currency: PropTypes.bool,
     can_upgrade_to: PropTypes.string,
     has_any_real_account: PropTypes.bool,
-    is_eu: PropTypes.bool,
     is_eu_enabled: PropTypes.bool,
     is_loading_mt5: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_pending_authentication: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
+    is_uk: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     logoutClient: PropTypes.func,
@@ -598,12 +610,12 @@ const account_switcher = withRouter(
         can_change_fiat_currency: client.can_change_fiat_currency,
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,
-        is_eu: client.is_eu,
         is_eu_enabled: ui.is_eu_enabled,
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,
         is_pending_authentication: client.is_pending_authentication,
+        is_uk: client.is_uk,
         is_virtual: client.is_virtual,
         has_any_real_account: client.has_any_real_account,
         mt5_login_list: client.mt5_login_list,

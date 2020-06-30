@@ -314,6 +314,11 @@ export default class ClientStore extends BaseStore {
             : eu_excluded_regex.test(this.residence);
     }
 
+    @computed
+    get is_uk() {
+        return this.residence === 'gb';
+    }
+
     // this is true when a user needs to have a active real account for trading
     @computed
     get should_have_real_account() {

@@ -71,34 +71,44 @@ class SelfExclusion extends React.Component {
         }
 
         // TODO: handle timout until and exclude until using date/moment format
-
         return errors;
     };
 
     handleSubmit = async (values, { setSubmitting }) => {
         const is_changed = JSON.stringify(this.state.self_exclusions) !== JSON.stringify(values);
-        if (is_changed) {
-            const request = {
-                set_self_exclusion: 1,
-                ...values,
-            };
+        console.log(this.state.self_exclusions);
+        console.log(is_changed);
+        console.log(values);
+        // if (is_changed) {
+        //     const request = {
+        //         set_self_exclusion: 1,
+        //         ...values,
+        //     };
 
-            const set_self_exclusion_response = await WS.authorized.setSelfExclusion(request);
-            if (set_self_exclusion_response.error) {
-                this.setState({ submit_error_message: set_self_exclusion_response.error.message });
-            } else {
-                this.setState({
-                    is_success: true,
-                });
-                setTimeout(() => {
-                    this.setState({ is_success: false });
-                }, 500);
-            }
-        } else {
-            this.setState({ submit_error_message: localize('You did not change anything.') });
-        }
+        //     const set_self_exclusion_response = await WS.authorized.setSelfExclusion(request);
+        //     if (set_self_exclusion_response.error) {
+        //         this.setState({ submit_error_message: set_self_exclusion_response.error.message });
+        //     } else {
+        //         this.setState({
+        //             is_success: true,
+        //         });
+        //         setTimeout(() => {
+        //             this.setState({ is_success: false });
+        //         }, 500);
+        //     }
+        // } else {
+        //     this.setState({ submit_error_message: localize('You did not change anything.') });
+        // }
 
         setSubmitting(false);
+    };
+
+    objectValuesToString = (object) => {
+        Object.keys(object).forEach((item) => {
+            object[item] = '' + object[item]; // instead of toString, '' + offer more raw speed
+        });
+
+        return object;
     };
 
     populateExclusionResponse = (response) => {
@@ -110,9 +120,10 @@ class SelfExclusion extends React.Component {
         } else {
             this.setState({
                 is_loading: false,
-                self_exclusions: ObjectUtils.getPropertyValue(response, ['get_self_exclusion']),
+                self_exclusions: this.objectValuesToString(
+                    ObjectUtils.getPropertyValue(response, ['get_self_exclusion'])
+                ),
             });
-            console.log(ObjectUtils.getPropertyValue(response, ['get_self_exclusion']));
         }
     };
 
@@ -158,6 +169,7 @@ class SelfExclusion extends React.Component {
                                 values,
                                 errors,
                                 isValid,
+                                dirty,
                                 touched,
                                 handleChange,
                                 handleBlur,
@@ -295,7 +307,7 @@ class SelfExclusion extends React.Component {
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
-                                                        type='number'
+                                                        type='text'
                                                         className='self-exclusion__input'
                                                         label={localize('Minutes')}
                                                         value={values.session_duration_limit}
@@ -322,7 +334,6 @@ class SelfExclusion extends React.Component {
                                                         {...field}
                                                         className='self-exclusion__input'
                                                         label={localize('Date')}
-                                                        type='text'
                                                         value={values.timeout_until}
                                                         onBlur={() => setTouched({ timeout_until: true })}
                                                         onChange={({ target }) =>
@@ -335,6 +346,7 @@ class SelfExclusion extends React.Component {
                                                             )
                                                         }
                                                         required
+                                                        readOnly
                                                         error={touched.timeout_until && errors.timeout_until}
                                                     />
                                                 )}
@@ -351,7 +363,6 @@ class SelfExclusion extends React.Component {
                                                     <DatePicker
                                                         {...field}
                                                         alignment='left'
-                                                        type='text'
                                                         className='self-exclusion__input'
                                                         label={localize('Date')}
                                                         value={values.exclude_until}
@@ -366,11 +377,73 @@ class SelfExclusion extends React.Component {
                                                             )
                                                         }
                                                         required
+                                                        autoComplete='off'
+                                                        readOnly
                                                         error={touched.exclude_until && errors.exclude_until}
                                                     />
                                                 )}
                                             </Field>
                                         </div>
+                                    </div>
+                                    <h2 className='self-exclusion__header'>
+                                        {localize('Your maximum account balance and open positions')}
+                                    </h2>
+                                    <div className='self-exclusion__item-wrapper'>
+                                        <div className='self-exclusion__item'>
+                                            <p className='self-exclusion__item-field'>
+                                                {localize(
+                                                    'Once your account balance reaches this amount, you will not be able to deposit funds into your account.'
+                                                )}
+                                            </p>
+                                            <Field name='max_balance'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        className='self-exclusion__input'
+                                                        label={localize('USD')}
+                                                        value={values.max_balance}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        error={touched.max_balance && errors.max_balance}
+                                                    />
+                                                )}
+                                            </Field>
+                                        </div>
+                                        <div className='self-exclusion__item'>
+                                            <p className='self-exclusion__item-field'>
+                                                {localize('You can only open positions up to this amount.')}
+                                            </p>
+                                            <Field name='max_open_bets'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        className='self-exclusion__input'
+                                                        label={localize('Amount')}
+                                                        value={values.max_open_bets}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        error={touched.max_open_bets && errors.max_open_bets}
+                                                    />
+                                                )}
+                                            </Field>
+                                        </div>
+                                    </div>
+                                    <div className='self-exclusion__button-wrapper'>
+                                        <Button
+                                            disabled={!dirty || !isValid || isSubmitting}
+                                            primary
+                                            className='self-exclusion__button'
+                                            large
+                                            type='submit'
+                                        >
+                                            {localize('Save')}
+                                        </Button>
                                     </div>
                                 </Form>
                             )}

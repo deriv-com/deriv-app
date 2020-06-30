@@ -91,7 +91,7 @@
             @include mobile {
                 font-size: 1.4rem;
                 padding: 1.6rem;
-                line-height: 1;
+                line-height: 1.2;
             }
         }
         &__section {
@@ -142,6 +142,9 @@
 
         .dc-btn:nth-child(2) {
             margin-left: 0.8rem;
+        }
+        &--separator {
+            border-top: 2px solid var(--general-section-1);
         }
     }
 }

@@ -12,7 +12,7 @@ const initStore = notification_messages => {
 
     const root_store = new RootStore();
 
-    setStorageEvents();
+    setStorageEvents(root_store);
 
     NetworkMonitor.init(root_store);
     // TODO: Re-enable and update browser checking

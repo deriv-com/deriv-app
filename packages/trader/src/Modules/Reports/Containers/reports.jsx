@@ -14,6 +14,7 @@ class Reports extends React.Component {
     }
 
     componentWillUnmount() {
+        this.props.setVisibilityRealityCheck(1);
         this.props.toggleReports(false);
     }
 
@@ -81,11 +82,13 @@ Reports.propTypes = {
     location: PropTypes.object,
     routes: PropTypes.arrayOf(PropTypes.object),
     setTabIndex: PropTypes.func,
+    setVisibilityRealityCheck: PropTypes.func,
     tab_index: PropTypes.number,
     toggleReports: PropTypes.func,
 };
 
-export default connect(({ common, ui }) => ({
+export default connect(({ client, common, ui }) => ({
+    setVisibilityRealityCheck: client.setVisibilityRealityCheck,
     routeBackInApp: common.routeBackInApp,
     is_visible: ui.is_reports_visible,
     setTabIndex: ui.setReportsTabIndex,

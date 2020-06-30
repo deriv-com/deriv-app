@@ -1,0 +1,93 @@
+/* @define reality-check */
+.reality-check {
+    &__text {
+        font-size: 1.4rem;
+        line-height: 1.5;
+        color: var(--text-general);
+
+        &:not(:last-child) {
+            margin-bottom: 1.2rem;
+        }
+        &--center {
+            text-align: center;
+        }
+    }
+    &__separator {
+        width: 100%;
+        height: 1px;
+        background-color: var(--general-section-1);
+        margin: 2.4rem 0;
+
+        &--large {
+            margin: 4rem 0;
+        }
+        @include mobile {
+            margin: 1.6rem 0;
+        }
+    }
+    &__fieldset {
+        max-width: 33.5rem;
+        margin: auto;
+        padding-top: 1.2rem;
+    }
+    &__column {
+        &-wrapper {
+            display: flex;
+            flex-direction: row;
+
+            @include mobile {
+                flex-direction: column;
+            }
+        }
+        &:not(:last-child) {
+            margin-right: 2.4rem;
+
+            @include mobile {
+                margin-right: 0;
+                margin-bottom: 0.8rem;
+            }
+        }
+    }
+    &__row {
+        width: 25.6rem;
+        height: 4rem;
+        background-color: var(--general-section-1);
+        margin-bottom: 0.1rem;
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.6rem;
+
+        &:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+        &:last-child {
+            margin-bottom: 0.8rem;
+            border-radius: 0 0 8px 8px;
+        }
+        :first-child {
+            width: 11.8rem;
+        }
+        @include mobile {
+            height: 3.2rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+    &__button {
+        &--full-width {
+            width: 100%;
+
+            @include mobile {
+                width: 25.6rem;
+                display: flex;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+    }
+    &__session-details {
+        @include mobile {
+            text-align: center;
+        }
+    }
+}

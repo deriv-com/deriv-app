@@ -44,6 +44,7 @@ export default class ClientStore extends BaseStore {
     @observable selected_currency = '';
     @observable is_populating_account_list = false;
     @observable is_populating_mt5_account_list = true;
+    @observable is_reality_check_dismissed = false;
     @observable website_status = {};
     @observable account_settings = {};
     @observable account_status = {};
@@ -104,6 +105,19 @@ export default class ClientStore extends BaseStore {
             this.is_virtual ||
             this.accounts[this.loginid].landing_company_shortcode === 'svg'
         );
+    }
+
+    @computed
+    get is_reality_check_visible() {
+        if (!this.loginid || !this.landing_company) {
+            return false;
+        }
+        const has_reality_check = ClientBase.getLandingCompanyValue(
+            this.loginid,
+            this.landing_company,
+            'has_reality_check'
+        );
+        return !!(has_reality_check && !this.is_reality_check_dismissed);
     }
 
     @computed
@@ -1396,6 +1410,11 @@ export default class ClientStore extends BaseStore {
     @computed
     get has_residence() {
         return !!this.accounts[this.loginid]?.residence;
+    }
+
+    @action.bound
+    toggleRealityCheck() {
+        this.is_reality_check_dismissed = !this.is_reality_check_dismissed;
     }
 }
 /* eslint-enable */

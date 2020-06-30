@@ -170,6 +170,7 @@ export default class StatementStore extends BaseStore {
         this.clearTable();
         this.clearDateFilter();
         this.disposeSwitchAccount();
+        this.root_store.client.toggleRealityCheck();
         WS.forgetAll('proposal');
     }
 }

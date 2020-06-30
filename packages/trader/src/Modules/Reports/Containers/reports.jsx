@@ -37,7 +37,7 @@ class Reports extends React.Component {
         };
 
         const { routes, location } = this.props;
-        const selected_route = isMobile() ? getSelectedRoute({ routes, pathname: location.pathname }) : null;
+        const selected_route = getSelectedRoute({ routes, pathname: location.pathname });
 
         return (
             <FadeWrapper
@@ -56,12 +56,14 @@ class Reports extends React.Component {
                                 current_path={this.props.location.pathname}
                                 is_routed={true}
                                 is_full_width={true}
+                                setVerticalTabIndex={this.props.setTabIndex}
+                                vertical_tab_index={selected_route.default ? 0 : this.props.tab_index}
                                 list={menu_options()}
                             />
                         </DesktopWrapper>
                         <MobileWrapper>
                             <div className='reports__mobile-wrapper'>
-                                {selected_route && (
+                                {isMobile() && selected_route && (
                                     <selected_route.component component_icon={selected_route.icon_component} />
                                 )}
                             </div>
@@ -78,11 +80,15 @@ Reports.propTypes = {
     is_visible: PropTypes.bool,
     location: PropTypes.object,
     routes: PropTypes.arrayOf(PropTypes.object),
+    setTabIndex: PropTypes.func,
+    tab_index: PropTypes.number,
     toggleReports: PropTypes.func,
 };
 
 export default connect(({ common, ui }) => ({
     routeBackInApp: common.routeBackInApp,
     is_visible: ui.is_reports_visible,
+    setTabIndex: ui.setReportsTabIndex,
+    tab_index: ui.reports_route_tab_index,
     toggleReports: ui.toggleReports,
 }))(withRouter(Reports));

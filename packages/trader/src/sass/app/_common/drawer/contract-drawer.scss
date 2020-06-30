@@ -108,11 +108,11 @@ $header-height: 4em;
         justify-content: center;
         flex-direction: column;
         padding: 0;
-        background-image: linear-gradient(to top, rgba($color-white, 0.8) 70%, rgba($color-orange, 0.3));
+        background-image: linear-gradient(to top, rgba($color-white, 0.9) 90%, rgba($color-orange, 0.3));
         z-index: 1000;
 
         &--dark {
-            background-image: linear-gradient(to top, rgba($color-black, 0.9) 70%, rgba($color-orange, 0.16));
+            background-image: linear-gradient(to top, rgba($color-black, 0.9) 50%, rgba($color-orange, 0.2));
         }
         p {
             @include typeface(--paragraph-center-normal-black);

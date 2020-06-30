@@ -1,9 +1,19 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import { Loading, ThemedScrollbars, DesktopWrapper, MobileWrapper, Input, Button, DatePicker } from '@deriv/components';
+import {
+    Loading,
+    ThemedScrollbars,
+    Div100vhContainer,
+    DesktopWrapper,
+    MobileWrapper,
+    Input,
+    Button,
+    DatePicker,
+} from '@deriv/components';
 import { connect } from 'Stores/connect';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { toMoment } from '@deriv/shared/utils/date';
+import { toMoment, epochToMoment } from '@deriv/shared/utils/date';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
@@ -11,14 +21,6 @@ import Article from './article';
 import LoadErrorMessage from 'Components/load-error-message';
 
 class SelfExclusion extends React.Component {
-    state = {
-        is_loading: true,
-        is_success: false,
-        error_message: '',
-        submit_error_message: '',
-        self_exclusions: this.exclusion_data,
-    };
-
     exclusion_data = {
         max_turnover: '',
         max_losses: '',
@@ -29,8 +31,16 @@ class SelfExclusion extends React.Component {
         session_duration_limit: '',
         timeout_until: '',
         exclude_until: '',
-        max_balance: null,
-        max_open_bets: null,
+        max_balance: '',
+        max_open_bets: '',
+    };
+
+    state = {
+        is_loading: true,
+        is_success: false,
+        error_message: '',
+        submit_error_message: '',
+        self_exclusions: this.exclusion_data,
     };
 
     validateFields = (values) => {
@@ -39,6 +49,7 @@ class SelfExclusion extends React.Component {
         const is_number = /^\d+(\.\d+)?$/;
         const is_integer = /^\d+$/;
         const is_minutes = /^[0-9]|99999/;
+        const six_weeks = 60480; // in minutes
 
         // Messages
         const valid_number_message = localize('Should be a valid number');
@@ -55,19 +66,47 @@ class SelfExclusion extends React.Component {
         const only_integers = ['session_duration_limit', 'max_open_bets'];
 
         only_numbers.forEach((item) => {
-            if (!is_number.test(values[item])) {
-                errors[item] = valid_number_message;
+            if (values[item]) {
+                if (!is_number.test(values[item])) {
+                    errors[item] = valid_number_message;
+                }
             }
         });
 
         only_integers.forEach((item) => {
-            if (!is_integer.test(values[item])) {
-                errors[item] = valid_number_message;
+            if (values[item]) {
+                if (!is_integer.test(values[item])) {
+                    errors[item] = valid_number_message;
+                }
             }
         });
 
-        if (!is_minutes.test(values.session_duration_limit)) {
-            errors.session_duration_limit = localize('Reached maximum amount of session duration limit.');
+        if (values.session_duration_limit) {
+            if (!is_minutes.test(values.session_duration_limit)) {
+                errors.session_duration_limit = localize('Reached maximum amount of session duration limit.');
+            } else if (values.session_duration_limit > six_weeks) {
+                errors.session_duration_limit = localize(
+                    'Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).'
+                );
+            }
+        }
+
+        if (values.timeout_until) {
+            if (values.timeout_until <= toMoment().unix()) {
+                errors.timeout_until = localize('Timeout time must be greater than current time.');
+            } else if (values.timeout_until > toMoment().add(6, 'week').unix()) {
+                errors.timeout_until = localize('Timeout time cannot be more than 6 weeks.');
+            }
+        }
+
+        if (values.exclude_until) {
+            if (toMoment(values.exclude_until).unix() < toMoment().unix()) {
+                errors.exclude_until = localize('Exclude time must be after today.');
+            } else if (toMoment(values.exclude_until).unix() < toMoment().add(6, 'month').unix()) {
+                errors.exclude_until = localize('Exclude time cannot be less than 6 months.');
+            } else if (toMoment(values.exclude_until).unix() > toMoment().add(5, 'year').unix()) {
+                errors.exclude_until = localize('Exclude time cannot be for more than five years.');
+            }
         }
 
         // TODO: handle timout until and exclude until using date/moment format
@@ -75,29 +114,23 @@ class SelfExclusion extends React.Component {
     };
 
     handleSubmit = async (values, { setSubmitting }) => {
-        const is_changed = JSON.stringify(this.state.self_exclusions) !== JSON.stringify(values);
-        console.log(this.state.self_exclusions);
-        console.log(is_changed);
-        console.log(values);
-        // if (is_changed) {
-        //     const request = {
-        //         set_self_exclusion: 1,
-        //         ...values,
-        //     };
+        console.log(values, 'values');
+        console.log(this.state.self_exclusions, 'state');
+        // const request = {
+        //     set_self_exclusion: 1,
+        //     ...values,
+        // };
 
-        //     const set_self_exclusion_response = await WS.authorized.setSelfExclusion(request);
-        //     if (set_self_exclusion_response.error) {
-        //         this.setState({ submit_error_message: set_self_exclusion_response.error.message });
-        //     } else {
-        //         this.setState({
-        //             is_success: true,
-        //         });
-        //         setTimeout(() => {
-        //             this.setState({ is_success: false });
-        //         }, 500);
-        //     }
+        // const set_self_exclusion_response = await WS.authorized.setSelfExclusion(request);
+        // if (set_self_exclusion_response.error) {
+        //     this.setState({ submit_error_message: set_self_exclusion_response.error.message });
         // } else {
-        //     this.setState({ submit_error_message: localize('You did not change anything.') });
+        //     this.setState({
+        //         is_success: true,
+        //     });
+        //     setTimeout(() => {
+        //         this.setState({ is_success: false });
+        //     }, 500);
         // }
 
         setSubmitting(false);
@@ -118,11 +151,15 @@ class SelfExclusion extends React.Component {
                 error_message: ObjectUtils.getPropertyValue(response, ['error', 'message']),
             });
         } else {
+            const response_to_string = this.objectValuesToString(
+                ObjectUtils.getPropertyValue(response, ['get_self_exclusion'])
+            );
+            if (response_to_string.timeout_until) {
+                response_to_string.timeout_until = +response_to_string.timeout_until;
+            }
             this.setState({
                 is_loading: false,
-                self_exclusions: this.objectValuesToString(
-                    ObjectUtils.getPropertyValue(response, ['get_self_exclusion'])
-                ),
+                self_exclusions: { ...this.state.self_exclusions, ...response_to_string },
             });
         }
     };
@@ -154,8 +191,8 @@ class SelfExclusion extends React.Component {
 
         return (
             <section className='self-exclusion'>
-                <div className='self-exclusion__wrapper'>
-                    <ThemedScrollbars autoHide className='self-exclusion__scrollbars' hideHorizontal={true}>
+                <Div100vhContainer className='self-exclusion__wrapper' is_disabled={isDesktop()} height_offset='80px'>
+                    <ThemedScrollbars className='self-exclusion__scrollbars' is_bypassed={isMobile()}>
                         <MobileWrapper>
                             <Article />
                         </MobileWrapper>
@@ -177,7 +214,7 @@ class SelfExclusion extends React.Component {
                                 setTouched,
                                 setFieldValue,
                             }) => (
-                                <Form noValidate>
+                                <Form className='self-exclusion__form' noValidate>
                                     <h2 className='self-exclusion__header'>{localize('Your stake and loss limits')}</h2>
                                     <div className='self-exclusion__item-wrapper'>
                                         <div className='self-exclusion__item'>
@@ -188,7 +225,6 @@ class SelfExclusion extends React.Component {
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
-                                                        type='text'
                                                         className='self-exclusion__input'
                                                         label={localize('USD')}
                                                         value={values.max_turnover}
@@ -205,7 +241,6 @@ class SelfExclusion extends React.Component {
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
-                                                        type='text'
                                                         className='self-exclusion__input'
                                                         label={localize('USD')}
                                                         value={values.max_losses}
@@ -225,7 +260,6 @@ class SelfExclusion extends React.Component {
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
-                                                        type='text'
                                                         className='self-exclusion__input'
                                                         label={localize('USD')}
                                                         value={values.max_7day_turnover}
@@ -242,7 +276,6 @@ class SelfExclusion extends React.Component {
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
-                                                        type='text'
                                                         className='self-exclusion__input'
                                                         label={localize('USD')}
                                                         value={values.max_7day_losses}
@@ -262,7 +295,6 @@ class SelfExclusion extends React.Component {
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
-                                                        type='text'
                                                         className='self-exclusion__input'
                                                         label={localize('USD')}
                                                         value={values.max_30day_turnover}
@@ -279,7 +311,6 @@ class SelfExclusion extends React.Component {
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
-                                                        type='text'
                                                         className='self-exclusion__input'
                                                         label={localize('USD')}
                                                         value={values.max_30day_losses}
@@ -307,7 +338,6 @@ class SelfExclusion extends React.Component {
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
-                                                        type='text'
                                                         className='self-exclusion__input'
                                                         label={localize('Minutes')}
                                                         value={values.session_duration_limit}
@@ -334,14 +364,14 @@ class SelfExclusion extends React.Component {
                                                         {...field}
                                                         className='self-exclusion__input'
                                                         label={localize('Date')}
-                                                        value={values.timeout_until}
+                                                        value={
+                                                            values.timeout_until && epochToMoment(values.timeout_until)
+                                                        }
                                                         onBlur={() => setTouched({ timeout_until: true })}
                                                         onChange={({ target }) =>
                                                             setFieldValue(
                                                                 'timeout_until',
-                                                                target?.value
-                                                                    ? toMoment(target.value).format('YYYY-MM-DD')
-                                                                    : '',
+                                                                target?.value ? target.value.unix() : '',
                                                                 true
                                                             )
                                                         }
@@ -355,7 +385,7 @@ class SelfExclusion extends React.Component {
                                         <div className='self-exclusion__item'>
                                             <p className='self-exclusion__item-field'>
                                                 {localize(
-                                                    'You will not be able to log in to your account until this date (up to 6 weeks from today).'
+                                                    'Your account will be excluded from the website until this date (at least 6 months, up to 5 years).'
                                                 )}
                                             </p>
                                             <Field name='exclude_until'>
@@ -400,7 +430,6 @@ class SelfExclusion extends React.Component {
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
-                                                        type='text'
                                                         className='self-exclusion__input'
                                                         label={localize('USD')}
                                                         value={values.max_balance}
@@ -421,7 +450,6 @@ class SelfExclusion extends React.Component {
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
-                                                        type='text'
                                                         className='self-exclusion__input'
                                                         label={localize('Amount')}
                                                         value={values.max_open_bets}
@@ -452,7 +480,7 @@ class SelfExclusion extends React.Component {
                     <DesktopWrapper>
                         <Article />
                     </DesktopWrapper>
-                </div>
+                </Div100vhContainer>
             </section>
         );
     }

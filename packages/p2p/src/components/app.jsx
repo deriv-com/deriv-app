@@ -365,7 +365,6 @@ class App extends React.Component {
                     getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId.bind(this),
                     order_table_type,
                     changeOrderToggle: this.changeOrderToggle,
-                    poi_status: this.state.poi_status,
                     createAdvertiser: this.createAdvertiser.bind(this),
                     is_mobile,
                 }}

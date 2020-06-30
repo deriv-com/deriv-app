@@ -49,6 +49,7 @@
         display: inline-flex;
         align-items: center;
         position: relative;
+        cursor: pointer;
 
         &:hover {
             background: var(--general-hover);
@@ -148,4 +149,35 @@
             pointer-events: none;
         }
     }
+}
+
+/** @define footer-regulatory-information */
+.footer-regulatory-information {
+    padding: 2rem;
+
+    p {
+        @include typeface(--paragraph-left-normal-prominent);
+    }
+    &__link {
+        @include typeface(--paragraph-left-bold-prominent);
+        color: var(--brand-red-coral);
+        text-decoration: none;
+    }
+    &__icon {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        margin-bottom: 2.4rem;
+    }
+}
+
+/** @define footer-icon-separator */
+.footer-icon-separator {
+    width: 1px;
+    height: 1.6rem !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--general-section-1);
+    margin: 0 0.1rem;
 }

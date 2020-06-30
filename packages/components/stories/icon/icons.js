@@ -17,6 +17,7 @@ export const icons = {
     ],
     common: [
         'IcAccountError',
+        'IcAccountLimits',
         'IcAccountMissingDetails',
         'IcAccountTransfer',
         'IcAddRounded',
@@ -64,6 +65,7 @@ export const icons = {
         'IcCross',
         'IcDelete',
         'IcDemo',
+        'IcDerivOutline',
         'IcDeriv',
         'IcDesktop',
         'IcDigits',
@@ -140,6 +142,7 @@ export const icons = {
         'IcPuzzle',
         'IcQrPhone',
         'IcRedo',
+        'IcRegulatoryInformation',
         'IcRemoveToken',
         'IcReports',
         'IcReset',

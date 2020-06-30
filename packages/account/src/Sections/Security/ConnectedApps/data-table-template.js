@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import { toMoment } from '@deriv/shared/utils/date';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
@@ -24,14 +24,16 @@ const getConnectedAppsColumnsTemplate = (handleToggleModal) => [
     },
 ];
 
-const prepareConnectedAppsAction = (app_id, handleToggleModal) => (
-    <Button className='revoke_access' small secondary onClick={() => handleToggleModal(app_id)}>
-        {localize('Revoke access')}
-    </Button>
-);
+const prepareConnectedAppsAction = (app_id, handleToggleModal) => {
+    return (
+        <Button className='revoke_access' small secondary onClick={() => handleToggleModal(app_id)}>
+            {localize('Revoke access')}
+        </Button>
+    );
+};
 
 const prepareConnectedAppsLastLogin = (last_used) => (
-    <p className='last_used_content'>{moment(last_used).format('YYYY-MM-DD HH:mm:ss')}</p>
+    <p className='last_used_content'>{toMoment(last_used).format('YYYY-MM-DD HH:mm:ss')}</p>
 );
 
 const oauth_apps_list_map = {

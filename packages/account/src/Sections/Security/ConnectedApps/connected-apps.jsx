@@ -13,7 +13,7 @@ class ConnectedApps extends React.Component {
         is_error: false,
         connected_apps: [],
     };
-    columns_map = getConnectedAppsColumnsTemplate(() => this.handleToggleModal()).reduce((map, item) => {
+    columns_map = getConnectedAppsColumnsTemplate((app_id) => this.handleToggleModal(app_id)).reduce((map, item) => {
         map[item.col_index] = item;
         return map;
     }, {});
@@ -88,7 +88,7 @@ class ConnectedApps extends React.Component {
                                 getRowSize={() => 56}
                                 is_empty={false}
                             >
-                                {this.state.is_loading && <Loading is_fullscreen={true} />}
+                                {this.state.is_loading && <Loading />}
                             </DataTable>
                         </DesktopWrapper>
                         <MobileWrapper>
@@ -100,7 +100,7 @@ class ConnectedApps extends React.Component {
                                 is_empty={false}
                                 rowRenderer={this.mobileRowRenderer}
                             >
-                                {this.state.is_loading && <Loading is_fullscreen={true} />}
+                                {this.state.is_loading && <Loading />}
                             </DataList>
                         </MobileWrapper>
                     </React.Fragment>

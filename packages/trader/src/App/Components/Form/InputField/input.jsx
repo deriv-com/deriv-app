@@ -39,7 +39,7 @@ const Input = ({
     const onBlur = () => setCurrentFocus(null);
     const onFocus = () => setCurrentFocus(name);
 
-    const onChange = (e) => {
+    const onChange = e => {
         /**
          * fix for Safari
          * we have to keep track of the current cursor position, update the value in store,
@@ -48,7 +48,7 @@ const Input = ({
         // TODO: find better ways to target browsers
         if (navigator.userAgent.indexOf('Safari') !== -1 && type !== 'checkbox') {
             const cursor = e.target.selectionStart;
-            changeValue(e, (evt) => {
+            changeValue(e, evt => {
                 evt.target.selectionEnd = cursor; // reset the cursor position in callback
             });
         } else {

@@ -54,7 +54,7 @@ class MobileWidget extends React.Component {
         return `${duration} ${formatted_duration_unit}`;
     }
 
-    isVisible = (component) => {
+    isVisible = component => {
         return this.props.form_components.includes(component);
     };
 

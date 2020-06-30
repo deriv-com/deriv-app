@@ -11,11 +11,11 @@ const GTM = (() => {
         return root_store.server_time.unix();
     };
 
-    const pushDataLayer = (data) => {
+    const pushDataLayer = data => {
         return root_store.core.gtm.pushDataLayer(data);
     };
 
-    const init = (_root_store) => {
+    const init = _root_store => {
         try {
             root_store = _root_store;
 
@@ -35,7 +35,7 @@ const GTM = (() => {
         }
     };
 
-    const onRunBot = (summary) => {
+    const onRunBot = summary => {
         try {
             const run_id = `${getLoginId()}-${getServerTime()}`;
             const counters = `tr:${summary.number_of_runs},\
@@ -56,7 +56,7 @@ const GTM = (() => {
         }
     };
 
-    const onTransactionClosed = (contracts) => {
+    const onTransactionClosed = contracts => {
         try {
             const contract = contracts.length > 0 && contracts[0];
             if (contract && contract.is_completed) {

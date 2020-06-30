@@ -22,7 +22,7 @@ export default class FlyoutHelpStore {
     @observable should_previous_disable = false;
 
     @action.bound
-    setHelpContent = async (block_node) => {
+    setHelpContent = async block_node => {
         const block_hw = Blockly.Block.getDimensions(block_node);
         const block_type = block_node.getAttribute('type');
         const title = Blockly.Blocks[block_type].meta().display_name;
@@ -67,7 +67,7 @@ export default class FlyoutHelpStore {
 
     @action.bound
     async onSequenceClick(should_go_next) {
-        const current_block = this.xml_list.find((xml) => xml.getAttribute('type') === this.block_type);
+        const current_block = this.xml_list.find(xml => xml.getAttribute('type') === this.block_type);
 
         let current_block_index;
 
@@ -112,9 +112,9 @@ export default class FlyoutHelpStore {
 
     @action.bound
     updateSequenceButtons() {
-        const current_block = this.xml_list.find((xml) => xml.getAttribute('type') === this.block_type);
+        const current_block = this.xml_list.find(xml => xml.getAttribute('type') === this.block_type);
         const current_index = Object.keys(this.xml_list_group).findIndex(
-            (key) => current_block.getAttribute('type') === key
+            key => current_block.getAttribute('type') === key
         );
         this.should_previous_disable = current_index === 0;
         this.should_next_disable = current_index === Object.keys(this.xml_list_group).length - 1;
@@ -122,7 +122,7 @@ export default class FlyoutHelpStore {
 
     // eslint-disable-next-line
     groupBy(nodes, should_include_block_only = false) {
-        return nodes.reduce(function (block_group, node) {
+        return nodes.reduce(function(block_group, node) {
             const type = node.getAttribute('type');
 
             if (should_include_block_only && type === null) {

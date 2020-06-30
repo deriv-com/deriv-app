@@ -56,8 +56,8 @@ export const isCustomJournalMessage = (
     return false;
 };
 
-const parseArray = (message) => {
-    return message.map((item) => {
+const parseArray = message => {
+    return message.map(item => {
         return {
             id: new Date().getTime() * Math.random(),
             value: item && Array.isArray(item) ? parseArray(item) : item,

@@ -24,13 +24,13 @@ const Basis = ({
     setToastErrorVisibility,
 }) => {
     const user_currency_decimal_places = CurrencyUtils.getDecimalPlaces(currency);
-    const onNumberChange = (num) => {
+    const onNumberChange = num => {
         setSelectedAmount(basis, num);
         validateAmount(num);
     };
-    const formatAmount = (value) =>
+    const formatAmount = value =>
         !isNaN(value) && value !== '' ? Number(value).toFixed(user_currency_decimal_places) : value;
-    const setBasisAndAmount = (amount) => {
+    const setBasisAndAmount = amount => {
         const on_change_obj = {};
 
         // Check for any duration changes in Duration trade params Tab before sending onChange object
@@ -48,7 +48,7 @@ const Basis = ({
     const zero_decimals = Number('0').toFixed(CurrencyUtils.getDecimalPlaces(currency));
     const min_amount = parseFloat(zero_decimals.toString().replace(/.$/, '1'));
 
-    const validateAmount = (value) => {
+    const validateAmount = value => {
         const localized_message = <Localize i18n_default_text='Should not be 0 or empty' />;
         const selected_value = parseFloat(value.toString());
 
@@ -121,12 +121,12 @@ const Amount = ({
     payout_value,
 }) => {
     const has_selected_tab_idx = typeof amount_tab_idx !== 'undefined';
-    const active_index = has_selected_tab_idx ? amount_tab_idx : basis_list.findIndex((b) => b.value === basis);
+    const active_index = has_selected_tab_idx ? amount_tab_idx : basis_list.findIndex(b => b.value === basis);
 
     return (
         <div>
             <Tabs active_index={active_index} onTabItemClick={setAmountTabIdx} top>
-                {basis_list.map((basis_option) => {
+                {basis_list.map(basis_option => {
                     switch (basis_option.value) {
                         case 'stake':
                             return (

@@ -163,7 +163,7 @@ export default class ContractReplayStore extends BaseStore {
     @action.bound
     onClickCancel(contract_id) {
         if (contract_id) {
-            WS.cancelContract(contract_id).then((response) => {
+            WS.cancelContract(contract_id).then(response => {
                 if (response.error) {
                     this.root_store.common.setServicesError({
                         type: response.msg_type,
@@ -209,7 +209,7 @@ export default class ContractReplayStore extends BaseStore {
         }
     }
 
-    forgetProposalOpenContract = (contract_id) => {
+    forgetProposalOpenContract = contract_id => {
         if (!(contract_id in this.subscribers)) return;
         this.subscribers[contract_id].unsubscribe();
         delete this.subscribers[contract_id];

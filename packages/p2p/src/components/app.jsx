@@ -60,7 +60,7 @@ class App extends React.Component {
         this.is_mounted = true;
 
         // force safari refresh on back/forward
-        window.onpageshow = function (event) {
+        window.onpageshow = function(event) {
             if (event.persisted) {
                 window.location.reload(true);
             }
@@ -94,7 +94,7 @@ class App extends React.Component {
 
     componentWillUnmount() {
         this.is_mounted = false;
-        Object.keys(this.ws_subscriptions).forEach((key) => this.ws_subscriptions[key].unsubscribe());
+        Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
     }
 
     createAdvertiser(name) {
@@ -115,11 +115,11 @@ class App extends React.Component {
         this.setState({ show_popup: false });
     };
 
-    handleTabClick = (idx) => {
+    handleTabClick = idx => {
         this.setState({ active_index: idx, parameters: null });
     };
 
-    setCreateAdvertiser = (response) => {
+    setCreateAdvertiser = response => {
         const { p2p_advertiser_create } = response;
 
         if (response.error) {
@@ -136,7 +136,7 @@ class App extends React.Component {
         }
     };
 
-    setIsAdvertiser = (response) => {
+    setIsAdvertiser = response => {
         const { p2p_advertiser_info } = response;
         if (!response.error) {
             this.setState({
@@ -156,7 +156,7 @@ class App extends React.Component {
         }
 
         if (!this.state.is_advertiser) {
-            requestWS({ get_account_status: 1 }).then((account_response) => {
+            requestWS({ get_account_status: 1 }).then(account_response => {
                 if (this.is_mounted && !account_response.error) {
                     const { get_account_status } = account_response;
                     const { authentication } = get_account_status;
@@ -173,7 +173,7 @@ class App extends React.Component {
         }
     };
 
-    setChatInfoUsingAdvertiserInfo = (response) => {
+    setChatInfoUsingAdvertiserInfo = response => {
         const { p2p_advertiser_info } = response;
         if (response.error) {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
@@ -195,7 +195,7 @@ class App extends React.Component {
         };
 
         if (!chat_info.token) {
-            requestWS({ service_token: 1, service: 'sendbird' }).then((response) => {
+            requestWS({ service_token: 1, service: 'sendbird' }).then(response => {
                 chat_info.token = response.service_token.sendbird.token;
             });
         }
@@ -211,9 +211,9 @@ class App extends React.Component {
     handleNotifications = (old_orders, new_orders) => {
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
 
-        new_orders.forEach((new_order) => {
-            const old_order = old_orders.find((o) => o.id === new_order.id);
-            const notification = notifications.find((n) => n.order_id === new_order.id);
+        new_orders.forEach(new_order => {
+            const old_order = old_orders.find(o => o.id === new_order.id);
+            const notification = notifications.find(n => n.order_id === new_order.id);
             const is_current_order = new_order.id === this.props.order_id;
 
             if (old_order) {
@@ -245,8 +245,8 @@ class App extends React.Component {
         this.updateP2pNotifications(notifications);
     };
 
-    updateP2pNotifications = (notifications) => {
-        const notification_count = notifications.filter((notification) => notification.is_seen === false).length;
+    updateP2pNotifications = notifications => {
+        const notification_count = notifications.filter(notification => notification.is_seen === false).length;
         const user_settings = this.getLocalStorageSettingsForLoginId();
         user_settings.is_cached = true;
         user_settings.notifications = notifications;
@@ -262,7 +262,7 @@ class App extends React.Component {
         }
     };
 
-    setP2pOrderList = (order_response) => {
+    setP2pOrderList = order_response => {
         if (order_response.error) {
             this.ws_subscriptions.order_list_subscription.unsubscribe();
             return;
@@ -276,7 +276,7 @@ class App extends React.Component {
             this.setState({ order_offset: list.length, orders: getModifiedP2POrderList(list) });
         } else {
             // it's a single order from p2p_order_info
-            const idx_order_to_update = this.state.orders.findIndex((order) => order.id === order_response.id);
+            const idx_order_to_update = this.state.orders.findIndex(order => order.id === order_response.id);
             const updated_orders = [...this.state.orders];
             // if it's a new order, add it to the top of the list
             if (idx_order_to_update < 0) {
@@ -337,10 +337,10 @@ class App extends React.Component {
                     advertiser_id,
                     is_advertiser: this.state.is_advertiser,
                     is_listed: this.state.is_listed,
-                    setIsListed: (is_listed) => this.setState({ is_listed }),
-                    setIsAdvertiser: (is_advertiser) => this.setState({ is_advertiser }),
+                    setIsListed: is_listed => this.setState({ is_listed }),
+                    setIsAdvertiser: is_advertiser => this.setState({ is_advertiser }),
                     nickname: this.state.nickname,
-                    setNickname: (nickname) => this.setState({ nickname }),
+                    setNickname: nickname => this.setState({ nickname }),
                     setChatInfo: this.setChatInfo,
                     is_restricted,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
@@ -353,8 +353,8 @@ class App extends React.Component {
                     poi_status,
                     nickname_error,
                     changeTab: this.handleTabClick,
-                    setOrders: (incoming_orders) => this.setState({ orders: incoming_orders }),
-                    setOrderOffset: (incoming_order_offset) => this.setState({ order_offset: incoming_order_offset }),
+                    setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
+                    setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
                     getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId.bind(this),

@@ -47,7 +47,7 @@ Blockly.Blocks.text_changeCase = {
     },
 };
 
-Blockly.JavaScript.text_changeCase = (block) => {
+Blockly.JavaScript.text_changeCase = block => {
     const operators = {
         UPPERCASE: '.toUpperCase()',
         LOWERCASE: '.toLowerCase()',

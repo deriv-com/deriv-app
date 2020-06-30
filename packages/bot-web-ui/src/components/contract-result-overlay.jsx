@@ -5,7 +5,7 @@ import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import '../assets/sass/contract-result-overlay.scss';
 
-const ContractResultOverlay = (props) => {
+const ContractResultOverlay = props => {
     const has_won_contract = props.profit >= 0;
 
     return (

@@ -1,17 +1,27 @@
 import { epochToMoment, toMoment } from '@deriv/shared/utils/date';
 
 const getDateTo = (partial_fetch_time, date_to) => {
-    const today = toMoment().startOf('day').unix();
+    const today = toMoment()
+        .startOf('day')
+        .unix();
     if (date_to && today > date_to) {
         return date_to;
     } else if (partial_fetch_time) {
-        return epochToMoment(today).add(1, 'd').subtract(1, 's').unix();
+        return epochToMoment(today)
+            .add(1, 'd')
+            .subtract(1, 's')
+            .unix();
     }
-    return epochToMoment(today).add(1, 'd').subtract(1, 's').unix();
+    return epochToMoment(today)
+        .add(1, 'd')
+        .subtract(1, 's')
+        .unix();
 };
 
 const getDateFrom = (should_load_partially, partial_fetch_time, date_from, date_to) => {
-    const today = toMoment().startOf('day').unix();
+    const today = toMoment()
+        .startOf('day')
+        .unix();
     if (today > date_to) {
         return date_from;
     }
@@ -19,7 +29,9 @@ const getDateFrom = (should_load_partially, partial_fetch_time, date_from, date_
 };
 
 const shouldSendDateFrom = (date_from, should_load_partially, partial_fetch_time, date_to) => {
-    const today = toMoment().startOf('day').unix();
+    const today = toMoment()
+        .startOf('day')
+        .unix();
     if (today > date_to) {
         return !!date_from || should_load_partially;
     }

@@ -40,7 +40,7 @@ export const InfiniteLoaderList = ({
         <AutoSizer style={{ height: autosizer_height }}>
             {({ height, width }) => (
                 <InfiniteLoader
-                    isItemLoaded={(index) => index < items.length}
+                    isItemLoaded={index => index < items.length}
                     itemCount={item_count}
                     loadMoreItems={loadMore}
                 >

@@ -52,7 +52,7 @@ class Dialog extends React.PureComponent {
         }
     }
 
-    onChange = (e) => {
+    onChange = e => {
         if (this.props.is_info_dialog_open) {
             this.props.onBackButtonClick();
         }
@@ -64,7 +64,7 @@ class Dialog extends React.PureComponent {
         });
     };
 
-    onScroll = (e) => {
+    onScroll = e => {
         this.is_user_scroll = true;
         const offset_top = e.target.scrollTop + 20; // add 20px of padding top and bottom
         const closest = this.vertical_tab_headers.reduce((prev, curr) => (curr.offset_top < offset_top ? curr : prev));
@@ -86,12 +86,12 @@ class Dialog extends React.PureComponent {
         }, 150);
     };
 
-    onChangeInput = (e) => {
+    onChangeInput = e => {
         this.is_user_scroll = true; // set to true to prevent calling this.scroll() when input changes
         this.setState({
             input_value: e.target.value,
         });
-        const filtered_items = this.contracts_list.filter((item) => item.indexOf(e.target.value.toLowerCase()) !== -1);
+        const filtered_items = this.contracts_list.filter(item => item.indexOf(e.target.value.toLowerCase()) !== -1);
         this.filterList(filtered_items);
     };
 
@@ -104,7 +104,7 @@ class Dialog extends React.PureComponent {
         this.filterList(this.contracts_list);
     };
 
-    filterList = (filtered_items) => {
+    filterList = filtered_items => {
         const filtered_list = getFilteredList(this.props.list, filtered_items);
         this.props.onChangeInput(filtered_list);
         this.setState({
@@ -146,7 +146,7 @@ class Dialog extends React.PureComponent {
     }
 
     get offset_top() {
-        return this.vertical_tab_headers.find((header) => header.label === this.selected.label).offset_top;
+        return this.vertical_tab_headers.find(header => header.label === this.selected.label).offset_top;
     }
 
     get should_scroll() {

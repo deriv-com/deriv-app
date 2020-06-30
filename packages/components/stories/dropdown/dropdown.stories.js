@@ -21,7 +21,7 @@ const items = [
     },
 ];
 
-const WithStateDropdown = (props) => {
+const WithStateDropdown = props => {
     const [default_value, setDefaultValue] = React.useState(1);
 
     return (
@@ -34,7 +34,7 @@ const WithStateDropdown = (props) => {
                 classNameDisplay='dropdown__display'
                 has_symbol={false}
                 is_alignment_left={props.is_alignment_left}
-                onChange={(e) => setDefaultValue(e.target.value)}
+                onChange={e => setDefaultValue(e.target.value)}
             />
         </Theme>
     );

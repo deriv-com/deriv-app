@@ -80,7 +80,7 @@ const FormatMessage = ({ logType, className, extra }) => {
 const Tools = ({ checked_filters, filters, filterMessage }) => (
     <div className='journal-tools__container'>
         <div className='journal-tools__container-filter'>
-            {filters.map((item) => {
+            {filters.map(item => {
                 return (
                     <Checkbox
                         key={item.id}
@@ -137,7 +137,7 @@ const Journal = ({ filtered_messages, contract_stage, is_stop_button_visible, ..
                 <div className='journal__item-list'>
                     {filtered_messages.length ? (
                         <TransitionGroup>
-                            {filtered_messages.map((item) => {
+                            {filtered_messages.map(item => {
                                 const { date, time, message, message_type, className, unique_id, extra } = item;
                                 const date_el = DateItem({ date, time });
 

@@ -49,13 +49,13 @@ class Trade extends React.Component {
             <BottomWidgetsMobile
                 digits={digits}
                 tick={tick}
-                setTick={(t) => this.setState({ tick: t })}
-                setDigits={(d) => this.setState({ digits: d })}
+                setTick={t => this.setState({ tick: t })}
+                setDigits={d => this.setState({ digits: d })}
             />
         );
     };
 
-    onChangeSwipeableIndex = (index) => {
+    onChangeSwipeableIndex = index => {
         if (index === 0) {
             this.props.setMobileDigitView(true);
         } else {
@@ -163,7 +163,7 @@ import { SmartChart } from 'Modules/SmartChart';
 
 // ChartMarkers --------------------------
 const Markers = ({ markers_array, is_dark_theme, granularity, currency, config }) =>
-    markers_array.map((marker) => {
+    markers_array.map(marker => {
         const Marker = AllMarkers[marker.type];
         return (
             <Marker
@@ -214,10 +214,10 @@ class ChartTradeClass extends React.Component {
         const { active_symbols } = this.props;
         const synthetic_index = 'synthetic_index';
 
-        const has_synthetic_index = !!active_symbols.find((s) => s.market === synthetic_index);
+        const has_synthetic_index = !!active_symbols.find(s => s.market === synthetic_index);
         const active_markets = active_symbols
             .sort((a, b) => (a.display_name < b.display_name ? -1 : 1))
-            .map((s) => s.market)
+            .map(s => s.market)
             .reduce(
                 (arr, market) => {
                     if (arr.indexOf(market) === -1) arr.push(market);
@@ -241,14 +241,14 @@ class ChartTradeClass extends React.Component {
 
         return (
             <SmartChart
-                ref={(ref) => (this.charts_ref = ref)}
+                ref={ref => (this.charts_ref = ref)}
                 barriers={barriers}
                 bottomWidgets={show_digits_stats && isDesktop() ? this.bottomWidgets : this.props.bottomWidgets}
                 crosshair={isMobile() ? 0 : undefined}
                 crosshairTooltipLeftAllow={560}
                 showLastDigitStats={isDesktop() ? show_digits_stats : false}
                 chartControlsWidgets={null}
-                chartStatusListener={(v) => this.props.setChartStatus(!v)}
+                chartStatusListener={v => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}
                 enabledNavigationWidget={isDesktop()}
                 enabledChartFooter={false}

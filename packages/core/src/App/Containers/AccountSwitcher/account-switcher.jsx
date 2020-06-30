@@ -36,19 +36,19 @@ class AccountSwitcher extends React.Component {
         };
     }
 
-    toggleVisibility = (section) => {
+    toggleVisibility = section => {
         this.setState({ [`is_${section}_visible`]: !this.state[`is_${section}_visible`] });
     };
 
-    setWrapperRef = (node) => {
+    setWrapperRef = node => {
         this.wrapper_ref = node;
     };
 
-    updateAccountTabIndex = (index) => {
+    updateAccountTabIndex = index => {
         this.setState({ active_tab_index: index });
     };
 
-    handleClickOutside = (event) => {
+    handleClickOutside = event => {
         const accounts_toggle_btn = !event.target.classList.contains('acc-info');
         if (
             this.wrapper_ref &&
@@ -70,12 +70,12 @@ class AccountSwitcher extends React.Component {
         });
     };
 
-    redirectToMt5 = (account_type) => {
+    redirectToMt5 = account_type => {
         this.props.toggleAccountsDialog();
         this.props.history.push(`${routes.mt5}#${account_type}`);
     };
 
-    openMt5RealAccount = (account_type) => {
+    openMt5RealAccount = account_type => {
         sessionStorage.setItem('open_mt5_account_type', `real.${account_type}`);
         this.redirectToMt5Real();
     };
@@ -92,7 +92,7 @@ class AccountSwitcher extends React.Component {
 
     onListLeave = () => this.setState({ has_autohide: true });
 
-    openMt5DemoAccount = (account_type) => {
+    openMt5DemoAccount = account_type => {
         sessionStorage.setItem('open_mt5_account_type', `demo.${account_type}`);
         this.redirectToMt5Demo();
     };
@@ -114,11 +114,11 @@ class AccountSwitcher extends React.Component {
         }
     };
 
-    isDemo = (account) => /^demo/.test(account.group);
+    isDemo = account => /^demo/.test(account.group);
 
-    isReal = (account) => !this.isDemo(account);
+    isReal = account => !this.isDemo(account);
 
-    getRemainingAccounts = (existing_mt5_groups) => {
+    getRemainingAccounts = existing_mt5_groups => {
         const mt5_config = [
             {
                 account_types: ['svg'],
@@ -140,9 +140,9 @@ class AccountSwitcher extends React.Component {
             },
         ];
 
-        existing_mt5_groups.forEach((group) => {
+        existing_mt5_groups.forEach(group => {
             const type = group.split(/[demo|real]_/)[1];
-            const index_to_remove = mt5_config.findIndex((account) => account.account_types.indexOf(type) > -1);
+            const index_to_remove = mt5_config.findIndex(account => account.account_types.indexOf(type) > -1);
             mt5_config.splice(index_to_remove, 1);
         });
 
@@ -214,7 +214,7 @@ class AccountSwitcher extends React.Component {
     }
 
     get remaining_demo_mt5() {
-        const existing_demo_mt5_groups = Object.keys(this.demo_mt5).map((account) => this.demo_mt5[account].group);
+        const existing_demo_mt5_groups = Object.keys(this.demo_mt5).map(account => this.demo_mt5[account].group);
         return this.getRemainingAccounts(existing_demo_mt5_groups);
     }
 
@@ -223,14 +223,12 @@ class AccountSwitcher extends React.Component {
     }
 
     get remaining_real_mt5() {
-        const existing_real_mt5_groups = Object.keys(this.real_mt5).map((account) => this.real_mt5[account].group);
+        const existing_real_mt5_groups = Object.keys(this.real_mt5).map(account => this.real_mt5[account].group);
         return this.getRemainingAccounts(existing_real_mt5_groups);
     }
 
     get has_set_currency() {
-        return this.props.account_list
-            .filter((account) => !account.is_virtual)
-            .some((account) => account.title !== 'Real');
+        return this.props.account_list.filter(account => !account.is_virtual).some(account => account.title !== 'Real');
     }
 
     get can_upgrade() {
@@ -242,10 +240,10 @@ class AccountSwitcher extends React.Component {
     }
 
     get total_demo_assets() {
-        const vrtc_loginid = this.props.account_list.find((account) => account.is_virtual).loginid;
+        const vrtc_loginid = this.props.account_list.find(account => account.is_virtual).loginid;
         const vrtc_balance = this.props.accounts[vrtc_loginid] ? this.props.accounts[vrtc_loginid].balance : 0;
         const mt5_demo_total = this.props.mt5_login_list
-            .filter((account) => /^demo/.test(account.group))
+            .filter(account => /^demo/.test(account.group))
             .reduce(
                 (total, account) => {
                     total.balance += account.balance;
@@ -284,8 +282,8 @@ class AccountSwitcher extends React.Component {
                 >
                     <div className='acc-switcher__accounts'>
                         {this.sorted_account_list
-                            .filter((account) => account.is_virtual)
-                            .map((account) => (
+                            .filter(account => account.is_virtual)
+                            .map(account => (
                                 <AccountList
                                     key={account.loginid}
                                     balance={this.props.accounts[account.loginid].balance}
@@ -322,7 +320,7 @@ class AccountSwitcher extends React.Component {
                                 <React.Fragment>
                                     {!!this.demo_mt5.length && (
                                         <div className='acc-switcher__accounts'>
-                                            {this.demo_mt5.map((account) => (
+                                            {this.demo_mt5.map(account => (
                                                 <AccountList
                                                     key={account.login}
                                                     account_type={account.group}
@@ -337,7 +335,7 @@ class AccountSwitcher extends React.Component {
                                             ))}
                                         </div>
                                     )}
-                                    {this.remaining_demo_mt5.map((account) => (
+                                    {this.remaining_demo_mt5.map(account => (
                                         <div key={account.title} className='acc-switcher__new-account'>
                                             <Icon icon={`IcMt5-${account.icon}`} size={24} />
                                             <span className='acc-switcher__new-account-text'>{account.title}</span>
@@ -371,8 +369,8 @@ class AccountSwitcher extends React.Component {
                     >
                         <div className='acc-switcher__accounts'>
                             {this.sorted_account_list
-                                .filter((account) => !account.is_virtual)
-                                .map((account) => (
+                                .filter(account => !account.is_virtual)
+                                .map(account => (
                                     <AccountList
                                         key={account.loginid}
                                         balance={this.props.accounts[account.loginid].balance}
@@ -440,7 +438,7 @@ class AccountSwitcher extends React.Component {
                                 <React.Fragment>
                                     {!!this.real_mt5.length && (
                                         <div className='acc-switcher__accounts'>
-                                            {this.real_mt5.map((account) => (
+                                            {this.real_mt5.map(account => (
                                                 <AccountList
                                                     key={account.login}
                                                     account_type={account.group}
@@ -454,7 +452,7 @@ class AccountSwitcher extends React.Component {
                                             ))}
                                         </div>
                                     )}
-                                    {this.remaining_real_mt5.map((account) => (
+                                    {this.remaining_real_mt5.map(account => (
                                         <div key={account.title} className='acc-switcher__new-account'>
                                             <Icon icon={`IcMt5-${account.icon}`} size={24} />
                                             <span className='acc-switcher__new-account-text'>{account.title}</span>

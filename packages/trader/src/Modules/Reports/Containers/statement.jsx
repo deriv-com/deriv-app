@@ -49,7 +49,7 @@ class Statement extends React.Component {
         );
     };
 
-    getRowAction = (row_obj) => {
+    getRowAction = row_obj => {
         let action;
 
         if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
@@ -147,7 +147,7 @@ class Statement extends React.Component {
                                 data_source={data}
                                 columns={this.columns}
                                 onScroll={handleScroll}
-                                getRowAction={(row) => this.getRowAction(row)}
+                                getRowAction={row => this.getRowAction(row)}
                                 is_empty={is_empty}
                                 custom_width={'100%'}
                                 getRowSize={() => 63}

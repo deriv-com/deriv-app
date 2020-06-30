@@ -29,9 +29,9 @@ const BinaryPushwoosh = (() => {
     };
 
     const sendTags = () => {
-        pw.push((api) => {
+        pw.push(api => {
             api.getTags()
-                .then((result) => {
+                .then(result => {
                     if (!result.result['Login ID'] || !result.result['Site Language']) {
                         // send login id and site language
                         return api.setTags({
@@ -41,7 +41,7 @@ const BinaryPushwoosh = (() => {
                     }
                     return null;
                 })
-                .catch((e) => {
+                .catch(e => {
                     return; // do nothing
                 });
         });

@@ -16,7 +16,7 @@ export default class JournalStore {
         return this.root_store.core.common.server_time.get();
     }
 
-    playAudio = (sound) => {
+    playAudio = sound => {
         if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
             const audio = document.getElementById(sound);
             audio.play();
@@ -30,7 +30,7 @@ export default class JournalStore {
     ];
 
     @observable unfiltered_messages = [];
-    @observable journal_filters = getSetting('journal_filter') || this.filters.map((filter) => filter.id);
+    @observable journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
 
     @action.bound
     onLogSuccess(message) {
@@ -53,7 +53,7 @@ export default class JournalStore {
                 { message, block_id, variable_name },
                 run_panel.showErrorMessage,
                 () => this.dbot.centerAndHighlightBlock(block_id, true),
-                (parsed_message) => this.pushMessage(parsed_message, message_type || message_types.NOTIFY, className)
+                parsed_message => this.pushMessage(parsed_message, message_type || message_types.NOTIFY, className)
             )
         ) {
             this.playAudio(sound);
@@ -76,14 +76,14 @@ export default class JournalStore {
     get filtered_messages() {
         // filter messages based on filtered-checkbox
         return this.unfiltered_messages.filter(
-            (message) =>
-                this.journal_filters.length && this.journal_filters.some((filter) => message.message_type === filter)
+            message =>
+                this.journal_filters.length && this.journal_filters.some(filter => message.message_type === filter)
         );
     }
 
     @computed
     get checked_filters() {
-        return this.journal_filters.filter((filter) => filter != null);
+        return this.journal_filters.filter(filter => filter != null);
     }
 
     @action.bound

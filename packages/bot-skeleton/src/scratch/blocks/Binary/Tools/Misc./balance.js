@@ -5,7 +5,7 @@ Blockly.Blocks.balance = {
     init() {
         this.jsonInit(this.definition());
         const balanceTypeField = this.getField('BALANCE_TYPE');
-        balanceTypeField.setValidator((value) => {
+        balanceTypeField.setValidator(value => {
             if (value === 'STR') {
                 this.setOutput(true, 'String');
             } else if (value === 'NUM') {
@@ -45,7 +45,7 @@ Blockly.Blocks.balance = {
     },
 };
 
-Blockly.JavaScript.balance = (block) => {
+Blockly.JavaScript.balance = block => {
     const balanceType = block.getFieldValue('BALANCE_TYPE');
 
     const code = `Bot.getBalance('${balanceType}')`;

@@ -18,7 +18,7 @@ const LastDigit = ({ is_minimized, last_digit, onChange }) => {
             is_center
         >
             <NumberSelector
-                arr_arr_numbers={[arr_five, arr_five.map((i) => i + 5)]}
+                arr_arr_numbers={[arr_five, arr_five.map(i => i + 5)]}
                 name='last_digit'
                 onChange={onChange}
                 selected_number={+last_digit}

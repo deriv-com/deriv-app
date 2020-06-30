@@ -9,7 +9,7 @@ class RangeSlider extends React.PureComponent {
         hover_value: 0,
     };
 
-    handleChange = (e) => {
+    handleChange = e => {
         // e.target.value returns string, we need to convert them to number
         const value = +e.target.value;
         if (value !== this.props.value) {
@@ -18,21 +18,21 @@ class RangeSlider extends React.PureComponent {
         }
     };
 
-    handleClick = (index) => {
+    handleClick = index => {
         if (index !== this.props.value) {
             this.resetOnHover();
             this.props.onChange({ target: { name: this.props.name, value: index } });
         }
     };
 
-    onMouseEnter = (index) => {
+    onMouseEnter = index => {
         if (index) {
             this.setState({ hover_value: index });
             this.rangeSliderTrack.style.width = this.getRangeSliderTrackWidth(index, true);
         }
     };
 
-    onMouseLeave = (e) => {
+    onMouseLeave = e => {
         const { offsetX, offsetY } = e.nativeEvent;
         if (offsetY <= -3 || offsetY >= 3 || offsetX < -3 || offsetX > 3) {
             this.resetOnHover();
@@ -79,7 +79,7 @@ class RangeSlider extends React.PureComponent {
                     />
                     {/* this element to be placed before <TickSteps /> to prevent overlapping colors */}
                     <span
-                        ref={(node) => (this.rangeSliderTrack = node)}
+                        ref={node => (this.rangeSliderTrack = node)}
                         className='range-slider__line range-slider__line--fill'
                         onMouseLeave={this.onMouseLeave}
                     />

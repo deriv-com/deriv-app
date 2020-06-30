@@ -17,7 +17,7 @@ class PositionsDrawerDialog extends React.Component {
         document.removeEventListener('mousedown', this.handleClickOutside, true);
     }
 
-    handleClickOutside = (event) => {
+    handleClickOutside = event => {
         if (this.ref && this.ref.current && this.props.is_visible) {
             if (this.ref.current.contains(event.target)) {
                 event.stopPropagation();

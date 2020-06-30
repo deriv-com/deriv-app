@@ -5,7 +5,7 @@ import { Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getAllowedLanguages, getURL, currentLanguage } from 'Utils/Language';
 
-const isCurrentLanguage = (lang) => lang === currentLanguage;
+const isCurrentLanguage = lang => lang === currentLanguage;
 
 const NonClickableLink = ({ children, lang }) => (
     <div
@@ -43,7 +43,7 @@ const LanguageSettings = () => (
             </span>
         </div>
         <div className='settings-language__language-container'>
-            {Object.keys(getAllowedLanguages()).map((key) =>
+            {Object.keys(getAllowedLanguages()).map(key =>
                 isCurrentLanguage(key) ? (
                     <NonClickableLink lang={key} key={key}>
                         <LanguageLink lang={key} />

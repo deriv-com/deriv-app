@@ -5,7 +5,7 @@ const isFirefox = () => typeof InstallTrigger !== 'undefined';
 // eslint-disable-next-line no-undef
 const isSafari = () =>
     /constructor/i.test(window.HTMLElement) ||
-    (function (p) {
+    (function(p) {
         return p.toString() === '[object SafariRemoteNotification]';
         // eslint-disable-next-line no-undef
     })(!window.safari || (typeof safari !== 'undefined' && safari.pushNotification));

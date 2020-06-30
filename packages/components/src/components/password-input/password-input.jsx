@@ -10,7 +10,7 @@ class PasswordInput extends React.Component {
     };
 
     togglePasswordVisibility = () => {
-        this.setState((prev_state) => ({ show_password: !prev_state.show_password }));
+        this.setState(prev_state => ({ show_password: !prev_state.show_password }));
     };
 
     render() {

@@ -35,7 +35,7 @@ Blockly.Blocks.lists_length = {
     },
 };
 
-Blockly.JavaScript.lists_length = (block) => {
+Blockly.JavaScript.lists_length = block => {
     const list = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_MEMBER) || '[]';
 
     const code = `${list}.length`;

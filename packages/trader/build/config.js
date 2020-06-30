@@ -3,7 +3,7 @@ const stylelintFormatter = require('stylelint-formatter-pretty');
 const { IS_RELEASE } = require('./constants');
 // const { transformContentUrlBase } = require('./helpers');
 
-const copyConfig = (base) => [
+const copyConfig = base => [
     {
         from: path.resolve(__dirname, '../node_modules/@deriv/deriv-charts/dist/*.smartcharts.*'),
         to: 'js/smartcharts/',

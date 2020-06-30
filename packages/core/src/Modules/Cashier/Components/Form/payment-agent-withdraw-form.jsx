@@ -70,7 +70,7 @@ const RadioDropDown = ({ field, values, ...props }) => (
             <Localize i18n_default_text='By name' />
         </span>
         <Field name='payment_agents'>
-            {(params) => (
+            {params => (
                 <React.Fragment>
                     <DesktopWrapper>
                         <Dropdown
@@ -80,7 +80,7 @@ const RadioDropDown = ({ field, values, ...props }) => (
                             classNameItems='cashier__drop-down-items'
                             list={props.payment_agent_list}
                             value={values.payment_agents}
-                            onChange={(e) => {
+                            onChange={e => {
                                 params.form.setFieldValue('payment_agents', e.target.value);
                             }}
                         />
@@ -92,7 +92,7 @@ const RadioDropDown = ({ field, values, ...props }) => (
                             list_items={props.payment_agent_list}
                             value={values.payment_agents}
                             label={localize('Choose agent')}
-                            onChange={(e) => params.form.setFieldValue('payment_agents', e.target.value)}
+                            onChange={e => params.form.setFieldValue('payment_agents', e.target.value)}
                             use_text={false}
                         />
                     </MobileWrapper>
@@ -108,7 +108,7 @@ const RadioInput = ({ touched, errors, field, values, ...props }) => (
             <Localize i18n_default_text='By payment agent ID' />
         </span>
         <Field>
-            {(params) => (
+            {params => (
                 <Input
                     name='payment_agent'
                     className='payment-agent__input'
@@ -139,17 +139,17 @@ class PaymentAgentWithdrawForm extends React.Component {
         this.props.resetPaymentAgent();
     }
 
-    validateWithdrawalPassthrough = (values) =>
+    validateWithdrawalPassthrough = values =>
         validateWithdrawal(values, {
             balance: this.props.balance,
             currency: this.props.currency,
             payment_agent:
                 values.payment_method === 'payment_agent'
                     ? {}
-                    : this.props.payment_agent_list.find((pa) => pa.value === values.payment_agents),
+                    : this.props.payment_agent_list.find(pa => pa.value === values.payment_agents),
         });
 
-    onWithdrawalPassthrough = (values) => {
+    onWithdrawalPassthrough = values => {
         this.props.requestPaymentAgentWithdraw({
             loginid: values[values.payment_method],
             currency: this.props.currency,
@@ -226,7 +226,7 @@ class PaymentAgentWithdrawForm extends React.Component {
                                         hint={
                                             values.payment_method === 'payment_agents' &&
                                             this.props.payment_agent_list.find(
-                                                (pa) => pa.value === values.payment_agents
+                                                pa => pa.value === values.payment_agents
                                             ) && (
                                                 <Localize
                                                     i18n_default_text='Withdrawal limits: <0 />-<1 />'
@@ -235,7 +235,7 @@ class PaymentAgentWithdrawForm extends React.Component {
                                                             key={0}
                                                             amount={
                                                                 this.props.payment_agent_list.find(
-                                                                    (pa) => pa.value === values.payment_agents
+                                                                    pa => pa.value === values.payment_agents
                                                                 ).min_withdrawal
                                                             }
                                                             currency={this.props.currency}
@@ -244,7 +244,7 @@ class PaymentAgentWithdrawForm extends React.Component {
                                                             key={1}
                                                             amount={
                                                                 this.props.payment_agent_list.find(
-                                                                    (pa) => pa.value === values.payment_agents
+                                                                    pa => pa.value === values.payment_agents
                                                                 ).max_withdrawal
                                                             }
                                                             currency={this.props.currency}

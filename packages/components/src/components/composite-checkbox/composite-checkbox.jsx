@@ -4,7 +4,7 @@ import React from 'react';
 import Checkbox from 'Components/checkbox/checkbox.jsx';
 
 const CompositeCheckbox = ({ name, value, onChange, className, label, id, description, ...props }) => {
-    const onClickContainer = (e) => {
+    const onClickContainer = e => {
         e.stopPropagation();
         e.preventDefault();
         onChange({

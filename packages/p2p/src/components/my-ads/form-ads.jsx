@@ -45,7 +45,7 @@ class FormAds extends React.Component {
         if (values.default_advert_description) {
             request_payload.description = values.default_advert_description;
         }
-        requestWS(request_payload).then((response) => {
+        requestWS(request_payload).then(response => {
             // If we get an error we should let the user submit the form again else we just go back to the list of ads
             if (response.error) {
                 this.setState({ error_message: response.error.message });
@@ -134,7 +134,7 @@ class FormAds extends React.Component {
                                                                     {this.context.currency}
                                                                 </span>
                                                             }
-                                                            onChange={(e) => {
+                                                            onChange={e => {
                                                                 this.restrictLength(e, handleChange);
                                                             }}
                                                             required
@@ -172,7 +172,7 @@ class FormAds extends React.Component {
                                                                     {this.context.local_currency_config.currency}
                                                                 </span>
                                                             }
-                                                            onChange={(e) => {
+                                                            onChange={e => {
                                                                 this.restrictLength(e, handleChange);
                                                             }}
                                                             required
@@ -193,7 +193,7 @@ class FormAds extends React.Component {
                                                                     {this.context.currency}
                                                                 </span>
                                                             }
-                                                            onChange={(e) => {
+                                                            onChange={e => {
                                                                 this.restrictLength(e, handleChange);
                                                             }}
                                                             required
@@ -213,7 +213,7 @@ class FormAds extends React.Component {
                                                                     {this.context.currency}
                                                                 </span>
                                                             }
-                                                            onChange={(e) => {
+                                                            onChange={e => {
                                                                 this.restrictLength(e, handleChange);
                                                             }}
                                                             required
@@ -312,45 +312,45 @@ class FormAds extends React.Component {
         );
     }
 
-    validateFormAds = (values) => {
+    validateFormAds = values => {
         // TODO: uncomment this when we have available_price
         // const available_price = ;
         const validations = {
-            default_advert_description: [(v) => !v || lengthValidator(v), (v) => !v || textValidator(v)],
+            default_advert_description: [v => !v || lengthValidator(v), v => !v || textValidator(v)],
             max_transaction: [
-                (v) => !!v,
-                (v) => !isNaN(v),
-                (v) => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
-                (v) => (values.offer_amount ? +v <= values.offer_amount : true),
-                (v) => (values.min_transaction ? +v >= values.min_transaction : true),
+                v => !!v,
+                v => !isNaN(v),
+                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
+                v => (values.offer_amount ? +v <= values.offer_amount : true),
+                v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
             min_transaction: [
-                (v) => !!v,
-                (v) => !isNaN(v),
-                (v) => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
-                (v) => (values.offer_amount ? +v <= values.offer_amount : true),
-                (v) => (values.max_transaction ? +v <= values.max_transaction : true),
+                v => !!v,
+                v => !isNaN(v),
+                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
+                v => (values.offer_amount ? +v <= values.offer_amount : true),
+                v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
             offer_amount: [
-                (v) => !!v,
+                v => !!v,
                 // TODO: uncomment this when we have available_price
                 // v => v > available_price,
                 // TODO: remove v > 0 check when we have available_price
-                (v) => !isNaN(v),
-                (v) => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
-                (v) => (values.min_transaction ? +v >= values.min_transaction : true),
-                (v) => (values.max_transaction ? +v >= values.max_transaction : true),
+                v => !isNaN(v),
+                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
+                v => (values.min_transaction ? +v >= values.min_transaction : true),
+                v => (values.max_transaction ? +v >= values.max_transaction : true),
             ],
             price_rate: [
-                (v) => !!v,
-                (v) => !isNaN(v),
-                (v) => v > 0 && countDecimalPlaces(v) <= this.context.local_currency_config.decimal_places,
+                v => !!v,
+                v => !isNaN(v),
+                v => v > 0 && countDecimalPlaces(v) <= this.context.local_currency_config.decimal_places,
             ],
         };
 
         if (values.type === 'sell') {
-            validations.contact_info = [(v) => !!v, (v) => textValidator(v), (v) => lengthValidator(v)];
-            validations.payment_info = [(v) => !!v, (v) => textValidator(v), (v) => lengthValidator(v)];
+            validations.contact_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
+            validations.payment_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
         }
 
         const mapped_key = {
@@ -363,9 +363,9 @@ class FormAds extends React.Component {
             price_rate: localize('Fixed price'),
         };
 
-        const common_messages = (field_name) => [localize('{{field_name}} is required', { field_name })];
+        const common_messages = field_name => [localize('{{field_name}} is required', { field_name })];
 
-        const contact_info_messages = (field_name) => [
+        const contact_info_messages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize(
                 "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
@@ -374,7 +374,7 @@ class FormAds extends React.Component {
             localize('{{field_name}} has exceeded maximum length', { field_name }),
         ];
 
-        const default_advert_description_messages = (field_name) => [
+        const default_advert_description_messages = field_name => [
             localize('{{field_name}} has exceeded maximum length', { field_name }),
             localize(
                 "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
@@ -382,7 +382,7 @@ class FormAds extends React.Component {
             ),
         ];
 
-        const amount_messages = (field_name) => [
+        const amount_messages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             // TODO: uncomment this when we have available_price
             // localize('Min is {{value}}', { value: available_price }),
@@ -392,7 +392,7 @@ class FormAds extends React.Component {
             localize('{{field_name}} should not be below Max limit', { field_name }),
         ];
 
-        const max_limit_messages = (field_name) => [
+        const max_limit_messages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
@@ -400,7 +400,7 @@ class FormAds extends React.Component {
             localize('{{field_name}} should not be below Min limit', { field_name }),
         ];
 
-        const min_limit_messages = (field_name) => [
+        const min_limit_messages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
@@ -408,7 +408,7 @@ class FormAds extends React.Component {
             localize('{{field_name}} should not exceed Max limit', { field_name }),
         ];
 
-        const price_rate_messages = (field_name) => [
+        const price_rate_messages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
@@ -417,7 +417,7 @@ class FormAds extends React.Component {
         const errors = {};
 
         Object.entries(validations).forEach(([key, rules]) => {
-            const error_index = rules.findIndex((v) => !v(values[key]));
+            const error_index = rules.findIndex(v => !v(values[key]));
             if (error_index !== -1) {
                 switch (key) {
                     case 'contact_info':

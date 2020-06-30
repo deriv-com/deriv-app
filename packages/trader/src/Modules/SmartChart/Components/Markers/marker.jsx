@@ -9,7 +9,7 @@ const ChartMarker = ({ marker_config, marker_content_props, is_bottom_widget_vis
     // TODO:
     //  - rename x to epoch
     //  - rename y to price
-    const onRef = (ref) => {
+    const onRef = ref => {
         if (ref) {
             // NOTE: null price means vertical line.
             if (!marker_props.y) {

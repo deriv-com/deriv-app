@@ -18,7 +18,7 @@ export default class PortfolioStore extends BaseStore {
     positions_map = {};
     @observable is_loading = false;
     @observable error = '';
-    getPositionById = createTransformer((id) => this.positions.find((position) => +position.id === +id));
+    getPositionById = createTransformer(id => this.positions.find(position => +position.id === +id));
 
     subscribers = {};
     responseQueue = [];
@@ -54,10 +54,10 @@ export default class PortfolioStore extends BaseStore {
         this.error = '';
         if (response.portfolio.contracts) {
             this.positions = response.portfolio.contracts
-                .map((pos) => formatPortfolioPosition(pos, this.root_store.modules.trade.active_symbols))
+                .map(pos => formatPortfolioPosition(pos, this.root_store.modules.trade.active_symbols))
                 .sort((pos1, pos2) => pos2.reference - pos1.reference); // new contracts first
 
-            this.positions.forEach((p) => {
+            this.positions.forEach(p => {
                 this.positions_map[p.id] = p;
             });
             this.updatePositions();
@@ -104,7 +104,7 @@ export default class PortfolioStore extends BaseStore {
                 return;
             }
             this.positions[i].is_loading = true;
-            const subscriber = WS.subscribeProposalOpenContract(contract_id, (poc) => {
+            const subscriber = WS.subscribeProposalOpenContract(contract_id, poc => {
                 this.updateContractTradeStore(poc);
                 this.populateResultDetails(poc);
                 subscriber.unsubscribe();
@@ -112,7 +112,7 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
-    deepClone = (obj) => JSON.parse(JSON.stringify(obj));
+    deepClone = obj => JSON.parse(JSON.stringify(obj));
     updateContractTradeStore(response) {
         const contract_trade = this.root_store.modules.contract_trade;
         const has_poc = !ObjectUtils.isEmptyObject(response.proposal_open_contract);
@@ -132,7 +132,7 @@ export default class PortfolioStore extends BaseStore {
         trade.updateLimitOrderBarriers(is_over, portfolio_position);
     }
 
-    proposalOpenContractQueueHandler = (response) => {
+    proposalOpenContractQueueHandler = response => {
         this.responseQueue.push(response);
         this.throttledUpdatePositions();
     };
@@ -204,7 +204,7 @@ export default class PortfolioStore extends BaseStore {
         const i = this.getPositionIndexById(contract_id);
         this.positions[i].is_sell_requested = true;
         if (contract_id) {
-            WS.cancelContract(contract_id).then((response) => {
+            WS.cancelContract(contract_id).then(response => {
                 if (response.error) {
                     this.root_store.common.setServicesError({
                         type: response.msg_type,
@@ -258,7 +258,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
-    populateResultDetails = (response) => {
+    populateResultDetails = response => {
         const contract_response = response.proposal_open_contract;
         const i = this.getPositionIndexById(contract_response.contract_id);
 
@@ -330,7 +330,7 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener() {
-        return new Promise(async (resolve) => {
+        return new Promise(async resolve => {
             return resolve(this.initializePortfolio());
         });
     }
@@ -398,7 +398,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     getPositionIndexById(contract_id) {
-        return this.positions.findIndex((pos) => +pos.id === +contract_id);
+        return this.positions.findIndex(pos => +pos.id === +contract_id);
     }
 
     @computed
@@ -407,7 +407,7 @@ export default class PortfolioStore extends BaseStore {
         let payout = 0;
         let purchase = 0;
 
-        this.positions.forEach((portfolio_pos) => {
+        this.positions.forEach(portfolio_pos => {
             indicative += +portfolio_pos.indicative;
             payout += +portfolio_pos.payout;
             purchase += +portfolio_pos.purchase;
@@ -421,12 +421,12 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     setActivePositions() {
-        this.active_positions = this.positions.filter((portfolio_pos) => !getEndTime(portfolio_pos.contract_info));
+        this.active_positions = this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
         this.all_positions = [...this.positions];
     }
 
     updatePositions = () => {
-        this.responseQueue.forEach((res) => this.proposalOpenContractHandler(res));
+        this.responseQueue.forEach(res => this.proposalOpenContractHandler(res));
         this.responseQueue = [];
         this.setActivePositions();
     };
@@ -451,14 +451,12 @@ export default class PortfolioStore extends BaseStore {
     @computed
     get all_positions_filtered() {
         // TODO: remove this once Multiplier is supported in Mobile
-        return this.all_positions.filter((p) => !(isMultiplierContract(p.contract_info.contract_type) && isMobile()));
+        return this.all_positions.filter(p => !(isMultiplierContract(p.contract_info.contract_type) && isMobile()));
     }
 
     @computed
     get active_positions_filtered() {
         // TODO: remove this once Multiplier is supported in Mobile
-        return this.active_positions.filter(
-            (p) => !(isMultiplierContract(p.contract_info.contract_type) && isMobile())
-        );
+        return this.active_positions.filter(p => !(isMultiplierContract(p.contract_info.contract_type) && isMobile()));
     }
 }

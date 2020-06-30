@@ -10,7 +10,7 @@ class Tabs extends React.Component {
         this.state = { active_index: props.active_index || 0 };
     }
 
-    onTabItemClick = (index) => {
+    onTabItemClick = index => {
         this.setState({ active_index: index });
     };
 
@@ -40,12 +40,12 @@ class Tabs extends React.Component {
         }
     };
 
-    setActiveTabRef = (ref) => {
+    setActiveTabRef = ref => {
         this.active_tab_ref = ref;
         this.setActiveLineStyle();
     };
 
-    setTabsWrapperRef = (ref) => {
+    setTabsWrapperRef = ref => {
         this.tabs_wrapper_ref = ref;
         this.setActiveLineStyle();
     };

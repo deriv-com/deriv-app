@@ -27,8 +27,8 @@ const Numpad = ({
     onValueChange,
     onValidate,
 }) => {
-    const formatNumber = (v) => (typeof format === 'function' ? format(v) : v);
-    const isFloat = (v) => String(v).match(/\./);
+    const formatNumber = v => (typeof format === 'function' ? format(v) : v);
+    const isFloat = v => String(v).match(/\./);
     const formatted_value = formatNumber(value);
     const [is_float, setFloat] = React.useState(isFloat(formatted_value));
     const [default_value, setValue] = React.useState(formatted_value);
@@ -46,12 +46,12 @@ const Numpad = ({
         setHasError(is_error);
     }, [default_value, value]);
 
-    const updateValue = (val) => {
+    const updateValue = val => {
         setValue(val);
         if (onValueChange) onValueChange(val);
     };
 
-    const onSelect = (num) => {
+    const onSelect = num => {
         switch (num) {
             // backspace
             case -1:
@@ -92,7 +92,7 @@ const Numpad = ({
         }
     };
 
-    const getDecimals = (val) => {
+    const getDecimals = val => {
         const array_value = typeof val === 'string' ? val.split('.') : val.toString().split('.');
         return array_value && array_value.length > 1 ? array_value[1].length : 0;
     };
@@ -136,7 +136,7 @@ const Numpad = ({
                 pip_size={pip_size}
                 value={default_value}
                 render={render}
-                onChange={(v) => {
+                onChange={v => {
                     const amount = Number(v).toFixed(getDecimals(default_value));
                     setFloat(isFloat(amount));
                     updateValue(amount);

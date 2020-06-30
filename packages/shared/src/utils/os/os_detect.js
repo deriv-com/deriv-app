@@ -25,7 +25,7 @@ export const systems = {
 
 export const isDesktop = () => {
     const os = OSDetect();
-    return !!['windows', 'mac', 'linux'].find((system) => system === os);
+    return !!['windows', 'mac', 'linux'].find(system => system === os);
 };
 
 export const isMobile = () =>
@@ -40,13 +40,13 @@ export const OSDetect = () => {
     }
     if (typeof navigator !== 'undefined' && navigator.platform) {
         return Object.keys(systems)
-            .map((os) => {
-                if (systems[os].some((platform) => navigator.platform === platform)) {
+            .map(os => {
+                if (systems[os].some(platform => navigator.platform === platform)) {
                     return os;
                 }
                 return false;
             })
-            .filter((os) => os)[0];
+            .filter(os => os)[0];
     }
 
     return 'Unknown OS';

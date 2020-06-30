@@ -39,12 +39,12 @@ class Validator {
      * @return {boolean} Whether it passes; true = passes, false = fails
      */
     check() {
-        Object.keys(this.input).forEach((attribute) => {
+        Object.keys(this.input).forEach(attribute => {
             if (!Object.prototype.hasOwnProperty.call(this.rules, attribute)) {
                 return;
             }
 
-            this.rules[attribute].forEach((rule) => {
+            this.rules[attribute].forEach(rule => {
                 const ruleObject = Validator.getRuleObject(rule);
 
                 if (!ruleObject.validator && typeof ruleObject.validator !== 'function') {

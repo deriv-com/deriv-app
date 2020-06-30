@@ -20,6 +20,6 @@ export const getComponentProperties = (Component, ...stores) =>
  * @return {Object}
  */
 const getPropFromStores = (prop, ...stores) => {
-    const store = stores.find((item) => prop in item) || {};
+    const store = stores.find(item => prop in item) || {};
     return prop in store ? { [prop]: store[prop] } : {};
 };

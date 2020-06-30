@@ -16,19 +16,19 @@ const validRequired = (value /* , options, field */) => {
     const str = String(value).replace(/\s/g, '');
     return str.length > 0;
 };
-const validEmail = (value) => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
-export const validPassword = (value) => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
-export const validLetterSymbol = (value) => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
-const validGeneral = (value) => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
-export const validAddress = (value) => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
-export const validPostCode = (value) => /^[-A-Za-z0-9\s]{0,20}$/.test(value);
-export const validPhone = (value) => /^\+?((-|\s)*[0-9]){8,35}$/.test(value.replace(/[ ]/g, ''));
+const validEmail = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
+export const validPassword = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
+export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
+const validGeneral = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
+export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
+export const validPostCode = value => /^[-A-Za-z0-9\s]{0,20}$/.test(value);
+export const validPhone = value => /^\+?((-|\s)*[0-9]){8,35}$/.test(value.replace(/[ ]/g, ''));
 export const validCountryCode = (list, value) =>
-    list.some((item) => value.replace(/[ ]/g, '').startsWith(`+${item.phone_idd}`));
+    list.some(item => value.replace(/[ ]/g, '').startsWith(`+${item.phone_idd}`));
 const validRegular = (value, options) => options.regex.test(value);
-const validEmailToken = (value) => value.trim().length === 8;
-export const validTaxID = (value) => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
-const validBarrier = (value) => /^[+-]?\d+\.?\d*$/.test(value);
+const validEmailToken = value => value.trim().length === 8;
+export const validTaxID = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
+const validBarrier = value => /^[+-]?\d+\.?\d*$/.test(value);
 
 const validCompare = (value, options) => value === getElementById(options.to.substr(1)).value;
 const validNotEqual = (value, options) => value !== getElementById(options.to.substr(1)).value;
@@ -163,4 +163,4 @@ export const getPreBuildDVRs = () => {
     return pre_build_dvrs;
 };
 
-export const getPasswordLengthConfig = (type) => ({ min: /^mt$/.test(type) ? 8 : 6, max: 25 });
+export const getPasswordLengthConfig = type => ({ min: /^mt$/.test(type) ? 8 : 6, max: 25 });

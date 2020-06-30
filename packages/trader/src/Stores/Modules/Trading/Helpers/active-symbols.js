@@ -5,13 +5,13 @@ import { redirectToLogin } from '_common/base/login';
 import { LocalStore } from '_common/storage';
 import { WS } from 'Services/ws-methods';
 
-export const showUnavailableLocationError = flow(function* (showError) {
+export const showUnavailableLocationError = flow(function*(showError) {
     const website_status = yield WS.wait('website_status');
     const residence_list = yield WS.residenceList();
 
     const clients_country_code = website_status.website_status.clients_country;
     const clients_country_text = (
-        residence_list.residence_list.find((obj_country) => obj_country.value === clients_country_code) || {}
+        residence_list.residence_list.find(obj_country => obj_country.value === clients_country_code) || {}
     ).text;
 
     showError(
@@ -29,8 +29,8 @@ export const showUnavailableLocationError = flow(function* (showError) {
 
 export const isMarketClosed = (active_symbols = [], symbol) => {
     if (!active_symbols.length) return false;
-    return active_symbols.filter((x) => x.symbol === symbol)[0]
-        ? !active_symbols.filter((symbol_info) => symbol_info.symbol === symbol)[0].exchange_is_open
+    return active_symbols.filter(x => x.symbol === symbol)[0]
+        ? !active_symbols.filter(symbol_info => symbol_info.symbol === symbol)[0].exchange_is_open
         : false;
 };
 
@@ -39,17 +39,17 @@ export const pickDefaultSymbol = (active_symbols = []) => {
     return getFavoriteOpenSymbol(active_symbols) || getDefaultOpenSymbol(active_symbols);
 };
 
-const getFavoriteOpenSymbol = (active_symbols) => {
+const getFavoriteOpenSymbol = active_symbols => {
     try {
         const chart_favorites = LocalStore.get('cq-favorites');
         if (!chart_favorites) return undefined;
         const client_favorite_markets = JSON.parse(chart_favorites)['chartTitle&Comparison'];
 
-        const client_favorite_list = client_favorite_markets.map((client_fav_symbol) =>
-            active_symbols.find((symbol_info) => symbol_info.symbol === client_fav_symbol)
+        const client_favorite_list = client_favorite_markets.map(client_fav_symbol =>
+            active_symbols.find(symbol_info => symbol_info.symbol === client_fav_symbol)
         );
         if (client_favorite_list) {
-            const client_first_open_symbol = client_favorite_list.filter((symbol) => symbol).find(isSymbolOpen);
+            const client_first_open_symbol = client_favorite_list.filter(symbol => symbol).find(isSymbolOpen);
             if (client_first_open_symbol) return client_first_open_symbol.symbol;
         }
         return undefined;
@@ -58,26 +58,26 @@ const getFavoriteOpenSymbol = (active_symbols) => {
     }
 };
 
-const getDefaultOpenSymbol = (active_symbols) => {
+const getDefaultOpenSymbol = active_symbols => {
     const default_open_symbol =
         findSymbol(active_symbols, '1HZ100V') ||
         findFirstSymbol(active_symbols, /random_index/) ||
         findFirstSymbol(active_symbols, /major_pairs/);
     if (default_open_symbol) return default_open_symbol.symbol;
-    return active_symbols.find((symbol_info) => symbol_info.submarket === 'major_pairs').symbol;
+    return active_symbols.find(symbol_info => symbol_info.submarket === 'major_pairs').symbol;
 };
 
 const findSymbol = (active_symbols, symbol) =>
-    active_symbols.find((symbol_info) => symbol_info.symbol === symbol && isSymbolOpen(symbol_info));
+    active_symbols.find(symbol_info => symbol_info.symbol === symbol && isSymbolOpen(symbol_info));
 
 const findFirstSymbol = (active_symbols, pattern) =>
-    active_symbols.find((symbol_info) => pattern.test(symbol_info.submarket) && isSymbolOpen(symbol_info));
+    active_symbols.find(symbol_info => pattern.test(symbol_info.submarket) && isSymbolOpen(symbol_info));
 
-const isSymbolOpen = (symbol) => symbol.exchange_is_open === 1;
+const isSymbolOpen = symbol => symbol.exchange_is_open === 1;
 
 export const getSymbolDisplayName = (active_symbols = [], symbol) =>
     (
-        active_symbols.find((symbol_info) => symbol_info.symbol.toUpperCase() === symbol.toUpperCase()) || {
+        active_symbols.find(symbol_info => symbol_info.symbol.toUpperCase() === symbol.toUpperCase()) || {
             display_name: '',
         }
     ).display_name;

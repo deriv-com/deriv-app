@@ -30,7 +30,7 @@ class AddCryptoCurrency extends React.Component {
     };
 
     static getDerivedStateFromProps(props) {
-        const fiat = props.legal_allowed_currencies.filter((currency) => currency.type === 'fiat');
+        const fiat = props.legal_allowed_currencies.filter(currency => currency.type === 'fiat');
         return {
             available_fiat_currencies: fiat,
         };
@@ -41,12 +41,12 @@ class AddCryptoCurrency extends React.Component {
     }
 
     get crypto_currencies() {
-        return this.props.legal_allowed_currencies.filter((currency) => currency.type === 'crypto');
+        return this.props.legal_allowed_currencies.filter(currency => currency.type === 'crypto');
     }
 
-    canAddCrypto = (currency) => {
+    canAddCrypto = currency => {
         // check if the cryptocurrency has not been created
-        return this.props.available_crypto_currencies.map((e) => e.value).indexOf(currency.value) === -1;
+        return this.props.available_crypto_currencies.map(e => e.value).indexOf(currency.value) === -1;
     };
 
     render() {
@@ -81,7 +81,7 @@ class AddCryptoCurrency extends React.Component {
                                 touched={touched.currency}
                                 is_title_enabled={this.can_add_fiat}
                             >
-                                {this.crypto_currencies.map((currency) => (
+                                {this.crypto_currencies.map(currency => (
                                     <Field
                                         key={currency.value}
                                         component={RadioButton}
@@ -99,7 +99,7 @@ class AddCryptoCurrency extends React.Component {
                                 label={localize('Cryptocurrencies')}
                                 is_title_enabled={this.can_add_fiat}
                             >
-                                {this.crypto_currencies.map((currency) => (
+                                {this.crypto_currencies.map(currency => (
                                     <Field
                                         key={currency.value}
                                         component={RadioButton}
@@ -123,7 +123,7 @@ class AddCryptoCurrency extends React.Component {
                                     touched={touched.currency}
                                     is_title_enabled={this.can_add_fiat}
                                 >
-                                    {this.state.available_fiat_currencies.map((currency) => (
+                                    {this.state.available_fiat_currencies.map(currency => (
                                         <Field
                                             key={currency.value}
                                             component={RadioButton}

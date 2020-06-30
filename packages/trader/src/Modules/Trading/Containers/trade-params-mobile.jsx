@@ -18,7 +18,7 @@ const DEFAULT_DURATION = Object.freeze({
     d: 1,
 });
 
-const makeGetDefaultDuration = (trade_duration, trade_duration_unit) => (duration_unit) =>
+const makeGetDefaultDuration = (trade_duration, trade_duration_unit) => duration_unit =>
     trade_duration_unit === duration_unit ? trade_duration : DEFAULT_DURATION[duration_unit];
 
 class TradeParamsModal extends React.Component {
@@ -48,7 +48,7 @@ class TradeParamsModal extends React.Component {
     }
 
     // Fix to prevent iOS from zooming in erratically on quick taps
-    preventIOSZoom = (event) => {
+    preventIOSZoom = event => {
         if (event.touches.length > 1) {
             event.preventDefault();
             event.stopPropagation();
@@ -56,7 +56,7 @@ class TradeParamsModal extends React.Component {
     };
 
     componentDidMount() {
-        document.addEventListener('touchstart', (event) => this.preventIOSZoom(event), { passive: false });
+        document.addEventListener('touchstart', event => this.preventIOSZoom(event), { passive: false });
     }
 
     componentDidUpdate(prev_props) {
@@ -68,14 +68,14 @@ class TradeParamsModal extends React.Component {
     }
 
     componentWillUnmount() {
-        document.removeEventListener('touchstart', (event) => this.preventIOSZoom(event));
+        document.removeEventListener('touchstart', event => this.preventIOSZoom(event));
     }
 
-    setTradeParamTabIdx = (trade_param_tab_idx) => this.setState({ trade_param_tab_idx });
+    setTradeParamTabIdx = trade_param_tab_idx => this.setState({ trade_param_tab_idx });
 
-    setDurationTabIdx = (duration_tab_idx) => this.setState({ duration_tab_idx });
+    setDurationTabIdx = duration_tab_idx => this.setState({ duration_tab_idx });
 
-    setAmountTabIdx = (amount_tab_idx) => this.setState({ amount_tab_idx });
+    setAmountTabIdx = amount_tab_idx => this.setState({ amount_tab_idx });
 
     setSelectedAmount = (basis, selected_basis_value) => this.setState({ [`${basis}_value`]: selected_basis_value });
 
@@ -87,14 +87,14 @@ class TradeParamsModal extends React.Component {
         });
     };
 
-    setAmountError = (has_error) => {
+    setAmountError = has_error => {
         this.setState({ has_amount_error: has_error });
     };
-    setDurationError = (has_error) => {
+    setDurationError = has_error => {
         this.setState({ has_duration_error: has_error });
     };
 
-    isVisible = (component_key) => this.props.form_components.includes(component_key);
+    isVisible = component_key => this.props.form_components.includes(component_key);
 
     render() {
         const { currency, duration_units_list } = this.props;
@@ -200,20 +200,19 @@ const TradeParamsMobile = ({
     basis,
 }) => {
     const getDurationText = () => {
-        const duration = duration_units_list.find((d) => d.value === duration_unit);
-        return `${duration_value} ${
-            duration && (duration_value > 1 ? localize(duration.text) : localize(duration.text.slice(0, -1)))
-        }`;
+        const duration = duration_units_list.find(d => d.value === duration_unit);
+        return `${duration_value} ${duration &&
+            (duration_value > 1 ? localize(duration.text) : localize(duration.text.slice(0, -1)))}`;
     };
 
     const getAmountText = () => {
         const has_selected_tab_idx = typeof amount_tab_idx !== 'undefined';
-        const active_index = has_selected_tab_idx ? amount_tab_idx : basis_list.findIndex((b) => b.value === basis);
+        const active_index = has_selected_tab_idx ? amount_tab_idx : basis_list.findIndex(b => b.value === basis);
 
         return <Money currency={currency} amount={active_index === 1 ? payout_value : stake_value} />;
     };
 
-    const getHeaderContent = (tab_key) => {
+    const getHeaderContent = tab_key => {
         switch (tab_key) {
             case 'duration':
                 return (

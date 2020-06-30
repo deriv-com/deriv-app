@@ -13,7 +13,12 @@ describe('<ToggleButtonGroup />', () => {
             </ToggleButtonGroup>
         );
 
-        expect(wrapper.find('div').childAt(0).type()).to.equal(ToggleButton);
+        expect(
+            wrapper
+                .find('div')
+                .childAt(0)
+                .type()
+        ).to.equal(ToggleButton);
     });
 
     describe('prop: onChange', () => {
@@ -26,7 +31,10 @@ describe('<ToggleButtonGroup />', () => {
                 </ToggleButtonGroup>
             );
 
-            wrapper.find(ToggleButton).at(0).simulate('click');
+            wrapper
+                .find(ToggleButton)
+                .at(0)
+                .simulate('click');
             expect(callback.callCount).to.equal(1);
         });
 
@@ -40,7 +48,10 @@ describe('<ToggleButtonGroup />', () => {
                     </ToggleButtonGroup>
                 );
 
-                wrapper.find(ToggleButton).at(0).simulate('click');
+                wrapper
+                    .find(ToggleButton)
+                    .at(0)
+                    .simulate('click');
                 expect(callback.callCount).to.equal(1);
                 expect(callback.args[0][1]).to.equal('test-one');
             });
@@ -53,7 +64,10 @@ describe('<ToggleButtonGroup />', () => {
                     </ToggleButtonGroup>
                 );
 
-                wrapper.find(ToggleButton).at(0).simulate('click');
+                wrapper
+                    .find(ToggleButton)
+                    .at(0)
+                    .simulate('click');
                 expect(callback.callCount).to.equal(1);
                 expect(callback.args[0][1]).to.equal(null);
             });
@@ -69,7 +83,10 @@ describe('<ToggleButtonGroup />', () => {
                     </ToggleButtonGroup>
                 );
 
-                wrapper.find(ToggleButton).at(0).simulate('click');
+                wrapper
+                    .find(ToggleButton)
+                    .at(0)
+                    .simulate('click');
                 expect(callback.callCount).to.equal(1);
                 expect(callback.args[0][1].length).to.equal(1);
                 expect(callback.args[0][1].slice(-1)).to.eql(['test-one']);
@@ -83,7 +100,10 @@ describe('<ToggleButtonGroup />', () => {
                     </ToggleButtonGroup>
                 );
 
-                wrapper.find(ToggleButton).at(0).simulate('click');
+                wrapper
+                    .find(ToggleButton)
+                    .at(0)
+                    .simulate('click');
                 expect(callback.callCount).to.equal(1);
                 expect(callback.args[0][1]).to.be.an('array');
                 expect(callback.args[0][1].length).to.equal(0);

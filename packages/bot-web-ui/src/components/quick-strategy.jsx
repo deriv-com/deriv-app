@@ -123,7 +123,7 @@ const QuickStrategyForm = ({
                                             initial_errors[field.name] || (touched[field.name] && errors[field.name])
                                         }
                                         label={localize('Duration value')}
-                                        onChange={(e) => {
+                                        onChange={e => {
                                             handleChange(e);
                                             onChangeInputValue('input_duration_value', e);
                                         }}
@@ -152,7 +152,7 @@ const QuickStrategyForm = ({
                                             initial_errors[field.name] || (touched[field.name] && errors[field.name])
                                         }
                                         label={localize('Initial stake')}
-                                        onChange={(e) => {
+                                        onChange={e => {
                                             handleChange(e);
                                             onChangeInputValue('input_stake', e);
                                         }}
@@ -179,7 +179,7 @@ const QuickStrategyForm = ({
                                             initial_errors[field.name] || (touched[field.name] && errors[field.name])
                                         }
                                         label={localize('Loss threshold')}
-                                        onChange={(e) => {
+                                        onChange={e => {
                                             handleChange(e);
                                             onChangeInputValue('input_loss', e);
                                         }}
@@ -210,7 +210,7 @@ const QuickStrategyForm = ({
                                             initial_errors[field.name] || (touched[field.name] && errors[field.name])
                                         }
                                         label={getSizeText(active_index)}
-                                        onChange={(e) => {
+                                        onChange={e => {
                                             handleChange(e);
                                             onChangeInputValue('input_size', e);
                                         }}
@@ -237,7 +237,7 @@ const QuickStrategyForm = ({
                                             initial_errors[field.name] || (touched[field.name] && errors[field.name])
                                         }
                                         label={localize('Profit threshold')}
-                                        onChange={(e) => {
+                                        onChange={e => {
                                             handleChange(e);
                                             onChangeInputValue('input_profit', e);
                                         }}
@@ -305,7 +305,7 @@ const TradeTypeOption = ({ trade_type }) => (
     </div>
 );
 
-const QuickStrategy = (props) => {
+const QuickStrategy = props => {
     const { strategies } = config;
     const {
         is_strategy_modal_open,
@@ -328,12 +328,12 @@ const QuickStrategy = (props) => {
         toggleStrategyModal,
     } = props;
 
-    const symbol_dropdown_options = symbol_dropdown.map((symbol) => ({
+    const symbol_dropdown_options = symbol_dropdown.map(symbol => ({
         component: <MarketOption symbol={symbol} />,
         ...symbol,
     }));
 
-    const trade_type_dropdown_options = trade_type_dropdown.map((trade_type) => ({
+    const trade_type_dropdown_options = trade_type_dropdown.map(trade_type => ({
         component: <TradeTypeOption trade_type={trade_type} />,
         ...trade_type,
     }));
@@ -350,7 +350,7 @@ const QuickStrategy = (props) => {
                 <div className='modal__content'>
                     <div className='quick-strategy__tabs'>
                         <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
-                            {Object.keys(strategies).map((key) => {
+                            {Object.keys(strategies).map(key => {
                                 const { index, label, description } = strategies[key];
                                 return (
                                     <div key={index} label={label}>

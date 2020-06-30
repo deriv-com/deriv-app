@@ -14,10 +14,10 @@ class ExpansionPanel extends React.Component {
         this.setState({ is_open: !this.state.is_open });
     };
 
-    onArrayItemClick = (id) => {
-        this.setState((state) => {
+    onArrayItemClick = id => {
+        this.setState(state => {
             if (state.open_ids.includes(id)) {
-                const open_ids = state.open_ids.filter((open_id) => open_id !== id);
+                const open_ids = state.open_ids.filter(open_id => open_id !== id);
                 return {
                     ...state,
                     open_ids,
@@ -30,7 +30,7 @@ class ExpansionPanel extends React.Component {
         });
     };
 
-    renderArrayContent = (array) => {
+    renderArrayContent = array => {
         return (
             <div>
                 {array.map((item, index) => {

@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 import { proposalsReady, clearProposals } from './state/actions';
 import { tradeOptionToProposal, doUntilDone, getUUID } from '../utils/helpers';
 
-export default (Engine) =>
+export default Engine =>
     class Proposal extends Engine {
         makeProposals(tradeOption) {
             if (!this.isNewTradeOption(tradeOption)) {
@@ -20,7 +20,7 @@ export default (Engine) =>
                 throw Error(localize('Proposals are not ready'));
             }
 
-            this.data.get('proposals').forEach((proposal) => {
+            this.data.get('proposals').forEach(proposal => {
                 if (proposal.contractType === contractType) {
                     if (proposal.error) {
                         throw Error(proposal.error.error.error.message);
@@ -50,7 +50,7 @@ export default (Engine) =>
         }
 
         requestProposals() {
-            this.proposalTemplates.map((proposal) =>
+            this.proposalTemplates.map(proposal =>
                 doUntilDone(() =>
                     this.api
                         .subscribeToPriceForContractProposal({
@@ -61,7 +61,7 @@ export default (Engine) =>
                             },
                         })
                         // eslint-disable-next-line consistent-return
-                        .catch((e) => {
+                        .catch(e => {
                             if (e && e.name === 'RateLimit') {
                                 return Promise.reject(e);
                             }
@@ -87,7 +87,7 @@ export default (Engine) =>
         }
 
         observeProposals() {
-            this.listen('proposal', (r) => {
+            this.listen('proposal', r => {
                 const { proposal, passthrough } = r;
                 const id = passthrough.uuid;
 
@@ -113,7 +113,7 @@ export default (Engine) =>
             this.clearProposals();
 
             return Promise.all(
-                proposals.map((proposal) => {
+                proposals.map(proposal => {
                     const { uuid: id } = proposal;
                     const removeProposal = () => {
                         this.data = this.data.deleteIn(['forgetProposals', id]);
@@ -145,7 +145,7 @@ export default (Engine) =>
                 return true;
             }
 
-            const isNotEqual = (key) => this.tradeOption[key] !== tradeOption[key];
+            const isNotEqual = key => this.tradeOption[key] !== tradeOption[key];
 
             return (
                 isNotEqual('duration') ||

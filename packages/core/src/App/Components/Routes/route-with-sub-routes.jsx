@@ -8,8 +8,8 @@ import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
 import { default_title } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
 
-const RouteWithSubRoutes = (route) => {
-    const renderFactory = (props) => {
+const RouteWithSubRoutes = route => {
+    const renderFactory = props => {
         let result = null;
         if (route.component === Redirect) {
             let to = route.to;
@@ -23,7 +23,7 @@ const RouteWithSubRoutes = (route) => {
         } else if (route.is_authenticated && !route.is_logged_in) {
             result = <LoginPrompt onLogin={redirectToLogin} onSignup={redirectToSignUp} page_title={route.title} />;
         } else {
-            const default_subroute = route.routes ? route.routes.find((r) => r.default) : {};
+            const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !ObjectUtils.isEmptyObject(default_subroute);
             const pathname = removeBranchName(location.pathname);
             result = (

@@ -9,12 +9,12 @@ import * as ICONS from './icons';
 
 const is_firefox = navigator.userAgent.search('Firefox') > 0;
 
-const RawMarkerMaker = (draw_callback) => {
+const RawMarkerMaker = draw_callback => {
     const Marker = ({ epoch_array, price_array, ...rest }) => (
         <RawMarker
             epoch_array={epoch_array}
             price_array={price_array}
-            draw_callback={(args) => draw_callback({ ...args, ...rest })}
+            draw_callback={args => draw_callback({ ...args, ...rest })}
         />
     );
     return Marker;
@@ -45,7 +45,7 @@ function get_color({ status, profit, is_dark_theme }) {
     return color;
 }
 
-const calc_scale = (zoom) => {
+const calc_scale = zoom => {
     return zoom ? Math.max(Math.min(Math.sqrt(zoom / 18), 1.2), 0.8) : 1;
 };
 
@@ -240,8 +240,8 @@ const TickContract = RawMarkerMaker(
         // ticks for last contract
         if (is_last_contract && granularity === 0 && !is_sold) {
             ticks
-                .filter((tick) => tick.visible)
-                .forEach((tick) => {
+                .filter(tick => tick.visible)
+                .forEach(tick => {
                     const clr = tick === exit ? color : get_color({ status: 'fg', is_dark_theme });
                     ctx.fillStyle = clr + opacity;
                     ctx.beginPath();
@@ -252,7 +252,7 @@ const TickContract = RawMarkerMaker(
         }
         // entry & expiry markers
         if (granularity === 0) {
-            [entry, is_expired ? exit : null].forEach((tick) => {
+            [entry, is_expired ? exit : null].forEach(tick => {
                 if (tick && tick.visible) {
                     ctx.strokeStyle = color + opacity;
                     ctx.setLineDash([2, 2]);
@@ -413,7 +413,7 @@ const NonTickContract = RawMarkerMaker(
         }
 
         // entry & expiry tick markers
-        [entry, exit].forEach((tick) => {
+        [entry, exit].forEach(tick => {
             if (tick && tick.visible) {
                 ctx.strokeStyle = color + opacity;
                 ctx.setLineDash([2, 2]);

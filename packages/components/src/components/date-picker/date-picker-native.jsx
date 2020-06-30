@@ -24,14 +24,14 @@ const Native = ({
         if (input_ref.current) input_ref.current.value = value;
     }, [value]);
 
-    const handleFocus = (e) => {
+    const handleFocus = e => {
         setIsFocused(true);
         if (typeof onFocus === 'function') {
             onFocus(e);
         }
     };
 
-    const handleBlur = (e) => {
+    const handleBlur = e => {
         setIsFocused(false);
         if (typeof onBlur === 'function') {
             onBlur(e);
@@ -70,7 +70,7 @@ const Native = ({
                 required
                 onBlur={handleBlur}
                 onFocus={handleFocus}
-                onChange={(e) => {
+                onChange={e => {
                     onSelect(e.target.value);
                 }}
             />

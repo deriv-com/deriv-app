@@ -12,16 +12,16 @@ import {
     Button,
     DatePicker,
 } from '@deriv/components';
-import { connect } from 'Stores/connect';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { toMoment, epochToMoment } from '@deriv/shared/utils/date';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { getDerivComLink } from '@deriv/shared/utils/url';
 import { localize, Localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
-import Article from './article';
 import LoadErrorMessage from 'Components/load-error-message';
+import Article from './article.jsx';
 
 class SelfExclusion extends React.Component {
     exclusion_data = {
@@ -137,7 +137,7 @@ class SelfExclusion extends React.Component {
         const has_need_logout = this.state.changed_attributes.some((attr) => need_logout_exclusions.includes(attr));
 
         const makeRequest = () =>
-            new Promise(async (resolve) => {
+            new Promise((resolve) => {
                 const request = {
                     set_self_exclusion: 1,
                 };
@@ -146,8 +146,7 @@ class SelfExclusion extends React.Component {
                     request[attr] = values[attr];
                 });
 
-                const set_self_exclusion_response = await WS.authorized.setSelfExclusion(request);
-                resolve(set_self_exclusion_response);
+                WS.authorized.setSelfExclusion(request).then((response) => resolve(response));
             });
 
         if (has_need_logout) {
@@ -191,7 +190,7 @@ class SelfExclusion extends React.Component {
 
     objectValuesToString = (object) => {
         Object.keys(object).forEach((item) => {
-            object[item] = '' + object[item]; // instead of toString, '' + offer more raw speed
+            object[item] = `${object[item]}`;
         });
 
         return object;

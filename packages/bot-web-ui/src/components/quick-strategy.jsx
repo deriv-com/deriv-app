@@ -261,7 +261,7 @@ const QuickStrategyForm = ({
                             <Button.Group>
                                 <Button
                                     id='db-quick-strategy__button-edit'
-                                    text={localize('Create & Edit')}
+                                    text={localize('Create and edit')}
                                     is_disabled={!is_submit_enabled}
                                     secondary
                                     large

@@ -271,7 +271,7 @@ class AccountWizard extends React.Component {
                             <div className='account-wizard__set-currency'>
                                 {!this.props.has_currency && (
                                     <p>
-                                        <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
+                                        <Localize i18n_default_text='You have an account without an assigned currency. Please choose a currency to trade with this account.' />
                                     </p>
                                 )}
                                 <h2>

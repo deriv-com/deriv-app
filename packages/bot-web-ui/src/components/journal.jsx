@@ -106,6 +106,7 @@ const FilterDialog = ({
 }) => {
     const wrapper_ref = React.useRef();
 
+    // TODO: Use onclickoutside hook from components package instead
     React.useEffect(() => {
         const clickOutsideListener = event => {
             const path = event.path ?? event.composedPath?.();

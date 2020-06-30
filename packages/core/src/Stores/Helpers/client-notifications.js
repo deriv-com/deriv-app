@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from '@deriv/components';
 import { urlFor, getDerivComLink } from '@deriv/shared/utils/url';
 import routes from '@deriv/shared/utils/routes';
 import { isMobile } from '@deriv/shared/utils/screen';
@@ -9,6 +8,7 @@ import { formatDate } from '@deriv/shared/utils/date';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
+import { website_domain } from 'App/Constants/app-config';
 import { LocalStore, State } from '_common/storage';
 
 // TODO: Update links to app_2 links when components are done.
@@ -33,14 +33,13 @@ export const clientNotifications = (ui = {}) => {
             header: localize('Self-exclusion detected'),
             message: (
                 <Localize
-                    i18n_default_text='You have opted to be excluded from Binary.com until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
+                    i18n_default_text='You have opted to be excluded from {{website_domain}} until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
                     values={{
+                        website_domain,
                         exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
                         interpolation: { escapeValue: false },
                     }}
-                    components={[
-                        <a key={0} className='link' target='_blank' href={urlFor('contact', { legacy: true })} />,
-                    ]}
+                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
                 />
             ),
             type: 'danger',
@@ -60,6 +59,14 @@ export const clientNotifications = (ui = {}) => {
             header: localize('Cashier disabled'),
             message: localize(
                 'Deposits and withdrawals have been disabled on your account. Please check your email for more details.'
+            ),
+            type: 'warning',
+        },
+        withdrawal_locked_review: {
+            key: 'withdrawal_locked_review',
+            header: localize('Withdrawal disabled'),
+            message: localize(
+                'Withdrawals have been disabled on your account. Please wait until your uploaded documents are verified.'
             ),
             type: 'warning',
         },
@@ -91,20 +98,18 @@ export const clientNotifications = (ui = {}) => {
             type: 'warning',
         },
         unwelcome: {
+            ...(isMobile() && {
+                action: {
+                    text: localize('Contact us'),
+                    onClick: () => {
+                        window.open(getDerivComLink('contact-us'));
+                    },
+                },
+            }),
             key: 'unwelcome',
             header: localize('Trading and deposits disabled'),
             message: isMobile() ? (
-                <Localize
-                    i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact customer support for assistance.<0/>'
-                    components={[
-                        <React.Fragment key={0}>
-                            <br />
-                            <a className='link link--right' target='_blank' href={getDerivComLink('contact-us')}>
-                                <Button secondary medium text={localize('Contact Us')} />
-                            </a>
-                        </React.Fragment>,
-                    ]}
-                />
+                <Localize i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact customer support for assistance.' />
             ) : (
                 <Localize
                     i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
@@ -114,20 +119,18 @@ export const clientNotifications = (ui = {}) => {
             type: 'danger',
         },
         mf_retail: {
+            ...(isMobile() && {
+                action: {
+                    text: localize('Contact us'),
+                    onClick: () => {
+                        window.open(getDerivComLink('contact-us'));
+                    },
+                },
+            }),
             key: 'mf_retail',
             header: localize('Digital options trading disabled'),
             message: isMobile() ? (
-                <Localize
-                    i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact customer support for assistance.<0/>'
-                    components={[
-                        <React.Fragment key={0}>
-                            <br />
-                            <a className='link link--right' target='_blank' href={getDerivComLink('contact-us')}>
-                                <Button secondary medium text={localize('Contact Us')} />
-                            </a>
-                        </React.Fragment>,
-                    ]}
-                />
+                <Localize i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact customer support for assistance.' />
             ) : (
                 <Localize
                     i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
@@ -351,11 +354,14 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     const {
-        authentication: { document, identity, needs_verification, prompt_client_to_authenticate },
+        authentication: { document, identity, needs_verification },
+        prompt_client_to_authenticate,
+        risk_classification,
         status,
     } = account_status;
 
     const {
+        authenticated,
         cashier_locked,
         withdrawal_locked,
         mt5_withdrawal_locked,
@@ -386,7 +392,19 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     if (needs_poa) addNotificationMessage(clientNotifications().needs_poa);
     if (needs_poi) addNotificationMessage(clientNotifications().needs_poi);
     if (cashier_locked) addNotificationMessage(clientNotifications().cashier_locked);
-    if (withdrawal_locked) addNotificationMessage(clientNotifications().withdrawal_locked);
+    if (withdrawal_locked) {
+        // if client is withdrawal locked but it's because they need to authenticate
+        // and they have submitted verification documents,
+        // we should wait for review of documents to be done and show a different message
+        const is_high_risk = risk_classification === 'high';
+        const should_authenticate = !authenticated || prompt_client_to_authenticate;
+        const doc_is_under_review = document.status === 'pending';
+        if (is_high_risk && should_authenticate && doc_is_under_review) {
+            addNotificationMessage(clientNotifications().withdrawal_locked_review);
+        } else {
+            addNotificationMessage(clientNotifications().withdrawal_locked);
+        }
+    }
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
     if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
     if (unwelcome) addNotificationMessage(clientNotifications().unwelcome);

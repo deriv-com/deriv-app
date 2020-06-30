@@ -78,8 +78,8 @@ const PositionsDrawerCard = ({
             {is_unsupported ? (
                 <div
                     className={classNames('positions-drawer-card', {
-                        'positions-drawer-card--green': profit_loss > 0 && !result,
-                        'positions-drawer-card--red': profit_loss < 0 && !result,
+                        'positions-drawer-card--green': !is_multiplier && profit_loss > 0 && !result,
+                        'positions-drawer-card--red': !is_multiplier && profit_loss < 0 && !result,
                     })}
                     onClick={() => toggleUnsupportedContractModal(true)}
                 >
@@ -88,8 +88,8 @@ const PositionsDrawerCard = ({
             ) : (
                 <NavLink
                     className={classNames('positions-drawer-card', {
-                        'positions-drawer-card--green': profit_loss > 0 && !result,
-                        'positions-drawer-card--red': profit_loss < 0 && !result,
+                        'positions-drawer-card--green': !is_multiplier && profit_loss > 0 && !result,
+                        'positions-drawer-card--red': !is_multiplier && profit_loss < 0 && !result,
                     })}
                     to={{
                         pathname: `/contract/${contract_info.contract_id}`,

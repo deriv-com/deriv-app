@@ -34,7 +34,7 @@
         "@deriv/shared": "^1.0.0",
         "classnames": "^2.2.6",
         "crc-32": "^1.2.0",
-        "formik": "^1.5.8",
+        "formik": "^2.1.4",
         "i18next": "^18.0.0",
         "prop-types": "^15.7.2",
         "react": "^16.8.6",

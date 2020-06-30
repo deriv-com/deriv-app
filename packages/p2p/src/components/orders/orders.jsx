@@ -10,9 +10,13 @@ import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
 const Orders = ({ params, navigate, chat_info }) => {
-    const { orders, order_id, setOrderId, updateP2pNotifications, getLocalStorageSettings } = React.useContext(
-        Dp2pContext
-    );
+    const {
+        getLocalStorageSettingsForLoginId,
+        orders,
+        order_id,
+        setOrderId,
+        updateP2pNotifications,
+    } = React.useContext(Dp2pContext);
     const [order_details, setDetails] = React.useState(null);
     const [nav, setNav] = React.useState(params?.nav);
     const is_mounted = React.useRef(false);
@@ -28,7 +32,7 @@ const Orders = ({ params, navigate, chat_info }) => {
         setOrderId(input_order.id);
         setDetails(input_order);
 
-        const { notifications } = getLocalStorageSettings();
+        const { notifications } = getLocalStorageSettingsForLoginId();
 
         if (notifications.length) {
             const notification = notifications.find(n => n.order_id === input_order.id);

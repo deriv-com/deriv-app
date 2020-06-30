@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import P2P from '@deriv/p2p';
 import { getLanguage } from '@deriv/translations';
+import routes from '@deriv/shared/utils/routes';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';
@@ -43,17 +44,27 @@ class P2PCashier extends React.Component {
         }
     }
     render() {
-        const { currency, local_currency_config, is_virtual, residence, setNotificationCount } = this.props;
+        const {
+            currency,
+            local_currency_config,
+            loginid,
+            is_virtual,
+            residence,
+            setNotificationCount,
+            location,
+        } = this.props;
         const { order_id } = this.state;
         return (
             <P2P
+                should_show_verification={/verification/.test(location.hash)}
                 websocket_api={WS}
                 lang={getLanguage()}
-                client={{ currency, local_currency_config, is_virtual, residence }}
+                client={{ currency, local_currency_config, is_virtual, residence, loginid }}
                 server_time={ServerTime}
                 setNotificationCount={setNotificationCount}
                 order_id={order_id}
                 setOrderId={this.setQueryOrder}
+                poi_url={routes.proof_of_identity}
             />
         );
     }
@@ -62,6 +73,7 @@ class P2PCashier extends React.Component {
 P2PCashier.propTypes = {
     currency: PropTypes.string,
     local_currency_config: PropTypes.object,
+    loginid: PropTypes.string,
     is_virtual: PropTypes.bool,
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
@@ -71,6 +83,7 @@ export default withRouter(
     connect(({ client, modules }) => ({
         currency: client.currency,
         local_currency_config: client.local_currency_config,
+        loginid: client.loginid,
         is_virtual: client.is_virtual,
         residence: client.residence,
         setNotificationCount: modules.cashier.setNotificationCount,

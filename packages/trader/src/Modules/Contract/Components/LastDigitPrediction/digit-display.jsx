@@ -35,8 +35,7 @@ const DigitDisplay = ({
         if (onLastDigitSpot) {
             onLastDigitSpot({ spot, is_lost, is_selected_winning, is_latest, is_won });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [latest_digit, spot, barrier, value]);
+    }, [latest_digit, spot, barrier, value, is_selected_winning, is_latest, is_won, is_lost, onLastDigitSpot]);
 
     const is_digit_selectable = isMobile() && typeof onSelect === 'function' && !status;
     const is_digit_selected = isMobile() && value === selected_digit && !status;

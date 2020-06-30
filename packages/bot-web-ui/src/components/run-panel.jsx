@@ -1,4 +1,4 @@
-import { Money, Button, Drawer, Tabs, Popover } from '@deriv/components';
+import { Money, Button, Drawer, Tabs, Popover, Icon } from '@deriv/components';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
@@ -7,6 +7,7 @@ import Dialog from './dialog.jsx';
 import Journal from './journal.jsx';
 import Summary from './summary.jsx';
 import Transactions from './transactions.jsx';
+import TradeAnimation from './trade-animation.jsx';
 import { popover_zindex } from '../constants/z-indexes';
 import { connect } from '../stores/connect';
 import '../assets/sass/run-panel.scss';

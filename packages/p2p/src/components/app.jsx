@@ -33,9 +33,10 @@ class App extends React.Component {
         WebsocketInit(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
         ServerTime.init(this.props.server_time);
 
-        this.ws_subscriptions = [];
+        this.ws_subscriptions = {};
         this.list_item_limit = 20;
         this.state = {
+            poi_url: this.props.poi_url,
             active_index: 0,
             loginid: this.props.client.loginid,
             order_offset: 0,
@@ -55,26 +56,32 @@ class App extends React.Component {
 
     componentDidMount() {
         this.is_mounted = true;
-        this.ws_subscriptions.push(
-            ...[
-                subscribeWS(
-                    {
-                        p2p_advertiser_info: 1,
-                        subscribe: 1,
-                    },
-                    [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
-                ),
-                subscribeWS(
-                    {
-                        p2p_order_list: 1,
-                        subscribe: 1,
-                        offset: 0,
-                        limit: this.list_item_limit,
-                    },
-                    [this.setP2pOrderList]
-                ),
-            ]
-        );
+
+        // force safari refresh on back/forward
+        window.onpageshow = function(event) {
+            if (event.persisted) {
+                window.location.reload(true);
+            }
+        };
+
+        this.ws_subscriptions = {
+            advertiser_subscription: subscribeWS(
+                {
+                    p2p_advertiser_info: 1,
+                    subscribe: 1,
+                },
+                [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
+            ),
+            order_list_subscription: subscribeWS(
+                {
+                    p2p_order_list: 1,
+                    subscribe: 1,
+                    offset: 0,
+                    limit: this.list_item_limit,
+                },
+                [this.setP2pOrderList]
+            ),
+        };
     }
 
     componentDidUpdate(prevProps) {
@@ -85,7 +92,13 @@ class App extends React.Component {
 
     componentWillUnmount() {
         this.is_mounted = false;
-        this.ws_subscriptions.forEach(subscription => subscription.unsubscribe());
+        Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
+    }
+
+    createAdvertiser(name) {
+        this.ws_subscriptions.advertiser_subscription = subscribeWS({ p2p_advertiser_create: 1, name, subscribe: 1 }, [
+            this.setCreateAdvertiser,
+        ]);
     }
 
     redirectTo = (path_name, params = null) => {
@@ -104,6 +117,23 @@ class App extends React.Component {
         this.setState({ active_index: idx, parameters: null });
     };
 
+    setCreateAdvertiser = response => {
+        const { p2p_advertiser_create } = response;
+
+        if (response.error) {
+            this.setState({ nickname_error: response.error.message });
+        } else {
+            this.setState({
+                advertiser_id: p2p_advertiser_create.id,
+                is_advertiser: !!p2p_advertiser_create.is_approved,
+                nickname: p2p_advertiser_create.name,
+                nickname_error: undefined,
+            });
+            this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
+            this.toggleNicknamePopup();
+        }
+    };
+
     setIsAdvertiser = response => {
         const { p2p_advertiser_info } = response;
         if (!response.error) {
@@ -113,12 +143,14 @@ class App extends React.Component {
                 is_listed: p2p_advertiser_info.is_listed === 1,
                 nickname: p2p_advertiser_info.name,
             });
-        } else if (response.error.code === 'RestrictedCountry') {
-            this.setState({ is_restricted: true });
-        } else if (response.error.code === 'AdvertiserNotFound') {
-            this.setState({ is_advertiser: false });
         } else {
-            this.ws_subscriptions[0].unsubscribe();
+            this.ws_subscriptions.advertiser_subscription.unsubscribe();
+
+            if (response.error.code === 'RestrictedCountry') {
+                this.setState({ is_restricted: true });
+            } else if (response.error.code === 'AdvertiserNotFound') {
+                this.setState({ is_advertiser: false });
+            }
         }
 
         if (!this.state.is_advertiser) {
@@ -139,7 +171,7 @@ class App extends React.Component {
     setChatInfoUsingAdvertiserInfo = response => {
         const { p2p_advertiser_info } = response;
         if (response.error) {
-            this.ws_subscriptions[0].unsubscribe();
+            this.ws_subscriptions.advertiser_subscription.unsubscribe();
             return;
         }
 
@@ -227,7 +259,7 @@ class App extends React.Component {
 
     setP2pOrderList = order_response => {
         if (order_response.error) {
-            this.ws_subscriptions[1].unsubscribe();
+            this.ws_subscriptions.order_list_subscription.unsubscribe();
             return;
         }
         const { p2p_order_list } = order_response;
@@ -259,11 +291,19 @@ class App extends React.Component {
             active_index,
             order_offset,
             orders,
+            advertiser_id,
+            nickname,
+            is_advertiser,
+            is_listed,
             parameters,
             notification_count,
             order_table_type,
             chat_info,
             show_popup,
+            poi_url,
+            poi_status,
+            is_restricted,
+            nickname_error,
         } = this.state;
         const {
             className,
@@ -286,32 +326,35 @@ class App extends React.Component {
         return (
             <Dp2pProvider
                 value={{
-                    changeTab: this.handleTabClick,
+                    nickname,
                     order_table_type,
                     currency,
                     local_currency_config,
                     residence,
-                    advertiser_id: this.state.advertiser_id,
-                    is_advertiser: this.state.is_advertiser,
-                    is_listed: this.state.is_listed,
-                    setIsListed: is_listed => this.setState({ is_listed }),
-                    setIsAdvertiser: is_advertiser => this.setState({ is_advertiser }),
-                    nickname: this.state.nickname,
-                    setNickname: nickname => this.setState({ nickname }),
-                    setChatInfo: this.setChatInfo,
-                    is_restricted: this.state.is_restricted,
-                    email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
-                    list_item_limit: this.list_item_limit,
+                    advertiser_id,
+                    is_advertiser,
+                    is_restricted,
+                    is_listed,
                     order_offset,
                     orders,
-                    setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
-                    setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     order_id,
                     setOrderId,
+                    poi_url,
+                    poi_status,
+                    nickname_error,
+                    list_item_limit: this.list_item_limit,
+                    changeTab: this.handleTabClick,
+                    setIsListed: is_listed_result => this.setState({ is_listed: is_listed_result }),
+                    setIsAdvertiser: is_advertiser_result => this.setState({ is_advertiser: is_advertiser_result }),
+                    setNickname: nickname_result => this.setState({ nickname: nickname_result }),
+                    setChatInfo: this.setChatInfo,
+                    email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
+                    setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
+                    setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
-                    updateP2pNotifications: this.updateP2pNotifications.bind(this),
-                    getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId.bind(this),
-                    poi_status: this.state.poi_status,
+                    updateP2pNotifications: this.updateP2pNotifications,
+                    getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId,
+                    createAdvertiser: this.createAdvertiser.bind(this),
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
@@ -346,10 +389,7 @@ class App extends React.Component {
                     {show_popup && (
                         <div className='p2p-nickname__dialog'>
                             <Dialog is_visible={show_popup}>
-                                <NicknameForm
-                                    handleClose={this.onNicknamePopupClose}
-                                    handleConfirm={this.toggleNicknamePopup}
-                                />
+                                <NicknameForm handleClose={this.onNicknamePopupClose} />
                             </Dialog>
                         </div>
                     )}

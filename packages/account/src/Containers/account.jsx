@@ -113,7 +113,6 @@ class Account extends React.Component {
             >
                 <div className='account'>
                     <PageOverlay
-                        has_side_note
                         header={isMobile() ? selected_route.title : localize('Settings')}
                         onClickClose={this.onClickClose}
                     >

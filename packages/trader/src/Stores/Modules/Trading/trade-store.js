@@ -278,15 +278,12 @@ export default class TradeStore extends BaseStore {
         if (this.symbol && this.is_symbol_in_active_symbols) {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
-                this.processNewValuesAsync(
-                    {
-                        ...ContractType.getContractValues(this),
-                        ...ContractType.getContractCategories(),
-                    },
-                    false,
-                    {},
-                    false
-                );
+                const contract_categories = ContractType.getContractCategories();
+                this.processNewValuesAsync({
+                    ...contract_categories,
+                    ...ContractType.getContractType(contract_categories.contract_types_list, this.contract_type),
+                });
+                this.processNewValuesAsync(ContractType.getContractValues(this));
             });
         }
     }
@@ -505,7 +502,6 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onPurchase(proposal_id, price, type) {
         if (!this.is_purchase_enabled) return;
-        performance.mark('purchase-started');
         if (proposal_id) {
             this.is_purchase_enabled = false;
             const is_tick_contract = this.duration_unit === 't';
@@ -556,7 +552,6 @@ export default class TradeStore extends BaseStore {
                             this.debouncedProposal();
                             this.clearLimitOrderBarriers();
                             this.pushPurchaseDataToGtm(contract_data);
-                            performance.mark('purchase-ended');
                             return;
                         }
                     } else if (response.error) {
@@ -846,12 +841,21 @@ export default class TradeStore extends BaseStore {
             if (error_id) {
                 this.setValidationErrorMessages(error_id, [response.error.message]);
             }
+            // Commission for multipliers is normally set from proposal response.
+            // But when we change the multiplier and if it is invalid, we don't get the proposal response to set the commission. We only get error message.
+            // This is a work around to set the commission from error message.
+            if (this.is_multiplier) {
+                const { message, details } = response.error;
+                const commission_match = (message || '').match(/\((\d+\.*\d*)\)/);
+                if (details.field === 'stop_loss' && commission_match && commission_match[1]) {
+                    this.commission = commission_match[1];
+                }
+            }
         } else {
             this.validateAllProperties();
         }
 
         this.is_purchase_enabled = true;
-        performance.mark('purchase-enabled');
     }
 
     @action.bound
@@ -903,21 +907,19 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    accountSwitcherListener() {
+    async accountSwitcherListener() {
         this.resetErrorServices();
-        // TODO: remove this, once multiplier is avaible for real accounts
-        if (this.is_multiplier && this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
-            this.processNewValuesAsync({ contract_type: 'rise_fall' }, false, {}, false);
-            if (!this.is_symbol_in_active_symbols) this.setActiveSymbols();
-        }
-        this.setContractTypes();
+        await this.setContractTypes();
 
-        return this.processNewValuesAsync(
-            { currency: this.root_store.client.currency || this.root_store.client.default_currency },
-            true,
-            { currency: this.currency },
-            false
-        );
+        runInAction(async () => {
+            this.processNewValuesAsync(
+                { currency: this.root_store.client.currency || this.root_store.client.default_currency },
+                true,
+                { currency: this.currency },
+                false
+            );
+        });
+        return Promise.resolve();
     }
 
     @action.bound
@@ -966,7 +968,6 @@ export default class TradeStore extends BaseStore {
             return;
         }
 
-        performance.mark('trade-engine-started');
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onLogout(this.logoutListener);
@@ -977,7 +978,6 @@ export default class TradeStore extends BaseStore {
         runInAction(async () => {
             this.is_trade_component_mounted = true;
             this.prepareTradeStore();
-            performance.mark('trade-engine-enabled');
         });
     }
 

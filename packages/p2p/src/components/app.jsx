@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { Tabs, Dialog } from '@deriv/components';
+import { Tabs, Modal, Loading } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
@@ -11,6 +11,8 @@ import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
 import NicknameForm from './nickname/nickname-form.jsx';
+import Download from './verification/download.jsx';
+import Verification from './verification/verification.jsx';
 import './app.scss';
 
 const allowed_currency = 'USD';
@@ -23,6 +25,8 @@ const path = {
 };
 
 class App extends React.Component {
+    is_mounted = false;
+
     constructor(props) {
         super(props);
 
@@ -30,10 +34,12 @@ class App extends React.Component {
         WebsocketInit(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
         ServerTime.init(this.props.server_time);
 
-        this.ws_subscriptions = [];
+        this.ws_subscriptions = {};
         this.list_item_limit = 20;
         this.state = {
+            poi_url: this.props.poi_url,
             active_index: 0,
+            loginid: this.props.client.loginid,
             order_offset: 0,
             orders: [],
             notification_count: 0,
@@ -46,30 +52,38 @@ class App extends React.Component {
                 user_id: '',
                 token: '',
             },
+            is_loading: true,
         };
     }
 
     componentDidMount() {
-        this.ws_subscriptions.push(
-            ...[
-                subscribeWS(
-                    {
-                        p2p_advertiser_info: 1,
-                        subscribe: 1,
-                    },
-                    [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
-                ),
-                subscribeWS(
-                    {
-                        p2p_order_list: 1,
-                        subscribe: 1,
-                        offset: 0,
-                        limit: this.list_item_limit,
-                    },
-                    [this.setP2pOrderList]
-                ),
-            ]
-        );
+        this.is_mounted = true;
+
+        // force safari refresh on back/forward
+        window.onpageshow = function(event) {
+            if (event.persisted) {
+                window.location.reload(true);
+            }
+        };
+
+        this.ws_subscriptions = {
+            advertiser_subscription: subscribeWS(
+                {
+                    p2p_advertiser_info: 1,
+                    subscribe: 1,
+                },
+                [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
+            ),
+            order_list_subscription: subscribeWS(
+                {
+                    p2p_order_list: 1,
+                    subscribe: 1,
+                    offset: 0,
+                    limit: this.list_item_limit,
+                },
+                [this.setP2pOrderList]
+            ),
+        };
     }
 
     componentDidUpdate(prevProps) {
@@ -79,7 +93,14 @@ class App extends React.Component {
     }
 
     componentWillUnmount() {
-        this.ws_subscriptions.forEach(subscription => subscription.unsubscribe());
+        this.is_mounted = false;
+        Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
+    }
+
+    createAdvertiser(name) {
+        this.ws_subscriptions.advertiser_subscription = subscribeWS({ p2p_advertiser_create: 1, name, subscribe: 1 }, [
+            this.setCreateAdvertiser,
+        ]);
     }
 
     redirectTo = (path_name, params = null) => {
@@ -98,27 +119,64 @@ class App extends React.Component {
         this.setState({ active_index: idx, parameters: null });
     };
 
+    setCreateAdvertiser = response => {
+        const { p2p_advertiser_create } = response;
+
+        if (response.error) {
+            this.setState({ nickname_error: response.error.message });
+        } else {
+            this.setState({
+                advertiser_id: p2p_advertiser_create.id,
+                is_advertiser: !!p2p_advertiser_create.is_approved,
+                nickname: p2p_advertiser_create.name,
+                nickname_error: undefined,
+            });
+            this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
+            this.toggleNicknamePopup();
+        }
+    };
+
     setIsAdvertiser = response => {
         const { p2p_advertiser_info } = response;
         if (!response.error) {
             this.setState({
                 advertiser_id: p2p_advertiser_info.id,
                 is_advertiser: !!p2p_advertiser_info.is_approved,
+                is_listed: p2p_advertiser_info.is_listed === 1,
                 nickname: p2p_advertiser_info.name,
             });
-        } else if (response.error.code === 'RestrictedCountry') {
-            this.setState({ is_restricted: true });
-        } else if (response.error.code === 'AdvertiserNotFound') {
-            this.setState({ is_advertiser: false });
         } else {
-            this.ws_subscriptions[0].unsubscribe();
+            this.ws_subscriptions.advertiser_subscription.unsubscribe();
+
+            if (response.error.code === 'RestrictedCountry') {
+                this.setState({ is_restricted: true });
+            } else if (response.error.code === 'AdvertiserNotFound') {
+                this.setState({ is_advertiser: false });
+            }
+        }
+
+        if (!this.state.is_advertiser) {
+            requestWS({ get_account_status: 1 }).then(account_response => {
+                if (this.is_mounted && !account_response.error) {
+                    const { get_account_status } = account_response;
+                    const { authentication } = get_account_status;
+                    const { identity } = authentication;
+
+                    this.setState({
+                        poi_status: identity.status,
+                        is_loading: false,
+                    });
+                }
+            });
+        } else {
+            this.setState({ is_loading: false });
         }
     };
 
     setChatInfoUsingAdvertiserInfo = response => {
         const { p2p_advertiser_info } = response;
         if (response.error) {
-            this.ws_subscriptions[0].unsubscribe();
+            this.ws_subscriptions.advertiser_subscription.unsubscribe();
             return;
         }
 
@@ -138,19 +196,20 @@ class App extends React.Component {
 
         if (!chat_info.token) {
             requestWS({ service_token: 1, service: 'sendbird' }).then(response => {
-                chat_info.token = response.service_token.token;
+                chat_info.token = response.service_token.sendbird.token;
             });
         }
 
         this.setState({ chat_info });
     };
 
-    getLocalStorageSettings = () => {
-        return JSON.parse(localStorage.getItem('dp2p_settings') || '{ "is_cached": false, "notifications": [] }');
-    };
+    getLocalStorageSettings = () => JSON.parse(localStorage.getItem('p2p_settings') || '{}');
+
+    getLocalStorageSettingsForLoginId = () =>
+        this.getLocalStorageSettings()[this.state.loginid] || { is_cached: false, notifications: [] };
 
     handleNotifications = (old_orders, new_orders) => {
-        const { is_cached, notifications } = this.getLocalStorageSettings();
+        const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
 
         new_orders.forEach(new_order => {
             const old_order = old_orders.find(o => o.id === new_order.id);
@@ -188,9 +247,14 @@ class App extends React.Component {
 
     updateP2pNotifications = notifications => {
         const notification_count = notifications.filter(notification => notification.is_seen === false).length;
-        const dp2p_settings = JSON.stringify({ is_cached: true, notifications });
+        const user_settings = this.getLocalStorageSettingsForLoginId();
+        user_settings.is_cached = true;
+        user_settings.notifications = notifications;
 
-        localStorage.setItem('dp2p_settings', dp2p_settings);
+        const p2p_settings = this.getLocalStorageSettings();
+        p2p_settings[this.state.loginid] = user_settings;
+
+        localStorage.setItem('p2p_settings', JSON.stringify(p2p_settings));
         this.setState({ notification_count });
 
         if (typeof this.props.setNotificationCount === 'function') {
@@ -200,7 +264,7 @@ class App extends React.Component {
 
     setP2pOrderList = order_response => {
         if (order_response.error) {
-            this.ws_subscriptions[1].unsubscribe();
+            this.ws_subscriptions.order_list_subscription.unsubscribe();
             return;
         }
         const { p2p_order_list } = order_response;
@@ -231,12 +295,18 @@ class App extends React.Component {
         const {
             active_index,
             order_offset,
+            advertiser_id,
             orders,
             parameters,
             notification_count,
             order_table_type,
             chat_info,
             show_popup,
+            is_loading,
+            poi_url,
+            poi_status,
+            is_restricted,
+            nickname_error,
         } = this.state;
         const {
             className,
@@ -244,6 +314,8 @@ class App extends React.Component {
             custom_strings,
             order_id,
             setOrderId,
+            should_show_verification,
+            is_mobile,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -258,62 +330,96 @@ class App extends React.Component {
         return (
             <Dp2pProvider
                 value={{
-                    changeTab: this.handleTabClick,
                     order_table_type,
                     currency,
                     local_currency_config,
                     residence,
-                    advertiser_id: this.state.advertiser_id,
+                    advertiser_id,
                     is_advertiser: this.state.is_advertiser,
+                    is_listed: this.state.is_listed,
+                    setIsListed: is_listed => this.setState({ is_listed }),
                     setIsAdvertiser: is_advertiser => this.setState({ is_advertiser }),
                     nickname: this.state.nickname,
                     setNickname: nickname => this.setState({ nickname }),
                     setChatInfo: this.setChatInfo,
-                    is_restricted: this.state.is_restricted,
+                    is_restricted,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,
                     order_offset,
                     orders,
-                    setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
-                    setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     order_id,
                     setOrderId,
+                    poi_url,
+                    poi_status,
+                    nickname_error,
+                    changeTab: this.handleTabClick,
+                    setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
+                    setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
-                    getLocalStorageSettings: this.getLocalStorageSettings.bind(this),
+                    getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId.bind(this),
+                    createAdvertiser: this.createAdvertiser.bind(this),
+                    changeOrderToggle: this.changeOrderToggle,
+                    is_mobile,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
-                    <Tabs
-                        onTabItemClick={this.handleTabClick}
-                        active_index={active_index}
-                        className='p2p-cashier'
-                        top
-                        header_fit_content
-                    >
-                        <div label={localize('Buy / Sell')}>
-                            <BuySell navigate={this.redirectTo} params={parameters} />
-                        </div>
-                        <div count={notification_count} label={localize('Orders')}>
-                            <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
-                        </div>
-                        <div label={localize('My ads')}>
-                            <MyAds navigate={this.redirectTo} params={parameters} />
-                        </div>
-                        {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
-                        {/* <div label={localize('My profile')}>
-                            <MyProfile navigate={this.redirectTo} params={parameters} />
-                        </div> */}
-                    </Tabs>
-                    {show_popup && (
-                        <div className='p2p-nickname__dialog'>
-                            <Dialog is_visible={show_popup}>
-                                <NicknameForm
-                                    handleClose={this.onNicknamePopupClose}
-                                    handleConfirm={this.toggleNicknamePopup}
-                                />
-                            </Dialog>
-                        </div>
+                    {show_popup ? (
+                        <>
+                            {is_mobile ? (
+                                <div className='p2p-nickname__dialog'>
+                                    <NicknameForm
+                                        handleClose={this.onNicknamePopupClose}
+                                        handleConfirm={this.toggleNicknamePopup}
+                                        is_mobile
+                                    />
+                                </div>
+                            ) : (
+                                <Modal is_open={show_popup} className='p2p-nickname__dialog'>
+                                    <NicknameForm
+                                        handleClose={this.onNicknamePopupClose}
+                                        handleConfirm={this.toggleNicknamePopup}
+                                    />
+                                </Modal>
+                            )}
+                        </>
+                    ) : (
+                        <>
+                            {is_loading && <Loading is_fullscreen={false} />}
+                            {should_show_verification && !this.state.is_advertiser && (
+                                <div
+                                    className={classNames('p2p-cashier__verification', {
+                                        'p2p-cashier__verification--mobile': is_mobile,
+                                    })}
+                                >
+                                    <Verification />
+                                </div>
+                            )}
+                            {should_show_verification && this.state.is_advertiser && <Download />}
+                            {!should_show_verification && (
+                                <Tabs
+                                    onTabItemClick={this.handleTabClick}
+                                    active_index={active_index}
+                                    className='p2p-cashier'
+                                    top
+                                    header_fit_content
+                                >
+                                    <div label={localize('Buy / Sell')}>
+                                        <BuySell navigate={this.redirectTo} params={parameters} />
+                                    </div>
+                                    <div count={notification_count} label={localize('Orders')}>
+                                        <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
+                                    </div>
+                                    <div label={localize('My ads')}>
+                                        <MyAds navigate={this.redirectTo} params={parameters} />
+                                    </div>
+                                    {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
+                                    {/* <div label={localize('My profile')}>
+                                    <MyProfile navigate={this.redirectTo} params={parameters} />
+                                </div> */}
+                                </Tabs>
+                            )}
+                        </>
                     )}
                 </main>
             </Dp2pProvider>
@@ -330,8 +436,9 @@ App.propTypes = {
         is_virtual: PropTypes.bool.isRequired,
         local_currency_config: PropTypes.shape({
             currency: PropTypes.string.isRequired,
-            decimal_places: PropTypes.number.isRequired,
+            decimal_places: PropTypes.number,
         }).isRequired,
+        loginid: PropTypes.string.isRequired,
         residence: PropTypes.string.isRequired,
     }),
     lang: PropTypes.string,

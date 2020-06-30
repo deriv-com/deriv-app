@@ -54,16 +54,11 @@ const FormInputField = ({ name, optional = false, ...props }) => (
 class PersonalDetails extends React.Component {
     constructor(props) {
         super(props);
-        this.form = React.createRef();
         this.state = {
             // add padding-bottom to the form when datepicker is active
             // to add empty spaces at the bottom when scrolling
             paddingBottom: 'unset',
         };
-    }
-
-    componentDidMount() {
-        this.form.current.getFormikActions().validateForm();
     }
 
     handleCancel = values => {
@@ -85,10 +80,10 @@ class PersonalDetails extends React.Component {
                     phone: this.props.value.phone,
                 }}
                 validate={this.validatePersonalDetails}
+                validateOnMount
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
-                ref={this.form}
             >
                 {({ handleSubmit, isSubmitting, errors, values }) => (
                     <AutoHeightWrapper default_height={200}>

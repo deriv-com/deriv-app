@@ -39,7 +39,7 @@ commands:
           command: echo $(find . ./packages/ -maxdepth 2 -name package-lock.json -type f -exec md5sum {} \; | md5sum | cut -d' ' -f1) >> CACHE_KEY1
       - restore_cache:
           keys:
-            - node-{{ checksum "CACHE_KEY1" }}
+            - node-{{ "CACHE_KEY1" }}
       - run:
           name: Install npm packages
           command: |
@@ -49,7 +49,7 @@ commands:
               npm run bootstrap             
             fi
       - save_cache:
-          key: node-{{ checksum "CACHE_KEY1" }}
+          key: node-{{ "CACHE_KEY1" }}
           paths:
             # VERIFY_CACHE_FOLDERS_START (DO NOT REMOVE)
             - "node_modules"

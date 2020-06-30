@@ -712,6 +712,57 @@ $MIN_HEIGHT_FLOATING: calc(
                 overflow-y: auto;
             }
         }
+        &__error {
+            @include typeface(--paragraph-center-normal-red);
+            margin-top: 1.6rem;
+        }
+        &__confirm {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            &-header {
+                margin-top: 3.6rem;
+                @include typeface(--title-center-bold-prominent);
+                margin-bottom: 1.4rem;
+            }
+            &-item {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 1.6rem;
+                padding: 1.6rem 0;
+                border-bottom: 1px solid var(--border-normal);
+                max-width: 40rem;
+                width: 100%;
+            }
+            &-label {
+                @include typeface(--paragraph-left-normal-black);
+            }
+            &-value {
+                @include typeface(--paragraph-right-bold-black);
+            }
+            &-note {
+                @include typeface(--paragraph-center-normal-black);
+                margin: 2.4rem 0;
+                max-width: 67.2rem;
+            }
+        }
+        &__back {
+            @include typeface(--paragraph-left-bold-prominent);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+            & > svg {
+                width: 1.6rem;
+                height: 1.6rem;
+                margin-right: 0.8rem;
+            }
+        }
         &__form {
             @include mobile {
                 margin: 1.6rem;
@@ -1228,6 +1279,51 @@ $MIN_HEIGHT_FLOATING: calc(
             &-buttons {
                 & > button:first-child {
                     margin-right: 1.6rem;
+                }
+            }
+            &-error {
+                margin-top: 1.6rem;
+                @include typeface(--paragraph-center-bold-red, none);
+            }
+            @include mobile {
+                width: 300px;
+                height: 272px;
+            }
+        }
+    }
+}
+
+.dc-modal__container_self_exclusion__modal {
+    .self-exclusion {
+        &__popup {
+            display: flex;
+            width: 440px;
+            height: 392px;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 2.4rem;
+
+            &-header {
+                @include typeface(--title-center-bold-prominent, none);
+                margin: 3.3rem 0 0.8rem;
+            }
+            &-desc {
+                @include typeface(--paragraph-center-normal-black, none);
+                margin-bottom: 2.4rem;
+            }
+            &-image {
+                width: 12.8rem;
+                height: 12.8rem;
+            }
+            &-buttons {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                & > button:first-child {
+                    width: fit-content;
+                    margin-bottom: 1.6rem;
                 }
             }
             &-error {

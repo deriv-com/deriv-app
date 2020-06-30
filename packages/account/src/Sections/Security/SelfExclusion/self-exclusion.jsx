@@ -6,7 +6,9 @@ import {
     Div100vhContainer,
     DesktopWrapper,
     MobileWrapper,
+    Modal,
     Input,
+    Icon,
     Button,
     DatePicker,
 } from '@deriv/components';
@@ -14,11 +16,13 @@ import { connect } from 'Stores/connect';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { toMoment, epochToMoment } from '@deriv/shared/utils/date';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
-import { localize } from '@deriv/translations';
+import { getDerivComLink } from '@deriv/shared/utils/url';
+import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
 import Article from './article';
 import LoadErrorMessage from 'Components/load-error-message';
+import { setTime } from '@deriv/shared/src/utils/date/date-time';
 
 class SelfExclusion extends React.Component {
     exclusion_data = {
@@ -35,13 +39,29 @@ class SelfExclusion extends React.Component {
         max_open_bets: '',
     };
 
+    exclusion_texts = {
+        max_turnover: localize('Max. total stake per day'),
+        max_losses: localize('Max. total loss per day'),
+        max_7day_turnover: localize('Max. total stake over 7 days'),
+        max_7day_losses: localize('Max. total loss over 7 days'),
+        max_30day_turnover: localize('Max. total stake over 30 days'),
+        max_30day_losses: localize('Max. total loss over 30 days'),
+        session_duration_limit: localize('Time limit per session'),
+        timeout_until: localize('Time out until'),
+        exclude_until: localize('Excluded from Deriv.com until'),
+        max_balance: localize('Max. account balance'),
+        max_open_bets: localize('Max. open positions'),
+    };
+
     state = {
         is_loading: true,
         is_success: false,
         is_confirm_page: false,
+        changed_attributes: [],
         error_message: '',
-        submit_error_message: '',
         self_exclusions: this.exclusion_data,
+        show_confirm: false,
+        submit_error_message: '',
     };
 
     validateFields = (values) => {
@@ -115,27 +135,60 @@ class SelfExclusion extends React.Component {
     };
 
     handleSubmit = async (values, { setSubmitting }) => {
-        console.log(values, 'values');
-        console.log(this.state.self_exclusions, 'state');
-        this.setState({ is_confirm_page: true });
-        // const request = {
-        //     set_self_exclusion: 1,
-        //     ...values,
-        // };
+        const need_logout_exclusions = ['exclude_until', 'timeout_until'];
+        const has_need_logout = this.state.changed_attributes.some((attr) => need_logout_exclusions.includes(attr));
 
-        // const set_self_exclusion_response = await WS.authorized.setSelfExclusion(request);
-        // if (set_self_exclusion_response.error) {
-        //     this.setState({ submit_error_message: set_self_exclusion_response.error.message });
-        // } else {
-        //     this.setState({
-        //         is_success: true,
-        //     });
-        //     setTimeout(() => {
-        //         this.setState({ is_success: false });
-        //     }, 500);
-        // }
+        const makeRequest = () =>
+            new Promise(async (resolve) => {
+                const request = {
+                    set_self_exclusion: 1,
+                };
 
-        setSubmitting(false);
+                this.state.changed_attributes.forEach((attr) => {
+                    request[attr] = values[attr];
+                });
+
+                const set_self_exclusion_response = await WS.authorized.setSelfExclusion(request);
+                resolve(set_self_exclusion_response);
+            });
+
+        if (has_need_logout) {
+            if (this.state.show_confirm) {
+                const response = await makeRequest();
+                if (response.error) {
+                    this.setState({
+                        submit_error_message: `${this.exclusion_texts[response.error.field]}: ${
+                            response.error.message
+                        }`,
+                    });
+                    this.setState({ show_confirm: false });
+                } else {
+                    this.props.logout();
+                }
+            } else {
+                this.setState({ show_confirm: true });
+            }
+        } else {
+            const response = await makeRequest();
+            if (response.error) {
+                this.setState({
+                    submit_error_message: `${this.exclusion_texts[response.error.field]}: ${response.error.message}`,
+                });
+            } else {
+                setSubmitting(false);
+                this.setState({ show_confirm: false, is_loading: true, is_confirm_page: false });
+                this.getSelfExclusion();
+            }
+        }
+    };
+
+    goToConfirm = (values) => {
+        const changed_attributes = Object.keys(values).filter((key) => values[key] !== this.state.self_exclusions[key]);
+        this.setState({ changed_attributes, is_confirm_page: true });
+    };
+
+    backToReview = () => {
+        this.setState({ show_confirm: false });
     };
 
     objectValuesToString = (object) => {
@@ -145,6 +198,10 @@ class SelfExclusion extends React.Component {
 
         return object;
     };
+
+    componentWillUnmount() {
+        this.setState({ changed_attributes: [] });
+    }
 
     populateExclusionResponse = (response) => {
         if (response.error) {
@@ -182,7 +239,14 @@ class SelfExclusion extends React.Component {
     }
 
     render() {
-        const { error_message, is_loading, is_confirm_page } = this.state;
+        const {
+            error_message,
+            is_loading,
+            is_confirm_page,
+            changed_attributes,
+            show_confirm,
+            submit_error_message,
+        } = this.state;
         const { is_virtual, is_switching } = this.props;
 
         if (is_virtual) return <DemoMessage />;
@@ -214,25 +278,105 @@ class SelfExclusion extends React.Component {
                                 handleBlur,
                                 isSubmitting,
                                 setTouched,
+                                handleSubmit,
                                 setFieldValue,
                             }) => (
-                                <>
+                                <Form className='self-exclusion__form' noValidate>
                                     {is_confirm_page ? (
-                                        <div>
-                                            <Button
-                                                secondary
+                                        <>
+                                            <Modal
+                                                className='self_exclusion__modal'
+                                                is_open={show_confirm}
+                                                has_close_icon={false}
+                                            >
+                                                <div className='self-exclusion__popup'>
+                                                    <Icon icon='IcStop' className='self-exclusion__popup-image' />
+                                                    <h4 className='self-exclusion__popup-header'>
+                                                        {localize('Save new limits?')}
+                                                    </h4>
+                                                    {/* TODO: will include this text once the requirement confirmed */}
+                                                    <p className='self-exclusion__popup-desc'>
+                                                        {localize(
+                                                            'Remember: You cannot log in to your account until the selected date.'
+                                                        )}
+                                                    </p>
+                                                    <div className='self-exclusion__popup-buttons'>
+                                                        <Button
+                                                            type='button'
+                                                            secondary
+                                                            large
+                                                            onClick={this.backToReview}
+                                                        >
+                                                            {localize('No, review my limits')}
+                                                        </Button>
+                                                        <Button
+                                                            type='submit'
+                                                            is_loading={isSubmitting}
+                                                            is_disabled={isSubmitting}
+                                                            primary
+                                                            large
+                                                            text={localize('Yes, log me out immediately')}
+                                                            onClick={handleSubmit}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </Modal>
+                                            <div
                                                 onClick={() => {
                                                     this.setState({ is_confirm_page: false });
                                                 }}
+                                                className='self-exclusion__back'
                                             >
-                                                {localize('back')}
-                                            </Button>
-                                            <h2 className='self-exclusion__header'>
-                                                {localize('You have set the following limits:')}
-                                            </h2>
-                                        </div>
+                                                <Icon icon='IcArrowLeftBold' />
+                                                <p>{localize('Back')}</p>
+                                            </div>
+                                            <div className='self-exclusion__confirm'>
+                                                <h2 className='self-exclusion__confirm-header'>
+                                                    {localize('You have set the following limits:')}
+                                                </h2>
+                                                {changed_attributes.map((key, idx) => {
+                                                    const need_date_format = ['exclude_until', 'timeout_until'];
+                                                    return (
+                                                        <div key={idx} className='self-exclusion__confirm-item'>
+                                                            <p className='self-exclusion__confirm-label'>
+                                                                {this.exclusion_texts[key]}
+                                                            </p>
+                                                            <p className='self-exclusion__confirm-value'>
+                                                                {need_date_format.includes(key)
+                                                                    ? toMoment(values[key]).format('DD MMM YYYY')
+                                                                    : values[key]}
+                                                            </p>
+                                                        </div>
+                                                    );
+                                                })}
+                                                <p className='self-exclusion__confirm-note'>
+                                                    <Localize
+                                                        i18n_default_text='You’ll be able to adjust these limits at any time. You can reduce your limits from the <0>self-exclusion page</0>. To increase or remove your limits, please <1>contact our Customer Support team</1>.'
+                                                        components={[
+                                                            <span key={0} className='self-exclusion__text--red' />,
+                                                            <a
+                                                                key={1}
+                                                                className='link link--orange'
+                                                                rel='noopener noreferrer'
+                                                                target='_blank'
+                                                                href={getDerivComLink('/contact-us')}
+                                                            />,
+                                                        ]}
+                                                    />
+                                                </p>
+                                                <Button
+                                                    is_loading={isSubmitting}
+                                                    is_disabled={isSubmitting}
+                                                    primary
+                                                    large
+                                                    type='submit'
+                                                    text={localize('Confirm my limits')}
+                                                />
+                                                <p className='self-exclusion__error'>{submit_error_message}</p>
+                                            </div>
+                                        </>
                                     ) : (
-                                        <Form className='self-exclusion__form' noValidate>
+                                        <>
                                             <h2 className='self-exclusion__header'>
                                                 {localize('Your stake and loss limits')}
                                             </h2>
@@ -515,14 +659,15 @@ class SelfExclusion extends React.Component {
                                                     primary
                                                     className='self-exclusion__button'
                                                     large
-                                                    type='submit'
+                                                    onClick={() => this.goToConfirm(values)}
+                                                    type='button'
                                                 >
                                                     {localize('Save')}
                                                 </Button>
                                             </div>
-                                        </Form>
+                                        </>
                                     )}
-                                </>
+                                </Form>
                             )}
                         </Formik>
                     </ThemedScrollbars>
@@ -538,4 +683,5 @@ class SelfExclusion extends React.Component {
 export default connect(({ client }) => ({
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,
+    logout: client.logout,
 }))(SelfExclusion);

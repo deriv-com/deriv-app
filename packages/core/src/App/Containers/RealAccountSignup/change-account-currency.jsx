@@ -28,7 +28,8 @@ class ChangeAccountCurrency extends React.Component {
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(false, values, actions.setSubmitting);
                 }}
-                render={({
+            >
+                {({
                     handleSubmit,
                     // setFieldValue,
                     // setFieldTouched,
@@ -77,7 +78,7 @@ class ChangeAccountCurrency extends React.Component {
                         />
                     </form>
                 )}
-            />
+            </Formik>
         );
     }
 }

@@ -30,5 +30,8 @@
       "post-merge": "bash ./hooks/post-merge.sh",
       "pre-commit": "lerna exec --concurrency 1 --stream -- npm run precommit"
     }
+  },
+  "dependencies": {
+    "binary": "^0.3.0"
   }
 }

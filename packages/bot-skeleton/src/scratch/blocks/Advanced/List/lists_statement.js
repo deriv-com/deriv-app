@@ -63,7 +63,7 @@ Blockly.Blocks.lists_statement = {
                 // Happens when someone tries to connect a statement block and Blockly automagically
                 // reconnects the children to this foreign statement block.
                 const all_blocks = this.workspace.getAllBlocks();
-                const original_parent = all_blocks.find(block => block.id === this.required_parent_id);
+                const original_parent = all_blocks.find((block) => block.id === this.required_parent_id);
 
                 if (original_parent) {
                     const last_connection = original_parent.getLastConnectionInStatement('STACK');
@@ -83,7 +83,7 @@ Blockly.Blocks.lists_statement = {
     },
 };
 
-Blockly.JavaScript.lists_statement = block => {
+Blockly.JavaScript.lists_statement = (block) => {
     const code = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

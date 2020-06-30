@@ -123,7 +123,7 @@ Blockly.Blocks.procedures_ifreturn = {
     FUNCTION_TYPES: ['procedures_defnoreturn', 'procedures_defreturn'],
 };
 
-Blockly.JavaScript.procedures_ifreturn = block => {
+Blockly.JavaScript.procedures_ifreturn = (block) => {
     const condition = Blockly.JavaScript.valueToCode(block, 'CONDITION', Blockly.JavaScript.ORDER_NONE) || 'false';
 
     let branch;

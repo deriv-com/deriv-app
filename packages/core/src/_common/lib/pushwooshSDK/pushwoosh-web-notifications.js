@@ -1,4 +1,4 @@
-!(function(e) {
+!(function (e) {
     var t = {};
     function n(r) {
         if (t[r]) return t[r].exports;
@@ -7,42 +7,42 @@
     }
     (n.m = e),
         (n.c = t),
-        (n.d = function(e, t, r) {
+        (n.d = function (e, t, r) {
             n.o(e, t) || Object.defineProperty(e, t, { configurable: !1, enumerable: !0, get: r });
         }),
-        (n.r = function(e) {
+        (n.r = function (e) {
             Object.defineProperty(e, '__esModule', { value: !0 });
         }),
-        (n.n = function(e) {
+        (n.n = function (e) {
             var t =
                 e && e.__esModule
-                    ? function() {
+                    ? function () {
                           return e.default;
                       }
-                    : function() {
+                    : function () {
                           return e;
                       };
             return n.d(t, 'a', t), t;
         }),
-        (n.o = function(e, t) {
+        (n.o = function (e, t) {
             return Object.prototype.hasOwnProperty.call(e, t);
         }),
         (n.p = ''),
         n((n.s = 6));
 })([
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         var r =
                 (this && this.__assign) ||
                 Object.assign ||
-                function(e) {
+                function (e) {
                     for (var t, n = 1, r = arguments.length; r > n; n++)
                         for (var i in (t = arguments[n])) Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
                     return e;
                 },
             i =
                 (this && this.__rest) ||
-                function(e, t) {
+                function (e, t) {
                     var n = {};
                     for (var r in e) Object.prototype.hasOwnProperty.call(e, r) && 0 > t.indexOf(r) && (n[r] = e[r]);
                     if (null != e && 'function' == typeof Object.getOwnPropertySymbols) {
@@ -98,7 +98,7 @@
             return localStorage.getItem(s.KEY_FAKE_PUSH_TOKEN);
         }
         function b() {
-            var e = (function(e) {
+            var e = (function (e) {
                 e = e || 32;
                 for (
                     var t = '', n = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', r = 0;
@@ -118,17 +118,17 @@
             return 'Promise' in a();
         }
         (t.getGlobal = a),
-            (t.getVersion = function() {
+            (t.getVersion = function () {
                 return '3.2.15';
             }),
             (t.isSafariBrowser = u),
-            (t.isOperaBrowser = function() {
+            (t.isOperaBrowser = function () {
                 return -1 !== navigator.userAgent.indexOf('Opera') || -1 !== navigator.userAgent.indexOf('OPR');
             }),
             (t.canUseServiceWorkers = c),
             (t.isSupportSDK = l),
             (t.getBrowserType = h),
-            (t.getBrowserVersion = function() {
+            (t.getBrowserVersion = function () {
                 var e = navigator.userAgent,
                     t = e.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [],
                     n = null;
@@ -140,7 +140,7 @@
                       null !== (n = e.match(/version\/([.\d]+)/i)) && t.splice(1, 1, n[1]),
                       t.join(' '));
             }),
-            (t.urlB64ToUint8Array = function(e) {
+            (t.urlB64ToUint8Array = function (e) {
                 for (
                     var t = (e + '='.repeat((4 - (e.length % 4)) % 4)).replace(/-/g, '+').replace(/_/g, '/'),
                         n = window.atob(t),
@@ -154,12 +154,12 @@
             }),
             (t.getDeviceName = p),
             (t.createUUID = d),
-            (t.generateHwid = function(e, t) {
+            (t.generateHwid = function (e, t) {
                 return e + '_' + d((t = f() || t || b()));
             }),
             (t.getFakePushToken = f),
             (t.generateFakePushToken = b),
-            (t.getPushToken = function(e) {
+            (t.getPushToken = function (e) {
                 return e
                     ? e.subscriptionId
                         ? e.subscriptionId
@@ -168,45 +168,45 @@
                         : e.endpoint.split('/').pop() || ''
                     : '';
             }),
-            (t.getFcmKey = function(e, t) {
+            (t.getFcmKey = function (e, t) {
                 return e
-                    ? new Promise(function(e) {
+                    ? new Promise(function (e) {
                           o.keyValue
                               .get(s.KEY_FCM_SUBSCRIPTION)
-                              .then(function(n) {
+                              .then(function (n) {
                                   e((n && n[t]) || '');
                               })
-                              .catch(function() {
+                              .catch(function () {
                                   e('');
                               });
                       })
                     : Promise.resolve('');
             }),
-            (t.getAuthToken = function(e) {
+            (t.getAuthToken = function (e) {
                 return _(e, 'auth');
             }),
-            (t.getPublicKey = function(e) {
+            (t.getPublicKey = function (e) {
                 return _(e, 'p256dh');
             }),
-            (t.getPushwooshUrl = function(e, t) {
+            (t.getPushwooshUrl = function (e, t) {
                 var n = 'cp';
                 u() || !e || ~e.indexOf('.') || (n = e + '.api');
                 var r = 'https://' + (t || n + '.pushwoosh.com') + '/json/1.3/';
-                return new Promise(function(e) {
+                return new Promise(function (e) {
                     o.keyValue
                         .get(s.KEY_API_BASE_URL)
-                        .then(function(t) {
+                        .then(function (t) {
                             void 0 === t && (t = null), e(t || r);
                         })
-                        .catch(function() {
+                        .catch(function () {
                             e(r);
                         });
                 });
             }),
-            (t.patchConsole = function() {
+            (t.patchConsole = function () {
                 for (
                     var e,
-                        t = function() {},
+                        t = function () {},
                         n = [
                             'assert',
                             'clear',
@@ -239,27 +239,27 @@
                 )
                     o[(e = n[r])] || (o[e] = t);
             }),
-            (t.patchPromise = function() {
+            (t.patchPromise = function () {
                 var e = a();
                 !g() &&
                     l() &&
-                    (e.Promise = function() {
-                        return { then: function() {}, catch: function() {} };
+                    (e.Promise = function () {
+                        return { then: function () {}, catch: function () {} };
                     });
             }),
             (t.canUsePromise = g),
-            (t.clearLocationHash = function() {
+            (t.clearLocationHash = function () {
                 'history' in a() && history.pushState ? history.pushState(null, '', '#') : (location.hash = '#');
             }),
-            (t.prepareDuration = function(e) {
+            (t.prepareDuration = function (e) {
                 return isNaN(e) ? 20 : Math.min(60, 0 > (e = Math.round(e)) ? 20 : e);
             }),
-            (t.validateParams = function(e) {
+            (t.validateParams = function (e) {
                 var t = i(e, []);
                 return !t.userId || ('user_id' !== t.userId && 0 != !!t.userId) || delete t.userId, t;
             }),
-            (t.sendInternalPostEvent = function(e) {
-                o.keyValue.get(s.KEY_INTERNAL_EVENTS).then(function(t) {
+            (t.sendInternalPostEvent = function (e) {
+                o.keyValue.get(s.KEY_INTERNAL_EVENTS).then(function (t) {
                     void 0 === t && (t = {}), 0 === Object.keys(t).length && o.keyValue.set(s.KEY_INTERNAL_EVENTS, {});
                     var n,
                         i = new Date().setHours(0, 0, 0, 0),
@@ -275,7 +275,7 @@
                 });
             });
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         Object.defineProperty(t, '__esModule', { value: !0 }),
             (t.DEFAULT_SERVICE_WORKER_URL = 'pushwoosh-service-worker.js'),
@@ -328,7 +328,7 @@
             (t.EVENT_GDPR_CONSENT = 'GDPRConsent'),
             (t.EVENT_GDPR_DELETE = 'GDPRDelete');
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         var r,
             i =
@@ -336,13 +336,13 @@
                 ((r =
                     Object.setPrototypeOf ||
                     ({ __proto__: [] } instanceof Array &&
-                        function(e, t) {
+                        function (e, t) {
                             e.__proto__ = t;
                         }) ||
-                    function(e, t) {
+                    function (e, t) {
                         for (var n in t) t.hasOwnProperty(n) && (e[n] = t[n]);
                     }),
-                function(e, t) {
+                function (e, t) {
                     function n() {
                         this.constructor = e;
                     }
@@ -351,15 +351,15 @@
             o =
                 (this && this.__assign) ||
                 Object.assign ||
-                function(e) {
+                function (e) {
                     for (var t, n = 1, r = arguments.length; r > n; n++)
                         for (var i in (t = arguments[n])) Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
                     return e;
                 },
             s =
                 (this && this.__awaiter) ||
-                function(e, t, n, r) {
-                    return new (n || (n = Promise))(function(i, o) {
+                function (e, t, n, r) {
+                    return new (n || (n = Promise))(function (i, o) {
                         function s(e) {
                             try {
                                 u(r.next(e));
@@ -377,7 +377,7 @@
                         function u(e) {
                             e.done
                                 ? i(e.value)
-                                : new n(function(t) {
+                                : new n(function (t) {
                                       t(e.value);
                                   }).then(s, a);
                         }
@@ -386,14 +386,14 @@
                 },
             a =
                 (this && this.__generator) ||
-                function(e, t) {
+                function (e, t) {
                     var n,
                         r,
                         i,
                         o,
                         s = {
                             label: 0,
-                            sent: function() {
+                            sent: function () {
                                 if (1 & i[0]) throw i[1];
                                 return i[1];
                             },
@@ -403,14 +403,14 @@
                     return (
                         (o = { next: a(0), throw: a(1), return: a(2) }),
                         'function' == typeof Symbol &&
-                            (o[Symbol.iterator] = function() {
+                            (o[Symbol.iterator] = function () {
                                 return this;
                             }),
                         o
                     );
                     function a(o) {
-                        return function(a) {
-                            return (function(o) {
+                        return function (a) {
+                            return (function (o) {
                                 if (n) throw new TypeError('Generator is already executing.');
                                 for (; s; )
                                     try {
@@ -471,7 +471,7 @@
                 },
             u =
                 (this && this.__rest) ||
-                function(e, t) {
+                function (e, t) {
                     var n = {};
                     for (var r in e) Object.prototype.hasOwnProperty.call(e, r) && 0 > t.indexOf(r) && (n[r] = e[r]);
                     if (null != e && 'function' == typeof Object.getOwnPropertySymbols) {
@@ -491,16 +491,16 @@
         }
         function f(e) {
             return (c ||
-                (c = new Promise(function(e, t) {
+                (c = new Promise(function (e, t) {
                     var n = indexedDB.open('PUSHWOOSH_SDK_STORE', 6);
-                    (n.onsuccess = function(t) {
+                    (n.onsuccess = function (t) {
                         var n = t.target.result;
                         (n.onversionchange = d), e(n);
                     }),
-                        (n.onerror = function() {
+                        (n.onerror = function () {
                             return t(n.error);
                         }),
-                        (n.onupgradeneeded = function(e) {
+                        (n.onupgradeneeded = function (e) {
                             var t = e.target.result;
                             (t.onversionchange = d),
                                 t.objectStoreNames.contains(l) || t.createObjectStore(l, { keyPath: 'key' });
@@ -515,44 +515,41 @@
                             t.objectStoreNames.contains(p) || t.createObjectStore(p, n).createIndex('date', 'date', r);
                         });
                 })),
-            c).then(function(t) {
-                return new Promise(function(n, r) {
+            c).then(function (t) {
+                return new Promise(function (n, r) {
                     return e(t, n, r);
                 });
             });
         }
-        var b = (function() {
+        var b = (function () {
             function e() {}
             return (
-                (e.prototype._add = function(e) {
+                (e.prototype._add = function (e) {
                     var t = this;
-                    return f(function(n, r, i) {
-                        var o = n
-                            .transaction([t.name], 'readwrite')
-                            .objectStore(t.name)
-                            .add(e);
-                        (o.onsuccess = function() {
+                    return f(function (n, r, i) {
+                        var o = n.transaction([t.name], 'readwrite').objectStore(t.name).add(e);
+                        (o.onsuccess = function () {
                             r(e);
                         }),
-                            (o.onerror = function() {
+                            (o.onerror = function () {
                                 i(o.error);
                             });
-                    }).then(function(e) {
-                        return t.getAll().then(function(n) {
+                    }).then(function (e) {
+                        return t.getAll().then(function (n) {
                             if (Array.isArray(n)) {
                                 var r = n
-                                    .map(function(e) {
+                                    .map(function (e) {
                                         return e.id;
                                     })
-                                    .sort(function(e, t) {
+                                    .sort(function (e, t) {
                                         return e == t ? 0 : t > e ? 1 : -1;
                                     });
                                 if (r.length > t.maxItems)
                                     return Promise.all(
-                                        r.slice(t.maxItems).map(function(e) {
+                                        r.slice(t.maxItems).map(function (e) {
                                             return t.delete(e);
                                         })
-                                    ).then(function() {
+                                    ).then(function () {
                                         return e;
                                     });
                             }
@@ -560,34 +557,28 @@
                         });
                     });
                 }),
-                (e.prototype.delete = function(e) {
+                (e.prototype.delete = function (e) {
                     var t = this;
-                    return f(function(n, r, i) {
-                        var o = n
-                            .transaction([t.name], 'readwrite')
-                            .objectStore(t.name)
-                            .delete(e);
-                        (o.onsuccess = function() {
+                    return f(function (n, r, i) {
+                        var o = n.transaction([t.name], 'readwrite').objectStore(t.name).delete(e);
+                        (o.onsuccess = function () {
                             r(o.result);
                         }),
-                            (o.onerror = function() {
+                            (o.onerror = function () {
                                 i(o.error);
                             });
                     });
                 }),
-                (e.prototype.getAll = function() {
+                (e.prototype.getAll = function () {
                     var e = this;
-                    return f(function(t, n, r) {
+                    return f(function (t, n, r) {
                         var i = [],
-                            o = t
-                                .transaction(e.name)
-                                .objectStore(e.name)
-                                .openCursor();
-                        (o.onsuccess = function(e) {
+                            o = t.transaction(e.name).objectStore(e.name).openCursor();
+                        (o.onsuccess = function (e) {
                             var t = e.target.result;
                             t ? (i.push(t.value), t.continue()) : n(i);
                         }),
-                            (o.onerror = function() {
+                            (o.onerror = function () {
                                 r(o.error);
                             });
                     });
@@ -596,7 +587,7 @@
             );
         })();
         t.LogBase = b;
-        var _ = (function(e) {
+        var _ = (function (e) {
             function t() {
                 var t = (null !== e && e.apply(this, arguments)) || this;
                 return (
@@ -608,7 +599,7 @@
             }
             return (
                 i(t, e),
-                (t.prototype.add = function(e, t, n) {
+                (t.prototype.add = function (e, t, n) {
                     var r = { type: e, environment: this.environment, message: '' + t, date: new Date() };
                     return t instanceof Error && (r.stack = t.stack), n && (r.additional = n), this._add(r);
                 }),
@@ -617,14 +608,14 @@
         })(b);
         t.LogLog = _;
         var g,
-            E = (function(e) {
+            E = (function (e) {
                 function t() {
                     var t = (null !== e && e.apply(this, arguments)) || this;
                     return (t.name = p), (t.maxItems = 25), t;
                 }
                 return (
                     i(t, e),
-                    (t.prototype.add = function(e) {
+                    (t.prototype.add = function (e) {
                         return this._add(o({}, e, { date: new Date() }));
                     }),
                     t
@@ -634,41 +625,35 @@
             (t.keyValue =
                 ((g = l),
                 {
-                    get: function(e) {
-                        return f(function(t, n, r) {
-                            var i = t
-                                .transaction(g)
-                                .objectStore(g)
-                                .get(e);
-                            (i.onsuccess = function() {
+                    get: function (e) {
+                        return f(function (t, n, r) {
+                            var i = t.transaction(g).objectStore(g).get(e);
+                            (i.onsuccess = function () {
                                 var e = i.result;
                                 n(e && e.value);
                             }),
-                                (i.onerror = function() {
+                                (i.onerror = function () {
                                     r(i.error);
                                 });
                         });
                     },
-                    getAll: function() {
-                        return f(function(e, t, n) {
+                    getAll: function () {
+                        return f(function (e, t, n) {
                             var r = {},
-                                i = e
-                                    .transaction(g)
-                                    .objectStore(g)
-                                    .openCursor();
-                            (i.onsuccess = function(e) {
+                                i = e.transaction(g).objectStore(g).openCursor();
+                            (i.onsuccess = function (e) {
                                 var n = e.target.result;
                                 n ? ((r[n.key] = n.value.value), n.continue()) : t(r);
                             }),
-                                (i.onerror = function() {
+                                (i.onerror = function () {
                                     n(i.error);
                                 });
                         });
                     },
-                    extend: function(e, t) {
-                        return s(this, void 0, void 0, function() {
+                    extend: function (e, t) {
+                        return s(this, void 0, void 0, function () {
                             var n, r;
-                            return a(this, function(i) {
+                            return a(this, function (i) {
                                 switch (i.label) {
                                     case 0:
                                         return [4, this.get(e)];
@@ -680,16 +665,13 @@
                             });
                         });
                     },
-                    set: function(e, t) {
-                        return f(function(n, r, i) {
-                            var o = n
-                                .transaction([g], 'readwrite')
-                                .objectStore(g)
-                                .put({ key: e, value: t });
-                            (o.onsuccess = function() {
+                    set: function (e, t) {
+                        return f(function (n, r, i) {
+                            var o = n.transaction([g], 'readwrite').objectStore(g).put({ key: e, value: t });
+                            (o.onsuccess = function () {
                                 r(e);
                             }),
-                                (o.onerror = function() {
+                                (o.onerror = function () {
                                     i(o.error);
                                 });
                         });
@@ -698,7 +680,7 @@
             (t.log = new _()),
             (t.message = new E());
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         Object.defineProperty(t, '__esModule', { value: !0 });
         var r = n(2),
@@ -706,16 +688,16 @@
             o = 3;
         n(0).patchConsole();
         var s = {
-            setLevel: function(e) {
+            setLevel: function (e) {
                 i[e] || (e = 'error'), (o = i[e]);
             },
-            write: function(e, t, n) {
+            write: function (e, t, n) {
                 return 'error' === e ? this.error(t) : this.info(t), r.log.add(e, t, n);
             },
         };
-        Object.keys(i).forEach(function(e) {
+        Object.keys(i).forEach(function (e) {
             var t = i[e];
-            s[e] = function() {
+            s[e] = function () {
                 for (var n = [], r = 0; arguments.length > r; r++) n[r] = arguments[r];
                 t > o ||
                     (console.groupCollapsed(e),
@@ -724,30 +706,30 @@
                     console.groupEnd());
             };
         }),
-            (t.logAndThrowError = function(e) {
+            (t.logAndThrowError = function (e) {
                 var t = Error(e);
                 throw (s.write('error', t, 'logAndThrowError'), t);
             }),
-            (t.logAndRejectError = function(e, t) {
+            (t.logAndRejectError = function (e, t) {
                 var n = Error(e);
                 s.write('error', n, 'logAndRejectError'), t(n);
             }),
             (t.default = s);
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         var r =
                 (this && this.__assign) ||
                 Object.assign ||
-                function(e) {
+                function (e) {
                     for (var t, n = 1, r = arguments.length; r > n; n++)
                         for (var i in (t = arguments[n])) Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
                     return e;
                 },
             i =
                 (this && this.__awaiter) ||
-                function(e, t, n, r) {
-                    return new (n || (n = Promise))(function(i, o) {
+                function (e, t, n, r) {
+                    return new (n || (n = Promise))(function (i, o) {
                         function s(e) {
                             try {
                                 u(r.next(e));
@@ -765,7 +747,7 @@
                         function u(e) {
                             e.done
                                 ? i(e.value)
-                                : new n(function(t) {
+                                : new n(function (t) {
                                       t(e.value);
                                   }).then(s, a);
                         }
@@ -774,14 +756,14 @@
                 },
             o =
                 (this && this.__generator) ||
-                function(e, t) {
+                function (e, t) {
                     var n,
                         r,
                         i,
                         o,
                         s = {
                             label: 0,
-                            sent: function() {
+                            sent: function () {
                                 if (1 & i[0]) throw i[1];
                                 return i[1];
                             },
@@ -791,14 +773,14 @@
                     return (
                         (o = { next: a(0), throw: a(1), return: a(2) }),
                         'function' == typeof Symbol &&
-                            (o[Symbol.iterator] = function() {
+                            (o[Symbol.iterator] = function () {
                                 return this;
                             }),
                         o
                     );
                     function a(o) {
-                        return function(a) {
-                            return (function(o) {
+                        return function (a) {
+                            return (function (o) {
                                 if (n) throw new TypeError('Generator is already executing.');
                                 for (; s; )
                                     try {
@@ -862,7 +844,7 @@
             a = n(0),
             u = n(2),
             c = n(3),
-            l = (function() {
+            l = (function () {
                 function e(e, t, n) {
                     (this.doPushwooshApiMethod = e),
                         (this.apiParams = t),
@@ -871,7 +853,7 @@
                 }
                 return (
                     Object.defineProperty(e.prototype, 'params', {
-                        get: function() {
+                        get: function () {
                             return (
                                 console.error(
                                     'Property "Pushwoosh.api.params" will be deprecated in next minor version. Instead, use the async method "Pushwoosh.api.getParams()"'
@@ -897,16 +879,16 @@
                         configurable: !0,
                     }),
                     Object.defineProperty(e.prototype, 'isSafari', {
-                        get: function() {
+                        get: function () {
                             return a.isSafariBrowser();
                         },
                         enumerable: !0,
                         configurable: !0,
                     }),
-                    (e.prototype.getParams = function() {
-                        return i(this, void 0, void 0, function() {
+                    (e.prototype.getParams = function () {
+                        return i(this, void 0, void 0, function () {
                             var e;
-                            return o(this, function(t) {
+                            return o(this, function (t) {
                                 switch (t.label) {
                                     case 0:
                                         return [4, u.keyValue.getAll()];
@@ -916,10 +898,10 @@
                             });
                         });
                     }),
-                    (e.prototype.callAPI = function(e, t) {
-                        return i(this, void 0, void 0, function() {
+                    (e.prototype.callAPI = function (e, t) {
+                        return i(this, void 0, void 0, function () {
                             var n, i, l, h, p, d, f, b;
-                            return o(this, function(o) {
+                            return o(this, function (o) {
                                 switch (o.label) {
                                     case 0:
                                         return [4, this.getParams()];
@@ -945,10 +927,10 @@
                             });
                         });
                     }),
-                    (e.prototype.registerDevice = function() {
-                        return i(this, void 0, void 0, function() {
+                    (e.prototype.registerDevice = function () {
+                        return i(this, void 0, void 0, function () {
                             var e, t;
-                            return o(this, function(n) {
+                            return o(this, function (n) {
                                 switch (n.label) {
                                     case 0:
                                         return [4, this.getParams()];
@@ -992,10 +974,10 @@
                             });
                         });
                     }),
-                    (e.prototype.unregisterDevice = function() {
-                        return i(this, void 0, void 0, function() {
+                    (e.prototype.unregisterDevice = function () {
+                        return i(this, void 0, void 0, function () {
                             var e;
-                            return o(this, function(t) {
+                            return o(this, function (t) {
                                 switch (t.label) {
                                     case 0:
                                         if (this.isSafari) return [2];
@@ -1019,10 +1001,10 @@
                             });
                         });
                     }),
-                    (e.prototype.registerUser = function(e) {
-                        return i(this, void 0, void 0, function() {
+                    (e.prototype.registerUser = function (e) {
+                        return i(this, void 0, void 0, function () {
                             var t, n;
-                            return o(this, function(r) {
+                            return o(this, function (r) {
                                 switch (r.label) {
                                     case 0:
                                         return [4, this.getParams()];
@@ -1044,10 +1026,10 @@
                             });
                         });
                     }),
-                    (e.prototype.applicationOpen = function() {
-                        return i(this, void 0, void 0, function() {
+                    (e.prototype.applicationOpen = function () {
+                        return i(this, void 0, void 0, function () {
                             var e;
-                            return o(this, function(t) {
+                            return o(this, function (t) {
                                 switch (t.label) {
                                     case 0:
                                         return [4, this.getParams()];
@@ -1064,19 +1046,19 @@
                             });
                         });
                     }),
-                    (e.prototype.setTags = function(e) {
+                    (e.prototype.setTags = function (e) {
                         return this.callAPI('setTags', { tags: e });
                     }),
-                    (e.prototype.getTags = function() {
+                    (e.prototype.getTags = function () {
                         return this.callAPI('getTags');
                     }),
-                    (e.prototype.pushStat = function(e) {
+                    (e.prototype.pushStat = function (e) {
                         return this.callAPI('pushStat', { hash: e });
                     }),
-                    (e.prototype.messageDeliveryEvent = function(e) {
+                    (e.prototype.messageDeliveryEvent = function (e) {
                         return this.callAPI('messageDeliveryEvent', { hash: e });
                     }),
-                    (e.prototype.postEvent = function(e, t) {
+                    (e.prototype.postEvent = function (e, t) {
                         var n = this.lastOpenMessage,
                             i = new Date(),
                             o = i.getTime(),
@@ -1093,10 +1075,10 @@
                             timestampCurrent: a,
                         });
                     }),
-                    (e.prototype.triggerEvent = function(e, t) {
-                        return i(this, void 0, void 0, function() {
+                    (e.prototype.triggerEvent = function (e, t) {
+                        return i(this, void 0, void 0, function () {
                             var n;
-                            return o(this, function(r) {
+                            return o(this, function (r) {
                                 switch (r.label) {
                                     case 0:
                                         return t ? [4, u.keyValue.get(t)] : [3, 2];
@@ -1117,7 +1099,7 @@
             })();
         t.default = l;
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         Object.defineProperty(t, '__esModule', { value: !0 }),
             (t.BELL_POSITION_BOTTOM_RIGHT = 'bottomRight'),
@@ -1143,7 +1125,7 @@
                 },
             });
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         Object.defineProperty(t, '__esModule', { value: !0 });
         var r = n(7),
@@ -1155,27 +1137,27 @@
             n && (e = n),
                 (n = new r.default()),
                 Array.isArray(e) &&
-                    e.forEach(function(e) {
+                    e.forEach(function (e) {
                         return n.push(e);
                     }),
                 (t.Pushwoosh = n);
         }
         n(12), 'complete' === document.readyState ? o() : window.addEventListener('load', o);
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         var r =
                 (this && this.__assign) ||
                 Object.assign ||
-                function(e) {
+                function (e) {
                     for (var t, n = 1, r = arguments.length; r > n; n++)
                         for (var i in (t = arguments[n])) Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
                     return e;
                 },
             i =
                 (this && this.__awaiter) ||
-                function(e, t, n, r) {
-                    return new (n || (n = Promise))(function(i, o) {
+                function (e, t, n, r) {
+                    return new (n || (n = Promise))(function (i, o) {
                         function s(e) {
                             try {
                                 u(r.next(e));
@@ -1193,7 +1175,7 @@
                         function u(e) {
                             e.done
                                 ? i(e.value)
-                                : new n(function(t) {
+                                : new n(function (t) {
                                       t(e.value);
                                   }).then(s, a);
                         }
@@ -1202,14 +1184,14 @@
                 },
             o =
                 (this && this.__generator) ||
-                function(e, t) {
+                function (e, t) {
                     var n,
                         r,
                         i,
                         o,
                         s = {
                             label: 0,
-                            sent: function() {
+                            sent: function () {
                                 if (1 & i[0]) throw i[1];
                                 return i[1];
                             },
@@ -1219,14 +1201,14 @@
                     return (
                         (o = { next: a(0), throw: a(1), return: a(2) }),
                         'function' == typeof Symbol &&
-                            (o[Symbol.iterator] = function() {
+                            (o[Symbol.iterator] = function () {
                                 return this;
                             }),
                         o
                     );
                     function a(o) {
-                        return function(a) {
-                            return (function(o) {
+                        return function (a) {
+                            return (function (o) {
                                 if (n) throw new TypeError('Generator is already executing.');
                                 for (; s; )
                                     try {
@@ -1296,7 +1278,7 @@
             d = n(11),
             f = n(2);
         u.patchPromise();
-        var b = (function() {
+        var b = (function () {
             function e() {
                 var e,
                     t = this;
@@ -1305,10 +1287,10 @@
                     (this.isSafari = u.isSafariBrowser()),
                     (this.ready = !1),
                     (this.debug = {
-                        showLog: function() {
-                            return i(this, void 0, void 0, function() {
+                        showLog: function () {
+                            return i(this, void 0, void 0, function () {
                                 var e;
-                                return o(this, function(t) {
+                                return o(this, function (t) {
                                     switch (t.label) {
                                         case 0:
                                             return [4, f.log.getAll()];
@@ -1318,10 +1300,10 @@
                                 });
                             });
                         },
-                        showKeyValues: function() {
-                            return i(this, void 0, void 0, function() {
+                        showKeyValues: function () {
+                            return i(this, void 0, void 0, function () {
                                 var e;
-                                return o(this, function(t) {
+                                return o(this, function (t) {
                                     switch (t.label) {
                                         case 0:
                                             return [4, f.keyValue.getAll()];
@@ -1331,15 +1313,15 @@
                                 });
                             });
                         },
-                        showMessages: function() {
-                            return i(this, void 0, void 0, function() {
-                                return o(this, function(e) {
+                        showMessages: function () {
+                            return i(this, void 0, void 0, function () {
+                                return o(this, function (e) {
                                     switch (e.label) {
                                         case 0:
                                             return [4, f.message.getAll()];
                                         case 1:
                                             return (
-                                                e.sent().forEach(function(e) {
+                                                e.sent().forEach(function (e) {
                                                     return console.log(e);
                                                 }),
                                                 [2]
@@ -1352,28 +1334,28 @@
                     (this._onPromises = {}),
                     u.canUsePromise() &&
                         (this._onPromises =
-                            (((e = {})[c.EVENT_ON_PERMISSION_DENIED] = new Promise(function(e) {
+                            (((e = {})[c.EVENT_ON_PERMISSION_DENIED] = new Promise(function (e) {
                                 return t._ee.once(c.EVENT_ON_PERMISSION_DENIED, e);
                             })),
-                            (e[c.EVENT_ON_PERMISSION_PROMPT] = new Promise(function(e) {
+                            (e[c.EVENT_ON_PERMISSION_PROMPT] = new Promise(function (e) {
                                 return t._ee.once(c.EVENT_ON_PERMISSION_PROMPT, e);
                             })),
-                            (e[c.EVENT_ON_PERMISSION_GRANTED] = new Promise(function(e) {
+                            (e[c.EVENT_ON_PERMISSION_GRANTED] = new Promise(function (e) {
                                 return t._ee.once(c.EVENT_ON_PERMISSION_GRANTED, e);
                             })),
                             e)),
                     (this.onServiceWorkerMessage = this.onServiceWorkerMessage.bind(this));
             }
             return (
-                (e.prototype.onReadyHandler = function(e) {
+                (e.prototype.onReadyHandler = function (e) {
                     var t = this;
                     this.ready
                         ? e(this.api)
-                        : this._ee.on(c.EVENT_ON_READY, function(n) {
+                        : this._ee.on(c.EVENT_ON_READY, function (n) {
                               return e(t.api, n);
                           });
                 }),
-                (e.prototype.push = function(e) {
+                (e.prototype.push = function (e) {
                     var t = this;
                     if ('function' == typeof e) this.onReadyHandler(e);
                     else {
@@ -1384,7 +1366,7 @@
                             case 'init':
                                 if (this.shouldInit()) {
                                     if ('object' != typeof r) break;
-                                    this.init(r).catch(function(e) {
+                                    this.init(r).catch(function (e) {
                                         return l.default.info('Pushwoosh init failed', e);
                                     });
                                 }
@@ -1402,7 +1384,7 @@
                             case c.EVENT_ON_NOTIFICATION_CLOSE:
                             case c.EVENT_ON_CHANGE_COMMUNICATION_ENABLED:
                                 if ('function' != typeof r) break;
-                                this._ee.on(n, function(e) {
+                                this._ee.on(n, function (e) {
                                     return r(t.api, e);
                                 });
                                 break;
@@ -1411,7 +1393,7 @@
                             case c.EVENT_ON_PERMISSION_GRANTED:
                                 if ('function' != typeof r) break;
                                 this._onPromises[n] &&
-                                    this._onPromises[n].then(function() {
+                                    this._onPromises[n].then(function () {
                                         return r(t.api);
                                     });
                                 break;
@@ -1420,11 +1402,11 @@
                         }
                     }
                 }),
-                (e.prototype.shouldInit = function() {
+                (e.prototype.shouldInit = function () {
                     return !!u.isSupportSDK() || (l.default.info('This browser does not support pushes'), !1);
                 }),
-                (e.prototype.init = function(e) {
-                    return i(this, void 0, void 0, function() {
+                (e.prototype.init = function (e) {
+                    return i(this, void 0, void 0, function () {
                         var t,
                             n,
                             i,
@@ -1438,7 +1420,7 @@
                             E,
                             v,
                             w = this;
-                        return o(this, function(o) {
+                        return o(this, function (o) {
                             switch (o.label) {
                                 case 0:
                                     if (
@@ -1522,7 +1504,7 @@
                                         pushwooshApiUrl: b.pushwooshApiUrl,
                                         webSitePushID: b.safariWebsitePushID,
                                     })),
-                                        this._ee.on(c.EVENT_ON_READY, function() {
+                                        this._ee.on(c.EVENT_ON_READY, function () {
                                             var e = /#P(.*)/,
                                                 t = decodeURIComponent(document.location.hash);
                                             e.test(t) && w.api.pushStat(e.exec(t)[1]).then(u.clearLocationHash);
@@ -1549,17 +1531,17 @@
                         });
                     });
                 }),
-                (e.prototype.onServiceWorkerMessage = function(e) {
+                (e.prototype.onServiceWorkerMessage = function (e) {
                     var t = (e || {}).data,
                         n = (void 0 === t ? {} : t) || {},
                         r = n.type,
                         i = n.payload;
                     this._ee.emit(void 0 === r ? '' : r, void 0 === i ? {} : i);
                 }),
-                (e.prototype.initApi = function() {
-                    return i(this, void 0, void 0, function() {
+                (e.prototype.initApi = function () {
+                    return i(this, void 0, void 0, function () {
                         var e, t, n, i, s;
-                        return o(this, function(o) {
+                        return o(this, function (o) {
                             switch (o.label) {
                                 case 0:
                                     return (e = this.params), [4, this.driver.getAPIParams()];
@@ -1595,10 +1577,10 @@
                         });
                     });
                 }),
-                (e.prototype.subscribe = function() {
-                    return i(this, void 0, void 0, function() {
+                (e.prototype.subscribe = function () {
+                    return i(this, void 0, void 0, function () {
                         var e, t;
-                        return o(this, function(n) {
+                        return o(this, function (n) {
                             switch (n.label) {
                                 case 0:
                                     return [4, this.isCommunicationEnabled()];
@@ -1630,10 +1612,10 @@
                         });
                     });
                 }),
-                (e.prototype.registerDuringSubscribe = function() {
-                    return i(this, void 0, void 0, function() {
+                (e.prototype.registerDuringSubscribe = function () {
+                    return i(this, void 0, void 0, function () {
                         var e, t;
-                        return o(this, function(n) {
+                        return o(this, function (n) {
                             switch (n.label) {
                                 case 0:
                                     return [4, this.driver.isSubscribed()];
@@ -1651,9 +1633,9 @@
                         });
                     });
                 }),
-                (e.prototype.onSubscribeEmitter = function() {
-                    return i(this, void 0, void 0, function() {
-                        return o(this, function(e) {
+                (e.prototype.onSubscribeEmitter = function () {
+                    return i(this, void 0, void 0, function () {
+                        return o(this, function (e) {
                             switch (e.label) {
                                 case 0:
                                     return [4, this.driver.isSubscribed()];
@@ -1663,12 +1645,12 @@
                         });
                     });
                 }),
-                (e.prototype.unsubscribe = function(e) {
+                (e.prototype.unsubscribe = function (e) {
                     return (
                         void 0 === e && (e = !0),
-                        i(this, void 0, void 0, function() {
+                        i(this, void 0, void 0, function () {
                             var t;
-                            return o(this, function(n) {
+                            return o(this, function (n) {
                                 switch (n.label) {
                                     case 0:
                                         return n.trys.push([0, 3, , 4]), [4, this.driver.unsubscribe()];
@@ -1689,21 +1671,21 @@
                         })
                     );
                 }),
-                (e.prototype.isDeviceRegistered = function() {
+                (e.prototype.isDeviceRegistered = function () {
                     return (
                         localStorage.getItem(c.KEY_DEVICE_REGISTRATION_STATUS) ===
                         c.DEVICE_REGISTRATION_STATUS_REGISTERED
                     );
                 }),
-                (e.prototype.isDeviceUnregistered = function() {
+                (e.prototype.isDeviceUnregistered = function () {
                     return (
                         localStorage.getItem(c.KEY_DEVICE_REGISTRATION_STATUS) ===
                         c.DEVICE_REGISTRATION_STATUS_UNREGISTERED
                     );
                 }),
-                (e.prototype.isSubscribed = function() {
-                    return i(this, void 0, void 0, function() {
-                        return o(this, function(e) {
+                (e.prototype.isSubscribed = function () {
+                    return i(this, void 0, void 0, function () {
+                        return o(this, function (e) {
                             return [
                                 2,
                                 ((this.isSafari || this.isDeviceRegistered()) && this.driver.isSubscribed()) || !1,
@@ -1711,10 +1693,10 @@
                         });
                     });
                 }),
-                (e.prototype.register = function(e) {
-                    return i(this, void 0, void 0, function() {
+                (e.prototype.register = function (e) {
+                    return i(this, void 0, void 0, function () {
                         var t, n, i, s, a, l;
-                        return o(this, function(o) {
+                        return o(this, function (o) {
                             switch (o.label) {
                                 case 0:
                                     if (!this.api) throw Error('API is not inited');
@@ -1768,9 +1750,9 @@
                         });
                     });
                 }),
-                (e.prototype.isCommunicationEnabled = function() {
-                    return i(this, void 0, void 0, function() {
-                        return o(this, function(e) {
+                (e.prototype.isCommunicationEnabled = function () {
+                    return i(this, void 0, void 0, function () {
+                        return o(this, function (e) {
                             switch (e.label) {
                                 case 0:
                                     return [4, f.keyValue.get(c.KEY_COMMUNICATION_ENABLED)];
@@ -1780,12 +1762,12 @@
                         });
                     });
                 }),
-                (e.prototype.setCommunicationEnabled = function(e) {
+                (e.prototype.setCommunicationEnabled = function (e) {
                     return (
                         void 0 === e && (e = !0),
-                        i(this, void 0, void 0, function() {
+                        i(this, void 0, void 0, function () {
                             var t;
-                            return o(this, function(n) {
+                            return o(this, function (n) {
                                 switch (n.label) {
                                     case 0:
                                         if (!this.api) throw Error('API is not inited');
@@ -1814,10 +1796,10 @@
                         })
                     );
                 }),
-                (e.prototype.removeAllDeviceData = function() {
-                    return i(this, void 0, void 0, function() {
+                (e.prototype.removeAllDeviceData = function () {
+                    return i(this, void 0, void 0, function () {
                         var e, t, n;
-                        return o(this, function(r) {
+                        return o(this, function (r) {
                             switch (r.label) {
                                 case 0:
                                     if (!this.api) throw Error('API is not inited');
@@ -1827,7 +1809,7 @@
                                 case 2:
                                     return (
                                         (t = r.sent()),
-                                        (n = Object.keys(t.result).reduce(function(e, t) {
+                                        (n = Object.keys(t.result).reduce(function (e, t) {
                                             return (e[t] = null), e;
                                         }, {})),
                                         [4, this.api.postEvent(c.EVENT_GDPR_DELETE, { status: !0, device_type: e })]
@@ -1842,10 +1824,10 @@
                         });
                     });
                 }),
-                (e.prototype.open = function(e) {
-                    return i(this, void 0, void 0, function() {
+                (e.prototype.open = function (e) {
+                    return i(this, void 0, void 0, function () {
                         var t, n, r, i;
-                        return o(this, function(o) {
+                        return o(this, function (o) {
                             switch (o.label) {
                                 case 0:
                                     return [4, this.driver.getAPIParams()];
@@ -1877,10 +1859,10 @@
                         });
                     });
                 }),
-                (e.prototype.needForcedOpen = function() {
-                    return i(this, void 0, void 0, function() {
+                (e.prototype.needForcedOpen = function () {
+                    return i(this, void 0, void 0, function () {
                         var e, t, n, r;
-                        return o(this, function(i) {
+                        return o(this, function (i) {
                             switch (i.label) {
                                 case 0:
                                     return this.isSafari
@@ -1891,7 +1873,7 @@
                                 case 2:
                                     return (
                                         (t = i.sent()),
-                                        (n = function(e, t) {
+                                        (n = function (e, t) {
                                             return e !== c.PERMISSION_GRANTED && t === c.PERMISSION_GRANTED;
                                         }),
                                         [4, f.keyValue.set(c.KEY_SAFARI_PREVIOUS_PERMISSION, t)]
@@ -1904,10 +1886,10 @@
                         });
                     });
                 }),
-                (e.prototype.defaultProcess = function() {
-                    return i(this, void 0, void 0, function() {
+                (e.prototype.defaultProcess = function () {
+                    return i(this, void 0, void 0, function () {
                         var e, t, n, r;
-                        return o(this, function(i) {
+                        return o(this, function (i) {
                             switch (i.label) {
                                 case 0:
                                     return (
@@ -2016,10 +1998,10 @@
                         });
                     });
                 }),
-                (e.prototype.getHWID = function() {
-                    return i(this, void 0, void 0, function() {
+                (e.prototype.getHWID = function () {
+                    return i(this, void 0, void 0, function () {
                         var e;
-                        return o(this, function(t) {
+                        return o(this, function (t) {
                             switch (t.label) {
                                 case 0:
                                     return [4, this.driver.getAPIParams()];
@@ -2029,10 +2011,10 @@
                         });
                     });
                 }),
-                (e.prototype.getPushToken = function() {
-                    return i(this, void 0, void 0, function() {
+                (e.prototype.getPushToken = function () {
+                    return i(this, void 0, void 0, function () {
                         var e;
-                        return o(this, function(t) {
+                        return o(this, function (t) {
                             switch (t.label) {
                                 case 0:
                                     return [4, this.driver.getAPIParams()];
@@ -2042,9 +2024,9 @@
                         });
                     });
                 }),
-                (e.prototype.getUserId = function() {
-                    return i(this, void 0, void 0, function() {
-                        return o(this, function(e) {
+                (e.prototype.getUserId = function () {
+                    return i(this, void 0, void 0, function () {
+                        return o(this, function (e) {
                             switch (e.label) {
                                 case 0:
                                     return [4, this.getParams()];
@@ -2054,10 +2036,10 @@
                         });
                     });
                 }),
-                (e.prototype.getParams = function() {
-                    return i(this, void 0, void 0, function() {
+                (e.prototype.getParams = function () {
+                    return i(this, void 0, void 0, function () {
                         var e;
-                        return o(this, function(t) {
+                        return o(this, function (t) {
                             switch (t.label) {
                                 case 0:
                                     return [4, f.keyValue.getAll()];
@@ -2072,30 +2054,30 @@
         })();
         t.default = b;
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         Object.defineProperty(t, '__esModule', { value: !0 });
-        var r = (function() {
+        var r = (function () {
             function e() {
                 this._events = {};
             }
             return (
-                (e.prototype.emit = function(e, t) {
+                (e.prototype.emit = function (e, t) {
                     var n = this._events[e] && this._events[e].slice();
                     if (n && n.length) for (var r = 0; n.length > r; r++) n[r](t);
                 }),
-                (e.prototype.on = function(e, t) {
+                (e.prototype.on = function (e, t) {
                     return this._events[e] || (this._events[e] = []), this._events[e].push(t), this;
                 }),
-                (e.prototype.once = function(e, t) {
+                (e.prototype.once = function (e, t) {
                     var n = this,
                         r = !1,
-                        i = function(o) {
+                        i = function (o) {
                             if (!r) return (r = !0), n.removeListener(e, i), t(o);
                         };
                     return this.on(e, i);
                 }),
-                (e.prototype.removeListener = function(e, t) {
+                (e.prototype.removeListener = function (e, t) {
                     var n = this._events[e];
                     if (n) {
                         var r = n.indexOf(t);
@@ -2107,12 +2089,12 @@
         })();
         t.default = r;
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         var r =
                 (this && this.__awaiter) ||
-                function(e, t, n, r) {
-                    return new (n || (n = Promise))(function(i, o) {
+                function (e, t, n, r) {
+                    return new (n || (n = Promise))(function (i, o) {
                         function s(e) {
                             try {
                                 u(r.next(e));
@@ -2130,7 +2112,7 @@
                         function u(e) {
                             e.done
                                 ? i(e.value)
-                                : new n(function(t) {
+                                : new n(function (t) {
                                       t(e.value);
                                   }).then(s, a);
                         }
@@ -2139,14 +2121,14 @@
                 },
             i =
                 (this && this.__generator) ||
-                function(e, t) {
+                function (e, t) {
                     var n,
                         r,
                         i,
                         o,
                         s = {
                             label: 0,
-                            sent: function() {
+                            sent: function () {
                                 if (1 & i[0]) throw i[1];
                                 return i[1];
                             },
@@ -2156,14 +2138,14 @@
                     return (
                         (o = { next: a(0), throw: a(1), return: a(2) }),
                         'function' == typeof Symbol &&
-                            (o[Symbol.iterator] = function() {
+                            (o[Symbol.iterator] = function () {
                                 return this;
                             }),
                         o
                     );
                     function a(o) {
-                        return function(a) {
-                            return (function(o) {
+                        return function (a) {
+                            return (function (o) {
                                 if (n) throw new TypeError('Generator is already executing.');
                                 for (; s; )
                                     try {
@@ -2227,15 +2209,15 @@
             s = n(1),
             a = n(2),
             u = n(3),
-            c = (function() {
+            c = (function () {
                 function e(e) {
                     this.params = e;
                 }
                 return (
-                    (e.prototype.initWorker = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.initWorker = function () {
+                        return r(this, void 0, void 0, function () {
                             var e, t, n, r, a;
-                            return i(this, function(i) {
+                            return i(this, function (i) {
                                 switch (i.label) {
                                     case 0:
                                         return (
@@ -2253,17 +2235,17 @@
                             });
                         });
                     }),
-                    (e.prototype.getPermission = function() {
-                        return r(this, void 0, void 0, function() {
-                            return i(this, function(e) {
+                    (e.prototype.getPermission = function () {
+                        return r(this, void 0, void 0, function () {
+                            return i(this, function (e) {
                                 return [2, Notification.permission];
                             });
                         });
                     }),
-                    (e.prototype.isSubscribed = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.isSubscribed = function () {
+                        return r(this, void 0, void 0, function () {
                             var e;
-                            return i(this, function(t) {
+                            return i(this, function (t) {
                                 switch (t.label) {
                                     case 0:
                                         return [4, navigator.serviceWorker.getRegistration()];
@@ -2275,21 +2257,21 @@
                             });
                         });
                     }),
-                    (e.prototype.emit = function(e) {
+                    (e.prototype.emit = function (e) {
                         var t = (this.params || {}).eventEmitter;
                         (void 0 === t
                             ? {
-                                  emit: function(e) {
+                                  emit: function (e) {
                                       return e;
                                   },
                               }
                             : t
                         ).emit(e);
                     }),
-                    (e.prototype.askSubscribe = function(e) {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.askSubscribe = function (e) {
+                        return r(this, void 0, void 0, function () {
                             var t, n, r;
-                            return i(this, function(i) {
+                            return i(this, function (i) {
                                 switch (i.label) {
                                     case 0:
                                         return [4, navigator.serviceWorker.ready];
@@ -2320,10 +2302,10 @@
                             });
                         });
                     }),
-                    (e.prototype.subscribe = function(e) {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.subscribe = function (e) {
+                        return r(this, void 0, void 0, function () {
                             var t, n;
-                            return i(this, function(r) {
+                            return i(this, function (r) {
                                 switch (r.label) {
                                     case 0:
                                         return [4, a.keyValue.get(s.KEY_DEVICE_DATA_REMOVED)];
@@ -2349,10 +2331,10 @@
                             });
                         });
                     }),
-                    (e.prototype.unsubscribe = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.unsubscribe = function () {
+                        return r(this, void 0, void 0, function () {
                             var e, t;
-                            return i(this, function(n) {
+                            return i(this, function (n) {
                                 switch (n.label) {
                                     case 0:
                                         return [4, navigator.serviceWorker.getRegistration()];
@@ -2364,10 +2346,10 @@
                             });
                         });
                     }),
-                    (e.prototype.getAPIParams = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.getAPIParams = function () {
+                        return r(this, void 0, void 0, function () {
                             var e, t, n, r, u;
-                            return i(this, function(i) {
+                            return i(this, function (i) {
                                 switch (i.label) {
                                     case 0:
                                         return [4, navigator.serviceWorker.getRegistration()];
@@ -2375,8 +2357,10 @@
                                         return i.sent() ? [3, 3] : ((e = s.KEY_API_PARAMS), [4, a.keyValue.getAll()]);
                                     case 2:
                                         if ((t = i.sent()[e])) return [2, t];
-                                        throw (this.emit(s.EVENT_ON_SW_INIT_ERROR),
-                                        Error('No service worker registration'));
+                                        throw (
+                                            (this.emit(s.EVENT_ON_SW_INIT_ERROR),
+                                            Error('No service worker registration'))
+                                        );
                                     case 3:
                                         return [4, navigator.serviceWorker.ready];
                                     case 4:
@@ -2401,15 +2385,15 @@
                             });
                         });
                     }),
-                    (e.prototype.getFCMToken = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.getFCMToken = function () {
+                        return r(this, void 0, void 0, function () {
                             var e,
                                 t,
                                 n,
                                 r,
                                 u,
                                 c = this;
-                            return i(this, function(i) {
+                            return i(this, function (i) {
                                 switch (i.label) {
                                     case 0:
                                         return [4, navigator.serviceWorker.getRegistration()];
@@ -2440,7 +2424,7 @@
                                                           method: 'post',
                                                           headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
                                                           body: JSON.stringify(u),
-                                                      }).then(function(e) {
+                                                      }).then(function (e) {
                                                           return c.onFCMSubscribe(e);
                                                       }),
                                                   ])
@@ -2452,10 +2436,10 @@
                             });
                         });
                     }),
-                    (e.prototype.onFCMSubscribe = function(e) {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.onFCMSubscribe = function (e) {
+                        return r(this, void 0, void 0, function () {
                             var t, n;
-                            return i(this, function(r) {
+                            return i(this, function (r) {
                                 switch (r.label) {
                                     case 0:
                                         if (200 !== e.status) return [3, 6];
@@ -2487,10 +2471,10 @@
                             });
                         });
                     }),
-                    (e.prototype.isNeedUnsubscribe = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.isNeedUnsubscribe = function () {
+                        return r(this, void 0, void 0, function () {
                             var e, t;
-                            return i(this, function(n) {
+                            return i(this, function (n) {
                                 switch (n.label) {
                                     case 0:
                                         return [4, this.checkSenderId()];
@@ -2502,10 +2486,10 @@
                             });
                         });
                     }),
-                    (e.prototype.checkFCMKeys = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.checkFCMKeys = function () {
+                        return r(this, void 0, void 0, function () {
                             var e, t, n;
-                            return i(this, function(r) {
+                            return i(this, function (r) {
                                 switch (r.label) {
                                     case 0:
                                         return [4, a.keyValue.get(s.KEY_FCM_SUBSCRIPTION)];
@@ -2519,12 +2503,12 @@
                             });
                         });
                     }),
-                    (e.prototype.checkSenderId = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.checkSenderId = function () {
+                        return r(this, void 0, void 0, function () {
                             var e,
                                 t,
                                 n = this;
-                            return i(this, function(r) {
+                            return i(this, function (r) {
                                 switch (r.label) {
                                     case 0:
                                         if (null === (e = document.querySelector('link[rel="manifest"]')))
@@ -2536,7 +2520,7 @@
                                                 fetch(t, {
                                                     method: 'get',
                                                     headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-                                                }).then(function(e) {
+                                                }).then(function (e) {
                                                     return n.isSameManifest(e);
                                                 }),
                                             ]
@@ -2547,10 +2531,10 @@
                             });
                         });
                     }),
-                    (e.prototype.isSameManifest = function(e) {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.isSameManifest = function (e) {
+                        return r(this, void 0, void 0, function () {
                             var t, n, r, o;
-                            return i(this, function(i) {
+                            return i(this, function (i) {
                                 switch (i.label) {
                                     case 0:
                                         return 200 !== e.status ? [3, 5] : [4, e.text()];
@@ -2582,12 +2566,12 @@
             })();
         t.default = c;
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         var r =
                 (this && this.__awaiter) ||
-                function(e, t, n, r) {
-                    return new (n || (n = Promise))(function(i, o) {
+                function (e, t, n, r) {
+                    return new (n || (n = Promise))(function (i, o) {
                         function s(e) {
                             try {
                                 u(r.next(e));
@@ -2605,7 +2589,7 @@
                         function u(e) {
                             e.done
                                 ? i(e.value)
-                                : new n(function(t) {
+                                : new n(function (t) {
                                       t(e.value);
                                   }).then(s, a);
                         }
@@ -2614,14 +2598,14 @@
                 },
             i =
                 (this && this.__generator) ||
-                function(e, t) {
+                function (e, t) {
                     var n,
                         r,
                         i,
                         o,
                         s = {
                             label: 0,
-                            sent: function() {
+                            sent: function () {
                                 if (1 & i[0]) throw i[1];
                                 return i[1];
                             },
@@ -2631,14 +2615,14 @@
                     return (
                         (o = { next: a(0), throw: a(1), return: a(2) }),
                         'function' == typeof Symbol &&
-                            (o[Symbol.iterator] = function() {
+                            (o[Symbol.iterator] = function () {
                                 return this;
                             }),
                         o
                     );
                     function a(o) {
-                        return function(a) {
-                            return (function(o) {
+                        return function (a) {
+                            return (function (o) {
                                 if (n) throw new TypeError('Generator is already executing.');
                                 for (; s; )
                                     try {
@@ -2700,24 +2684,24 @@
         Object.defineProperty(t, '__esModule', { value: !0 });
         var o = n(0),
             s = n(1),
-            a = (function() {
+            a = (function () {
                 function e(e) {
                     this.params = e;
                 }
                 return (
-                    (e.prototype.getPermissionObject = function() {
+                    (e.prototype.getPermissionObject = function () {
                         return safari.pushNotification.permission(this.params.webSitePushID);
                     }),
-                    (e.prototype.getPermission = function() {
-                        return r(this, void 0, void 0, function() {
-                            return i(this, function(e) {
+                    (e.prototype.getPermission = function () {
+                        return r(this, void 0, void 0, function () {
+                            return i(this, function (e) {
                                 return [2, this.getPermissionObject().permission];
                             });
                         });
                     }),
-                    (e.prototype.isSubscribed = function() {
-                        return r(this, void 0, void 0, function() {
-                            return i(this, function(e) {
+                    (e.prototype.isSubscribed = function () {
+                        return r(this, void 0, void 0, function () {
+                            return i(this, function (e) {
                                 switch (e.label) {
                                     case 0:
                                         return [4, this.getPermission()];
@@ -2727,13 +2711,13 @@
                             });
                         });
                     }),
-                    (e.prototype.askSubscribe = function() {
+                    (e.prototype.askSubscribe = function () {
                         var e = this.params || {},
                             t = e.eventEmitter,
                             n =
                                 void 0 === t
                                     ? {
-                                          emit: function(e) {
+                                          emit: function (e) {
                                               return e;
                                           },
                                       }
@@ -2744,27 +2728,30 @@
                             u = void 0 === a ? '' : a,
                             c = e.pushwooshApiUrl,
                             l = void 0 === c ? '' : c;
-                        return new Promise(function(e, t) {
-                            o.getPushwooshUrl(i, l).then(function(r) {
-                                safari.pushNotification.requestPermission(r + 'safari', u, { application: i }, function(
-                                    r
-                                ) {
-                                    r.permission === s.PERMISSION_GRANTED
-                                        ? (n.emit(s.EVENT_ON_PERMISSION_GRANTED), e(!0))
-                                        : (n.emit(s.EVENT_ON_PERMISSION_DENIED), t('Safari permission denied'));
-                                });
+                        return new Promise(function (e, t) {
+                            o.getPushwooshUrl(i, l).then(function (r) {
+                                safari.pushNotification.requestPermission(
+                                    r + 'safari',
+                                    u,
+                                    { application: i },
+                                    function (r) {
+                                        r.permission === s.PERMISSION_GRANTED
+                                            ? (n.emit(s.EVENT_ON_PERMISSION_GRANTED), e(!0))
+                                            : (n.emit(s.EVENT_ON_PERMISSION_DENIED), t('Safari permission denied'));
+                                    }
+                                );
                             });
                         });
                     }),
-                    (e.prototype.unsubscribe = function() {
-                        return new Promise(function(e) {
+                    (e.prototype.unsubscribe = function () {
+                        return new Promise(function (e) {
                             return e(!0);
                         });
                     }),
-                    (e.prototype.getAPIParams = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.getAPIParams = function () {
+                        return r(this, void 0, void 0, function () {
                             var e, t, n, r;
-                            return i(this, function(i) {
+                            return i(this, function (i) {
                                 return (
                                     (e = (this.getPermissionObject() || {}).deviceToken),
                                     (n = ((t = void 0 === e ? '' : e) && t.toLowerCase()) || ''),
@@ -2779,24 +2766,24 @@
             })();
         t.default = a;
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         Object.defineProperty(t, '__esModule', { value: !0 });
         var r = n(3),
             i = n(2),
             o = n(1),
             s = n(0);
-        t.default = function(e, t) {
-            return function(n, a) {
-                return new Promise(function(u, c) {
-                    s.getPushwooshUrl(e, t).then(function(e) {
+        t.default = function (e, t) {
+            return function (n, a) {
+                return new Promise(function (u, c) {
+                    s.getPushwooshUrl(e, t).then(function (e) {
                         try {
                             var t = '' + e + n,
                                 s = { request: a },
                                 l = new XMLHttpRequest();
                             l.open('POST', t, !0),
                                 l.setRequestHeader('Content-Type', 'text/plain;charset=UTF-8'),
-                                (l.onload = function() {
+                                (l.onload = function () {
                                     if (200 == l.status)
                                         try {
                                             var e = JSON.parse(l.responseText),
@@ -2830,7 +2817,7 @@
                                         i.keyValue.set(o.KEY_API_BASE_URL, null),
                                             r.logAndRejectError('Error occurred, status code: ' + l.status, c);
                                 }),
-                                (l.onerror = function(e) {
+                                (l.onerror = function (e) {
                                     r.logAndRejectError('Pushwoosh response to ' + n + ' call in not ok: ' + e, c);
                                 }),
                                 l.send(JSON.stringify(s));
@@ -2842,12 +2829,12 @@
             };
         };
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         var r =
                 (this && this.__awaiter) ||
-                function(e, t, n, r) {
-                    return new (n || (n = Promise))(function(i, o) {
+                function (e, t, n, r) {
+                    return new (n || (n = Promise))(function (i, o) {
                         function s(e) {
                             try {
                                 u(r.next(e));
@@ -2865,7 +2852,7 @@
                         function u(e) {
                             e.done
                                 ? i(e.value)
-                                : new n(function(t) {
+                                : new n(function (t) {
                                       t(e.value);
                                   }).then(s, a);
                         }
@@ -2874,14 +2861,14 @@
                 },
             i =
                 (this && this.__generator) ||
-                function(e, t) {
+                function (e, t) {
                     var n,
                         r,
                         i,
                         o,
                         s = {
                             label: 0,
-                            sent: function() {
+                            sent: function () {
                                 if (1 & i[0]) throw i[1];
                                 return i[1];
                             },
@@ -2891,14 +2878,14 @@
                     return (
                         (o = { next: a(0), throw: a(1), return: a(2) }),
                         'function' == typeof Symbol &&
-                            (o[Symbol.iterator] = function() {
+                            (o[Symbol.iterator] = function () {
                                 return this;
                             }),
                         o
                     );
                     function a(o) {
-                        return function(a) {
-                            return (function(o) {
+                        return function (a) {
+                            return (function (o) {
                                 if (n) throw new TypeError('Generator is already executing.');
                                 for (; s; )
                                     try {
@@ -2963,7 +2950,7 @@
             a = n(5),
             u = n(13),
             c = n(14),
-            l = (function() {
+            l = (function () {
                 function e(e) {
                     var t = this;
                     if (((this.pw = e), this.pw.shouldInit())) {
@@ -2977,30 +2964,30 @@
                         );
                         (this.config = Object.assign(a.SUBSCRIBE_WIDGET_DEFAULT_CONFIG, this.pw.subscribeWidgetConfig)),
                             (this.config.tooltipText = n),
-                            this.pw.isSubscribed().then(function(e) {
+                            this.pw.isSubscribed().then(function (e) {
                                 e || t.pw.isDeviceUnregistered() || t.render();
                             });
                     } else console.warn('Browser does not support push notifications');
                 }
                 return (
-                    (e.prototype.addStylesToElement = function(e, t) {
-                        Object.keys(e).forEach(function(n) {
+                    (e.prototype.addStylesToElement = function (e, t) {
+                        Object.keys(e).forEach(function (n) {
                             t.style[n] = e[n];
                         });
                     }),
-                    (e.prototype.createContainer = function() {
+                    (e.prototype.createContainer = function () {
                         var e = document.createElement('div');
                         (e.id = a.WIDGET_CONTAINER_ID), (e.className = 'pushwoosh-subscribe-widget');
                         var t = u.default.getBellPosition(this.config.position, this.config.indent),
                             n = Object.assign({ zIndex: this.config.zIndex }, t);
                         return this.addStylesToElement(n, e), e;
                     }),
-                    (e.prototype.createStyle = function() {
+                    (e.prototype.createStyle = function () {
                         var e = n(15),
                             t = document.createElement('style');
                         return (t.innerHTML = e), t;
                     }),
-                    (e.prototype.createBell = function() {
+                    (e.prototype.createBell = function () {
                         var e = document.createElement('div');
                         return (
                             (e.className = 'pushwoosh-subscribe-widget__bell-button'),
@@ -3019,10 +3006,10 @@
                             e
                         );
                     }),
-                    (e.prototype.createTooltip = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.createTooltip = function () {
+                        return r(this, void 0, void 0, function () {
                             var e, t, n, r, o;
-                            return i(this, function(i) {
+                            return i(this, function (i) {
                                 switch (i.label) {
                                     case 0:
                                         return (
@@ -3042,10 +3029,10 @@
                             });
                         });
                     }),
-                    (e.prototype.createTooltipContent = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.createTooltipContent = function () {
+                        return r(this, void 0, void 0, function () {
                             var e, t;
-                            return i(this, function(n) {
+                            return i(this, function (n) {
                                 switch (n.label) {
                                     case 0:
                                         return (
@@ -3061,10 +3048,10 @@
                             });
                         });
                     }),
-                    (e.prototype.tooltipTextFactory = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.tooltipTextFactory = function () {
+                        return r(this, void 0, void 0, function () {
                             var e, t;
-                            return i(this, function(n) {
+                            return i(this, function (n) {
                                 switch (n.label) {
                                     case 0:
                                         return [4, this.pw.driver.getPermission()];
@@ -3084,7 +3071,7 @@
                             });
                         });
                     }),
-                    (e.prototype.createPopover = function() {
+                    (e.prototype.createPopover = function () {
                         var e = document.createElement('div'),
                             t = document.createElement('div'),
                             n = u.default.getPopoverPosition(this.config.position, this.config.size),
@@ -3107,7 +3094,7 @@
                             t
                         );
                     }),
-                    (e.prototype.createPopoverContent = function() {
+                    (e.prototype.createPopoverContent = function () {
                         var e = document.createElement('div');
                         e.className = 'pushwoosh-subscribe-widget__popover-content';
                         var t = document.createElement('img');
@@ -3125,7 +3112,7 @@
                             e
                         );
                     }),
-                    (e.prototype.helpImageSourceFactory = function() {
+                    (e.prototype.helpImageSourceFactory = function () {
                         var e, t;
                         if (s.isOperaBrowser())
                             return [
@@ -3154,10 +3141,10 @@
                         }
                         return [e, t];
                     }),
-                    (e.prototype.render = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.render = function () {
+                        return r(this, void 0, void 0, function () {
                             var e, t, n;
-                            return i(this, function(r) {
+                            return i(this, function (r) {
                                 switch (r.label) {
                                     case 0:
                                         return (
@@ -3195,13 +3182,13 @@
                             });
                         });
                     }),
-                    (e.prototype.toggleHelpPopover = function() {
+                    (e.prototype.toggleHelpPopover = function () {
                         this.popover.classList.toggle('pushwoosh-subscribe-widget__popover__visible');
                     }),
-                    (e.prototype.clickBell = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.clickBell = function () {
+                        return r(this, void 0, void 0, function () {
                             var e;
-                            return i(this, function(t) {
+                            return i(this, function (t) {
                                 switch (t.label) {
                                     case 0:
                                         return [4, this.pw.driver.getPermission()];
@@ -3232,19 +3219,19 @@
                             });
                         });
                     }),
-                    (e.prototype.onSubscribeEvent = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.onSubscribeEvent = function () {
+                        return r(this, void 0, void 0, function () {
                             var e,
                                 t = this;
-                            return i(this, function(n) {
+                            return i(this, function (n) {
                                 return null === (e = this.tooltip.querySelector('div'))
                                     ? [2]
                                     : ((e.innerText = this.config.tooltipText.successSubscribe),
                                       this.tooltip.classList.add('pushwoosh-subscribe-widget__tooltip__visible'),
-                                      setTimeout(function() {
-                                          return r(t, void 0, void 0, function() {
+                                      setTimeout(function () {
+                                          return r(t, void 0, void 0, function () {
                                               var t;
-                                              return i(this, function(n) {
+                                              return i(this, function (n) {
                                                   switch (n.label) {
                                                       case 0:
                                                           return (
@@ -3270,10 +3257,10 @@
                             });
                         });
                     }),
-                    (e.prototype.onPermissionDeniedEvent = function() {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.onPermissionDeniedEvent = function () {
+                        return r(this, void 0, void 0, function () {
                             var e, t;
-                            return i(this, function(n) {
+                            return i(this, function (n) {
                                 switch (n.label) {
                                     case 0:
                                         return null === (e = this.tooltip.querySelector('div'))
@@ -3285,7 +3272,7 @@
                             });
                         });
                     }),
-                    (e.prototype.clickOutOfPopover = function(e) {
+                    (e.prototype.clickOutOfPopover = function (e) {
                         this.popover.classList.contains('pushwoosh-subscribe-widget__popover__visible') &&
                             !e.target.classList.contains('pushwoosh-subscribe-widget__popover') &&
                             null === e.target.closest('.pushwoosh-subscribe-widget__popover') &&
@@ -3293,10 +3280,10 @@
                             null === e.target.closest('.pushwoosh-subscribe-widget__bell-button') &&
                             this.popover.classList.remove('pushwoosh-subscribe-widget__popover__visible');
                     }),
-                    (e.prototype.triggerPwEvent = function(e, t) {
-                        return r(this, void 0, void 0, function() {
+                    (e.prototype.triggerPwEvent = function (e, t) {
+                        return r(this, void 0, void 0, function () {
                             var n;
-                            return i(this, function(r) {
+                            return i(this, function (r) {
                                 switch (r.label) {
                                     case 0:
                                         return void 0 === this.pw.api ? [2] : [4, this.pw.getParams()];
@@ -3313,18 +3300,18 @@
                     e
                 );
             })();
-        document.addEventListener('pushwoosh.initialized', function(e) {
+        document.addEventListener('pushwoosh.initialized', function (e) {
             e.detail.pw.subscribeWidgetConfig.enable && new l(e.detail.pw);
         });
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         Object.defineProperty(t, '__esModule', { value: !0 });
         var r = n(5),
-            i = (function() {
+            i = (function () {
                 function e() {}
                 return (
-                    (e.getBellPosition = function(e, t) {
+                    (e.getBellPosition = function (e, t) {
                         var n;
                         switch (e) {
                             case r.BELL_POSITION_BOTTOM_RIGHT:
@@ -3344,7 +3331,7 @@
                         }
                         return n;
                     }),
-                    (e.getTooltipPosition = function(e, t) {
+                    (e.getTooltipPosition = function (e, t) {
                         var n,
                             i,
                             o = parseInt(t) + 12 + 'px';
@@ -3364,7 +3351,7 @@
                         }
                         return [n, i];
                     }),
-                    (e.getPopoverPosition = function(e, t) {
+                    (e.getPopoverPosition = function (e, t) {
                         var n,
                             i,
                             o = parseInt(t) + 15 + 'px';
@@ -3386,7 +3373,7 @@
                         }
                         return [n, i];
                     }),
-                    (e.getPopoverArrowPosition = function(e, t) {
+                    (e.getPopoverArrowPosition = function (e, t) {
                         var n;
                         switch (e) {
                             case r.BELL_POSITION_BOTTOM_RIGHT:
@@ -3426,10 +3413,10 @@
             })();
         t.default = i;
     },
-    function(e, t, n) {
+    function (e, t, n) {
         'use strict';
         Object.defineProperty(t, '__esModule', { value: !0 }),
-            (t.default = function(e, t) {
+            (t.default = function (e, t) {
                 return (
                     '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<svg\n   xmlns:dc="http://purl.org/dc/elements/1.1/"\n   xmlns:cc="http://creativecommons.org/ns#"\n   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n   xmlns:svg="http://www.w3.org/2000/svg"\n   xmlns="http://www.w3.org/2000/svg"\n   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"\n   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"\n   version="1.1"\n   id="Capa_1"\n   x="0px"\n   y="0px"\n   viewBox="0 0 346.013 346.013"\n   style="enable-background:new 0 0 346.013 346.013;width: 80%; height: auto; vertical-align: middle;"\n   xml:space="preserve"\n   inkscape:version="0.91 r13725"\n   sodipodi:docname="alarm_white.svg"><metadata\n     id="metadata51"><rdf:RDF><cc:Work\n         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type\n           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs\n     id="defs49" /><sodipodi:namedview\n     borderopacity="1"\n     objecttolerance="10"\n     gridtolerance="10"\n     guidetolerance="10"\n     inkscape:pageopacity="0"\n     inkscape:pageshadow="2"\n     inkscape:window-width="1618"\n     inkscape:window-height="828"\n     id="namedview47"\n     showgrid="false"\n     inkscape:zoom="0.6820553"\n     inkscape:cx="173.0065"\n     inkscape:cy="173.0065"\n     inkscape:window-x="0"\n     inkscape:window-y="0"\n     inkscape:window-maximized="0"\n     inkscape:current-layer="g3" /><g\n     id="g3"><path\n       d="m 256.76227,220.19006 c -1.77513,-2.69766 -3.45154,-5.24564 -3.98966,-7.46382 -0.042,-0.17861 -0.0911,-0.36128 -0.16237,-0.61436 -2.28354,-7.67647 0.69147,-24.43921 2.46886,-34.45124 0.26788,-1.50394 0.52274,-2.94197 0.75286,-4.29035 0.0232,-0.13675 0.044,-0.27211 0.0724,-0.48006 1.95582,-15.28051 2.58811,-37.91956 -5.51044,-58.99147 -5.6032,-14.57978 -14.45978,-25.82612 -26.3559,-33.48393 1.26598,-9.812938 -4.85967,-19.343691 -14.66682,-22.0511 -9.80715,-2.70741 -19.95724,2.33226 -23.90298,11.405413 -14.1382,0.467533 -27.51111,5.577097 -39.80114,15.219267 -17.76129,13.9298 -28.83431,33.68757 -34.99389,47.80757 l -0.0479,0.11335 c -0.0512,0.12175 -0.0998,0.24114 -0.13249,0.32962 -0.49733,1.28292 -1.01552,2.64514 -1.55689,4.07255 -3.61311,9.51043 -9.66004,25.42824 -15.611995,30.89342 -0.106524,0.10027 -0.208228,0.20187 -0.362362,0.35435 -1.636243,1.66563 -4.382941,2.99463 -7.288979,4.40101 -7.145531,3.45301 -22.013613,10.64166 -17.206389,31.67844 0.929154,4.07105 4.008437,7.29057 8.033861,8.40185 l 167.570804,46.2604 c 4.02253,1.11048 8.31521,-0.0729 11.2052,-3.08958 14.91617,-15.58874 5.84693,-29.38668 1.48625,-36.02133 z"\n       id="path5"\n       inkscape:connector-curvature="0"\n       vector-effect="non-scaling-stroke"\n       style="fill:' +
                     e +
@@ -3443,24 +3430,24 @@
                 );
             });
     },
-    function(e, t, n) {
+    function (e, t, n) {
         var r = n(16);
         e.exports = 'string' == typeof r ? r : '' + r;
     },
-    function(e, t, n) {
+    function (e, t, n) {
         (e.exports = n(17)(void 0)).push([
             e.i,
             '/* Widget */\n.pushwoosh-subscribe-widget {\n  position: fixed;\n  display: block;\n  -webkit-transform: translate3d(0, 0, 0);\n          transform: translate3d(0, 0, 0);\n}\n\n.pushwoosh-subscribe-widget__subscribed {\n  display: none;\n}\n\n.pushwoosh-subscribe-widget .pushwoosh-subscribe-widget__bell-button {\n  -webkit-border-radius: 50%;\n          border-radius: 50%;\n  cursor: pointer;\n  font-size: 0;\n  text-align: center;\n  -webkit-transform: scale(0.9) translate3d(0, 0, 0);\n          transform: scale(0.9) translate3d(0, 0, 0);\n  -webkit-transition: -webkit-transform .3s ease-in-out;\n  transition: -webkit-transform .3s ease-in-out;\n  -o-transition: transform .3s ease-in-out;\n  transition: transform .3s ease-in-out;\n  transition: transform .3s ease-in-out, -webkit-transform .3s ease-in-out;\n  position: relative;\n}\n\n.pushwoosh-subscribe-widget .pushwoosh-subscribe-widget__bell-button:hover {\n  -webkit-transform: scale(1);\n      -ms-transform: scale(1);\n          transform: scale(1);\n}\n\n/* Tooltip */\n.pushwoosh-subscribe-widget__tooltip {\n  position: absolute;\n  height: 48px;\n  max-width: 300px;\n  min-width: 200px;\n  padding: 5px 7px;\n  background-color: #3b444b;\n  color: #ffffff;\n  text-align: center;\n  vertical-align: middle;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  line-height: 38px;\n  font-size: 0;\n  font-weight: normal;\n  visibility: hidden;\n  opacity: 0;\n  -webkit-transition: visibility 0s ease-in .3s,\n              opacity .3s ease-in;\n  -o-transition: visibility 0s ease-in .3s,\n              opacity .3s ease-in;\n  transition: visibility 0s ease-in .3s,\n              opacity .3s ease-in;\n  top: 50%;\n  -webkit-transform: translate(0, -50%);\n      -ms-transform: translate(0, -50%);\n          transform: translate(0, -50%);\n  -webkit-box-shadow: 1px 1px 5px 0 rgba(0,0,0,0.5);\n          box-shadow: 1px 1px 5px 0 rgba(0,0,0,0.5);\n}\n\n.pushwoosh-subscribe-widget__tooltip__right:after,\n.pushwoosh-subscribe-widget__tooltip__left:after {\n  content: "";\n  top: 50%;\n  height: 0;\n  width: 0;\n  position: absolute;\n  pointer-events: none;\n  border-top: 5px solid transparent;\n  border-bottom: 5px solid transparent;\n  background: #3b444b;\n}\n\n.pushwoosh-subscribe-widget__tooltip__right:after {\n  left: -webkit-calc(100% - 7px);\n  left: calc(100% - 7px);\n  border-top: 5px solid #3b444b;\n  border-left: 5px solid #3b444b;\n  border-right: 5px solid transparent;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  -webkit-transform-origin: 0 0;\n      -ms-transform-origin: 0 0;\n          transform-origin: 0 0;\n  -webkit-transform: rotate(-45deg);\n      -ms-transform: rotate(-45deg);\n          transform: rotate(-45deg);\n  -webkit-box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.25);\n          box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.25);\n}\n\n.pushwoosh-subscribe-widget__tooltip__left:after {\n  left: -7px;\n  border-top: 5px solid #3b444b;\n  border-right: 5px solid #3b444b;\n  border-left: 5px solid transparent;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  -webkit-transform-origin: 0 0;\n      -ms-transform-origin: 0 0;\n          transform-origin: 0 0;\n  -webkit-transform: rotate(-45deg);\n      -ms-transform: rotate(-45deg);\n          transform: rotate(-45deg);\n  -webkit-box-shadow: -2px -2px 2px 0 rgba(0, 0, 0, 0.25);\n          box-shadow: -2px -2px 2px 0 rgba(0, 0, 0, 0.25);\n}\n\n.pushwoosh-subscribe-widget__bell-button:hover + .pushwoosh-subscribe-widget__tooltip,\n.pushwoosh-subscribe-widget__tooltip.pushwoosh-subscribe-widget__tooltip__visible {\n  display: block;\n  visibility: visible;\n  opacity: 1;\n  -webkit-transition-delay: 0s;\n       -o-transition-delay: 0s;\n          transition-delay: 0s;\n}\n\n.pushwoosh-subscribe-widget .pushwoosh-subscribe-widget__tooltip-content {\n  display: inline-block;\n  vertical-align: middle;\n  font-size: 14px;\n  line-height: 1.4;\n  white-space: nowrap;\n  overflow: hidden;\n  padding-right: 5px;\n  -o-text-overflow: ellipsis;\n     text-overflow: ellipsis;\n  max-width: 100%;\n}\n\n/* Popover */\n\n.pushwoosh-subscribe-widget .pushwoosh-subscribe-widget__popover {\n  position: absolute;\n  right: auto;\n  -webkit-box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.5);\n          box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.5);\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  background: #9ca8b1;\n  visibility: hidden;\n  opacity: 0;\n  -webkit-transition: visibility 0s ease-in .5s,\n              opacity .5s ease-in;\n  -o-transition: visibility 0s ease-in .5s,\n              opacity .5s ease-in;\n  transition: visibility 0s ease-in .5s,\n              opacity .5s ease-in;\n}\n\n.pushwoosh-subscribe-widget .pushwoosh-subscribe-widget__popover__visible {\n  display: block;\n  visibility: visible;\n  opacity: 1;\n  -webkit-transition-delay: 0s;\n       -o-transition-delay: 0s;\n          transition-delay: 0s;\n}\n\n.pushwoosh-subscribe-widget__popover__bottom:after,\n.pushwoosh-subscribe-widget__popover__top:after {\n  content: "";\n  height: 0;\n  width: 0;\n  position: absolute;\n  pointer-events: none;\n  border-right: 8px solid transparent;\n  border-left: 8px solid #9ca8b1;\n  background: #9ca8b1;\n  -webkit-transform-origin: 0 0;\n      -ms-transform-origin: 0 0;\n          transform-origin: 0 0;\n  -webkit-transform: rotate(-45deg);\n      -ms-transform: rotate(-45deg);\n          transform: rotate(-45deg);\n}\n\n.pushwoosh-subscribe-widget__popover__bottom:after {\n  border-bottom: 8px solid #9ca8b1;\n  border-top: 8px solid transparent;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  -webkit-box-shadow: -2px 2px 1px 0 rgba(0, 0, 0, 0.25);\n          box-shadow: -2px 2px 1px 0 rgba(0, 0, 0, 0.25);\n  bottom: -16px;\n}\n\n.pushwoosh-subscribe-widget__popover__top:after {\n  top: 0;\n  border-top: 8px solid #9ca8b1;\n  border-bottom: 8px solid transparent;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  -webkit-box-shadow: 1px -1px 1px 0 rgba(0, 0, 0, 0.25);\n          box-shadow: 1px -1px 1px 0 rgba(0, 0, 0, 0.25);\n}\n\n.pushwoosh-subscribe-widget__popover-content-wrapper {\n  overflow: auto;\n  max-width: 100%;\n}\n\n\n.pushwoosh-subscribe-widget .pushwoosh-subscribe-widget__popover-content {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  padding: 14px;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  float: left;\n  min-width: 100%;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n\n.pushwoosh-subscribe-widget .pushwoosh-subscribe-widget__popover img {\n  display: block;\n}\n\n.pushwoosh-subscribe-widget .pushwoosh-subscribe-widget__popover img:first-child {\n  margin-bottom: 14px;\n}\n\n@media (max-width: 767px) and (orientation: portrait) {\n  .pushwoosh-subscribe-widget .pushwoosh-subscribe-widget__popover-content {\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n    -webkit-flex-direction: column;\n        -ms-flex-direction: column;\n            flex-direction: column;\n  }\n  .pushwoosh-subscribe-widget .pushwoosh-subscribe-widget__popover img {\n    max-width: 280px;\n    height: auto;\n  }\n  .pushwoosh-subscribe-widget .pushwoosh-subscribe-widget__popover img:first-child {\n    margin-right: 0;\n    margin-bottom: 14px;\n  }\n}\n@media (max-width: 767px) and (orientation: landscape) {\n  .pushwoosh-subscribe-widget .pushwoosh-subscribe-widget__popover-content {\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n    -webkit-flex-direction: row;\n        -ms-flex-direction: row;\n            flex-direction: row;\n  }\n  .pushwoosh-subscribe-widget .pushwoosh-subscribe-widget__popover img {\n    max-width: 280px;\n    height: auto;\n  }\n  .pushwoosh-subscribe-widget .pushwoosh-subscribe-widget__popover img:first-child {\n    margin-right: 14px;\n    margin-bottom: 0;\n  }\n}\n',
             '',
         ]);
     },
-    function(e, t) {
-        e.exports = function(e) {
+    function (e, t) {
+        e.exports = function (e) {
             var t = [];
             return (
-                (t.toString = function() {
-                    return this.map(function(t) {
-                        var n = (function(e, t) {
+                (t.toString = function () {
+                    return this.map(function (t) {
+                        var n = (function (e, t) {
                             var n = e[1] || '',
                                 r = e[3];
                             if (!r) return n;
@@ -3469,20 +3456,17 @@
                                         '/*# sourceMappingURL=data:application/json;charset=utf-8;base64,' +
                                         btoa(unescape(encodeURIComponent(JSON.stringify(r)))) +
                                         ' */',
-                                    o = r.sources.map(function(e) {
+                                    o = r.sources.map(function (e) {
                                         return '/*# sourceURL=' + r.sourceRoot + e + ' */';
                                     });
-                                return [n]
-                                    .concat(o)
-                                    .concat([i])
-                                    .join('\n');
+                                return [n].concat(o).concat([i]).join('\n');
                             }
                             return '' + n;
                         })(t, e);
                         return t[2] ? '@media ' + t[2] + '{' + n + '}' : n;
                     }).join('');
                 }),
-                (t.i = function(e, n) {
+                (t.i = function (e, n) {
                     'string' == typeof e && (e = [[null, e, '']]);
                     for (var r = {}, i = 0; this.length > i; i++) {
                         var o = this[i][0];

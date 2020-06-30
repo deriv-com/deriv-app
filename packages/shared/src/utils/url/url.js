@@ -20,7 +20,7 @@ export const reset = () => {
     location_url = window?.location ?? location_url;
 };
 
-export const params = href => {
+export const params = (href) => {
     const arr_params = [];
     const parsed = ((href ? new URL(href) : location_url).search || '').substr(1).split('&');
     let p_l = parsed.length;
@@ -31,7 +31,7 @@ export const params = href => {
     return arr_params;
 };
 
-export const paramsHash = href => {
+export const paramsHash = (href) => {
     const param_hash = {};
     const arr_params = params(href);
     let param = arr_params.length;
@@ -43,7 +43,7 @@ export const paramsHash = href => {
     return param_hash;
 };
 
-export const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_/])/g, '') : '');
+export const normalizePath = (path) => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_/])/g, '') : '');
 
 export const urlFor = (
     path,
@@ -74,7 +74,7 @@ export const urlFor = (
     return urlForLanguage(lang, new_url);
 };
 
-export const urlForCurrentDomain = href => {
+export const urlForCurrentDomain = (href) => {
     const current_domain = getCurrentProductionDomain();
 
     if (!current_domain) {
@@ -128,7 +128,7 @@ export const removeBranchName = (path = '') => {
     return path.replace(/^\/br_.*?\//, '/');
 };
 
-export const param = name => paramsHash()[name];
+export const param = (name) => paramsHash()[name];
 
 export const getHostMap = () => host_map;
 
@@ -136,7 +136,7 @@ export const resetStaticHost = () => {
     static_host = undefined;
 };
 
-export const setUrlLanguage = lang => {
+export const setUrlLanguage = (lang) => {
     default_language = lang;
 };
 

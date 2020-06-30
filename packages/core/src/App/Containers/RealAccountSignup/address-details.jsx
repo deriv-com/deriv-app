@@ -16,7 +16,7 @@ import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
 import { validLength, validPostCode } from 'Utils/Validator/declarative-validation-rules';
 
-const InputField = props => {
+const InputField = (props) => {
     return (
         <Field name={props.name}>
             {({ field, form: { errors, touched } }) => (
@@ -37,7 +37,7 @@ const InputField = props => {
 
 const getLocation = (location_list, value, type) => {
     const location_obj = location_list.find(
-        location => location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase()
+        (location) => location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase()
     );
 
     if (location_obj) return location_obj[type];
@@ -66,7 +66,7 @@ class AddressDetails extends React.Component {
         this.is_mounted = false;
     }
 
-    handleCancel = values => {
+    handleCancel = (values) => {
         this.props.onSave(this.props.index, values);
         this.props.onCancel();
     };
@@ -168,7 +168,7 @@ class AddressDetails extends React.Component {
                                                                             value={values.address_state}
                                                                             list_items={this.props.states_list}
                                                                             use_text={true}
-                                                                            onChange={e =>
+                                                                            onChange={(e) =>
                                                                                 setFieldValue(
                                                                                     'address_state',
                                                                                     e.target.value,
@@ -216,13 +216,13 @@ class AddressDetails extends React.Component {
         );
     }
 
-    validateAddressDetails = values => {
+    validateAddressDetails = (values) => {
         const validations = {
-            address_line_1: [v => !!v, v => /^[\w\W\s/-]{1,70}$/gu.exec(v) !== null],
-            address_line_2: [v => !v || /^[\w\W\s/-]{0,70}$/gu.exec(v) !== null],
-            address_city: [v => !!v, v => /^[a-zA-Z\s\W'.-]{1,35}$/gu.exec(v) !== null],
-            address_state: [v => /^[a-zA-Z\s\W'.-]{0,35}$/gu.exec(v) !== null],
-            address_postcode: [v => validLength(v, { min: 0, max: 20 }), v => validPostCode(v)],
+            address_line_1: [(v) => !!v, (v) => /^[\w\W\s/-]{1,70}$/gu.exec(v) !== null],
+            address_line_2: [(v) => !v || /^[\w\W\s/-]{0,70}$/gu.exec(v) !== null],
+            address_city: [(v) => !!v, (v) => /^[a-zA-Z\s\W'.-]{1,35}$/gu.exec(v) !== null],
+            address_state: [(v) => /^[a-zA-Z\s\W'.-]{0,35}$/gu.exec(v) !== null],
+            address_postcode: [(v) => validLength(v, { min: 0, max: 20 }), (v) => validPostCode(v)],
         };
 
         const mappedKey = {
@@ -251,7 +251,7 @@ class AddressDetails extends React.Component {
         const errors = {};
 
         Object.entries(validations).forEach(([key, rules]) => {
-            const error_index = rules.findIndex(v => !v(values[key]));
+            const error_index = rules.findIndex((v) => !v(values[key]));
             if (error_index !== -1) {
                 switch (key) {
                     case 'address_state':

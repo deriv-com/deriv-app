@@ -16,7 +16,7 @@ const KEY_CODE = {
 const getFilteredItems = (val, list) => {
     const is_string_array = list.length && typeof list[0] === 'string';
 
-    return list.filter(item =>
+    return list.filter((item) =>
         is_string_array ? item.toLowerCase().includes(val) : item.text.toLowerCase().includes(val)
     );
 };
@@ -44,7 +44,7 @@ class Autocomplete extends React.PureComponent {
         }
     }
 
-    handleScrollStop = e => {
+    handleScrollStop = (e) => {
         // pass onScrollStop func callback when scrolling stops
         if (typeof this.props.onScrollStop !== 'function') return;
         const element = e.target;
@@ -57,9 +57,9 @@ class Autocomplete extends React.PureComponent {
         }, 150);
     };
 
-    setInputWrapperRef = node => (this.input_wrapper_ref = node);
+    setInputWrapperRef = (node) => (this.input_wrapper_ref = node);
 
-    onKeyPressed = event => {
+    onKeyPressed = (event) => {
         const { active_index, filtered_items, should_show_list } = this.state;
 
         switch (event.keyCode) {
@@ -92,7 +92,7 @@ class Autocomplete extends React.PureComponent {
         }
     };
 
-    setActiveIndex = index => this.setState({ active_index: index });
+    setActiveIndex = (index) => this.setState({ active_index: index });
 
     setActiveUp = () => {
         const { active_index, filtered_items } = this.state;
@@ -155,7 +155,7 @@ class Autocomplete extends React.PureComponent {
         }
     };
 
-    onBlur = e => {
+    onBlur = (e) => {
         e.preventDefault();
         this.hideDropdownList();
 
@@ -172,7 +172,7 @@ class Autocomplete extends React.PureComponent {
         }
     };
 
-    onItemSelection = item => {
+    onItemSelection = (item) => {
         if (!item) return;
 
         this.setState({ input_value: item.text ? item.text : item });
@@ -198,7 +198,7 @@ class Autocomplete extends React.PureComponent {
         }
     };
 
-    filterList = e => {
+    filterList = (e) => {
         const val = e.target.value.toLowerCase();
         const filtered_items = getFilteredItems(val, this.props.list_items);
 

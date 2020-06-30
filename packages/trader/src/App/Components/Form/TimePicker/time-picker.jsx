@@ -19,10 +19,10 @@ class TimePicker extends React.Component {
     }
 
     toggleDropDown = () => {
-        this.setState(state => ({ is_open: !state.is_open }));
+        this.setState((state) => ({ is_open: !state.is_open }));
     };
 
-    handleChange = arg => {
+    handleChange = (arg) => {
         // To handle nativepicker;
         const value = typeof arg === 'object' ? arg.target.selected_time : arg;
 
@@ -31,7 +31,7 @@ class TimePicker extends React.Component {
         }
     };
 
-    saveRef = node => {
+    saveRef = (node) => {
         if (!node) return;
         if (node.nodeName === 'INPUT') {
             this.target_element = node;
@@ -40,7 +40,7 @@ class TimePicker extends React.Component {
         this.wrapper_ref = node;
     };
 
-    handleClickOutside = event => {
+    handleClickOutside = (event) => {
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target)) {
             if (this.state.is_open) {
                 this.setState({ is_open: false });

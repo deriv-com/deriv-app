@@ -2,7 +2,7 @@ const getSettingsFromLocal = () => {
     return JSON.parse(localStorage.getItem('dbot_settings'));
 };
 
-export const getSetting = key => {
+export const getSetting = (key) => {
     const settings = getSettingsFromLocal();
 
     if (!settings) {

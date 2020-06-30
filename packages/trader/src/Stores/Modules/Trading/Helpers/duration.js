@@ -22,7 +22,7 @@ export const buildDurationConfig = (contract, durations = { min_max: {}, units_d
     };
 
     const arr_units = [];
-    durations.units_display[contract.start_type].forEach(obj => {
+    durations.units_display[contract.start_type].forEach((obj) => {
         arr_units.push(obj.value);
     });
 
@@ -33,7 +33,7 @@ export const buildDurationConfig = (contract, durations = { min_max: {}, units_d
             arr_units.push(obj_min.unit);
         }
     } else {
-        Object.keys(duration_maps).forEach(u => {
+        Object.keys(duration_maps).forEach((u) => {
             if (
                 u !== 'd' && // when the expiray_type is intraday, the supported units are seconds, minutes and hours.
                 arr_units.indexOf(u) === -1 &&
@@ -66,7 +66,7 @@ export const convertDurationUnit = (value, from_unit, to_unit) => {
     return (value * duration_maps[from_unit].to_second) / duration_maps[to_unit].to_second;
 };
 
-const getDurationFromString = duration_string => {
+const getDurationFromString = (duration_string) => {
     const duration = duration_string.toString().match(/[a-zA-Z]+|[0-9]+/g);
     return {
         duration: +duration[0], // converts string to numbers
@@ -74,7 +74,7 @@ const getDurationFromString = duration_string => {
     };
 };
 
-export const getExpiryType = store => {
+export const getExpiryType = (store) => {
     const { duration_unit, expiry_date, expiry_type, duration_units_list } = store;
     const server_time = store.root_store.common.server_time;
 
@@ -110,8 +110,8 @@ export const convertDurationLimit = (value, unit) => {
     return value;
 };
 
-export const hasIntradayDurationUnit = duration_units_list =>
-    duration_units_list.some(unit => ['m', 'h'].indexOf(unit.value) !== -1);
+export const hasIntradayDurationUnit = (duration_units_list) =>
+    duration_units_list.some((unit) => ['m', 'h'].indexOf(unit.value) !== -1);
 
 /**
  * On switching symbols, end_time value of volatility indices should be set to today

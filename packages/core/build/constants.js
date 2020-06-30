@@ -141,7 +141,7 @@ const plugins = (base, is_test_env, is_mocha_only) => [
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
     ...(IS_RELEASE
         ? []
-        : [new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: file => file.name !== 'CNAME' })]),
+        : [new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: (file) => file.name !== 'CNAME' })]),
     ...(is_test_env && !is_mocha_only
         ? [new StylelintPlugin(stylelintConfig())]
         : [

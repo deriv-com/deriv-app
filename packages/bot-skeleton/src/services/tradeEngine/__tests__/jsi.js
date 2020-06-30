@@ -6,8 +6,8 @@ const interpreter = new Interpreter();
 describe('Run Interpreter over simple calculation', () => {
     let value;
 
-    beforeAll(done => {
-        interpreter.run('1 + 2').then(v => {
+    beforeAll((done) => {
+        interpreter.run('1 + 2').then((v) => {
             value = v;
             done();
         });

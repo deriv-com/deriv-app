@@ -45,7 +45,7 @@ Blockly.Blocks.controls_repeat_ext = {
     },
 };
 
-Blockly.JavaScript.controls_repeat_ext = block => {
+Blockly.JavaScript.controls_repeat_ext = (block) => {
     let repeats;
     if (block.getField('TIMES')) {
         repeats = String(Number(block.getFieldValue('TIMES')));

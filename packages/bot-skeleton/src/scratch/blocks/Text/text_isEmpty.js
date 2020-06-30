@@ -37,9 +37,9 @@ Blockly.Blocks.text_isEmpty = {
     },
 };
 
-Blockly.JavaScript.text_isEmpty = block => {
+Blockly.JavaScript.text_isEmpty = (block) => {
     const text = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_MEMBER) || "''";
-    const isVariable = block.workspace.getAllVariables().findIndex(variable => variable.name === text) !== -1;
+    const isVariable = block.workspace.getAllVariables().findIndex((variable) => variable.name === text) !== -1;
 
     const code = isVariable ? `!${text} || !${text}.length` : `!${text}.length`;
     return [code, Blockly.JavaScript.ORDER_LOGICAL_NOT];

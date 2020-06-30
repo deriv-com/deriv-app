@@ -38,7 +38,7 @@ Blockly.Blocks.math_constant = {
     },
 };
 
-Blockly.JavaScript.math_constant = block => {
+Blockly.JavaScript.math_constant = (block) => {
     const constant = block.getFieldValue('CONSTANT');
 
     let code, order;

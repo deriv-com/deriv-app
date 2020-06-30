@@ -21,10 +21,10 @@ class ContractAudit extends React.Component {
         return state;
     }
 
-    onTabItemClick = tab_index => {
+    onTabItemClick = (tab_index) => {
         this.props.toggleHistoryTab(tab_index);
         if (tab_index) {
-            WS.contractUpdateHistory(this.props.contract_info.contract_id).then(response => {
+            WS.contractUpdateHistory(this.props.contract_info.contract_id).then((response) => {
                 this.setState({
                     contract_update_history: response.contract_update_history,
                 });

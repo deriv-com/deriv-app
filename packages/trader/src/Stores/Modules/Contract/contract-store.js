@@ -158,7 +158,7 @@ function calculate_marker(contract_info) {
         high_barrier,
         low_barrier,
     } = contract_info;
-    const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
+    const ticks_epoch_array = tick_stream ? tick_stream.map((t) => t.epoch) : [];
     const is_digit_contract = isDigitContract(contract_type);
 
     // window.ci = toJS(contract_info);

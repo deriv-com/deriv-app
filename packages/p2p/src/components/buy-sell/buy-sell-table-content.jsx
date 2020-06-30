@@ -31,14 +31,14 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
         }
     }, [is_buy]);
 
-    const loadMoreItems = start_idx => {
-        return new Promise(resolve => {
+    const loadMoreItems = (start_idx) => {
+        return new Promise((resolve) => {
             requestWS({
                 p2p_advert_list: 1,
                 counterparty_type: is_buy ? 'buy' : 'sell',
                 offset: start_idx,
                 limit: list_item_limit,
-            }).then(response => {
+            }).then((response) => {
                 if (is_mounted.current) {
                     if (!response.error) {
                         setHasMoreItemsToLoad(response.length >= list_item_limit);
@@ -61,7 +61,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
         return <TableError message={api_error_message} />;
     }
 
-    const Row = props => <RowComponent {...props} is_buy={is_buy} setSelectedAd={setSelectedAd} />;
+    const Row = (props) => <RowComponent {...props} is_buy={is_buy} setSelectedAd={setSelectedAd} />;
 
     if (items.length) {
         const item_height = 56;

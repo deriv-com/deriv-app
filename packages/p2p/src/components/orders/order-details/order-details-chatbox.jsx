@@ -40,7 +40,7 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url }) => {
                     const max_length = el_sendbird_textarea.getAttribute('maxlength');
                     const el_character_count = document.createElement('span');
                     const naivelyResetCharacterCounter = () => (el_character_count.innerText = `0/${max_length}`);
-                    const syncCharacterCounter = event => {
+                    const syncCharacterCounter = (event) => {
                         el_character_count.innerText = `${el_sendbird_textarea.value.length}/${max_length}`;
 
                         if (event.target.value.length > 0) {
@@ -54,7 +54,7 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url }) => {
 
                     el_character_count.className = new_character_count_class;
                     el_sendbird_textarea.addEventListener('input', syncCharacterCounter);
-                    el_sendbird_textarea.addEventListener('keyup', event => {
+                    el_sendbird_textarea.addEventListener('keyup', (event) => {
                         if (event.key === 'Enter') naivelyResetCharacterCounter();
                     });
 

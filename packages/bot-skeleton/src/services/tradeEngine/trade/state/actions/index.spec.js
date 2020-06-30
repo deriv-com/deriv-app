@@ -7,19 +7,20 @@ const getDispatchFromAction = ({ action, state }) => {
     return dispatch;
 };
 
-const toBeCalledWith = args => expect(getDispatchFromAction(args)).toBeCalledWith(args.calledWith);
+const toBeCalledWith = (args) => expect(getDispatchFromAction(args)).toBeCalledWith(args.calledWith);
 
-const notToBeCalled = args => expect(getDispatchFromAction(args)).not.toBeCalled();
+const notToBeCalled = (args) => expect(getDispatchFromAction(args)).not.toBeCalled();
 
 const beforePurchase = {
-    correctScope: args => toBeCalledWith({ ...args, state: { scope: constants.BEFORE_PURCHASE } }),
-    incorrectScope: action => notToBeCalled({ action, state: { scope: constants.DURING_PURCHASE } }),
-    isReady: args =>
+    correctScope: (args) => toBeCalledWith({ ...args, state: { scope: constants.BEFORE_PURCHASE } }),
+    incorrectScope: (action) => notToBeCalled({ action, state: { scope: constants.DURING_PURCHASE } }),
+    isReady: (args) =>
         toBeCalledWith({
             ...args,
             state: { scope: constants.BEFORE_PURCHASE, proposalsReady: true },
         }),
-    isNotReady: action => notToBeCalled({ action, state: { scope: constants.BEFORE_PURCHASE, proposalsReady: false } }),
+    isNotReady: (action) =>
+        notToBeCalled({ action, state: { scope: constants.BEFORE_PURCHASE, proposalsReady: false } }),
 };
 
 describe('response actions', () => {

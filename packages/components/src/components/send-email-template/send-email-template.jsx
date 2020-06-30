@@ -26,7 +26,7 @@ class SendEmailTemplate extends React.Component {
 
     startCountdownTimer = () => {
         this.setState(
-            prevState => ({
+            (prevState) => ({
                 resend_timeout: prevState.resend_timeout - 1,
             }),
             () => {
@@ -35,7 +35,7 @@ class SendEmailTemplate extends React.Component {
                         this.setState({ resend_timeout: 60 });
                         clearInterval(this.resend_interval);
                     } else {
-                        this.setState(prevState => ({ resend_timeout: prevState.resend_timeout - 1 }));
+                        this.setState((prevState) => ({ resend_timeout: prevState.resend_timeout - 1 }));
                     }
                 }, 1000);
             }

@@ -12,14 +12,14 @@ export const isMT5 = () =>
     /^\/mt5/.test(window.location.pathname) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'mt5');
 
-export const getPlatformHeader = routing_history => {
+export const getPlatformHeader = (routing_history) => {
     if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return 'DBot';
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return 'DMT5';
     if (isNavigationFromPlatform(routing_history, routes.smarttrader)) return 'SmartTrader';
     return 'DTrader';
 };
 
-export const getPlatformIcon = routing_history => {
+export const getPlatformIcon = (routing_history) => {
     if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return 'IcBrandDbot';
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return 'IcBrandDmt5';
     if (isNavigationFromPlatform(routing_history, routes.smarttrader)) return 'IcBrandSmarttrader';
@@ -28,7 +28,7 @@ export const getPlatformIcon = routing_history => {
 
 export const isNavigationFromPlatform = (app_routing_history, platform_route) => {
     if (app_routing_history.length > 0) {
-        const getParentPath = pathname => (/^http/.test(pathname) ? false : pathname.split('/')[1]);
+        const getParentPath = (pathname) => (/^http/.test(pathname) ? false : pathname.split('/')[1]);
 
         for (let i = 0; i < app_routing_history.length; i++) {
             const history_item = app_routing_history[i];
@@ -46,7 +46,9 @@ export const isNavigationFromPlatform = (app_routing_history, platform_route) =>
                 // Return false when path matches a platform parent path, but don't return anything
                 // when a non-platform path was seen. i.e. navigating between /cashier and /reports
                 // should not affect navigating back to platform when clicking cross.
-                const platform_parent_paths = [routes.mt5, routes.bot, routes.trade].map(route => getParentPath(route));
+                const platform_parent_paths = [routes.mt5, routes.bot, routes.trade].map((route) =>
+                    getParentPath(route)
+                );
                 const is_other_platform_path = platform_parent_paths.includes(history_item_parent_path);
 
                 if (is_other_platform_path) {

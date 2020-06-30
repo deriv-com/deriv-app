@@ -43,7 +43,7 @@ export default class TransactionsStore {
         };
 
         const same_contract_index = this.elements.findIndex(
-            c =>
+            (c) =>
                 c.type === transaction_elements.CONTRACT &&
                 c.data.transaction_ids &&
                 c.data.transaction_ids.buy === data.transaction_ids.buy
@@ -93,7 +93,7 @@ export default class TransactionsStore {
     onClickOutsideTransaction(event) {
         const path = event.path || (event.composedPath && event.composedPath());
         const is_transaction_click = path.some(
-            el => el.classList && el.classList.contains('transactions__item-wrapper')
+            (el) => el.classList && el.classList.contains('transactions__item-wrapper')
         );
         if (!is_transaction_click) {
             this.setActiveTransactionId(null);

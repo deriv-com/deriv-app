@@ -76,7 +76,7 @@ class MT5Dashboard extends React.Component {
     };
 
     togglePasswordManagerModal = (login, title, group, type) => {
-        this.setState(prev_state => ({
+        this.setState((prev_state) => ({
             active_index: prev_state.active_index,
             password_manager: {
                 is_visible: !prev_state.password_manager.is_visible,
@@ -88,7 +88,7 @@ class MT5Dashboard extends React.Component {
         }));
     };
 
-    openRealPasswordModal = account_type => {
+    openRealPasswordModal = (account_type) => {
         this.props.setAccountType(account_type);
         this.props.openPasswordModal();
     };

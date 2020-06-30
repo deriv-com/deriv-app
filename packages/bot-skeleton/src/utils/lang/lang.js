@@ -9,7 +9,7 @@ export const addUiLang = () => {
         el.text(localize($(this).attr('data-i18n-text'))).append(contents);
     });
 
-    document.querySelectorAll('[data-i18n-title]').forEach(titleNode => {
+    document.querySelectorAll('[data-i18n-title]').forEach((titleNode) => {
         titleNode.setAttribute('title', localize(titleNode.getAttribute('data-i18n-title')));
     });
 };

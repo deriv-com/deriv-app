@@ -36,7 +36,7 @@ const Barrier = ({
     // TODO: Some contracts yet to be implemented in deriv.app allow only absolute barrier, hence the prop
     const is_absolute_barrier = is_day_duration || is_absolute_only;
 
-    const format = value => {
+    const format = (value) => {
         const float_value = parseFloat(value);
         let final_value;
         if (Math.sign(float_value) === -1) {

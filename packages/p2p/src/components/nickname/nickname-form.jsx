@@ -11,19 +11,19 @@ import './nickname-form.scss';
 const NicknameForm = ({ handleClose }) => {
     const { createAdvertiser, nickname_error, is_mobile } = React.useContext(Dp2pContext);
 
-    const handleSubmit = values => createAdvertiser(values.nickname);
+    const handleSubmit = (values) => createAdvertiser(values.nickname);
 
-    const validatePopup = values => {
+    const validatePopup = (values) => {
         const validations = {
             nickname: [
-                v => !!v,
-                v => v.length >= 2,
-                v => v.length <= 24,
-                v => /^[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
-                v => /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
-                v =>
+                (v) => !!v,
+                (v) => v.length >= 2,
+                (v) => v.length <= 24,
+                (v) => /^[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
+                (v) => /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
+                (v) =>
                     Array.from(v).every(
-                        word => (v.match(new RegExp(word === '.' ? `\\${word}` : word, 'g')) || []).length <= 5
+                        (word) => (v.match(new RegExp(word === '.' ? `\\${word}` : word, 'g')) || []).length <= 5
                     ),
             ],
         };
@@ -40,7 +40,7 @@ const NicknameForm = ({ handleClose }) => {
         const errors = {};
 
         Object.entries(validations).forEach(([key, rules]) => {
-            const error_index = rules.findIndex(v => {
+            const error_index = rules.findIndex((v) => {
                 return !v(values[key]);
             });
 

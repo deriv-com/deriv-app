@@ -6,24 +6,24 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 
 const ticksService = new TicksService(generateLiveApiInstance());
 
-const isTick = t => Number.isInteger(t.epoch) && Number.isFinite(t.quote);
+const isTick = (t) => Number.isInteger(t.epoch) && Number.isFinite(t.quote);
 
-const isOhlc = o =>
+const isOhlc = (o) =>
     Number.isInteger(o.epoch) &&
     Number.isFinite(o.open) &&
     Number.isFinite(o.high) &&
     Number.isFinite(o.low) &&
     Number.isFinite(o.close);
 
-const isTicksList = l => l.every(t => isTick(t));
+const isTicksList = (l) => l.every((t) => isTick(t));
 
-const isCandles = l => l.every(o => isOhlc(o));
+const isCandles = (l) => l.every((o) => isOhlc(o));
 
 describe('Ticks Service', () => {
     describe('Monitor ticks', () => {
         const ticks = [];
-        beforeAll(done => {
-            const callback = ticksList => {
+        beforeAll((done) => {
+            const callback = (ticksList) => {
                 ticks.push(ticksList);
                 if (ticks.length === 3) {
                     ticksService.stopMonitor('R_100', key);
@@ -38,14 +38,14 @@ describe('Ticks Service', () => {
     });
     describe('Get ticks', () => {
         let ticks, candles;
-        beforeAll(done => {
+        beforeAll((done) => {
             ticksService
                 .request({ symbol: 'R_25' })
-                .then(t => {
+                .then((t) => {
                     ticks = t;
                     return ticksService.request({ symbol: 'R_50', granularity: 60 });
                 })
-                .then(c => {
+                .then((c) => {
                     candles = c;
                     done();
                 });

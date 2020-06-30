@@ -40,7 +40,7 @@ class HighlightWrapper extends React.PureComponent {
         this.setState({ left: 0 });
     };
 
-    updateHighlightPosition = el => {
+    updateHighlightPosition = (el) => {
         if (!el) return;
         const { offsetLeft: left } = el;
         if (this.state.left !== left) {
@@ -57,10 +57,10 @@ class HighlightWrapper extends React.PureComponent {
         const button_width = (100 / children.length).toFixed(2);
 
         return (
-            <div ref={node => (this.node = node)} {...props}>
-                {React.Children.map(children, child =>
+            <div ref={(node) => (this.node = node)} {...props}>
+                {React.Children.map(children, (child) =>
                     React.cloneElement(child, {
-                        onClick: e => this.onClick(e, child.props.onClick),
+                        onClick: (e) => this.onClick(e, child.props.onClick),
                     })
                 )}
                 <Highlight left={this.state.left} width={`${button_width}%`} has_rounded_button={has_rounded_button} />

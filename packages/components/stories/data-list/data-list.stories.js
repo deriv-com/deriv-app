@@ -47,9 +47,9 @@ const rowRenderer = ({ row }) => {
         </>
     );
 };
-const handleRowAction = row_obj => console.log(row_obj);
+const handleRowAction = (row_obj) => console.log(row_obj);
 
-const handleScroll = e => {
+const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     console.log(scrollTop, scrollHeight, clientHeight);
 };

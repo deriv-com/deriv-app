@@ -27,8 +27,8 @@ const Purchase = ({
     validation_errors,
 }) => {
     const is_high_low = /^high_low$/.test(contract_type.toLowerCase());
-    const isLoading = info => {
-        const has_validation_error = Object.values(validation_errors).some(e => e.length);
+    const isLoading = (info) => {
+        const has_validation_error = Object.values(validation_errors).some((e) => e.length);
         return !has_validation_error && !info.has_error && !info.id;
     };
     const is_proposal_empty = ObjectUtils.isEmptyObject(proposal_info);

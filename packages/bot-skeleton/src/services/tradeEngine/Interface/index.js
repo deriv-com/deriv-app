@@ -40,27 +40,27 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
     }
 
     getBotInterface() {
-        const getDetail = i => createDetails(this.get('contract'))[i];
+        const getDetail = (i) => createDetails(this.get('contract'))[i];
 
         return {
             init: (...args) => this.tradeEngine.init(...args),
             start: (...args) => this.tradeEngine.start(...args),
             stop: (...args) => this.tradeEngine.stop(...args),
-            purchase: contractType => this.tradeEngine.purchase(contractType),
-            getAskPrice: contractType => Number(this.getProposal(contractType).ask_price),
-            getPayout: contractType => Number(this.getProposal(contractType).payout),
+            purchase: (contractType) => this.tradeEngine.purchase(contractType),
+            getAskPrice: (contractType) => Number(this.getProposal(contractType).ask_price),
+            getPayout: (contractType) => Number(this.getProposal(contractType).payout),
             isSellAvailable: () => this.tradeEngine.isSellAtMarketAvailable(),
             sellAtMarket: () => this.tradeEngine.sellAtMarket(),
             getSellPrice: () => this.getSellPrice(),
-            isResult: result => getDetail(10) === result,
-            isTradeAgain: result => globalObserver.emit('bot.trade_again', result),
-            readDetails: i => getDetail(i - 1),
+            isResult: (result) => getDetail(10) === result,
+            isTradeAgain: (result) => globalObserver.emit('bot.trade_again', result),
+            readDetails: (i) => getDetail(i - 1),
         };
     }
 
     sleep(arg = 1) {
         return new Promise(
-            r =>
+            (r) =>
                 setTimeout(() => {
                     r();
                     setTimeout(() => this.observer.emit('CONTINUE'), 0);
@@ -74,7 +74,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
 
         let proposal;
 
-        proposals.forEach(p => {
+        proposals.forEach((p) => {
             if (p.contractType === contractType) {
                 proposal = p;
             }

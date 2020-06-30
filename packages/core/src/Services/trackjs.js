@@ -44,20 +44,20 @@ export const ApiCallProxyHandler = {
         try {
             const target_value = Reflect.get(target, prop_key, receiver);
             if (typeof target_value === 'function') {
-                return function(...args) {
+                return function (...args) {
                     const result = target_value.apply(this, args);
                     if (result instanceof Promise) {
-                        return new Promise(resolve => {
+                        return new Promise((resolve) => {
                             let return_value;
                             result
-                                .then(response => {
+                                .then((response) => {
                                     if (response.error) {
                                         queue.push(response);
                                         if (window.TrackJS) window.TrackJS.console.log(queue.list);
                                         queue.fresh();
                                         if (
                                             window.TrackJS &&
-                                            !ignored_responses_in_trackjs.some(item => item === response.error.code)
+                                            !ignored_responses_in_trackjs.some((item) => item === response.error.code)
                                         ) {
                                             window.TrackJS.track(response.error.code);
                                         }
@@ -65,7 +65,7 @@ export const ApiCallProxyHandler = {
                                     queue.push(response);
                                     return_value = response;
                                 })
-                                .catch(error => {
+                                .catch((error) => {
                                     if (window.TrackJS) {
                                         window.TrackJS.console.log(queue.list);
                                         window.TrackJS.track(error.getMessage());
@@ -86,4 +86,4 @@ export const ApiCallProxyHandler = {
     },
 };
 
-export const trackJSNetworkMonitor = obj => new Proxy(obj, ApiCallProxyHandler);
+export const trackJSNetworkMonitor = (obj) => new Proxy(obj, ApiCallProxyHandler);

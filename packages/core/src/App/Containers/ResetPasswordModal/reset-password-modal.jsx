@@ -39,7 +39,7 @@ class ResetPassword extends React.Component {
             verification_code,
         };
 
-        WS.resetPassword(api_request).then(async response => {
+        WS.resetPassword(api_request).then(async (response) => {
             if (response.error) {
                 this.onResetComplete(response.error.message, actions);
             } else {
@@ -48,7 +48,7 @@ class ResetPassword extends React.Component {
         });
     };
 
-    validateReset = values => {
+    validateReset = (values) => {
         const errors = {};
         const min_password_length = 6;
 

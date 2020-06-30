@@ -16,7 +16,7 @@ const skeleton = {
 
 const globalStat = {};
 
-export default Engine =>
+export default (Engine) =>
     class Total extends Engine {
         constructor() {
             super();

@@ -23,7 +23,7 @@ class Reports extends React.Component {
         const menu_options = () => {
             const options = [];
 
-            this.props.routes.forEach(route => {
+            this.props.routes.forEach((route) => {
                 options.push({
                     default: route.default,
                     icon: route.icon_component,

@@ -34,7 +34,7 @@ const CancelDeal = ({
         });
     };
 
-    const changeDuration = e => {
+    const changeDuration = (e) => {
         const { name, value } = e.target;
         onChangeMultiple({
             has_cancellation: true,

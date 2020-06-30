@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import Icon from 'Components/icon/icon.jsx';
 
 const Content = ({ is_routed, items, selected }) => {
-    const selected_item = items.find(item => item.label === selected.label);
+    const selected_item = items.find((item) => item.label === selected.label);
     const TabContent = selected_item.value;
 
     const [side_note, setSideNote] = React.useState(null);

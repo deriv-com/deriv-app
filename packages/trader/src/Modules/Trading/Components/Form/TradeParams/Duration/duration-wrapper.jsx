@@ -10,10 +10,10 @@ class DurationWrapper extends React.Component {
         let duration_list = [...this.props.duration_units_list];
 
         if (duration_list.length > 1 && !is_advanced_duration) {
-            duration_list = duration_list.filter(du => du.value === 'm' || du.value === 't');
+            duration_list = duration_list.filter((du) => du.value === 'm' || du.value === 't');
         }
 
-        return duration_list.some(du => du.value === duration_unit);
+        return duration_list.some((du) => du.value === duration_unit);
     };
 
     setDurationUnit() {

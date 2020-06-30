@@ -49,7 +49,7 @@ export default class ContractsFor {
         const contracts_for_category = await this.getContractsByTradeType(symbol, trade_type);
         const durations = await this.getDurations(symbol, trade_type, false);
         const offset_regexp = new RegExp('^[-|+]([0-9]+.[0-9]+)$');
-        const isOffset = input => input && offset_regexp.test(input.toString());
+        const isOffset = (input) => input && offset_regexp.test(input.toString());
 
         let has_absolute_default_value = true;
 
@@ -58,14 +58,14 @@ export default class ContractsFor {
                 const has_selected_offset_type = ['+', '-'].includes(barrier_type);
                 const real_trade_type = this.getContractCategoryByTradeType(trade_type);
 
-                let contract = contracts_for_category.find(c => {
+                let contract = contracts_for_category.find((c) => {
                     const { BARRIER_CATEGORIES } = config;
-                    const barrier_category = Object.keys(BARRIER_CATEGORIES).find(b =>
+                    const barrier_category = Object.keys(BARRIER_CATEGORIES).find((b) =>
                         BARRIER_CATEGORIES[b].includes(trade_type)
                     );
 
                     const has_matching_category = c.contract_category === real_trade_type;
-                    const has_matching_duration = durations.findIndex(d => d.unit === duration) !== -1;
+                    const has_matching_duration = durations.findIndex((d) => d.unit === duration) !== -1;
                     const has_matching_barrier_category = c.barrier_category === barrier_category;
                     const has_matching_barrier_type =
                         // Match offset type barriers.
@@ -85,7 +85,7 @@ export default class ContractsFor {
                 if (!contract) {
                     contract = contracts_for_category
                         // Retrieve contracts with barriers.
-                        .filter(c => c.barrier || c.high_barrier)
+                        .filter((c) => c.barrier || c.high_barrier)
                         // Get contract with smallest barriers.
                         .sort((a, b) => {
                             const c = a.barrier || a.high_barrier;
@@ -125,8 +125,8 @@ export default class ContractsFor {
                 barriers.values = barriers.values.map(() => false);
             } else if (
                 barriers.values.length === 2 &&
-                barrier_types.every(barrier_type => barrier_type === barrier_types[0]) &&
-                barriers.values.every(barrier => barrier === barriers.values[0])
+                barrier_types.every((barrier_type) => barrier_type === barrier_types[0]) &&
+                barriers.values.every((barrier) => barrier === barriers.values[0])
             ) {
                 barriers.values[1] = (barriers.values[0] * 0.95).toFixed(1);
             }
@@ -140,7 +140,7 @@ export default class ContractsFor {
         const { TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING } = config;
 
         return (
-            Object.keys(TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING).find(category =>
+            Object.keys(TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING).find((category) =>
                 TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING[category].includes(trade_type)
             ) || trade_type
         );
@@ -149,7 +149,7 @@ export default class ContractsFor {
     // eslint-disable-next-line class-methods-use-this
     getTradeTypeCategoryByTradeType(trade_type) {
         const { TRADE_TYPE_CATEGORIES } = config;
-        const trade_type_category = Object.keys(TRADE_TYPE_CATEGORIES).find(t =>
+        const trade_type_category = Object.keys(TRADE_TYPE_CATEGORIES).find((t) =>
             TRADE_TYPE_CATEGORIES[t].includes(trade_type)
         );
 
@@ -166,7 +166,7 @@ export default class ContractsFor {
     // eslint-disable-next-line class-methods-use-this
     getBarrierCategoryByTradeType(trade_type) {
         const { BARRIER_CATEGORIES } = config;
-        return Object.keys(BARRIER_CATEGORIES).find(barrier_category =>
+        return Object.keys(BARRIER_CATEGORIES).find((barrier_category) =>
             BARRIER_CATEGORIES[barrier_category].includes(trade_type)
         );
     }
@@ -176,7 +176,7 @@ export default class ContractsFor {
         const contract_category = this.getContractCategoryByTradeType(trade_type);
         const barrier_category = this.getBarrierCategoryByTradeType(trade_type);
 
-        return contracts.filter(contract => {
+        return contracts.filter((contract) => {
             const has_matching_category = contract.contract_category === contract_category;
             const has_matching_barrier = contract.barrier_category === barrier_category;
 
@@ -207,7 +207,7 @@ export default class ContractsFor {
             } = response;
 
             // We don't offer forward-starting contracts in bot.
-            const filtered_contracts = contracts.filter(c => c.start_type !== 'forward');
+            const filtered_contracts = contracts.filter((c) => c.start_type !== 'forward');
 
             this.contracts_for[symbol] = {
                 contracts: filtered_contracts,
@@ -244,21 +244,21 @@ export default class ContractsFor {
 
         const contracts_for_category = await this.getContractsByTradeType(symbol, trade_type);
         const durations = [];
-        const getDurationIndex = input =>
-            DEFAULT_DURATION_DROPDOWN_OPTIONS.findIndex(d => d[1] === input.replace(/\d+/g, ''));
+        const getDurationIndex = (input) =>
+            DEFAULT_DURATION_DROPDOWN_OPTIONS.findIndex((d) => d[1] === input.replace(/\d+/g, ''));
         // convert 'duration' to 'unit_to_convert' e.g : convertDuration('10h', 's') will return 10*60*60s
         const convertDuration = (duration, unit_to_convert) => {
             const duration_value = duration.replace(/\D/g, '');
             const duration_index = getDurationIndex(duration);
             const target_index = DEFAULT_DURATION_DROPDOWN_OPTIONS.findIndex(
-                default_duration => default_duration[1] === unit_to_convert
+                (default_duration) => default_duration[1] === unit_to_convert
             );
 
             let converted_duration = parseInt(duration_value);
 
             DEFAULT_DURATION_DROPDOWN_OPTIONS.slice(target_index + 1, duration_index + 1)
                 .reverse()
-                .forEach(default_duration => {
+                .forEach((default_duration) => {
                     switch (default_duration[1]) {
                         case 'm':
                         case 'h':
@@ -275,7 +275,7 @@ export default class ContractsFor {
             return converted_duration;
         };
 
-        contracts_for_category.forEach(contract => {
+        contracts_for_category.forEach((contract) => {
             if (!contract.min_contract_duration || !contract.max_contract_duration) {
                 return;
             }
@@ -286,7 +286,7 @@ export default class ContractsFor {
             );
 
             DEFAULT_DURATION_DROPDOWN_OPTIONS.slice(start_index, end_index + 1).forEach((default_duration, index) => {
-                const is_existing_duration = durations.findIndex(d => d.unit === default_duration[1]) !== -1;
+                const is_existing_duration = durations.findIndex((d) => d.unit === default_duration[1]) !== -1;
 
                 if (!is_existing_duration) {
                     durations.push({
@@ -300,8 +300,8 @@ export default class ContractsFor {
         });
 
         // If only intraday contracts available, remove day durations
-        if (contracts_for_category.every(contract => contract.expiry_type === 'intraday')) {
-            const day_duration_index = durations.findIndex(d => d[1] === 'd');
+        if (contracts_for_category.every((contract) => contract.expiry_type === 'intraday')) {
+            const day_duration_index = durations.findIndex((d) => d[1] === 'd');
 
             if (day_duration_index !== -1) {
                 durations.splice(day_duration_index, 1);
@@ -323,11 +323,11 @@ export default class ContractsFor {
         const { DIGIT_CATEGORIES, opposites } = config;
 
         if (DIGIT_CATEGORIES.includes(contract_category) && trade_type !== 'evenodd') {
-            const contract = contracts.find(c => {
+            const contract = contracts.find((c) => {
                 const categories = Object.keys(opposites);
 
-                return categories.some(category =>
-                    opposites[category].map(subcategory => Object.keys(subcategory)[0]).includes(c.contract_type)
+                return categories.some((category) =>
+                    opposites[category].map((subcategory) => Object.keys(subcategory)[0]).includes(c.contract_type)
                 );
             });
 
@@ -411,7 +411,7 @@ export default class ContractsFor {
                 if (!is_disabled && has_durations) {
                     const types = opposites[trade_type.toUpperCase()];
                     dropdown_options.push({
-                        name: types.map(type => type[Object.keys(type)[0]]).join('/'),
+                        name: types.map((type) => type[Object.keys(type)[0]]).join('/'),
                         value: trade_type,
                         icon: [Object.keys(types[0])[0], Object.keys(types[1])[0]],
                     });
@@ -427,7 +427,7 @@ export default class ContractsFor {
         const contracts = await this.getContractsFor(symbol);
         const trade_type_categories = [];
 
-        contracts.forEach(contract => {
+        contracts.forEach((contract) => {
             const trade_type_category = this.getTradeTypeCategoryByTradeType(contract.contract_category);
             const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contract.contract_category);
 
@@ -441,7 +441,7 @@ export default class ContractsFor {
 
                 if (!is_disabled) {
                     const is_existing_category =
-                        trade_type_categories.findIndex(c => c[1] === trade_type_category) !== -1;
+                        trade_type_categories.findIndex((c) => c[1] === trade_type_category) !== -1;
 
                     if (!is_existing_category) {
                         trade_type_categories.push([trade_type_category_name, trade_type_category]);
@@ -454,8 +454,8 @@ export default class ContractsFor {
             const category_names = Object.keys(TRADE_TYPE_CATEGORY_NAMES);
 
             return trade_type_categories.sort((a, b) => {
-                const index_a = category_names.findIndex(c => c === a[1]);
-                const index_b = category_names.findIndex(c => c === b[1]);
+                const index_a = category_names.findIndex((c) => c === a[1]);
+                const index_b = category_names.findIndex((c) => c === b[1]);
                 return index_a - index_b;
             });
         }
@@ -484,7 +484,7 @@ export default class ContractsFor {
                 if (!is_disabled && has_durations) {
                     const types = opposites[trade_type.toUpperCase()];
                     // e.g. [['Rise/Fall', 'callput']]
-                    trade_types.push([types.map(type => type[Object.keys(type)[0]]).join('/'), trade_type]);
+                    trade_types.push([types.map((type) => type[Object.keys(type)[0]]).join('/'), trade_type]);
                 }
             }
         }
@@ -493,8 +493,8 @@ export default class ContractsFor {
     }
 
     isDisabledOption(compare_obj) {
-        return this.disabled_options.some(disabled_obj =>
-            Object.keys(disabled_obj).every(prop => compare_obj[prop] === disabled_obj[prop])
+        return this.disabled_options.some((disabled_obj) =>
+            Object.keys(disabled_obj).every((prop) => compare_obj[prop] === disabled_obj[prop])
         );
     }
 

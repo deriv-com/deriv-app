@@ -61,7 +61,7 @@ class Chart extends React.Component {
                 showLastDigitStats={show_digits_stats}
                 chartControlsWidgets={null}
                 enabledChartFooter={false}
-                chartStatusListener={v => this.props.setChartStatus(!v)}
+                chartStatusListener={(v) => this.props.setChartStatus(!v)}
                 toolbarWidget={this.chartToolbarWidget}
                 chartType={chart_type}
                 isMobile={is_mobile}

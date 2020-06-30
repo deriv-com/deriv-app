@@ -36,7 +36,7 @@ stories
                     label='Label'
                     description='Description'
                     value={value}
-                    onChange={v => {
+                    onChange={(v) => {
                         action(`Value is set to ${v.target.value}`);
                         setValue(v.target.value);
                     }}
@@ -58,28 +58,28 @@ stories
                         value={value}
                         label='Morty'
                         description='Mortimer "Morty" Smith Sr. is one of the two eponymous main protagonists in Rick and Morty. He is the grandson of Rick and is often forced to tag along on his various misadventures. Morty attends Harry Herpson High School along with his sister, Summer.'
-                        onChange={v => setValue(v.target.value)}
+                        onChange={(v) => setValue(v.target.value)}
                     />
                     <CompositeCheckbox
                         name='test2'
                         value={value2}
                         label='Evil Morty'
                         description='Evil Morty is one of the many versions of Morty in the multiverse. He is the main general antagonist for Rick and Morty. He currently serves as the first Morty to be democratically elected President of The Citadel. He first appeared in "Close Rick-Counters of the Rick Kind" as the true lead antagonist, and was seen being rounded up with the other Rickless Mortys.'
-                        onChange={v => setValue2(v.target.value)}
+                        onChange={(v) => setValue2(v.target.value)}
                     />
                     <CompositeCheckbox
                         name='test3'
                         value={value3}
                         label='Rick'
                         description="Rick Sanchez is the titular anti-heroic main protagonist of the series. He is a genius scientist whose alcoholism and reckless, nihilistic behavior are a source of concern for his daughter's family, as well as the safety of their son, Morty. He is voiced by Justin Roiland. He is later revealed to be Morty's cousin in an interview with Roiland himself."
-                        onChange={v => setValue3(v.target.value)}
+                        onChange={(v) => setValue3(v.target.value)}
                     />
                     <CompositeCheckbox
                         name='test4'
                         value={value4}
                         label='Jerry Smith'
                         description='Jerry Smith is the pentagonist of Rick and Morty. Jerry is the husband of Beth Smith, the father of Summer Smith and Morty Smith, and the son-in-law of Rick Sanchez.'
-                        onChange={v => setValue4(v.target.value)}
+                        onChange={(v) => setValue4(v.target.value)}
                     />
                 </Grid>
             </Theme>

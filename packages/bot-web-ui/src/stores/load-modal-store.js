@@ -55,10 +55,10 @@ export default class LoadModalStore {
         if (this.active_index === 1) {
             this.drop_zone = document.getElementById('import_dragndrop');
             if (this.drop_zone) {
-                this.drop_zone.addEventListener('drop', e => this.handleFileChange(e, false));
+                this.drop_zone.addEventListener('drop', (e) => this.handleFileChange(e, false));
             }
         } else if (this.drop_zone) {
-            this.drop_zone.removeEventListener('drop', e => this.handleFileChange(e, false));
+            this.drop_zone.removeEventListener('drop', (e) => this.handleFileChange(e, false));
         }
     }
 
@@ -82,7 +82,7 @@ export default class LoadModalStore {
 
     @action.bound
     previewWorkspace(id) {
-        const selected_file_id = this.recent_files.find(file => file.id === id);
+        const selected_file_id = this.recent_files.find((file) => file.id === id);
         if (!selected_file_id) {
             return;
         }
@@ -123,7 +123,7 @@ export default class LoadModalStore {
     @action.bound
     loadFileFromRecent() {
         this.is_open_button_loading = true;
-        const selected_workspace = this.recent_files.find(file => file.id === this.selected_file_id);
+        const selected_workspace = this.recent_files.find((file) => file.id === this.selected_file_id);
 
         if (!selected_workspace) {
             return;
@@ -161,7 +161,7 @@ export default class LoadModalStore {
 
     // eslint-disable-next-line class-methods-use-this
     getSaveType(save_type) {
-        return save_type.replace(/\b\w/g, l => l.toUpperCase());
+        return save_type.replace(/\b\w/g, (l) => l.toUpperCase());
     }
     /** --------- Recent Tab End --------- */
 
@@ -190,7 +190,7 @@ export default class LoadModalStore {
     readFile(is_preview, drop_event, file) {
         const file_name = file && file.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
-        reader.onload = action(e => {
+        reader.onload = action((e) => {
             const load_options = { block_string: e.target.result, drop_event, from: save_types.LOCAL };
             if (is_preview) {
                 const ref = document.getElementById('load-local__scratch');

@@ -118,7 +118,7 @@ const WorkspaceGroup = ({
     </div>
 );
 
-const Toolbar = props => {
+const Toolbar = (props) => {
     const {
         active_tab,
         is_dialog_open,

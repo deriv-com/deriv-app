@@ -34,7 +34,7 @@ class Transactions extends React.PureComponent {
                     <ThemedScrollbars height='calc(100% - 8px)'>
                         {elements.length ? (
                             <TransitionGroup>
-                                {elements.map(element => {
+                                {elements.map((element) => {
                                     switch (element.type) {
                                         case transaction_elements.CONTRACT: {
                                             const { data: contract } = element;

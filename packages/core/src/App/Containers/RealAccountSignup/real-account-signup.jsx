@@ -117,7 +117,7 @@ class RealAccountSignup extends React.Component {
         });
     };
 
-    showAddCurrencySuccess = currency => {
+    showAddCurrencySuccess = (currency) => {
         this.props.setParams({
             current_currency: currency,
             active_modal_index: 3,
@@ -143,11 +143,11 @@ class RealAccountSignup extends React.Component {
         });
     };
 
-    cacheFormValues = payload => {
+    cacheFormValues = (payload) => {
         localStorage.setItem(
             'real_account_signup_wizard',
             JSON.stringify(
-                payload.map(item => {
+                payload.map((item) => {
                     if (typeof item.form_value === 'object') {
                         return item.form_value;
                     }

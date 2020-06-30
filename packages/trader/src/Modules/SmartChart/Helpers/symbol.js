@@ -1,6 +1,6 @@
-export const symbolChange = onSymbolChange =>
+export const symbolChange = (onSymbolChange) =>
     onSymbolChange &&
-    (symbol => {
+    ((symbol) => {
         onSymbolChange({
             target: {
                 name: 'symbol',

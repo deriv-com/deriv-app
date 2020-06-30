@@ -17,7 +17,7 @@ import { expectInitArg, expectTradeOptions } from '../utils/sanitize';
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
 
-const watchBefore = store =>
+const watchBefore = (store) =>
     watchScope({
         store,
         stopScope: constants.DURING_PURCHASE,
@@ -25,7 +25,7 @@ const watchBefore = store =>
         passFlag: 'proposalsReady',
     });
 
-const watchDuring = store =>
+const watchDuring = (store) =>
     watchScope({
         store,
         stopScope: constants.STOP,
@@ -42,7 +42,7 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
     if (store.getState().scope === stopScope) {
         return Promise.resolve(false);
     }
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         const unsubscribe = store.subscribe(() => {
             const newState = store.getState();
 
@@ -110,16 +110,16 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             return Promise.resolve();
         }
 
-        doUntilDone(() => this.api.authorize(token)).catch(e => this.$scope.observer.emit('Error', e));
+        doUntilDone(() => this.api.authorize(token)).catch((e) => this.$scope.observer.emit('Error', e));
 
-        return new Promise(resolve =>
+        return new Promise((resolve) =>
             this.listen('authorize', ({ authorize }) => {
                 this.accountInfo = authorize;
                 this.token = token;
 
                 // Only subscribe to balance in browser, not for tests.
                 if (document) {
-                    this.api.subscribeToBalance().then(r => {
+                    this.api.subscribeToBalance().then((r) => {
                         this.balance = Number(r.balance.balance);
                         resolve();
                     });

@@ -3,7 +3,7 @@ import { runAndGetResult, expectResultTypes, parts } from '../tools';
 describe('After Purchase Blocks', () => {
     let result;
 
-    beforeAll(done => {
+    beforeAll((done) => {
         runAndGetResult(
             undefined,
             `
@@ -12,7 +12,7 @@ describe('After Purchase Blocks', () => {
       result.isWin = Bot.isResult('win');
       result.detail = Bot.readDetails(1);
     `
-        ).then(v => {
+        ).then((v) => {
             result = v;
             done();
         });

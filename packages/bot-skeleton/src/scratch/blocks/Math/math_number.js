@@ -5,7 +5,7 @@ Blockly.Blocks.math_number = {
         this.jsonInit(this.definition());
 
         const fieldInput = this.getField('NUM');
-        fieldInput.setValidator(input => this.numberValidator(input));
+        fieldInput.setValidator((input) => this.numberValidator(input));
     },
     definition() {
         return {
@@ -42,7 +42,7 @@ Blockly.Blocks.math_number = {
     },
 };
 
-Blockly.JavaScript.math_number = block => {
+Blockly.JavaScript.math_number = (block) => {
     const code = block.getFieldValue('NUM');
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

@@ -7,7 +7,7 @@ import RootStore from 'Stores';
 
 configure({ enforceActions: 'observed' });
 
-const initStore = notification_messages => {
+const initStore = (notification_messages) => {
     Client.init();
 
     const root_store = new RootStore();

@@ -65,7 +65,7 @@ class Test extends React.Component {
         return (
             <code id='state_info' style={Object.assign({}, container, { display: is_visible ? 'block' : 'none' })}>
                 <div style={tabs}>
-                    {Object.keys(this.props).map(store => (
+                    {Object.keys(this.props).map((store) => (
                         <p
                             key={store}
                             onClick={() => this.setState({ store })}

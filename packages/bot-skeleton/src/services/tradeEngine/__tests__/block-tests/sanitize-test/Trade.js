@@ -5,33 +5,33 @@ describe('Trade Definition Blocks', () => {
     let error;
 
     describe('Start arguments', () => {
-        beforeAll(done =>
-            run('Bot.init("");').catch(e => {
+        beforeAll((done) =>
+            run('Bot.init("");').catch((e) => {
                 error = e;
                 done();
             })
         );
 
         it('User must be logged in', () => {
-            expect(error).satisfy(e => e.message);
+            expect(error).satisfy((e) => e.message);
         });
     });
 
     describe('Trade Option must be checked', () => {
-        beforeAll(done =>
+        beforeAll((done) =>
             run(
                 `
         Bot.init('Sametoken');
         Bot.start({ amount: "hello" })
       `
-            ).catch(e => {
+            ).catch((e) => {
                 error = e;
                 done();
             })
         );
 
         it('Trade Option must be checked', () => {
-            expect(error).satisfy(e => e.message);
+            expect(error).satisfy((e) => e.message);
         });
     });
 });

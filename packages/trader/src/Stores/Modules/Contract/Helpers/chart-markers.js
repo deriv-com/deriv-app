@@ -11,7 +11,7 @@ import {
 import { getChartType, getEndTime } from './logic';
 import { MARKER_TYPES_CONFIG } from '../../SmartChart/Constants/markers';
 
-export const createChartMarkers = contract_info => {
+export const createChartMarkers = (contract_info) => {
     let markers = [];
     if (contract_info) {
         const end_time = getEndTime(contract_info);
@@ -21,15 +21,15 @@ export const createChartMarkers = contract_info => {
             const tick_markers = createTickMarkers(contract_info);
             markers.push(...tick_markers);
         } else if (chart_type !== 'candle') {
-            const spot_markers = Object.keys(marker_spots).map(type => marker_spots[type](contract_info));
+            const spot_markers = Object.keys(marker_spots).map((type) => marker_spots[type](contract_info));
             markers.push(...spot_markers);
         }
-        const line_markers = Object.keys(marker_lines).map(type => marker_lines[type](contract_info));
+        const line_markers = Object.keys(marker_lines).map((type) => marker_lines[type](contract_info));
         markers.push(...line_markers);
 
-        markers = markers.filter(m => !!m);
+        markers = markers.filter((m) => !!m);
     }
-    markers.forEach(marker => {
+    markers.forEach((marker) => {
         const contract_id = contract_info.contract_id;
         marker.react_key = `${contract_id}-${marker.type}`;
     });
@@ -60,7 +60,7 @@ const addLabelAlignment = (tick, idx, arr) => {
     return tick;
 };
 
-const createTickMarkers = contract_info => {
+const createTickMarkers = (contract_info) => {
     const tick_stream = ObjectUtils.unique(contract_info.tick_stream, 'epoch').map(addLabelAlignment);
     const result = [];
 

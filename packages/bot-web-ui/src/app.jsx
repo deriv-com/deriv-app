@@ -87,14 +87,14 @@ class App extends React.Component {
         // Syncs all trade options blocks' currency with the client's active currency.
         this.disposeCurrencyReaction = reaction(
             () => this.root_store.core.client.currency,
-            currency => {
+            (currency) => {
                 const workspace = Blockly.derivWorkspace;
 
                 if (workspace) {
                     const trade_options_blocks = workspace
                         .getAllBlocks()
-                        .filter(b => b.type === 'trade_definition_tradeoptions');
-                    trade_options_blocks.forEach(trade_options_block => trade_options_block.setCurrency(currency));
+                        .filter((b) => b.type === 'trade_definition_tradeoptions');
+                    trade_options_blocks.forEach((trade_options_block) => trade_options_block.setCurrency(currency));
                 }
             }
         );
@@ -108,7 +108,7 @@ class App extends React.Component {
 
         this.disposeSwitchAccountListener = reaction(
             () => client.switch_broadcast,
-            switch_broadcast => {
+            (switch_broadcast) => {
                 if (!switch_broadcast) {
                     return;
                 }
@@ -121,8 +121,8 @@ class App extends React.Component {
                         contracts_for.disposeCache();
                         workspace
                             .getAllBlocks()
-                            .filter(block => block.type === 'trade_definition_market')
-                            .forEach(block => {
+                            .filter((block) => block.type === 'trade_definition_market')
+                            .forEach((block) => {
                                 runIrreversibleEvents(() => {
                                     const fake_create_event = new Blockly.Events.Create(block);
                                     Blockly.Events.fire(fake_create_event);
@@ -137,9 +137,9 @@ class App extends React.Component {
     /**
      * Ensures inputs are closed when clicking on non-Blockly elements.
      */
-    onClickOutsideBlockly = event => {
+    onClickOutsideBlockly = (event) => {
         const path = event.path || (event.composedPath && event.composedPath());
-        const is_click_outside_blockly = !path.some(el => el.classList && el.classList.contains('injectionDiv'));
+        const is_click_outside_blockly = !path.some((el) => el.classList && el.classList.contains('injectionDiv'));
         if (is_click_outside_blockly) {
             Blockly.hideChaff(/* allowToolbox */ false);
         }
@@ -149,7 +149,7 @@ class App extends React.Component {
         window.addEventListener('click', this.onClickOutsideBlockly);
     }
 
-    onBeforeUnload = event => {
+    onBeforeUnload = (event) => {
         if (this.root_store.run_panel.is_stop_button_visible) {
             event.returnValue = true;
         }

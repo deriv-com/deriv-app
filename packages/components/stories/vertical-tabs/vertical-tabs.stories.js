@@ -6,7 +6,7 @@ import VerticalTab from 'Components/vertical-tab/vertical-tab';
 import 'Components/vertical-tab/vertical-tab.scss';
 import Theme from '../shared/theme';
 
-const TextComponent = props => (
+const TextComponent = (props) => (
     <div
         style={{
             margin: '16px',

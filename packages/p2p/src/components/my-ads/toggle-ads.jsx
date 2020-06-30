@@ -28,7 +28,7 @@ class ToggleAds extends React.Component {
 
     handleToggle = () => {
         const is_listed = this.context.is_listed ? 0 : 1;
-        requestWS({ p2p_advertiser_update: 1, is_listed }).then(response => {
+        requestWS({ p2p_advertiser_update: 1, is_listed }).then((response) => {
             if (response.error) {
                 this.setState({ error: response.error.message });
             } else {

@@ -15,7 +15,7 @@ const StopLoss = ({
     stop_loss,
     validation_errors,
 }) => {
-    const changeValue = e => {
+    const changeValue = (e) => {
         if (e.target.name === 'has_stop_loss') {
             const new_val = e.target.value;
             onChangeMultiple({

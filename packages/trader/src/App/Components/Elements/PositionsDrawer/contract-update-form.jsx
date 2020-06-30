@@ -67,12 +67,12 @@ class ContractUpdateForm extends React.Component {
     }
 
     get has_validation_errors() {
-        return Object.keys(this.error_messages).some(field => this.error_messages[field]?.length);
+        return Object.keys(this.error_messages).some((field) => this.error_messages[field]?.length);
     }
 
-    isValid = val => !(val === undefined || val === null);
+    isValid = (val) => !(val === undefined || val === null);
 
-    onChange = e => {
+    onChange = (e) => {
         const { name, value } = e.target;
 
         if (typeof this.props.onChange === 'function') {

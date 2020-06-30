@@ -19,7 +19,7 @@ const Input = (
     ref
 ) => {
     const [counter, setCounter] = React.useState(0);
-    const changeHandler = e => {
+    const changeHandler = (e) => {
         let input_value = e.target.value;
         if (max_characters && input_value.length >= max_characters) {
             input_value = input_value.slice(0, max_characters);

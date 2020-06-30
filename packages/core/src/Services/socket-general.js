@@ -15,7 +15,7 @@ const BinarySocketGeneral = (() => {
         common_store.setIsSocketOpened(false);
     };
 
-    const onOpen = is_ready => {
+    const onOpen = (is_ready) => {
         // Header.hideNotification();
         if (is_ready) {
             if (!Login.isLoginPages()) {
@@ -30,7 +30,7 @@ const BinarySocketGeneral = (() => {
         }
     };
 
-    const onMessage = response => {
+    const onMessage = (response) => {
         handleError(response);
         // Header.hideNotification('CONNECTION_ERROR');
         switch (response.msg_type) {
@@ -87,33 +87,33 @@ const BinarySocketGeneral = (() => {
         }
     };
 
-    const setResidence = residence => {
+    const setResidence = (residence) => {
         if (residence) {
             client_store.setResidence(residence);
             WS.landingCompany(residence);
         }
     };
 
-    const setBalanceActiveAccount = flow(function*(obj_balance) {
+    const setBalanceActiveAccount = flow(function* (obj_balance) {
         yield BinarySocket.wait('website_status');
         client_store.setBalanceActiveAccount(obj_balance);
     });
 
-    const setBalanceOtherAccounts = obj_balance => {
+    const setBalanceOtherAccounts = (obj_balance) => {
         client_store.setBalanceOtherAccounts(obj_balance);
     };
 
-    const handleError = response => {
+    const handleError = (response) => {
         const msg_type = response.msg_type;
         const error_code = ObjectUtils.getPropertyValue(response, ['error', 'code']);
         switch (error_code) {
             case 'WrongResponse':
                 // TODO: Remove condition checks below for WrongResponse once mt5 is more reliable
                 if (msg_type === 'mt5_login_list') {
-                    WS.authorized.mt5LoginList().then(mt5_list_response => {
+                    WS.authorized.mt5LoginList().then((mt5_list_response) => {
                         if (!mt5_list_response.error) {
                             client_store.responseMt5LoginList(mt5_list_response);
-                            WS.balanceAll().then(balance_response => {
+                            WS.balanceAll().then((balance_response) => {
                                 if (!balance_response.error)
                                     client_store.setBalanceOtherAccounts(balance_response.balance);
                             });
@@ -124,14 +124,14 @@ const BinarySocketGeneral = (() => {
                 } else if (msg_type === 'balance') {
                     WS.forgetAll('balance').then(subscribeBalances);
                 } else if (msg_type === 'get_account_status') {
-                    WS.authorized.getAccountStatus().then(account_status_response => {
+                    WS.authorized.getAccountStatus().then((account_status_response) => {
                         if (!account_status_response.error) {
                             client_store.setAccountStatus(account_status_response.get_account_status);
                         }
                     });
                 } else if (msg_type === 'landing_company') {
                     if (client_store.residence) {
-                        WS.authorized.landingCompany(client_store.residence).then(landing_company_response => {
+                        WS.authorized.landingCompany(client_store.residence).then((landing_company_response) => {
                             if (!landing_company_response.error) {
                                 client_store.responseLandingCompany(landing_company_response);
                             }
@@ -184,7 +184,7 @@ const BinarySocketGeneral = (() => {
         }
     };
 
-    const init = store => {
+    const init = (store) => {
         client_store = store.client;
         common_store = store.common;
         gtm_store = store.gtm;
@@ -201,7 +201,7 @@ const BinarySocketGeneral = (() => {
         WS.subscribeBalanceActiveAccount(ResponseHandlers.balanceActiveAccount, client_store.loginid);
     };
 
-    const authorizeAccount = response => {
+    const authorizeAccount = (response) => {
         client_store.responseAuthorize(response);
         subscribeBalances();
         WS.storage.getSettings();
@@ -235,7 +235,7 @@ export default BinarySocketGeneral;
 
 const ResponseHandlers = (() => {
     let is_available = false;
-    const websiteStatus = response => {
+    const websiteStatus = (response) => {
         if (response.website_status) {
             is_available = /^up$/i.test(response.website_status.site_status);
             if (is_available && !BinarySocket.availability()) {
@@ -252,13 +252,13 @@ const ResponseHandlers = (() => {
         }
     };
 
-    const balanceActiveAccount = response => {
+    const balanceActiveAccount = (response) => {
         if (!response.error) {
             BinarySocketGeneral.setBalanceActiveAccount(response.balance);
         }
     };
 
-    const balanceOtherAccounts = response => {
+    const balanceOtherAccounts = (response) => {
         if (!response.error) {
             BinarySocketGeneral.setBalanceOtherAccounts(response.balance);
         }

@@ -14,14 +14,12 @@ Blockly.Blocks.lists_getIndex = {
             [localize('last'), 'LAST'],
             [localize('random'), 'RANDOM'],
         ];
-        const modeMenu = new Blockly.FieldDropdown(this.MODE_OPTIONS, value => {
+        const modeMenu = new Blockly.FieldDropdown(this.MODE_OPTIONS, (value) => {
             const isStatement = value === 'REMOVE';
             this.updateStatement(isStatement);
         });
 
-        this.appendValueInput('VALUE')
-            .setCheck('Array')
-            .appendField(localize('in list'));
+        this.appendValueInput('VALUE').setCheck('Array').appendField(localize('in list'));
         this.appendDummyInput().appendField(modeMenu, 'MODE');
         this.appendDummyInput('AT');
         // eslint-disable-next-line no-underscore-dangle
@@ -86,7 +84,7 @@ Blockly.Blocks.lists_getIndex = {
             this.appendDummyInput('AT');
         }
 
-        const menu = new Blockly.FieldDropdown(this.WHERE_OPTIONS, value => {
+        const menu = new Blockly.FieldDropdown(this.WHERE_OPTIONS, (value) => {
             const newAt = ['FROM_START', 'FROM_END'].includes(value);
             if (newAt !== isAt) {
                 this.updateAt(newAt);
@@ -103,7 +101,7 @@ Blockly.Blocks.lists_getIndex = {
     },
 };
 
-Blockly.JavaScript.lists_getIndex = block => {
+Blockly.JavaScript.lists_getIndex = (block) => {
     const mode = block.getFieldValue('MODE') || 'GET';
     const where = block.getFieldValue('WHERE') || 'FIRST';
     const listOrder = where === 'RANDOM' ? Blockly.JavaScript.ORDER_COMMA : Blockly.JavaScript.ORDER_MEMBER;

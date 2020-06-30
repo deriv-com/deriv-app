@@ -4,10 +4,10 @@ import DBotStore from '../../../scratch/dbot-store';
 
 let balance_string = '';
 
-export default Engine =>
+export default (Engine) =>
     class Balance extends Engine {
         observeBalance() {
-            this.listen('balance', r => {
+            this.listen('balance', (r) => {
                 const {
                     balance: { balance: b, currency },
                 } = r;

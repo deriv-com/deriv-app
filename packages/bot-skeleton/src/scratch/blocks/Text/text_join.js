@@ -78,14 +78,14 @@ Blockly.Blocks.text_join = {
 };
 
 // Blockly.JavaScript.text_join = Blockly.JavaScript.lists_create_with;
-Blockly.JavaScript.text_join = block => {
+Blockly.JavaScript.text_join = (block) => {
     // eslint-disable-next-line no-underscore-dangle
     const var_name = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
         Blockly.Variables.NAME_TYPE
     );
     const blocks_in_stack = block.getBlocksInStatement('STACK');
-    const elements = blocks_in_stack.map(b => {
+    const elements = blocks_in_stack.map((b) => {
         const value = Blockly.JavaScript[b.type](b);
         return Array.isArray(value) ? value[0] : value;
     });

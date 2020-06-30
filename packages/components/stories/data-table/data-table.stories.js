@@ -30,7 +30,7 @@ const mock_columns = [
     },
 ];
 
-const handleRowAction = row_obj => console.log(row_obj);
+const handleRowAction = (row_obj) => console.log(row_obj);
 
 const handleActionColumns = () => ({ row_obj, is_header, is_footer }) => {
     if (is_header || is_footer) {
@@ -44,7 +44,7 @@ const handleActionColumns = () => ({ row_obj, is_header, is_footer }) => {
     );
 };
 
-const handleScroll = e => {
+const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     console.log(scrollTop, scrollHeight, clientHeight);
 };
@@ -99,7 +99,7 @@ stories
                     columns={mock_columns}
                     data_source={mock_data}
                     getRowSize={() => 30}
-                    getRowAction={row => handleRowAction(row)}
+                    getRowAction={(row) => handleRowAction(row)}
                 />
             </div>
         </Theme>

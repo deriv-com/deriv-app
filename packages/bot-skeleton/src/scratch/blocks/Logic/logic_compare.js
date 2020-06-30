@@ -52,7 +52,7 @@ Blockly.Blocks.logic_compare = {
     },
 };
 
-Blockly.JavaScript.logic_compare = block => {
+Blockly.JavaScript.logic_compare = (block) => {
     const operatorMapping = {
         EQ: '==',
         NEQ: '!=',

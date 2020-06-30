@@ -18,7 +18,7 @@ class VerticalTabHeaders extends React.PureComponent {
         this.repositionActiveHighlighter();
     }
 
-    onTabChange = item => {
+    onTabChange = (item) => {
         if (typeof this.props.onChange === 'function') {
             this.props.onChange(item);
         }
@@ -29,7 +29,7 @@ class VerticalTabHeaders extends React.PureComponent {
     // You can pass true for `should_skip_animation` for uses such as closing a header group.
     // Otherwise, there can be a spotlight effect where the highlighter will gradually animate over to the new offsetTop
     // value of the tab header. This is expected.
-    repositionActiveHighlighter = should_skip_animation => {
+    repositionActiveHighlighter = (should_skip_animation) => {
         this.setState({ top: this.offset_top, should_skip_animation });
     };
 
@@ -39,7 +39,7 @@ class VerticalTabHeaders extends React.PureComponent {
 
         this.headers = this.ref.current.querySelectorAll('.dc-vertical-tab__header__link');
 
-        const selected_el = [...this.headers].find(header => header.innerText === (selected.label || selected.title));
+        const selected_el = [...this.headers].find((header) => header.innerText === (selected.label || selected.title));
 
         if (selected_el) {
             const extra_offset = this.props.is_floating ? 18 : 10;
@@ -66,7 +66,7 @@ class VerticalTabHeaders extends React.PureComponent {
                               onToggle={this.repositionActiveHighlighter}
                               selected={group.subitems.includes(
                                   // See if the index of the currently selected item is in the subitems of this group
-                                  this.props.items.findIndex(i => i === this.props.selected)
+                                  this.props.items.findIndex((i) => i === this.props.selected)
                               )}
                               items={this.props.items}
                               group={group}

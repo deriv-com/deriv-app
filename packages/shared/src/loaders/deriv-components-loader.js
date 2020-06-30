@@ -21,9 +21,9 @@ function checkExists(component) {
     return existsSync(resolve(__dirname, '../../components/src/components/', component, `${component}.scss`));
 }
 
-module.exports = function(source, map) {
+module.exports = function (source, map) {
     const lines = source.split(/\n/);
-    const mapped_lines = lines.map(line => {
+    const mapped_lines = lines.map((line) => {
         const matches = /\s*import\s+\{(.*)\}\s*from\s+\'@deriv\/components/.exec(line); // eslint-disable-line no-useless-escape
         if (!matches || !matches[1]) {
             return line; // do nothing;
@@ -34,7 +34,7 @@ module.exports = function(source, map) {
             .split(',');
         const replace = components
             .map(
-                c => `
+                (c) => `
 import ${c} from '@deriv/components/lib/${getKebabCase(c)}';
 ${checkExists(getKebabCase(c)) ? `import '@deriv/components/lib/${getKebabCase(c)}.css';` : ''}
         `

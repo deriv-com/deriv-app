@@ -7,7 +7,7 @@ const Localize = ({ i18n_default_text, values, components, options, i18n }) => (
 );
 
 // Trans needs to have the i18n instance in scope
-const withI18n = i18n => props => <Localize i18n={i18n} {...props} />;
+const withI18n = (i18n) => (props) => <Localize i18n={i18n} {...props} />;
 
 Localize.propTypes = {
     components: PropTypes.arrayOf(PropTypes.node),

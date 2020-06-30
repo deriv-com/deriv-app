@@ -24,7 +24,7 @@ const validateSignup = (values, residence_list) => {
         errors.residence = true;
     } else {
         const index_of_selection = residence_list.findIndex(
-            item => item.text.toLowerCase() === values.residence.toLowerCase()
+            (item) => item.text.toLowerCase() === values.residence.toLowerCase()
         );
 
         if (index_of_selection === -1 || residence_list[index_of_selection].disabled === 'DISABLED') {
@@ -43,7 +43,7 @@ class AccountSignup extends React.Component {
         pw_input: '',
     };
 
-    updatePassword = string => {
+    updatePassword = (string) => {
         this.setState({ pw_input: string });
     };
 
@@ -51,7 +51,7 @@ class AccountSignup extends React.Component {
         this.setState({ has_valid_residence: true });
     };
 
-    onSignupComplete = error => {
+    onSignupComplete = (error) => {
         // Error would be returned on invalid token (and the like) cases.
         // TODO: Proper error handling (currently we have no place to put the message)
 
@@ -67,10 +67,10 @@ class AccountSignup extends React.Component {
     render() {
         const { onSignup, residence_list } = this.props;
 
-        const validateSignupPassthrough = values => validateSignup(values, residence_list);
-        const onSignupPassthrough = values => {
+        const validateSignupPassthrough = (values) => validateSignup(values, residence_list);
+        const onSignupPassthrough = (values) => {
             const index_of_selection = residence_list.findIndex(
-                item => item.text.toLowerCase() === values.residence.toLowerCase()
+                (item) => item.text.toLowerCase() === values.residence.toLowerCase()
             );
 
             const modded_values = { ...values, residence: residence_list[index_of_selection].value };
@@ -135,7 +135,7 @@ class AccountSignup extends React.Component {
                                                         required
                                                         value={values.password}
                                                         onBlur={handleBlur}
-                                                        onChange={e => {
+                                                        onChange={(e) => {
                                                             const input = e.target;
                                                             setFieldTouched('password', true);
                                                             if (input) this.updatePassword(input.value);

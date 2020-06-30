@@ -53,7 +53,7 @@ Blockly.Blocks.math_arithmetic = {
     },
 };
 
-Blockly.JavaScript.math_arithmetic = block => {
+Blockly.JavaScript.math_arithmetic = (block) => {
     const operators = {
         ADD: ['+', Blockly.JavaScript.ORDER_ADDITION],
         MINUS: ['-', Blockly.JavaScript.ORDER_SUBTRACTION],

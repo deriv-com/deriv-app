@@ -10,7 +10,7 @@ const getValidationRules = () => ({
             [
                 'req',
                 {
-                    condition: store => !store.contract_update_stop_loss,
+                    condition: (store) => !store.contract_update_stop_loss,
                     message: localize('Please enter a stop loss amount.'),
                 },
             ],
@@ -44,7 +44,7 @@ const getValidationRules = () => ({
             [
                 'req',
                 {
-                    condition: store => !store.contract_update_take_profit,
+                    condition: (store) => !store.contract_update_take_profit,
                     message: localize('Please enter a take profit amount.'),
                 },
             ],

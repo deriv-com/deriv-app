@@ -156,14 +156,14 @@ class MT5PasswordManagerModal extends React.Component {
         });
     };
 
-    hideError = section => {
+    hideError = (section) => {
         this.setState({
             [`error_message_${section}`]: '',
             [`is_submit_success_${section}`]: true,
         });
     };
 
-    updateAccountTabIndex = index => {
+    updateAccountTabIndex = (index) => {
         this.setState({
             active_tab_index: index,
             error_message_main: '',
@@ -185,7 +185,7 @@ class MT5PasswordManagerModal extends React.Component {
             selected_account_group,
         } = this.props;
 
-        const validatePassword = values => {
+        const validatePassword = (values) => {
             const errors = {};
 
             if (
@@ -209,7 +209,7 @@ class MT5PasswordManagerModal extends React.Component {
             return errors;
         };
 
-        const onSubmit = async values => {
+        const onSubmit = async (values) => {
             const login = selected_login;
 
             if (!login) {
@@ -267,7 +267,7 @@ class MT5PasswordManagerModal extends React.Component {
                                                     )
                                                 }
                                                 error={touched.new_password && errors.new_password}
-                                                onChange={e => {
+                                                onChange={(e) => {
                                                     setFieldTouched('new_password', true, true);
                                                     field.onChange(e);
                                                 }}
@@ -358,7 +358,7 @@ class MT5PasswordManagerModal extends React.Component {
                                                         )
                                                     }
                                                     error={touched.new_password && errors.new_password}
-                                                    onChange={e => {
+                                                    onChange={(e) => {
                                                         setFieldTouched('new_password', true, true);
                                                         field.onChange(e);
                                                     }}

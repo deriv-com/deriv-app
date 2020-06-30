@@ -7,7 +7,7 @@ import { config } from '../../constants/config';
  *     went wrong with deserialization.
  * @package
  */
-Blockly.Flyout.prototype.createBlock = function(event, original_block) {
+Blockly.Flyout.prototype.createBlock = function (event, original_block) {
     Blockly.Events.disable();
 
     const main_workspace = this.targetWorkspace_;
@@ -34,7 +34,7 @@ Blockly.Flyout.prototype.createBlock = function(event, original_block) {
         // event that respects the current Blockly.Events group, this is required to maintain
         // a working undo/redo stack.
         if (config.single_instance_blocks.includes(new_block.type)) {
-            main_workspace.getAllBlocks().forEach(ws_block => {
+            main_workspace.getAllBlocks().forEach((ws_block) => {
                 if (ws_block.type === new_block.type && ws_block.id !== new_block.id) {
                     ws_block.dispose();
                 }
@@ -42,7 +42,7 @@ Blockly.Flyout.prototype.createBlock = function(event, original_block) {
         }
 
         // Fire a VarCreate event for each (if any) new variable created.
-        new_variables.forEach(new_variable => {
+        new_variables.forEach((new_variable) => {
             Blockly.Events.fire(new Blockly.Events.VarCreate(new_variable));
         });
 
@@ -65,7 +65,7 @@ Blockly.Flyout.prototype.createBlock = function(event, original_block) {
  * @return {!Blockly.Block} The new block in the main workspace.
  * @private
  */
-Blockly.Flyout.prototype.placeNewBlock_ = function(event, old_block) {
+Blockly.Flyout.prototype.placeNewBlock_ = function (event, old_block) {
     const main_workspace = this.targetWorkspace_;
     const svg_root_old = old_block.getSvgRoot();
 

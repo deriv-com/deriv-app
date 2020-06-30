@@ -3,7 +3,7 @@ import React from 'react';
 export const useLongPress = (callback = () => {}, ms = 300) => {
     const [startLongPress, setStartLongPress] = React.useState(false);
 
-    const preventDefaults = e => {
+    const preventDefaults = (e) => {
         e.preventDefault();
         e.stopPropagation();
     };
@@ -22,13 +22,13 @@ export const useLongPress = (callback = () => {}, ms = 300) => {
     }, [startLongPress]);
 
     return {
-        onMouseDown: e => {
+        onMouseDown: (e) => {
             preventDefaults(e);
             setStartLongPress(true);
         },
         onMouseUp: () => setStartLongPress(false),
         onMouseLeave: () => setStartLongPress(false),
-        onTouchStart: e => {
+        onTouchStart: (e) => {
             preventDefaults(e);
             setStartLongPress(true);
         },

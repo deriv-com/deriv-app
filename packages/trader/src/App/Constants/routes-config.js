@@ -14,7 +14,7 @@ const MT5 = React.lazy(() => import(/* webpackChunkName: "mt5", webpackPrefetch:
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
-const handleLoading = props => {
+const handleLoading = (props) => {
     // 200ms default
     if (props.pastDelay) {
         return <Loading />;
@@ -22,7 +22,7 @@ const handleLoading = props => {
     return null;
 };
 
-const makeLazyLoader = importFn => component_name =>
+const makeLazyLoader = (importFn) => (component_name) =>
     Loadable.Map({
         loader: {
             ComponentModule: importFn,

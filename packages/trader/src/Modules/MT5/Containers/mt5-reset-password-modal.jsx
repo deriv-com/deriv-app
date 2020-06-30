@@ -21,9 +21,7 @@ const ResetPasswordIntent = ({ current_list, children, ...props }) => {
         login = current_list[`${group}.${type}`].login;
         title = getMtCompanies()[group][type].title;
     } else if (current_list) {
-        [group, type] = Object.keys(current_list)
-            .pop()
-            .split('.');
+        [group, type] = Object.keys(current_list).pop().split('.');
         login = current_list[`${group}.${type}`].login;
         title = getMtCompanies()[group][type].title;
     } else {
@@ -47,7 +45,7 @@ class MT5ResetPasswordModal extends React.Component {
         is_finished: false,
         changed_password_type: '',
     };
-    renderErrorBox = error => {
+    renderErrorBox = (error) => {
         this.setState({
             has_error: true,
             error_message: error.message,
@@ -70,7 +68,7 @@ class MT5ResetPasswordModal extends React.Component {
             verification_code: url_params.get('code'),
         };
 
-        WS.mt5PasswordReset(request).then(response => {
+        WS.mt5PasswordReset(request).then((response) => {
             if (response.error && response.error.code === 'InvalidToken') {
                 this.renderErrorBox(response.error);
             } else {
@@ -102,7 +100,7 @@ class MT5ResetPasswordModal extends React.Component {
                         {({ title, type, login }) => (
                             <Formik
                                 initialValues={{ new_password: '' }}
-                                validate={values => !!values.new_password}
+                                validate={(values) => !!values.new_password}
                                 onSubmit={(values, actions) => this.resetPassword(values, type, login, actions)}
                             >
                                 {({

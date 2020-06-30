@@ -1,15 +1,15 @@
-export const toSentenceCase = string => {
+export const toSentenceCase = (string) => {
     if (!string) {
         return '';
     }
     return string[0].toUpperCase() + string.slice(1);
 };
 
-export const countDecimalPlaces = value => {
+export const countDecimalPlaces = (value) => {
     return ((value.toString().split('.') || [])[1] || []).length;
 };
 
-export const generateHexColourFromNickname = nickname => {
+export const generateHexColourFromNickname = (nickname) => {
     const colours = [
         '#fc4400',
         '#ff8c00',
@@ -44,4 +44,4 @@ export const generateHexColourFromNickname = nickname => {
     return colours[((colour_hash % colours.length) + colours.length) % colours.length];
 };
 
-export const getShortNickname = nickname => nickname.substr(0, 2).toUpperCase();
+export const getShortNickname = (nickname) => nickname.substr(0, 2).toUpperCase();

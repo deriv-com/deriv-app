@@ -52,18 +52,18 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
         setSubmitting(false);
     };
 
-    const validatePopup = values => {
+    const validatePopup = (values) => {
         const validations = {
             amount: [
-                v => !!v,
-                v => v >= ad.min_available,
-                v => v <= ad.max_available,
-                v => countDecimalPlaces(v) <= ad.offer_currency_decimals,
+                (v) => !!v,
+                (v) => v >= ad.min_available,
+                (v) => v <= ad.max_available,
+                (v) => countDecimalPlaces(v) <= ad.offer_currency_decimals,
             ],
         };
         if (ad.type === 'sell') {
-            validations.contact_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
-            validations.payment_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
+            validations.contact_info = [(v) => !!v, (v) => textValidator(v), (v) => lengthValidator(v)];
+            validations.payment_info = [(v) => !!v, (v) => textValidator(v), (v) => lengthValidator(v)];
         }
 
         const display_initial_amount = CurrencyUtils.formatMoney(
@@ -90,7 +90,7 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
             localize('Enter a valid amount'),
         ];
 
-        const info_messages = field_name => [
+        const info_messages = (field_name) => [
             localize('{{field_name}} is required', { field_name }),
             localize(
                 "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
@@ -107,7 +107,7 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
         const errors = {};
 
         Object.entries(validations).forEach(([key, rules]) => {
-            const error_index = rules.findIndex(v => {
+            const error_index = rules.findIndex((v) => {
                 return !v(values[key]);
             });
 
@@ -204,7 +204,7 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
                                                             {ad.offer_currency}
                                                         </span>
                                                     }
-                                                    onChange={e => {
+                                                    onChange={(e) => {
                                                         // typing more than 15 characters will break the layout
                                                         // max doesn't disable typing, so we will use this to restrict length
                                                         if (e.target.value.length > 15) {

@@ -312,7 +312,7 @@ export default class RunPanelStore {
     showErrorMessage(data) {
         const { journal } = this.root_store;
         journal.onError(data);
-        if (journal.journal_filters.some(filter => filter === message_types.ERROR)) {
+        if (journal.journal_filters.some((filter) => filter === message_types.ERROR)) {
             this.setActiveTabIndex(2);
         }
     }
@@ -336,7 +336,7 @@ export default class RunPanelStore {
             if (common.is_socket_opened) {
                 this.disposeIsSocketOpenedListener = reaction(
                     () => client.loginid,
-                    loginid => {
+                    (loginid) => {
                         if (loginid && this.is_running) {
                             ui.addNotificationMessage(switch_account_notification);
                         }

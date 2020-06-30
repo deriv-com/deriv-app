@@ -10,8 +10,8 @@ class AutoHeightWrapper extends React.Component {
         };
     }
 
-    setHeight = height => this.setState({ height });
-    setRef = ref =>
+    setHeight = (height) => this.setState({ height });
+    setRef = (ref) =>
         this.setState({ ref }, () => {
             this.updateHeight();
         });

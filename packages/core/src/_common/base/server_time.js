@@ -7,7 +7,7 @@ const ServerTime = (() => {
     const pending = new PromiseClass();
     let server_time, performance_request_time, get_time_interval, update_time_interval, onTimeUpdated;
 
-    const init = fncTimeUpdated => {
+    const init = (fncTimeUpdated) => {
         if (!clock_started) {
             onTimeUpdated = fncTimeUpdated;
             requestTime();
@@ -22,7 +22,7 @@ const ServerTime = (() => {
         BinarySocket.send({ time: 1 }).then(timeCounter);
     };
 
-    const timeCounter = response => {
+    const timeCounter = (response) => {
         if (response.error) return;
 
         if (!clock_started) {

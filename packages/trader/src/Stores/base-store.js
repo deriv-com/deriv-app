@@ -133,7 +133,7 @@ export default class BaseStore {
     setupReactionForLocalStorage() {
         if (this.local_storage_properties.length) {
             reaction(
-                () => this.local_storage_properties.map(i => this[i]),
+                () => this.local_storage_properties.map((i) => this[i]),
                 () => this.saveToStorage(this.local_storage_properties, BaseStore.STORAGES.LOCAL_STORAGE)
             );
         }
@@ -147,7 +147,7 @@ export default class BaseStore {
     setupReactionForSessionStorage() {
         if (this.session_storage_properties.length) {
             reaction(
-                () => this.session_storage_properties.map(i => this[i]),
+                () => this.session_storage_properties.map((i) => this[i]),
                 () => this.saveToStorage(this.session_storage_properties, BaseStore.STORAGES.SESSION_STORAGE)
             );
         }
@@ -184,7 +184,7 @@ export default class BaseStore {
 
         const snapshot = { ...local_storage_snapshot, ...session_storage_snapshot };
 
-        Object.keys(snapshot).forEach(k => (this[k] = snapshot[k]));
+        Object.keys(snapshot).forEach((k) => (this[k] = snapshot[k]));
     }
 
     /**
@@ -198,8 +198,8 @@ export default class BaseStore {
     setValidationErrorMessages(propertyName, messages) {
         const is_different = () =>
             !!this.validation_errors[propertyName]
-                .filter(x => !messages.includes(x))
-                .concat(messages.filter(x => !this.validation_errors[propertyName].includes(x))).length;
+                .filter((x) => !messages.includes(x))
+                .concat(messages.filter((x) => !this.validation_errors[propertyName].includes(x))).length;
         if (!this.validation_errors[propertyName] || is_different()) {
             this.validation_errors[propertyName] = messages;
         }
@@ -213,7 +213,7 @@ export default class BaseStore {
      */
     @action
     setValidationRules(rules = {}) {
-        Object.keys(rules).forEach(key => {
+        Object.keys(rules).forEach((key) => {
             this.addRule(key, rules[key]);
         });
     }
@@ -229,7 +229,7 @@ export default class BaseStore {
     addRule(property, rules) {
         this.validation_rules[property] = rules;
 
-        intercept(this, property, change => {
+        intercept(this, property, (change) => {
             this.validateProperty(property, change.newValue);
             return change;
         });
@@ -257,7 +257,7 @@ export default class BaseStore {
 
         validator.isPassed();
 
-        Object.keys(inputs).forEach(key => {
+        Object.keys(inputs).forEach((key) => {
             this.setValidationErrorMessages(key, validator.errors.get(key));
         });
     }
@@ -271,12 +271,12 @@ export default class BaseStore {
         const validation_rules = Object.keys(this.validation_rules);
         const validation_errors = Object.keys(this.validation_errors);
 
-        validation_rules.forEach(p => {
+        validation_rules.forEach((p) => {
             this.validateProperty(p, this[p]);
         });
 
         // Remove keys that are present in error, but not in rules:
-        validation_errors.forEach(error => {
+        validation_errors.forEach((error) => {
             if (!validation_rules.includes(error)) {
                 delete this.validation_errors[error];
             }
@@ -395,7 +395,7 @@ export default class BaseStore {
     onNetworkStatusChange(listener) {
         this.networkStatusChangeDisposer = reaction(
             () => this.root_store.common.is_network_online,
-            is_online => {
+            (is_online) => {
                 try {
                     this.network_status_change_listener(is_online);
                 } catch (error) {
@@ -415,7 +415,7 @@ export default class BaseStore {
     onThemeChange(listener) {
         this.themeChangeDisposer = reaction(
             () => this.root_store.ui.is_dark_mode_on,
-            is_dark_mode_on => {
+            (is_dark_mode_on) => {
                 try {
                     this.theme_change_listener(is_dark_mode_on);
                 } catch (error) {
@@ -530,7 +530,7 @@ export default class BaseStore {
     assertHasValidCache(loginid, ...reactions) {
         // account was changed when this was unmounted.
         if (this.root_store.client.loginid !== loginid) {
-            reactions.forEach(act => act());
+            reactions.forEach((act) => act());
             this.partial_fetch_time = false;
         }
     }

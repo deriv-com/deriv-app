@@ -14,11 +14,7 @@ const delay_on_scroll_time = 150;
 export default class ProfitTableStore extends BaseStore {
     @observable data = [];
     @observable date_from = null;
-    @observable date_to = toMoment()
-        .startOf('day')
-        .add(1, 'd')
-        .subtract(1, 's')
-        .unix();
+    @observable date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     @observable error = '';
     @observable has_loaded_all = false;
     @observable is_loading = false;
@@ -51,16 +47,14 @@ export default class ProfitTableStore extends BaseStore {
     @computed
     get data_source() {
         // TODO: remove this getter once Multiplier is supported in mobile
-        return isDesktop() ? this.data : this.data.filter(row => !Shortcode.isMultiplier({ shortcode: row.shortcode }));
+        return isDesktop()
+            ? this.data
+            : this.data.filter((row) => !Shortcode.isMultiplier({ shortcode: row.shortcode }));
     }
 
     shouldFetchNextBatch(should_load_partially) {
         if (!should_load_partially && (this.has_loaded_all || this.is_loading)) return false;
-        const today = toMoment()
-            .startOf('day')
-            .add(1, 'd')
-            .subtract(1, 's')
-            .unix();
+        const today = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
         if (this.date_to < today) return !should_load_partially && this.partial_fetch_time;
         return true;
     }
@@ -86,7 +80,7 @@ export default class ProfitTableStore extends BaseStore {
             return;
         }
 
-        const formatted_transactions = response.profit_table.transactions.map(transaction =>
+        const formatted_transactions = response.profit_table.transactions.map((transaction) =>
             formatProfitTableTransactions(
                 transaction,
                 this.root_store.client.currency,
@@ -106,7 +100,7 @@ export default class ProfitTableStore extends BaseStore {
         }
     }
 
-    fetchOnScroll = debounce(left => {
+    fetchOnScroll = debounce((left) => {
         if (left < 2000) {
             this.fetchNextBatch();
         }
@@ -149,7 +143,7 @@ export default class ProfitTableStore extends BaseStore {
     get totals() {
         let profit_loss = 0;
 
-        this.data.forEach(transaction => {
+        this.data.forEach((transaction) => {
             profit_loss += parseFloat(transaction.profit_loss.replace(/,/g, ''));
         });
         return {
@@ -159,7 +153,7 @@ export default class ProfitTableStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener() {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             this.clearTable();
             this.clearDateFilter();
             return resolve(this.fetchNextBatch());
@@ -176,11 +170,7 @@ export default class ProfitTableStore extends BaseStore {
     @action.bound
     clearDateFilter() {
         this.date_from = null;
-        this.date_to = toMoment()
-            .startOf('day')
-            .add(1, 'd')
-            .subtract(1, 's')
-            .unix();
+        this.date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
         this.partial_fetch_time = 0;
     }
 

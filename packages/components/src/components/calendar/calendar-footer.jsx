@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Button from './calendar-button.jsx';
 
-const FooterIcon = use_icon => use_icon || 'IcCalendarToday';
+const FooterIcon = (use_icon) => use_icon || 'IcCalendarToday';
 
 const Footer = ({ footer, has_today_btn, onClick, use_icon }) => (
     <>

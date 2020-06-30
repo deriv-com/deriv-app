@@ -91,7 +91,7 @@ class PaymentAgentList extends React.Component {
                                                 ? localize('All payment agents')
                                                 : localize('Type')
                                         }
-                                        onChange={e =>
+                                        onChange={(e) =>
                                             this.props.onChangePaymentMethod({
                                                 target: {
                                                     name: 'payment_methods',
@@ -106,7 +106,7 @@ class PaymentAgentList extends React.Component {
                         )}
                         <Accordion
                             className='payment-agent__accordion'
-                            list={this.props.payment_agent_list.map(payment_agent => ({
+                            list={this.props.payment_agent_list.map((payment_agent) => ({
                                 header: payment_agent.name,
                                 content: (
                                     <PaymentAgentDetails

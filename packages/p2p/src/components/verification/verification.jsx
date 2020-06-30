@@ -5,7 +5,25 @@ import { Localize } from 'Components/i18next';
 import './verification.scss';
 
 const Verification = () => {
-    const { nickname, toggleNicknamePopup, is_advertiser, poi_status } = React.useContext(Dp2pContext);
+    const { nickname, toggleNicknamePopup, is_advertiser, poi_status, poi_url } = React.useContext(Dp2pContext);
+
+    const poiStatusText = status => {
+        switch (status) {
+            case 'pending':
+            case 'rejected':
+                return <Localize i18n_default_text='Check your verification status.' />;
+            case 'none':
+            default:
+                return (
+                    <Localize
+                        i18n_default_text='We’ll need you to upload your documents to verify 
+    your identity.'
+                    />
+                );
+            case 'verified':
+                return <Localize i18n_default_text='Identity verification is complete.' />;
+        }
+    };
 
     const items = [
         {
@@ -14,20 +32,10 @@ const Verification = () => {
             onClick: nickname ? () => {} : toggleNicknamePopup,
         },
         {
-            content: (
-                <>
-                    {poi_status === 'none' && (
-                        <Localize
-                            i18n_default_text='We’ll need you to upload your documents to verify 
-            your identity'
-                        />
-                    )}
-                    {poi_status === 'pending' && <Localize i18n_default_text='Check your verification status' />}
-                </>
-            ),
+            content: poiStatusText(poi_status),
             status: poi_status === 'verified' ? 'done' : 'action',
-            onClick: () => (window.location.href = '/account/proof-of-identity'),
-            is_disabled: !nickname,
+            onClick: poi_status === 'verified' ? () => {} : () => (window.location.href = poi_url),
+            is_disabled: poi_status !== 'verified' && !nickname,
         },
     ];
 

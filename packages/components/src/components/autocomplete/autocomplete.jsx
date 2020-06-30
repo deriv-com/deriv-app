@@ -156,7 +156,7 @@ class Autocomplete extends React.PureComponent {
     };
 
     onBlur = e => {
-        event.preventDefault();
+        e.preventDefault();
         this.hideDropdownList();
 
         this.setState({ filtered_items: this.props.list_items });

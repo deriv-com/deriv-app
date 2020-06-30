@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { Tabs, Dialog } from '@deriv/components';
+import { Tabs, Modal, Loading } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
@@ -11,6 +11,7 @@ import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
 import NicknameForm from './nickname/nickname-form.jsx';
+import Download from './verification/download.jsx';
 import Verification from './verification/verification.jsx';
 import './app.scss';
 
@@ -51,6 +52,7 @@ class App extends React.Component {
                 user_id: '',
                 token: '',
             },
+            is_loading: true,
         };
     }
 
@@ -162,9 +164,12 @@ class App extends React.Component {
 
                     this.setState({
                         poi_status: identity.status,
+                        is_loading: false,
                     });
                 }
             });
+        } else {
+            this.setState({ is_loading: false });
         }
     };
 
@@ -290,16 +295,14 @@ class App extends React.Component {
         const {
             active_index,
             order_offset,
-            orders,
             advertiser_id,
-            nickname,
-            is_advertiser,
-            is_listed,
+            orders,
             parameters,
             notification_count,
             order_table_type,
             chat_info,
             show_popup,
+            is_loading,
             poi_url,
             poi_status,
             is_restricted,
@@ -312,6 +315,7 @@ class App extends React.Component {
             order_id,
             setOrderId,
             should_show_verification,
+            is_mobile,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -326,15 +330,21 @@ class App extends React.Component {
         return (
             <Dp2pProvider
                 value={{
-                    nickname,
                     order_table_type,
                     currency,
                     local_currency_config,
                     residence,
                     advertiser_id,
-                    is_advertiser,
+                    is_advertiser: this.state.is_advertiser,
+                    is_listed: this.state.is_listed,
+                    setIsListed: is_listed => this.setState({ is_listed }),
+                    setIsAdvertiser: is_advertiser => this.setState({ is_advertiser }),
+                    nickname: this.state.nickname,
+                    setNickname: nickname => this.setState({ nickname }),
+                    setChatInfo: this.setChatInfo,
                     is_restricted,
-                    is_listed,
+                    email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
+                    list_item_limit: this.list_item_limit,
                     order_offset,
                     orders,
                     order_id,
@@ -342,56 +352,74 @@ class App extends React.Component {
                     poi_url,
                     poi_status,
                     nickname_error,
-                    list_item_limit: this.list_item_limit,
                     changeTab: this.handleTabClick,
-                    setIsListed: is_listed_result => this.setState({ is_listed: is_listed_result }),
-                    setIsAdvertiser: is_advertiser_result => this.setState({ is_advertiser: is_advertiser_result }),
-                    setNickname: nickname_result => this.setState({ nickname: nickname_result }),
-                    setChatInfo: this.setChatInfo,
-                    email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
                     setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
-                    updateP2pNotifications: this.updateP2pNotifications,
-                    getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId,
+                    updateP2pNotifications: this.updateP2pNotifications.bind(this),
+                    getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId.bind(this),
                     createAdvertiser: this.createAdvertiser.bind(this),
+                    changeOrderToggle: this.changeOrderToggle,
+                    is_mobile,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
-                    {should_show_verification && (
-                        <div className='p2p-cashier--verification'>
-                            <Verification />
-                        </div>
-                    )}
-                    {!should_show_verification && (
-                        <Tabs
-                            onTabItemClick={this.handleTabClick}
-                            active_index={active_index}
-                            className='p2p-cashier'
-                            top
-                            header_fit_content
-                        >
-                            <div label={localize('Buy / Sell')}>
-                                <BuySell navigate={this.redirectTo} params={parameters} />
-                            </div>
-                            <div count={notification_count} label={localize('Orders')}>
-                                <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
-                            </div>
-                            <div label={localize('My ads')}>
-                                <MyAds navigate={this.redirectTo} params={parameters} />
-                            </div>
-                            {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
-                            {/* <div label={localize('My profile')}>
+                    {show_popup ? (
+                        <>
+                            {is_mobile ? (
+                                <div className='p2p-nickname__dialog'>
+                                    <NicknameForm
+                                        handleClose={this.onNicknamePopupClose}
+                                        handleConfirm={this.toggleNicknamePopup}
+                                        is_mobile
+                                    />
+                                </div>
+                            ) : (
+                                <Modal is_open={show_popup} className='p2p-nickname__dialog'>
+                                    <NicknameForm
+                                        handleClose={this.onNicknamePopupClose}
+                                        handleConfirm={this.toggleNicknamePopup}
+                                    />
+                                </Modal>
+                            )}
+                        </>
+                    ) : (
+                        <>
+                            {is_loading && <Loading is_fullscreen={false} />}
+                            {should_show_verification && !this.state.is_advertiser && (
+                                <div
+                                    className={classNames('p2p-cashier__verification', {
+                                        'p2p-cashier__verification--mobile': is_mobile,
+                                    })}
+                                >
+                                    <Verification />
+                                </div>
+                            )}
+                            {should_show_verification && this.state.is_advertiser && <Download />}
+                            {!should_show_verification && (
+                                <Tabs
+                                    onTabItemClick={this.handleTabClick}
+                                    active_index={active_index}
+                                    className='p2p-cashier'
+                                    top
+                                    header_fit_content
+                                >
+                                    <div label={localize('Buy / Sell')}>
+                                        <BuySell navigate={this.redirectTo} params={parameters} />
+                                    </div>
+                                    <div count={notification_count} label={localize('Orders')}>
+                                        <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
+                                    </div>
+                                    <div label={localize('My ads')}>
+                                        <MyAds navigate={this.redirectTo} params={parameters} />
+                                    </div>
+                                    {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
+                                    {/* <div label={localize('My profile')}>
                                     <MyProfile navigate={this.redirectTo} params={parameters} />
                                 </div> */}
-                        </Tabs>
-                    )}
-                    {show_popup && (
-                        <div className='p2p-nickname__dialog'>
-                            <Dialog is_visible={show_popup}>
-                                <NicknameForm handleClose={this.onNicknamePopupClose} />
-                            </Dialog>
-                        </div>
+                                </Tabs>
+                            )}
+                        </>
                     )}
                 </main>
             </Dp2pProvider>
@@ -408,7 +436,7 @@ App.propTypes = {
         is_virtual: PropTypes.bool.isRequired,
         local_currency_config: PropTypes.shape({
             currency: PropTypes.string.isRequired,
-            decimal_places: PropTypes.number.isRequired,
+            decimal_places: PropTypes.number,
         }).isRequired,
         loginid: PropTypes.string.isRequired,
         residence: PropTypes.string.isRequired,

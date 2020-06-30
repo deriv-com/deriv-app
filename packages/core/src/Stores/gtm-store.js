@@ -72,10 +72,10 @@ export default class GTMStore extends BaseStore {
     async pushDataLayer(data) {
         if (this.is_gtm_applicable && !isLoginPages()) {
             BinarySocket.wait('authorize').then(() => {
-                dataLayer.push({
-                    ...this.common_variables,
-                    ...data,
-                });
+                const gtm_object = { ...this.common_variables, ...data };
+                if (!gtm_object.event) return;
+
+                dataLayer.push(gtm_object);
             });
         }
     }
@@ -181,20 +181,8 @@ export default class GTMStore extends BaseStore {
 
     @action.bound
     setLoginFlag(event_name) {
-        if (this.is_gtm_applicable) {
+        if (this.is_gtm_applicable && event_name) {
             localStorage.setItem('GTM_login', event_name);
         }
-    }
-
-    @action.bound
-    pushLoadPerformance(performance_metric, duration) {
-        const data = {
-            event: performance_metric,
-            duration,
-        };
-        dataLayer.push({
-            ...this.common_variables,
-            ...data,
-        });
     }
 }

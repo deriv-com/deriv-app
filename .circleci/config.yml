@@ -46,7 +46,7 @@ commands:
           command: |
             if [ -d "./node_modules" ]; then
               echo "Found cache. Using cached node_modules."
-              lerna link
+              npx lerna link
             else
               echo "Could not find cache. Bootstrapping..."
               npm run bootstrap             

@@ -6,6 +6,10 @@
     align-items: center;
     transform: translate(-14%, 5%);
 
+    @include mobile {
+        transform: none;
+    }
+
     &__icon {
         margin-bottom: 3.4rem;
     }
@@ -29,5 +33,8 @@
                 margin-bottom: 0.4rem;
             }
         }
+    }
+    &__checklist {
+        width: 400px;
     }
 }

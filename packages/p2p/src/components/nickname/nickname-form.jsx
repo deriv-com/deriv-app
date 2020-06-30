@@ -4,32 +4,14 @@ import { Formik, Field, Form } from 'formik';
 import { Input, Button, ThemedScrollbars, Icon } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
-import { requestWS } from 'Utils/websocket';
 import IconClose from 'Assets/icon-close.jsx';
 import FormError from '../form/error.jsx';
 import './nickname-form.scss';
 
-const NicknameForm = ({ handleClose, handleConfirm }) => {
-    const { setNickname, setIsAdvertiser, setChatInfo } = React.useContext(Dp2pContext);
+const NicknameForm = ({ handleClose }) => {
+    const { createAdvertiser, nickname_error } = React.useContext(Dp2pContext);
 
-    const handleSubmit = (values, { setStatus, setSubmitting }) => {
-        requestWS({ p2p_advertiser_create: 1, name: values.nickname }).then(response => {
-            if (response.error) {
-                setStatus({ error_message: response.error.message });
-            } else {
-                const { p2p_advertiser_create } = response;
-
-                setNickname(p2p_advertiser_create.name);
-                setIsAdvertiser(p2p_advertiser_create.is_approved);
-                setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
-                if (typeof handleConfirm === 'function') {
-                    handleConfirm();
-                }
-            }
-
-            setSubmitting(false);
-        });
-    };
+    const handleSubmit = values => createAdvertiser(values.nickname);
 
     const validatePopup = values => {
         const validations = {
@@ -82,7 +64,7 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
                 </div>
             </div>
             <Formik validate={validatePopup} initialValues={{ nickname: '' }} onSubmit={handleSubmit}>
-                {({ errors, isSubmitting, handleChange, status }) => (
+                {({ errors, handleChange, values }) => (
                     <Form noValidate>
                         <ThemedScrollbars autoHide style={{ height: '437px' }}>
                             <div className='buy-sell__popup-content buy-sell__popup-content_centre'>
@@ -121,12 +103,17 @@ const NicknameForm = ({ handleClose, handleConfirm }) => {
                             </div>
                         </ThemedScrollbars>
                         <div className='nickname__form-footer'>
-                            {status && status.error_message && <FormError message={status.error_message} />}
+                            {nickname_error && <FormError message={nickname_error} />}
                             <Button.Group>
                                 <Button secondary type='button' onClick={handleClose} large>
                                     {localize('Cancel')}
                                 </Button>
-                                <Button type='submit' is_disabled={!!(isSubmitting || errors.nickname)} primary large>
+                                <Button
+                                    type='submit'
+                                    is_disabled={!!errors.nickname || values.nickname === ''}
+                                    primary
+                                    large
+                                >
                                     {localize('Confirm')}
                                 </Button>
                             </Button.Group>

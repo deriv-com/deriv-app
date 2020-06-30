@@ -2,7 +2,6 @@ import { observable, action, computed } from 'mobx';
 import { localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared/utils/date';
 import { message_types } from '@deriv/bot-skeleton';
-
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
 import { isCustomJournalMessage } from '../utils/journal-notifications';
@@ -16,6 +15,13 @@ export default class JournalStore {
     getServerTime() {
         return this.root_store.core.common.server_time.get();
     }
+
+    playAudio = sound => {
+        if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
+            const audio = document.getElementById(sound);
+            audio.play();
+        }
+    };
 
     filters = [
         { id: message_types.ERROR, label: localize('Errors') },
@@ -50,15 +56,11 @@ export default class JournalStore {
                 parsed_message => this.pushMessage(parsed_message, message_type || message_types.NOTIFY, className)
             )
         ) {
+            this.playAudio(sound);
             return;
         }
-
         this.pushMessage(message, message_type || message_types.NOTIFY, className);
-
-        if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
-            const audio = document.getElementById(sound);
-            audio.play();
-        }
+        this.playAudio(sound);
     }
 
     @action.bound

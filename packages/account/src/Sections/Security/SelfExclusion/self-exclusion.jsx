@@ -74,6 +74,13 @@ class SelfExclusion extends React.Component {
         // Messages
         const valid_number_message = localize('Should be a valid number');
 
+        const getLimitNumberMessage = (current_value) => (
+            <Localize
+                i18n_default_text='Please enter a number between 0 and {{current_value}}'
+                values={{ current_value }}
+            />
+        );
+
         const only_numbers = [
             'max_turnover',
             'max_losses',
@@ -82,6 +89,8 @@ class SelfExclusion extends React.Component {
             'max_30day_turnover',
             'max_30day_losses',
             'max_balance',
+            'max_open_bets',
+            'session_duration_limit',
         ];
         const only_integers = ['session_duration_limit', 'max_open_bets'];
 
@@ -89,6 +98,8 @@ class SelfExclusion extends React.Component {
             if (values[item]) {
                 if (!is_number.test(values[item])) {
                     errors[item] = valid_number_message;
+                } else if (values[item] > this.state.self_exclusions[item]) {
+                    errors[item] = getLimitNumberMessage(this.state.self_exclusions[item]);
                 }
             }
         });
@@ -154,9 +165,11 @@ class SelfExclusion extends React.Component {
                 const response = await makeRequest();
                 if (response.error) {
                     this.setState({
-                        submit_error_message: `${this.exclusion_texts[response.error.field]}: ${
-                            response.error.message
-                        }`,
+                        submit_error_message: `${
+                            response.error.field
+                                ? this.exclusion_texts[response.error.field]
+                                : localize('Self exclusion')
+                        }: ${response.error.message}`,
                     });
                     this.setState({ show_confirm: false });
                 } else {
@@ -319,7 +332,7 @@ class SelfExclusion extends React.Component {
                                             </Modal>
                                             <div
                                                 onClick={() => {
-                                                    this.setState({ is_confirm_page: false });
+                                                    this.setState({ is_confirm_page: false, submit_error_message: '' });
                                                 }}
                                                 className='self-exclusion__back'
                                             >

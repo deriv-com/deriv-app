@@ -154,12 +154,12 @@ export const personalDetailsConfig = ({ real_account_signup_target, residence_li
                     value: 'Mr',
                 },
                 {
-                    label: localize('Ms'),
-                    value: 'Ms',
-                },
-                {
                     label: localize('Mrs'),
                     value: 'Mrs',
+                },
+                {
+                    label: localize('Ms'),
+                    value: 'Ms',
                 },
                 {
                     label: localize('Miss'),

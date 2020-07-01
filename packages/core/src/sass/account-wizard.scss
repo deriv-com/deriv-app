@@ -142,7 +142,7 @@
     &__body {
         & .details-form {
             @include tablet {
-                grid-template-rows: 5rem minmax(10rem, 1fr);
+                grid-template-rows: minmax(10rem, 1fr);
             }
         }
     }

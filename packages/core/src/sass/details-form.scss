@@ -92,6 +92,6 @@
         overflow-y: auto;
     }
     @include desktop {
-        grid-template-rows: 4rem minmax(10rem, 1fr);
+        grid-template-rows: minmax(5rem, 1fr);
     }
 }

@@ -5,8 +5,8 @@ import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import Popup from './popup.jsx';
 import BuySellTableContent from './buy-sell-table-content.jsx';
-import Verification from '../verification/verification.jsx';
 import PageReturn from '../page-return/page-return.jsx';
+import Verification from '../verification/verification.jsx';
 import './buy-sell.scss';
 
 const buy_sell_filters = [
@@ -57,7 +57,7 @@ class BuySell extends React.Component {
         if (this.state.show_verification)
             return (
                 <>
-                    <PageReturn onClick={this.hideVerification} page_title={localize('Back')} />
+                    <PageReturn onClick={this.hideVerification} page_title={localize('Verification')} />
                     <Verification />
                 </>
             );

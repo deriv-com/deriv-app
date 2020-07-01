@@ -3,13 +3,14 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { secondsToTimer } from 'Utils/date-time';
+import LocalStorage from 'Utils/local-storage';
 import ServerTime from 'Utils/server-time';
 
 const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active }) => {
     const {
         // advertiser_name,
+        channel_url,
         display_transaction_amount,
         display_offer_amount,
         display_status,
@@ -27,13 +28,12 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
         is_refunded,
     } = data;
     const [remaining_time, setRemainingTime] = React.useState();
-    const { getLocalStorageSettings } = React.useContext(Dp2pContext);
 
     let interval;
 
-    const isOrderSeen = order_id => {
-        const { notifications } = getLocalStorageSettings();
-        return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
+    const isOrderSeen = channel_identifier => {
+        const { notifications } = LocalStorage.getSettings();
+        return notifications.some(n => n.channel_url === channel_identifier && n.has_seen_chat && n.has_seen_order);
     };
 
     const countDownTimer = () => {
@@ -72,7 +72,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
                     'orders__table-grid--active': is_active,
-                    'orders__table-row--attention': !isOrderSeen(id),
+                    'orders__table-row--attention': !isOrderSeen(channel_url),
                 })}
             >
                 <Table.Cell>{is_buyer ? localize('Buy') : localize('Sell')}</Table.Cell>

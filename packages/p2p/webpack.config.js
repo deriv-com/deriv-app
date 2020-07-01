@@ -11,11 +11,12 @@ const is_publishing = process.env.NPM_PUBLISHING_MODE === '1';
 module.exports = {
     entry: {
         index: path.resolve(__dirname, 'src/components', 'app.jsx'),
+        utils: path.resolve(__dirname, 'src/utils', 'export-utils.js'),
     },
     mode: is_release ? 'production' : 'development',
     output: {
         path: path.resolve(__dirname, 'lib'),
-        filename: 'index.js',
+        filename: '[name].js',
         libraryExport: 'default',
         library: '@deriv/p2p',
         libraryTarget: 'umd',

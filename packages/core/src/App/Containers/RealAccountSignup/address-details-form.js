@@ -64,7 +64,7 @@ export const addressDetailsConfig = ({ real_account_signup_target, residence }) 
     return {
         header: {
             active_title: localize('Complete your address details'),
-            title: localize('Address details'),
+            title: localize('Address'),
         },
         body: AddressDetails,
         form_value: getDefaultFields(real_account_signup_target, address_details_config),

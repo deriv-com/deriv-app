@@ -86,8 +86,8 @@
     h2 {
         text-transform: none;
         margin-top: 2.4rem;
-        color: var(--text-less-prominent);
         @include typeface(--title-center-bold-black);
+        color: var(--text-less-prominent);
         @include mobile {
             margin-top: 0.8rem;
             font-size: 1.2rem;
@@ -103,6 +103,19 @@
         width: 100%;
 
         .currency-selector {
+            &__radio-group {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                justify-content: space-around;
+                align-items: center;
+            }
+            &__description {
+                font-size: 1.4rem;
+                color: var(--text-less-prominent);
+                line-height: 2.4rem;
+                margin-top: 2.4rem;
+            }
             &__container {
                 width: 100%;
                 @include mobile {
@@ -148,7 +161,6 @@
         }
         h2 {
             @include typeface(--title-center-bold-black);
-            color: var(--text-prominent);
 
             @include mobile {
                 font-size: 1.2rem;

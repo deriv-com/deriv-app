@@ -42,19 +42,19 @@ export const getMtCompanies = () => {
             synthetic: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Real Synthetic'),
+                title: localize('DMT5 Synthetic'),
                 short_title: synthetic_config.short_title,
             },
             financial: {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
-                title: localize('Real Financial'),
+                title: localize('DMT5 Financial'),
                 short_title: financial_config.short_title,
             },
             financial_stp: {
                 mt5_account_type: financial_stp_config.account_type,
                 leverage: financial_stp_config.leverage,
-                title: localize('Real Financial STP'),
+                title: localize('DMT5 Financial STP'),
                 short_title: financial_stp_config.short_title,
             },
         },

@@ -194,6 +194,11 @@ class AccountWizard extends React.Component {
     };
 
     prevStep = () => {
+        if (this.state.step - 1 < 0) {
+            this.props.onClose();
+            return;
+        }
+
         this.setState({
             step: this.state.step - 1,
             form_error: '',

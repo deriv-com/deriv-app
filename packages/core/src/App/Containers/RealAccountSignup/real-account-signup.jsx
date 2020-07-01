@@ -26,17 +26,17 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
         (real_account_signup_target === 'iom' && is_isle_of_man_residence) ||
         (real_account_signup_target === 'malta' && is_belgium_residence)
     ) {
-        return <Localize i18n_default_text='Add a Real Synthetic account' />;
+        return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
     }
 
     switch (real_account_signup_target) {
         case 'malta':
         case 'iom':
-            return <Localize i18n_default_text='Add a Real Synthetic account' />;
+            return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
         case 'maltainvest':
-            return <Localize i18n_default_text='Add a Real Financial Account' />;
+            return <Localize i18n_default_text='Add a Deriv Financial Account' />;
         default:
-            return <Localize i18n_default_text='Add a Real Account' />;
+            return <Localize i18n_default_text='Add a Deriv Account' />;
     }
 };
 
@@ -51,6 +51,7 @@ class RealAccountSignup extends React.Component {
                             onFinishSuccess={this.showStatusDialog}
                             onLoading={this.showLoadingModal}
                             onError={this.showErrorModal}
+                            onClose={this.closeModal}
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                         />
                     ),

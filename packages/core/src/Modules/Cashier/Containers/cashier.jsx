@@ -9,11 +9,9 @@ import {
     FadeWrapper,
     PageOverlay,
 } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes, isCryptocurrency, getSelectedRoute, isMobile, isTouchDevice } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { isCryptocurrency } from '@deriv/shared';
-import { getSelectedRoute } from '@deriv/shared';
-import { isMobile, isTouchDevice } from '@deriv/shared';
+
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/cashier.scss';
 

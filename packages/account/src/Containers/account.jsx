@@ -2,9 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import { VerticalTab, DesktopWrapper, MobileWrapper, FadeWrapper, PageOverlay } from '@deriv/components';
-import { routes } from '@deriv/shared';
-import { isMobile } from '@deriv/shared';
-import { getSelectedRoute } from '@deriv/shared';
+import { routes, isMobile, getSelectedRoute } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';

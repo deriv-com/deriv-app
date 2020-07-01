@@ -1,6 +1,6 @@
 import { action, observable } from 'mobx';
-import { routes } from '@deriv/shared';
-import { isEmptyObject } from '@deriv/shared';
+import { routes, isEmptyObject } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import ContractStore from './contract-store';

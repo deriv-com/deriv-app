@@ -3,8 +3,8 @@ import React from 'react';
 import { Formik } from 'formik';
 import { withRouter } from 'react-router';
 import { Loading, Button, Dropdown, Modal, Icon, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
-import { routes } from '@deriv/shared';
-import { isMobile, isDesktop } from '@deriv/shared';
+import { routes, isMobile, isDesktop } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';

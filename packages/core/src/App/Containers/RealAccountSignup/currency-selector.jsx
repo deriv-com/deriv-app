@@ -11,8 +11,8 @@ import {
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik } from 'formik';
-import { getCurrencyDisplayCode } from '@deriv/shared';
-import { isMobile, isDesktop } from '@deriv/shared';
+import { getCurrencyDisplayCode, isMobile, isDesktop } from '@deriv/shared';
+
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
 import 'Sass/currency-select-radio.scss';

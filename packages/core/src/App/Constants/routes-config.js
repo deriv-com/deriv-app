@@ -2,9 +2,8 @@ import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
-import { getUrlBase } from '@deriv/shared';
-import { routes } from '@deriv/shared';
-import { addRoutesConfig } from '@deriv/shared';
+import { getUrlBase, routes, addRoutesConfig } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { Redirect } from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';

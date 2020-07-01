@@ -2,9 +2,8 @@ import classNames from 'classnames';
 import { Icon, Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { routes } from '@deriv/shared';
-import { isNavigationFromPlatform } from '@deriv/shared';
-import { getCurrencyDisplayCode } from '@deriv/shared';
+import { routes, isNavigationFromPlatform, getCurrencyDisplayCode } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';

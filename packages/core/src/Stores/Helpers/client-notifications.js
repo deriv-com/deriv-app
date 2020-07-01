@@ -1,11 +1,9 @@
 import React from 'react';
-import { urlFor, getDerivComLink } from '@deriv/shared';
-import { routes } from '@deriv/shared';
-import { isMobile } from '@deriv/shared';
+import { urlFor, getDerivComLink, routes, isMobile, formatDate, isEmptyObject } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
-import { formatDate } from '@deriv/shared';
-import { isEmptyObject } from '@deriv/shared';
+
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
 import { website_domain } from 'App/Constants/app-config';

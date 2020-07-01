@@ -1,6 +1,6 @@
 import { action, intercept, observable, reaction, toJS, when } from 'mobx';
-import { isProduction } from '@deriv/shared';
-import { isEmptyObject } from '@deriv/shared';
+import { isProduction, isEmptyObject } from '@deriv/shared';
+
 import Validator from 'Utils/Validator';
 
 /**

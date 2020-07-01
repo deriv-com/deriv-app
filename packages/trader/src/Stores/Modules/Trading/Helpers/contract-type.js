@@ -1,8 +1,8 @@
-import { getPropertyValue, cloneObject } from '@deriv/shared';
+import { getPropertyValue, cloneObject, isTimeValid, minDate, toMoment } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
-import { isTimeValid, minDate, toMoment } from '@deriv/shared';
+
 import { getUnitMap } from 'Stores/Modules/Portfolio/Helpers/details';
 import { buildBarriersConfig } from './barrier';
 import { buildDurationConfig, hasIntradayDurationUnit } from './duration';

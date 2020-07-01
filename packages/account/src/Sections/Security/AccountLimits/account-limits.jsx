@@ -2,9 +2,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Popover, DesktopWrapper, Loading, MobileWrapper } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared';
-import { formatMoney } from '@deriv/shared';
-import { isMobile } from '@deriv/shared';
+import { getDerivComLink, formatMoney, isMobile } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import FormBody from 'Components/form-body';

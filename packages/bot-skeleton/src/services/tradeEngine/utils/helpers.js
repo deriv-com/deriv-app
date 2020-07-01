@@ -1,6 +1,6 @@
-import { getRoundedNumber } from '@deriv/shared';
+import { getRoundedNumber, formatTime } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { formatTime } from '@deriv/shared';
+
 import { log } from './broadcast';
 
 export const noop = () => {};

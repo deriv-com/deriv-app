@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes } from '@deriv/shared';
-import { isMobile } from '@deriv/shared';
-import { getDecimalPlaces } from '@deriv/shared';
+import { routes, isMobile, getDecimalPlaces } from '@deriv/shared';
+
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';

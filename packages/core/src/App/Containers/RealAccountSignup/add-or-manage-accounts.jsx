@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode } from '@deriv/shared';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { getCurrencyDisplayCode, isDesktop, isMobile } from '@deriv/shared';
+
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';

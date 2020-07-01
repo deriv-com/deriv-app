@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
-import { isEmptyObject } from '@deriv/shared';
+import { isEmptyObject, addComma } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { addComma } from '@deriv/shared';
+
 import { connect } from 'Stores/connect';
 import { getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
 

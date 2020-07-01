@@ -12,9 +12,8 @@ import {
     Tabs,
     ThemedScrollbars,
 } from '@deriv/components';
-import { urlFor } from '@deriv/shared';
-import { routes } from '@deriv/shared';
-import { isCryptocurrency, formatMoney } from '@deriv/shared';
+import { urlFor, routes, isCryptocurrency, formatMoney } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getMT5AccountDisplay } from 'Stores/Helpers/client';

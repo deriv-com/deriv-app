@@ -1,6 +1,5 @@
-import { addComma, getDecimalPlaces } from '@deriv/shared';
-import { cloneObject } from '@deriv/shared';
-import { compareBigUnsignedInt } from '@deriv/shared';
+import { addComma, getDecimalPlaces, cloneObject, compareBigUnsignedInt } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { ClientBase } from 'Duplicated/_common/base/client_base';
 import { getElementById } from 'Duplicated/_common/common_functions';

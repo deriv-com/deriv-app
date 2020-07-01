@@ -14,8 +14,8 @@ import {
     Clipboard,
     Loading,
 } from '@deriv/components';
-import { getPropertyValue } from '@deriv/shared';
-import { formatDate } from '@deriv/shared';
+import { getPropertyValue, formatDate } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';

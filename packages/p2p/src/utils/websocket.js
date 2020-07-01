@@ -1,5 +1,5 @@
-import { setCurrencies, formatMoney, getCurrencies } from '@deriv/shared';
-import { isEmptyObject, getPropertyValue } from '@deriv/shared';
+import { setCurrencies, formatMoney, getCurrencies, isEmptyObject, getPropertyValue } from '@deriv/shared';
+
 import { localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 

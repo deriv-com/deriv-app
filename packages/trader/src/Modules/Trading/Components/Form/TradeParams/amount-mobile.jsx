@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tabs, Money, Numpad } from '@deriv/components';
-import { isEmptyObject } from '@deriv/shared';
+import { isEmptyObject, getDecimalPlaces } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { getDecimalPlaces } from '@deriv/shared';
+
 import { connect } from 'Stores/connect';
 
 const Basis = ({

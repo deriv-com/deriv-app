@@ -3,8 +3,8 @@ import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
-import { addComma } from '@deriv/shared';
-import { toMoment } from '@deriv/shared';
+import { addComma, toMoment } from '@deriv/shared';
+
 import MarkerSpot from './marker-spot.jsx';
 
 class MarkerSpotLabel extends React.Component {

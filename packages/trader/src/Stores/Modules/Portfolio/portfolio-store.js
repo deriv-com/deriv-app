@@ -2,8 +2,8 @@ import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction } from 'mobx';
 import { createTransformer } from 'mobx-utils';
 import { WS } from 'Services/ws-methods';
-import { isMobile } from '@deriv/shared';
-import { isEmptyObject } from '@deriv/shared';
+import { isMobile, isEmptyObject } from '@deriv/shared';
+
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractCancelled, contractSold } from './Helpers/portfolio-notifications';
 import { getCurrentTick, getDurationPeriod, getDurationTime, getDurationUnitText } from './Helpers/details';

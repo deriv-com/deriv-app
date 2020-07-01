@@ -1,7 +1,6 @@
-import { getDecimalPlaces } from '@deriv/shared';
-import { getPropertyValue } from '@deriv/shared';
+import { getDecimalPlaces, getPropertyValue, convertToUnix, toMoment } from '@deriv/shared';
+
 import { isVisible } from '_common/common_functions';
-import { convertToUnix, toMoment } from '@deriv/shared';
 
 const map_error_field = {
     barrier: 'barrier_1',

@@ -5,9 +5,8 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { DesktopWrapper } from '@deriv/components';
-import { checkAndSetEndpointFromUrl } from '@deriv/shared';
-import { setUrlLanguage } from '@deriv/shared';
-import { isMobile } from '@deriv/shared';
+import { checkAndSetEndpointFromUrl, setUrlLanguage, isMobile } from '@deriv/shared';
+
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';

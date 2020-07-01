@@ -1,6 +1,6 @@
 import React from 'react';
-import { addRoutesConfig } from '@deriv/shared';
-import { routes } from '@deriv/shared';
+import { addRoutesConfig, routes } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import {
     AccountLimits,

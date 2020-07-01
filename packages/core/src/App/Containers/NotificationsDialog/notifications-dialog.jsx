@@ -6,8 +6,8 @@ import { Button, DesktopWrapper, Icon, MobileDialog, MobileWrapper, ThemedScroll
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
-import { toTitleCase } from '@deriv/shared';
-import { isEmptyObject } from '@deriv/shared';
+import { toTitleCase, isEmptyObject } from '@deriv/shared';
+
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
 class NotificationsDialog extends React.Component {

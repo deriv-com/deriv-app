@@ -1,8 +1,7 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
-import { isDesktop } from '@deriv/shared';
-import { isCryptocurrency, getMinPayout } from '@deriv/shared';
-import { cloneObject, isEmptyObject, getPropertyValue } from '@deriv/shared';
+import { isDesktop, isCryptocurrency, getMinPayout, cloneObject, isEmptyObject, getPropertyValue } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';

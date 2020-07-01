@@ -1,5 +1,5 @@
-import { formatMoney } from '@deriv/shared';
-import { toMoment } from '@deriv/shared';
+import { formatMoney, toMoment } from '@deriv/shared';
+
 import { getMarketInformation } from '../../../../Modules/Reports/Helpers/market-underlying';
 import { getSymbolDisplayName } from '../../Trading/Helpers/active-symbols';
 

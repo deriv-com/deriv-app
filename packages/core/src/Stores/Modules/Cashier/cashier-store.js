@@ -1,7 +1,15 @@
 import { action, computed, observable, toJS } from 'mobx';
-import { routes } from '@deriv/shared';
-import { isCryptocurrency, formatMoney, getCurrencies, getDecimalPlaces, getCurrencyDisplayCode } from '@deriv/shared';
-import { isEmptyObject, getPropertyValue } from '@deriv/shared';
+import {
+    routes,
+    isCryptocurrency,
+    formatMoney,
+    getCurrencies,
+    getDecimalPlaces,
+    getCurrencyDisplayCode,
+    isEmptyObject,
+    getPropertyValue,
+} from '@deriv/shared';
+
 import BinarySocket from '_common/base/socket_base';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';

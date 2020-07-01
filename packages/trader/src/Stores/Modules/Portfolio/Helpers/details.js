@@ -1,6 +1,6 @@
-import { unique } from '@deriv/shared';
+import { unique, epochToMoment, formatMiliseconds, getDiffDuration } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { epochToMoment, formatMiliseconds, getDiffDuration } from '@deriv/shared';
+
 import { isDigitContract } from '../../Contract/Helpers/digits';
 
 export const getCurrentTick = contract_info => {

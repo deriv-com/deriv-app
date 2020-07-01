@@ -1,8 +1,8 @@
-import { formatMoney } from '@deriv/shared';
-import { toTitleCase } from '@deriv/shared';
+import { formatMoney, toTitleCase, toMoment } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
-import { toMoment } from '@deriv/shared';
+
 import { getSymbolDisplayName } from '../../Trading/Helpers/active-symbols';
 
 export const formatStatementTransaction = (transaction, currency, active_symbols = []) => {

@@ -13,8 +13,8 @@ import {
     SelectNative,
     DateOfBirthPicker,
 } from '@deriv/components';
-import { toMoment } from '@deriv/shared';
-import { isMobile } from '@deriv/shared';
+import { toMoment, isMobile } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';

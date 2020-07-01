@@ -1,8 +1,7 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { isEmptyObject } from '@deriv/shared';
-import { routes } from '@deriv/shared';
-import { removeBranchName } from '@deriv/shared';
+import { isEmptyObject, routes, removeBranchName } from '@deriv/shared';
+
 import { redirectToLogin, redirectToSignUp } from 'Duplicated/_common/base/login';
 import LoginPrompt from 'Duplicated/App/Components/Elements/login-prompt.jsx';
 import { default_title } from 'Duplicated/App/Constants/app-config';

@@ -4,15 +4,14 @@ import PropTypes from 'prop-types';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import PageReturn from 'Components/page-return/page-return.jsx';
+import LocalStorage from 'Utils/local-storage';
 import OrderInfo from './order-info';
 import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
 const Orders = ({ params, navigate, chat_info }) => {
-    const { orders, order_id, setOrderId, updateP2pNotifications, getLocalStorageSettings } = React.useContext(
-        Dp2pContext
-    );
+    const { orders, order_id, setOrderId } = React.useContext(Dp2pContext);
     const [order_details, setDetails] = React.useState(null);
     const [nav, setNav] = React.useState(params?.nav);
     const is_mounted = React.useRef(false);
@@ -28,16 +27,10 @@ const Orders = ({ params, navigate, chat_info }) => {
         setOrderId(input_order.id);
         setDetails(input_order);
 
-        const { notifications } = getLocalStorageSettings();
-
-        if (notifications.length) {
-            const notification = notifications.find(n => n.order_id === input_order.id);
-
-            if (notification) {
-                notification.is_seen = true;
-                updateP2pNotifications(notifications);
-            }
-        }
+        LocalStorage.setNotification(input_order.chat_channel_url, {
+            has_seen_chat: true,
+            has_seen_order: true,
+        });
     };
 
     React.useEffect(() => {

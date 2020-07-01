@@ -58,7 +58,8 @@ class AddCryptoCurrency extends React.Component {
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(false, values, actions.setSubmitting);
                 }}
-                render={({
+            >
+                {({
                     handleSubmit,
                     // setFieldValue,
                     // setFieldTouched,
@@ -142,7 +143,7 @@ class AddCryptoCurrency extends React.Component {
                         />
                     </form>
                 )}
-            />
+            </Formik>
         );
     }
 }

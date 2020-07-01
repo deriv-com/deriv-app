@@ -170,7 +170,7 @@ class MT5Dashboard extends React.Component {
                                 name={getBrokerName()}
                                 label={localize('Broker')}
                                 info_msg={localize('Click here to copy broker name.')}
-                                success_msg={localize('broker name copied!')}
+                                success_msg={localize('Broker name copied!')}
                             />
                             <MT5InfoCopy
                                 name={getServerName(this.state.is_demo_tab)}

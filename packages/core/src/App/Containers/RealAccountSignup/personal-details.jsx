@@ -100,7 +100,7 @@ class PersonalDetails extends React.Component {
                                     <ThemedScrollbars is_bypassed={isMobile()} height={height}>
                                         <div
                                             className='details-form__elements'
-                                            style={{ paddingBottom: this.state.paddingBottom }}
+                                            style={{ paddingBottom: isDesktop() ? this.state.paddingBottom : null }}
                                         >
                                             <FormSubHeader title={localize('Title and name')} />
                                             {'salutation' in this.props.value && ( // TODO: [deriv-eu] Remove salutation once api is optional
@@ -256,8 +256,6 @@ class PersonalDetails extends React.Component {
                                                                 <DesktopWrapper>
                                                                     <Dropdown
                                                                         placeholder={localize('Account opening reason')}
-                                                                        is_align_text_left
-                                                                        is_alignment_top
                                                                         name={field.name}
                                                                         list={this.props.account_opening_reason_list}
                                                                         value={values.account_opening_reason}
@@ -275,7 +273,9 @@ class PersonalDetails extends React.Component {
                                                                     <SelectNative
                                                                         name={field.name}
                                                                         label={localize('Account opening reason')}
-                                                                        list_items={this.state.account_opening_reason}
+                                                                        list_items={
+                                                                            this.props.account_opening_reason_list
+                                                                        }
                                                                         value={values.account_opening_reason}
                                                                         use_text={true}
                                                                         error={
@@ -301,17 +301,17 @@ class PersonalDetails extends React.Component {
                                             )}
                                         </div>
                                     </ThemedScrollbars>
+                                    <FormSubmitButton
+                                        cancel_label={localize('Previous')}
+                                        has_cancel
+                                        is_disabled={
+                                            // eslint-disable-next-line no-unused-vars
+                                            isSubmitting || Object.keys(errors).length > 0
+                                        }
+                                        label={localize('Next')}
+                                        onCancel={this.handleCancel.bind(this, values)}
+                                    />
                                 </Div100vhContainer>
-                                <FormSubmitButton
-                                    cancel_label={localize('Previous')}
-                                    has_cancel
-                                    is_disabled={
-                                        // eslint-disable-next-line no-unused-vars
-                                        isSubmitting || Object.keys(errors).length > 0
-                                    }
-                                    label={localize('Next')}
-                                    onCancel={this.handleCancel.bind(this, values)}
-                                />
                             </form>
                         )}
                     </AutoHeightWrapper>

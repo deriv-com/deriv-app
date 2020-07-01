@@ -32,7 +32,7 @@ export default class P2pStore extends BaseStore {
                 return Promise.resolve();
             }
 
-            this.sendbird_api = new SendbirdAPI();
+            this.sendbird_api = new SendbirdAPI({ LocalStorage: P2pStorage });
             this.sendbird_api.init(sendbird_user_id, service_token);
         }
 

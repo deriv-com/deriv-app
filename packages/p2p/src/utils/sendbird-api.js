@@ -1,10 +1,9 @@
 import SendBird from 'sendbird';
-import LocalStorage from './local-storage';
 
 class SendbirdAPI {
-    constructor() {
+    constructor({ LocalStorage }) {
+        this.LocalStorage = LocalStorage;
         this.channels = {};
-        this.has_finished_initial_sync = false;
         this.sendbird = null;
     }
 
@@ -22,7 +21,6 @@ class SendbirdAPI {
 
             channel_event_handler.onMessageReceived = this.onMessageReceived.bind(this);
             channel_event_handler.onChannelChanged = this.onMessageReceived.bind(this);
-            // user_event_handler.onTotalUnreadMessageCountUpdated = this.onTotalUnreadMessageCountUpdated.bind(this);
 
             this.sendbird.addChannelHandler('channel_event_handler', channel_event_handler);
             this.sendbird.addUserEventHandler('user_event_handler', user_event_handler);
@@ -70,9 +68,9 @@ class SendbirdAPI {
             }
         }
 
-        this.has_finished_initial_sync = true;
-        this.channels = { ...this.channels, ...channels };
-        LocalStorage.syncNotifications();
+        this.channels = Object.assign({}, this.channels, channels);
+        this.LocalStorage.syncNotifications();
+
         return Promise.resolve();
     }
 
@@ -87,7 +85,7 @@ class SendbirdAPI {
         LocalStorage.setNotification(channel.url, { has_seen_chat });
 
         this.channels = Object.assign({}, this.channels, updated_channels);
-        LocalStorage.syncNotifications();
+        this.LocalStorage.syncNotifications();
     }
 }
 

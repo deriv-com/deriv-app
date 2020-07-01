@@ -97,22 +97,13 @@ class PersonalDetails extends React.Component {
                                     height_offset='199px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <p className='details-form__description'>
-                                        <Localize
-                                            i18n_default_text={
-                                                'Any information you provide is confidential and will be used for verification purposes only.'
-                                            }
-                                        />
-                                    </p>
                                     <ThemedScrollbars is_bypassed={isMobile()} height={height}>
                                         <div
                                             className='details-form__elements'
                                             style={{ paddingBottom: this.state.paddingBottom }}
                                         >
                                             <FormSubHeader title={localize('Title and name')} />
-                                            {/* TODO: [deriv-eu] Remove salutation once api is optional */}
-
-                                            {'salutation' in this.props.value && (
+                                            {'salutation' in this.props.value && ( // TODO: [deriv-eu] Remove salutation once api is optional
                                                 <RadioGroup
                                                     className='dc-radio__input'
                                                     name='salutation'

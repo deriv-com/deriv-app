@@ -28,7 +28,7 @@ class Statement extends React.Component {
     componentDidMount() {
         this.props.onMount();
         const is_mx_mlt =
-            this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'malta';
+            this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'virtual';
 
         if (is_mx_mlt)
             WS.accountStatistics().then(response => {
@@ -130,19 +130,22 @@ class Statement extends React.Component {
                     <div className='statement__account-statistics--is-rectangle'>
                         <span className='statement__account-statistics--title'>{localize('Total Deposit')}</span>
                         <span className='statement__account-statistics--amount'>
-                            <Money amount={this.state.total_deposits} currency={'usd'} />
+                            <Money amount={this.state.total_deposits} currency={currency} />
                         </span>
                     </div>
                     <div className='statement__account-statistics--is-rectangle'>
                         <span className='statement__account-statistics--title'>{localize('Total Withdrawals')}</span>
                         <span className='statement__account-statistics--amount'>
-                            <Money amount={this.state.total_withdrawals} currency={'usd'} />
+                            <Money amount={this.state.total_withdrawals} currency={currency} />
                         </span>
                     </div>
                     <div className='statement__account-statistics--is-rectangle'>
                         <span className='statement__account-statistics--title'>{localize('Net Deposit')}</span>
                         <span className='statement__account-statistics--amount'>
-                            <Money amount={this.state.total_deposits - this.state.total_withdrawals} currency={'usd'} />
+                            <Money
+                                amount={this.state.total_deposits - this.state.total_withdrawals}
+                                currency={currency}
+                            />
                         </span>
                     </div>
                 </div>
@@ -171,7 +174,7 @@ class Statement extends React.Component {
                 <ReportsMeta
                     optional_component={
                         this.props.landing_company_shortcode === 'iom' ||
-                        this.props.landing_company_shortcode === 'malta'
+                        this.props.landing_company_shortcode === 'virtual'
                             ? account_statistics_component
                             : undefined
                     }

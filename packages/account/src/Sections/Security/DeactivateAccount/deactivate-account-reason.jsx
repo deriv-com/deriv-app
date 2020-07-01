@@ -47,8 +47,8 @@ const WarningModal = (props) => {
             <div className='account-closure-warning-modal__content-wrapper'>
                 <p className='account-closure-warning-modal__content'>
                     <Localize
-                        i18n_default_text='You will NOT be able to log in again.'
-                        components={[<span key={0} className='' />]}
+                        i18n_default_text='You will <0>NOT</0> be able to log in again.'
+                        components={[<span key={0} style={{ color: 'var(--text-loss-danger)', fontWeight: 'bold' }} />]}
                     />
                 </p>
             </div>
@@ -114,7 +114,7 @@ const ExistingAccountHasBalance = (accounts_with_balance, mt5_login_list, onBack
     return (
         <div className='existing-account-has-balance'>
             <p className='existing-account-has-balance__action'>
-                {localize('You have funds or open positions in these DMT5 accounts:')}
+                {localize('You have funds in these Deriv accounts:')}
             </p>
             {Object.keys(accounts_with_balance).map((account_id) => (
                 <div key={account_id}>
@@ -252,7 +252,7 @@ class DeactivateAccountReason extends React.Component {
         });
         this.setState({ is_loading: false });
         if (account_closure_response.account_closure === 1) {
-            this.props.logout();
+            window.location.href = '/account-deactivated';
             return;
         }
         this.setState({
@@ -261,7 +261,6 @@ class DeactivateAccountReason extends React.Component {
             is_modal_open: true,
         });
     };
-
     render() {
         return this.state.is_loading ? (
             <Loading is_fullscreen={false} />
@@ -459,5 +458,4 @@ class DeactivateAccountReason extends React.Component {
 export default connect(({ client }) => ({
     client_accounts: client.account_list,
     mt5_login_list: client.mt5_login_list,
-    logout: client.logout,
 }))(DeactivateAccountReason);

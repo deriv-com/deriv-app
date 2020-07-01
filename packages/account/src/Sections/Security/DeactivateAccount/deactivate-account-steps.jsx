@@ -26,7 +26,7 @@ const DeactivateAccountSteps = ({ redirectToReasons }) => (
             <p className='deactivate-account__content'>
                 <Localize
                     i18n_default_text='If you have a Deriv real account, go to <0>Cashier</0> to withdraw your funds.'
-                    components={[<Link to='/mt5' key={0} className='deactivate-account__link' />]}
+                    components={[<Link to='/cashier/deposit' key={0} className='deactivate-account__link' />]}
                 />
             </p>
             <p className='deactivate-account__content'>

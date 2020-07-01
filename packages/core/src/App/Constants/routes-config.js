@@ -11,7 +11,9 @@ import Endpoint from 'Modules/Endpoint';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
-
+const AccountDeactivated = React.lazy(() =>
+    import(/* webpackChunkName: "accountdeactivated" */ 'Modules/AccountDeactivated')
+);
 const Trader = React.lazy(() => {
     const el_head = document.querySelector('head');
     const el_main_css = document.createElement('link');
@@ -44,6 +46,13 @@ const modules = [
         path: routes.bot,
         component: Bot,
         title: localize('Bot'),
+    },
+    {
+        path: routes.account_deactivated,
+        component: AccountDeactivated,
+        title: localize('Accounts deactivated'),
+        icon_component: 'IcUserOutline',
+        is_authenticated: false,
     },
     {
         path: routes.account,

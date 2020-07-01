@@ -54,7 +54,7 @@ const OrderDetails = ({ order_details, chat_info }) => {
             });
         }
 
-        () => (is_mounted.current = false);
+        return () => (is_mounted.current = false);
     }, []);
 
     return (

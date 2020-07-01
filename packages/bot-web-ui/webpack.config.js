@@ -86,8 +86,8 @@ module.exports = function(env, argv) {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
                     loader: [
-                      '@deriv/shared/utils/deriv-components-loader.js',
-                      '@deriv/shared/utils/react-import-loader.js',
+                      '@deriv/shared/src/loaders/deriv-components-loader.js',
+                      '@deriv/shared/src/loaders/react-import-loader.js',
                       'babel-loader'
                     ],
                 },

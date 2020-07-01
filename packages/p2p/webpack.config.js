@@ -45,13 +45,13 @@ module.exports = {
                 exclude: /node_modules/,
                 use: [
                     {
-                        loader: '@deriv/shared/utils/deriv-components-loader.js',
+                        loader: '@deriv/shared/src/loaders/deriv-components-loader.js',
                     },
                     {
-                        loader: '@deriv/shared/utils/react-import-loader.js',
+                        loader: '@deriv/shared/src/loaders/react-import-loader.js',
                     },
                     {
-                        loader: '@deriv/shared/utils/react-import-loader.js',
+                        loader: '@deriv/shared/src/loaders/react-import-loader.js',
                     },
                     {
                         loader: 'babel-loader',

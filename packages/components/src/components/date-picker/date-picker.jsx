@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { addDays, daysFromTodayTo, toMoment, convertDateFormat } from '@deriv/shared';
-import { isMobile } from '@deriv/shared';
+import { addDays, daysFromTodayTo, toMoment, convertDateFormat, isMobile } from '@deriv/shared';
+
 import DesktopWrapper from 'Components/desktop-wrapper';
 import MobileWrapper from 'Components/mobile-wrapper';
 import Input from './date-picker-input.jsx';

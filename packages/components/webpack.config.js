@@ -176,7 +176,7 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader: ['@deriv/shared/utils/react-import-loader.js', 'babel-loader'],
+                loader: ['@deriv/shared/src/loaders/react-import-loader.js', 'babel-loader'],
             },
         ],
     },

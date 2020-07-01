@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { formatMoney } from '@deriv/shared';
 
 const Money = ({ amount, className, currency = 'USD', has_sign, should_format = true }) => {
     let sign = '';
@@ -11,7 +11,7 @@ const Money = ({ amount, className, currency = 'USD', has_sign, should_format = 
 
     // if it's formatted already then don't make any changes unless we should remove extra -/+ signs
     const value = has_sign || should_format ? Math.abs(amount) : amount;
-    const final_amount = should_format ? CurrencyUtils.formatMoney(currency, value, true) : value;
+    const final_amount = should_format ? formatMoney(currency, value, true) : value;
 
     return (
         <React.Fragment>

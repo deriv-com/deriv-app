@@ -6,14 +6,14 @@ import {
     DesktopWrapper,
     MobileWrapper,
     Div100vhContainer,
-    PageOverlay,
     FadeWrapper,
+    PageOverlay,
 } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import { getSelectedRoute } from '@deriv/shared/utils/route';
-import { isMobile, isTouchDevice } from '@deriv/shared/utils/screen';
+import { isCryptocurrency } from '@deriv/shared';
+import { getSelectedRoute } from '@deriv/shared';
+import { isMobile, isTouchDevice } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/cashier.scss';
 
@@ -94,7 +94,7 @@ class Cashier extends React.Component {
             : null;
         const should_show_tab_headers_note =
             !this.props.is_virtual &&
-            !CurrencyUtils.isCryptocurrency(this.props.loggedin_currency) &&
+            !isCryptocurrency(this.props.loggedin_currency) &&
             (location.pathname.startsWith(routes.cashier_deposit) ||
                 location.pathname.startsWith(routes.cashier_withdrawal));
 

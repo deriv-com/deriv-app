@@ -1,9 +1,9 @@
 import * as PropTypes from 'prop-types';
 import React from 'react';
 import { Button, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { formatMoney } from '@deriv/shared';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
 import ToggleNotifications from './toggle-notifications.jsx';
@@ -59,11 +59,7 @@ export class AccountActions extends React.Component {
                         <React.Suspense fallback={<div />}>
                             <AccountInfo
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
-                                balance={
-                                    typeof balance === 'undefined'
-                                        ? balance
-                                        : CurrencyUtils.formatMoney(currency, balance, true)
-                                }
+                                balance={typeof balance === 'undefined' ? balance : ormatMoney(currency, balance, true)}
                                 is_disabled={is_acc_switcher_disabled}
                                 disableApp={disableApp}
                                 enableApp={enableApp}
@@ -94,9 +90,7 @@ export class AccountActions extends React.Component {
                             <AccountInfo
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
                                 balance={
-                                    typeof balance === 'undefined'
-                                        ? balance
-                                        : CurrencyUtils.formatMoney(currency, balance, true)
+                                    typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
                                 }
                                 is_disabled={is_acc_switcher_disabled}
                                 is_virtual={is_virtual}

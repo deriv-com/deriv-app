@@ -2,9 +2,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Popover, DesktopWrapper, Loading, MobileWrapper } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared/utils/url';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { getDerivComLink } from '@deriv/shared';
+import { formatMoney } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import FormBody from 'Components/form-body';
@@ -22,7 +22,7 @@ const makeTurnoverLimitRow = (currency, arr, title) => (
                         {title && `${title} - `}
                         {item.name}
                     </Td>
-                    <Td>{CurrencyUtils.formatMoney(currency, item.turnover_limit, true)}</Td>
+                    <Td>{formatMoney(currency, item.turnover_limit, true)}</Td>
                 </Row>
             ))}
     </>
@@ -154,7 +154,7 @@ class AccountLimits extends React.Component {
                                             />
                                         </div>
                                     </Td>
-                                    <Td>{CurrencyUtils.formatMoney(currency, account_balance, true)}</Td>
+                                    <Td>{formatMoney(currency, account_balance, true)}</Td>
                                 </Row>
                                 <Row>
                                     <Td>
@@ -167,7 +167,7 @@ class AccountLimits extends React.Component {
                                             />
                                         </div>
                                     </Td>
-                                    <Td>{CurrencyUtils.formatMoney(currency, payout, true)}</Td>
+                                    <Td>{formatMoney(currency, payout, true)}</Td>
                                 </Row>
                             </tbody>
                         </table>
@@ -215,21 +215,15 @@ class AccountLimits extends React.Component {
                                 <tbody>
                                     <Row>
                                         <Td>{localize('Total withdrawal allowed')}</Td>
-                                        <Td>{CurrencyUtils.formatMoney(currency, num_of_days_limit, true)}</Td>
+                                        <Td>{formatMoney(currency, num_of_days_limit, true)}</Td>
                                     </Row>
                                     <Row>
                                         <Td>{localize('Total withdrawn')}</Td>
-                                        <Td>
-                                            {CurrencyUtils.formatMoney(
-                                                currency,
-                                                withdrawal_since_inception_monetary,
-                                                true
-                                            )}
-                                        </Td>
+                                        <Td>{formatMoney(currency, withdrawal_since_inception_monetary, true)}</Td>
                                     </Row>
                                     <Row>
                                         <Td>{localize('Maximum withdrawal remaining')}</Td>
-                                        <Td>{CurrencyUtils.formatMoney(currency, remainder, true)}</Td>
+                                        <Td>{formatMoney(currency, remainder, true)}</Td>
                                     </Row>
                                 </tbody>
                             )}

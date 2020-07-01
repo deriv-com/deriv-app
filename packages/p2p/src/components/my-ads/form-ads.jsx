@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { getDecimalPlaces } from '@deriv/shared';
 import Dp2pContext from 'Components/context/dp2p-context';
 import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import { localize } from 'Components/i18next';
@@ -320,14 +320,14 @@ class FormAds extends React.Component {
             max_transaction: [
                 v => !!v,
                 v => !isNaN(v),
-                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
+                v => v > 0 && countDecimalPlaces(v) <= getDecimalPlaces(this.context.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
             min_transaction: [
                 v => !!v,
                 v => !isNaN(v),
-                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
+                v => v > 0 && countDecimalPlaces(v) <= getDecimalPlaces(this.context.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
@@ -337,7 +337,7 @@ class FormAds extends React.Component {
                 // v => v > available_price,
                 // TODO: remove v > 0 check when we have available_price
                 v => !isNaN(v),
-                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
+                v => v > 0 && countDecimalPlaces(v) <= getDecimalPlaces(this.context.currency),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
                 v => (values.max_transaction ? +v >= values.max_transaction : true),
             ],

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { getPropertyValue } from '@deriv/shared';
 import { Tabs, Modal, Loading } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
@@ -180,8 +180,8 @@ class App extends React.Component {
             return;
         }
 
-        const user_id = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
-        const token = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_token']);
+        const user_id = getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
+        const token = getPropertyValue(p2p_advertiser_info, ['chat_token']);
 
         this.setChatInfo(user_id, token);
     };
@@ -343,7 +343,7 @@ class App extends React.Component {
                     setNickname: nickname => this.setState({ nickname }),
                     setChatInfo: this.setChatInfo,
                     is_restricted,
-                    email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
+                    email_domain: getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,
                     order_offset,
                     orders,

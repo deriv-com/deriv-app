@@ -2,7 +2,7 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
-const shared_utils = require('@deriv/shared/utils/index.js');
+const shared_utils = require('@deriv/shared/src/styles/index.js');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const is_serve = process.env.BUILD_MODE === 'serve';

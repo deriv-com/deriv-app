@@ -1,10 +1,10 @@
 import * as Cookies from 'js-cookie';
 import { action, computed } from 'mobx';
-import { getAppId } from '@deriv/shared/utils/config';
+import { getAppId } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
 import { isLoginPages } from '_common/base/login';
-import { toMoment, epochToMoment } from '@deriv/shared/utils/date';
+import { toMoment, epochToMoment } from '@deriv/shared';
 import BaseStore from './base-store';
 import { getMT5AccountType } from './Helpers/client';
 

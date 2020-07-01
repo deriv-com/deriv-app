@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { when } from 'mobx';
 import { MobileWrapper } from '@deriv/components';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { isMobile } from '@deriv/shared';
 import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggle-positions-mobile.jsx';
 import { connect, MobxContentProvider } from 'Stores/connect';
 

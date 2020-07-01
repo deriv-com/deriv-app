@@ -1,4 +1,4 @@
-import { OSDetect } from '@deriv/shared/utils/os';
+import { OSDetect } from '@deriv/shared';
 
 // TODO: [deriv-eu] for EU we should return 'Binary.com-Demo' for demo accounts
 const getServerName = is_demo => (is_demo ? 'Deriv-Demo' : 'Deriv-Server');

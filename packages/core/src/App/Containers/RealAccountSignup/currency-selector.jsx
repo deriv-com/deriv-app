@@ -11,8 +11,8 @@ import {
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik } from 'formik';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import { isMobile, isDesktop } from '@deriv/shared/utils/screen';
+import { getCurrencyDisplayCode } from '@deriv/shared';
+import { isMobile, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
 import 'Sass/currency-select-radio.scss';
@@ -56,7 +56,7 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
                     )}
                     <div className='label currency-list__item-text'>
                         {label}
-                        <br />({CurrencyUtils.getCurrencyDisplayCode(id)})
+                        <br />({getCurrencyDisplayCode(id)})
                     </div>
                 </div>
             </label>

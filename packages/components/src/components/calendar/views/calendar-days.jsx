@@ -1,16 +1,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-    addDays,
-    addMonths,
-    daysFromTodayTo,
-    epochToMoment,
-    subDays,
-    subMonths,
-    toMoment,
-} from '@deriv/shared/utils/date';
-import { padLeft } from '@deriv/shared/utils/string';
+import { addDays, addMonths, daysFromTodayTo, epochToMoment, subDays, subMonths, toMoment } from '@deriv/shared';
+import { padLeft } from '@deriv/shared';
 import Popover from 'Components/popover';
 import { CommonPropTypes } from './types';
 import { getDaysOfTheWeek, week_headers_abbr } from '../helpers';

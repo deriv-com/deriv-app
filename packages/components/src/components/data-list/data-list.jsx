@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { VariableSizeList as List } from 'react-window';
 import { NavLink } from 'react-router-dom';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { isMobile } from '@deriv/shared';
 import DataListCell from './data-list-cell.jsx';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 

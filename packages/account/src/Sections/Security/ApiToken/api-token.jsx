@@ -14,8 +14,8 @@ import {
     Clipboard,
     Loading,
 } from '@deriv/components';
-import ObjectUtils from '@deriv/shared/utils/object';
-import DateUtils from '@deriv/shared/utils/date';
+import { getPropertyValue } from '@deriv/shared';
+import { formatDate } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -71,7 +71,7 @@ class ApiToken extends React.Component {
     getScopeValue = (token) => {
         const titled_scopes = token.scopes.map((scope) => this.formatTokenScopes(scope));
         const mapped_scopes = titled_scopes.length === 5 ? localize('All') : titled_scopes.join(', ');
-        const date_format = token.last_used ? DateUtils.formatDate(token.last_used, 'DD/MM/YYYY') : localize('Never');
+        const date_format = token.last_used ? formatDate(token.last_used, 'DD/MM/YYYY') : localize('Never');
 
         return {
             display_name: token.display_name,
@@ -96,7 +96,7 @@ class ApiToken extends React.Component {
             } else {
                 this.setState({
                     is_success: true,
-                    api_tokens: ObjectUtils.getPropertyValue(token_response, ['api_token', 'tokens']),
+                    api_tokens: getPropertyValue(token_response, ['api_token', 'tokens']),
                 });
                 setTimeout(() => {
                     this.setState({ is_success: false });
@@ -114,12 +114,12 @@ class ApiToken extends React.Component {
         if (response.error) {
             this.setState({
                 is_loading: false,
-                error_message: ObjectUtils.getPropertyValue(response, ['error', 'message']),
+                error_message: getPropertyValue(response, ['error', 'message']),
             });
         } else {
             this.setState({
                 is_loading: false,
-                api_tokens: ObjectUtils.getPropertyValue(response, ['api_token', 'tokens']),
+                api_tokens: getPropertyValue(response, ['api_token', 'tokens']),
             });
         }
     };

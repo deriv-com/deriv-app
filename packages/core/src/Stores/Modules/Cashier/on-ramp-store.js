@@ -33,7 +33,7 @@ export default class OnRampStore extends BaseStore {
                         ','
                     )}&to=${currency}&amount=50&address=&fromDefault=${
                         this.default_from_currency
-                    }&toDefault=${currency}&theme=danger&merchant_id=iiq3jdt2p44yrfbx&payment_id=&v=2" width="100%" height="420px" class="changelly" scrolling="no" onLoad="function at(t){var e=t.target,i=e.parentNode,n=e.contentWindow,r=function(){return n.postMessage({width:i.offsetWidth},it.url)};window.addEventListener('resize',r),r()};at.apply(this, arguments);" style="min-height: 100%; min-width: 100%; overflow-y: visible; border: none">Can't load widget</iframe>`;
+                    }&toDefault=${currency}&theme=danger&merchant_id=iiq3jdt2p44yrfbx&payment_id=&v=2" width="100%" height="475px" class="changelly" scrolling="no" onLoad="function at(t){var e=t.target,i=e.parentNode,n=e.contentWindow,r=function(){return n.postMessage({width:i.offsetWidth},it.url)};window.addEventListener('resize',r),r()};at.apply(this, arguments);" style="min-height: 100%; min-width: 100%; overflow-y: visible; border: none">Can't load widget</iframe>`;
                 },
                 icon: 'IcCashierChangelly',
                 name: 'Changelly',

@@ -31,6 +31,7 @@
     flex-direction: column;
     position: relative;
     flex-grow: 1;
+    width: 30rem;
 
     &__icon-area {
         display: flex;
@@ -116,7 +117,7 @@
         }
     }
     &__btn-area {
-        margin: 3rem 0;
+        margin: 2rem 0 3rem;
         width: 100%;
         display: flex;
         justify-content: center;

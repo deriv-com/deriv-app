@@ -1,4 +1,4 @@
-import { Clipboard, DesktopWrapper, Icon, MobileWrapper, Tabs } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileWrapper, Tabs } from '@deriv/components';
 import React from 'react';
 import { withRouter } from 'react-router';
 import routes from '@deriv/shared/utils/routes';
@@ -15,6 +15,7 @@ import MT5ServerErrorDialog from './mt5-server-error-dialog.jsx';
 import Mt5TopUpDemoModal from './mt5-top-up-demo-modal.jsx';
 import MT5ResetPasswordModal from './mt5-reset-password-modal.jsx';
 import Mt5FinancialStpPendingDialog from '../Components/mt5-financial-stp-pending-dialog.jsx';
+import { MT5InfoCopy } from '../Components/mt5-info-copy.jsx';
 import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
 import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
 import { getBrokerName, getServerName, getPlatformMt5DownloadLink } from '../Helpers/constants';
@@ -165,30 +166,18 @@ class MT5Dashboard extends React.Component {
                             <div className='mt5-dashboard__info-description'>
                                 <Localize i18n_default_text='Use these in your apps' />
                             </div>
-                            <div className='mt5-dashboard__info-broker'>
-                                <div className='mt5-dashboard__info-broker-display'>
-                                    <span className='mt5-dashboard__info-label'>{localize('Broker')}:</span>{' '}
-                                    {getBrokerName()}
-                                </div>
-                                <Clipboard
-                                    text_copy={getBrokerName()}
-                                    info_message={localize('Click here to copy broker name.')}
-                                    success_message={localize('broker name copied!')}
-                                    className='mt5-dashboard__info-server-clipboard'
-                                />
-                            </div>
-                            <div className='mt5-dashboard__info-server'>
-                                <div className='mt5-dashboard__info-server-display'>
-                                    <span className='mt5-dashboard__info-label'>{localize('Server')}:</span>{' '}
-                                    {getServerName(this.state.is_demo_tab)}
-                                </div>
-                                <Clipboard
-                                    text_copy={getServerName(this.state.is_demo_tab)}
-                                    info_message={localize('Click here to copy server name.')}
-                                    success_message={localize('Server name copied!')}
-                                    className='mt5-dashboard__info-server-clipboard'
-                                />
-                            </div>
+                            <MT5InfoCopy
+                                name={getBrokerName()}
+                                label={localize('Broker')}
+                                info_msg={localize('Click here to copy broker name.')}
+                                success_msg={localize('broker name copied!')}
+                            />
+                            <MT5InfoCopy
+                                name={getServerName(this.state.is_demo_tab)}
+                                label={localize('Server')}
+                                info_msg={localize('Click here to copy server name.')}
+                                success_msg={localize('Server name copied!')}
+                            />
                         </div>
                         <CompareAccountsModal />
                         <div className='mt5-dashboard__maintenance'>

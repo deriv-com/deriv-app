@@ -34,23 +34,21 @@
         border-radius: $BORDER_RADIUS;
 
         &-description,
-        &-server,
-        &-broker {
+        &-copy {
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        &-server,
-        &-broker {
+        &-copy {
             font-size: 1.6rem;
             font-weight: bold;
-
-            &-display {
-                padding-right: 0.8rem;
-            }
+        }
+        &-display {
+            padding-right: 0.8rem;
         }
         &-label {
             font-weight: normal;
+            padding-right: 0.4rem;
         }
         @include mobile {
             display: flex;
@@ -59,8 +57,7 @@
             flex-direction: column;
             align-items: flex-start;
 
-            &-server,
-            &-broker {
+            &-copy {
                 margin: 0 0 0.8rem;
                 font-size: 1.4rem;
             }

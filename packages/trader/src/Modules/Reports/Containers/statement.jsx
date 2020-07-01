@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money } from '@deriv/components';
 import { urlFor } from '@deriv/shared/utils/url';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
@@ -28,7 +28,7 @@ class Statement extends React.Component {
     componentDidMount() {
         this.props.onMount();
         const is_mx_mlt =
-            this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'malta';
+            this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'virtual';
 
         if (is_mx_mlt)
             WS.accountStatistics().then(response => {
@@ -129,16 +129,20 @@ class Statement extends React.Component {
                 <div className='statement__account-statistics'>
                     <div className='statement__account-statistics--is-rectangle'>
                         <span className='statement__account-statistics--title'>{localize('Total Deposit')}</span>
-                        <span className='statement__account-statistics--amount'> ${this.state.total_deposits}</span>
+                        <span className='statement__account-statistics--amount'>
+                            <Money amount={this.state.total_deposits} currency={'usd'} />
+                        </span>
                     </div>
                     <div className='statement__account-statistics--is-rectangle'>
                         <span className='statement__account-statistics--title'>{localize('Total Withdrawals')}</span>
-                        <span className='statement__account-statistics--amount'>${this.state.total_withdrawals}</span>
+                        <span className='statement__account-statistics--amount'>
+                            <Money amount={this.state.total_withdrawals} currency={'usd'} />
+                        </span>
                     </div>
                     <div className='statement__account-statistics--is-rectangle'>
                         <span className='statement__account-statistics--title'>{localize('Net Deposit')}</span>
                         <span className='statement__account-statistics--amount'>
-                            ${this.state.total_deposits - this.state.total_withdrawals}
+                            <Money amount={this.state.total_deposits - this.state.total_withdrawals} currency={'usd'} />
                         </span>
                     </div>
                 </div>
@@ -167,7 +171,7 @@ class Statement extends React.Component {
                 <ReportsMeta
                     optional_component={
                         this.props.landing_company_shortcode === 'iom' ||
-                        this.props.landing_company_shortcode === 'malta'
+                        this.props.landing_company_shortcode === 'virtual'
                             ? account_statistics_component
                             : undefined
                     }

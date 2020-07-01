@@ -27,6 +27,7 @@ export default class P2pStore extends BaseStore {
             const service_token = p2p_service_token?.service_token?.sendbird?.token;
 
             if (!sendbird_user_id || !service_token) {
+                // eslint-disable-next-line no-console
                 console.warn('Could not initialise Sendbird API for notifications');
                 return Promise.resolve();
             }

@@ -311,11 +311,6 @@ class App extends React.Component {
             poi_status,
             poi_url,
             show_popup,
-            is_loading,
-            poi_url,
-            poi_status,
-            is_restricted,
-            nickname_error,
         } = this.state;
         const {
             LocalStorage,
@@ -438,6 +433,8 @@ class App extends React.Component {
 }
 
 App.propTypes = {
+    LocalStorage: PropTypes.object,
+    className: PropTypes.string,
     client: PropTypes.shape({
         currency: PropTypes.string.isRequired,
         custom_strings: PropTypes.shape({
@@ -451,10 +448,12 @@ App.propTypes = {
         loginid: PropTypes.string.isRequired,
         residence: PropTypes.string.isRequired,
     }),
+    is_mobile: PropTypes.bool,
     lang: PropTypes.string,
     notification_count: PropTypes.number,
     order_id: PropTypes.string,
-    setP2pOrderNotificationCount: PropTypes.func,
+    setOrderId: PropTypes.func,
+    should_show_verification: PropTypes.bool,
     websocket_api: PropTypes.object.isRequired,
 };
 

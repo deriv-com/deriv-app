@@ -20,13 +20,6 @@ class LocalStorage {
         this.notification_listeners.push(callback);
     }
 
-    removeNotificationListener(callback) {
-        const listener_idx = this.notification_listeners.findIndex(listener => listener === callback);
-        if (listener_idx > -1) {
-            this.notification_listeners.splice(existing_listener_idx, 1);
-        }
-    }
-
     getNotificationCount() {
         return this.getNotifications().filter(n => !n.has_seen_chat || !n.has_seen_order).length;
     }

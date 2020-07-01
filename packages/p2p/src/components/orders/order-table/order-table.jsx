@@ -2,22 +2,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ButtonToggle } from '@deriv/components';
 import { localize } from 'Components/i18next';
+import Dp2pContext from 'Components/context/dp2p-context';
 import OrderTableContent from './order-table-content.jsx';
 import { orderToggleIndex } from '../order-info';
 
-const orders_filters = [
-    {
-        text: localize('Active order'),
-        value: orderToggleIndex.ACTIVE,
-    },
-    {
-        text: localize('Past order'),
-        value: orderToggleIndex.INACTIVE,
-    },
-];
-
 const OrderTable = ({ showDetails }) => {
+    const { active_notification_count, inactive_notification_count } = React.useContext(Dp2pContext);
     const [current_toggle, setCurrentToggle] = React.useState(orderToggleIndex.ACTIVE);
+    const orders_filters = [
+        {
+            text: localize('Active order'),
+            value: orderToggleIndex.ACTIVE,
+            count: active_notification_count,
+        },
+        {
+            text: localize('Past order'),
+            value: orderToggleIndex.INACTIVE,
+            count: inactive_notification_count,
+        },
+    ];
+
     return (
         <>
             <div className='orders__header'>

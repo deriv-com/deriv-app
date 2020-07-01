@@ -20,6 +20,9 @@
         width: 50%;
         background-color: var(--state-normal);
 
+        & .dc-btn__text {
+            display: contents;
+        }
         &:hover:not(.dc-button-menu__button--active) {
             background-color: var(--state-hover) !important;
         }
@@ -27,6 +30,9 @@
         span {
             @include typeface(--paragraph-left-normal-black, unset);
             color: var(--text-general);
+        }
+        &__count {
+            margin-left: 0.4rem;
         }
         &--active {
             cursor: initial;

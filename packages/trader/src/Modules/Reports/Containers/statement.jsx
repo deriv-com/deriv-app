@@ -28,7 +28,7 @@ class Statement extends React.Component {
     componentDidMount() {
         this.props.onMount();
         const is_mx_mlt =
-            this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'virtual';
+            this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'malta';
 
         if (is_mx_mlt)
             WS.accountStatistics().then(response => {

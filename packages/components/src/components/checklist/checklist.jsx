@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Icon from '../icon';
 
-const checkStatus = (status, onClick) => {
+const ItemStatus = ({ status, onClick }) => {
     switch (status) {
         case 'done':
             return (
@@ -36,7 +36,7 @@ const Checklist = ({ items, className, itemClassName }) => (
                         'dc-checklist__item-status--disabled': item.is_disabled,
                     })}
                 >
-                    {checkStatus(item.status, item.onClick)}
+                    <ItemStatus status={item.status} onClick={item.onClick} />
                 </div>
             </div>
         ))}
@@ -46,6 +46,7 @@ const Checklist = ({ items, className, itemClassName }) => (
 Checklist.propTypes = {
     items: PropTypes.array,
     className: PropTypes.string,
+    itemClassName: PropTypes.string,
 };
 
 export default Checklist;

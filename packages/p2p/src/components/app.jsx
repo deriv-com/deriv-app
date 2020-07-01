@@ -4,13 +4,14 @@ import PropTypes from 'prop-types';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { Tabs, Dialog } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
+import LocalStorage from 'Utils/local-storage';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
-import Orders from './orders/orders.jsx';
 import NicknameForm from './nickname/nickname-form.jsx';
+import Orders from './orders/orders.jsx';
 import './app.scss';
 
 const allowed_currency = 'USD';
@@ -145,26 +146,26 @@ class App extends React.Component {
         this.setState({ chat_info });
     };
 
-    getLocalStorageSettings = () => {
-        return JSON.parse(localStorage.getItem('dp2p_settings') || '{ "is_cached": false, "notifications": [] }');
-    };
-
     handleNotifications = (old_orders, new_orders) => {
-        const { is_cached, notifications } = this.getLocalStorageSettings();
+        const { is_cached, notifications } = LocalStorage.getSettings();
 
         new_orders.forEach(new_order => {
-            const old_order = old_orders.find(o => o.id === new_order.id);
-            const notification = notifications.find(n => n.order_id === new_order.id);
-            const is_current_order = new_order.id === this.props.order_id;
+            const old_order = old_orders.find(o => o.channel_url === new_order.channel_url);
+            const notification = notifications.find(n => n.channel_url === new_order.chat_channel_url);
+            const is_current_order = new_order.channel_url === this.props.channel_url;
 
             if (old_order) {
                 if (old_order.status !== new_order.status) {
                     if (notification) {
                         // If order status changed, notify the user.
-                        notification.is_seen = is_current_order;
+                        notification.has_seen_order = is_current_order;
                     } else {
                         // If we have an old_order, but for some reason don't have a copy in local storage.
-                        notifications.push({ order_id: new_order.id, is_seen: is_current_order });
+                        notifications.push({
+                            channel_url: new_order.chat_channel_url,
+                            has_seen_chat: true,
+                            has_seen_order: is_current_order,
+                        });
                     }
                 }
             } else if (!notification) {
@@ -172,13 +173,23 @@ class App extends React.Component {
                 // cached list or only notify user of actionable orders.
                 if (is_cached) {
                     // If we can compare with a cached list, assume each new order should be notified.
-                    notifications.push({ order_id: new_order.id, is_seen: is_current_order });
+                    notifications.push({
+                        channel_url: new_order.chat_channel_url,
+                        has_seen_chat: true,
+                        has_seen_order: false,
+                    });
                 } else {
                     // If we don't have a cached list, only notify user of orders that require action.
                     // This is done so user isn't spammed with old orders after resetting their local storage.
                     const actionable_statuses = ['pending', 'buyer-confirmed'];
                     const is_action_required = actionable_statuses.includes(new_order.status);
-                    notifications.push({ order_id: new_order.id, is_seen: is_current_order || !is_action_required });
+                    const has_seen_order = is_current_order || !is_action_required;
+
+                    notifications.push({
+                        channel_url: new_order.chat_channel_url,
+                        has_seen_chat: true,
+                        has_seen_order,
+                    });
                 }
             }
         });
@@ -187,7 +198,7 @@ class App extends React.Component {
     };
 
     updateP2pNotifications = notifications => {
-        const notification_count = notifications.filter(notification => notification.is_seen === false).length;
+        const notification_count = LocalStorage.getUnreadNotificationCount();
         const dp2p_settings = JSON.stringify({ is_cached: true, notifications });
 
         localStorage.setItem('dp2p_settings', dp2p_settings);
@@ -236,13 +247,12 @@ class App extends React.Component {
             order_table_type,
             chat_info,
             show_popup,
-            notification_count: state_notification_count,
+            notification_count,
         } = this.state;
         const {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
             custom_strings,
-            notification_count: props_notification_count,
             order_id,
             setOrderId,
         } = this.props;
@@ -281,7 +291,6 @@ class App extends React.Component {
                     setOrderId,
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
-                    getLocalStorageSettings: this.getLocalStorageSettings.bind(this),
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
@@ -295,14 +304,7 @@ class App extends React.Component {
                         <div label={localize('Buy / Sell')}>
                             <BuySell navigate={this.redirectTo} params={parameters} />
                         </div>
-                        <div
-                            count={
-                                props_notification_count === undefined
-                                    ? state_notification_count
-                                    : props_notification_count
-                            }
-                            label={localize('Orders')}
-                        >
+                        <div count={notification_count} label={localize('Orders')}>
                             <Orders navigate={this.redirectTo} params={parameters} chat_info={chat_info} />
                         </div>
                         <div label={localize('My ads')}>

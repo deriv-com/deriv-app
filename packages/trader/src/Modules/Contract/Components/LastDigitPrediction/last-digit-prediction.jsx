@@ -35,23 +35,23 @@ class LastDigitPrediction extends React.Component {
         9: { left: 6 + this.props.dimension * 4, top: 8 },
     };
 
-    handleSelect = (digit_value) => {
+    handleSelect = digit_value => {
         if (!this.is_selectable_digit_type) return;
         if (digit_value !== this.props.selected_digit && typeof this.props.onDigitChange === 'function') {
             this.props.onDigitChange({ target: { name: 'last_digit', value: digit_value } });
         }
     };
 
-    getBarrier = (num) => {
+    getBarrier = num => {
         const { barrier, contract_type } = this.props;
 
         const barrier_map = {
-            DIGITMATCH: (val) => val === barrier,
-            DIGITDIFF: (val) => val !== barrier && !isNaN(barrier),
-            DIGITOVER: (val) => val > barrier,
-            DIGITUNDER: (val) => val < barrier,
-            DIGITODD: (val) => val % 2,
-            DIGITEVEN: (val) => !(val % 2),
+            DIGITMATCH: val => val === barrier,
+            DIGITDIFF: val => val !== barrier && !isNaN(barrier),
+            DIGITOVER: val => val > barrier,
+            DIGITUNDER: val => val < barrier,
+            DIGITODD: val => val % 2,
+            DIGITEVEN: val => !(val % 2),
         };
         if (!contract_type || !barrier_map[contract_type]) return null;
         return barrier_map[contract_type](num) ? num : null;
@@ -79,7 +79,7 @@ class LastDigitPrediction extends React.Component {
         } = this.props;
         const digits_array = Object.keys(digits_info)
             .sort()
-            .map((spot_time) => digits_info[spot_time]);
+            .map(spot_time => digits_info[spot_time]);
         const last_contract_digit = digits_array.slice(-1)[0] || {};
 
         // 'won' or 'lost' status exists after contract expiry
@@ -103,12 +103,12 @@ class LastDigitPrediction extends React.Component {
             : last_contract_digit;
         return (
             <div
-                ref={(node) => (this.node = node)}
+                ref={node => (this.node = node)}
                 className={classNames('digits', {
                     'digits--trade': is_trade_page,
                 })}
             >
-                {display_array.map((idx) => (
+                {display_array.map(idx => (
                     <DigitDisplay
                         barrier={this.getBarrier(idx)}
                         has_entry_spot={has_entry_spot}

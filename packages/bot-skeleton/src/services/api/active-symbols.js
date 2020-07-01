@@ -29,8 +29,8 @@ export default class ActiveSymbols {
 
         this.active_symbols = active_symbols;
         this.processed_symbols = this.processActiveSymbols();
-        this.trading_times.onMarketOpenCloseChanged = (changes) => {
-            Object.keys(changes).forEach((symbol_name) => {
+        this.trading_times.onMarketOpenCloseChanged = changes => {
+            Object.keys(changes).forEach(symbol_name => {
                 const symbol_obj = this.active_symbols[symbol_name];
 
                 if (symbol_obj) {
@@ -57,7 +57,7 @@ export default class ActiveSymbols {
                 return processed_symbols;
             }
 
-            const isExistingValue = (object, prop) => Object.keys(object).findIndex((a) => a === symbol[prop]) !== -1;
+            const isExistingValue = (object, prop) => Object.keys(object).findIndex(a => a === symbol[prop]) !== -1;
 
             if (!isExistingValue(processed_symbols, 'market')) {
                 processed_symbols[symbol.market] = {
@@ -96,15 +96,15 @@ export default class ActiveSymbols {
     getAllSymbols() {
         const all_symbols = [];
 
-        Object.keys(this.processed_symbols).forEach((market_name) => {
+        Object.keys(this.processed_symbols).forEach(market_name => {
             const market = this.processed_symbols[market_name];
             const { submarkets } = market;
 
-            Object.keys(submarkets).forEach((submarket_name) => {
+            Object.keys(submarkets).forEach(submarket_name => {
                 const submarket = submarkets[submarket_name];
                 const { symbols } = submarket;
 
-                Object.keys(symbols).forEach((symbol_name) => {
+                Object.keys(symbols).forEach(symbol_name => {
                     const symbol = symbols[symbol_name];
 
                     all_symbols.push({
@@ -126,7 +126,7 @@ export default class ActiveSymbols {
         await this.retrieveActiveSymbols();
         const market_options = [];
 
-        Object.keys(this.processed_symbols).forEach((market_name) => {
+        Object.keys(this.processed_symbols).forEach(market_name => {
             const { display_name } = this.processed_symbols[market_name];
             const market_display_name =
                 display_name + (this.isMarketClosed(market_name) ? ` ${localize('(Closed)')}` : '');
@@ -136,15 +136,15 @@ export default class ActiveSymbols {
         if (market_options.length === 0) {
             return config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
         }
-        market_options.sort((a) => (a[1] === 'synthetic_index' ? -1 : 1));
+        market_options.sort(a => (a[1] === 'synthetic_index' ? -1 : 1));
 
-        const has_closed_markets = market_options.some((market_option) => this.isMarketClosed(market_option[1]));
+        const has_closed_markets = market_options.some(market_option => this.isMarketClosed(market_option[1]));
 
         if (has_closed_markets) {
             const sorted_options = this.sortDropdownOptions(market_options, this.isMarketClosed);
 
             if (this.isMarketClosed('forex')) {
-                return sorted_options.sort((a) => (a[1] === 'synthetic_index' ? -1 : 1));
+                return sorted_options.sort(a => (a[1] === 'synthetic_index' ? -1 : 1));
             }
 
             return sorted_options;
@@ -162,7 +162,7 @@ export default class ActiveSymbols {
         if (market_obj) {
             const { submarkets } = market_obj;
 
-            Object.keys(submarkets).forEach((submarket_name) => {
+            Object.keys(submarkets).forEach(submarket_name => {
                 const { display_name } = submarkets[submarket_name];
                 const submarket_display_name =
                     display_name + (this.isSubmarketClosed(submarket_name) ? ` ${localize('(Closed)')}` : '');
@@ -174,7 +174,7 @@ export default class ActiveSymbols {
             return config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
         }
         if (market === 'synthetic_index') {
-            submarket_options.sort((a) => (a[1] === 'random_index' ? -1 : 1));
+            submarket_options.sort(a => (a[1] === 'random_index' ? -1 : 1));
         }
 
         return this.sortDropdownOptions(submarket_options, this.isSubmarketClosed);
@@ -186,10 +186,10 @@ export default class ActiveSymbols {
         const symbol_options = Object.keys(this.processed_symbols).reduce((accumulator, market_name) => {
             const { submarkets } = this.processed_symbols[market_name];
 
-            Object.keys(submarkets).forEach((submarket_name) => {
+            Object.keys(submarkets).forEach(submarket_name => {
                 if (submarket_name === submarket) {
                     const { symbols } = submarkets[submarket_name];
-                    Object.keys(symbols).forEach((symbol_name) => {
+                    Object.keys(symbols).forEach(symbol_name => {
                         const { display_name } = symbols[symbol_name];
                         const symbol_display_name =
                             display_name + (this.isSymbolClosed(symbol_name) ? ` ${localize('(Closed)')}` : '');
@@ -215,11 +215,11 @@ export default class ActiveSymbols {
             return true;
         }
 
-        return Object.keys(market.submarkets).every((submarket_name) => this.isSubmarketClosed(submarket_name));
+        return Object.keys(market.submarkets).every(submarket_name => this.isSubmarketClosed(submarket_name));
     }
 
     isSubmarketClosed(submarket_name) {
-        const market_name = Object.keys(this.processed_symbols).find((name) => {
+        const market_name = Object.keys(this.processed_symbols).find(name => {
             const market = this.processed_symbols[name];
             return Object.keys(market.submarkets).includes(submarket_name);
         });
@@ -236,12 +236,12 @@ export default class ActiveSymbols {
         }
 
         const { symbols } = submarket;
-        return Object.keys(symbols).every((symbol_name) => this.isSymbolClosed(symbol_name));
+        return Object.keys(symbols).every(symbol_name => this.isSymbolClosed(symbol_name));
     }
 
     isSymbolClosed(symbol_name) {
         return this.active_symbols.some(
-            (active_symbol) =>
+            active_symbol =>
                 active_symbol.symbol === symbol_name &&
                 (!active_symbol.exchange_is_open || active_symbol.is_trading_suspended)
         );

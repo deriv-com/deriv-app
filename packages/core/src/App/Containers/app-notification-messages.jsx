@@ -10,7 +10,7 @@ import 'Sass/app/_common/components/app-notification-message.scss';
 
 class AppNotificationMessages extends React.Component {
     state = {};
-    setRef = (el) => {
+    setRef = el => {
         if (el && el.parentElement) {
             this.setState({
                 bounds: el.parentElement.getBoundingClientRect(),
@@ -31,7 +31,7 @@ class AppNotificationMessages extends React.Component {
 
         const notifications = notification_messages
             .filter(
-                (message) =>
+                message =>
                     !marked_notifications.includes(message.key) &&
                     (isMobile() ? allowed_on_mobile.includes(message.key) : true)
             )

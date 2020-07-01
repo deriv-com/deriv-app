@@ -21,7 +21,7 @@ const getSubmitText = (account_title, category) => {
     return localize('You have created a DMT5 {{account_title}} account.', { account_title });
 };
 
-const getIconFromType = (type) => {
+const getIconFromType = type => {
     switch (type) {
         case 'synthetic':
             return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
@@ -46,7 +46,7 @@ const MT5PasswordModal = ({
     setMt5Error,
     submitMt5Password,
 }) => {
-    const validatePassword = (values) => {
+    const validatePassword = values => {
         const errors = {};
 
         if (
@@ -146,7 +146,7 @@ const MT5PasswordModal = ({
                                                 name='password'
                                                 value={values.password}
                                                 onBlur={handleBlur}
-                                                onChange={(e) => {
+                                                onChange={e => {
                                                     setFieldTouched('password', true);
                                                     handleChange(e);
                                                 }}

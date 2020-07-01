@@ -41,13 +41,13 @@ const OrderDetails = ({ order_details, chat_info }) => {
     const { advertiser_id: ad_advertiser_id } = React.useContext(Dp2pContext);
     const is_my_ad = advertiser_id === ad_advertiser_id;
     const onCancelClick = () => setShowPopup(false);
-    const handleShowPopup = (options) => {
+    const handleShowPopup = options => {
         setPopupOptions(options);
         setShowPopup(true);
     };
     React.useEffect(() => {
         if (!channel_url) {
-            chatCreate(id).then((val) => {
+            chatCreate(id).then(val => {
                 setChannelUrl(val.channel_url);
             });
         }

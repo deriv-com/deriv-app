@@ -12,7 +12,7 @@ export const init = (websocket, local_currency_decimal_places) => {
     transaction_currency_decimals = local_currency_decimal_places;
 };
 
-const setCurrenciesConfig = (website_status_response) => {
+const setCurrenciesConfig = website_status_response => {
     if ('website_status' in website_status_response && ObjectUtils.isEmptyObject(CurrencyUtils.currencies_config)) {
         CurrencyUtils.setCurrencies(website_status_response.website_status);
     }
@@ -33,7 +33,7 @@ const map_payment_method = {
 
 const getModifiedP2PAdvertList = (response, is_original) => {
     // only show active adverts
-    const filtered_list = response.list.filter((offer) => !!+offer.is_active);
+    const filtered_list = response.list.filter(offer => !!+offer.is_active);
 
     const length = filtered_list.length;
     const modified_response = [];
@@ -93,7 +93,7 @@ const getModifiedP2PAdvertList = (response, is_original) => {
     return modified_response;
 };
 
-const getModifiedP2POrder = (response) => {
+const getModifiedP2POrder = response => {
     const { chat_channel_url, contact_info, is_incoming, payment_info } = response;
     const offer_currency = response.account_currency;
     const transaction_currency = response.local_currency;
@@ -129,7 +129,7 @@ const getModifiedP2POrder = (response) => {
     };
 };
 
-export const getModifiedP2POrderList = (response) => {
+export const getModifiedP2POrderList = response => {
     const modified_response = [];
     response.forEach((list_item, idx) => {
         modified_response[idx] = getModifiedP2POrder(list_item);
@@ -138,7 +138,7 @@ export const getModifiedP2POrderList = (response) => {
     return modified_response;
 };
 
-export const requestWS = async (request) => {
+export const requestWS = async request => {
     await populateInitialResponses();
 
     const response = await ws.send(request);
@@ -146,7 +146,7 @@ export const requestWS = async (request) => {
     return getModifiedResponse(response);
 };
 
-const getModifiedResponse = (response) => {
+const getModifiedResponse = response => {
     let modified_response = response;
 
     if (response.p2p_advert_list || response.p2p_advertiser_adverts) {
@@ -162,6 +162,6 @@ const getModifiedResponse = (response) => {
 };
 
 export const subscribeWS = (request, callbacks) =>
-    ws.p2pSubscribe(request, (response) => {
-        callbacks.map((callback) => callback(getModifiedResponse(response)));
+    ws.p2pSubscribe(request, response => {
+        callbacks.map(callback => callback(getModifiedResponse(response)));
     });

@@ -15,7 +15,7 @@ class P2PCashier extends React.Component {
         order_id: null,
     };
 
-    setQueryOrder = (input_order_id) => {
+    setQueryOrder = input_order_id => {
         const { history, location } = this.props;
         const current_query_param = queryString.parse(this.props.location.search);
         delete current_query_param.order;

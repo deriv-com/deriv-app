@@ -5,7 +5,7 @@ import { BinarySocketGeneral } from './index';
 let common_store;
 
 const NetworkMonitor = (() => {
-    const init = (store) => {
+    const init = store => {
         NetworkMonitorBase.init(BinarySocketGeneral.init(store), updateStore);
         common_store = store.common;
     };

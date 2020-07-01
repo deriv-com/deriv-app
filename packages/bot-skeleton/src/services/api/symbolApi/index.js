@@ -3,13 +3,13 @@ import { getTokenList, removeAllTokens } from '../../../utils/token-helper';
 
 const noop = () => {};
 
-const parseAssetIndex = (assetIndex) => {
+const parseAssetIndex = assetIndex => {
     const parsed = {};
 
-    assetIndex.forEach((symbol) => {
+    assetIndex.forEach(symbol => {
         parsed[symbol[0].toLowerCase()] = {};
 
-        symbol[2].forEach((category) => {
+        symbol[2].forEach(category => {
             [, , parsed[symbol[0].toLowerCase()][category[0].toLowerCase()]] = category;
         });
     });
@@ -19,11 +19,11 @@ const parseAssetIndex = (assetIndex) => {
 export default class _Symbol {
     constructor(api) {
         this.api = api;
-        this.initPromise = new Promise((resolve) => {
+        this.initPromise = new Promise(resolve => {
             const getActiveSymbolsLogic = () => {
-                this.api.getActiveSymbolsBrief().then((r) => {
+                this.api.getActiveSymbolsBrief().then(r => {
                     this.activeSymbols = new ActiveSymbols(r.active_symbols);
-                    this.api.getAssetIndex().then((r2) => {
+                    this.api.getAssetIndex().then(r2 => {
                         parseAssetIndex(r2.asset_index);
                         resolve();
                     }, noop);

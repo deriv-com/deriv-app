@@ -3,13 +3,13 @@ import { localize } from '@deriv/translations';
 import { epochToMoment, formatMiliseconds, getDiffDuration } from '@deriv/shared/utils/date';
 import { isDigitContract } from '../../Contract/Helpers/digits';
 
-export const getCurrentTick = (contract_info) => {
+export const getCurrentTick = contract_info => {
     const tick_stream = ObjectUtils.unique(contract_info.tick_stream, 'epoch');
     const current_tick = isDigitContract(contract_info.contract_type) ? tick_stream.length : tick_stream.length - 1;
     return !current_tick || current_tick < 0 ? 0 : current_tick;
 };
 
-export const getDurationUnitValue = (obj_duration) => {
+export const getDurationUnitValue = obj_duration => {
     const duration_ms = obj_duration.asMilliseconds() / 1000;
     // Check with isEndTime to find out if value of duration has decimals
     // for days we do not require precision for End Time value since users cannot select with timepicker if not in same day
@@ -35,7 +35,7 @@ export const getDurationUnitValue = (obj_duration) => {
     return Math.floor(duration_ms / 1000);
 };
 
-export const isEndTime = (duration) => duration % 1 !== 0;
+export const isEndTime = duration => duration % 1 !== 0;
 
 export const getUnitMap = () => {
     return {
@@ -46,7 +46,7 @@ export const getUnitMap = () => {
     };
 };
 
-export const getDurationUnitText = (obj_duration) => {
+export const getDurationUnitText = obj_duration => {
     const unit_map = getUnitMap();
     const duration_ms = obj_duration.asMilliseconds() / 1000;
     // return empty suffix string if duration is End Time set except for days and seconds, refer to L18 and L19
@@ -68,11 +68,11 @@ export const getDurationUnitText = (obj_duration) => {
     return unit_map.s.name;
 };
 
-export const getDurationPeriod = (contract_info) =>
+export const getDurationPeriod = contract_info =>
     getDiffDuration(
         epochToMoment(contract_info.purchase_time || contract_info.date_start),
         epochToMoment(contract_info.date_expiry)
     );
 
-export const getDurationTime = (contract_info) =>
+export const getDurationTime = contract_info =>
     contract_info.tick_count ? contract_info.tick_count : getDurationUnitValue(getDurationPeriod(contract_info));

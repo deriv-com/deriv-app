@@ -34,7 +34,7 @@ class CompositeCalendarMobile extends React.PureComponent {
         const from_date = from && toMoment(from).format('DD MMM YYYY');
         const to_date = from && toMoment(to).format('DD MMM YYYY');
 
-        const date_range = input_date_range || duration_list.find((range) => range.value === 'all_time');
+        const date_range = input_date_range || duration_list.find(range => range.value === 'all_time');
         this.state = {
             from: from_date,
             to: to_date,
@@ -47,8 +47,17 @@ class CompositeCalendarMobile extends React.PureComponent {
         const from = selected_date_range.duration;
         this.props.onChange(
             {
-                from: is_today || from ? toMoment().startOf('day').subtract(from, 'day').add(1, 's').unix() : null,
-                to: toMoment().endOf('day').unix(),
+                from:
+                    is_today || from
+                        ? toMoment()
+                              .startOf('day')
+                              .subtract(from, 'day')
+                              .add(1, 's')
+                              .unix()
+                        : null,
+                to: toMoment()
+                    .endOf('day')
+                    .unix(),
                 is_batch: true,
             },
             {
@@ -71,8 +80,13 @@ class CompositeCalendarMobile extends React.PureComponent {
 
         this.props.onChange(
             {
-                from: toMoment(from, 'DD MMM YYYY').startOf('day').add(1, 's').unix(),
-                to: toMoment(to, 'DD MMM YYYY').endOf('day').unix(),
+                from: toMoment(from, 'DD MMM YYYY')
+                    .startOf('day')
+                    .add(1, 's')
+                    .unix(),
+                to: toMoment(to, 'DD MMM YYYY')
+                    .endOf('day')
+                    .unix(),
                 is_batch: true,
             },
             {
@@ -138,10 +152,10 @@ class CompositeCalendarMobile extends React.PureComponent {
         );
     }
 
-    onDateRangeChange = (date_range) => {
+    onDateRangeChange = date_range => {
         const { duration_list } = this.props;
         const selected_date_range =
-            duration_list.find((range) => date_range && range.value === date_range.value) || date_range;
+            duration_list.find(range => date_range && range.value === date_range.value) || date_range;
         this.setState({ selected_date_range });
     };
 
@@ -180,7 +194,7 @@ class CompositeCalendarMobile extends React.PureComponent {
                 >
                     <div className='composite-calendar-modal'>
                         <div className='composite-calendar-modal__radio-group'>
-                            {duration_list.map((duration) => (
+                            {duration_list.map(duration => (
                                 <RadioButton
                                     id={`composite-calendar-modal__radio__${duration.value}`}
                                     key={duration.value}
@@ -207,7 +221,7 @@ class CompositeCalendarMobile extends React.PureComponent {
                                     placeholder={localize('Start date')}
                                     value={this.state.from}
                                     max_date={max_date}
-                                    onChange={(e) => this.selectDate(e, 'from')}
+                                    onChange={e => this.selectDate(e, 'from')}
                                 />
                                 <DatePicker
                                     className='composite-calendar-modal__custom-date-range-end-date'
@@ -216,7 +230,7 @@ class CompositeCalendarMobile extends React.PureComponent {
                                     value={this.state.to}
                                     max_date={today}
                                     min_date={min_date}
-                                    onChange={(e) => this.selectDate(e, 'to')}
+                                    onChange={e => this.selectDate(e, 'to')}
                                 />
                             </div>
                         </div>

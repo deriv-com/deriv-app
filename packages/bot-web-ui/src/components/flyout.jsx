@@ -113,7 +113,7 @@ class Flyout extends React.PureComponent {
                                                     'dc-btn--primary',
                                                     'flyout__button-new'
                                                 )}
-                                                onClick={(button) => {
+                                                onClick={button => {
                                                     const flyout_button = button;
 
                                                     // Workaround for not having a flyout workspace.

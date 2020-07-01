@@ -24,7 +24,7 @@ class Radio extends React.Component {
         this.setState({ checked: this.props.defaultChecked });
     }
 
-    onChange = (e) => {
+    onChange = e => {
         this.setState({ checked: e.target.checked });
         this.props.onChange(e);
     };

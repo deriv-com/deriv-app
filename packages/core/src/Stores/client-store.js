@@ -102,18 +102,18 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get has_active_real_account() {
-        return this.active_accounts.some((acc) => acc.is_virtual === 0);
+        return this.active_accounts.some(acc => acc.is_virtual === 0);
     }
 
     @computed
     get has_any_real_account() {
-        return this.account_list.some((acc) => acc.is_virtual === 0);
+        return this.account_list.some(acc => acc.is_virtual === 0);
     }
 
     @computed
     get first_switchable_real_loginid() {
         const result = this.active_accounts.find(
-            (acc) => acc.is_virtual === 0 && acc.landing_company_shortcode === 'svg'
+            acc => acc.is_virtual === 0 && acc.landing_company_shortcode === 'svg'
         );
         return result.loginid || undefined;
     }
@@ -141,7 +141,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get upgradeable_currencies() {
         if (!this.legal_allowed_currencies || !this.website_status.currencies_config) return [];
-        return this.legal_allowed_currencies.map((currency) => ({
+        return this.legal_allowed_currencies.map(currency => ({
             value: currency,
             ...this.website_status.currencies_config[currency],
         }));
@@ -168,7 +168,7 @@ export default class ClientStore extends BaseStore {
             return acc;
         }, []);
 
-        return this.upgradeable_currencies.filter((acc) => !values.includes(acc.value) && acc.type === 'crypto');
+        return this.upgradeable_currencies.filter(acc => !values.includes(acc.value) && acc.type === 'crypto');
     }
 
     @computed
@@ -180,7 +180,7 @@ export default class ClientStore extends BaseStore {
             return acc;
         }, []);
 
-        return !!this.upgradeable_currencies.filter((acc) => values.includes(acc.value) && acc.type === 'fiat').length;
+        return !!this.upgradeable_currencies.filter(acc => values.includes(acc.value) && acc.type === 'fiat').length;
     }
 
     @computed
@@ -193,13 +193,13 @@ export default class ClientStore extends BaseStore {
         }, []);
 
         return this.has_fiat
-            ? this.upgradeable_currencies.filter((acc) => values.includes(acc.value) && acc.type === 'fiat')[0].value
+            ? this.upgradeable_currencies.filter(acc => values.includes(acc.value) && acc.type === 'fiat')[0].value
             : undefined;
     }
 
     @computed
     get account_list() {
-        return this.all_loginids.map((id) => this.getAccountInfo(id)).filter((account) => account);
+        return this.all_loginids.map(id => this.getAccountInfo(id)).filter(account => account);
     }
 
     @computed
@@ -210,7 +210,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get active_accounts() {
         return this.accounts instanceof Object
-            ? Object.values(this.accounts).filter((account) => !account.is_disabled)
+            ? Object.values(this.accounts).filter(account => !account.is_disabled)
             : [];
     }
 
@@ -250,13 +250,13 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_fully_authenticated() {
         if (!this.account_status.status) return false;
-        return this.account_status.status.some((status) => status === 'authenticated');
+        return this.account_status.status.some(status => status === 'authenticated');
     }
 
     @computed
     get is_pending_authentication() {
         if (!this.account_status.status) return false;
-        return this.account_status.status.some((status) => status === 'document_under_review');
+        return this.account_status.status.some(status => status === 'document_under_review');
     }
 
     @computed
@@ -276,7 +276,7 @@ export default class ClientStore extends BaseStore {
     get is_valid_login() {
         if (!this.is_logged_in) return true;
         const valid_login_ids_regex = new RegExp('^(MX|MF|VRTC|MLT|CR|FOG)[0-9]+$', 'i');
-        return this.all_loginids.every((id) => valid_login_ids_regex.test(id));
+        return this.all_loginids.every(id => valid_login_ids_regex.test(id));
     }
 
     @computed
@@ -310,14 +310,14 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get virtual_account_loginid() {
-        return this.all_loginids.find((loginid) => !!this.accounts[loginid].is_virtual);
+        return this.all_loginids.find(loginid => !!this.accounts[loginid].is_virtual);
     }
 
     @computed
     get is_single_currency() {
         return (
             Object.keys(this.currencies_list)
-                .map((type) => Object.values(this.currencies_list[type]).length)
+                .map(type => Object.values(this.currencies_list[type]).length)
                 .reduce((acc, cur) => acc + cur, 0) === 1
         );
     }
@@ -369,7 +369,7 @@ export default class ClientStore extends BaseStore {
                 upgradeable_landing_companies.indexOf(this.accounts[this.loginid].landing_company_shortcode) !== -1;
             const canUpgrade = (...landing_companies) =>
                 landing_companies.find(
-                    (landing_company) =>
+                    landing_company =>
                         landing_company !== this.accounts[this.loginid].landing_company_shortcode &&
                         upgradeable_landing_companies.indexOf(landing_company) !== -1
                 );
@@ -389,8 +389,8 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     getLimits() {
-        return new Promise((resolve) => {
-            WS.authorized.storage.getLimits().then((data) => {
+        return new Promise(resolve => {
+            WS.authorized.storage.getLimits().then(data => {
                 runInAction(() => {
                     if (data.error) {
                         this.account_limits = { api_initial_load_error: data.error.message };
@@ -416,7 +416,11 @@ export default class ClientStore extends BaseStore {
         this.accounts[this.loginid].email = response.authorize.email;
         this.accounts[this.loginid].currency = response.authorize.currency;
         this.accounts[this.loginid].is_virtual = +response.authorize.is_virtual;
-        this.accounts[this.loginid].session_start = parseInt(moment().utc().valueOf() / 1000);
+        this.accounts[this.loginid].session_start = parseInt(
+            moment()
+                .utc()
+                .valueOf() / 1000
+        );
         this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
         this.accounts[this.loginid].country = response.country;
         this.updateAccountList(response.authorize.account_list);
@@ -439,7 +443,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     accountRealReaction(response) {
-        return new Promise(async (resolve) => {
+        return new Promise(async resolve => {
             runInAction(() => {
                 this.is_populating_account_list = true;
             });
@@ -557,10 +561,10 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     updateAccountList(account_list) {
-        account_list.forEach((account) => {
+        account_list.forEach(account => {
             if (this.accounts[account.loginid]) {
                 this.accounts[account.loginid].excluded_until = account.excluded_until || '';
-                Object.keys(account).forEach((param) => {
+                Object.keys(account).forEach(param => {
                     const param_to_set = param === 'country' ? 'residence' : param;
                     const value_to_set = typeof account[param] === 'undefined' ? '' : account[param];
                     if (param_to_set !== 'loginid') {
@@ -836,7 +840,7 @@ export default class ClientStore extends BaseStore {
     }
 
     isUnableToFindLoginId() {
-        return !this.all_loginids.some((id) => id !== this.switched) || this.switched === this.loginid;
+        return !this.all_loginids.some(id => id !== this.switched) || this.switched === this.loginid;
     }
 
     @action.bound
@@ -1011,14 +1015,14 @@ export default class ClientStore extends BaseStore {
 
         let is_allowed_real = true;
         // Performs check to avoid login of landing companies that are currently not supported in app
-        account_list.forEach(function (account) {
+        account_list.forEach(function(account) {
             if (!/^virtual|svg$/.test(account.landing_company_name)) {
                 is_allowed_real = false;
             }
         });
 
-        account_list.forEach(function (account) {
-            Object.keys(account).forEach(function (param) {
+        account_list.forEach(function(account) {
+            Object.keys(account).forEach(function(param) {
                 if (param === 'loginid') {
                     if (!active_loginid && !account.is_disabled) {
                         if (is_allowed_real && !account.is_virtual) {
@@ -1070,7 +1074,7 @@ export default class ClientStore extends BaseStore {
         const search = window.location.search;
         if (search) {
             const arr_params = window.location.search.substr(1).split('&');
-            arr_params.forEach(function (param) {
+            arr_params.forEach(function(param) {
                 if (param) {
                     const param_value = param.split('=');
                     if (param_value) {
@@ -1118,10 +1122,10 @@ export default class ClientStore extends BaseStore {
     @action.bound
     canStoreClientAccounts(obj_params, account_list) {
         const is_ready_to_process = account_list && ObjectUtils.isEmptyObject(this.accounts);
-        const accts = Object.keys(obj_params).filter((value) => /^acct./.test(value));
+        const accts = Object.keys(obj_params).filter(value => /^acct./.test(value));
 
-        const is_cross_checked = accts.every((acct) =>
-            account_list.some((account) => account.loginid === obj_params[acct])
+        const is_cross_checked = accts.every(acct =>
+            account_list.some(account => account.loginid === obj_params[acct])
         );
 
         return is_ready_to_process && is_cross_checked;
@@ -1171,7 +1175,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     onSetResidence({ residence }, cb) {
         if (!residence) return;
-        WS.setSettings({ residence }).then(async (response) => {
+        WS.setSettings({ residence }).then(async response => {
             if (response.error) {
                 cb(response.error.message);
             } else {
@@ -1179,7 +1183,7 @@ export default class ClientStore extends BaseStore {
                 await WS.authorized.storage
                     .landingCompany(this.accounts[this.loginid].residence)
                     .then(this.responseLandingCompany);
-                await WS.authorized.storage.getSettings().then(async (response) => {
+                await WS.authorized.storage.getSettings().then(async response => {
                     this.setAccountSettings(response.get_settings);
                 });
                 runInAction(async () => {
@@ -1203,7 +1207,7 @@ export default class ClientStore extends BaseStore {
             password,
             residence,
             ObjectUtils.removeEmptyPropertiesFromObject(this.device_data)
-        ).then(async (response) => {
+        ).then(async response => {
             if (response.error) {
                 cb(response.error.message);
             } else {
@@ -1229,8 +1233,8 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     fetchAccountSettings() {
-        return new Promise((resolve) => {
-            WS.authorized.storage.getSettings().then((response) => {
+        return new Promise(resolve => {
+            WS.authorized.storage.getSettings().then(response => {
                 this.setAccountSettings(response.get_settings);
                 resolve(response);
             });
@@ -1239,8 +1243,8 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     fetchResidenceList() {
-        return new Promise((resolve) => {
-            WS.storage.residenceList().then((response) => {
+        return new Promise(resolve => {
+            WS.storage.residenceList().then(response => {
                 this.setResidenceList(response);
                 resolve(response);
             });
@@ -1257,7 +1261,7 @@ export default class ClientStore extends BaseStore {
         return new Promise((resolve, reject) => {
             WS.statesList({
                 states_list: this.accounts[this.loginid].residence,
-            }).then((response) => {
+            }).then(response => {
                 if (response.error) {
                     reject(response.error);
                 } else {
@@ -1299,8 +1303,8 @@ export default class ClientStore extends BaseStore {
 
         if (!response.error) {
             this.mt5_login_list = response.mt5_login_list
-                .filter((account) => !/inactive/.test(account.group)) // remove disabled mt5 accounts
-                .map((account) => ({
+                .filter(account => !/inactive/.test(account.group)) // remove disabled mt5 accounts
+                .map(account => ({
                     ...account,
                     group: getMT5AccountType(account.group),
                     display_login: account.login.replace(/^(MT[DR]?)/i, ''),

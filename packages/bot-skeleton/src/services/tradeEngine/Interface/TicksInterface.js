@@ -1,4 +1,4 @@
-export default (Interface) =>
+export default Interface =>
     class extends Interface {
         getTicksInterface() {
             return {

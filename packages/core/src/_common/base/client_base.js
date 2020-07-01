@@ -20,7 +20,7 @@ const ClientBase = (() => {
     const isValidLoginid = () => {
         if (!isLoggedIn()) return true;
         const valid_login_ids = new RegExp('^(MX|MF|VRTC|MLT|CR|FOG)[0-9]+$', 'i');
-        return getAllLoginids().every((loginid) => valid_login_ids.test(loginid));
+        return getAllLoginids().every(loginid => valid_login_ids.test(loginid));
     };
 
     /**
@@ -87,7 +87,7 @@ const ClientBase = (() => {
     };
 
     const getAccountOfType = (type, only_enabled) => {
-        const id = getAllLoginids().find((loginid) => isAccountOfType(type, loginid, only_enabled));
+        const id = getAllLoginids().find(loginid => isAccountOfType(type, loginid, only_enabled));
         return id ? Object.assign({ loginid: id }, get(null, id)) : {};
     };
 
@@ -95,17 +95,17 @@ const ClientBase = (() => {
 
     // only considers currency of real money accounts
     // @param {String} type = crypto|fiat
-    const hasCurrencyType = (type) => {
+    const hasCurrencyType = type => {
         const loginids = getAllLoginids();
         if (type === 'crypto') {
             // find if has crypto currency account
             return loginids.find(
-                (loginid) => !get('is_virtual', loginid) && CurrencyUtils.isCryptocurrency(get('currency', loginid))
+                loginid => !get('is_virtual', loginid) && CurrencyUtils.isCryptocurrency(get('currency', loginid))
             );
         }
         // else find if have fiat currency account
         return loginids.find(
-            (loginid) => !get('is_virtual', loginid) && !CurrencyUtils.isCryptocurrency(get('currency', loginid))
+            loginid => !get('is_virtual', loginid) && !CurrencyUtils.isCryptocurrency(get('currency', loginid))
         );
     };
 
@@ -129,12 +129,12 @@ const ClientBase = (() => {
         };
     })();
 
-    const getAccountTitle = (loginid) => {
+    const getAccountTitle = loginid => {
         const types_map = TypesMapConfig.get();
         return types_map[getAccountType(loginid)] || types_map.default;
     };
 
-    const responseAuthorize = (response) => {
+    const responseAuthorize = response => {
         const authorize = response.authorize;
         set('loginid', authorize.loginid);
     };
@@ -152,7 +152,7 @@ const ClientBase = (() => {
         LocalStore.setObject(storage_key, client_object);
     };
 
-    const setNewAccount = (options) => {
+    const setNewAccount = options => {
         if (!options.email || !options.loginid || !options.token) {
             return false;
         }
@@ -172,7 +172,7 @@ const ClientBase = (() => {
         const landing_company_response = State.getResponse('landing_company') || {};
         const this_shortcode = get('landing_company_shortcode');
         const landing_company_prop = Object.keys(landing_company_response).find(
-            (key) => this_shortcode === landing_company_response[key].shortcode
+            key => this_shortcode === landing_company_response[key].shortcode
         );
         return landing_company_response[landing_company_prop] || {};
     };
@@ -182,7 +182,7 @@ const ClientBase = (() => {
 
     // remove manager id or master distinction from group
     // remove EUR or GBP or Bbook or HighRisk distinction from group
-    const getMT5AccountType = (group) =>
+    const getMT5AccountType = group =>
         group ? group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP|Bbook|HighRisk)/i, '') : '';
 
     const getBasicUpgradeInfo = () => {
@@ -198,7 +198,7 @@ const ClientBase = (() => {
             // only show upgrade message to landing companies other than current
             const canUpgrade = (...landing_companies) =>
                 landing_companies.find(
-                    (landing_company) =>
+                    landing_company =>
                         landing_company !== current_landing_company &&
                         upgradeable_landing_companies.indexOf(landing_company) !== -1
                 );
@@ -248,16 +248,16 @@ const ClientBase = (() => {
     };
 
     // API_V3: send a list of accounts the client can transfer to
-    const canTransferFunds = (account) => {
+    const canTransferFunds = account => {
         if (account) {
             // this specific account can be used to transfer funds to
             return canTransferFundsTo(account.loginid);
         }
         // at least one account can be used to transfer funds to
-        return Object.keys(client_object).some((loginid) => canTransferFundsTo(loginid));
+        return Object.keys(client_object).some(loginid => canTransferFundsTo(loginid));
     };
 
-    const canTransferFundsTo = (to_loginid) => {
+    const canTransferFundsTo = to_loginid => {
         if (
             to_loginid === current_loginid ||
             get('is_virtual', to_loginid) ||
@@ -290,7 +290,7 @@ const ClientBase = (() => {
         return is_from_crypto ? !is_to_crypto : is_to_crypto;
     };
 
-    const hasSvgAccount = () => !!getAllLoginids().find((loginid) => /^CR/.test(loginid));
+    const hasSvgAccount = () => !!getAllLoginids().find(loginid => /^CR/.test(loginid));
 
     const canChangeCurrency = (statement, mt5_login_list, is_current = true) => {
         const currency = get('currency');

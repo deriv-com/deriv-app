@@ -10,7 +10,7 @@ const NativeSelect = React.forwardRef(({ name, list, value, onChange }, ref) => 
                           {item.nativepicker_text}
                       </option>
                   ))
-                : Object.keys(list).map((key) => (
+                : Object.keys(list).map(key => (
                       <React.Fragment key={key}>
                           <optgroup label={key}>
                               {list[key].map((item, idx) => (

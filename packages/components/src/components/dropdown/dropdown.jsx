@@ -132,7 +132,7 @@ const Dropdown = ({
         if (!is_list_visible) dropdown_ref.current.focus();
     }, [is_list_visible]);
 
-    const handleSelect = (item) => {
+    const handleSelect = item => {
         if (item.value !== value) onChange({ target: { name, value: item.value } });
 
         handleVisibility();
@@ -190,7 +190,7 @@ const Dropdown = ({
         // For char presses, we do a search for the item:
         if (event.key.length === 1 && list.length) {
             const char = event.key.toLowerCase();
-            const item_starting_with_char = list.find((li) => li.value && li.value[0].toLowerCase() === char);
+            const item_starting_with_char = list.find(li => li.value && li.value[0].toLowerCase() === char);
             if (!item_starting_with_char) return;
 
             const item_ref = nodes.current.get(item_starting_with_char.value);
@@ -198,7 +198,7 @@ const Dropdown = ({
         }
     };
 
-    const focusNextListItem = (direction) => {
+    const focusNextListItem = direction => {
         const { activeElement } = document;
 
         if (activeElement.id === 'dropdown-display') {

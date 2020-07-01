@@ -6,7 +6,7 @@ import { expectPositiveInteger } from '../utils/sanitize';
 
 let tickListenerKey;
 
-export default (Engine) =>
+export default Engine =>
     class Ticks extends Engine {
         watchTicks(symbol) {
             if (symbol && this.symbol !== symbol) {
@@ -17,7 +17,7 @@ export default (Engine) =>
                     key: tickListenerKey,
                 });
 
-                const callback = (ticks) => {
+                const callback = ticks => {
                     this.checkProposalReady();
                     const lastTick = ticks.slice(-1)[0];
                     const { epoch } = lastTick;
@@ -33,10 +33,10 @@ export default (Engine) =>
         }
 
         getTicks(toString = false) {
-            return new Promise((resolve) => {
-                this.$scope.ticksService.request({ symbol: this.symbol }).then((ticks) => {
+            return new Promise(resolve => {
+                this.$scope.ticksService.request({ symbol: this.symbol }).then(ticks => {
                     const pipSize = this.getPipSize();
-                    const ticksList = ticks.map((o) => {
+                    const ticksList = ticks.map(o => {
                         if (toString) {
                             return o.quote.toFixed(pipSize);
                         }
@@ -49,8 +49,8 @@ export default (Engine) =>
         }
 
         getLastTick(raw, toString = false) {
-            return new Promise((resolve) =>
-                this.$scope.ticksService.request({ symbol: this.symbol }).then((ticks) => {
+            return new Promise(resolve =>
+                this.$scope.ticksService.request({ symbol: this.symbol }).then(ticks => {
                     let lastTick = raw ? getLast(ticks) : getLast(ticks).quote;
 
                     if (toString && !raw) {
@@ -62,32 +62,32 @@ export default (Engine) =>
         }
 
         getLastDigit() {
-            return new Promise((resolve) =>
-                this.getLastTick().then((tick) => resolve(getLastDigit(tick, this.getPipSize())))
+            return new Promise(resolve =>
+                this.getLastTick().then(tick => resolve(getLastDigit(tick, this.getPipSize())))
             );
         }
 
         getLastDigitList() {
-            return new Promise((resolve) =>
-                this.getTicks().then((ticks) => resolve(ticks.map((tick) => getLastDigit(tick, this.getPipSize()))))
+            return new Promise(resolve =>
+                this.getTicks().then(ticks => resolve(ticks.map(tick => getLastDigit(tick, this.getPipSize()))))
             );
         }
 
         checkDirection(dir) {
-            return new Promise((resolve) =>
+            return new Promise(resolve =>
                 this.$scope.ticksService
                     .request({ symbol: this.symbol })
-                    .then((ticks) => resolve(getDirection(ticks) === dir))
+                    .then(ticks => resolve(getDirection(ticks) === dir))
             );
         }
 
         getOhlc(args) {
             const { granularity = this.options.candleInterval || 60, field } = args || {};
 
-            return new Promise((resolve) =>
+            return new Promise(resolve =>
                 this.$scope.ticksService
                     .request({ symbol: this.symbol, granularity })
-                    .then((ohlc) => resolve(field ? ohlc.map((o) => o[field]) : ohlc))
+                    .then(ohlc => resolve(field ? ohlc.map(o => o[field]) : ohlc))
             );
         }
 
@@ -96,7 +96,7 @@ export default (Engine) =>
 
             const index = expectPositiveInteger(Number(i), localize('Index must be a positive integer'));
 
-            return new Promise((resolve) => this.getOhlc(args).then((ohlc) => resolve(ohlc.slice(-index)[0])));
+            return new Promise(resolve => this.getOhlc(args).then(ohlc => resolve(ohlc.slice(-index)[0])));
         }
 
         getPipSize() {

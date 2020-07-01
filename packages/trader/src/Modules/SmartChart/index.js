@@ -9,8 +9,8 @@ Module.then(({ setSmartChartsPublicPath }) => {
 
 // React.Lazy expects a default export for the component
 // SmartChart library exports many components
-const load = (component_name) => () =>
-    Module.then((module) => {
+const load = component_name => () =>
+    Module.then(module => {
         return { default: module[component_name] };
     });
 

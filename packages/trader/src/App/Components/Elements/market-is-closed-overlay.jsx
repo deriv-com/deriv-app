@@ -23,21 +23,25 @@ const toggleFade = ({ node, opacity, direction, color }) => {
     if (new_opacity >= 1) {
         cancelAnimationFrame(stopId);
         // Set the initial value to follow CSS
-        node.querySelectorAll('div').forEach((element) => {
+        node.querySelectorAll('div').forEach(element => {
             element.style.backgroundColor = '';
         });
         node.style.backgroundColor = '';
     }
 };
 
-const startAnimation = (node) => {
+const startAnimation = node => {
     const children_background_color = getComputedStyle(node.firstElementChild).getPropertyValue('background-color');
     const converted_rgba = children_background_color.startsWith('rgba')
         ? children_background_color
-        : `rgba(${children_background_color.replace('rgb(', '').replace(')', '').split(', ').join(',')},1)`;
+        : `rgba(${children_background_color
+              .replace('rgb(', '')
+              .replace(')', '')
+              .split(', ')
+              .join(',')},1)`;
 
     // Set initial value for individual rows
-    node.querySelectorAll('div').forEach((element) => {
+    node.querySelectorAll('div').forEach(element => {
         element.style.backgroundColor = 'transparent';
     });
     node.style.backgroundColor = converted_rgba; // compensate for removal background of individual rows
@@ -53,9 +57,9 @@ const startAnimation = (node) => {
     );
 };
 
-const asyncNextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
+const asyncNextFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
 
-const waitForElement = async (query_selector) => {
+const waitForElement = async query_selector => {
     const element = document.querySelector(query_selector);
     if (element !== null) {
         return Promise.resolve(element);
@@ -65,7 +69,7 @@ const waitForElement = async (query_selector) => {
     return Promise.resolve(waitForElement(query_selector));
 };
 
-const waitForElementRemoval = async (query_selector) => {
+const waitForElementRemoval = async query_selector => {
     const element = document.querySelector(query_selector);
     if (element === null) {
         return Promise.resolve(true);
@@ -75,7 +79,7 @@ const waitForElementRemoval = async (query_selector) => {
     return Promise.resolve(waitForElementRemoval(query_selector));
 };
 
-const waitFor = (msec) => new Promise((resolve) => setTimeout(resolve, msec));
+const waitFor = msec => new Promise(resolve => setTimeout(resolve, msec));
 
 /**
  * Handle animation for dropdown, this is imperative, with DOM manipulation.

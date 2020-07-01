@@ -53,7 +53,7 @@ Blockly.Blocks.lists_sort = {
     },
 };
 
-Blockly.JavaScript.lists_sort = (block) => {
+Blockly.JavaScript.lists_sort = block => {
     const list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_FUNCTION_CALL) || '[]';
     const direction = block.getFieldValue('DIRECTION') === '1' ? 1 : -1;
     const type = block.getFieldValue('TYPE');
@@ -76,6 +76,6 @@ Blockly.JavaScript.lists_sort = (block) => {
         }`,
     ]);
 
-    const code = `${list}.slice(0).sort(${getCompareFunctionName}("${type}", ${direction}))`;
+    const code = `${list}.sort().slice(0).sort(${getCompareFunctionName}("${type}", ${direction}))`;
     return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };

@@ -6,11 +6,11 @@ describe('Misc. tools', () => {
     let result;
     const observed = {};
 
-    globalObserver.register('Notify', (notify) => {
+    globalObserver.register('Notify', notify => {
         observed.notify = notify;
     });
 
-    beforeAll((done) => {
+    beforeAll(done => {
         runAndGetResult(
             undefined,
             `
@@ -21,7 +21,7 @@ describe('Misc. tools', () => {
         result.balance = Bot.getBalance('NUM')
         result.balanceStr = Bot.getBalance('STR')
     `
-        ).then((v) => {
+        ).then(v => {
             result = v;
             done();
         });

@@ -4,7 +4,7 @@ import { run } from '../../tools';
 describe('Time in tools', () => {
     let result;
 
-    beforeAll((done) => {
+    beforeAll(done => {
         run(
             `
       (function() {
@@ -15,7 +15,7 @@ describe('Time in tools', () => {
         return result;
       })()
     `
-        ).then((v) => {
+        ).then(v => {
             result = v;
             done();
         });

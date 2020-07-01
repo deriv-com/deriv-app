@@ -5,7 +5,7 @@ const ServerTime = (() => {
     const pending = new PendingPromise();
     let common_store;
 
-    const init = (store) => {
+    const init = store => {
         if (!clock_started) {
             common_store = store;
             pending.resolve(common_store.server_time);

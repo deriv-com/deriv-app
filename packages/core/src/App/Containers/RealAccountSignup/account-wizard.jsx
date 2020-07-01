@@ -76,7 +76,7 @@ class AccountWizard extends React.Component {
         this.fetchFromStorage();
         if (!this.residence_list?.length) {
             const items = this.state.items.slice(0);
-            this.getCountryCode().then((phone_idd) => {
+            this.getCountryCode().then(phone_idd => {
                 items[1].form_value.phone = phone_idd || '';
                 this.setState(items);
             });
@@ -105,7 +105,7 @@ class AccountWizard extends React.Component {
 
     get form_values() {
         return this.state.items
-            .map((item) => item.form_value)
+            .map(item => item.form_value)
             .reduce((obj, item) => {
                 const values = fromEntries(new Map(Object.entries(item)));
                 if (values.date_of_birth) {
@@ -125,7 +125,7 @@ class AccountWizard extends React.Component {
 
     getCountryCode = async () => {
         await this.props.fetchResidenceList();
-        const response = this.props.residence_list.find((item) => item.value === this.props.residence);
+        const response = this.props.residence_list.find(item => item.value === this.props.residence);
         if (!response || !response.phone_idd) return '';
         return `+${response.phone_idd}`;
     };
@@ -136,7 +136,7 @@ class AccountWizard extends React.Component {
         });
     };
 
-    getCurrent = (key) => {
+    getCurrent = key => {
         return key ? this.state.items[this.state_index][key] : this.state.items[this.state_index];
     };
 
@@ -144,7 +144,7 @@ class AccountWizard extends React.Component {
         return this.state.finished;
     };
 
-    nextStep = (setSubmitting) => {
+    nextStep = setSubmitting => {
         this.clearError();
         // Check if account wizard is not finished
         if (this.hasMoreSteps()) {
@@ -186,7 +186,7 @@ class AccountWizard extends React.Component {
         const passthrough = this.getCurrent('passthrough');
         if (passthrough && passthrough.length) {
             const props = {};
-            passthrough.forEach((item) => {
+            passthrough.forEach(item => {
                 Object.assign(props, { [item]: this.props[item] });
             });
             return props;
@@ -197,11 +197,11 @@ class AccountWizard extends React.Component {
     createRealAccount(setSubmitting) {
         if (this.props.has_real_account && !this.props.has_currency) {
             this.setAccountCurrency()
-                .then((response) => {
+                .then(response => {
                     setSubmitting(false);
                     this.props.onSuccessAddCurrency(response.echo_req.set_account_currency.toLowerCase());
                 })
-                .catch((error_message) => {
+                .catch(error_message => {
                     this.setState(
                         {
                             form_error: error_message,
@@ -211,11 +211,11 @@ class AccountWizard extends React.Component {
                 });
         } else {
             this.submitForm()
-                .then((response) => {
+                .then(response => {
                     setSubmitting(false);
                     this.props.onSuccessAddCurrency(response.new_account_real.currency.toLowerCase());
                 })
-                .catch((error) => {
+                .catch(error => {
                     this.props.onError(error, this.state.items);
                 });
         }

@@ -1,9 +1,9 @@
 import { localize } from '@deriv/translations';
 import { createError } from '../../../utils/error';
 
-const isPositiveNumber = (num) => Number.isFinite(num) && num > 0;
+const isPositiveNumber = num => Number.isFinite(num) && num > 0;
 
-const isPositiveInteger = (num) => isPositiveNumber(num) && Number.isInteger(num);
+const isPositiveInteger = num => isPositiveNumber(num) && Number.isInteger(num);
 
 export const expectPositiveInteger = (num, msg) => {
     if (!isPositiveInteger(num)) {
@@ -19,7 +19,7 @@ export const expectPositiveNumber = (num, msg) => {
     return num;
 };
 
-const expectOptions = (options) => {
+const expectOptions = options => {
     const { symbol, contractTypes } = options;
 
     if (!symbol) {
@@ -31,7 +31,7 @@ const expectOptions = (options) => {
     }
 };
 
-export const expectInitArg = (args) => {
+export const expectInitArg = args => {
     const [token, options] = args;
 
     if (!token) {
@@ -43,7 +43,7 @@ export const expectInitArg = (args) => {
     return args;
 };
 
-export const expectTradeOptions = (tradeOptions) => {
+export const expectTradeOptions = tradeOptions => {
     const { amount, duration } = tradeOptions;
 
     expectPositiveInteger(duration, localize('Duration must be a positive integer'));
@@ -53,20 +53,20 @@ export const expectTradeOptions = (tradeOptions) => {
     return tradeOptions;
 };
 
-const isCandle = (candle) =>
+const isCandle = candle =>
     candle instanceof Object &&
-    ['open', 'high', 'low', 'close'].every((key) => isPositiveNumber(candle[key])) &&
+    ['open', 'high', 'low', 'close'].every(key => isPositiveNumber(candle[key])) &&
     isPositiveInteger(candle.epoch);
 
-export const expectCandle = (candle) => {
+export const expectCandle = candle => {
     if (!isCandle(candle)) {
         throw createError('CandleExpected', localize('Given candle is not valid'));
     }
     return candle;
 };
 
-export const expectCandles = (candles) => {
-    if (!(candles instanceof Array) || !candles.every((c) => isCandle(c))) {
+export const expectCandles = candles => {
+    if (!(candles instanceof Array) || !candles.every(c => isCandle(c))) {
         throw createError('CandleListExpected', localize('Given candle list is not valid'));
     }
     return candles;

@@ -6,7 +6,7 @@ Blockly.Blocks.text_charAt = {
         this.jsonInit(this.definition());
 
         const dropdown = this.getField('WHERE');
-        dropdown.setValidator((value) => {
+        dropdown.setValidator(value => {
             const newAt = ['FROM_START', 'FROM_END'].includes(value);
             if (newAt !== this.isAt) {
                 this.updateAt(newAt);
@@ -82,7 +82,7 @@ Blockly.Blocks.text_charAt = {
     },
 };
 
-Blockly.JavaScript.text_charAt = (block) => {
+Blockly.JavaScript.text_charAt = block => {
     const where = block.getFieldValue('WHERE') || 'FROM_START';
     const textOrder = where === 'RANDOM' ? Blockly.JavaScript.ORDER_NONE : Blockly.JavaScript.ORDER_MEMBER;
     const text = Blockly.JavaScript.valueToCode(block, 'VALUE', textOrder) || "''";

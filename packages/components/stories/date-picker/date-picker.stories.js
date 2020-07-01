@@ -120,7 +120,7 @@ stories
     .add('mode', () => {
         const [footer, setFooterText] = React.useState('');
 
-        const onChange = (e) => {
+        const onChange = e => {
             setFooterText(`Duration: ${e.duration} ${e.duration === 1 ? 'day' : 'days'}`);
         };
 

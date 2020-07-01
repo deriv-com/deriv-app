@@ -11,7 +11,7 @@ import { MyAdsLoader } from './my-ads-loader.jsx';
 import ToggleAds from './toggle-ads.jsx';
 import Popup from '../orders/popup.jsx';
 
-const getHeaders = (offered_currency) => [
+const getHeaders = offered_currency => [
     { text: localize('Ad ID') },
     { text: localize('Limits') },
     { text: localize('Rate (1 {{ offered_currency }})', { offered_currency }) },
@@ -79,13 +79,13 @@ const MyAdsTable = ({ onClickCreate }) => {
         return () => (is_mounted.current = false);
     }, []);
 
-    const loadMoreAds = (start_idx) => {
-        return new Promise((resolve) => {
+    const loadMoreAds = start_idx => {
+        return new Promise(resolve => {
             requestWS({
                 p2p_advertiser_adverts: 1,
                 offset: start_idx,
                 limit: list_item_limit,
-            }).then((response) => {
+            }).then(response => {
                 if (is_mounted.current) {
                     if (!response.error) {
                         setHasMoreItemsToLoad(response.length >= list_item_limit);
@@ -101,7 +101,7 @@ const MyAdsTable = ({ onClickCreate }) => {
         });
     };
 
-    const onClickDelete = (id) => {
+    const onClickDelete = id => {
         setSelectedAdId(id);
         setShowPopup(true);
     };
@@ -111,13 +111,13 @@ const MyAdsTable = ({ onClickCreate }) => {
         setShowPopup(false);
     };
 
-    const onClickConfirm = (showError) => {
-        requestWS({ p2p_advert_update: 1, id: selected_ad_id, delete: 1 }).then((response) => {
+    const onClickConfirm = showError => {
+        requestWS({ p2p_advert_update: 1, id: selected_ad_id, delete: 1 }).then(response => {
             if (response.error) {
                 showError({ error_message: response.error.message });
             } else {
                 // remove the deleted ad from the list of items
-                const updated_items = ads.filter((ad) => ad.id !== response.p2p_advert_update.id);
+                const updated_items = ads.filter(ad => ad.id !== response.p2p_advert_update.id);
                 setAds(updated_items);
                 setShowPopup(false);
             }
@@ -159,7 +159,7 @@ const MyAdsTable = ({ onClickCreate }) => {
                 >
                     <Table.Header>
                         <Table.Row className='p2p-my-ads__table-row'>
-                            {getHeaders(currency).map((header) => (
+                            {getHeaders(currency).map(header => (
                                 <Table.Head key={header.text}>{header.text}</Table.Head>
                             ))}
                         </Table.Row>

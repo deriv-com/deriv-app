@@ -39,7 +39,7 @@ const extendOrReplace = (source, new_values) => {
         'trade_types',
     ];
 
-    to_replace.forEach((key) => {
+    to_replace.forEach(key => {
         if (key in new_values) {
             source[key] = undefined;
         }

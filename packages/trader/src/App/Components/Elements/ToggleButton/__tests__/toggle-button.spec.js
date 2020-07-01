@@ -91,7 +91,7 @@ describe('<ToggleButton />', () => {
         it('should not be called when the click is prevented', () => {
             const callback = fake();
             const wrapper = shallow(
-                <ToggleButton value='test' onChange={callback} onClick={(event) => event.preventDefault()}>
+                <ToggleButton value='test' onChange={callback} onClick={event => event.preventDefault()}>
                     Test
                 </ToggleButton>
             );

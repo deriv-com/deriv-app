@@ -19,7 +19,7 @@ const PlatformBox = ({ platform: { icon, title, description } }) => (
     </>
 );
 class PlatformDropdown extends React.PureComponent {
-    handleClickOutside = (event) => {
+    handleClickOutside = event => {
         if (!event.target.closest('.platform-dropdown__list') && !event.target.closest('.platform-switcher')) {
             this.props.closeDrawer();
         }

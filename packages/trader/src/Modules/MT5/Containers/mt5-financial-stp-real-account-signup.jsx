@@ -93,7 +93,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
         });
     };
 
-    nextStep = (setSubmitting) => {
+    nextStep = setSubmitting => {
         this.clearError();
         if (this.has_more_steps) {
             this.goNext();
@@ -102,7 +102,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
         }
     };
 
-    finishWizard = (setSubmitting) => {
+    finishWizard = setSubmitting => {
         setSubmitting(false);
         this.props.openPendingDialog();
         this.props.toggleModal();
@@ -132,7 +132,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
         this.nextStep(setSubmitting);
     };
 
-    initiatePersonalDetails = async (setSubmitting) => {
+    initiatePersonalDetails = async setSubmitting => {
         // force request to update settings cache since settings have been updated
         const response = await WS.authorized.storage.getSettings();
 
@@ -171,8 +171,8 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
         );
     };
 
-    transform = (value) => {
-        const [result] = this.props.residence_list.filter((item) => item.value === value);
+    transform = value => {
+        const [result] = this.props.residence_list.filter(item => item.value === value);
         return getPropertyValue(result, ['text']) || value;
     };
 
@@ -195,7 +195,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
         }
     }
 
-    getCurrent = (key) => {
+    getCurrent = key => {
         return key ? this.state.items[this.state_index][key] : this.state.items[this.state_index];
     };
 

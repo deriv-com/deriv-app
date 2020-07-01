@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 
 export const getDisplayText = (list, value) => {
-    const findInArray = (arr_list) => (arr_list.find((item) => item.value === value) || {}).text;
+    const findInArray = arr_list => (arr_list.find(item => item.value === value) || {}).text;
     let text = '';
     if (Array.isArray(list)) {
         text = findInArray(list);
     } else {
-        Object.keys(list).some((key) => {
+        Object.keys(list).some(key => {
             text = findInArray(list[key]);
             return text;
         });
@@ -14,13 +14,13 @@ export const getDisplayText = (list, value) => {
     return text;
 };
 
-export const findNextFocusableNode = (active_node) => {
+export const findNextFocusableNode = active_node => {
     if (!active_node) return null;
     if (active_node.attributes.tabIndex) return active_node;
     return findNextFocusableNode(active_node.nextSibling);
 };
 
-export const findPreviousFocusableNode = (active_node) => {
+export const findPreviousFocusableNode = active_node => {
     if (!active_node) return null;
     if (active_node.attributes.tabIndex) return active_node;
     return findPreviousFocusableNode(active_node.previousSibling);

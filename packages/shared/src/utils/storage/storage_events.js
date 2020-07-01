@@ -1,5 +1,5 @@
 export const setStorageEvents = () => {
-    window.addEventListener('storage', (evt) => {
+    window.addEventListener('storage', evt => {
         switch (evt.key) {
             case 'active_loginid':
                 if (document.hidden) {

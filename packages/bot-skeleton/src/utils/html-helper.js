@@ -1,4 +1,4 @@
-export const importExternal = (url) => {
+export const importExternal = url => {
     return new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.src = url;

@@ -30,7 +30,7 @@ const getUrlBase = (path = '') => {
 
 const isStaging = () => /staging\.deriv\.app/i.test(window.location.hostname);
 
-const isLanguageAvailable = (lang) => {
+const isLanguageAvailable = lang => {
     if (!lang) return false;
 
     const selected_language = lang.toUpperCase();
@@ -67,7 +67,7 @@ const getInitialLanguage = () => {
     return DEFAULT_LANGUAGE;
 };
 
-const loadLanguageJson = async (lang) => {
+const loadLanguageJson = async lang => {
     if (!i18n.hasResourceBundle(lang, 'translations') && lang.toUpperCase() !== DEFAULT_LANGUAGE) {
         const response = await fetch(getUrlBase(`/public/i18n/${lang.toLowerCase()}.json`));
         const lang_json = await response.text();

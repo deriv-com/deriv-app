@@ -22,7 +22,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     } = order_details;
     let buttons_to_render = null;
     const cancelOrder = () => {
-        const cancel = async (setFormStatus) => {
+        const cancel = async setFormStatus => {
             setFormStatus({ error_message: '' });
             const cancel_response = await requestWS({ p2p_order_cancel: 1, id });
 
@@ -76,7 +76,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     };
 
     const paidOrder = () => {
-        const payOrder = async (setFormStatus) => {
+        const payOrder = async setFormStatus => {
             setFormStatus({ error_message: '' });
 
             const update_response = await requestWS({
@@ -110,7 +110,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     };
 
     const receivedFunds = () => {
-        const receive = async (setFormStatus) => {
+        const receive = async setFormStatus => {
             setFormStatus({ error_message: '' });
 
             const update_response = await requestWS({

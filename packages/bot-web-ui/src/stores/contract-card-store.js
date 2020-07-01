@@ -62,7 +62,7 @@ export default class ContractCardStore {
 
         const movements = { profit, indicative };
 
-        Object.keys(movements).forEach((name) => {
+        Object.keys(movements).forEach(name => {
             if (movements[name] !== this[name]) {
                 this[`${name}_movement`] = movements[name] > this[name] ? 'profit' : 'loss';
             } else if (this[`${name}_movement`] !== '') {

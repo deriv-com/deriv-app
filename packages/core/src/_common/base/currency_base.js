@@ -18,7 +18,12 @@ const formatMoney = (currency_value, amount, exclude_currency, decimals = 0, min
             minimumFractionDigits: minimumFractionDigits || decimal_places,
             maximumFractionDigits: decimal_places,
         };
-        money = new Intl.NumberFormat(getLanguage().toLowerCase().replace('_', '-'), options).format(money);
+        money = new Intl.NumberFormat(
+            getLanguage()
+                .toLowerCase()
+                .replace('_', '-'),
+            options
+        ).format(money);
     } else {
         money = addComma(money, decimal_places);
     }
@@ -26,7 +31,7 @@ const formatMoney = (currency_value, amount, exclude_currency, decimals = 0, min
     return sign + (exclude_currency ? '' : formatCurrency(currency_value)) + money;
 };
 
-const formatCurrency = (currency) => `<span class="symbols ${(currency || '').toLowerCase()}"></span>`;
+const formatCurrency = currency => `<span class="symbols ${(currency || '').toLowerCase()}"></span>`;
 
 const addComma = (num, decimal_points, is_crypto) => {
     let number = String(num || 0).replace(/,/g, '');
@@ -42,20 +47,20 @@ const addComma = (num, decimal_points, is_crypto) => {
         .replace(/(^|[^\w.])(\d{4,})/g, ($0, $1, $2) => $1 + $2.replace(/\d(?=(?:\d\d\d)+(?!\d))/g, '$&,'));
 };
 
-const calcDecimalPlaces = (currency) => (isCryptocurrency(currency) ? 8 : 2);
+const calcDecimalPlaces = currency => (isCryptocurrency(currency) ? 8 : 2);
 
-const getDecimalPlaces = (currency) =>
+const getDecimalPlaces = currency =>
     // need to check currencies_config[currency] exists instead of || in case of 0 value
     currencies_config[currency]
         ? getPropertyValue(currencies_config, [currency, 'fractional_digits'])
         : calcDecimalPlaces(currency);
 
-const setCurrencies = (website_status) => {
+const setCurrencies = website_status => {
     currencies_config = website_status.currencies_config;
 };
 
 // (currency in crypto_config) is a back-up in case website_status doesn't include the currency config, in some cases where it's disabled
-const isCryptocurrency = (currency) =>
+const isCryptocurrency = currency =>
     /crypto/i.test(getPropertyValue(currencies_config, [currency, 'type'])) || currency in CryptoConfig.get();
 
 const CryptoConfig = (() => {
@@ -81,7 +86,7 @@ const CryptoConfig = (() => {
     };
 })();
 
-const getMinWithdrawal = (currency) =>
+const getMinWithdrawal = currency =>
     isCryptocurrency(currency) ? getPropertyValue(CryptoConfig.get(), [currency, 'min_withdrawal']) || 0.002 : 1;
 
 // @param {String} limit = max|min
@@ -92,9 +97,9 @@ const getPaWithdrawalLimit = (currency, limit) => {
     return limit === 'max' ? 2000 : 10; // limits for fiat currency
 };
 
-const getCurrencyName = (currency) => getPropertyValue(CryptoConfig.get(), [currency, 'name']) || '';
+const getCurrencyName = currency => getPropertyValue(CryptoConfig.get(), [currency, 'name']) || '';
 
-const getMinPayout = (currency) => getPropertyValue(currencies_config, [currency, 'stake_default']);
+const getMinPayout = currency => getPropertyValue(currencies_config, [currency, 'stake_default']);
 
 module.exports = {
     formatMoney,

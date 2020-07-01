@@ -6,7 +6,7 @@ import { CSSTransition } from 'react-transition-group';
 import Icon from 'Components/icon/icon.jsx';
 import Div100vhContainer from '../div100vh-container';
 
-const MobileDialog = (props) => {
+const MobileDialog = props => {
     const { title, visible, children, portal_element_id, wrapper_classname, footer } = props;
 
     const footer_ref = React.useRef(false);
@@ -39,7 +39,7 @@ const MobileDialog = (props) => {
     };
 
     // sometimes input is covered by virtual keyboard on mobile chrome, uc browser
-    const handleClick = (e) => {
+    const handleClick = e => {
         if (e.target.tagName === 'INPUT' && e.target.type === 'number') {
             const scrollToTarget = scrollToElement(e.currentTarget, e.target);
             window.addEventListener('resize', scrollToTarget, false);

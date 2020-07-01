@@ -14,7 +14,7 @@ const ProgressTicks = ({ current_tick, ticks_count }) => {
                 />
             </span>
             <div className='progress-slider__ticks-wrapper'>
-                {arr_ticks.map((idx) => (
+                {arr_ticks.map(idx => (
                     <div
                         key={idx}
                         className={classNames('progress-slider__ticks-step', {

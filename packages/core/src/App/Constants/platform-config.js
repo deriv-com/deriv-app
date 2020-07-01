@@ -32,4 +32,4 @@ const platform_config = [
     },
 ];
 
-export default platform_config.filter((config) => !!config); // filter undefined
+export default platform_config.filter(config => !!config); // filter undefined

@@ -106,7 +106,7 @@ class DataTable extends React.PureComponent {
             >
                 <div
                     className='table__head'
-                    ref={(el) => {
+                    ref={el => {
                         this.el_table_head = el;
                     }}
                 >
@@ -120,7 +120,7 @@ class DataTable extends React.PureComponent {
                 </div>
                 <div
                     className='table__body'
-                    ref={(el) => {
+                    ref={el => {
                         this.el_table_body = el;
                     }}
                     onScroll={onScroll}

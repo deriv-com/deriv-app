@@ -1,13 +1,13 @@
 import { observer as globalObserver } from '../../../utils/observer';
 import { config } from '../../../constants/config';
 
-export const contract = (c) => globalObserver.emit('bot.contract', c);
+export const contract = c => globalObserver.emit('bot.contract', c);
 
-export const contractStatus = (c) => globalObserver.emit('contract.status', c);
+export const contractStatus = c => globalObserver.emit('contract.status', c);
 
-export const contractSettled = (c) => globalObserver.emit('contract.settled', c);
+export const contractSettled = c => globalObserver.emit('contract.settled', c);
 
-export const info = (i) => globalObserver.emit('bot.info', i);
+export const info = i => globalObserver.emit('bot.info', i);
 
 // TODO use api time
 export const notify = (className, message) =>
@@ -15,4 +15,4 @@ export const notify = (className, message) =>
 
 export const log = (log_type, extra) => globalObserver.emit('ui.log.success', { log_type, extra });
 
-export const error = (message) => globalObserver.emit('ui.log.error', { message });
+export const error = message => globalObserver.emit('ui.log.error', { message });

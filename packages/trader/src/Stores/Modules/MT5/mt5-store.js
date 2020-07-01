@@ -44,7 +44,7 @@ export default class MT5Store extends BaseStore {
     get current_list() {
         const list = [];
 
-        this.root_store.client.mt5_login_list.forEach((login) => {
+        this.root_store.client.mt5_login_list.forEach(login => {
             const { type, category } = getMt5GroupConfig(login.group);
             list[`${category}.${type}`] = Object.assign({}, login);
         });
@@ -141,7 +141,7 @@ export default class MT5Store extends BaseStore {
         }
         const group = `${category}\\${tmp_type}`;
 
-        return this.current_list.filter((item) => item.group === group);
+        return this.current_list.filter(item => item.group === group);
     }
 
     @action.bound
@@ -235,14 +235,14 @@ export default class MT5Store extends BaseStore {
             setStatus({ msg: '' });
             this.setState({ is_btn_loading: true });
 
-            WS.setSettings(values).then((data) => {
+            WS.setSettings(values).then(data => {
                 if (data.error) {
                     setStatus({ msg: data.error.message });
                     reject(data);
                 } else {
                     this.root_store.fetchAccountSettings();
                     // force request to update settings cache since settings have been updated
-                    file_uploader_ref.current.upload().then((api_response) => {
+                    file_uploader_ref.current.upload().then(api_response => {
                         if (api_response.warning) {
                             setStatus({ msg: api_response.message });
                             reject(api_response);
@@ -303,7 +303,7 @@ export default class MT5Store extends BaseStore {
         if (!response.error) {
             await WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
             const new_balance = this.root_store.client.mt5_login_list.find(
-                (item) => item.login === this.current_account.login
+                item => item.login === this.current_account.login
             ).balance;
             runInAction(() => {
                 // Get new current account

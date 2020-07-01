@@ -4,7 +4,7 @@ import { runAndGetResult, expectResultTypes } from '../tools';
 describe('Many getTicks in a row', () => {
     let result;
 
-    beforeAll((done) => {
+    beforeAll(done => {
         runAndGetResult(
             undefined,
             `
@@ -13,7 +13,7 @@ describe('Many getTicks in a row', () => {
         result.ticks.push(Bot.getLastTick())
       }
     `
-        ).then((v) => {
+        ).then(v => {
             result = v;
             done();
         });
@@ -22,14 +22,14 @@ describe('Many getTicks in a row', () => {
     it('All getTicks should be the same', () => {
         const { ticks } = result;
 
-        expect(ticks).satisfy((t) => t.length === 100 && t.every((n) => n === ticks[0]));
+        expect(ticks).satisfy(t => t.length === 100 && t.every(n => n === ticks[0]));
     });
 });
 
 describe('Ticks Analysis', () => {
     let result;
 
-    beforeAll((done) => {
+    beforeAll(done => {
         runAndGetResult(
             `
       result.ticks = []
@@ -46,7 +46,7 @@ describe('Ticks Analysis', () => {
       }
       ta()
     `
-        ).then((v) => {
+        ).then(v => {
             result = v;
             done();
         });
@@ -55,14 +55,14 @@ describe('Ticks Analysis', () => {
     it('tick analysis block', () => {
         const { ticks } = result;
 
-        expect(ticks).satisfy((t) => t.length >= 3 && t.every((n) => Number.isFinite(n)));
+        expect(ticks).satisfy(t => t.length >= 3 && t.every(n => Number.isFinite(n)));
     });
 });
 
 describe('Tick Blocks', () => {
     let result;
 
-    beforeAll((done) => {
+    beforeAll(done => {
         runAndGetResult(
             undefined,
             `
@@ -77,7 +77,7 @@ describe('Tick Blocks', () => {
         result.lastCloseValue1 = Bot.getOhlcFromEnd({ field: 'close', index: 2 });
         result.lastCloseValue2 = Bot.getOhlcFromEnd({ field: 'close' });
   `
-        ).then((v) => {
+        ).then(v => {
             result = v;
             done();
         });

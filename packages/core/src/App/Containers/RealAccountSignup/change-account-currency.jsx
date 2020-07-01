@@ -14,7 +14,7 @@ class ChangeAccountCurrency extends React.Component {
     static getDerivedStateFromProps(props) {
         return {
             selectable_currencies: reorderFiatCurrencies(
-                props.legal_allowed_currencies.filter((currency) => currency.type === 'fiat')
+                props.legal_allowed_currencies.filter(currency => currency.type === 'fiat')
             ),
         };
     }
@@ -39,7 +39,7 @@ class ChangeAccountCurrency extends React.Component {
                     isSubmitting,
                 }) => (
                     <form
-                        onSubmit={(e) => {
+                        onSubmit={e => {
                             e.preventDefault();
                             handleSubmit();
                         }}
@@ -58,7 +58,7 @@ class ChangeAccountCurrency extends React.Component {
                             touched={touched.fiat}
                             is_title_enabled={false}
                         >
-                            {this.state.selectable_currencies.map((currency) => (
+                            {this.state.selectable_currencies.map(currency => (
                                 <Field
                                     key={currency.value}
                                     component={RadioButton}

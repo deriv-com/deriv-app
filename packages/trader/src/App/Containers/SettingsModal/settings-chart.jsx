@@ -34,7 +34,7 @@ const ChartSettings = ({ is_countdown_visible, is_dark_mode, setCountdown }) => 
                         id='dt_settings_interval_checkbox'
                         defaultChecked={is_countdown_visible}
                         label={localize('Display remaining time for each interval')}
-                        onChange={(e) => {
+                        onChange={e => {
                             setCountdown(e.target.checked);
                         }}
                     />

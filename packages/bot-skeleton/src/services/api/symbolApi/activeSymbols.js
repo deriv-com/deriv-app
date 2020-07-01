@@ -18,7 +18,7 @@ const parsedSubmarkets = {};
 const parsedSymbols = {};
 
 const parseSymbols = () => {
-    apiActiveSymbols.forEach((s) => {
+    apiActiveSymbols.forEach(s => {
         const submarket = parsedSubmarkets[s.submarket];
         submarket.symbols = submarket.symbols || {};
         const symbol = {
@@ -32,7 +32,7 @@ const parseSymbols = () => {
 };
 
 const parseSubmarkets = () => {
-    Object.keys(groupedSubmarkets).forEach((k) => {
+    Object.keys(groupedSubmarkets).forEach(k => {
         const symbol = groupedSubmarkets[k][0];
         const market = parsedMarkets[symbol.market];
         market.submarkets = market.submarkets || {};
@@ -46,7 +46,7 @@ const parseSubmarkets = () => {
 };
 
 const parseMarkets = () => {
-    Object.keys(groupedMarkets).forEach((k) => {
+    Object.keys(groupedMarkets).forEach(k => {
         const symbol = groupedMarkets[k][0];
         parsedMarkets[k] = {
             name: symbol.market_display_name,

@@ -36,14 +36,14 @@ class AddOrManageAccounts extends React.Component {
             if (key === 'fiat') {
                 this.props
                     .setCurrency(value)
-                    .then((response) => {
+                    .then(response => {
                         setSubmitting(false);
                         this.props.onSuccessSetAccountCurrency(
                             response.passthrough.previous_currency,
                             response.echo_req.set_account_currency
                         );
                     })
-                    .catch((error_message) => {
+                    .catch(error_message => {
                         this.props.onError(error_message);
                     });
             } else {
@@ -54,7 +54,7 @@ class AddOrManageAccounts extends React.Component {
                         this.props.onSuccessAddCurrency(value);
                         setSubmitting(false);
                     })
-                    .catch((error_message) => {
+                    .catch(error_message => {
                         this.props.onError(error_message);
                     });
             }

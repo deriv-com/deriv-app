@@ -28,7 +28,7 @@ export default class OrderInfo {
 
     constructor(order_info = null) {
         if (order_info) {
-            Object.keys(order_info).forEach((detail) => {
+            Object.keys(order_info).forEach(detail => {
                 this[detail] = order_info[detail];
             });
         }
@@ -102,7 +102,7 @@ export default class OrderInfo {
         return this.status === 'completed';
     }
 
-    setStatus = (value) => {
+    setStatus = value => {
         this.status = value;
     };
 }

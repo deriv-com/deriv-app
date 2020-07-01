@@ -11,8 +11,8 @@ const match = RegExp(search, 'g');
 const files = readdirSync(dir);
 
 files
-    .filter((file) => file.match(match))
-    .forEach((file) => {
+    .filter(file => file.match(match))
+    .forEach(file => {
         const filePath = join(dir, file);
         const newFilePath = join(dir, file.replace(match, replace));
 

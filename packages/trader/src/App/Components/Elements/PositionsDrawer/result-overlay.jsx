@@ -29,7 +29,7 @@ export const ResultStatusIcon = ({ is_contract_won }) => (
 );
 
 class ResultOverlay extends React.PureComponent {
-    handleClick = (e) => {
+    handleClick = e => {
         if (this.props.is_unsupported) {
             e.preventDefault();
             this.props.onClick();

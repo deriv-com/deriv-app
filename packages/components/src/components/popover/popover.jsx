@@ -13,7 +13,7 @@ class Popover extends React.PureComponent {
             popover_ref: undefined,
         };
 
-        this.setWrapperRef = (ref) => (this.wrapper_ref = ref);
+        this.setWrapperRef = ref => (this.wrapper_ref = ref);
     }
 
     componentDidMount() {

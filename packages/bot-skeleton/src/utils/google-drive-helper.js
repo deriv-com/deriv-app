@@ -22,7 +22,7 @@ class GoogleDrive {
         const prior = document.getElementsByTagName('script')[0];
 
         script.async = 1;
-        script.onload = script.onreadystatechange = function (_, isAbort) {
+        script.onload = script.onreadystatechange = function(_, isAbort) {
             if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState)) {
                 script.onload = null;
                 script.onreadystatechange = null;
@@ -48,10 +48,10 @@ class GoogleDrive {
                 .then(
                     () => {
                         this.googleAuth = gapi.auth2.getAuthInstance();
-                        this.googleAuth.isSignedIn.listen((isSignedIn) => this.updateSigninStatus(isSignedIn));
+                        this.googleAuth.isSignedIn.listen(isSignedIn => this.updateSigninStatus(isSignedIn));
                         this.updateSigninStatus(this.googleAuth.isSignedIn.get());
                     },
-                    (error) => {
+                    error => {
                         console.log(error); // eslint-disable-line
                     }
                 );
@@ -75,7 +75,7 @@ class GoogleDrive {
                 this.googleAuth
                     .signIn({ prompt: 'select_account' })
                     .then(() => resolve())
-                    .catch((response) => {
+                    .catch(response => {
                         if (response.error === 'access_denied') {
                             globalObserver.emit(
                                 'ui.log.warn',
@@ -121,7 +121,7 @@ class GoogleDrive {
     createFilePicker() {
         return new Promise((resolve, reject) => {
             // eslint-disable-next-line consistent-return
-            const userPickedFile = (data) => {
+            const userPickedFile = data => {
                 if (data.action === google.picker.Action.PICKED) {
                     const fileId = data.docs[0].id;
                     gapi.client.drive.files
@@ -130,7 +130,7 @@ class GoogleDrive {
                             fileId,
                             mimeType: 'text/plain',
                         })
-                        .then((response) => {
+                        .then(response => {
                             try {
                                 const xmlDom = Blockly.Xml.textToDom(response.body);
                                 const loadFunction =
@@ -149,7 +149,7 @@ class GoogleDrive {
                                 reject(error);
                             }
                         })
-                        .catch((error) => {
+                        .catch(error => {
                             if (error.status && error.status === 401) {
                                 this.signOut();
                             }
@@ -187,7 +187,7 @@ class GoogleDrive {
                                 .build()
                                 .setVisible(true);
                         })
-                        .catch((error) => {
+                        .catch(error => {
                             if (error.status && error.status === 401) {
                                 this.signOut();
                             }
@@ -195,7 +195,7 @@ class GoogleDrive {
                             reject(error);
                         });
                 })
-                .catch((error) => reject(error));
+                .catch(error => reject(error));
         });
     }
 
@@ -211,9 +211,9 @@ class GoogleDrive {
                     gapi.client.drive.files
                         .list({ q: 'trashed=false' })
                         // eslint-disable-next-line consistent-return
-                        .then((response) => {
+                        .then(response => {
                             const botFolder = response.result.files.find(
-                                (file) =>
+                                file =>
                                     file.name === this.botFolderName &&
                                     file.mimeType === 'application/vnd.google-apps.folder'
                             );
@@ -228,8 +228,8 @@ class GoogleDrive {
                                         fields: 'id',
                                     },
                                 })
-                                .then((createFileResponse) => resolve(createFileResponse.result.id))
-                                .catch((error) => {
+                                .then(createFileResponse => resolve(createFileResponse.result.id))
+                                .catch(error => {
                                     if (error.status && error.status === 401) {
                                         this.signOut();
                                     }
@@ -240,7 +240,7 @@ class GoogleDrive {
                                     reject(error);
                                 });
                         })
-                        .catch((error) => {
+                        .catch(error => {
                             if (error.status && error.status === 401) {
                                 this.signOut();
                             }
@@ -257,7 +257,7 @@ class GoogleDrive {
     saveFile(options) {
         return new Promise((resolve, reject) => {
             // eslint-disable-next-line consistent-return
-            const savePickerCallback = (data) => {
+            const savePickerCallback = data => {
                 if (data.action === google.picker.Action.PICKED) {
                     const folderId = data.docs[0].id;
                     const strategyFile = new Blob([options.content], { type: options.mimeType });
@@ -317,9 +317,9 @@ class GoogleDrive {
                                 .build()
                                 .setVisible(true);
                         })
-                        .catch((error) => reject(error));
+                        .catch(error => reject(error));
                 })
-                .catch((error) => reject(error));
+                .catch(error => reject(error));
         });
     }
 }

@@ -19,7 +19,7 @@ class MyAds extends React.Component {
         show_form: false,
     };
 
-    handleShowForm = (show_form) => {
+    handleShowForm = show_form => {
         this.setState({ show_form });
     };
 
@@ -27,7 +27,7 @@ class MyAds extends React.Component {
         this.is_mounted = true;
 
         if (!this.context.is_advertiser) {
-            requestWS({ get_account_status: 1 }).then((response) => {
+            requestWS({ get_account_status: 1 }).then(response => {
                 if (this.is_mounted && !response.error) {
                     const { get_account_status } = response;
                     const { authentication } = get_account_status;

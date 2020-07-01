@@ -22,7 +22,7 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
 
         if (item.disabled) removeListeners();
         else {
-            const handleKeyPress = (e) => onKeyPressed(e, item);
+            const handleKeyPress = e => onKeyPressed(e, item);
             item_ref.current.addEventListener('keydown', handleKeyPress);
             nodes.set(item.value.toString(), item_ref.current);
         }

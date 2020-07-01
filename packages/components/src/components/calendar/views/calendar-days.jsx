@@ -47,7 +47,9 @@ const getDays = ({
             : toMoment(selected_date).startOf('day');
 
     // populate previous months' dates
-    const end_of_prev_month = subMonths(moment_cur_date, 1).endOf('month').day();
+    const end_of_prev_month = subMonths(moment_cur_date, 1)
+        .endOf('month')
+        .day();
     for (let i = end_of_prev_month; i > 0; i--) {
         dates.push(subDays(moment_month_start, i).format(date_format));
     }
@@ -56,7 +58,9 @@ const getDays = ({
         dates.push(moment_cur_date.clone().format(date_format.replace('DD', padLeft(idx, 2, '0'))));
     }
     // populate next months' dates
-    const start_of_next_month = addMonths(moment_cur_date, 1).startOf('month').day();
+    const start_of_next_month = addMonths(moment_cur_date, 1)
+        .startOf('month')
+        .day();
     if (start_of_next_month - day_offset > 0 || dates.length <= 28) {
         // if start_of_next_month doesn't falls on Monday, append rest of the week
         for (let i = 1; i <= 7 - start_of_next_month + day_offset; i++) {
@@ -69,19 +73,19 @@ const getDays = ({
 
     const moment_start_date = toMoment(start_date).startOf('day');
 
-    dates.map((date) => {
+    dates.map(date => {
         const moment_date = toMoment(date).startOf('day');
         const moment_hovered = toMoment(hovered_date).startOf('day');
         const is_active = selected_date && moment_date.isSame(moment_selected);
         const is_today = moment_date.isSame(moment_today, 'day');
 
-        const calendar_events = events.filter((event) =>
+        const calendar_events = events.filter(event =>
             // filter by date or day of the week
-            event.dates.find((d) => d === date || getDaysOfTheWeek(d) === toMoment(date).day())
+            event.dates.find(d => d === date || getDaysOfTheWeek(d) === toMoment(date).day())
         );
         const has_events = !!calendar_events.length;
-        const is_closes_early = calendar_events.map((event) => !!event.descrip.match(/Closes early|Opens late/))[0];
-        const message = calendar_events.map((event) => event.descrip)[0] || '';
+        const is_closes_early = calendar_events.map(event => !!event.descrip.match(/Closes early|Opens late/))[0];
+        const message = calendar_events.map(event => event.descrip)[0] || '';
         const duration_from_today = daysFromTodayTo(date);
         const is_between = moment_date.isBetween(moment_today, moment_selected);
         const is_between_hover = moment_date.isBetween(moment_today, moment_hovered);
@@ -92,7 +96,7 @@ const getDays = ({
             // for forward starting accounts, only show same day as start date and the day after
             (start_date && moment_date.isBefore(moment_start_date)) ||
             // check if weekends are disabled
-            disabled_days.some((day) => toMoment(date).day() === day) ||
+            disabled_days.some(day => toMoment(date).day() === day) ||
             // check if date falls on holidays, and doesn't close early or opens late
             (has_events && !is_closes_early);
 
@@ -113,7 +117,7 @@ const getDays = ({
                     'dc-calendar__cell--between-hover': is_between_hover && has_range_selection,
                     'dc-calendar__cell--between': is_between && has_range_selection,
                 })}
-                onClick={is_disabled ? undefined : (e) => updateSelected(e, 'day')}
+                onClick={is_disabled ? undefined : e => updateSelected(e, 'day')}
                 data-date={date}
                 data-duration={`${duration_from_today} ${duration_from_today === 1 ? 'Day' : 'Days'}`}
                 onMouseOver={onMouseOver}
@@ -136,8 +140,8 @@ const getDays = ({
     return days;
 };
 
-const Days = (props) => {
-    const days = getDays(props).map((day) => day);
+const Days = props => {
+    const days = getDays(props).map(day => day);
 
     return (
         <div className='dc-calendar__body dc-calendar__body--date'>

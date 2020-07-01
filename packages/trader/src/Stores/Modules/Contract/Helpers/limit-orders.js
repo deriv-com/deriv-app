@@ -16,10 +16,10 @@ export const setLimitOrderBarriers = ({ barriers, contract_type, contract_info =
     if (is_over && isLimitOrderBarrierSupported(contract_type, contract_info)) {
         const limit_orders = Object.values(LIMIT_ORDER_TYPES);
         const has_stop_loss = Object.keys(contract_info.limit_order).some(
-            (k) => k === LIMIT_ORDER_TYPES.STOP_LOSS && contract_info.limit_order[k].value
+            k => k === LIMIT_ORDER_TYPES.STOP_LOSS && contract_info.limit_order[k].value
         );
 
-        limit_orders.forEach((key) => {
+        limit_orders.forEach(key => {
             const obj_limit_order = contract_info.limit_order[key];
 
             if (!obj_limit_order || !obj_limit_order.value) {
@@ -27,7 +27,7 @@ export const setLimitOrderBarriers = ({ barriers, contract_type, contract_info =
                 return;
             }
 
-            let barrier = barriers.find((b) => b.key === key);
+            let barrier = barriers.find(b => b.key === key);
 
             if (barrier) {
                 if (barrier.high === +obj_limit_order.value) {
@@ -59,7 +59,7 @@ export const setLimitOrderBarriers = ({ barriers, contract_type, contract_info =
         });
     } else {
         const limit_orders = Object.values(LIMIT_ORDER_TYPES);
-        limit_orders.forEach((l) => removeBarrier(barriers, l));
+        limit_orders.forEach(l => removeBarrier(barriers, l));
     }
 };
 
@@ -67,7 +67,7 @@ export const setLimitOrderBarriers = ({ barriers, contract_type, contract_info =
  * Get stop_loss & take_profit order amount from contract_info
  * @param {object} contract_info - proposal_open_contract response
  */
-export const getLimitOrderAmount = (limit_order) => {
+export const getLimitOrderAmount = limit_order => {
     const {
         stop_loss: { order_amount: stop_loss_order_amount } = {},
         take_profit: { order_amount: take_profit_order_amount } = {},
@@ -83,7 +83,7 @@ export const getLimitOrderAmount = (limit_order) => {
  * Get limit_order for contract_update API
  * @param {object} contract_update - contract_update input & checkbox values
  */
-export const getLimitOrder = (contract_update) => {
+export const getLimitOrder = contract_update => {
     const {
         has_contract_update_stop_loss,
         has_contract_update_take_profit,

@@ -26,6 +26,6 @@ ErrorBoundary.propTypes = {
     root_store: PropTypes.object,
 };
 
-export default connect((store) => ({
+export default connect(store => ({
     root_store: store,
 }))(ErrorBoundary);

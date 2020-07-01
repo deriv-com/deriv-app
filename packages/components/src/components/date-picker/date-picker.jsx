@@ -37,7 +37,7 @@ class DatePicker extends React.PureComponent {
 
     handleVisibility = () => {
         this.setState(
-            (state) => ({ is_datepicker_visible: !state.is_datepicker_visible }),
+            state => ({ is_datepicker_visible: !state.is_datepicker_visible }),
             () => {
                 if (
                     this.state.is_datepicker_visible &&
@@ -65,7 +65,7 @@ class DatePicker extends React.PureComponent {
         );
     };
 
-    onClickOutside = (e) => {
+    onClickOutside = e => {
         const is_click_outside =
             !this.datepicker?.current?.contains(e.target) && !this.calendar_portal?.current?.contains(e.target);
 
@@ -74,7 +74,7 @@ class DatePicker extends React.PureComponent {
         }
     };
 
-    onHover = (hovered_date) => {
+    onHover = hovered_date => {
         const { display_format, mode, onChange } = this.props;
 
         const date = toMoment(hovered_date).format(display_format);
@@ -116,7 +116,7 @@ class DatePicker extends React.PureComponent {
         );
     };
 
-    onSelectCalendarNative = (selected_date) => {
+    onSelectCalendarNative = selected_date => {
         const { display_format, name, onChange } = this.props;
 
         const date = selected_date ? toMoment(selected_date).format(display_format) : null;
@@ -141,7 +141,7 @@ class DatePicker extends React.PureComponent {
     /**
      * TODO: currently only works for duration, make it works for date as well
      */
-    onChangeInput = (e) => {
+    onChangeInput = e => {
         const { display_format, mode, name, onChange } = this.props;
 
         const date = addDays(toMoment(), e.target.value).format(display_format);
@@ -226,7 +226,7 @@ class DatePicker extends React.PureComponent {
                         />
                         <Calendar
                             ref={this.calendar_portal}
-                            onRef={(ref) => (this.calendar = ref)}
+                            onRef={ref => (this.calendar = ref)}
                             is_datepicker_visible={this.state.is_datepicker_visible}
                             onHover={this.props.has_range_selection ? this.onHover : undefined}
                             onSelect={this.onSelectCalendar}

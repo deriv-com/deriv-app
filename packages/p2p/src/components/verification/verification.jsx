@@ -7,7 +7,7 @@ import './verification.scss';
 const Verification = () => {
     const { nickname, toggleNicknamePopup, is_advertiser, poi_status, poi_url } = React.useContext(Dp2pContext);
 
-    const poiStatusText = (status) => {
+    const poiStatusText = status => {
         switch (status) {
             case 'pending':
             case 'rejected':
@@ -59,9 +59,6 @@ const Verification = () => {
                     <Localize i18n_default_text='Want to post ads?' />
                 </div>
                 <div className='p2p-verification__text-description'>
-                    <p>
-                        <Localize i18n_default_text='Register with us here' />
-                    </p>
                     <p>
                         <Localize i18n_default_text='To use DP2P, you need to choose a display name (a nickname) and verify your identity.' />
                     </p>

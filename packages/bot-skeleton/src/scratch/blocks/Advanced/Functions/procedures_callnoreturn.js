@@ -172,7 +172,7 @@ Blockly.Blocks.procedures_callnoreturn = {
      */
     getProcedureDefinition(name) {
         // Assume that a procedure definition is a top block.
-        return this.workspace.getTopBlocks(false).find((block) => {
+        return this.workspace.getTopBlocks(false).find(block => {
             if (block.getProcedureDef) {
                 const tuple = block.getProcedureDef();
                 return tuple && Blockly.Names.equals(tuple[0], name);
@@ -212,7 +212,7 @@ Blockly.Blocks.procedures_callnoreturn = {
         this.arguments = [].concat(paramNames);
 
         // And rebuild the argument model list.
-        this.argument_var_models = this.arguments.map((argumentName) =>
+        this.argument_var_models = this.arguments.map(argumentName =>
             Blockly.Variables.getOrCreateVariablePackage(this.workspace, null, argumentName, '')
         );
 
@@ -274,7 +274,7 @@ Blockly.Blocks.procedures_callnoreturn = {
         const container = document.createElement('mutation');
         container.setAttribute('name', this.getProcedureCall());
 
-        this.arguments.forEach((argumentName) => {
+        this.arguments.forEach(argumentName => {
             const parameter = document.createElement('arg');
             parameter.setAttribute('name', argumentName);
             container.appendChild(parameter);
@@ -294,7 +294,7 @@ Blockly.Blocks.procedures_callnoreturn = {
         const args = [];
         const paramIds = [];
 
-        xmlElement.childNodes.forEach((childNode) => {
+        xmlElement.childNodes.forEach(childNode => {
             if (childNode.nodeName.toLowerCase() === 'arg') {
                 args.push(childNode.getAttribute('name'));
                 paramIds.push(childNode.getAttribute('paramId'));
@@ -335,7 +335,7 @@ Blockly.Blocks.procedures_callnoreturn = {
     defType: 'procedures_defnoreturn',
 };
 
-Blockly.JavaScript.procedures_callnoreturn = (block) => {
+Blockly.JavaScript.procedures_callnoreturn = block => {
     // eslint-disable-next-line no-underscore-dangle
     const functionName = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('NAME'),

@@ -24,6 +24,50 @@
             top: 64px;
         }
     }
+    &__info {
+        background: var(--fill-disabled);
+        margin-top: 2.4rem;
+        font-size: 1.4rem;
+        display: grid;
+        grid-template-columns: 0.5fr 1fr 1fr;
+        height: 56px;
+
+        &-description,
+        &-server,
+        &-broker {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        &-server,
+        &-broker {
+            font-size: 1.6rem;
+            font-weight: bold;
+
+            &-display {
+                padding-right: 0.8rem;
+            }
+        }
+        &-label {
+            font-weight: normal;
+        }
+        @include mobile {
+            display: flex;
+            height: 100%;
+            padding: 1.6rem;
+            flex-direction: column;
+            align-items: flex-start;
+
+            &-server,
+            &-broker {
+                margin: 0 0 0.8rem;
+                font-size: 1.4rem;
+            }
+            &-description {
+                margin: 0.8rem 0 1.6rem;
+            }
+        }
+    }
     &__welcome-message {
         margin-bottom: 2.4em;
 

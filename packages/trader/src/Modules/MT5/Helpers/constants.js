@@ -1,5 +1,9 @@
 import { OSDetect } from '@deriv/shared/utils/os';
 
+const getServerName = is_demo => (is_demo ? 'Deriv-Demo' : 'Deriv-Server');
+
+const getBrokerName = () => 'Deriv Limited (Deriv)';
+
 const getPlatformMt5DownloadLink = (platform = undefined) => {
     switch (platform || OSDetect()) {
         case 'windows':
@@ -24,4 +28,4 @@ const getMT5WebTerminalLink = ({ category, loginid }) => {
     return `https://trade.mql5.com/trade?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;
 };
 
-export { getPlatformMt5DownloadLink, getMT5WebTerminalLink };
+export { getServerName, getBrokerName, getPlatformMt5DownloadLink, getMT5WebTerminalLink };

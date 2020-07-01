@@ -270,7 +270,6 @@ class App extends React.Component {
         p2p_settings[this.state.loginid] = user_settings;
 
         localStorage.setItem('p2p_settings', JSON.stringify(p2p_settings));
-        console.log({ notification_count, active_notification_count, inactive_notification_count });
         this.setState({ notification_count, active_notification_count, inactive_notification_count });
 
         if (typeof this.props.setNotificationCount === 'function') {

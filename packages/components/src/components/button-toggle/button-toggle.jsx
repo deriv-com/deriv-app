@@ -23,7 +23,7 @@ const ButtonToggle = ({ buttons_arr, className, id, is_animated, name, onChange,
                 is_button_toggle
             >
                 {`${val.text.charAt(0).toUpperCase()}${val.text.slice(1)}`}
-                {!!val.count && <Counter className='dc-button-menu__button__count' count={val.count} />}
+                {!!val.count && <Counter className='dc-button-menu__counter' count={val.count} />}
             </Button>
         );
     });

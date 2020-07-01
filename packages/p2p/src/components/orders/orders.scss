@@ -54,7 +54,7 @@
     &__popup {
         &-header {
             &_wrapper {
-                padding: 1.6rem 2.4rem;
+                padding: 2.4rem;
                 display: flex;
                 align-items: center;
                 width: 100%;
@@ -104,6 +104,7 @@
 
             & > button:first-of-type {
                 margin-right: 0.8rem;
+                border-width: 2px;
             }
         }
         &-close_icon {

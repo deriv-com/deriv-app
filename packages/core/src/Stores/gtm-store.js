@@ -1,5 +1,5 @@
 import * as Cookies from 'js-cookie';
-import { action, computed, observable, runInAction } from 'mobx';
+import { action, computed } from 'mobx';
 import { getAppId } from '@deriv/shared/utils/config';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
@@ -10,8 +10,6 @@ import { getMT5AccountType } from './Helpers/client';
 
 export default class GTMStore extends BaseStore {
     is_gtm_applicable = /^(16303|16929|19111|19112)$/.test(getAppId());
-
-    @observable is_tracking = false;
 
     constructor(root_store) {
         super({ root_store });
@@ -74,13 +72,10 @@ export default class GTMStore extends BaseStore {
     async pushDataLayer(data) {
         if (this.is_gtm_applicable && !isLoginPages()) {
             BinarySocket.wait('authorize').then(() => {
-                runInAction(() => {
-                    dataLayer.push({
-                        ...this.common_variables,
-                        ...data,
-                    });
-                    if (data?.event === 'allow_tracking') this.is_tracking = true;
-                });
+                const gtm_object = { ...this.common_variables, ...data };
+                if (!gtm_object.event) return;
+
+                dataLayer.push(gtm_object);
             });
         }
     }

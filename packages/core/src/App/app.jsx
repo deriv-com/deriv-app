@@ -26,7 +26,6 @@ import initStore from './app.js';
 import 'Sass/app.scss';
 
 const App = ({ root_store }) => {
-    // non-state vars
     const l = window.location;
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);

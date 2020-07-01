@@ -2,39 +2,30 @@ import SendBird from 'sendbird';
 import LocalStorage from './local-storage';
 
 class SendbirdAPI {
-    constructor({ callbacks }) {
+    constructor() {
         this.channels = {};
-        this.callbacks = { ...callbacks };
+        this.has_finished_initial_sync = false;
         this.sendbird = null;
-        this.sendbird_user_id = null;
-        this.service_token = null;
-        this.unread_notification_count = 0;
     }
 
     async init(sendbird_user_id, service_token) {
-        const sendbird = new SendBird({ appId: '4E259BA5-C383-4624-89A6-8365E06D9D39' });
-
-        this.sendbird = sendbird;
-        this.sendbird_user_id = sendbird_user_id;
-        this.service_token = service_token;
-
-        sendbird.connect(this.sendbird_user_id, this.service_token, (user, error) => {
+        this.sendbird = new SendBird({ appId: '4E259BA5-C383-4624-89A6-8365E06D9D39' });
+        this.sendbird.connect(sendbird_user_id, service_token, (user, error) => {
             if (error) {
                 // eslint-disable-next-line no-console
-                console.warn(error);
+                console.warn({ error });
                 return;
             }
 
-            const channel_event_handler = new sendbird.ChannelHandler();
-            channel_event_handler.onMessageReceived = this.onMessageReceived;
-            channel_event_handler.onChannelChanged = this.onMessageReceived;
+            const channel_event_handler = new this.sendbird.ChannelHandler();
+            const user_event_handler = new this.sendbird.UserEventHandler();
 
-            const user_event_handler = new sendbird.UserEventHandler();
-            user_event_handler.onTotalUnreadMessageCountUpdated = this.onTotalUnreadMessageCountUpdated;
+            channel_event_handler.onMessageReceived = this.onMessageReceived.bind(this);
+            channel_event_handler.onChannelChanged = this.onMessageReceived.bind(this);
+            // user_event_handler.onTotalUnreadMessageCountUpdated = this.onTotalUnreadMessageCountUpdated.bind(this);
 
-            sendbird.addChannelHandler('channel_event_handler', channel_event_handler);
-            sendbird.addUserEventHandler('user_event_handler', user_event_handler);
-
+            this.sendbird.addChannelHandler('channel_event_handler', channel_event_handler);
+            this.sendbird.addUserEventHandler('user_event_handler', user_event_handler);
             this.syncChannels();
         });
 
@@ -68,7 +59,7 @@ class SendbirdAPI {
             channel_list_query.next((channel_list, error) => {
                 if (!error) {
                     channel_list.forEach(channel => {
-                        const has_seen_chat = channel.unreadMessageCount > 0;
+                        const has_seen_chat = channel.unreadMessageCount === 0;
                         LocalStorage.setNotification(channel.url, { has_seen_chat });
                     });
                 }
@@ -79,13 +70,14 @@ class SendbirdAPI {
             }
         }
 
+        this.has_finished_initial_sync = true;
         this.channels = { ...this.channels, ...channels };
-        this.syncUnreadChatMessageCount();
+        LocalStorage.syncNotifications();
         return Promise.resolve();
     }
 
     onMessageReceived(channel) {
-        const updated_channel = {
+        const updated_channels = {
             [channel.url]: {
                 unread_message_count: channel.unreadMessageCount,
             },
@@ -94,17 +86,8 @@ class SendbirdAPI {
         const has_seen_chat = channel.unreadMessageCount > 0;
         LocalStorage.setNotification(channel.url, { has_seen_chat });
 
-        this.channels = { ...this.channels, ...updated_channel };
-        this.syncUnreadChatMessageCount();
-    }
-
-    syncUnreadChatMessageCount() {
-        const unread_notification_count = LocalStorage.getUnreadNotificationCount();
-        this.unread_notification_count = unread_notification_count;
-
-        if (typeof this.callbacks.setUnreadNotificationCount === 'function') {
-            this.callbacks.setUnreadNotificationCount(unread_notification_count);
-        }
+        this.channels = Object.assign({}, this.channels, updated_channels);
+        LocalStorage.syncNotifications();
     }
 }
 

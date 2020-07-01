@@ -99,8 +99,6 @@ class ConfigVerification {
 export default class CashierStore extends BaseStore {
     @observable is_loading = false;
     @observable is_p2p_visible = false;
-    @observable p2p_chat_notification_count = 0;
-    @observable p2p_order_notification_count = 0;
     @observable is_p2p_advertiser = false;
     @observable cashier_route_tab_index = 0;
 
@@ -138,12 +136,6 @@ export default class CashierStore extends BaseStore {
     @computed
     get is_payment_agent_transfer_visible() {
         return this.config.payment_agent_transfer.is_payment_agent;
-    }
-
-    @computed
-    get p2p_notification_count() {
-        const { p2p } = this.root_store.modules;
-        return p2p.unread_chat_message_count;
     }
 
     @action.bound

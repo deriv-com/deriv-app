@@ -6,8 +6,8 @@ import {
     DesktopWrapper,
     MobileWrapper,
     Div100vhContainer,
-    FadeWrapper,
     PageOverlay,
+    FadeWrapper,
 } from '@deriv/components';
 import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';
@@ -71,10 +71,10 @@ class Cashier extends React.Component {
                     (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible) &&
                     (route.path !== routes.cashier_p2p ||
-                        (this.props.is_p2p_visible && /show_p2p/.test(this.props.location.hash)))
+                        (this.props.is_p2p_visible && /(show_p2p|verification)/.test(this.props.location.hash)))
                 ) {
                     options.push({
-                        ...(route.path === routes.cashier_p2p && { count: this.props.p2p_notification_count }),
+                        ...(route.path === routes.cashier_p2p && { count: this.props.unread_notification_count }),
                         default: route.default,
                         icon: route.icon_component,
                         label: route.title,
@@ -110,7 +110,6 @@ class Cashier extends React.Component {
                     <PageOverlay
                         header={isMobile() ? selected_route.title : localize('Cashier')}
                         onClickClose={this.onClickClose}
-                        has_side_note
                     >
                         <DesktopWrapper>
                             <VerticalTab
@@ -168,7 +167,7 @@ Cashier.propTypes = {
     is_visible: PropTypes.bool,
     location: PropTypes.object,
     onMount: PropTypes.func,
-    p2p_notification_count: PropTypes.number,
+    unread_notification_count: PropTypes.number,
     setTabIndex: PropTypes.func,
     tab_index: PropTypes.number,
     routes: PropTypes.arrayOf(PropTypes.object),
@@ -186,7 +185,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     onMount: modules.cashier.onMountCommon,
-    p2p_notification_count: modules.cashier.p2p_notification_count,
+    unread_notification_count: modules.p2p.unread_notification_count,
     setAccountSwitchListener: modules.cashier.setAccountSwitchListener,
     toggleCashier: ui.toggleCashier,
 }))(withRouter(Cashier));

@@ -66,7 +66,7 @@ Blockly.JavaScript.lists_sort = block => {
                     return parseFloat(a) - parseFloat(b);
                 },
                 TEXT: function(a, b) {
-                    return a.toString().toLowerCase() > b.toString().toLowerCase() ? 1 : -1;
+                    return a.toString() > b.toString() ? 1 : -1;
                 }
             };
 
@@ -76,6 +76,6 @@ Blockly.JavaScript.lists_sort = block => {
         }`,
     ]);
 
-    const code = `${list}.slice(0).sort(${getCompareFunctionName}("${type}", ${direction}))`;
+    const code = `${list}.sort().slice(0).sort(${getCompareFunctionName}("${type}", ${direction}))`;
     return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };

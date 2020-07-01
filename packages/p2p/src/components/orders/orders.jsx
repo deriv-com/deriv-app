@@ -4,14 +4,13 @@ import PropTypes from 'prop-types';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import PageReturn from 'Components/page-return/page-return.jsx';
-import LocalStorage from 'Utils/local-storage';
 import OrderInfo from './order-info';
 import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
 const Orders = ({ params, navigate, chat_info }) => {
-    const { orders, order_id, setOrderId } = React.useContext(Dp2pContext);
+    const { orders, order_id, setOrderId, LocalStorage } = React.useContext(Dp2pContext);
     const [order_details, setDetails] = React.useState(null);
     const [nav, setNav] = React.useState(params?.nav);
     const is_mounted = React.useRef(false);
@@ -26,7 +25,6 @@ const Orders = ({ params, navigate, chat_info }) => {
     const setQueryDetails = input_order => {
         setOrderId(input_order.id);
         setDetails(input_order);
-
         LocalStorage.setNotification(input_order.chat_channel_url, {
             has_seen_chat: true,
             has_seen_order: true,

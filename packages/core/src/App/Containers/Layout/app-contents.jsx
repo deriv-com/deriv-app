@@ -10,102 +10,97 @@ import { cookie_banner_expires_in_days } from '../../Constants/app-config';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 // import InstallPWA    from './install-pwa.jsx';
 
-class AppContents extends React.Component {
-    state = {
-        show_cookie_banner: false,
-    };
+const AppContents = ({
+    children,
+    identifyEvent,
+    is_app_disabled,
+    is_cashier_visible,
+    is_eu_country,
+    is_logged_in,
+    is_mt5_page,
+    is_positions_drawer_on,
+    is_route_modal_on,
+    is_window_loaded,
+    pageView,
+    pushDataLayer,
+}) => {
+    const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
+    const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
 
-    async componentDidMount() {
-        // Segment page view trigger
-        this.props.identifyEvent();
-        this.props.pageView();
-        /*
-        if (is_logged_in) {
-        TODO: uncomment these after the issues with showing the prompt too often and in the app are fixed
-        window.addEventListener('beforeinstallprompt', e => {
-            console.log('Going to show the installation prompt'); // eslint-disable-line no-console
-            e.preventDefault();
-            this.props.setPWAPromptEvent(e);
-            this.props.addNotificationBar({
-                content : <InstallPWA />,
-                autoShow: 10000, // show after 10 secs
-                msg_type: 'pwa',
-            });
-        });
-        }
-        */
-    }
+    const tracking_status = Cookies.get('tracking_status');
 
-    componentDidUpdate(prev_props) {
-        const { is_eu_country, is_logged_in, is_window_loaded, is_tracking, pushDataLayer } = this.props;
-
-        const tracking_status = Cookies.get('tracking_status');
-        const allow_tracking = !is_eu_country || tracking_status === 'accepted';
-        if (allow_tracking && !is_tracking) {
+    React.useEffect(() => {
+        const allow_tracking = (is_eu_country !== undefined && !is_eu_country) || tracking_status === 'accepted';
+        if (allow_tracking && !is_gtm_tracking) {
             pushDataLayer({ event: 'allow_tracking' });
+            setIsGtmTracking(true);
         }
+    }, [is_eu_country]);
 
-        if (is_window_loaded !== prev_props.is_window_loaded || is_logged_in !== prev_props.is_logged_in) {
-            if (!is_logged_in && is_eu_country && !tracking_status) {
-                this.setState({
-                    show_cookie_banner: true,
-                });
-            }
+    React.useEffect(() => {
+        if (!is_logged_in && is_eu_country && !tracking_status) {
+            setShowCookieBanner(true);
         }
+    }, [is_logged_in, is_window_loaded]);
+
+    // Segment page view trigger
+    identifyEvent();
+    pageView();
+    /*
+    if (is_logged_in) {
+    TODO: uncomment these after the issues with showing the prompt too often and in the app are fixed
+    window.addEventListener('beforeinstallprompt', e => {
+        console.log('Going to show the installation prompt'); // eslint-disable-line no-console
+        e.preventDefault();
+        this.props.setPWAPromptEvent(e);
+        this.props.addNotificationBar({
+            content : <InstallPWA />,
+            autoShow: 10000, // show after 10 secs
+            msg_type: 'pwa',
+        });
+    });
     }
+    */
 
     // handle accept/decline cookies
-    onAccept = () => {
+    const onAccept = () => {
         Cookies.set('tracking_status', 'accepted', {
             expires: cookie_banner_expires_in_days,
         });
-        this.props.pushDataLayer({ event: 'allow_tracking' });
-        this.setState({ show_cookie_banner: false });
+        pushDataLayer({ event: 'allow_tracking' });
+        setShowCookieBanner(false);
+        setIsGtmTracking(true);
     };
 
-    onDecline = () => {
+    const onDecline = () => {
         Cookies.set('tracking_status', 'declined', {
             expires: cookie_banner_expires_in_days,
         });
-        this.setState({ show_cookie_banner: false });
+        setShowCookieBanner(false);
     };
 
-    render() {
-        const {
-            children,
-            is_app_disabled,
-            is_cashier_visible,
-            is_mt5_page,
-            is_positions_drawer_on,
-            is_route_modal_on,
-        } = this.props;
-        return (
-            <div
-                id='app_contents'
-                className={classNames('app-contents', {
-                    'app-contents--show-positions-drawer': is_positions_drawer_on,
-                    'app-contents--is-disabled': is_app_disabled,
-                    'app-contents--is-mobile': isMobile(),
-                    'app-contents--is-route-modal': is_route_modal_on,
-                    'app-contents--is-scrollable': is_mt5_page || is_cashier_visible,
-                })}
-            >
-                <MobileWrapper>{children}</MobileWrapper>
-                <DesktopWrapper>
-                    {/* Calculate height of user screen and offset height of header and footer */}
-                    <ThemedScrollbars height='calc(100vh - 84px)'>{children}</ThemedScrollbars>
-                </DesktopWrapper>
-                {this.state.show_cookie_banner && (
-                    <CookieBanner
-                        onAccept={this.onAccept}
-                        onDecline={this.onDecline}
-                        is_open={this.state.show_cookie_banner}
-                    />
-                )}
-            </div>
-        );
-    }
-}
+    return (
+        <div
+            id='app_contents'
+            className={classNames('app-contents', {
+                'app-contents--show-positions-drawer': is_positions_drawer_on,
+                'app-contents--is-disabled': is_app_disabled,
+                'app-contents--is-mobile': isMobile(),
+                'app-contents--is-route-modal': is_route_modal_on,
+                'app-contents--is-scrollable': is_mt5_page || is_cashier_visible,
+            })}
+        >
+            <MobileWrapper>{children}</MobileWrapper>
+            <DesktopWrapper>
+                {/* Calculate height of user screen and offset height of header and footer */}
+                <ThemedScrollbars height='calc(100vh - 84px)'>{children}</ThemedScrollbars>
+            </DesktopWrapper>
+            {show_cookie_banner && (
+                <CookieBanner onAccept={onAccept} onDecline={onDecline} is_open={show_cookie_banner} />
+            )}
+        </div>
+    );
+};
 
 AppContents.propTypes = {
     children: PropTypes.any,

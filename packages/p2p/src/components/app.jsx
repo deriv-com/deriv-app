@@ -39,6 +39,7 @@ class App extends React.Component {
         this.state = {
             poi_url: this.props.poi_url,
             active_index: 0,
+            loginid: this.props.client.loginid,
             order_offset: 0,
             orders: [],
             notification_count: 0,
@@ -310,6 +311,11 @@ class App extends React.Component {
             poi_status,
             poi_url,
             show_popup,
+            is_loading,
+            poi_url,
+            poi_status,
+            is_restricted,
+            nickname_error,
         } = this.state;
         const {
             LocalStorage,

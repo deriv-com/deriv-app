@@ -20,6 +20,9 @@ const getRealFinancialStpBtnLbl = (is_fully_authenticated, is_pending_authentica
 
 const MT5RealAccountDisplay = ({
     has_real_account,
+    is_eu,
+    is_eu_enabled,
+    has_maltainvest_account,
     is_fully_authenticated,
     is_pending_authentication,
     landing_companies,
@@ -30,6 +33,7 @@ const MT5RealAccountDisplay = ({
     has_mt5_account,
     openPasswordManager,
     account_settings,
+    showAccountNeededModal,
 }) => {
     const has_required_credentials =
         account_settings.citizen && account_settings.tax_identification_number && account_settings.tax_residence;
@@ -43,7 +47,14 @@ const MT5RealAccountDisplay = ({
     const is_real_financial_stp_disabled = !has_real_account || is_pending_authentication;
 
     const onSelectRealSynthetic = () => onSelectAccount({ type: 'synthetic', category: 'real' });
-    const onSelectRealFinancial = () => onSelectAccount({ type: 'financial', category: 'real' });
+    const onSelectRealFinancial = () => {
+        // TODO: [deriv-eu] remove is_eu_enabled when eu gets a release
+        if (is_eu_enabled && is_eu && !has_maltainvest_account) {
+            showAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Financial'));
+        } else {
+            onSelectAccount({ type: 'financial', category: 'real' });
+        }
+    };
     const onSelectRealFinancialStp = () => {
         const account_type = {
             category: 'real',

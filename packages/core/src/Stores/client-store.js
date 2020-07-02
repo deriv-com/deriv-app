@@ -916,6 +916,12 @@ export default class ClientStore extends BaseStore {
     // --> so we keep a separate balance subscription for the active account
     @action.bound
     setBalanceOtherAccounts(obj_balance) {
+        // Only the first response of balance:all will include all accounts
+        // subsequent requests will be single account balance updates
+        if (this.accounts[obj_balance?.loginid] && !obj_balance.accounts && obj_balance.loginid !== this.loginid) {
+            this.accounts[obj_balance.loginid].balance = obj_balance.balance;
+        }
+
         if (this.accounts[obj_balance?.loginid] && obj_balance.accounts) {
             Object.keys(obj_balance.accounts).forEach(account_id => {
                 const is_active_account_id = account_id === this.loginid;
@@ -924,18 +930,18 @@ export default class ClientStore extends BaseStore {
                     this.accounts[account_id].balance = +obj_balance.accounts[account_id].balance;
                 }
             });
+        }
 
-            if (obj_balance.total) {
-                const total_real = ObjectUtils.getPropertyValue(obj_balance, ['total', 'deriv']);
-                const total_mt5 = ObjectUtils.getPropertyValue(obj_balance, ['total', 'mt5']);
-                // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
-                const has_mt5 = !ObjectUtils.isEmptyObject(total_mt5);
-                this.obj_total_balance = {
-                    amount_real: +total_real.amount,
-                    amount_mt5: has_mt5 ? +total_mt5.amount : this.obj_total_balance.amount_mt5,
-                    currency: total_real.currency,
-                };
-            }
+        if (obj_balance.total) {
+            const total_real = ObjectUtils.getPropertyValue(obj_balance, ['total', 'deriv']);
+            const total_mt5 = ObjectUtils.getPropertyValue(obj_balance, ['total', 'mt5']);
+            // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
+            const has_mt5 = !ObjectUtils.isEmptyObject(total_mt5);
+            this.obj_total_balance = {
+                amount_real: +total_real.amount,
+                amount_mt5: has_mt5 ? +total_mt5.amount : this.obj_total_balance.amount_mt5,
+                currency: total_real.currency,
+            };
         }
     }
 

@@ -26,8 +26,12 @@ const MT5AccountNeededModal = ({
                 deriv_account: target_label,
             })}
             onConfirm={createAccount}
+            cancel_button_text={localize('Maybe later')}
+            onCancel={onClose}
+            is_closed_on_cancel
             disableApp={disableApp}
             enableApp={enableApp}
+            is_closed_on_confirm
             is_visible={is_open}
         >
             <Localize

@@ -22,6 +22,7 @@ const MT5RealAccountDisplay = ({
     has_real_account,
     is_eu,
     is_eu_enabled,
+    has_malta_account,
     has_maltainvest_account,
     is_fully_authenticated,
     is_pending_authentication,
@@ -46,7 +47,13 @@ const MT5RealAccountDisplay = ({
 
     const is_real_financial_stp_disabled = !has_real_account || is_pending_authentication;
 
-    const onSelectRealSynthetic = () => onSelectAccount({ type: 'synthetic', category: 'real' });
+    const onSelectRealSynthetic = () => {
+        if (is_eu_enabled && is_eu && has_maltainvest_account && !has_malta_account) {
+            showAccountNeededModal('malta', localize('Deriv Synthetic'), localize('DMT5 Synthetic'));
+        } else {
+            onSelectAccount({ type: 'synthetic', category: 'real' });
+        }
+    };
     const onSelectRealFinancial = () => {
         // TODO: [deriv-eu] remove is_eu_enabled when eu gets a release
         if (is_eu_enabled && is_eu && !has_maltainvest_account) {

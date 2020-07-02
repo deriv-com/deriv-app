@@ -116,6 +116,11 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get has_malta_account() {
+        return this.active_accounts.some(acc => acc.landing_company_shortcode === 'malta');
+    }
+
+    @computed
     get has_any_real_account() {
         return this.account_list.some(acc => acc.is_virtual === 0);
     }

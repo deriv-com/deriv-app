@@ -38,7 +38,10 @@ const FinancialInformation = ({
     account_turnover_enum,
 }) => (
     <React.Fragment>
-        <FormSubHeader title={localize('Financial information')} />
+        <FormSubHeader
+            title={localize('Financial information')}
+            description={localize("We're legally obliged to ask for your financial information.")}
+        />
         <IncomeSource {...shared_props} income_source_enum={income_source_enum} />
         <EmploymentStatus {...shared_props} employment_status_enum={employment_status_enum} />
         <EmploymentIndustry {...shared_props} employment_industry_enum={employment_industry_enum} />
@@ -132,9 +135,6 @@ class FinancialDetails extends React.Component {
                                         height_offset='199px'
                                         is_disabled={isDesktop()}
                                     >
-                                        <p className='details-form__description'>
-                                            <Localize i18n_default_text="We're legally obliged to ask for your financial information." />
-                                        </p>
                                         <ThemedScrollbars
                                             is_native={isMobile()}
                                             autoHide={!(window.innerHeight < 890)}

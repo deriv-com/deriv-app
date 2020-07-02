@@ -323,4 +323,10 @@
         padding-right: 8px;
         position: absolute;
     }
+    &__description {
+        position: absolute;
+        font-size: 1.2rem;
+        font-weight: normal;
+        top: 2rem;
+    }
 }

@@ -40,14 +40,14 @@ const Firestore = (() => {
             );
 
             reaction(
-                () => s.summary.number_of_runs,
+                () => s.statistics.number_of_runs,
                 () => {
                     // send the summary when contract closes and bot is stopped
                     if (
                         !run_panel.is_running &&
                         run_panel.contract_stage.index === contract_stages.CONTRACT_CLOSED.index
                     ) {
-                        onSummaryChanged(client.loginid, s.summary);
+                        onSummaryChanged(client.loginid, s.statistics);
                     }
                 }
             );

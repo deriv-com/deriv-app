@@ -32,6 +32,7 @@ const TradeAnimation = ({
     contract_stage,
     is_contract_completed,
     is_stop_button_visible,
+    is_stop_button_disabled,
     profit,
     should_show_overlay,
     onRunButtonClick,
@@ -60,6 +61,7 @@ const TradeAnimation = ({
         <div className={classNames('animation__wrapper', className)}>
             {info_direction === 'left' && <AnimationInfo />}
             <Button
+                is_disabled={is_stop_button_disabled}
                 className='animation__button'
                 id={is_stop_button_visible ? 'db-animation__stop-button' : 'db-animation__run-button'}
                 text={is_stop_button_visible ? localize('Stop') : localize('Run')}
@@ -106,6 +108,7 @@ export default connect(({ run_panel, contract_card }) => ({
     contract_stage: run_panel.contract_stage,
     is_contract_completed: contract_card.is_contract_completed,
     is_stop_button_visible: run_panel.is_stop_button_visible,
+    is_stop_button_disabled: run_panel.is_stop_button_disabled,
     onRunButtonClick: run_panel.onRunButtonClick,
     onStopButtonClick: run_panel.onStopButtonClick,
     profit: contract_card.profit,

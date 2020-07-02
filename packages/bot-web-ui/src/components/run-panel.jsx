@@ -104,7 +104,7 @@ const drawerFooter = ({
                         )}
                     />
                     <StatisticsTile
-                        title={localize('Profit/Loss')}
+                        title={localize('Profit/loss')}
                         content={<Money amount={total_profit} currency={currency} has_sign={true} />}
                         alignment='bottom'
                         contentClassName={classNames('run-panel__stat-amount', {
@@ -163,11 +163,7 @@ class RunPanel extends React.PureComponent {
             is_clear_stat_disabled,
             is_drawer_open,
             is_mobile,
-            is_stop_button_disabled,
-            is_stop_button_visible,
             onClearStatClick,
-            onStopButtonClick,
-            onRunButtonClick,
             setActiveTabIndex,
             toggleDrawer,
         } = this.props;
@@ -186,16 +182,11 @@ class RunPanel extends React.PureComponent {
                     is_open={is_drawer_open}
                     onClearStatClick={onClearStatClick}
                     toggleDrawer={toggleDrawer}
+                    zIndex={popover_zindex.RUN_PANEL}
                 >
                     {content}
                 </Drawer>
-                {is_mobile &&
-                    MobileDrawerFooter({
-                        onStopButtonClick,
-                        onRunButtonClick,
-                        is_stop_button_visible,
-                        is_stop_button_disabled,
-                    })}
+                {is_mobile && <MobileDrawerFooter />}
             </>
         );
     }
@@ -208,14 +199,10 @@ RunPanel.propTypes = {
     is_dialog_open: PropTypes.bool,
     is_drawer_open: PropTypes.bool,
     is_mobile: PropTypes.bool,
-    is_stop_button_disabled: PropTypes.bool,
-    is_stop_button_visible: PropTypes.bool,
     onCancelButtonClick: PropTypes.func,
     onClearStatClick: PropTypes.func,
     onMount: PropTypes.func,
     onOkButtonClick: PropTypes.func,
-    onRunButtonClick: PropTypes.func,
-    onStopButtonClick: PropTypes.func,
     onUnmount: PropTypes.func,
     setActiveTabIndex: PropTypes.func,
     toggleDrawer: PropTypes.func,
@@ -235,14 +222,10 @@ export default connect(({ run_panel, core, ui }) => ({
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
     is_mobile: ui.is_mobile,
-    is_stop_button_disabled: run_panel.is_stop_button_disabled,
-    is_stop_button_visible: run_panel.is_stop_button_visible,
     onCancelButtonClick: run_panel.onCancelButtonClick,
     onClearStatClick: run_panel.onClearStatClick,
     onMount: run_panel.onMount,
     onOkButtonClick: run_panel.onOkButtonClick,
-    onRunButtonClick: run_panel.onRunButtonClick,
-    onStopButtonClick: run_panel.onStopButtonClick,
     onUnmount: run_panel.onUnmount,
     setActiveTabIndex: run_panel.setActiveTabIndex,
     toggleDrawer: run_panel.toggleDrawer,

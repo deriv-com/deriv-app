@@ -5,7 +5,11 @@
 .run-panel {
     height: var(--bot-content-height) !important;
     top: 104px !important;
+    width: 382px !important;
 
+    &--open {
+        transform: translateX(-382px) !important;
+    }
     &__tile {
         display: flex;
         flex-direction: column;

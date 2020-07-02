@@ -207,20 +207,6 @@ export default class TradeStore extends BaseStore {
                 }
             }
         );
-
-        reaction(
-            () => [this.contract_expiry_type],
-            () => {
-                console.trace(this.contract_expiry_type, 'contract_expiry_type reaction');
-            }
-        );
-
-        reaction(
-            () => [this.form_components],
-            () => {
-                console.trace(this.form_components, 'form_components reaction');
-            }
-        );
     }
 
     @computed
@@ -608,7 +594,6 @@ export default class TradeStore extends BaseStore {
     @action.bound
     updateStore(new_state) {
         Object.keys(ObjectUtils.cloneObject(new_state)).forEach(key => {
-            console.log('update store', key);
             if (key === 'root_store' || ['validation_rules', 'validation_errors', 'currency'].indexOf(key) > -1) return;
             if (JSON.stringify(this[key]) === JSON.stringify(new_state[key])) {
                 delete new_state[key];
@@ -716,10 +701,8 @@ export default class TradeStore extends BaseStore {
 
             // TODO: handle barrier updates on proposal api
             // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
-            console.log('before', new_state, JSON.parse(JSON.stringify(this)));
             const snapshot = await processTradeParams(this, new_state);
             snapshot.is_trade_enabled = true;
-            console.log('after', new_state, snapshot, snapshot.duration_units_list);
 
             this.updateStore({
                 ...snapshot,

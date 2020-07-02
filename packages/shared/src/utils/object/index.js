@@ -1,2 +1,2 @@
 export * from './object';
-export * as cloneThorough from './clone';
+export { default as cloneThorough } from './clone';

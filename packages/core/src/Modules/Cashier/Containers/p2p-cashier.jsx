@@ -10,16 +10,7 @@ import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';
 
-const P2PCashier = ({
-    currency,
-    history,
-    is_mobile,
-    is_virtual,
-    local_currency_config,
-    location,
-    loginid,
-    residence,
-}) => {
+const P2PCashier = ({ currency, history, is_mobile, is_virtual, local_currency_config, location, residence }) => {
     const [order_id, setOrderId] = React.useState(null);
 
     React.useEffect(() => {
@@ -53,7 +44,7 @@ const P2PCashier = ({
     return (
         <P2P
             LocalStorage={P2pStorage}
-            client={{ currency, local_currency_config, is_virtual, residence, loginid }}
+            client={{ currency, local_currency_config, is_virtual, residence }}
             is_mobile={is_mobile}
             lang={getLanguage()}
             order_id={order_id}
@@ -71,7 +62,6 @@ P2PCashier.propTypes = {
     is_mobile: PropTypes.bool,
     is_virtual: PropTypes.bool,
     local_currency_config: PropTypes.object,
-    loginid: PropTypes.string,
     residence: PropTypes.string,
 };
 
@@ -81,7 +71,6 @@ export default withRouter(
         is_mobile: ui.is_mobile,
         is_virtual: client.is_virtual,
         local_currency_config: client.local_currency_config,
-        loginid: client.loginid,
         residence: client.residence,
     }))(P2PCashier)
 );

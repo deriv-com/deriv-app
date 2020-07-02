@@ -39,7 +39,6 @@ class App extends React.Component {
         this.state = {
             poi_url: this.props.poi_url,
             active_index: 0,
-            loginid: this.props.client.loginid,
             order_offset: 0,
             orders: [],
             notification_count: 0,
@@ -243,8 +242,8 @@ class App extends React.Component {
                     }
                 }
             } else if (!notification) {
-                // If we don't have a notification our local storage, only notify the user
-                // actionable orders.
+                // If we don't have a notification in our local storage, only notify the user
+                // if an action needs to be taken.
                 const actionable_statuses = ['pending', 'buyer-confirmed'];
                 const is_action_required = actionable_statuses.includes(new_order.status);
                 const has_seen_order = is_current_order || !is_action_required;
@@ -308,7 +307,7 @@ class App extends React.Component {
         const {
             LocalStorage,
             className,
-            client: { currency, local_currency_config, is_virtual, residence, loginid },
+            client: { currency, local_currency_config, is_virtual, residence },
             custom_strings,
             is_mobile,
             order_id,
@@ -341,7 +340,6 @@ class App extends React.Component {
                     is_restricted,
                     list_item_limit: this.list_item_limit,
                     local_currency_config,
-                    loginid,
                     nickname: this.state.nickname,
                     nickname_error,
                     order_id,
@@ -438,7 +436,6 @@ App.propTypes = {
             currency: PropTypes.string.isRequired,
             decimal_places: PropTypes.number,
         }).isRequired,
-        loginid: PropTypes.string.isRequired,
         residence: PropTypes.string.isRequired,
     }),
     is_mobile: PropTypes.bool,

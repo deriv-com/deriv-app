@@ -159,7 +159,7 @@ class MT5Dashboard extends React.Component {
                                 selected_account_type={this.state.password_manager.selected_account_type}
                                 toggleModal={this.togglePasswordManagerModal}
                             />
-                            {!hasMoreThanOne(this.props.landing_companies) && (
+                            {!this.props.is_eu && !hasMoreThanOne(this.props.landing_companies) && (
                                 <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
                             )}
                             <TabOrFlex
@@ -172,9 +172,11 @@ class MT5Dashboard extends React.Component {
                             >
                                 <div label={localize('Real account')}>
                                     <React.Fragment>
-                                        {hasMoreThanOne(this.props.landing_companies) && !has_real_account && (
-                                            <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
-                                        )}
+                                        {!this.props.is_eu &&
+                                            hasMoreThanOne(this.props.landing_companies) &&
+                                            !has_real_account && (
+                                                <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
+                                            )}
                                         <MT5RealAccountDisplay
                                             is_eu={this.props.is_eu}
                                             is_eu_enabled={this.props.is_eu_enabled}
@@ -198,6 +200,11 @@ class MT5Dashboard extends React.Component {
                                 </div>
                                 <div label={localize('Demo account')}>
                                     <MT5DemoAccountDisplay
+                                        is_eu={this.props.is_eu}
+                                        is_eu_enabled={this.props.is_eu_enabled}
+                                        has_maltainvest_account={this.props.has_maltainvest_account}
+                                        showAccountNeededModal={this.showAccountNeededModal}
+                                        standpoint={this.props.standpoint}
                                         is_loading={is_loading}
                                         has_mt5_account={has_mt5_account}
                                         current_list={this.props.current_list}
@@ -296,6 +303,7 @@ export default withRouter(
         setAccountType: modules.mt5.setAccountType,
         setMt5PasswordResetModal: modules.mt5.setMt5PasswordResetModal,
         setCurrentAccount: modules.mt5.setCurrentAccount,
+        standpoint: client.standpoint,
         toggleCompareAccounts: modules.mt5.toggleCompareAccountsModal,
         openTopUpModal: ui.openTopUpModal,
         NotificationMessages: ui.notification_messages_ui,

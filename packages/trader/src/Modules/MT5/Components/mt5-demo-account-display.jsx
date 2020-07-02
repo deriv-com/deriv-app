@@ -5,6 +5,11 @@ import { MT5AccountCard } from './mt5-account-card.jsx';
 import Loading from '../../../templates/_common/components/loading.jsx';
 
 const MT5DemoAccountDisplay = ({
+    is_eu,
+    is_eu_enabled,
+    has_maltainvest_account,
+    showAccountNeededModal,
+    standpoint,
     is_loading,
     landing_companies,
     onSelectAccount,
@@ -12,8 +17,19 @@ const MT5DemoAccountDisplay = ({
     current_list,
     has_mt5_account,
     openPasswordManager,
-}) =>
-    is_loading ? (
+}) => {
+    const openMt5Account = () => {
+        if (is_eu_enabled && is_eu && !has_maltainvest_account && standpoint.iom) {
+            showAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Financial'));
+        } else {
+            onSelectAccount({
+                category: 'demo',
+                type: 'financial',
+            });
+        }
+    };
+
+    return is_loading ? (
         <div className='mt5-demo-accounts-display'>
             <Loading />
         </div>
@@ -70,12 +86,7 @@ const MT5DemoAccountDisplay = ({
                             components={[<span key={0} className='mt5-dashboard--hint' />]}
                         />
                     }
-                    onSelectAccount={() =>
-                        onSelectAccount({
-                            category: 'demo',
-                            type: 'financial',
-                        })
-                    }
+                    onSelectAccount={openMt5Account}
                     onPasswordManager={openPasswordManager}
                     onClickFund={() =>
                         openAccountTransfer(current_list['demo.financial'], {
@@ -131,5 +142,6 @@ const MT5DemoAccountDisplay = ({
             )}
         </div>
     );
+};
 
 export { MT5DemoAccountDisplay };

@@ -46,7 +46,7 @@ class TermsOfUse extends React.Component {
                                     id='agreed_tnc'
                                     label={
                                         <Localize
-                                            i18n_default_text='I have read and agree to the <0>terms and conditions</0> of the Deriv website.'
+                                            i18n_default_text='I agree to the <0>terms and conditions</0>.'
                                             components={[
                                                 <a
                                                     key={0}

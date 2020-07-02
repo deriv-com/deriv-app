@@ -20,18 +20,20 @@ import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.js
 import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
+const hasMoreThanOne = ({ mt_financial_company, mt_gaming_company }) =>
+    [
+        ...(mt_financial_company?.standard ? [true] : []),
+        ...(mt_financial_company?.advanced ? [true] : []),
+        ...(mt_gaming_company?.standard ? [true] : []),
+    ].length > 1;
+
 const TabOrFlex = ({ landing_companies, children, is_loading, loading_component, ...props }) => {
     const LoadingComponent = loading_component;
     if (is_loading) {
         return <LoadingComponent />;
     }
 
-    const should_show_tab =
-        [
-            ...(landing_companies?.mt_financial_company?.standard ? [true] : []),
-            ...(landing_companies?.mt_financial_company?.advanced ? [true] : []),
-            ...(landing_companies?.mt_gaming_company?.standard ? [true] : []),
-        ].length > 1;
+    const should_show_tab = hasMoreThanOne(landing_companies);
 
     if (should_show_tab) {
         return <Tabs {...props}>{children}</Tabs>;
@@ -53,9 +55,6 @@ class MT5Dashboard extends React.Component {
     };
 
     componentDidMount() {
-        if (!this.props.is_mt5_allowed) {
-            this.props.history.push(routes.trade);
-        }
         this.updateActiveIndex();
         this.openResetPassword();
         this.props.onMount();
@@ -145,6 +144,9 @@ class MT5Dashboard extends React.Component {
                             selected_account_type={this.state.password_manager.selected_account_type}
                             toggleModal={this.togglePasswordManagerModal}
                         />
+                        {!hasMoreThanOne(this.props.landing_companies) && (
+                            <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
+                        )}
                         <TabOrFlex
                             landing_companies={this.props.landing_companies}
                             active_index={this.state.active_index}
@@ -155,7 +157,9 @@ class MT5Dashboard extends React.Component {
                         >
                             <div label={localize('Real account')}>
                                 <React.Fragment>
-                                    {!has_real_account && <MissingRealAccount onClickSignup={beginRealSignupForMt5} />}
+                                    {hasMoreThanOne(this.props.landing_companies) && !has_real_account && (
+                                        <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
+                                    )}
                                     <MT5RealAccountDisplay
                                         current_list={this.props.current_list}
                                         account_status={this.props.account_status}

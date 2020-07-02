@@ -389,13 +389,11 @@ export default class ClientStore extends BaseStore {
         const has_mt5 =
             'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
 
-        // TODO: [deriv-eu] Update this when all EU functionalities are merged into production and all landing companies are accepted.
-        if (this.root_store.ui.is_eu_enabled && has_mt5) {
-            // hide MT5 dashboard for IOM account or VRTC of IOM landing company
-            if (this.landing_companies?.gaming_company?.shortcode === 'iom') {
-                return this.landing_company_shortcode !== 'iom' && !this.is_virtual;
-            }
-            return true;
+        // TODO: [deriv-eu] Remove the if statement once EU is enabled in dev
+        if (this.is_eu && !this.root_store.ui.is_eu_enabled) {
+            return false;
+        } else if (this.is_eu && this.root_store.ui.is_eu_enabled) {
+            return has_mt5;
         }
 
         if (has_mt5) {

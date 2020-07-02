@@ -141,14 +141,14 @@ class AccountSwitcher extends React.Component {
 
         const mt5_config = [
             {
-                account_types: ['svg'],
+                account_types: ['svg', 'malta'],
                 icon: 'Synthetic',
                 title: localize('Synthetic'),
                 type: 'synthetic',
                 api_key: 'mt_gaming_company.standard',
             },
             {
-                account_types: ['vanuatu', 'svg_standard'],
+                account_types: ['vanuatu', 'svg_standard', 'maltainvest_standard'],
                 icon: 'Financial',
                 title: localize('Financial'),
                 type: 'financial',

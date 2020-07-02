@@ -98,8 +98,6 @@ class ConfigVerification {
 
 export default class CashierStore extends BaseStore {
     @observable is_loading = false;
-    @observable is_p2p_visible = false;
-    @observable is_p2p_advertiser = false;
     @observable cashier_route_tab_index = 0;
 
     @observable config = {
@@ -178,13 +176,14 @@ export default class CashierStore extends BaseStore {
             // 1. we have not already checked this before, and
             // 2. client is not virtual, and
             // 3. p2p call does not return error code `PermissionDenied`
-            if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
+            const { p2p } = this.root_store.modules;
+            if (!p2p.is_visible && !this.root_store.client.is_virtual) {
                 const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
                 const advertiser_error = ObjectUtils.getPropertyValue(advertiser_info, ['error', 'code']);
                 if (advertiser_error === 'PermissionDenied') return;
 
-                this.is_p2p_advertiser = !advertiser_error;
-                this.setIsP2pVisible(true);
+                p2p.setIsAdvertiser(!advertiser_error);
+                p2p.setIsVisible(true);
             }
         }
     }
@@ -192,14 +191,6 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setCashierTabIndex(index) {
         this.cashier_route_tab_index = index;
-    }
-
-    @action.bound
-    setIsP2pVisible(is_p2p_visible) {
-        this.is_p2p_visible = is_p2p_visible;
-        if (!is_p2p_visible && window.location.pathname.startsWith(routes.cashier_p2p)) {
-            this.root_store.common.routeTo(routes.cashier_deposit);
-        }
     }
 
     @action.bound
@@ -1022,7 +1013,7 @@ export default class CashierStore extends BaseStore {
         this.config.account_transfer = new ConfigAccountTransfer();
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
         this.is_populating_values = false;
-        this.setIsP2pVisible(false);
+        this.root_store.modules.p2p.setIsVisible(false);
 
         this.onRemount();
 

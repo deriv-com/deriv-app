@@ -11,6 +11,8 @@ export default class P2pStore extends BaseStore {
     }
 
     @observable unread_notification_count = 0;
+    @observable is_advertiser = false;
+    @observable is_visible = false;
 
     @action.bound
     async initSendbird() {
@@ -40,12 +42,26 @@ export default class P2pStore extends BaseStore {
     }
 
     @action.bound
-    disconnectSendbird() {
+    async disconnectSendbird() {
         if (this.sendbird_api) {
             this.sendbird_api.disconnect();
         }
 
         return Promise.resolve();
+    }
+
+    @action.bound
+    setIsAdvertiser(is_advertiser) {
+        this.is_advertiser = is_advertiser;
+    }
+
+    @action.bound
+    setIsVisible(is_visible) {
+        this.is_visible = is_visible;
+
+        if (!is_visible && window.location.pathname.startsWith(routes.cashier_p2p)) {
+            this.root_store.common.routeTo(routes.cashier_deposit);
+        }
     }
 
     @action.bound

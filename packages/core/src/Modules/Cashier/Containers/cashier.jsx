@@ -179,7 +179,7 @@ export default connect(({ client, common, modules, ui }) => ({
     tab_index: modules.cashier.cashier_route_tab_index,
     setTabIndex: modules.cashier.setCashierTabIndex,
     loggedin_currency: client.currency,
-    is_p2p_visible: modules.cashier.is_p2p_visible,
+    is_p2p_visible: modules.p2p.is_visible,
     is_virtual: client.is_virtual,
     is_visible: ui.is_cashier_visible,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,

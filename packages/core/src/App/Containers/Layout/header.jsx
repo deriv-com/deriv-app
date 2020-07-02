@@ -187,7 +187,7 @@ export default connect(({ client, common, ui, modules }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
-    is_p2p_visible: modules.cashier.is_p2p_visible,
+    is_p2p_visible: modules.p2p.is_visible,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     balance: client.balance,

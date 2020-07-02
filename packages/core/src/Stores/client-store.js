@@ -916,7 +916,7 @@ export default class ClientStore extends BaseStore {
     // --> so we keep a separate balance subscription for the active account
     @action.bound
     setBalanceOtherAccounts(obj_balance) {
-        if (this.accounts[obj_balance?.loginid]) {
+        if (this.accounts[obj_balance?.loginid] && obj_balance.accounts) {
             Object.keys(obj_balance.accounts).forEach(account_id => {
                 const is_active_account_id = account_id === this.loginid;
 

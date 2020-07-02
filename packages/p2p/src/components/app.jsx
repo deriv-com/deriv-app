@@ -95,9 +95,13 @@ class App extends React.Component {
         };
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
         if (prevProps.order_id !== this.props.order_id && this.props.order_id) {
             this.redirectTo('orders');
+        }
+
+        if (!ObjectUtils.isDeepEqual(prevState.orders, this.state.orders)) {
+            this.handleNotifications(prevState.orders, this.state.orders);
         }
     }
 
@@ -219,9 +223,9 @@ class App extends React.Component {
         const { is_cached, notifications } = LocalStorage.getSettings();
 
         new_orders.forEach(new_order => {
-            const old_order = old_orders.find(o => o.channel_url === new_order.chat_channel_url);
-            const notification = notifications.find(n => n.channel_url === new_order.chat_channel_url);
-            const is_current_order = new_order.channel_url === this.props.channel_url;
+            const old_order = old_orders.find(o => o.id === new_order.id);
+            const notification = notifications.find(n => n.order_id === new_order.id);
+            const is_current_order = new_order.id === this.props.order_id;
 
             if (old_order) {
                 if (old_order.status !== new_order.status) {
@@ -231,35 +235,26 @@ class App extends React.Component {
                     } else {
                         // If we have an old_order, but don't have a copy in local storage.
                         notifications.push({
+                            order_id: new_order.id,
                             channel_url: new_order.chat_channel_url,
-                            has_seen_chat: true,
+                            unread_msgs: 0,
                             has_seen_order: is_current_order,
                         });
                     }
                 }
             } else if (!notification) {
-                // If we don't have an old order nor a notification, this is a first page load. Compare with
-                // cached list or only notify user of actionable orders.
-                if (is_cached) {
-                    // If we can compare with a cached list, assume each new order should be notified.
-                    notifications.push({
-                        channel_url: new_order.chat_channel_url,
-                        has_seen_chat: true,
-                        has_seen_order: false,
-                    });
-                } else {
-                    // If we don't have a cached list, only notify user of orders that require action.
-                    // This is done so user isn't spammed with old orders after resetting their local storage.
-                    const actionable_statuses = ['pending', 'buyer-confirmed'];
-                    const is_action_required = actionable_statuses.includes(new_order.status);
-                    const has_seen_order = is_current_order || !is_action_required;
+                // If we don't have a notification our local storage, only notify the user
+                // actionable orders.
+                const actionable_statuses = ['pending', 'buyer-confirmed'];
+                const is_action_required = actionable_statuses.includes(new_order.status);
+                const has_seen_order = is_current_order || !is_action_required;
 
-                    notifications.push({
-                        channel_url: new_order.chat_channel_url,
-                        has_seen_chat: true,
-                        has_seen_order,
-                    });
-                }
+                notifications.push({
+                    order_id: new_order.id,
+                    channel_url: new_order.chat_channel_url,
+                    unread_msgs: 0,
+                    has_seen_order,
+                });
             }
         });
 
@@ -274,9 +269,8 @@ class App extends React.Component {
         const { p2p_order_list } = order_response;
 
         if (p2p_order_list) {
-            const { list } = p2p_order_list;
             // it's an array of orders from p2p_order_list
-            this.handleNotifications(this.state.orders, list);
+            const { list } = p2p_order_list;
             this.setState({ order_offset: list.length, orders: getModifiedP2POrderList(list) });
         } else {
             // it's a single order from p2p_order_info
@@ -290,7 +284,6 @@ class App extends React.Component {
                 updated_orders[idx_order_to_update] = order_response;
             }
             // trigger re-rendering by setting orders again
-            this.handleNotifications(this.state.orders, updated_orders);
             this.setState({ order_offset: updated_orders.length, orders: updated_orders });
         }
     };

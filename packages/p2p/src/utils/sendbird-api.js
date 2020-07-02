@@ -57,8 +57,9 @@ class SendbirdAPI {
             channel_list_query.next((channel_list, error) => {
                 if (!error) {
                     channel_list.forEach(channel => {
-                        const has_seen_chat = channel.unreadMessageCount === 0;
-                        LocalStorage.setNotification(channel.url, { has_seen_chat });
+                        this.LocalStorage.setNotificationByChannelUrl(channel.url, {
+                            unread_msgs: channel.unreadMessageCount,
+                        });
                     });
                 }
             });
@@ -81,9 +82,9 @@ class SendbirdAPI {
             },
         };
 
-        const has_seen_chat = channel.unreadMessageCount > 0;
-        LocalStorage.setNotification(channel.url, { has_seen_chat });
-
+        this.LocalStorage.setNotificationByChannelUrl(channel.url, {
+            unread_msgs: channel.unreadMessageCount,
+        });
         this.channels = Object.assign({}, this.channels, updated_channels);
         this.LocalStorage.syncNotifications();
     }

@@ -25,8 +25,8 @@ const Orders = ({ params, navigate, chat_info }) => {
     const setQueryDetails = input_order => {
         setOrderId(input_order.id);
         setDetails(input_order);
-        LocalStorage.setNotification(input_order.chat_channel_url, {
-            has_seen_chat: true,
+        LocalStorage.setNotificationByOrderId(input_order.id, {
+            unread_msgs: 0,
             has_seen_order: true,
         });
     };

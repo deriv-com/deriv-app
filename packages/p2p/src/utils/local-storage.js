@@ -21,7 +21,7 @@ class LocalStorage {
     }
 
     getNotificationCount() {
-        return this.getNotifications().filter(n => !n.has_seen_chat || !n.has_seen_order).length;
+        return this.getNotifications().filter(n => n.unread_msgs > 0 || !n.has_seen_order).length;
     }
 
     getNotifications() {
@@ -44,31 +44,36 @@ class LocalStorage {
         return JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY) || '{}');
     }
 
-    setNotification(channel_url, options) {
-        if (!channel_url) {
-            return;
-        }
+    setNotificationByChannelUrl(channel_url, options) {
+        const matches = channel_url.match(/^p2porder_([A-Za-z]{2})_([0-9]+)_([0-9]+)$/);
+        const order_id = matches[2];
+        this.setNotificationByOrderId(order_id, options);
+    }
 
+    setNotificationByOrderId(order_id, options) {
         const notifications = this.getNotifications();
-        const notification = notifications.find(n => n.channel_url === channel_url);
+        const notification = notifications.find(n => n.order_id === order_id);
 
         if (notification) {
-            if (options.has_seen_chat !== undefined) {
-                notification.has_seen_chat = options.has_seen_chat;
+            if (options?.channel_url !== undefined) {
+                notification.channel_url = options.channel_url;
             }
-            if (options.has_seen_order !== undefined) {
+            if (options?.unread_msgs !== undefined) {
+                notification.unread_msgs = options.unread_msgs;
+            }
+            if (options?.has_seen_order !== undefined) {
                 notification.has_seen_order = options.has_seen_order;
             }
         } else {
             notifications.push({
-                channel_url,
-                has_seen_chat: options.has_seen_chat || false,
-                has_seen_order: options.has_seen_order || false,
+                order_id,
+                channel_url: options?.chat_channel_url,
+                unread_msgs: options?.unread_msgs || 0,
+                has_seen_order: options?.has_seen_order || true,
             });
         }
 
         this.updateNotifications({ is_cached: true, notifications });
-        this.syncNotifications();
     }
 
     syncNotifications() {
@@ -84,6 +89,7 @@ class LocalStorage {
         const p2p_settings = this.getAllSettings();
         p2p_settings[this.loginid] = settings;
         localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(p2p_settings));
+        this.syncNotifications();
     }
 }
 

@@ -32,9 +32,9 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
 
     let interval;
 
-    const isOrderSeen = channel_url => {
+    const isOrderSeen = () => {
         const notifications = LocalStorage.getNotifications();
-        return notifications.some(n => n.channel_url === channel_url && n.has_seen_chat && n.has_seen_order);
+        return notifications.some(n => n.order_id === id && n.unread_msgs === 0 && n.has_seen_order);
     };
 
     const countDownTimer = () => {

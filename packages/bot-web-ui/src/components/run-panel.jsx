@@ -42,6 +42,71 @@ const StatisticsTile = props => (
     </div>
 );
 
+const StatisticsSummary = ({
+    total_stake,
+    currency,
+    total_payout,
+    number_of_runs,
+    lost_contracts,
+    won_contracts,
+    total_profit,
+}) => (
+    <div className='run-panel__stat'>
+        <StatisticsTile
+            title={localize('Total stake')}
+            alignment='top'
+            content={<Money amount={total_stake} currency={currency} />}
+            tooltip={localize(
+                'Total stake since you last cleared your stats. Refreshing the page will also clear your stats.'
+            )}
+        />
+        <StatisticsTile
+            title={localize('Total payout')}
+            alignment='top'
+            content={<Money amount={total_payout} currency={currency} />}
+            tooltip={localize(
+                'Total payout since you last cleared your stats. Refreshing the page will also clear your stats.'
+            )}
+        />
+        <StatisticsTile
+            title={localize('No. of runs')}
+            alignment='top'
+            content={number_of_runs}
+            tooltip={localize(
+                'The number of times your bot has run since you last cleared your stats. Each run includes the execution of all the root blocks. Refreshing the page will also clear your stats.'
+            )}
+        />
+        <StatisticsTile
+            title={localize('Contracts lost')}
+            alignment='bottom'
+            content={lost_contracts}
+            tooltip={localize(
+                'The number of contracts you have lost since you last cleared your stats. Refreshing the page will also clear your stats.'
+            )}
+        />
+        <StatisticsTile
+            title={localize('Contracts won')}
+            alignment='bottom'
+            content={won_contracts}
+            tooltip={localize(
+                'The number of contracts you have won since you last cleared your stats. Refreshing the page will also clear your stats.'
+            )}
+        />
+        <StatisticsTile
+            title={localize('Profit/loss')}
+            content={<Money amount={total_profit} currency={currency} has_sign />}
+            alignment='bottom'
+            contentClassName={classNames('run-panel__stat-amount', {
+                'run-panel__stat-amount--positive': total_profit > 0,
+                'run-panel__stat-amount--negative': total_profit < 0,
+            })}
+            tooltip={localize(
+                'Your total profit/loss since you last cleared your stats. It is the difference between your total payout and your total stake. Refreshing the page will also clear your stats.'
+            )}
+        />
+    </div>
+);
+
 const drawerFooter = ({
     active_index,
     dialog_options,
@@ -50,97 +115,35 @@ const drawerFooter = ({
     onCancelButtonClick,
     onClearStatClick,
     onOkButtonClick,
-    total_stake,
-    total_payout,
-    number_of_runs,
-    lost_contracts,
-    won_contracts,
-    total_profit,
-    currency,
-}) => {
-    const is_journal_tab = active_index === 2;
-    return (
-        <div className='run-panel__footer'>
-            {!is_journal_tab && (
-                <div className='run-panel__stat'>
-                    <StatisticsTile
-                        title={localize('Total stake')}
-                        alignment='top'
-                        content={<Money amount={total_stake} currency={currency} />}
-                        tooltip={localize(
-                            'Total stake since you last cleared your stats. Refreshing the page will also clear your stats.'
-                        )}
-                    />
-                    <StatisticsTile
-                        title={localize('Total payout')}
-                        alignment='top'
-                        content={<Money amount={total_payout} currency={currency} />}
-                        tooltip={localize(
-                            'Total payout since you last cleared your stats. Refreshing the page will also clear your stats.'
-                        )}
-                    />
-                    <StatisticsTile
-                        title={localize('No. of runs')}
-                        alignment='top'
-                        content={number_of_runs}
-                        tooltip={localize(
-                            'The number of times your bot has run since you last cleared your stats. Each run includes the execution of all the root blocks. Refreshing the page will also clear your stats.'
-                        )}
-                    />
-                    <StatisticsTile
-                        title={localize('Contracts lost')}
-                        alignment='bottom'
-                        content={lost_contracts}
-                        tooltip={localize(
-                            'The number of contracts you have lost since you last cleared your stats. Refreshing the page will also clear your stats.'
-                        )}
-                    />
-                    <StatisticsTile
-                        title={localize('Contracts won')}
-                        alignment='bottom'
-                        content={won_contracts}
-                        tooltip={localize(
-                            'The number of contracts you have won since you last cleared your stats. Refreshing the page will also clear your stats.'
-                        )}
-                    />
-                    <StatisticsTile
-                        title={localize('Profit/loss')}
-                        content={<Money amount={total_profit} currency={currency} has_sign={true} />}
-                        alignment='bottom'
-                        contentClassName={classNames('run-panel__stat-amount', {
-                            'run-panel__stat-amount--positive': total_profit > 0,
-                            'run-panel__stat-amount--negative': total_profit < 0,
-                        })}
-                        tooltip={localize(
-                            'Your total profit/loss since you last cleared your stats. It is the difference between your total payout and your total stake. Refreshing the page will also clear your stats.'
-                        )}
-                    />
-                </div>
-            )}
-            <Button
-                id='db-run-panel__clear-button'
-                className='run-panel__footer-button'
-                is_disabled={is_clear_stat_disabled}
-                text={localize('Clear stat')}
-                onClick={onClearStatClick}
-                has_effect
-                secondary
-            />
-            <Dialog
-                title={dialog_options.title}
-                is_open={is_dialog_open}
-                onOkButtonClick={onOkButtonClick}
-                onCancelButtonClick={onCancelButtonClick}
-            >
-                {dialog_options.message}
-            </Dialog>
-        </div>
-    );
-};
+    should_show_statistics,
+    ...props
+}) => (
+    <div className='run-panel__footer'>
+        {should_show_statistics && <StatisticsSummary {...props} />}
+        <Button
+            id='db-run-panel__clear-button'
+            className='run-panel__footer-button'
+            is_disabled={is_clear_stat_disabled}
+            text={localize('Clear stat')}
+            onClick={onClearStatClick}
+            has_effect
+            secondary
+        />
+        <Dialog
+            title={dialog_options.title}
+            is_open={is_dialog_open}
+            onOkButtonClick={onOkButtonClick}
+            onCancelButtonClick={onCancelButtonClick}
+        >
+            {dialog_options.message}
+        </Dialog>
+    </div>
+);
 
-const MobileDrawerFooter = () => {
+const MobileDrawerFooter = ({ should_show_statistics, is_drawer_open, ...props }) => {
     return (
         <div className='controls__section'>
+            {is_drawer_open && should_show_statistics && <StatisticsSummary {...props} />}
             <div className='controls__buttons'>
                 <TradeAnimation className='controls__animation' should_show_overlay info_direction={'right'} />
             </div>
@@ -168,7 +171,7 @@ class RunPanel extends React.PureComponent {
             toggleDrawer,
         } = this.props;
         const content = drawerContent({ active_index, setActiveTabIndex });
-        const footer = drawerFooter({ ...this.props, active_index });
+        const footer = drawerFooter({ ...this.props, should_show_statistics: active_index !== 2 });
 
         return (
             <>
@@ -186,7 +189,7 @@ class RunPanel extends React.PureComponent {
                 >
                     {content}
                 </Drawer>
-                {is_mobile && <MobileDrawerFooter />}
+                {is_mobile && <MobileDrawerFooter {...this.props} should_show_statistics={active_index !== 2} />}
             </>
         );
     }

@@ -31,6 +31,11 @@
         overflow: auto;
     }
     &__form {
+        &-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
         &-row {
             align-items: flex-end;
             display: flex;
@@ -60,13 +65,21 @@
             }
         }
         &-footer {
-            text-align: right;
-            position: fixed;
-            right: 20px;
-            bottom: 15px;
+            // text-align: right;
+            // position: fixed;
+            // right: 20px;
+            // bottom: 15px;
+            width: 100%;
+            background-color: var(--general-main-1);
         }
         .dc-input {
             margin-bottom: 0;
+        }
+        .dc-btn__group {
+            display: flex;
+            justify-content: flex-end;
+            flex-direction: row;
+            margin-top: 1.6rem;
         }
     }
     &__option {
@@ -133,6 +146,11 @@
             & .dc-page-overlay__content {
                 margin-top: 40px;
                 z-index: 5;
+            }
+            .dc-themed-scrollbars__autohide--is-hovered {
+                &::-webkit-scrollbar-thumb {
+                    display: unset;
+                }
             }
         }
     }

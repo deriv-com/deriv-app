@@ -918,9 +918,10 @@ export default class ClientStore extends BaseStore {
     setBalanceOtherAccounts(obj_balance) {
         if (this.accounts[obj_balance?.loginid]) {
             Object.keys(obj_balance.accounts).forEach(account_id => {
-                const is_active_account_id = account_id !== this.loginid;
-                if (!is_active_account_id) {
-                    this.accounts[account_id].balance = obj_balance.accounts[account_id].balance;
+                const is_active_account_id = account_id === this.loginid;
+
+                if (!is_active_account_id && this.accounts[account_id]) {
+                    this.accounts[account_id].balance = +obj_balance.accounts[account_id].balance;
                 }
             });
 

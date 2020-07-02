@@ -207,7 +207,6 @@ const BinarySocketGeneral = (() => {
         WS.storage.getSettings();
         WS.getAccountStatus();
         WS.storage.payoutCurrencies();
-        setResidence(response.authorize.country || client_store.accounts[client_store.loginid].residence);
         if (!client_store.is_virtual) {
             WS.getSelfExclusion();
         }

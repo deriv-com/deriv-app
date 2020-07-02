@@ -76,11 +76,9 @@ $FLOATING_HEADER_HEIGHT: 41px;
 /** @define trade-container; weak */
 .trade-container {
     position: relative;
-    padding: 0.8em 1.2em 0;
+    padding: 0.8em 1.2em;
     display: flex;
     min-height: calc(100vh - 84px);
-    transition: transform 0.25s ease;
-    will-change: transform;
     overflow: hidden;
 
     &__replay {
@@ -242,6 +240,13 @@ $FLOATING_HEADER_HEIGHT: 41px;
     position: relative;
     z-index: 1;
 
+    &__wrapper {
+        position: fixed;
+        top: calc(#{$HEADER_HEIGHT} + 2px);
+        // charts width is 100% - sidebar width - sidebar margin - .trade-container padding
+        width: calc(100% - 240px - 1.6rem - 2.4rem);
+        height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+    }
     &__loader {
         position: absolute;
         height: calc(100% - 68px);
@@ -442,9 +447,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
 .sidebar {
     &__container {
         position: relative;
-        margin-left: 1.6em;
+        margin: 0.8rem 0 0.8rem 1.6rem;
         width: $SIDEBAR_WIDTH;
-        margin-top: 8px;
         z-index: 1;
     }
     &__items {

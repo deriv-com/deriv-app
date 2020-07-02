@@ -6,6 +6,10 @@
     align-items: center;
     transform: translate(-14%, 5%);
 
+    @include mobile {
+        transform: none;
+    }
+
     &__icon {
         margin-bottom: 3.4rem;
     }
@@ -22,12 +26,20 @@
         &-description {
             color: var(--text-general);
             font-size: var(--text-size-xs);
+            font-weight: normal;
             margin-bottom: 2.4rem;
             line-height: 1.43;
 
             & p:first-child {
                 margin-bottom: 0.4rem;
             }
+        }
+    }
+    &__checklist {
+        width: 400px;
+
+        @include mobile {
+            width: 100%;
         }
     }
 }

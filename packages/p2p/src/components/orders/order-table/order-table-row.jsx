@@ -73,7 +73,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
                     'orders__table-grid--active': is_active,
-                    'orders__table-row--attention': !isOrderSeen(chat_channel_url),
+                    'orders__table-row--attention': !isOrderSeen(),
                 })}
             >
                 <Table.Cell>{is_buyer ? localize('Buy') : localize('Sell')}</Table.Cell>

@@ -12,7 +12,7 @@ class ProofOfIdentity extends React.Component {
     redirectBack = () => {
         if (/p2p/.test(this.props.location.hash)) {
             // remove hashtag once p2p is ready
-            this.props.routeBackInApp(this.props.history, `${routes.cashier_p2p}#show_p2p`);
+            this.props.routeTo(`${routes.cashier_p2p}#show_p2p`);
         }
     };
 
@@ -49,5 +49,5 @@ export default connect(({ client, ui, common }) => ({
     addNotificationByKey: ui.addNotificationMessageByKey,
     removeNotificationByKey: ui.removeNotificationByKey,
     removeNotificationMessage: ui.removeNotificationMessage,
-    routeBackInApp: common.routeBackInApp,
+    routeTo: common.routeTo,
 }))(withRouter(ProofOfIdentity));

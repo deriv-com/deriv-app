@@ -37,7 +37,6 @@ class App extends React.Component {
         this.ws_subscriptions = {};
         this.list_item_limit = 20;
         this.state = {
-            poi_url: this.props.poi_url,
             active_index: 0,
             loginid: this.props.client.loginid,
             order_offset: 0,
@@ -303,7 +302,6 @@ class App extends React.Component {
             chat_info,
             show_popup,
             is_loading,
-            poi_url,
             poi_status,
             is_restricted,
             nickname_error,

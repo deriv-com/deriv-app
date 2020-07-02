@@ -2,7 +2,7 @@ import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, ThemedScrollbar
 import { Formik } from 'formik';
 import React from 'react';
 import { FormSubHeader } from '@deriv/account';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
 import {

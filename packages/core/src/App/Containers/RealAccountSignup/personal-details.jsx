@@ -18,7 +18,7 @@ import React from 'react';
 import { FormSubHeader } from '@deriv/account';
 import { toMoment } from '@deriv/shared/utils/date';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import 'Sass/details-form.scss';
 
 const DateOfBirthField = props => (

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Icon, Checklist } from '@deriv/components';
+import routes from '@deriv/shared/utils/routes';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { Localize } from 'Components/i18next';
-import routes from '@deriv/shared/utils/routes';
 import './verification.scss';
 
 const Verification = () => {

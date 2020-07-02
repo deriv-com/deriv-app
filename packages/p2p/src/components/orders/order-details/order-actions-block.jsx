@@ -66,7 +66,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                     ]}
                 />
             ),
-            confirm_text: localize('Understood'),
+            confirm_text: localize('Close'),
             onClickConfirm: () => {
                 cancelPopup();
             },
@@ -90,7 +90,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             }
         };
         const options = {
-            title: localize('Confirm this payment?'),
+            title: localize('Confirm payment?'),
             className: 'order-details__popup-no-border',
             message: localize("Please make sure that you've paid {{amount}} {{currency}} to {{advertiser_name}}.", {
                 amount: display_transaction_amount,

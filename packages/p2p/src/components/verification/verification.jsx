@@ -52,11 +52,11 @@ const Verification = () => {
             <Icon icon='IcCashierSendEmail' className='p2p-verification__icon' size={102} />
             <div className='p2p-verification__text'>
                 <div className='p2p-verification__text-title'>
-                    <Localize i18n_default_text='Would you like to post P2P ads?' />
+                    <Localize i18n_default_text='Please register with us!' />
                 </div>
                 <div className='p2p-verification__text-description'>
                     <p>
-                        <Localize i18n_default_text='To use DP2P, you need to choose a display name (a nickname) and verify your identity.' />
+                        <Localize i18n_default_text='To use P2P, you need to choose a display name (a nickname) and verify your identity.' />
                     </p>
                 </div>
             </div>

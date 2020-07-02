@@ -10,7 +10,6 @@ import ServerTime from 'Utils/server-time';
 const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active }) => {
     const {
         // advertiser_name,
-        chat_channel_url,
         display_transaction_amount,
         display_offer_amount,
         display_status,

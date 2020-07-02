@@ -23,7 +23,7 @@ const OnfidoContainer = ({ height }) => {
     );
 };
 
-class Onfido extends React.Component {
+export default class Onfido extends React.Component {
     state = {
         onfido: null,
         onfido_init_error: false,
@@ -80,7 +80,7 @@ class Onfido extends React.Component {
     }
 
     render() {
-        const { status, has_poa, is_description_enabled, height } = this.props;
+        const { status, has_poa, is_description_enabled, height, redirectBack } = this.props;
 
         if (status === onfido_status_codes.onfido) return <OnfidoContainer height={height} />;
 
@@ -88,11 +88,23 @@ class Onfido extends React.Component {
             case onfido_status_codes.unsupported:
                 return <Unsupported is_description_enabled={is_description_enabled} />;
             case onfido_status_codes.pending:
-                return <UploadComplete has_poa={has_poa} is_description_enabled={is_description_enabled} />;
+                return (
+                    <UploadComplete
+                        has_poa={has_poa}
+                        is_description_enabled={is_description_enabled}
+                        redirectBack={redirectBack}
+                    />
+                );
             case onfido_status_codes.rejected:
                 return <OnfidoFailed is_description_enabled={is_description_enabled} />;
             case onfido_status_codes.verified:
-                return <Verified has_poa={has_poa} is_description_enabled={is_description_enabled} />;
+                return (
+                    <Verified
+                        has_poa={has_poa}
+                        is_description_enabled={is_description_enabled}
+                        redirectBack={redirectBack}
+                    />
+                );
             case onfido_status_codes.expired:
                 return <Expired is_description_enabled={is_description_enabled} />;
             case onfido_status_codes.suspected:
@@ -110,5 +122,3 @@ Onfido.propTypes = {
     onfido_service_token: PropTypes.string,
     status: PropTypes.oneOf(Object.keys(onfido_status_codes)),
 };
-
-export default Onfido;

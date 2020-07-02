@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import P2P from '@deriv/p2p';
 import { getLanguage } from '@deriv/translations';
-import routes from '@deriv/shared/utils/routes';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';
@@ -53,6 +52,7 @@ class P2PCashier extends React.Component {
             setNotificationCount,
             location,
             is_mobile,
+            routeTo,
         } = this.props;
         const { order_id } = this.state;
         return (
@@ -66,7 +66,7 @@ class P2PCashier extends React.Component {
                 order_id={order_id}
                 setOrderId={this.setQueryOrder}
                 is_mobile={is_mobile}
-                poi_url={routes.proof_of_identity}
+                routeTo={routeTo}
             />
         );
     }
@@ -80,10 +80,11 @@ P2PCashier.propTypes = {
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
     is_mobile: PropTypes.bool,
+    routeTo: PropTypes.func,
 };
 
 export default withRouter(
-    connect(({ client, modules, ui }) => ({
+    connect(({ client, modules, ui, common }) => ({
         currency: client.currency,
         local_currency_config: client.local_currency_config,
         loginid: client.loginid,
@@ -91,5 +92,6 @@ export default withRouter(
         residence: client.residence,
         setNotificationCount: modules.cashier.setNotificationCount,
         is_mobile: ui.is_mobile,
+        routeTo: common.routeTo,
     }))(P2PCashier)
 );

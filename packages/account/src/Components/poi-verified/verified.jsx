@@ -5,7 +5,7 @@ import { ContinueTradingButton } from 'Components/poa-continue-trading-button/co
 import { PoaButton } from 'Components/poa-button/poa-button.jsx';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const Verified = ({ has_poa, is_description_enabled }) => {
+export const Verified = ({ has_poa, is_description_enabled, redirectBack }) => {
     const message = localize('Your proof of identity is verified');
     if (has_poa) {
         return (
@@ -21,6 +21,11 @@ export const Verified = ({ has_poa, is_description_enabled }) => {
             text={localize('To continue trading, you must also submit a proof of address.')}
         >
             {is_description_enabled && <PoaButton />}
+            {redirectBack && (
+                <Button onClick={redirectBack} primary>
+                    {localize('Go back P2P')}
+                </Button>
+            )}
         </IconMessageContent>
     );
 };

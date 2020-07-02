@@ -148,10 +148,11 @@ export default class CommonStore extends BaseStore {
             this.app_routing_history.splice(check_existing, 1);
         }
         this.app_routing_history.unshift(router_action);
+        console.log(this.app_routing_history);
     }
 
     @action.bound
-    routeBackInApp(history) {
+    routeBackInApp(history, pathname = routes.trade) {
         let route_to_item_idx = -1;
         const route_to_item = this.app_routing_history.find((history_item, idx) => {
             if (history_item.action === 'PUSH') {
@@ -175,13 +176,13 @@ export default class CommonStore extends BaseStore {
             if (route_to_item.is_external) {
                 window.location.href = route_to_item.pathname;
                 return;
-            } else if (route_to_item_idx > -1) {
+            } else if (route_to_item_idx > -1 || history_item.pathname.includes(pathname)) {
                 this.app_routing_history.splice(0, route_to_item_idx + 1);
                 history.push(route_to_item.pathname);
                 return;
             }
         }
 
-        history.push(routes.trade);
+        history.push(pathname);
     }
 }

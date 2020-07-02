@@ -27,8 +27,6 @@ const ToggleComplaintsPolicy = ({ landing_company_shortcode } = {}) => {
                 is_open={is_modal_visible}
                 title={localize('Complaints policy')}
                 toggleModal={() => setModalVisibility(false)}
-                height='616px'
-                width='904px'
             >
                 <ComplaintsPolicyContent />
             </Modal>

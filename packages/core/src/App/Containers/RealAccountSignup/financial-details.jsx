@@ -66,7 +66,11 @@ const TradingExperience = ({
     other_instruments_trading_frequency_enum,
 }) => (
     <React.Fragment>
-        <FormSubHeader title={localize('Trading experience')} />
+        <FormSubHeader
+            title={localize('Trading experience')}
+            subtitle={localize('(All fields are required)')}
+            description={localize('Tell us about your trading experience.')}
+        />
         <ForexTradingExperience {...shared_props} forex_trading_experience_enum={forex_trading_experience_enum} />
         <ForexTradingFrequency {...shared_props} forex_trading_frequency_enum={forex_trading_frequency_enum} />
         <BinaryOptionsTradingExperience

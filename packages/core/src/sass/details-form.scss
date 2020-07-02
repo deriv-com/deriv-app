@@ -65,6 +65,9 @@
                 background-color: var(--general-main-2);
             }
         }
+        .dc-dropdown__container {
+            margin-bottom: 3rem;
+        }
         @include mobile {
             width: 100%;
             margin: 0;

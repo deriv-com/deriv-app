@@ -304,6 +304,10 @@
         margin-bottom: 1.6em;
         position: relative;
         height: 1.6em;
+
+        &--has-description {
+            margin-bottom: 0.5rem;
+        }
     }
     &__header:not(:first-child) {
         margin-top: 1.6em;
@@ -323,10 +327,15 @@
         padding-right: 8px;
         position: absolute;
     }
+    &__subtitle {
+        margin-left: 0.4rem;
+        font-size: 1rem;
+        font-weight: normal;
+    }
     &__description {
-        position: absolute;
         font-size: 1.2rem;
         font-weight: normal;
-        top: 2rem;
+        color: var(--text-prominent);
+        margin-bottom: 2rem;
     }
 }

@@ -61,13 +61,15 @@
 
             &-filter {
                 display: flex;
-                justify-content: space-around;
-                width: 85%;
+                justify-content: flex-end;
+                align-items: center;
+                width: 100%;
+                cursor: pointer;
 
-                &--mobile {
-                    display: flex;
-                    justify-content: flex-end;
-                    width: 100%;
+                &--label {
+                    font-size: 1.4rem;
+                    color: var(--text-general);
+                    margin-right: 0.8rem;
                 }
             }
             &-download {

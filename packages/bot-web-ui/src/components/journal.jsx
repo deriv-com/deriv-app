@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Checkbox, Icon, ThemedScrollbars, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { Checkbox, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
@@ -144,49 +144,32 @@ const Tools = ({ checked_filters, filters, filterMessage, is_filter_dialog_visib
     return (
         <>
             <div className='journal-tools__container'>
-                <MobileWrapper>
-                    <div
-                        ref={toggle_ref}
-                        className='journal-tools__container-filter--mobile'
-                        onClick={toggleFilterDialog}
-                    >
-                        <Icon icon='IcFilter' size={16} />
-                    </div>
-                </MobileWrapper>
-                <DesktopWrapper>
-                    <Filters
-                        checked_filters={checked_filters}
-                        filters={filters}
-                        filterMessage={filterMessage}
-                        className='journal-tools__container-filter'
-                        classNameLabel='journal-tools__text'
-                    />
-                </DesktopWrapper>
-                {/* <div className='tools__container-download'>
-                    <Icon icon='IcDownload' />
-                </div> */}
+                <div ref={toggle_ref} className='journal-tools__container-filter' onClick={toggleFilterDialog}>
+                    <span className='journal-tools__container-filter--label'>
+                        <Localize i18n_default_text='Filters' />
+                    </span>
+                    <Icon icon='IcFilter' size={16} />
+                </div>
             </div>
-            <MobileWrapper>
-                <CSSTransition
-                    in={is_filter_dialog_visible}
-                    classNames={{
-                        enter: 'filter-dialog--enter',
-                        enterDone: 'filter-dialog--enter-done',
-                        exit: 'filter-dialog--exit',
-                    }}
-                    timeout={150}
-                    unmountOnExit
-                >
-                    <FilterDialog
-                        toggle_ref={toggle_ref}
-                        checked_filters={checked_filters}
-                        filters={filters}
-                        filterMessage={filterMessage}
-                        is_filter_dialog_visible={is_filter_dialog_visible}
-                        toggleFilterDialog={toggleFilterDialog}
-                    />
-                </CSSTransition>
-            </MobileWrapper>
+            <CSSTransition
+                in={is_filter_dialog_visible}
+                classNames={{
+                    enter: 'filter-dialog--enter',
+                    enterDone: 'filter-dialog--enter-done',
+                    exit: 'filter-dialog--exit',
+                }}
+                timeout={150}
+                unmountOnExit
+            >
+                <FilterDialog
+                    toggle_ref={toggle_ref}
+                    checked_filters={checked_filters}
+                    filters={filters}
+                    filterMessage={filterMessage}
+                    is_filter_dialog_visible={is_filter_dialog_visible}
+                    toggleFilterDialog={toggleFilterDialog}
+                />
+            </CSSTransition>
         </>
     );
 };

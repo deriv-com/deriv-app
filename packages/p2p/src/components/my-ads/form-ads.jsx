@@ -358,7 +358,7 @@ class FormAds extends React.Component {
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
             payment_info: localize('Payment instructions'),
-            price_rate: localize('Fixed price'),
+            price_rate: localize('Fixed rate'),
         };
 
         const common_messages = field_name => [localize('{{field_name}} is required', { field_name })];

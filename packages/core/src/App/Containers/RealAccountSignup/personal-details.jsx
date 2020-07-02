@@ -257,8 +257,8 @@ class PersonalDetails extends React.Component {
                                                                     <Dropdown
                                                                         placeholder={localize('Account opening reason')}
                                                                         name={field.name}
-                                                                        is_alignment_top={true}
-                                                                        is_align_text_left={true}
+                                                                        is_alignment_top
+                                                                        is_align_text_left
                                                                         list={this.props.account_opening_reason_list}
                                                                         value={values.account_opening_reason}
                                                                         onChange={handleChange}

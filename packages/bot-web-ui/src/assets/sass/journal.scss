@@ -72,17 +72,6 @@
                     margin-right: 0.8rem;
                 }
             }
-            &-download {
-                cursor: pointer;
-            }
-        }
-        &__text {
-            // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
-            font-size: var(--text-size--xxs) !important;
-
-            &--mobile {
-                font-size: var(--text-size--xs) !important;
-            }
         }
     }
     &__text {

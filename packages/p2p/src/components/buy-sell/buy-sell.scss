@@ -36,6 +36,27 @@
             max-width: 44rem;
         }
     }
+    &__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: var(--text-colored-background);
+        margin-right: 0.8rem;
+        font-size: 12px;
+        line-height: 1.33;
+        width: 2.4rem;
+        height: 2.4rem;
+        white-space: nowrap;
+    }
+    &__table-row {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+    }
+    &__button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     &__popup {
         &-header {
             border-bottom: 1px solid var(--general-section-2);
@@ -163,26 +184,5 @@
             cursor: pointer;
             fill: var(--text-general);
         }
-    }
-    &__icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        color: var(--text-colored-background);
-        margin-right: 0.8rem;
-        font-size: 12px;
-        line-height: 1.33;
-        width: 2.4rem;
-        height: 2.4rem;
-        white-space: nowrap;
-    }
-    &__table-row {
-        grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
-    }
-    &__button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
     }
 }

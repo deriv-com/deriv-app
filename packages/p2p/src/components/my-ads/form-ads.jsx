@@ -162,7 +162,7 @@ class FormAds extends React.Component {
                                                             data-lpignore='true'
                                                             type='text'
                                                             error={touched.price_rate && errors.price_rate}
-                                                            label={localize('Fixed price (1 USD)')}
+                                                            label={localize('Fixed rate (1 USD)')}
                                                             hint={localize('Per 1 {{currency}}', {
                                                                 currency: this.context.currency,
                                                             })}

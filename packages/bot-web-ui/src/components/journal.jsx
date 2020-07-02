@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Checkbox, Icon, ThemedScrollbars } from '@deriv/components';
+import { Checkbox, Icon, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
@@ -106,26 +106,9 @@ const FilterDialog = ({
 }) => {
     const wrapper_ref = React.useRef();
 
-    // TODO: Use onclickoutside hook from components package instead
-    React.useEffect(() => {
-        const clickOutsideListener = event => {
-            const path = event.path ?? event.composedPath?.();
-            if (
-                wrapper_ref &&
-                !wrapper_ref.current.contains(event.target) &&
-                !wrapper_ref.current.contains(path && path[0])
-            ) {
-                if (is_filter_dialog_visible && toggle_ref.current.contains(event.target)) return;
-                toggleFilterDialog();
-            }
-        };
+    const validateClickOutside = event => is_filter_dialog_visible && !toggle_ref.current.contains(event.target);
 
-        document.addEventListener('mousedown', clickOutsideListener);
-
-        return () => {
-            document.removeEventListener('mousedown', clickOutsideListener);
-        };
-    }, [toggle_ref]);
+    useOnClickOutside(wrapper_ref, toggleFilterDialog, validateClickOutside);
 
     return (
         <Filters

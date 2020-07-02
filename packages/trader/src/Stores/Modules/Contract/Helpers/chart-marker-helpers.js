@@ -1,5 +1,7 @@
 import extend from 'extend';
 import { isDigitContract } from 'Stores/Modules/Contract/Helpers/digits';
+import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { isUserSold, getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { MARKER_TYPES_CONFIG } from '../../SmartChart/Constants/markers';
 
@@ -21,7 +23,7 @@ export const createMarkerEndTime = contract_info => {
     if (!end_time) return false;
 
     return createMarkerConfig(MARKER_TYPES_CONFIG.LINE_END.type, +end_time, null, {
-        status: `${contract_info.profit > 0 ? 'won' : 'lost'}`,
+        status: `${contract_info.profit >= 0 ? 'won' : 'lost'}`,
         marker_config: MARKER_TYPES_CONFIG,
     });
 };
@@ -80,20 +82,23 @@ export const createMarkerSpotExit = (contract_info, tick, idx) => {
 
     const exit_tick = contract_info.exit_tick_display_value;
 
-    return createMarkerConfig(
-        !is_user_sold ? MARKER_TYPES_CONFIG.SPOT_EXIT.type : MARKER_TYPES_CONFIG.SPOT_SELL.type,
-        +contract_info.exit_tick_time,
-        +exit_tick,
-        !is_user_sold
-            ? {
-                  spot_value: `${exit_tick}`,
-                  spot_epoch: `${contract_info.exit_tick_time}`,
-                  status: `${+contract_info.profit > 0 ? 'won' : 'lost'}`,
-                  align_label,
-                  spot_count,
-              }
-            : {}
-    );
+    const should_show_spot_exit = !is_user_sold || isMultiplierContract(contract_info.contract_type);
+
+    const marker_spot_type = should_show_spot_exit
+        ? MARKER_TYPES_CONFIG.SPOT_EXIT.type
+        : MARKER_TYPES_CONFIG.SPOT_SELL.type;
+
+    const component_props = should_show_spot_exit
+        ? {
+              spot_value: `${exit_tick}`,
+              spot_epoch: `${contract_info.exit_tick_time}`,
+              status: `${+contract_info.profit >= 0 ? 'won' : 'lost'}`,
+              align_label,
+              spot_count,
+          }
+        : {};
+
+    return createMarkerConfig(marker_spot_type, +contract_info.exit_tick_time, +exit_tick, component_props);
 };
 
 export const createMarkerSpotMiddle = (contract_info, tick, idx) => {
@@ -108,5 +113,6 @@ export const createMarkerSpotMiddle = (contract_info, tick, idx) => {
     });
     marker_config.type = `${marker_config.type}_${idx}`;
 
+    if (isMobile() && spot_count > 1) return null;
     return marker_config;
 };

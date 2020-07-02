@@ -23,14 +23,13 @@ Blockly.Blocks.text_statement = {
             colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
-            tooltip: localize('Text string'),
             category: Blockly.Categories.Text,
         };
     },
     meta() {
         return {
             display_name: localize('Text Statement'),
-            description: localize('Text Statement Description'),
+            description: '',
         };
     },
     onIconClick: Blockly.Blocks.lists_statement.onIconClick,
@@ -38,6 +37,6 @@ Blockly.Blocks.text_statement = {
 };
 
 Blockly.JavaScript.text_statement = block => {
-    const code = `String(${Blockly.JavaScript.valueToCode(block, 'TEXT')})`;
+    const code = `String(${Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_ATOMIC)})`;
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

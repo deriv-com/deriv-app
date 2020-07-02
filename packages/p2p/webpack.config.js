@@ -48,6 +48,12 @@ module.exports = {
                         loader: '@deriv/shared/utils/deriv-components-loader.js',
                     },
                     {
+                        loader: '@deriv/shared/utils/react-import-loader.js',
+                    },
+                    {
+                        loader: '@deriv/shared/utils/react-import-loader.js',
+                    },
+                    {
                         loader: 'babel-loader',
                     },
                 ],
@@ -75,6 +81,27 @@ module.exports = {
                         options: {
                             // Provide path to the file with resources
                             resources: require('@deriv/shared/utils/index.js'),
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.svg$/,
+                exclude: /node_modules/,
+                use: [
+                    'babel-loader',
+                    {
+                        loader: 'react-svg-loader',
+                        options: {
+                            jsx: true,
+                            svgo: {
+                                plugins: [
+                                    { removeTitle: false },
+                                    { removeUselessStrokeAndFill: false },
+                                    { removeUknownsAndDefaults: false },
+                                ],
+                                floatPrecision: 2,
+                            },
                         },
                     },
                 ],

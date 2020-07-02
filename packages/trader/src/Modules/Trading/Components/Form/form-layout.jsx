@@ -1,28 +1,29 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Lazy from 'App/Containers/Lazy';
-import ScreenLarge from './screen-large.jsx';
+import Loadable from 'react-loadable';
+import { isMobile } from '@deriv/shared/utils/screen';
 
-const FormLayout = ({ is_dark_theme, is_market_closed, is_mobile, is_trade_enabled }) =>
-    is_mobile ? (
-        <Lazy
-            ctor={() => import(/* webpackChunkName: "screen-small" */ './screen-small.jsx')}
-            should_load={is_mobile}
-            is_trade_enabled={is_trade_enabled}
-        />
-    ) : (
-        <ScreenLarge
-            is_dark_theme={is_dark_theme}
-            is_trade_enabled={is_trade_enabled}
-            is_market_closed={is_market_closed}
-        />
-    );
+const Screen = Loadable({
+    loader: () =>
+        isMobile()
+            ? import(/* webpackChunkName: "screen-small" */ './screen-small.jsx')
+            : import(/* webpackChunkName: "screen-large" */ './screen-large.jsx'),
+    loading: () => null,
+    render(loaded, props) {
+        const Component = loaded.default;
+        return <Component {...props} />;
+    },
+});
+
+const FormLayout = ({ is_market_closed, is_trade_enabled }) => (
+    <React.Fragment>
+        <Screen is_trade_enabled={is_trade_enabled} is_market_closed={isMobile() ? undefined : is_market_closed} />
+    </React.Fragment>
+);
 
 FormLayout.propTypes = {
-    is_dark_theme: PropTypes.bool,
     is_market_closed: PropTypes.bool,
-    is_mobile: PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
 };
 
-export default FormLayout;
+export default React.memo(FormLayout);

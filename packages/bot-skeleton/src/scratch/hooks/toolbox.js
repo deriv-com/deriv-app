@@ -19,7 +19,7 @@ Blockly.Toolbox.prototype.init = function() {
      * HTML container for the Toolbox menu.
      * @type {Element}
      */
-    this.HtmlDiv = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox');
+    this.HtmlDiv = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox toolbox--hidden');
     this.HtmlDiv.setAttribute('id', 'gtm-toolbox');
     this.HtmlDiv.setAttribute('dir', workspace.RTL ? 'RTL' : 'LTR');
 
@@ -64,7 +64,6 @@ Blockly.Toolbox.prototype.init = function() {
         this.categoryMenu_.allCategories_.push(clone_category);
     });
     this.position();
-    this.toggle();
 };
 
 /**
@@ -83,7 +82,7 @@ Blockly.Toolbox.prototype.populate_ = function(newTree) {
     if (toggleStrategyModal) {
         const quick_strat_btn = document.createElement('BUTTON');
         quick_strat_btn.innerHTML = localize('Quick strategy');
-        quick_strat_btn.className = 'toolbox__button btn effect btn--primary btn__medium';
+        quick_strat_btn.className = 'toolbox__button dc-btn effect dc-btn--primary dc-btn__medium';
         quick_strat_btn.id = 'gtm-quick-strategy';
         quick_strat_btn.onclick = toggleStrategyModal;
 
@@ -98,6 +97,7 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
         .replace(/\s+/g, ' ')
         .trim()
         .toUpperCase();
+    const search_words = search_term.split(' ');
     const all_variables = workspace.getVariablesOfType('');
     const all_procedures = Blockly.Procedures.allProcedures(workspace);
     const { flyout } = DBotStore.instance;
@@ -105,11 +105,20 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
     flyout.setVisibility(false);
 
     // avoid general term which the result will return most of the blocks
-    const general_term = ['THE', 'OF', 'YOU', 'IS', 'THIS', 'THEN'];
+    const general_term = [
+        localize('THE'),
+        localize('OF'),
+        localize('YOU'),
+        localize('IS'),
+        localize('THIS'),
+        localize('THEN'),
+        localize('A'),
+        localize('AN'),
+    ];
 
     if (search_term.length === 0) {
         return;
-    } else if (search_term.length <= 1 || general_term.includes(search_term)) {
+    } else if (search_term.length <= 1 || search_words.every(term => general_term.includes(term))) {
         flyout.setIsSearchFlyout(true);
         flyout.setContents(flyout_content, search);
         return;
@@ -139,98 +148,100 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
         }
     };
 
-    const pushBlockWithPriority = ({ block_type, block_meta, block_definitions, block_content, priority }) => {
-        const block_name = block_meta.display_name;
-        const block_type_terms = block_type.toUpperCase().split('_');
-        const block_name_terms = block_name.toUpperCase().split(' ');
-        const definition_key_to_search = /^((message)|(tooltip)|(category))/;
-        const search_regex = new RegExp(`^${search_term}`);
-
-        switch (priority) {
-            case 'exact_block_name': {
-                if (search_regex.test(block_name.toUpperCase()) || search_regex.test(block_type.toUpperCase())) {
-                    pushIfNotExists(flyout_content, block_content);
-                }
-                break;
-            }
-            case 'block_term': {
-                if (
-                    block_type_terms.some(term => search_regex.test(term)) ||
-                    block_name_terms.some(term => search_regex.test(term))
-                ) {
-                    pushIfNotExists(flyout_content, block_content);
-                }
-                break;
-            }
-            case 'block_definitions': {
-                // eslint-disable-next-line consistent-return
-                const matched_definition = Object.keys(block_definitions).filter(key => {
-                    const definition = block_definitions[key];
-
-                    if (definition_key_to_search.test(key) && search_regex.test(definition.toUpperCase())) {
-                        return true;
-                    }
-
-                    if (definition instanceof Array) {
-                        let has_dropdown_and_in_search = false;
-                        // eslint-disable-next-line consistent-return
-                        definition.forEach(def => {
-                            const definition_strings = JSON.stringify(def).toUpperCase();
-
-                            if (
-                                def.type === 'field_dropdown' &&
-                                search_term > 2 &&
-                                definition_strings.includes(search_term)
-                            ) {
-                                has_dropdown_and_in_search = true;
-                            }
-                        });
-
-                        return has_dropdown_and_in_search;
-                    }
-                    return false;
-                });
-
-                if (matched_definition && matched_definition.length) {
-                    pushIfNotExists(flyout_content, block_content);
-                }
-                break;
-            }
-            case 'block_meta': {
-                // block_meta matched
-                const matched_meta = Object.keys(block_meta)
-                    .filter(key => key !== 'display_name')
-                    .find(key => {
-                        const block_meta_strings = block_meta[key]
-                            .toUpperCase()
-                            .replace(/[^\w\s]/gi, '')
-                            .split(' ');
-
-                        return block_meta_strings.some(meta_string => search_regex.test(meta_string));
-                    });
-
-                if (matched_meta && matched_meta.length) {
-                    pushIfNotExists(flyout_content, block_content);
-                }
-                break;
-            }
-            default:
-                break;
-        }
-    };
-
-    const priority_order = ['exact_block_name', 'block_term', 'block_definitions', 'block_meta'];
-
-    priority_order.forEach(priority => {
+    const pushBlockWithPriority = priority => {
         block_contents.forEach(block_content => {
             const block_type = block_content.getAttribute('type');
             const block = Blockly.Blocks[block_type];
             const block_meta = block.meta instanceof Function && block.meta();
             const block_definitions = block.definition instanceof Function && block.definition();
+            const block_name = block_meta.display_name;
+            const block_type_terms = block_type.toUpperCase().split('_');
+            const block_name_terms = block_name.toUpperCase().split(' ');
+            const definition_key_to_search = /^((message)|(tooltip)|(category))/;
 
-            pushBlockWithPriority({ block_type, block_meta, block_definitions, block_content, priority });
+            switch (priority) {
+                // when the search text match exactly the block's name
+                case 'exact_block_name': {
+                    if (search_term === block_name.toUpperCase() || search_term === block_type.toUpperCase()) {
+                        pushIfNotExists(flyout_content, block_content);
+                    }
+                    break;
+                }
+                // when there's multiple search text and all the search text match block's name or block type
+                case 'match_words': {
+                    if (
+                        search_words.every(word => block_name_terms.some(term => term.includes(word))) ||
+                        search_words.every(word => block_type_terms.some(term => term.includes(word)))
+                    ) {
+                        pushIfNotExists(flyout_content, block_content);
+                    }
+                    break;
+                }
+                // when some of search word match block's name or block's type
+                case 'block_term': {
+                    if (
+                        block_type_terms.some(term => search_words.some(word => term.includes(word))) ||
+                        block_name_terms.some(term => search_words.some(word => term.includes(word)))
+                    ) {
+                        pushIfNotExists(flyout_content, block_content);
+                    }
+                    break;
+                }
+                case 'block_definitions': {
+                    // eslint-disable-next-line consistent-return
+                    Object.keys(block_definitions).forEach(key => {
+                        const definition = block_definitions[key];
+
+                        if (
+                            definition_key_to_search.test(key) &&
+                            search_words.some(word => definition.includes(word))
+                        ) {
+                            pushIfNotExists(flyout_content, block_content);
+                        }
+
+                        if (definition instanceof Array) {
+                            definition.forEach(def => {
+                                const definition_strings = JSON.stringify(def).toUpperCase();
+
+                                if (
+                                    def.type === 'field_dropdown' &&
+                                    search_term.length > 2 &&
+                                    search_words.some(word => definition_strings.includes(word))
+                                ) {
+                                    pushIfNotExists(flyout_content, block_content);
+                                }
+                            });
+                        }
+                    });
+                    break;
+                }
+                case 'block_meta': {
+                    // block_meta matched
+                    const matched_meta = Object.keys(block_meta)
+                        .filter(key => key !== 'display_name')
+                        .find(key => {
+                            const block_meta_strings = block_meta[key]
+                                .toUpperCase()
+                                .replace(/[^\w\s]/gi, '')
+                                .split(' ');
+
+                            return search_words.some(word => block_meta_strings.some(meta => meta.includes(word)));
+                        });
+
+                    if (matched_meta && matched_meta.length) {
+                        pushIfNotExists(flyout_content, block_content);
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
         });
-    });
+    };
+
+    const priority_order = ['exact_block_name', 'match_words', 'block_term', 'block_definitions', 'block_meta'];
+
+    priority_order.forEach(priority => pushBlockWithPriority(priority));
 
     // block_variable_name matched
     const matched_variables = all_variables.filter(variable => variable.name.toUpperCase().includes(search_term));
@@ -281,6 +292,7 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
  * @private
  */
 Blockly.Toolbox.prototype.showCategory_ = function(category_id) {
+    const { flyout } = DBotStore.instance;
     const selected_category = this.categoryMenu_.categories_.find(category => category.id_ === category_id);
     let flyout_content = selected_category.getContents();
 
@@ -290,9 +302,6 @@ Blockly.Toolbox.prototype.showCategory_ = function(category_id) {
         flyout_content = fnToApply(this.workspace_);
     }
 
-    const {
-        instance: { flyout },
-    } = DBotStore;
     flyout.setIsSearchFlyout(false);
     flyout.setContents(flyout_content);
 };
@@ -644,7 +653,7 @@ Blockly.Toolbox.prototype.refreshCategory = function() {
 Blockly.Toolbox.prototype.toggle = function() {
     const { toolbar, flyout } = DBotStore.instance;
     if (!toolbar.is_toolbox_open) {
-        this.addStyle('hidden');
+        this.addStyle('toolbox--hidden');
 
         flyout.setVisibility(false);
 
@@ -654,6 +663,6 @@ Blockly.Toolbox.prototype.toggle = function() {
         }
     } else {
         flyout.setVisibility(false);
-        this.removeStyle('hidden');
+        this.removeStyle('toolbox--hidden');
     }
 };

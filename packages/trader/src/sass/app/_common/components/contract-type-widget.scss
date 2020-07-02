@@ -1,4 +1,4 @@
-/** @define contract-type-widget; */
+/** @define contract-type-widget; weak */
 .contract-type-widget {
     position: relative;
     z-index: 2;
@@ -14,7 +14,7 @@
         align-items: center;
         justify-content: flex-start;
         flex-direction: row;
-        padding: 1.6em;
+        padding: 1.6rem;
 
         /* postcss-bem-linter: ignore */
         span[name='contract_type'] {
@@ -92,5 +92,13 @@
         outline: none;
         border-radius: 4px;
         border-color: var(--border-active);
+    }
+    @include mobile {
+        margin-bottom: 0.8rem;
+        height: 4rem;
+
+        .contract-type-widget__display {
+            padding: 0.8rem;
+        }
     }
 }

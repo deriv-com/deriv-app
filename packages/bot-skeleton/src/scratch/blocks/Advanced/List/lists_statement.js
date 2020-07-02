@@ -24,14 +24,13 @@ Blockly.Blocks.lists_statement = {
             colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
-            tooltip: localize('List Statement Tooltip'),
             category: Blockly.Categories.List,
         };
     },
     meta() {
         return {
             display_name: localize('List Statement'),
-            description: localize('List Statement Description'),
+            description: '',
         };
     },
     onIconClick() {
@@ -85,6 +84,6 @@ Blockly.Blocks.lists_statement = {
 };
 
 Blockly.JavaScript.lists_statement = block => {
-    const code = Blockly.JavaScript.valueToCode(block, 'VALUE') || 'null';
+    const code = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

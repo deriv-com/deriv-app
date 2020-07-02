@@ -1,4 +1,6 @@
 const DerivAPIBasic = require('@deriv/deriv-api/dist/DerivAPIBasic');
+const getAppId = require('@deriv/shared/utils/config').getAppId;
+const getSocketURL = require('@deriv/shared/utils/config').getSocketURL;
 const ObjectUtils = require('@deriv/shared/utils/object');
 const { getLanguage } = require('@deriv/translations');
 const website_name = require('App/Constants/app-config').website_name;
@@ -6,8 +8,6 @@ const ClientBase = require('./client_base');
 const SocketCache = require('./socket_cache');
 const APIMiddleware = require('./api_middleware');
 const { State } = require('../storage');
-const getAppId = require('../../config').getAppId;
-const getSocketURL = require('../../config').getSocketURL;
 
 /*
  * An abstraction layer over native javascript WebSocket,
@@ -15,7 +15,7 @@ const getSocketURL = require('../../config').getSocketURL;
  * reopen the closed connection and process the buffered requests
  */
 const BinarySocketBase = (() => {
-    let deriv_api, binary_socket, middleware;
+    let deriv_api, binary_socket;
 
     let config = {};
     let wrong_app_id = 0;
@@ -23,7 +23,9 @@ const BinarySocketBase = (() => {
     let is_disconnect_called = false;
     let is_connected_before = false;
 
-    const socket_url = `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
+    const getSocketUrl = () =>
+        `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
+
     const timeouts = {};
 
     const clearTimeouts = () => {
@@ -37,33 +39,50 @@ const BinarySocketBase = (() => {
 
     const isClose = () => !binary_socket || hasReadyState(2, 3);
 
+    const close = () => {
+        binary_socket.close();
+    };
+
+    const closeAndOpenNewConnection = token => {
+        close();
+        init({ config, is_switching_socket: true, token });
+    };
+
     const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
 
-    const init = options => {
+    const init = ({ options, is_switching_socket, token }) => {
         if (wrong_app_id === getAppId()) {
             return;
         }
         if (typeof options === 'object' && config !== options) {
             config = options;
-            middleware = new APIMiddleware(config);
         }
         clearTimeouts();
-        config.wsEvent('init');
+
+        if (!is_switching_socket) {
+            config.wsEvent('init');
+        }
 
         if (isClose()) {
             is_disconnect_called = false;
-            binary_socket = new WebSocket(socket_url);
+            binary_socket = new WebSocket(getSocketUrl());
             deriv_api = new DerivAPIBasic({
                 connection: binary_socket,
                 storage: SocketCache,
-                middleware,
+                middleware: new APIMiddleware(config),
             });
         }
 
         deriv_api.onOpen().subscribe(() => {
             config.wsEvent('open');
+
+            wait('website_status');
+
             if (ClientBase.isLoggedIn()) {
-                deriv_api.authorize(ClientBase.get('token'));
+                // ClientBase is not up to date after first load
+                // TODO: remove this once ClientBase has been migrated to client-store
+                const authorize_token = token || ClientBase.get('token');
+                deriv_api.authorize(authorize_token);
             }
 
             if (typeof config.onOpen === 'function') {
@@ -96,7 +115,10 @@ const BinarySocketBase = (() => {
 
         deriv_api.onClose().subscribe(() => {
             clearTimeouts();
-            config.wsEvent('close');
+
+            if (!is_switching_socket) {
+                config.wsEvent('close');
+            }
 
             if (wrong_app_id !== getAppId() && typeof config.onDisconnect === 'function' && !is_disconnect_called) {
                 config.onDisconnect();
@@ -121,6 +143,8 @@ const BinarySocketBase = (() => {
     const balanceAll = () => deriv_api.send({ balance: 1, account: 'all' });
 
     const subscribeBalanceAll = cb => subscribe({ balance: 1, account: 'all' }, cb);
+
+    const subscribeBalanceActiveAccount = (cb, account) => subscribe({ balance: 1, account }, cb);
 
     const subscribeProposal = (req, cb) => subscribe({ proposal: 1, ...req }, cb);
 
@@ -148,7 +172,7 @@ const BinarySocketBase = (() => {
         });
     };
 
-    const buy = ({ proposal_id, price, passthrough }) => deriv_api.send({ buy: proposal_id, price, passthrough });
+    const buy = ({ proposal_id, price }) => deriv_api.send({ buy: proposal_id, price });
 
     const sell = (contract_id, bid_price) => deriv_api.send({ sell: contract_id, price: bid_price });
 
@@ -190,6 +214,11 @@ const BinarySocketBase = (() => {
             new_password,
             password_type,
             ...values,
+        });
+    const mt5PasswordReset = payload =>
+        deriv_api.send({
+            ...payload,
+            mt5_password_reset: 1,
         });
 
     const profitTable = (limit, offset, date_boundaries) =>
@@ -241,6 +270,21 @@ const BinarySocketBase = (() => {
 
     const tncApproval = () => deriv_api.send({ tnc_approval: '1' });
 
+    const contractUpdate = (contract_id, limit_order) =>
+        deriv_api.send({
+            contract_update: 1,
+            contract_id,
+            limit_order,
+        });
+
+    const contractUpdateHistory = contract_id =>
+        deriv_api.send({
+            contract_update_history: 1,
+            contract_id,
+        });
+
+    const cancelContract = contract_id => deriv_api.send({ cancel: contract_id });
+
     const p2pAdvertiserInfo = () => deriv_api.send({ p2p_advertiser_info: 1 });
 
     // subscribe method export for P2P use only
@@ -276,8 +320,13 @@ const BinarySocketBase = (() => {
         buyAndSubscribe,
         sell,
         cashier,
+        cancelContract,
+        close,
+        contractUpdate,
+        contractUpdateHistory,
         mt5NewAccount,
         mt5PasswordChange,
+        mt5PasswordReset,
         newAccountVirtual,
         newAccountReal,
         p2pAdvertiserInfo,
@@ -292,6 +341,7 @@ const BinarySocketBase = (() => {
         setAccountCurrency,
         balanceAll,
         subscribeBalanceAll,
+        subscribeBalanceActiveAccount,
         subscribeProposal,
         subscribeProposalOpenContract,
         subscribeTicks,
@@ -300,6 +350,7 @@ const BinarySocketBase = (() => {
         subscribeWebsiteStatus,
         tncApproval,
         transferBetweenAccounts,
+        closeAndOpenNewConnection,
     };
 })();
 

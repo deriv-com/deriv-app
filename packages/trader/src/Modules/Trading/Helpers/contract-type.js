@@ -1,21 +1,5 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { flatten } from 'Modules/Account/Helpers/flatten';
-
-export const unsupported_contract_types_list = [
-    // TODO: remove these once all contract types are supported
-    'callputspread',
-    'run_high_low',
-    'reset',
-    'asian',
-    'tick_high_low',
-    'end',
-    'stay',
-    'lb_call',
-    'lb_put',
-    'lb_high_low',
-    'multiplier',
-];
 
 export const contract_category_icon = {
     [localize('Ups & Downs')]: 'IcUpsDowns',
@@ -23,7 +7,7 @@ export const contract_category_icon = {
     [localize('Ins & Outs')]: 'IcInsOuts',
     [localize('Look Backs')]: 'IcLookbacks',
     [localize('Digits')]: 'IcDigits',
-    [localize('Multiplier options')]: 'IcMultiplier',
+    [localize('Multipliers')]: 'IcMultiplier',
 };
 
 /**
@@ -54,7 +38,7 @@ export const getAvailableContractTypes = (contract_types_list, unsupported_list)
                     contract_types: available_contract_types,
                     icon: contract_category_icon[key],
                     component:
-                        key === localize('Multiplier options') ? (
+                        key === localize('Multipliers') ? (
                             <span className='dc-vertical-tab__header--new'>{localize('NEW!')}</span>
                         ) : null,
                 };
@@ -102,6 +86,7 @@ export const getFilteredList = (contract_types_list, filtered_items_array) => {
     return filtered_list;
 };
 
+const flatten = arr => [].concat(...arr);
 /**
  * Flatten list object into an array of contract category label and contract types names
  * @param {object} list
@@ -117,7 +102,7 @@ export const getContractsList = list =>
     );
 
 export const findContractCategory = (list, item) =>
-    list.find(list_item => list_item.contract_types.some(i => i.value === item.value));
+    list.find(list_item => list_item.contract_types.some(i => i.value === item.value)) || {};
 
 export const getContractCategoryLabel = (list, item) => findContractCategory(list, item).label;
 

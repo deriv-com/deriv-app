@@ -1,8 +1,10 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ThemedScrollbars } from '@deriv/components';
+import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import CurrencyUtils from '@deriv/shared/utils/currency';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
@@ -65,8 +67,12 @@ class AddOrManageAccounts extends React.Component {
 
     render() {
         return (
-            <ThemedScrollbars autoHide style={{ height: '100%' }}>
-                <div className='account-wizard add-or-manage'>
+            <ThemedScrollbars is_bypassed={isMobile()}>
+                <Div100vhContainer
+                    className='account-wizard add-or-manage'
+                    is_disabled={isDesktop()}
+                    height_offset='40px'
+                >
                     <div
                         className={classNames('add-crypto-currency', {
                             'account-wizard--disabled': this.props.available_crypto_currencies.length === 0,
@@ -102,7 +108,7 @@ class AddOrManageAccounts extends React.Component {
                                             <Localize
                                                 i18n_default_text='Currency change is not available because either you have deposited money into your {{currency}} account or you have created a real MetaTrader 5 (MT5) account.'
                                                 values={{
-                                                    currency: this.props.currency.toUpperCase(),
+                                                    currency: CurrencyUtils.getCurrencyDisplayCode(this.props.currency),
                                                 }}
                                             />
                                         ) : (
@@ -125,7 +131,7 @@ class AddOrManageAccounts extends React.Component {
                             />
                         </div>
                     )}
-                </div>
+                </Div100vhContainer>
             </ThemedScrollbars>
         );
     }

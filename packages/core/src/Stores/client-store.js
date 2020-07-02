@@ -2,20 +2,26 @@ import moment from 'moment';
 import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
+import { isDesktop } from '@deriv/shared/utils/os';
+import { getUrlSmartTrader } from '@deriv/shared/utils/storage';
 import { requestLogout, WS } from 'Services';
 import ClientBase from '_common/base/client_base';
+import { redirectToLogin } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
+import { toMoment } from '@deriv/shared/utils/date';
+import { isEmptyObject } from '@deriv/shared/src/utils/object/object';
 import { LocalStore, State } from '_common/storage';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import { getClientAccountType } from './Helpers/client';
+import { getClientAccountType, getMT5AccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
-import { toMoment } from '../Utils/Date';
 
 const storage_key = 'client.accounts';
+
+const store_name = 'client_store';
 export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
@@ -23,6 +29,7 @@ export default class ClientStore extends BaseStore {
     @observable accounts = {};
     @observable pre_switch_broadcast = false;
     @observable switched = '';
+    @observable is_switching = false;
     @observable switch_broadcast = false;
     @observable initialized_broadcast = false;
     @observable currencies_list = {};
@@ -57,6 +64,7 @@ export default class ClientStore extends BaseStore {
         payment_withdraw: '',
         payment_agent_withdraw: '',
     };
+    @observable account_limits = {};
 
     @observable local_currency_config = {
         currency: '',
@@ -66,7 +74,8 @@ export default class ClientStore extends BaseStore {
     is_mt5_account_list_updated = false;
 
     constructor(root_store) {
-        super({ root_store });
+        const local_storage_properties = ['device_data'];
+        super({ root_store, local_storage_properties, store_name });
     }
 
     @computed
@@ -115,12 +124,6 @@ export default class ClientStore extends BaseStore {
         const has_no_transaction = this.statement.count === 0 && this.statement.transactions.length === 0;
         const has_account_criteria = has_no_transaction && has_no_mt5;
         return !this.is_virtual && has_account_criteria && this.current_currency_type === 'fiat';
-    }
-
-    @computed
-    get can_change_currency() {
-        const has_available_crypto_currencies = this.available_crypto_currencies.length > 0;
-        return this.can_change_fiat_currency || (!this.is_virtual && has_available_crypto_currencies);
     }
 
     @computed
@@ -248,6 +251,12 @@ export default class ClientStore extends BaseStore {
     get is_fully_authenticated() {
         if (!this.account_status.status) return false;
         return this.account_status.status.some(status => status === 'authenticated');
+    }
+
+    @computed
+    get is_pending_authentication() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'document_under_review');
     }
 
     @computed
@@ -379,6 +388,23 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    getLimits() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getLimits().then(data => {
+                runInAction(() => {
+                    if (data.error) {
+                        this.account_limits = { api_initial_load_error: data.error.message };
+                        resolve(data);
+                    } else {
+                        this.account_limits = { ...data.get_limits, is_loading: false };
+                        resolve(data);
+                    }
+                });
+            });
+        });
+    }
+
+    @action.bound
     responsePayoutCurrencies(response) {
         const list = response.payout_currencies || response;
         this.currencies_list = buildCurrenciesList(list);
@@ -458,6 +484,7 @@ export default class ClientStore extends BaseStore {
             if (!response.error) {
                 await this.accountRealReaction(response);
                 localStorage.removeItem('real_account_signup_wizard');
+                this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
                 resolve(response);
             } else {
                 reject(response.error);
@@ -592,11 +619,29 @@ export default class ClientStore extends BaseStore {
     async init(login_new_user) {
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
+
+        this.setDeviceData();
+
+        // On case of invalid token, no need to continue with additional api calls.
+        if (authorize_response?.error) {
+            await this.logout();
+            this.root_store.common.setError(true, {
+                header: authorize_response.error.message,
+                message: localize('Please Log in'),
+                should_show_refresh: false,
+                redirect_label: localize('Log in'),
+                redirectOnClick: redirectToLogin,
+            });
+            this.setIsLoggingIn(false);
+            this.setInitialized(false);
+            this.setSwitched('');
+            return false;
+        }
+
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
         let client = this.accounts[this.loginid];
-
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
             // If this fails, it means the landing company check failed
@@ -611,6 +656,9 @@ export default class ClientStore extends BaseStore {
                 // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
             }
+            runInAction(() => {
+                this.is_populating_account_list = false;
+            });
         }
 
         /**
@@ -645,24 +693,26 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            WS.authorized.storage.mt5LoginList().then(this.responseMt5LoginList);
-            WS.authorized.storage.landingCompany(this.residence).then(this.responseLandingCompany);
+            WS.storage.mt5LoginList().then(this.responseMt5LoginList);
             this.responseStatement(
                 await BinarySocket.send({
                     statement: 1,
                 })
             );
-            const account_settings = (await WS.authorized.storage.getSettings()).get_settings;
+            const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
             if (account_settings && !account_settings.residence) {
                 await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
+            WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            this.getLimits();
         }
-        this.responseWebsiteStatus(await WS.storage.websiteStatus());
+        this.responseWebsiteStatus(await WS.wait('website_status'));
 
         this.registerReactions();
         this.setIsLoggingIn(false);
         this.setInitialized(true);
+        return true;
     }
 
     @action.bound
@@ -779,17 +829,25 @@ export default class ClientStore extends BaseStore {
         });
     }
 
+    handleNotFoundLoginId() {
+        // Logout if the switched_account doesn't belong to any loginid.
+        this.root_store.ui.addNotificationMessage({
+            message: localize('Could not switch to default account.'),
+            type: 'danger',
+        });
+        // request a logout
+        this.logout();
+    }
+
+    isUnableToFindLoginId() {
+        return !this.all_loginids.some(id => id !== this.switched) || this.switched === this.loginid;
+    }
+
     @action.bound
     async switchAccountHandler() {
         if (!this.switched || !this.switched.length || !this.getAccount(this.switched).token) {
-            // Logout if the switched_account doesn't belong to any loginid.
-            if (!this.all_loginids.some(id => id !== this.switched) || this.switched === this.loginid) {
-                this.root_store.ui.addNotificationMessage({
-                    message: localize('Could not switch to default account.'),
-                    type: 'danger',
-                });
-                // request a logout
-                this.logout();
+            if (this.isUnableToFindLoginId()) {
+                this.handleNotFoundLoginId();
                 return;
             }
 
@@ -805,15 +863,38 @@ export default class ClientStore extends BaseStore {
             return;
         }
 
-        sessionStorage.setItem('active_tab', '1');
-        // set local storage
-        this.root_store.gtm.setLoginFlag();
+        runInAction(() => (this.is_switching = true));
+
+        const from_login_id = this.loginid;
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
-        WS.forgetAll('balance');
-        await BinarySocket.authorize(this.getToken());
+
+        // if real to virtual --> switch to blue
+        // if virtual to real --> switch to green
+        // else keep the existing connection
+        const should_switch_socket_connection = this.is_virtual || /VRTC/.test(from_login_id);
+
+        if (should_switch_socket_connection) {
+            BinarySocket.closeAndOpenNewConnection(this.getToken());
+            await BinarySocket.wait('authorize');
+        } else {
+            await WS.forgetAll('balance');
+            await BinarySocket.authorize(this.getToken());
+        }
+
+        sessionStorage.setItem('active_tab', '1');
+
+        // set local storage
+        this.root_store.gtm.setLoginFlag();
+
         await this.init();
-        this.broadcastAccountChange();
+
+        // broadcastAccountChange is already called after new connection is authorized
+        if (!should_switch_socket_connection) this.broadcastAccountChange();
+
+        this.getLimits();
+
+        runInAction(() => (this.is_switching = false));
     }
 
     @action.bound
@@ -823,21 +904,44 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    setBalance(obj_balance) {
-        if (this.accounts[obj_balance.loginid]) {
+    setBalanceActiveAccount(obj_balance) {
+        if (this.accounts[obj_balance?.loginid] && obj_balance.loginid === this.loginid) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
-            if (obj_balance.total) {
-                const total_real = ObjectUtils.getPropertyValue(obj_balance, ['total', 'real']);
-                const total_mt5 = ObjectUtils.getPropertyValue(obj_balance, ['total', 'mt5']);
-                // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
-                const has_mt5 = !ObjectUtils.isEmptyObject(total_mt5);
-                this.obj_total_balance = {
-                    amount_real: +total_real.amount,
-                    amount_mt5: has_mt5 ? +total_mt5.amount : this.obj_total_balance.amount_mt5,
-                    currency: total_real.currency,
-                };
-            }
             this.resetLocalStorageValues(this.loginid);
+        }
+    }
+
+    // This callback is used for balance: all
+    // Balance: all is very slow
+    // --> so we keep a separate balance subscription for the active account
+    @action.bound
+    setBalanceOtherAccounts(obj_balance) {
+        // Only the first response of balance:all will include all accounts
+        // subsequent requests will be single account balance updates
+        if (this.accounts[obj_balance?.loginid] && !obj_balance.accounts && obj_balance.loginid !== this.loginid) {
+            this.accounts[obj_balance.loginid].balance = obj_balance.balance;
+        }
+
+        if (this.accounts[obj_balance?.loginid] && obj_balance.accounts) {
+            Object.keys(obj_balance.accounts).forEach(account_id => {
+                const is_active_account_id = account_id === this.loginid;
+
+                if (!is_active_account_id && this.accounts[account_id]) {
+                    this.accounts[account_id].balance = +obj_balance.accounts[account_id].balance;
+                }
+            });
+        }
+
+        if (obj_balance.total) {
+            const total_real = ObjectUtils.getPropertyValue(obj_balance, ['total', 'deriv']);
+            const total_mt5 = ObjectUtils.getPropertyValue(obj_balance, ['total', 'mt5']);
+            // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
+            const has_mt5 = !ObjectUtils.isEmptyObject(total_mt5);
+            this.obj_total_balance = {
+                amount_real: +total_real.amount,
+                amount_mt5: has_mt5 ? +total_mt5.amount : this.obj_total_balance.amount_mt5,
+                currency: total_real.currency,
+            };
         }
     }
 
@@ -995,26 +1099,47 @@ export default class ClientStore extends BaseStore {
 
         if (is_client_logging_in) {
             window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
-
+            SocketCache.clear();
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
             const authorize_response = await BinarySocket.authorize(is_client_logging_in);
-            this.is_populating_account_list = false;
 
             if (login_new_user) {
                 // overwrite obj_params if login is for new virtual account
                 obj_params = login_new_user;
             }
 
+            if (authorize_response.error) {
+                return authorize_response;
+            }
+
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
                 this.upgradeable_landing_companies = authorize_response.upgradeable_landing_companies;
-                if (account_list && ObjectUtils.isEmptyObject(this.accounts)) {
+                if (this.canStoreClientAccounts(obj_params, account_list)) {
                     this.storeClientAccounts(obj_params, account_list);
+                } else {
+                    // Since there is no API error, we have to add this to manually trigger checks in other parts of the code.
+                    authorize_response.error = {
+                        code: 'MismatchedAcct',
+                        message: localize('Invalid token'),
+                    };
                 }
             });
             return authorize_response;
         }
+    }
+
+    @action.bound
+    canStoreClientAccounts(obj_params, account_list) {
+        const is_ready_to_process = account_list && ObjectUtils.isEmptyObject(this.accounts);
+        const accts = Object.keys(obj_params).filter(value => /^acct./.test(value));
+
+        const is_cross_checked = accts.every(acct =>
+            account_list.some(account => account.loginid === obj_params[acct])
+        );
+
+        return is_ready_to_process && is_cross_checked;
     }
 
     @action.bound
@@ -1032,8 +1157,30 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    setDeviceData(device_data) {
-        this.device_data = device_data;
+    setDeviceData() {
+        // Set client URL params on init
+        const url_params = new URLSearchParams(window.location.search);
+        const device_data = {
+            ...(url_params.get('affiliate_token') && { affiliate_token: url_params.get('affiliate_token') }),
+            ...(url_params.get('gclid_url') && { gclid_url: url_params.get('gclid_url') }),
+
+            // date_first_contact should be preserved to the first client contact
+            ...(!this.device_data.date_first_contact && {
+                date_first_contact:
+                    url_params.get('date_first_contact') || this.root_store.common.server_time.format('YYYY-MM-DD'),
+            }),
+
+            // signup device can be set anytime even if there is no url parameter by using isDesktop function
+            signup_device: url_params.get('signup_device') || isDesktop() ? 'desktop' : 'mobile',
+
+            // url params can be stored only if utm_source is available
+            ...(url_params.get('utm_source') && {
+                utm_campaign: url_params.get('utm_campaign') || '',
+                utm_medium: url_params.get('utm_medium') || '',
+                utm_source: url_params.get('utm_source'), // since the check is done previously
+            }),
+        };
+        this.device_data = { ...this.device_data, ...device_data };
     }
 
     @action.bound
@@ -1081,7 +1228,7 @@ export default class ClientStore extends BaseStore {
                 await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
 
                 // GTM Signup event
-                this.root_store.gtm.pushDataLayer({ event: 'signup' });
+                this.root_store.gtm.pushDataLayer({ event: 'virtual_signup' });
             }
         });
     }
@@ -1093,6 +1240,16 @@ export default class ClientStore extends BaseStore {
             curr1: currency,
         };
         await this.init(new_user_login);
+    }
+
+    @action.bound
+    fetchAccountSettings() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getSettings().then(response => {
+                this.setAccountSettings(response.get_settings);
+                resolve(response);
+            });
+        });
     }
 
     @action.bound
@@ -1136,13 +1293,9 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     async updateMt5LoginList() {
-        if (!this.is_mt5_account_list_updated && !this.is_populating_mt5_account_list) {
+        if (this.is_logged_in && !this.is_mt5_account_list_updated && !this.is_populating_mt5_account_list) {
             const response = await WS.mt5LoginList();
             this.responseMt5LoginList(response);
-            // update total balance since MT5 total only comes in non-stream balance call
-            WS.balanceAll().then(response => {
-                this.setBalance(response.balance);
-            });
         }
     }
 
@@ -1160,10 +1313,13 @@ export default class ClientStore extends BaseStore {
         }, 60000);
 
         if (!response.error) {
-            this.mt5_login_list = response.mt5_login_list.map(account => ({
-                ...account,
-                display_login: account.login.replace(/^(MT[DR]?)/i, ''),
-            }));
+            this.mt5_login_list = response.mt5_login_list
+                .filter(account => !/inactive/.test(account.group)) // remove disabled mt5 accounts
+                .map(account => ({
+                    ...account,
+                    group: getMT5AccountType(account.group),
+                    display_login: account.login.replace(/^(MT[DR]?)/i, ''),
+                }));
         }
     }
 
@@ -1193,33 +1349,36 @@ export default class ClientStore extends BaseStore {
     syncWithSmartTrader(active_loginid, client_accounts) {
         const iframe_window = document.getElementById('localstorage-sync');
         if (iframe_window) {
-            let origin;
-
-            if (/^staging\.deriv\.app$/i.test(window.location.hostname)) {
-                origin = 'https://smarttrader-staging.deriv.app';
-            } else if (/^deriv\.app$/i.test(window.location.hostname)) {
-                origin = 'https://smarttrader.deriv.app';
-            } else {
-                return;
+            const origin = getUrlSmartTrader();
+            if (origin) {
+                // Keep client.accounts in sync (in case user wasn't logged in).
+                iframe_window.contentWindow.postMessage(
+                    {
+                        key: 'client.accounts',
+                        value: JSON.stringify(client_accounts),
+                    },
+                    origin
+                );
+                iframe_window.contentWindow.postMessage(
+                    {
+                        key: 'active_loginid',
+                        value: active_loginid,
+                    },
+                    origin
+                );
             }
-
-            // Keep client.accounts in sync (in case user wasn't logged in).
-            iframe_window.contentWindow.postMessage(
-                { key: 'client.accounts', value: JSON.stringify(client_accounts) },
-                origin
-            );
-            iframe_window.contentWindow.postMessage({ key: 'active_loginid', value: active_loginid }, origin);
         }
     }
 
     @computed
     get is_high_risk() {
+        if (isEmptyObject(this.account_status)) return false;
         return this.account_status.risk_classification === 'high';
     }
 
     @computed
     get has_residence() {
-        return !!this.accounts[this.loginid].residence;
+        return !!this.accounts[this.loginid]?.residence;
     }
 }
 /* eslint-enable */

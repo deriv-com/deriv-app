@@ -12,7 +12,7 @@
 //         </div>
 //         <h4 className='purchase-container__lock-header'>{localize('Purchase Locked')}</h4>
 //         <Button
-//             className='purchase-container__lock-button btn--secondary btn--secondary--orange'
+//             className='purchase-container__lock-button dc-btn--secondary dc-btn--secondary--orange'
 //             has_effect
 //             onClick={onClick}
 //             text={localize('Unlock')}

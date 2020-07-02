@@ -1,5 +1,3 @@
-@import 'app/_common/base/index';
-
 .terms-of-use {
     display: flex;
     flex-direction: column;
@@ -27,5 +25,21 @@
     }
     input {
         display: none;
+    }
+    @include mobile {
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0 2.4rem 4rem;
+        overflow-y: auto;
+
+        & .dc-checkbox__box {
+            width: 2.4rem;
+            height: 2.4rem;
+
+            .dc-icon {
+                width: 2.4rem;
+                height: 2.4rem;
+            }
+        }
     }
 }

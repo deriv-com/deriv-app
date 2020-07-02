@@ -18,13 +18,13 @@ Blockly.Blocks.logic_negate = {
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary: Blockly.Colours.Base.colourTertiary,
-            tooltip: localize('Converts a given True of False to the oposite value'),
+            tooltip: localize('Converts a given True or False to the opposite value'),
             category: Blockly.Categories.Logic,
         };
     },
     meta() {
         return {
-            display_name: localize('Logic negate'),
+            display_name: localize('Logic negation'),
             description: localize('This block converts the boolean value (true or false) to its opposite.'),
         };
     },

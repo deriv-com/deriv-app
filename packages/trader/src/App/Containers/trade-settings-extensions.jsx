@@ -1,27 +1,23 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Loadable from 'react-loadable';
+import { UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import Lazy from 'App/Containers/Lazy';
+import { connect, MobxContentProvider } from 'Stores/connect';
 
-const ChartSettingContainer = () => (
-    <Lazy
-        ctor={() =>
-            import(
-                /* webpackChunkName: "settings-chart", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-chart.jsx'
-            )
-        }
-    />
-);
+const ChartSettingContainer = Loadable({
+    loader: () =>
+        import(
+            /* webpackChunkName: "settings-chart", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-chart.jsx'
+        ),
+    loading: UILoader,
+});
 
-// const PurchaseSettings = () => (
-//     <Lazy
-//         ctor={() => import(/* webpackChunkName: "settings-chart", webpackPrefetch: true */'App/Containers/SettingsModal/settings-purchase.jsx')}
-//     />
-// );
-
-ChartSettingContainer.displayName = 'ChartSettingContainer';
-// PurchaseSettings.displayName = 'PurchaseSettings';
+// const PurchaseSettings = Loadable({
+//     loader: () =>
+//     import(/* webpackChunkName: "settings-chart", webpackPrefetch: true */'App/Containers/SettingsModal/settings-purchase.jsx'),
+//     loading: UILoader,
+// });
 
 class TradeSettingsExtensions extends React.Component {
     populateSettings = () => {
@@ -31,7 +27,11 @@ class TradeSettingsExtensions extends React.Component {
             {
                 icon: 'IcChart',
                 label: localize('Charts'),
-                value: ChartSettingContainer,
+                value: ({ ...props }) => (
+                    <MobxContentProvider store={this.props.store}>
+                        <ChartSettingContainer {...props} />
+                    </MobxContentProvider>
+                ),
                 // uncomment below lines to bring back purchase lock and purchase confirmation}
                 // }, {
                 //     icon : IconPurchase,

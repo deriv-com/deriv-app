@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
-import './blocks';
-import './hooks';
+import './blockly';
 import { hasAllRequiredBlocks, updateDisabledBlocks } from './utils';
 import main_xml from './xml/main.xml';
 import toolbox_xml from './xml/toolbox.xml';
@@ -23,21 +22,31 @@ class DBot {
     /**
      * Initialises the workspace and mounts it to a container element (app_contents).
      */
-    async initWorkspace(public_path, store, api_helpers_store) {
+    async initWorkspace(public_path, store, api_helpers_store, is_mobile) {
         try {
             __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
             ApiHelpers.setInstance(api_helpers_store);
             DBotStore.setInstance(store);
+            const window_width = window.innerWidth;
+            let workspaceScale = 0.8;
 
-            const { handleFileChange, onBotNameTyped } = DBotStore.instance;
-
+            const { handleFileChange } = DBotStore.instance;
+            if (window_width < 1640) {
+                if (is_mobile) {
+                    workspaceScale = 0.7;
+                } else {
+                    const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
+                    const zoom_scale = scratch_div_width / window_width;
+                    workspaceScale = zoom_scale;
+                }
+            }
             const el_scratch_div = document.getElementById('scratch_div');
             this.workspace = Blockly.inject(el_scratch_div, {
                 grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
                 media: `${__webpack_public_path__}media/`,
                 toolbox: toolbox_xml,
-                trashcan: true,
-                zoom: { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
+                trashcan: !is_mobile,
+                zoom: { wheel: true, startScale: workspaceScale },
             });
 
             this.workspace.cached_xml = { main: main_xml, toolbox: toolbox_xml };
@@ -64,8 +73,14 @@ class DBot {
                 file_name = latest_file.name;
                 Blockly.derivWorkspace.current_strategy_id = latest_file.id;
             }
+
+            const event_group = `dbot-load${Date.now()}`;
+            Blockly.Events.setGroup(event_group);
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
-            onBotNameTyped(file_name);
+            const { save_modal } = DBotStore.instance;
+
+            save_modal.updateBotName(file_name);
+            this.workspace.cleanUp();
             this.workspace.clearUndo();
 
             window.addEventListener('resize', () => onWorkspaceResize());
@@ -233,11 +248,32 @@ class DBot {
 
         this.workspace.centerOnBlock(error_blocks[0].id);
         error_blocks.forEach(block => {
-            const message = { name: 'BlocksError', message: block.error_message };
-            globalObserver.emit('Error', message);
+            globalObserver.emit('ui.log.error', block.error_message);
         });
 
         return false;
+    }
+
+    centerAndHighlightBlock(block_id, should_animate = false) {
+        const block_to_highlight = this.workspace.getBlockById(block_id);
+
+        if (!block_to_highlight) {
+            return;
+        }
+
+        const all_blocks = this.workspace.getAllBlocks();
+
+        all_blocks.forEach(block => block.setErrorHighlighted(false));
+        if (should_animate) {
+            block_to_highlight.blink();
+        }
+        block_to_highlight.setErrorHighlighted(true);
+
+        this.workspace.centerOnBlock(block_to_highlight.id);
+    }
+
+    unHighlightAllBlocks() {
+        this.workspace.getAllBlocks().forEach(block => block.setErrorHighlighted(false));
     }
 
     /**
@@ -247,8 +283,7 @@ class DBot {
         if (!hasAllRequiredBlocks(this.workspace)) {
             const error = new Error(
                 localize(
-                    'One or more mandatory blocks are missing from your workspace. ' +
-                        'Please add the required block(s) and then try again.'
+                    'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
                 )
             );
 

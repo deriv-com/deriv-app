@@ -63,6 +63,8 @@ export const toGMTFormat = time =>
 
 export const formatDate = (date, date_format = 'YYYY-MM-DD') => toMoment(date).format(date_format);
 
+export const formatTime = (epoch, time_format = 'HH:mm:ss [GMT]') => toMoment(epoch).format(time_format);
+
 /**
  * return the number of days from today to date specified
  * @param  {String} date   the date to calculate number of days from today
@@ -93,21 +95,21 @@ export const getDiffDuration = (start_time, end_time) =>
  * @param  {moment.duration} moment duration object
  * @return {String} formatted display string
  */
-export const formatDuration = duration => {
+export const formatDuration = (duration, format) => {
     const d = Math.floor(duration.asDays()); // duration.days() does not include months/years
     const h = duration.hours();
     const m = duration.minutes();
     const s = duration.seconds();
-    let formatted_str = moment(0)
+    const formatted_str = moment(0)
         .hour(h)
         .minute(m)
         .seconds(s)
-        .format('HH:mm:ss');
-    if (d > 0) {
-        // TODO add translations for days and day
-        formatted_str = `${d} ${d > 1 ? 'days' : 'day'} ${formatted_str}`;
-    }
-    return formatted_str;
+        .format(format || 'HH:mm:ss');
+
+    return {
+        days: d,
+        timestamp: formatted_str,
+    };
 };
 
 /**
@@ -218,3 +220,12 @@ export const getStartOfMonth = date =>
  * @param {String} str_format formatting using moment e.g - YYYY-MM-DD HH:mm
  */
 export const formatMiliseconds = (miliseconds, str_format) => moment.utc(miliseconds).format(str_format);
+
+/**
+ * returns a new date string
+ * @param {moment|string|epoch} date parameter
+ * @param {String} from_date_format initial date format
+ * @param {String} to_date_format to date format
+ */
+export const convertDateFormat = (date, from_date_format, to_date_format) =>
+    moment(date, from_date_format).format(to_date_format);

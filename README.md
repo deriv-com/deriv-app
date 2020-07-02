@@ -35,7 +35,7 @@ In order to work on your own version of the Deriv application, please **fork thi
 
 You will need to perform the following on your development machine:
 
-1. Node.js (v11.15.0 is recommended, v12 has compat issues currently) and NPM (see <https://nodejs.org/en/download/package-manager/>)
+1. Node.js (v12.18.0 is recommended) and NPM (see <https://nodejs.org/en/download/package-manager/>)
 2. Clone your own fork of this repo
 3. Run `npm run bootstrap` from the root folder
 4. If you have a custom domain that you use for GH Pages, add a file named `CNAME` in `packages/core/scripts/` to be used for your GH Pages deployments
@@ -58,9 +58,11 @@ All packages must contain the following scripts to perform the stated actions:
 | ✅            | `test:eslint`       | Runs only eslint.                                                                             |
 | ✅            | `test:stylelint`    | Runs only stylelint.                                                                          |
 | ✅            | `test:mocha`        | Runs only the test suite.                                                                     |
-| ❌            | `deploy`            | Runs `build` script, then pushes the output to GH Pages.                                      |
-| ❌            | `deploy:clean`      | Runs `build` script, clears `gh-pages` branch, then pushes the output to GH Pages.            |
-| ❌            | `deploy:folder`     | Runs `build` script, then pushes the output to the specified folder in GH Pages.              |
+
+[comment]: <> (The following scripts are not to be used except for CI/CD environments)
+[comment]: <> (| ❌            | `deploy`            | Runs `build` script, then pushes the output to GH Pages.                                      |)
+[comment]: <> (| ❌            | `deploy:clean`      | Runs `build` script, clears `gh-pages` branch, then pushes the output to GH Pages.            |)
+[comment]: <> (| ❌            | `deploy:folder`     | Runs `build` script, then pushes the output to the specified folder in GH Pages.              |)
 
 **Please follow the README of each package you intend to work with on how to get set up and their custom scripts.** However, the above scripts can be run from the root directory in the following manner.
 
@@ -98,22 +100,17 @@ npm run start bot
 npm run test:stylelint trader
 ```
 
-❌ Below command will not work as the script `deploy:clean` does not support "Package param" (refer to the table in [Working With This Repo](#working-with-this-repo)):
-```bash
-npm run deploy:clean bot
-```
+[comment]: <> (❌ Below command will not work as the script `deploy:clean` does not support "Package param" (refer to the table in [Working With This Repo](#working-with-this-repo)): ```bash npm run deploy:clean bot```)
 
 #### Release
-There are 3 types of release:
+There are 2 types of release:
 
-1. Release to test link (deploy to your fork's GH Pages):
-    1. You can simply deploy to root of the `gh-pages` branch with: `npm run deploy`.
-    2. You can clean (remove `br_` folders and clear root) your `gh-pages` branch and deploy to root in a single command with `npm run deploy:clean`
-    3. You can deploy to a folder in your `gh-pages` branch in order to separate from root app deployment and other folder deployments with: `npm run deploy:folder br_test_folder` (folder name must be prefixed with `br_`)
-2. Release to staging: 
+[comment]: <> (1. Release to test link (deploy to your fork's GH Pages): 1. You can simply deploy to root of the `gh-pages` branch with: `npm run deploy`. 2. You can clean (remove `br_` folders and clear root) your `gh-pages` branch and deploy to root in a single command with `npm run deploy:clean` 3. You can deploy to a folder in your `gh-pages` branch in order to separate from root app deployment and other folder deployments with: `npm run deploy:folder br_test_folder` (folder name must be prefixed with `br_`))
+
+1. Release to staging: 
     1. `git tag staging_v20191205 -m 'release staging'` # the tag needs to follow the RegExp format `/^staging.*/`
     2. `git push origin staging_v20191205`
-3. Release to production:
+2. Release to production:
     1. `git tag production_v20191205 -m 'release production'`
     2. `git push origin production_v20191205`
 

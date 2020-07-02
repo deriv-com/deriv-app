@@ -1,15 +1,16 @@
 import { reaction } from 'mobx';
-import { Provider } from 'mobx-react';
 import React from 'react';
 import { runIrreversibleEvents, ApiHelpers, DBot, ServerTime } from '@deriv/bot-skeleton';
 import './public-path'; // Leave this here! OK boss!
 import Audio from './components/audio.jsx';
 import FooterExtension from './components/footer-extension.jsx';
 import MainContent from './components/main-content.jsx';
-import NotificationMessages from './components/notification-messages.jsx';
+import BotNotificationMessages from './components/bot-notification-messages.jsx';
 import QuickStrategy from './components/quick-strategy.jsx';
 import RunPanel from './components/run-panel.jsx';
 import Toolbar from './components/toolbar.jsx';
+import { MobxContentProvider } from './stores/connect';
+import RoutePromptDialog from './components/route-prompt-dialog.jsx';
 import RootStore from './stores';
 import GTM from './utils/gtm';
 import './assets/sass/app.scss';
@@ -33,30 +34,36 @@ class App extends React.Component {
             core: { client },
             flyout,
             toolbar,
+            save_modal,
             quick_strategy,
             load_modal,
         } = this.root_store;
         const { handleFileChange } = load_modal;
         const { toggleStrategyModal } = quick_strategy;
-        const { onBotNameTyped } = toolbar;
         this.dbot_store = {
             is_mobile: false,
             client,
             flyout,
             toolbar,
+            save_modal,
             toggleStrategyModal,
             handleFileChange,
-            onBotNameTyped,
         };
         this.api_helpers_store = { ws: this.root_store.ws, server_time: this.root_store.server_time };
     }
 
     componentDidMount() {
-        DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store);
+        DBot.initWorkspace(
+            __webpack_public_path__,
+            this.dbot_store,
+            this.api_helpers_store,
+            this.root_store.ui.is_mobile
+        );
         this.registerCurrencyReaction();
         this.registerOnAccountSwitch();
         this.registerClickOutsideBlockly();
         this.registerBeforeUnload();
+        this.root_store.main_content.getCachedActiveTab();
     }
 
     componentWillUnmount() {
@@ -65,10 +72,12 @@ class App extends React.Component {
         }
 
         this.disposeReactions();
+        DBot.terminateBot();
 
         // Ensure account switch is re-enabled.
         const { ui } = this.root_store.core;
         ui.setAccountSwitcherDisabledMessage(false);
+        ui.setPromptHandler(false);
     }
 
     /**
@@ -166,17 +175,18 @@ class App extends React.Component {
 
     render() {
         return (
-            <Provider {...this.root_store}>
+            <MobxContentProvider store={this.root_store}>
                 <div className='bot'>
-                    <NotificationMessages />
+                    <BotNotificationMessages />
                     <Toolbar />
                     <MainContent />
                     <RunPanel />
                     <QuickStrategy />
                     <FooterExtension />
                     <Audio />
+                    <RoutePromptDialog />
                 </div>
-            </Provider>
+            </MobxContentProvider>
         );
     }
 }

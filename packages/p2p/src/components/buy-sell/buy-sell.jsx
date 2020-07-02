@@ -1,9 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, ButtonToggle } from '@deriv/components';
+import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
-import { BuySellTable } from './buy-sell-table.jsx';
 import Popup from './popup.jsx';
+import BuySellTableContent from './buy-sell-table-content.jsx';
+import PageReturn from '../page-return/page-return.jsx';
+import Verification from '../verification/verification.jsx';
 import './buy-sell.scss';
 
 const buy_sell_filters = [
@@ -17,15 +20,20 @@ const buy_sell_filters = [
     },
 ];
 
-class BuySell extends Component {
+class BuySell extends React.Component {
     state = {
         table_type: 'buy',
         selected_ad: {},
         show_popup: false,
+        show_verification: false,
     };
 
     setSelectedAd = selected_ad => {
-        this.setState({ selected_ad, show_popup: true });
+        if (!this.context.is_advertiser) {
+            this.setState({ show_verification: true });
+        } else {
+            this.setState({ selected_ad, show_popup: true });
+        }
     };
 
     onCancelClick = () => {
@@ -37,11 +45,22 @@ class BuySell extends Component {
     };
 
     onConfirmClick = order_info => {
-        this.props.navigate('orders', { order_info });
+        const nav = { location: 'buy_sell' };
+        this.props.navigate('orders', { order_info, nav });
     };
+
+    hideVerification = () => this.setState({ show_verification: false });
 
     render() {
         const { table_type, selected_ad, show_popup } = this.state;
+
+        if (this.state.show_verification)
+            return (
+                <>
+                    <PageReturn onClick={this.hideVerification} page_title={localize('Verification')} />
+                    <Verification />
+                </>
+            );
 
         return (
             <div className='buy-sell'>
@@ -53,9 +72,14 @@ class BuySell extends Component {
                         name='filter'
                         onChange={this.onChangeTableType}
                         value={table_type}
+                        has_rounded_button
                     />
                 </div>
-                <BuySellTable table_type={table_type} setSelectedAd={this.setSelectedAd} />
+                <BuySellTableContent
+                    key={table_type}
+                    is_buy={table_type === 'buy'}
+                    setSelectedAd={this.setSelectedAd}
+                />
                 {show_popup && (
                     <div className='buy-sell__dialog'>
                         <Dialog is_visible={show_popup}>
@@ -78,3 +102,5 @@ BuySell.propTypes = {
 };
 
 export default BuySell;
+
+BuySell.contextType = Dp2pContext;

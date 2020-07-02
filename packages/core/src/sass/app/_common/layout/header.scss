@@ -1,4 +1,4 @@
-/** @define header */
+/** @define header; weak */
 .header {
     position: fixed;
     z-index: 99;
@@ -14,6 +14,57 @@
     &--is-disabled:after {
         opacity: 1;
         pointer-events: auto;
+    }
+    &__menu-mobile-platform-switcher {
+        position: absolute;
+        height: 100%;
+        top: -48px;
+        left: 0;
+    }
+    &__menu-mobile-link {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+
+        &--active {
+            .header__menu-mobile-link-text {
+                font-weight: bold;
+                color: var(--text-prominent);
+            }
+        }
+        &-text {
+            font-size: 1.4rem;
+            color: var(--text-general);
+        }
+        &-icon {
+            margin-right: 16px;
+            width: 16px;
+            height: 16px;
+        }
+        &-suffix-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        &-toggler {
+            &-label {
+                width: 48px;
+                height: 25.6px;
+                margin-left: auto;
+                margin-right: 1.6rem;
+            }
+            &-button {
+                width: 19.2px;
+                height: 19.2px;
+                top: 3px;
+                left: 4px;
+
+                &--active {
+                    left: calc(100% - 4px) !important;
+                }
+            }
+        }
     }
     &__menu-items {
         display: flex;
@@ -42,6 +93,12 @@
         display: inline-flex;
         flex: 1;
         height: #{$HEADER_HEIGHT - 1px};
+
+        &-extensions {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
     }
     &__menu-right {
         justify-content: flex-end;
@@ -49,6 +106,15 @@
         display: inline-flex;
         height: #{$HEADER_HEIGHT - 1px};
         position: relative;
+
+        @include mobile {
+            .acc-info__separator {
+                display: none;
+            }
+            .notifications-toggle {
+                margin-right: 0;
+            }
+        }
     }
     &__menu-toggle {
         align-self: center;
@@ -124,6 +190,20 @@
         width: 50px;
         margin-left: 8px;
     }
+    &__mobile-drawer {
+        &-icon {
+            width: 16px;
+            height: 16px;
+            transform: scale(1.3);
+        }
+        &-toggle {
+            padding: 0 1.2rem;
+            border-right: 1px solid var(--general-section-1);
+            display: flex;
+            align-items: center;
+            height: inherit;
+        }
+    }
     &__title {
         display: inline-block;
         font-weight: bold;
@@ -132,5 +212,13 @@
     &__icon {
         margin-right: 0.8rem;
         vertical-align: middle;
+    }
+    @include mobile {
+        height: $MOBILE_HEADER_HEIGHT;
+
+        .header__menu-left,
+        .header__menu-right {
+            height: #{$MOBILE_HEADER_HEIGHT - 1px};
+        }
     }
 }

@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Dropdown, Icon, Input, Money } from '@deriv/components';
+import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { Field, Formik, Form } from 'formik';
 import CurrencyUtils from '@deriv/shared/utils/currency';
-import { website_name } from 'App/Constants/app-config';
 import { localize, Localize } from '@deriv/translations';
+import { website_name } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
 import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
 import Loading from '../../../../templates/_common/components/loading.jsx';
@@ -19,270 +19,393 @@ const AccountOption = ({ account, idx }) => (
             />
         )}
         <span className='account-transfer__currency'>{account.text}</span>
-        <span className='account-transfer__balance'>
-            (<Money amount={account.balance} currency={account.currency} />)
+        <span className='account-transfer__balance cashier__drop-down-display-brackets'>
+            <Money amount={account.balance} currency={account.currency} />
         </span>
     </React.Fragment>
 );
 
-class AccountTransferForm extends React.Component {
-    validateAmount = amount => {
-        let error;
+const AccountTransferBullet = ({ children }) => (
+    <div className='account-transfer__bullet-wrapper'>
+        <div className='account-transfer__bullet' />
+        <span>{children}</span>
+    </div>
+);
+
+const AccountTransferNote = ({
+    currency,
+    transfer_fee,
+    minimum_fee,
+    internal_total_transfers,
+    mt5_total_transfers,
+}) => (
+    <div className='account-transfer__notes'>
+        <DesktopWrapper>
+            <div className='cashier__header account-transfer__notes-header'>
+                <Localize i18n_default_text='Notes' />
+            </div>
+        </DesktopWrapper>
+        <AccountTransferBullet>
+            <Localize
+                i18n_default_text='Daily transfer limits: up to {{number_deriv}} times for Deriv accounts, and up to {{number_dmt5}} times for DMT5 accounts.'
+                values={{
+                    number_deriv: internal_total_transfers,
+                    number_dmt5: mt5_total_transfers,
+                }}
+            />
+        </AccountTransferBullet>
+        <AccountTransferBullet>
+            <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
+        </AccountTransferBullet>
+        <AccountTransferBullet>
+            <Localize
+                i18n_default_text='We’ll charge a {{transfer_fee}}% transfer fee, or {{minimum_fee}} {{currency}}, whichever is higher.'
+                values={{
+                    transfer_fee,
+                    minimum_fee,
+                    currency: CurrencyUtils.getCurrencyDisplayCode(currency),
+                }}
+            />
+        </AccountTransferBullet>
+        <AccountTransferBullet>
+            <Localize
+                i18n_default_text='You may transfer between your fiat and cryptocurrency accounts or between your {{website_name}} and DMT5 accounts.'
+                values={{ website_name }}
+            />
+        </AccountTransferBullet>
+        <AccountTransferBullet>
+            <Localize i18n_default_text='Transfers may be unavailable when the exchange markets are closed, when there is high volatility, or when there are technical issues.' />
+        </AccountTransferBullet>
+    </div>
+);
+
+const AccountTransferForm = ({
+    onMount,
+    transfer_limit,
+    account_limits,
+    selected_from,
+    selected_to,
+    requestTransferBetweenAccounts,
+    accounts_list,
+    setSideNote,
+    transfer_fee,
+    minimum_fee,
+    onChangeTransferFrom,
+    onChangeTransferTo,
+    setErrorMessage,
+    error,
+}) => {
+    const validateAmount = amount => {
+        let error_message;
 
         if (!amount) {
-            error = localize('This field is required.');
+            error_message = localize('This field is required.');
         } else if (
             !validNumber(amount, {
                 type: 'float',
-                decimals: CurrencyUtils.getDecimalPlaces(this.props.selected_from.currency),
-                min: this.props.transfer_limit.min,
-                max: this.props.transfer_limit.max,
+                decimals: CurrencyUtils.getDecimalPlaces(selected_from.currency),
+                min: transfer_limit.min,
+                max: transfer_limit.max,
             })
         ) {
-            error = getPreBuildDVRs().number.message;
-        } else if (+this.props.selected_from.balance < +amount) {
-            error = localize('Insufficient balance.');
+            error_message = getPreBuildDVRs().number.message;
+        } else if (+selected_from.balance < +amount) {
+            error_message = localize('Insufficient balance.');
         }
 
-        return error;
+        return error_message;
     };
 
-    onTransferPassthrough = async (values, actions) => {
-        const transfer_between_accounts = await this.props.requestTransferBetweenAccounts({
-            amount: values.amount,
+    const onTransferPassthrough = async (values, actions) => {
+        const transfer_between_accounts = await requestTransferBetweenAccounts({
+            amount: +values.amount,
         });
-        if (transfer_between_accounts.error) {
+        if (transfer_between_accounts?.error) {
             actions.setSubmitting(false);
         }
     };
 
-    render() {
-        const accounts_from = [];
-        const mt_accounts_from = [];
-        const accounts_to = [];
-        const mt_accounts_to = [];
+    const accounts_from = [];
+    const mt_accounts_from = [];
+    const accounts_to = [];
+    const mt_accounts_to = [];
 
-        this.props.accounts_list.forEach((account, idx) => {
-            const text = <AccountOption idx={idx} account={account} />;
-            const value = account.value;
-            (account.is_mt ? mt_accounts_from : accounts_from).push({
-                text,
-                value,
-            });
-            const is_selected_from = account.value === this.props.selected_from.value;
-            const is_selected_from_mt = this.props.selected_from.is_mt && account.is_mt;
-            const is_selected_from_crypto = this.props.selected_from.is_crypto && account.is_crypto;
-            // account from and to cannot be the same
+    accounts_list.forEach((account, idx) => {
+        const text = <AccountOption idx={idx} account={account} />;
+        const value = account.value;
+        (account.is_mt ? mt_accounts_from : accounts_from).push({
+            text,
+            value,
+            nativepicker_text: `${account.text} (${account.currency} ${account.balance})`,
+        });
+        const is_selected_from = account.value === selected_from.value;
+        // account from and to cannot be the same
+        if (!is_selected_from) {
+            const is_selected_from_mt = selected_from.is_mt && account.is_mt;
+            const is_selected_from_crypto = selected_from.is_crypto && account.is_crypto;
             // cannot transfer to MT account from MT
             // cannot transfer to crypto account from crypto
-            const is_disabled = is_selected_from_mt || is_selected_from || is_selected_from_crypto;
+            const is_disabled = is_selected_from_mt || is_selected_from_crypto;
             (account.is_mt ? mt_accounts_to : accounts_to).push({
                 text,
                 value,
                 disabled: is_disabled,
+                nativepicker_text: `${account.text} (${account.currency} ${account.balance})`,
             });
-        });
+        }
+    });
 
-        const from_accounts = {
-            [localize('Deriv accounts')]: accounts_from,
-            ...(mt_accounts_from.length && { [localize('DMT5 accounts')]: mt_accounts_from }),
-        };
+    const from_accounts = {
+        ...(mt_accounts_from.length && { [localize('DMT5 accounts')]: mt_accounts_from }),
+        ...(accounts_from.length && { [localize('Deriv accounts')]: accounts_from }),
+    };
 
-        const to_accounts = {
-            [localize('Deriv accounts')]: accounts_to,
-            ...(mt_accounts_to.length && { [localize('DMT5 accounts')]: mt_accounts_to }),
-        };
+    const to_accounts = {
+        ...(mt_accounts_to.length && { [localize('DMT5 accounts')]: mt_accounts_to }),
+        ...(accounts_to.length && { [localize('Deriv accounts')]: accounts_to }),
+    };
 
-        return (
-            <div className='cashier__wrapper--align-left'>
-                <React.Fragment>
-                    <Formik
-                        initialValues={{
-                            amount: '',
-                        }}
-                        onSubmit={this.onTransferPassthrough}
-                    >
-                        {({ errors, isSubmitting, isValid, touched, validateField, handleChange }) => (
-                            <React.Fragment>
-                                {isSubmitting ? (
-                                    <div className='cashier__loader-wrapper'>
-                                        <Loading className='cashier__loader' />
+    const { daily_transfers } = account_limits;
+    const mt5_remaining_transfers = daily_transfers?.mt5?.available;
+    const internal_remaining_transfers = daily_transfers?.internal?.available;
+    const mt5_total_transfers = daily_transfers?.mt5?.allowed;
+    const internal_total_transfers = daily_transfers?.internal?.allowed;
+
+    const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
+    const remaining_transfers = is_mt_transfer ? mt5_remaining_transfers : internal_remaining_transfers;
+
+    const transfer_to_hint =
+        +remaining_transfers === 1
+            ? localize('You have {{number}} transfer remaining for today.', { number: remaining_transfers })
+            : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
+
+    React.useEffect(() => {
+        onMount();
+    }, []);
+
+    React.useEffect(() => {
+        if (Object.keys(from_accounts).length && typeof setSideNote === 'function') {
+            setSideNote(
+                <AccountTransferNote
+                    mt5_total_transfers={mt5_total_transfers}
+                    internal_total_transfers={internal_total_transfers}
+                    transfer_fee={transfer_fee}
+                    currency={selected_from.currency}
+                    minimum_fee={minimum_fee}
+                />
+            );
+        }
+    }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNote]);
+
+    return (
+        <div className='cashier__wrapper account-transfer__wrapper'>
+            <React.Fragment>
+                <h2 className='cashier__header cashier__content-header'>
+                    {localize('Transfer between your accounts in Deriv')}
+                </h2>
+                <Formik
+                    initialValues={{
+                        amount: '',
+                    }}
+                    onSubmit={onTransferPassthrough}
+                >
+                    {({ errors, isSubmitting, isValid, touched, validateField, handleChange }) => (
+                        <React.Fragment>
+                            {isSubmitting ? (
+                                <div className='cashier__loader-wrapper'>
+                                    <Loading className='cashier__loader' />
+                                </div>
+                            ) : (
+                                <Form>
+                                    <div className='cashier__drop-down-wrapper account-transfer__drop-down-wrapper'>
+                                        <DesktopWrapper>
+                                            <Dropdown
+                                                id='transfer_from'
+                                                className='cashier__drop-down account-transfer__drop-down'
+                                                classNameDisplay='cashier__drop-down-display'
+                                                classNameDisplaySpan='cashier__drop-down-display-span'
+                                                classNameItems='cashier__drop-down-items'
+                                                classNameLabel='cashier__drop-down-label'
+                                                is_large
+                                                label={localize('From')}
+                                                list={from_accounts}
+                                                list_height='404'
+                                                name='transfer_from'
+                                                value={selected_from.value}
+                                                onChange={e => {
+                                                    onChangeTransferFrom(e);
+                                                    handleChange(e);
+                                                    validateField('amount');
+                                                }}
+                                            />
+                                        </DesktopWrapper>
+                                        <MobileWrapper>
+                                            <SelectNative
+                                                placeholder={localize('Please select')}
+                                                className='account-transfer__transfer-from'
+                                                classNameDisplay='cashier__drop-down-display'
+                                                label={localize('From')}
+                                                value={selected_from.value}
+                                                list_items={from_accounts}
+                                                onChange={e => {
+                                                    onChangeTransferFrom(e);
+                                                    handleChange(e);
+                                                    validateField('amount');
+                                                }}
+                                            />
+                                        </MobileWrapper>
+                                        <DesktopWrapper>
+                                            <Dropdown
+                                                id='transfer_to'
+                                                className='cashier__drop-down account-transfer__drop-down'
+                                                classNameDisplay='cashier__drop-down-display'
+                                                classNameDisplaySpan='cashier__drop-down-display-span'
+                                                classNameItems='cashier__drop-down-items'
+                                                classNameLabel='cashier__drop-down-label'
+                                                is_large
+                                                label={localize('To')}
+                                                list={to_accounts}
+                                                list_height='404'
+                                                name='transfer_to'
+                                                value={selected_to.value}
+                                                onChange={onChangeTransferTo}
+                                                hint={transfer_to_hint}
+                                            />
+                                        </DesktopWrapper>
+                                        <MobileWrapper>
+                                            <SelectNative
+                                                placeholder={localize('Please select')}
+                                                className='account-transfer__transfer-to'
+                                                classNameDisplay='cashier__drop-down-display'
+                                                label={localize('To')}
+                                                value={selected_to.value}
+                                                list_items={to_accounts}
+                                                onChange={onChangeTransferTo}
+                                                hint={transfer_to_hint}
+                                            />
+                                        </MobileWrapper>
                                     </div>
-                                ) : (
-                                    <Form>
-                                        <Dropdown
-                                            id='transfer_from'
-                                            className='cashier__drop-down account-transfer__drop-down'
-                                            classNameDisplay='cashier__drop-down-display'
-                                            classNameDisplaySpan='cashier__drop-down-display-span'
-                                            classNameItems='cashier__drop-down-items'
-                                            classNameLabel='cashier__drop-down-label'
-                                            label={localize('From')}
-                                            list={from_accounts}
-                                            name='transfer_from'
-                                            value={this.props.selected_from.value}
-                                            onChange={e => {
-                                                this.props.onChangeTransferFrom(e);
-                                                handleChange(e);
-                                                validateField('amount');
-                                            }}
-                                        />
-                                        <Icon
-                                            className='cashier__transferred-icon account-transfer__transfer-icon'
-                                            icon='IcArrowLeftBold'
-                                        />
-                                        <Dropdown
-                                            id='transfer_to'
-                                            className='cashier__drop-down account-transfer__drop-down'
-                                            classNameDisplay='cashier__drop-down-display'
-                                            classNameDisplaySpan='cashier__drop-down-display-span'
-                                            classNameItems='cashier__drop-down-items'
-                                            classNameLabel='cashier__drop-down-label'
-                                            label={localize('To')}
-                                            list={to_accounts}
-                                            name='transfer_to'
-                                            value={this.props.selected_to.value}
-                                            onChange={this.props.onChangeTransferTo}
-                                        />
-                                        <Field name='amount' validate={this.validateAmount}>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    onChange={e => {
-                                                        this.props.setErrorMessage('');
-                                                        handleChange(e);
-                                                    }}
-                                                    className='cashier__input cashier__input--long dc-input--no-placeholder'
-                                                    type='text'
-                                                    label={localize('Amount')}
-                                                    error={touched.amount && errors.amount}
-                                                    required
-                                                    leading_icon={
-                                                        this.props.selected_from.currency ? (
-                                                            <span
-                                                                className={classNames(
-                                                                    'symbols',
-                                                                    `symbols--${this.props.selected_from.currency.toLowerCase()}`
-                                                                )}
-                                                            />
-                                                        ) : (
-                                                            undefined
-                                                        )
-                                                    }
-                                                    autoComplete='off'
-                                                    maxLength='30'
-                                                    hint={
-                                                        this.props.transfer_limit.min &&
-                                                        this.props.transfer_limit.max && (
-                                                            <Localize
-                                                                i18n_default_text='Transfer limits: <0 />-<1 />'
-                                                                components={[
-                                                                    <Money
-                                                                        key={0}
-                                                                        amount={this.props.transfer_limit.min}
-                                                                        currency={this.props.selected_from.currency}
-                                                                    />,
-                                                                    <Money
-                                                                        key={1}
-                                                                        amount={this.props.transfer_limit.max}
-                                                                        currency={this.props.selected_from.currency}
-                                                                    />,
-                                                                ]}
-                                                            />
-                                                        )
-                                                    }
-                                                />
-                                            )}
-                                        </Field>
-                                        <div>
-                                            <div className='account-transfer__notes'>
-                                                <div className='account-transfer__bullet-wrapper'>
-                                                    <div className='account-transfer__bullet' />
-                                                    <span>
-                                                        <Localize i18n_default_text='Transfer limits may vary depending on changes in exchange rates.' />
-                                                    </span>
-                                                </div>
-                                                <div className='account-transfer__bullet-wrapper'>
-                                                    <div className='account-transfer__bullet' />
-                                                    <span>
-                                                        <Localize
-                                                            i18n_default_text='Transfers are subject to a {{transfer_fee}}% transfer fee or {{currency}} {{minimum_fee}}, whichever is higher.'
-                                                            values={{
-                                                                transfer_fee: this.props.transfer_fee,
-                                                                currency: this.props.selected_from.currency,
-                                                                minimum_fee: this.props.minimum_fee,
-                                                            }}
+                                    <Field name='amount' validate={validateAmount}>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                onChange={e => {
+                                                    setErrorMessage('');
+                                                    handleChange(e);
+                                                }}
+                                                className='cashier__input dc-input--no-placeholder account-transfer__input'
+                                                type='text'
+                                                label={localize('Amount')}
+                                                error={touched.amount && errors.amount}
+                                                required
+                                                leading_icon={
+                                                    selected_from.currency ? (
+                                                        <span
+                                                            className={classNames(
+                                                                'symbols',
+                                                                `symbols--${selected_from.currency.toLowerCase()}`
+                                                            )}
                                                         />
-                                                    </span>
-                                                </div>
-                                                <div className='account-transfer__bullet-wrapper'>
-                                                    <div className='account-transfer__bullet' />
-                                                    <span>
+                                                    ) : (
+                                                        undefined
+                                                    )
+                                                }
+                                                autoComplete='off'
+                                                maxLength='30'
+                                                hint={
+                                                    transfer_limit.max && (
                                                         <Localize
-                                                            i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts (and vice versa), or between your {{website_name}} account and your {{website_name}} MT5 (DMT5) account (or vice versa).'
-                                                            values={{ website_name }}
+                                                            i18n_default_text='Transfer limits: <0 /> - <1 />'
+                                                            components={[
+                                                                <Money
+                                                                    key={0}
+                                                                    amount={transfer_limit.min}
+                                                                    currency={selected_from.currency}
+                                                                />,
+                                                                <Money
+                                                                    key={1}
+                                                                    amount={transfer_limit.max}
+                                                                    currency={selected_from.currency}
+                                                                />,
+                                                            ]}
                                                         />
-                                                    </span>
-                                                </div>
-                                                <div className='account-transfer__bullet-wrapper'>
-                                                    <div className='account-transfer__bullet' />
-                                                    <span>
-                                                        <Localize i18n_default_text='Transfers may be unavailable at times such as when the market is closed (weekends or holidays), periods of high volatility, or when there are technical issues.' />
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='cashier__form-submit'>
-                                            {this.props.error.message && (
-                                                <React.Fragment>
-                                                    <Icon
-                                                        icon='IcAlertDanger'
-                                                        className='cashier__form-error-icon'
-                                                        size={128}
-                                                    />
-                                                    <Icon
-                                                        icon='IcAlertDanger'
-                                                        className='cashier__form-error-small-icon'
-                                                    />
-                                                    <p className='cashier__form-error'>{this.props.error.message}</p>
-                                                </React.Fragment>
-                                            )}
-                                            <Button
-                                                className='cashier__form-submit-button'
-                                                type='submit'
-                                                is_disabled={!isValid || isSubmitting}
-                                                primary
-                                                large
-                                            >
-                                                <Localize i18n_default_text='Transfer' />
-                                            </Button>
-                                        </div>
-                                    </Form>
-                                )}
-                            </React.Fragment>
-                        )}
-                    </Formik>
-                </React.Fragment>
-            </div>
-        );
-    }
-}
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                    <div className='cashier__form-submit cashier__form-submit--align-end account-transfer__form-submit'>
+                                        {error.message && (
+                                            <React.Fragment>
+                                                <DesktopWrapper>
+                                                    <div className='cashier__form-error-wrapper account-transfer__form-error'>
+                                                        <Icon
+                                                            icon='IcAlertDanger'
+                                                            className='cashier__form-error-small-icon'
+                                                        />
+                                                        <p className='cashier__form-error'>{error.message}</p>
+                                                    </div>
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <div className='cashier__form-error-container'>
+                                                        <Icon
+                                                            icon='IcAlertDanger'
+                                                            className='cashier__form-error-small-icon'
+                                                        />
+                                                        <p className='cashier__form-error'>{error.message}</p>
+                                                    </div>
+                                                </MobileWrapper>
+                                            </React.Fragment>
+                                        )}
+                                        <Button
+                                            className='cashier__form-submit-button'
+                                            type='submit'
+                                            is_disabled={!isValid || isSubmitting || !+remaining_transfers}
+                                            primary
+                                            large
+                                        >
+                                            <Localize i18n_default_text='Transfer' />
+                                        </Button>
+                                    </div>
+                                    <MobileWrapper>
+                                        <AccountTransferNote
+                                            mt5_total_transfers={mt5_total_transfers}
+                                            internal_total_transfers={internal_total_transfers}
+                                            transfer_fee={transfer_fee}
+                                            currency={selected_from.currency}
+                                            minimum_fee={minimum_fee}
+                                        />
+                                    </MobileWrapper>
+                                </Form>
+                            )}
+                        </React.Fragment>
+                    )}
+                </Formik>
+            </React.Fragment>
+        </div>
+    );
+};
 
 AccountTransferForm.propTypes = {
+    account_limits: PropTypes.object,
     accounts_list: PropTypes.array,
     error: PropTypes.object,
     minimum_fee: PropTypes.string,
     onChangeTransferFrom: PropTypes.func,
     onChangeTransferTo: PropTypes.func,
+    onMount: PropTypes.func,
     requestTransferBetweenAccounts: PropTypes.func,
     selected_from: PropTypes.object,
     selected_to: PropTypes.object,
     setErrorMessage: PropTypes.func,
+    setSideNote: PropTypes.func,
     transfer_fee: PropTypes.number,
     transfer_limit: PropTypes.object,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ client, modules }) => ({
+    account_limits: client.account_limits,
+    onMount: client.getLimits,
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
     minimum_fee: modules.cashier.config.account_transfer.minimum_fee,
     onChangeTransferFrom: modules.cashier.onChangeTransferFrom,

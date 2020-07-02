@@ -32,6 +32,9 @@ const copyConfig = base => [
             return context.split('node_modules/@deriv/trader/dist/')[1];
         },
     },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/js/**'), to: 'account/js', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/css/**'), to: 'account/css/', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/*.*'), to: 'account/js', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/trader.*.js'), to: 'js', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/**'), to: 'css', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/*.*'), to: 'js', flatten: true },
@@ -51,6 +54,12 @@ const copyConfig = base => [
     { from: path.resolve(__dirname, '../src/root_files/sitemap.xml'), to: 'sitemap.xml', toType: 'file' },
     { from: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'), to: 'favicon.ico', toType: 'file' },
     { from: path.resolve(__dirname, '../src/public/images/favicons/**') },
+    {
+        from: path.resolve(__dirname, '../src/public/images/common/static_images/**'),
+        to: 'public/images/common',
+        flatten: true,
+    },
+    // { from: path.resolve(__dirname, '../src/public/images/common/og_image.gif'), to: 'images/common/og_image.gif' }, // Once the design for og_image is ready, bring this back.
     { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
     { from: path.resolve(__dirname, '../src/public/images/app/header/**') },
     {
@@ -71,7 +80,7 @@ const copyConfig = base => [
 
 const generateSWConfig = () => ({
     cleanupOutdatedCaches: true,
-    exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^localstorage-sync\.html$/],
+    exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^localstorage-sync\.html$/, /\.map$/],
     skipWaiting: true,
     clientsClaim: true,
 });
@@ -107,6 +116,14 @@ const htmlInjectConfig = () => ({
                 rel: 'icon',
             },
         },
+        {
+            path: 'public/fonts/binary_symbols.woff',
+            attributes: {
+                rel: 'preload',
+                as: 'font',
+                crossorigin: 'crossorigin',
+            },
+        },
         // {
         //     path: 'pushwoosh-web-notifications.js',
         //     attributes: {
@@ -127,6 +144,16 @@ const htmlInjectConfig = () => ({
     append: false,
 });
 
+const htmlPreloadConfig = () => ({
+    rel: 'preload',
+    as(entry) {
+        if (/\.css$/.test(entry)) return 'style';
+        if (/\.woff$/.test(entry)) return 'font';
+        return 'script';
+    },
+    fileWhitelist: [/\.css$/],
+});
+
 const cssConfig = () => ({ filename: 'css/core.main.css', chunkFilename: 'css/core.[name].[contenthash].css' });
 
 const stylelintConfig = () => ({
@@ -140,6 +167,7 @@ module.exports = {
     copyConfig,
     htmlOutputConfig,
     htmlInjectConfig,
+    htmlPreloadConfig,
     cssConfig,
     stylelintConfig,
     generateSWConfig,

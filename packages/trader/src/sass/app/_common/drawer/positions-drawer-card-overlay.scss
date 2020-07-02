@@ -1,6 +1,7 @@
 /** @define result */
 .result {
     &__caption {
+        text-transform: capitalize;
         font-size: 1.6em;
         font-weight: bold;
         display: flex;
@@ -24,6 +25,9 @@
             margin-top: 2rem;
             height: calc(100% - 36px);
             text-decoration: none;
+        }
+        @include mobile {
+            pointer-events: none;
         }
     }
     &__close-btn {

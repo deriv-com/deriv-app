@@ -10,7 +10,8 @@ export const getClientAccountType = loginid => {
 };
 
 // TODO: [move-to-shared] - Remove the implementation in ClientBase and add this to shared utils
-export const getMT5AccountType = group => (group ? group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP)/, '') : '');
+export const getMT5AccountType = group =>
+    group ? group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP|Bbook|HighRisk)/i, '') : '';
 
 export const getMT5AccountDisplay = group => {
     if (!group) return {};
@@ -18,11 +19,11 @@ export const getMT5AccountDisplay = group => {
     const value = getMT5AccountType(group);
     let display_text = localize('MT5');
     if (/svg$/.test(value)) {
-        display_text = localize('Synthetic indices');
+        display_text = localize('Synthetic');
     } else if (/vanuatu/.test(value) || /svg_standard/.test(value)) {
-        display_text = localize('Standard');
+        display_text = localize('Financial');
     } else if (/labuan/.test(value)) {
-        display_text = localize('Advanced');
+        display_text = localize('Financial STP');
     }
 
     return display_text;

@@ -1,6 +1,3 @@
-@import '../../_common/base/index';
-@import '../../_common/components/data-table';
-
 /*
 *  [Work In Progress]
 *  This file is a WIP and will be broken down into different files for different components before the module is enabled
@@ -10,117 +7,155 @@
 /* stylelint-disable */
 /** @define mt5-dashboard; */
 .mt5-dashboard {
-    position: relative;
-    margin: 4.8em auto;
+    padding: 4.8em 0;
     max-width: 960px;
+    margin: 0 auto;
 
     &--hint {
-        //@include typeface(--xsmall-left-normal-black, none);
-        font-size: 10px;
-        color: var(--text-less-prominent);
+        @include typeface(--xsmall-left-normal-black, none);
     }
     &__container {
         position: relative;
+        overflow-y: auto;
 
         .notification-messages {
             position: fixed;
-            top: 64px;
             right: 16px;
+            top: 64px;
+        }
+    }
+    &__info {
+        background: var(--fill-disabled);
+        margin-top: 2.4rem;
+        font-size: 1.4rem;
+        color: var(--text-general);
+        display: grid;
+        grid-template-columns: 0.85fr 1fr 1fr;
+        height: 56px;
+        border-radius: $BORDER_RADIUS;
+
+        &-description,
+        &-copy {
+            display: flex;
+            align-items: center;
+        }
+        &-description {
+            justify-content: flex-start;
+            padding-left: 3.2rem;
+        }
+        &-copy {
+            justify-content: center;
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--text-prominent);
+        }
+        &-display {
+            padding-right: 0.8rem;
+        }
+        &-label {
+            color: var(--text-general);
+            font-weight: normal;
+            padding-right: 0.4rem;
+        }
+        @include mobile {
+            display: flex;
+            height: 100%;
+            padding: 1.6rem;
+            flex-direction: column;
+            align-items: flex-start;
+
+            &-copy {
+                margin: 0 0 0.8rem;
+                font-size: 1.4rem;
+            }
+            &-description {
+                margin: 0.8rem 0 1.6rem;
+            }
         }
     }
     &__welcome-message {
-        margin-bottom: 3.2em;
+        margin-bottom: 2.4em;
 
-        &--content {
-            display: flex;
-            justify-content: space-between;
-        }
         &--heading {
             @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
             line-height: 1.5em;
-        }
-        &--paragraph {
-            @include typeface(--paragraph-left-normal-black, none);
-            color: var(--text-general);
-        }
-        &--hint {
-            @include typeface(--xsmall-left-normal-black, none);
-            color: var(--text-less-prominent);
-        }
-        &--button {
-            margin: 0;
-            background-color: transparent;
-            font-weight: bold;
-            height: 4em;
-            color: var(--text-prominent);
         }
     }
     &__missing-real {
+        align-items: center;
+        background-color: var(--general-section-1);
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        padding-left: 1.6rem;
-        background-color: var(--general-section-1);
         margin: 2.4em 0;
+        padding: 1.6rem;
 
         &--heading {
-            @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
-            line-height: 1.5em;
+            line-height: 1.5rem;
+            @include typeface(--title-left-bold-black, none);
+            @include mobile {
+                font-size: 1.2rem;
+            }
         }
         &--button {
-            height: 4em;
+            height: 4rem;
+        }
+        @include mobile {
+            flex-direction: column;
+            padding: 0.8rem;
+
+            &--heading {
+                margin-bottom: 0.8rem;
+            }
+            &--button {
+                width: 27rem;
+            }
         }
     }
-    &__accounts-display {
-        margin-bottom: 2.4em;
-    }
     &__download-center {
-        border-radius: 4px;
-        border: solid 1px var(--border-normal);
-        padding-top: 1.6em;
-        padding-bottom: 1.6em;
+        border-top: 2px solid var(--general-section-1);
+        padding-top: 4rem;
+        padding-bottom: 6.8rem;
 
         &-options {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
 
             &--desktop,
             &--mobile {
+                align-items: center;
                 display: flex;
                 flex-flow: column nowrap;
-                align-items: center;
             }
             &--desktop {
-                margin-left: 7em;
-                display: flex;
-                flex-flow: row nowrap;
-                align-items: flex-start;
-
                 &-devices {
-                    width: 200px;
                     display: flex;
-                    justify-content: space-between;
-                    align-items: flex-end;
-                    margin-right: 1.6em;
-                    flex-wrap: wrap;
-                    svg:first-child {
-                        margin-right: 0.4em;
+                    align-items: baseline;
+                    > svg:first-child {
+                        margin-left: 4.3rem;
+                        margin-right: 0.4rem;
                     }
-                    svg:not(:last-child) {
-                        margin-bottom: 1.6em;
+                    > svg:not(:last-child) {
+                        margin-bottom: 1.1rem;
+                    }
+                    a svg {
+                        margin-left: 5.2rem;
                     }
                 }
                 &-links {
-                    height: 142px;
                     display: flex;
-                    flex-flow: column nowrap;
-                    justify-content: space-between;
+                }
+                &-link {
+                    &:not(:last-child) {
+                        margin-right: 0.8rem;
+                    }
+                    &--top {
+                    }
                 }
             }
             &--mobile {
-                margin-right: 7em;
+                margin-left: 4.7rem;
 
                 &-devices {
                     margin-bottom: 1.6em;
@@ -128,27 +163,51 @@
                         margin-right: 0.8em;
                     }
                 }
-                &-links {
-                    width: 27.1em;
-                    display: flex;
-                    justify-content: space-between;
+                &-link:not(:first-child) {
+                    margin-left: 1.6rem;
+                }
+                @include mobile {
+                    margin-left: unset;
+                    margin-right: unset;
                 }
             }
         }
         &--heading {
             @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
-            line-height: 1.5em;
-            margin-left: 1.3em;
-            margin-bottom: 1.5em;
+            line-height: 1.5;
+            margin-left: 2.1rem;
+            margin-bottom: 4.2rem;
         }
         &--hint {
             @include typeface(--xsmall-left-normal-black, none);
-            margin-left: 7.05em;
+            margin-top: 1.6rem;
+        }
+        @include mobile {
+            margin-bottom: 1.6rem;
+        }
+    }
+    &__maintenance {
+        @include typeface(--small-center-normal-black, none);
+        display: flex;
+        justify-content: center;
+        margin: 2.4rem 0;
+
+        &-icon {
+            margin-right: 0.8rem;
+            margin-top: 0.2rem;
+        }
+        &-text {
+            text-align: left;
+            line-height: 1.67;
         }
     }
     .notification-messages {
         top: calc(-4.8rem + 16px);
+    }
+    @include mobile {
+        margin-top: 2.4rem;
+        padding: 0 1.6rem;
     }
 }
 
@@ -156,68 +215,170 @@
     @include typeface(--paragraph-left-bold-black, none);
     font-size: 14px;
     font-weight: bold;
+    line-height: 1.43;
     color: var(--text-general);
+
+    .counter {
+        color: var(--brand-red-coral);
+        font-size: 1rem;
+        font-weight: bold;
+        line-height: 1.43;
+        vertical-align: top;
+    }
+    @include mobile {
+        font-size: 1.2rem;
+    }
 }
 
 .mt5-compare-accounts {
     display: flex;
     flex-flow: column nowrap;
     flex-grow: 1;
+    background: inherit;
+    height: 100%;
+    position: relative;
 
-    &__data {
-        //height: 50vh;
+    &__table-row {
+        grid-template-columns: 1.5fr 1fr 2fr 1fr;
+        box-shadow: inset 0 -1px 0 0 var(--general-section-1);
+    }
+    &__star {
+        color: var(--brand-red-coral);
+        font-weight: bold;
+    }
+    &__bullet {
+        flex: none;
 
-        &__table {
-            //height: 50vh;
-            flex: 1;
-            padding: 0px 30px;
+        &--circle {
+            background-color: var(--text-general);
+            border-radius: 100%;
+            margin-right: 1.2rem;
+            margin-left: 0.2rem;
+            margin-top: 0.8rem;
+            width: 0.4rem;
+            height: 0.4rem;
         }
-        &__row {
-            /*                     attribute   standard advanced synthetic */
-            grid-template-columns: 1.7fr 1fr 1fr 1fr;
+        &--star {
+            font-size: 14px;
+            margin-right: 1rem;
+            line-height: 1.43;
         }
-        .attribute,
-        .standard,
-        .advanced,
-        .synthetic {
-            justify-content: flex-start;
-            align-items: flex-start;
-            text-align: left;
+        &-wrapper {
+            display: flex;
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
+        }
+    }
+
+    .dc-table {
+        padding: 0 30px;
+        @include desktop {
+            position: absolute;
+            height: 100%;
+        }
+
+        &__header {
+            border-bottom: none;
+            height: 50px;
+        }
+        &__cell,
+        &__head {
+            padding: 0.8rem;
+
+            &--fixed {
+                padding-left: 1.6rem;
+
+                @include mobile {
+                    background-color: var(--general-section-2);
+                }
+            }
+        }
+        &__cell {
+            border-bottom: none;
+            align-items: normal;
+            padding: 1rem 0.8rem;
+        }
+        @include desktop {
+            &__header {
+                background-color: var(--general-main-2);
+            }
         }
     }
     &-modal {
         &__wrapper {
-            margin-top: 1.6rem;
             display: flex;
             justify-content: center;
+            margin-top: 2.4rem;
         }
     }
+    @include mobile {
+        background: var(--general-section-1);
+        height: 100%;
+        font-size: 1.2rem;
 
-    .mt5-compare-account--hint {
-        color: var(--text-less-prominent);
-        font-size: 12px;
-        line-height: 1.5em;
-        width: 100%;
-        padding: 1.6em 6.4em 2.4em 6.4em;
+        .dc-table {
+            padding: 0;
+            height: inherit;
+
+            &__cell {
+                font-size: 1.2rem;
+            }
+            &__row {
+                padding: 0;
+            }
+            &__head {
+                font-size: 1.2rem;
+                border-bottom: 2px solid var(--border-disabled);
+                background-color: var(--general-section-2);
+                margin-top: -1px;
+            }
+            &__header,
+            &__row {
+                width: 150vw;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+            }
+        }
+    }
+}
+
+.mt5-compare-account--hint {
+    color: var(--text-less-prominent);
+    font-size: 12px;
+    line-height: 1.5em;
+    width: 100%;
+    padding: 1.6rem 2.4rem 0.8rem 2.4rem;
+
+    @include mobile {
+        padding: 1.6rem;
+        border-top: 2px solid var(--border-disabled);
+    }
+    @include desktop {
+        position: absolute;
+        bottom: 0;
     }
 }
 
 .mt5-real-accounts-display,
 .mt5-demo-accounts-display {
-    margin-top: 2.4em;
     display: flex;
-    justify-content: space-around;
+    margin-top: 2.4em;
+
+    @include mobile {
+        flex-direction: column;
+    }
 }
 
 .mt5-account-card {
-    min-height: 32em;
-    width: 30.4em;
+    border: solid 1px var(--border-normal);
     border-radius: 4px;
     display: flex;
     flex-flow: column nowrap;
-    justify-content: space-between;
-    border: solid 1px var(--border-normal);
+    min-height: 35.8rem;
+    width: 30.4em;
 
+    &:not(:last-child) {
+        margin-right: 2.4rem;
+    }
     &:hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
     }
@@ -232,49 +393,93 @@
         line-height: 1.45em;
     }
     &--balance {
-        @include typeface(--paragraph-left-bold-black);
+        @include typeface(--title-left-bold-black);
+        line-height: 1.5;
+        margin-top: -0.4rem;
         color: var(--text-profit-success);
     }
+    &__banner {
+        position: relative;
+        transform: rotate(45deg);
+        border-bottom: 2.3rem solid var(--brand-red-coral);
+        border-left: 2.3rem solid transparent;
+        border-right: 2.3rem solid transparent;
+        height: 0;
+        width: 10.6rem;
+        left: 22rem;
+        top: 1.7rem;
+        color: var(--text-colored-background);
+        font-weight: bold;
+        line-height: 24px;
+        white-space: nowrap;
+        text-align: center;
+
+        &--demo {
+            border-bottom-color: var(--brand-secondary);
+        }
+        @include mobile {
+            left: calc(100vw - 11.6rem);
+        }
+    }
     &__type {
-        padding: 1.6em 1.6em 0;
         display: flex;
+        padding: 1.5rem 1.6rem 1.6rem; // -1 for border
 
         &--description {
-            max-width: 19.2em;
             display: inline-block;
             margin-left: 1.6em;
+            max-width: 19.2em;
 
             .mt5-account-card--heading {
-                margin-bottom: 0.5em;
+                margin-bottom: 0.8rem;
             }
             .mt5-account-card--paragraph {
-                width: 13em;
+                width: 18.8rem;
             }
+        }
+        &--has-banner {
+            margin-top: -23px;
+        }
+    }
+    &__display {
+        display: flex;
+        flex-wrap: wrap;
+        width: min-content;
+        justify-content: center;
+        height: fit-content;
+
+        &-text {
+            @include typeface(--title-center-bold-black);
+            color: var(--brand-red-coral);
+            line-height: 1.5;
+            margin-top: 0.4rem;
+
+            &--top-right {
+                position: relative;
+                left: 22.2rem;
+                bottom: 7.2rem;
+                margin: 0;
+            }
+        }
+        &--fixed-height {
+            height: 64px; // don't leave space for the demo text that is moved to the top right
         }
     }
     &__clipboard {
-        cursor: pointer;
-        margin-left: 1em;
+        margin: 0 1em;
     }
     &__cta {
+        align-items: center;
         display: flex;
         flex-direction: column;
-        align-items: center;
-    }
-    &__specs {
-        padding: 0 1.6em 1.6em;
+        margin-top: auto;
     }
     &__specs-table {
         width: 100%;
 
-        &-attribute {
-            width: 14.8em;
-            display: inline-block;
-            white-space: nowrap;
-
-            .mt5-account-card--paragraph {
-                color: var(--text-general);
-            }
+        &-attribute .mt5-account-card--paragraph {
+            color: var(--text-general);
+            margin-right: 2.4rem;
         }
         &-data {
             .mt5-account-card--paragraph {
@@ -286,19 +491,21 @@
     }
     &__commission {
         text-align: center;
+        margin-top: 1.6rem;
+
         &.mt5-account-card--paragraph {
             line-height: 1.4em;
         }
     }
     &__account-selection {
-        height: 4rem;
-        width: 27rem;
-        display: flex;
         align-items: center;
+        display: flex;
+        height: 4rem;
         justify-content: center;
-        text-decoration: none;
+        margin: 1.6rem 1.6rem 1.5rem; // -1 for border
         padding: 0;
-        margin: 1.6rem;
+        text-decoration: none;
+        width: 27rem;
         @include typeface(--paragraph-center-bold-black, none);
 
         &--primary {
@@ -314,18 +521,23 @@
                 background-color: var(--button-secondary-hover);
             }
         }
+        &--disabled {
+            background-color: var(--brand-red-coral);
+            cursor: initial;
+            opacity: 0.32;
+        }
     }
     &__login {
-        @include typeface(--paragraph-center-normal-black);
-        width: 272px;
-        height: 40px;
-        display: flex;
-        justify-content: center;
+        @include typeface(--title-center-normal-black);
         align-items: center;
-        border-radius: 4px;
         background-color: var(--general-section-1);
+        border-radius: 4px;
         color: var(--text-general);
-        margin: 1.6em 0 0.8em;
+        display: flex;
+        height: 40px;
+        justify-content: center;
+        margin: 2.4rem 0 1.6rem;
+        width: 272px;
 
         strong {
             font-weight: bold;
@@ -333,68 +545,533 @@
     }
     &__manage {
         display: flex;
-        justify-content: space-between;
+        width: 272px;
 
-        .btn {
-            @include typeface(--small-center-bold-black, none);
-            margin: 0 1em;
-            width: 122px;
-            height: 32px;
-            color: var(--text-prominent);
+        .dc-btn {
+            width: 100%;
+
+            &:not(:last-child) {
+                margin-right: 1.6rem;
+            }
+        }
+    }
+    @include mobile {
+        width: calc(100vw - 3.2rem);
+
+        &:not(:last-child) {
+            margin-bottom: 2.4rem;
+            margin-right: 0;
         }
     }
 }
 
 .mt5-password-manager {
-    margin: 5.6rem auto 0;
-    width: 400px;
+    margin: 5.6rem auto 3.2rem;
+    max-width: calc(400px + 1rem); // needs extra padding for the scrollbar, otherwise it will cover the words
+    width: 100%;
 
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
+        margin-bottom: 3.2rem;
     }
     &--error-message {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-loss-danger);
         margin-bottom: 1em;
     }
-    &--hint {
-        //@include typeface(--xsmall-left-normal-black, none);
-        font-size: 12px;
-        color: var(--text-less-prominent);
-        padding: 1.333em 0;
-    }
     &__main-form,
     &__investor-wrapper {
-        margin-top: 2.4rem;
+        margin: 3.2rem 0.5rem 0;
+
+        @include mobile {
+            padding-bottom: 12rem;
+        }
+    }
+    .dc-password-meter__container,
+    .dc-password-input {
+        width: 30rem;
+        margin: auto;
     }
     &__investor-wrapper {
         .mt5-password-manager--paragraph:first-child {
-            margin-bottom: 0.6em;
+            margin-bottom: 0.8rem;
         }
     }
     &__investor-form {
-        width: 300px;
+        width: 100%;
+        max-width: 300px;
         margin: 2.4em auto 0;
+
+        @include mobile {
+            max-width: unset;
+        }
+    }
+    &__new-password {
+        margin-bottom: 8.6rem;
     }
     &__actions {
+        align-items: center;
         display: flex;
         flex-flow: column nowrap;
-        align-items: center;
     }
     &--button {
         margin-top: 1.6rem;
+
+        @include mobile {
+            width: 100%;
+            margin-top: 0.8rem;
+        }
+    }
+    &__success {
+        text-align: center;
+        margin-top: 3.2rem;
+
+        &-header {
+            @include typeface(--paragraph-center-bold-black);
+            margin: 1.6rem 0 0.8rem;
+        }
+        &-paragraph {
+            @include typeface(--small-center-normal-black);
+        }
+        &-btn {
+            margin-top: 3.2rem;
+            width: 6.4rem;
+        }
+    }
+    @include mobile {
+        padding: 0 1.6rem;
+        margin-top: 2.4rem;
+    }
+    .multi-step__header {
+        margin: 0 0 2.4rem 0;
+    }
+    .multi-step__component {
+        text-align: center;
+    }
+}
+
+.mt5-financial-stp-modal {
+    display: grid;
+    grid-template-rows: 13rem minmax(10rem, 1fr);
+    height: 100%;
+    position: relative;
+    width: 100%;
+
+    &__heading {
+        padding: 2em 2em 0 2em;
+    }
+    &__form,
+    &__body {
+        display: grid;
+    }
+    &__form {
+        grid-template-rows: minmax(20rem, 1fr) 7rem;
+    }
+    @include desktop {
+        overflow: hidden;
+    }
+    @include mobile {
+        overflow: auto;
+        grid-template-rows: 7rem minmax(10rem, 1fr);
+        &__heading {
+            padding: unset;
+        }
+        &__header {
+            &-steps {
+                padding-bottom: 0.8rem;
+                width: 100%;
+                background: var(--general-section-2);
+
+                &-title {
+                    color: var(--brand-red-coral);
+                    font-size: 1.4rem;
+                    font-weight: bold;
+                    line-height: 20px;
+                    padding: 1.6rem 2.4rem 0.8rem;
+                }
+                &-subtitle {
+                    color: var(--text-prominent);
+                    line-height: 18px;
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    padding: 0 2.4rem;
+                }
+            }
+        }
+        .dc-form-submit-button {
+            background-color: inherit;
+        }
+    }
+}
+
+.account-management {
+    &__message-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &__message-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        height: 24em;
+        padding: 0 3em;
+    }
+    &__message {
+        @include typeface(--title-center-bold-black);
+        color: var(--text-prominent);
+    }
+    &__text {
+        @include typeface(--paragraph-center-normal-black);
+        color: var(--text-prominent);
+    }
+}
+
+.mt5-pending-verification {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 11em;
+    margin: 12.7em 0 12em;
+
+    &__heading {
+        @include typeface(--title-left-bold-black);
+        color: var(--text-prominent);
+    }
+    &__description {
+        @include typeface(--paragraph-center-normal-black);
+        color: var(--text-prominent);
+        margin: 0.6em 0 0;
+    }
+    &__btn-area {
+        margin: 3.2em 0 0;
+
+        .btn--primary {
+            width: 90px !important;
+            height: 40px !important;
+        }
     }
 }
 
 .dc-modal {
     &__container {
+        min-width: initial;
+        &_mt5-password-modal {
+            &__description {
+                @include typeface(--small-left-normal-black);
+                line-height: 1.5;
+                max-width: 300px;
+                margin: -2.7rem 0 0.4rem;
+                color: var(--text-less-prominent);
+            }
+        }
         &_mt5-dashboard__compare-accounts {
             width: 904px;
         }
         &_mt5-password-manager__modal {
-            width: 904px;
             height: 688px;
+            width: 904px;
+        }
+    }
+}
+
+.mt5-details-form {
+    height: 100%;
+    @include tablet {
+        display: grid;
+        grid-template-rows: 7rem minmax(10rem, 1fr);
+        height: auto;
+    }
+    &__fields {
+        padding: 0;
+    }
+    & .mt5-tax-identification-number {
+        margin-top: 1em;
+    }
+    & .dc-autocomplete {
+        margin-bottom: 2.4em;
+        &__input-field {
+            .dc-input {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+.account-form {
+    &__header {
+        font-size: var(--text-size-xs);
+        font-weight: bold;
+        margin-bottom: 1.6em;
+        position: relative;
+        height: 1.6em;
+    }
+    &__header:not(:first-child) {
+        margin-top: 1.6em;
+    }
+    &__header:before {
+        border-top: 1px solid var(--general-section-1);
+        content: '';
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0.5em;
+        width: 100%;
+    }
+    &__title {
+        background: var(--general-main-1);
+        color: var(--text-prominent);
+        padding-right: 8px;
+        position: absolute;
+    }
+    &__subtitle {
+        color: var(--text-prominent);
+        font-weight: normal;
+        padding-left: 8px;
+    }
+    @include mobile {
+        overflow: auto;
+
+        &__title {
+            background: inherit;
+        }
+        &__subtitle {
+            font-size: 1.2rem;
+        }
+    }
+}
+
+.account-poa {
+    &__upload {
+        &-icon {
+            width: 25px;
+        }
+        &-section {
+            margin-top: 0em;
+        }
+        &-list {
+            width: 100%;
+            flex: 1;
+            margin-right: 16px;
+        }
+        &-file {
+            width: 100%;
+            flex: 1;
+            height: 240px;
+            position: relative;
+
+            .dc-file-dropzone {
+                max-width: 400px;
+            }
+        }
+        &-remove-btn {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 8px;
+            right: 8px;
+            cursor: pointer;
+            transition: transform 0.25s linear;
+
+            &:hover {
+                transform: scale(1.25, 1.25);
+            }
+            &--error {
+                circle {
+                    fill: var(--status-danger);
+                }
+            }
+            &-container {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+        &-box {
+            display: flex;
+            margin-bottom: 2em;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        &-item {
+            min-width: 238px;
+            width: 100%;
+            margin-left: 1em;
+            font-size: var(--text-size-xxs);
+            line-height: 1.5;
+            color: var(--text-prominent);
+        }
+    }
+}
+
+.mt5-proof-of-address {
+    height: 100%;
+    & .details-form {
+        display: grid;
+        grid-template-rows: minmax(10rem, 1fr) 7.2rem;
+        height: 100%;
+    }
+    &__file-upload {
+        position: relative;
+
+        li {
+            margin: 0 0 1.5rem 0;
+        }
+        .dc-field-error {
+            top: 0;
+            right: 5%;
+        }
+    }
+    &__field-area {
+        max-width: 556px;
+        margin: 0 auto;
+        @include mobile {
+            overflow: auto;
+        }
+    }
+    &__inline-fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 1em;
+
+        .dc-dropdown-container {
+            margin-top: 0;
+        }
+    }
+    @include mobile {
+        .dc-input__label {
+            background: var(--general-section-2);
+        }
+        &__field-area {
+            padding: 0 1.6rem;
+        }
+        &__inline-fields {
+            display: flex;
+            flex-direction: column;
+
+            .dc-select-native {
+                margin-bottom: 3.2rem;
+            }
+        }
+        &__file-upload {
+            .dc-field-error {
+                top: 50%;
+                left: 0;
+                right: unset;
+            }
+            .account-poa__upload-section {
+                flex-direction: column;
+            }
+        }
+    }
+}
+
+.mt5-proof-of-identity {
+    height: 100%;
+    overflow: auto;
+
+    &__fields {
+        @include mobile {
+            position: relative;
+        }
+    }
+    & .details-form {
+        display: grid;
+        grid-template-rows: minmax(10rem, 1fr) 7.2rem;
+        height: 100%;
+        position: relative;
+    }
+}
+.dc-modal__container_mt5-financial-stp-signup-modal {
+    @include desktop {
+        display: grid;
+        grid-template-rows: 6rem minmax(20rem, 1fr);
+    }
+    @include tablet {
+        max-height: calc(100vh - 102px); // HEADER and FOOTER
+    }
+}
+.dc-modal__container_mt5-password-modal {
+    .dc-form-submit-button {
+        background-color: unset;
+        padding-bottom: 1.2rem;
+
+        .dc-btn:first-child {
+            margin-left: 0;
+        }
+    }
+}
+.dc-modal__container_mt5-pending-dialog,
+.dc-modal__container_mt5-success-dialog {
+    .dc-modal-header__title--mt5-pending-dialog {
+        text-align: center;
+        margin: auto;
+        padding: 2.4rem;
+        width: fit-content;
+    }
+    .dc-modal-body {
+        text-align: center;
+        padding-top: 0;
+    }
+    .dc-modal-footer {
+        justify-content: center;
+        padding: 0.8rem 2rem 2.4rem;
+
+        .dc-btn {
+            min-width: 90px;
+
+            &:only-child {
+                margin: 0;
+            }
+            &:first-child {
+                margin-left: 0;
+            }
+        }
+    }
+}
+.dc-modal__container_mt5-success-dialog {
+    .success-change__icon-area {
+        width: 128px;
+        margin: 2.4rem auto 0;
+
+        &--large .bottom-right-overlay {
+            left: 76px;
+            top: 76px;
+
+            @include mobile {
+                left: 78px;
+                top: 58px;
+            }
+        }
+        &--xlarge .bottom-right-overlay {
+            left: 104px;
+            top: 80px;
+
+            @include mobile {
+                left: 78px;
+                top: 74px;
+            }
+        }
+        @include mobile {
+            width: 96px;
+        }
+    }
+    .dc-modal-body {
+        min-width: 384px;
+
+        .dc-modal-header__title {
+            text-align: center;
+            margin: auto;
+            padding: 1.6rem 0 0.8rem;
+            width: fit-content;
+        }
+        @include mobile {
+            min-width: calc(100vw - 3.2rem);
         }
     }
 }

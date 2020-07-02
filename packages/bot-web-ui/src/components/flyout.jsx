@@ -48,7 +48,12 @@ class Flyout extends React.PureComponent {
             >
                 {is_search_flyout && !is_help_content && (
                     <div className='flyout__search-header'>
-                        <span className='flyout__search-header-text'>{localize(`Results for "${search_term}"`)}</span>
+                        <span className='flyout__search-header-text'>
+                            {localize('Results for "{{ search_term }}"', {
+                                search_term,
+                                interpolation: { escapeValue: false },
+                            })}
+                        </span>
                         <span className={classNames('flyout__search-header-text', 'flyout__search-header-results')}>
                             {`${total_result} ${total_result > 1 ? localize('results') : localize('result')}`}
                         </span>
@@ -103,9 +108,9 @@ class Flyout extends React.PureComponent {
                                             <button
                                                 key={`${cb_key}${index}`}
                                                 className={classNames(
-                                                    'btn',
-                                                    'btn-effect',
-                                                    'btn--primary',
+                                                    'dc-btn',
+                                                    'dc-btn-effect',
+                                                    'dc-btn--primary',
                                                     'flyout__button-new'
                                                 )}
                                                 onClick={button => {

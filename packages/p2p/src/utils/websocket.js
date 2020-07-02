@@ -60,6 +60,7 @@ const getModifiedP2PAdvertList = (response, is_original) => {
 
         modified_response[i] = {
             available_amount,
+            contact_info: filtered_list[i].contact_info,
             min_available,
             max_available,
             max_transaction,
@@ -67,16 +68,19 @@ const getModifiedP2PAdvertList = (response, is_original) => {
             offer_amount,
             offer_currency,
             offer_currency_decimals,
+            payment_info: filtered_list[i].payment_info,
             payment_method,
             price_rate,
             transaction_currency,
             transaction_currency_decimals,
             advertiser_name: ObjectUtils.getPropertyValue(filtered_list[i], ['advertiser_details', 'name']),
             advertiser_id: ObjectUtils.getPropertyValue(filtered_list[i], ['advertiser_details', 'id']),
-            advertiser_notes: filtered_list[i].description,
+            advertiser_instructions: filtered_list[i].description,
             display_available_amount: formatMoney(offer_currency, available_amount),
             display_max_available: formatMoney(offer_currency, max_available), // for displaying limit fields in buy/sell and ads table
             display_min_available: formatMoney(offer_currency, min_available), // for displaying limit fields in buy/sell and ads table
+            display_max_order_amount: formatMoney(offer_currency, max_transaction),
+            display_min_order_amount: formatMoney(offer_currency, min_transaction),
             display_offer_amount: formatMoney(offer_currency, offer_amount),
             display_payment_method: map_payment_method[payment_method] || payment_method,
             display_price_rate: formatMoney(transaction_currency, price_rate),
@@ -90,6 +94,7 @@ const getModifiedP2PAdvertList = (response, is_original) => {
 };
 
 const getModifiedP2POrder = response => {
+    const { chat_channel_url, contact_info, is_incoming, payment_info } = response;
     const offer_currency = response.account_currency;
     const transaction_currency = response.local_currency;
 
@@ -100,19 +105,24 @@ const getModifiedP2POrder = response => {
     // const payment_method = response.payment_method;
 
     return {
+        contact_info,
         offer_amount,
         offer_currency,
+        payment_info,
         price_rate,
         transaction_amount,
         transaction_currency,
+        chat_channel_url,
+        advertiser_id: ObjectUtils.getPropertyValue(response, ['advertiser_details', 'id']),
         advertiser_name: ObjectUtils.getPropertyValue(response, ['advertiser_details', 'name']),
-        advertiser_notes: ObjectUtils.getPropertyValue(response, ['advert_details', 'description']),
+        advertiser_instructions: ObjectUtils.getPropertyValue(response, ['advert_details', 'description']),
         display_offer_amount: formatMoney(offer_currency, offer_amount),
         display_payment_method: map_payment_method[payment_method] || payment_method,
         display_price_rate: formatMoney(offer_currency, price_rate),
         display_transaction_amount: formatMoney(transaction_currency, transaction_amount),
         order_expiry_millis: convertToMillis(response.expiry_time),
         id: response.id,
+        is_incoming: !!is_incoming,
         order_purchase_datetime: getFormattedDateString(new Date(convertToMillis(response.created_time))),
         status: response.status,
         type: response.is_incoming ? ObjectUtils.getPropertyValue(response, ['advert_details', 'type']) : response.type,
@@ -151,8 +161,7 @@ const getModifiedResponse = response => {
     return modified_response;
 };
 
-export const subscribeWS = (request, cb) => {
+export const subscribeWS = (request, callbacks) =>
     ws.p2pSubscribe(request, response => {
-        cb(getModifiedResponse(response));
+        callbacks.map(callback => callback(getModifiedResponse(response)));
     });
-};

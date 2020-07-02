@@ -1,0 +1,69 @@
+/** @define dc-page-error */
+.dc-page-error {
+    &__container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 84px);
+
+        @include desktop {
+            &--left {
+                justify-content: left;
+            }
+        }
+    }
+    &__box {
+        background: var(--general-main-1);
+        border: var(--general-main-1);
+        padding: 5em;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        justify-content: center;
+
+        @include desktop {
+            &--left {
+                align-items: start;
+            }
+        }
+        @media screen and (min-width: 1008px) {
+            max-width: calc(100vw - 45%);
+        }
+        /* postcss-bem-linter: ignore */
+        .inline-icon {
+            margin: 0 auto;
+        }
+    }
+    &__header {
+        @include typeface(--xheading-center-bold-black, none);
+        color: var(--text-prominent);
+        line-height: 44px;
+    }
+    &__message {
+        @include typeface(--title-center-normal-black, none);
+        color: var(--text-prominent);
+        line-height: 1.5;
+        max-width: 502px;
+        margin: 1.6rem 0 2.4rem;
+
+        &-wrapper {
+            display: flex;
+            justify-content: center;
+
+            &--left {
+                @include desktop {
+                    justify-content: left;
+                }
+
+                .dc-page-error__message-paragraph:not(:last-child) {
+                    margin-bottom: 1.6rem;
+                }
+            }
+        }
+        @include desktop {
+            &--left {
+                text-align: left;
+            }
+        }
+    }
+}

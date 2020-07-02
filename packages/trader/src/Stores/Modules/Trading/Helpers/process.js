@@ -30,8 +30,10 @@ const getMethodsList = (store, new_state) => [
 // Some values need to be replaced, not extended
 const extendOrReplace = (source, new_values) => {
     const to_replace = [
+        'basis_list',
         'contract_types_list',
         'duration_units_list',
+        'expiry_type',
         'form_components',
         'market_close_times',
         'trade_types',

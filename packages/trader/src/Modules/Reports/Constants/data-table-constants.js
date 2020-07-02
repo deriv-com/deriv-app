@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import { Icon, Label, Money } from '@deriv/components';
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
+import MultiplierCloseActions from 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard/multiplier-close-actions.jsx';
 import { getProfitOrLoss } from 'Modules/Reports/Helpers/profit-loss';
 import IndicativeCell from '../Components/indicative-cell.jsx';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row.jsx';
@@ -30,7 +31,7 @@ export const getStatementTableColumnsTemplate = currency => [
     {
         key: 'icon',
         title: '',
-        col_index: 'action_type',
+        col_index: 'icon',
         renderCellContent: ({ cell_value, row_obj }) => (
             <MarketSymbolIconRow action={cell_value} key={row_obj.transaction_id} payload={row_obj} />
         ),
@@ -98,6 +99,14 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
     {
         title: localize('Sell time'),
         col_index: 'sell_time',
+        renderHeader: ({ title }) => {
+            return (
+                <>
+                    <span>{title}</span>
+                    <Icon icon='IcContractFlag' />
+                </>
+            );
+        },
     },
     {
         title: localize('Sell price'),
@@ -120,7 +129,7 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
 ];
 export const getOpenPositionsColumnsTemplate = currency => [
     {
-        title: '',
+        title: 'Type',
         col_index: 'type',
         renderCellContent: ({ cell_value, row_obj, is_footer }) => {
             if (is_footer) return localize('Total');
@@ -147,8 +156,8 @@ export const getOpenPositionsColumnsTemplate = currency => [
         title: localize('Potential profit/loss'),
         col_index: 'profit',
         renderCellContent: ({ row_obj }) => {
-            if (!row_obj.contract_info || !row_obj.contract_info.profit) return;
-            const profit = row_obj.contract_info.profit;
+            if (!row_obj.profit_loss && (!row_obj.contract_info || !row_obj.contract_info.profit)) return;
+            const profit = row_obj.profit_loss || row_obj.contract_info.profit;
             // eslint-disable-next-line consistent-return
             return (
                 <div
@@ -179,7 +188,146 @@ export const getOpenPositionsColumnsTemplate = currency => [
     {
         title: localize('Remaining time'),
         col_index: 'id',
-        renderCellContent: ({ cell_value }) => <ProgressSliderStream id={cell_value} />,
+        renderCellContent: ({ row_obj }) => <ProgressSliderStream contract_info={row_obj.contract_info} />,
+    },
+];
+
+export const getMultiplierOpenPositionsColumnsTemplate = ({
+    currency,
+    onClickCancel,
+    onClickSell,
+    getPositionById,
+}) => [
+    {
+        title: 'Type',
+        col_index: 'type',
+        renderCellContent: ({ cell_value, row_obj, is_footer }) => {
+            if (is_footer) return localize('Total');
+
+            return <MarketSymbolIconRow action={cell_value} key={row_obj.id} payload={row_obj.contract_info} />;
+        },
+    },
+    {
+        title: localize('Multiplier'),
+        col_index: 'multiplier',
+        renderCellContent: ({ row_obj }) =>
+            row_obj.contract_info && row_obj.contract_info.multiplier ? `x${row_obj.contract_info.multiplier}` : '',
+    },
+    {
+        title: localize('Stake'),
+        col_index: 'buy_price',
+        renderCellContent: ({ row_obj }) => {
+            if (row_obj.contract_info) {
+                const { ask_price: cancellation_price = 0 } = row_obj.contract_info.cancellation || {};
+                return <Money amount={row_obj.contract_info.buy_price - cancellation_price} currency={currency} />;
+            }
+            return '';
+        },
+    },
+    {
+        title: localize('Deal cancel. fee'),
+        col_index: 'cancellation',
+        renderCellContent: ({ row_obj }) => {
+            if (row_obj.contract_info && row_obj.contract_info.cancellation) {
+                return <Money amount={row_obj.contract_info.cancellation.ask_price} currency={currency} />;
+            }
+            return '-';
+        },
+    },
+    {
+        title: localize('Buy price'),
+        col_index: 'purchase',
+        renderCellContent: ({ cell_value }) => <Money amount={cell_value} currency={currency} />,
+    },
+    {
+        title: <Localize i18n_default_text='Take profit<0 />Stop loss' components={[<br key={0} />]} />,
+        col_index: 'limit_order',
+        renderCellContent: ({ row_obj, is_footer }) => {
+            if (is_footer) {
+                return '';
+            }
+
+            const { take_profit, stop_loss } = row_obj.contract_info?.limit_order || {};
+            return (
+                <React.Fragment>
+                    <div>
+                        {take_profit ? <Money has_sign amount={take_profit.order_amount} currency={currency} /> : '-'}
+                    </div>
+                    <div>
+                        {stop_loss ? <Money has_sign amount={stop_loss.order_amount} currency={currency} /> : '-'}
+                    </div>
+                </React.Fragment>
+            );
+        },
+    },
+    {
+        title: localize('Current stake'),
+        col_index: 'bid_price',
+        renderCellContent: ({ row_obj, is_footer }) => {
+            if (is_footer) {
+                return '';
+            }
+
+            if (!row_obj.contract_info || !row_obj.contract_info.bid_price) return '-';
+
+            const total_profit = row_obj.contract_info.bid_price - row_obj.contract_info.buy_price;
+            return (
+                <div
+                    className={classNames('open-positions__bid_price', {
+                        'open-positions__bid_price--negative': total_profit < 0,
+                        'open-positions__bid_price--positive': total_profit > 0,
+                    })}
+                >
+                    <Money amount={row_obj.contract_info.bid_price} currency={currency} />
+                </div>
+            );
+        },
+    },
+    {
+        title: <Localize i18n_default_text='Total<0 />profit/loss' components={[<br key={0} />]} />,
+        col_index: 'profit',
+        renderCellContent: ({ row_obj }) => {
+            if (!row_obj.contract_info || !row_obj.contract_info.profit) return null;
+            const total_profit = row_obj.contract_info.bid_price - row_obj.contract_info.buy_price;
+            // eslint-disable-next-line consistent-return
+            return (
+                <div
+                    className={classNames('open-positions__profit-loss', {
+                        'open-positions__profit-loss--negative': total_profit < 0,
+                        'open-positions__profit-loss--positive': total_profit > 0,
+                    })}
+                >
+                    <Money amount={Math.abs(total_profit)} currency={currency} />
+                    <div className='open-positions__profit-loss--movement'>
+                        {total_profit > 0 ? <Icon icon='IcProfit' /> : <Icon icon='IcLoss' />}
+                    </div>
+                </div>
+            );
+        },
+    },
+    {
+        title: localize('Action'),
+        col_index: 'action',
+        renderCellContent: ({ row_obj, is_footer }) => {
+            if (is_footer) {
+                return <div className='open-positions__row-action' />;
+            }
+
+            const { contract_info } = row_obj;
+            const position = getPositionById(contract_info.contract_id);
+            const { is_sell_requested } = position || {};
+
+            return (
+                <div className='open-positions__row-action'>
+                    <MultiplierCloseActions
+                        contract_info={contract_info}
+                        is_sell_requested={is_sell_requested}
+                        onClickCancel={onClickCancel}
+                        onClickSell={onClickSell}
+                    />
+                </div>
+            );
+        },
     },
 ];
 /* eslint-enable react/display-name, react/prop-types */

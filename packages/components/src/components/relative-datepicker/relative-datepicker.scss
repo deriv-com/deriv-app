@@ -1,0 +1,25 @@
+.dc-relative-datepicker {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 16px;
+    position: relative;
+
+    &__span {
+        width: 100%;
+        font-size: 1.4em;
+        color: var(--purchase-main-2);
+        line-height: 1.43;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    // This css is for make date input field invisible
+    &__input {
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+    }
+}

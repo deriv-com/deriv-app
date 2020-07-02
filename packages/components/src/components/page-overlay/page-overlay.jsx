@@ -1,40 +1,68 @@
+import classNames from 'classnames';
 import React from 'react';
+import ReactDOM from 'react-dom';
+import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
 import Icon from 'Components/icon/icon.jsx';
+import { useOnClickOutside } from '../../hooks/use-onclickoutside';
 
-class PageOverlay extends React.Component {
-    render() {
-        const { children, header, onClickClose } = this.props;
+const PageOverlay = ({ portal_id, children, header, id, onClickClose, is_open }) => {
+    const page_overlay_ref = React.useRef();
 
-        return (
-            <div className='dc-page-overlay'>
-                {header && (
-                    <div className='dc-page-overlay__header'>
-                        <div className='dc-page-overlay__header-wrapper'>
-                            <div className='dc-page-overlay__header-title'>{header}</div>
-                            <div
-                                className='dc-page-overlay__header-close'
-                                onClick={onClickClose || window.history.back}
-                            >
-                                <Icon icon='IcCross' />
-                            </div>
+    useOnClickOutside(page_overlay_ref, onClickClose, () => is_open && portal_id);
+
+    const el_page_overlay = (
+        <div
+            ref={page_overlay_ref}
+            id={id}
+            className={classNames('dc-page-overlay', {
+                'dc-page-overlay-portal': !!portal_id,
+            })}
+        >
+            {header && (
+                <div className='dc-page-overlay__header'>
+                    <div className='dc-page-overlay__header-wrapper'>
+                        <div className='dc-page-overlay__header-title'>{header}</div>
+                        <div className='dc-page-overlay__header-close' onClick={onClickClose || window.history.back}>
+                            <Icon icon='IcCross' />
                         </div>
                     </div>
-                )}
-                <div className='dc-page-overlay__content'>{children}</div>
-            </div>
+                </div>
+            )}
+            <div className='dc-page-overlay__content'>{children}</div>
+        </div>
+    );
+
+    if (portal_id) {
+        return ReactDOM.createPortal(
+            <CSSTransition
+                appear
+                in={is_open}
+                timeout={250}
+                classNames={{
+                    appear: 'dc-page-overlay--enter',
+                    enter: 'dc-page-overlay--enter',
+                    enterDone: 'dc-page-overlay--enter-done',
+                    exit: 'dc-page-overlay--exit',
+                }}
+                unmountOnExit
+            >
+                {el_page_overlay}
+            </CSSTransition>,
+            document.getElementById(portal_id)
         );
     }
-}
 
-PageOverlay.defaultProps = {
-    has_side_note: false,
+    return <>{el_page_overlay}</>;
 };
 
 PageOverlay.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     onClickClose: PropTypes.func,
+    portal_id: PropTypes.string,
+    is_open: PropTypes.bool,
 };
 
 export default PageOverlay;

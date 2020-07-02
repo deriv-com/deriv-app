@@ -1,6 +1,6 @@
 .transactions {
     $transaction: &;
-    $grid-template-columns: 8rem 1fr 1fr;
+    $grid-template-columns: 0.9fr 1fr 1fr;
 
     &-empty {
         display: flex;
@@ -45,12 +45,12 @@
         display: grid;
         @include typeface(--small-left-bold-black, none);
         grid-template-columns: $grid-template-columns;
-        grid-template-areas: '. spot profit .';
+        grid-template-areas: 'type spot profit';
         margin: 0 16px -1px;
         padding: 13px 8px; // Equal l+r with transaction__item padding.
         height: 42px;
 
-        $header-grid-items: (unquote('spot'), unquote('profit'));
+        $header-grid-items: (unquote('type'), unquote('spot'), unquote('profit'));
 
         @each $item in $header-grid-items {
             &-#{$item} {

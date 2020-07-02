@@ -23,6 +23,7 @@ class Transactions extends React.PureComponent {
         return (
             <div className='transactions run-panel-tab__content'>
                 <div className='transactions__header'>
+                    <span className='transactions__header-column transactions__header-type'>{localize('Type')}</span>
                     <span className='transactions__header-column transactions__header-spot'>
                         {localize('Entry/Exit spot')}
                     </span>

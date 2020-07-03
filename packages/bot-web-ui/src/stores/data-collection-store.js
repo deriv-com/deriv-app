@@ -23,10 +23,7 @@ export default class DataCollectionStore {
 
     @action.bound
     async trackRun() {
-        if (!this.pako) {
-            this.pako = await import(/* webpackChunkName: "pako" */ 'pako');
-        }
-
+        const pako = await import(/* webpackChunkName: "dbot-collection" */ 'pako');
         const xml_string = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(DBot.workspace));
         const strategy_hash = crc32.str(xml_string);
 
@@ -35,7 +32,7 @@ export default class DataCollectionStore {
         if (!this.known_hashes.includes(strategy_hash)) {
             this.known_hashes.push(strategy_hash);
 
-            const body = this.pako.deflate(xml_string, { to: 'string' });
+            const body = pako.deflate(xml_string, { to: 'string' });
 
             fetch(`${this.endpoint}/${this.getRunId()}`, {
                 body,
@@ -46,10 +43,7 @@ export default class DataCollectionStore {
                 },
                 method: 'POST',
                 mode: 'cors',
-            }).catch(() => {
-                // eslint-disable-next-line no-console
-                console.warn('Could not send data to endpoint.');
-            });
+            }).catch(() => {});
         }
     }
 

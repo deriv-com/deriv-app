@@ -18,7 +18,7 @@ import Mt5FinancialStpPendingDialog from '../Components/mt5-financial-stp-pendin
 import { MT5InfoCopy } from '../Components/mt5-info-copy.jsx';
 import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
 import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
-import { getBrokerName, getServerName, getPlatformMt5DownloadLink } from '../Helpers/constants';
+import { getBrokerDetails, getServerName, getPlatformMt5DownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
 class MT5Dashboard extends React.Component {
@@ -167,13 +167,15 @@ class MT5Dashboard extends React.Component {
                                 <Localize i18n_default_text='Use these in your apps' />
                             </div>
                             <MT5InfoCopy
-                                name={getBrokerName()}
+                                display_name={getBrokerDetails.display_name}
+                                text_copy={getBrokerDetails.name}
                                 label={localize('Broker')}
                                 info_msg={localize('Click here to copy broker name.')}
                                 success_msg={localize('Broker name copied!')}
                             />
                             <MT5InfoCopy
-                                name={getServerName(this.state.is_demo_tab)}
+                                display_name={getServerName(this.state.is_demo_tab)}
+                                text_copy={getServerName(this.state.is_demo_tab)}
                                 label={localize('Server')}
                                 info_msg={localize('Click here to copy server name.')}
                                 success_msg={localize('Server name copied!')}

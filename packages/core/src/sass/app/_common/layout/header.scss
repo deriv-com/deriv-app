@@ -15,6 +15,18 @@
         opacity: 1;
         pointer-events: auto;
     }
+    &__menu-mobile {
+        &-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+        &-scrollbars {
+            overflow: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+    }
     &__menu-mobile-platform-switcher {
         position: absolute;
         height: 100%;

@@ -26,6 +26,11 @@
         padding-bottom: 1.6rem;
         margin-bottom: 1.6rem;
     }
+    &__menu-mobile-wrapper {
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
     &__menu-mobile-link {
         text-decoration: none;
         display: flex;

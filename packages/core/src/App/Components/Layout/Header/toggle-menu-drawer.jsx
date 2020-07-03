@@ -198,51 +198,54 @@ class ToggleMenuDrawer extends React.Component {
                         <MobileDrawer.SubHeader>{this.props.platform_switcher}</MobileDrawer.SubHeader>
                         <MobileDrawer.Body>
                             <div className='header__menu-mobile-platform-switcher' id='mobile_platform_switcher' />
-                            <MobileDrawer.Item>
-                                <MenuLink
-                                    link_to={routes.trade}
-                                    icon='IcTrade'
-                                    text={localize('Trade')}
-                                    onClickLink={this.toggleDrawer}
-                                />
-                            </MobileDrawer.Item>
-                            {primary_routes_config.map(route_config => this.getRoutesWithSubMenu(route_config))}
-                            <MobileDrawer.Item
-                                className='header__menu-mobile-theme'
-                                onClick={e => {
-                                    e.preventDefault();
-                                    this.props.toggleTheme(!this.props.is_dark_mode);
-                                }}
-                            >
-                                <div
-                                    className={classNames('header__menu-mobile-link', {
-                                        'header__menu-mobile-link--active': this.props.is_dark_mode,
-                                    })}
-                                >
-                                    <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
-                                    <span className='header__menu-mobile-link-text'>{localize('Dark theme')}</span>
-                                    <ToggleSwitch
-                                        id='dt_mobile_drawer_theme_toggler'
-                                        classNameLabel='header__menu-mobile-link-toggler-label'
-                                        classNameButton={classNames('header__menu-mobile-link-toggler-button', {
-                                            'header__menu-mobile-link-toggler-button--active': this.props.is_dark_mode,
-                                        })}
-                                        handleToggle={() => this.props.toggleTheme(!this.props.is_dark_mode)}
-                                        is_enabled={this.props.is_dark_mode}
+                            <div className='header__menu-mobile-wrapper'>
+                                <MobileDrawer.Item>
+                                    <MenuLink
+                                        link_to={routes.trade}
+                                        icon='IcTrade'
+                                        text={localize('Trade')}
+                                        onClickLink={this.toggleDrawer}
                                     />
-                                </div>
-                            </MobileDrawer.Item>
-                            {secondary_routes_config.map(route_config => this.getRoutesWithSubMenu(route_config))}
-                            {this.props.is_logged_in && (
+                                </MobileDrawer.Item>
+                                {primary_routes_config.map(route_config => this.getRoutesWithSubMenu(route_config))}
                                 <MobileDrawer.Item
-                                    onClick={() => {
-                                        this.props.logoutClient();
-                                        this.toggleDrawer();
+                                    className='header__menu-mobile-theme'
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        this.props.toggleTheme(!this.props.is_dark_mode);
                                     }}
                                 >
-                                    <MenuLink icon='IcLogout' text={localize('Log out')} />
+                                    <div
+                                        className={classNames('header__menu-mobile-link', {
+                                            'header__menu-mobile-link--active': this.props.is_dark_mode,
+                                        })}
+                                    >
+                                        <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
+                                        <span className='header__menu-mobile-link-text'>{localize('Dark theme')}</span>
+                                        <ToggleSwitch
+                                            id='dt_mobile_drawer_theme_toggler'
+                                            classNameLabel='header__menu-mobile-link-toggler-label'
+                                            classNameButton={classNames('header__menu-mobile-link-toggler-button', {
+                                                'header__menu-mobile-link-toggler-button--active': this.props
+                                                    .is_dark_mode,
+                                            })}
+                                            handleToggle={() => this.props.toggleTheme(!this.props.is_dark_mode)}
+                                            is_enabled={this.props.is_dark_mode}
+                                        />
+                                    </div>
                                 </MobileDrawer.Item>
-                            )}
+                                {secondary_routes_config.map(route_config => this.getRoutesWithSubMenu(route_config))}
+                                {this.props.is_logged_in && (
+                                    <MobileDrawer.Item
+                                        onClick={() => {
+                                            this.props.logoutClient();
+                                            this.toggleDrawer();
+                                        }}
+                                    >
+                                        <MenuLink icon='IcLogout' text={localize('Log out')} />
+                                    </MobileDrawer.Item>
+                                )}
+                            </div>
                         </MobileDrawer.Body>
                         <MobileDrawer.Footer>
                             <ServerTime is_mobile />

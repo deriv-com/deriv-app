@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { NavLink } from 'react-router-dom';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
 import { BinaryLink } from '../index';
 
 configure({ adapter: new Adapter() });

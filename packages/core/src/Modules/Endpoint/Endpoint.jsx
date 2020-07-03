@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { Button, Input } from '@deriv/components';
-import { getAppId, getSocketURL } from '@deriv/shared/utils/config';
+import { getAppId, getSocketURL } from '@deriv/shared';
 // eslint-disable-next-line import/extensions
 
 const InputField = props => {

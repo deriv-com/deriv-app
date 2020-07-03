@@ -6,18 +6,17 @@ import { transaction_elements } from '../constants/transactions';
 export default class DataCollectionStore {
     constructor(root_store) {
         this.root_store = root_store;
-        this.endpoint = 'http://192.168.19.61:8000/dbotconf';
-        this.transaction_ids = [];
+        this.endpoint = 'https://dbot-conf-dot-business-intelligence-240201.df.r.appspot.com/dbotconf';
+        this.known_hashes = [];
         this.pako = null;
-
-        const { run_panel, transactions } = this.root_store;
+        this.transaction_ids = [];
 
         reaction(
-            () => run_panel.is_running,
-            () => (run_panel.is_running ? this.trackRun() : undefined)
+            () => this.root_store.run_panel.is_running,
+            () => (this.root_store.run_panel.is_running ? this.trackRun() : undefined)
         );
         reaction(
-            () => transactions.elements,
+            () => this.root_store.transactions.elements,
             elements => this.trackTransaction(elements)
         );
     }
@@ -26,23 +25,32 @@ export default class DataCollectionStore {
     async trackRun() {
         if (!this.pako) {
             this.pako = await import(/* webpackChunkName: "pako" */ 'pako');
-            console.log(this.pako);
         }
 
         const xml_string = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(DBot.workspace));
-        const run_id = this.generateRunId(xml_string);
+        const strategy_hash = crc32.str(xml_string);
 
-        this.setRunId(run_id);
+        this.setRunId(this.generateRunId(xml_string));
 
-        fetch(`${this.endpoint}/${this.getRunId()}`, {
-            body: xml_string,
-            headers: {
-                'Content-Type': 'text/plain',
-                // 'Content-Length': xml_string.length,
-            },
-            method: 'POST',
-            mode: 'no-cors',
-        }).then(() => {});
+        if (!this.known_hashes.includes(strategy_hash)) {
+            this.known_hashes.push(strategy_hash);
+
+            const body = this.pako.deflate(xml_string, { to: 'string' });
+
+            fetch(`${this.endpoint}/${this.getRunId()}`, {
+                body,
+                headers: {
+                    'Content-Encoding': 'gzip',
+                    'Content-Type': 'application/xml',
+                    'Content-Length': body.length,
+                },
+                method: 'POST',
+                mode: 'cors',
+            }).catch(() => {
+                // eslint-disable-next-line no-console
+                console.warn('Could not send data to endpoint.');
+            });
+        }
     }
 
     @action.bound
@@ -50,7 +58,7 @@ export default class DataCollectionStore {
         const contracts = elements.filter(element => element.type === transaction_elements.CONTRACT);
         const contract = contracts[0]; // Most recent contract.
 
-        if (contract && contract.type === transaction_elements.CONTRACT) {
+        if (contract?.type === transaction_elements.CONTRACT) {
             const { buy: buy_id } = contract.data.transaction_ids;
 
             if (!this.transaction_ids.includes(buy_id)) {
@@ -59,6 +67,11 @@ export default class DataCollectionStore {
         }
     }
 
+    /**
+     * Generates a unique run id.
+     * This value should be unique on each run button click.
+     * @param {String} xml_string
+     */
     generateRunId(xml_string) {
         return crc32.str(xml_string + this.root_store.core.client.loginid + Math.random());
     }

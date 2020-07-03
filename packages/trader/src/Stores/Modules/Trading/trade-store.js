@@ -39,12 +39,13 @@ export default class TradeStore extends BaseStore {
     @observable active_symbols = [];
     @observable should_refresh_active_symbols = false;
 
+    @observable form_components = [];
+
     // Contract Type
     @observable contract_expiry_type = '';
     @observable contract_start_type = '';
     @observable contract_type = '';
     @observable contract_types_list = {};
-    @observable form_components = [];
     @observable trade_types = {};
 
     // Amount
@@ -696,7 +697,6 @@ export default class TradeStore extends BaseStore {
 
             // TODO: handle barrier updates on proposal api
             // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
-
             const snapshot = await processTradeParams(this, new_state);
             snapshot.is_trade_enabled = true;
 

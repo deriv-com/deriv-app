@@ -167,13 +167,15 @@ class MT5Dashboard extends React.Component {
                                 <Localize i18n_default_text='Use these in your apps' />
                             </div>
                             <MT5InfoCopy
-                                name={getBrokerName()}
+                                display_name={getBrokerName()}
+                                text_copy={getBrokerName()}
                                 label={localize('Broker')}
                                 info_msg={localize('Click here to copy broker name.')}
                                 success_msg={localize('Broker name copied!')}
                             />
                             <MT5InfoCopy
-                                name={getServerName(this.state.is_demo_tab)}
+                                display_name={getServerName(this.state.is_demo_tab)}
+                                text_copy={getServerName(this.state.is_demo_tab)}
                                 label={localize('Server')}
                                 info_msg={localize('Click here to copy server name.')}
                                 success_msg={localize('Server name copied!')}

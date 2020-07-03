@@ -3,7 +3,7 @@ import { OSDetect } from '@deriv/shared/utils/os';
 // TODO: [deriv-eu] for EU we should return 'Binary.com-Demo' for demo accounts
 const getServerName = is_demo => (is_demo ? 'Deriv-Demo' : 'Deriv-Server');
 
-const getBrokerName = () => 'Deriv Limited (Deriv)';
+const getBrokerName = () => 'Deriv Limited';
 
 const getPlatformMt5DownloadLink = (platform = undefined) => {
     switch (platform || OSDetect()) {

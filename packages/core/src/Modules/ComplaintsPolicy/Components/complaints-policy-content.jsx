@@ -1,6 +1,7 @@
 import React from 'react';
 import { ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared/utils/screen';
 import 'Sass/app/modules/complaints-policy.scss';
 
 const Content = () => {
@@ -216,7 +217,7 @@ const Content = () => {
     ));
 
     return (
-        <ThemedScrollbars className='complaints-policy__scrollbars'>
+        <ThemedScrollbars is_bypassed={isMobile()} className='complaints-policy__scrollbars'>
             <div className='complaints-policy__wrapper'>{modal_content}</div>
         </ThemedScrollbars>
     );

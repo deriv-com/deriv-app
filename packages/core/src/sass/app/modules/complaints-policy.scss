@@ -1,13 +1,16 @@
 .complaints-policy {
     &__scrollbars {
         margin: 0 1rem;
+        max-height: calc(100vh - 6rem) !important;
     }
     &__wrapper {
         padding: 0 1.4rem 2.4rem;
         color: var(--text-prominent);
-
         @include mobile {
             padding: 0 0.6rem 2.4rem;
+            overflow: auto;
+            height: 100%;
+            margin: 0 1rem;
         }
 
         .link--orange {

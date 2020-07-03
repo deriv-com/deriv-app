@@ -1,4 +1,4 @@
-import { getRoundedNumber } from '@deriv/shared/utils/currency';
+import { getRoundedNumber } from '@deriv/shared';
 import { sell, openContractReceived } from './state/actions';
 import { contractStatus, contractSettled, contract as broadcastContract } from '../utils/broadcast';
 import { doUntilDone } from '../utils/helpers';

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, ButtonLink } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared/utils/url';
+import { getDerivComLink } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';

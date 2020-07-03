@@ -115,7 +115,7 @@ export default class Interpreter {
                     return;
                 }
 
-                this.isErrorTriggered = true;
+                this.is_error_triggered = true;
                 if (!shouldRestartOnError(this.bot, e.name) || !botStarted(this.bot)) {
                     reject(e);
                     return;
@@ -142,7 +142,6 @@ export default class Interpreter {
 
     loop() {
         if (this.stopped || !this.interpreter.run()) {
-            this.isErrorTriggered = false;
             this.onFinish(this.interpreter.pseudoToNative(this.interpreter.value));
         }
     }
@@ -163,12 +162,15 @@ export default class Interpreter {
         } else if (socket.readyState === 1) {
             this.$scope.api.disconnect();
         }
+
         this.stopped = true;
+        this.is_error_triggered = false;
+
         globalObserver.emit('bot.stop');
     }
 
     stop() {
-        if (this.bot.tradeEngine.isSold === false && !this.isErrorTriggered) {
+        if (this.bot.tradeEngine.isSold === false && !this.is_error_triggered) {
             globalObserver.register('contract.status', contractStatus => {
                 if (contractStatus.id === 'contract.sold') {
                     this.terminateSession();

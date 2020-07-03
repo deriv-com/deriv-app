@@ -12,8 +12,8 @@ module.exports = function(env, argv) {
             open: openChromeBasedOnPlatform(process.platform),
             openPage: sub_path,
             host: 'localhost.binary.sx',
-            https: true,
-            port: 443,
+            https: false,
+            port: 80,
             historyApiFallback: true,
             stats: {
                 colors: true,

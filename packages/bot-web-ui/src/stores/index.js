@@ -13,6 +13,7 @@ import TransactionsStore from './transactions-store';
 import QuickStrategyStore from './quick-strategy-store';
 import MainContentStore from './main-content-store';
 import RoutePromptDialogStore from './route-prompt-dialog-store';
+import DataCollectionStore from './data-collection-store';
 
 export default class RootStore {
     constructor(core, ws, dbot) {
@@ -39,5 +40,6 @@ export default class RootStore {
         // need to be at last for dependency
         this.chart_store = new ChartStore(this);
         this.main_content = new MainContentStore(this);
+        this.data_collection_store = new DataCollectionStore(this);
     }
 }

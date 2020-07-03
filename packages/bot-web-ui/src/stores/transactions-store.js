@@ -32,6 +32,7 @@ export default class TransactionsStore {
             exit_tick: data.exit_tick_display_value,
             exit_tick_time: data.exit_tick_time && formatDate(data.exit_tick_time, 'YYYY-M-D HH:mm:ss [GMT]'),
             high_barrier: data.high_barrier,
+            id: data.id,
             is_completed,
             low_barrier: data.low_barrier,
             profit: is_completed && data.profit,

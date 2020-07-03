@@ -43,7 +43,9 @@ export default class DataCollectionStore {
                 },
                 method: 'POST',
                 mode: 'cors',
-            }).catch(() => {});
+            }).catch(() => {
+                /* Automatically triggers error in browser's console */
+            });
         }
     }
 

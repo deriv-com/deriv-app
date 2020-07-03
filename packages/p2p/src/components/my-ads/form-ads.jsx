@@ -204,6 +204,7 @@ class FormAds extends React.Component {
                                                     {({ field }) => (
                                                         <Input
                                                             {...field}
+                                                            data-lpignore='true'
                                                             type='text'
                                                             error={touched.max_transaction && errors.max_transaction}
                                                             label={localize('Max order')}

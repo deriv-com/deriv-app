@@ -1071,7 +1071,6 @@ export default class ClientStore extends BaseStore {
         }
 
         // TODO: send login flag to GTM if needed
-
         if (active_loginid && Object.keys(client_object).length) {
             localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
@@ -1083,20 +1082,32 @@ export default class ClientStore extends BaseStore {
         // login_new_user is populated only on virtual sign-up
         let obj_params = {};
         const search = window.location.search;
+
         if (search) {
+            let search_params = new URLSearchParams(window.location.search);
             const arr_params = window.location.search.substr(1).split('&');
+
             arr_params.forEach(function(param) {
                 if (param) {
                     const param_value = param.split('=');
-                    if (param_value) {
-                        obj_params[param_value[0]] = param_value[1];
+                    const [key, value] = param_value;
+
+                    const is_account_param =
+                        param_value && (key.includes('acct') || key.includes('token') || key.includes('cur'));
+                    if (is_account_param) {
+                        search_params.delete(key);
+                        obj_params[key] = value;
                     }
                 }
             });
+
+            // replace account query params - but keep other query params (e.g. utm)
+            search_params = search_params?.toString();
+            const search_param_without_account = search_params ? '?' + search_params : '/';
+            history.replaceState(null, null, search_param_without_account);
         }
 
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
-
         if (is_client_logging_in) {
             window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
             SocketCache.clear();
@@ -1116,6 +1127,7 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
                 this.upgradeable_landing_companies = authorize_response.upgradeable_landing_companies;
+
                 if (this.canStoreClientAccounts(obj_params, account_list)) {
                     this.storeClientAccounts(obj_params, account_list);
                 } else {

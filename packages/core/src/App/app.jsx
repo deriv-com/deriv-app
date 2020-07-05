@@ -33,50 +33,6 @@ const App = ({ root_store }) => {
         initializeTranslations();
         setUrlLanguage(getLanguage());
     }, []);
-    if (isMobile()) {
-        React.useEffect(() => {
-            const el_landscape_blocker = document.getElementById('landscape_blocker');
-
-            const onFocus = () => {
-                /* Prevent from showing Landscape blocker UI when keyboard is visible */
-                el_landscape_blocker.classList.add('landscape-blocker--keyboard-visible');
-                root_store.ui.setIsNativepickerVisible(true);
-            };
-
-            const onFocusOut = e => {
-                if (e.target.classList.contains('dc-dropdown__display')) {
-                    // if the next target is a dropdown, keep native picker open
-                    return;
-                }
-                root_store.ui.setIsNativepickerVisible(false);
-            };
-
-            const onTouchStart = () => {
-                if (document.activeElement.tagName !== 'INPUT') {
-                    el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
-                }
-            };
-            /**
-             * Adding `focus` and `focusout` event listeners to document here to detect for on-screen keyboard on mobile browsers
-             * and storing this value in UI-store to be used across the app stores.
-             *  - when document gets `focus` event - keyboard is visible
-             *  - when document gets `focusout` or `touchstart` event - keyboard is hidden
-             *  - note: the `touchstart` event comes after `focusout` and and we want to
-             *          remove `landscape-blocker--keyboard-visible` class as late as possible
-             * [TODO]: find an alternative solution to detect for on-screen keyboard
-             */
-            document.addEventListener('focus', onFocus, true);
-            document.addEventListener('focusout', onFocusOut, false);
-            document.addEventListener('touchstart', onTouchStart, true);
-
-            // componentWillUnmount lifecycle
-            return () => {
-                document.removeEventListener('focus', onFocus);
-                document.removeEventListener('focusout', onFocusOut);
-                document.removeEventListener('touchstart', onTouchStart);
-            };
-        }, []);
-    }
 
     const platform_passthrough = {
         root_store,
@@ -92,7 +48,7 @@ const App = ({ root_store }) => {
                     <ErrorBoundary>
                         <AppContents>
                             {/* TODO: [trader-remove-client-base] */}
-                            <Routes passthrough={platform_passthrough} />
+                            <Routes passthrough={platform_passthrough} isMobile={isMobile} />
                         </AppContents>
                     </ErrorBoundary>
                     <DesktopWrapper>

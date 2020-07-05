@@ -41,6 +41,44 @@ class Routes extends React.Component {
             this.initial_route = null;
         }
     }
+    componentDidUpdate() {
+        const l = window.location;
+        const base = l.pathname.split('/')[1];
+        const el_landscape_blocker = document.getElementById('landscape_blocker');
+        const onFocus = () => {
+            /* Prevent from showing Landscape blocker UI when keyboard is visible */
+            el_landscape_blocker.classList.add('landscape-blocker--keyboard-visible');
+            this.props.setIsNativepickerVisible(true);
+        };
+
+        const onFocusOut = e => {
+            if (e.target.classList.contains('dc-dropdown__display')) {
+                // if the next target is a dropdown, keep native picker open
+                return;
+            }
+            this.props.setIsNativepickerVisible(false);
+        };
+
+        const onTouchStart = () => {
+            if (document.activeElement.tagName !== 'INPUT') {
+                el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
+            }
+        };
+
+        if (this.props.isMobile) {
+            if (base === 'bot') {
+                document.removeEventListener('focus', onFocus);
+                document.removeEventListener('focusout', onFocusOut);
+                document.removeEventListener('touchstart', onTouchStart);
+                el_landscape_blocker.classList.add('landscape-blocker--keyboard-visible');
+            } else {
+                el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
+                document.removeEventListener('focus', onFocus);
+                document.addEventListener('focusout', onFocusOut, false);
+                document.addEventListener('touchstart', onTouchStart, true);
+            }
+        }
+    }
 
     render() {
         const { error, has_error, is_logged_in, passthrough } = this.props;
@@ -63,12 +101,13 @@ Routes.propTypes = {
 // need to wrap withRouter around connect
 // to prevent updates on <BinaryRoutes /> from being blocked
 export default withRouter(
-    connect(({ client, common }) => ({
+    connect(({ client, common, ui }) => ({
         is_logged_in: client.is_logged_in,
         error: common.error,
         has_error: common.has_error,
         setAppRouterHistory: common.setAppRouterHistory,
         addRouteHistoryItem: common.addRouteHistoryItem,
         setInitialRouteHistoryItem: common.setInitialRouteHistoryItem,
+        setIsNativepickerVisible: ui.setIsNativepickerVisible,
     }))(Routes)
 );

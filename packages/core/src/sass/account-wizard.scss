@@ -62,6 +62,10 @@
     border-bottom: 1px solid var(--general-section-1);
 }
 
+.dc-form-submit-button {
+    border-top: 1px solid var(--border-disabled);
+}
+
 .account-wizard {
     display: grid;
     grid-template-rows: 13rem minmax(10rem, 1fr);

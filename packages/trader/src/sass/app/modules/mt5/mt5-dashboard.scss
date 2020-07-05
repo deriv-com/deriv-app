@@ -752,49 +752,6 @@
     }
 }
 
-.account-form {
-    &__header {
-        font-size: var(--text-size-xs);
-        font-weight: bold;
-        margin-bottom: 1.6em;
-        position: relative;
-        height: 1.6em;
-    }
-    &__header:not(:first-child) {
-        margin-top: 1.6em;
-    }
-    &__header:before {
-        border-top: 1px solid var(--general-section-1);
-        content: '';
-        height: 100%;
-        left: 0;
-        position: absolute;
-        top: 0.5em;
-        width: 100%;
-    }
-    &__title {
-        background: var(--general-main-1);
-        color: var(--text-prominent);
-        padding-right: 8px;
-        position: absolute;
-    }
-    &__subtitle {
-        color: var(--text-prominent);
-        font-weight: normal;
-        padding-left: 8px;
-    }
-    @include mobile {
-        overflow: auto;
-
-        &__title {
-            background: inherit;
-        }
-        &__subtitle {
-            font-size: 1.2rem;
-        }
-    }
-}
-
 .account-poa {
     &__upload {
         &-icon {

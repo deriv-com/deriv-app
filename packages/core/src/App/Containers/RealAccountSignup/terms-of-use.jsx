@@ -62,7 +62,6 @@ class TermsOfUse extends React.Component {
                             </Div100vhContainer>
                         </ThemedScrollbars>
                         <FormSubmitButton
-                            is_absolute
                             is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
                             label={localize('Add account')}
                             has_cancel={true}

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Formik, Form, Field } from 'formik';
 import { Input, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { getPropertyValue } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 
 const DigitForm = ({ is_enabled, setEnabled }) => {
@@ -45,11 +45,7 @@ const DigitForm = ({ is_enabled, setEnabled }) => {
                 setFieldError('digit_code', message);
             }
         } else {
-            const is_enabled_response = ObjectUtils.getPropertyValue(enable_response, [
-                'account_security',
-                'totp',
-                'is_enabled',
-            ]);
+            const is_enabled_response = getPropertyValue(enable_response, ['account_security', 'totp', 'is_enabled']);
             setEnabled(is_enabled_response);
             setSuccess(true);
 

@@ -2,14 +2,14 @@
 @import 'app/_common/base/index';
 
 // Fonts
-@import '@deriv/shared/utils/styles/google-fonts.scss';
+@import '~@deriv/shared/src/styles/google-fonts.scss';
 
 // Shared
-@import '@deriv/shared/utils/styles/reset.scss';
-@import '@deriv/shared/utils/styles/themes.scss';
+@import '~@deriv/shared/src/styles/reset.scss';
+@import '~@deriv/shared/src/styles/themes.scss';
 
 // General
-@import '@deriv/shared/utils/styles/symbols.scss';
+@import '~@deriv/shared/src/styles/symbols.scss';
 
 // Layout
 @import 'app/_common/layout/app-layouts';

@@ -4,7 +4,7 @@ import React from 'react';
 import { withRouter, matchPath } from 'react-router';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
 import BinaryRoutes from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 

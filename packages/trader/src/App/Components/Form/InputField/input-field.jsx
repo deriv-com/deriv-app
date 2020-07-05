@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { isCryptocurrency } from '@deriv/shared';
 import Tooltip from 'App/Components/Elements/tooltip.jsx';
 import { connect } from 'Stores/connect';
 import IncrementButtons from './increment-buttons.jsx';
@@ -135,7 +135,7 @@ class InputField extends React.Component {
             const current_value = this.state.local_value || value;
 
             const decimal_places = current_value ? getDecimals(current_value) : 0;
-            const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
+            const is_crypto = !!currency && isCryptocurrency(currency);
 
             if (long_press_step) {
                 const increase_percentage = Math.min(long_press_step, Math.max(long_press_step, 10)) / 10;
@@ -159,7 +159,7 @@ class InputField extends React.Component {
             const current_value = this.state.local_value || value;
 
             const decimal_places = current_value ? getDecimals(current_value) : 0;
-            const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
+            const is_crypto = !!currency && isCryptocurrency(currency);
 
             if (long_press_step) {
                 const decrease_percentage = Math.min(long_press_step, Math.max(long_press_step, 10)) / 10;

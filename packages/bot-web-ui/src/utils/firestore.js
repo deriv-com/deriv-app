@@ -43,10 +43,7 @@ const Firestore = (() => {
                 () => s.summary.number_of_runs,
                 () => {
                     // send the summary when contract closes and bot is stopped
-                    if (
-                        !run_panel.is_running &&
-                        run_panel.contract_stage.index === contract_stages.CONTRACT_CLOSED.index
-                    ) {
+                    if (!run_panel.is_running && run_panel.contract_stage === contract_stages.CONTRACT_CLOSED) {
                         onSummaryChanged(client.loginid, s.summary);
                     }
                 }

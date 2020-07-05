@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isEmptyObject } from '@deriv/shared';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { connect } from 'Stores/connect';
@@ -31,7 +31,7 @@ const Purchase = ({
         const has_validation_error = Object.values(validation_errors).some(e => e.length);
         return !has_validation_error && !info.has_error && !info.id;
     };
-    const is_proposal_empty = ObjectUtils.isEmptyObject(proposal_info);
+    const is_proposal_empty = isEmptyObject(proposal_info);
 
     const components = [];
     Object.keys(trade_types).map((type, index) => {

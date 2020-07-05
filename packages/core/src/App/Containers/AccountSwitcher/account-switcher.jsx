@@ -12,9 +12,8 @@ import {
     Tabs,
     ThemedScrollbars,
 } from '@deriv/components';
-import { urlFor } from '@deriv/shared/utils/url';
-import routes from '@deriv/shared/utils/routes';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { urlFor, routes, isCryptocurrency, formatMoney } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getMT5AccountDisplay } from 'Stores/Helpers/client';
@@ -175,8 +174,8 @@ class AccountSwitcher extends React.Component {
         return this.props.account_list.slice().sort((a, b) => {
             const a_currency = this.props.accounts[a.loginid].currency;
             const b_currency = this.props.accounts[b.loginid].currency;
-            const a_is_crypto = CurrencyUtils.isCryptocurrency(a_currency);
-            const b_is_crypto = CurrencyUtils.isCryptocurrency(b_currency);
+            const a_is_crypto = isCryptocurrency(a_currency);
+            const b_is_crypto = isCryptocurrency(b_currency);
             const a_is_fiat = !a_is_crypto;
             const b_is_fiat = !b_is_crypto;
             if (a.is_virtual || b.is_virtual) {
@@ -526,7 +525,7 @@ class AccountSwitcher extends React.Component {
                     <span className='acc-switcher__balance'>
                         <Money
                             currency={this.is_real_account_tab ? this.props.obj_total_balance.currency : 'USD'}
-                            amount={CurrencyUtils.formatMoney(
+                            amount={formatMoney(
                                 this.is_real_account_tab ? this.props.obj_total_balance.currency : 'USD',
                                 this.is_real_account_tab ? this.total_real_assets : this.total_demo_assets,
                                 true

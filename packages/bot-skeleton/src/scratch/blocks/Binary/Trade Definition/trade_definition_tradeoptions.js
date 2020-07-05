@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import DBotStore from '../../../dbot-store';
 import { runIrreversibleEvents } from '../../../utils';
 import { config } from '../../../../constants/config';
@@ -34,7 +34,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 {
                     type: 'field_label',
                     name: 'CURRENCY_LIST',
-                    text: CurrencyUtils.getCurrencyDisplayCode(config.lists.CURRENCY[0]),
+                    text: getCurrencyDisplayCode(config.lists.CURRENCY[0]),
                 },
                 {
                     type: 'input_value',
@@ -358,7 +358,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     setCurrency() {
         const currency_field = this.getField('CURRENCY_LIST');
         const { currency } = DBotStore.instance.client;
-        currency_field.setText(CurrencyUtils.getCurrencyDisplayCode(currency));
+        currency_field.setText(getCurrencyDisplayCode(currency));
     },
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {
@@ -406,7 +406,7 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
 
     // Determine decimal places for rounding the stake, this is done so Martingale multipliers
     // are not affected by fractional values e.g. USD 12.232323 will become 12.23.
-    const decimal_places = CurrencyUtils.getDecimalPlaces(currency);
+    const decimal_places = getDecimalPlaces(currency);
     const stake_amount = `+(Number(${amount}).toFixed(${decimal_places}))`;
 
     const getBarrierValue = (barrier_offset_type, value) => {

@@ -222,7 +222,27 @@ class AccountTypesModal extends React.Component {
                         <p className='account-types__intro'>{localize('Choose an account that suits your needs.')}</p>
                         <div>
                             <SyntheticBox
-                                derivOnClick={() => this.createRealAccount(this.props.standpoint.gaming_company)}
+                                derivOnClick={() => {
+                                    if (this.props.has_iom_account) {
+                                        if (this.props.landing_company_shortcode !== 'iom') {
+                                            const target_loginid = Object.entries(this.props.accounts).reduce(
+                                                (acc, [loginid, { landing_company_shortcode }]) => {
+                                                    if (landing_company_shortcode === 'iom') {
+                                                        // eslint-disable-next-line no-param-reassign
+                                                        acc += loginid;
+                                                    }
+                                                    return acc;
+                                                },
+                                                ''
+                                            );
+
+                                            this.props.switchAccount(target_loginid);
+                                        }
+                                        this.closeModal();
+                                    } else {
+                                        this.createRealAccount(this.props.standpoint.gaming_company);
+                                    }
+                                }}
                                 add_account_label={
                                     this.props.has_iom_account
                                         ? localize('Trade with this account')
@@ -233,7 +253,11 @@ class AccountTypesModal extends React.Component {
                                 derivOnClick={() => this.createRealAccount(this.props.standpoint.financial_company)}
                                 mt5OnClick={this.redirectToMt5Real}
                                 has_maltainvest_account={this.props.has_maltainvest_account}
-                                add_account_label={localize('Add this real account')}
+                                add_account_label={
+                                    this.props.has_maltainvest_account
+                                        ? localize('Trade with this account')
+                                        : localize('Add this real account')
+                                }
                             />
                         </div>
                     </div>
@@ -262,6 +286,8 @@ export default withRouter(
         has_any_real_account: client.has_any_real_account,
         // TODO: [deriv-eu] Change this later and make it a separate computed
         is_account_types_modal_visible: ui.is_account_types_modal_visible,
+        accounts: client.accounts,
+        landing_company_shortcode: client.landing_company_shortcode,
         has_iom_account: client.has_iom_account,
         has_maltainvest_account: client.has_maltainvest_account,
         is_dismissible: !client.should_have_real_account,
@@ -271,6 +297,7 @@ export default withRouter(
         openRealAccountSignup: ui.openRealAccountSignup,
         residence: client.residence,
         standpoint: client.standpoint,
+        switchAccount: client.switchAccount,
         toggleAccountTypesModal: ui.toggleAccountTypesModal,
     }))(AccountTypesModal)
 );

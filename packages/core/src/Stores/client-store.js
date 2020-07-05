@@ -180,6 +180,7 @@ export default class ClientStore extends BaseStore {
     get has_iom_account() {
         return this.active_accounts.some(acc => acc.landing_company_shortcode === 'iom');
     }
+
     @computed
     get has_fiat() {
         const values = Object.values(this.accounts).reduce((acc, item) => {

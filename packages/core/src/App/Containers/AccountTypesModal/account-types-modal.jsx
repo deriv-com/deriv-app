@@ -2,11 +2,11 @@ import { Icon, Modal, ThemedScrollbars } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { website_name } from 'App/Constants/app-config';
+import { getDerivComLink, urlFor } from '@deriv/shared/utils/url';
 import routes from '@deriv/shared/utils/routes';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { urlFor } from '@deriv/shared/utils/url';
+
 import AccountCard from './account-card.jsx';
 
 import 'Sass/app/modules/account-types.scss';
@@ -37,7 +37,7 @@ Box.propTypes = {
     cards: PropTypes.array,
 };
 
-const FinancialBox = ({ derivOnClick, mt5OnClick }) => {
+const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_account_label }) => {
     return (
         <Box
             title={localize('Financial')}
@@ -51,7 +51,7 @@ const FinancialBox = ({ derivOnClick, mt5OnClick }) => {
                     key={0}
                     title={localize('Trade Options')}
                     subtitle={localize('with a Deriv Financial account')}
-                    button_text={localize('Add this real account')}
+                    button_text={add_account_label}
                     buttonOnClick={derivOnClick}
                     items={{
                         [localize('Multiplier')]: localize('Up to X1000'),
@@ -65,17 +65,17 @@ const FinancialBox = ({ derivOnClick, mt5OnClick }) => {
                         {
                             icon: 'IcBrandDtrader',
                             name: 'DTrader',
-                            path: '/#',
+                            path: getDerivComLink('/dtrader'),
                         },
                         {
                             icon: 'IcBrandDbot',
                             name: 'DBot',
-                            path: '/#',
+                            path: getDerivComLink('/dbot'),
                         },
                         {
                             icon: 'IcBrandSmarttrader',
                             name: 'SmartTrader',
-                            path: '/#',
+                            path: 'https://smarttrader.deriv.app/en/trading.html',
                         },
                     ]}
                 >
@@ -91,8 +91,9 @@ const FinancialBox = ({ derivOnClick, mt5OnClick }) => {
                     key={1}
                     title={localize('Trade on Margin')}
                     subtitle={localize('with a DMT5 Financial account')}
-                    button_text={localize('Add this real account')}
+                    button_text={add_account_label}
                     buttonOnClick={mt5OnClick}
+                    is_button_disabled={!has_maltainvest_account}
                     items={{
                         [localize('Leverage')]: localize('Up to 1:1000'),
                         [localize('Margin call')]: localize('150%'),
@@ -104,7 +105,7 @@ const FinancialBox = ({ derivOnClick, mt5OnClick }) => {
                         {
                             icon: 'IcBrandDMT5',
                             name: 'MetaTrader 5',
-                            path: '/#',
+                            path: getDerivComLink('/dmt5'),
                         },
                     ]}
                 >
@@ -123,7 +124,7 @@ const FinancialBox = ({ derivOnClick, mt5OnClick }) => {
     );
 };
 
-const SyntheticBox = () => {
+const SyntheticBox = ({ derivOnClick, add_account_label }) => {
     return (
         <Box
             title={localize('Synthetic')}
@@ -144,9 +145,8 @@ const SyntheticBox = () => {
                     key={0}
                     title={localize('Trade Options')}
                     subtitle={localize('with a Deriv Synthetic account')}
-                    button_text={localize('Add this real account')}
-                    // TODO: [deriv-eu] Add click handler
-                    buttonOnClick={() => {}}
+                    button_text={add_account_label}
+                    buttonOnClick={derivOnClick}
                     items={{
                         [localize('Trade type')]: localize('10+'),
                         [localize('Min duration')]: localize('1 Tick'),
@@ -154,22 +154,21 @@ const SyntheticBox = () => {
                         [localize('Availability')]: localize('24/7'),
                         [localize('Currency')]: localize('USD/GBP/EUR'),
                     }}
-                    // TODO: [deriv-eu] Update paths
                     platforms={[
                         {
                             icon: 'IcBrandDtrader',
                             name: 'DTrader',
-                            path: '/#',
+                            path: getDerivComLink('dtrader'),
                         },
                         {
                             icon: 'IcBrandDbot',
                             name: 'DBot',
-                            path: '/#',
+                            path: getDerivComLink('dbot'),
                         },
                         {
                             icon: 'IcBrandSmarttrader',
                             name: 'SmartTrader',
-                            path: '/#',
+                            path: 'https://smarttrader.deriv.app',
                         },
                     ]}
                 >
@@ -199,13 +198,12 @@ class AccountTypesModal extends React.Component {
     redirectToMt5Real = () => {
         if (!this.props.is_logged_in || this.props.is_mt5_allowed) {
             this.redirectToMt5('real');
-            // TODO: [deriv-eu] Update this after EU account sign-up completion
         } else {
             window.open(urlFor('user/metatrader', { legacy: true }));
         }
     };
 
-    createRealAccount = (target = 'svg') => {
+    createRealAccount = target => {
         this.props.toggleAccountTypesModal();
         this.props.openRealAccountSignup(target);
     };
@@ -224,11 +222,18 @@ class AccountTypesModal extends React.Component {
                         <p className='account-types__intro'>{localize('Choose an account that suits your needs.')}</p>
                         <div>
                             <SyntheticBox
-                                derivOnClick={() => openRealAccountSignup(this.props.standpoint.gaming_company)}
+                                derivOnClick={() => this.createRealAccount(this.props.standpoint.gaming_company)}
+                                add_account_label={
+                                    this.props.has_iom_account
+                                        ? localize('Trade with this account')
+                                        : localize('Add this real account')
+                                }
                             />
                             <FinancialBox
-                                derivOnClick={() => openRealAccountSignup(this.props.standpoint.financial_company)}
+                                derivOnClick={() => this.createRealAccount(this.props.standpoint.financial_company)}
                                 mt5OnClick={this.redirectToMt5Real}
+                                has_maltainvest_account={this.props.has_maltainvest_account}
+                                add_account_label={localize('Add this real account')}
                             />
                         </div>
                     </div>
@@ -257,6 +262,8 @@ export default withRouter(
         has_any_real_account: client.has_any_real_account,
         // TODO: [deriv-eu] Change this later and make it a separate computed
         is_account_types_modal_visible: ui.is_account_types_modal_visible,
+        has_iom_account: client.has_iom_account,
+        has_maltainvest_account: client.has_maltainvest_account,
         is_dismissible: !client.should_have_real_account,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,

@@ -2,12 +2,9 @@ import classNames from 'classnames';
 import { Button, Icon } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { localize } from '@deriv/translations';
-
 import 'Sass/app/modules/account-types.scss';
 
-const MainCard = ({ button_text, buttonOnClick, platforms, items, subtitle, title }) => {
+const MainCard = ({ button_text, buttonOnClick, platforms, is_button_disabled, items, subtitle, title }) => {
     return (
         <div className='account-card__main'>
             <h3 className='account-card__main-title'>{title}</h3>
@@ -35,7 +32,10 @@ const MainCard = ({ button_text, buttonOnClick, platforms, items, subtitle, titl
                         {platforms.map((platform, index) => {
                             return (
                                 <div key={index} className='account-card__platforms-icon'>
-                                    <Icon icon={platform.icon} size={24} />
+                                    <a href={platform.path} target='_blank' rel='noopener noreferrer'>
+                                        <Icon icon={platform.icon} size={24} />
+                                    </a>
+
                                     <p className='account-card__platforms-name'>{platform.name}</p>
                                 </div>
                             );
@@ -46,6 +46,7 @@ const MainCard = ({ button_text, buttonOnClick, platforms, items, subtitle, titl
             <Button
                 className='account-card__main-button'
                 text={button_text}
+                is_disabled={is_button_disabled}
                 onClick={buttonOnClick}
                 has_effect
                 primary
@@ -54,7 +55,7 @@ const MainCard = ({ button_text, buttonOnClick, platforms, items, subtitle, titl
     );
 };
 
-const AccountCard = ({ button_text, buttonOnClick, items, platforms, subtitle, title }) => {
+const AccountCard = ({ button_text, buttonOnClick, items, platforms, subtitle, title, is_button_disabled }) => {
     return (
         <div className='account-card'>
             <div className={classNames('account-card__wrapper')}>
@@ -62,6 +63,7 @@ const AccountCard = ({ button_text, buttonOnClick, items, platforms, subtitle, t
                     items={items}
                     subtitle={subtitle}
                     title={title}
+                    is_button_disabled={is_button_disabled}
                     platforms={platforms}
                     button_text={button_text}
                     buttonOnClick={buttonOnClick}

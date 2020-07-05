@@ -6,7 +6,7 @@ import { connect } from 'Stores/connect';
 
 const MT5AccountNeededModal = ({
     is_open,
-    required_account: { target, target_label, target_dmt5_label },
+    account_needed_modal_props: { target, target_label, target_dmt5_label },
     onClose,
     disableApp,
     enableApp,
@@ -19,14 +19,14 @@ const MT5AccountNeededModal = ({
 
     return (
         <Dialog
-            title={localize('{{deriv_account}} account required', {
+            title={localize('You’ll need a {{deriv_account}} account', {
                 deriv_account: target_label,
             })}
             confirm_button_text={localize('Add {{deriv_account}} account', {
                 deriv_account: target_label,
             })}
             onConfirm={createAccount}
-            cancel_button_text={localize('Maybe later')}
+            cancel_button_text={localize('Cancel')}
             onCancel={onClose}
             is_closed_on_cancel
             disableApp={disableApp}
@@ -35,7 +35,7 @@ const MT5AccountNeededModal = ({
             is_visible={is_open}
         >
             <Localize
-                i18n_default_text='{{deriv_account}} is required to have a {{dmt5_account}}'
+                i18n_default_text='Please add a {{deriv_account}} account first before adding a {{dmt5_account}} account. Deposits and withdrawals for your DMT5 account are done by transferring funds to and from your Deriv account.'
                 values={{
                     deriv_account: target_label,
                     dmt5_account: target_dmt5_label,
@@ -52,6 +52,9 @@ MT5AccountNeededModal.propTypes = {
 };
 
 export default connect(({ ui }) => ({
+    is_open: ui.is_account_needed_modal_on,
+    account_needed_modal_props: ui.account_needed_modal_props,
+    onClose: ui.closeAccountNeededModal,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     openRealAccountSignup: ui.openRealAccountSignup,

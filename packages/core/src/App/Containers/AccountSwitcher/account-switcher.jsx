@@ -86,8 +86,16 @@ class AccountSwitcher extends React.Component {
     };
 
     openMt5RealAccount = account_type => {
-        sessionStorage.setItem('open_mt5_account_type', `real.${account_type}`);
-        this.redirectToMt5Real();
+        if (this.props.is_eu_enabled && this.props.is_eu && !this.props.has_maltainvest_account) {
+            this.props.openAccountNeededModal(
+                'maltainvest',
+                account_type === 'synthetic' ? localize('Deriv Synthetic') : localize('Deriv Financial'),
+                account_type === 'synthetic' ? localize('DMT5 Synthetic') : localize('DMT5 Financial')
+            );
+        } else {
+            sessionStorage.setItem('open_mt5_account_type', `real.${account_type}`);
+            this.redirectToMt5Real();
+        }
     };
 
     redirectToMt5Real = () => {
@@ -514,7 +522,9 @@ class AccountSwitcher extends React.Component {
                                                 secondary
                                                 small
                                                 is_disabled={
-                                                    !this.props.has_any_real_account ||
+                                                    (!this.props.is_eu_enabled &&
+                                                        !this.props.is_eu &&
+                                                        !this.props.has_any_real_account) ||
                                                     (account.type === 'financial_stp' &&
                                                         this.props.is_pending_authentication)
                                                 }
@@ -650,6 +660,8 @@ const account_switcher = withRouter(
         mt5_login_list: client.mt5_login_list,
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,
+        has_maltainvest_account: client.has_maltainvest_account,
+        openAccountNeededModal: ui.openAccountNeededModal,
         logoutClient: client.logout,
         landing_companies: client.landing_companies,
         upgradeable_landing_companies: client.upgradeable_landing_companies,

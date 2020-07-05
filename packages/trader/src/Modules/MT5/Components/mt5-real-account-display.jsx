@@ -34,7 +34,8 @@ const MT5RealAccountDisplay = ({
     has_mt5_account,
     openPasswordManager,
     account_settings,
-    showAccountNeededModal,
+    openAccountNeededModal,
+    standpoint,
 }) => {
     const has_required_credentials =
         account_settings.citizen && account_settings.tax_identification_number && account_settings.tax_residence;
@@ -48,8 +49,8 @@ const MT5RealAccountDisplay = ({
     const is_real_financial_stp_disabled = !has_real_account || is_pending_authentication;
 
     const onSelectRealSynthetic = () => {
-        if (is_eu_enabled && is_eu && has_maltainvest_account && !has_malta_account) {
-            showAccountNeededModal('malta', localize('Deriv Synthetic'), localize('DMT5 Synthetic'));
+        if (is_eu_enabled && is_eu && standpoint.malta && !has_malta_account) {
+            openAccountNeededModal('malta', localize('Deriv Synthetic'), localize('DMT5 Synthetic'));
         } else {
             onSelectAccount({ type: 'synthetic', category: 'real' });
         }
@@ -57,7 +58,7 @@ const MT5RealAccountDisplay = ({
     const onSelectRealFinancial = () => {
         // TODO: [deriv-eu] remove is_eu_enabled when eu gets a release
         if (is_eu_enabled && is_eu && !has_maltainvest_account) {
-            showAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Financial'));
+            openAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Financial'));
         } else {
             onSelectAccount({ type: 'financial', category: 'real' });
         }
@@ -97,7 +98,7 @@ const MT5RealAccountDisplay = ({
                     has_mt5_account={has_mt5_account}
                     icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
                     title={localize('Synthetic')}
-                    is_disabled={!has_real_account}
+                    is_disabled={!is_eu && !has_real_account}
                     type={{
                         category: 'real',
                         type: 'synthetic',
@@ -116,7 +117,7 @@ const MT5RealAccountDisplay = ({
             {landing_companies?.mt_financial_company?.standard && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    is_disabled={!has_real_account}
+                    is_disabled={!is_eu && !has_real_account}
                     icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
                     title={localize('Financial')}
                     type={{
@@ -159,7 +160,7 @@ const MT5RealAccountDisplay = ({
                         'Trade major, minor, and exotic currency pairs with Straight-Through Processing (STP) of your orders direct to the market.'
                     )}
                     specs={real_financial_stp_specs}
-                    is_disabled={is_real_financial_stp_disabled}
+                    is_disabled={!is_eu && is_real_financial_stp_disabled}
                 />
             )}
         </div>

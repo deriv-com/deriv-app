@@ -14,7 +14,6 @@ import MT5PasswordModal from './mt5-password-modal.jsx';
 import MT5ServerErrorDialog from './mt5-server-error-dialog.jsx';
 import Mt5TopUpDemoModal from './mt5-top-up-demo-modal.jsx';
 import MT5ResetPasswordModal from './mt5-reset-password-modal.jsx';
-import MT5AccountNeededModal from './mt5-account-needed-modal.jsx';
 import Mt5FinancialStpPendingDialog from '../Components/mt5-financial-stp-pending-dialog.jsx';
 import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
 import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
@@ -81,17 +80,6 @@ class MT5Dashboard extends React.Component {
         }
 
         this.props.setMt5PasswordResetModal(true);
-    };
-
-    showAccountNeededModal = (target, target_label, target_dmt5_label) => {
-        this.setState({
-            is_account_needed_modal_open: true,
-            required_account: {
-                target,
-                target_label,
-                target_dmt5_label,
-            },
-        });
     };
 
     updateActiveIndex = () => {
@@ -182,7 +170,7 @@ class MT5Dashboard extends React.Component {
                                             is_eu_enabled={this.props.is_eu_enabled}
                                             has_maltainvest_account={this.props.has_maltainvest_account}
                                             has_malta_account={this.props.has_malta_account}
-                                            showAccountNeededModal={this.showAccountNeededModal}
+                                            openAccountNeededModal={this.props.openAccountNeededModal}
                                             current_list={this.props.current_list}
                                             account_status={this.props.account_status}
                                             has_mt5_account={has_mt5_account}
@@ -195,6 +183,7 @@ class MT5Dashboard extends React.Component {
                                             openPasswordManager={this.togglePasswordManagerModal}
                                             openPasswordModal={this.openRealPasswordModal}
                                             has_real_account={has_real_account}
+                                            standpoint={this.props.standpoint}
                                         />
                                     </React.Fragment>
                                 </div>
@@ -203,7 +192,7 @@ class MT5Dashboard extends React.Component {
                                         is_eu={this.props.is_eu}
                                         is_eu_enabled={this.props.is_eu_enabled}
                                         has_maltainvest_account={this.props.has_maltainvest_account}
-                                        showAccountNeededModal={this.showAccountNeededModal}
+                                        openAccountNeededModal={this.props.openAccountNeededModal}
                                         standpoint={this.props.standpoint}
                                         is_loading={is_loading}
                                         has_mt5_account={has_mt5_account}
@@ -267,11 +256,6 @@ class MT5Dashboard extends React.Component {
                         <MT5ResetPasswordModal />
                     </div>
                 </div>
-                <MT5AccountNeededModal
-                    required_account={this.state.required_account}
-                    onClose={() => this.setState({ is_account_needed_modal_open: false })}
-                    is_open={this.state.is_account_needed_modal_open}
-                />
             </React.Fragment>
         );
     }
@@ -296,6 +280,7 @@ export default withRouter(
         is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
         is_fully_authenticated: client.is_fully_authenticated,
         openPasswordModal: modules.mt5.enableMt5PasswordModal,
+        openAccountNeededModal: ui.openAccountNeededModal,
         is_loading: client.is_populating_mt5_account_list,
         is_mt5_allowed: client.is_mt5_allowed,
         has_mt5_account: modules.mt5.has_mt5_account,

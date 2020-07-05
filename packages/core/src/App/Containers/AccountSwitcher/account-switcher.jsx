@@ -138,19 +138,19 @@ class AccountSwitcher extends React.Component {
             {
                 account_types: ['svg'],
                 icon: 'Synthetic',
-                title: localize('DMT5 Synthetic'),
+                title: localize('Synthetic'),
                 type: 'synthetic',
             },
             {
                 account_types: ['vanuatu', 'svg_standard'],
                 icon: 'Financial',
-                title: localize('DMT5 Financial'),
+                title: localize('Financial'),
                 type: 'financial',
             },
             {
                 account_types: ['labuan'],
                 icon: 'Financial STP',
-                title: localize('DMT5 Financial STP'),
+                title: localize('Financial STP'),
                 type: 'financial_stp',
             },
         ];

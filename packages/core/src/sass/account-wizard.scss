@@ -84,7 +84,7 @@
             grid-template-rows: 1fr 1fr;
         }
     }
-    h2 {
+    & > h2 {
         text-transform: none;
         margin-top: 2.4rem;
         @include typeface(--title-center-bold-black);
@@ -94,7 +94,7 @@
             font-size: 1.2rem;
         }
     }
-    h3 {
+    & > h3 {
         @include typeface(--small-center-normal-black);
         text-transform: none;
         color: var(--text-general);
@@ -304,7 +304,20 @@
         margin-bottom: 1.6em;
         position: relative;
         height: 1.6em;
+        white-space: nowrap;
 
+        &-section {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        &-section:after {
+            border-top: 1px solid var(--general-section-1);
+            content: '';
+            height: 100%;
+            width: 100%;
+            margin-top: 0.3rem;
+        }
         &--has-description {
             margin-bottom: 0.5rem;
         }
@@ -312,25 +325,17 @@
     &__header:not(:first-child) {
         margin-top: 1.6em;
     }
-    &__header:before {
-        border-top: 1px solid var(--general-section-1);
-        content: '';
-        height: 100%;
-        left: 0;
-        position: absolute;
-        top: 0.5em;
-        width: 100%;
-    }
     &__title {
         background: var(--general-main-1);
         color: var(--text-prominent);
-        padding-right: 8px;
-        position: absolute;
+        padding-right: 0.8rem;
     }
     &__subtitle {
-        margin-left: 0.4rem;
         font-size: 1rem;
         font-weight: normal;
+        align-self: baseline;
+        padding-right: 0.8rem;
+        margin-top: 0.2rem;
     }
     &__description {
         font-size: 1.2rem;

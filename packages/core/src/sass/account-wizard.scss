@@ -114,10 +114,16 @@
                 flex-grow: 1;
                 justify-content: space-around;
                 align-items: center;
+
+                &--is-header {
+                    font-size: 2rem;
+                    margin: 2rem 0 0;
+                    font-weight: bold;
+                    color: var(--text-less-prominent);
+                }
             }
             &__description {
                 font-size: 1.4rem;
-                color: var(--text-less-prominent);
                 line-height: 2.4rem;
                 margin-top: 2.4rem;
             }

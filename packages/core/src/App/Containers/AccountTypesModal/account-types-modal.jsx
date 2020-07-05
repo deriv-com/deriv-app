@@ -11,6 +11,15 @@ import AccountCard from './account-card.jsx';
 
 import 'Sass/app/modules/account-types.scss';
 
+const getTargetLoginid = (accounts, target_landing_company_shortcode) =>
+    Object.entries(accounts).reduce((acc, [loginid, { landing_company_shortcode }]) => {
+        if (landing_company_shortcode === target_landing_company_shortcode) {
+            // eslint-disable-next-line no-param-reassign
+            acc += loginid;
+        }
+        return acc;
+    }, '');
+
 const Box = ({ title, description, footer_text, icons, cards }) => {
     return (
         <div className='account-types__box'>
@@ -51,7 +60,7 @@ const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_a
                     key={0}
                     title={localize('Trade Options')}
                     subtitle={localize('with a Deriv Financial account')}
-                    button_text={add_account_label}
+                    button_text={has_maltainvest_account ? add_account_label[0] : add_account_label[1]}
                     buttonOnClick={derivOnClick}
                     items={{
                         [localize('Multiplier')]: localize('Up to X1000'),
@@ -91,7 +100,7 @@ const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_a
                     key={1}
                     title={localize('Trade on Margin')}
                     subtitle={localize('with a DMT5 Financial account')}
-                    button_text={add_account_label}
+                    button_text={add_account_label[1]}
                     buttonOnClick={mt5OnClick}
                     is_button_disabled={!has_maltainvest_account}
                     items={{
@@ -225,18 +234,7 @@ class AccountTypesModal extends React.Component {
                                 derivOnClick={() => {
                                     if (this.props.has_iom_account) {
                                         if (this.props.landing_company_shortcode !== 'iom') {
-                                            const target_loginid = Object.entries(this.props.accounts).reduce(
-                                                (acc, [loginid, { landing_company_shortcode }]) => {
-                                                    if (landing_company_shortcode === 'iom') {
-                                                        // eslint-disable-next-line no-param-reassign
-                                                        acc += loginid;
-                                                    }
-                                                    return acc;
-                                                },
-                                                ''
-                                            );
-
-                                            this.props.switchAccount(target_loginid);
+                                            this.props.switchAccount(getTargetLoginid(this.props.accounts, 'iom'));
                                         }
                                         this.closeModal();
                                     } else {
@@ -250,14 +248,24 @@ class AccountTypesModal extends React.Component {
                                 }
                             />
                             <FinancialBox
-                                derivOnClick={() => this.createRealAccount(this.props.standpoint.financial_company)}
+                                derivOnClick={() => {
+                                    if (this.props.has_maltainvest_account) {
+                                        if (this.props.landing_company_shortcode !== 'maltainvest') {
+                                            this.props.switchAccount(
+                                                getTargetLoginid(this.props.accounts, 'maltainvest')
+                                            );
+                                        }
+                                        this.closeModal();
+                                    } else {
+                                        this.createRealAccount(this.props.standpoint.financial_company);
+                                    }
+                                }}
                                 mt5OnClick={this.redirectToMt5Real}
                                 has_maltainvest_account={this.props.has_maltainvest_account}
-                                add_account_label={
-                                    this.props.has_maltainvest_account
-                                        ? localize('Trade with this account')
-                                        : localize('Add this real account')
-                                }
+                                add_account_label={[
+                                    localize('Trade with this account'),
+                                    localize('Add this real account'),
+                                ]}
                             />
                         </div>
                     </div>

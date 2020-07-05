@@ -12,13 +12,13 @@ export const DialogMessage = ({ status = EXPERIAN.SUCCESS, landing_company_short
     let message = '';
     if (landing_company_shortcode === 'maltainvest') {
         message = (
-            <Localize i18n_default_text='We need proofs of your identity and address before you can start trading' />
+            <Localize i18n_default_text='We need proofs of your identity and address before you can start trading.' />
         );
     } else {
         switch (status) {
             case EXPERIAN.WARN:
                 message = (
-                    <Localize i18n_default_text="We couldn't verify your proof of address document. You can upload a new document to try again" />
+                    <Localize i18n_default_text="We couldn't verify your proof of address document. You can upload a new document to try again." />
                 );
                 break;
             case EXPERIAN.DANGER:

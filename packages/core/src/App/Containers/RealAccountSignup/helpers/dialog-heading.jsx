@@ -37,7 +37,7 @@ export const DialogHeading = ({ status, landing_company_shortcode }) => {
         default:
             return (
                 <h2>
-                    <Localize i18n_default_text='Your account is ready!' />
+                    <Localize i18n_default_text='Your account is ready' />
                 </h2>
             );
     }

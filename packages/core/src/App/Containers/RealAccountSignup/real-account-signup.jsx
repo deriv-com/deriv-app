@@ -14,11 +14,11 @@ import StatusDialogContainer from './status-dialog-container.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
-const LoadingModal = () => <Loading is_fullscreen={false} />;
+const LoadingModal = props => <Loading {...props} is_fullscreen={false} />;
 
 const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, is_belgium_residence }) => {
     if (!currency) {
-        return <Localize i18n_default_text='Set a currency for your Real Account' />;
+        return <Localize i18n_default_text='Set a currency for your real account' />;
     }
 
     if (
@@ -33,9 +33,9 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
         case 'iom':
             return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
         case 'maltainvest':
-            return <Localize i18n_default_text='Add a Deriv Financial Account' />;
+            return <Localize i18n_default_text='Add a Deriv Financial account' />;
         default:
-            return <Localize i18n_default_text='Add a Deriv Account' />;
+            return <Localize i18n_default_text='Add a Deriv account' />;
     }
 };
 
@@ -81,7 +81,7 @@ class RealAccountSignup extends React.Component {
                     body: () => <StatusDialogContainer />,
                 },
                 {
-                    body: () => <LoadingModal />,
+                    body: () => <LoadingModal className='loading-modal' />,
                 },
                 {
                     body: () => (

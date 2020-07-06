@@ -45,7 +45,7 @@
         "react-virtualized-auto-sizer": "^1.0.2",
         "react-window": "^1.8.5",
         "react-window-infinite-loader": "^1.0.5",
-        "sendbird-uikit": "^1.0.1"
+        "sendbird-uikit": "^1.0.7"
     },
     "devDependencies": {
         "@babel/plugin-proposal-class-properties": "^7.5.5",

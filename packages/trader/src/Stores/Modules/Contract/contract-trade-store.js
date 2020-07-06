@@ -1,5 +1,5 @@
 import { action, computed, observable, toJS } from 'mobx';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { isDesktop } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import { LocalStore } from '_common/storage';
 import { switch_to_tick_chart } from './Helpers/chart-notifications';

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable } from '@deriv/components';
-import { urlFor } from '@deriv/shared/utils/url';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { urlFor, isMobile } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import { getTimePercentage } from 'App/Components/Elements/PositionsDrawer/helpers';

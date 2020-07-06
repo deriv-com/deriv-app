@@ -159,7 +159,7 @@ const Journal = ({ filtered_messages, contract_stage, ...props }) => (
                     </TransitionGroup>
                 ) : (
                     <>
-                        {contract_stage.index >= contract_stages.STARTING.index ? (
+                        {contract_stage >= contract_stages.STARTING ? (
                             <JournalLoader />
                         ) : (
                             <div className='journal-empty__container'>

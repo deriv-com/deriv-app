@@ -9,7 +9,7 @@ import {
     UILoader,
 } from '@deriv/components';
 import React from 'react';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 

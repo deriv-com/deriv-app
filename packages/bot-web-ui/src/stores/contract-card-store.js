@@ -20,7 +20,7 @@ export default class ContractCardStore {
         return (
             this.contract &&
             isEnded(this.contract) &&
-            this.root_store.run_panel.contract_stage.index !== contract_stages.PURCHASE_RECEIVED.index
+            this.root_store.run_panel.contract_stage !== contract_stages.PURCHASE_RECEIVED
         );
     }
 
@@ -28,8 +28,8 @@ export default class ContractCardStore {
     get is_contract_loading() {
         return (
             (this.root_store.run_panel.is_running && this.contract === null) ||
-            this.root_store.run_panel.contract_stage.index === contract_stages.PURCHASE_SENT.index ||
-            this.root_store.run_panel.contract_stage.index === contract_stages.STARTING.index
+            this.root_store.run_panel.contract_stage === contract_stages.PURCHASE_SENT ||
+            this.root_store.run_panel.contract_stage === contract_stages.STARTING
         );
     }
 

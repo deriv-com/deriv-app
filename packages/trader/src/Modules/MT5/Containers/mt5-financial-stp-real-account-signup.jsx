@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormProgress, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
-import { getPropertyValue } from '@deriv/shared/utils/object';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { getPropertyValue, isDesktop } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';

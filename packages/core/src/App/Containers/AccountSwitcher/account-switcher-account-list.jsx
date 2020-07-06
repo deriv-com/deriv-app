@@ -29,7 +29,7 @@ const AccountList = ({
                 })}
                 onClick={is_disabled ? undefined : onClickAccount}
             >
-                <span className={'acc-switcher__id'}>
+                <span className='acc-switcher__id'>
                     <Icon
                         icon={currency ? currency_icon : 'IcCurrencyUnknown'}
                         className={'acc-switcher__id-icon'}

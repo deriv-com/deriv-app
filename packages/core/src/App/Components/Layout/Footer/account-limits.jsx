@@ -1,8 +1,7 @@
 import React from 'react';
 import { Icon, Popover } from '@deriv/components';
 import { Link } from 'react-router-dom';
-import routes from '@deriv/shared/utils/routes';
-import { getDerivComLink } from '@deriv/shared/utils/url';
+import { routes, getDerivComLink } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 export const AccountLimits = () => (

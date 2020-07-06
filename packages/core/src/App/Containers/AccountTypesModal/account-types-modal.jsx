@@ -2,8 +2,7 @@ import { Icon, Modal, ThemedScrollbars } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { getDerivComLink, urlFor } from '@deriv/shared/utils/url';
-import routes from '@deriv/shared/utils/routes';
+import { routes, getDerivComLink, urlFor } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -69,7 +68,6 @@ const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_a
                         [localize('Cancel trade')]: localize('Allowed'),
                         [localize('Currency')]: localize('USD/GBP/EUR'),
                     }}
-                    // TODO: [deriv-eu] Update paths
                     platforms={[
                         {
                             icon: 'IcBrandDtrader',

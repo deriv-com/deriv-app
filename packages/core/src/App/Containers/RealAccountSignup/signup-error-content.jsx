@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared/utils/url';
+import { getDerivComLink } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
 const SignupErrorContent = ({ message, code, onConfirm }) => {

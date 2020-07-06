@@ -91,7 +91,7 @@ export const checkAndSetEndpointFromUrl = () => {
 
             location.href = `${location.protocol}//${location.hostname}${location.pathname}${
                 params ? `?${params}` : ''
-            }${hash ? hash : ''}`;
+            }${hash || ''}`;
         }
     }
 };

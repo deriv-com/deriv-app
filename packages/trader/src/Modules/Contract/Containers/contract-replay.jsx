@@ -85,6 +85,7 @@ class ContractReplay extends React.Component {
                             contract_info={contract_info}
                             contract_update={contract_update}
                             contract_update_history={contract_update_history}
+                            is_chart_loading={is_chart_loading}
                             is_dark_theme={is_dark_theme}
                             is_sell_requested={is_sell_requested}
                             is_valid_to_cancel={is_valid_to_cancel}

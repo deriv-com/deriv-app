@@ -40,6 +40,18 @@ export default class OnRampStore extends BaseStore {
                 payment_icons: ['IcCashierVisa', 'IcCashierMastercard'],
                 to_currencies: ['bch', 'btc', 'etc', 'eth', 'ltc', 'ust'],
                 type: 'widget',
+                onClickContinue() {
+                    const currency = getCurrencyDisplayCode(root_store.client.currency).toLowerCase();
+                    const base_url = 'https://buy.changelly.com';
+                    const url_params = new URLSearchParams();
+
+                    url_params.append('baseCurrencyCode', 'usd');
+                    url_params.append('defaultCurrencyCode', currency);
+                    url_params.append('externalCustomerId', '1591148580177.9550776014718119');
+                    url_params.append('externalTransactionId', '_f3kxzxxl_widget');
+
+                    window.open(`${base_url}/?${url_params.toString()}`);
+                },
             },
         ];
     }
@@ -92,7 +104,11 @@ export default class OnRampStore extends BaseStore {
 
     @action.bound
     onClickDisclaimerContinue() {
-        this.should_show_widget = true;
+        if (this.selected_provider.onClickContinue) {
+            this.selected_provider.onClickContinue();
+        } else {
+            this.should_show_widget = true;
+        }
     }
 
     @action.bound

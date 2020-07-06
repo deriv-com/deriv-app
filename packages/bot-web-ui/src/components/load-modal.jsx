@@ -259,7 +259,7 @@ const LoadModal = ({
         <FadeWrapper is_visible={is_load_modal_open} className='load__wrapper' keyname='save__wrapper'>
             <PageOverlay header={localize('Load Strategy')} onClickClose={toggleLoadModal} onMount={onMount}>
                 <MobileWrapper>
-                    <Div100vhContainer className='load__wrapper--is-mobile' height_offset='80px'>
+                    <Div100vhContainer className='load__wrapper--is-mobile'>
                         <Tabs
                             active_index={active_index}
                             onTabItemClick={setActiveTabIndex}

@@ -282,19 +282,28 @@ $modal_container_height: calc(100vh - 210px);
         @include mobile {
             position: fixed;
             z-index: 5;
+            top: 40px;
             width: 100%;
             left: 0px;
+            height: calc(100vh - 40px);
             background: var(--general-main-1);
 
+            &--is-mobile {
+                max-height: calc(100vh - 80px);
+            }
             #import_dragndrop {
                 padding: 8vw;
             }
-            &--is-mobile {
-                width: 100%;
-            }
             & .dc {
-                &-tabs__list {
-                    width: 100%;
+                &-tabs {
+                    max-height: calc(100vh - 80px);
+
+                    &__list {
+                        width: 100%;
+                    }
+                    &__item {
+                        width: 50%;
+                    }
                 }
                 &-btn {
                     height: 4rem;
@@ -302,9 +311,6 @@ $modal_container_height: calc(100vh - 210px);
                     &--secondary {
                         border-width: 0.2rem;
                     }
-                }
-                &-tabs__item {
-                    width: 50%;
                 }
                 &-page-overlay {
                     &__header {
@@ -315,9 +321,13 @@ $modal_container_height: calc(100vh - 210px);
                     }
                     &__content {
                         margin-top: 40px;
+                        height: calc(100vh - 120px);
+                        overflow: overlay;
 
                         & .modal__content {
                             padding: 1.6rem;
+                            max-height: calc(100vh - 150px);
+                            overflow: overlay;
                         }
                     }
                 }
@@ -326,7 +336,12 @@ $modal_container_height: calc(100vh - 210px);
                 &__container {
                     width: calc(100vw);
                     padding: 1.6rem;
-                    height: calc(100vh - 134px);
+                    height: 100%;
+                    max-height: calc(100vh - 120px);
+                }
+                &__dragndrop {
+                    height: calc(100vh - 200px);
+                    overflow: overlay;
                 }
                 &__footer {
                     display: flex;
@@ -343,7 +358,7 @@ $modal_container_height: calc(100vh - 210px);
                     width: calc(100vw - 3.2rem);
                     margin: 1.6rem;
                     border: dashed 0.2rem var(--border-normal);
-                    height: calc(100vh - 166px);
+                    height: calc(100vh - 200px);
                 }
                 &__buttons > * {
                     margin: 0rem 0.4rem;
@@ -351,6 +366,7 @@ $modal_container_height: calc(100vh - 210px);
             }
             .preview__workspace {
                 width: 100vw;
+                height: calc(100vh - 300px);
             }
         }
     }

@@ -4,7 +4,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getExpiryType, getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
-import MultiplierLimitOrdersInfo from './Multiplier/limit-orders-info.jsx';
+import MultiplierLimitOrderInfo from './Multiplier/limit-order-info.jsx';
 import TradeParamsModal from '../../Containers/trade-params-mobile.jsx';
 
 class MobileWidget extends React.Component {
@@ -78,7 +78,7 @@ class MobileWidget extends React.Component {
         return (
             <div className='mobile-widget__wrapper'>
                 {is_multiplier ? (
-                    <MultiplierLimitOrdersInfo />
+                    <MultiplierLimitOrderInfo />
                 ) : (
                     <div className='mobile-widget' onClick={this.toggleWidget}>
                         <div className='mobile-widget__duration'>{this.getHumanReadableDuration()}</div>

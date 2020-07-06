@@ -179,20 +179,6 @@ export default class CashierStore extends BaseStore {
             if (!this.config.account_transfer.accounts_list.length) {
                 this.sortAccountsTransfer();
             }
-
-            // show p2p if:
-            // 1. we have not already checked this before, and
-            // 2. client is not virtual, and
-            // 3. p2p call does not return error code `PermissionDenied`
-            const { p2p } = this.root_store.modules;
-            if (!p2p.is_visible && !this.root_store.client.is_virtual) {
-                const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
-                const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'PermissionDenied') return;
-
-                p2p.setIsAdvertiser(!advertiser_error);
-                p2p.setIsVisible(true);
-            }
         }
     }
 
@@ -1021,7 +1007,6 @@ export default class CashierStore extends BaseStore {
         this.config.account_transfer = new ConfigAccountTransfer();
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
         this.is_populating_values = false;
-        this.root_store.modules.p2p.setIsVisible(false);
 
         this.onRemount();
 

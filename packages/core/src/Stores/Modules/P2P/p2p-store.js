@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx';
-import { routes } from '@deriv/shared';
+import { getPropertyValue, routes } from '@deriv/shared';
 import { SendbirdAPI, P2pStorage } from '@deriv/p2p/lib/utils';
 import { WS } from 'Services';
 import BaseStore from '../../base-store';
@@ -9,6 +9,7 @@ export default class P2pStore extends BaseStore {
         super({ root_store });
         this.onClientInit(this.initSendbird);
         this.onLogout(this.disconnectSendbird);
+        this.onSwitchAccount(this.accountSwitcherListener);
     }
 
     @observable unread_notification_count = 0;
@@ -37,6 +38,22 @@ export default class P2pStore extends BaseStore {
 
             this.sendbird_api = new SendbirdAPI({ LocalStorage: P2pStorage });
             this.sendbird_api.init(sendbird_user_id, service_token);
+
+            // show p2p if:
+            // 1. we have not already checked this before, and
+            // 2. client is not virtual, and
+            // 3. p2p call does not return error code `PermissionDenied`
+            if (!this.is_visible && !client.is_virtual) {
+                const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
+                const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+                if (advertiser_error === 'PermissionDenied') return;
+
+                this.setIsAdvertiser(!advertiser_error);
+                this.setIsVisible(true);
+            }
+        } else {
+            P2pStorage.setLoginId(null);
+            P2pStorage.resetNotificationListeners();
         }
 
         return true;
@@ -49,6 +66,12 @@ export default class P2pStore extends BaseStore {
         }
 
         return true;
+    }
+
+    @action.bound
+    accountSwitcherListener() {
+        this.setIsVisible(false);
+        return Promise.resolve();
     }
 
     @action.bound

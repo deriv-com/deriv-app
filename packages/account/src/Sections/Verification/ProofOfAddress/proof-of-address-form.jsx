@@ -2,7 +2,7 @@ import React from 'react';
 import { Loading, Button, Input } from '@deriv/components';
 import { Formik } from 'formik';
 import { localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { isMobile } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import {

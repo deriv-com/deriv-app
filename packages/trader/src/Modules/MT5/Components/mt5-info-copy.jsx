@@ -1,13 +1,13 @@
 import React from 'react';
 import { Clipboard } from '@deriv/components';
 
-const MT5InfoCopy = ({ name, label, success_msg, info_msg }) => (
+const MT5InfoCopy = ({ display_name, label, success_msg, info_msg, text_copy }) => (
     <div className='mt5-dashboard__info-copy'>
         <div className='mt5-dashboard__info-display'>
             <span className='mt5-dashboard__info-label'>{label}:</span>
-            {name}
+            {display_name}
         </div>
-        <Clipboard text_copy={name} info_message={info_msg} success_message={success_msg} />
+        <Clipboard text_copy={text_copy} info_message={info_msg} success_message={success_msg} />
     </div>
 );
 

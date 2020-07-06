@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Button, Div100vhContainer, Icon } from '@deriv/components';
 import React from 'react';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const SuccessDialog = ({

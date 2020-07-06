@@ -4,7 +4,7 @@ import React from 'react';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer } from '@deriv/components';
 import { ProofOfIdentityContainer } from '@deriv/account';
 import { WS } from 'Services/ws-methods';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 class MT5POI extends React.PureComponent {

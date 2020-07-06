@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { Tabs, Modal, Loading } from '@deriv/components';
+import { Tabs, Modal } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
@@ -51,7 +51,6 @@ class App extends React.Component {
                 user_id: '',
                 token: '',
             },
-            is_loading: true,
         };
     }
 
@@ -163,12 +162,9 @@ class App extends React.Component {
 
                     this.setState({
                         poi_status: identity.status,
-                        is_loading: false,
                     });
                 }
             });
-        } else {
-            this.setState({ is_loading: false });
         }
     };
 
@@ -301,7 +297,6 @@ class App extends React.Component {
             order_table_type,
             chat_info,
             show_popup,
-            is_loading,
             poi_status,
             is_restricted,
             nickname_error,
@@ -384,7 +379,6 @@ class App extends React.Component {
                         </>
                     ) : (
                         <>
-                            {is_loading && <Loading is_fullscreen={false} />}
                             {should_show_verification && !this.state.is_advertiser && (
                                 <div
                                     className={classNames('p2p-cashier__verification', {

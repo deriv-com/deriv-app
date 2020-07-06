@@ -80,7 +80,7 @@ export default class Onfido extends React.Component {
     }
 
     render() {
-        const { status, has_poa, is_description_enabled, height, redirectBack } = this.props;
+        const { status, has_poa, is_description_enabled, height, show_redirect_btn, routeBackInApp } = this.props;
 
         if (status === onfido_status_codes.onfido) return <OnfidoContainer height={height} />;
 
@@ -92,7 +92,8 @@ export default class Onfido extends React.Component {
                     <UploadComplete
                         has_poa={has_poa}
                         is_description_enabled={is_description_enabled}
-                        redirectBack={redirectBack}
+                        show_redirect_btn={show_redirect_btn}
+                        routeBackInApp={routeBackInApp}
                     />
                 );
             case onfido_status_codes.rejected:
@@ -102,7 +103,8 @@ export default class Onfido extends React.Component {
                     <Verified
                         has_poa={has_poa}
                         is_description_enabled={is_description_enabled}
-                        redirectBack={redirectBack}
+                        show_redirect_btn={show_redirect_btn}
+                        routeBackInApp={routeBackInApp}
                     />
                 );
             case onfido_status_codes.expired:

@@ -9,14 +9,15 @@ import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 
 class ProofOfIdentity extends React.Component {
-    redirectBack = () => {
-        if (/p2p/.test(this.props.location.hash)) {
-            // remove hashtag once p2p is ready
-            this.props.routeTo(`${routes.cashier_p2p}#show_p2p`);
+    routeBackTo = () => {
+        if (this.props.is_from_p2p) {
+            //remove hash once p2p is ready
+            this.props.routeBackInApp(this.props.history, [routes.cashier_p2p]);
         }
     };
 
     render() {
+        console.log(this.props.is_from_p2p);
         if (this.props.is_virtual) return <DemoMessage />;
         if (this.props.has_missing_required_field) return <MissingPersonalDetails />;
 
@@ -33,7 +34,8 @@ class ProofOfIdentity extends React.Component {
                             removeNotificationMessage={this.props.removeNotificationMessage}
                             refreshNotifications={this.props.refreshNotifications}
                             height={height}
-                            redirectBack={/p2p/.test(this.props.location.hash) ? this.redirectBack : undefined}
+                            show_redirect_btn={this.props.is_from_p2p}
+                            routeBackInApp={this.routeBackTo}
                         />
                     </div>
                 )}
@@ -49,5 +51,6 @@ export default connect(({ client, ui, common }) => ({
     addNotificationByKey: ui.addNotificationMessageByKey,
     removeNotificationByKey: ui.removeNotificationByKey,
     removeNotificationMessage: ui.removeNotificationMessage,
-    routeTo: common.routeTo,
+    routeBackInApp: common.routeBackInApp,
+    is_from_p2p: common.is_from_p2p,
 }))(withRouter(ProofOfIdentity));

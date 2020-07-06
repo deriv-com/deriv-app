@@ -39,7 +39,7 @@ const Verification = () => {
         {
             content: poiStatusText(poi_status),
             status: poi_status === 'verified' ? 'done' : 'action',
-            onClick: poi_status === 'verified' ? () => {} : () => routeTo(`${routes.proof_of_identity}#p2p`),
+            onClick: poi_status === 'verified' ? () => {} : () => routeTo(routes.proof_of_identity),
             is_disabled: poi_status !== 'verified' && !nickname,
         },
     ];

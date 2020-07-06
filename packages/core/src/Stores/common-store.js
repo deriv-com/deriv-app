@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, computed } from 'mobx';
 import routes from '@deriv/shared/utils/routes';
 import { toMoment } from '@deriv/shared/utils/date';
 import { getUrlSmartTrader } from '@deriv/shared/utils/storage';
@@ -151,7 +151,7 @@ export default class CommonStore extends BaseStore {
     }
 
     @action.bound
-    routeBackInApp(history) {
+    routeBackInApp(history, additional_platform_path = []) {
         let route_to_item_idx = -1;
         const route_to_item = this.app_routing_history.find((history_item, idx) => {
             if (history_item.action === 'PUSH') {
@@ -162,7 +162,10 @@ export default class CommonStore extends BaseStore {
                 const parent_path = history_item.pathname.split('/')[1];
                 const platform_parent_paths = [routes.mt5, routes.bot, routes.trade].map(i => i.split('/')[1]); // map full path to just base path (`/mt5/abc` -> `mt5`)
 
-                if (platform_parent_paths.includes(parent_path)) {
+                if (
+                    platform_parent_paths.includes(parent_path) ||
+                    additional_platform_path.includes(history_item.pathname)
+                ) {
                     route_to_item_idx = idx;
                     return true;
                 }
@@ -177,11 +180,31 @@ export default class CommonStore extends BaseStore {
                 return;
             } else if (route_to_item_idx > -1) {
                 this.app_routing_history.splice(0, route_to_item_idx + 1);
-                history.push(route_to_item.pathname);
+                // remove once p2p is ready
+                if (route_to_item.pathname === routes.cashier_p2p) history.push(`${route_to_item.pathname}#show_p2p`);
+                else history.push(route_to_item.pathname);
                 return;
             }
         }
 
         history.push(routes.trade);
+    }
+
+    @computed
+    get is_from_p2p() {
+        const route_to_item = this.app_routing_history.find(history_item => {
+            if (history_item.action === 'PUSH') {
+                const platform_parent_paths = [routes.mt5, routes.bot, routes.trade, routes.cashier_p2p];
+
+                if (platform_parent_paths.includes(history_item.pathname)) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
+
+        if (route_to_item && route_to_item.pathname === routes.cashier_p2p) return true;
+        else return false;
     }
 }

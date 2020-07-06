@@ -203,6 +203,7 @@ export default class CommonStore extends BaseStore {
         });
 
         if (route_to_item && route_to_item.pathname === routes.cashier_p2p) return true;
-        else return false;
+
+        return false;
     }
 }

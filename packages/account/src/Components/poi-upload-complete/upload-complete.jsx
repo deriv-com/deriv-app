@@ -1,9 +1,9 @@
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import React from 'react';
-import { ContinueTradingButton } from 'Components/poa-continue-trading-button/continue-trading-button.jsx';
-import PoaButton from 'Components/poa-button/poa-button';
-import RedirectButton from 'Components/redirect-button/redirect-button';
+import ContinueTradingButton from 'Components/poa-continue-trading-button';
+import PoaButton from 'Components/poa-button';
+import RedirectButton from 'Components/redirect-button';
 import IconMessageContent from 'Components/icon-message-content';
 
 export const UploadComplete = ({ has_poa, is_description_enabled, show_redirect_btn, routeBackInApp }) => {

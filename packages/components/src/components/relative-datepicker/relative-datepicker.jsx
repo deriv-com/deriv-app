@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { toMoment, daysFromTodayTo } from '@deriv/shared/utils/date';
+import { toMoment, daysFromTodayTo } from '@deriv/shared';
 
 const RelativeDatepicker = ({ onChange, min_date, max_date, title }) => {
     const hidden_input_ref = React.useRef();

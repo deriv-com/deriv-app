@@ -8,9 +8,9 @@ import {
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import React from 'react';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import { isDesktop, isMobile, toMoment } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { toMoment } from '@deriv/shared/utils/date';
+
 import 'Sass/details-form.scss';
 
 const DateOfBirthField = props => (

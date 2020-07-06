@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { getCurrencyDisplayCode } from '@deriv/shared';
 import Popover from 'Components/popover';
 
 const Items = ({ items, ...props }) =>
@@ -45,7 +45,7 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
             id={item.value}
         >
             {!!has_symbol && item.has_tooltip && (
-                <Popover alignment='left' message={CurrencyUtils.getCurrencyDisplayCode(item.text)}>
+                <Popover alignment='left' message={getCurrencyDisplayCode(item.text)}>
                     <span className={classNames('symbols', 'dc-list__item-symbol', symbol_type_class_name)} />
                 </Popover>
             )}

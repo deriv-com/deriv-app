@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper } from '@deriv/components';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { isMobile } from '@deriv/shared';
 import { Bounce } from 'App/Components/Animations';
 import Digit from './digit.jsx';
 import DigitSpot from './digit-spot.jsx';

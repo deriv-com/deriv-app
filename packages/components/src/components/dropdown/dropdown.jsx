@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { mobileOSDetect } from '@deriv/shared/utils/os';
+import { mobileOSDetect } from '@deriv/shared';
 import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from './dropdown';
 import Items from './items.jsx';
 import NativeSelect from './native-select.jsx';

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { Field, Formik, Form } from 'formik';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { getDecimalPlaces, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { website_name } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
@@ -63,7 +63,7 @@ const AccountTransferNote = ({
                 values={{
                     transfer_fee,
                     minimum_fee,
-                    currency: CurrencyUtils.getCurrencyDisplayCode(currency),
+                    currency: getCurrencyDisplayCode(currency),
                 }}
             />
         </AccountTransferBullet>
@@ -103,7 +103,7 @@ const AccountTransferForm = ({
         } else if (
             !validNumber(amount, {
                 type: 'float',
-                decimals: CurrencyUtils.getDecimalPlaces(selected_from.currency),
+                decimals: getDecimalPlaces(selected_from.currency),
                 min: transfer_limit.min,
                 max: transfer_limit.max,
             })

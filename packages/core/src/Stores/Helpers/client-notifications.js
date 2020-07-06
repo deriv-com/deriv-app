@@ -1,11 +1,9 @@
 import React from 'react';
-import { urlFor, getDerivComLink } from '@deriv/shared/utils/url';
-import routes from '@deriv/shared/utils/routes';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { urlFor, getDerivComLink, routes, isMobile, formatDate, isEmptyObject } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
-import { formatDate } from '@deriv/shared/utils/date';
-import ObjectUtils from '@deriv/shared/utils/object';
+
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
 import { website_domain } from 'App/Constants/app-config';
@@ -350,7 +348,7 @@ const addVerificationNotifications = (identity, document, addNotificationMessage
 };
 
 const checkAccountStatus = (account_status, client, addNotificationMessage, loginid) => {
-    if (ObjectUtils.isEmptyObject(account_status)) return {};
+    if (isEmptyObject(account_status)) return {};
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     const {

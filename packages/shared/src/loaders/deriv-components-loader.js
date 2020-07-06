@@ -18,7 +18,7 @@ function getKebabCase(str) {
 }
 
 function checkExists(component) {
-    return existsSync(resolve(__dirname, '../../components/src/components/', component, `${component}.scss`));
+    return existsSync(resolve(__dirname, '../../../components/src/components/', component, `${component}.scss`));
 }
 
 module.exports = function(source, map) {

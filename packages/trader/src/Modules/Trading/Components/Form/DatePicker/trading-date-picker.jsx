@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { DatePicker } from '@deriv/components';
-import { isTimeValid, setTime, toMoment } from '@deriv/shared/utils/date';
+import { isTimeValid, setTime, toMoment } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import Tooltip from 'App/Components/Elements/tooltip.jsx';
 import { connect } from 'Stores/connect';

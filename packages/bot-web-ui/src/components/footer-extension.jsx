@@ -1,10 +1,20 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { tabs_title } from '../constants/bot-contents';
 import { connect } from '../stores/connect';
 import '../assets/sass/footer-extensions.scss';
+
+const getTabText = tab_title => {
+    switch (tab_title) {
+        case tabs_title.WORKSPACE:
+        default:
+            return <Localize i18n_default_text='Workspace' />;
+        case tabs_title.CHART:
+            return <Localize i18n_default_text='Chart' />;
+    }
+};
 
 class FooterExtension extends React.Component {
     populateFooter = () => {
@@ -12,24 +22,20 @@ class FooterExtension extends React.Component {
 
         const footer_items = (
             <div className='footer_extensions'>
-                <span
-                    key={tabs_title.WORKSPACE}
-                    className={classNames('footer_extensions__button', {
-                        'footer_extensions__button--active': active_tab === tabs_title.WORKSPACE,
-                    })}
-                    onClick={() => setActiveTab(tabs_title.WORKSPACE)}
-                >
-                    {localize(tabs_title.WORKSPACE)}
-                </span>
-                <span
-                    key={tabs_title.CHART}
-                    className={classNames('footer_extensions__button', {
-                        'footer_extensions__button--active': active_tab === tabs_title.CHART,
-                    })}
-                    onClick={() => setActiveTab(tabs_title.CHART)}
-                >
-                    {localize(tabs_title.CHART)}
-                </span>
+                {Object.keys(tabs_title).map(key => {
+                    const tab_title = tabs_title[key];
+                    return (
+                        <span
+                            key={key}
+                            className={classNames('footer_extensions__button', {
+                                'footer_extensions__button--active': active_tab === tab_title,
+                            })}
+                            onClick={() => setActiveTab(tab_title)}
+                        >
+                            {getTabText(tab_title)}
+                        </span>
+                    );
+                })}
             </div>
         );
 

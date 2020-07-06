@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Div100vhContainer, FormProgress } from '@deriv/components';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { isDesktop, toMoment } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { toMoment } from '@deriv/shared/utils/date';
+
 import { getItems } from './account-wizard-form';
 
 // TODO: [deriv-eu] remove and merge this with the original function in PersonalDetails

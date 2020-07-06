@@ -20,6 +20,10 @@ class LocalStorage {
         this.notification_listeners.push(callback);
     }
 
+    resetNotificationListeners() {
+        this.notification_listeners = [];
+    }
+
     getNotificationCount() {
         return this.getNotifications().filter(n => n.unread_msgs > 0 || !n.has_seen_order).length;
     }

@@ -46,10 +46,11 @@ export default class P2pStore extends BaseStore {
             if (!this.is_visible && !client.is_virtual) {
                 const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
                 const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'PermissionDenied') return;
 
-                this.setIsAdvertiser(!advertiser_error);
-                this.setIsVisible(true);
+                if (advertiser_error !== 'PermissionDenied') {
+                    this.setIsAdvertiser(!advertiser_error);
+                    this.setIsVisible(true);
+                }
             }
         } else {
             P2pStorage.setLoginId(null);

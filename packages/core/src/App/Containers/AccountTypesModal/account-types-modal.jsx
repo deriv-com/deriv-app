@@ -109,7 +109,6 @@ const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_a
                         [localize('Stop out level')]: localize('75%'),
                         [localize('Currency')]: localize('USD'),
                     }}
-                    // TODO: [deriv-eu] Update paths
                     platforms={[
                         {
                             icon: 'IcBrandDMT5',
@@ -292,7 +291,6 @@ export default withRouter(
         can_upgrade: client.can_upgrade,
         can_upgrade_to: client.can_upgrade_to,
         has_any_real_account: client.has_any_real_account,
-        // TODO: [deriv-eu] Change this later and make it a separate computed
         is_account_types_modal_visible: ui.is_account_types_modal_visible,
         accounts: client.accounts,
         landing_company_shortcode: client.landing_company_shortcode,

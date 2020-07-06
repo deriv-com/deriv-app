@@ -285,7 +285,7 @@ class AccountSwitcher extends React.Component {
         const demo_accounts = (
             <div className='acc-switcher__list-wrapper'>
                 <AccountWrapper
-                    header={<span>{localize('Deriv Accounts')}</span>}
+                    header={localize('Deriv Accounts')}
                     is_visible={this.state.is_demo_deriv_visible}
                     toggleVisibility={() => {
                         this.toggleVisibility('demo_deriv');

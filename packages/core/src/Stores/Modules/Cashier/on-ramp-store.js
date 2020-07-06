@@ -1,7 +1,5 @@
 import { action, observable, computed } from 'mobx';
-import { getCurrencyDisplayCode } from '@deriv/shared/utils/currency';
-import routes from '@deriv/shared/utils/routes';
-import { websiteUrl } from '@deriv/shared/utils/url';
+import { getCurrencyDisplayCode, routes, websiteUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 import BaseStore from '../../base-store';

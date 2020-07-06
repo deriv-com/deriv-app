@@ -4,7 +4,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
-import { urlFor } from '@deriv/shared/utils/url';
+import { urlFor } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { website_name } from 'App/Constants/app-config';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';

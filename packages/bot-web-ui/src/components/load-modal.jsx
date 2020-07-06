@@ -227,7 +227,7 @@ const LoadModal = ({
     ...props
 }) => (
     <Modal
-        title={'Load Strategy'}
+        title={localize('Load strategy')}
         className='modal--load'
         width='1050px'
         is_open={is_load_modal_open}

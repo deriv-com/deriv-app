@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx';
-import { formatDate } from '@deriv/shared/utils/date';
+import { formatDate } from '@deriv/shared';
 import { isEnded } from '@deriv/bot-skeleton';
 import { transaction_elements } from '../constants/transactions';
 

@@ -1,8 +1,7 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import ObjectUtils from '@deriv/shared/utils/object';
-import routes from '@deriv/shared/utils/routes';
-import { removeBranchName } from '@deriv/shared/utils/url';
+import { isEmptyObject, routes, removeBranchName } from '@deriv/shared';
+
 import { redirectToLogin, redirectToSignUp } from 'Duplicated/_common/base/login';
 import LoginPrompt from 'Duplicated/App/Components/Elements/login-prompt.jsx';
 import { default_title } from 'Duplicated/App/Constants/app-config';
@@ -29,7 +28,7 @@ const RouteWithSubRoutes = (route) => {
             );
         } else {
             const default_subroute = route.routes ? route.routes.find((r) => r.default) : {};
-            const has_default_subroute = !ObjectUtils.isEmptyObject(default_subroute);
+            const has_default_subroute = !isEmptyObject(default_subroute);
             const pathname = removeBranchName(location.pathname);
             result = (
                 <React.Fragment>

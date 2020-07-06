@@ -113,7 +113,6 @@ export default class RunPanelStore {
 
     @action.bound
     onClearStatClick() {
-        console.log('test');
         this.showClearStatDialog();
     }
 

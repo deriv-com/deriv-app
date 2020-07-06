@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { Collapsible } from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals.jsx';
@@ -9,6 +10,7 @@ import {
     hasDurationForCallPutEqual,
     isRiseFallEqual,
 } from 'Stores/Modules/Trading/Helpers/allow-equals';
+import MultiplierAmount from './TradeParams/Multiplier/amount-mobile.jsx';
 import MobileWidget from '../Elements/mobile-widget.jsx';
 import ContractType from '../../Containers/contract-type.jsx';
 import { BarrierMobile, LastDigitMobile } from '../../Containers/trade-params-mobile.jsx';
@@ -21,6 +23,7 @@ const CollapsibleTradeParams = ({
     previous_symbol,
     is_allow_equal,
     is_trade_params_expanded,
+    is_multiplier,
     setIsTradeParamsExpanded,
 }) => {
     React.useEffect(() => {
@@ -41,7 +44,14 @@ const CollapsibleTradeParams = ({
 
     return (
         <Collapsible position='top' is_collapsed={is_collapsed} onClick={onClick}>
-            <ContractType />
+            <div
+                className={classNames('mobile-widget__contract-type-wrapper', {
+                    'mobile-widget__contract-type-wrapper--multiplier': is_multiplier,
+                })}
+            >
+                <ContractType />
+                {is_multiplier && <MultiplierAmount />}
+            </div>
             {isVisible('last_digit') && (
                 <div collapsible='true'>
                     <LastDigitMobile />
@@ -95,6 +105,7 @@ ScreenSmall.propTypes = {
 
 export default connect(({ modules }) => ({
     is_allow_equal: !!modules.trade.is_equal,
+    is_multiplier: modules.trade.is_multiplier,
     duration_unit: modules.trade.duration_unit,
     contract_types_list: modules.trade.contract_types_list,
     contract_type: modules.trade.contract_type,

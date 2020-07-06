@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import Login from '_common/base/login';
 

@@ -9,9 +9,7 @@ const host_map = {
     'tech.binary.com': 'tech.binary.com',
     'blog.binary.com': 'blog.binary.com',
 };
-let location_url = undefined;
-let static_host = undefined;
-let default_language = undefined;
+let location_url, static_host, default_language;
 
 export const urlForLanguage = (target_language, url = window.location.href) =>
     url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);

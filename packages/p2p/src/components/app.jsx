@@ -1,12 +1,13 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { getPropertyValue } from '@deriv/shared';
 import { Tabs, Modal, Loading } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
+import { orderToggleIndex } from './orders/order-info';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
@@ -50,6 +51,7 @@ class App extends React.Component {
             is_advertiser: false,
             is_restricted: false,
             show_popup: false,
+            order_table_type: orderToggleIndex.ACTIVE,
             chat_info: {
                 app_id: '',
                 user_id: '',
@@ -183,8 +185,8 @@ class App extends React.Component {
             return;
         }
 
-        const user_id = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
-        const token = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_token']);
+        const user_id = getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
+        const token = getPropertyValue(p2p_advertiser_info, ['chat_token']);
 
         this.setChatInfo(user_id, token);
     };
@@ -306,6 +308,10 @@ class App extends React.Component {
         }
     };
 
+    changeOrderToggle = value => {
+        this.setState({ order_table_type: value });
+    };
+
     render() {
         const {
             active_index,
@@ -349,7 +355,6 @@ class App extends React.Component {
                 value={{
                     active_notification_count,
                     inactive_notification_count,
-                    order_table_type,
                     currency,
                     local_currency_config,
                     residence,
@@ -362,7 +367,7 @@ class App extends React.Component {
                     setNickname: nickname => this.setState({ nickname }),
                     setChatInfo: this.setChatInfo,
                     is_restricted,
-                    email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
+                    email_domain: getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,
                     order_offset,
                     orders,
@@ -377,8 +382,9 @@ class App extends React.Component {
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
                     getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId.bind(this),
-                    createAdvertiser: this.createAdvertiser.bind(this),
+                    order_table_type,
                     changeOrderToggle: this.changeOrderToggle,
+                    createAdvertiser: this.createAdvertiser.bind(this),
                     is_mobile,
                 }}
             >

@@ -98,7 +98,7 @@ class SelfExclusion extends React.Component {
             if (values[item]) {
                 if (!is_number.test(values[item])) {
                     errors[item] = valid_number_message;
-                } else if (values[item] > this.state.self_exclusions[item]) {
+                } else if (this.state.self_exclusions[item] && values[item] > this.state.self_exclusions[item]) {
                     errors[item] = getLimitNumberMessage(this.state.self_exclusions[item]);
                 }
             }

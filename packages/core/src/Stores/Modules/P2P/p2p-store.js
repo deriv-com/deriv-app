@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
 import { SendbirdAPI, P2pStorage } from '@deriv/p2p/lib/utils';
 import { WS } from 'Services';
 import BaseStore from '../../base-store';
@@ -39,7 +39,7 @@ export default class P2pStore extends BaseStore {
             this.sendbird_api.init(sendbird_user_id, service_token);
         }
 
-        return Promise.resolve();
+        return true;
     }
 
     @action.bound
@@ -48,7 +48,7 @@ export default class P2pStore extends BaseStore {
             this.sendbird_api.disconnect();
         }
 
-        return Promise.resolve();
+        return true;
     }
 
     @action.bound

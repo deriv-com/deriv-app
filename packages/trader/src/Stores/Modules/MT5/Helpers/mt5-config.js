@@ -95,6 +95,22 @@ export const getMt5GroupConfig = (group = undefined) => {
             type: 'financial_stp',
             category: 'demo',
         },
+        demo_maltainvest_standard: {
+            type: 'financial',
+            category: 'demo',
+        },
+        real_maltainvest_standard: {
+            type: 'financial',
+            category: 'real',
+        },
+        demo_malta: {
+            type: 'synthetic',
+            category: 'demo',
+        },
+        real_malta: {
+            type: 'synthetic',
+            category: 'real',
+        },
     };
 
     if (group !== undefined) {

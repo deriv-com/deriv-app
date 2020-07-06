@@ -122,6 +122,14 @@ export default class UIStore extends BaseStore {
     @observable prompt_when = false;
     @observable promptFn = () => {};
 
+    // MT5 account needed modal
+    @observable is_account_needed_modal_on = false;
+    @observable account_needed_modal_props = {
+        target: '',
+        target_label: '',
+        target_dmt5_label: '',
+    };
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -368,6 +376,26 @@ export default class UIStore extends BaseStore {
             this.resetRealAccountSignupParams();
             this.setRealAccountSignupEnd(true);
         }, 300);
+    }
+
+    @action.bound
+    openAccountNeededModal(target, target_label, target_dmt5_label) {
+        this.is_account_needed_modal_on = true;
+        this.account_needed_modal_props = {
+            target,
+            target_label,
+            target_dmt5_label,
+        };
+    }
+
+    @action.bound
+    closeAccountNeededModal() {
+        this.is_account_needed_modal_on = false;
+        this.account_needed_modal_props = {
+            target: '',
+            target_label: '',
+            target_dmt5_label: '',
+        };
     }
 
     @action.bound

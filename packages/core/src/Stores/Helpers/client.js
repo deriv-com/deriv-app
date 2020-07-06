@@ -18,9 +18,9 @@ export const getMT5AccountDisplay = group => {
 
     const value = getMT5AccountType(group);
     let display_text = localize('MT5');
-    if (/svg$/.test(value)) {
+    if (/svg$/.test(value) || /malta$/.test(value)) {
         display_text = localize('Synthetic');
-    } else if (/vanuatu/.test(value) || /svg_standard/.test(value)) {
+    } else if (/vanuatu/.test(value) || /svg_standard/.test(value) || /maltainvest_standard$/.test(value)) {
         display_text = localize('Financial');
     } else if (/labuan/.test(value)) {
         display_text = localize('Financial STP');

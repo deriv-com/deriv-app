@@ -116,6 +116,16 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get has_maltainvest_account() {
+        return this.active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest');
+    }
+
+    @computed
+    get has_malta_account() {
+        return this.active_accounts.some(acc => acc.landing_company_shortcode === 'malta');
+    }
+
+    @computed
     get has_any_real_account() {
         return this.account_list.some(acc => acc.is_virtual === 0);
     }
@@ -389,9 +399,14 @@ export default class ClientStore extends BaseStore {
         if (!this.landing_companies || !Object.keys(this.landing_companies).length) return false;
         const has_mt5 =
             'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
-        // TODO: [deriv-eu] Update this when all EU functionalities are merged into production and all landing companies are accepted.
-        // return has_mtf;
-        if (this.root_store.ui.is_eu_enabled) return has_mt5;
+
+        // TODO: [deriv-eu] Remove the if statement once EU is enabled in dev
+        if (this.is_eu && !this.root_store.ui.is_eu_enabled) {
+            return false;
+        } else if (this.is_eu && this.root_store.ui.is_eu_enabled) {
+            return has_mt5;
+        }
+
         if (has_mt5) {
             const { gaming_company, financial_company } = this.landing_companies;
             // eslint-disable-next-line no-nested-ternary

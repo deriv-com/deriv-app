@@ -1,4 +1,4 @@
-import { isMobile } from '@deriv/shared/utils/screen';
+import { isMobile } from '@deriv/shared';
 
 const MobileWrapper = ({ children }) => {
     if (!isMobile()) return null;

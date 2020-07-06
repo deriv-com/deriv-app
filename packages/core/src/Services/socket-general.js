@@ -1,5 +1,5 @@
 import { flow } from 'mobx';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { getPropertyValue } from '@deriv/shared';
 import Login from '_common/base/login';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
@@ -37,10 +37,7 @@ const BinarySocketGeneral = (() => {
             case 'authorize':
                 if (response.error) {
                     const is_active_tab = sessionStorage.getItem('active_tab') === '1';
-                    if (
-                        ObjectUtils.getPropertyValue(response, ['error', 'code']) === 'SelfExclusion' &&
-                        is_active_tab
-                    ) {
+                    if (getPropertyValue(response, ['error', 'code']) === 'SelfExclusion' && is_active_tab) {
                         sessionStorage.removeItem('active_tab');
                         // Dialog.alert({ id: 'authorize_error_alert', message: response.error.message });
                     }
@@ -105,7 +102,7 @@ const BinarySocketGeneral = (() => {
 
     const handleError = response => {
         const msg_type = response.msg_type;
-        const error_code = ObjectUtils.getPropertyValue(response, ['error', 'code']);
+        const error_code = getPropertyValue(response, ['error', 'code']);
         switch (error_code) {
             case 'WrongResponse':
                 // TODO: Remove condition checks below for WrongResponse once mt5 is more reliable
@@ -162,6 +159,9 @@ const BinarySocketGeneral = (() => {
             case 'InvalidToken':
                 if (['cashier', 'paymentagent_withdraw', 'mt5_password_reset'].includes(msg_type)) {
                     return;
+                }
+                if (!['reset_password', 'new_account_virtual'].includes(msg_type)) {
+                    if (window.TrackJS) window.TrackJS.track('Custom InvalidToken error');
                 }
                 client_store.logout().then(() => {
                     common_store.setError(true, {

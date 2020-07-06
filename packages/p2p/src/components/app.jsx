@@ -13,8 +13,8 @@ import Orders from './orders/orders.jsx';
 import NicknameForm from './nickname/nickname-form.jsx';
 import Download from './verification/download.jsx';
 import Verification from './verification/verification.jsx';
-import './app.scss';
 import OrderInfo from './orders/order-info';
+import './app.scss';
 
 const allowed_currency = 'USD';
 
@@ -258,9 +258,9 @@ class App extends React.Component {
     };
 
     updateP2pNotifications = notifications => {
-        const unseen_notification = notifications.filter(notification => notification.is_seen === false);
-        const notification_count = unseen_notification.length;
-        const active_notification_count = unseen_notification.filter(notification => notification.active).length;
+        const unseen_notifications = notifications.filter(notification => notification.is_seen === false);
+        const notification_count = unseen_notifications.length;
+        const active_notification_count = unseen_notifications.filter(notification => notification.active).length;
         const inactive_notification_count = notification_count - active_notification_count;
         const user_settings = this.getLocalStorageSettingsForLoginId();
         user_settings.is_cached = true;

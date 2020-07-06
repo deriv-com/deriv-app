@@ -11,7 +11,7 @@ import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 class ProofOfIdentity extends React.Component {
     routeBackTo = () => {
         if (this.props.is_from_p2p) {
-            //remove hash once p2p is ready
+            // remove hash once p2p is ready
             this.props.routeBackInApp(this.props.history, [routes.cashier_p2p]);
         }
     };

@@ -150,6 +150,7 @@ export default class TradeStore extends BaseStore {
             'expiry_type',
             'has_take_profit',
             'has_stop_loss',
+            'has_cancellation',
             'is_equal',
             'last_digit',
             'multiplier',

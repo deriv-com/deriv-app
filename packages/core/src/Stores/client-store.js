@@ -296,11 +296,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_virtual() {
-        return (
-            !isEmptyObject(this.accounts) &&
-            this.accounts[this.loginid] &&
-            !!this.accounts[this.loginid].is_virtual
-        );
+        return !isEmptyObject(this.accounts) && this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
     }
 
     @computed
@@ -1097,8 +1093,9 @@ export default class ClientStore extends BaseStore {
                     const param_value = param.split('=');
                     const [key, value] = param_value;
 
-                    const is_account_param =
-                        param_value && (key.includes('acct') || key.includes('token') || key.includes('cur'));
+                    const account_keys = ['acct', 'token', 'cur'];
+                    const is_account_param = account_keys.some(account_key => key?.includes(account_key));
+
                     if (is_account_param) {
                         search_params.delete(key);
                         obj_params[key] = value;

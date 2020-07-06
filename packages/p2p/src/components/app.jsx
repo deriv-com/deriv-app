@@ -1,9 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getPropertyValue } from '@deriv/shared';
+import { isDeepEqual, getPropertyValue } from '@deriv/shared';
 import { Tabs, Modal, Loading } from '@deriv/components';
-import ObjectUtils from '@deriv/shared/utils/object';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
@@ -102,7 +101,7 @@ class App extends React.Component {
             this.redirectTo('orders');
         }
 
-        if (!ObjectUtils.isDeepEqual(prevState.orders, this.state.orders)) {
+        if (!isDeepEqual(prevState.orders, this.state.orders)) {
             this.handleNotifications(prevState.orders, this.state.orders);
         }
     }
@@ -340,7 +339,7 @@ class App extends React.Component {
                     changeTab: this.handleTabClick,
                     createAdvertiser: this.createAdvertiser.bind(this),
                     currency,
-                    email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
+                    email_domain: getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     is_advertiser: this.state.is_advertiser,
                     is_listed: this.state.is_listed,
                     is_mobile,

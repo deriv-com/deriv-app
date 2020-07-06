@@ -6,22 +6,27 @@ import { Div100vhContainer, SwipeableWrapper } from '@deriv/components';
 /**
  * Swipeable components
  */
-export const SwipeableContractAudit = ({ children, onSwipedDown }) => {
+export const SwipeableContractAudit = ({ is_multiplier, children, onSwipedDown }) => {
     const swipe_handlers = SwipeableWrapper.useSwipeable({
         onSwipedDown,
     });
 
+    const target_el = document.getElementById('dt_contract_drawer_audit');
+
+    if (!target_el) return null;
+
     return ReactDOM.createPortal(
         <Div100vhContainer className='contract-audit-card' height_offset='220px'>
-            <div {...swipe_handlers} style={{ height: '100%' }}>
+            <div {...swipe_handlers} style={{ height: is_multiplier ? 'calc(100% - 60px)' : '100%' }}>
                 {children}
             </div>
         </Div100vhContainer>,
-        document.getElementById('dt_contract_replay_container')
+        target_el
     );
 };
 
 SwipeableContractAudit.propTypes = {
+    is_multiplier: PropTypes.bool,
     children: PropTypes.node,
     onSwipedDown: PropTypes.func,
 };

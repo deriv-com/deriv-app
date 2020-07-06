@@ -86,8 +86,8 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
                             'orders__table-status--secondary':
                                 (!is_buyer && is_pending) || (is_buyer_confirmed && is_buyer),
                             'orders__table-status--success': is_completed,
-                            'orders__table-status--info': is_refunded,
-                            'orders__table-status--disabled': is_buyer_cancelled || is_expired,
+                            // 'orders__table-status--info': is_refunded,
+                            'orders__table-status--disabled': is_buyer_cancelled || is_expired || is_refunded,
                         })}
                     >
                         {display_status}

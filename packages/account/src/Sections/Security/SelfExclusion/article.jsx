@@ -1,5 +1,5 @@
 import React from 'react';
-import { getDerivComLink } from '@deriv/shared/utils/url';
+import { getDerivComLink } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import Article from 'Components/article';
 

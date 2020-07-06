@@ -12,10 +12,7 @@ import {
     Button,
     DatePicker,
 } from '@deriv/components';
-import ObjectUtils from '@deriv/shared/utils/object';
-import { toMoment, epochToMoment } from '@deriv/shared/utils/date';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
-import { getDerivComLink } from '@deriv/shared/utils/url';
+import { getPropertyValue, toMoment, epochToMoment, isDesktop, isMobile, getDerivComLink } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
@@ -217,12 +214,10 @@ class SelfExclusion extends React.Component {
         if (response.error) {
             this.setState({
                 is_loading: false,
-                error_message: ObjectUtils.getPropertyValue(response, ['error', 'message']),
+                error_message: getPropertyValue(response, ['error', 'message']),
             });
         } else {
-            const response_to_string = this.objectValuesToString(
-                ObjectUtils.getPropertyValue(response, ['get_self_exclusion'])
-            );
+            const response_to_string = this.objectValuesToString(getPropertyValue(response, ['get_self_exclusion']));
             if (response_to_string.timeout_until) {
                 response_to_string.timeout_until = +response_to_string.timeout_until;
             }

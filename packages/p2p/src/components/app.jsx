@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { getPropertyValue } from '@deriv/shared';
 import { Tabs, Modal, Loading } from '@deriv/components';
+import ObjectUtils from '@deriv/shared/utils/object';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';

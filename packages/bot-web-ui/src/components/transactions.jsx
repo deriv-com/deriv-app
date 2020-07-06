@@ -4,6 +4,7 @@ import { PropTypes } from 'prop-types';
 import React from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Transaction from './transaction.jsx';
+import Download from './download.jsx';
 import { transaction_elements } from '../constants/transactions';
 import { connect } from '../stores/connect';
 import '../assets/sass/transactions.scss';
@@ -22,6 +23,7 @@ class Transactions extends React.PureComponent {
         const { contract_stage, elements } = this.props;
         return (
             <div className='transactions run-panel-tab__content'>
+                <Download />
                 <div className='transactions__header'>
                     <span className='transactions__header-column transactions__header-spot'>
                         {localize('Entry/Exit spot')}

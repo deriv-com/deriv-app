@@ -7,6 +7,7 @@ import { Checkbox, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
+import Download from './download.jsx';
 import { contract_stages } from '../constants/contract-stage';
 import { connect } from '../stores/connect';
 import '../assets/sass/journal.scss';
@@ -132,6 +133,7 @@ const JournalLoader = () => (
 const Journal = ({ filtered_messages, contract_stage, is_stop_button_visible, ...props }) => {
     return (
         <div className='journal run-panel-tab__content'>
+            <Download />
             <Tools {...props} />
             <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 50px)'}>
                 <div className='journal__item-list'>

@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { NetworkStatus } from 'App/Components/Layout/Footer';

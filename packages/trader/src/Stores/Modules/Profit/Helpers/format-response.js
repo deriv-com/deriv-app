@@ -1,5 +1,5 @@
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import { toMoment } from '@deriv/shared/utils/date';
+import { formatMoney, toMoment } from '@deriv/shared';
+
 import { getMarketInformation } from '../../../../Modules/Reports/Helpers/market-underlying';
 import { getSymbolDisplayName } from '../../Trading/Helpers/active-symbols';
 
@@ -10,7 +10,7 @@ export const formatProfitTableTransactions = (transaction, currency, active_symb
     const payout = parseFloat(transaction.payout);
     const sell_price = parseFloat(transaction.sell_price);
     const buy_price = parseFloat(transaction.buy_price);
-    const profit_loss = CurrencyUtils.formatMoney(currency, Number(sell_price - buy_price), true);
+    const profit_loss = formatMoney(currency, Number(sell_price - buy_price), true);
     const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(transaction.shortcode).underlying);
 
     return {

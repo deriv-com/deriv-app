@@ -1,7 +1,8 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import Trade from 'Modules/Trading';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popover, Icon } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared/utils/url';
+import { getDerivComLink } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 const HelpCentre = () => {

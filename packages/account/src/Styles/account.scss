@@ -1013,7 +1013,7 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define connected-apps; weak */
 .connected-apps {
     width: 100%;
-    max-width: 728px;
+    max-width: 672px;
     max-height: 560px;
     height: 100%;
 
@@ -1036,9 +1036,9 @@ $MIN_HEIGHT_FLOATING: calc(
         flex: 1;
     }
     &__row {
-        grid-template-columns: 158px 215px 96px 99px;
+        grid-template-columns: 169px 198px 80px 99px;
         padding: 0;
-        column-gap: 35px;
+        column-gap: 42px;
         text-align: left;
 
         .table__cell {
@@ -1055,6 +1055,12 @@ $MIN_HEIGHT_FLOATING: calc(
         .table__cell {
             padding: 0;
         }
+        .table__row {
+            padding: 0;
+        }
+        .table__head {
+            font-weight: bold;
+        }
     }
     @include mobile {
         margin-top: 24px;
@@ -1067,7 +1073,7 @@ $MIN_HEIGHT_FLOATING: calc(
             min-height: calc(100vh - 50px);
 
             .connected-apps {
-                max-height: calc(100vh - 150px);
+                max-height: calc(100vh - 250px);
             }
             .data-list__item {
                 padding: 8px;

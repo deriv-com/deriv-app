@@ -112,7 +112,7 @@ const modules = [
                     {
                         path: routes.connected_apps,
                         component: Account,
-                        title: localize('Connected Apps'),
+                        title: localize('Connected apps'),
                     },
                 ],
             },

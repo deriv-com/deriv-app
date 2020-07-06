@@ -82,7 +82,7 @@ const initRoutesConfig = () => [
                     {
                         path: routes.connected_apps,
                         component: ConnectedApps,
-                        title: localize('Connected Apps'),
+                        title: localize('Connected apps'),
                     },
                     {
                         path: routes.two_factor_authentication,

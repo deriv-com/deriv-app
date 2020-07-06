@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import queryString from 'query-string';
 import P2P from '@deriv/p2p';
 import { P2pStorage } from '@deriv/p2p/lib/utils';
 import { getLanguage } from '@deriv/translations';
@@ -16,29 +15,30 @@ const P2PCashier = ({ currency, history, is_mobile, is_virtual, local_currency_c
     React.useEffect(() => {
         const url_params = new URLSearchParams(location.search);
         if (url_params.has('order')) {
-            setOrderId(url_params.get('order'));
-            setQueryOrder(order_id);
+            setQueryOrder(url_params.get('order'));
         }
     }, []);
 
     const setQueryOrder = input_order_id => {
-        const current_query_param = queryString.parse(location.search);
-        delete current_query_param.order;
-
-        const order_id_param = input_order_id
-            ? { ...current_query_param, order: input_order_id }
-            : { ...current_query_param };
-
-        if (order_id !== input_order_id) {
-            // Changing query params
-            history.push({
-                pathname: '/cashier/p2p',
-                search: queryString.stringify(order_id_param),
+        const pathname = '/cashier/p2p';
+        if (input_order_id === null) {
+            history.replace({
+                pathname,
                 hash: location.hash,
             });
-
-            setOrderId(input_order_id);
+        } else {
+            const url_params = new URLSearchParams(location.search);
+            if (order_id !== input_order_id) {
+                url_params.set('order', input_order_id);
+            }
+            history.replace({
+                pathname,
+                search: `?${url_params.toString()}`,
+                hash: location.hash,
+            });
         }
+
+        setOrderId(input_order_id);
     };
 
     return (

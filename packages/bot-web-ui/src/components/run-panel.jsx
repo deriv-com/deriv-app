@@ -107,17 +107,7 @@ const StatisticsSummary = ({
     </div>
 );
 
-const drawerFooter = ({
-    active_index,
-    dialog_options,
-    is_clear_stat_disabled,
-    is_dialog_open,
-    onCancelButtonClick,
-    onClearStatClick,
-    onOkButtonClick,
-    should_show_statistics,
-    ...props
-}) => (
+const drawerFooter = ({ active_index, is_clear_stat_disabled, onClearStatClick, should_show_statistics, ...props }) => (
     <div className='run-panel__footer'>
         {should_show_statistics && <StatisticsSummary {...props} />}
         <Button
@@ -129,14 +119,6 @@ const drawerFooter = ({
             has_effect
             secondary
         />
-        <Dialog
-            title={dialog_options.title}
-            is_open={is_dialog_open}
-            onOkButtonClick={onOkButtonClick}
-            onCancelButtonClick={onCancelButtonClick}
-        >
-            {dialog_options.message}
-        </Dialog>
     </div>
 );
 
@@ -163,12 +145,16 @@ class RunPanel extends React.PureComponent {
     render() {
         const {
             active_index,
+            dialog_options,
             is_clear_stat_disabled,
             is_drawer_open,
             is_mobile,
             onClearStatClick,
             setActiveTabIndex,
             toggleDrawer,
+            is_dialog_open,
+            onOkButtonClick,
+            onCancelButtonClick,
         } = this.props;
         const content = drawerContent({ active_index, setActiveTabIndex });
         const footer = drawerFooter({ ...this.props, should_show_statistics: active_index !== 2 });
@@ -190,6 +176,14 @@ class RunPanel extends React.PureComponent {
                     {content}
                 </Drawer>
                 {is_mobile && <MobileDrawerFooter {...this.props} should_show_statistics={active_index !== 2} />}
+                <Dialog
+                    title={dialog_options.title}
+                    is_open={is_dialog_open}
+                    onOkButtonClick={onOkButtonClick}
+                    onCancelButtonClick={onCancelButtonClick}
+                >
+                    {dialog_options.message}
+                </Dialog>
             </>
         );
     }

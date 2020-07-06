@@ -1086,26 +1086,20 @@ export default class ClientStore extends BaseStore {
 
         if (search) {
             let search_params = new URLSearchParams(window.location.search);
-            const arr_params = window.location.search.substr(1).split('&');
 
-            arr_params.forEach(function(param) {
-                if (param) {
-                    const param_value = param.split('=');
-                    const [key, value] = param_value;
+            search_params.forEach((value, key) => {
+                const account_keys = ['acct', 'token', 'cur'];
+                const is_account_param = account_keys.some(account_key => key?.includes(account_key));
 
-                    const account_keys = ['acct', 'token', 'cur'];
-                    const is_account_param = account_keys.some(account_key => key?.includes(account_key));
-
-                    if (is_account_param) {
-                        search_params.delete(key);
-                        obj_params[key] = value;
-                    }
+                if (is_account_param) {
+                    obj_params[key] = value;
                 }
             });
 
-            // replace account query params - but keep other query params (e.g. utm)
+            // delete account query params - but keep other query params (e.g. utm)
+            Object.keys(obj_params).forEach(key => search_params.delete(key));
             search_params = search_params?.toString();
-            const search_param_without_account = search_params ? '?' + search_params : '/';
+            const search_param_without_account = search_params ? `?${search_params}` : '/';
             history.replaceState(null, null, search_param_without_account);
         }
 

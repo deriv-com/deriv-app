@@ -212,7 +212,7 @@ class CurrencySelector extends React.Component {
                                 <FormSubmitButton
                                     is_disabled={isSubmitting || !values.currency}
                                     is_center={!has_currency}
-                                    has_cancel={true}
+                                    has_cancel
                                     onCancel={this.props.onCancel}
                                     cancel_label={localize('Cancel')}
                                     label={localize('Next')}

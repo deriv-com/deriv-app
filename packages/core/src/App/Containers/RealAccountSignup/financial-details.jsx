@@ -96,10 +96,6 @@ const TradingExperience = ({
 class FinancialDetails extends React.Component {
     form = React.createRef();
 
-    // async componentDidMount() {
-    //     await this.form.current.getFormikActions().validateForm();
-    // }
-
     componentWillUnmount() {
         this.is_mounted = false;
     }
@@ -118,7 +114,7 @@ class FinancialDetails extends React.Component {
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
-                // ref={this.form}
+                validateOnMount
             >
                 {({ handleSubmit, isSubmitting, errors, values, setFieldValue, handleChange, handleBlur, touched }) => {
                     const shared_props = {

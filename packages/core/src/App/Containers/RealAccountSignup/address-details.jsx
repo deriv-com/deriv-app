@@ -187,10 +187,7 @@ class AddressDetails extends React.Component {
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
                                 <FormSubmitButton
-                                    is_disabled={
-                                        // eslint-disable-next-line no-unused-vars
-                                        isSubmitting || Object.keys(errors).length > 0
-                                    }
+                                    is_disabled={isSubmitting || Object.keys(errors).length > 0}
                                     label={localize('Next')}
                                     has_cancel
                                     cancel_label={localize('Previous')}

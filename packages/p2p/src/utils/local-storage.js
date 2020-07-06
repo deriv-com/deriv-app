@@ -1,4 +1,4 @@
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isEmptyObject } from '@deriv/shared';
 
 const LOCALSTORAGE_KEY = 'p2p_settings';
 
@@ -30,7 +30,7 @@ class LocalStorage {
 
     getSettings() {
         const user_settings = this.getAllSettings()[this.loginid];
-        if (ObjectUtils.isEmptyObject(user_settings)) {
+        if (isEmptyObject(user_settings)) {
             return {
                 is_cached: false,
                 notifications: [],

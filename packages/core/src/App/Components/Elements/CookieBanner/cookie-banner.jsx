@@ -5,11 +5,11 @@ import { Button } from '@deriv/components';
 import { getDerivComLink } from '@deriv/shared/utils/url';
 import { localize, Localize } from '@deriv/translations';
 
-const CookieBanner = ({ onAccept, onDecline, is_open }) => (
+const CookieBanner = ({ onAccept, onDecline, is_open, is_dark_mode }) => (
     <div
         className={classNames('cookie-banner', {
-            'cookie-banner--is-open': is_open,
             'cookie-banner--is-closed': !is_open,
+            'cookie-banner--theme-dark': is_dark_mode,
         })}
     >
         <div className='description'>
@@ -38,6 +38,7 @@ const CookieBanner = ({ onAccept, onDecline, is_open }) => (
 );
 
 CookieBanner.prototype = {
+    is_dark_mode: PropTypes.bool,
     is_open: PropTypes.bool,
     onAccept: PropTypes.func,
     onDecline: PropTypes.func,

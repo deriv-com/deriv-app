@@ -105,6 +105,12 @@ $MIN_HEIGHT_FLOATING: calc(
         &-text {
             @include typeface(--small-left-normal-black, none);
         }
+        & > li {
+            margin-bottom: 0.8rem;
+        }
+        & > li:last-child {
+            margin-bottom: 0;
+        }
         @include mobile {
             width: auto;
             margin: 1.6rem;
@@ -764,6 +770,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__form {
+            margin: 0 1.6rem;
             @include mobile {
                 margin: 1.6rem;
             }
@@ -826,6 +833,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 justify-content: flex-end;
                 margin-top: 2.4rem;
             }
+        }
+        &__text--red {
+            @include typeface(--paragraph-left-bold-red);
         }
     }
     .account-limit-container {

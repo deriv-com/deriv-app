@@ -181,10 +181,19 @@ const AccountSignupModal = ({
     is_eu,
     is_loading,
     is_visible,
+    is_logged_in,
+    logout,
     onSignup,
     residence_list,
     toggleAccountSignupModal,
 }) => {
+    React.useEffect(() => {
+        // a logged in user should not be able to create a new account
+        if (is_visible && is_logged_in) {
+            logout();
+        }
+    }, [is_visible, is_logged_in, logout]);
+
     return (
         <Dialog
             is_visible={is_visible}
@@ -223,5 +232,7 @@ export default connect(({ ui, client }) => ({
     is_eu: client.is_eu,
     is_loading: ui.is_loading,
     onSignup: client.onSignup,
+    is_logged_in: client.is_logged_in,
     residence_list: client.residence_list,
+    logout: client.logout,
 }))(AccountSignupModal);

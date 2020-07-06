@@ -1,6 +1,6 @@
 import React from 'react';
-import { isBot, isMT5 } from '@deriv/shared/utils/platform';
-import { urlFor } from '@deriv/shared/utils/url';
+import { isBot, isMT5, urlFor } from '@deriv/shared';
+
 import DenialOfServiceModal from 'App/Components/Elements/Modals/DenialOfServiceModal';
 import { connect } from 'Stores/connect';
 

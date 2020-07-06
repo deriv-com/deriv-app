@@ -1,10 +1,10 @@
 import moment from 'moment';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isEmptyObject } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { getLimitOrderAmount } from './limit-orders';
 
 export const getChartConfig = contract_info => {
-    if (ObjectUtils.isEmptyObject(contract_info)) return null;
+    if (isEmptyObject(contract_info)) return null;
     const start = contract_info.date_start;
     const end = getEndTime(contract_info);
     const granularity = getChartGranularity(start, end || null);
@@ -51,7 +51,7 @@ export const getDisplayStatus = contract_info => {
 };
 
 export const isContractElapsed = (contract_info, tick) => {
-    if (ObjectUtils.isEmptyObject(tick) || ObjectUtils.isEmptyObject(contract_info)) return false;
+    if (isEmptyObject(tick) || isEmptyObject(contract_info)) return false;
     const end_time = getEndTime(contract_info);
     if (end_time && tick.epoch) {
         const seconds = moment.duration(moment.unix(tick.epoch).diff(moment.unix(end_time))).asSeconds();

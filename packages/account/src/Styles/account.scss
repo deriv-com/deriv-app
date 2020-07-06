@@ -97,6 +97,13 @@ $MIN_HEIGHT_FLOATING: calc(
             @include typeface(--paragraph-left-bold-black, none);
             padding-left: 1.6rem;
             list-style-type: disc;
+
+            & > li {
+                margin-bottom: 0.8rem;
+            }
+            & > li:last-child {
+                margin-bottom: 0;
+            }
         }
         &-title {
             @include typeface(--paragraph-left-bold-prominent, none);
@@ -104,12 +111,6 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &-text {
             @include typeface(--small-left-normal-black, none);
-        }
-        & > li {
-            margin-bottom: 0.8rem;
-        }
-        & > li:last-child {
-            margin-bottom: 0;
         }
         @include mobile {
             width: auto;
@@ -770,7 +771,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__form {
-            margin: 0 1.6rem;
+            margin-right: 1rem;
             @include mobile {
                 margin: 1.6rem;
             }

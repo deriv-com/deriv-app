@@ -197,11 +197,6 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get has_maltainvest_account() {
-        return this.active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest');
-    }
-
-    @computed
     get has_fiat() {
         const values = Object.values(this.accounts).reduce((acc, item) => {
             if (!item.is_virtual) {

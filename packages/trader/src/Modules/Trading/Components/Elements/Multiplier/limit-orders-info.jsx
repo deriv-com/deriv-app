@@ -3,7 +3,7 @@ import { Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const MultiplierTradeInfo = ({
+const LimitOrdersInfo = ({
     currency,
     stop_loss,
     take_profit,
@@ -42,4 +42,4 @@ export default connect(({ modules }) => ({
     has_take_profit: modules.trade.has_take_profit,
     cancellation_duration: modules.trade.cancellation_duration,
     has_cancellation: modules.trade.has_cancellation,
-}))(MultiplierTradeInfo);
+}))(LimitOrdersInfo);

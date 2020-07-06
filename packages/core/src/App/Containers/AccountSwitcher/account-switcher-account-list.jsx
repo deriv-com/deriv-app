@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money } from '@deriv/components';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 
@@ -48,7 +48,7 @@ const AccountList = ({
                             {currency && (
                                 <Money
                                     currency={currency}
-                                    amount={CurrencyUtils.formatMoney(currency, balance, true)}
+                                    amount={formatMoney(currency, balance, true)}
                                     should_format={false}
                                 />
                             )}
@@ -67,7 +67,7 @@ const CurrencyDisplay = ({ currency, is_virtual }) => {
     if (!currency) {
         return <Localize i18n_default_text='No currency assigned' />;
     }
-    return CurrencyUtils.getCurrencyDisplayCode(currency);
+    return getCurrencyDisplayCode(currency);
 };
 
 const AccountDisplay = ({ account_type }) => <div>{getMT5AccountDisplay(account_type)}</div>;

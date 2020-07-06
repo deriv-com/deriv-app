@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { formatDuration, getDiffDuration } from '@deriv/shared/utils/date';
+import { formatDuration, getDiffDuration } from '@deriv/shared';
 
 const RemainingTime = ({ end_time = null, start_time, format }) => {
     if (!+end_time || start_time.unix() > +end_time) {

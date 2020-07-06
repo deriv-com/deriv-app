@@ -16,9 +16,8 @@ import {
     SelectNative,
 } from '@deriv/components';
 import { FormSubHeader } from '@deriv/account';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import { isDesktop, isMobile, isDeepEqual } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { isDeepEqual } from '@deriv/shared/utils/object';
 
 const getAccountOpeningReasonList = () => [
     {

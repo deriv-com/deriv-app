@@ -18,7 +18,7 @@ module.exports = async ({ config, mode }) => {
                 loader: 'sass-resources-loader',
                 options: {
                     // Provide path to the file with resources
-                    resources: require('@deriv/shared/utils/index.js'),
+                    resources: require('@deriv/shared/src/styles/index.js'),
                 },
             },
         ],

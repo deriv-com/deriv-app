@@ -5,7 +5,7 @@ import queryString from 'query-string';
 import P2P from '@deriv/p2p';
 import { P2pStorage } from '@deriv/p2p/lib/utils';
 import { getLanguage } from '@deriv/translations';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';

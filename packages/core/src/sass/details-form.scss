@@ -81,7 +81,7 @@
         text-align: left;
         font-size: var(--text-size-xxs);
         width: 40%;
-        line-height: 1.4rem;
+        line-height: 1.8rem;
         margin: 1.6rem auto;
         color: var(--text-general);
 
@@ -97,6 +97,6 @@
         overflow-y: auto;
     }
     @include desktop {
-        grid-template-rows: minmax(7rem, 1fr);
+        grid-template-rows: minmax(10rem, 1fr);
     }
 }

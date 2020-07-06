@@ -116,10 +116,10 @@
                 align-items: center;
 
                 &--is-header {
-                    font-size: 2rem;
+                    font-size: 1.8rem;
                     margin: 2rem 0 0;
                     font-weight: bold;
-                    color: var(--text-less-prominent);
+                    color: var(--text-prominent);
                 }
             }
             &__description {

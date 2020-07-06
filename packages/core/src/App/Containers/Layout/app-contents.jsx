@@ -117,7 +117,6 @@ export default withRouter(
     connect(({ client, gtm, segment, ui }) => ({
         is_eu_country: client.is_eu_country,
         is_logged_in: client.is_logged_in,
-        is_tracking: gtm.is_tracking,
         pushDataLayer: gtm.pushDataLayer,
         identifyEvent: segment.identifyEvent,
         pageView: segment.pageView,

@@ -402,7 +402,10 @@ export default class TradeStore extends BaseStore {
     onHoverPurchase(is_over, contract_type) {
         if (this.is_purchase_enabled && this.main_barrier && !this.is_multiplier) {
             this.main_barrier.updateBarrierShade(is_over, contract_type);
+        } else if (!is_over && this.main_barrier && !this.is_multiplier) {
+            this.main_barrier.updateBarrierShade(false, contract_type);
         }
+
         this.hovered_contract_type = is_over ? contract_type : null;
         setLimitOrderBarriers({
             barriers: this.barriers,
@@ -824,8 +827,9 @@ export default class TradeStore extends BaseStore {
             }
         }
 
-        if (!this.main_barrier || !(this.main_barrier.shade !== 'NONE_SINGLE'))
+        if (!this.main_barrier || !(this.main_barrier.shade !== 'NONE_SINGLE')) {
             this.setMainBarrier(response.echo_req);
+        }
 
         if (this.hovered_contract_type === contract_type) {
             this.addTickByProposal(response);

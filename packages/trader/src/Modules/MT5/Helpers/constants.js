@@ -1,4 +1,9 @@
-import { OSDetect } from '@deriv/shared/utils/os';
+import { OSDetect } from '@deriv/shared';
+
+// TODO: [deriv-eu] for EU we should return 'Binary.com-Demo' for demo accounts
+const getServerName = is_demo => (is_demo ? 'Deriv-Demo' : 'Deriv-Server');
+
+const getBrokerName = () => 'Deriv Limited';
 
 const getPlatformMt5DownloadLink = (platform = undefined) => {
     switch (platform || OSDetect()) {
@@ -24,4 +29,4 @@ const getMT5WebTerminalLink = ({ category, loginid }) => {
     return `https://trade.mql5.com/trade?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;
 };
 
-export { getPlatformMt5DownloadLink, getMT5WebTerminalLink };
+export { getServerName, getBrokerName, getPlatformMt5DownloadLink, getMT5WebTerminalLink };

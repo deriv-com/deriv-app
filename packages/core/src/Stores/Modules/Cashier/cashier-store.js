@@ -1,7 +1,15 @@
 import { action, computed, observable, toJS } from 'mobx';
-import routes from '@deriv/shared/utils/routes';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import ObjectUtils from '@deriv/shared/utils/object';
+import {
+    routes,
+    isCryptocurrency,
+    formatMoney,
+    getCurrencies,
+    getDecimalPlaces,
+    getCurrencyDisplayCode,
+    isEmptyObject,
+    getPropertyValue,
+} from '@deriv/shared';
+
 import BinarySocket from '_common/base/socket_base';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
@@ -188,7 +196,7 @@ export default class CashierStore extends BaseStore {
             // 3. p2p call does not return error code `PermissionDenied`
             if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
                 const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
-                const advertiser_error = ObjectUtils.getPropertyValue(advertiser_info, ['error', 'code']);
+                const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
                 if (advertiser_error === 'PermissionDenied') return;
 
                 this.is_p2p_advertiser = !advertiser_error;
@@ -260,7 +268,7 @@ export default class CashierStore extends BaseStore {
                 // clear verification code on error
                 this.clearVerification();
             }
-        } else if (CurrencyUtils.isCryptocurrency(this.root_store.client.currency)) {
+        } else if (isCryptocurrency(this.root_store.client.currency)) {
             this.setLoading(false);
             this.setContainerHeight('540');
             this.setIframeUrl(response_cashier.cashier);
@@ -321,7 +329,7 @@ export default class CashierStore extends BaseStore {
             code: error.code,
             message: error.message,
             is_show_full_page: /InvalidToken|ASK_TNC_APPROVAL|ASK_FIX_DETAILS|WrongResponse/.test(error.code),
-            ...(ObjectUtils.getPropertyValue(error, ['details', 'fields']) && {
+            ...(getPropertyValue(error, ['details', 'fields']) && {
                 fields: error.details.fields,
             }),
         };
@@ -636,7 +644,7 @@ export default class CashierStore extends BaseStore {
         if (+payment_agent_withdraw.paymentagent_withdraw === 1) {
             const selected_agent = this.config.payment_agent.agents.find(agent => agent.value === loginid);
             this.setReceipt({
-                amount_transferred: CurrencyUtils.formatMoney(currency, amount, true),
+                amount_transferred: formatMoney(currency, amount, true),
                 ...(selected_agent && {
                     payment_agent_email: selected_agent.email,
                     payment_agent_id: selected_agent.value,
@@ -742,7 +750,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setTransferFee() {
-        const transfer_fee = ObjectUtils.getPropertyValue(CurrencyUtils.getCurrencies(), [
+        const transfer_fee = getPropertyValue(getCurrencies(), [
             this.config.account_transfer.selected_from.currency,
             'transfer_between_accounts',
             'fees',
@@ -753,19 +761,19 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setMinimumFee() {
-        const decimals = CurrencyUtils.getDecimalPlaces(this.config.account_transfer.selected_from.currency);
+        const decimals = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.config.account_transfer.minimum_fee = (1 / Math.pow(10, decimals)).toFixed(decimals);
     }
 
     @action.bound
     setTransferLimit() {
-        const transfer_limit = ObjectUtils.getPropertyValue(CurrencyUtils.getCurrencies(), [
+        const transfer_limit = getPropertyValue(getCurrencies(), [
             this.config.account_transfer.selected_from.currency,
             'transfer_between_accounts',
             'limits',
         ]);
-        const decimal_places = CurrencyUtils.getDecimalPlaces(this.config.account_transfer.selected_from.currency);
+        const decimal_places = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.config.account_transfer.transfer_limit = {
             max: transfer_limit.max ? transfer_limit.max.toFixed(decimal_places) : null,
@@ -790,8 +798,8 @@ export default class CashierStore extends BaseStore {
         accounts.sort((a, b) => {
             const a_is_mt = a.account_type === 'mt5';
             const b_is_mt = b.account_type === 'mt5';
-            const a_is_crypto = !a_is_mt && CurrencyUtils.isCryptocurrency(a.currency);
-            const b_is_crypto = !b_is_mt && CurrencyUtils.isCryptocurrency(b.currency);
+            const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency);
+            const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency);
             const a_is_fiat = !a_is_mt && !a_is_crypto;
             const b_is_fiat = !b_is_mt && !b_is_crypto;
             if (a_is_mt && b_is_mt) {
@@ -815,18 +823,18 @@ export default class CashierStore extends BaseStore {
             const obj_values = {
                 text: account.mt5_group
                     ? `${localize('DMT5')} ${getMT5AccountDisplay(account.mt5_group)}`
-                    : CurrencyUtils.getCurrencyDisplayCode(account.currency.toUpperCase()),
+                    : getCurrencyDisplayCode(account.currency.toUpperCase()),
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,
-                is_crypto: CurrencyUtils.isCryptocurrency(account.currency),
+                is_crypto: isCryptocurrency(account.currency),
                 is_mt: account.account_type === 'mt5',
                 ...(account.mt5_group && { mt_icon: getMT5AccountDisplay(account.mt5_group) }),
             };
             // set current logged in client as the default transfer from account
             if (account.loginid === this.root_store.client.loginid) {
                 this.setSelectedFrom(obj_values);
-            } else if (ObjectUtils.isEmptyObject(this.config.account_transfer.selected_to)) {
+            } else if (isEmptyObject(this.config.account_transfer.selected_to)) {
                 // set the first available account as the default transfer to account
                 this.setSelectedTo(obj_values);
             }
@@ -913,7 +921,7 @@ export default class CashierStore extends BaseStore {
         if (transfer_between_accounts.error) {
             this.setErrorMessage(transfer_between_accounts.error);
         } else {
-            this.setReceiptTransfer({ amount: CurrencyUtils.formatMoney(currency, amount, true) });
+            this.setReceiptTransfer({ amount: formatMoney(currency, amount, true) });
             transfer_between_accounts.accounts.forEach(account => {
                 this.config.account_transfer.setBalanceByLoginId(account.loginid, account.balance);
                 if (account.loginid === this.config.account_transfer.selected_from.value) {

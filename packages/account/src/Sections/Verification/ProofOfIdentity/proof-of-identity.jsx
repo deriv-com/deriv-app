@@ -17,7 +17,6 @@ class ProofOfIdentity extends React.Component {
     };
 
     render() {
-        console.log(this.props.is_from_p2p);
         if (this.props.is_virtual) return <DemoMessage />;
         if (this.props.has_missing_required_field) return <MissingPersonalDetails />;
 

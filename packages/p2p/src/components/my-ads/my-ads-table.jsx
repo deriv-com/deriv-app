@@ -2,14 +2,15 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Dialog, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
-import { localize, Localize } from 'Components/i18next';
+import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
+import Empty from 'Components/empty/empty.jsx';
+import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
+import Popup from 'Components/orders/popup.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { requestWS } from 'Utils/websocket';
 import { MyAdsLoader } from './my-ads-loader.jsx';
-import ToggleAds from './toggle-ads.jsx';
-import Popup from '../orders/popup.jsx';
 
 const getHeaders = offered_currency => [
     { text: localize('Ad ID') },
@@ -197,15 +198,11 @@ const MyAdsTable = ({ onClickCreate }) => {
     }
 
     return (
-        <div className='p2p-cashier__empty'>
-            <Icon icon='IcCashierNoAds' className='p2p-cashier__empty-icon' size={128} />
-            <div className='p2p-cashier__empty-title'>
-                <Localize i18n_default_text='You have no ads' />
-            </div>
-            <Button primary large className='p2p-cashier__empty-button' onClick={() => onClickCreate()}>
+        <Empty icon='IcCashierNoAds' title={localize('You have no ads')}>
+            <Button primary large className='p2p-empty__button' onClick={() => onClickCreate()}>
                 {localize('Create new ad')}
             </Button>
-        </div>
+        </Empty>
     );
 };
 

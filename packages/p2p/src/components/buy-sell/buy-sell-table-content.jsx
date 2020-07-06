@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Loading, Icon } from '@deriv/components';
-import { Localize } from 'Components/i18next';
+import { Loading } from '@deriv/components';
+import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
+import Empty from 'Components/empty/empty.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { requestWS } from 'Utils/websocket';
@@ -91,14 +92,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
         );
     }
 
-    return (
-        <div className='p2p-cashier__empty'>
-            <Icon icon='IcCashierNoAds' className='p2p-cashier__empty-icon' size={128} />
-            <div className='p2p-cashier__empty-title'>
-                <Localize i18n_default_text='No ads found' />
-            </div>
-        </div>
-    );
+    return <Empty has_tabs icon='IcCashierNoAds' title={localize('No ads found')} />;
 };
 
 BuySellTableContent.propTypes = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { toMoment } from '@deriv/shared/utils/date';
+import { toMoment } from '@deriv/shared';
 import DatePicker from 'Components/date-picker';
 
 class DateOfBirthPicker extends React.Component {

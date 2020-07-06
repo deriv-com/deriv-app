@@ -16,8 +16,7 @@ import {
 import { Field, Formik } from 'formik';
 import React from 'react';
 import { FormSubHeader } from '@deriv/account';
-import { toMoment } from '@deriv/shared/utils/date';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import { isDesktop, isMobile, toMoment } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import 'Sass/details-form.scss';
 

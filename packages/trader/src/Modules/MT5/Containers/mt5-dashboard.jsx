@@ -1,7 +1,7 @@
 import { DesktopWrapper, Icon, MobileWrapper, Tabs } from '@deriv/components';
 import React from 'react';
 import { withRouter } from 'react-router';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import LoadingMT5RealAccountDisplay from './loading-mt5-real-account-display.jsx';
@@ -15,9 +15,10 @@ import MT5ServerErrorDialog from './mt5-server-error-dialog.jsx';
 import Mt5TopUpDemoModal from './mt5-top-up-demo-modal.jsx';
 import MT5ResetPasswordModal from './mt5-reset-password-modal.jsx';
 import Mt5FinancialStpPendingDialog from '../Components/mt5-financial-stp-pending-dialog.jsx';
+import { MT5InfoCopy } from '../Components/mt5-info-copy.jsx';
 import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
 import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
-import { getPlatformMt5DownloadLink } from '../Helpers/constants';
+import { getBrokerName, getServerName, getPlatformMt5DownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
 class MT5Dashboard extends React.Component {
@@ -58,7 +59,11 @@ class MT5Dashboard extends React.Component {
         this.props.setMt5PasswordResetModal(true);
     };
 
-    updateActiveIndex = () => {
+    updateActiveIndex = index => {
+        // updateActiveIndex is called in componentDidUpdate causing tab_index to always revert back to 0
+        if (index === 1) this.setState({ is_demo_tab: true });
+        else if (index === 0) this.setState({ is_demo_tab: false });
+
         const index_to_set = /demo/.test(this.props.location.hash) ? 1 : 0;
         if (this.state.active_index !== index_to_set) {
             this.setState({ active_index: index_to_set });
@@ -122,7 +127,7 @@ class MT5Dashboard extends React.Component {
                             selected_account_type={this.state.password_manager.selected_account_type}
                             toggleModal={this.togglePasswordManagerModal}
                         />
-                        <Tabs active_index={this.state.active_index} top center>
+                        <Tabs active_index={this.state.active_index} top center onTabItemClick={this.updateActiveIndex}>
                             <div label={localize('Real account')}>
                                 {is_loading && <LoadingMT5RealAccountDisplay />}
                                 {!is_loading && (
@@ -157,6 +162,25 @@ class MT5Dashboard extends React.Component {
                                 />
                             </div>
                         </Tabs>
+                        <div className='mt5-dashboard__info'>
+                            <div className='mt5-dashboard__info-description'>
+                                <Localize i18n_default_text='Use these in your apps' />
+                            </div>
+                            <MT5InfoCopy
+                                display_name={getBrokerName()}
+                                text_copy={getBrokerName()}
+                                label={localize('Broker')}
+                                info_msg={localize('Click here to copy broker name.')}
+                                success_msg={localize('Broker name copied!')}
+                            />
+                            <MT5InfoCopy
+                                display_name={getServerName(this.state.is_demo_tab)}
+                                text_copy={getServerName(this.state.is_demo_tab)}
+                                label={localize('Server')}
+                                info_msg={localize('Click here to copy server name.')}
+                                success_msg={localize('Server name copied!')}
+                            />
+                        </div>
                         <CompareAccountsModal />
                         <div className='mt5-dashboard__maintenance'>
                             <Icon icon='IcAlertWarning' className='mt5-dashboard__maintenance-icon' />
@@ -168,7 +192,6 @@ class MT5Dashboard extends React.Component {
                             </div>
                         </div>
                     </div>
-
                     <DesktopWrapper>
                         <MT5DashboardContainer />
                     </DesktopWrapper>

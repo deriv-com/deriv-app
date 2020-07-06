@@ -15,6 +15,7 @@ const AppContents = ({
     identifyEvent,
     is_app_disabled,
     is_cashier_visible,
+    is_dark_mode,
     is_eu_country,
     is_logged_in,
     is_mt5_page,
@@ -96,7 +97,12 @@ const AppContents = ({
                 <ThemedScrollbars height='calc(100vh - 84px)'>{children}</ThemedScrollbars>
             </DesktopWrapper>
             {show_cookie_banner && (
-                <CookieBanner onAccept={onAccept} onDecline={onDecline} is_open={show_cookie_banner} />
+                <CookieBanner
+                    onAccept={onAccept}
+                    onDecline={onDecline}
+                    is_open={show_cookie_banner}
+                    is_dark_mode={is_dark_mode}
+                />
             )}
         </div>
     );
@@ -122,6 +128,7 @@ export default withRouter(
         pageView: segment.pageView,
         is_app_disabled: ui.is_app_disabled,
         is_cashier_visible: ui.is_cashier_visible,
+        is_dark_mode: ui.is_dark_mode_on,
         is_mt5_page: ui.is_mt5_page,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         is_route_modal_on: ui.is_route_modal_on,

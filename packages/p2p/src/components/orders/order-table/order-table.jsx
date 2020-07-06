@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { ButtonToggle } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
 import OrderTableContent from './order-table-content.jsx';
 import { orderToggleIndex } from '../order-info';
 

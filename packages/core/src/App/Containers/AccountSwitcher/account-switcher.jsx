@@ -332,7 +332,7 @@ class AccountSwitcher extends React.Component {
                     <React.Fragment>
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                         <AccountWrapper
-                            header={<span>{localize('DMT5 Accounts')}</span>}
+                            header={localize('DMT5 Accounts')}
                             is_visible={this.state.is_demo_dmt5_visible}
                             toggleVisibility={() => {
                                 this.toggleVisibility('demo_dmt5');
@@ -387,7 +387,7 @@ class AccountSwitcher extends React.Component {
             <div className='acc-switcher__list-wrapper' onMouseEnter={this.onListEnter} onMouseLeave={this.onListLeave}>
                 <React.Fragment>
                     <AccountWrapper
-                        header={<span>{localize('Deriv Accounts')}</span>}
+                        header={localize('Deriv Accounts')}
                         is_visible={this.state.is_real_deriv_visible}
                         toggleVisibility={() => {
                             this.toggleVisibility('real_deriv');
@@ -450,7 +450,7 @@ class AccountSwitcher extends React.Component {
                     <React.Fragment>
                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                         <AccountWrapper
-                            header={<span>{localize('DMT5 Accounts')}</span>}
+                            header={localize('DMT5 Accounts')}
                             is_visible={this.state.is_real_dmt5_visible}
                             toggleVisibility={() => {
                                 this.toggleVisibility('real_dmt5');

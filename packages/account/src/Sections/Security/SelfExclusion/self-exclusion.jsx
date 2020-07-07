@@ -391,7 +391,7 @@ class SelfExclusion extends React.Component {
                                                 })}
                                                 <p className='self-exclusion__confirm-note'>
                                                     <Localize
-                                                        i18n_default_text='You’ll be able to adjust these limits at any time. You can reduce your limits from the <0>self-exclusion page</0>. To increase or remove your limits, please <1>contact our Customer Support team</1>.'
+                                                        i18n_default_text='You’ll be able to adjust these limits at any time. You can reduce your limits from the <0>self-exclusion page</0>. To increase or remove your limits, please contact our <1>Customer Support team</1>.'
                                                         components={[
                                                             <span key={0} className='self-exclusion__text--red' />,
                                                             <a

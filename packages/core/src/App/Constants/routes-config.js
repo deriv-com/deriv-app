@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
-import { getUrlBase, isMobile, routes } from '@deriv/shared';
+import { getUrlBase, routes } from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
 import { makeLazyLoader } from '_common/lazy-load';

@@ -1,6 +1,4 @@
 import React from 'react';
-import { ThemedScrollbars } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import 'Sass/app/modules/complaints-policy.scss';
 

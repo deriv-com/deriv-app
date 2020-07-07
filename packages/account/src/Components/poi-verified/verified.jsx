@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Button } from '@deriv/components';
+import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import ContinueTradingButton from 'Components/poa-continue-trading-button';
 import PoaButton from 'Components/poa-button';

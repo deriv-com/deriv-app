@@ -29,7 +29,7 @@ export default class RunPanelStore {
     // #region button clicks
     @computed
     get is_stop_button_disabled() {
-        return this.contract_stage.index === contract_stages.IS_STOPPING.index;
+        return this.contract_stage === contract_stages.IS_STOPPING;
     }
 
     @computed

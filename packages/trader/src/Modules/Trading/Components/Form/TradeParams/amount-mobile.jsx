@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tabs, Money, Numpad } from '@deriv/components';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isEmptyObject, getDecimalPlaces } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+
 import { connect } from 'Stores/connect';
 
 const Basis = ({
@@ -23,7 +23,7 @@ const Basis = ({
     setToastErrorMessage,
     setToastErrorVisibility,
 }) => {
-    const user_currency_decimal_places = CurrencyUtils.getDecimalPlaces(currency);
+    const user_currency_decimal_places = getDecimalPlaces(currency);
     const onNumberChange = num => {
         setSelectedAmount(basis, num);
         validateAmount(num);
@@ -42,10 +42,10 @@ const Basis = ({
             on_change_obj.amount = amount;
         }
 
-        if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
+        if (!isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
         toggleModal();
     };
-    const zero_decimals = Number('0').toFixed(CurrencyUtils.getDecimalPlaces(currency));
+    const zero_decimals = Number('0').toFixed(getDecimalPlaces(currency));
     const min_amount = parseFloat(zero_decimals.toString().replace(/.$/, '1'));
 
     const validateAmount = value => {

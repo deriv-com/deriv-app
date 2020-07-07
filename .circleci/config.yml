@@ -30,6 +30,7 @@ commands:
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
+            
   npm_install_from_cache:
     description: "npm install and save cache"
     steps:
@@ -57,7 +58,16 @@ commands:
           name: "build core"
           command: node_modules/lerna/cli.js exec --scope @deriv/core -- npm run build
 
-  deploy_gh_pages:
+  notify_slack:
+    description: "Notify slack"
+    steps:
+      - slack/status:
+          include_project_field: false
+          failure_message: "Release failed for deriv.com with version *$(cat lib/version)*"
+          success_message: "Release succeeded for deriv.com with version *$(cat lib/version)*"
+          webhook: ${SLACK_WEBHOOK}
+
+  deploy:
     description: "Deploy to static branches"
     parameters:
       target_branch:
@@ -78,7 +88,7 @@ commands:
             git config user.name "ci-build"
       - add_ssh_keys:
           fingerprints:
-            - "97:d7:d4:a5:5c:e3:12:b6:de:d4:aa:c9:67:9c:ca:58"
+            - "01:67:4a:6d:26:9c:70:c4:1a:60:91:88:d9:dd:f0:83"
       - run:
           name: Deploy docs to gh-pages branch
           command: /home/circleci/.npm-packages/bin/gh-pages -d packages/core/dist --branch << parameters.target_branch >> --message '[skip ci]'
@@ -102,6 +112,7 @@ commands:
           command: |
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
             docker push ${DOCKHUB_ORGANISATION}/deriv-app
+
   k8s_deploy:
     description: "Deploy to k8s cluster"
     parameters:
@@ -130,46 +141,63 @@ commands:
               fi
             done
 jobs:
-  build_deploy_staging:
+  build:
     docker:
       - image: circleci/node:12.18.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
-      - deploy_gh_pages:
+  release_staging:
+    docker:
+      - image: circleci/node:12.18.0-stretch
+    steps:
+      - git_checkout_from_cache
+      - npm_install_from_cache
+      - build
+      - deploy:
           target_branch: staging
       - docker_build_push
       - k8s_deploy
+      - notify_slack
     environment:
       NODE_ENV: staging
-  build_deploy_production:
+
+  release_production:
     docker:
       - image: circleci/node:12.18.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
-      - deploy_gh_pages:
+      - deploy:
           target_branch: production
       - docker_build_push:
           docker_image_latest_tag: latest
       - k8s_deploy:
           k8s_svc_name: production-deriv-app
+      - notify_slack
     environment:
       NODE_ENV: staging
 
 workflows:
-  build_deploy_staging:
+  build:
     jobs:
-      - build_deploy_staging:
-          context: binary-frontend-artifact-upload
+      - build:
+          filters:
+            branches:
+              ignore: /^master$/
+
+  release_staging:
+    jobs:
+      - release_staging:
           filters:
             branches:
               only: /^master$/
-  build_deploy_production:
+
+  release_production:
     jobs:
-      - build_deploy_production:
+      - release_production:
           context: binary-frontend-artifact-upload
           filters:
             branches:

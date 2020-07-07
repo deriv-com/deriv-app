@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getPropertyValue } from '@deriv/shared';
+import { getPropertyValue, isProduction } from '@deriv/shared';
 import { Tabs, Modal } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
@@ -185,8 +185,7 @@ class App extends React.Component {
 
     setChatInfo = (user_id, token) => {
         const chat_info = {
-            // This is using QA10 SendBird AppId, please change to production's SendBird AppId when we deploy to production.
-            app_id: '4E259BA5-C383-4624-89A6-8365E06D9D39',
+            app_id: isProduction() ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69' : '4E259BA5-C383-4624-89A6-8365E06D9D39',
             user_id,
             token,
         };

@@ -7,6 +7,7 @@ import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';
+import { routes } from '@deriv/shared';
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
 class P2PCashier extends React.Component {
@@ -52,7 +53,7 @@ class P2PCashier extends React.Component {
             setNotificationCount,
             location,
             is_mobile,
-            routeTo,
+            poi_url,
         } = this.props;
         const { order_id } = this.state;
         return (
@@ -66,7 +67,7 @@ class P2PCashier extends React.Component {
                 order_id={order_id}
                 setOrderId={this.setQueryOrder}
                 is_mobile={is_mobile}
-                routeTo={routeTo}
+                poi_url={routes.proof_of_identity}
             />
         );
     }
@@ -80,11 +81,11 @@ P2PCashier.propTypes = {
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
     is_mobile: PropTypes.bool,
-    routeTo: PropTypes.func,
+    poi_url: PropTypes.string,
 };
 
 export default withRouter(
-    connect(({ client, modules, ui, common }) => ({
+    connect(({ client, modules, ui }) => ({
         currency: client.currency,
         local_currency_config: client.local_currency_config,
         loginid: client.loginid,
@@ -92,6 +93,5 @@ export default withRouter(
         residence: client.residence,
         setNotificationCount: modules.cashier.setNotificationCount,
         is_mobile: ui.is_mobile,
-        routeTo: common.routeTo,
     }))(P2PCashier)
 );

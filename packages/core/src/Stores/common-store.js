@@ -38,6 +38,8 @@ export default class CommonStore extends BaseStore {
 
             if (ext_url?.indexOf(getUrlSmartTrader()) === 0) {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
+            } else if (ext_url?.indexOf(routes.cashier_p2p) === 0) {
+                this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH' });
             } else {
                 this.addRouteHistoryItem({ ...location, action: 'PUSH' });
             }

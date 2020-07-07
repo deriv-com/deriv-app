@@ -1,12 +1,12 @@
 import React from 'react';
 import { Icon, Checklist } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { Localize } from 'Components/i18next';
 import './verification.scss';
 
 const Verification = () => {
-    const { nickname, toggleNicknamePopup, is_advertiser, poi_status, routeTo } = React.useContext(Dp2pContext);
+    const { nickname, toggleNicknamePopup, is_advertiser, poi_status, poi_url } = React.useContext(Dp2pContext);
 
     const poiStatusText = status => {
         switch (status) {
@@ -35,7 +35,10 @@ const Verification = () => {
         {
             content: poiStatusText(poi_status),
             status: poi_status === 'verified' ? 'done' : 'action',
-            onClick: poi_status === 'verified' ? () => {} : () => routeTo(routes.proof_of_identity),
+            onClick:
+                poi_status === 'verified'
+                    ? () => {}
+                    : () => (window.location.href = `${poi_url}?ext_platform_url=${routes.cashier_p2p}`),
             is_disabled: poi_status !== 'verified' && !nickname,
         },
     ];

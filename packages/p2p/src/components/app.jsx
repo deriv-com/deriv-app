@@ -314,7 +314,7 @@ class App extends React.Component {
             setOrderId,
             should_show_verification,
             is_mobile,
-            routeTo,
+            poi_url,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -359,7 +359,7 @@ class App extends React.Component {
                     changeOrderToggle: this.changeOrderToggle,
                     createAdvertiser: this.createAdvertiser.bind(this),
                     is_mobile,
-                    routeTo,
+                    poi_url,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>

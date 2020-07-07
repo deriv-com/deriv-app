@@ -3,10 +3,9 @@ import { localize } from '@deriv/translations';
 import React from 'react';
 import ContinueTradingButton from 'Components/poa-continue-trading-button';
 import PoaButton from 'Components/poa-button';
-import RedirectButton from 'Components/redirect-button';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const UploadComplete = ({ has_poa, is_description_enabled, show_redirect_btn, routeBackInApp }) => {
+export const UploadComplete = ({ has_poa, is_description_enabled, redirectButton }) => {
     const message = localize('Your proof of identity was submitted successfully');
     if (has_poa) {
         return (
@@ -34,7 +33,7 @@ export const UploadComplete = ({ has_poa, is_description_enabled, show_redirect_
                     <PoaButton />
                 </React.Fragment>
             )}
-            {show_redirect_btn && <RedirectButton onClick={routeBackInApp} />}
+            {redirectButton}
         </IconMessageContent>
     );
 };

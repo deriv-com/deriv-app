@@ -145,8 +145,7 @@ class ProofOfIdentityContainer extends React.Component {
                 has_poa={has_poa}
                 height={this.props.height ?? null}
                 handleComplete={this.handleComplete}
-                show_redirect_btn={this.props.show_redirect_btn}
-                routeBackInApp={this.props.routeBackInApp}
+                redirectButton={this.props.redirectButton}
             />
         );
     }

@@ -1,7 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { AutoHeightWrapper } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
+import { AutoHeightWrapper, Button } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
@@ -9,9 +10,37 @@ import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 
 class ProofOfIdentity extends React.Component {
+    state = {
+        should_show_redirect_btn: false,
+        redirect_text: '',
+        redirect_route: '',
+    };
+
+    componentDidMount() {
+        const route_to_item = this.props.app_routing_history.find((history_item) => {
+            if (history_item.action === 'PUSH') {
+                const platform_parent_paths = [routes.mt5, routes.bot, routes.trade, routes.cashier_p2p];
+
+                if (platform_parent_paths.includes(history_item.pathname)) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
+
+        if (route_to_item && route_to_item.pathname === routes.cashier_p2p) {
+            this.setState({
+                should_show_redirect_btn: true,
+                redirect_text: localize('Back to P2P'),
+                redirect_route: routes.cashier_p2p,
+            });
+        }
+    }
+
     routeBackTo = () => {
-        if (this.props.is_from_p2p) {
-            this.props.routeBackInApp(this.props.history, [routes.cashier_p2p]);
+        if (this.state.should_show_redirect_btn) {
+            this.props.routeBackInApp(this.props.history, [this.state.redirect_route]);
         }
     };
 
@@ -32,8 +61,13 @@ class ProofOfIdentity extends React.Component {
                             removeNotificationMessage={this.props.removeNotificationMessage}
                             refreshNotifications={this.props.refreshNotifications}
                             height={height}
-                            show_redirect_btn={this.props.is_from_p2p}
-                            routeBackInApp={this.routeBackTo}
+                            redirectButton={
+                                this.state.should_show_redirect_btn && (
+                                    <Button primary onClick={this.routeBackTo}>
+                                        {this.state.redirect_text}
+                                    </Button>
+                                )
+                            }
                         />
                     </div>
                 )}
@@ -50,5 +84,5 @@ export default connect(({ client, ui, common }) => ({
     removeNotificationByKey: ui.removeNotificationByKey,
     removeNotificationMessage: ui.removeNotificationMessage,
     routeBackInApp: common.routeBackInApp,
-    is_from_p2p: common.is_from_p2p,
+    app_routing_history: common.app_routing_history,
 }))(withRouter(ProofOfIdentity));

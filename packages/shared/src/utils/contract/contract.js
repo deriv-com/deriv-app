@@ -1,4 +1,4 @@
-import ObjectUtils from '../object';
+import { unique } from '../object';
 import moment from 'moment';
 
 export const getFinalPrice = contract_info => +(contract_info.sell_price || contract_info.bid_price);
@@ -30,7 +30,7 @@ export const isValidToSell = contract_info =>
 export const isMultiplierContract = contract_type => /MULT/i.test(contract_type);
 
 export const getCurrentTick = contract_info => {
-    const tick_stream = ObjectUtils.unique(contract_info.tick_stream, 'epoch');
+    const tick_stream = unique(contract_info.tick_stream, 'epoch');
     const current_tick = isDigitContract(contract_info.contract_type) ? tick_stream.length : tick_stream.length - 1;
     return !current_tick || current_tick < 0 ? 0 : current_tick;
 };

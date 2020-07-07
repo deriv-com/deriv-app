@@ -46,7 +46,7 @@ class TermsOfUse extends React.Component {
                                     id='agreed_tnc'
                                     label={
                                         <Localize
-                                            i18n_default_text='I have read and agree to the <0>terms and conditions</0> of the Deriv website.'
+                                            i18n_default_text='I agree to the <0>terms and conditions</0>.'
                                             components={[
                                                 <a
                                                     key={0}
@@ -62,7 +62,6 @@ class TermsOfUse extends React.Component {
                             </Div100vhContainer>
                         </ThemedScrollbars>
                         <FormSubmitButton
-                            is_absolute
                             is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
                             label={localize('Add account')}
                             has_cancel={true}

@@ -23,13 +23,13 @@ const getDismissButton = ({ status, landing_company_shortcode, closeModal, switc
             }
             // Danger
             return {
-                label: localize('Do it later'),
+                label: localize('Maybe later'),
                 action: closeModal,
             };
         // case 'svg':
         default:
             return {
-                label: localize('Do it later'),
+                label: localize('Maybe later'),
                 action: closeModal,
             };
     }

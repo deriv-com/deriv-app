@@ -41,9 +41,9 @@ export const getAccountTitle = (
             return localize('Deriv account');
         case 'iom':
         case 'malta':
-            return localize('Real Synthetic');
+            return localize('Deriv Synthetic');
         case 'maltainvest':
-            return localize('Real Financial');
+            return localize('Deriv Financial');
         default:
             return localize('Deriv');
     }

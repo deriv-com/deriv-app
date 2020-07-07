@@ -14,28 +14,28 @@ import StatusDialogContainer from './status-dialog-container.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
-const LoadingModal = () => <Loading is_fullscreen={false} />;
+const LoadingModal = props => <Loading {...props} is_fullscreen={false} />;
 
 const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, is_belgium_residence }) => {
     if (!currency) {
-        return <Localize i18n_default_text='Set a currency for your Real Account' />;
+        return <Localize i18n_default_text='Set a currency for your real account' />;
     }
 
     if (
         (real_account_signup_target === 'iom' && is_isle_of_man_residence) ||
         (real_account_signup_target === 'malta' && is_belgium_residence)
     ) {
-        return <Localize i18n_default_text='Add a Real Synthetic account' />;
+        return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
     }
 
     switch (real_account_signup_target) {
         case 'malta':
         case 'iom':
-            return <Localize i18n_default_text='Add a Real Synthetic account' />;
+            return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
         case 'maltainvest':
-            return <Localize i18n_default_text='Add a Real Financial Account' />;
+            return <Localize i18n_default_text='Add a Deriv Financial account' />;
         default:
-            return <Localize i18n_default_text='Add a Real Account' />;
+            return <Localize i18n_default_text='Add a Deriv account' />;
     }
 };
 
@@ -50,6 +50,7 @@ class RealAccountSignup extends React.Component {
                             onFinishSuccess={this.showStatusDialog}
                             onLoading={this.showLoadingModal}
                             onError={this.showErrorModal}
+                            onClose={this.closeModal}
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                         />
                     ),
@@ -80,7 +81,7 @@ class RealAccountSignup extends React.Component {
                     body: () => <StatusDialogContainer />,
                 },
                 {
-                    body: () => <LoadingModal />,
+                    body: () => <LoadingModal className='loading-modal' />,
                 },
                 {
                     body: () => (
@@ -100,6 +101,7 @@ class RealAccountSignup extends React.Component {
         const { currency, has_real_account } = this.props;
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) return '702px'; // Add or manage account modal
+        if (this.active_modal_index === 3) return 'fit-content'; // Status dialog
         return '740px'; // Account wizard modal
     }
 

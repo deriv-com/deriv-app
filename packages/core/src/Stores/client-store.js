@@ -192,6 +192,11 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get has_iom_account() {
+        return this.active_accounts.some(acc => acc.landing_company_shortcode === 'iom');
+    }
+
+    @computed
     get has_fiat() {
         const values = Object.values(this.accounts).reduce((acc, item) => {
             if (!item.is_virtual) {
@@ -323,6 +328,11 @@ export default class ClientStore extends BaseStore {
         return financial_shortcode || gaming_shortcode
             ? eu_shortcode_regex.test(financial_shortcode) || eu_shortcode_regex.test(gaming_shortcode)
             : eu_excluded_regex.test(this.residence);
+    }
+
+    @computed
+    get is_uk() {
+        return this.residence === 'gb';
     }
 
     // this is true when a user needs to have a active real account for trading

@@ -1,224 +1,23 @@
-import { Icon, Modal, Tabs, ThemedScrollbars } from '@deriv/components';
+import { Icon, Modal, ThemedScrollbars } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { routes } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import { website_name } from 'App/Constants/app-config';
+import { routes, getDerivComLink, urlFor } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { urlFor } from '_common/url';
+
 import AccountCard from './account-card.jsx';
 
 import 'Sass/app/modules/account-types.scss';
 
-// TODO: [deriv-eu] this function is needed to be updated after end of all landing companies design
-const boxGenerator = ({
-    standpoint,
-    has_demo,
-    state,
-    setAccountTypeTabIndex,
-    redirectToMt5Real,
-    redirectToMt5Demo,
-    openRealAccountSignup,
-}) => {
-    if (standpoint.malta && standpoint.maltainvest) {
-        // MLT/MF
-        return has_demo ? (
-            <Tabs
-                active_index={state.account_type_tab_index}
-                className='account-types__tabs'
-                fit_content
-                onTabItemClick={setAccountTypeTabIndex}
-                top
-            >
-                <div label={localize('Real accounts')}>
-                    <FinancialBox
-                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
-                        mt5OnClick={redirectToMt5Real}
-                    />
-                    <GamingBox
-                        derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
-                        mt5OnClick={redirectToMt5Real}
-                    />
-                </div>
-                <div label={localize('Demo accounts')}>
-                    <FinancialBox
-                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
-                        is_demo
-                        mt5OnClick={redirectToMt5Demo}
-                    />
-                    <GamingBox
-                        derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
-                        is_demo
-                        mt5OnClick={redirectToMt5Demo}
-                    />
-                </div>
-            </Tabs>
-        ) : (
-            <div>
-                <FinancialBox
-                    derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
-                    mt5OnClick={redirectToMt5Real}
-                />
-                <GamingBox
-                    derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
-                    mt5OnClick={redirectToMt5Real}
-                />
-            </div>
-        );
-    } else if (standpoint.iom && standpoint.maltainvest) {
-        // MX/MF
-        return has_demo ? (
-            <Tabs
-                active_index={state.account_type_tab_index}
-                className='account-types__tabs'
-                fit_content
-                onTabItemClick={setAccountTypeTabIndex}
-                top
-            >
-                <div label={localize('Real accounts')}>
-                    <FinancialBox
-                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
-                        mt5OnClick={redirectToMt5Real}
-                    />
-                    <GamingBox
-                        no_mt5
-                        mt5OnClick={redirectToMt5Real}
-                        derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
-                    />
-                </div>
-                <div label={localize('Demo accounts')}>
-                    <FinancialBox
-                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
-                        is_demo
-                        mt5OnClick={redirectToMt5Demo}
-                    />
-                    <GamingBox
-                        derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
-                        is_demo
-                        no_mt5
-                        mt5OnClick={redirectToMt5Demo}
-                    />
-                </div>
-            </Tabs>
-        ) : (
-            <div>
-                <FinancialBox
-                    derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
-                    mt5OnClick={redirectToMt5Real}
-                />
-                <GamingBox
-                    derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
-                    no_mt5
-                    mt5OnClick={redirectToMt5Real}
-                />
-            </div>
-        );
-    } else if (standpoint.malta) {
-        // Only MLT
-        return has_demo ? (
-            <Tabs
-                active_index={state.account_type_tab_index}
-                className='account-types__tabs'
-                fit_content
-                onTabItemClick={setAccountTypeTabIndex}
-                top
-            >
-                <div label={localize('Real accounts')}>
-                    <SyntheticBox mt5OnClick={redirectToMt5Real} />
-                </div>
-                <div label={localize('Demo accounts')}>
-                    <SyntheticBox is_demo mt5OnClick={redirectToMt5Demo} />
-                </div>
-            </Tabs>
-        ) : (
-            <div>
-                <SyntheticBox mt5OnClick={redirectToMt5Real} />
-            </div>
-        );
-    } else if (standpoint.iom) {
-        // Only MX
-        return has_demo ? (
-            <Tabs
-                active_index={state.account_type_tab_index}
-                className='account-types__tabs'
-                fit_content
-                onTabItemClick={setAccountTypeTabIndex}
-                top
-            >
-                <div label={localize('Real accounts')}>
-                    <FinancialBox
-                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
-                        mt5OnClick={redirectToMt5Real}
-                    />
-                    <GamingBox
-                        derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
-                        no_mt5
-                        mt5OnClick={redirectToMt5Real}
-                    />
-                </div>
-                <div label={localize('Demo accounts')}>
-                    <FinancialBox
-                        is_demo
-                        mt5OnClick={redirectToMt5Demo}
-                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
-                    />
-                    <GamingBox
-                        is_demo
-                        no_mt5
-                        mt5OnClick={redirectToMt5Demo}
-                        derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
-                    />
-                </div>
-            </Tabs>
-        ) : (
-            <div>
-                <FinancialBox
-                    derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
-                    mt5OnClick={redirectToMt5Real}
-                />
-                <GamingBox
-                    no_mt5
-                    mt5OnClick={redirectToMt5Real}
-                    derivOnClick={() => openRealAccountSignup(standpoint.gaming_company)}
-                />
-            </div>
-        );
-    } else if (standpoint.maltainvest) {
-        // only MF
-        return has_demo ? (
-            <Tabs
-                active_index={state.account_type_tab_index}
-                className='account-types__tabs'
-                fit_content
-                onTabItemClick={setAccountTypeTabIndex}
-                top
-            >
-                <div label={localize('Real accounts')}>
-                    <FinancialBox
-                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
-                        mt5OnClick={redirectToMt5Real}
-                    />
-                </div>
-                <div label={localize('Demo accounts')}>
-                    <FinancialBox
-                        is_demo
-                        mt5OnClick={redirectToMt5Demo}
-                        derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
-                    />
-                </div>
-            </Tabs>
-        ) : (
-            <div>
-                <FinancialBox
-                    derivOnClick={() => openRealAccountSignup(standpoint.financial_company)}
-                    mt5OnClick={redirectToMt5Real}
-                />
-            </div>
-        );
-    }
-    throw new Error('Unknown box');
-};
+const getTargetLoginid = (accounts, target_landing_company_shortcode) =>
+    Object.entries(accounts).reduce((acc, [loginid, { landing_company_shortcode }]) => {
+        if (landing_company_shortcode === target_landing_company_shortcode) {
+            // eslint-disable-next-line no-param-reassign
+            acc += loginid;
+        }
+        return acc;
+    }, '');
 
 const Box = ({ title, description, footer_text, icons, cards }) => {
     return (
@@ -246,42 +45,44 @@ Box.propTypes = {
     cards: PropTypes.array,
 };
 
-const FinancialBox = ({ derivOnClick, is_demo = false, mt5OnClick }) => {
+const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_account_label }) => {
     return (
         <Box
-            title={localize('Financial account ({{type}})', { type: is_demo ? localize('Demo') : localize('Real') })}
+            title={localize('Financial')}
             description={localize(
-                'Financial accounts offer you to trade financial assets such as Forex, commodities and indices.'
+                'Trade commodities, cryptocurrencies, major and minor currency pairs with high leverage and variable spreads for maximum flexibility.'
             )}
             footer_text={localize('Over 50 tradable financial assets')}
             icons={['IcUnderlyingFRXNZDJPY', 'IcUnderlyingOTC_NDX', 'IcUnderlyingFRXXAUUSD', 'IcUnderlyingFRXBROUSD']}
             cards={[
                 <AccountCard
                     key={0}
-                    title={localize('Trade on {{ website_name }}', { website_name })}
-                    subtitle={localize('Option trading account')}
-                    button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
+                    title={localize('Trade Options')}
+                    subtitle={localize('with a Deriv Financial account')}
+                    button_text={has_maltainvest_account ? add_account_label[0] : add_account_label[1]}
                     buttonOnClick={derivOnClick}
                     items={{
                         [localize('Multiplier')]: localize('Up to X1000'),
                         [localize('Stop loss')]: localize('Flexible'),
                         [localize('Take profit')]: localize('Flexible'),
-                        [localize('Cancel trade')]: localize('Allow'),
+                        [localize('Cancel trade')]: localize('Allowed'),
                         [localize('Currency')]: localize('USD/GBP/EUR'),
                     }}
-                    // TODO: [deriv-eu] Update paths
-                    learn_more={[
+                    platforms={[
                         {
-                            text: localize('Option trading'),
-                            path: '/#',
+                            icon: 'IcBrandDtrader',
+                            name: 'DTrader',
+                            path: getDerivComLink('/dtrader'),
                         },
                         {
-                            text: localize('Dtrader'),
-                            path: '/#',
+                            icon: 'IcBrandDbot',
+                            name: 'DBot',
+                            path: getDerivComLink('/dbot'),
                         },
                         {
-                            text: localize('DBot'),
-                            path: '/#',
+                            icon: 'IcBrandSmarttrader',
+                            name: 'SmartTrader',
+                            path: 'https://smarttrader.deriv.app/en/trading.html',
                         },
                     ]}
                 >
@@ -295,25 +96,22 @@ const FinancialBox = ({ derivOnClick, is_demo = false, mt5OnClick }) => {
                 </AccountCard>,
                 <AccountCard
                     key={1}
-                    title={localize('Trade on MT5')}
-                    subtitle={localize('Margin trading account')}
-                    button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
+                    title={localize('Trade on Margin')}
+                    subtitle={localize('with a DMT5 Financial account')}
+                    button_text={add_account_label[1]}
                     buttonOnClick={mt5OnClick}
+                    is_button_disabled={!has_maltainvest_account}
                     items={{
                         [localize('Leverage')]: localize('Up to 1:1000'),
                         [localize('Margin call')]: localize('150%'),
                         [localize('Stop out level')]: localize('75%'),
                         [localize('Currency')]: localize('USD'),
                     }}
-                    // TODO: [deriv-eu] Update paths
-                    learn_more={[
+                    platforms={[
                         {
-                            text: localize('Margin Trading'),
-                            path: '/#',
-                        },
-                        {
-                            text: localize('DMT5'),
-                            path: '/#',
+                            icon: 'IcBrandDMT5',
+                            name: 'MetaTrader 5',
+                            path: getDerivComLink('/dmt5'),
                         },
                     ]}
                 >
@@ -332,108 +130,12 @@ const FinancialBox = ({ derivOnClick, is_demo = false, mt5OnClick }) => {
     );
 };
 
-const GamingBox = ({ is_demo = false, no_mt5 = false, mt5OnClick, derivOnClick }) => {
-    const cards = [
-        <AccountCard
-            key={0}
-            title={localize('Trade on {{website_name}}', { website_name })}
-            subtitle={localize('Option trading account')}
-            button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
-            buttonOnClick={derivOnClick}
-            items={{
-                [localize('Trade type')]: localize('10+'),
-                [localize('Min duration')]: localize('1 tick'),
-                [localize('Max duration')]: localize('365 days'),
-                [localize('Availability')]: localize('24/7'),
-                [localize('Currency')]: localize('USD/GBP/EUR'),
-            }}
-            // TODO: [deriv-eu] Update paths
-            learn_more={[
-                {
-                    text: localize('Option trading'),
-                    path: '/#',
-                },
-                {
-                    text: localize('Dtrader'),
-                    path: '/#',
-                },
-                {
-                    text: localize('DBot'),
-                    path: '/#',
-                },
-            ]}
-        >
-            <p className='account-card__description-text'>
-                {localize(
-                    'Options are contracts that give the owner the right to buy or sell an asset at a fixed price for a specific period of time. That period could be as short as a day or as long as a couple of years, depending on the type of option contract.'
-                )}
-            </p>
-            <p className='account-card__description-text--small'>{localize('Supported platform:')}</p>
-            <p className='account-card__description-text--small'>{localize('DTrader and Dbot')}</p>
-        </AccountCard>,
-        <AccountCard
-            key={1}
-            title={localize('Trade on MT5')}
-            subtitle={localize('Margin trading account')}
-            button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
-            buttonOnClick={mt5OnClick}
-            items={{
-                [localize('Leverage')]: localize('Up to 1:1000'),
-                [localize('Margin call')]: localize('100%'),
-                [localize('Stop out level')]: localize('50%'),
-                [localize('Currency')]: localize('USD'),
-            }}
-            // TODO: [deriv-eu] Update paths
-            learn_more={[
-                {
-                    text: localize('Margin Trading'),
-                    path: '/#',
-                },
-                {
-                    text: localize('DMT5'),
-                    path: '/#',
-                },
-            ]}
-        >
-            <p className='account-card__description-text'>
-                {localize(
-                    'Margin trading is a method of trading assets using funds provided by Deriv.com. It allow you to access greater sums of capital to leverage your positions and realize larger profits on successful trades.'
-                )}
-            </p>
-            <p className='account-card__description-text--small'>{localize('Supported platform:')}</p>
-            <p className='account-card__description-text--small'>{localize('DMT5')}</p>
-        </AccountCard>,
-    ];
-
-    if (no_mt5) {
-        cards.pop();
-    }
+const SyntheticBox = ({ derivOnClick, add_account_label }) => {
     return (
         <Box
-            title={localize('Gaming account ({{type}})', { type: is_demo ? localize('Demo') : localize('Real') })}
+            title={localize('Synthetic')}
             description={localize(
-                'Gaming account offers you to trade Gaming assets like synthetic indices that simulates simulated markets with constant volatilities of 10%, 25%, 50%,75% and 100%.'
-            )}
-            icons={[
-                'IcUnderlying1HZ10V',
-                'IcUnderlying1HZ100V',
-                'IcUnderlyingR_10',
-                'IcUnderlyingR_25',
-                'IcUnderlyingR_50',
-                'IcUnderlyingR_75',
-                'IcUnderlyingR_100',
-            ]}
-            cards={cards}
-        />
-    );
-};
-
-const SyntheticBox = ({ is_demo = false, mt5OnClick }) => {
-    return (
-        <Box
-            title={localize('Synthetic account')}
-            description={localize(
-                'Synthetic account offers you to trade Synthetic assets like synthetic indices that simulates simulated markets with constant volatilities of 10%, 25%, 50%,75% and 100%.'
+                'Trade synthetic indices that are available 24/7, have constant volatility, and are free of market and liquidity risks.'
             )}
             icons={[
                 'IcUnderlying1HZ10V',
@@ -447,11 +149,10 @@ const SyntheticBox = ({ is_demo = false, mt5OnClick }) => {
             cards={[
                 <AccountCard
                     key={0}
-                    title={localize('Trade on {{website_name}}', { website_name })}
-                    subtitle={localize('Option trading account')}
-                    button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
-                    // TODO: [deriv-eu] Add click handler
-                    buttonOnClick={() => {}}
+                    title={localize('Trade Options')}
+                    subtitle={localize('with a Deriv Synthetic account')}
+                    button_text={add_account_label}
+                    buttonOnClick={derivOnClick}
                     items={{
                         [localize('Trade type')]: localize('10+'),
                         [localize('Min duration')]: localize('1 Tick'),
@@ -459,19 +160,21 @@ const SyntheticBox = ({ is_demo = false, mt5OnClick }) => {
                         [localize('Availability')]: localize('24/7'),
                         [localize('Currency')]: localize('USD/GBP/EUR'),
                     }}
-                    // TODO: [deriv-eu] Update paths
-                    learn_more={[
+                    platforms={[
                         {
-                            text: localize('Option trading'),
-                            path: '/#',
+                            icon: 'IcBrandDtrader',
+                            name: 'DTrader',
+                            path: getDerivComLink('dtrader'),
                         },
                         {
-                            text: localize('Dtrader'),
-                            path: '/#',
+                            icon: 'IcBrandDbot',
+                            name: 'DBot',
+                            path: getDerivComLink('dbot'),
                         },
                         {
-                            text: localize('DBot'),
-                            path: '/#',
+                            icon: 'IcBrandSmarttrader',
+                            name: 'SmartTrader',
+                            path: 'https://smarttrader.deriv.app',
                         },
                     ]}
                 >
@@ -483,56 +186,12 @@ const SyntheticBox = ({ is_demo = false, mt5OnClick }) => {
                     <p className='account-card__description-text--small'>{localize('Supported platform:')}</p>
                     <p className='account-card__description-text--small'>{localize('DTrader and Dbot')}</p>
                 </AccountCard>,
-                <AccountCard
-                    key={1}
-                    title={localize('Trade on MT5')}
-                    subtitle={localize('Margin trading account')}
-                    button_text={is_demo ? localize('Add demo account') : localize('Add real account')}
-                    buttonOnClick={mt5OnClick}
-                    items={{
-                        [localize('Leverage')]: localize('Up to 1:1000'),
-                        [localize('Margin call')]: localize('100%'),
-                        [localize('Stop out level')]: localize('50%'),
-                        [localize('Currency')]: localize('USD'),
-                    }}
-                    // TODO: [deriv-eu] Update paths
-                    learn_more={[
-                        {
-                            text: localize('Margin Trading'),
-                            path: '/#',
-                        },
-                        {
-                            text: localize('DMT5'),
-                            path: '/#',
-                        },
-                    ]}
-                >
-                    <p className='account-card__description-text'>
-                        {localize(
-                            'Margin trading is a method of trading assets using funds provided by Deriv.com. It allow you to access greater sums of capital to leverage your positions and realize larger profits on successful trades.'
-                        )}
-                    </p>
-                    <p className='account-card__description-text--small'>{localize('Supported platform:')} </p>
-                    <p className='account-card__description-text--small'>
-                        {localize('DMT5')} <br />
-                    </p>
-                </AccountCard>,
             ]}
         />
     );
 };
 
 class AccountTypesModal extends React.Component {
-    state = {
-        account_type_tab_index: 0,
-    };
-
-    setAccountTypeTabIndex = tab_index => {
-        this.setState({
-            account_type_tab_index: tab_index,
-        });
-    };
-
     closeModal = () => {
         this.props.toggleAccountTypesModal(false);
     };
@@ -545,31 +204,17 @@ class AccountTypesModal extends React.Component {
     redirectToMt5Real = () => {
         if (!this.props.is_logged_in || this.props.is_mt5_allowed) {
             this.redirectToMt5('real');
-            // TODO: [deriv-eu] Update this after EU account sign-up completion
         } else {
-            window.open(urlFor('user/metatrader', undefined, undefined, true));
+            window.open(urlFor('user/metatrader', { legacy: true }));
         }
     };
 
-    redirectToMt5Demo = () => {
-        this.redirectToMt5('demo');
-    };
-
-    createRealAccount = (target = 'svg') => {
+    createRealAccount = target => {
         this.props.toggleAccountTypesModal();
         this.props.openRealAccountSignup(target);
     };
 
     render() {
-        const calculatedBox = boxGenerator({
-            standpoint: this.props.standpoint,
-            has_demo: this.props.has_demo,
-            state: this.state,
-            setAccountTypeTabIndex: this.setAccountTypeTabIndex,
-            redirectToMt5Real: this.redirectToMt5Real,
-            redirectToMt5Demo: this.redirectToMt5Demo,
-            openRealAccountSignup: this.createRealAccount,
-        });
         return (
             <Modal
                 title={localize('Account types')}
@@ -580,16 +225,46 @@ class AccountTypesModal extends React.Component {
             >
                 <ThemedScrollbars autoHide style={{ height: '63.5rem' }}>
                     <div className='account-types'>
-                        <p className='account-types__intro'>
-                            <Localize
-                                i18n_default_text='{{ website_name }} offer various accounts based on 2 account types that suites different need. You can have all of them whenever you want. To view this page again, simply press any of the <0/> icon in Account Switcher.'
-                                values={{ website_name }}
-                                components={[
-                                    <Icon key={0} className='account-types__text-icon' icon='IcInfoOutline' />,
+                        <p className='account-types__intro'>{localize('Choose an account that suits your needs.')}</p>
+                        <div>
+                            <SyntheticBox
+                                derivOnClick={() => {
+                                    if (this.props.has_iom_account) {
+                                        if (this.props.landing_company_shortcode !== 'iom') {
+                                            this.props.switchAccount(getTargetLoginid(this.props.accounts, 'iom'));
+                                        }
+                                        this.closeModal();
+                                    } else {
+                                        this.createRealAccount(this.props.standpoint.gaming_company);
+                                    }
+                                }}
+                                add_account_label={
+                                    this.props.has_iom_account
+                                        ? localize('Trade with this account')
+                                        : localize('Add this real account')
+                                }
+                            />
+                            <FinancialBox
+                                derivOnClick={() => {
+                                    if (this.props.has_maltainvest_account) {
+                                        if (this.props.landing_company_shortcode !== 'maltainvest') {
+                                            this.props.switchAccount(
+                                                getTargetLoginid(this.props.accounts, 'maltainvest')
+                                            );
+                                        }
+                                        this.closeModal();
+                                    } else {
+                                        this.createRealAccount(this.props.standpoint.financial_company);
+                                    }
+                                }}
+                                mt5OnClick={this.redirectToMt5Real}
+                                has_maltainvest_account={this.props.has_maltainvest_account}
+                                add_account_label={[
+                                    localize('Trade with this account'),
+                                    localize('Add this real account'),
                                 ]}
                             />
-                        </p>
-                        {calculatedBox}
+                        </div>
                     </div>
                 </ThemedScrollbars>
             </Modal>
@@ -599,11 +274,11 @@ class AccountTypesModal extends React.Component {
 
 AccountTypesModal.propTypes = {
     has_any_real_account: PropTypes.bool,
-    has_demo: PropTypes.bool,
     is_account_types_modal_visible: PropTypes.bool,
     is_dismissible: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
+    is_virtual: PropTypes.bool,
     residence: PropTypes.string,
     standpoint: PropTypes.object,
     toggleAccountTypesModal: PropTypes.func,
@@ -614,15 +289,19 @@ export default withRouter(
         can_upgrade: client.can_upgrade,
         can_upgrade_to: client.can_upgrade_to,
         has_any_real_account: client.has_any_real_account,
-        // TODO: [deriv-eu] Change this later and make it a separate computed
-        has_demo: (client.standpoint.malta || client.standpoint.maltainvest) && !client.standpoint.iom,
         is_account_types_modal_visible: ui.is_account_types_modal_visible,
+        accounts: client.accounts,
+        landing_company_shortcode: client.landing_company_shortcode,
+        has_iom_account: client.has_iom_account,
+        has_maltainvest_account: client.has_maltainvest_account,
         is_dismissible: !client.should_have_real_account,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,
+        is_virtual: client.is_virtual,
         openRealAccountSignup: ui.openRealAccountSignup,
         residence: client.residence,
         standpoint: client.standpoint,
+        switchAccount: client.switchAccount,
         toggleAccountTypesModal: ui.toggleAccountTypesModal,
     }))(AccountTypesModal)
 );

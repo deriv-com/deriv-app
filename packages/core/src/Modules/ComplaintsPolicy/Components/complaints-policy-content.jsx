@@ -217,9 +217,9 @@ const Content = () => {
     ));
 
     return (
-        <ThemedScrollbars is_bypassed={isMobile()} className='complaints-policy__scrollbars'>
+        <div className='complaints-policy'>
             <div className='complaints-policy__wrapper'>{modal_content}</div>
-        </ThemedScrollbars>
+        </div>
     );
 };
 

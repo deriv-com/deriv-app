@@ -211,17 +211,13 @@ const initRoutesConfig = () => [
             },
         ],
     },
-    ...(isMobile()
-        ? [
-              {
-                  path: routes.complaints_policy,
-                  component: lazyLoadComplaintsPolicy(),
-                  title: localize('Complaints policy'),
-                  icon_component: 'IcComplaintsPolicy',
-                  is_authenticated: true,
-              },
-          ]
-        : []),
+    {
+        path: routes.complaints_policy,
+        component: lazyLoadComplaintsPolicy(),
+        title: localize('Complaints policy'),
+        icon_component: 'IcComplaintsPolicy',
+        is_authenticated: true,
+    },
     ...modules,
 ];
 

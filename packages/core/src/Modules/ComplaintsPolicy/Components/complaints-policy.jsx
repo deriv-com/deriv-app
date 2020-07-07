@@ -18,7 +18,7 @@ const ComplaintsPolicy = ({ routeBackInApp, history }) => {
     return (
         <FadeWrapper is_visible={is_visible} keyname='complaints-policy-page-wrapper'>
             <PageOverlay header={localize('Complaints policy')} onClickClose={onClickClose}>
-                <Div100vhContainer height_offset='80px'>
+                <Div100vhContainer className='complaints-policy__container' height_offset='80px'>
                     <ComplaintsPolicyContent />
                 </Div100vhContainer>
             </PageOverlay>

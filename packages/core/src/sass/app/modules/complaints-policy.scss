@@ -1,11 +1,20 @@
 .complaints-policy {
-    &__scrollbars {
-        margin: 0 1rem;
-        max-height: calc(100vh - 6rem) !important;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    &__container {
+        width: 100%;
+
+        @include mobile {
+            overflow: auto;
+        }
     }
     &__wrapper {
         padding: 0 1.4rem 2.4rem;
         color: var(--text-prominent);
+        max-width: 78rem;
+
         @include mobile {
             padding: 0 0.6rem 2.4rem;
             overflow: auto;

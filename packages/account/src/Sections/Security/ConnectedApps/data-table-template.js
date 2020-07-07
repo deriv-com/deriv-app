@@ -1,5 +1,5 @@
 import React from 'react';
-import { toMoment } from '@deriv/shared/utils/date';
+import { toMoment } from '@deriv/shared';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 

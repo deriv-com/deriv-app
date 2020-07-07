@@ -5,15 +5,10 @@
     text-decoration: none;
     position: relative;
     border-radius: $BORDER_RADIUS;
-    padding: 4px;
+    padding: 1.2rem;
     background-color: var(--general-main-1);
     color: var(--text-prominent);
 
-    .progress-slider,
-    .progress-slider--completed {
-        margin: 0.8rem 0 0;
-        border-bottom: 1px solid var(--general-section-1);
-    }
     &:before {
         content: '';
         position: absolute;
@@ -250,61 +245,6 @@
             }
         }
     }
-    &__footer {
-        margin-bottom: 0.5em;
-        padding: 0 4px;
-
-        &-wrapper {
-            @include typeface(--small-center-normal-black);
-            color: var(--text-prominent);
-            padding: 8px 8px 0;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
-    }
-    &__sell-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: transform 0.25s ease, opacity 0.25s linear;
-        padding-top: 8px;
-        border-top: 1px solid var(--general-section-1);
-
-        &--enter-done {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        &--enter,
-        &--exit {
-            opacity: 0;
-            transform: translateY(-8px);
-        }
-        &--has-cancel-btn {
-            justify-content: space-between;
-
-            .dc-btn--cancel {
-                margin-left: 0.8rem;
-            }
-        }
-        .remaining-time {
-            border-radius: 0.4rem;
-            font-size: 1.2rem;
-            margin-left: 0.8rem;
-            padding-top: 0.2rem;
-        }
-        .dc-btn--sell {
-            height: 32px;
-
-            @include mobile {
-                width: 100%;
-            }
-        }
-        .positions-drawer-dialog-toggle {
-            top: 103px;
-            right: 6px;
-            width: 108px;
-        }
-    }
     &-items-wrapper {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -375,6 +315,7 @@
         display: flex;
         margin-right: 0.4rem;
         align-items: center;
+        justify-content: center;
 
         .result-icon {
             margin-left: 0.4rem;

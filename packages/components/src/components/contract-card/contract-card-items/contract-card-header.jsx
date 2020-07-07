@@ -7,7 +7,13 @@ import Icon from '../../icon';
 import ProgressSlider from '../progress-slider';
 import DesktopWrapper from '../../desktop-wrapper';
 
-const ContractCardHeader = ({ contract_info, has_progress_slider, getContractTypeDisplay }) => {
+const ContractCardHeader = ({
+    card_labels,
+    contract_info,
+    has_progress_slider,
+    getContractTypeDisplay,
+    server_time,
+}) => {
     const current_tick = contract_info.tick_count ? getCurrentTick(contract_info) : null;
     const {
         underlying,
@@ -41,10 +47,12 @@ const ContractCardHeader = ({ contract_info, has_progress_slider, getContractTyp
                 {(!has_progress_slider || !!is_sold) && <div className='progress-slider--completed' />}
                 {has_progress_slider && !is_sold && (
                     <ProgressSlider
-                        is_loading={false}
-                        start_time={purchase_time}
-                        expiry_time={date_expiry}
+                        card_labels={card_labels}
                         current_tick={current_tick}
+                        expiry_time={date_expiry}
+                        is_loading={false}
+                        server_time={server_time}
+                        start_time={purchase_time}
                         ticks_count={tick_count}
                     />
                 )}

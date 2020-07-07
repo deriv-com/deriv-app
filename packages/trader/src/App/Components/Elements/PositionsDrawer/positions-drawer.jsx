@@ -66,6 +66,7 @@ class PositionsDrawer extends React.Component {
             onClickSell,
             onClickRemove,
             onHoverPosition,
+            server_time,
             toggleUnsupportedContractModal,
         } = this.props;
         const portfolio_position = data[index];
@@ -81,10 +82,10 @@ class PositionsDrawer extends React.Component {
                         isScrolling
                             ? {}
                             : {
-                                  appear: 'positions-drawer-card__wrapper--enter',
-                                  enter: 'positions-drawer-card__wrapper--enter',
-                                  enterDone: 'positions-drawer-card__wrapper--enter-done',
-                                  exit: 'positions-drawer-card__wrapper--exit',
+                                  appear: 'contract-card__wrapper--enter',
+                                  enter: 'contract-card__wrapper--enter',
+                                  enterDone: 'contract-card__wrapper--enter-done',
+                                  exit: 'contract-card__wrapper--exit',
                               }
                     }
                     unmountOnExit
@@ -101,6 +102,7 @@ class PositionsDrawer extends React.Component {
                         }}
                         key={portfolio_position.id}
                         currency={currency}
+                        server_time={server_time}
                         show_transition={!isScrolling}
                         toggleUnsupportedContractModal={toggleUnsupportedContractModal}
                         {...portfolio_position}
@@ -262,7 +264,7 @@ PositionsDrawer.propTypes = {
     toggleDrawer: PropTypes.func,
 };
 
-export default connect(({ modules, client, ui }) => ({
+export default connect(({ client, common, modules, ui }) => ({
     currency: client.currency,
     all_positions: modules.portfolio.all_positions,
     error: modules.portfolio.error,
@@ -273,6 +275,7 @@ export default connect(({ modules, client, ui }) => ({
     onHoverPosition: modules.portfolio.onHoverPosition,
     onMount: modules.portfolio.onMount,
     onUnmount: modules.portfolio.onUnmount,
+    server_time: common.server_time,
     symbol: modules.trade.symbol,
     trade_contract_type: modules.trade.contract_type,
     is_positions_drawer_on: ui.is_positions_drawer_on,

@@ -17,13 +17,25 @@ const ContractDrawerCard = ({
     onClickSell,
     onSwipedUp,
     onSwipedDown,
+    server_time,
     status,
     toggleContractAuditDrawer,
 }) => {
     const { is_sold, profit } = contract_info;
 
+    const card_footer = (
+        <CardFooter
+            contract_info={contract_info}
+            is_multiplier={is_multiplier}
+            is_sell_requested={is_sell_requested}
+            onClickCancel={onClickCancel}
+            onClickSell={onClickSell}
+        />
+    );
+
     const contract_card = (
         <ContractCard
+            card_footer={card_footer}
             card_labels={card_labels}
             contract_info={contract_info}
             contract_update={contract_update}
@@ -35,16 +47,9 @@ const ContractDrawerCard = ({
             is_positions={false}
             is_sold={!!is_sold}
             profit_loss={profit}
+            server_time={server_time}
             status={status}
-        >
-            <CardFooter
-                contract_info={contract_info}
-                is_multiplier={is_multiplier}
-                is_sell_requested={is_sell_requested}
-                onClickCancel={onClickCancel}
-                onClickSell={onClickSell}
-            />
-        </ContractCard>
+        />
     );
 
     return (

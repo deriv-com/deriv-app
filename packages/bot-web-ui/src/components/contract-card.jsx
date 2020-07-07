@@ -38,7 +38,6 @@ const ContractCardComponent = ({
                     getContractTypeDisplay={getContractTypeDisplay}
                     is_positions={false}
                     profit_loss={contract.profit}
-                    result={contract.status}
                     server_time={server_time}
                     status={contract.status}
                 />
@@ -61,12 +60,12 @@ ContractCardComponent.propTypes = {
     is_contract_winning: PropTypes.bool,
 };
 
-export default connect(({ contract_card, server_time }) => ({
+export default connect(({ contract_card, common }) => ({
     contract: contract_card.contract,
     is_contract_completed: contract_card.is_contract_completed,
     is_contract_loading: contract_card.is_contract_loading,
     is_contract_losing: contract_card.is_contract_losing,
     is_contract_inactive: contract_card.is_contract_inactive,
     is_contract_winning: contract_card.is_contract_winning,
-    server_time,
+    server_time: common.server_time,
 }))(ContractCardComponent);

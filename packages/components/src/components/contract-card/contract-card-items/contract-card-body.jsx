@@ -155,6 +155,7 @@ const ContractCardBody = ({
                         />
                     ) : (
                         <ProgressSliderMobile
+                            card_labels={card_labels}
                             current_tick={current_tick}
                             expiry_time={date_expiry}
                             is_loading={false}

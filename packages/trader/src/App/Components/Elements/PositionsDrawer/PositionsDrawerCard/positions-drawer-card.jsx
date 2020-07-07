@@ -20,15 +20,26 @@ const PositionsDrawerCard = ({
     onMouseEnter,
     onMouseLeave,
     result,
+    server_time,
     show_transition,
     status,
     toggleUnsupportedContractModal,
 }) => {
-    const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
+
+    const card_footer = (
+        <CardFooter
+            contract_info={contract_info}
+            is_multiplier={is_multiplier}
+            is_sell_requested={is_sell_requested}
+            onClickCancel={onClickCancel}
+            onClickSell={onClickSell}
+        />
+    );
 
     return (
         <ContractCard
+            card_footer={card_footer}
             card_labels={card_labels}
             className={className}
             contract_id={contract_info.contract_id}
@@ -45,19 +56,13 @@ const PositionsDrawerCard = ({
             onClickRemove={onClickRemove}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            result={result || fallback_result}
+            profit_loss={profit_loss}
+            result={result}
+            server_time={server_time}
             show_transition={show_transition}
             status={status}
             toggleUnsupportedContractModal={toggleUnsupportedContractModal}
-        >
-            <CardFooter
-                contract_info={contract_info}
-                is_multiplier={is_multiplier}
-                is_sell_requested={is_sell_requested}
-                onClickCancel={onClickCancel}
-                onClickSell={onClickSell}
-            />
-        </ContractCard>
+        />
     );
 };
 

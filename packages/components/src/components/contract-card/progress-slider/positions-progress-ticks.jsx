@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const ProgressTicks = ({ current_tick, ticks_count }) => {
+const ProgressTicks = ({ card_labels, current_tick, ticks_count }) => {
     const arr_ticks = [...Array(ticks_count).keys()];
     return (
         <div className='progress-slider__ticks'>
@@ -11,7 +11,7 @@ const ProgressTicks = ({ current_tick, ticks_count }) => {
                     i18n_default_text='Tick {{current_tick}}'
                     values={{ current_tick: current_tick.toString() }}
                 /> */}
-                Tick {current_tick}
+                {card_labels.TICK} {current_tick}
             </span>
             <div className='progress-slider__ticks-wrapper'>
                 {arr_ticks.map(idx => (

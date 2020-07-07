@@ -12,6 +12,7 @@ import { getEndTime, isUserSold } from 'Stores/Modules/Contract/Helpers/logic';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import ContractDrawerCard from './contract-drawer-card.jsx';
 import { SwipeableContractAudit } from './swipeable-components.jsx';
+import { connect } from 'Stores/connect';
 
 class ContractDrawer extends React.Component {
     state = {
@@ -45,6 +46,7 @@ class ContractDrawer extends React.Component {
             is_dark_theme,
             onClickCancel,
             onClickSell,
+            server_time,
             status,
             toggleHistoryTab,
         } = this.props;
@@ -82,8 +84,9 @@ class ContractDrawer extends React.Component {
                     onClickSell={onClickSell}
                     onSwipedUp={this.onSwipedUp}
                     onSwipedDown={this.onSwipedDown}
-                    toggleContractAuditDrawer={this.toggleContractAuditDrawer}
+                    server_time={server_time}
                     status={status}
+                    toggleContractAuditDrawer={this.toggleContractAuditDrawer}
                 />
                 <DesktopWrapper>{contract_audit}</DesktopWrapper>
                 <MobileWrapper>
@@ -155,4 +158,8 @@ ContractDrawer.propTypes = {
     status: PropTypes.string,
 };
 
-export default withRouter(ContractDrawer);
+export default withRouter(
+    connect(({ common }) => ({
+        server_time: common.server_time,
+    }))(ContractDrawer)
+);

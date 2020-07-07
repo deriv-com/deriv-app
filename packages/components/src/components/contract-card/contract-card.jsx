@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { isMultiplierContract } from '@deriv/shared';
+import { isMultiplierContract, isMultiplier } from '@deriv/shared';
 import ContractCardLoader from './contract-card-loader';
 import ContractCardHeader from './contract-card-items/contract-card-header.jsx';
 import ContractCardBody from './contract-card-items/contract-card-body.jsx';
@@ -64,9 +64,11 @@ const ContractCard = ({
     const contract_el = (
         <React.Fragment>
             <ContractCardHeader
+                card_labels={card_labels}
                 contract_info={contract_info}
                 has_progress_slider={!is_multiplier}
                 getContractTypeDisplay={getContractTypeDisplay}
+                server_time={server_time}
             />
             {card_body_wrapper}
         </React.Fragment>
@@ -135,10 +137,15 @@ const ContractCard = ({
                     {card_footer}
                 </div>
             ) : (
-                <React.Fragment>
+                <div
+                    className={classNames('contract-card', {
+                        'contract-card--green': !is_multiplier && profit_loss > 0 && !result,
+                        'contract-card--red': !is_multiplier && profit_loss < 0 && !result,
+                    })}
+                >
                     {contract_el}
                     {card_footer}
-                </React.Fragment>
+                </div>
             )}
         </>
     );

@@ -1,4 +1,4 @@
-import { toMoment } from '@deriv/shared/utils/date';
+import { toMoment } from '@deriv/shared';
 
 // TODO: localize
 export const month_headers = {

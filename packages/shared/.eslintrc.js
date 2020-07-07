@@ -54,9 +54,4 @@ module.exports = {
     parserOptions: {
         ecmaVersion : 6,
     },
-    settings: {
-        'import/resolver': {
-            webpack: { config: 'webpack.config.js' }
-        }
-    },
 };

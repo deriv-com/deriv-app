@@ -64,8 +64,8 @@ commands:
     steps:
       - slack/status:
           include_project_field: false
-          failure_message: "Release failed for deriv.com with version *$(cat lib/version)*"
-          success_message: "Release succeeded for deriv.com with version *$(cat lib/version)*"
+          failure_message: "Release failed for deriv.app with version *$(cat lib/version)*"
+          success_message: "Release succeeded for deriv.app with version *$(cat lib/version)*"
           webhook: ${SLACK_WEBHOOK}
 
   deploy:

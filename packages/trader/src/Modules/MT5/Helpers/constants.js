@@ -1,6 +1,5 @@
 import { OSDetect } from '@deriv/shared';
 
-// TODO: [deriv-eu] for EU we should return 'Binary.com-Demo' for demo accounts
 const getServerName = is_demo => (is_demo ? 'Deriv-Demo' : 'Deriv-Server');
 
 const getBrokerName = () => 'Deriv Limited';
@@ -8,7 +7,6 @@ const getBrokerName = () => 'Deriv Limited';
 const getPlatformMt5DownloadLink = (platform = undefined) => {
     switch (platform || OSDetect()) {
         case 'windows':
-            // TODO: [deriv-eu] for EU we should return https://download.mql5.com/cdn/web/16177/mt5/binarycom5setup.exe
             return 'https://download.mql5.com/cdn/web/deriv.limited/mt5/deriv5setup.exe';
         case 'linux':
             return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';

@@ -70,6 +70,11 @@ const initRoutesConfig = () => [
                         title: localize('Deriv password'),
                     },
                     {
+                        path: routes.self_exclusion,
+                        component: SelfExclusion,
+                        title: localize('Self exclusion'),
+                    },
+                    {
                         path: routes.account_limits,
                         component: AccountLimits,
                         title: localize('Account limits'),
@@ -83,11 +88,6 @@ const initRoutesConfig = () => [
                         path: routes.two_factor_authentication,
                         component: TwoFactorAuthentication,
                         title: localize('Two-factor authentication'),
-                    },
-                    {
-                        path: routes.self_exclusion,
-                        component: SelfExclusion,
-                        title: localize('Self exclusion'),
                     },
                 ],
             },

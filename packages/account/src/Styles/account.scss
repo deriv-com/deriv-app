@@ -722,6 +722,7 @@ $MIN_HEIGHT_FLOATING: calc(
         &__error {
             @include typeface(--paragraph-center-normal-red);
             margin-top: 1.6rem;
+            margin-bottom: 1.6rem;
         }
         &__confirm {
             display: flex;
@@ -836,7 +837,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__text--red {
-            @include typeface(--paragraph-left-bold-red);
+            @include typeface(--small-left-bold-red);
         }
     }
     .account-limit-container {

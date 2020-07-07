@@ -12,7 +12,15 @@ import {
     Button,
     DatePicker,
 } from '@deriv/components';
-import { getPropertyValue, toMoment, epochToMoment, isDesktop, isMobile, getDerivComLink } from '@deriv/shared';
+import {
+    getPropertyValue,
+    toMoment,
+    epochToMoment,
+    isDesktop,
+    isMobile,
+    getDerivComLink,
+    formatMoney,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
@@ -66,10 +74,12 @@ class SelfExclusion extends React.Component {
         const is_number = /^\d+(\.\d+)?$/;
         const is_integer = /^\d+$/;
         const is_minutes = /^[0-9]|99999/;
+        const max_number = 9999999999999;
         const six_weeks = 60480; // in minutes
 
         // Messages
         const valid_number_message = localize('Should be a valid number');
+        const max_number_message = localize('Reached maximum number of digits');
 
         const getLimitNumberMessage = (current_value) => (
             <Localize
@@ -95,8 +105,10 @@ class SelfExclusion extends React.Component {
             if (values[item]) {
                 if (!is_number.test(values[item])) {
                     errors[item] = valid_number_message;
-                } else if (this.state.self_exclusions[item] && values[item] > this.state.self_exclusions[item]) {
+                } else if (this.state.self_exclusions[item] && +values[item] > +this.state.self_exclusions[item]) {
                     errors[item] = getLimitNumberMessage(this.state.self_exclusions[item]);
+                } else if (+values[item] > max_number) {
+                    errors[item] = max_number_message;
                 }
             }
         });
@@ -252,7 +264,7 @@ class SelfExclusion extends React.Component {
             show_confirm,
             submit_error_message,
         } = this.state;
-        const { is_virtual, is_switching } = this.props;
+        const { is_virtual, is_switching, currency } = this.props;
 
         if (is_virtual) return <DemoMessage />;
 
@@ -282,7 +294,7 @@ class SelfExclusion extends React.Component {
                                 handleChange,
                                 handleBlur,
                                 isSubmitting,
-                                setTouched,
+                                setFieldTouched,
                                 handleSubmit,
                                 setFieldValue,
                             }) => (
@@ -340,16 +352,40 @@ class SelfExclusion extends React.Component {
                                                 </h2>
                                                 {changed_attributes.map((key, idx) => {
                                                     const need_date_format = ['exclude_until', 'timeout_until'];
+                                                    const need_money_format = [
+                                                        'max_total_stake',
+                                                        'max_turnover',
+                                                        'max_losses',
+                                                        'max_7day_turnover',
+                                                        'max_7day_losses',
+                                                        'max_30day_turnover',
+                                                        'max_30day_losses',
+                                                        'max_balance',
+                                                    ];
+                                                    const need_minutes = ['session_duration_limit'];
+                                                    const need_amount = ['max_open_bets'];
+                                                    let value = '';
+
+                                                    if (need_date_format.includes(key)) {
+                                                        value = toMoment(values[key]).format('DD MMM YYYY');
+                                                    } else if (need_money_format.includes(key)) {
+                                                        value = `${formatMoney(
+                                                            currency,
+                                                            +values[key],
+                                                            true
+                                                        )} ${currency}`;
+                                                    } else if (need_minutes.includes(key)) {
+                                                        value = `${values[key]} Minutes`;
+                                                    } else if (need_amount.includes(key)) {
+                                                        value = `${values[key]}`;
+                                                    }
+
                                                     return (
                                                         <div key={idx} className='self-exclusion__confirm-item'>
                                                             <p className='self-exclusion__confirm-label'>
                                                                 {this.exclusion_texts[key]}
                                                             </p>
-                                                            <p className='self-exclusion__confirm-value'>
-                                                                {need_date_format.includes(key)
-                                                                    ? toMoment(values[key]).format('DD MMM YYYY')
-                                                                    : values[key]}
-                                                            </p>
+                                                            <p className='self-exclusion__confirm-value'>{value}</p>
                                                         </div>
                                                     );
                                                 })}
@@ -368,6 +404,7 @@ class SelfExclusion extends React.Component {
                                                         ]}
                                                     />
                                                 </p>
+                                                <p className='self-exclusion__error'>{submit_error_message}</p>
                                                 <Button
                                                     is_loading={isSubmitting}
                                                     is_disabled={isSubmitting}
@@ -376,7 +413,6 @@ class SelfExclusion extends React.Component {
                                                     type='submit'
                                                     text={localize('Confirm my limits')}
                                                 />
-                                                <p className='self-exclusion__error'>{submit_error_message}</p>
                                             </div>
                                         </>
                                     ) : (
@@ -560,7 +596,7 @@ class SelfExclusion extends React.Component {
                                                                     values.timeout_until &&
                                                                     epochToMoment(values.timeout_until)
                                                                 }
-                                                                onBlur={() => setTouched({ timeout_until: true })}
+                                                                onBlur={() => setFieldTouched('exclude_until')}
                                                                 onChange={({ target }) =>
                                                                     setFieldValue(
                                                                         'timeout_until',
@@ -589,7 +625,7 @@ class SelfExclusion extends React.Component {
                                                                 className='self-exclusion__input'
                                                                 label={localize('Date')}
                                                                 value={values.exclude_until}
-                                                                onBlur={() => setTouched({ exclude_until: true })}
+                                                                onBlur={() => setFieldTouched('exclude_until')}
                                                                 onChange={({ target }) =>
                                                                     setFieldValue(
                                                                         'exclude_until',
@@ -685,6 +721,7 @@ class SelfExclusion extends React.Component {
 }
 
 export default connect(({ client }) => ({
+    currency: client.currency,
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,
     logout: client.logout,

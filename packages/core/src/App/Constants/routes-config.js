@@ -95,6 +95,11 @@ const modules = [
                         title: localize('Deriv password'),
                     },
                     {
+                        path: routes.self_exclusion,
+                        component: Account,
+                        title: localize('Two-factor authentication'),
+                    },
+                    {
                         path: routes.account_limits,
                         component: Account,
                         title: localize('Account limits'),
@@ -106,11 +111,6 @@ const modules = [
                     },
                     {
                         path: routes.two_factor_authentication,
-                        component: Account,
-                        title: localize('Two-factor authentication'),
-                    },
-                    {
-                        path: routes.self_exclusion,
                         component: Account,
                         title: localize('Two-factor authentication'),
                     },

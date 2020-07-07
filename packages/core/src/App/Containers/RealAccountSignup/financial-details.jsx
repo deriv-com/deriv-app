@@ -94,12 +94,6 @@ const TradingExperience = ({
     </React.Fragment>
 );
 class FinancialDetails extends React.Component {
-    form = React.createRef();
-
-    componentWillUnmount() {
-        this.is_mounted = false;
-    }
-
     handleCancel = values => {
         this.props.onSave(this.props.index, values);
         this.props.onCancel();

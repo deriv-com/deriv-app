@@ -7,6 +7,7 @@ export default class DownloadStore {
     }
 
     getSuccessJournalMessage = (message, extra) => {
+        const { profit, sold_for, longcode, transaction_id } = extra;
         switch (message) {
             case 'BLOCK_LOADED': {
                 return localize('Blocks are loaded successfully');
@@ -15,16 +16,16 @@ export default class DownloadStore {
                 return localize('Resale of this contract is not offered.');
             }
             case 'PURCHASE': {
-                return localize(`Bought: ${extra.longcode} (ID: ${extra.transaction_id})`);
+                return localize('Bought: {{longcode}} (ID: {{transaction_id}})', { longcode, transaction_id });
             }
             case 'SELL': {
-                return localize(`Sold for: ${extra.sold_for}`);
+                return localize('Sold for: {{sold_for}}', { sold_for });
             }
             case 'PROFIT': {
-                return localize(`Profit amount: ${extra.profit}`);
+                return localize('Profit amount: {{profit}}', { profit });
             }
             case 'LOST': {
-                return localize(`Loss amount: ${extra.profit}`);
+                return localize('Loss amount: {{profit}}', { profit });
             }
             default:
                 return null;

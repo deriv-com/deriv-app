@@ -45,7 +45,7 @@
             width: 80%;
             margin-bottom: 2.4rem;
         }
-        a {
+        a.dc-btn {
             @include typeface(--paragraph-center-bold-black);
             text-transform: none;
             text-decoration: none;
@@ -54,6 +54,11 @@
             align-items: center;
             justify-content: center;
             align-self: center;
+        }
+        a.email-inline {
+            color: var(--brand-red-coral);
+            font-weight: bold;
+            text-decoration: none;
         }
     }
     .loading-modal {

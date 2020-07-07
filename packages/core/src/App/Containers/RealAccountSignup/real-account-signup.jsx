@@ -99,9 +99,9 @@ class RealAccountSignup extends React.Component {
 
     get modal_height() {
         const { currency, has_real_account } = this.props;
+        if (this.active_modal_index === 3) return 'fit-content'; // Status dialog
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) return '702px'; // Add or manage account modal
-        if (this.active_modal_index === 3) return 'fit-content'; // Status dialog
         return '740px'; // Account wizard modal
     }
 

@@ -124,10 +124,10 @@
                 align-items: center;
 
                 &--is-header {
-                    font-size: 1.8rem;
+                    font-size: 1.6rem;
                     margin: 2rem 0 0;
                     font-weight: bold;
-                    color: var(--text-prominent);
+                    color: var(--text-less-prominent);
                 }
             }
             &__description {

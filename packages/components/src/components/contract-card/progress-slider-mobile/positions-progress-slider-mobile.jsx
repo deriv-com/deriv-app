@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { getTimePercentage } from '@deriv/shared/utils/contract';
+import { getTimePercentage } from '@deriv/shared';
 import ProgressTicksMobile from './progress-ticks-mobile.jsx';
 import CircularProgress from '../../circular-progress';
 import RemainingTime from '../../remaining-time';

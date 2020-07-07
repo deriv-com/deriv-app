@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isHighLow } from '@deriv/shared/utils/shortcode';
-import { getCurrentTick } from '@deriv/shared/utils/contract';
+import { isHighLow, getCurrentTick } from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell.jsx';
 import Icon from '../../icon';
 import ProgressSlider from '../progress-slider';

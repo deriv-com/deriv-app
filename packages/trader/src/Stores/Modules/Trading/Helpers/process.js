@@ -1,5 +1,3 @@
-import extend from 'extend';
-
 import ContractTypeHelper from './contract-type';
 import * as ContractType from '../Actions/contract-type';
 import * as Duration from '../Actions/duration';
@@ -11,7 +9,9 @@ export const processTradeParams = async (store, new_state) => {
 
     // To make sure that every function is invoked and affects the snapshot respectively, we have to use for instead of forEach
     for (let i = 0; i < functions.length; i++) {
-        extendOrReplace(snapshot, await functions[i](snapshot)); // eslint-disable-line no-await-in-loop
+        // Shallow copy with Object.assign is good enough to extend the snapshot with new state
+        // we don't need deep extension here, since each function in functions array composes a property of the store completely
+        Object.assign(snapshot, await functions[i](snapshot)); // eslint-disable-line no-await-in-loop
     }
 
     return snapshot;
@@ -26,24 +26,3 @@ const getMethodsList = (store, new_state) => [
     StartDate.onChangeStartDate,
     Duration.onChangeExpiry, // it should be always after StartDate.onChangeStartDate
 ];
-
-// Some values need to be replaced, not extended
-const extendOrReplace = (source, new_values) => {
-    const to_replace = [
-        'basis_list',
-        'contract_types_list',
-        'duration_units_list',
-        'expiry_type',
-        'form_components',
-        'market_close_times',
-        'trade_types',
-    ];
-
-    to_replace.forEach(key => {
-        if (key in new_values) {
-            source[key] = undefined;
-        }
-    });
-
-    extend(true, source, new_values);
-};

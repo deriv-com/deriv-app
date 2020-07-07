@@ -2,8 +2,8 @@ import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction } from 'mobx';
 import { createTransformer } from 'mobx-utils';
 import { WS } from 'Services/ws-methods';
-import { isMobile } from '@deriv/shared/utils/screen';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isMobile, isEmptyObject } from '@deriv/shared';
+
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractCancelled, contractSold } from './Helpers/portfolio-notifications';
 import { getCurrentTick, getDurationPeriod, getDurationTime, getDurationUnitText } from './Helpers/details';
@@ -115,7 +115,7 @@ export default class PortfolioStore extends BaseStore {
     deepClone = obj => JSON.parse(JSON.stringify(obj));
     updateContractTradeStore(response) {
         const contract_trade = this.root_store.modules.contract_trade;
-        const has_poc = !ObjectUtils.isEmptyObject(response.proposal_open_contract);
+        const has_poc = !isEmptyObject(response.proposal_open_contract);
         const has_error = !!response.error;
         if (!has_poc && !has_error) return;
         if (has_poc) {
@@ -223,7 +223,7 @@ export default class PortfolioStore extends BaseStore {
         const i = this.getPositionIndexById(contract_id);
         const { bid_price } = this.positions[i].contract_info;
         this.positions[i].is_sell_requested = true;
-        if (contract_id && bid_price) {
+        if (contract_id && typeof bid_price === 'number') {
             WS.sell(contract_id, bid_price).then(this.handleSell);
         }
     }

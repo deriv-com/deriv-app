@@ -1,14 +1,14 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import CurrencyUtils from '@deriv/shared/utils/currency';
 import {
+    isCryptocurrency,
     getCancellationPrice,
     getIndicativePrice,
     getLimitOrderAmount,
     getCurrentTick,
     getDisplayStatus,
-} from '@deriv/shared/utils/contract';
+} from '@deriv/shared';
 import ContractCardItem from './contract-card-item.jsx';
 import Money from '../../money';
 import Icon from '../../icon';
@@ -66,7 +66,7 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, status, 
             <ContractCardItem
                 className='contract-card-item__total-profit-loss'
                 header={card_labels.TOTAL_PROFIT_LOSS}
-                is_crypto={CurrencyUtils.isCryptocurrency(currency)}
+                is_crypto={isCryptocurrency(currency)}
                 is_loss={+total_profit < 0}
                 is_won={+total_profit > 0}
             >
@@ -114,7 +114,7 @@ const ContractCardBody = ({
             <div className='contract-card-items-wrapper'>
                 <ContractCardItem
                     header={is_sold ? card_labels.PROFIT_LOSS : card_labels.POTENTIAL_PROFIT_LOSS}
-                    is_crypto={CurrencyUtils.isCryptocurrency(currency)}
+                    is_crypto={isCryptocurrency(currency)}
                     is_loss={+profit < 0}
                     is_won={+profit > 0}
                 >

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { formatDuration, getDiffDuration } from '@deriv/shared/utils/date';
+import { formatDuration, getDiffDuration } from '@deriv/shared';
 
 const RemainingTime = ({ end_time = null, start_time, format, card_labels }) => {
     if (!+end_time || start_time.unix() > +end_time) {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
-import { getContractPath } from '@deriv/shared/utils/route';
+import { getContractPath } from '@deriv/shared';
 import { ContractCard } from '@deriv/components';
 import ContractCardLoader from './contract-card-loading.jsx';
 import { connect } from '../stores/connect';

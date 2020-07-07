@@ -43,7 +43,7 @@ class ProofOfIdentity extends React.Component {
                             removeNotificationMessage={this.props.removeNotificationMessage}
                             refreshNotifications={this.props.refreshNotifications}
                             height={height}
-                            redirectButton={
+                            redirect_button={
                                 should_show_redirect_btn && (
                                     <Button primary onClick={() => this.routeBackTo(from_platform.route)}>
                                         {this.redirectText(from_platform.name)}

@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   k8s: circleci/kubernetes@0.7.0
+  slack: circleci/slack@3.4.2
 commands:
   git_checkout_from_cache:
     description: "Git checkout and save cache"
@@ -30,7 +31,7 @@ commands:
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
-            
+
   npm_install_from_cache:
     description: "npm install and save cache"
     steps:

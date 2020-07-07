@@ -1,9 +1,10 @@
+// Download Journal and Transactions as CSV files
+
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon } from '@deriv/components';
 import '../assets/sass/download.scss';
 import { connect } from '../stores/connect';
-import '../assets/sass/transactions.scss';
 
 const Download = ({ onDownloadClick }) => {
     return (
@@ -22,7 +23,6 @@ Download.propTypes = {
     onDownloadClick: PropTypes.func,
 };
 
-export default connect(({ download, run_panel }) => ({
-    contract_stages: run_panel.contract_stages,
+export default connect(({ download }) => ({
     onDownloadClick: download.onDownloadClick,
 }))(Download);

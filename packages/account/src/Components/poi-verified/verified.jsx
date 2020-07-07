@@ -3,7 +3,6 @@ import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import ContinueTradingButton from 'Components/poa-continue-trading-button';
 import PoaButton from 'Components/poa-button';
-import RedirectButton from 'Components/redirect-button';
 import IconMessageContent from 'Components/icon-message-content';
 
 export const Verified = ({ has_poa, is_description_enabled, redirectButton }) => {

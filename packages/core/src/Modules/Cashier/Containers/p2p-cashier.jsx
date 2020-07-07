@@ -53,7 +53,6 @@ class P2PCashier extends React.Component {
             setNotificationCount,
             location,
             is_mobile,
-            poi_url,
         } = this.props;
         const { order_id } = this.state;
         return (
@@ -81,7 +80,6 @@ P2PCashier.propTypes = {
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
     is_mobile: PropTypes.bool,
-    poi_url: PropTypes.string,
 };
 
 export default withRouter(

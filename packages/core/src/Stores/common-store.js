@@ -1,4 +1,4 @@
-import { action, observable, computed } from 'mobx';
+import { action, observable } from 'mobx';
 import { routes, toMoment, getUrlSmartTrader } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { currentLanguage } from 'Utils/Language/index';

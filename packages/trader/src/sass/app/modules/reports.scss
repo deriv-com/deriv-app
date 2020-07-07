@@ -34,6 +34,9 @@ $side-padding: 1.2em;
             position: relative;
             display: flex;
         }
+        &--date-filter {
+            margin-left: 61.6rem;
+        }
 
         @include desktop {
             align-items: center;

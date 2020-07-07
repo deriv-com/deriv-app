@@ -15,7 +15,7 @@ const personal_details_config = ({ residence_list, account_settings }) => {
         {
             account_opening_reason: {
                 supported_in: ['iom', 'malta', 'maltainvest'],
-                default_value: '',
+                default_value: account_settings.account_opening_reason ?? '',
                 rules: [['req', localize('Account opening reason is required')]],
             },
             salutation: {

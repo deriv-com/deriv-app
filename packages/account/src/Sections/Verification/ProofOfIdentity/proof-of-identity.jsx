@@ -12,8 +12,6 @@ import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 class ProofOfIdentity extends React.Component {
     state = {
         should_show_redirect_btn: false,
-        redirect_text: '',
-        redirect_route: '',
     };
 
     componentDidMount() {
@@ -21,9 +19,7 @@ class ProofOfIdentity extends React.Component {
             if (history_item.action === 'PUSH') {
                 const platform_parent_paths = [routes.mt5, routes.bot, routes.trade, routes.cashier_p2p];
 
-                if (platform_parent_paths.includes(history_item.pathname)) {
-                    return true;
-                }
+                if (platform_parent_paths.includes(history_item.pathname)) return true;
             }
 
             return false;

@@ -189,23 +189,4 @@ export default class CommonStore extends BaseStore {
 
         history.push(routes.trade);
     }
-
-    @computed
-    get is_from_p2p() {
-        const route_to_item = this.app_routing_history.find(history_item => {
-            if (history_item.action === 'PUSH') {
-                const platform_parent_paths = [routes.mt5, routes.bot, routes.trade, routes.cashier_p2p];
-
-                if (platform_parent_paths.includes(history_item.pathname)) {
-                    return true;
-                }
-            }
-
-            return false;
-        });
-
-        if (route_to_item && route_to_item.pathname === routes.cashier_p2p) return true;
-
-        return false;
-    }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { AutoHeightWrapper, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { routes } from '@deriv/shared';
+import { routes, getPlatformRedirect } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
@@ -10,37 +10,23 @@ import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 
 class ProofOfIdentity extends React.Component {
-    state = {
-        should_show_redirect_btn: false,
+    redirectText = (from_platform) => {
+        switch (from_platform) {
+            case 'P2P':
+                return localize('Back To P2P');
+            default:
+                return localize('Back');
+        }
     };
 
-    componentDidMount() {
-        const route_to_item = this.props.app_routing_history.find((history_item) => {
-            if (history_item.action === 'PUSH') {
-                const platform_parent_paths = [routes.mt5, routes.bot, routes.trade, routes.cashier_p2p];
-
-                if (platform_parent_paths.includes(history_item.pathname)) return true;
-            }
-
-            return false;
-        });
-
-        if (route_to_item && route_to_item.pathname === routes.cashier_p2p) {
-            this.setState({
-                should_show_redirect_btn: true,
-                redirect_text: localize('Back to P2P'),
-                redirect_route: routes.cashier_p2p,
-            });
-        }
-    }
-
-    routeBackTo = () => {
-        if (this.state.should_show_redirect_btn) {
-            this.props.routeBackInApp(this.props.history, [this.state.redirect_route]);
-        }
+    routeBackTo = (redirect_route) => {
+        this.props.routeBackInApp(this.props.history, [redirect_route]);
     };
 
     render() {
+        const from_platform = getPlatformRedirect(this.props.app_routing_history);
+        const should_show_redirect_btn = from_platform.name === 'P2P';
+
         if (this.props.is_virtual) return <DemoMessage />;
         if (this.props.has_missing_required_field) return <MissingPersonalDetails />;
 
@@ -58,9 +44,9 @@ class ProofOfIdentity extends React.Component {
                             refreshNotifications={this.props.refreshNotifications}
                             height={height}
                             redirectButton={
-                                this.state.should_show_redirect_btn && (
-                                    <Button primary onClick={this.routeBackTo}>
-                                        {this.state.redirect_text}
+                                should_show_redirect_btn && (
+                                    <Button primary onClick={() => this.routeBackTo(from_platform.route)}>
+                                        {this.redirectText(from_platform.name)}
                                     </Button>
                                 )
                             }

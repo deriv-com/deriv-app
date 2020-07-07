@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, computed } from 'mobx';
 import { routes, toMoment, getUrlSmartTrader } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { currentLanguage } from 'Utils/Language/index';
@@ -188,5 +188,20 @@ export default class CommonStore extends BaseStore {
         }
 
         history.push(routes.trade);
+    }
+
+    @computed
+    get getPlatformFrom() {
+        return (
+            this.app_routing_history.find(history_item => {
+                if (history_item.action === 'PUSH') {
+                    const platform_parent_paths = [routes.mt5, routes.bot, routes.trade, routes.cashier_p2p];
+
+                    if (platform_parent_paths.includes(history_item.pathname)) return true;
+                }
+
+                return false;
+            }) ?? routes.trade
+        );
     }
 }

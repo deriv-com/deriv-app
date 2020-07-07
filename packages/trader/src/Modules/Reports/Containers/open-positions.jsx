@@ -92,7 +92,7 @@ const OpenPositionsTable = ({
                                 rowRenderer={mobileRowRenderer}
                                 getRowAction={getRowAction}
                                 custom_width={'100%'}
-                                getRowSize={() => 194}
+                                getRowSize={() => (isMobile() ? 202 : 194)}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataList>

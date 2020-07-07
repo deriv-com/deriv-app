@@ -17,7 +17,7 @@ export const SwipeableContractAudit = ({ is_multiplier, children, onSwipedDown }
 
     return ReactDOM.createPortal(
         <Div100vhContainer className='contract-audit-card' height_offset='220px'>
-            <div {...swipe_handlers} style={{ height: is_multiplier ? 'calc(100% - 60px)' : '100%' }}>
+            <div {...swipe_handlers} style={{ height: is_multiplier ? 'calc(100% - 40px)' : '100%' }}>
                 {children}
             </div>
         </Div100vhContainer>,

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Money, ThemedScrollbars } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
 import ContractAuditItem from './contract-audit-item.jsx';
@@ -18,31 +19,33 @@ const ContractHistory = ({ currency, history = [] }) => {
         );
     }
     return (
-        <ThemedScrollbars className='contract-audit__tabs-content'>
-            {history.map((item, key) => (
-                <ContractAuditItem
-                    key={key}
-                    id={`dt_history_label_${key}`}
-                    label={item.display_name}
-                    timestamp={+item.order_date}
-                    value={
-                        Math.abs(+item.order_amount) !== 0 ? (
-                            <React.Fragment>
-                                {+item.order_amount < 0 && <strong>-</strong>}
-                                <Money amount={item.order_amount} currency={currency} />
-                                {item.value && (
-                                    <React.Fragment>
-                                        <br />
-                                        <span>({item.value})</span>
-                                    </React.Fragment>
-                                )}
-                            </React.Fragment>
-                        ) : (
-                            localize('Cancelled')
-                        )
-                    }
-                />
-            ))}
+        <ThemedScrollbars is_bypassed={isMobile()}>
+            <div className='contract-audit__tabs-content'>
+                {history.map((item, key) => (
+                    <ContractAuditItem
+                        key={key}
+                        id={`dt_history_label_${key}`}
+                        label={item.display_name}
+                        timestamp={+item.order_date}
+                        value={
+                            Math.abs(+item.order_amount) !== 0 ? (
+                                <React.Fragment>
+                                    {+item.order_amount < 0 && <strong>-</strong>}
+                                    <Money amount={item.order_amount} currency={currency} />
+                                    {item.value && (
+                                        <React.Fragment>
+                                            <br />
+                                            <span>({item.value})</span>
+                                        </React.Fragment>
+                                    )}
+                                </React.Fragment>
+                            ) : (
+                                localize('Cancelled')
+                            )
+                        }
+                    />
+                ))}
+            </div>
         </ThemedScrollbars>
     );
 };

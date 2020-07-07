@@ -1,11 +1,12 @@
 import React from 'react';
 import { Icon, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { ContinueTradingButton } from 'Components/poa-continue-trading-button/continue-trading-button.jsx';
-import { PoaButton } from 'Components/poa-button/poa-button.jsx';
+import ContinueTradingButton from 'Components/poa-continue-trading-button';
+import PoaButton from 'Components/poa-button';
+import RedirectButton from 'Components/redirect-button';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const Verified = ({ has_poa, is_description_enabled, redirectBack }) => {
+export const Verified = ({ has_poa, is_description_enabled, show_redirect_btn, routeBackInApp }) => {
     const message = localize('Your proof of identity is verified');
     if (has_poa) {
         return (
@@ -21,11 +22,7 @@ export const Verified = ({ has_poa, is_description_enabled, redirectBack }) => {
             text={localize('To continue trading, you must also submit a proof of address.')}
         >
             {is_description_enabled && <PoaButton />}
-            {redirectBack && (
-                <Button onClick={redirectBack} primary>
-                    {localize('Go back P2P')}
-                </Button>
-            )}
+            {show_redirect_btn && <RedirectButton onClick={routeBackInApp} />}
         </IconMessageContent>
     );
 };

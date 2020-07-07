@@ -1,40 +1,40 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, DesktopWrapper } from '@deriv/components';
-import ContractCardHeader from 'App/Components/Elements/ContractCard/contract-card-header.jsx';
-import ContractTypeCell from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
-import ProgressSlider from 'App/Components/Elements/PositionsDrawer/ProgressSlider';
-import Shortcode from 'Modules/Reports/Helpers/shortcode';
-import { getCurrentTick } from 'Stores/Modules/Portfolio/Helpers/details';
+import { isHighLow } from '@deriv/shared/utils/shortcode';
+import { getCurrentTick } from '@deriv/shared/utils/contract';
+import ContractTypeCell from './contract-type-cell.jsx';
+import Icon from '../../icon';
+import ProgressSlider from '../progress-slider';
+import DesktopWrapper from '../../desktop-wrapper';
 
-const CardHeader = ({ contract_info, has_progress_slider }) => {
+const ContractCardHeader = ({ contract_info, has_progress_slider, getContractTypeDisplay }) => {
+    const current_tick = contract_info.tick_count ? getCurrentTick(contract_info) : null;
     const {
-        contract_type,
-        multiplier,
-        date_expiry,
-        display_name,
-        is_sold,
-        purchase_time,
-        shortcode,
-        tick_count,
         underlying,
+        display_name,
+        multiplier,
+        contract_type,
+        shortcode,
+        purchase_time,
+        date_expiry,
+        tick_count,
+        is_sold,
     } = contract_info;
 
-    const current_tick = tick_count ? getCurrentTick(contract_info) : null;
-
     return (
-        <ContractCardHeader>
+        <>
             <div className={classNames('contract-card__grid', 'contract-card__grid-underlying-trade')}>
-                <div id='dt_underlying_label' className='contract-card__underlying-name'>
+                <div id='contract_card_underlying_label' className='contract-card__underlying-name'>
                     <Icon icon={underlying ? `IcUnderlying${underlying}` : 'IcUnknown'} width={40} size={32} />
                     <span className='contract-card__symbol'>{display_name}</span>
                 </div>
-                <div id='dt_contract_type_label' className='contract-card__type'>
+                <div id='contract_card_type_label' className='contract-card__type'>
                     <ContractTypeCell
                         multiplier={multiplier}
                         type={contract_type}
-                        is_high_low={Shortcode.isHighLow({ shortcode })}
+                        is_high_low={isHighLow({ shortcode })}
+                        getContractTypeDisplay={getContractTypeDisplay}
                     />
                 </div>
             </div>
@@ -50,13 +50,15 @@ const CardHeader = ({ contract_info, has_progress_slider }) => {
                     />
                 )}
             </DesktopWrapper>
-        </ContractCardHeader>
+        </>
     );
 };
 
-CardHeader.propTypes = {
+ContractCardHeader.propTypes = {
     contract_info: PropTypes.object,
     has_progress_slider: PropTypes.bool,
+    getContractTypeDisplay: PropTypes.func,
+    is_positions: PropTypes.bool,
 };
 
-export default CardHeader;
+export default ContractCardHeader;

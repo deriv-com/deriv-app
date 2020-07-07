@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Collapsible } from '@deriv/components';
-import ContractCard from 'App/Components/Elements/ContractCard';
-import CardBody from './contract-drawer-card-body.jsx';
-import CardFooter from './contract-drawer-card-footer.jsx';
-import CardHeader from './contract-drawer-card-header.jsx';
+import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv/components';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
+import { card_labels, getContractTypeDisplay } from '../../../../Constants/contract';
+import CardFooter from './contract-drawer-card-footer.jsx';
+import { getContractPath } from '@deriv/shared/utils/route';
 
 const ContractDrawerCard = ({
     contract_info,
@@ -23,34 +22,21 @@ const ContractDrawerCard = ({
 }) => {
     const { is_sold, profit } = contract_info;
 
-    const card_body = (
-        <CardBody
+    const contract_card = (
+        <ContractCard
+            card_labels={card_labels}
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}
+            getContractPath={getContractPath}
+            getContractTypeDisplay={getContractTypeDisplay}
+            has_progress_slider={!is_multiplier}
             is_multiplier={is_multiplier}
-            status={status}
-        />
-    );
-
-    const card_body_wrapper = (
-        <React.Fragment>
-            <DesktopWrapper>{card_body}</DesktopWrapper>
-            <MobileWrapper>
-                <div className='contract-card__body-wrapper contract-card__separator'>{card_body}</div>
-            </MobileWrapper>
-        </React.Fragment>
-    );
-
-    const contract_card = (
-        <ContractCard
-            is_multiplier={is_multiplier}
-            contract_info={contract_info}
-            profit_loss={profit}
+            is_positions={false}
             is_sold={!!is_sold}
+            profit_loss={profit}
+            status={status}
         >
-            <CardHeader contract_info={contract_info} has_progress_slider={!is_multiplier} />
-            {card_body_wrapper}
             <CardFooter
                 contract_info={contract_info}
                 is_multiplier={is_multiplier}

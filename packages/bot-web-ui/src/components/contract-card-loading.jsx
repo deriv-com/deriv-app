@@ -11,17 +11,17 @@ const ContractCardLoader = () => (
     >
         <rect x='12' y='15' rx='0' ry='0' width='25' height='25' />
         <rect x='45' y='24' rx='0' ry='0' width='70' height='8' />
-        <rect x='154' y='15' rx='0' ry='0' width='25' height='25' />
-        <rect x='187' y='24' rx='0' ry='0' width='70' height='8' />
+        <rect x='200' y='15' rx='0' ry='0' width='25' height='25' />
+        <rect x='233' y='24' rx='0' ry='0' width='70' height='8' />
         <rect x='12' y='57' rx='0' ry='0' width='308' height='1' />
-        <rect x='40' y='75' rx='0' ry='0' width='100' height='8' />
-        <rect x='40' y='90' rx='0' ry='0' width='60' height='8' />
-        <rect x='40' y='115' rx='0' ry='0' width='100' height='8' />
-        <rect x='40' y='130' rx='0' ry='0' width='60' height='8' />
-        <rect x='200' y='75' rx='0' ry='0' width='100' height='8' />
-        <rect x='200' y='90' rx='0' ry='0' width='60' height='8' />
-        <rect x='200' y='115' rx='0' ry='0' width='100' height='8' />
-        <rect x='200' y='130' rx='0' ry='0' width='60' height='8' />
+        <rect x='12' y='75' rx='0' ry='0' width='100' height='8' />
+        <rect x='12' y='90' rx='0' ry='0' width='60' height='8' />
+        <rect x='12' y='115' rx='0' ry='0' width='100' height='8' />
+        <rect x='12' y='130' rx='0' ry='0' width='60' height='8' />
+        <rect x='154' y='75' rx='0' ry='0' width='100' height='8' />
+        <rect x='154' y='90' rx='0' ry='0' width='60' height='8' />
+        <rect x='154' y='115' rx='0' ry='0' width='100' height='8' />
+        <rect x='154' y='130' rx='0' ry='0' width='60' height='8' />
     </ContentLoader>
 );
 

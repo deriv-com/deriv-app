@@ -1,19 +1,21 @@
-let all_routes_config = [];
+import {
+    getAllRoutesConfig,
+    getSelectedRoute,
+    addRoutesConfig,
+    normalizePath,
+    findRouteByPath,
+    isRouteVisible,
+    getPath,
+    getContractPath,
+} from './route';
 
-const addRoutesConfig = (routes_config, should_init) => {
-    if (should_init) all_routes_config = [];
-    all_routes_config.push(...routes_config);
+export default {
+    getAllRoutesConfig,
+    getSelectedRoute,
+    addRoutesConfig,
+    normalizePath,
+    findRouteByPath,
+    isRouteVisible,
+    getPath,
+    getContractPath,
 };
-
-const getAllRoutesConfig = () => {
-    return all_routes_config;
-};
-
-const getSelectedRoute = ({ routes, pathname }) => {
-    const route = routes.find(r => r.path === pathname) || routes.find(r => r.default) || routes[0];
-    if (!route) return null;
-
-    return route;
-};
-
-export default { getAllRoutesConfig, getSelectedRoute, addRoutesConfig };

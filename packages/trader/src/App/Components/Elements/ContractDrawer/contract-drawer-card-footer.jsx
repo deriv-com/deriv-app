@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 import React from 'react';
 import { Button } from '@deriv/components';
-import ContractCardFooter from 'App/Components/Elements/ContractCard/contract-card-footer.jsx';
 import TogglePositionsDrawerDialog from 'App/Components/Elements/PositionsDrawer/toggle-positions-drawer-dialog.jsx';
 import { localize } from '@deriv/translations';
 import { isValidToCancel, isValidToSell } from 'Stores/Modules/Contract/Helpers/logic';
@@ -14,7 +13,7 @@ const CardFooter = ({ contract_info, is_multiplier, is_sell_requested, onClickCa
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_valid_to_sell = isValidToSell(contract_info);
     return (
-        <ContractCardFooter>
+        <div className='contract-card__footer'>
             <CSSTransition
                 in={!!(isValidToSell(contract_info) || (is_multiplier && !is_sold))}
                 timeout={250}
@@ -59,7 +58,7 @@ const CardFooter = ({ contract_info, is_multiplier, is_sell_requested, onClickCa
                     </div>
                 )}
             </CSSTransition>
-        </ContractCardFooter>
+        </div>
     );
 };
 

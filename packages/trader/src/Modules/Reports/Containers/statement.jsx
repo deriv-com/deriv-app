@@ -178,7 +178,6 @@ class Statement extends React.Component {
                             ? account_statistics_component
                             : undefined
                     }
-                    // optional_component={account_statistics_component}
                     filter_component={filter_component}
                 />
                 {data.length === 0 || is_empty ? (

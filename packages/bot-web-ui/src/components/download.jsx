@@ -1,10 +1,8 @@
-// Download Journal and Transactions as CSV files
-
-import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon, DesktopWrapper } from '@deriv/components';
-import '../assets/sass/download.scss';
+import { Button, DesktopWrapper, Icon } from '@deriv/components';
+import PropTypes from 'prop-types';
 import { connect } from '../stores/connect';
+import '../assets/sass/download.scss';
 
 const Download = ({ onDownloadClick, is_clear_stat_disabled }) => {
     return (
@@ -24,6 +22,7 @@ const Download = ({ onDownloadClick, is_clear_stat_disabled }) => {
 
 Download.propTypes = {
     onDownloadClick: PropTypes.func,
+    is_clear_stat_disabled: PropTypes.bool,
 };
 
 export default connect(({ download, run_panel }) => ({

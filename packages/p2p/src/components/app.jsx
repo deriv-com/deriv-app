@@ -7,14 +7,13 @@ import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
-import { orderToggleIndex } from './orders/order-info';
+import OrderInfo, { orderToggleIndex } from './orders/order-info';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
 import NicknameForm from './nickname/nickname-form.jsx';
 import Download from './verification/download.jsx';
 import Verification from './verification/verification.jsx';
-import OrderInfo from './orders/order-info';
 import './app.scss';
 
 const allowed_currency = 'USD';
@@ -221,7 +220,6 @@ class App extends React.Component {
             const old_order = old_orders.find(o => o.id === new_order.id);
             const notification = notifications.find(n => n.order_id === new_order.id);
             const is_current_order = new_order.id === this.props.order_id;
-            console.log(order_info.is_active);
             const notification_obj = {
                 order_id: new_order.id,
                 is_seen: is_current_order,

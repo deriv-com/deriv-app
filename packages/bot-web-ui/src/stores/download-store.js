@@ -1,6 +1,7 @@
 import { action } from 'mobx';
 import { localize } from '@deriv/translations';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
+import { transaction_elements } from '../constants/transactions';
 
 export default class DownloadStore {
     constructor(root_store) {
@@ -53,8 +54,8 @@ export default class DownloadStore {
         ];
         const transaction_messages = this.root_store.transactions.elements;
         transaction_messages.map(item => {
-            if (item.type === 'contract') {
-                const arr = [
+            if (item.type === transaction_elements.CONTRACT) {
+                const array_message = [
                     item.data.display_name,
                     item.data.transaction_ids.buy,
                     item.data.transaction_ids.sell,
@@ -67,7 +68,7 @@ export default class DownloadStore {
                     item.data.buy_price,
                     item.data.profit,
                 ];
-                transaction_csv_titles.push(arr);
+                transaction_csv_titles.push(array_message);
             }
         });
 
@@ -82,6 +83,8 @@ export default class DownloadStore {
         document.body.appendChild(transaction_link);
 
         transaction_link.click();
+
+        transaction_link.parentNode.removeChild(transaction_link);
     };
 
     @action.bound
@@ -92,14 +95,14 @@ export default class DownloadStore {
         const journal_messages = this.root_store.journal.filtered_messages;
 
         journal_messages.map(item => {
-            let arrayMessage;
+            let array_message;
             if (item.message_type !== 'success') {
-                arrayMessage = item.message;
+                array_message = item.message;
             } else {
-                arrayMessage = this.getSuccessJournalMessage(item.message.toString(), item.extra);
+                array_message = this.getSuccessJournalMessage(item.message.toString(), item.extra);
             }
 
-            const arr = [item.date, item.time, arrayMessage];
+            const arr = [item.date, item.time, array_message];
             journal_csv_titles.push(arr);
         });
 
@@ -114,5 +117,7 @@ export default class DownloadStore {
         document.body.appendChild(journal_link);
 
         journal_link.click();
+
+        journal_link.parentNode.removeChild(journal_link);
     };
 }

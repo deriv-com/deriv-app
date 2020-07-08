@@ -100,7 +100,7 @@ export default class DownloadStore {
         const journalEncodedUri = encodeURI(journalCsvContent);
         const journalLink = document.createElement('a');
         journalLink.setAttribute('href', journalEncodedUri);
-        journalLink.setAttribute('download', 'Journal.csv');
+        journalLink.setAttribute('download', localize('Journal.csv'));
         document.body.appendChild(journalLink);
 
         transactionLink.click();

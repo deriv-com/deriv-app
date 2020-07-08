@@ -57,6 +57,7 @@
     &__subheader {
         display: flex;
         height: 72px;
+        min-height: 72px;
         border-bottom: 1px solid var(--general-section-2);
         justify-content: center;
         align-items: center;

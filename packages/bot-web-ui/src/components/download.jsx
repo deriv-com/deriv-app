@@ -6,12 +6,12 @@ import { connect } from '../stores/connect';
 import '../assets/sass/download.scss';
 
 const Download = ({ tab, onClickDownloadTransaction, onClickDownloadJournal, is_clear_stat_disabled }) => {
-    let clickFunction, popover_message;
+    let click_function, popover_message;
     if (tab === 'transactions') {
-        clickFunction = onClickDownloadTransaction;
+        click_function = onClickDownloadTransaction;
         popover_message = localize('Download your transaction history.');
     } else if (tab === 'journal') {
-        clickFunction = onClickDownloadJournal;
+        click_function = onClickDownloadJournal;
         popover_message = localize('Download your journal.');
     }
     return (
@@ -29,7 +29,7 @@ const Download = ({ tab, onClickDownloadTransaction, onClickDownloadJournal, is_
                         is_disabled={is_clear_stat_disabled}
                         className='download__button'
                         icon={<Icon icon='IcDownload' className='download__icon' />}
-                        onClick={clickFunction}
+                        onClick={click_function}
                     />
                 </Popover>
             </div>

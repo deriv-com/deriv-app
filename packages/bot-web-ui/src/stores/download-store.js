@@ -80,6 +80,7 @@ export default class DownloadStore {
         transaction_link.setAttribute('href', transaction_encoded_uri);
         transaction_link.setAttribute('download', localize('Transactions.csv'));
         document.body.appendChild(transaction_link);
+
         transaction_link.click();
     };
 

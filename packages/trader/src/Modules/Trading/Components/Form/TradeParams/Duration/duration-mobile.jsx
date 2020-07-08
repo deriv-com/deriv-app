@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isEmptyObject, addComma } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { addComma } from '@deriv/shared/utils/currency';
+
 import { connect } from 'Stores/connect';
 import { getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
 
@@ -63,7 +63,7 @@ class Ticks extends React.Component {
                 on_change_obj.duration = duration;
             }
 
-            if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
+            if (!isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
             toggleModal();
         };
 
@@ -163,7 +163,7 @@ const Numbers = ({
             on_change_obj.expiry_type = 'duration';
         }
 
-        if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
+        if (!isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
         toggleModal();
     };
 

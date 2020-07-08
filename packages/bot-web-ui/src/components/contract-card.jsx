@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Icon, Money, IconTradeTypes } from '@deriv/components';
 import React from 'react';
 import PropTypes from 'prop-types';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { isCryptocurrency } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getIndicativePrice, isEnded, getContractTypeName } from '@deriv/bot-skeleton';
 import ContractCardLoader from './contract-card-loading.jsx';
@@ -67,9 +67,7 @@ const ContractCard = ({
                                     'db-contract-card__profit-loss',
                                     'db-contract-card__profit-loss-amount',
                                     {
-                                        'db-contract-card__profit-loss--is-crypto': CurrencyUtils.isCryptocurrency(
-                                            contract.currency
-                                        ),
+                                        'db-contract-card__profit-loss--is-crypto': isCryptocurrency(contract.currency),
                                         'db-contract-card__profit-loss--negative': contract.profit < 0,
                                         'db-contract-card__profit-loss--positive': contract.profit > 0,
                                     }

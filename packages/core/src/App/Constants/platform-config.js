@@ -1,5 +1,5 @@
-import routes from '@deriv/shared/utils/routes';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { routes, isDesktop } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 
 const platform_config = [

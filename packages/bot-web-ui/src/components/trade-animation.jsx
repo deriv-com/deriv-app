@@ -135,5 +135,4 @@ export default connect(({ run_panel, contract_card }) => ({
     onRunButtonClick: run_panel.onRunButtonClick,
     onStopButtonClick: run_panel.onStopButtonClick,
     profit: contract_card.profit,
-    should_show_overlay: run_panel.should_show_overlay,
 }))(TradeAnimation);

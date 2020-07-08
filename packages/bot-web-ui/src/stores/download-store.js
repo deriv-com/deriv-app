@@ -110,8 +110,5 @@ export default class DownloadStore {
 
         transaction_link.click();
         journal_link.click();
-
-        transaction_link.parentNode.removeChild(transaction_link);
-        journal_link.parentNode.removeChild(journal_link);
     };
 }

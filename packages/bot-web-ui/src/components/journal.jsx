@@ -133,7 +133,7 @@ const JournalLoader = () => (
 const Journal = ({ filtered_messages, contract_stage, is_stop_button_visible, ...props }) => {
     return (
         <div className='journal run-panel-tab__content'>
-            <Download />
+            <Download tab='journal' />
             <Tools {...props} />
             <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 50px)'}>
                 <div className='journal__item-list'>

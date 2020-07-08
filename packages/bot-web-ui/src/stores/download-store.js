@@ -34,7 +34,7 @@ export default class DownloadStore {
     };
 
     @action.bound
-    onDownloadClick = () => {
+    onClickDownloadTransaction = () => {
         // Transaction Array
         const transaction_csv_titles = [
             [
@@ -71,6 +71,20 @@ export default class DownloadStore {
             }
         });
 
+        // Push Transaction array to CSV
+        const transaction_csv_content = `data:text/csv;charset=utf-8, ${transaction_csv_titles
+            .map(e => e.join(','))
+            .join('\n')}`;
+        const transaction_encoded_uri = encodeURI(transaction_csv_content);
+        const transaction_link = document.createElement('a');
+        transaction_link.setAttribute('href', transaction_encoded_uri);
+        transaction_link.setAttribute('download', localize('Transactions.csv'));
+        document.body.appendChild(transaction_link);
+        transaction_link.click();
+    };
+
+    @action.bound
+    onClickDownloadJournal = () => {
         // Journal Array
         const journal_csv_titles = [[localize('Date'), localize('Time'), localize('Message')]];
 
@@ -88,16 +102,6 @@ export default class DownloadStore {
             journal_csv_titles.push(arr);
         });
 
-        // Push Transaction array to CSV
-        const transaction_csv_content = `data:text/csv;charset=utf-8, ${transaction_csv_titles
-            .map(e => e.join(','))
-            .join('\n')}`;
-        const transaction_encoded_uri = encodeURI(transaction_csv_content);
-        const transaction_link = document.createElement('a');
-        transaction_link.setAttribute('href', transaction_encoded_uri);
-        transaction_link.setAttribute('download', localize('Transactions.csv'));
-        document.body.appendChild(transaction_link);
-
         // Push Journal array to CSV
         const journal_csv_content = `data:text/csv;charset=utf-8, ${journal_csv_titles
             .map(e => e.join(','))
@@ -108,7 +112,6 @@ export default class DownloadStore {
         journal_link.setAttribute('download', localize('Journal.csv'));
         document.body.appendChild(journal_link);
 
-        transaction_link.click();
         journal_link.click();
     };
 }

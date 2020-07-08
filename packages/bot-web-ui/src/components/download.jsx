@@ -4,7 +4,13 @@ import PropTypes from 'prop-types';
 import { connect } from '../stores/connect';
 import '../assets/sass/download.scss';
 
-const Download = ({ onDownloadClick, is_clear_stat_disabled }) => {
+const Download = ({ tab, onClickDownloadTransaction, onClickDownloadJournal, is_clear_stat_disabled }) => {
+    let clickFunction;
+    if (tab === 'transactions') {
+        clickFunction = onClickDownloadTransaction;
+    } else if (tab === 'journal') {
+        clickFunction = onClickDownloadJournal;
+    }
     return (
         <DesktopWrapper>
             <div className='download__container'>
@@ -13,7 +19,7 @@ const Download = ({ onDownloadClick, is_clear_stat_disabled }) => {
                     is_disabled={is_clear_stat_disabled}
                     className='download__button'
                     icon={<Icon icon='IcDownload' className='download__icon' />}
-                    onClick={onDownloadClick}
+                    onClick={clickFunction}
                 />
             </div>
         </DesktopWrapper>
@@ -21,11 +27,14 @@ const Download = ({ onDownloadClick, is_clear_stat_disabled }) => {
 };
 
 Download.propTypes = {
-    onDownloadClick: PropTypes.func,
+    onClickDownloadTransaction: PropTypes.func,
+    onClickDownloadJournal: PropTypes.func,
+    tab: PropTypes.string,
     is_clear_stat_disabled: PropTypes.bool,
 };
 
 export default connect(({ download, run_panel }) => ({
-    onDownloadClick: download.onDownloadClick,
+    onClickDownloadTransaction: download.onClickDownloadTransaction,
+    onClickDownloadJournal: download.onClickDownloadJournal,
     is_clear_stat_disabled: run_panel.is_clear_stat_disabled,
 }))(Download);

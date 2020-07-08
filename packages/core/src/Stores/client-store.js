@@ -1086,7 +1086,6 @@ export default class ClientStore extends BaseStore {
 
         if (search) {
             let search_params = new URLSearchParams(window.location.search);
-            console.log(search_params);
 
             search_params.forEach((value, key) => {
                 const account_keys = ['acct', 'token', 'cur'];
@@ -1100,7 +1099,6 @@ export default class ClientStore extends BaseStore {
             // delete account query params - but keep other query params (e.g. utm)
             Object.keys(obj_params).forEach(key => search_params.delete(key));
             search_params = search_params?.toString();
-            console.log(search_params);
             const search_param_without_account = search_params ? `?${search_params}` : '/';
             history.replaceState(null, null, `${search_param_without_account}${window.location.hash}`);
         }

@@ -103,14 +103,15 @@ const getMT5AccountDisplay = (group) => {
     return display_text;
 };
 
-const ExistingAccountHasBalance = (accounts_with_balance, mt5_login_list, onBackClick) => {
+const ExistingAccountHasBalance = ({ accounts_with_balance, mt5_login_list, onBackClick }) => {
     const mt5_with_balance_id = Object.keys(accounts_with_balance).filter(
         (account_id) => !accounts_with_balance[account_id].currency
     );
     const mt5_accounts = [];
-    mt5_with_balance_id.forEach((id) =>
-        mt5_login_list.forEach((account_obj) => account_obj.login === id && mt5_accounts.push(account_obj))
-    );
+    mt5_with_balance_id.length != 0 &&
+        mt5_with_balance_id.forEach((id) =>
+            mt5_login_list.forEach((account_obj) => account_obj.login === id && mt5_accounts.push(account_obj))
+        );
     return (
         <div className='existing-account-has-balance'>
             <p className='existing-account-has-balance__action'>
@@ -443,12 +444,13 @@ class DeactivateAccountReason extends React.Component {
                     )}
                     {this.state.which_modal_should_render === 'AccountHasOpenPositions' &&
                         HaveOpenPositions(this.state.accounts, this.props.client_accounts, this.props.onBackClick)}
-                    {this.state.which_modal_should_render === 'ExistingAccountHasBalance' &&
-                        ExistingAccountHasBalance(
-                            this.state.accounts,
-                            this.props.mt5_login_list,
-                            this.props.onBackClick
-                        )}
+                    {this.state.which_modal_should_render === 'ExistingAccountHasBalance' && (
+                        <ExistingAccountHasBalance
+                            accounts_with_balance={this.state.accounts}
+                            mt5_login_list={this.props.mt5_login_list}
+                            onBackClick={this.props.onBackClick}
+                        />
+                    )}
                 </Modal>
             </div>
         );

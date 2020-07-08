@@ -98,7 +98,7 @@ const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_a
                     key={1}
                     title={localize('Trade on Margin')}
                     subtitle={localize('with a DMT5 Financial account')}
-                    button_text={add_account_label[1]}
+                    button_text={!has_maltainvest_account ? add_account_label[2] : add_account_label[0]}
                     buttonOnClick={mt5OnClick}
                     is_button_disabled={!has_maltainvest_account}
                     items={{
@@ -155,7 +155,7 @@ const SyntheticBox = ({ derivOnClick, add_account_label }) => {
                     buttonOnClick={derivOnClick}
                     items={{
                         [localize('Trade type')]: localize('10+'),
-                        [localize('Min duration')]: localize('1 Tick'),
+                        [localize('Min duration')]: localize('1 tick'),
                         [localize('Max duration')]: localize('365 days'),
                         [localize('Availability')]: localize('24/7'),
                         [localize('Currency')]: localize('USD/GBP/EUR'),
@@ -262,6 +262,7 @@ class AccountTypesModal extends React.Component {
                                 add_account_label={[
                                     localize('Trade with this account'),
                                     localize('Add this real account'),
+                                    localize('Deriv Financial required'),
                                 ]}
                             />
                         </div>

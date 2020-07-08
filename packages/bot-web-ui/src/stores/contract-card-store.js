@@ -18,8 +18,8 @@ export default class ContractCardStore {
     @computed
     get is_contract_completed() {
         return (
-            this.contract &&
-            isEnded(this.contract) &&
+            !!this.contract &&
+            !!this.contract.is_sold &&
             this.root_store.run_panel.contract_stage !== contract_stages.PURCHASE_RECEIVED
         );
     }

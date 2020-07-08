@@ -1,5 +1,5 @@
-import { unique } from '../object';
 import moment from 'moment';
+import { unique } from '../object';
 
 export const getFinalPrice = contract_info => +(contract_info.sell_price || contract_info.bid_price);
 

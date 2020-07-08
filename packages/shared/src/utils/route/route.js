@@ -1,5 +1,5 @@
 import { matchPath } from 'react-router';
-import { routes } from '../routes';
+import { routes } from '../routes/routes';
 
 let all_routes_config = [];
 

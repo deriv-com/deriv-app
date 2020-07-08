@@ -20,17 +20,18 @@
             display: flex;
             flex-direction: column;
         }
-        &-scrollbars {
-            overflow: auto;
+        &-body-wrapper {
+            position: relative;
             flex: 1;
             display: flex;
             flex-direction: column;
+            height: calc(100% - 36px);
         }
     }
     &__menu-mobile-platform-switcher {
         position: absolute;
         height: 100%;
-        top: -48px;
+        top: 24px;
         left: 0;
     }
     &__menu-mobile-theme {

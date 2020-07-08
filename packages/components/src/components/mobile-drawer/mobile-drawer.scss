@@ -114,8 +114,7 @@
                 pointer-events: auto;
             }
             &--has-subheader {
-                height: calc(100% + 76px);
-                top: -76px;
+                height: 100%;
             }
             &-title {
                 display: flex;
@@ -160,11 +159,12 @@
         }
     }
     &__body {
-        position: relative;
         font-size: 1.4rem;
         height: 100%;
         line-height: 1.5;
         color: var(--text-prominent);
+        overflow-y: auto;
+        overflow-x: hidden;
     }
     &__item {
         padding: 0 0 3.2rem 4.8rem;

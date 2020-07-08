@@ -1,26 +1,37 @@
 import React from 'react';
-import { Button, DesktopWrapper, Icon } from '@deriv/components';
+import { Button, DesktopWrapper, Icon, Popover } from '@deriv/components';
+import { localize } from '@deriv/translations';
 import PropTypes from 'prop-types';
 import { connect } from '../stores/connect';
 import '../assets/sass/download.scss';
 
 const Download = ({ tab, onClickDownloadTransaction, onClickDownloadJournal, is_clear_stat_disabled }) => {
-    let clickFunction;
+    let clickFunction, popover_message;
     if (tab === 'transactions') {
         clickFunction = onClickDownloadTransaction;
+        popover_message = localize('Download your transaction history.');
     } else if (tab === 'journal') {
         clickFunction = onClickDownloadJournal;
+        popover_message = localize('Download your journal.');
     }
     return (
         <DesktopWrapper>
             <div className='download__container'>
-                <Button
-                    id='download-button'
-                    is_disabled={is_clear_stat_disabled}
-                    className='download__button'
-                    icon={<Icon icon='IcDownload' className='download__icon' />}
-                    onClick={clickFunction}
-                />
+                <Popover
+                    className='run-panel__info'
+                    classNameBubble='run-panel__info--bubble'
+                    alignment='bottom'
+                    message={popover_message}
+                    zIndex={4}
+                >
+                    <Button
+                        id='download-button'
+                        is_disabled={is_clear_stat_disabled}
+                        className='download__button'
+                        icon={<Icon icon='IcDownload' className='download__icon' />}
+                        onClick={clickFunction}
+                    />
+                </Popover>
             </div>
         </DesktopWrapper>
     );

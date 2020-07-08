@@ -1,5 +1,5 @@
 import { observable, action, computed } from 'mobx';
-import { isEnded, getIndicativePrice } from '@deriv/bot-skeleton';
+import { getIndicativePrice } from '@deriv/bot-skeleton';
 import { contract_stages } from '../constants/contract-stage';
 
 export default class ContractCardStore {

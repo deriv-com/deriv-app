@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { Modal, Loading, ThemedScrollbars, Money, Button } from '@deriv/components';
+import { Modal, Loading, ThemedScrollbars, Money, Button, FormSubmitButton } from '@deriv/components';
 import { isEmptyObject, getDiffDuration, toGMTFormat } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
@@ -32,7 +32,6 @@ const SummaryModal = ({
     openStatement,
     reality_check_duration,
     server_time,
-    SubmitButtons,
     validateForm,
 }) => {
     const [computed_values, setComputedValues] = React.useState({});
@@ -181,11 +180,12 @@ const SummaryModal = ({
                             </ThemedScrollbars>
                         </Modal.Body>
                         <Modal.Footer has_separator>
-                            <SubmitButtons
-                                logout={logout}
-                                values={values}
-                                isValid={isValid}
-                                isSubmitting={isSubmitting}
+                            <FormSubmitButton
+                                has_cancel
+                                cancel_label={localize('Log out')}
+                                is_disabled={!values.interval || !isValid || isSubmitting}
+                                label={localize('Continue trading')}
+                                onCancel={logout}
                             />
                         </Modal.Footer>
                     </Form>
@@ -206,7 +206,6 @@ SummaryModal.propTypes = {
     openStatement: PropTypes.func,
     reality_check_duration: PropTypes.number,
     server_time: PropTypes.object,
-    SubmitButtons: PropTypes.func,
     validateForm: PropTypes.func,
 };
 

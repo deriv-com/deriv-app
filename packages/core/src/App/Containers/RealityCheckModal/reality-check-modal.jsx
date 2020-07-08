@@ -2,9 +2,9 @@ import { Field } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Input, Button } from '@deriv/components';
+import { Input } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
 import BriefModal from './brief-modal.jsx';
@@ -30,17 +30,6 @@ const IntervalField = ({ values, touched, errors, handleChange, handleBlur }) =>
                 />
             )}
         </Field>
-    </div>
-);
-
-const SubmitButtons = ({ logout, values, isValid, isSubmitting }) => (
-    <div>
-        <Button type='button' secondary large onClick={logout}>
-            {localize('Log out')}
-        </Button>
-        <Button type='submit' is_disabled={!values.interval || !isValid || isSubmitting} primary large>
-            <Localize i18n_default_text='Continue trading' />
-        </Button>
     </div>
 );
 
@@ -110,7 +99,6 @@ const RealityCheckModal = withRouter(
                     reality_check_duration={reality_check_duration}
                     server_time={server_time}
                     IntervalField={IntervalField}
-                    SubmitButtons={SubmitButtons}
                 />
             );
         }
@@ -125,7 +113,6 @@ const RealityCheckModal = withRouter(
                 onSubmit={onSubmit}
                 logout={logout}
                 IntervalField={IntervalField}
-                SubmitButtons={SubmitButtons}
             />
         );
     }

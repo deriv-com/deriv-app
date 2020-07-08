@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { Modal } from '@deriv/components';
+import { Modal, FormSubmitButton } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
 const BriefModal = ({
@@ -13,7 +13,6 @@ const BriefModal = ({
     onSubmit,
     openStatement,
     validateForm,
-    SubmitButtons,
 }) => {
     return (
         <Modal
@@ -59,11 +58,12 @@ const BriefModal = ({
                             />
                         </Modal.Body>
                         <Modal.Footer has_separator>
-                            <SubmitButtons
-                                logout={logout}
-                                values={values}
-                                isValid={isValid}
-                                isSubmitting={isSubmitting}
+                            <FormSubmitButton
+                                has_cancel
+                                cancel_label={localize('Log out')}
+                                is_disabled={!values.interval || !isValid || isSubmitting}
+                                label={localize('Continue trading')}
+                                onCancel={logout}
                             />
                         </Modal.Footer>
                     </Form>
@@ -81,7 +81,6 @@ BriefModal.propTypes = {
     logout: PropTypes.func,
     onSubmit: PropTypes.func,
     openStatement: PropTypes.func,
-    SubmitButtons: PropTypes.func,
     validateForm: PropTypes.func,
 };
 

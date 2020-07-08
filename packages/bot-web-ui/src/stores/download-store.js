@@ -92,7 +92,7 @@ export default class DownloadStore {
         const transactionEncodedUri = encodeURI(transactionCsvContent);
         const transactionLink = document.createElement('a');
         transactionLink.setAttribute('href', transactionEncodedUri);
-        transactionLink.setAttribute('download', 'Transactions.csv');
+       transactionLink.setAttribute('download', localize('Transactions.csv'));
         document.body.appendChild(transactionLink);
 
         // Push Journal array to CSV

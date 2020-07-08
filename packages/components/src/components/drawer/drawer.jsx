@@ -88,7 +88,6 @@ class Drawer extends React.PureComponent {
                             is_disabled={is_clear_stat_disabled}
                             text={clear_stat_button_text}
                             onClick={onClearStatClick}
-                            has_effect
                             secondary
                         />
                     )}

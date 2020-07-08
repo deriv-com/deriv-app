@@ -121,6 +121,7 @@ TradeAnimation.propTypes = {
     contract_stage: PropTypes.number,
     is_contract_completed: PropTypes.bool,
     is_stop_button_visible: PropTypes.bool,
+    is_stop_button_disabled: PropTypes.bool,
     onRunButtonClick: PropTypes.func,
     onStopButtonClick: PropTypes.func,
     profit: PropTypes.number,
@@ -135,4 +136,5 @@ export default connect(({ run_panel, contract_card }) => ({
     onRunButtonClick: run_panel.onRunButtonClick,
     onStopButtonClick: run_panel.onStopButtonClick,
     profit: contract_card.profit,
+    should_show_overlay: run_panel.should_show_overlay,
 }))(TradeAnimation);

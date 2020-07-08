@@ -10,15 +10,6 @@ import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 
 class ProofOfIdentity extends React.Component {
-    redirectText = (from_platform) => {
-        switch (from_platform) {
-            case 'P2P':
-                return localize('Back To P2P');
-            default:
-                return localize('Back');
-        }
-    };
-
     routeBackTo = (redirect_route) => {
         this.props.routeBackInApp(this.props.history, [redirect_route]);
     };
@@ -46,7 +37,7 @@ class ProofOfIdentity extends React.Component {
                             redirect_button={
                                 should_show_redirect_btn && (
                                     <Button primary onClick={() => this.routeBackTo(from_platform.route)}>
-                                        {this.redirectText(from_platform.name)}
+                                        {`Back to ${from_platform.name}`}
                                     </Button>
                                 )
                             }

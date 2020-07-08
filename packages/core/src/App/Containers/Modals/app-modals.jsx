@@ -22,11 +22,9 @@ const AppModals = ({
     is_account_needed_modal_on,
     is_account_types_modal_visible,
     is_denial_of_service_modal_visible,
-    should_have_real_account,
     is_set_residence_modal_visible,
     url_action_param,
     switchAccount,
-    toggleAccountTypesModal,
     virtual_account_loginid,
 }) => {
     let ComponentToLoad = null;
@@ -59,19 +57,12 @@ const AppModals = ({
                 );
             } else if (is_set_residence_modal_visible) {
                 ComponentToLoad = <SetResidenceModal />;
+            } else if (is_account_types_modal_visible) {
+                ComponentToLoad = <AccountTypesModal />;
+            } else if (is_account_needed_modal_on) {
+                ComponentToLoad = <MT5AccountNeededModal />;
             }
             break;
-    }
-    // Account Types modal
-    if (should_have_real_account) {
-        toggleAccountTypesModal(true);
-    }
-    if (is_account_types_modal_visible) {
-        ComponentToLoad = <AccountTypesModal />;
-    }
-
-    if (is_account_needed_modal_on) {
-        ComponentToLoad = <MT5AccountNeededModal />;
     }
 
     return ComponentToLoad ? <React.Suspense fallback={<div />}>{ComponentToLoad}</React.Suspense> : null;

@@ -84,6 +84,20 @@ export default class ClientStore extends BaseStore {
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
+
+        when(
+            () => this.is_uk && this.should_have_real_account,
+            () => {
+                this.root_store.ui.showAccountTypesModalForEuropean();
+                this.onRealAccountSignupEnd(() => {
+                    if (!this.has_any_real_account) {
+                        this.root_store.ui.showAccountTypesModalForEuropean();
+                    }
+
+                    return Promise.resolve();
+                });
+            }
+        );
     }
 
     @computed
@@ -338,12 +352,7 @@ export default class ClientStore extends BaseStore {
     // this is true when a user needs to have a active real account for trading
     @computed
     get should_have_real_account() {
-        return (
-            this.standpoint.iom &&
-            !this.has_any_real_account &&
-            this.residence === 'gb' &&
-            this.root_store.ui.is_real_acc_signup_on === false
-        );
+        return this.standpoint.iom && this.residence === 'gb' && !this.has_any_real_account;
     }
 
     // Shows all possible landing companies of user between all

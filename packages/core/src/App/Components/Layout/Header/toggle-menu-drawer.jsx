@@ -50,6 +50,7 @@ class ToggleMenuDrawer extends React.Component {
             needs_verification: false,
             primary_routes_config: [],
             secondary_routes_config: [],
+            is_submenu_expanded: false,
         };
     }
 
@@ -76,6 +77,10 @@ class ToggleMenuDrawer extends React.Component {
 
     toggleDrawer = () => {
         this.setState({ is_open: !this.state.is_open });
+    };
+
+    onToggleSubmenu = is_submenu_expanded => {
+        this.setState({ is_submenu_expanded });
     };
 
     getFilteredRoutesConfig = (all_routes_config, routes_to_filter) => {
@@ -112,6 +117,7 @@ class ToggleMenuDrawer extends React.Component {
                 submenu_icon={route_config.icon_component}
                 submenu_title={route_config.title}
                 submenu_suffix_icon='IcChevronRight'
+                onToggle={this.onToggleSubmenu}
             >
                 {!has_subroutes &&
                     route_config.routes.map(route => {
@@ -197,7 +203,13 @@ class ToggleMenuDrawer extends React.Component {
                 >
                     <Div100vhContainer height_offset='40px'>
                         <div className='header__menu-mobile-body-wrapper'>
-                            <MobileDrawer.SubHeader>{this.props.platform_switcher}</MobileDrawer.SubHeader>
+                            <MobileDrawer.SubHeader
+                                className={classNames({
+                                    'dc-mobile-drawer__subheader--hidden': this.state.is_submenu_expanded,
+                                })}
+                            >
+                                {this.props.platform_switcher}
+                            </MobileDrawer.SubHeader>
                             <MobileDrawer.Body>
                                 <div className='header__menu-mobile-platform-switcher' id='mobile_platform_switcher' />
                                 <MobileDrawer.Item>

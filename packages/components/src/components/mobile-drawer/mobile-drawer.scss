@@ -66,6 +66,10 @@
         width: 100%;
         background: var(--general-main-2);
         z-index: 1;
+
+        &--hidden {
+            visibility: hidden;
+        }
     }
     &__submenu {
         &-back {

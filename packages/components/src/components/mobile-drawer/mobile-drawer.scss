@@ -62,6 +62,10 @@
         justify-content: center;
         align-items: center;
         margin-bottom: 1.8rem;
+        position: absolute;
+        width: 100%;
+        background: var(--general-main-2);
+        z-index: 1;
     }
     &__submenu {
         &-back {
@@ -161,6 +165,7 @@
     &__body {
         font-size: 1.4rem;
         height: 100%;
+        padding-top: 8.8rem;
         line-height: 1.5;
         color: var(--text-prominent);
         overflow-y: auto;

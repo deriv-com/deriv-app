@@ -195,7 +195,7 @@ class ToggleMenuDrawer extends React.Component {
                     height='100vh'
                     width='295px'
                 >
-                    <Div100vhContainer className='header__menu-mobile-wrapper' height_offset='40px'>
+                    <Div100vhContainer height_offset='40px'>
                         <div className='header__menu-mobile-body-wrapper'>
                             <MobileDrawer.SubHeader>{this.props.platform_switcher}</MobileDrawer.SubHeader>
                             <MobileDrawer.Body>

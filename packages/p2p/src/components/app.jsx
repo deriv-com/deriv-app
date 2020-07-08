@@ -221,6 +221,7 @@ class App extends React.Component {
             const old_order = old_orders.find(o => o.id === new_order.id);
             const notification = notifications.find(n => n.order_id === new_order.id);
             const is_current_order = new_order.id === this.props.order_id;
+            console.log(order_info.is_active);
             const notification_obj = {
                 order_id: new_order.id,
                 is_seen: is_current_order,
@@ -262,7 +263,7 @@ class App extends React.Component {
     updateP2pNotifications = notifications => {
         const unseen_notifications = notifications.filter(notification => notification.is_seen === false);
         const notification_count = unseen_notifications.length;
-        const active_notification_count = unseen_notifications.filter(notification => notification.active).length;
+        const active_notification_count = unseen_notifications.filter(notification => notification.is_active).length;
         const inactive_notification_count = notification_count - active_notification_count;
         const user_settings = this.getLocalStorageSettingsForLoginId();
         user_settings.is_cached = true;

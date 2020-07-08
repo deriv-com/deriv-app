@@ -137,8 +137,8 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
                 <div className='transactions__loader-container'>
                     {contract ? (
                         <TransactionIconWithText
-                            icon={<Icon icon={`IcUnderlying${contract.underlying}`} size={20} />}
-                            title={'Underlying'}
+                            icon={<Icon icon={`IcUnderlying${contract.underlying}`} size={16} />}
+                            title={contract.underlying}
                         />
                     ) : (
                         <TransactionIconLoader />
@@ -147,7 +147,7 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
                 <div className='transactions__loader-container'>
                     {contract ? (
                         <TransactionIconWithText
-                            icon={<IconTradeTypes type={contract.contract_type} size={20} />}
+                            icon={<IconTradeTypes type={contract.contract_type} size={16} />}
                             title={getContractTypeName(contract)}
                         />
                     ) : (

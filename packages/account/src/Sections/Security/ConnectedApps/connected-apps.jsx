@@ -88,7 +88,7 @@ class ConnectedApps extends React.Component {
                                 getRowSize={() => 56}
                                 is_empty={false}
                             >
-                                {this.state.is_loading && <Loading />}
+                                {this.state.is_loading && <Loading is_fullscreen={false} />}
                             </DataTable>
                         </DesktopWrapper>
                         <MobileWrapper>
@@ -100,7 +100,7 @@ class ConnectedApps extends React.Component {
                                 is_empty={false}
                                 rowRenderer={this.mobileRowRenderer}
                             >
-                                {this.state.is_loading && <Loading />}
+                                {this.state.is_loading && <Loading is_fullscreen={false} />}
                             </DataList>
                         </MobileWrapper>
                     </React.Fragment>

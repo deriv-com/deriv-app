@@ -1013,7 +1013,7 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define connected-apps; weak */
 .connected-apps {
     width: 100%;
-    max-width: 672px;
+    max-width: 682px;
     max-height: 560px;
     height: 100%;
 
@@ -1034,6 +1034,7 @@ $MIN_HEIGHT_FLOATING: calc(
     &__table {
         height: calc(100% - 42px);
         flex: 1;
+        max-width: 100%;
     }
     &__row {
         grid-template-columns: 169px 198px 80px 99px;

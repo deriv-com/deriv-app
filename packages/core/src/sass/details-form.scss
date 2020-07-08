@@ -9,6 +9,9 @@
         margin: 1.2rem auto;
         width: 40%;
 
+        &--wide {
+            width: 45%;
+        }
         &-container {
             height: calc(100% - 76px);
             overflow: hidden;

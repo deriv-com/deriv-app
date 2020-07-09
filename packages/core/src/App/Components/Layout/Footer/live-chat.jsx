@@ -10,7 +10,6 @@ class LiveChat extends React.Component {
     componentDidMount() {
         window.LiveChatWidget.on('ready', () => {
             this.setState({ is_livechat_interactive: true });
-            console.log('ready');
         });
     }
 

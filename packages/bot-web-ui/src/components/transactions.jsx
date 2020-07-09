@@ -97,7 +97,7 @@ class Transactions extends React.PureComponent {
 }
 
 Transactions.propTypes = {
-    contract_stage: PropTypes.object,
+    contract_stage: PropTypes.number,
     elements: PropTypes.array,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,

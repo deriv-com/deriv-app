@@ -138,7 +138,7 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
                     {contract ? (
                         <TransactionIconWithText
                             icon={<Icon icon={`IcUnderlying${contract.underlying}`} size={16} />}
-                            title={contract.underlying}
+                            title={contract.display_name}
                         />
                     ) : (
                         <TransactionIconLoader />
@@ -206,8 +206,7 @@ Transaction.propTypes = {
     setActiveTransactionId: PropTypes.func,
 };
 
-export default connect(({ transactions, run_panel }) => ({
+export default connect(({ transactions }) => ({
     active_transaction_id: transactions.active_transaction_id,
-    contract_stage: run_panel.contract_stage,
     setActiveTransactionId: transactions.setActiveTransactionId,
 }))(Transaction);

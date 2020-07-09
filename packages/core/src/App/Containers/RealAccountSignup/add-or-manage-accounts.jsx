@@ -66,6 +66,8 @@ class AddOrManageAccounts extends React.Component {
     };
 
     render() {
+        // TODO [deriv-eu] remove is_eu_enabled once released
+        const should_hide_crypto = this.props.is_eu_enabled && this.props.is_eu;
         return (
             <ThemedScrollbars is_bypassed={isMobile()}>
                 <Div100vhContainer
@@ -73,28 +75,30 @@ class AddOrManageAccounts extends React.Component {
                     is_disabled={isDesktop()}
                     height_offset='40px'
                 >
-                    <div
-                        className={classNames('add-crypto-currency', {
-                            'account-wizard--disabled': this.props.available_crypto_currencies.length === 0,
-                        })}
-                    >
-                        {this.props.available_crypto_currencies.length === 0 && (
-                            <div className='account-wizard--disabled-message'>
-                                <p className='add-crypto-currency'>
-                                    {localize(
-                                        'You already have an account for each of the cryptocurrencies available on Deriv.'
-                                    )}
-                                </p>
-                            </div>
-                        )}
-                        <AddCryptoCurrency
-                            className='account-wizard__body'
-                            onSubmit={this.updateValue}
-                            value={this.state.form_value}
-                            form_error={this.state.form_error}
-                            {...this.props}
-                        />
-                    </div>
+                    {!should_hide_crypto && (
+                        <div
+                            className={classNames('add-crypto-currency', {
+                                'account-wizard--disabled': this.props.available_crypto_currencies.length === 0,
+                            })}
+                        >
+                            {this.props.available_crypto_currencies.length === 0 && (
+                                <div className='account-wizard--disabled-message'>
+                                    <p className='add-crypto-currency'>
+                                        {localize(
+                                            'You already have an account for each of the cryptocurrencies available on Deriv.'
+                                        )}
+                                    </p>
+                                </div>
+                            )}
+                            <AddCryptoCurrency
+                                className='account-wizard__body'
+                                onSubmit={this.updateValue}
+                                value={this.state.form_value}
+                                form_error={this.state.form_error}
+                                {...this.props}
+                            />
+                        </div>
+                    )}
                     {this.props.has_fiat && (
                         <div
                             className={classNames('change-currency', {
@@ -144,12 +148,14 @@ AddOrManageAccounts.propTypes = {
     onSuccessSetAccountCurrency: PropTypes.func,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,
     currency: client.currency,
     current_currency_type: client.current_currency_type,
     current_fiat_currency: client.current_fiat_currency,
+    is_eu_enabled: ui.is_eu_enabled,
+    is_eu: client.is_eu,
     has_fiat: client.has_fiat,
     setCurrency: client.setAccountCurrency,
     createCryptoAccount: client.createCryptoAccount,

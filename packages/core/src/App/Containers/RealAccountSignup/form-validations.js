@@ -45,7 +45,7 @@ export const generateValidationFunction = (landing_company, schema) => {
                             values,
                         })
                     ) {
-                        errors[field_name] = message;
+                        errors[field_name] = typeof message === 'string' ? ['error', message] : message;
                         return true;
                     }
 

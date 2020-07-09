@@ -1,5 +1,5 @@
 // const Cookies = require('js-cookie');
-import { isBot } from '../platform/platform';
+import { isBot } from '../platform';
 
 /*
  * Configuration values needed in js codes
@@ -11,7 +11,8 @@ import { isBot } from '../platform/platform';
  */
 export const domain_app_ids = {
     // these domains as supported "production domains"
-    'deriv.app': 16929,
+    'deriv.app': 16929, // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+    'app.deriv.com': 16929,
 };
 const binary_desktop_app_id = 14473;
 

@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "name": "@deriv/bot-web-ui",
-  "description": "Visual automation for deriv.app",
+  "description": "Visual automation for Deriv.com",
   "main": "dist/bot-web-ui.main.js",
   "private": true,
   "jest": {

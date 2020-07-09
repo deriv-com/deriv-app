@@ -217,8 +217,8 @@ class App extends React.Component {
 
         new_orders.forEach(new_order => {
             const order_info = new OrderInfo(new_order);
-            const old_order = old_orders.find(o => o.id === new_order.id);
             const notification = notifications.find(n => n.order_id === new_order.id);
+            const old_order = old_orders.find(o => o.id === new_order.id);
             const is_current_order = new_order.id === this.props.order_id;
             const notification_obj = {
                 order_id: new_order.id,
@@ -231,6 +231,7 @@ class App extends React.Component {
                     if (notification) {
                         // If order status changed, notify the user.
                         notification.is_seen = is_current_order;
+                        notification.is_active = order_info.is_active;
                     } else {
                         // If we have an old_order, but for some reason don't have a copy in local storage.
                         notifications.push(notification_obj);

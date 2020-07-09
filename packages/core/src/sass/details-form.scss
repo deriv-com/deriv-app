@@ -71,6 +71,23 @@
             padding: 0 1.6rem;
         }
     }
+    &__tax {
+        position: relative;
+
+        .dc-popover {
+            position: absolute;
+            top: 10px;
+            right: -25px;
+        }
+    }
+    &__tax-identification {
+        .dc-popover {
+            pointer-events: none;
+        }
+    }
+    &__tin-warn-divider {
+        height: 3rem;
+    }
     .dc-page-error__container {
         height: 100%;
     }

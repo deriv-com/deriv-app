@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+import classNames from 'classnames';
 import {
     Autocomplete,
     AutoHeightWrapper,
@@ -9,6 +11,7 @@ import {
     Div100vhContainer,
     FormSubmitButton,
     Input,
+    Popover,
     RadioGroup,
     SelectNative,
     ThemedScrollbars,
@@ -19,6 +22,7 @@ import { FormSubHeader } from '@deriv/account';
 import { toMoment } from '@deriv/shared/utils/date';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
+import { setWarnsFilterErrors } from 'App/Containers/RealAccountSignup/helpers/utils';
 import 'Sass/details-form.scss';
 
 const DateOfBirthField = props => (
@@ -42,7 +46,7 @@ const DateOfBirthField = props => (
     </Field>
 );
 
-const FormInputField = ({ name, optional = false, ...props }) => (
+const FormInputField = ({ name, optional = false, warn, ...props }) => (
     <Field name={name}>
         {({ field, form: { errors, touched } }) => (
             <Input
@@ -52,6 +56,7 @@ const FormInputField = ({ name, optional = false, ...props }) => (
                 autoComplete='off'
                 maxLength='30'
                 error={touched[field.name] && errors[field.name]}
+                warn={warn}
                 {...field}
                 {...props}
             />
@@ -66,6 +71,8 @@ class PersonalDetails extends React.Component {
             // add padding-bottom to the form when datepicker is active
             // to add empty spaces at the bottom when scrolling
             paddingBottom: 'unset',
+            is_tin_popover_open: false, // turns true on tin focus, with extra margin provides more space to show warning
+            warnings: {},
         };
     }
 
@@ -82,7 +89,7 @@ class PersonalDetails extends React.Component {
         return (
             <Formik
                 initialValues={{ ...this.props.value }}
-                validate={this.props.validate}
+                validate={values => setWarnsFilterErrors.call(this, this.props.validate(values))}
                 validateOnMount
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
@@ -209,33 +216,85 @@ class PersonalDetails extends React.Component {
                                                     {'tax_residence' in this.props.value && (
                                                         <Field name='tax_residence'>
                                                             {({ field }) => (
-                                                                <Autocomplete
-                                                                    {...field}
-                                                                    data-lpignore='true'
-                                                                    autoComplete='off' // prevent chrome autocomplete
-                                                                    type='text'
-                                                                    label={localize('Tax residence')}
-                                                                    error={
-                                                                        touched.tax_residence && errors.tax_residence
-                                                                    }
-                                                                    list_items={this.props.residence_list}
-                                                                    onItemSelection={({ value, text }) =>
-                                                                        setFieldValue(
-                                                                            'tax_residence',
-                                                                            value ? text : '',
-                                                                            true
-                                                                        )
-                                                                    }
-                                                                />
+                                                                <div className='details-form__tax'>
+                                                                    <Autocomplete
+                                                                        {...field}
+                                                                        data-lpignore='true'
+                                                                        autoComplete='off' // prevent chrome autocomplete
+                                                                        type='text'
+                                                                        label={localize('Tax residence')}
+                                                                        error={
+                                                                            touched.tax_residence &&
+                                                                            errors.tax_residence
+                                                                        }
+                                                                        list_items={this.props.residence_list}
+                                                                        onItemSelection={({ value, text }) =>
+                                                                            setFieldValue(
+                                                                                'tax_residence',
+                                                                                value ? text : '',
+                                                                                true
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                    <Popover
+                                                                        alignment='right'
+                                                                        icon='info'
+                                                                        message={localize(
+                                                                            'Tax residence, also known as fiscal residency or redisence for tax purposes, is an important concept for all taxpayers living and working abroad. It determines the tax liabilities that the individual has to beer within a particular country (jurisdiction).'
+                                                                        )}
+                                                                        zIndex={9999999}
+                                                                        disable_message_icon
+                                                                    />
+                                                                </div>
                                                             )}
                                                         </Field>
                                                     )}
                                                     {'tax_identification_number' in this.props.value && (
-                                                        <FormInputField
-                                                            name='tax_identification_number'
-                                                            label={localize('Tax identification number')}
-                                                            placeholder={localize('Tax identification number')}
-                                                        />
+                                                        <div
+                                                            className={classNames(
+                                                                'details-form__tax',
+                                                                'details-form__tax-identification'
+                                                            )}
+                                                        >
+                                                            <FormInputField
+                                                                name='tax_identification_number'
+                                                                label={localize('Tax identification number')}
+                                                                placeholder={localize('Tax identification number')}
+                                                                onFocus={() =>
+                                                                    this.setState({ is_tin_popover_open: true })
+                                                                }
+                                                                onBlur={() =>
+                                                                    this.setState({ is_tin_popover_open: false })
+                                                                }
+                                                                warn={this.state.warnings?.tax_identification_number}
+                                                            />
+                                                            <Popover
+                                                                alignment='right'
+                                                                icon='info'
+                                                                is_open={this.state.is_tin_popover_open}
+                                                                message={
+                                                                    <Localize
+                                                                        i18n_default_text={
+                                                                            'A Tax Identification Number (TIN) is a unique identifying number used for tax purposes by countries (jurisdictions) that observe the Common Reporting Standards. To determine your TIN or its equivalent, follow <0>this link</0>, locate your jurisdiction, and read the information provided on taxation guidelines.'
+                                                                        }
+                                                                        components={[
+                                                                            <a
+                                                                                key={0}
+                                                                                className='link link--red'
+                                                                                rel='noopener noreferrer'
+                                                                                target='_blank'
+                                                                                href='https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
+                                                                            />,
+                                                                        ]}
+                                                                    />
+                                                                }
+                                                                zIndex={9999999}
+                                                                disable_message_icon
+                                                            />
+                                                        </div>
+                                                    )}
+                                                    {this.state.warnings?.tax_identification_number && (
+                                                        <div className='details-form__tin-warn-divider' />
                                                     )}
                                                     {'tax_identification_confirm' in this.props.value && (
                                                         <Checkbox

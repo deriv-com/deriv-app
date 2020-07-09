@@ -172,13 +172,12 @@ class Statement extends React.Component {
         return (
             <React.Fragment>
                 <ReportsMeta
-                    // optional_component={
-                    //     this.props.landing_company_shortcode === 'iom' ||
-                    //     this.props.landing_company_shortcode === 'malta'
-                    //         ? account_statistics_component
-                    //         : undefined
-                    // }
-                    optional_component={account_statistics_component}
+                    optional_component={
+                        this.props.landing_company_shortcode === 'iom' ||
+                        this.props.landing_company_shortcode === 'malta'
+                            ? account_statistics_component
+                            : undefined
+                    }
                     filter_component={filter_component}
                 />
                 {data.length === 0 || is_empty ? (

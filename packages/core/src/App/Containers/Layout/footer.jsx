@@ -8,6 +8,7 @@ import {
     ToggleFullScreen,
     ToggleSettings,
     HelpCentre,
+    LiveChat,
 } from 'App/Components/Layout/Footer';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
@@ -33,6 +34,7 @@ const Footer = ({
         <ServerTime />
 
         <div className='footer__links'>
+            <LiveChat />
             <HelpCentre />
             <ToggleSettings
                 is_settings_visible={is_settings_modal_on}

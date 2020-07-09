@@ -223,7 +223,7 @@ export default class PortfolioStore extends BaseStore {
         const i = this.getPositionIndexById(contract_id);
         const { bid_price } = this.positions[i].contract_info;
         this.positions[i].is_sell_requested = true;
-        if (contract_id && bid_price) {
+        if (contract_id && typeof bid_price === 'number') {
             WS.sell(contract_id, bid_price).then(this.handleSell);
         }
     }

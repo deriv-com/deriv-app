@@ -1,13 +1,16 @@
 import classNames from 'classnames';
 import React from 'react';
 import FieldError from 'Components/field-error';
+import FieldWarn from 'Components/field-warn';
 
 const Input = (
     {
         className,
         classNameError,
+        classNameWarn,
         disabled,
         error,
+        warn,
         hint,
         leading_icon,
         has_character_counter,
@@ -69,6 +72,7 @@ const Input = (
                 </label>
             )}
             {error && <FieldError className={classNameError} message={error} />}
+            {warn && <FieldWarn className={classNameWarn} message={warn} />}
             {!error && hint && <p className='dc-input__hint'>{hint}</p>}
             {has_character_counter && (
                 <p className='dc-input__counter'>

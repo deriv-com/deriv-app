@@ -11,6 +11,7 @@
         border-radius: $BORDER_RADIUS;
         overflow: hidden;
         max-width: 478px;
+        min-width: initial;
     }
     .dc-modal-header__title {
         text-transform: none;
@@ -55,10 +56,17 @@
             align-self: center;
         }
     }
+    .loading-modal {
+        width: 300px;
+    }
 }
 
 .dc-modal-header__real-account-signup-modal {
     border-bottom: 1px solid var(--general-section-1);
+}
+
+.dc-form-submit-button {
+    border-top: 1px solid var(--border-disabled);
 }
 
 .account-wizard {
@@ -83,17 +91,17 @@
             grid-template-rows: 1fr 1fr;
         }
     }
-    h2 {
+    & > h2 {
         text-transform: none;
         margin-top: 2.4rem;
-        color: var(--text-less-prominent);
         @include typeface(--title-center-bold-black);
+        color: var(--text-less-prominent);
         @include mobile {
             margin-top: 0.8rem;
             font-size: 1.2rem;
         }
     }
-    h3 {
+    & > h3 {
         @include typeface(--small-center-normal-black);
         text-transform: none;
         color: var(--text-general);
@@ -103,6 +111,25 @@
         width: 100%;
 
         .currency-selector {
+            &__radio-group {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                justify-content: space-around;
+                align-items: center;
+
+                &--is-header {
+                    font-size: 1.8rem;
+                    margin: 2rem 0 0;
+                    font-weight: bold;
+                    color: var(--text-prominent);
+                }
+            }
+            &__description {
+                font-size: 1.4rem;
+                line-height: 2.4rem;
+                margin-top: 2.4rem;
+            }
             &__container {
                 width: 100%;
                 @include mobile {
@@ -118,18 +145,18 @@
         @include desktop {
             height: 100%;
             display: grid;
-            grid-template-rows: minmax(20rem, 1fr) 7rem;
+            grid-template-rows: minmax(20rem, 1fr);
         }
         @include tablet {
             height: 100%;
             display: grid;
-            grid-template-rows: minmax(20rem, 1fr) 7rem;
+            grid-template-rows: minmax(20rem, 1fr);
         }
     }
     &__body {
         & .details-form {
             @include tablet {
-                grid-template-rows: 5rem minmax(10rem, 1fr);
+                grid-template-rows: minmax(10rem, 1fr);
             }
         }
     }
@@ -148,7 +175,6 @@
         }
         h2 {
             @include typeface(--title-center-bold-black);
-            color: var(--text-prominent);
 
             @include mobile {
                 font-size: 1.2rem;
@@ -291,23 +317,43 @@
         margin-bottom: 1.6em;
         position: relative;
         height: 1.6em;
+        white-space: nowrap;
+
+        &-section {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        &-section:after {
+            border-top: 1px solid var(--general-section-1);
+            content: '';
+            height: 100%;
+            width: 100%;
+            margin-top: 0.3rem;
+        }
+        &--has-description {
+            margin-bottom: 0.5rem;
+        }
     }
     &__header:not(:first-child) {
         margin-top: 1.6em;
     }
-    &__header:before {
-        border-top: 1px solid var(--general-section-1);
-        content: '';
-        height: 100%;
-        left: 0;
-        position: absolute;
-        top: 0.5em;
-        width: 100%;
-    }
     &__title {
         background: var(--general-main-1);
         color: var(--text-prominent);
-        padding-right: 8px;
-        position: absolute;
+        padding-right: 0.8rem;
+    }
+    &__subtitle {
+        font-size: 1rem;
+        font-weight: normal;
+        align-self: baseline;
+        padding-right: 0.8rem;
+        margin-top: 0.2rem;
+    }
+    &__description {
+        font-size: 1.2rem;
+        font-weight: normal;
+        color: var(--text-prominent);
+        margin-bottom: 2rem;
     }
 }

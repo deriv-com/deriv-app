@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer } from '@deriv/components';
 import { ProofOfIdentityContainer } from '@deriv/account';
-import WS from 'Services/ws-methods';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import WS from 'Services/ws-methods';
 
 class ProofOfIdentityForm extends React.PureComponent {
     state = {

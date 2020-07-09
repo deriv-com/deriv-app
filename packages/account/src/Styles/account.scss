@@ -61,8 +61,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 0;
             }
             .dc-dropdown-container {
-                margin-top: 0;
-
                 .dc-dropdown__display-text,
                 .dc-list__item-text {
                     text-transform: unset;
@@ -164,9 +162,6 @@ $MIN_HEIGHT_FLOATING: calc(
                         width: 2.4rem;
                         height: 2.4rem;
                     }
-                }
-                .dc-field-error {
-                    top: 4.2rem;
                 }
             }
         }

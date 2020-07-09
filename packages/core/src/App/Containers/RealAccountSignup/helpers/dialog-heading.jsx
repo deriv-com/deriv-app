@@ -10,7 +10,7 @@ import { EXPERIAN } from './constants';
  */
 const IOMHeading = ({ status }) => (
     <h2>
-        {status === EXPERIAN.SUCCESS && <Localize i18n_default_text='Your account is ready!' />}
+        {status === EXPERIAN.SUCCESS && <Localize i18n_default_text='Your account is ready' />}
         {status === EXPERIAN.WARN && <Localize i18n_default_text='Proof of address verification failed' />}
         {status === EXPERIAN.DANGER && (
             <Localize i18n_default_text='Proofs of identity and address verification failed' />
@@ -37,7 +37,7 @@ export const DialogHeading = ({ status, landing_company_shortcode }) => {
         default:
             return (
                 <h2>
-                    <Localize i18n_default_text='Your account is ready!' />
+                    <Localize i18n_default_text='Your account is ready' />
                 </h2>
             );
     }

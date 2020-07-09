@@ -46,7 +46,7 @@ const Input = (
                 <textarea
                     ref={ref}
                     {...props}
-                    className={classNames('dc-input__field', {
+                    className={classNames('dc-input__field dc-input__textarea', {
                         'dc-input__field--placeholder-visible': !label && props.placeholder,
                     })}
                     onChange={changeHandler}

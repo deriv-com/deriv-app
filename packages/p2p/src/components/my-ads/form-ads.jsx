@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { getDecimalPlaces } from '@deriv/shared';
 import Dp2pContext from 'Components/context/dp2p-context';
 import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import { localize } from 'Components/i18next';
@@ -94,7 +94,7 @@ class FormAds extends React.Component {
                             return (
                                 <div className='p2p-my-ads__form'>
                                     <Form noValidate>
-                                        <ThemedScrollbars className='p2p-my-ads__form-scrollbar' height='440px'>
+                                        <ThemedScrollbars className='p2p-my-ads__form-scrollbar'>
                                             <p className='p2p-my-ads__form-summary'>
                                                 <AdSummary
                                                     offer_amount={errors.offer_amount ? '' : values.offer_amount}
@@ -162,7 +162,7 @@ class FormAds extends React.Component {
                                                             data-lpignore='true'
                                                             type='text'
                                                             error={touched.price_rate && errors.price_rate}
-                                                            label={localize('Fixed price')}
+                                                            label={localize('Fixed rate (1 USD)')}
                                                             hint={localize('Per 1 {{currency}}', {
                                                                 currency: this.context.currency,
                                                             })}
@@ -204,6 +204,7 @@ class FormAds extends React.Component {
                                                     {({ field }) => (
                                                         <Input
                                                             {...field}
+                                                            data-lpignore='true'
                                                             type='text'
                                                             error={touched.max_transaction && errors.max_transaction}
                                                             label={localize('Max order')}
@@ -228,12 +229,10 @@ class FormAds extends React.Component {
                                                             {...field}
                                                             data-lpignore='true'
                                                             type='textarea'
+                                                            label={localize('Your payment details')}
                                                             error={touched.payment_info && errors.payment_info}
-                                                            hint={localize(
-                                                                'Bank name, account number, beneficiary name'
-                                                            )}
+                                                            hint={localize('e.g. your bank/e-wallet account details')}
                                                             className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            placeholder={localize('Payment instructions')}
                                                             required
                                                             has_character_counter
                                                             max_characters={300}
@@ -248,9 +247,9 @@ class FormAds extends React.Component {
                                                             {...field}
                                                             data-lpignore='true'
                                                             type='textarea'
+                                                            label={localize('Your contact details')}
                                                             error={touched.contact_info && errors.contact_info}
                                                             className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            placeholder={localize('Contact details')}
                                                             required
                                                             has_character_counter
                                                             max_characters={300}
@@ -268,9 +267,9 @@ class FormAds extends React.Component {
                                                             touched.default_advert_description &&
                                                             errors.default_advert_description
                                                         }
+                                                        label={localize('Instructions (optional)')}
                                                         hint={localize('This information will be visible to everyone')}
                                                         className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                        placeholder={localize('Instructions (optional)')}
                                                         has_character_counter
                                                         max_characters={300}
                                                         required
@@ -320,14 +319,14 @@ class FormAds extends React.Component {
             max_transaction: [
                 v => !!v,
                 v => !isNaN(v),
-                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
+                v => v > 0 && countDecimalPlaces(v) <= getDecimalPlaces(this.context.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
             min_transaction: [
                 v => !!v,
                 v => !isNaN(v),
-                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
+                v => v > 0 && countDecimalPlaces(v) <= getDecimalPlaces(this.context.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
@@ -337,7 +336,7 @@ class FormAds extends React.Component {
                 // v => v > available_price,
                 // TODO: remove v > 0 check when we have available_price
                 v => !isNaN(v),
-                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
+                v => v > 0 && countDecimalPlaces(v) <= getDecimalPlaces(this.context.currency),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
                 v => (values.max_transaction ? +v >= values.max_transaction : true),
             ],
@@ -360,7 +359,7 @@ class FormAds extends React.Component {
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
             payment_info: localize('Payment instructions'),
-            price_rate: localize('Fixed price'),
+            price_rate: localize('Fixed rate'),
         };
 
         const common_messages = field_name => [localize('{{field_name}} is required', { field_name })];

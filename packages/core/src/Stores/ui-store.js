@@ -1,6 +1,6 @@
 import { action, autorun, computed, observable } from 'mobx';
-import { getPlatformHeader } from '@deriv/shared/utils/platform';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { getPlatformHeader, unique, isEmptyObject } from '@deriv/shared';
+
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import { LocalStore } from '_common/storage';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
@@ -121,6 +121,14 @@ export default class UIStore extends BaseStore {
 
     @observable prompt_when = false;
     @observable promptFn = () => {};
+
+    // MT5 account needed modal
+    @observable is_account_needed_modal_on = false;
+    @observable account_needed_modal_props = {
+        target: '',
+        target_label: '',
+        target_dmt5_label: '',
+    };
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -355,7 +363,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    openRealAccountSignup(target) {
+    openRealAccountSignup(target = this.root_store.client.upgradeable_landing_companies?.[0]) {
         this.is_real_acc_signup_on = true;
         this.real_account_signup_target = target;
         this.is_accounts_switcher_on = false;
@@ -368,6 +376,26 @@ export default class UIStore extends BaseStore {
             this.resetRealAccountSignupParams();
             this.setRealAccountSignupEnd(true);
         }, 300);
+    }
+
+    @action.bound
+    openAccountNeededModal(target, target_label, target_dmt5_label) {
+        this.is_account_needed_modal_on = true;
+        this.account_needed_modal_props = {
+            target,
+            target_label,
+            target_dmt5_label,
+        };
+    }
+
+    @action.bound
+    closeAccountNeededModal() {
+        this.is_account_needed_modal_on = false;
+        this.account_needed_modal_props = {
+            target: '',
+            target_label: '',
+            target_dmt5_label: '',
+        };
     }
 
     @action.bound
@@ -442,7 +470,7 @@ export default class UIStore extends BaseStore {
             // Remove notification messages if it was already closed by user and exists in LocalStore
             const active_loginid = LocalStore.get('active_loginid');
             const messages = LocalStore.getObject('notification_messages');
-            if (active_loginid && !ObjectUtils.isEmptyObject(messages)) {
+            if (active_loginid && !isEmptyObject(messages)) {
                 // Check if is existing message to remove already closed messages stored in LocalStore
                 const is_existing_message = Array.isArray(messages[active_loginid])
                     ? messages[active_loginid].includes(notification.key)
@@ -494,7 +522,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     addNotificationBar(message) {
         this.push_notifications.push(message);
-        this.push_notifications = ObjectUtils.unique(this.push_notifications, 'msg_type');
+        this.push_notifications = unique(this.push_notifications, 'msg_type');
     }
 
     @action.bound

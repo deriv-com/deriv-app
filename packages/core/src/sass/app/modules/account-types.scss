@@ -25,7 +25,6 @@
         grid-auto-flow: column;
         grid-column-gap: 2.4rem;
         grid-template-columns: auto 1fr;
-        height: 30.2rem;
         margin: 0 auto 4rem;
         padding: 2.4rem;
         width: 80.8rem;
@@ -59,7 +58,7 @@
     }
     &__box-icons {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-auto-flow: column;
         grid-gap: 0.8rem 1.6rem;
         width: fit-content;
     }
@@ -78,14 +77,9 @@
             display: flex;
             flex: 1;
             position: relative;
-            transition: all 0.3s ease;
-
-            &--show-description {
-                transform: translateX(-100%);
-            }
         }
         &__main {
-            height: 25.2rem;
+            height: 35.8rem;
             min-width: 100%;
             padding: 1.6rem;
 
@@ -97,17 +91,22 @@
                 margin-bottom: 0.4rem;
             }
             &-subtitle {
-                color: var(--text-profit-success);
+                color: var(--text-general);
                 font-size: 1.2rem;
                 font-weight: bold;
                 line-height: 1.5;
                 margin-bottom: 0.8rem;
             }
+            &-table-container {
+                height: 14.8rem;
+                border-bottom: 1px solid var(--border-normal);
+                padding-bottom: 1.6rem;
+                margin-bottom: 1.6rem;
+            }
             &-items {
                 width: 100%;
                 border-collapse: separate;
                 border-spacing: 0 0.8rem;
-                margin-bottom: 1.6rem;
             }
             &-item {
                 margin-bottom: 0.8rem;
@@ -116,6 +115,7 @@
                     color: var(--text-less-prominent);
                     display: inline-block;
                     font-size: 1.2rem;
+                    line-height: 1.5;
                     white-space: nowrap;
                     width: 10.3rem;
                 }
@@ -123,75 +123,40 @@
                     color: var(--text-general);
                     display: inline-block;
                     font-size: 1.2rem;
+                    line-height: 1.5;
                     white-space: nowrap;
                     width: 8rem;
                 }
-            }
-            &-help {
-                cursor: pointer;
-                vertical-align: middle;
-                margin-left: 0.4rem;
             }
             &-button {
                 width: calc(100% - 32px);
                 box-sizing: border-box;
                 position: absolute;
-                bottom: 2.2rem;
+                bottom: 1.6rem;
             }
         }
-        &__description {
-            color: var(--text-general);
-            font-size: 1.2rem;
-            line-height: 1.5;
-            min-width: 100%;
-            padding: 0.8rem 1.6rem 1.6rem;
-
+        &__platforms {
             &-title {
-                color: var(--text-profit-success);
-                font-size: 1.2rem;
-                font-weight: bold;
-                line-height: 1.5;
-                padding-bottom: 0.8rem;
-            }
-            &-text {
-                color: var(--text-general);
-                font-size: 1.2rem;
+                color: var(--text-less-prominent);
+                font-size: var(--text-size-xxs);
                 line-height: 1.5;
                 margin-bottom: 0.8rem;
-
-                &--small {
-                    color: var(--text-general);
-                    font-size: 1rem;
-                    line-height: 1.4;
-                }
             }
-            &-title-text {
-                padding-left: 0.8rem;
+            &-name {
+                font-size: var(--text-size-xxxs);
+                color: var(--text-general);
+                padding-top: 0.2rem;
             }
-            &-back {
+            &-icons {
+                display: grid;
+                grid-auto-flow: column;
+                justify-content: start;
+            }
+            &-icon {
                 cursor: pointer;
-                vertical-align: middle;
-            }
-            &-learn {
-                position: absolute;
-                bottom: 1.6rem;
-                width: fit-content;
-            }
-            &-learn-title {
-                color: var(--text-less-prominent);
-                font-size: 1rem;
-                line-height: 1.4;
-            }
-            &-learn-items {
-                background-color: var(--brand-red-coral);
-                border-radius: 10px;
-                color: var(--text-colored-background);
-                font-size: 1rem;
-                font-weight: bold;
-                line-height: 1.4;
-                margin-right: 0.4rem;
-                padding: 0.1rem 0.4rem;
-                text-decoration: none;
+                display: grid;
+                justify-items: center;
+                width: 6.4rem;
             }
         }
     }

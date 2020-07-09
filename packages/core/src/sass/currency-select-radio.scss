@@ -101,12 +101,3 @@
         width: calc(100% + 2.4rem);
     }
 }
-
-.currency-selector {
-    &__radio-group {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        justify-content: space-around;
-    }
-}

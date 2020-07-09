@@ -1,4 +1,4 @@
-import { toMoment } from '@deriv/shared/utils/date';
+import { toMoment } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PersonalDetails from 'App/Containers/RealAccountSignup/personal-details.jsx';
 import { getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
@@ -159,12 +159,12 @@ export const personalDetailsConfig = ({ real_account_signup_target, residence_li
                     value: 'Mr',
                 },
                 {
-                    label: localize('Ms'),
-                    value: 'Ms',
-                },
-                {
                     label: localize('Mrs'),
                     value: 'Mrs',
+                },
+                {
+                    label: localize('Ms'),
+                    value: 'Ms',
                 },
                 {
                     label: localize('Miss'),

@@ -1,8 +1,8 @@
 import { Div100vhContainer, ThemedScrollbars, FormSubmitButton } from '@deriv/components';
 import { Field, Formik } from 'formik';
 import React from 'react';
-import { getDerivComLink } from '@deriv/shared/utils/url';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import { getDerivComLink, isDesktop, isMobile } from '@deriv/shared';
+
 import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { Hr } from './currency-selector.jsx';
@@ -46,7 +46,7 @@ class TermsOfUse extends React.Component {
                                     id='agreed_tnc'
                                     label={
                                         <Localize
-                                            i18n_default_text='I have read and agree to the <0>terms and conditions</0> of the Deriv website.'
+                                            i18n_default_text='I agree to the <0>terms and conditions</0>.'
                                             components={[
                                                 <a
                                                     key={0}
@@ -62,7 +62,6 @@ class TermsOfUse extends React.Component {
                             </Div100vhContainer>
                         </ThemedScrollbars>
                         <FormSubmitButton
-                            is_absolute
                             is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
                             label={localize('Add account')}
                             has_cancel={true}

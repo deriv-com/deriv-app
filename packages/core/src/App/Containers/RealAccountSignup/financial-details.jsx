@@ -2,8 +2,8 @@ import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, ThemedScrollbar
 import { Formik } from 'formik';
 import React from 'react';
 import { FormSubHeader } from '@deriv/account';
-import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import { localize } from '@deriv/translations';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { setWarnsFilterErrors } from 'App/Containers/RealAccountSignup/helpers/utils';
 import {
@@ -39,7 +39,10 @@ const FinancialInformation = ({
     account_turnover_enum,
 }) => (
     <React.Fragment>
-        <FormSubHeader title={localize('Financial information')} />
+        <FormSubHeader
+            title={localize('Financial information')}
+            description={localize("We're legally obliged to ask for your financial information.")}
+        />
         <IncomeSource {...shared_props} income_source_enum={income_source_enum} />
         <EmploymentStatus {...shared_props} employment_status_enum={employment_status_enum} />
         <EmploymentIndustry {...shared_props} employment_industry_enum={employment_industry_enum} />
@@ -64,7 +67,11 @@ const TradingExperience = ({
     other_instruments_trading_frequency_enum,
 }) => (
     <React.Fragment>
-        <FormSubHeader title={localize('Trading experience')} />
+        <FormSubHeader
+            title={localize('Trading experience')}
+            subtitle={localize('(All fields are required)')}
+            description={localize('Tell us about your trading experience.')}
+        />
         <ForexTradingExperience {...shared_props} forex_trading_experience_enum={forex_trading_experience_enum} />
         <ForexTradingFrequency {...shared_props} forex_trading_frequency_enum={forex_trading_frequency_enum} />
         <BinaryOptionsTradingExperience
@@ -93,18 +100,6 @@ class FinancialDetails extends React.Component {
         this.state = {
             warnings: {},
         };
-        // TODO: Find a better solution for handling no-op instead of using is_mounted flags
-        this.is_mounted = false;
-    }
-
-    form = React.createRef();
-
-    async componentDidMount() {
-        await this.form.current.getFormikActions().validateForm();
-    }
-
-    componentWillUnmount() {
-        this.is_mounted = false;
     }
 
     handleCancel = values => {
@@ -121,7 +116,7 @@ class FinancialDetails extends React.Component {
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
-                ref={this.form}
+                validateOnMount
             >
                 {({ handleSubmit, isSubmitting, errors, values, setFieldValue, handleChange, handleBlur, touched }) => {
                     const shared_props = {
@@ -142,9 +137,6 @@ class FinancialDetails extends React.Component {
                                         height_offset='199px'
                                         is_disabled={isDesktop()}
                                     >
-                                        <p className='details-form__description'>
-                                            <Localize i18n_default_text="We're legally obliged to ask for your financial information." />
-                                        </p>
                                         <ThemedScrollbars
                                             is_native={isMobile()}
                                             autoHide={!(window.innerHeight < 890)}
@@ -191,18 +183,17 @@ class FinancialDetails extends React.Component {
                                                 />
                                             </div>
                                         </ThemedScrollbars>
-                                        <FormSubmitButton
-                                            is_absolute
-                                            is_disabled={
-                                                // eslint-disable-next-line no-unused-vars
-                                                isSubmitting || Object.keys(errors).length > 0
-                                            }
-                                            label={localize('Next')}
-                                            has_cancel
-                                            cancel_label={localize('Previous')}
-                                            onCancel={this.handleCancel.bind(this, values)}
-                                        />
                                     </Div100vhContainer>
+                                    <FormSubmitButton
+                                        is_disabled={
+                                            // eslint-disable-next-line no-unused-vars
+                                            isSubmitting || Object.keys(errors).length > 0
+                                        }
+                                        label={localize('Next')}
+                                        has_cancel
+                                        cancel_label={localize('Previous')}
+                                        onCancel={this.handleCancel.bind(this, values)}
+                                    />
                                 </form>
                             )}
                         </AutoHeightWrapper>

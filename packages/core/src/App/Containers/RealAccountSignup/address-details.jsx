@@ -12,7 +12,7 @@ import {
 import { Formik, Field } from 'formik';
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { setWarnsFilterErrors } from 'App/Containers/RealAccountSignup/helpers/utils';
 
@@ -107,7 +107,10 @@ class AddressDetails extends React.Component {
                                     is_disabled={isDesktop()}
                                 >
                                     <p className='details-form__description'>
-                                        <Localize i18n_default_text='Please ensure that this address is the same as in your proof of address' />
+                                        <strong>
+                                            <Localize i18n_default_text='Only use an address for which you have proof of residence - ' />
+                                        </strong>
+                                        <Localize i18n_default_text='a recent utility bill (e.g. electricity, water, gas, landline or internet), bank statement, or government-issued letter with your name and this address.' />
                                     </p>
                                     <ThemedScrollbars is_bypassed={isMobile()} height={height}>
                                         <div
@@ -187,18 +190,14 @@ class AddressDetails extends React.Component {
                                             />
                                         </div>
                                     </ThemedScrollbars>
-                                    <FormSubmitButton
-                                        is_absolute
-                                        is_disabled={
-                                            // eslint-disable-next-line no-unused-vars
-                                            isSubmitting || Object.keys(errors).length > 0
-                                        }
-                                        label={localize('Next')}
-                                        has_cancel
-                                        cancel_label={localize('Previous')}
-                                        onCancel={this.handleCancel.bind(this, values)}
-                                    />
                                 </Div100vhContainer>
+                                <FormSubmitButton
+                                    is_disabled={isSubmitting || Object.keys(errors).length > 0}
+                                    label={localize('Next')}
+                                    has_cancel
+                                    cancel_label={localize('Previous')}
+                                    onCancel={this.handleCancel.bind(this, values)}
+                                />
                             </form>
                         )}
                     </AutoHeightWrapper>

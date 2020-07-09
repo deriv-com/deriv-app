@@ -11,8 +11,8 @@ import {
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik } from 'formik';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import { isMobile, isDesktop } from '@deriv/shared/utils/screen';
+import { getCurrencyDisplayCode, isMobile, isDesktop } from '@deriv/shared';
+
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
 import { setWarnsFilterErrors } from 'App/Containers/RealAccountSignup/helpers/utils';
@@ -57,7 +57,7 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
                     )}
                     <div className='label currency-list__item-text'>
                         {label}
-                        <br />({CurrencyUtils.getCurrencyDisplayCode(id)})
+                        <br />({getCurrencyDisplayCode(id)})
                     </div>
                 </div>
             </label>
@@ -69,8 +69,11 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
 export const RadioButtonGroup = ({ label, className, children, is_title_enabled }) => {
     return (
         <div className={className}>
-            {is_title_enabled && <h2>{label}</h2>}
+            {is_title_enabled && <h2 className={classNames(`${className}--is-header`)}>{label}</h2>}
             <div className='currency-list__items'>{children}</div>
+            <p className='currency-selector__description'>
+                <Localize i18n_default_text='You will not be able to change currency once you have made a deposit' />
+            </p>
         </div>
     );
 };
@@ -121,6 +124,7 @@ class CurrencySelector extends React.Component {
 
     render() {
         const { has_currency, has_real_account } = this.props;
+
         return (
             <Formik
                 initialValues={this.props.value}
@@ -209,10 +213,11 @@ class CurrencySelector extends React.Component {
                                 </Div100vhContainer>
                                 <FormSubmitButton
                                     is_disabled={isSubmitting || !values.currency}
-                                    is_center={!has_currency || isMobile()}
-                                    label={
-                                        !has_real_account && isMobile() ? localize('Next') : localize('Set currency')
-                                    }
+                                    is_center={!has_currency}
+                                    has_cancel
+                                    onCancel={this.props.onCancel}
+                                    cancel_label={localize('Cancel')}
+                                    label={localize('Next')}
                                 />
                             </form>
                         )}

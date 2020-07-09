@@ -1,4 +1,4 @@
-import { isDesktop } from '@deriv/shared/utils/os';
+import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getDefaultFields } from './form-validations';
 import TermsOfUse from './terms-of-use.jsx';

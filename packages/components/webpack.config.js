@@ -35,6 +35,7 @@ module.exports = {
         'expansion-panel': 'Components/expansion-panel',
         'fade-wrapper': 'Components/fade-wrapper',
         'field-error': 'Components/field-error',
+        'field-warn': 'Components/field-warn',
         'file-dropzone': 'Components/file-dropzone',
         'form-progress': path.resolve(__dirname, 'src', 'components/form-progress/index.js'),
         'form-submit-button': path.resolve(__dirname, 'src', 'components/form-submit-button/index.js'),

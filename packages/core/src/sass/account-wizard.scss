@@ -338,6 +338,9 @@
             height: 100%;
             width: 100%;
             margin-top: 0.3rem;
+            @include mobile {
+                border-top-color: var(--general-disabled);
+            }
         }
         &--has-description {
             margin-bottom: 0.5rem;
@@ -347,7 +350,6 @@
         margin-top: 1.6em;
     }
     &__title {
-        background: var(--general-main-1);
         color: var(--text-prominent);
         padding-right: 0.8rem;
     }

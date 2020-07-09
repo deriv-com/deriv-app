@@ -11,7 +11,7 @@ import OrderTableHeader from './order-table-header.jsx';
 import OrderRowComponent from './order-table-row.jsx';
 import OrderInfo from '../order-info';
 
-const OrderRowLoader = () => (
+/* const OrderRowLoader = () => (
     <ContentLoader
         height={64}
         width={900}
@@ -25,7 +25,7 @@ const OrderRowLoader = () => (
         <rect x='536' y='20' rx='5' ry='5' width='90' height='10' />
         <rect x='720' y='20' rx='5' ry='5' width='90' height='10' />
     </ContentLoader>
-);
+); */
 
 const OrderTableContent = ({ showDetails, is_active }) => {
     const { changeTab, list_item_limit, order_offset, orders, setOrders, setOrderOffset } = React.useContext(
@@ -106,7 +106,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                         items={modified_list}
                         item_size={item_height}
                         RenderComponent={Row}
-                        RowLoader={OrderRowLoader}
+                        // RowLoader={OrderRowLoader}
                         has_more_items_to_load={has_more_items_to_load}
                         loadMore={loadMoreOrders}
                     />

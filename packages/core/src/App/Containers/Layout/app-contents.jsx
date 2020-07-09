@@ -4,7 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 // import InstallPWA    from './install-pwa.jsx';
 

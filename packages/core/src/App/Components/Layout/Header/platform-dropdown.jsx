@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Div100vhContainer, Icon } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import { routes, isDesktop, isMobile } from '@deriv/shared';
+
 import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 

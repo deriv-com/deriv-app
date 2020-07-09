@@ -63,7 +63,7 @@ class Transactions extends React.PureComponent {
                             </TransitionGroup>
                         ) : (
                             <>
-                                {contract_stage.index >= contract_stages.STARTING.index ? (
+                                {contract_stage >= contract_stages.STARTING ? (
                                     <Transaction contract={null} />
                                 ) : (
                                     <div className='transactions-empty__container'>
@@ -97,7 +97,7 @@ class Transactions extends React.PureComponent {
 }
 
 Transactions.propTypes = {
-    contract_stage: PropTypes.object,
+    contract_stage: PropTypes.number,
     elements: PropTypes.array,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,

@@ -9,8 +9,9 @@ import {
     subDays,
     subMonths,
     toMoment,
-} from '@deriv/shared/utils/date';
-import { padLeft } from '@deriv/shared/utils/string';
+    padLeft,
+} from '@deriv/shared';
+
 import Popover from 'Components/popover';
 import { CommonPropTypes } from './types';
 import { getDaysOfTheWeek, week_headers_abbr } from '../helpers';

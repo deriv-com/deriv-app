@@ -136,7 +136,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     }
                 }
                 &--is-multiplier {
-                    bottom: 40px;
+                    bottom: 48px;
+
                     & .positions-drawer-dialog-toggle {
                         top: 46px;
                         width: 98px;
@@ -156,7 +157,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         &-item {
                             &__total-profit-loss {
                                 flex-direction: row;
-                                margin: 0.4rem auto 0;
+                                margin: 0 auto;
                                 border-top: 0;
                             }
                             &__header,
@@ -176,6 +177,12 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     }
                     &.contract-drawer--with-collapsible-btn {
                         bottom: 36px;
+
+                        & .contract-card-item {
+                            &__total-profit-loss {
+                                margin: 0.4rem auto 0;
+                            }
+                        }
                     }
                     &.contract-drawer--is-expanded {
                         transform: translateY(95px);

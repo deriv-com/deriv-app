@@ -76,7 +76,7 @@ class ToggleMenuDrawer extends React.Component {
     }
 
     toggleDrawer = () => {
-        this.setState({ is_open: !this.state.is_open });
+        this.setState({ is_open: !this.state.is_open, is_submenu_expanded: false });
     };
 
     onToggleSubmenu = is_submenu_expanded => {

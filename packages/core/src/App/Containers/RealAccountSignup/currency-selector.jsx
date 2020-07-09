@@ -15,6 +15,7 @@ import CurrencyUtils from '@deriv/shared/utils/currency';
 import { isMobile, isDesktop } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
+import { setWarnsFilterErrors } from 'App/Containers/RealAccountSignup/helpers/utils';
 import 'Sass/currency-select-radio.scss';
 
 // Radio input
@@ -101,6 +102,7 @@ class CurrencySelector extends React.Component {
         this.state = {
             fiat_currencies: [],
             crypto_currencies: [],
+            warnings: {},
         };
     }
 
@@ -125,7 +127,7 @@ class CurrencySelector extends React.Component {
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
-                validate={this.props.validate}
+                validate={values => setWarnsFilterErrors.call(this, this.props.validate(values))}
             >
                 {({
                     handleSubmit,

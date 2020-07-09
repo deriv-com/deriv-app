@@ -1,5 +1,5 @@
 import { observable, action, computed } from 'mobx';
-import { isEnded, getIndicativePrice } from '@deriv/bot-skeleton';
+import { getIndicativePrice } from '@deriv/bot-skeleton';
 import { contract_stages } from '../constants/contract-stage';
 
 export default class ContractCardStore {
@@ -18,9 +18,9 @@ export default class ContractCardStore {
     @computed
     get is_contract_completed() {
         return (
-            this.contract &&
-            isEnded(this.contract) &&
-            this.root_store.run_panel.contract_stage.index !== contract_stages.PURCHASE_RECEIVED.index
+            !!this.contract &&
+            !!this.contract.is_sold &&
+            this.root_store.run_panel.contract_stage !== contract_stages.PURCHASE_RECEIVED
         );
     }
 
@@ -28,8 +28,8 @@ export default class ContractCardStore {
     get is_contract_loading() {
         return (
             (this.root_store.run_panel.is_running && this.contract === null) ||
-            this.root_store.run_panel.contract_stage.index === contract_stages.PURCHASE_SENT.index ||
-            this.root_store.run_panel.contract_stage.index === contract_stages.STARTING.index
+            this.root_store.run_panel.contract_stage === contract_stages.PURCHASE_SENT ||
+            this.root_store.run_panel.contract_stage === contract_stages.STARTING
         );
     }
 

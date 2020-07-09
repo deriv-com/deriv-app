@@ -1035,6 +1035,7 @@ $MIN_HEIGHT_FLOATING: calc(
         height: calc(100% - 42px);
         flex: 1;
         max-width: 100%;
+        max-height: 502px;
     }
     &__row {
         grid-template-columns: 169px 198px 80px 99px;

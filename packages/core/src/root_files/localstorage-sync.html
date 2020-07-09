@@ -7,8 +7,10 @@
         <script>
             window.addEventListener('message', function(message) {
                 var allowed_origins = [
+                    'https://smarttrader.deriv.com',
                     'https://smarttrader.deriv.app', 
-                    'https://smarttrader-staging.deriv.app'
+                    'https://smarttrader-staging.deriv.app',
+                    'https://smarttrader-staging.deriv.com'
                 ];
 
                 if (allowed_origins.includes(message.origin)) {

@@ -12,6 +12,7 @@ import { isBot } from '../platform/platform';
 export const domain_app_ids = {
     // these domains as supported "production domains"
     'deriv.app': 16929,
+    'app.deriv.com': 16929,
 };
 const binary_desktop_app_id = 14473;
 

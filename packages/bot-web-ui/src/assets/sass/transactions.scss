@@ -3,20 +3,11 @@
     $grid-template-columns: 0.9fr 1fr 1fr;
 
     &-empty {
-        height: calc(100vh - 365px);
+        height: calc(100vh - 37.9rem);
         display: flex;
         flex-direction: column;
         justify-content: center;
 
-        &__container {
-            box-flex: 1;
-            flex-grow: 1;
-            display: -webkit-box;
-            display: flex;
-            flex-direction: column;
-            box-align: center;
-            box-pack: center;
-        }
         &__header {
             font-size: 1.4rem;
             font-weight: bold;
@@ -36,6 +27,10 @@
         &__list {
             list-style-type: circle;
             margin-left: 2rem;
+        }
+        &--mobile {
+            @extend .transactions-empty;
+            height: calc(100vh - 22.5rem);
         }
     }
     &__header {

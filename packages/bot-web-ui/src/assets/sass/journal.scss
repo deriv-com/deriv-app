@@ -3,26 +3,17 @@
  */
 .journal {
     &-empty {
-        height: calc(100vh - 365px);
+        height: calc(100vh - 37.9rem);
         display: flex;
         flex-direction: column;
         justify-content: center;
 
-        &__container {
-            -webkit-box-flex: 1;
-            flex-grow: 1;
-            display: -webkit-box;
-            display: flex;
-            flex-direction: column;
-            -webkit-box-align: center;
-            -webkit-box-pack: center;
-        }
         &__header {
             font-size: 1.4rem;
             font-weight: bold;
             text-align: center;
             color: var(--text-less-prominent);
-            padding: 8px;
+            padding: 0.8rem;
         }
         &__icon {
             align-self: center;
@@ -36,6 +27,10 @@
         &__list {
             list-style-type: circle;
             margin-left: 20px;
+        }
+        &--mobile {
+            @extend .journal-empty;
+            height: calc(100vh - 22.5rem);
         }
     }
     &__item {
@@ -103,6 +98,11 @@
     }
     &__loader {
         width: 350px;
-        height: 90px;
+        height: 9.2rem;
+
+        &--mobile {
+            @extend .journal__loader;
+            width: 100vw;
+        }
     }
 }

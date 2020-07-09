@@ -1,5 +1,5 @@
 import { configure } from 'mobx';
-import { setStorageEvents } from '@deriv/shared/utils/storage';
+import { setStorageEvents } from '@deriv/shared';
 import Client from '_common/base/client_base';
 import NetworkMonitor from 'Services/network-monitor';
 // import OutdatedBrowser      from 'Services/outdated-browser';

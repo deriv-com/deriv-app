@@ -7,13 +7,13 @@ commands:
     description: "Git checkout and save cache"
     steps:
       - restore_cache:
-          name: Git restore cache
+          name: "Git restore cache"
           keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
+            - source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ .Revision }}
+            - source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
+            - source-v{{ .Environment.CACHE_VERSION }}-
       - run:
-          name: Fetch git tags
+          name: "Fetch git tags"
           command: |
             mkdir -p ~/.ssh
             echo 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==' >> ~/.ssh/known_hosts
@@ -24,40 +24,55 @@ commands:
             fi
       - checkout
       - run:
-          name: Compress git objects
+          name: "Compress git objects"
           command: git gc
       - save_cache:
           name: Git save cache
-          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          key: source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
 
   npm_install_from_cache:
     description: "npm install and save cache"
     steps:
+      - run:
+          name: "Create cache key"
+          command: echo $(find . ./packages/ -maxdepth 2 -name package-lock.json -type f -exec md5sum {} \; | sort -n | md5sum | cut -d' ' -f1) >> CACHE_KEY1
       - restore_cache:
           keys:
-            - node-
+            - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
       - run:
-          name: Install npm packages
-          command: npm run bootstrap
-      - run:
-          name: "create cache key"
-          command: echo $(find ./packages/ -name package-lock.json -type f -exec md5sum {} \; | md5sum | cut -d' ' -f1) >> CACHE_KEY1
+          name: "Install npm packages"
+          command: |
+            if [ -d "./node_modules" ]; then
+              echo "Found cache. Using cached node_modules."
+              node_modules/lerna/cli.js link
+            else
+              echo "Could not find cache. Bootstrapping..."
+              npm run bootstrap
+            fi
       - save_cache:
-          key: node-{{ checksum "CACHE_KEY1" }}
+          name: "Saving node_modules cache"
+          key: node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
           paths:
+            # VERIFY_CACHE_FOLDERS_START (DO NOT REMOVE)
             - "node_modules"
-            - "packages/*/node_modules"
+            - "packages/account/node_modules"
+            - "packages/bot-skeleton/node_modules"
+            - "packages/bot-web-ui/node_modules"
+            - "packages/components/node_modules"
+            - "packages/core/node_modules"
+            - "packages/p2p/node_modules"
+            - "packages/shared/node_modules"
+            - "packages/trader/node_modules"
+            - "packages/translations/node_modules"
+            # VERIFY_CACHE_FOLDERS_END (DO NOT REMOVE)
   build:
     description: "Build"
     steps:
       - run:
-          name: "build packages"
-          command: npm run build:local
-      - run:
-          name: "build core"
-          command: node_modules/lerna/cli.js exec --scope @deriv/core -- npm run build
+          name: "Build all packages"
+          command: npm run build
 
   notify_slack:
     description: "Notify slack"

@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { toMoment } from '@deriv/shared/utils/date';
+import { toMoment } from '@deriv/shared';
 
 const getDurationMaps = () => ({
     t: { display: localize('Ticks'), order: 1 },

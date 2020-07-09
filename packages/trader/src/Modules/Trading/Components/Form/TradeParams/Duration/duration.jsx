@@ -5,7 +5,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import RangeSlider from 'App/Components/Form/RangeSlider';
-import { toMoment } from '@deriv/shared/utils/date';
+import { toMoment } from '@deriv/shared';
 import DurationToggle from './duration-toggle.jsx';
 import AdvancedDuration from './advanced-duration.jsx';
 import SimpleDuration from './simple-duration.jsx';

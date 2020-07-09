@@ -791,7 +791,8 @@ export default class CashierStore extends BaseStore {
                 if (/svg$/.test(a.mt5_group)) {
                     return -1;
                 }
-                if (/vanuatu|svg_standard/.test(a.mt5_group)) {
+                // TODO: [remove-standard-advanced] remove standard when API groups are updated
+                if (/vanuatu|svg_(standard|financial)/.test(a.mt5_group)) {
                     return /svg$/.test(b.mt5_group) ? 1 : -1;
                 }
                 return 1;

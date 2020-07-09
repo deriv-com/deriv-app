@@ -29,7 +29,6 @@ export default class RunPanelStore {
     @observable has_open_contract = false;
     @observable is_running = false;
     @observable is_drawer_open = true;
-    @observable is_stop_button_disabled = false;
 
     // when error happens, if it is unrecoverable_errors we reset run-panel
     // we activate run-button and clear trade info and set the ContractStage to NOT_RUNNING
@@ -40,6 +39,11 @@ export default class RunPanelStore {
     @computed
     get is_stop_button_visible() {
         return this.is_running || this.has_open_contract;
+    }
+
+    @computed
+    get is_stop_button_disabled() {
+        return this.contract_stage === contract_stages.IS_STOPPING;
     }
 
     @computed
@@ -71,7 +75,6 @@ export default class RunPanelStore {
             )
         );
 
-        this.is_stop_button_disabled = false;
         this.is_running = true;
         ui.setPromptHandler(true, route_prompt_dialog.shouldNavigateAfterPrompt);
         this.toggleDrawer(true);
@@ -92,18 +95,15 @@ export default class RunPanelStore {
             // when user click stop button when there is a error but bot is retrying
             this.setContractStage(contract_stages.NOT_RUNNING);
             ui.setAccountSwitcherDisabledMessage(false);
-            this.is_stop_button_disabled = false;
             this.is_running = false;
         } else if (this.has_open_contract) {
             // when user click stop button when bot is running
             this.setContractStage(contract_stages.IS_STOPPING);
-            this.is_stop_button_disabled = true;
         } else {
             // when user click stop button before bot start running
             this.setContractStage(contract_stages.NOT_RUNNING);
             RunPanelStore.unregisterBotListeners();
             ui.setAccountSwitcherDisabledMessage(false);
-            this.is_stop_button_disabled = false;
             this.is_running = false;
         }
 
@@ -222,7 +222,6 @@ export default class RunPanelStore {
 
     @action.bound
     onBotRunningEvent() {
-        this.is_stop_button_disabled = false;
         this.has_open_contract = true;
     }
 

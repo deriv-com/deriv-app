@@ -1,7 +1,8 @@
 import React from 'react';
 import { Popover, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { WS } from 'Services';
+import BinarySocket from '_common/base/socket_base';
+// import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 
 const LiveChat = ({ email, is_logged_in, loginid, landing_company_shortcode, currency, residence }) => {
@@ -9,7 +10,7 @@ const LiveChat = ({ email, is_logged_in, loginid, landing_company_shortcode, cur
 
     React.useEffect(() => {
         if (window.LiveChatWidget) {
-            WS.authorized.getSettings({ get_settings: 1 }).then(response => {
+            BinarySocket.wait('get_settings').then(response => {
                 const get_settings = response.get_settings || {};
                 const { first_name, last_name } = get_settings;
 

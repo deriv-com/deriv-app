@@ -2,7 +2,7 @@ import { action, observable, computed } from 'mobx';
 import { getCurrencyDisplayCode, routes, websiteUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
-import BaseStore from '../../base-store';
+import BaseStore from 'Stores/base-store';
 
 export default class OnRampStore extends BaseStore {
     @observable api_error = null;

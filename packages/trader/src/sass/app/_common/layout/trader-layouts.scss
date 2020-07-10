@@ -236,6 +236,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                                 margin-bottom: 0;
                             }
                         }
+
                         &__sell-button {
                             &--has-cancel-btn {
                                 display: grid;
@@ -648,16 +649,18 @@ $FLOATING_HEADER_HEIGHT: 41px;
     }
 }
 
-/** @define contract */
+/** @define contract; weak */
 .contract {
     // TODO: Remove below if redundant
     &-update {
+        /* postcss-bem-linter: ignore */
         &__wrapper {
             display: grid;
             grid-template-columns: 1fr;
             grid-gap: 1.6rem;
             margin: 1.6rem;
 
+            /* postcss-bem-linter: ignore */
             & .dc-tooltip:before,
             & .dc-tooltip:after {
                 display: none;

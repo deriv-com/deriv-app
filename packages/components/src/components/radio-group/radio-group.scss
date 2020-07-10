@@ -10,6 +10,7 @@
     &__item {
         display: flex;
         cursor: pointer;
+        color: var(--text-general);
     }
     &__item:not(:last-child) {
         margin-right: 16px;

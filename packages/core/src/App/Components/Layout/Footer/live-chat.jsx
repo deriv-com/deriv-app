@@ -12,13 +12,14 @@ class LiveChat extends React.Component {
     componentDidMount() {
         const { email, is_logged_in, loginid, landing_company_shortcode, currency, residence } = this.props;
         if (window.LiveChatWidget) {
-            // WS.authorized.getSettings({ get_settings: 1 }).then((response) => {
-            //     const get_settings = response.get_settings || {};
-            //     const { first_name, last_name } = get_settings;
+            WS.authorized.getSettings({ get_settings: 1 }).then(response => {
+                const get_settings = response.get_settings || {};
+                const { first_name, last_name } = get_settings;
 
-            //     if (email) window.LiveChatWidget.call('set_customer_email', email);
-            //     if (first_name && last_name) window.LiveChatWidget.call('set_customer_name', `${first_name} ${last_name}`);
-            // });
+                if (email) window.LiveChatWidget.call('set_customer_email', email);
+                if (first_name && last_name)
+                    window.LiveChatWidget.call('set_customer_name', `${first_name} ${last_name}`);
+            });
 
             window.LiveChatWidget.on('ready', () => {
                 this.setState({ is_livechat_interactive: true });

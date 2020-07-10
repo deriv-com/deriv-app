@@ -36,7 +36,6 @@ export default class OnRampStore extends BaseStore {
                     const url_params = new URLSearchParams({
                         baseCurrencyCode: 'usd',
                         defaultCurrencyCode: currency,
-                        externalCustomerId: '1591148580177.9550776014718119',
                         externalTransactionId: '_f3kxzxxl_widget',
                     });
 

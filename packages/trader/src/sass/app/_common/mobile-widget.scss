@@ -37,6 +37,11 @@
         &--multiplier {
             grid-template-columns: 1fr 1fr;
             grid-column-gap: 0.8rem;
+
+            /* postcss-bem-linter: ignore */
+            .contract-type-widget__icon-wrapper {
+                padding-left: 0;
+            }
         }
     }
     &__multiplier-amount {
@@ -47,10 +52,6 @@
 
         .mobile-widget__item-label {
             margin-right: 0.4rem;
-        }
-        /* postcss-bem-linter: ignore */
-        .contract-type-widget__icon-wrapper {
-            padding-left: 0;
         }
     }
     &__wrapper {

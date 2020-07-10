@@ -836,8 +836,12 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: 2.4rem;
             }
         }
-        &__text--red {
-            @include typeface(--small-left-bold-red);
+        &__text-highlight {
+            @include typeface(--paragraph-left-bold-red);
+
+            &--small {
+                font-size: 1.2rem;
+            }
         }
     }
     .account-limit-container {

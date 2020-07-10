@@ -20,6 +20,8 @@ import {
     isMobile,
     getDerivComLink,
     formatMoney,
+    hasCorrectDecimalPlaces,
+    getDecimalPlaces,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -82,6 +84,7 @@ class SelfExclusion extends React.Component {
     };
 
     validateFields = (values) => {
+        const { currency } = this.props;
         const errors = {};
         // Regex
         const is_number = /^\d+(\.\d+)?$/;
@@ -93,6 +96,12 @@ class SelfExclusion extends React.Component {
         // Messages
         const valid_number_message = localize('Should be a valid number');
         const max_number_message = localize('Reached maximum number of digits');
+        const max_decimal_message = (
+            <Localize
+                i18n_default_text='Reached maximum number of decimals: {{decimal}}'
+                values={{ decimal: getDecimalPlaces(currency) }}
+            />
+        );
 
         const getLimitNumberMessage = (current_value) => (
             <Localize
@@ -112,6 +121,15 @@ class SelfExclusion extends React.Component {
             'max_open_bets',
             'session_duration_limit',
         ];
+        const only_currency = [
+            'max_turnover',
+            'max_losses',
+            'max_7day_turnover',
+            'max_7day_losses',
+            'max_30day_turnover',
+            'max_30day_losses',
+            'max_balance',
+        ];
         const only_integers = ['session_duration_limit', 'max_open_bets'];
 
         only_numbers.forEach((item) => {
@@ -130,6 +148,14 @@ class SelfExclusion extends React.Component {
             if (values[item]) {
                 if (!is_integer.test(values[item])) {
                     errors[item] = valid_number_message;
+                }
+            }
+        });
+
+        only_currency.forEach((item) => {
+            if (values[item]) {
+                if (!hasCorrectDecimalPlaces(currency, values[item])) {
+                    errors[item] = max_decimal_message;
                 }
             }
         });
@@ -187,11 +213,7 @@ class SelfExclusion extends React.Component {
                 const response = await makeRequest();
                 if (response.error) {
                     this.setState({
-                        submit_error_message: `${
-                            response.error.field
-                                ? this.exclusion_texts[response.error.field]
-                                : localize('Self exclusion')
-                        }: ${response.error.message}`,
+                        submit_error_message: response.error.message,
                     });
                     this.setState({ show_confirm: false });
                 } else {
@@ -412,7 +434,7 @@ class SelfExclusion extends React.Component {
                                                     <Localize
                                                         i18n_default_text='You’ll be able to adjust these limits at any time. You can reduce your limits from the <0>self-exclusion page</0>. To increase or remove your limits, please contact our <1>Customer Support team</1>.'
                                                         components={[
-                                                            <span key={0} className='self-exclusion__text--red' />,
+                                                            <span key={0} className='self-exclusion__text-highlight' />,
                                                             <a
                                                                 key={1}
                                                                 className='link link--orange'

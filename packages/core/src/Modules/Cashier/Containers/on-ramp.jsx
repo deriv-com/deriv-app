@@ -14,29 +14,38 @@ const OnRamp = ({
     setIsOnRampModalOpen,
     should_show_dialog,
     resetPopup,
-}) => (
-    <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
-        <h2 className='on-ramp__page-header'>
-            <Localize i18n_default_text='Select payment channel' />
-        </h2>
-        {filtered_onramp_providers.map((provider, idx) => (
-            <OnRampProviderCard key={idx} provider={provider} />
-        ))}
-        <Modal
-            className={should_show_dialog ? 'on-ramp__dialog' : 'on-ramp__modal'}
-            has_close_icon
-            is_open={is_onramp_modal_open}
-            small={should_show_dialog}
-            title={onramp_popup_modal_title}
-            toggleModal={() => setIsOnRampModalOpen(!is_onramp_modal_open)}
-            onUnmount={resetPopup}
-        >
-            <Modal.Body>
-                <OnRampProviderPopup />
-            </Modal.Body>
-        </Modal>
-    </div>
-);
+    onMount,
+    onUnmount,
+}) => {
+    React.useEffect(() => {
+        onMount();
+        return () => onUnmount();
+    }, []);
+
+    return (
+        <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
+            <h2 className='on-ramp__page-header'>
+                <Localize i18n_default_text='Select payment channel' />
+            </h2>
+            {filtered_onramp_providers.map((provider, idx) => (
+                <OnRampProviderCard key={idx} provider={provider} />
+            ))}
+            <Modal
+                className={should_show_dialog ? 'on-ramp__dialog' : 'on-ramp__modal'}
+                has_close_icon
+                is_open={is_onramp_modal_open}
+                small={should_show_dialog}
+                title={onramp_popup_modal_title}
+                toggleModal={() => setIsOnRampModalOpen(!is_onramp_modal_open)}
+                onUnmount={resetPopup}
+            >
+                <Modal.Body>
+                    <OnRampProviderPopup />
+                </Modal.Body>
+            </Modal>
+        </div>
+    );
+};
 
 OnRamp.propTypes = {
     filtered_onramp_providers: PropTypes.array,
@@ -44,7 +53,9 @@ OnRamp.propTypes = {
     resetPopup: PropTypes.func,
     should_show_dialog: PropTypes.bool,
     setIsOnRampModalOpen: PropTypes.func,
+    onMount: PropTypes.func,
     onramp_popup_modal_title: PropTypes.string,
+    onUnmount: PropTypes.func,
 };
 
 export default connect(({ modules }) => ({
@@ -53,5 +64,7 @@ export default connect(({ modules }) => ({
     resetPopup: modules.cashier.onramp.resetPopup,
     should_show_dialog: modules.cashier.onramp.should_show_dialog,
     setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
+    onMount: modules.cashier.onramp.onMount,
     onramp_popup_modal_title: modules.cashier.onramp.onramp_popup_modal_title,
+    onUnmount: modules.cashier.onramp.onUnmount,
 }))(OnRamp);

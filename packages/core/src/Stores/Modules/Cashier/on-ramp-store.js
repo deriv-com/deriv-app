@@ -1,4 +1,4 @@
-import { action, observable, computed } from 'mobx';
+import { action, observable, computed, reaction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, routes, websiteUrl } from '@deriv/shared';
 import { WS } from 'Services';
@@ -17,7 +17,6 @@ export default class OnRampStore extends BaseStore {
 
     constructor(root_store) {
         super({ root_store });
-
         this.onramp_providers = [
             {
                 default_from_currency: 'usd',
@@ -25,9 +24,10 @@ export default class OnRampStore extends BaseStore {
                     'Your simple access to crypto. Fast and secure way to exchange and purchase 150+ cryptocurrencies. 24/7 live-chat support.'
                 ),
                 from_currencies: ['usd', 'eur', 'gbp'],
+                widget_script_dependencies: { 'changelly-affiliate-js': 'https://widget.changelly.com/affiliate.js' },
                 getWidgetHtml() {
                     const currency = getCurrencyDisplayCode(root_store.client.currency).toLowerCase();
-                    return `<script src="https://widget.changelly.com/affiliate.js"></script><iframe src="https://widget.changelly.com?from=${this.from_currencies.join(
+                    return `<iframe src="https://widget.changelly.com?from=${this.from_currencies.join(
                         ','
                     )}&to=${currency}&amount=50&address=&fromDefault=${
                         this.default_from_currency
@@ -37,9 +37,34 @@ export default class OnRampStore extends BaseStore {
                 name: 'Changelly',
                 payment_icons: ['IcCashierVisa', 'IcCashierMastercard'],
                 to_currencies: ['bch', 'btc', 'etc', 'eth', 'ltc', 'ust'],
-                type: 'widget',
             },
         ];
+    }
+
+    @action.bound
+    onMount() {
+        this.disposeThirdPartyJsReaction = reaction(
+            () => this.selected_provider,
+            provider => {
+                if (!provider?.widget_script_dependencies) return;
+
+                Object.keys(provider.widget_script_dependencies).forEach(script_name => {
+                    if (!document.querySelector(`#${script_name}`)) {
+                        const el_script = document.createElement('script');
+                        el_script.src = provider.widget_script_dependencies[script_name];
+                        el_script.id = script_name;
+                        document.body.appendChild(el_script);
+                    }
+                });
+            }
+        );
+    }
+
+    @action.bound
+    onUnmount() {
+        if (typeof this.disposeThirdPartyJsReaction === 'function') {
+            this.disposeThirdPartyJsReaction();
+        }
     }
 
     @computed

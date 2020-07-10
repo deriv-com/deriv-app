@@ -1,7 +1,6 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable } from 'mobx';
-import { isDesktop, toMoment } from '@deriv/shared';
-import Shortcode from 'Modules/Reports/Helpers/shortcode';
+import { toMoment } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 
 import { formatStatementTransaction } from './Helpers/format-response';

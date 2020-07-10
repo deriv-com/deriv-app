@@ -27,7 +27,7 @@ const OnRampProviderPopup = ({
     if (should_show_widget) {
         return (
             <div className='on-ramp__widget-container'>
-                <div dangerouslySetInnerHTML={{ __html: selected_provider.getWidgetHtml() }} />
+                <div dangerouslySetInnerHTML={{ __html: selected_provider.getWidgetHtml?.() }} />
             </div>
         );
     }

@@ -25,14 +25,6 @@ export default class OnRampStore extends BaseStore {
                     'Your simple access to crypto. Fast and secure way to exchange and purchase 150+ cryptocurrencies. 24/7 live-chat support.'
                 ),
                 from_currencies: ['usd', 'eur', 'gbp'],
-                getWidgetHtml() {
-                    const currency = getCurrencyDisplayCode(root_store.client.currency).toLowerCase();
-                    return `<script src="https://widget.changelly.com/affiliate.js"></script><iframe src="https://widget.changelly.com?from=${this.from_currencies.join(
-                        ','
-                    )}&to=${currency}&amount=50&address=&fromDefault=${
-                        this.default_from_currency
-                    }&toDefault=${currency}&theme=danger&merchant_id=iiq3jdt2p44yrfbx&payment_id=&v=2" width="100%" height="475px" class="changelly" scrolling="no" onLoad="function at(t){var e=t.target,i=e.parentNode,n=e.contentWindow,r=function(){return n.postMessage({width:i.offsetWidth},it.url)};window.addEventListener('resize',r),r()};at.apply(this, arguments);" style="min-height: 100%; min-width: 100%; overflow-y: visible; border: none">Can't load widget</iframe>`;
-                },
                 icon: 'IcCashierChangelly',
                 name: 'Changelly',
                 payment_icons: ['IcCashierVisa', 'IcCashierMastercard'],
@@ -41,12 +33,12 @@ export default class OnRampStore extends BaseStore {
                 onClickContinue() {
                     const currency = getCurrencyDisplayCode(root_store.client.currency).toLowerCase();
                     const base_url = 'https://buy.changelly.com';
-                    const url_params = new URLSearchParams();
-
-                    url_params.append('baseCurrencyCode', 'usd');
-                    url_params.append('defaultCurrencyCode', currency);
-                    url_params.append('externalCustomerId', '1591148580177.9550776014718119');
-                    url_params.append('externalTransactionId', '_f3kxzxxl_widget');
+                    const url_params = new URLSearchParams({
+                        baseCurrencyCode: 'usd',
+                        defaultCurrencyCode: currency,
+                        externalCustomerId: '1591148580177.9550776014718119',
+                        externalTransactionId: '_f3kxzxxl_widget',
+                    });
 
                     window.open(`${base_url}/?${url_params.toString()}`);
                 },

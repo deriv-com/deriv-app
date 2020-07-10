@@ -4,7 +4,6 @@ import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
 import { card_labels, getContractTypeDisplay } from '../../../../Constants/contract';
 import CardFooter from './contract-drawer-card-footer.jsx';
-import { getContractPath } from '@deriv/shared/utils/route';
 
 const ContractDrawerCard = ({
     contract_info,
@@ -40,7 +39,6 @@ const ContractDrawerCard = ({
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}
-            getContractPath={getContractPath}
             getContractTypeDisplay={getContractTypeDisplay}
             has_progress_slider={!is_multiplier}
             is_multiplier={is_multiplier}
@@ -48,6 +46,7 @@ const ContractDrawerCard = ({
             is_sold={!!is_sold}
             profit_loss={profit}
             server_time={server_time}
+            should_show_result_overlay={false}
             status={status}
         />
     );

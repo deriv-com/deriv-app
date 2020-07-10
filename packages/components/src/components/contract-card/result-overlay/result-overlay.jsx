@@ -73,13 +73,14 @@ class ResultOverlay extends React.PureComponent {
                                 onClick={() => onClickRemove(contract_id)}
                             />
                         )}
-                        <NavLink
-                            className='result__caption-wrapper'
-                            to={getContractPath(contract_id)}
-                            onClick={this.handleClick}
-                        >
-                            <ResultStatusIcon is_contract_won={is_contract_won} card_labels={card_labels} />
-                        </NavLink>
+                        {getContractPath && (
+                            <NavLink
+                                className='result__caption-wrapper'
+                                to={getContractPath(contract_id)}
+                                onClick={this.handleClick}
+                            />
+                        )}
+                        <ResultStatusIcon is_contract_won={is_contract_won} card_labels={card_labels} />
                     </div>
                 </CSSTransition>
             </React.Fragment>

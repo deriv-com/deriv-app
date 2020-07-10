@@ -27,6 +27,7 @@ const ContractCard = ({
     profit_loss,
     result,
     server_time,
+    should_show_result_overlay,
     show_transition,
     status,
     toggleUnsupportedContractModal,
@@ -80,20 +81,22 @@ const ContractCard = ({
 
     return (
         <>
-            <DesktopWrapper>
-                <ResultOverlay
-                    contract_id={contract_info.contract_id}
-                    is_unsupported={is_unsupported}
-                    is_multiplier={is_multiplier}
-                    is_visible={!!contract_info.is_sold}
-                    onClickRemove={onClickRemove}
-                    onClick={() => toggleUnsupportedContractModal(true)}
-                    result={result || fallback_result}
-                    card_labels={card_labels}
-                    getContractPath={getContractPath}
-                    is_positions={is_positions}
-                />
-            </DesktopWrapper>
+            {should_show_result_overlay && (
+                <DesktopWrapper>
+                    <ResultOverlay
+                        contract_id={contract_info.contract_id}
+                        is_unsupported={is_unsupported}
+                        is_multiplier={is_multiplier}
+                        is_visible={!!contract_info.is_sold}
+                        onClickRemove={onClickRemove}
+                        onClick={() => toggleUnsupportedContractModal(true)}
+                        result={result || fallback_result}
+                        card_labels={card_labels}
+                        getContractPath={getContractPath}
+                        is_positions={is_positions}
+                    />
+                </DesktopWrapper>
+            )}
             {is_positions ? (
                 <div
                     id={`contract_card_${contract_info.contract_id}`}

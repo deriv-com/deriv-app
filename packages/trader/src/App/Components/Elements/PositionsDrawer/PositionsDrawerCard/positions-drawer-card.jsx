@@ -59,6 +59,7 @@ const PositionsDrawerCard = ({
             profit_loss={profit_loss}
             result={result}
             server_time={server_time}
+            should_show_result_overlay={true}
             show_transition={show_transition}
             status={status}
             toggleUnsupportedContractModal={toggleUnsupportedContractModal}

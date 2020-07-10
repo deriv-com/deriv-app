@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
-import { getContractPath } from '@deriv/shared';
 import { ContractCard } from '@deriv/components';
 import ContractCardLoader from './contract-card-loading.jsx';
 import { connect } from '../stores/connect';
@@ -34,11 +33,11 @@ const ContractCardComponent = ({
                     card_labels={card_labels}
                     contract_info={contract}
                     currency={contract.currency}
-                    getContractPath={getContractPath}
                     getContractTypeDisplay={getContractTypeDisplay}
                     is_positions={false}
                     profit_loss={contract.profit}
                     server_time={server_time}
+                    should_show_result_overlay={true}
                     status={contract.status}
                 />
             )}

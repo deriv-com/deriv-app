@@ -4,13 +4,10 @@ import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 
-class LiveChat extends React.Component {
-    state = {
-        is_livechat_interactive: false,
-    };
+const LiveChat = ({ email, is_logged_in, loginid, landing_company_shortcode, currency, residence }) => {
+    const [is_livechat_interactive, setLiveChatInteractive] = React.useState(false);
 
-    componentDidMount() {
-        const { email, is_logged_in, loginid, landing_company_shortcode, currency, residence } = this.props;
+    React.useEffect(() => {
         if (window.LiveChatWidget) {
             WS.authorized.getSettings({ get_settings: 1 }).then(response => {
                 const get_settings = response.get_settings || {};
@@ -22,7 +19,7 @@ class LiveChat extends React.Component {
             });
 
             window.LiveChatWidget.on('ready', () => {
-                this.setState({ is_livechat_interactive: true });
+                setLiveChatInteractive(true);
             });
             window.LiveChatWidget.on('visibility_changed', ({ visibility }) => {
                 // only visible to CS
@@ -46,31 +43,29 @@ class LiveChat extends React.Component {
                 }
             });
         }
-    }
+    }, []);
 
-    render() {
-        return (
-            <>
-                {this.state.is_livechat_interactive && (
-                    <Popover
-                        className='footer__link'
-                        classNameBubble='help-centre__tooltip'
-                        alignment='top'
-                        message={localize('Live chat')}
-                    >
-                        <Icon
-                            icon='IcLiveChat'
-                            className='footer__icon'
-                            onClick={() => {
-                                window.LC_API.open_chat_window();
-                            }}
-                        />
-                    </Popover>
-                )}
-            </>
-        );
-    }
-}
+    return (
+        <>
+            {is_livechat_interactive && (
+                <Popover
+                    className='footer__link'
+                    classNameBubble='help-centre__tooltip'
+                    alignment='top'
+                    message={localize('Live chat')}
+                >
+                    <Icon
+                        icon='IcLiveChat'
+                        className='footer__icon'
+                        onClick={() => {
+                            window.LC_API.open_chat_window();
+                        }}
+                    />
+                </Popover>
+            )}
+        </>
+    );
+};
 
 export default connect(({ client }) => ({
     email: client.email,

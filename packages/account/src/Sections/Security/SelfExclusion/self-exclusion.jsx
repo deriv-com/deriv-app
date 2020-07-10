@@ -432,7 +432,7 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={localize('USD')}
+                                                                label={currency}
                                                                 value={values.max_turnover}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -450,7 +450,7 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={localize('USD')}
+                                                                label={currency}
                                                                 value={values.max_losses}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -471,7 +471,7 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={localize('USD')}
+                                                                label={currency}
                                                                 value={values.max_7day_turnover}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -492,7 +492,7 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={localize('USD')}
+                                                                label={currency}
                                                                 value={values.max_7day_losses}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -517,7 +517,7 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={localize('USD')}
+                                                                label={currency}
                                                                 value={values.max_30day_turnover}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -538,7 +538,7 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={localize('USD')}
+                                                                label={currency}
                                                                 value={values.max_30day_losses}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -662,7 +662,7 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={localize('USD')}
+                                                                label={currency}
                                                                 value={values.max_balance}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}

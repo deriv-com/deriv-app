@@ -123,6 +123,21 @@ const Amount = ({
     const has_selected_tab_idx = typeof amount_tab_idx !== 'undefined';
     const active_index = has_selected_tab_idx ? amount_tab_idx : basis_list.findIndex(b => b.value === basis);
 
+    if (basis_list.length === 1) {
+        return (
+            <AmountWrapper
+                toggleModal={toggleModal}
+                duration_value={duration_value}
+                duration_unit={duration_unit}
+                has_duration_error={has_duration_error}
+                basis={basis_list[0].value}
+                setAmountError={setAmountError}
+                selected_basis={basis_list[0].value === 'stake' ? stake_value : payout_value}
+                setSelectedAmount={setSelectedAmount}
+            />
+        );
+    }
+
     return (
         <div>
             <Tabs active_index={active_index} onTabItemClick={setAmountTabIdx} top>

@@ -333,6 +333,20 @@
                     margin-left: 0.4rem;
                 }
             }
+            &-limit-orders {
+                .trade-container__fieldset {
+                    padding: 1.6rem;
+                    margin-bottom: 0rem;
+                    border-bottom: 1px solid var(--general-main-1);
+                    border-radius: 0;
+                }
+                .dc-checkbox__box {
+                    margin-left: 0rem;
+                }
+                .dc-radio-group {
+                    padding: 1.6rem 0rem;
+                }
+            }
         }
     }
 }

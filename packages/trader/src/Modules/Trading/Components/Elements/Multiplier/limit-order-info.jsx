@@ -2,6 +2,7 @@ import React from 'react';
 import { Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import LimitOrdersDialog from 'Modules/Trading/Containers/Multiplier/limit-orders-dialog.jsx';
 
 const LimitOrderInfo = ({
     currency,
@@ -12,25 +13,29 @@ const LimitOrderInfo = ({
     cancellation_duration,
     has_cancellation,
 }) => {
+    const [is_dialog_open, setDialogOpen] = React.useState(false);
     return (
-        <div className='mobile-widget'>
-            <div className='mobile-widget__item'>
-                <div className='mobile-widget__item-label'>{localize('Take profit')}</div>
-                <div className='mobile-widget__item-value'>
-                    {has_take_profit && <Money amount={take_profit} currency={currency} />}
+        <React.Fragment>
+            <LimitOrdersDialog is_open={is_dialog_open} onClose={() => setDialogOpen(false)} />
+            <div className='mobile-widget' onClick={() => setDialogOpen(!is_dialog_open)}>
+                <div className='mobile-widget__item'>
+                    <div className='mobile-widget__item-label'>{localize('Take profit')}</div>
+                    <div className='mobile-widget__item-value'>
+                        {has_take_profit && <Money amount={take_profit} currency={currency} />}
+                    </div>
+                </div>
+                <div className='mobile-widget__item'>
+                    <div className='mobile-widget__item-label'>{localize('Stop loss')}</div>
+                    <div className='mobile-widget__item-value'>
+                        {has_stop_loss && <Money amount={stop_loss} currency={currency} />}
+                    </div>
+                </div>
+                <div className='mobile-widget__item'>
+                    <div className='mobile-widget__item-label'>{localize('Deal Cancellation')}</div>
+                    <div className='mobile-widget__item-value'>{has_cancellation && cancellation_duration}</div>
                 </div>
             </div>
-            <div className='mobile-widget__item'>
-                <div className='mobile-widget__item-label'>{localize('Stop loss')}</div>
-                <div className='mobile-widget__item-value'>
-                    {has_stop_loss && <Money amount={stop_loss} currency={currency} />}
-                </div>
-            </div>
-            <div className='mobile-widget__item'>
-                <div className='mobile-widget__item-label'>{localize('Deal Cancellation')}</div>
-                <div className='mobile-widget__item-value'>{has_cancellation && cancellation_duration}</div>
-            </div>
-        </div>
+        </React.Fragment>
     );
 };
 

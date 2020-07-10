@@ -650,6 +650,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
 /** @define contract */
 .contract {
+    // TODO: Remove below if redundant
     &-update {
         &__wrapper {
             display: grid;

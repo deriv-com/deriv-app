@@ -267,9 +267,8 @@ class SelfExclusion extends React.Component {
             this.getSelfExclusion();
         }
     }
-    s;
     componentDidUpdate(prev_props) {
-        if (prev_props.is_switching !== this.props.is_switching && !!this.props.is_switching) {
+        if (prev_props.is_switching !== this.props.is_switching) {
             this.resetState();
             this.getSelfExclusion();
         }

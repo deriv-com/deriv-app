@@ -53,6 +53,7 @@ const LiveChat = ({ email, is_logged_in, loginid, landing_company_shortcode, cur
                     classNameBubble='help-centre__tooltip'
                     alignment='top'
                     message={localize('Live chat')}
+                    id='gtm-deriv-livechat'
                 >
                     <Icon
                         icon='IcLiveChat'

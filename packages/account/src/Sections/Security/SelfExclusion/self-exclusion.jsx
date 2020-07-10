@@ -68,6 +68,19 @@ class SelfExclusion extends React.Component {
         submit_error_message: '',
     };
 
+    resetState = () => {
+        this.setState({
+            is_loading: true,
+            is_success: false,
+            is_confirm_page: false,
+            changed_attributes: [],
+            error_message: '',
+            self_exclusions: this.exclusion_data,
+            show_confirm: false,
+            submit_error_message: '',
+        });
+    };
+
     validateFields = (values) => {
         const errors = {};
         // Regex
@@ -251,6 +264,13 @@ class SelfExclusion extends React.Component {
         if (is_virtual) {
             this.setState({ is_loading: false });
         } else {
+            this.getSelfExclusion();
+        }
+    }
+    s;
+    componentDidUpdate(prev_props) {
+        if (prev_props.is_switching !== this.props.is_switching && !!this.props.is_switching) {
+            this.resetState();
             this.getSelfExclusion();
         }
     }

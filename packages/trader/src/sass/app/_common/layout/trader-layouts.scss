@@ -127,13 +127,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 &--with-collapsible-btn {
                     padding-top: 0;
 
-                    //& .contract-card {
-                    //    min-height: 178px;
-                    //
-                    //    @media (max-width: 320px) and (max-height: 480px) {
-                    //        min-height: 146px;
-                    //    }
-                    //}
                     &.contract-drawer--is-expanded {
                         transform: translateY(calc(-100% + 204px));
                     }

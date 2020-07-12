@@ -68,7 +68,8 @@ class LoginHistory extends React.Component {
 
     static getFormattedData(login_history) {
         const data = [];
-        for (let i = 0; i < fetch_limit; i++) {
+        const real_fetch_limit = Math.min(fetch_limit, login_history.length);
+        for (let i = 0; i < real_fetch_limit; i++) {
             data[i] = {};
             const environment = login_history[i].environment;
             const environment_split = environment.split(' ');

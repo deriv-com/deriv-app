@@ -3,8 +3,8 @@ import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import { toMoment } from '@deriv/shared/utils/date';
+import { addComma, toMoment } from '@deriv/shared';
+
 import MarkerSpot from './marker-spot.jsx';
 
 class MarkerSpotLabel extends React.Component {
@@ -58,7 +58,7 @@ class MarkerSpotLabel extends React.Component {
                                     'chart-spot-label__value-container--lost': this.props.status === 'lost',
                                 })}
                             >
-                                <p>{CurrencyUtils.addComma(this.props.spot_value)}</p>
+                                <p>{addComma(this.props.spot_value)}</p>
                             </div>
                         </div>
                     </div>

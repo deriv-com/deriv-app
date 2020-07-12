@@ -1,7 +1,8 @@
 const DerivAPIBasic = require('@deriv/deriv-api/dist/DerivAPIBasic');
-const getAppId = require('@deriv/shared/utils/config').getAppId;
-const getSocketURL = require('@deriv/shared/utils/config').getSocketURL;
-const ObjectUtils = require('@deriv/shared/utils/object');
+const getAppId = require('@deriv/shared').getAppId;
+const getSocketURL = require('@deriv/shared').getSocketURL;
+const cloneObject = require('@deriv/shared').cloneObject;
+const getPropertyValue = require('@deriv/shared').getPropertyValue;
 const { getLanguage } = require('@deriv/translations');
 const website_name = require('App/Constants/app-config').website_name;
 const ClientBase = require('./client_base');
@@ -100,11 +101,11 @@ const BinarySocketBase = (() => {
 
         deriv_api.onMessage().subscribe(({ data: response }) => {
             const msg_type = response.msg_type;
-            State.set(['response', msg_type], ObjectUtils.cloneObject(response));
+            State.set(['response', msg_type], cloneObject(response));
 
             config.wsEvent('message');
 
-            if (ObjectUtils.getPropertyValue(response, ['error', 'code']) === 'InvalidAppID') {
+            if (getPropertyValue(response, ['error', 'code']) === 'InvalidAppID') {
                 wrong_app_id = getAppId();
             }
 

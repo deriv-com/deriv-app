@@ -9,8 +9,8 @@ import {
     SwipeableWrapper,
     FadeWrapper,
 } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isDesktop, isMobile, isEmptyObject } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
@@ -37,7 +37,7 @@ class ContractReplay extends React.Component {
 
     onClickClose = () => {
         this.setState({ is_visible: false });
-        const is_from_table_row = !ObjectUtils.isEmptyObject(this.props.location.state)
+        const is_from_table_row = !isEmptyObject(this.props.location.state)
             ? this.props.location.state.from_table_row
             : false;
         return is_from_table_row ? this.props.history.goBack() : this.props.routeBackInApp(this.props.history);
@@ -184,7 +184,7 @@ class Chart extends React.Component {
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}
                 requestForgetStream={this.props.wsForgetStream}
-                crosshairState={isMobile() ? 0 : undefined}
+                crosshair={isMobile() ? 0 : undefined}
                 maxTick={isMobile() ? 8 : undefined}
                 requestSubscribe={this.props.wsSubscribe}
                 settings={this.props.settings}
@@ -196,6 +196,10 @@ class Chart extends React.Component {
                 isConnectionOpened={this.props.is_socket_opened}
                 isStaticChart={false}
                 shouldFetchTradingTimes={!this.props.end_epoch}
+                yAxisMargin={{
+                    top: isMobile() ? 116 : 136,
+                    bottom: this.is_bottom_widget_visible ? 128 : 112,
+                }}
             >
                 {this.props.markers_array.map(marker => (
                     <ChartMarker

@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import DBotStore from '../../../dbot-store';
 import { runIrreversibleEvents } from '../../../utils';
 import { config } from '../../../../constants/config';
@@ -34,7 +34,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 {
                     type: 'field_label',
                     name: 'CURRENCY_LIST',
-                    text: CurrencyUtils.getCurrencyDisplayCode(config.lists.CURRENCY[0]),
+                    text: getCurrencyDisplayCode(config.lists.CURRENCY[0]),
                 },
                 {
                     type: 'input_value',
@@ -358,7 +358,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     setCurrency() {
         const currency_field = this.getField('CURRENCY_LIST');
         const { currency } = DBotStore.instance.client;
-        currency_field.setText(CurrencyUtils.getCurrencyDisplayCode(currency));
+        currency_field.setText(getCurrencyDisplayCode(currency));
     },
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {
@@ -399,14 +399,14 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 Blockly.Blocks.trade_definition_tradeoptions_payout = Blockly.Blocks.trade_definition_tradeoptions;
 
 Blockly.JavaScript.trade_definition_tradeoptions = block => {
-    const amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT') || '0';
+    const amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC) || '0';
     const { currency } = DBotStore.instance.client;
     const duration_type = block.getFieldValue('DURATIONTYPE_LIST') || '0';
-    const duration_value = Blockly.JavaScript.valueToCode(block, 'DURATION') || '0';
+    const duration_value = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC) || '0';
 
     // Determine decimal places for rounding the stake, this is done so Martingale multipliers
     // are not affected by fractional values e.g. USD 12.232323 will become 12.23.
-    const decimal_places = CurrencyUtils.getDecimalPlaces(currency);
+    const decimal_places = getDecimalPlaces(currency);
     const stake_amount = `+(Number(${amount}).toFixed(${decimal_places}))`;
 
     const getBarrierValue = (barrier_offset_type, value) => {
@@ -420,18 +420,19 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
     let prediction_value, barrier_offset_value, second_barrier_offset_value;
 
     if (block.getInput('PREDICTION')) {
-        prediction_value = Blockly.JavaScript.valueToCode(block, 'PREDICTION') || '-1';
+        prediction_value = Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC) || '-1';
     }
 
     if (block.getInput('BARRIEROFFSET')) {
         const barrier_offset_type = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
-        const value = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET') || '0';
+        const value = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC) || '0';
         barrier_offset_value = getBarrierValue(barrier_offset_type, value);
     }
 
     if (block.getInput('SECONDBARRIEROFFSET')) {
         const barrier_offset_type = block.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST');
-        const value = Blockly.JavaScript.valueToCode(block, 'SECONDBARRIEROFFSET') || '0';
+        const value =
+            Blockly.JavaScript.valueToCode(block, 'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC) || '0';
         second_barrier_offset_value = getBarrierValue(barrier_offset_type, value);
     }
 

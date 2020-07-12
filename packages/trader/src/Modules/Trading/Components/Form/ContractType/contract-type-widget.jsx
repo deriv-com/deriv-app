@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { isMobile } from '@deriv/shared';
 import ContractType from './contract-type.jsx';
 
 class ContractTypeWidget extends React.PureComponent {

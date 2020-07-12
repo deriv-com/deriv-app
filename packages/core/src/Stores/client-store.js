@@ -1,24 +1,32 @@
 import moment from 'moment';
 import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import ObjectUtils from '@deriv/shared/utils/object';
-import { getUrlSmartTrader } from '@deriv/shared/utils/storage';
+import {
+    setCurrencies,
+    isEmptyObject,
+    getPropertyValue,
+    removeEmptyPropertiesFromObject,
+    isDesktopOs,
+    getUrlSmartTrader,
+    toMoment,
+} from '@deriv/shared';
+
 import { requestLogout, WS } from 'Services';
 import ClientBase from '_common/base/client_base';
 import { redirectToLogin } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
-import { toMoment } from '@deriv/shared/utils/date';
-import { isEmptyObject } from '@deriv/shared/src/utils/object/object';
+
 import { LocalStore, State } from '_common/storage';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import { getClientAccountType } from './Helpers/client';
+import { getClientAccountType, getMT5AccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
+
+const store_name = 'client_store';
 export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
@@ -71,12 +79,13 @@ export default class ClientStore extends BaseStore {
     is_mt5_account_list_updated = false;
 
     constructor(root_store) {
-        super({ root_store });
+        const local_storage_properties = ['device_data'];
+        super({ root_store, local_storage_properties, store_name });
     }
 
     @computed
     get balance() {
-        if (ObjectUtils.isEmptyObject(this.accounts)) return undefined;
+        if (isEmptyObject(this.accounts)) return undefined;
         return this.accounts[this.loginid] && 'balance' in this.accounts[this.loginid]
             ? this.accounts[this.loginid].balance.toString()
             : undefined;
@@ -212,7 +221,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get all_loginids() {
-        return !ObjectUtils.isEmptyObject(this.accounts) ? Object.keys(this.accounts) : [];
+        return !isEmptyObject(this.accounts) ? Object.keys(this.accounts) : [];
     }
 
     @computed
@@ -278,7 +287,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_logged_in() {
         return !!(
-            !ObjectUtils.isEmptyObject(this.accounts) &&
+            !isEmptyObject(this.accounts) &&
             Object.keys(this.accounts).length > 0 &&
             this.loginid &&
             this.accounts[this.loginid].token
@@ -287,11 +296,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_virtual() {
-        return (
-            !ObjectUtils.isEmptyObject(this.accounts) &&
-            this.accounts[this.loginid] &&
-            !!this.accounts[this.loginid].is_virtual
-        );
+        return !isEmptyObject(this.accounts) && this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
     }
 
     @computed
@@ -434,7 +439,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setWebsiteStatus(response) {
         this.website_status = response.website_status;
-        CurrencyUtils.setCurrencies(this.website_status);
+        setCurrencies(this.website_status);
     }
 
     @action.bound
@@ -616,6 +621,8 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
 
+        this.setDeviceData();
+
         // On case of invalid token, no need to continue with additional api calls.
         if (authorize_response?.error) {
             await this.logout();
@@ -693,12 +700,12 @@ export default class ClientStore extends BaseStore {
                     statement: 1,
                 })
             );
-            const account_settings = (await WS.authorized.storage.getSettings()).get_settings;
+            const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
             if (account_settings && !account_settings.residence) {
                 await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
-            WS.authorized.storage.landingCompany(this.residence).then(this.responseLandingCompany);
+            WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             this.getLimits();
         }
         this.responseWebsiteStatus(await WS.wait('website_status'));
@@ -910,21 +917,32 @@ export default class ClientStore extends BaseStore {
     // --> so we keep a separate balance subscription for the active account
     @action.bound
     setBalanceOtherAccounts(obj_balance) {
-        if (this.accounts[obj_balance?.loginid]) {
-            if (obj_balance.loginid !== this.loginid) {
-                this.accounts[obj_balance.loginid].balance = obj_balance.balance;
-            }
-            if (obj_balance.total) {
-                const total_real = ObjectUtils.getPropertyValue(obj_balance, ['total', 'real']);
-                const total_mt5 = ObjectUtils.getPropertyValue(obj_balance, ['total', 'mt5']);
-                // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
-                const has_mt5 = !ObjectUtils.isEmptyObject(total_mt5);
-                this.obj_total_balance = {
-                    amount_real: +total_real.amount,
-                    amount_mt5: has_mt5 ? +total_mt5.amount : this.obj_total_balance.amount_mt5,
-                    currency: total_real.currency,
-                };
-            }
+        // Only the first response of balance:all will include all accounts
+        // subsequent requests will be single account balance updates
+        if (this.accounts[obj_balance?.loginid] && !obj_balance.accounts && obj_balance.loginid !== this.loginid) {
+            this.accounts[obj_balance.loginid].balance = obj_balance.balance;
+        }
+
+        if (this.accounts[obj_balance?.loginid] && obj_balance.accounts) {
+            Object.keys(obj_balance.accounts).forEach(account_id => {
+                const is_active_account_id = account_id === this.loginid;
+
+                if (!is_active_account_id && this.accounts[account_id]) {
+                    this.accounts[account_id].balance = +obj_balance.accounts[account_id].balance;
+                }
+            });
+        }
+
+        if (obj_balance.total) {
+            const total_real = getPropertyValue(obj_balance, ['total', 'deriv']);
+            const total_mt5 = getPropertyValue(obj_balance, ['total', 'mt5']);
+            // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
+            const has_mt5 = !isEmptyObject(total_mt5);
+            this.obj_total_balance = {
+                amount_real: +total_real.amount,
+                amount_mt5: has_mt5 ? +total_mt5.amount : this.obj_total_balance.amount_mt5,
+                currency: total_real.currency,
+            };
         }
     }
 
@@ -1054,7 +1072,6 @@ export default class ClientStore extends BaseStore {
         }
 
         // TODO: send login flag to GTM if needed
-
         if (active_loginid && Object.keys(client_object).length) {
             localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
@@ -1066,20 +1083,27 @@ export default class ClientStore extends BaseStore {
         // login_new_user is populated only on virtual sign-up
         let obj_params = {};
         const search = window.location.search;
+
         if (search) {
-            const arr_params = window.location.search.substr(1).split('&');
-            arr_params.forEach(function(param) {
-                if (param) {
-                    const param_value = param.split('=');
-                    if (param_value) {
-                        obj_params[param_value[0]] = param_value[1];
-                    }
+            let search_params = new URLSearchParams(window.location.search);
+
+            search_params.forEach((value, key) => {
+                const account_keys = ['acct', 'token', 'cur'];
+                const is_account_param = account_keys.some(account_key => key?.includes(account_key));
+
+                if (is_account_param) {
+                    obj_params[key] = value;
                 }
             });
+
+            // delete account query params - but keep other query params (e.g. utm)
+            Object.keys(obj_params).forEach(key => search_params.delete(key));
+            search_params = search_params?.toString();
+            const search_param_without_account = search_params ? `?${search_params}` : '/';
+            history.replaceState(null, null, search_param_without_account);
         }
 
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
-
         if (is_client_logging_in) {
             window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
             SocketCache.clear();
@@ -1099,6 +1123,7 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
                 this.upgradeable_landing_companies = authorize_response.upgradeable_landing_companies;
+
                 if (this.canStoreClientAccounts(obj_params, account_list)) {
                     this.storeClientAccounts(obj_params, account_list);
                 } else {
@@ -1115,7 +1140,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     canStoreClientAccounts(obj_params, account_list) {
-        const is_ready_to_process = account_list && ObjectUtils.isEmptyObject(this.accounts);
+        const is_ready_to_process = account_list && isEmptyObject(this.accounts);
         const accts = Object.keys(obj_params).filter(value => /^acct./.test(value));
 
         const is_cross_checked = accts.every(acct =>
@@ -1140,8 +1165,30 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    setDeviceData(device_data) {
-        this.device_data = device_data;
+    setDeviceData() {
+        // Set client URL params on init
+        const url_params = new URLSearchParams(window.location.search);
+        const device_data = {
+            ...(url_params.get('affiliate_token') && { affiliate_token: url_params.get('affiliate_token') }),
+            ...(url_params.get('gclid_url') && { gclid_url: url_params.get('gclid_url') }),
+
+            // date_first_contact should be preserved to the first client contact
+            ...(!this.device_data.date_first_contact && {
+                date_first_contact:
+                    url_params.get('date_first_contact') || this.root_store.common.server_time.format('YYYY-MM-DD'),
+            }),
+
+            // signup device can be set anytime even if there is no url parameter by using isDesktopOs function
+            signup_device: url_params.get('signup_device') || isDesktopOs() ? 'desktop' : 'mobile',
+
+            // url params can be stored only if utm_source is available
+            ...(url_params.get('utm_source') && {
+                utm_campaign: url_params.get('utm_campaign') || '',
+                utm_medium: url_params.get('utm_medium') || '',
+                utm_source: url_params.get('utm_source'), // since the check is done previously
+            }),
+        };
+        this.device_data = { ...this.device_data, ...device_data };
     }
 
     @action.bound
@@ -1178,7 +1225,7 @@ export default class ClientStore extends BaseStore {
             this.verification_code.signup,
             password,
             residence,
-            ObjectUtils.removeEmptyPropertiesFromObject(this.device_data)
+            removeEmptyPropertiesFromObject(this.device_data)
         ).then(async response => {
             if (response.error) {
                 cb(response.error.message);
@@ -1278,6 +1325,7 @@ export default class ClientStore extends BaseStore {
                 .filter(account => !/inactive/.test(account.group)) // remove disabled mt5 accounts
                 .map(account => ({
                     ...account,
+                    group: getMT5AccountType(account.group),
                     display_login: account.login.replace(/^(MT[DR]?)/i, ''),
                 }));
         }
@@ -1338,7 +1386,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get has_residence() {
-        return !!this.accounts[this.loginid].residence;
+        return !!this.accounts[this.loginid]?.residence;
     }
 }
 /* eslint-enable */

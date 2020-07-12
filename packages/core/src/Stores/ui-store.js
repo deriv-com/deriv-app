@@ -1,6 +1,6 @@
 import { action, autorun, computed, observable } from 'mobx';
-import { getPlatformHeader } from '@deriv/shared/utils/platform';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { getPlatformHeader, unique, isEmptyObject } from '@deriv/shared';
+
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import { LocalStore } from '_common/storage';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
@@ -19,8 +19,6 @@ export default class UIStore extends BaseStore {
 
     // TODO: [cleanup ui-store]
     // Take profit, Stop loss & Deal cancellation checkbox
-    @observable should_show_take_profit_warning = true;
-    @observable should_show_stop_loss_warning = true;
     @observable should_show_cancellation_warning = true;
 
     // Extensions
@@ -139,12 +137,11 @@ export default class UIStore extends BaseStore {
             'is_reports_visible',
             // 'is_purchase_confirm_on',
             // 'is_purchase_lock_on',
-            'should_show_stop_loss_warning',
-            'should_show_take_profit_warning',
             'should_show_cancellation_warning',
         ];
 
         super({ root_store, local_storage_properties, store_name });
+
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
             // TODO: [disable-dark-bot] Delete this condition when Bot is ready
@@ -437,7 +434,7 @@ export default class UIStore extends BaseStore {
             // Remove notification messages if it was already closed by user and exists in LocalStore
             const active_loginid = LocalStore.get('active_loginid');
             const messages = LocalStore.getObject('notification_messages');
-            if (active_loginid && !ObjectUtils.isEmptyObject(messages)) {
+            if (active_loginid && !isEmptyObject(messages)) {
                 // Check if is existing message to remove already closed messages stored in LocalStore
                 const is_existing_message = Array.isArray(messages[active_loginid])
                     ? messages[active_loginid].includes(notification.key)
@@ -489,7 +486,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     addNotificationBar(message) {
         this.push_notifications.push(message);
-        this.push_notifications = ObjectUtils.unique(this.push_notifications, 'msg_type');
+        this.push_notifications = unique(this.push_notifications, 'msg_type');
     }
 
     @action.bound
@@ -505,16 +502,6 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleSetResidenceModal(state_change = !this.is_set_residence_modal_visible) {
         this.is_set_residence_modal_visible = state_change;
-    }
-
-    @action.bound
-    toggleTakeProfitWarning(state_change = !this.should_show_take_profit_warning) {
-        this.should_show_take_profit_warning = state_change;
-    }
-
-    @action.bound
-    toggleStopLossWarning(state_change = !this.should_show_stop_loss_warning) {
-        this.should_show_stop_loss_warning = state_change;
     }
 
     @action.bound

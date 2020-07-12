@@ -1,21 +1,2 @@
-import {
-    isEmptyObject,
-    cloneObject,
-    isDeepEqual,
-    isEqualArray,
-    isEqualObject,
-    unique,
-    getPropertyValue,
-    removeEmptyPropertiesFromObject,
-} from './object';
-
-export default {
-    isEmptyObject,
-    cloneObject,
-    isDeepEqual,
-    isEqualArray,
-    isEqualObject,
-    unique,
-    getPropertyValue,
-    removeEmptyPropertiesFromObject,
-};
+export * from './object';
+export { default as cloneThorough } from './clone';

@@ -27,12 +27,12 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
         is_refunded,
     } = data;
     const [remaining_time, setRemainingTime] = React.useState();
-    const { getLocalStorageSettings } = React.useContext(Dp2pContext);
+    const { getLocalStorageSettingsForLoginId } = React.useContext(Dp2pContext);
 
     let interval;
 
     const isOrderSeen = order_id => {
-        const { notifications } = getLocalStorageSettings();
+        const { notifications } = getLocalStorageSettingsForLoginId();
         return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
     };
 
@@ -86,8 +86,8 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
                             'orders__table-status--secondary':
                                 (!is_buyer && is_pending) || (is_buyer_confirmed && is_buyer),
                             'orders__table-status--success': is_completed,
-                            'orders__table-status--info': is_refunded,
-                            'orders__table-status--disabled': is_buyer_cancelled || is_expired,
+                            // 'orders__table-status--info': is_refunded,
+                            'orders__table-status--disabled': is_buyer_cancelled || is_expired || is_refunded,
                         })}
                     >
                         {display_status}

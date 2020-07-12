@@ -1,14 +1,12 @@
 import React from 'react';
-import { Button } from '@deriv/components';
-import { urlFor, getDerivComLink } from '@deriv/shared/utils/url';
-import routes from '@deriv/shared/utils/routes';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { urlFor, getDerivComLink, routes, isMobile, formatDate, isEmptyObject } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
-import { formatDate } from '@deriv/shared/utils/date';
-import ObjectUtils from '@deriv/shared/utils/object';
+
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
+import { website_domain } from 'App/Constants/app-config';
 import { LocalStore, State } from '_common/storage';
 
 // TODO: Update links to app_2 links when components are done.
@@ -33,14 +31,13 @@ export const clientNotifications = (ui = {}) => {
             header: localize('Self-exclusion detected'),
             message: (
                 <Localize
-                    i18n_default_text='You have opted to be excluded from Binary.com until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
+                    i18n_default_text='You have opted to be excluded from {{website_domain}} until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
                     values={{
+                        website_domain,
                         exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
                         interpolation: { escapeValue: false },
                     }}
-                    components={[
-                        <a key={0} className='link' target='_blank' href={urlFor('contact', { legacy: true })} />,
-                    ]}
+                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
                 />
             ),
             type: 'danger',
@@ -99,20 +96,18 @@ export const clientNotifications = (ui = {}) => {
             type: 'warning',
         },
         unwelcome: {
+            ...(isMobile() && {
+                action: {
+                    text: localize('Contact us'),
+                    onClick: () => {
+                        window.open(getDerivComLink('contact-us'));
+                    },
+                },
+            }),
             key: 'unwelcome',
             header: localize('Trading and deposits disabled'),
             message: isMobile() ? (
-                <Localize
-                    i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact customer support for assistance.<0/>'
-                    components={[
-                        <React.Fragment key={0}>
-                            <br />
-                            <a className='link link--right' target='_blank' href={getDerivComLink('contact-us')}>
-                                <Button secondary medium text={localize('Contact Us')} />
-                            </a>
-                        </React.Fragment>,
-                    ]}
-                />
+                <Localize i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact customer support for assistance.' />
             ) : (
                 <Localize
                     i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
@@ -122,20 +117,18 @@ export const clientNotifications = (ui = {}) => {
             type: 'danger',
         },
         mf_retail: {
+            ...(isMobile() && {
+                action: {
+                    text: localize('Contact us'),
+                    onClick: () => {
+                        window.open(getDerivComLink('contact-us'));
+                    },
+                },
+            }),
             key: 'mf_retail',
             header: localize('Digital options trading disabled'),
             message: isMobile() ? (
-                <Localize
-                    i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact customer support for assistance.<0/>'
-                    components={[
-                        <React.Fragment key={0}>
-                            <br />
-                            <a className='link link--right' target='_blank' href={getDerivComLink('contact-us')}>
-                                <Button secondary medium text={localize('Contact Us')} />
-                            </a>
-                        </React.Fragment>,
-                    ]}
-                />
+                <Localize i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact customer support for assistance.' />
             ) : (
                 <Localize
                     i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
@@ -355,7 +348,7 @@ const addVerificationNotifications = (identity, document, addNotificationMessage
 };
 
 const checkAccountStatus = (account_status, client, addNotificationMessage, loginid) => {
-    if (ObjectUtils.isEmptyObject(account_status)) return {};
+    if (isEmptyObject(account_status)) return {};
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     const {

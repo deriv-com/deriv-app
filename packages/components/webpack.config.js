@@ -2,7 +2,7 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
-const shared_utils = require('@deriv/shared/utils/index.js');
+const shared_utils = require('@deriv/shared/src/styles/index.js');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const is_serve = process.env.BUILD_MODE === 'serve';
@@ -32,6 +32,7 @@ module.exports = {
         'div100vh-container': 'Components/div100vh-container',
         drawer: 'Components/drawer',
         dropdown: 'Components/dropdown',
+        'expansion-panel': 'Components/expansion-panel',
         'fade-wrapper': 'Components/fade-wrapper',
         'field-error': 'Components/field-error',
         'file-dropzone': 'Components/file-dropzone',
@@ -175,7 +176,7 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader: ['@deriv/shared/utils/react-import-loader.js', 'babel-loader'],
+                loader: ['@deriv/shared/src/loaders/react-import-loader.js', 'babel-loader'],
             },
         ],
     },

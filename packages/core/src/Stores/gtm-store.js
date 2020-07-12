@@ -1,10 +1,10 @@
 import * as Cookies from 'js-cookie';
 import { action, computed } from 'mobx';
-import { getAppId } from '@deriv/shared/utils/config';
+import { getAppId, toMoment, epochToMoment } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
 import { isLoginPages } from '_common/base/login';
-import { toMoment, epochToMoment } from '@deriv/shared/utils/date';
+
 import BaseStore from './base-store';
 import { getMT5AccountType } from './Helpers/client';
 
@@ -72,10 +72,10 @@ export default class GTMStore extends BaseStore {
     async pushDataLayer(data) {
         if (this.is_gtm_applicable && !isLoginPages()) {
             BinarySocket.wait('authorize').then(() => {
-                dataLayer.push({
-                    ...this.common_variables,
-                    ...data,
-                });
+                const gtm_object = { ...this.common_variables, ...data };
+                if (!gtm_object.event) return;
+
+                dataLayer.push(gtm_object);
             });
         }
     }
@@ -181,20 +181,8 @@ export default class GTMStore extends BaseStore {
 
     @action.bound
     setLoginFlag(event_name) {
-        if (this.is_gtm_applicable) {
+        if (this.is_gtm_applicable && event_name) {
             localStorage.setItem('GTM_login', event_name);
         }
-    }
-
-    @action.bound
-    pushLoadPerformance(performance_metric, duration) {
-        const data = {
-            event: performance_metric,
-            duration,
-        };
-        dataLayer.push({
-            ...this.common_variables,
-            ...data,
-        });
     }
 }

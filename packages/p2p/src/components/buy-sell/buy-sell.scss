@@ -27,7 +27,7 @@
             width: auto;
             height: auto;
             padding: 0;
-            max-height: initial;
+            max-height: 55.3rem;
             min-width: 44rem;
         }
         & .dc-dialog__content {
@@ -35,6 +35,27 @@
             width: 100%;
             max-width: 44rem;
         }
+    }
+    &__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: var(--text-colored-background);
+        margin-right: 0.8rem;
+        font-size: 12px;
+        line-height: 1.33;
+        width: 2.4rem;
+        height: 2.4rem;
+        white-space: nowrap;
+    }
+    &__table-row {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+    }
+    &__button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     &__popup {
         &-header {
@@ -68,7 +89,7 @@
             padding: 2.4rem;
 
             &_centre {
-                padding: 0 8rem;
+                padding: 0 4rem;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -85,6 +106,20 @@
                 font-size: var(--text-size-xs);
                 margin-bottom: 1.6rem;
             }
+            &--list {
+                font-size: var(--text-size-xs);
+                line-height: 1.43;
+
+                & li {
+                    list-style-type: disc;
+                    margin: 0.8rem 1.8rem 0;
+                }
+            }
+            &--ps {
+                margin-top: 1.6rem;
+                font-size: var(--text-size-xs);
+                align-self: flex-start;
+            }
         }
         &-field {
             margin-bottom: 0 !important;
@@ -95,7 +130,7 @@
             }
             &_wrapper {
                 display: flex;
-                margin-bottom: 1.6rem;
+                margin-bottom: 3.4rem;
                 align-items: center;
             }
             &--textarea {
@@ -149,26 +184,5 @@
             cursor: pointer;
             fill: var(--text-general);
         }
-    }
-    &__icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        color: var(--text-colored-background);
-        margin-right: 0.8rem;
-        font-size: 12px;
-        line-height: 1.33;
-        width: 2.4rem;
-        height: 2.4rem;
-        white-space: nowrap;
-    }
-    &__table-row {
-        grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
-    }
-    &__button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
     }
 }

@@ -20,7 +20,11 @@ const MultiplierCloseActions = ({ className, onClickCancel, onClickSell, contrac
                 })}
                 is_disabled={is_sell_requested || (+profit < 0 && is_valid_to_cancel)}
                 text={localize('Close')}
-                onClick={() => onClickSell(contract_id, true)}
+                onClick={ev => {
+                    onClickSell(contract_id);
+                    ev.stopPropagation();
+                    ev.preventDefault();
+                }}
                 secondary
             />
             {is_valid_to_cancel && (
@@ -28,7 +32,11 @@ const MultiplierCloseActions = ({ className, onClickCancel, onClickSell, contrac
                     id={`dt_drawer_card_${contract_id}_cancel_button`}
                     className='dc-btn--cancel'
                     is_disabled={+profit >= 0}
-                    onClick={() => onClickCancel(contract_id, true)}
+                    onClick={ev => {
+                        onClickCancel(contract_id);
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                    }}
                     secondary
                 >
                     {localize('Cancel')}

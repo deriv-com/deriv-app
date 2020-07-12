@@ -9,11 +9,9 @@ import {
     FadeWrapper,
     PageOverlay,
 } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
+import { routes, isCryptocurrency, getSelectedRoute, isMobile, isTouchDevice } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import { getSelectedRoute } from '@deriv/shared/utils/route';
-import { isMobile, isTouchDevice } from '@deriv/shared/utils/screen';
+
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/cashier.scss';
 
@@ -71,7 +69,7 @@ class Cashier extends React.Component {
                     (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible) &&
                     (route.path !== routes.cashier_p2p ||
-                        (this.props.is_p2p_visible && /show_p2p/.test(this.props.location.hash)))
+                        (this.props.is_p2p_visible && /(show_p2p|verification)/.test(this.props.location.hash)))
                 ) {
                     options.push({
                         ...(route.path === routes.cashier_p2p && { count: this.props.p2p_notification_count }),
@@ -94,7 +92,7 @@ class Cashier extends React.Component {
             : null;
         const should_show_tab_headers_note =
             !this.props.is_virtual &&
-            !CurrencyUtils.isCryptocurrency(this.props.loggedin_currency) &&
+            !isCryptocurrency(this.props.loggedin_currency) &&
             (location.pathname.startsWith(routes.cashier_deposit) ||
                 location.pathname.startsWith(routes.cashier_withdrawal));
 
@@ -110,7 +108,6 @@ class Cashier extends React.Component {
                     <PageOverlay
                         header={isMobile() ? selected_route.title : localize('Cashier')}
                         onClickClose={this.onClickClose}
-                        has_side_note
                     >
                         <DesktopWrapper>
                             <VerticalTab

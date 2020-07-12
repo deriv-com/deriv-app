@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { when } from 'mobx';
 import { MobileWrapper } from '@deriv/components';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { isMobile } from '@deriv/shared';
 import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggle-positions-mobile.jsx';
-import { connect } from 'Stores/connect';
+import { connect, MobxContentProvider } from 'Stores/connect';
 
 class TradeHeaderExtensions extends React.Component {
     populateHeader = () => {
@@ -24,17 +24,19 @@ class TradeHeaderExtensions extends React.Component {
 
         const header_items = is_logged_in && (
             <MobileWrapper>
-                <TogglePositionsMobile
-                    active_positions_count={active_positions_count}
-                    all_positions={positions}
-                    currency={positions_currency}
-                    disableApp={disableApp}
-                    is_empty={is_positions_empty}
-                    enableApp={enableApp}
-                    error={positions_error}
-                    onClickSell={onPositionsSell}
-                    onClickRemove={onPositionsRemove}
-                />
+                <MobxContentProvider store={this.props.store}>
+                    <TogglePositionsMobile
+                        active_positions_count={active_positions_count}
+                        all_positions={positions}
+                        currency={positions_currency}
+                        disableApp={disableApp}
+                        is_empty={is_positions_empty}
+                        enableApp={enableApp}
+                        error={positions_error}
+                        onClickSell={onPositionsSell}
+                        onClickRemove={onPositionsRemove}
+                    />
+                </MobxContentProvider>
             </MobileWrapper>
         );
 

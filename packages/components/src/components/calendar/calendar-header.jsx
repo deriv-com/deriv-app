@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { addMonths, addYears, subMonths, subYears, toMoment } from '@deriv/shared/utils/date';
+import { addMonths, addYears, subMonths, subYears, toMoment } from '@deriv/shared';
 import Button from './calendar-button.jsx';
 import { month_headers, getCentury, getDecade } from './helpers';
 

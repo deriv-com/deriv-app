@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Div100vhContainer, FormProgress } from '@deriv/components';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { isDesktop, toMoment } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { toMoment } from '@deriv/shared/utils/date';
+
 import AddressDetails from './address-details.jsx';
 import CurrencySelector from './currency-selector.jsx';
 import PersonalDetails from './personal-details.jsx';
@@ -271,7 +271,7 @@ class AccountWizard extends React.Component {
                             <div className='account-wizard__set-currency'>
                                 {!this.props.has_currency && (
                                     <p>
-                                        <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
+                                        <Localize i18n_default_text='You have an account without an assigned currency. Please choose a currency to trade with this account.' />
                                     </p>
                                 )}
                                 <h2>

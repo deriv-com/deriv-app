@@ -1,6 +1,6 @@
 import { action, observable } from 'mobx';
-import routes from '@deriv/shared/utils/routes';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { routes, isEmptyObject } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import ContractStore from './contract-store';
@@ -94,7 +94,7 @@ export default class ContractReplayStore extends BaseStore {
             this.is_chart_loading = false;
             return;
         }
-        if (ObjectUtils.isEmptyObject(response.proposal_open_contract)) {
+        if (isEmptyObject(response.proposal_open_contract)) {
             this.has_error = true;
             this.error_message = localize(
                 "Sorry, you can't view this contract because it doesn't belong to this account."
@@ -161,8 +161,7 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     @action.bound
-    onClickCancel(contract_id, remove_position_after_sell = false) {
-        this.root_store.modules.portfolio.remove_position_after_sell = remove_position_after_sell;
+    onClickCancel(contract_id) {
         if (contract_id) {
             WS.cancelContract(contract_id).then(response => {
                 if (response.error) {
@@ -179,9 +178,8 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     @action.bound
-    onClickSell(contract_id, remove_position_after_sell = false) {
+    onClickSell(contract_id) {
         const { bid_price } = this.contract_info;
-        this.root_store.modules.portfolio.remove_position_after_sell = remove_position_after_sell;
         if (contract_id && bid_price) {
             this.is_sell_requested = true;
             WS.sell(contract_id, bid_price).then(this.handleSell);
@@ -208,9 +206,6 @@ export default class ContractReplayStore extends BaseStore {
             this.root_store.ui.addNotificationMessage(
                 contractSold(this.root_store.client.currency, response.sell.sold_for)
             );
-            if (this.remove_position_after_sell) {
-                this.root_store.modules.portfolio.removePositionById(response.sell.contract_id);
-            }
         }
     }
 

@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import P2P from '@deriv/p2p';
 import { getLanguage } from '@deriv/translations';
+import { routes } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';
@@ -43,17 +44,29 @@ class P2PCashier extends React.Component {
         }
     }
     render() {
-        const { currency, local_currency_config, is_virtual, residence, setNotificationCount } = this.props;
+        const {
+            currency,
+            local_currency_config,
+            loginid,
+            is_virtual,
+            residence,
+            setNotificationCount,
+            location,
+            is_mobile,
+        } = this.props;
         const { order_id } = this.state;
         return (
             <P2P
+                should_show_verification={/verification/.test(location.hash)}
                 websocket_api={WS}
                 lang={getLanguage()}
-                client={{ currency, local_currency_config, is_virtual, residence }}
+                client={{ currency, local_currency_config, is_virtual, residence, loginid }}
                 server_time={ServerTime}
                 setNotificationCount={setNotificationCount}
                 order_id={order_id}
                 setOrderId={this.setQueryOrder}
+                is_mobile={is_mobile}
+                poi_url={routes.proof_of_identity}
             />
         );
     }
@@ -62,17 +75,21 @@ class P2PCashier extends React.Component {
 P2PCashier.propTypes = {
     currency: PropTypes.string,
     local_currency_config: PropTypes.object,
+    loginid: PropTypes.string,
     is_virtual: PropTypes.bool,
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
+    is_mobile: PropTypes.bool,
 };
 
 export default withRouter(
-    connect(({ client, modules }) => ({
+    connect(({ client, modules, ui }) => ({
         currency: client.currency,
         local_currency_config: client.local_currency_config,
+        loginid: client.loginid,
         is_virtual: client.is_virtual,
         residence: client.residence,
         setNotificationCount: modules.cashier.setNotificationCount,
+        is_mobile: ui.is_mobile,
     }))(P2PCashier)
 );

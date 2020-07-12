@@ -1,6 +1,6 @@
 import React from 'react';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import { isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import { connect } from 'Stores/connect';
@@ -10,6 +10,19 @@ import Test from './test.jsx';
 import { ChartBottomWidgets, ChartToolbarWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
+
+const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
+    React.useEffect(() => {
+        setTick(tick);
+    }, [tick]);
+
+    React.useEffect(() => {
+        setDigits(digits);
+    }, digits);
+
+    // render nothing for bottom widgets on chart in mobile
+    return null;
+};
 
 class Trade extends React.Component {
     state = {
@@ -32,12 +45,14 @@ class Trade extends React.Component {
     }
 
     bottomWidgets = ({ digits, tick }) => {
-        this.setState({
-            digits,
-            tick,
-        });
-
-        return null; // render nothing for bottom widgets on chart in mobile
+        return (
+            <BottomWidgetsMobile
+                digits={digits}
+                tick={tick}
+                setTick={t => this.setState({ tick: t })}
+                setDigits={d => this.setState({ digits: d })}
+            />
+        );
     };
 
     onChangeSwipeableIndex = index => {
@@ -79,8 +94,10 @@ class Trade extends React.Component {
                         }
                     >
                         <DesktopWrapper>
-                            <ChartLoader is_visible={this.props.is_chart_loading} />
-                            <ChartTrade />
+                            <div className='chart-container__wrapper'>
+                                <ChartLoader is_visible={this.props.is_chart_loading} />
+                                <ChartTrade />
+                            </div>
                         </DesktopWrapper>
                         <MobileWrapper>
                             <ChartLoader
@@ -185,7 +202,6 @@ class ChartTradeClass extends React.Component {
     };
 
     componentDidMount() {
-        performance.mark('smart-charts-mounted');
         this.setActiveMarkets();
     }
 
@@ -258,7 +274,7 @@ class ChartTradeClass extends React.Component {
                 refToAddTick={this.props.refToAddTick}
                 activeSymbols={active_markets}
                 yAxisMargin={{
-                    top: isMobile() ? 76 : 106
+                    top: isMobile() ? 76 : 106,
                 }}
             >
                 <ChartMarkers />

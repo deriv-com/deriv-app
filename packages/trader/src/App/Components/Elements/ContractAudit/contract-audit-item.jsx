@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { formatDate, formatTime } from '@deriv/shared/utils/date';
+import { formatDate, formatTime } from '@deriv/shared';
 
 const ContractAuditItem = ({ icon, id, label, timestamp, value, value2 }) => (
     <div id={id} className='contract-audit__grid'>

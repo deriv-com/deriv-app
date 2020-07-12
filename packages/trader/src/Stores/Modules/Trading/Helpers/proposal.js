@@ -1,7 +1,6 @@
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { getDecimalPlaces, getPropertyValue, convertToUnix, toMoment } from '@deriv/shared';
+
 import { isVisible } from '_common/common_functions';
-import { convertToUnix, toMoment } from '@deriv/shared/utils/date';
 
 const map_error_field = {
     barrier: 'barrier_1',
@@ -10,7 +9,7 @@ const map_error_field = {
 };
 
 export const getProposalErrorField = response => {
-    const error_field = ObjectUtils.getPropertyValue(response, ['error', 'details', 'field']);
+    const error_field = getPropertyValue(response, ['error', 'details', 'field']);
     if (!error_field) {
         return null;
     }
@@ -56,7 +55,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         message: proposal.longcode || response.error.message,
         obj_contract_basis,
         payout: proposal.payout,
-        profit: profit.toFixed(CurrencyUtils.getDecimalPlaces(store.currency)),
+        profit: profit.toFixed(getDecimalPlaces(store.currency)),
         returns: `${returns.toFixed(2)}%`,
         stake,
     };

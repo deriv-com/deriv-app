@@ -1,6 +1,6 @@
 import { action, intercept, observable, reaction, toJS, when } from 'mobx';
-import { isProduction } from '@deriv/shared/utils/config';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isProduction, isEmptyObject } from '@deriv/shared';
+
 import Validator from 'Utils/Validator';
 
 /**
@@ -114,7 +114,7 @@ export default class BaseStore {
     getSnapshot(properties) {
         let snapshot = toJS(this);
 
-        if (!ObjectUtils.isEmptyObject(this.root_store)) {
+        if (!isEmptyObject(this.root_store)) {
             snapshot.root_store = this.root_store;
         }
 

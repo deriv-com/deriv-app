@@ -41,10 +41,9 @@ Blockly.Blocks.tick_analysis = {
 
 Blockly.JavaScript.tick_analysis = block => {
     const stack = Blockly.JavaScript.statementToCode(block, 'TICKANALYSIS_STACK') || '';
-
     const code = `
     BinaryBotPrivateTickAnalysisList.push(function BinaryBotPrivateTickAnalysis() {
         ${stack}
     });\n`;
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+    return code;
 };

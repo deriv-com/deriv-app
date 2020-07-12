@@ -1,8 +1,7 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
-import { isDesktop } from '@deriv/shared/utils/screen';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isDesktop, isCryptocurrency, getMinPayout, cloneObject, isEmptyObject, getPropertyValue } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -40,12 +39,13 @@ export default class TradeStore extends BaseStore {
     @observable active_symbols = [];
     @observable should_refresh_active_symbols = false;
 
+    @observable form_components = [];
+
     // Contract Type
     @observable contract_expiry_type = '';
     @observable contract_start_type = '';
     @observable contract_type = '';
     @observable contract_types_list = {};
-    @observable form_components = [];
     @observable trade_types = {};
 
     // Amount
@@ -278,15 +278,12 @@ export default class TradeStore extends BaseStore {
         if (this.symbol && this.is_symbol_in_active_symbols) {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
-                this.processNewValuesAsync(
-                    {
-                        ...ContractType.getContractValues(this),
-                        ...ContractType.getContractCategories(),
-                    },
-                    false,
-                    {},
-                    false
-                );
+                const contract_categories = ContractType.getContractCategories();
+                this.processNewValuesAsync({
+                    ...contract_categories,
+                    ...ContractType.getContractType(contract_categories.contract_types_list, this.contract_type),
+                });
+                this.processNewValuesAsync(ContractType.getContractValues(this));
             });
         }
     }
@@ -505,7 +502,6 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onPurchase(proposal_id, price, type) {
         if (!this.is_purchase_enabled) return;
-        performance.mark('purchase-started');
         if (proposal_id) {
             this.is_purchase_enabled = false;
             const is_tick_contract = this.duration_unit === 't';
@@ -556,7 +552,6 @@ export default class TradeStore extends BaseStore {
                             this.debouncedProposal();
                             this.clearLimitOrderBarriers();
                             this.pushPurchaseDataToGtm(contract_data);
-                            performance.mark('purchase-ended');
                             return;
                         }
                     } else if (response.error) {
@@ -597,7 +592,7 @@ export default class TradeStore extends BaseStore {
      */
     @action.bound
     updateStore(new_state) {
-        Object.keys(ObjectUtils.cloneObject(new_state)).forEach(key => {
+        Object.keys(cloneObject(new_state)).forEach(key => {
             if (key === 'root_store' || ['validation_rules', 'validation_errors', 'currency'].indexOf(key) > -1) return;
             if (JSON.stringify(this[key]) === JSON.stringify(new_state[key])) {
                 delete new_state[key];
@@ -643,17 +638,14 @@ export default class TradeStore extends BaseStore {
         }
         if (is_changed_by_user && /\bcurrency\b/.test(Object.keys(obj_new_values))) {
             const prev_currency =
-                obj_old_values && !ObjectUtils.isEmptyObject(obj_old_values) && obj_old_values.currency
+                obj_old_values && !isEmptyObject(obj_old_values) && obj_old_values.currency
                     ? obj_old_values.currency
                     : this.currency;
-            if (
-                CurrencyUtils.isCryptocurrency(obj_new_values.currency) !==
-                CurrencyUtils.isCryptocurrency(prev_currency)
-            ) {
+            if (isCryptocurrency(obj_new_values.currency) !== isCryptocurrency(prev_currency)) {
                 obj_new_values.amount =
                     is_changed_by_user && obj_new_values.amount
                         ? obj_new_values.amount
-                        : CurrencyUtils.getMinPayout(obj_new_values.currency);
+                        : getMinPayout(obj_new_values.currency);
             }
             this.currency = obj_new_values.currency;
         }
@@ -672,7 +664,7 @@ export default class TradeStore extends BaseStore {
         this.root_store.ui.setHasOnlyForwardingContracts(has_only_forward_starting_contracts);
         if (has_only_forward_starting_contracts) return;
 
-        const new_state = this.updateStore(ObjectUtils.cloneObject(obj_new_values));
+        const new_state = this.updateStore(cloneObject(obj_new_values));
 
         if (is_changed_by_user || /\b(symbol|contract_types_list)\b/.test(Object.keys(new_state))) {
             this.updateStore({
@@ -705,7 +697,6 @@ export default class TradeStore extends BaseStore {
 
             // TODO: handle barrier updates on proposal api
             // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
-
             const snapshot = await processTradeParams(this, new_state);
             snapshot.is_trade_enabled = true;
 
@@ -785,7 +776,7 @@ export default class TradeStore extends BaseStore {
             return;
         }
 
-        if (!ObjectUtils.isEmptyObject(requests)) {
+        if (!isEmptyObject(requests)) {
             this.proposal_requests = requests;
             this.purchase_info = {};
 
@@ -810,8 +801,8 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onProposalResponse(response) {
         const contract_type = response.echo_req.contract_type;
-        const prev_proposal_info = ObjectUtils.getPropertyValue(this.proposal_info, contract_type) || {};
-        const obj_prev_contract_basis = ObjectUtils.getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
+        const prev_proposal_info = getPropertyValue(this.proposal_info, contract_type) || {};
+        const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
 
         this.proposal_info = {
             ...this.proposal_info,
@@ -846,12 +837,21 @@ export default class TradeStore extends BaseStore {
             if (error_id) {
                 this.setValidationErrorMessages(error_id, [response.error.message]);
             }
+            // Commission for multipliers is normally set from proposal response.
+            // But when we change the multiplier and if it is invalid, we don't get the proposal response to set the commission. We only get error message.
+            // This is a work around to set the commission from error message.
+            if (this.is_multiplier) {
+                const { message, details } = response.error;
+                const commission_match = (message || '').match(/\((\d+\.*\d*)\)/);
+                if (details.field === 'stop_loss' && commission_match && commission_match[1]) {
+                    this.commission = commission_match[1];
+                }
+            }
         } else {
             this.validateAllProperties();
         }
 
         this.is_purchase_enabled = true;
-        performance.mark('purchase-enabled');
     }
 
     @action.bound
@@ -903,21 +903,19 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    accountSwitcherListener() {
+    async accountSwitcherListener() {
         this.resetErrorServices();
-        // TODO: remove this, once multiplier is avaible for real accounts
-        if (this.is_multiplier && this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
-            this.processNewValuesAsync({ contract_type: 'rise_fall' }, false, {}, false);
-            if (!this.is_symbol_in_active_symbols) this.setActiveSymbols();
-        }
-        this.setContractTypes();
+        await this.setContractTypes();
 
-        return this.processNewValuesAsync(
-            { currency: this.root_store.client.currency || this.root_store.client.default_currency },
-            true,
-            { currency: this.currency },
-            false
-        );
+        runInAction(async () => {
+            this.processNewValuesAsync(
+                { currency: this.root_store.client.currency || this.root_store.client.default_currency },
+                true,
+                { currency: this.currency },
+                false
+            );
+        });
+        return Promise.resolve();
     }
 
     @action.bound
@@ -966,7 +964,6 @@ export default class TradeStore extends BaseStore {
             return;
         }
 
-        performance.mark('trade-engine-started');
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onLogout(this.logoutListener);
@@ -977,7 +974,6 @@ export default class TradeStore extends BaseStore {
         runInAction(async () => {
             this.is_trade_component_mounted = true;
             this.prepareTradeStore();
-            performance.mark('trade-engine-enabled');
         });
     }
 

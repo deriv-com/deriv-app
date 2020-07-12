@@ -21,7 +21,7 @@ import React from 'react';
 import { FormSubHeader } from '@deriv/account';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, toMoment } from '@deriv/shared';
-import { setWarnsFilterErrors } from 'App/Containers/RealAccountSignup/helpers/utils';
+import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
 import 'Sass/details-form.scss';
 
 const DateOfBirthField = props => (
@@ -84,11 +84,17 @@ class PersonalDetails extends React.Component {
         this.setState({ paddingBottom: is_active ? '18rem' : 'unset' });
     };
 
+    handleValidate = values => {
+        const { errors, warnings } = splitValidationResultTypes(this.props.validate(values));
+        this.setState({ warnings });
+        return errors;
+    };
+
     render() {
         return (
             <Formik
                 initialValues={{ ...this.props.value }}
-                validate={values => setWarnsFilterErrors.call(this, this.props.validate(values))}
+                validate={this.handleValidate}
                 validateOnMount
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
@@ -232,7 +238,7 @@ class PersonalDetails extends React.Component {
                                                                         message={localize(
                                                                             'Tax residence, also known as fiscal residency or redisence for tax purposes, is an important concept for all taxpayers living and working abroad. It determines the tax liabilities that the individual has to beer within a particular country (jurisdiction).'
                                                                         )}
-                                                                        zIndex={9999999}
+                                                                        zIndex={9999}
                                                                         disable_message_icon
                                                                     />
                                                                 </div>
@@ -278,7 +284,7 @@ class PersonalDetails extends React.Component {
                                                                         ]}
                                                                     />
                                                                 }
-                                                                zIndex={9999999}
+                                                                zIndex={9999}
                                                                 disable_message_icon
                                                             />
                                                         </div>

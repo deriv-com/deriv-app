@@ -14,7 +14,7 @@ import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { setWarnsFilterErrors } from 'App/Containers/RealAccountSignup/helpers/utils';
+import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
 
 const InputField = props => {
     return (
@@ -79,12 +79,18 @@ class AddressDetails extends React.Component {
         return this.state.has_fetched_states_list && this.props.states_list.length > 0;
     }
 
+    handleValidate = values => {
+        const { errors, warnings } = splitValidationResultTypes(this.props.validate(values));
+        this.setState({ warnings });
+        return errors;
+    };
+
     render() {
         const padding_bottom = window.innerHeight < 930 ? '10rem' : '12rem';
         return (
             <Formik
                 initialValues={{ ...this.props.value }}
-                validate={values => setWarnsFilterErrors.call(this, this.props.validate(values))}
+                validate={this.handleValidate}
                 validateOnMount
                 onSubmit={(values, actions) => {
                     if (isDesktop() && values.address_state) {

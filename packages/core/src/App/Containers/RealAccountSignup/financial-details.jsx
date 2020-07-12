@@ -5,7 +5,7 @@ import { FormSubHeader } from '@deriv/account';
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { setWarnsFilterErrors } from 'App/Containers/RealAccountSignup/helpers/utils';
+import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
 import {
     AccountTurnover,
     BinaryOptionsTradingExperience,
@@ -107,12 +107,18 @@ class FinancialDetails extends React.Component {
         this.props.onCancel();
     };
 
+    handleValidate = values => {
+        const { errors, warnings } = splitValidationResultTypes(this.props.validate(values));
+        this.setState({ warnings });
+        return errors;
+    };
+
     render() {
         const padding_bottom = window.innerHeight < 930 ? '10rem' : '12rem';
         return (
             <Formik
                 initialValues={{ ...this.props.value }}
-                validate={values => setWarnsFilterErrors.call(this, this.props.validate(values))}
+                validate={this.handleValidate}
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}

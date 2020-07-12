@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { Icon, Money, Popover, IconTradeTypes } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { convertDateFormat } from '@deriv/shared';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import PropTypes from 'prop-types';
@@ -94,14 +95,22 @@ const PopoverContent = ({ contract }) => (
             ))}
         {contract.date_start && (
             <PopoverItem title={localize('Start time')}>
-                <div className='transactions__popover-value'>{contract.date_start}</div>
+                <div className='transactions__popover-value'>
+                    {convertDateFormat(contract.date_start, 'YYYY-M-D HH:mm:ss [GMT]', 'YYYY-MM-DD HH:mm:ss [GMT]')}
+                </div>
             </PopoverItem>
         )}
         {contract.entry_tick && (
             <PopoverItem title={localize('Entry spot')}>
                 <div className='transactions__popover-value'>{contract.entry_tick}</div>
                 {contract.entry_tick_time && (
-                    <div className='transactions__popover-value'>{contract.entry_tick_time}</div>
+                    <div className='transactions__popover-value'>
+                        {convertDateFormat(
+                            contract.entry_tick_time,
+                            'YYYY-M-D HH:mm:ss [GMT]',
+                            'YYYY-MM-DD HH:mm:ss [GMT]'
+                        )}
+                    </div>
                 )}
             </PopoverItem>
         )
@@ -110,7 +119,9 @@ const PopoverContent = ({ contract }) => (
         {(contract.exit_tick && contract.exit_tick_time && (
             <PopoverItem title={localize('Exit spot')}>
                 <div className='transactions__popover-value'>{contract.exit_tick}</div>
-                <div className='transactions__popover-value'>{contract.exit_tick_time}</div>
+                <div className='transactions__popover-value'>
+                    {convertDateFormat(contract.exit_tick_time, 'YYYY-M-D HH:mm:ss [GMT]', 'YYYY-MM-DD HH:mm:ss [GMT]')}
+                </div>
             </PopoverItem>
         )) ||
             (contract.exit_tick && (

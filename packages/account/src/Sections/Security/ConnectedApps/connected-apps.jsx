@@ -77,6 +77,8 @@ class ConnectedApps extends React.Component {
                 <p className='connected-apps__title'>{localize('Authorised applications')}</p>
                 {this.state.is_error ? (
                     <ErrorComponent />
+                ) : this.state.is_loading ? (
+                    <Loading is_fullscreen={false} />
                 ) : (
                     <React.Fragment>
                         <DesktopWrapper>
@@ -87,9 +89,7 @@ class ConnectedApps extends React.Component {
                                 custom_width={'100%'}
                                 getRowSize={() => 56}
                                 is_empty={false}
-                            >
-                                {this.state.is_loading && <Loading is_fullscreen={false} />}
-                            </DataTable>
+                            />
                         </DesktopWrapper>
                         <MobileWrapper>
                             <DataList
@@ -99,9 +99,7 @@ class ConnectedApps extends React.Component {
                                 getRowSize={() => 128}
                                 is_empty={false}
                                 rowRenderer={this.mobileRowRenderer}
-                            >
-                                {this.state.is_loading && <Loading is_fullscreen={false} />}
-                            </DataList>
+                            />
                         </MobileWrapper>
                     </React.Fragment>
                 )}

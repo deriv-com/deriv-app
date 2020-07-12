@@ -15,8 +15,8 @@ export const switch_account_notification = {
 export const journalError = clickFunction => {
     return {
         key: 'bot_error',
-        header: localize('Error in Bot'),
-        message: <Button onClick={clickFunction} has_effect type='button' text={localize('Go to Journal')} primary />,
+        header: localize('Error in bot'),
+        message: <Button onClick={clickFunction} has_effect type='button' text={localize(`Go to 'Journal'`)} primary />,
         type: 'warning',
         is_persistent: true,
     };

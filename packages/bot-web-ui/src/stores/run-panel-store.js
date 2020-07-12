@@ -299,6 +299,7 @@ export default class RunPanelStore {
 
     @action.bound
     onError(data) {
+        const { journal } = this.root_store;
         if (unrecoverable_errors.includes(data.name)) {
             this.root_store.contract_card.clear();
             this.error_type = error_types.UNRECOVERABLE_ERRORS;
@@ -309,11 +310,10 @@ export default class RunPanelStore {
         const error_message = data?.error?.error?.message ?? data?.message;
         this.showErrorMessage(error_message);
 
-        if (
-            this.error_type === error_types.UNRECOVERABLE_ERRORS ||
-            this.error_type === error_types.RECOVERABLE_ERRORS
-        ) {
-            if (this.active_index < 2) {
+        if (!journal.journal_filters.includes(message_types.ERROR)) {
+            console.log(error_message);
+            if (this.active_index !== 2) {
+                console.log(error_message);
                 this.root_store.ui.addNotificationMessage(journalError(this.switchToJournal));
             }
         }

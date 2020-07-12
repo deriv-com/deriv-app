@@ -3,7 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, MobileWrapper, Loading, DataTable, Table } from '@deriv/components';
 import Bowser from 'bowser';
-import { convertDateFormat } from '@deriv/shared/utils/date';
+import { convertDateFormat } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';

@@ -213,7 +213,7 @@ const Journal = ({ filtered_messages, contract_stage, is_stop_button_visible, ..
                         </TransitionGroup>
                     ) : (
                         <>
-                            {contract_stage.index >= contract_stages.STARTING.index &&
+                            {contract_stage >= contract_stages.STARTING &&
                             !!props.checked_filters.length &&
                             is_stop_button_visible ? (
                                 <JournalLoader />

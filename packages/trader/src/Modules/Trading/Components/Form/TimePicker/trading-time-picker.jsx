@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
-import { setTime, toMoment } from '@deriv/shared/utils/date';
+import { setTime, toMoment } from '@deriv/shared';
 import TimePicker from 'App/Components/Form/TimePicker';
 import { getSelectedTime, getBoundaries } from 'Stores/Modules/Trading/Helpers/end-time';
 

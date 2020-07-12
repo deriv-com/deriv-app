@@ -2,9 +2,9 @@
  * Takes validation result of a form, sets warnings on component's state and pass errors down to the form
  *
  * @param {object} values - object containing form field values and validations
- * @return {object} errors
+ * @return {object} object containing errors and warnings
  */
-function setWarnsFilterErrors(values) {
+function splitValidationResultTypes(values) {
     const warnings = {};
     Object.keys(values).forEach(field => {
         if (values[field][0] === 'warn') {
@@ -12,10 +12,9 @@ function setWarnsFilterErrors(values) {
             delete values[field];
         }
     });
-    this.setState({ warnings });
     const errors = {};
     Object.keys(values).forEach(error => (errors[error] = values[error][1]));
-    return errors;
+    return { warnings, errors };
 }
 
-export { setWarnsFilterErrors };
+export { splitValidationResultTypes };

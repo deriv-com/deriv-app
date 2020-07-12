@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { setMainContentWidth } from '../utils/window-size';
 import { contract_stages } from '../constants/contract-stage';
-import { switch_account_notification } from '../utils/bot-notifications';
+import { switch_account_notification, journalError } from '../utils/bot-notifications';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -308,6 +308,15 @@ export default class RunPanelStore {
 
         const error_message = data?.error?.error?.message ?? data?.message;
         this.showErrorMessage(error_message);
+
+        if (
+            this.error_type === error_types.UNRECOVERABLE_ERRORS ||
+            this.error_type === error_types.RECOVERABLE_ERRORS
+        ) {
+            if (this.active_index < 2) {
+                this.root_store.ui.addNotificationMessage(journalError(this.switchToJournal));
+            }
+        }
     }
 
     @action.bound
@@ -318,6 +327,15 @@ export default class RunPanelStore {
             this.setActiveTabIndex(2);
         }
     }
+
+    @action.bound
+    switchToJournal = () => {
+        const { journal } = this.root_store;
+        journal.journal_filters.push(message_types.ERROR);
+        this.setActiveTabIndex(2);
+        this.root_store.ui.toggleNotificationsModal();
+        this.root_store.ui.removeNotificationByKey({ key: 'bot_error' });
+    };
 
     static unregisterBotListeners() {
         observer.unregisterAll('bot.running');

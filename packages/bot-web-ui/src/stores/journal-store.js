@@ -24,9 +24,9 @@ export default class JournalStore {
     };
 
     filters = [
-        { id: message_types.SUCCESS, label: localize('System') },
-        { id: message_types.NOTIFY, label: localize('Notifications') },
         { id: message_types.ERROR, label: localize('Errors') },
+        { id: message_types.NOTIFY, label: localize('Notifications') },
+        { id: message_types.SUCCESS, label: localize('System') },
     ];
 
     @observable is_filter_dialog_visible = false;

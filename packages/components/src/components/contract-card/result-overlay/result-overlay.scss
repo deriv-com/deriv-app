@@ -24,6 +24,8 @@
             margin-top: 2rem;
             height: calc(100% - 36px);
             text-decoration: none;
+            position: absolute;
+            z-index: 2;
         }
         @include mobile {
             pointer-events: none;
@@ -45,5 +47,9 @@
     }
     &__icon {
         margin-left: 10px;
+    }
+    &-positions {
+        margin: 0 10px;
+        max-width: 220px;
     }
 }

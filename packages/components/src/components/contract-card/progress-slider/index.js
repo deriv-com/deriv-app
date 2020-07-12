@@ -1,4 +1,4 @@
-import ProgressSlider from './positions-progress-slider.jsx';
-import './positions-progress-slider.scss';
+import ProgressSlider from './progress-slider.jsx';
+import './progress-slider.scss';
 
 export default ProgressSlider;

@@ -61,6 +61,7 @@ class ResultOverlay extends React.PureComponent {
                     <div
                         id={`contract_card_${contract_id}_result`}
                         className={classNames('contract-card__result', {
+                            'result-positions': is_positions,
                             'contract-card__result--won': is_contract_won,
                             'contract-card__result--lost': !is_contract_won,
                             'contract-card__result--lg': is_multiplier,

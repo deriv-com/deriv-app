@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { getTimePercentage } from '@deriv/shared';
-import ProgressTicks from './positions-progress-ticks.jsx';
+import ProgressTicks from './progress-ticks.jsx';
 import RemainingTime from '../../remaining-time';
 
 const ProgressSlider = ({
@@ -22,7 +22,7 @@ const ProgressSlider = ({
                 <ProgressTicks card_labels={card_labels} current_tick={current_tick} ticks_count={ticks_count} />
             ) : (
                 <React.Fragment>
-                    <span className='positions-drawer-card__remaining-time'>
+                    <span className='progress-slider__remaining-time'>
                         <RemainingTime card_labels={card_labels} end_time={expiry_time} start_time={server_time} />
                     </span>
                     {is_loading || percentage < 1 ? (

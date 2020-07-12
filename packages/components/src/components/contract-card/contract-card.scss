@@ -36,7 +36,7 @@
         grid-gap: 4px;
 
         &-underlying-trade {
-            grid-template-columns: 1.5fr 1fr;
+            grid-template-columns: 1fr 1fr;
             width: 100%;
         }
         &-profit-payout {
@@ -68,7 +68,6 @@
         left: -1px;
         width: calc(100% + 2px);
         height: calc(100% + 2px);
-        max-height: 140px;
         border-radius: $BORDER_RADIUS;
         z-index: 2;
         display: flex;
@@ -111,7 +110,7 @@
         }
     }
     &__wrapper {
-        padding: 0.8em;
+        // padding: 0.8em;
         margin: 0 1em;
         max-width: 218px;
         border-radius: $BORDER_RADIUS;

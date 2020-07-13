@@ -1,4 +1,5 @@
 import SendBird from 'sendbird';
+import { isProduction } from '@deriv/shared';
 
 class SendbirdAPI {
     constructor({ LocalStorage }) {
@@ -8,7 +9,9 @@ class SendbirdAPI {
     }
 
     async init(sendbird_user_id, service_token) {
-        this.sendbird = new SendBird({ appId: isProduction() ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69' : '4E259BA5-C383-4624-89A6-8365E06D9D39' });
+        this.sendbird = new SendBird({
+            appId: isProduction() ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69' : '4E259BA5-C383-4624-89A6-8365E06D9D39',
+        });
         this.sendbird.connect(sendbird_user_id, service_token, (user, error) => {
             if (error) {
                 // eslint-disable-next-line no-console

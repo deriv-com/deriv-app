@@ -1,4 +1,5 @@
 import { getCurrentProductionDomain } from '../config/config';
+import { routes } from '../routes';
 
 const default_domain = 'binary.com';
 const host_map = {
@@ -145,3 +146,8 @@ export const getDerivComLink = (path = '') => {
 
     return `${host}${link_lang}/${normalizePath(path)}`;
 };
+
+export const getPath = (route_path, parameters = {}) =>
+    Object.keys(parameters).reduce((p, name) => p.replace(`:${name}`, parameters[name]), route_path);
+
+export const getContractPath = contract_id => getPath(routes.contract, { contract_id });

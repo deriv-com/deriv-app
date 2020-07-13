@@ -1,5 +1,3 @@
-import { routes } from '../routes';
-
 let all_routes_config = [];
 
 export const addRoutesConfig = (routes_config, should_init) => {
@@ -18,11 +16,4 @@ export const getSelectedRoute = ({ routes, pathname }) => {
     return route;
 };
 
-export const normalizePath = path => (/^\//.test(path) ? path : `/${path || ''}`); // Default to '/'
-
 export const isRouteVisible = (route, is_logged_in) => !(route && route.is_authenticated && !is_logged_in);
-
-export const getPath = (route_path, params = {}) =>
-    Object.keys(params).reduce((p, name) => p.replace(`:${name}`, params[name]), route_path);
-
-export const getContractPath = contract_id => getPath(routes.contract, { contract_id });

@@ -36,7 +36,11 @@ class ProofOfIdentity extends React.Component {
                             height={height}
                             redirect_button={
                                 should_show_redirect_btn && (
-                                    <Button primary onClick={() => this.routeBackTo(from_platform.route)}>
+                                    <Button
+                                        primary
+                                        className='proof-of-identity__redirect'
+                                        onClick={() => this.routeBackTo(from_platform.route)}
+                                    >
                                         <Localize
                                             i18n_default_text='Back to {{platform_name}}'
                                             values={{ platform_name: from_platform.name }}

@@ -143,10 +143,6 @@ export const personalDetailsConfig = ({ real_account_signup_target, residence_li
                     text: localize('Speculative'),
                     value: 'Speculative',
                 },
-                {
-                    text: localize('Peer-to-peer exchange'),
-                    value: 'Peer-to-peer exchange',
-                },
             ],
             salutation_list: [
                 {

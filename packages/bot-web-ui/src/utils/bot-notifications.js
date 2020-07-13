@@ -1,6 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { Button } from '@deriv/components';
+import '../assets/sass/notify-item.scss';
 
 export const switch_account_notification = {
     key: 'bot_switch_account',
@@ -15,9 +16,18 @@ export const switch_account_notification = {
 export const journalError = clickFunction => {
     return {
         key: 'bot_error',
-        header: localize('Error in bot'),
-        message: <Button onClick={clickFunction} has_effect type='button' text={localize("Go to 'Journal'")} primary />,
-        type: 'warning',
+        header: localize('The bot encountered an error while running.'),
+        message: (
+            <Button
+                className='notify__item-button'
+                onClick={clickFunction}
+                has_effect
+                type='button'
+                text={localize('View error in Journal')}
+                secondary
+            />
+        ),
+        type: 'danger',
         is_persistent: true,
     };
 };

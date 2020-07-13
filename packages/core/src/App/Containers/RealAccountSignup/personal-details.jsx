@@ -305,7 +305,7 @@ class PersonalDetails extends React.Component {
                                                             }
                                                             value={values.tax_identification_confirm}
                                                             label={localize(
-                                                                'I hereby confirm that the tax information i provided is true and complete. I will also inform Binary Investments (Europe) Ltd. about any changes to this information.'
+                                                                'I hereby confirm that the tax information I provided is true and complete. I will also inform Deriv Investments (Europe) Ltd. about any changes to this information.'
                                                             )}
                                                         />
                                                     )}

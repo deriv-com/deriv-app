@@ -96,6 +96,10 @@ export default class ClientStore extends BaseStore {
 
                     return Promise.resolve();
                 });
+
+                if (!this.root_store.ui.is_real_acc_signup_on) {
+                    this.root_store.ui.toggleAccountTypesModal(true);
+                }
             }
         );
     }

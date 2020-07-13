@@ -202,6 +202,7 @@ class AccountTypesModal extends React.Component {
     };
 
     redirectToMt5Real = () => {
+        this.closeModal();
         if (!this.props.is_logged_in || this.props.is_mt5_allowed) {
             this.redirectToMt5('real');
         } else {
@@ -210,7 +211,7 @@ class AccountTypesModal extends React.Component {
     };
 
     createRealAccount = target => {
-        this.props.toggleAccountTypesModal();
+        this.closeModal();
         this.props.openRealAccountSignup(target);
     };
 

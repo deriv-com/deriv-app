@@ -1,11 +1,17 @@
 .statement {
+    &__statement-header {
+        justify-content: flex-end;
+    }
     &__account-statistics {
-        width: 100%;
+        width: 43.2rem;
         height: 6.4rem;
         display: flex;
         flex-direction: row;
         text-align: left;
 
+        :last-child {
+            border-right: unset;
+        }
         &--is-rectangle {
             text-align: left;
             height: 100%;
@@ -13,21 +19,22 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 8px 16px;
+            padding: 8px 0 0 16px;
             align-items: flex-start;
-            max-width: 14.8rem;
+            max-width: 14.4rem;
             width: 100%;
         }
         &-title {
             text-align: left;
             color: $color-grey-1;
             font-size: 14px;
-            margin-bottom: 4px;
+            margin-bottom: 9px;
         }
         &-amount {
             text-align: left;
             font-weight: bold;
             font-size: 16px;
+            color: var(--text-prominent);
         }
     }
 }

@@ -128,7 +128,7 @@ class Statement extends React.Component {
             <React.Fragment>
                 <div className='statement__account-statistics'>
                     <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>{localize('Total Deposit')}</span>
+                        <span className='statement__account-statistics-title'>{localize('Total Deposits')}</span>
                         <span className='statement__account-statistics-amount'>
                             <Money amount={this.state.total_deposits} currency={currency} />
                         </span>
@@ -140,7 +140,7 @@ class Statement extends React.Component {
                         </span>
                     </div>
                     <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>{localize('Net Deposit')}</span>
+                        <span className='statement__account-statistics-title'>{localize('Net Deposits')}</span>
                         <span className='statement__account-statistics-amount'>
                             <Money
                                 amount={this.state.total_deposits - this.state.total_withdrawals}
@@ -168,16 +168,14 @@ class Statement extends React.Component {
             map[item.col_index] = item;
             return map;
         }, {});
+        const is_mx_mlt =
+            this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'malta';
 
         return (
             <React.Fragment>
                 <ReportsMeta
-                    optional_component={
-                        this.props.landing_company_shortcode === 'iom' ||
-                        this.props.landing_company_shortcode === 'malta'
-                            ? account_statistics_component
-                            : undefined
-                    }
+                    className={is_mx_mlt ? undefined : 'reports__meta--statement'}
+                    optional_component={is_mx_mlt ? account_statistics_component : undefined}
                     filter_component={filter_component}
                 />
                 {data.length === 0 || is_empty ? (

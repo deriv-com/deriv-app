@@ -12,6 +12,9 @@ $side-padding: 1.2em;
         justify-content: space-between;
         padding: 0 24px 16px;
 
+        &--statement {
+            justify-content: flex-end;
+        }
         &-description {
             &--heading {
                 @include typeface(--title-left-bold-black, none);
@@ -33,9 +36,7 @@ $side-padding: 1.2em;
         &-filter {
             position: relative;
             display: flex;
-        }
-        &--date-filter {
-            margin-left: 61.6rem;
+            justify-content: flex-end;
         }
 
         @include desktop {
@@ -102,7 +103,9 @@ $side-padding: 1.2em;
     @include desktop {
         height: 100%;
     }
-
+    .table__head {
+        font-weight: bold;
+    }
     @include mobile {
         flex: 1;
 
@@ -542,6 +545,7 @@ $side-padding: 1.2em;
             .table__cell {
                 padding-top: 0px;
                 padding-bottom: 0px;
+                font-weight: bold;
             }
         }
         .table__body {

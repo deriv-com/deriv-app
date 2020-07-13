@@ -33,7 +33,7 @@ export default class P2pStore extends BaseStore {
             if (!sendbird_user_id || !service_token) {
                 // eslint-disable-next-line no-console
                 console.warn('Could not initialise Sendbird API for notifications');
-                return Promise.resolve();
+                return true;
             }
 
             this.sendbird_api = new SendbirdAPI({ LocalStorage: P2pStorage });

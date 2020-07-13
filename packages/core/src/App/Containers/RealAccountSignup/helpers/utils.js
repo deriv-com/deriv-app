@@ -8,10 +8,10 @@ function splitValidationResultTypes(values) {
     const warnings = {};
     Object.keys(values).forEach(field => {
         const item = values[field];
-        if (Array.isArray(item) && item[0] === 'warn') {
-            warnings[field] = item[1];
+        if (!Array.isArray(item)) {
             delete values[field];
-        } else if (!Array.isArray(item)) {
+        } else if (item[0] === 'warn') {
+            warnings[field] = item[1];
             delete values[field];
         }
     });

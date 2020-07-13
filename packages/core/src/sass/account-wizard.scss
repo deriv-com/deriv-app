@@ -134,6 +134,7 @@
                 font-size: 1.4rem;
                 line-height: 2.4rem;
                 margin-top: 2.4rem;
+                @include typeface(--paragraph-center-normal-prominent);
                 @include mobile {
                     text-align: center;
                 }

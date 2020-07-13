@@ -141,7 +141,6 @@ class AddressDetails extends React.Component {
                                                                     })}
                                                                     data-lpignore='true'
                                                                     autoComplete='new-password' // prevent chrome autocomplete
-                                                                    dropdown_offset='1rem'
                                                                     type='text'
                                                                     label={localize('State/Province')}
                                                                     list_items={this.props.states_list}

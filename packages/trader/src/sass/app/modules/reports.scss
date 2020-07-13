@@ -100,11 +100,12 @@ $side-padding: 1.2em;
 
 /** @define statement; weak */
 .statement {
-    @include desktop {
-        height: 100%;
-    }
     .table__head {
         font-weight: bold;
+    }
+
+    @include desktop {
+        height: 100%;
     }
     @include mobile {
         flex: 1;
@@ -149,10 +150,6 @@ $side-padding: 1.2em;
         .table__cell {
             height: 63px;
         }
-    }
-    .amount,
-    .balance {
-        justify-content: flex-end;
     }
     .amount {
         font-weight: bold;

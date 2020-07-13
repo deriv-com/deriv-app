@@ -12,6 +12,9 @@
         :last-child {
             border-right: unset;
         }
+        :first-child {
+            padding-left: 0;
+        }
         &--is-rectangle {
             text-align: left;
             height: 100%;

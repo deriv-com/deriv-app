@@ -4,7 +4,7 @@ import React from 'react';
 import { isHighLow, getCurrentTick } from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell.jsx';
 import Icon from '../../icon';
-import ProgressSlider from '../progress-slider';
+import ProgressSlider from '../../progress-slider';
 import DesktopWrapper from '../../desktop-wrapper';
 
 const ContractCardHeader = ({

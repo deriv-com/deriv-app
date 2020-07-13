@@ -2,16 +2,17 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Button, Icon, Money } from '@deriv/components';
+import { Button, Icon, Money, ProgressSliderMobile } from '@deriv/components';
+import { isCryptocurrency } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { BinaryLink } from 'App/Components/Routes';
-import { isCryptocurrency } from '@deriv/shared';
+import { connect } from 'Stores/connect';
 import Shortcode from 'Modules/Reports/Helpers/shortcode';
-import { localize } from '@deriv/translations';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell from './contract-type-cell.jsx';
-import ProgressSliderMobile from './ProgressSliderMobile';
 import ResultMobile from './result-mobile.jsx';
+import { card_labels } from '../../../../Constants/contract';
 
 const PositionsModalCard = ({
     className,
@@ -28,6 +29,7 @@ const PositionsModalCard = ({
     onClickSell,
     onClickRemove,
     result,
+    server_time,
     sell_price,
     status,
     togglePositions,
@@ -158,11 +160,13 @@ const PositionsModalCard = ({
                     />
                 ) : (
                     <ProgressSliderMobile
+                        card_labels={card_labels}
                         className='positions-modal-card__progress'
-                        is_loading={is_loading}
-                        start_time={contract_info.date_start}
-                        expiry_time={contract_info.date_expiry}
                         current_tick={current_tick}
+                        expiry_time={contract_info.date_expiry}
+                        is_loading={is_loading}
+                        server_time={server_time}
+                        start_time={contract_info.date_start}
                         ticks_count={contract_info.tick_count}
                     />
                 )}
@@ -211,10 +215,13 @@ PositionsModalCard.propTypes = {
     profit_loss: PropTypes.number,
     result: PropTypes.string,
     sell_time: PropTypes.number,
+    server_time: PropTypes.object,
     status: PropTypes.string,
     togglePositions: PropTypes.func,
     toggleUnsupportedContractModal: PropTypes.func,
     type: PropTypes.string,
 };
 
-export default PositionsModalCard;
+export default connect(({ common }) => ({
+    server_time: common.server_time,
+}))(PositionsModalCard);

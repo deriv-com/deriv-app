@@ -61,6 +61,8 @@ module.exports = {
         popover: 'Components/popover',
         'progress-bar': 'Components/progress-bar',
         'progress-indicator': 'Components/progress-indicator',
+        'progress-slider': 'Components/progress-slider',
+        'progress-slider-mobile': 'Components/progress-slider-mobile',
         'radio-group': 'Components/radio-group',
         'select-native': 'Components/select-native',
         'send-email-template': 'Components/send-email-template',

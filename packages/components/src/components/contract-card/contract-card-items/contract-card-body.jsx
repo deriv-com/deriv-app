@@ -14,7 +14,7 @@ import Money from '../../money';
 import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
-import ProgressSliderMobile from '../progress-slider-mobile';
+import ProgressSliderMobile from '../../progress-slider-mobile';
 
 const MultiplierCardBody = ({ contract_info, contract_update, currency, status, card_labels }) => {
     const { buy_price, bid_price, is_sold, profit } = contract_info;

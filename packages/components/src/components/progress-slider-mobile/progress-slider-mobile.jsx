@@ -1,13 +1,13 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { CircularProgress } from '@deriv/components';
-import { connect } from 'Stores/connect';
+import { getTimePercentage } from '@deriv/shared';
 import ProgressTicksMobile from './progress-ticks-mobile.jsx';
-import { getTimePercentage } from '../helpers';
-import RemainingTime from '../../../../Containers/remaining-time.jsx';
+import CircularProgress from '../circular-progress';
+import RemainingTime from '../remaining-time';
 
 const ProgressSliderMobile = ({
+    card_labels,
     className,
     current_tick,
     is_loading,
@@ -18,22 +18,22 @@ const ProgressSliderMobile = ({
 }) => {
     const percentage = getTimePercentage(server_time, start_time, expiry_time);
     return (
-        <div className={classNames('positions-progress-slider-mobile', className)}>
+        <div className={classNames('progress-slider-mobile', className)}>
             {ticks_count ? (
-                <ProgressTicksMobile current_tick={current_tick} ticks_count={ticks_count} />
+                <ProgressTicksMobile card_labels={card_labels} current_tick={current_tick} ticks_count={ticks_count} />
             ) : (
                 <React.Fragment>
-                    <span className='positions-modal-card__remaining-time'>
-                        <RemainingTime end_time={expiry_time} />
+                    <span className='progress-slider-mobile__remaining-time'>
+                        <RemainingTime card_labels={card_labels} end_time={expiry_time} start_time={server_time} />
                     </span>
                     {is_loading || percentage < 1 ? (
                         // TODO: Change this behavior in mobile
-                        <div className='positions-progress-slider-mobile__infinite-loader'>
-                            <div className='positions-progress-slider-mobile__infinite-loader--indeterminate' />
+                        <div className='progress-slider-mobile__infinite-loader'>
+                            <div className='progress-slider-mobile__infinite-loader--indeterminate' />
                         </div>
                     ) : (
                         <CircularProgress
-                            className='positions-modal-card__timer'
+                            className='progress-slider-mobile__timer'
                             danger_limit={20}
                             icon='IcClockOutline'
                             progress={percentage}
@@ -56,6 +56,4 @@ ProgressSliderMobile.propTypes = {
     ticks_count: PropTypes.number,
 };
 
-export default connect(({ common }) => ({
-    server_time: common.server_time,
-}))(ProgressSliderMobile);
+export default ProgressSliderMobile;

@@ -184,7 +184,6 @@ class SelfExclusion extends React.Component {
                 }
             }
         });
-        console.log(errors);
 
         return errors;
     };
@@ -333,7 +332,6 @@ class SelfExclusion extends React.Component {
                                 handleChange,
                                 handleBlur,
                                 isSubmitting,
-                                setFieldTouched,
                                 handleSubmit,
                                 setFieldValue,
                             }) => (

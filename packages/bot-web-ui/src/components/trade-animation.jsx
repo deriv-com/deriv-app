@@ -89,5 +89,4 @@ export default connect(({ run_panel, contract_card }) => ({
     contract_stage: run_panel.contract_stage,
     is_contract_completed: contract_card.is_contract_completed,
     profit: contract_card.profit,
-    should_show_overlay: run_panel.should_show_overlay,
 }))(TradeAnimation);

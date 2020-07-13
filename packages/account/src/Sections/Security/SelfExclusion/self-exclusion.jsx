@@ -184,6 +184,7 @@ class SelfExclusion extends React.Component {
                 }
             }
         });
+        console.log(errors);
 
         return errors;
     };
@@ -634,7 +635,6 @@ class SelfExclusion extends React.Component {
                                                                     values.timeout_until &&
                                                                     epochToMoment(values.timeout_until)
                                                                 }
-                                                                onBlur={() => setFieldTouched('exclude_until')}
                                                                 onChange={({ target }) =>
                                                                     setFieldValue(
                                                                         'timeout_until',
@@ -663,7 +663,6 @@ class SelfExclusion extends React.Component {
                                                                 className='self-exclusion__input'
                                                                 label={localize('Date')}
                                                                 value={values.exclude_until}
-                                                                onBlur={() => setFieldTouched('exclude_until')}
                                                                 onChange={({ target }) =>
                                                                     setFieldValue(
                                                                         'exclude_until',

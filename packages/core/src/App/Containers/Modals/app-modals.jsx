@@ -22,11 +22,9 @@ const AppModals = ({
     is_account_needed_modal_on,
     is_account_types_modal_visible,
     is_denial_of_service_modal_visible,
-    should_have_real_account,
     is_set_residence_modal_visible,
     url_action_param,
     switchAccount,
-    toggleAccountTypesModal,
     virtual_account_loginid,
 }) => {
     let ComponentToLoad = null;
@@ -80,8 +78,6 @@ export default connect(({ client, ui }) => ({
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     is_denial_of_service_modal_visible: !client.is_client_allowed_to_visit,
-    should_have_real_account: client.should_have_real_account,
     switchAccount: client.switchAccount,
-    toggleAccountTypesModal: ui.toggleAccountTypesModal,
     virtual_account_loginid: client.virtual_account_loginid,
 }))(AppModals);

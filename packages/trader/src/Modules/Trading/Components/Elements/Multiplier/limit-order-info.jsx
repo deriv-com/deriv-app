@@ -21,18 +21,18 @@ const LimitOrderInfo = ({
                 <div className='mobile-widget__item'>
                     <div className='mobile-widget__item-label'>{localize('Take profit')}</div>
                     <div className='mobile-widget__item-value'>
-                        {has_take_profit && <Money amount={take_profit} currency={currency} />}
+                        {has_take_profit ? <Money amount={take_profit} currency={currency} /> : '-'}
                     </div>
                 </div>
                 <div className='mobile-widget__item'>
                     <div className='mobile-widget__item-label'>{localize('Stop loss')}</div>
                     <div className='mobile-widget__item-value'>
-                        {has_stop_loss && <Money amount={stop_loss} currency={currency} />}
+                        {has_stop_loss ? <Money amount={stop_loss} currency={currency} /> : '-'}
                     </div>
                 </div>
                 <div className='mobile-widget__item'>
                     <div className='mobile-widget__item-label'>{localize('Deal Cancellation')}</div>
-                    <div className='mobile-widget__item-value'>{has_cancellation && cancellation_duration}</div>
+                    <div className='mobile-widget__item-value'>{has_cancellation ? cancellation_duration : '-'}</div>
                 </div>
             </div>
         </React.Fragment>

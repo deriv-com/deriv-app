@@ -97,7 +97,7 @@ export default class DownloadStore {
         journal_messages.map(item => {
             let array_message;
             if (item.message_type !== 'success') {
-                array_message = item.message;
+                array_message = JSON.stringify(item.message);
             } else {
                 array_message = this.getSuccessJournalMessage(item.message.toString(), item.extra);
             }

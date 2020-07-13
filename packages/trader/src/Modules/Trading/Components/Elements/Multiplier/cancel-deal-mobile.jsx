@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, RadioGroup } from '@deriv/components';
+import { Checkbox, RadioGroup, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Contract/Helpers/multiplier';
@@ -8,13 +8,24 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 const CancelDeal = ({ has_cancellation, onChangeMultiple, cancellation_duration, cancellation_range_list }) => {
     return (
         <Fieldset className='trade-container__fieldset'>
-            <Checkbox
-                id='dt_cancellation-checkbox_input'
-                onChange={() => onToggleCancellation({ has_cancellation, onChangeMultiple })}
-                name='has_cancellation'
-                label={localize('Deal cancellation')}
-                defaultChecked={has_cancellation}
-            />
+            <div className='input-wrapper--inline'>
+                <Checkbox
+                    id='dt_cancellation-checkbox_input'
+                    onChange={() => onToggleCancellation({ has_cancellation, onChangeMultiple })}
+                    name='has_cancellation'
+                    label={localize('Deal cancellation')}
+                    defaultChecked={has_cancellation}
+                />
+                <Popover
+                    alignment='bottom'
+                    icon='info'
+                    id='dt_cancellation-checkbox__tooltip'
+                    message={localize(
+                        'Allows you to cancel your trade within a chosen time frame should the market move against your favour.'
+                    )}
+                    relative_render
+                />
+            </div>
             {has_cancellation && (
                 <RadioGroup
                     className='trade-params__multiplier-radio-group'

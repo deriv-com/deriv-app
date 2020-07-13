@@ -89,7 +89,6 @@ class SelfExclusion extends React.Component {
         // Regex
         const is_number = /^\d+(\.\d+)?$/;
         const is_integer = /^\d+$/;
-        const is_minutes = /^[0-9]|99999/;
         const max_number = 9999999999999;
         const six_weeks = 60480; // in minutes
 

@@ -132,6 +132,32 @@ class SelfExclusion extends React.Component {
         ];
         const only_integers = ['session_duration_limit', 'max_open_bets'];
 
+        if (values.session_duration_limit) {
+            if (values.session_duration_limit > six_weeks) {
+                errors.session_duration_limit = localize(
+                    'Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).'
+                );
+            }
+        }
+
+        if (values.timeout_until) {
+            if (values.timeout_until <= toMoment().unix()) {
+                errors.timeout_until = localize('Timeout time must be greater than current time.');
+            } else if (values.timeout_until > toMoment().add(6, 'week').unix()) {
+                errors.timeout_until = localize('Timeout time cannot be more than 6 weeks.');
+            }
+        }
+
+        if (values.exclude_until) {
+            if (toMoment(values.exclude_until).unix() < toMoment().unix()) {
+                errors.exclude_until = localize('Exclude time must be after today.');
+            } else if (toMoment(values.exclude_until).unix() < toMoment().add(6, 'month').unix()) {
+                errors.exclude_until = localize('Exclude time cannot be less than 6 months.');
+            } else if (toMoment(values.exclude_until).unix() > toMoment().add(5, 'year').unix()) {
+                errors.exclude_until = localize('Exclude time cannot be for more than five years.');
+            }
+        }
+
         only_numbers.forEach((item) => {
             if (values[item]) {
                 if (!is_number.test(values[item])) {
@@ -159,34 +185,6 @@ class SelfExclusion extends React.Component {
                 }
             }
         });
-
-        if (values.session_duration_limit) {
-            if (!is_minutes.test(values.session_duration_limit)) {
-                errors.session_duration_limit = localize('Reached maximum amount of session duration limit.');
-            } else if (values.session_duration_limit > six_weeks) {
-                errors.session_duration_limit = localize(
-                    'Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).'
-                );
-            }
-        }
-
-        if (values.timeout_until) {
-            if (values.timeout_until <= toMoment().unix()) {
-                errors.timeout_until = localize('Timeout time must be greater than current time.');
-            } else if (values.timeout_until > toMoment().add(6, 'week').unix()) {
-                errors.timeout_until = localize('Timeout time cannot be more than 6 weeks.');
-            }
-        }
-
-        if (values.exclude_until) {
-            if (toMoment(values.exclude_until).unix() < toMoment().unix()) {
-                errors.exclude_until = localize('Exclude time must be after today.');
-            } else if (toMoment(values.exclude_until).unix() < toMoment().add(6, 'month').unix()) {
-                errors.exclude_until = localize('Exclude time cannot be less than 6 months.');
-            } else if (toMoment(values.exclude_until).unix() > toMoment().add(5, 'year').unix()) {
-                errors.exclude_until = localize('Exclude time cannot be for more than five years.');
-            }
-        }
 
         return errors;
     };
@@ -226,7 +224,7 @@ class SelfExclusion extends React.Component {
             const response = await makeRequest();
             if (response.error) {
                 this.setState({
-                    submit_error_message: `${this.exclusion_texts[response.error.field]}: ${response.error.message}`,
+                    submit_error_message: response.error.message,
                 });
             } else {
                 setSubmitting(false);

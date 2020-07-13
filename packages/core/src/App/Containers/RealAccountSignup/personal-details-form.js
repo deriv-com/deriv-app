@@ -9,7 +9,9 @@ const personal_details_config = ({ residence_list, account_settings }) => {
         return {};
     }
 
-    const disabled_items = [...Object.keys(account_settings).filter(value => !!value)];
+    const disabled_items = [
+        ...Object.keys(account_settings).filter(field_name => field_name !== 'account_opening_reason' && !!field_name),
+    ];
 
     return [
         {

@@ -1,11 +1,18 @@
-import { Icon, Modal, ThemedScrollbars } from '@deriv/components';
+import {
+    MobileWrapper,
+    MobileCarousel,
+    DesktopWrapper,
+    Div100vhContainer,
+    Icon,
+    Modal,
+    ThemedScrollbars,
+} from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { routes, getDerivComLink, urlFor } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-
 import AccountCard from './account-card.jsx';
 
 import 'Sass/app/modules/account-types.scss';
@@ -32,7 +39,10 @@ const Box = ({ title, description, footer_text, icons, cards }) => {
                     })}
                 </div>
             </div>
-            {cards}
+            <MobileWrapper>
+                <MobileCarousel>{cards}</MobileCarousel>
+            </MobileWrapper>
+            <DesktopWrapper>{cards}</DesktopWrapper>
         </div>
     );
 };
@@ -220,55 +230,60 @@ class AccountTypesModal extends React.Component {
             <Modal
                 title={localize('Account types')}
                 width='904px'
+                className='account-types'
                 is_open={this.props.is_account_types_modal_visible}
                 toggleModal={this.closeModal}
                 has_close_icon={this.props.is_dismissible}
             >
-                <ThemedScrollbars autoHide style={{ height: '63.5rem' }}>
-                    <div className='account-types'>
-                        <p className='account-types__intro'>{localize('Choose an account that suits your needs.')}</p>
-                        <div>
-                            <SyntheticBox
-                                derivOnClick={() => {
-                                    if (this.props.has_iom_account) {
-                                        if (this.props.landing_company_shortcode !== 'iom') {
-                                            this.props.switchAccount(getTargetLoginid(this.props.accounts, 'iom'));
+                <Div100vhContainer height_offset='120px'>
+                    <ThemedScrollbars>
+                        <div className='account-types'>
+                            <p className='account-types__intro'>
+                                {localize('Choose an account that suits your needs.')}
+                            </p>
+                            <div>
+                                <SyntheticBox
+                                    derivOnClick={() => {
+                                        if (this.props.has_iom_account) {
+                                            if (this.props.landing_company_shortcode !== 'iom') {
+                                                this.props.switchAccount(getTargetLoginid(this.props.accounts, 'iom'));
+                                            }
+                                            this.closeModal();
+                                        } else {
+                                            this.createRealAccount(this.props.standpoint.gaming_company);
                                         }
-                                        this.closeModal();
-                                    } else {
-                                        this.createRealAccount(this.props.standpoint.gaming_company);
+                                    }}
+                                    add_account_label={
+                                        this.props.has_iom_account
+                                            ? localize('Trade with this account')
+                                            : localize('Add this real account')
                                     }
-                                }}
-                                add_account_label={
-                                    this.props.has_iom_account
-                                        ? localize('Trade with this account')
-                                        : localize('Add this real account')
-                                }
-                            />
-                            <FinancialBox
-                                derivOnClick={() => {
-                                    if (this.props.has_maltainvest_account) {
-                                        if (this.props.landing_company_shortcode !== 'maltainvest') {
-                                            this.props.switchAccount(
-                                                getTargetLoginid(this.props.accounts, 'maltainvest')
-                                            );
+                                />
+                                <FinancialBox
+                                    derivOnClick={() => {
+                                        if (this.props.has_maltainvest_account) {
+                                            if (this.props.landing_company_shortcode !== 'maltainvest') {
+                                                this.props.switchAccount(
+                                                    getTargetLoginid(this.props.accounts, 'maltainvest')
+                                                );
+                                            }
+                                            this.closeModal();
+                                        } else {
+                                            this.createRealAccount(this.props.standpoint.financial_company);
                                         }
-                                        this.closeModal();
-                                    } else {
-                                        this.createRealAccount(this.props.standpoint.financial_company);
-                                    }
-                                }}
-                                mt5OnClick={this.redirectToMt5Real}
-                                has_maltainvest_account={this.props.has_maltainvest_account}
-                                add_account_label={[
-                                    localize('Trade with this account'),
-                                    localize('Add this real account'),
-                                    localize('Deriv Financial required'),
-                                ]}
-                            />
+                                    }}
+                                    mt5OnClick={this.redirectToMt5Real}
+                                    has_maltainvest_account={this.props.has_maltainvest_account}
+                                    add_account_label={[
+                                        localize('Trade with this account'),
+                                        localize('Add this real account'),
+                                        localize('Deriv Financial required'),
+                                    ]}
+                                />
+                            </div>
                         </div>
-                    </div>
-                </ThemedScrollbars>
+                    </ThemedScrollbars>
+                </Div100vhContainer>
             </Modal>
         );
     }

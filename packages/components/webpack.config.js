@@ -46,6 +46,7 @@ module.exports = {
         label: 'Components/label',
         'linear-progress': 'Components/linear-progress',
         loading: 'Components/loading',
+        'mobile-carousel': 'Components/mobile-carousel',
         'mobile-dialog': 'Components/mobile-dialog',
         'mobile-drawer': 'Components/mobile-drawer',
         'mobile-wrapper': 'Components/mobile-wrapper',

@@ -59,6 +59,7 @@ const BriefModal = ({
                         </Modal.Body>
                         <Modal.Footer has_separator>
                             <FormSubmitButton
+                                className='reality-check__submit'
                                 has_cancel
                                 cancel_label={localize('Log out')}
                                 is_disabled={!values.interval || !isValid || isSubmitting}

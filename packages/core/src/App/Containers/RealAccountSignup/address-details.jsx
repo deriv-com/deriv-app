@@ -50,7 +50,6 @@ class AddressDetails extends React.Component {
         this.state = {
             has_fetched_states_list: false,
             address_state_to_display: '',
-            warnings: {},
         };
         // TODO: Find a better solution for handling no-op instead of using is_mounted flags
         this.is_mounted = false;
@@ -80,8 +79,7 @@ class AddressDetails extends React.Component {
     }
 
     handleValidate = values => {
-        const { errors, warnings } = splitValidationResultTypes(this.props.validate(values));
-        this.setState({ warnings });
+        const { errors } = splitValidationResultTypes(this.props.validate(values));
         return errors;
     };
 

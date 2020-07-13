@@ -95,21 +95,13 @@ const TradingExperience = ({
     </React.Fragment>
 );
 class FinancialDetails extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            warnings: {},
-        };
-    }
-
     handleCancel = values => {
         this.props.onSave(this.props.index, values);
         this.props.onCancel();
     };
 
     handleValidate = values => {
-        const { errors, warnings } = splitValidationResultTypes(this.props.validate(values));
-        this.setState({ warnings });
+        const { errors } = splitValidationResultTypes(this.props.validate(values));
         return errors;
     };
 

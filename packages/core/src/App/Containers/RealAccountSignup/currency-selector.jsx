@@ -105,7 +105,6 @@ class CurrencySelector extends React.Component {
         this.state = {
             fiat_currencies: [],
             crypto_currencies: [],
-            warnings: {},
         };
     }
 
@@ -123,8 +122,7 @@ class CurrencySelector extends React.Component {
     }
 
     handleValidate = values => {
-        const { errors, warnings } = splitValidationResultTypes(this.props.validate(values));
-        this.setState({ warnings });
+        const { errors } = splitValidationResultTypes(this.props.validate(values));
         return errors;
     };
 

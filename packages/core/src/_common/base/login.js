@@ -31,7 +31,7 @@ const Login = (() => {
             date_first_contact ? `&date_first_contact=${date_first_contact}` : ''
         }`;
         // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
-        const default_login_url_app = `https://oauth.deriv.com/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+        const default_login_url_app = `https://oauth.deriv.app/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
         const default_login_url = `https://oauth.deriv.com/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
 
         if (server_url && /qa/.test(server_url)) {

@@ -339,6 +339,10 @@
                     margin-bottom: 0rem;
                     border-bottom: 1px solid var(--general-main-1);
                     border-radius: 0;
+
+                    .input-field {
+                        z-index: 0;
+                    }
                 }
                 .dc-checkbox__box {
                     margin-left: 0rem;

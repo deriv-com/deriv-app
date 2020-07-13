@@ -21,6 +21,7 @@ const InputWithCheckbox = ({
     max_value,
     onChange,
     checkbox_tooltip_label,
+    tooltip_alignment,
     error_message_alignment,
     tooltip_label,
     value,
@@ -104,7 +105,7 @@ const InputWithCheckbox = ({
             <div ref={input_wrapper_ref} className='input-wrapper--inline'>
                 {checkbox_tooltip_label ? (
                     <Popover
-                        alignment='left'
+                        alignment={'left'}
                         classNameBubble='trade-container__popover'
                         is_bubble_hover_enabled
                         margin={2}
@@ -118,11 +119,11 @@ const InputWithCheckbox = ({
                 )}
                 {tooltip_label && (
                     <Popover
-                        alignment='left'
+                        alignment={tooltip_alignment || 'left'}
                         icon='info'
                         id={`dt_${name}-checkbox__tooltip`}
                         message={tooltip_label}
-                        margin={210}
+                        margin={tooltip_alignment === 'bottom' ? 0 : 210}
                         relative_render
                     />
                 )}
@@ -149,6 +150,7 @@ InputWithCheckbox.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func,
     tooltip_label: PropTypes.string,
+    tooltip_alignment: PropTypes.string,
     error_message_alignment: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };

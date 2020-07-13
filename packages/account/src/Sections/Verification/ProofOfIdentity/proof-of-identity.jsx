@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { AutoHeightWrapper, Button } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { getPlatformRedirect } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
@@ -37,7 +37,10 @@ class ProofOfIdentity extends React.Component {
                             redirect_button={
                                 should_show_redirect_btn && (
                                     <Button primary onClick={() => this.routeBackTo(from_platform.route)}>
-                                        {`Back to ${from_platform.name}`}
+                                        <Localize
+                                            i18n_default_text='Back to {{platform_name}}'
+                                            values={{ platform_name: from_platform.name }}
+                                        />
                                     </Button>
                                 )
                             }

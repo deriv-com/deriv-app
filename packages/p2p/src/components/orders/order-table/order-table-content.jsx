@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ContentLoader from 'react-content-loader';
+// import ContentLoader from 'react-content-loader';
 import { Loading, Icon, Button } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';

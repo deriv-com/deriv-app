@@ -7,7 +7,7 @@ import InputField from 'App/Components/Form/InputField';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { connect } from 'Stores/connect';
 import { hasIntradayDurationUnit } from 'Stores/Modules/Trading/Helpers/duration';
-import { toMoment } from '@deriv/shared/utils/date';
+import { toMoment } from '@deriv/shared';
 import TradingDatePicker from '../../DatePicker';
 import TradingTimePicker from '../../TimePicker';
 

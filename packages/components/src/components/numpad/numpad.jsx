@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import Button from 'Components/button/button.jsx';
 import NumberGrid from './number-grid.jsx';
 import StepInput from './step-input.jsx';
-import { useLongPress } from './numpad';
+import { useLongPress } from '../../hooks/use-onlongpress';
 
 const concatenate = (number, default_value) => default_value.toString().concat(number);
 const Numpad = ({

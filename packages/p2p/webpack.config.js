@@ -45,16 +45,16 @@ module.exports = {
                 exclude: /node_modules/,
                 use: [
                     {
-                        loader: '@deriv/shared/utils/deriv-components-loader.js',
+                        loader: '@deriv/shared/src/loaders/deriv-components-loader.js',
                     },
                     {
-                        loader: '@deriv/shared/utils/react-import-loader.js'
+                        loader: '@deriv/shared/src/loaders/react-import-loader.js',
                     },
                     {
-                        loader: '@deriv/shared/utils/react-import-loader.js'
+                        loader: '@deriv/shared/src/loaders/react-import-loader.js',
                     },
                     {
-                        loader : 'babel-loader',
+                        loader: 'babel-loader',
                     },
                 ],
             },
@@ -80,7 +80,28 @@ module.exports = {
                         loader: 'sass-resources-loader',
                         options: {
                             // Provide path to the file with resources
-                            resources: require('@deriv/shared/utils/index.js'),
+                            resources: require('@deriv/shared/src/styles/index.js'),
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.svg$/,
+                exclude: /node_modules/,
+                use: [
+                    'babel-loader',
+                    {
+                        loader: 'react-svg-loader',
+                        options: {
+                            jsx: true,
+                            svgo: {
+                                plugins: [
+                                    { removeTitle: false },
+                                    { removeUselessStrokeAndFill: false },
+                                    { removeUknownsAndDefaults: false },
+                                ],
+                                floatPrecision: 2,
+                            },
                         },
                     },
                 ],

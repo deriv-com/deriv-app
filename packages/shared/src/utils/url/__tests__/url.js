@@ -12,7 +12,7 @@ import {
 } from '../url';
 
 // Testable URLs
-const urls = ['https://deriv.app'];
+const urls = ['https://app.deriv.com'];
 
 function mockLocation(url) {
     // Mocking global location
@@ -40,8 +40,8 @@ describe('Url', () => {
                 url_with_qs = `${url_no_qs}?${query_string}`;
             });
             it('assert mocking globals is working', () => {
-                expect(window.location.hostname).to.be.eq('deriv.app');
-                expect(location.hostname).to.be.eq('deriv.app');
+                expect(window.location.hostname).to.be.eq('app.deriv.com');
+                expect(location.hostname).to.be.eq('app.deriv.com');
                 expect(window.location.href).to.be.eq(websiteUrl());
             });
             describe('.urlFor()', () => {
@@ -88,13 +88,13 @@ describe('Url', () => {
                 });
             });
 
-            if (!/deriv.app/.test(url)) {
+            if (!/app\.deriv\.com/.test(url)) {
                 describe('.urlForCurrentDomain()', () => {
                     const path_query_hash = 'path/to/file.html?q=value&n=1#hash';
 
                     it('updates domain correctly', () => {
-                        expect(urlForCurrentDomain('https://www.deriv.app/')).to.eq(`${url}/`);
-                        expect(urlForCurrentDomain(`https://www.deriv.app/${path_query_hash}`)).to.eq(
+                        expect(urlForCurrentDomain('https://www.app.deriv.com/')).to.eq(`${url}/`);
+                        expect(urlForCurrentDomain(`https://www.app.deriv.com/${path_query_hash}`)).to.eq(
                             `${url}/${path_query_hash}`
                         );
                     });
@@ -127,8 +127,8 @@ describe('Url', () => {
                     it("doesn't update when current domain is not supported", () => {
                         setURL('https://user.github.io/');
                         [
-                            'https://deriv.app',
-                            'https://www.deriv.app/',
+                            'https://app.deriv.com',
+                            'https://www.app.deriv.com/',
                             'https://bot.binary.com',
                             'mailto:affiliates@binary.com',
                         ].forEach(u => {

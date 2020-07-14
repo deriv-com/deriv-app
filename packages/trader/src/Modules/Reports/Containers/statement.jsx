@@ -128,19 +128,19 @@ class Statement extends React.Component {
             <React.Fragment>
                 <div className='statement__account-statistics'>
                     <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>{localize('Total Deposits')}</span>
+                        <span className='statement__account-statistics-title'>{localize('Total deposits')}</span>
                         <span className='statement__account-statistics-amount'>
                             <Money amount={this.state.total_deposits} currency={currency} />
                         </span>
                     </div>
                     <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>{localize('Total Withdrawals')}</span>
+                        <span className='statement__account-statistics-title'>{localize('Total withdrawals')}</span>
                         <span className='statement__account-statistics-amount'>
                             <Money amount={this.state.total_withdrawals} currency={currency} />
                         </span>
                     </div>
                     <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>{localize('Net Deposits')}</span>
+                        <span className='statement__account-statistics-title'>{localize('Net deposits')}</span>
                         <span className='statement__account-statistics-amount'>
                             <Money
                                 amount={this.state.total_deposits - this.state.total_withdrawals}

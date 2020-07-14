@@ -8,7 +8,7 @@ import { connect } from '../stores/connect';
 import '../assets/sass/contract-card.scss';
 import { card_labels, getContractTypeDisplay } from '../constants/contract';
 
-const ContractCardComponent = ({
+const SummaryCard = ({
     contract,
     is_contract_completed,
     is_contract_loading,
@@ -50,7 +50,7 @@ const ContractCardComponent = ({
     );
 };
 
-ContractCardComponent.propTypes = {
+SummaryCard.propTypes = {
     contract: PropTypes.object,
     is_contract_completed: PropTypes.bool,
     is_contract_inactive: PropTypes.bool,
@@ -67,4 +67,4 @@ export default connect(({ contract_card, common }) => ({
     is_contract_inactive: contract_card.is_contract_inactive,
     is_contract_winning: contract_card.is_contract_winning,
     server_time: common.server_time,
-}))(ContractCardComponent);
+}))(SummaryCard);

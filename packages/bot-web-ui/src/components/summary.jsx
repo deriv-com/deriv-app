@@ -3,7 +3,7 @@ import { Money, ThemedScrollbars, Popover } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import ContractCard from './contract-card.jsx';
+import SummaryCard from './summary-card.jsx';
 import { connect } from '../stores/connect';
 import '../assets/sass/summary.scss';
 import { popover_zindex } from '../constants/z-indexes';
@@ -36,7 +36,7 @@ const Summary = ({
     return (
         <div className='summary run-panel-tab__content'>
             <ThemedScrollbars height='var(--drawer-scroll-height)'>
-                <ContractCard />
+                <SummaryCard />
                 <div className='summary__tiles'>
                     <SummaryTile
                         title={localize('Total stake')}

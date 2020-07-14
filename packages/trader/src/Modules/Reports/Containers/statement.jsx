@@ -175,7 +175,7 @@ class Statement extends React.Component {
             <React.Fragment>
                 <ReportsMeta
                     className={is_mx_mlt ? undefined : 'reports__meta--statement'}
-                    optional_component={is_mx_mlt ? account_statistics_component : undefined}
+                    optional_component={is_mx_mlt && account_statistics_component}
                     filter_component={filter_component}
                 />
                 {data.length === 0 || is_empty ? (

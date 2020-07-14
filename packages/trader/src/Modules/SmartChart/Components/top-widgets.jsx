@@ -3,10 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { isEnded, isDigitContract } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { AssetInformation, ChartTitle } from 'Modules/SmartChart';
-import { isEnded } from 'Stores/Modules/Contract/Helpers/logic';
-import { isDigitContract } from 'Stores/Modules/Contract/Helpers/digits';
 
 const TradeInfo = ({ markers_array, granularity }) => {
     const latest_tick_contract = markers_array[markers_array.length - 1];

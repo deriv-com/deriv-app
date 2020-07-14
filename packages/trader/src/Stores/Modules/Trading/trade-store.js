@@ -1,12 +1,19 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
-import { isDesktop, isCryptocurrency, getMinPayout, cloneObject, isEmptyObject, getPropertyValue } from '@deriv/shared';
+import {
+    isDesktop,
+    isCryptocurrency,
+    getMinPayout,
+    cloneObject,
+    isEmptyObject,
+    getPropertyValue,
+    extractInfoFromShortcode,
+} from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import ServerTime from '_common/base/server_time';
-import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { processPurchase } from './Actions/purchase';
 import * as Symbol from './Actions/symbol';
 import getValidationRules, { getMultiplierValidationRules } from './Constants/validation-rules';
@@ -522,7 +529,7 @@ export default class TradeStore extends BaseStore {
                         // toggle smartcharts to contract mode
                         if (contract_id) {
                             const shortcode = response.buy.shortcode;
-                            const { category, underlying } = Shortcode.extractInfoFromShortcode(shortcode);
+                            const { category, underlying } = extractInfoFromShortcode(shortcode);
                             const is_digit_contract = isDigitContractType(category.toUpperCase());
                             const contract_type = category.toUpperCase();
                             this.root_store.modules.contract_trade.addContract({

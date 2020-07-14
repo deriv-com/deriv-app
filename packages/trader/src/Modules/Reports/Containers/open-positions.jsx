@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable } from '@deriv/components';
-import { urlFor, isMobile } from '@deriv/shared';
+import { urlFor, isMobile, isMultiplierContract, getTimePercentage } from '@deriv/shared';
 
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
-import { getTimePercentage } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { website_name } from 'App/Constants/app-config';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { getContractDurationType } from 'Modules/Reports/Helpers/market-underlying';
@@ -18,7 +17,6 @@ import {
 } from 'Modules/Reports/Constants/data-table-constants';
 import PlaceholderComponent from 'Modules/Reports/Components/placeholder-component.jsx';
 import { connect } from 'Stores/connect';
-import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 
 const EmptyPlaceholderWrapper = props => (

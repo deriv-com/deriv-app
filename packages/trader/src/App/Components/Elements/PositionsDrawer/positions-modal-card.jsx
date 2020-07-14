@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Button, Icon, Money, ProgressSliderMobile } from '@deriv/components';
-import { isCryptocurrency } from '@deriv/shared';
+import { isCryptocurrency, isHighLow } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
-import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell from './contract-type-cell.jsx';
 import ResultMobile from './result-mobile.jsx';
@@ -56,7 +55,7 @@ const PositionsModalCard = ({
                     <ContractTypeCell
                         multiplier={contract_info.multiplier}
                         type={type}
-                        is_high_low={Shortcode.isHighLow({ shortcode: contract_info.shortcode })}
+                        is_high_low={isHighLow({ shortcode: contract_info.shortcode })}
                     />
                 </div>
                 <CSSTransition

@@ -6,13 +6,10 @@ import { NavLink } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { VariableSizeList as List } from 'react-window';
 import { Icon, ThemedScrollbars } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes, isValidToSell, isMultiplierContract, isHighLow } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
-import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { connect } from 'Stores/connect';
-import { isValidToSell } from 'Stores/Modules/Contract/Helpers/logic';
-import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { getContractTypesConfig } from 'Stores/Modules/Trading/Constants/contract';
 import { isCallPut } from 'Stores/Modules/Contract/Helpers/contract-type';
 import PositionsDrawerCard from './PositionsDrawerCard';
@@ -115,7 +112,7 @@ class PositionsDrawer extends React.Component {
     filterByContractType = ({ contract_type, shortcode }) => {
         const { trade_contract_type } = this.props;
         const is_call_put = isCallPut(trade_contract_type);
-        const is_high_low = Shortcode.isHighLow({ shortcode });
+        const is_high_low = isHighLow({ shortcode });
         const trade_types = is_call_put
             ? ['CALL', 'CALLE', 'PUT', 'PUTE']
             : getContractTypesConfig()[trade_contract_type]?.trade_types;

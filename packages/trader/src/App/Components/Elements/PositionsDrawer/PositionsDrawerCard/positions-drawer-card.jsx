@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ContractCard } from '@deriv/components';
-import { getContractPath } from '@deriv/shared';
-import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
+import { getContractPath, isMultiplierContract } from '@deriv/shared';
 import CardFooter from './positions-drawer-card-footer.jsx';
 import { card_labels, getContractTypeDisplay } from '../../../../../Constants/contract';
 

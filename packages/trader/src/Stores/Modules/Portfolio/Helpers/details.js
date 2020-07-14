@@ -1,13 +1,5 @@
-import { unique, epochToMoment, formatMiliseconds, getDiffDuration } from '@deriv/shared';
+import { epochToMoment, formatMiliseconds, getDiffDuration } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-
-import { isDigitContract } from '../../Contract/Helpers/digits';
-
-export const getCurrentTick = contract_info => {
-    const tick_stream = unique(contract_info.tick_stream, 'epoch');
-    const current_tick = isDigitContract(contract_info.contract_type) ? tick_stream.length : tick_stream.length - 1;
-    return !current_tick || current_tick < 0 ? 0 : current_tick;
-};
 
 export const getDurationUnitValue = obj_duration => {
     const duration_ms = obj_duration.asMilliseconds() / 1000;

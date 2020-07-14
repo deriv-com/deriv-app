@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
-import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
+import { getCancellationPrice, getLimitOrderAmount } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
 import { connect } from 'Stores/connect';
-import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-orders';
-import { getCancellationPrice } from 'Stores/Modules/Contract/Helpers/logic';
 
 class ContractUpdateForm extends React.Component {
     componentWillUnmount() {

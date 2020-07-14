@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ProgressSlider } from '@deriv/components';
+import { getCurrentTick } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { getCurrentTick } from 'Stores/Modules/Portfolio/Helpers/details';
 import { card_labels } from '../../../Constants/contract';
 
 const ProgressSliderStream = ({ contract_info, is_loading, server_time }) => {

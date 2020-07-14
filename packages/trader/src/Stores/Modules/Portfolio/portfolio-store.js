@@ -2,13 +2,21 @@ import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction } from 'mobx';
 import { createTransformer } from 'mobx-utils';
 import { WS } from 'Services/ws-methods';
-import { isMobile, isEmptyObject } from '@deriv/shared';
+import {
+    isMobile,
+    isEmptyObject,
+    isEnded,
+    isUserSold,
+    isValidToSell,
+    isMultiplierContract,
+    getCurrentTick,
+    getDisplayStatus,
+} from '@deriv/shared';
 
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractCancelled, contractSold } from './Helpers/portfolio-notifications';
-import { getCurrentTick, getDurationPeriod, getDurationTime, getDurationUnitText } from './Helpers/details';
-import { getDisplayStatus, getEndTime, isEnded, isUserSold, isValidToSell } from '../Contract/Helpers/logic';
-import { isMultiplierContract } from '../Contract/Helpers/multiplier';
+import { getDurationPeriod, getDurationTime, getDurationUnitText } from './Helpers/details';
+import { getEndTime } from '../Contract/Helpers/logic';
 
 import BaseStore from '../../base-store';
 

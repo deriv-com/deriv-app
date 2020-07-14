@@ -1,12 +1,11 @@
 import { action, computed, observable, toJS } from 'mobx';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, isEnded, isMultiplierContract } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import { LocalStore } from '_common/storage';
 import { switch_to_tick_chart } from './Helpers/chart-notifications';
 import ContractStore from './contract-store';
 import getValidationRules from './Constants/validation-rules';
-import { isEnded, getContractUpdateConfig } from './Helpers/logic';
-import { isMultiplierContract } from './Helpers/multiplier';
+import { getContractUpdateConfig } from './Helpers/logic';
 import { isCallPut } from './Helpers/contract-type';
 import { getLimitOrder } from './Helpers/limit-orders';
 import BaseStore from '../../base-store';

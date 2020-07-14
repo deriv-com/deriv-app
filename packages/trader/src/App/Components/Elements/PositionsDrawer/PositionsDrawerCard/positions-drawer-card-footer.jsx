@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Button } from '@deriv/components';
+import { isValidToCancel, isValidToSell } from '@deriv/shared';
 import TogglePositionsDrawerDialog from 'App/Components/Elements/PositionsDrawer/toggle-positions-drawer-dialog.jsx';
 import { localize } from '@deriv/translations';
-import { isValidToCancel, isValidToSell } from 'Stores/Modules/Contract/Helpers/logic';
 import MultiplierCloseActions from './multiplier-close-actions.jsx';
 
 const CardFooter = ({ contract_info, is_multiplier, is_sell_requested, onClickCancel, onClickSell }) => {

@@ -2,15 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Money, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { epochToMoment, toGMTFormat } from '@deriv/shared';
+import { epochToMoment, toGMTFormat, getCancellationPrice, isEnded, isMultiplierContract } from '@deriv/shared';
 import { getBarrierLabel, getBarrierValue, isDigitType } from 'App/Components/Elements/PositionsDrawer/helpers';
-import {
-    getCancellationPrice,
-    isCancellationExpired,
-    isUserCancelled,
-    isEnded,
-} from 'Stores/Modules/Contract/Helpers/logic';
-import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
+import { isCancellationExpired, isUserCancelled } from 'Stores/Modules/Contract/Helpers/logic';
 import ContractAuditItem from './contract-audit-item.jsx';
 
 const ContractDetails = ({ contract_end_time, contract_info, duration, duration_unit, exit_spot }) => {

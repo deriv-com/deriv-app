@@ -1,9 +1,8 @@
 import { action, extendObservable, observable, toJS } from 'mobx';
+import { isEnded, isMultiplierContract, isDigitContract, getDigitInfo, getDisplayStatus } from '@deriv/shared';
 import { createChartMarkers } from './Helpers/chart-markers';
-import { getDigitInfo, isDigitContract } from './Helpers/digits';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
-import { getChartConfig, getContractUpdateConfig, getDisplayStatus, getEndTime, isEnded } from './Helpers/logic';
-import { isMultiplierContract } from './Helpers/multiplier';
+import { getChartConfig, getContractUpdateConfig, getEndTime } from './Helpers/logic';
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';

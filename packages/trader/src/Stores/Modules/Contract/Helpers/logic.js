@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { isEmptyObject, isEnded, isUserSold, getLimitOrderAmount } from '@deriv/shared';
+import { isEmptyObject, isUserSold, getLimitOrderAmount } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 
 export const getChartConfig = contract_info => {

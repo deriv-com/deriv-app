@@ -67,7 +67,7 @@
         top: -1px;
         left: -1px;
         width: calc(100% + 2px);
-        height: calc(100% + 2px);
+        height: calc(100% - 10px);
         border-radius: $BORDER_RADIUS;
         z-index: 2;
         display: flex;

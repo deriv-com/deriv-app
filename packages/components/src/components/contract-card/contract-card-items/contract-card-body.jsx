@@ -17,10 +17,10 @@ import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
 import ProgressSliderMobile from '../../progress-slider-mobile';
 
 const MultiplierCardBody = ({ contract_info, contract_update, currency, status, card_labels }) => {
-    const { buy_price, bid_price, is_sold, profit } = contract_info;
+    const { buy_price, bid_price, is_sold, profit, limit_order } = contract_info;
 
     const total_profit = bid_price - buy_price;
-    const { take_profit, stop_loss } = getLimitOrderAmount(contract_update);
+    const { take_profit, stop_loss } = getLimitOrderAmount(contract_update || limit_order);
     const cancellation_price = getCancellationPrice(contract_info);
 
     return (

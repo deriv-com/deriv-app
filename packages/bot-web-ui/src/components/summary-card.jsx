@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import { ContractCard } from '@deriv/components';
 import ContractCardLoader from './contract-card-loading.jsx';
 import { connect } from '../stores/connect';
-import '../assets/sass/contract-card.scss';
+import '../assets/sass/summary-card.scss';
 import { card_labels, getContractTypeDisplay } from '../constants/contract';
 
 const SummaryCard = ({
@@ -15,6 +15,7 @@ const SummaryCard = ({
     is_contract_losing,
     is_contract_inactive,
     is_contract_winning,
+    is_mobile,
     server_time,
 }) => {
     return (
@@ -25,6 +26,7 @@ const SummaryCard = ({
                 'db-contract-card--is-winning': is_contract_winning,
                 'db-contract-card--is-losing': is_contract_losing,
                 'db-contract-card--completed': is_contract_completed,
+                'db-contract-card--completed-mobile': is_contract_completed && is_mobile,
             })}
         >
             {is_contract_loading && <ContractCardLoader speed={2} />}
@@ -57,14 +59,16 @@ SummaryCard.propTypes = {
     is_contract_loading: PropTypes.bool,
     is_contract_losing: PropTypes.bool,
     is_contract_winning: PropTypes.bool,
+    is_mobile: PropTypes.bool,
 };
 
-export default connect(({ contract_card, common }) => ({
+export default connect(({ contract_card, common, ui }) => ({
     contract: contract_card.contract,
     is_contract_completed: contract_card.is_contract_completed,
     is_contract_loading: contract_card.is_contract_loading,
     is_contract_losing: contract_card.is_contract_losing,
     is_contract_inactive: contract_card.is_contract_inactive,
     is_contract_winning: contract_card.is_contract_winning,
+    is_mobile: ui.is_mobile,
     server_time: common.server_time,
 }))(SummaryCard);

@@ -38,4 +38,7 @@
             border: 1px solid var(--border-disabled);
         }
     }
+    &--completed-mobile {
+        border: 1px solid var(--border-normal);
+    }
 }

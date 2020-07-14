@@ -1,10 +1,9 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button } from '@deriv/components';
+import { Button, RemainingTime } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isValidToCancel } from '@deriv/shared';
-import RemainingTime from 'App/Containers/remaining-time.jsx';
 
 const MultiplierCloseActions = ({ className, onClickCancel, onClickSell, contract_info, is_sell_requested }) => {
     const { contract_id, cancellation: { date_expiry: cancellation_date_expiry } = {}, profit } = contract_info;

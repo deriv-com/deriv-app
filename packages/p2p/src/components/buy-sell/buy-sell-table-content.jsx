@@ -6,6 +6,7 @@ import Dp2pContext from 'Components/context/dp2p-context';
 import Empty from 'Components/empty/empty.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
+import { height_constants } from 'Utils/height_constants';
 import { requestWS } from 'Utils/websocket';
 import { RowComponent, BuySellRowLoader } from './row.jsx';
 import { BuySellTable } from './buy-sell-table.jsx';
@@ -66,21 +67,21 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
 
     if (items.length) {
         const item_height = 56;
-        const height_values = {
-            screen_size: '100vh',
-            header_size: '48px',
-            page_overlay_header: '53px',
-            page_overlay_content_padding: '2.4rem',
-            tabs_height: '36px',
-            filter_height: '44px',
-            filter_margin_padding: '4rem', // 2.4rem + 1.6rem
-            table_header_height: '50px',
-            footer_size: '37px',
-        };
+        const height_values = [
+            height_constants.screen,
+            height_constants.core_header,
+            height_constants.page_overlay_header,
+            height_constants.page_overlay_content_padding,
+            height_constants.tabs,
+            height_constants.filters,
+            height_constants.filters_margin,
+            height_constants.table_header,
+            height_constants.core_footer,
+        ];
         return (
             <BuySellTable>
                 <InfiniteLoaderList
-                    autosizer_height={`calc(${Object.values(height_values).join(' - ')})`}
+                    autosizer_height={`calc(${height_values.join(' - ')})`}
                     items={items}
                     item_size={item_height}
                     RenderComponent={Row}

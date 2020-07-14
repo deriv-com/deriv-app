@@ -11,6 +11,7 @@ import Empty from 'Components/empty/empty.jsx';
 import OrderTableHeader from 'Components/orders/order-table/order-table-header.jsx';
 import OrderRowComponent from 'Components/orders/order-table/order-table-row.jsx';
 import OrderInfo from 'Components/orders/order-info';
+import { height_constants } from 'Utils/height_constants';
 
 const OrderRowLoader = () => (
     <ContentLoader
@@ -92,24 +93,22 @@ const OrderTableContent = ({ showDetails, is_active }) => {
             .map(list => new OrderInfo(list))
             .filter(order => (is_active ? order.is_active : order.is_inactive));
         const item_height = 72;
-        const height_values = {
-            screen_size: '100vh',
-            header_size: '48px',
-            page_overlay_header: '53px',
-            page_overlay_content_padding: '2.4rem',
-            tabs_height: '36px',
-            tabs_margin: '2.4rem',
-            filter_height: '44px',
-            table_header_height: '50px',
-            table_header_top_padding: '1.6rem',
-            footer_size: '37px',
-        };
-
+        const height_values = [
+            height_constants.screen,
+            height_constants.core_header,
+            height_constants.page_overlay_header,
+            height_constants.page_overlay_content_padding,
+            height_constants.tabs,
+            height_constants.filters,
+            height_constants.filters_margin,
+            height_constants.table_header,
+            height_constants.core_footer,
+        ];
         if (modified_list.length) {
             return (
                 <OrderTableHeader is_active={is_active}>
                     <InfiniteLoaderList
-                        autosizer_height={`calc(${Object.values(height_values).join(' - ')})`}
+                        autosizer_height={`calc(${height_values.join(' - ')})`}
                         items={modified_list}
                         item_size={item_height}
                         RenderComponent={Row}

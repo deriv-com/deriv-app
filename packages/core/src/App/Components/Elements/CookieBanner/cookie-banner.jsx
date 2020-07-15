@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared/utils/url';
+import { getDerivComLink } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const CookieBanner = ({ onAccept, onDecline, is_open, is_dark_mode }) => (

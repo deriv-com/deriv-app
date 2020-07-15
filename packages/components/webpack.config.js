@@ -75,6 +75,7 @@ module.exports = {
         'tick-progress': 'Components/tick-progress',
         timeline: 'Components/timeline',
         'u-i-loader': 'Components/u-i-loader',
+        'use-on-click-outside': path.resolve(__dirname, 'src', 'hooks/use-onclickoutside.js'),
         'vertical-tab': 'Components/vertical-tab',
     },
     output: {

@@ -18,7 +18,7 @@ _Hint: In order to simply build (without tests) type 1 dependencies, use the com
 To illustrate the structure above (with packages that exist at the time of writing, it would look something like below:
                                                                                   
                                +------------------------------+                                                                                                                                          
-        +----------------------+ Core (deployed to deriv.app) |                                                                                                                                          
+        +----------------------+ Core (deployed to app.deriv.com) |                                                                                                                                          
         |                      +-------+--------------+-------+                                                                                                                                          
         |                              |              |                                                                                                                                                  
         |                              |              |                                                                                                                                                  

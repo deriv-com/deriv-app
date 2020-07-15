@@ -4,10 +4,10 @@ import { withRouter } from 'react-router-dom';
 import { P2pStorage } from '@deriv/p2p/lib/utils';
 import P2P from '@deriv/p2p';
 import { getLanguage } from '@deriv/translations';
-import { routes } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';
+import { routes } from '@deriv/shared';
 
 const P2PCashier = ({ currency, history, is_mobile, is_virtual, local_currency_config, location, residence }) => {
     const [order_id, setOrderId] = React.useState(null);

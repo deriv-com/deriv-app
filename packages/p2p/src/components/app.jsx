@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { isDeepEqual, isProduction, getPropertyValue } from '@deriv/shared';
-import { Tabs, Modal, Loading } from '@deriv/components';
+import { Tabs, Modal } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
@@ -38,7 +38,6 @@ class App extends React.Component {
         this.ws_subscriptions = {};
         this.list_item_limit = 20;
         this.state = {
-            poi_url: this.props.poi_url,
             active_index: 0,
             order_offset: 0,
             orders: [],
@@ -53,7 +52,6 @@ class App extends React.Component {
                 user_id: '',
                 token: '',
             },
-            is_loading: true,
         };
     }
 
@@ -178,12 +176,9 @@ class App extends React.Component {
 
                     this.setState({
                         poi_status: identity.status,
-                        is_loading: false,
                     });
                 }
             });
-        } else {
-            this.setState({ is_loading: false });
         }
     };
 
@@ -202,7 +197,6 @@ class App extends React.Component {
 
     setChatInfo = (user_id, token) => {
         const chat_info = {
-            // This is using QA10 SendBird AppId, please change to production's SendBird AppId when we deploy to production.
             app_id: isProduction() ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69' : '4E259BA5-C383-4624-89A6-8365E06D9D39',
             user_id,
             token,
@@ -298,7 +292,6 @@ class App extends React.Component {
             active_index,
             advertiser_id,
             chat_info,
-            is_loading,
             is_restricted,
             nickname_error,
             notification_count,
@@ -307,7 +300,6 @@ class App extends React.Component {
             orders,
             parameters,
             poi_status,
-            poi_url,
             show_popup,
         } = this.state;
         const {
@@ -319,6 +311,7 @@ class App extends React.Component {
             order_id,
             setOrderId,
             should_show_verification,
+            poi_url,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -387,7 +380,6 @@ class App extends React.Component {
                         </>
                     ) : (
                         <>
-                            {is_loading && <Loading is_fullscreen={false} />}
                             {should_show_verification && !this.state.is_advertiser && (
                                 <div
                                     className={classNames('p2p-cashier__verification', {

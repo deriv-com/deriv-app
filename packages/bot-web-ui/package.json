@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "name": "@deriv/bot-web-ui",
-  "description": "Visual automation for deriv.app",
+  "description": "Visual automation for Deriv.com",
   "main": "dist/bot-web-ui.main.js",
   "private": true,
   "jest": {
@@ -105,7 +105,6 @@
     "concat-stream": "^2.0.0",
     "core-js": "^2.6.5",
     "file-saver": "^2.0.2",
-    "firebase": "7.2.3",
     "formik": "^2.1.4",
     "gh-pages": "^2.0.1",
     "immutable": "^3.8.2",

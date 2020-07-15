@@ -177,8 +177,7 @@ const BinarySocketBase = (() => {
 
     const sell = (contract_id, bid_price) => deriv_api.send({ sell: contract_id, price: bid_price });
 
-    const cashier = (action, verification_code) =>
-        deriv_api.send({ cashier: action, ...(verification_code && { verification_code }) });
+    const cashier = (action, parameters = {}) => deriv_api.send({ cashier: action, ...parameters });
 
     const newAccountVirtual = (verification_code, client_password, residence, device_data) =>
         deriv_api.send({

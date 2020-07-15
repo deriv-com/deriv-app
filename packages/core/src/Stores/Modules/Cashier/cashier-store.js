@@ -13,6 +13,7 @@ import {
 import BinarySocket from '_common/base/socket_base';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
+import OnRampStore from './on-ramp-store';
 import BaseStore from '../../base-store';
 import { getMT5AccountDisplay } from '../../Helpers/client';
 
@@ -137,6 +138,8 @@ export default class CashierStore extends BaseStore {
         [this.config.payment_agent.container]: 'payment_agent_withdraw',
     };
 
+    onramp = new OnRampStore(this.root_store);
+
     @computed
     get is_payment_agent_visible() {
         return !!(this.config.payment_agent.filtered_list.length || this.config.payment_agent.agents.length);
@@ -181,6 +184,10 @@ export default class CashierStore extends BaseStore {
 
             if (!this.config.account_transfer.accounts_list.length) {
                 this.sortAccountsTransfer();
+            }
+
+            if (!this.onramp.is_onramp_tab_visible && window.location.pathname.startsWith(routes.cashier_onramp)) {
+                this.root_store.common.routeTo(routes.cashier_deposit);
             }
 
             // show p2p if:
@@ -245,7 +252,7 @@ export default class CashierStore extends BaseStore {
             return;
         }
 
-        const response_cashier = await WS.authorized.cashier(this.active_container, verification_code);
+        const response_cashier = await WS.authorized.cashier(this.active_container, { verification_code });
 
         // if tab changed while waiting for response, ignore it
         if (current_container !== this.active_container) {

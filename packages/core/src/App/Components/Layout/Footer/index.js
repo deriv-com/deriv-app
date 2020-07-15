@@ -8,3 +8,4 @@ export * from './help-centre.jsx';
 export * from './responsible-trading.jsx';
 export * from './account-limits.jsx';
 export * from './regulatory-information.jsx';
+export * from './toggle-complaints-policy.jsx';

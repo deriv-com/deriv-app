@@ -184,7 +184,7 @@ class Chart extends React.Component {
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}
                 requestForgetStream={this.props.wsForgetStream}
-                crosshairState={isMobile() ? 0 : undefined}
+                crosshair={isMobile() ? 0 : undefined}
                 maxTick={isMobile() ? 8 : undefined}
                 requestSubscribe={this.props.wsSubscribe}
                 settings={this.props.settings}

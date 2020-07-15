@@ -80,6 +80,7 @@ export const icons = {
         'IcEmail',
         'IcEmptyFolder',
         'IcEye',
+        'IcFilter',
         'IcFolderOpenFilled',
         'IcFolderOpen',
         'IcFullScreenRestore',

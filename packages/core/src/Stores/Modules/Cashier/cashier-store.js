@@ -38,6 +38,7 @@ class ConfigError {
     @observable fields = '';
     @observable is_show_full_page = false;
     @observable onClickButton = null;
+    @observable is_ask_uk_funds_protection = false;
 }
 
 class ConfigPaymentAgent {
@@ -254,7 +255,7 @@ export default class CashierStore extends BaseStore {
 
         if (response_cashier.error) {
             this.setLoading(false);
-            this.setErrorMessage(response_cashier.error);
+            this.handleCashierError(response_cashier.error);
             this.setSessionTimeout(true);
             this.clearTimeoutCashierUrl();
             if (verification_code) {
@@ -315,17 +316,59 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setErrorMessage(error, onClickButton) {
+    setErrorMessage(error, onClickButton, is_show_full_page) {
         // for errors that need to show a button, reset the form
         this.config[this.active_container].error = {
             onClickButton,
             code: error.code,
             message: error.message,
-            is_show_full_page: /InvalidToken|ASK_TNC_APPROVAL|ASK_FIX_DETAILS|WrongResponse/.test(error.code),
+            is_show_full_page: is_show_full_page || /InvalidToken|WrongResponse/.test(error.code),
             ...(getPropertyValue(error, ['details', 'fields']) && {
                 fields: error.details.fields,
             }),
         };
+    }
+    @action.bound
+    handleCashierError(error) {
+        switch (error.code) {
+            case 'ASK_EMAIL_VERIFY':
+                // TODO: hanle email verify
+                break;
+            case 'ASK_TNC_APPROVAL':
+                setErrorMessage(error, null, true);
+                break;
+            case 'ASK_FIX_DETAILS':
+                setErrorMessage(error, null, true);
+                break;
+            case 'ASK_UK_FUNDS_PROTECTION':
+                this.is_ask_uk_funds_protection = true;
+                break;
+            case 'ASK_AUTHENTICATE':
+                // TODO: handle ask authentication
+                break;
+            case 'ASK_FINANCIAL_RISK_APPROVAL':
+                // TODO: handle risk error
+                break;
+            case 'ASK_AGE_VERIFICATION':
+                // TODO: handle age error
+                break;
+            case 'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET':
+                // TODO: handle self exclusion max turnover error
+                break;
+            default:
+                setErrorMessage(error);
+        }
+    }
+
+    @action.bound
+    submitFundsProtection() {
+        WS.send({ ukgc_funds_protection: 1 }).then(() => {
+            if (response.error) {
+                setErrorMessage(response.error);
+            } else {
+                this.is_ask_uk_funds_protection = false;
+            }
+        });
     }
 
     @action.bound

@@ -33,10 +33,10 @@ const BriefModal = ({
                 {({ errors, isSubmitting, isValid, values, touched, handleChange, handleBlur }) => (
                     <Form noValidate>
                         <Modal.Body>
-                            <p className='reality-check__text'>
+                            <p className='reality-check__text reality-check__text--description'>
                                 <Localize i18n_default_text='Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your traders and accounts on a regular basis.' />
                             </p>
-                            <p className='reality-check__text'>
+                            <p className='reality-check__text reality-check__text--description'>
                                 <Localize
                                     i18n_default_text='Would like to check your statement first? <0>Check Statement</0>'
                                     components={[<a key={0} className='link' onClick={openStatement} />]}

@@ -1,8 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { Modal, Loading, ThemedScrollbars, Money, Button, FormSubmitButton } from '@deriv/components';
-import { isEmptyObject, getDiffDuration, toGMTFormat } from '@deriv/shared';
+import {
+    Modal,
+    DesktopWrapper,
+    MobileWrapper,
+    Loading,
+    ThemedScrollbars,
+    Money,
+    Button,
+    FormSubmitButton,
+} from '@deriv/components';
+import { isEmptyObject, getDiffDuration, toGMTFormat, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 
@@ -74,14 +83,27 @@ const SummaryModal = ({
 
     return (
         <Modal
+            className='reality-check'
             enableApp={enableApp}
             is_open={is_visible}
             disableApp={disableApp}
             has_close_icon={false}
-            title={localize('Your trading statistics since: {{date_time}}', {
-                date_time: computed_values.start_date_time_gmt,
-            })}
-            width='720px'
+            title={
+                <React.Fragment>
+                    <DesktopWrapper>
+                        <Localize
+                            i18n_default_text='Your trading statistics since: {{date_time}}'
+                            values={{ date_time: computed_values.start_date_time_gmt }}
+                        />
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <Localize i18n_default_text='Your trading statistics since:' />
+                        <br />
+                        {computed_values.start_date_time_gmt}
+                    </MobileWrapper>
+                </React.Fragment>
+            }
+            width={isMobile() ? '304px' : '720px'}
         >
             <Formik
                 initialValues={{
@@ -148,7 +170,12 @@ const SummaryModal = ({
                                             {localize('Go to Reports')}
                                         </Button>
                                     </div>
-                                    <div className='reality-check__column reality-check__session-details'>
+
+                                    <MobileWrapper>
+                                        <div className='reality-check__separator' />
+                                    </MobileWrapper>
+
+                                    <div className='reality-check__column'>
                                         <RowInfo
                                             label={localize('Session duration:')}
                                             value={computed_values.duration_string}
@@ -162,7 +189,9 @@ const SummaryModal = ({
                                             value={computed_values.current_date_time_gmt}
                                         />
 
-                                        <div className='reality-check__separator' />
+                                        <DesktopWrapper>
+                                            <div className='reality-check__separator' />
+                                        </DesktopWrapper>
 
                                         <p className='reality-check__text reality-check__text--center'>
                                             <Localize i18n_default_text='Your preferred time interval between each report:' />

@@ -11,6 +11,7 @@ import {
     ProofOfAddress,
     ApiToken,
     TwoFactorAuthentication,
+    SelfExclusion,
     Account,
 } from 'Sections';
 
@@ -67,6 +68,11 @@ const initRoutesConfig = () => [
                         path: routes.deriv_password,
                         component: DerivPassword,
                         title: localize('Deriv password'),
+                    },
+                    {
+                        path: routes.self_exclusion,
+                        component: SelfExclusion,
+                        title: localize('Self exclusion'),
                     },
                     {
                         path: routes.account_limits,

@@ -156,6 +156,7 @@ export const icons = {
         'IcStage3',
         'IcStage4',
         'IcStatement',
+        'IcStop',
         'IcSuccess',
         'IcTheme',
         'IcTrade',

@@ -103,6 +103,7 @@ const onClick = async () => {
 
     // Sets the vertical tabs in markets dropdown to Synthetic group
     const left_panel = document.getElementsByClassName('sc-filter')[1];
+    await waitFor(30);
     left_panel.click();
 
     const input_event = new Event('input', { bubbles: true });

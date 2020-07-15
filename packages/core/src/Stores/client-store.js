@@ -707,6 +707,8 @@ export default class ClientStore extends BaseStore {
             }
             WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             this.getLimits();
+        } else {
+            this.is_populating_mt5_account_list = false;
         }
         this.responseWebsiteStatus(await WS.wait('website_status'));
 

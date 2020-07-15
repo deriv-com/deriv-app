@@ -107,6 +107,7 @@ class MT5Dashboard extends React.Component {
             has_real_account,
             NotificationMessages,
             account_settings,
+            is_logged_in,
         } = this.props;
 
         return (
@@ -132,7 +133,7 @@ class MT5Dashboard extends React.Component {
                                 {is_loading && <LoadingMT5RealAccountDisplay />}
                                 {!is_loading && (
                                     <>
-                                        {!has_real_account && (
+                                        {!has_real_account && is_logged_in && (
                                             <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
                                         )}
                                         <MT5RealAccountDisplay
@@ -147,6 +148,7 @@ class MT5Dashboard extends React.Component {
                                             openPasswordManager={this.togglePasswordManagerModal}
                                             openPasswordModal={this.openRealPasswordModal}
                                             has_real_account={has_real_account}
+                                            is_logged_in={is_logged_in}
                                         />
                                     </>
                                 )}
@@ -159,28 +161,31 @@ class MT5Dashboard extends React.Component {
                                     onSelectAccount={createMT5Account}
                                     openAccountTransfer={this.openAccountTransfer}
                                     openPasswordManager={this.togglePasswordManagerModal}
+                                    is_logged_in={is_logged_in}
                                 />
                             </div>
                         </Tabs>
-                        <div className='mt5-dashboard__info'>
-                            <div className='mt5-dashboard__info-description'>
-                                <Localize i18n_default_text='Use these in your apps' />
+                        {is_logged_in && (
+                            <div className='mt5-dashboard__info'>
+                                <div className='mt5-dashboard__info-description'>
+                                    <Localize i18n_default_text='Use these in your apps' />
+                                </div>
+                                <MT5InfoCopy
+                                    display_name={getBrokerName()}
+                                    text_copy={getBrokerName()}
+                                    label={localize('Broker')}
+                                    info_msg={localize('Click here to copy broker name.')}
+                                    success_msg={localize('Broker name copied!')}
+                                />
+                                <MT5InfoCopy
+                                    display_name={getServerName(this.state.is_demo_tab)}
+                                    text_copy={getServerName(this.state.is_demo_tab)}
+                                    label={localize('Server')}
+                                    info_msg={localize('Click here to copy server name.')}
+                                    success_msg={localize('Server name copied!')}
+                                />
                             </div>
-                            <MT5InfoCopy
-                                display_name={getBrokerName()}
-                                text_copy={getBrokerName()}
-                                label={localize('Broker')}
-                                info_msg={localize('Click here to copy broker name.')}
-                                success_msg={localize('Broker name copied!')}
-                            />
-                            <MT5InfoCopy
-                                display_name={getServerName(this.state.is_demo_tab)}
-                                text_copy={getServerName(this.state.is_demo_tab)}
-                                label={localize('Server')}
-                                info_msg={localize('Click here to copy server name.')}
-                                success_msg={localize('Server name copied!')}
-                            />
-                        </div>
+                        )}
                         <CompareAccountsModal />
                         <div className='mt5-dashboard__maintenance'>
                             <Icon icon='IcAlertWarning' className='mt5-dashboard__maintenance-icon' />

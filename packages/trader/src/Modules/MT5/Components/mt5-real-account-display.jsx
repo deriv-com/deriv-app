@@ -29,6 +29,7 @@ const MT5RealAccountDisplay = ({
     has_mt5_account,
     openPasswordManager,
     account_settings,
+    is_logged_in,
 }) => {
     const has_required_credentials =
         account_settings.citizen && account_settings.tax_identification_number && account_settings.tax_residence;
@@ -89,6 +90,7 @@ const MT5RealAccountDisplay = ({
                 onClickFund={onClickFundRealSynthetic}
                 descriptor={localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.')}
                 specs={real_synthetic_specs}
+                is_logged_in={is_logged_in}
             />
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}
@@ -113,6 +115,7 @@ const MT5RealAccountDisplay = ({
                     'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
                 )}
                 specs={real_financial_specs}
+                is_logged_in={is_logged_in}
             />
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}
@@ -134,6 +137,7 @@ const MT5RealAccountDisplay = ({
                 )}
                 specs={real_financial_stp_specs}
                 is_disabled={is_real_financial_stp_disabled}
+                is_logged_in={is_logged_in}
             />
         </div>
     );

@@ -29,5 +29,6 @@ export const journalError = clickFunction => {
         ),
         type: 'danger',
         is_persistent: true,
+        platform: 'DBot',
     };
 };

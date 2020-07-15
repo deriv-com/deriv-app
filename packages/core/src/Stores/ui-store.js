@@ -87,6 +87,7 @@ export default class UIStore extends BaseStore {
     @observable show_positions_toggle = true;
 
     @observable modal_index = 0;
+    @observable current_platform = getPlatformHeader(this.root_store.common.app_routing_history.slice());
 
     // Mt5 topup
     @observable is_top_up_virtual_open = false;
@@ -164,8 +165,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    init(notification_messages) {
-        this.notification_messages_ui = notification_messages;
+    init(notification_messages_array) {
+        this.notification_messages_ui = notification_messages_array;
     }
 
     @action.bound
@@ -218,6 +219,13 @@ export default class UIStore extends BaseStore {
     @computed
     get is_account_switcher_disabled() {
         return !!this.account_switcher_disabled_message;
+    }
+
+    @computed
+    get notification_messages_array() {
+        return this.notification_messages.filter(
+            notification => notification.platform === null || notification.platform === this.current_platform
+        );
     }
 
     @action.bound

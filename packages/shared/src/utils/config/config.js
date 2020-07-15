@@ -38,7 +38,10 @@ export const getAppId = () => {
     } else if (user_app_id.length) {
         window.localStorage.setItem('config.default_app_id', user_app_id);
         app_id = user_app_id;
-    } else if (/staging\.deriv\.app/i.test(window.location.hostname)) {
+    } else if (
+        /staging\.deriv\.app/i.test(window.location.hostname) || // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+        /staging-deriv\.deriv\.com/i.test(window.location.hostname)
+    ) {
         window.localStorage.removeItem('config.default_app_id');
         app_id = isBot() ? 19112 : 16303; // it's being used in endpoint chrome extension - please do not remove
     } else if (/localhost/i.test(window.location.hostname)) {

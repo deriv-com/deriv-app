@@ -140,8 +140,9 @@ export const setUrlLanguage = lang => {
 
 export const getDerivComLink = (path = '') => {
     const host = 'https://deriv.com';
-    const lang = default_language?.toLowerCase();
-    const link_lang = lang === 'en' ? '' : `/${lang}`;
+    let lang = default_language?.toLowerCase();
+    if (lang && lang !== 'en') lang = `/${lang}`;
+    else lang = '';
 
-    return `${host}${link_lang}/${normalizePath(path)}`;
+    return `${host}${lang}/${normalizePath(path)}`;
 };

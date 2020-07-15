@@ -18,6 +18,7 @@ import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
 
 import { LocalStore, State } from '_common/storage';
+import { isEuCountry } from '_common/utility';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
@@ -346,6 +347,12 @@ export default class ClientStore extends BaseStore {
         return false;
     }
 
+    @computed({ keepAlive: true })
+    get is_eu_country() {
+        const country = this.website_status.clients_country;
+        if (country) return isEuCountry(country);
+        return country;
+    }
     /**
      * Store Values relevant to the loginid to local storage.
      *
@@ -1100,7 +1107,7 @@ export default class ClientStore extends BaseStore {
             Object.keys(obj_params).forEach(key => search_params.delete(key));
             search_params = search_params?.toString();
             const search_param_without_account = search_params ? `?${search_params}` : '/';
-            history.replaceState(null, null, search_param_without_account);
+            history.replaceState(null, null, `${search_param_without_account}${window.location.hash}`);
         }
 
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;

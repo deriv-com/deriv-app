@@ -38,6 +38,8 @@ export const routes = {
     cashier_withdrawal: '/cashier/withdrawal',
     cashier_pa: '/cashier/payment-agent',
     cashier_acc_transfer: '/cashier/account-transfer',
+    // cashier_offramp: '/cashier/off-ramp',
+    cashier_onramp: '/cashier/on-ramp',
     cashier_p2p: '/cashier/p2p',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
     smarttrader: getUrlSmartTrader(),

@@ -2,9 +2,9 @@
     $save-modal: 'modal--save';
 
     &__container {
-        min-width: 320px !important;
-
         &_#{$save-modal} {
+            min-width: 320px !important;
+
             .modal__content {
                 padding: 16px 24px;
             }
@@ -22,12 +22,12 @@
                 align-items: center;
                 justify-content: center;
             }
-        }
-        & form {
-            height: 445px;
-            display: flex;
-            justify-content: space-between;
-            flex-direction: column;
+            & form {
+                height: 445px;
+                display: flex;
+                justify-content: space-between;
+                flex-direction: column;
+            }
         }
     }
 }

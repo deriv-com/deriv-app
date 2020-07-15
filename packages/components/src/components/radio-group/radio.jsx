@@ -42,11 +42,9 @@ class Radio extends React.Component {
         return (
             <label
                 htmlFor={id}
-                className={classNames(
-                    'dc-radio-group__item',
-                    className,
-                    this.state.checked && 'dc-radio-group__item--active'
-                )}
+                className={classNames('dc-radio-group__item', className, {
+                    'dc-radio-group__item--active': this.state.checked,
+                })}
             >
                 <input
                     className='dc-radio-group__input'

@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-import classNames from 'classnames';
 import {
     Autocomplete,
     AutoHeightWrapper,
@@ -70,7 +69,8 @@ class PersonalDetails extends React.Component {
             // add padding-bottom to the form when datepicker is active
             // to add empty spaces at the bottom when scrolling
             paddingBottom: 'unset',
-            is_tin_popover_open: false, // turns true on tin focus, with extra margin provides more space to show warning
+            is_tax_residence_popover_open: false,
+            is_tin_popover_open: false,
             warnings: {},
         };
     }
@@ -90,6 +90,15 @@ class PersonalDetails extends React.Component {
         return errors;
     };
 
+    handleClickOutside = () => {
+        if (this.state.is_tax_residence_popover_open) {
+            this.setState({ is_tax_residence_popover_open: false });
+        }
+        if (this.state.is_tin_popover_open) {
+            this.setState({ is_tin_popover_open: false });
+        }
+    };
+
     render() {
         return (
             <Formik
@@ -103,7 +112,12 @@ class PersonalDetails extends React.Component {
                 {({ handleSubmit, isSubmitting, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
                     <AutoHeightWrapper default_height={200}>
                         {({ setRef, height }) => (
-                            <form ref={setRef} onSubmit={handleSubmit} autoComplete='off'>
+                            <form
+                                ref={setRef}
+                                onSubmit={handleSubmit}
+                                autoComplete='off'
+                                onClick={this.handleClickOutside}
+                            >
                                 <Div100vhContainer
                                     className='details-form'
                                     height_offset='199px'
@@ -232,61 +246,73 @@ class PersonalDetails extends React.Component {
                                                                             )
                                                                         }
                                                                     />
-                                                                    <Popover
-                                                                        alignment='right'
-                                                                        icon='info'
-                                                                        message={localize(
-                                                                            'Tax residence, also known as fiscal residency or redisence for tax purposes, is an important concept for all taxpayers living and working abroad. It determines the tax liabilities that the individual has to beer within a particular country (jurisdiction).'
-                                                                        )}
-                                                                        zIndex={9999}
-                                                                        disable_message_icon
-                                                                    />
+                                                                    <div
+                                                                        onClick={e => {
+                                                                            this.setState({
+                                                                                is_tax_residence_popover_open: true,
+                                                                                is_tin_popover_open: false,
+                                                                            });
+                                                                            e.stopPropagation();
+                                                                        }}
+                                                                    >
+                                                                        <Popover
+                                                                            alignment='right'
+                                                                            icon='info'
+                                                                            message={localize(
+                                                                                'Tax residence, also known as fiscal residency or redisence for tax purposes, is an important concept for all taxpayers living and working abroad. It determines the tax liabilities that the individual has to beer within a particular country (jurisdiction).'
+                                                                            )}
+                                                                            zIndex={9999}
+                                                                            disable_message_icon
+                                                                            is_open={
+                                                                                this.state.is_tax_residence_popover_open
+                                                                            }
+                                                                        />
+                                                                    </div>
                                                                 </div>
                                                             )}
                                                         </Field>
                                                     )}
                                                     {'tax_identification_number' in this.props.value && (
-                                                        <div
-                                                            className={classNames(
-                                                                'details-form__tax',
-                                                                'details-form__tax-identification'
-                                                            )}
-                                                        >
+                                                        <div className='details-form__tax'>
                                                             <FormInputField
                                                                 name='tax_identification_number'
                                                                 label={localize('Tax Identification Number')}
                                                                 placeholder={localize('Tax Identification Number')}
-                                                                onFocus={() =>
-                                                                    this.setState({ is_tin_popover_open: true })
-                                                                }
-                                                                onBlur={() =>
-                                                                    this.setState({ is_tin_popover_open: false })
-                                                                }
                                                                 warn={this.state.warnings?.tax_identification_number}
                                                             />
-                                                            <Popover
-                                                                alignment='right'
-                                                                icon='info'
-                                                                is_open={this.state.is_tin_popover_open}
-                                                                message={
-                                                                    <Localize
-                                                                        i18n_default_text={
-                                                                            'A Tax Identification Number (TIN) is a unique identifying number used for tax purposes by countries (jurisdictions) that observe the Common Reporting Standards. To determine your TIN or its equivalent, follow <0>this link</0>, locate your jurisdiction, and read the information provided on taxation guidelines.'
-                                                                        }
-                                                                        components={[
-                                                                            <a
-                                                                                key={0}
-                                                                                className='link link--red'
-                                                                                rel='noopener noreferrer'
-                                                                                target='_blank'
-                                                                                href='https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
-                                                                            />,
-                                                                        ]}
-                                                                    />
-                                                                }
-                                                                zIndex={9999}
-                                                                disable_message_icon
-                                                            />
+                                                            <div
+                                                                onClick={e => {
+                                                                    this.setState({
+                                                                        is_tin_popover_open: true,
+                                                                        is_tax_residence_popover_open: false,
+                                                                    });
+                                                                    e.stopPropagation();
+                                                                }}
+                                                            >
+                                                                <Popover
+                                                                    alignment='right'
+                                                                    icon='info'
+                                                                    is_open={this.state.is_tin_popover_open}
+                                                                    message={
+                                                                        <Localize
+                                                                            i18n_default_text={
+                                                                                'A Tax Identification Number (TIN) is a unique identifying number used for tax purposes by countries (jurisdictions) that observe the Common Reporting Standards. To determine your TIN or its equivalent, follow <0>this link</0>, locate your jurisdiction, and read the information provided on taxation guidelines.'
+                                                                            }
+                                                                            components={[
+                                                                                <a
+                                                                                    key={0}
+                                                                                    className='link link--red'
+                                                                                    rel='noopener noreferrer'
+                                                                                    target='_blank'
+                                                                                    href='https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
+                                                                                />,
+                                                                            ]}
+                                                                        />
+                                                                    }
+                                                                    zIndex={9999}
+                                                                    disable_message_icon
+                                                                />
+                                                            </div>
                                                         </div>
                                                     )}
                                                     {this.state.warnings?.tax_identification_number && (

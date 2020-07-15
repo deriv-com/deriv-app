@@ -33,7 +33,7 @@ const Barrier = ({
 
     const input_class = barrier_count === 2 ? 'multiple' : 'single';
     const is_day_duration = duration_unit === 'd';
-    // TODO: Some contracts yet to be implemented in deriv.app allow only absolute barrier, hence the prop
+    // TODO: Some contracts yet to be implemented in app.deriv.com allow only absolute barrier, hence the prop
     const is_absolute_barrier = is_day_duration || is_absolute_only;
 
     const format = value => {

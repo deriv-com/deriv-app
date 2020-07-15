@@ -7,6 +7,7 @@ import DerivPassword from 'Sections/Security/DerivPassword';
 import TwoFactorAuthentication from 'Sections/Security/TwoFactorAuthentication';
 import ApiToken from 'Sections/Security/ApiToken';
 import Account from 'Containers/account.jsx';
+import LoginHistory from 'Sections/Security/LoginHistory';
 
 export {
     AccountLimits,
@@ -16,6 +17,7 @@ export {
     ProofOfIdentity,
     ProofOfAddress,
     TwoFactorAuthentication,
-    ApiToken,
     Account,
+    LoginHistory,
+    ApiToken,
 };

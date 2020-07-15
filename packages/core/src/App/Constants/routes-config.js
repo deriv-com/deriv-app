@@ -104,6 +104,11 @@ const modules = [
                         title: localize('Account limits'),
                     },
                     {
+                        path: routes.login_history,
+                        component: Account,
+                        title: localize('Login history'),
+                    },
+                    {
                         path: routes.api_token,
                         component: Account,
                         title: localize('API token'),

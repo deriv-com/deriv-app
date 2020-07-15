@@ -8,6 +8,7 @@ import TwoFactorAuthentication from 'Sections/Security/TwoFactorAuthentication';
 import ApiToken from 'Sections/Security/ApiToken';
 import SelfExclusion from 'Sections/Security/SelfExclusion';
 import Account from 'Containers/account.jsx';
+import LoginHistory from 'Sections/Security/LoginHistory';
 
 export {
     AccountLimits,
@@ -20,4 +21,5 @@ export {
     ApiToken,
     SelfExclusion,
     Account,
+    LoginHistory,
 };

@@ -95,34 +95,21 @@ const onClick = async () => {
     await waitFor(100);
     dropdown.click();
     await waitForElement('.cq-menu-dropdown-enter-done');
-    // document.querySelector('.cq-symbol-select-btn').click();
-    const left_panel = document.querySelector('.cq-filter-panel');
-    left_panel.querySelector('.ic-synthetic_index').parentNode.click();
 
-    const node = document.querySelector('.category-synthetic_index').querySelector('.category-content');
-    setTimeout(startAnimation.bind(this, node), 600);
-    // const reset_icon = await waitForElement('.icon-reset');
-    // reset_icon.click();
-    // const input_search = await waitForElement('.data-hj-whitelist');
-    // // This is a workaround to trigger input events in React.
-    // const nativeInputSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-    // nativeInputSetter.call(input_search, 'Volatility');
+    const input_search = await waitForElement('.data-hj-whitelist');
+    // This is a workaround to trigger input events in React.
+    const nativeInputSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+    nativeInputSetter.call(input_search, 'Volatility');
 
     // Sets the vertical tabs in markets dropdown to Synthetic group
-    // const cq_panel = document.getElementsByClassName('cq-filter');
-    // if (cq_panel instanceof HTMLCollection) {
-    //     [...cq_panel].forEach((cq_item, index) => {
-    //         cq_item.classList.remove('cq-active-filter');
-    //         // Synthetic group is first item after favourites
-    //         if (index === 1) cq_item.classList.add('cq-active-filter');
-    //     });
-    // }
+    const left_panel = document.getElementsByClassName('sc-filter')[1];
+    left_panel.click();
 
-    // const input_event = new Event('input', { bubbles: true });
-    // input_search.dispatchEvent(input_event);
-    //
-    // const node = document.querySelector('.category-synthetic_index').querySelector('.category-content');
-    // startAnimation(node);
+    const input_event = new Event('input', { bubbles: true });
+    input_search.dispatchEvent(input_event);
+
+    const node = document.querySelector('.category-synthetic_index').querySelector('.category-content');
+    startAnimation(node);
 };
 
 const MarketIsClosedOverlay = () => (

@@ -722,7 +722,7 @@ export const OtherInstrumentsTradingExperience = ({
                 <MobileWrapper>
                     <SelectNative
                         name={field.name}
-                        label={localize('Frequency of trading other financial instruments')}
+                        label={localize('Experience with trading other financial instruments')}
                         list_items={other_instruments_trading_experience_enum}
                         value={values.other_instruments_trading_experience}
                         use_text={true}
@@ -756,7 +756,7 @@ export const OtherInstrumentsTradingFrequency = ({
             <React.Fragment>
                 <DesktopWrapper>
                     <Dropdown
-                        placeholder={localize('Other instruments trading frequency')}
+                        placeholder={localize('Trading frequency in other financial instruments')}
                         is_align_text_left
                         name={field.name}
                         list={other_instruments_trading_frequency_enum}
@@ -773,7 +773,7 @@ export const OtherInstrumentsTradingFrequency = ({
                 <MobileWrapper>
                     <SelectNative
                         name={field.name}
-                        label={localize('Other instruments trading frequency')}
+                        label={localize('Trading frequency in other financial instruments')}
                         list_items={other_instruments_trading_frequency_enum}
                         value={values.other_instruments_trading_frequency}
                         use_text={true}

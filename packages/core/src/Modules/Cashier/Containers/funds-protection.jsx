@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'Stores/connect';
 import { Icon, Button } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 
 const FundsProtection = ({ submitFundsProtection }) => {
     return (

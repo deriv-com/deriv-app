@@ -335,10 +335,10 @@ export default class CashierStore extends BaseStore {
                 // TODO: hanle email verify
                 break;
             case 'ASK_TNC_APPROVAL':
-                setErrorMessage(error, null, true);
+                this.setErrorMessage(error, null, true);
                 break;
             case 'ASK_FIX_DETAILS':
-                setErrorMessage(error, null, true);
+                this.setErrorMessage(error, null, true);
                 break;
             case 'ASK_UK_FUNDS_PROTECTION':
                 this.is_ask_uk_funds_protection = true;
@@ -356,15 +356,15 @@ export default class CashierStore extends BaseStore {
                 // TODO: handle self exclusion max turnover error
                 break;
             default:
-                setErrorMessage(error);
+                this.setErrorMessage(error);
         }
     }
 
     @action.bound
     submitFundsProtection() {
-        WS.send({ ukgc_funds_protection: 1 }).then(() => {
+        WS.send({ ukgc_funds_protection: 1 }).then(response => {
             if (response.error) {
-                setErrorMessage(response.error);
+                this.setErrorMessage(response.error);
             } else {
                 this.is_ask_uk_funds_protection = false;
             }

@@ -225,6 +225,7 @@ class RealAccountSignup extends React.Component {
                             'dc-modal__container_real-account-signup-modal--error': this.active_modal_index === 5,
                             'dc-modal__container_real-account-signup-modal--success':
                                 this.active_modal_index >= 2 && this.active_modal_index < 5,
+                            'dc-modal__container_real-account-signup-modal--loading': this.active_modal_index === 4,
                         })}
                         is_open={is_real_acc_signup_on}
                         has_close_icon={has_close_icon}

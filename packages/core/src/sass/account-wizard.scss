@@ -61,8 +61,13 @@
             text-decoration: none;
         }
     }
-    .loading-modal {
+    &--loading {
         width: 300px;
+        max-height: 300px;
+
+        .dc-modal-header__title {
+            height: 0;
+        }
     }
 }
 

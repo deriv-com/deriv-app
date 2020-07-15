@@ -107,6 +107,9 @@ class RealAccountSignup extends React.Component {
                 // Manage account
                 return '400px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
+            if (this.active_modal_index === 2) {
+                return 'auto';
+            }
             return '702px'; // Add or manage account modal
         }
         return '740px'; // Account wizard modal

@@ -39,10 +39,10 @@ const Login = (() => {
         }
 
         // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
-        if (getAppId() === domain_app_ids['deriv.app'] && /^(www\.)?deriv\.app$%/.test(window.location.hostname)) {
+        if (getAppId() === domain_app_ids['deriv.app'] && /^(www\.)?deriv\.app$/.test(window.location.hostname)) {
             return default_login_url_app;
         }
-        if (getAppId() === domain_app_ids['app.deriv.com'] && /^app\.deriv\.com$%/.test(window.location.hostname)) {
+        if (getAppId() === domain_app_ids['app.deriv.com'] && /^app\.deriv\.com$/.test(window.location.hostname)) {
             return default_login_url;
         }
 

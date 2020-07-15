@@ -5,7 +5,7 @@ import { getPropertyValue, isProduction } from '@deriv/shared';
 import { Tabs, Modal, Loading } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
-import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
+import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS, waitWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
 import { orderToggleIndex } from './orders/order-info';
 import BuySell from './buy-sell/buy-sell.jsx';
@@ -68,24 +68,26 @@ class App extends React.Component {
             }
         };
 
-        this.ws_subscriptions = {
-            advertiser_subscription: subscribeWS(
-                {
-                    p2p_advertiser_info: 1,
-                    subscribe: 1,
-                },
-                [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
-            ),
-            order_list_subscription: subscribeWS(
-                {
-                    p2p_order_list: 1,
-                    subscribe: 1,
-                    offset: 0,
-                    limit: this.list_item_limit,
-                },
-                [this.setP2pOrderList]
-            ),
-        };
+        waitWS('authorize').then(() => {
+            this.ws_subscriptions = {
+                advertiser_subscription: subscribeWS(
+                    {
+                        p2p_advertiser_info: 1,
+                        subscribe: 1,
+                    },
+                    [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
+                ),
+                order_list_subscription: subscribeWS(
+                    {
+                        p2p_order_list: 1,
+                        subscribe: 1,
+                        offset: 0,
+                        limit: this.list_item_limit,
+                    },
+                    [this.setP2pOrderList]
+                ),
+            };
+        });
     }
 
     componentDidUpdate(prevProps) {

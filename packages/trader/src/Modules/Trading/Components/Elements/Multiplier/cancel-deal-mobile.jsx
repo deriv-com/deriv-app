@@ -27,17 +27,22 @@ const CancelDeal = ({ has_cancellation, onChangeMultiple, cancellation_duration,
                 />
             </div>
             {has_cancellation && (
-                <RadioGroup
-                    className='trade-params__multiplier-radio-group'
-                    name='trade-params__multiplier-radio'
-                    items={cancellation_range_list.map(({ text, value }) => ({
-                        id: text,
-                        label: text,
-                        value: value.toString(),
-                    }))}
-                    selected={cancellation_duration}
-                    onToggle={event => onChangeCancellationDuration({ event, onChangeMultiple })}
-                />
+                <React.Fragment>
+                    <div className='trade-params__multiplier-warning-label'>
+                        {localize('Take profit and/or stop loss are not available while deal cancellation is active.')}
+                    </div>
+                    <RadioGroup
+                        className='trade-params__multiplier-radio-group'
+                        name='trade-params__multiplier-radio'
+                        items={cancellation_range_list.map(({ text, value }) => ({
+                            id: text,
+                            label: text,
+                            value: value.toString(),
+                        }))}
+                        selected={cancellation_duration}
+                        onToggle={event => onChangeCancellationDuration({ event, onChangeMultiple })}
+                    />
+                </React.Fragment>
             )}
         </Fieldset>
     );

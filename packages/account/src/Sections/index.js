@@ -6,8 +6,10 @@ import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
 import DerivPassword from 'Sections/Security/DerivPassword';
 import TwoFactorAuthentication from 'Sections/Security/TwoFactorAuthentication';
 import ApiToken from 'Sections/Security/ApiToken';
+import SelfExclusion from 'Sections/Security/SelfExclusion';
 import Account from 'Containers/account.jsx';
 import DeactivateAccount from 'Sections/Security/DeactivateAccount';
+import LoginHistory from 'Sections/Security/LoginHistory';
 
 export {
     AccountLimits,
@@ -18,6 +20,8 @@ export {
     ProofOfAddress,
     TwoFactorAuthentication,
     ApiToken,
+    SelfExclusion,
     Account,
     DeactivateAccount,
+    LoginHistory,
 };

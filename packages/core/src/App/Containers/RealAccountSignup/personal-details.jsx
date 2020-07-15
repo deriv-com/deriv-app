@@ -254,8 +254,8 @@ class PersonalDetails extends React.Component {
                                                         >
                                                             <FormInputField
                                                                 name='tax_identification_number'
-                                                                label={localize('Tax identification number')}
-                                                                placeholder={localize('Tax identification number')}
+                                                                label={localize('Tax Identification Number')}
+                                                                placeholder={localize('Tax Identification Number')}
                                                                 onFocus={() =>
                                                                     this.setState({ is_tin_popover_open: true })
                                                                 }
@@ -295,6 +295,7 @@ class PersonalDetails extends React.Component {
                                                     {'tax_identification_confirm' in this.props.value && (
                                                         <Checkbox
                                                             name='tax_identification_confirm'
+                                                            className='details-form__tin-confirm'
                                                             data-lpignore
                                                             onChange={() =>
                                                                 setFieldValue(

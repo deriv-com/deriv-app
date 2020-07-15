@@ -11,6 +11,7 @@ const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 module.exports = {
     entry: {
         accordion: 'Components/accordion',
+        'auto-height-wrapper': 'Components/auto-height-wrapper',
         autocomplete: 'Components/autocomplete',
         button: 'Components/button',
         'button-link': 'Components/button-link',
@@ -36,9 +37,9 @@ module.exports = {
         'fade-wrapper': 'Components/fade-wrapper',
         'field-error': 'Components/field-error',
         'file-dropzone': 'Components/file-dropzone',
-        'form-progress': path.resolve(__dirname, 'src', 'components/form-progress/index.js'),
-        'form-submit-button': path.resolve(__dirname, 'src', 'components/form-submit-button/index.js'),
-        'auto-height-wrapper': 'Components/auto-height-wrapper',
+        'form-progress': 'Components/form-progress',
+        'form-submit-button': 'Components/form-submit-button',
+        'hint-box': 'Components/hint-box',
         icon: 'Components/icon',
         'icon-trade-types': 'Components/icon-trade-types',
         'icon/js/icons': 'Components/icon/icons.js',
@@ -74,6 +75,7 @@ module.exports = {
         'tick-progress': 'Components/tick-progress',
         timeline: 'Components/timeline',
         'u-i-loader': 'Components/u-i-loader',
+        'use-on-click-outside': path.resolve(__dirname, 'src', 'hooks/use-onclickoutside.js'),
         'vertical-tab': 'Components/vertical-tab',
     },
     output: {

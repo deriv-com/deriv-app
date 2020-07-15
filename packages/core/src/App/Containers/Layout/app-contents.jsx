@@ -2,9 +2,10 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, ThemedScrollbars, Dialog } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import { localize } from '@deriv/translations';
 // import InstallPWA    from './install-pwa.jsx';
 
 const AppContents = ({
@@ -19,6 +20,27 @@ const AppContents = ({
     pageView,
     // setPWAPromptEvent,
 }) => {
+    const [external_link_statue, setExternalLinkStatus] = React.useState(false);
+    const [dialog_status, setDialogStatus] = React.useState(false);
+    const [external_link, setExternalLink] = React.useState(false);
+    const onCancelDialog = () => {
+        setDialogStatus(false);
+    };
+    const onConfirmDialog = () => {
+        setDialogStatus(false);
+        window.open(external_link);
+    };
+    React.useEffect(() => {
+        document.addEventListener('click', function(e) {
+            if (e.target.relList && e.target.relList.value !== '') {
+                setExternalLink(e.target.href);
+                e.preventDefault();
+                setExternalLinkStatus(true);
+                setDialogStatus(true);
+            }
+        });
+    }, []);
+
     // Segment page view trigger
     identifyEvent();
     pageView();
@@ -51,6 +73,20 @@ const AppContents = ({
         >
             <MobileWrapper>{children}</MobileWrapper>
             <DesktopWrapper>
+                {external_link_statue && (
+                    <Dialog
+                        className='redirect-notice'
+                        is_visible={dialog_status}
+                        title='Redirect notice'
+                        is_open={dialog_status}
+                        cancel_button_text={localize('Cancel')}
+                        confirm_button_text={localize('Proceed')}
+                        onCancel={onCancelDialog}
+                        onConfirm={onConfirmDialog}
+                    >
+                        {'You are being redirected to an external website.'}
+                    </Dialog>
+                )}
                 {/* Calculate height of user screen and offset height of header and footer */}
                 <ThemedScrollbars height='calc(100vh - 84px)'>{children}</ThemedScrollbars>
             </DesktopWrapper>

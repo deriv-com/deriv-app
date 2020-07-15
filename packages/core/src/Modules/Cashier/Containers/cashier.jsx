@@ -1,24 +1,23 @@
+import {
+    DesktopWrapper,
+    Div100vhContainer,
+    FadeWrapper,
+    MobileWrapper,
+    PageOverlay,
+    VerticalTab,
+} from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import {
-    VerticalTab,
-    DesktopWrapper,
-    MobileWrapper,
-    Div100vhContainer,
-    FadeWrapper,
-    PageOverlay,
-} from '@deriv/components';
-import { routes, isCryptocurrency, getSelectedRoute, isMobile, isTouchDevice } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-
-import { connect } from 'Stores/connect';
+import { getSelectedRoute, isCryptocurrency, isMobile, isTouchDevice, routes } from '@deriv/shared';
 import 'Sass/app/modules/cashier.scss';
+import { connect } from 'Stores/connect';
 
 const el_landscape_blocker = document.getElementById('landscape_blocker');
 
 class Cashier extends React.Component {
-    state = { device_height: window.innerHeight };
+    state = { device_height: window.innerHeight, click_external_link: false, is_open_dialog: false };
 
     componentDidMount() {
         this.props.toggleCashier();
@@ -58,7 +57,6 @@ class Cashier extends React.Component {
     };
 
     onClickClose = () => this.props.routeBackInApp(this.props.history);
-
     render() {
         const menu_options = () => {
             const options = [];
@@ -141,6 +139,18 @@ class Cashier extends React.Component {
                                         undefined
                                     )
                                 }
+                            />
+                            <Localize
+                                i18n_default_text='Want to exchange between e-wallet currencies? Try <0>bestchange.com</0>'
+                                components={[
+                                    <a
+                                        key={0}
+                                        href='https://www.bestchange.com/?p=1095016'
+                                        rel='noopener noreferrer'
+                                        target='_blank'
+                                        className='link'
+                                    />,
+                                ]}
                             />
                         </DesktopWrapper>
                         <MobileWrapper>

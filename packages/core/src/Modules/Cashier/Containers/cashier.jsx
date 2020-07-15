@@ -17,7 +17,7 @@ import { connect } from 'Stores/connect';
 const el_landscape_blocker = document.getElementById('landscape_blocker');
 
 class Cashier extends React.Component {
-    state = { device_height: window.innerHeight, click_external_link: false, is_open_dialog: false };
+    state = { device_height: window.innerHeight };
 
     componentDidMount() {
         this.props.toggleCashier();
@@ -139,18 +139,6 @@ class Cashier extends React.Component {
                                         undefined
                                     )
                                 }
-                            />
-                            <Localize
-                                i18n_default_text='Want to exchange between e-wallet currencies? Try <0>bestchange.com</0>'
-                                components={[
-                                    <a
-                                        key={0}
-                                        href='https://www.bestchange.com/?p=1095016'
-                                        rel='noopener noreferrer'
-                                        target='_blank'
-                                        className='link'
-                                    />,
-                                ]}
                             />
                         </DesktopWrapper>
                         <MobileWrapper>

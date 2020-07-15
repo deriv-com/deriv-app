@@ -7,7 +7,7 @@
     &__elements {
         flex-grow: 1;
         margin: 1.2rem auto;
-        width: 40%;
+        width: 45%;
 
         &-container {
             height: calc(100% - 76px);
@@ -90,6 +90,13 @@
     }
     &__tin-warn-divider {
         height: 3rem;
+    }
+    &__tin-confirm {
+        margin-left: -5px;
+
+        .dc-checkbox__box {
+            align-self: baseline;
+        }
     }
     .dc-page-error__container {
         height: 100%;

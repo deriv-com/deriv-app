@@ -44,9 +44,55 @@ class PromiseClass {
     }
 }
 
+const copyToClipboard = text => {
+    const textField = document.createElement('textarea');
+    textField.innerText = text;
+    document.body.appendChild(textField);
+    textField.select();
+    document.execCommand('copy');
+    textField.remove();
+};
+// eu countries to support
+const eu_countries = [
+    'it',
+    'de',
+    'fr',
+    'lu',
+    'gr',
+    'mf',
+    'es',
+    'sk',
+    'lt',
+    'nl',
+    'at',
+    'bg',
+    'si',
+    'cy',
+    'be',
+    'ro',
+    'hr',
+    'pt',
+    'pl',
+    'lv',
+    'ee',
+    'cz',
+    'fi',
+    'hu',
+    'dk',
+    'se',
+    'ie',
+    'im',
+    'gb',
+    'mt',
+];
+// check if client is from EU
+const isEuCountry = country => eu_countries.includes(country);
+
 module.exports = {
     template,
     createElement,
     getStaticHash,
     PromiseClass,
+    isEuCountry,
+    copyToClipboard,
 };

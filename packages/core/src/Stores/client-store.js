@@ -18,6 +18,7 @@ import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
 
 import { LocalStore, State } from '_common/storage';
+import { isEuCountry } from '_common/utility';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
@@ -346,6 +347,12 @@ export default class ClientStore extends BaseStore {
         return false;
     }
 
+    @computed({ keepAlive: true })
+    get is_eu_country() {
+        const country = this.website_status.clients_country;
+        if (country) return isEuCountry(country);
+        return country;
+    }
     /**
      * Store Values relevant to the loginid to local storage.
      *

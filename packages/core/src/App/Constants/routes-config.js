@@ -1,10 +1,9 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
-import Loadable from 'react-loadable';
-import { Loading } from '@deriv/components';
-import { getUrlBase, routes, addRoutesConfig } from '@deriv/shared';
+import { getUrlBase, routes } from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
+import { makeLazyLoader } from '_common/lazy-load';
 import { Redirect } from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
 
@@ -153,26 +152,11 @@ const modules = [
     },
 ];
 
-const handleLoading = props => {
-    // 200ms default
-    if (props.pastDelay) {
-        return <Loading />;
-    }
-    return null;
-};
+const lazyLoadCashierComponent = makeLazyLoader(() => import(/* webpackChunkName: "cashier" */ 'Modules/Cashier'));
 
-const lazyLoadCashierComponent = component => {
-    return Loadable.Map({
-        loader: {
-            Cashier: () => import(/* webpackChunkName: "cashier" */ 'Modules/Cashier'),
-        },
-        render(loaded, props) {
-            const CashierLazy = loaded.Cashier.default[component];
-            return <CashierLazy {...props} />;
-        },
-        loading: handleLoading,
-    });
-};
+const lazyLoadComplaintsPolicy = makeLazyLoader(() =>
+    import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy')
+);
 
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
@@ -227,6 +211,13 @@ const initRoutesConfig = () => [
             },
         ],
     },
+    {
+        path: routes.complaints_policy,
+        component: lazyLoadComplaintsPolicy(),
+        title: localize('Complaints policy'),
+        icon_component: 'IcComplaintsPolicy',
+        is_authenticated: true,
+    },
     ...modules,
 ];
 
@@ -239,7 +230,6 @@ const getRoutesConfig = () => {
     if (!routesConfig) {
         routesConfig = initRoutesConfig();
         routesConfig.push(route_default);
-        addRoutesConfig(routesConfig, true);
     }
     return routesConfig;
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const useOnClickOutside = (ref, handler, validationFn) => {
+const useOnClickOutside = (ref, handler, validationFn) => {
     React.useEffect(() => {
         const listener = event => {
             const path = event.path ?? event.composedPath?.();
@@ -19,3 +19,5 @@ export const useOnClickOutside = (ref, handler, validationFn) => {
         };
     }, [ref, handler]);
 };
+
+export default useOnClickOutside;

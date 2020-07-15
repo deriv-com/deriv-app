@@ -105,7 +105,6 @@
     "concat-stream": "^2.0.0",
     "core-js": "^2.6.5",
     "file-saver": "^2.0.2",
-    "firebase": "7.2.3",
     "formik": "^2.1.4",
     "gh-pages": "^2.0.1",
     "immutable": "^3.8.2",

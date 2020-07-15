@@ -177,8 +177,7 @@ const BinarySocketBase = (() => {
 
     const sell = (contract_id, bid_price) => deriv_api.send({ sell: contract_id, price: bid_price });
 
-    const cashier = (action, verification_code) =>
-        deriv_api.send({ cashier: action, ...(verification_code && { verification_code }) });
+    const cashier = (action, parameters = {}) => deriv_api.send({ cashier: action, ...parameters });
 
     const newAccountVirtual = (verification_code, client_password, residence, device_data) =>
         deriv_api.send({
@@ -288,6 +287,12 @@ const BinarySocketBase = (() => {
 
     const p2pAdvertiserInfo = () => deriv_api.send({ p2p_advertiser_info: 1 });
 
+    const loginHistory = limit =>
+        deriv_api.send({
+            login_history: 1,
+            limit,
+        });
+
     // subscribe method export for P2P use only
     // so that subscribe remains private
     const p2pSubscribe = (request, cb) => subscribe(request, cb);
@@ -351,6 +356,7 @@ const BinarySocketBase = (() => {
         subscribeWebsiteStatus,
         tncApproval,
         transferBetweenAccounts,
+        loginHistory,
         closeAndOpenNewConnection,
     };
 })();

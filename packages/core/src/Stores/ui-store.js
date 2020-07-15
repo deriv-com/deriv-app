@@ -16,7 +16,7 @@ export default class UIStore extends BaseStore {
     @observable is_reports_visible = false;
     @observable is_cashier_visible = false;
     @observable is_history_tab_active = false;
-
+    @observable is_window_loaded = false;
     // TODO: [cleanup ui-store]
     // Take profit, Stop loss & Deal cancellation checkbox
     @observable should_show_cancellation_warning = true;
@@ -142,6 +142,13 @@ export default class UIStore extends BaseStore {
 
         super({ root_store, local_storage_properties, store_name });
 
+        window.addEventListener(
+            'load',
+            action('windowLoadSuccess', () => {
+                this.is_window_loaded = true;
+            })
+        );
+      
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
             // TODO: [disable-dark-bot] Delete this condition when Bot is ready

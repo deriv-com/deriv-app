@@ -36,7 +36,7 @@
         grid-gap: 4px;
 
         &-underlying-trade {
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1.5fr 1fr 0.5fr;
             width: 100%;
         }
         &-profit-payout {
@@ -191,13 +191,15 @@
         align-items: center;
         font-weight: bold;
         font-size: 1.2em;
-        max-width: 120px;
+        max-width: 12rem;
+        min-width: 11rem;
     }
     &__type {
         font-size: 1.2em;
         display: flex;
         justify-content: flex-start;
         font-weight: bold;
+        margin-left: 0.8rem;
 
         /* postcss-bem-linter: ignore */
         .category-type {
@@ -318,6 +320,14 @@
 
         .result-icon {
             margin-left: 0.4rem;
+        }
+    }
+    &__sell-button-mobile {
+        justify-self: end;
+        align-self: center;
+
+        .dc-btn--sell {
+            height: 3.2rem !important;
         }
     }
     .contract-audit {

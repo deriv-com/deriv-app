@@ -19,6 +19,7 @@ export const card_labels = Object.freeze({
     LOST: localize('Lost'),
     DAYS: localize('Days'),
     DAY: localize('Day'),
+    SELL: localize('Sell'),
 });
 
 export const getMarketNamesMap = () => ({

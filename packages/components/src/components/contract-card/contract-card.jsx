@@ -19,9 +19,13 @@ const ContractCard = ({
     currency,
     getContractPath,
     getContractTypeDisplay,
+    id,
     is_positions,
+    is_sell_requested,
     is_unsupported,
+    is_valid_to_sell,
     onClickRemove,
+    onClickSell,
     onMouseEnter,
     onMouseLeave,
     profit_loss,
@@ -68,7 +72,11 @@ const ContractCard = ({
                 card_labels={card_labels}
                 contract_info={contract_info}
                 has_progress_slider={!is_multiplier}
+                id={id}
+                is_sell_requested={is_sell_requested}
+                is_valid_to_sell={is_valid_to_sell}
                 getContractTypeDisplay={getContractTypeDisplay}
+                onClickSell={onClickSell}
                 server_time={server_time}
             />
             {card_body_wrapper}

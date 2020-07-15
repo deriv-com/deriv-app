@@ -7,11 +7,11 @@
     }
 
     &--success {
-        max-height: 380px;
         border-radius: $BORDER_RADIUS;
         overflow: hidden;
         max-width: 478px;
         min-width: initial;
+        max-height: initial;
     }
     .dc-modal-header__title {
         text-transform: none;

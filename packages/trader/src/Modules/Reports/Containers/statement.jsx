@@ -17,7 +17,6 @@ import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 import Shortcode from '../Helpers/shortcode';
-import 'Sass/app/modules/statement.scss';
 
 class Statement extends React.Component {
     constructor(props) {

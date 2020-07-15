@@ -105,7 +105,7 @@ const InputWithCheckbox = ({
             <div ref={input_wrapper_ref} className='input-wrapper--inline'>
                 {checkbox_tooltip_label ? (
                     <Popover
-                        alignment={'left'}
+                        alignment='left'
                         classNameBubble='trade-container__popover'
                         is_bubble_hover_enabled
                         margin={2}

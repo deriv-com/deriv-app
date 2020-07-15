@@ -45,6 +45,7 @@ const TakeProfit = ({
                     'Your contract is closed automatically when your profit is more than or equals to this amount.'
                 )}
                 tooltip_alignment={isMobile() ? 'bottom' : 'left'}
+                error_message_alignment={isMobile() ? 'bottom' : 'left'}
                 value={take_profit}
             />
         </Fieldset>

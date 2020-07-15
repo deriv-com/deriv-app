@@ -135,7 +135,7 @@ const Journal = ({ filtered_messages, contract_stage, is_stop_button_visible, ..
         <div className='journal run-panel-tab__content'>
             <Download tab='journal' />
             <Tools {...props} />
-            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 108px)'}>
+            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 92px)'}>
                 <div className='journal__item-list'>
                     {filtered_messages.length ? (
                         <TransitionGroup>

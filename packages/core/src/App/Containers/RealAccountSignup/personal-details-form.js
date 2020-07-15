@@ -71,7 +71,7 @@ const personal_details_config = ({ residence_list, account_settings }) => {
                 rules: [['req', localize('Citizenship is required')]],
             },
             phone: {
-                supported_in: ['svg', 'iom', 'malta'],
+                supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
                 default_value: account_settings.phone ?? '',
                 rules: [
                     ['req', localize('Phone is required')],

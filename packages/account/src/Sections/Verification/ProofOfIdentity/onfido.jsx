@@ -34,9 +34,10 @@ export default class Onfido extends React.Component {
             const { documents_supported } = this.props;
             const onfido = await init({
                 containerId: onfido_container_id,
-                language: {
-                    locale: getLanguage().toLowerCase() || 'en',
-                },
+                // TODO: add language when translations are ready
+                // language: {
+                //     locale: getLanguage().toLowerCase() || 'en',
+                // },
                 token: this.props.onfido_service_token,
                 useModal: false,
                 onComplete: this.handleComplete,
@@ -81,6 +82,8 @@ export default class Onfido extends React.Component {
 
     render() {
         const { status, height } = this.props;
+        // console.log(onfido_status_codes);
+        // console.log(this.props);
 
         if (status === onfido_status_codes.onfido) return <OnfidoContainer height={height} />;
 

@@ -22,6 +22,38 @@
         @include typeface(--paragraph-center-normal-black);
         color: var(--text-less-prominent);
     }
+    &__item {
+        color: var(--text-prominent);
+        line-height: 1.4rem;
+
+        &-value {
+            font-weight: bold;
+            min-height: 1.4rem;
+        }
+    }
+    &__contract-type-wrapper {
+        display: grid;
+
+        &--multiplier {
+            grid-template-columns: 1fr 1fr;
+            grid-column-gap: 0.8rem;
+
+            /* postcss-bem-linter: ignore */
+            .contract-type-widget__icon-wrapper {
+                padding-left: 0;
+            }
+        }
+    }
+    &__multiplier-amount {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.8rem;
+
+        .mobile-widget__item-label {
+            margin-right: 0.4rem;
+        }
+    }
     &__wrapper {
         display: flex;
 

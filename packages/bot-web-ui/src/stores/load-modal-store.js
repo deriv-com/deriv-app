@@ -218,6 +218,7 @@ export default class LoadModalStore {
                 load_options.workspace = Blockly.derivWorkspace;
                 load_options.file_name = file_name;
             }
+
             load(load_options);
         });
         reader.readAsText(file);

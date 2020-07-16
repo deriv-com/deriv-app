@@ -1,7 +1,7 @@
 import { observable, action, reaction, computed } from 'mobx';
 import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
-import { setMainContentWidth } from '../utils/window-size';
+// import { setMainContentWidth } from '../utils/window-size';
 import { contract_stages } from '../constants/contract-stage';
 import { switch_account_notification } from '../utils/bot-notifications';
 
@@ -126,7 +126,7 @@ export default class RunPanelStore {
     @action.bound
     toggleDrawer(is_open) {
         this.is_drawer_open = is_open;
-        setMainContentWidth(is_open);
+        // setMainContentWidth(is_open);
     }
 
     @action.bound

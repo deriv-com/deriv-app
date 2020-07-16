@@ -55,7 +55,7 @@ export default class UIStore extends BaseStore {
     @observable screen_width = window.innerWidth;
 
     @observable notifications = [];
-    @observable notification_messages_array = [];
+    @observable notification_messages = [];
     @observable marked_notifications = [];
     @observable push_notifications = [];
 
@@ -148,7 +148,7 @@ export default class UIStore extends BaseStore {
                 this.is_window_loaded = true;
             })
         );
-      
+
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
             // TODO: [disable-dark-bot] Delete this condition when Bot is ready
@@ -227,22 +227,26 @@ export default class UIStore extends BaseStore {
         return !!this.account_switcher_disabled_message;
     }
 
-    @computed
-    get notification_messages() {
+    @action.bound
+    filterNotificationMessages() {
         const new_app_routing_history = this.root_store.common.app_routing_history.slice();
         const current_platform = getPlatformHeader(new_app_routing_history);
 
-        console.log(
-            this.notification_messages_array.filter(notification => notification.platform === current_platform)
-        );
-
-        if (this.notification_messages_array.some(notif => notif.platform)) {
-            return this.notification_messages_array.filter(
-                notification => notification.platform === current_platform || undefined
-            );
-        } else {
-            return this.notification_messages_array;
-        }
+        this.notifications.forEach(notification => {
+            if (notification.platform && !notification.platform.includes(current_platform)) {
+                if (notification.is_disposable) {
+                    this.notifications = this.notifications.filter(
+                        notification =>
+                            notification.platform.includes(current_platform) || notification.platform === undefined
+                    );
+                } else {
+                    this.notifications.filter(
+                        notification =>
+                            notification.platform.includes(current_platform) || notification.platform === undefined
+                    );
+                }
+            }
+        });
     }
 
     @action.bound
@@ -451,16 +455,14 @@ export default class UIStore extends BaseStore {
     @action.bound
     addNotificationMessage(notification) {
         if (!notification) return;
-        if (!this.notification_messages_array.find(item => item.header === notification.header)) {
-            this.notification_messages_array = [...this.notification_messages_array, notification].sort(
-                sortNotifications
-            );
+        if (!this.notification_messages.find(item => item.header === notification.header)) {
+            this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
             if (!excluded_notifications.includes(notification.key)) {
-                this.updateNotifications(this.notification_messages_array);
+                this.updateNotifications(this.notification_messages);
             }
             // Remove notification messages if it was already closed by user and exists in LocalStore
             const active_loginid = LocalStore.get('active_loginid');
-            const messages = LocalStore.getObject('notification_messages_array');
+            const messages = LocalStore.getObject('notification_messages');
             if (active_loginid && !isEmptyObject(messages)) {
                 // Check if is existing message to remove already closed messages stored in LocalStore
                 const is_existing_message = Array.isArray(messages[active_loginid])
@@ -476,11 +478,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     removeNotificationMessage({ key } = {}) {
         if (!key) return;
-        this.notification_messages_array = this.notification_messages_array.filter(n => n.key !== key);
+        this.notification_messages = this.notification_messages.filter(n => n.key !== key);
         // Add notification messages to LocalStore when user closes, check for redundancy
         const active_loginid = LocalStore.get('active_loginid');
         if (!excluded_notifications.includes(key) && active_loginid) {
-            const messages = LocalStore.getObject('notification_messages_array');
+            const messages = LocalStore.getObject('notification_messages');
             // Check if same message already exists in LocalStore for this account
             if (messages[active_loginid] && messages[active_loginid].includes(key)) {
                 return;
@@ -494,15 +496,15 @@ export default class UIStore extends BaseStore {
             };
             // Store message into LocalStore upon closing message
             Object.assign(messages, { [active_loginid]: current_message() });
-            LocalStore.setObject('notification_messages_array', messages);
+            LocalStore.setObject('notification_messages', messages);
         }
     }
 
     @action.bound
     removeAllNotificationMessages(should_close_persistent) {
-        this.notification_messages_array = should_close_persistent
+        this.notification_messages = should_close_persistent
             ? []
-            : [...this.notification_messages_array.filter(notifs => notifs.is_persistent)];
+            : [...this.notification_messages.filter(notifs => notifs.is_persistent)];
     }
 
     @action.bound

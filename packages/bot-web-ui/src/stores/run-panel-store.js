@@ -309,11 +309,9 @@ export default class RunPanelStore {
 
         const error_message = data?.error?.error?.message ?? data?.message;
         this.showErrorMessage(error_message);
-        console.log(error_message);
-        if (this.active_index !== 2) {
-            if (!journal.journal_filters.includes(message_types.ERROR)) {
-                this.root_store.ui.addNotificationMessage(journalError(this.switchToJournal));
-            }
+
+        if (!journal.journal_filters.includes(message_types.ERROR)) {
+            this.root_store.ui.addNotificationMessage(journalError(this.switchToJournal));
         }
     }
 

@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { Icon } from '@deriv/components';
 import { getPlatformHeader, getPlatformIcon, isMobile } from '@deriv/shared';
-
+import { connect } from 'Stores/connect';
 import { PlatformSwitcherLoader } from './Components/Preloader/platform-switcher.jsx';
 import { PlatformDropdown } from './platform-dropdown.jsx';
 import 'Sass/app/_common/components/platform-switcher.scss';
@@ -15,6 +15,10 @@ class PlatformSwitcher extends React.PureComponent {
         super(props);
 
         this.state = { is_open: false };
+    }
+
+    componentDidUpdate() {
+        this.props.filterNotificationMessages();
     }
 
     toggleDrawer = () => this.setState(state => ({ is_open: !state.is_open }));
@@ -74,4 +78,8 @@ PlatformSwitcher.propTypes = {
     platform_config: PropTypes.array,
 };
 
-export default withRouter(PlatformSwitcher);
+export default withRouter(
+    connect(({ ui }) => ({
+        filterNotificationMessages: ui.filterNotificationMessages,
+    }))(PlatformSwitcher)
+);

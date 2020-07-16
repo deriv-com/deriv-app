@@ -20,6 +20,7 @@
     &__input-fields {
         display: flex;
         border-radius: $BORDER_RADIUS;
+        width: 100%;
 
         &--fill {
             width: 100%;
@@ -30,6 +31,9 @@
         }
         & > .input-field {
             margin: 0;
+            max-width: 17.6rem;
+            width: 100%;
+
             @include colorIcon(var(--text-prominent));
 
             & .input {

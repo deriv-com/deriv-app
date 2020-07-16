@@ -17,7 +17,7 @@ export const MobileCarousel = ({ children }) => {
         setMinWidth(carousel_body.current.children[0].clientWidth + 1);
         carousel_body.current.scrollLeft = index * (min_width + 1);
         setTotal(React.Children.count(children));
-    });
+    }, [index, min_width]);
 
     const goPrev = () => {
         if (index !== 0) {

@@ -68,6 +68,7 @@ class AddOrManageAccounts extends React.Component {
     render() {
         // TODO [deriv-eu] remove is_eu_enabled once released
         const should_hide_crypto = this.props.is_eu_enabled && this.props.is_eu;
+        const no_crypto_available = this.props.available_crypto_currencies.length === 0;
         return (
             <ThemedScrollbars is_bypassed={isMobile()}>
                 <Div100vhContainer
@@ -78,10 +79,10 @@ class AddOrManageAccounts extends React.Component {
                     {!should_hide_crypto && (
                         <div
                             className={classNames('add-crypto-currency', {
-                                'account-wizard--disabled': this.props.available_crypto_currencies.length === 0,
+                                'account-wizard--disabled': no_crypto_available,
                             })}
                         >
-                            {this.props.available_crypto_currencies.length === 0 && (
+                            {no_crypto_available && (
                                 <div className='account-wizard--disabled-message'>
                                     <p className='add-crypto-currency'>
                                         {localize(

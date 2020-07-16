@@ -9,7 +9,7 @@
         margin-bottom: 3.2em;
 
         & > h2 {
-            font-size: 1.6rem;
+            font-size: var(--text-size-s);
             color: var(--text-prominent);
             font-weight: bold;
             text-transform: none;
@@ -27,7 +27,7 @@
         z-index: 2;
 
         & .title {
-            font-size: 1.2rem;
+            font-size: var(--text-size-xxs);
             color: var(--text-prominent);
         }
         & .identifier {

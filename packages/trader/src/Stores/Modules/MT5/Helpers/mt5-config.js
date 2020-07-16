@@ -67,15 +67,15 @@ export const getMt5GroupConfig = (group = undefined) => {
             type: 'synthetic',
             category: 'real',
         },
-        real_svg_standard: {
+        real_svg_financial: {
             type: 'financial',
             category: 'real',
         },
-        real_vanuatu_standard: {
+        real_vanuatu_financial: {
             type: 'financial',
             category: 'real',
         },
-        real_labuan_advanced: {
+        real_labuan_financial_stp: {
             type: 'financial_stp',
             category: 'real',
         },
@@ -83,15 +83,15 @@ export const getMt5GroupConfig = (group = undefined) => {
             type: 'synthetic',
             category: 'demo',
         },
-        demo_svg_standard: {
+        demo_svg_financial: {
             type: 'financial',
             category: 'demo',
         },
-        demo_vanuatu_standard: {
+        demo_vanuatu_financial: {
             type: 'financial',
             category: 'demo',
         },
-        demo_labuan_advanced: {
+        demo_labuan_financial_stp: {
             type: 'financial_stp',
             category: 'demo',
         },
@@ -123,11 +123,11 @@ export const getAccountTypeFields = ({ category, type }) => {
             },
             financial: {
                 account_type: 'financial',
-                mt5_account_type: 'standard', // API still calls it standard
+                mt5_account_type: 'financial',
             },
             financial_stp: {
                 account_type: 'financial',
-                mt5_account_type: 'advanced', // API still calls it advanced
+                mt5_account_type: 'financial_stp',
             },
         },
         demo: {
@@ -136,11 +136,11 @@ export const getAccountTypeFields = ({ category, type }) => {
             },
             financial: {
                 account_type: 'demo',
-                mt5_account_type: 'standard', // API still calls it standard
+                mt5_account_type: 'financial',
             },
             financial_stp: {
                 account_type: 'demo',
-                mt5_account_type: 'advanced', // API still calls it advanced
+                mt5_account_type: 'financial_stp',
             },
         },
     };

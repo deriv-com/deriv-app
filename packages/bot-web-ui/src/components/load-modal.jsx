@@ -1,7 +1,16 @@
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Modal, Tabs, Icon } from '@deriv/components';
+import {
+    Button,
+    Modal,
+    Tabs,
+    Icon,
+    MobileWrapper,
+    Div100vhContainer,
+    FadeWrapper,
+    PageOverlay,
+} from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
@@ -25,6 +34,7 @@ const Recent = ({
     previewWorkspace,
     recent_files,
     selected_file_id,
+    is_mobile,
     ...props
 }) => (
     <div className='load-recent__container'>
@@ -117,6 +127,7 @@ const Local = ({
     is_open_button_loading,
     loaded_local_file,
     loadFileFromLocal,
+    is_mobile,
     ...props
 }) => {
     let file_input_ref = React.useRef(null);
@@ -129,9 +140,11 @@ const Local = ({
             >
                 <div className='load-local__preview-title'>{localize('Preview')}</div>
                 <div id='load-local__scratch' className='preview__workspace load-local__preview-workspace'>
-                    <div className='load-local__preview-close'>
-                        <Icon icon={'IcCross'} onClick={closePreview} />
-                    </div>
+                    {!is_mobile && (
+                        <div className='load-local__preview-close'>
+                            <Icon icon={'IcCross'} onClick={closePreview} />
+                        </div>
+                    )}
                     <WorkspaceControl {...props} />
                 </div>
             </div>
@@ -145,9 +158,15 @@ const Local = ({
                         onChange={e => handleFileChange(e, false)}
                     />
                     <div id='import_dragndrop' className='load-local__dragndrop'>
-                        <Icon icon={'IcPc'} className='load-local__icon' size={116} />
-                        <div className='load-local__title'>{localize('Drag your file here')}</div>
-                        <div className='load-local__desc'>{localize('or, if you prefer...')}</div>
+                        {is_mobile ? (
+                            <Icon icon={'IcMobile'} className='load-local__icon' size={is_mobile ? 96 : 116} />
+                        ) : (
+                            <>
+                                <Icon icon={'IcPc'} className='load-local__icon' size={is_mobile ? 96 : 116} />
+                                <div className='load-local__title'>{localize('Drag your file here')}</div>
+                                <div className='load-local__desc'>{localize('or, if you prefer...')}</div>
+                            </>
+                        )}
                         <Button
                             className='load-local__upload'
                             text={localize('Select a file from your device')}
@@ -160,6 +179,15 @@ const Local = ({
                 </>
             ) : (
                 <div className='load-local__footer'>
+                    {is_mobile && (
+                        <Button
+                            className='load-recent__footer-open'
+                            text={localize('Cancel')}
+                            onClick={closePreview}
+                            has_effect
+                            secondary
+                        />
+                    )}
                     <Button
                         className='load-local__footer-open'
                         text={localize('Open')}
@@ -174,7 +202,7 @@ const Local = ({
     );
 };
 
-const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, onDriveOpen }) => (
+const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, onDriveOpen, is_mobile }) => (
     <div className='load-google-drive__container'>
         <Icon
             icon={'IcGoogleDrive'}
@@ -182,13 +210,20 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                 'load-google-drive__icon--active': is_authorised,
                 'load-google-drive__icon--disabled': !is_authorised,
             })}
-            size={116}
+            size={is_mobile ? 96 : 116}
         />
-        <div className={classnames('load-google-drive__text', { 'load-google-drive__text--disabled': !is_authorised })}>
-            {is_authorised ? localize('You are connected to Google Drive') : localize('Google Drive')}
+        <div className='load-google-drive__text'>
+            {is_authorised ? localize('You are connected to Google Drive') : 'Google Drive'}
         </div>
         {is_authorised ? (
             <div className='load-google-drive__buttons'>
+                <Button
+                    className='load-google-drive__disconnect'
+                    text={localize('Disconnect')}
+                    onClick={onDriveConnect}
+                    has_effect
+                    secondary
+                />
                 <Button
                     className='load-google-drive__open'
                     text={localize('Open')}
@@ -196,13 +231,6 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                     is_loading={is_open_button_loading}
                     has_effect
                     primary
-                />
-                <Button
-                    className='load-google-drive__disconnect'
-                    text={localize('Disconnect')}
-                    onClick={onDriveConnect}
-                    has_effect
-                    secondary
                 />
             </div>
         ) : (
@@ -224,19 +252,43 @@ const LoadModal = ({
     onUnmount,
     setActiveTabIndex,
     toggleLoadModal,
+    is_mobile,
     ...props
-}) => (
-    <Modal
-        title={localize('Load strategy')}
-        className='modal--load'
-        width='1050px'
-        is_open={is_load_modal_open}
-        toggleModal={toggleLoadModal}
-        onMount={onMount}
-        onUnmount={onUnmount}
-        elements_to_ignore={[document.querySelector('.injectionDiv')]}
-    >
-        <div className='load__container'>
+}) => {
+    return is_mobile ? (
+        <FadeWrapper is_visible={is_load_modal_open} className='load__wrapper' keyname='save__wrapper'>
+            <PageOverlay header={localize('Load Strategy')} onClickClose={toggleLoadModal} onMount={onMount}>
+                <MobileWrapper>
+                    <Div100vhContainer className='load__wrapper--is-mobile'>
+                        <Tabs
+                            active_index={active_index}
+                            onTabItemClick={setActiveTabIndex}
+                            top
+                            fit_content
+                            header_fit_content
+                        >
+                            <div label={localize('Local')}>
+                                <Local is_mobile={is_mobile} {...props} />
+                            </div>
+                            <div label='Google Drive'>
+                                <GoogleDrive is_mobile={is_mobile} {...props} />
+                            </div>
+                        </Tabs>
+                    </Div100vhContainer>
+                </MobileWrapper>
+            </PageOverlay>
+        </FadeWrapper>
+    ) : (
+        <Modal
+            title={'Load Strategy'}
+            className='modal--load'
+            width='1050px'
+            is_open={is_load_modal_open}
+            toggleModal={toggleLoadModal}
+            onMount={onMount}
+            onUnmount={onUnmount}
+            elements_to_ignore={[document.querySelector('.injectionDiv')]}
+        >
             <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top fit_content header_fit_content>
                 <div label={localize('Recent')}>
                     <Recent {...props} />
@@ -244,13 +296,13 @@ const LoadModal = ({
                 <div label={localize('Local')}>
                     <Local {...props} />
                 </div>
-                <div label={localize('Google Drive')}>
+                <div label='Google Drive'>
                     <GoogleDrive {...props} />
                 </div>
             </Tabs>
-        </div>
-    </Modal>
-);
+        </Modal>
+    );
+};
 
 LoadModal.propTypes = {
     active_index: PropTypes.number,
@@ -261,6 +313,7 @@ LoadModal.propTypes = {
     handleFileChange: PropTypes.func,
     is_authorised: PropTypes.bool,
     is_load_modal_open: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     is_open_button_loading: PropTypes.bool,
     loaded_local_file: PropTypes.object,
     loadFileFromLocal: PropTypes.func,
@@ -278,7 +331,7 @@ LoadModal.propTypes = {
     toggleLoadModal: PropTypes.func,
 };
 
-export default connect(({ load_modal, google_drive }) => ({
+export default connect(({ load_modal, google_drive, ui }) => ({
     active_index: load_modal.active_index,
     closePreview: load_modal.closePreview,
     is_explanation_expand: load_modal.is_explanation_expand,
@@ -287,6 +340,7 @@ export default connect(({ load_modal, google_drive }) => ({
     handleFileChange: load_modal.handleFileChange,
     is_authorised: google_drive.is_authorised,
     is_load_modal_open: load_modal.is_load_modal_open,
+    is_mobile: ui.is_mobile,
     is_open_button_loading: load_modal.is_open_button_loading,
     loadFileFromLocal: load_modal.loadFileFromLocal,
     loadFileFromRecent: load_modal.loadFileFromRecent,

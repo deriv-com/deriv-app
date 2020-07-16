@@ -146,7 +146,8 @@ class AccountSwitcher extends React.Component {
                 api_key: 'mt_gaming_company.standard',
             },
             {
-                account_types: ['vanuatu', 'svg_standard', 'maltainvest_standard'],
+                // TODO: [remove-standard-advanced] remove standard when API groups are updated
+                account_types: ['vanuatu', 'svg_standard', 'svg_financial', 'maltainvest_standard'],
                 icon: 'Financial',
                 title: localize('Financial'),
                 type: 'financial',
@@ -223,7 +224,8 @@ class AccountSwitcher extends React.Component {
             if (/svg$/.test(a.group)) {
                 return -1;
             }
-            if (/vanuatu|svg_standard/.test(a.group)) {
+            // TODO: [remove-standard-advanced] remove standard when API groups are updated
+            if (/vanuatu|svg_(standard|financial)/.test(a.group)) {
                 return /svg$/.test(b.group) ? 1 : -1;
             }
             return 1;

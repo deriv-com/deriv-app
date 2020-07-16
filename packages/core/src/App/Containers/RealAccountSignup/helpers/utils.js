@@ -6,17 +6,17 @@
  */
 function splitValidationResultTypes(values) {
     const warnings = {};
+    const errors = {};
     Object.keys(values).forEach(field => {
         const item = values[field];
-        if (!Array.isArray(item)) {
-            delete values[field];
-        } else if (item[0] === 'warn') {
-            warnings[field] = item[1];
-            delete values[field];
+        if (Array.isArray(item)) {
+            if (item[0] === 'warn') {
+                warnings[field] = item[1];
+            } else if (item[0] === 'error') {
+                errors[field] = item[1];
+            }
         }
     });
-    const errors = {};
-    Object.keys(values).forEach(error => (errors[error] = values[error][1]));
     return { warnings, errors };
 }
 

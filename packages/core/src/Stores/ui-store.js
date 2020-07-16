@@ -629,6 +629,6 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     showAccountTypesModalForEuropean() {
-        this.toggleAccountTypesModal(this.root_store.client.is_eu);
+        this.toggleAccountTypesModal(this.root_store.client.is_uk);
     }
 }

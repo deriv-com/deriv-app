@@ -78,7 +78,7 @@ class AddressDetails extends React.Component {
         const padding_bottom = window.innerHeight < 930 ? '10rem' : '12rem';
         return (
             <Formik
-                initialValues={{ ...this.props.value }}
+                initialValues={this.props.value}
                 validate={this.props.validate}
                 validateOnMount
                 onSubmit={(values, actions) => {
@@ -141,7 +141,6 @@ class AddressDetails extends React.Component {
                                                                     })}
                                                                     data-lpignore='true'
                                                                     autoComplete='new-password' // prevent chrome autocomplete
-                                                                    dropdown_offset='3.2rem'
                                                                     type='text'
                                                                     label={localize('State/Province')}
                                                                     list_items={this.props.states_list}

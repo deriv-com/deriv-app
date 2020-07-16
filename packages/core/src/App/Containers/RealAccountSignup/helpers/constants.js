@@ -58,13 +58,14 @@ export const getAccountTitle = (
  *
  * @return {EXPERIAN.WARN|EXPERIAN.SUCCESS|EXPERIAN.DANGER}
  */
-export const getExperianResult = ({
-    landing_company_shortcode = '',
-    is_fully_authenticated = false,
-    is_age_verified = false,
-    is_isle_of_man_residence = false,
-    is_belgium_residence = false,
-}) => {
+export const getExperianResult = status => {
+    const {
+        landing_company_shortcode = '',
+        is_fully_authenticated = false,
+        is_age_verified = false,
+        is_isle_of_man_residence = false,
+        is_belgium_residence = false,
+    } = status;
     const getIOMStatus = () => {
         if (is_fully_authenticated) return EXPERIAN.SUCCESS;
         if (is_age_verified) return EXPERIAN.WARN;

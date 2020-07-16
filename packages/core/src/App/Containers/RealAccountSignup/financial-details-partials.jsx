@@ -611,7 +611,7 @@ export const CFDTradingExperience = ({
             <React.Fragment>
                 <DesktopWrapper>
                     <Dropdown
-                        placeholder={localize('CFDs trading experience')}
+                        placeholder={localize('CFD trading experience')}
                         is_align_text_left
                         name={field.name}
                         list={cfd_trading_experience_enum}
@@ -626,7 +626,7 @@ export const CFDTradingExperience = ({
                 <MobileWrapper>
                     <SelectNative
                         name={field.name}
-                        label={localize('CFDs trading experience')}
+                        label={localize('CFD trading experience')}
                         list_items={cfd_trading_experience_enum}
                         value={values.cfd_trading_experience}
                         use_text={true}
@@ -658,7 +658,7 @@ export const CFDTradingFrequency = ({
             <React.Fragment>
                 <DesktopWrapper>
                     <Dropdown
-                        placeholder={localize('CFDs trading frequency')}
+                        placeholder={localize('CFD trading frequency')}
                         is_align_text_left
                         name={field.name}
                         list={cfd_trading_frequency_enum}
@@ -673,7 +673,7 @@ export const CFDTradingFrequency = ({
                 <MobileWrapper>
                     <SelectNative
                         name={field.name}
-                        label={localize('CFDs trading frequency')}
+                        label={localize('CFD trading frequency')}
                         list_items={cfd_trading_frequency_enum}
                         value={values.cfd_trading_frequency}
                         use_text={true}
@@ -705,7 +705,7 @@ export const OtherInstrumentsTradingExperience = ({
             <React.Fragment>
                 <DesktopWrapper>
                     <Dropdown
-                        placeholder={localize('Other instruments trading experience')}
+                        placeholder={localize('Experience with trading other financial instruments')}
                         is_align_text_left
                         name={field.name}
                         list={other_instruments_trading_experience_enum}
@@ -722,7 +722,7 @@ export const OtherInstrumentsTradingExperience = ({
                 <MobileWrapper>
                     <SelectNative
                         name={field.name}
-                        label={localize('Other instruments trading experience')}
+                        label={localize('Experience with trading other financial instruments')}
                         list_items={other_instruments_trading_experience_enum}
                         value={values.other_instruments_trading_experience}
                         use_text={true}
@@ -756,7 +756,7 @@ export const OtherInstrumentsTradingFrequency = ({
             <React.Fragment>
                 <DesktopWrapper>
                     <Dropdown
-                        placeholder={localize('Other instruments trading frequency')}
+                        placeholder={localize('Trading frequency in other financial instruments')}
                         is_align_text_left
                         name={field.name}
                         list={other_instruments_trading_frequency_enum}
@@ -773,7 +773,7 @@ export const OtherInstrumentsTradingFrequency = ({
                 <MobileWrapper>
                     <SelectNative
                         name={field.name}
-                        label={localize('Other instruments trading frequency')}
+                        label={localize('Trading frequency in other financial instruments')}
                         list_items={other_instruments_trading_frequency_enum}
                         value={values.other_instruments_trading_frequency}
                         use_text={true}

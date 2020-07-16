@@ -85,6 +85,24 @@ export default class ClientStore extends BaseStore {
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
+
+        when(
+            () => this.should_have_real_account,
+            () => {
+                this.root_store.ui.showAccountTypesModalForEuropean();
+                this.onRealAccountSignupEnd(() => {
+                    if (!this.has_any_real_account) {
+                        this.root_store.ui.showAccountTypesModalForEuropean();
+                    }
+
+                    return Promise.resolve();
+                });
+
+                if (!this.root_store.ui.is_real_acc_signup_on) {
+                    this.root_store.ui.toggleAccountTypesModal(true);
+                }
+            }
+        );
     }
 
     @computed
@@ -286,6 +304,12 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_age_verified() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'age_verification');
+    }
+
+    @computed
     get landing_company_shortcode() {
         if (this.accounts[this.loginid]) {
             return this.accounts[this.loginid].landing_company_shortcode;
@@ -339,12 +363,7 @@ export default class ClientStore extends BaseStore {
     // this is true when a user needs to have a active real account for trading
     @computed
     get should_have_real_account() {
-        return (
-            this.standpoint.iom &&
-            !this.has_any_real_account &&
-            this.residence === 'gb' &&
-            this.root_store.ui.is_real_acc_signup_on === false
-        );
+        return this.standpoint.iom && this.is_uk && !this.has_any_real_account;
     }
 
     // Shows all possible landing companies of user between all

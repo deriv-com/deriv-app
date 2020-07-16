@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
-import FundsProtection from './funds-protection.jsx';
 import CashierContainer from '../Components/cashier-container.jsx';
 import Error from '../Components/Error/error.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
+import FundsProtection from '../Components/funds-protection.jsx';
 
 class Deposit extends React.Component {
     componentDidMount() {
@@ -25,7 +25,13 @@ class Deposit extends React.Component {
                 {error.message ? (
                     <Error error={error} />
                 ) : (
-                    <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} is_loading={is_loading} />
+                    <>
+                        <CashierContainer
+                            iframe_height={iframe_height}
+                            iframe_url={iframe_url}
+                            is_loading={is_loading}
+                        />
+                    </>
                 )}
             </React.Fragment>
         );

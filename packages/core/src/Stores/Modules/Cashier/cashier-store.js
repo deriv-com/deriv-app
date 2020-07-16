@@ -40,6 +40,7 @@ class ConfigError {
     @observable is_show_full_page = false;
     @observable onClickButton = null;
     @observable is_ask_uk_funds_protection = false;
+    @observable is_self_exclusion_max_turnover_set = false;
 }
 
 class ConfigPaymentAgent {
@@ -362,7 +363,9 @@ export default class CashierStore extends BaseStore {
                 // TODO: handle age error
                 break;
             case 'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET':
-                // TODO: handle self exclusion max turnover error
+                this.config[this.active_container].error = {
+                    is_self_exclusion_max_turnover_set: true,
+                };
                 break;
             default:
                 this.setErrorMessage(error);
@@ -371,7 +374,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     submitFundsProtection() {
-        WS.send({ ukgc_funds_protection: 1 }).then(response => {
+        WS.send({ ukgc_funds_protection: 1, tnc_approval: 1 }).then(response => {
             if (response.error) {
                 this.setErrorMessage(response.error);
             } else {

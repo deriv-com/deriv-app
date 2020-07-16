@@ -59,6 +59,7 @@ const Redirect = ({
         default:
             break;
     }
+    console.log(url_query_string);
 
     if (!redirected_to_route) {
         history.push({

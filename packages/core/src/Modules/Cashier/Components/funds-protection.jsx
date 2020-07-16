@@ -6,7 +6,7 @@ import { connect } from 'Stores/connect';
 
 const FundsProtection = ({ submitFundsProtection }) => {
     return (
-        <div className='funds-protectiosn'>
+        <div className='funds-protection'>
             <Icon icon='IcMoneyTransfer' className='funds-protection__icon' />
             <h2 className='funds-protection__title'>{localize('Funds protection level')}</h2>
             <p className='funds-protection__desc'>

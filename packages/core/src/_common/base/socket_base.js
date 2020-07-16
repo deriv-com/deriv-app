@@ -298,6 +298,7 @@ const BinarySocketBase = (() => {
     // subscribe method export for P2P use only
     // so that subscribe remains private
     const p2pSubscribe = (request, cb) => subscribe(request, cb);
+    const accountStatistics = () => deriv_api.send({ account_statistics: 1 });
 
     return {
         init,
@@ -361,6 +362,7 @@ const BinarySocketBase = (() => {
         transferBetweenAccounts,
         loginHistory,
         closeAndOpenNewConnection,
+        accountStatistics,
     };
 })();
 

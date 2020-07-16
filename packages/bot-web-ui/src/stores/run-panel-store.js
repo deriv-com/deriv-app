@@ -299,7 +299,6 @@ export default class RunPanelStore {
 
     @action.bound
     onError(data) {
-        const { journal } = this.root_store;
         if (unrecoverable_errors.includes(data.name)) {
             this.root_store.contract_card.clear();
             this.error_type = error_types.UNRECOVERABLE_ERRORS;
@@ -309,18 +308,17 @@ export default class RunPanelStore {
 
         const error_message = data?.error?.error?.message ?? data?.message;
         this.showErrorMessage(error_message);
-
-        if (!journal.journal_filters.includes(message_types.ERROR)) {
-            this.root_store.ui.addNotificationMessage(journalError(this.switchToJournal));
-        }
     }
 
     @action.bound
     showErrorMessage(data) {
         const { journal } = this.root_store;
+
         journal.onError(data);
         if (journal.journal_filters.some(filter => filter === message_types.ERROR)) {
             this.setActiveTabIndex(2);
+        } else {
+            this.root_store.ui.addNotificationMessage(journalError(this.switchToJournal));
         }
     }
 

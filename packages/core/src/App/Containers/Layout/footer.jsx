@@ -8,6 +8,7 @@ import {
     ToggleFullScreen,
     ToggleSettings,
     HelpCentre,
+    ToggleComplaintsPolicy,
 } from 'App/Components/Layout/Footer';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
@@ -21,6 +22,7 @@ const Footer = ({
     disableApp,
     toggleSettingsModal,
     settings_extension,
+    landing_company_shortcode,
 }) => (
     <footer
         className={classNames('footer', {
@@ -31,7 +33,9 @@ const Footer = ({
         <EndpointNote />
         <NetworkStatus />
         <ServerTime />
-
+        <div className='footer__links footer__links-extras'>
+            <ToggleComplaintsPolicy landing_company_shortcode={landing_company_shortcode} />
+        </div>
         <div className='footer__links'>
             <HelpCentre />
             <ToggleSettings
@@ -67,5 +71,6 @@ export default withRouter(
         is_settings_modal_on: ui.is_settings_modal_on,
         disableApp: ui.disableApp,
         toggleSettingsModal: ui.toggleSettingsModal,
+        landing_company_shortcode: client.landing_company_shortcode,
     }))(Footer)
 );

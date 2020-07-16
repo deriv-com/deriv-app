@@ -13,13 +13,28 @@ const MaxTurnoverForm = ({ submitMaxTurnover }) => {
 
     validateFields = values => {
         const { currency } = this.props;
+        const is_number = /^\d+(\.\d+)?$/;
+        const max_number = 9999999999999;
+
+        const required_message = localize('Please enter a max 30 days turnover.');
+        const valid_number_message = localize('Should be a valid number');
+        const max_number_message = localize('Reached maximum number of digits');
+        const max_decimal_message = (
+            <Localize
+                i18n_default_text='Reached maximum number of decimals: {{decimal}}'
+                values={{ decimal: getDecimalPlaces(currency) }}
+            />
+        );
+
+        if (values.max_30day_turnover) {
+        }
     };
 
     return (
         <div className='max-turnover'>
             <Formik initialValues={initial_values} onSubmit={this.handleSubmit} validate={this.validateFields}>
                 {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting, setFieldValue }) => (
-                    <Field name='token_name'>
+                    <Field name='max_30day_turnover'>
                         {({ field }) => (
                             <Input
                                 {...field}

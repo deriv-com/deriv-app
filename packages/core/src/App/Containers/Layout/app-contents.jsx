@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Cookies from 'js-cookie';
 import { withRouter } from 'react-router';
-import { DesktopWrapper, MobileWrapper, ThemedScrollbars, Dialog } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
+import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { localize } from '@deriv/translations';
 import { cookie_banner_expires_in_days } from '../../Constants/app-config';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 // import InstallPWA    from './install-pwa.jsx';
@@ -26,9 +26,6 @@ const AppContents = ({
     pageView,
     pushDataLayer,
 }) => {
-    const [external_link_statue, setExternalLinkStatus] = React.useState(false);
-    const [dialog_status, setDialogStatus] = React.useState(false);
-    const [external_link, setExternalLink] = React.useState(false);
     const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
     const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
 
@@ -48,23 +45,6 @@ const AppContents = ({
         }
     }, [is_logged_in, is_window_loaded]);
 
-    const onCancelDialog = () => {
-        setDialogStatus(false);
-    };
-    const onConfirmDialog = () => {
-        setDialogStatus(false);
-        window.open(external_link);
-    };
-    React.useEffect(() => {
-        document.addEventListener('click', function(e) {
-            if (e.target.relList && e.target.relList.value !== '') {
-                setExternalLink(e.target.href);
-                e.preventDefault();
-                setExternalLinkStatus(true);
-                setDialogStatus(true);
-            }
-        });
-    }, []);
     // Segment page view trigger
     identifyEvent();
     pageView();
@@ -114,20 +94,7 @@ const AppContents = ({
         >
             <MobileWrapper>{children}</MobileWrapper>
             <DesktopWrapper>
-                {external_link_statue && (
-                    <Dialog
-                        className='redirect-notice'
-                        is_visible={dialog_status}
-                        title='Redirect notice'
-                        is_open={dialog_status}
-                        cancel_button_text={localize('Cancel')}
-                        confirm_button_text={localize('Proceed')}
-                        onCancel={onCancelDialog}
-                        onConfirm={onConfirmDialog}
-                    >
-                        {'You are being redirected to an external website.'}
-                    </Dialog>
-                )}
+                <RedirectNoticeModal />
                 {/* Calculate height of user screen and offset height of header and footer */}
                 <ThemedScrollbars height='calc(100vh - 84px)'>{children}</ThemedScrollbars>
             </DesktopWrapper>

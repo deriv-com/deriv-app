@@ -35,7 +35,7 @@ const MT5DemoAccountDisplay = ({
         </div>
     ) : (
         <div className='mt5-demo-accounts-display'>
-            {landing_companies?.mt_gaming_company?.standard && (
+            {landing_companies?.mt_gaming_company?.financial && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
                     icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
@@ -70,7 +70,7 @@ const MT5DemoAccountDisplay = ({
                     }}
                 />
             )}
-            {landing_companies?.mt_financial_company?.standard && (
+            {landing_companies?.mt_financial_company?.financial && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
                     icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
@@ -105,7 +105,7 @@ const MT5DemoAccountDisplay = ({
                     }}
                 />
             )}
-            {landing_companies?.mt_financial_company?.advanced && (
+            {landing_companies?.mt_financial_company?.financial_stp && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
                     icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}

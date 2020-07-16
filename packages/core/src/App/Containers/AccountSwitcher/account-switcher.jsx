@@ -143,7 +143,7 @@ class AccountSwitcher extends React.Component {
                 icon: 'Synthetic',
                 title: localize('Synthetic'),
                 type: 'synthetic',
-                api_key: 'mt_gaming_company.standard',
+                api_key: 'mt_gaming_company.financial',
             },
             {
                 // TODO: [remove-standard-advanced] remove standard when API groups are updated
@@ -151,14 +151,14 @@ class AccountSwitcher extends React.Component {
                 icon: 'Financial',
                 title: localize('Financial'),
                 type: 'financial',
-                api_key: 'mt_financial_company.standard',
+                api_key: 'mt_financial_company.financial',
             },
             {
                 account_types: ['labuan'],
                 icon: 'Financial STP',
                 title: localize('Financial STP'),
                 type: 'financial_stp',
-                api_key: 'mt_financial_company.advanced',
+                api_key: 'mt_financial_company.financial_stp',
             },
         ];
 

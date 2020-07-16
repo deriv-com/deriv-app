@@ -192,7 +192,7 @@ class DatePicker extends React.PureComponent {
     }
 
     render() {
-        const { id, name, value, onBlur, onFocus, required, ...props } = this.props;
+        const { id, name, value, onBlur, onFocus, required, type, ...props } = this.props;
         return (
             <>
                 <MobileWrapper>
@@ -214,6 +214,7 @@ class DatePicker extends React.PureComponent {
                 <DesktopWrapper>
                     <div id={id} ref={this.datepicker} className='dc-datepicker' data-value={this.input_value}>
                         <Input
+                            {...props}
                             name={name}
                             onClick={this.handleVisibility}
                             onChangeInput={this.onChangeInput}
@@ -221,8 +222,8 @@ class DatePicker extends React.PureComponent {
                             is_placeholder_visible={this.state.is_placeholder_visible}
                             onBlur={onBlur}
                             required={required}
+                            type={type}
                             value={this.input_value}
-                            {...props}
                         />
                         <Calendar
                             ref={this.calendar_portal}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { addRoutesConfig, routes } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
 import {
@@ -11,6 +11,7 @@ import {
     ProofOfAddress,
     ApiToken,
     TwoFactorAuthentication,
+    SelfExclusion,
     Account,
     LoginHistory,
 } from 'Sections';
@@ -70,6 +71,11 @@ const initRoutesConfig = () => [
                         title: localize('Deriv password'),
                     },
                     {
+                        path: routes.self_exclusion,
+                        component: SelfExclusion,
+                        title: localize('Self exclusion'),
+                    },
+                    {
                         path: routes.account_limits,
                         component: AccountLimits,
                         title: localize('Account limits'),
@@ -104,7 +110,6 @@ const getRoutesConfig = () => {
     if (!routesConfig) {
         routesConfig = initRoutesConfig();
         routesConfig.push(route_default);
-        addRoutesConfig(routesConfig);
     }
     return routesConfig;
 };

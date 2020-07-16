@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import LoadErrorMessage from 'Components/load-error-message';
-import Article from './article.jsx';
+import Article from 'Components/article';
 import DigitForm from './digit-form.jsx';
 
 class TwoFactorAuthentication extends React.Component {

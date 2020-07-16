@@ -82,8 +82,6 @@ export default class Onfido extends React.Component {
 
     render() {
         const { status, height } = this.props;
-        // console.log(onfido_status_codes);
-        // console.log(this.props);
 
         if (status === onfido_status_codes.onfido) return <OnfidoContainer height={height} />;
 

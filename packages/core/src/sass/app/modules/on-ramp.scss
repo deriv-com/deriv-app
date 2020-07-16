@@ -142,14 +142,7 @@
 }
 
 .dc-modal__container {
-    &_on-ramp__dialog {
-        width: 440px !important;
-    }
     &_on-ramp__modal {
-        width: 628px !important;
-    }
-    &_on-ramp__modal,
-    &_on-ramp__dialog {
         > .dc-modal-body {
             padding-top: 0.8rem;
         }

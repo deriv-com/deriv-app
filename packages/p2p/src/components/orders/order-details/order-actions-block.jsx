@@ -143,7 +143,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         showPopup(options);
     };
 
-    if (is_buyer_confirmed && !is_buyer) {
+    if ((is_buyer_confirmed || is_expired) && !is_buyer) {
         buttons_to_render = (
             <React.Fragment>
                 <div className='order-details__separator' />

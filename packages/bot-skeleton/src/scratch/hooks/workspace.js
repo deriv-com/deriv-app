@@ -58,13 +58,13 @@ Blockly.Workspace.prototype.getTradeDefinitionBlock = function() {
 
 Blockly.Workspace.prototype.waitForBlockEvent = function(block_id, opt_event_type = null) {
     const event_promise = new PendingPromise();
-
-    this.wait_events.push({
-        blockId: block_id,
-        promise: event_promise,
-        type: opt_event_type,
-    });
-
+    if (!this.wait_events.some(event => event.blockId === block_id && event.type === opt_event_type)) {
+        this.wait_events.push({
+            blockId: block_id,
+            promise: event_promise,
+            type: opt_event_type,
+        });
+    }
     return event_promise;
 };
 

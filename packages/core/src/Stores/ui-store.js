@@ -236,13 +236,15 @@ export default class UIStore extends BaseStore {
             if (notification.platform && !notification.platform.includes(current_platform)) {
                 if (notification.is_disposable) {
                     this.notifications = this.notifications.filter(
-                        notification =>
-                            notification.platform.includes(current_platform) || notification.platform === undefined
+                        check_notification =>
+                            check_notification.platform.includes(current_platform) ||
+                            check_notification.platform === undefined
                     );
                 } else {
                     this.notifications.filter(
-                        notification =>
-                            notification.platform.includes(current_platform) || notification.platform === undefined
+                        check_notification =>
+                            check_notification.platform.includes(current_platform) ||
+                            check_notification.platform === undefined
                     );
                 }
             }

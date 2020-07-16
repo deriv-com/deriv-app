@@ -715,7 +715,7 @@ export default class ClientStore extends BaseStore {
             WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             this.getLimits();
         } else {
-            this.is_populating_mt5_account_list = false;
+            this.resetMt5AccountListPopulation();
         }
         this.responseWebsiteStatus(await WS.wait('website_status'));
 
@@ -723,6 +723,11 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(false);
         this.setInitialized(true);
         return true;
+    }
+
+    @action.bound
+    resetMt5AccountListPopulation() {
+        this.is_populating_mt5_account_list = false;
     }
 
     @action.bound

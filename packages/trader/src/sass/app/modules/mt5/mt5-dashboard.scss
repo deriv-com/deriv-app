@@ -373,8 +373,12 @@
     border-radius: 4px;
     display: flex;
     flex-flow: column nowrap;
-    min-height: 29rem;
+    min-height: 35.8rem;
     width: 30.4em;
+
+    &__logged-out {
+        min-height: 29rem;
+    }
 
     &:not(:last-child) {
         margin-right: 2.4rem;

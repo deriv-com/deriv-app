@@ -35,7 +35,7 @@ const MT5AccountCard = ({
     const has_demo_banner = type.category === 'demo';
 
     return (
-        <div className='mt5-account-card'>
+        <div className={`mt5-account-card ${!is_logged_in ? 'mt5-account-card__logged-out' : ''}`}>
             {has_popular_banner && (
                 <div className='mt5-account-card__banner'>
                     <Localize i18n_default_text='Most popular' />

@@ -287,6 +287,12 @@ const BinarySocketBase = (() => {
 
     const p2pAdvertiserInfo = () => deriv_api.send({ p2p_advertiser_info: 1 });
 
+    const loginHistory = limit =>
+        deriv_api.send({
+            login_history: 1,
+            limit,
+        });
+
     // subscribe method export for P2P use only
     // so that subscribe remains private
     const p2pSubscribe = (request, cb) => subscribe(request, cb);
@@ -350,6 +356,7 @@ const BinarySocketBase = (() => {
         subscribeWebsiteStatus,
         tncApproval,
         transferBetweenAccounts,
+        loginHistory,
         closeAndOpenNewConnection,
     };
 })();

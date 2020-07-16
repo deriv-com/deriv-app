@@ -28,7 +28,13 @@ const Download = ({ tab, onClickDownloadTransaction, onClickDownloadJournal, is_
                         id='download-button'
                         is_disabled={is_clear_stat_disabled}
                         className='download__button'
-                        icon={<Icon icon='IcDownload' className='download__icon' />}
+                        icon={
+                            <Icon
+                                icon='IcDownload'
+                                color={is_clear_stat_disabled && 'disabled'}
+                                className='download__icon'
+                            />
+                        }
                         onClick={clickFunction}
                     />
                 </Popover>

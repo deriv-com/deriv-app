@@ -8,8 +8,8 @@ import {
     ToggleFullScreen,
     ToggleSettings,
     HelpCentre,
-    LiveChat,
 } from 'App/Components/Layout/Footer';
+import LiveChat from 'App/Components/Elements/live-chat.jsx';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
 

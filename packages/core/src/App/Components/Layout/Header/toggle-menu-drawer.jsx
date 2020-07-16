@@ -8,6 +8,7 @@ import { WS } from 'Services';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
+import LiveChat from '../../Elements/live-chat.jsx';
 
 const MenuLink = ({ link_to, icon, is_disabled, suffix_icon, text, onClickLink }) => (
     <React.Fragment>
@@ -173,6 +174,7 @@ class ToggleMenuDrawer extends React.Component {
                     enableApp={this.props.enableApp}
                     disableApp={this.props.disableApp}
                     title={localize('Menu')}
+                    livechat={<LiveChat is_mobile_drawer />}
                     height='100vh'
                     width='295px'
                 >

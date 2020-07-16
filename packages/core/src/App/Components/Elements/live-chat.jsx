@@ -2,10 +2,17 @@ import React from 'react';
 import { Popover, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
-// import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 
-const LiveChat = ({ email, is_logged_in, loginid, landing_company_shortcode, currency, residence }) => {
+const LiveChat = ({
+    email,
+    is_logged_in,
+    is_mobile_drawer,
+    loginid,
+    landing_company_shortcode,
+    currency,
+    residence,
+}) => {
     const [is_livechat_interactive, setLiveChatInteractive] = React.useState(false);
 
     React.useEffect(() => {
@@ -49,21 +56,35 @@ const LiveChat = ({ email, is_logged_in, loginid, landing_company_shortcode, cur
     return (
         <>
             {is_livechat_interactive && (
-                <Popover
-                    className='footer__link'
-                    classNameBubble='help-centre__tooltip'
-                    alignment='top'
-                    message={localize('Live chat')}
-                    id='gtm-deriv-livechat'
-                >
-                    <Icon
-                        icon='IcLiveChat'
-                        className='footer__icon'
-                        onClick={() => {
-                            window.LC_API.open_chat_window();
-                        }}
-                    />
-                </Popover>
+                <>
+                    {is_mobile_drawer ? (
+                        <div
+                            className='livechat'
+                            onClick={() => {
+                                window.LC_API.open_chat_window();
+                            }}
+                        >
+                            <Icon icon='IcLiveChat' className='livechat__icon' />
+                            <p className='livechat__title'>{localize('Live chat')}</p>
+                        </div>
+                    ) : (
+                        <Popover
+                            className='footer__link'
+                            classNameBubble='help-centre__tooltip'
+                            alignment='top'
+                            message={localize('Live chat')}
+                            id='gtm-deriv-livechat'
+                        >
+                            <Icon
+                                icon='IcLiveChat'
+                                className='footer__icon'
+                                onClick={() => {
+                                    window.LC_API.open_chat_window();
+                                }}
+                            />
+                        </Popover>
+                    )}
+                </>
             )}
         </>
     );

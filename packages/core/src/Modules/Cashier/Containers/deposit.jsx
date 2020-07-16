@@ -13,19 +13,11 @@ class Deposit extends React.Component {
     }
 
     render() {
-        const {
-            is_virtual,
-            error,
-            iframe_height,
-            iframe_url,
-            is_loading,
-            is_ask_uk_funds_protection,
-            standpoint,
-        } = this.props;
+        const { is_virtual, error, iframe_height, iframe_url, is_loading, standpoint } = this.props;
         if (is_virtual) {
             return <Virtual />;
         }
-        if (standpoint.iom && is_ask_uk_funds_protection) {
+        if (standpoint.iom && error.is_ask_uk_funds_protection) {
             return <FundsProtection />;
         }
         return (
@@ -45,7 +37,6 @@ Deposit.propTypes = {
     error: PropTypes.object,
     iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     iframe_url: PropTypes.string,
-    is_ask_uk_funds_protection: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
@@ -59,7 +50,6 @@ export default connect(({ client, modules }) => ({
     error: modules.cashier.config.deposit.error,
     iframe_height: modules.cashier.config.deposit.iframe_height,
     iframe_url: modules.cashier.config.deposit.iframe_url,
-    is_ask_uk_funds_protection: modules.cashier.config.deposit.error.is_ask_uk_funds_protection,
     is_loading: modules.cashier.is_loading,
     onMount: modules.cashier.onMount,
     setActiveTab: modules.cashier.setActiveTab,

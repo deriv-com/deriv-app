@@ -348,7 +348,9 @@ export default class CashierStore extends BaseStore {
                 this.setErrorMessage(error, null, true);
                 break;
             case 'ASK_UK_FUNDS_PROTECTION':
-                this.is_ask_uk_funds_protection = true;
+                this.config[this.active_container].error = {
+                    is_ask_uk_funds_protection: true,
+                };
                 break;
             case 'ASK_AUTHENTICATE':
                 // TODO: handle ask authentication
@@ -373,7 +375,9 @@ export default class CashierStore extends BaseStore {
             if (response.error) {
                 this.setErrorMessage(response.error);
             } else {
-                this.is_ask_uk_funds_protection = false;
+                this.config[this.active_container].error = {
+                    is_ask_uk_funds_protection: false,
+                };
             }
         });
     }

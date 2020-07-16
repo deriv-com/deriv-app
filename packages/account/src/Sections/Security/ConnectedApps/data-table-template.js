@@ -46,20 +46,22 @@ const oauth_apps_list_map = {
 
 const prepareConnectedAppsScopes = (permissions_list) => {
     const is_trading_information = permissions_list.includes('trading_information');
-    const oauth_apps_list = [];
-    permissions_list.forEach((permision, index) => {
-        if (permision !== 'trading_information') {
-            if (permissions_list.length - 1 !== index) {
-                oauth_apps_list.push(`${oauth_apps_list_map[permision]}, `);
-            } else {
-                oauth_apps_list.push(oauth_apps_list_map[permision]);
-            }
+    let oauth_apps_list = [];
+    if (is_trading_information) {
+        oauth_apps_list = permissions_list.filter((permission) => permission !== 'trading_information');
+        oauth_apps_list.push('trading_information');
+    } else {
+        oauth_apps_list = permissions_list;
+    }
+    const sorted_app_list = [];
+    oauth_apps_list.forEach((permision, index) => {
+        if (permissions_list.length - 1 !== index) {
+            sorted_app_list.push(`${oauth_apps_list_map[permision]}, `);
+        } else {
+            sorted_app_list.push(oauth_apps_list_map[permision]);
         }
     });
-    if (is_trading_information) {
-        oauth_apps_list.push(`${oauth_apps_list.pop()}, `, `${oauth_apps_list_map.trading_information}`);
-    }
-    return <div>{oauth_apps_list}</div>;
+    return <div>{sorted_app_list}</div>;
 };
 
 export default getConnectedAppsColumnsTemplate;

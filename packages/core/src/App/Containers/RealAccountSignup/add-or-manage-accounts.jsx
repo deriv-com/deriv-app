@@ -4,7 +4,7 @@ import React from 'react';
 import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, isDesktop, isMobile } from '@deriv/shared';
-
+import { website_name } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
@@ -65,10 +65,16 @@ class AddOrManageAccounts extends React.Component {
         this.manageOrChangeAccount(value, setSubmitting);
     };
 
-    render() {
+    get no_crypto_available() {
+        return this.props.available_crypto_currencies.length === 0;
+    }
+
+    get should_hide_crypto() {
         // TODO [deriv-eu] remove is_eu_enabled once released
-        const should_hide_crypto = this.props.is_eu_enabled && this.props.is_eu;
-        const no_crypto_available = this.props.available_crypto_currencies.length === 0;
+        return this.props.is_eu_enabled && this.props.is_eu;
+    }
+
+    render() {
         return (
             <ThemedScrollbars is_bypassed={isMobile()}>
                 <Div100vhContainer
@@ -76,17 +82,18 @@ class AddOrManageAccounts extends React.Component {
                     is_disabled={isDesktop()}
                     height_offset='40px'
                 >
-                    {!should_hide_crypto && (
+                    {!this.should_hide_crypto && (
                         <div
                             className={classNames('add-crypto-currency', {
-                                'account-wizard--disabled': no_crypto_available,
+                                'account-wizard--disabled': this.no_crypto_available,
                             })}
                         >
-                            {no_crypto_available && (
+                            {this.no_crypto_available && (
                                 <div className='account-wizard--disabled-message'>
                                     <p className='add-crypto-currency'>
                                         {localize(
-                                            'You already have an account for each of the cryptocurrencies available on Deriv.'
+                                            'You already have an account for each of the cryptocurrencies available on {{website_name}}.',
+                                            { website_name }
                                         )}
                                     </p>
                                 </div>

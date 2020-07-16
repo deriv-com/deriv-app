@@ -5,7 +5,7 @@ import { DesktopWrapper, MobileWrapper, Div100vhContainer, FormProgress } from '
 import { isDesktop, toMoment } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { makeCancelablePromise } from '_common/base/cancellable_promise';
+import { makeCancellablePromise } from '_common/base/cancellable_promise';
 
 import { getItems } from './account-wizard-form';
 
@@ -77,7 +77,7 @@ class AccountWizard extends React.Component {
     componentDidMount() {
         this.fetchFromStorage();
         this.props.fetchStatesList();
-        const { cancel, promise } = makeCancelablePromise(this.props.fetchResidenceList());
+        const { cancel, promise } = makeCancellablePromise(this.props.fetchResidenceList());
         this.cancel = cancel;
         promise
             .then(() => {

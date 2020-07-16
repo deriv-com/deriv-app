@@ -1,4 +1,4 @@
-export const makeCancelablePromise = listener => {
+export const makeCancellablePromise = listener => {
     let done = false;
     let cancel = () => (done = true);
     const promise = new Promise((resolve, reject) => {

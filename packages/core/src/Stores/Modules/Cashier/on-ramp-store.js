@@ -69,7 +69,7 @@ export default class OnRampStore extends BaseStore {
 
     @computed
     get is_onramp_tab_visible() {
-        return this.filtered_onramp_providers.length > 0;
+        return this.filtered_onramp_providers.length > 0 && !this.root_store.ui.is_mobile;
     }
 
     @computed

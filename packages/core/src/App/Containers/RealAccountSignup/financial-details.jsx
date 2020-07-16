@@ -6,6 +6,7 @@ import { localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
+import { screen_height_sm_threshold } from 'App/Containers/RealAccountSignup/helpers/constants';
 import {
     AccountTurnover,
     BinaryOptionsTradingExperience,
@@ -96,7 +97,7 @@ const TradingExperience = ({
 );
 
 const FinancialDetails = props => {
-    const padding_bottom = window.innerHeight < 930 ? '10rem' : '12rem';
+    const padding_bottom = window.innerHeight < screen_height_sm_threshold ? '10rem' : '12rem';
 
     const handleCancel = values => {
         props.onSave(props.index, values);

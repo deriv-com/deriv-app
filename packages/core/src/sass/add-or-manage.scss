@@ -31,12 +31,13 @@
     flex-direction: column;
     position: relative;
     flex-grow: 1;
-    width: 30rem;
+    width: min-content;
+    padding: 1rem;
 
     &__icon-area {
         display: flex;
         align-items: center;
-        width: 60%;
+        width: 82%;
         justify-content: space-between;
         position: relative;
         margin-top: 3rem;
@@ -117,7 +118,7 @@
         }
     }
     &__btn-area {
-        margin: 2rem 0 3rem;
+        margin: 2rem 0 1rem;
         width: 100%;
         display: flex;
         justify-content: center;
@@ -145,5 +146,6 @@
         justify-content: flex-start;
         flex-grow: unset;
         height: 33rem;
+        width: 100%;
     }
 }

@@ -347,6 +347,9 @@ class PersonalDetails extends React.Component {
                                                                     <Dropdown
                                                                         placeholder={localize('Account opening reason')}
                                                                         name={field.name}
+                                                                        disabled={this.props.disabled_items.includes(
+                                                                            'account_opening_reason'
+                                                                        )}
                                                                         is_alignment_top
                                                                         is_align_text_left
                                                                         list={this.props.account_opening_reason_list}

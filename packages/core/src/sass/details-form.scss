@@ -9,6 +9,9 @@
         margin: 1.2rem auto;
         width: 45%;
 
+        &--wide {
+            width: 45%;
+        }
         &-container {
             height: calc(100% - 76px);
             overflow: hidden;
@@ -100,10 +103,12 @@
     &__description {
         text-align: left;
         font-size: var(--text-size-xxs);
-        width: 40%;
         line-height: 1.8rem;
         margin: 1.6rem auto;
         color: var(--text-general);
+        @include desktop {
+            width: 40%;
+        }
 
         @include mobile {
             text-align: left;

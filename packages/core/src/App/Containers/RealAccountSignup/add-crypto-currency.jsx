@@ -116,6 +116,7 @@ class AddCryptoCurrency extends React.Component {
                                 <Hr />
                                 <RadioButtonGroup
                                     id='fiat_currency'
+                                    is_fiat
                                     className='currency-selector__radio-group'
                                     label={localize('Fiat currencies')}
                                     value={values.currency}

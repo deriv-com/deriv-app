@@ -18,6 +18,7 @@ import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
 
 import { LocalStore, State } from '_common/storage';
+import { isEuCountry } from '_common/utility';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
@@ -84,6 +85,24 @@ export default class ClientStore extends BaseStore {
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
+
+        when(
+            () => this.should_have_real_account,
+            () => {
+                this.root_store.ui.showAccountTypesModalForEuropean();
+                this.onRealAccountSignupEnd(() => {
+                    if (!this.has_any_real_account) {
+                        this.root_store.ui.showAccountTypesModalForEuropean();
+                    }
+
+                    return Promise.resolve();
+                });
+
+                if (!this.root_store.ui.is_real_acc_signup_on) {
+                    this.root_store.ui.toggleAccountTypesModal(true);
+                }
+            }
+        );
     }
 
     @computed
@@ -285,6 +304,12 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_age_verified() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'age_verification');
+    }
+
+    @computed
     get landing_company_shortcode() {
         if (this.accounts[this.loginid]) {
             return this.accounts[this.loginid].landing_company_shortcode;
@@ -338,12 +363,7 @@ export default class ClientStore extends BaseStore {
     // this is true when a user needs to have a active real account for trading
     @computed
     get should_have_real_account() {
-        return (
-            this.standpoint.iom &&
-            !this.has_any_real_account &&
-            this.residence === 'gb' &&
-            this.root_store.ui.is_real_acc_signup_on === false
-        );
+        return this.standpoint.iom && this.is_uk && !this.has_any_real_account;
     }
 
     // Shows all possible landing companies of user between all
@@ -430,6 +450,12 @@ export default class ClientStore extends BaseStore {
         return false;
     }
 
+    @computed({ keepAlive: true })
+    get is_eu_country() {
+        const country = this.website_status.clients_country;
+        if (country) return isEuCountry(country);
+        return country;
+    }
     /**
      * Store Values relevant to the loginid to local storage.
      *
@@ -1232,7 +1258,7 @@ export default class ClientStore extends BaseStore {
             Object.keys(obj_params).forEach(key => search_params.delete(key));
             search_params = search_params?.toString();
             const search_param_without_account = search_params ? `?${search_params}` : '/';
-            history.replaceState(null, null, search_param_without_account);
+            history.replaceState(null, null, `${search_param_without_account}${window.location.hash}`);
         }
 
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;

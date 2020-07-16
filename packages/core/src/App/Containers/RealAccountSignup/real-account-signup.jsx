@@ -98,10 +98,20 @@ class RealAccountSignup extends React.Component {
     }
 
     get modal_height() {
-        const { currency, has_real_account } = this.props;
-        if (!currency) return '688px'; // Set currency modal
-        if (has_real_account && currency) return '702px'; // Add or manage account modal
+        // TODO [deriv-eu] remove is_eu_enabled once eu is released.
+        const { currency, has_real_account, is_eu, is_eu_enabled } = this.props;
         if (this.active_modal_index === 3) return 'fit-content'; // Status dialog
+        if (!currency) return '688px'; // Set currency modal
+        if (has_real_account && currency) {
+            if (is_eu && is_eu_enabled && this.active_modal_index === 1) {
+                // Manage account
+                return '400px'; // Since crypto is disabled for EU clients, lower the height of modal
+            }
+            if (this.active_modal_index === 2) {
+                return 'auto';
+            }
+            return '702px'; // Add or manage account modal
+        }
         return '740px'; // Account wizard modal
     }
 
@@ -218,6 +228,7 @@ class RealAccountSignup extends React.Component {
                             'dc-modal__container_real-account-signup-modal--error': this.active_modal_index === 5,
                             'dc-modal__container_real-account-signup-modal--success':
                                 this.active_modal_index >= 2 && this.active_modal_index < 5,
+                            'dc-modal__container_real-account-signup-modal--loading': this.active_modal_index === 4,
                         })}
                         is_open={is_real_acc_signup_on}
                         has_close_icon={has_close_icon}
@@ -255,6 +266,8 @@ export default connect(({ ui, client, common }) => ({
     can_change_fiat_currency: client.can_change_fiat_currency,
     has_real_account: client.has_active_real_account,
     currency: client.currency,
+    is_eu: client.is_eu,
+    is_eu_enabled: ui.is_eu_enabled,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     real_account_signup_target: ui.real_account_signup_target,
     is_logged_in: client.is_logged_in,

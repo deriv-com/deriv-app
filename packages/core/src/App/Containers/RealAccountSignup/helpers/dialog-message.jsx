@@ -18,7 +18,7 @@ export const DialogMessage = ({ status = EXPERIAN.SUCCESS, landing_company_short
         switch (status) {
             case EXPERIAN.WARN:
                 message = (
-                    <Localize i18n_default_text="We couldn't verify your proof of address document. You can upload a new document to try again." />
+                    <Localize i18n_default_text='We were unable to verify your proof of address document. You can upload a new document to try again.' />
                 );
                 break;
             case EXPERIAN.DANGER:

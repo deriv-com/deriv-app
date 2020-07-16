@@ -143,7 +143,7 @@ const FinancialDetails = props => {
                                         height={height}
                                     >
                                         <div
-                                            className='details-form__elements'
+                                            className='details-form__elements  details-form__elements--wide'
                                             style={{ paddingBottom: isDesktop() ? padding_bottom : null }}
                                         >
                                             <FinancialInformation

@@ -9,13 +9,15 @@ const personal_details_config = ({ residence_list, account_settings }) => {
         return {};
     }
 
-    const disabled_items = [...Object.keys(account_settings).filter(value => !!value)];
+    const disabled_items = [
+        ...Object.keys(account_settings).filter(field_name => field_name !== 'account_opening_reason' && !!field_name),
+    ];
 
     return [
         {
             account_opening_reason: {
                 supported_in: ['iom', 'malta', 'maltainvest'],
-                default_value: '',
+                default_value: account_settings.account_opening_reason ?? '',
                 rules: [['req', localize('Account opening reason is required')]],
             },
             salutation: {
@@ -69,7 +71,7 @@ const personal_details_config = ({ residence_list, account_settings }) => {
                 rules: [['req', localize('Citizenship is required')]],
             },
             phone: {
-                supported_in: ['svg', 'iom', 'malta'],
+                supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
                 default_value: account_settings.phone ?? '',
                 rules: [
                     ['req', localize('Phone is required')],
@@ -147,10 +149,6 @@ export const personalDetailsConfig = ({ real_account_signup_target, residence_li
                 {
                     text: localize('Speculative'),
                     value: 'Speculative',
-                },
-                {
-                    text: localize('Peer-to-peer exchange'),
-                    value: 'Peer-to-peer exchange',
                 },
             ],
             salutation_list: [

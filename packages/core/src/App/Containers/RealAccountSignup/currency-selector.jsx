@@ -66,14 +66,16 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
 };
 
 // Radio group
-export const RadioButtonGroup = ({ label, className, children, is_title_enabled }) => {
+export const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fiat }) => {
     return (
         <div className={className}>
             {is_title_enabled && <h2 className={classNames(`${className}--is-header`)}>{label}</h2>}
             <div className='currency-list__items'>{children}</div>
-            <p className='currency-selector__description'>
-                <Localize i18n_default_text='You will not be able to change currency once you have made a deposit' />
-            </p>
+            {is_fiat && (
+                <p className='currency-selector__description'>
+                    <Localize i18n_default_text='You will not be able to change currency once you have made a deposit' />
+                </p>
+            )}
         </div>
     );
 };
@@ -176,6 +178,7 @@ class CurrencySelector extends React.Component {
                                             id='currency'
                                             className='currency-selector__radio-group'
                                             label={localize('Fiat currencies')}
+                                            is_fiat
                                             value={values.currency}
                                             error={errors.currency}
                                             touched={touched.currency}

@@ -34,7 +34,10 @@ export default class GTMStore extends BaseStore {
             const domain = url.hostname;
             const path = url.pathname;
 
-            if (/^(deriv.app|staging.deriv.app|localhost.binary.sx)$/.test(domain)) {
+            // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+            if (
+                /^(app.deriv.com|staging-app.deriv.com|deriv.app|staging.deriv.app|localhost.binary.sx)$/.test(domain)
+            ) {
                 if (path === 'bot') {
                     return 'DBot';
                 } else if (path === 'mt5') {

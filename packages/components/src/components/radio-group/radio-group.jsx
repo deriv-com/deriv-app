@@ -40,7 +40,7 @@ RadioGroup.propTypes = {
         })
     ),
     onToggle: PropTypes.func,
-    selected: PropTypes.oneOfType(PropTypes.bool, PropTypes.string),
+    selected: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 };
 
 export default RadioGroup;

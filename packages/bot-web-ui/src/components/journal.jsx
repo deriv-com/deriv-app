@@ -128,6 +128,7 @@ const Tools = ({ checked_filters, filters, filterMessage, is_filter_dialog_visib
     return (
         <>
             <div className='journal-tools__container'>
+                <Download tab='journal' />
                 <div ref={toggle_ref} className='journal-tools__container-filter' onClick={toggleFilterDialog}>
                     <span className='journal-tools__container-filter--label'>
                         <Localize i18n_default_text='Filters' />
@@ -191,7 +192,6 @@ const JournalLoader = () => (
 const Journal = ({ filtered_messages, contract_stage, is_stop_button_visible, ...props }) => {
     return (
         <div className='journal run-panel-tab__content'>
-            <Download tab='journal' />
             <Tools {...props} />
             <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 92px)'}>
                 <div className='journal__item-list'>

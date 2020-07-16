@@ -9,6 +9,7 @@ import { transaction_elements } from '../constants/transactions';
 import { connect } from '../stores/connect';
 import '../assets/sass/transactions.scss';
 import { contract_stages } from '../constants/contract-stage';
+import '../assets/sass/download.scss';
 
 class Transactions extends React.PureComponent {
     componentDidMount() {
@@ -23,7 +24,9 @@ class Transactions extends React.PureComponent {
         const { contract_stage, elements } = this.props;
         return (
             <div className='transactions run-panel-tab__content'>
-                <Download tab='transactions' />
+                <div className='download__container'>
+                    <Download tab='transactions' />
+                </div>
                 <div className='transactions__header'>
                     <span className='transactions__header-column transactions__header-spot'>
                         {localize('Entry/Exit spot')}

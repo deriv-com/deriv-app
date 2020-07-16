@@ -16,29 +16,27 @@ const Download = ({ tab, onClickDownloadTransaction, onClickDownloadJournal, is_
     }
     return (
         <DesktopWrapper>
-            <div className='download__container'>
-                <Popover
-                    className='run-panel__info'
-                    classNameBubble='run-panel__info--bubble'
-                    alignment='bottom'
-                    message={popover_message}
-                    zIndex={4}
-                >
-                    <Button
-                        id='download-button'
-                        is_disabled={is_clear_stat_disabled}
-                        className='download__button'
-                        icon={
-                            <Icon
-                                icon='IcDownload'
-                                color={is_clear_stat_disabled && 'disabled'}
-                                className='download__icon'
-                            />
-                        }
-                        onClick={clickFunction}
-                    />
-                </Popover>
-            </div>
+            <Popover
+                className='run-panel__info'
+                classNameBubble='run-panel__info--bubble'
+                alignment='bottom'
+                message={popover_message}
+                zIndex={4}
+            >
+                <Button
+                    id='download-button'
+                    is_disabled={is_clear_stat_disabled}
+                    className='download__button'
+                    icon={
+                        <Icon
+                            icon='IcDownload'
+                            color={is_clear_stat_disabled && 'disabled'}
+                            className='download__icon'
+                        />
+                    }
+                    onClick={clickFunction}
+                />
+            </Popover>
         </DesktopWrapper>
     );
 };

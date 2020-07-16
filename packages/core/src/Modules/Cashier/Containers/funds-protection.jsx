@@ -25,6 +25,6 @@ FundsProtection.propTypes = {
     submitFundsProtection: PropTypes.func,
 };
 
-export default connect(({ client }) => ({
-    submitFundsProtection: client.submitFundsProtection,
+export default connect(({ modules }) => ({
+    submitFundsProtection: modules.cashier.submitFundsProtection,
 }))(FundsProtection);

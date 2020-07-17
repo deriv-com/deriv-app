@@ -29,6 +29,7 @@ export default class RunPanelStore {
     @observable has_open_contract = false;
     @observable is_running = false;
     @observable is_drawer_open = true;
+    @observable is_dialog_open = false;
 
     // when error happens, if it is unrecoverable_errors we reset run-panel
     // we activate run-button and clear trade info and set the ContractStage to NOT_RUNNING
@@ -149,14 +150,9 @@ export default class RunPanelStore {
     // #endregion
 
     // #region Dialog
-    @computed
-    get is_dialog_open() {
-        return Object.entries(this.dialog_options).length > 0;
-    }
-
     @action.bound
     onCloseDialog() {
-        this.dialog_options = {};
+        this.is_dialog_open = false;
     }
 
     @action.bound
@@ -167,6 +163,7 @@ export default class RunPanelStore {
             title: localize('Please log in'),
             message: localize('You need to log in to run the bot.'),
         };
+        this.is_dialog_open = true;
     }
 
     @action.bound
@@ -177,6 +174,7 @@ export default class RunPanelStore {
             title: localize("DBot isn't quite ready for real accounts"),
             message: localize('Please switch to your demo account to run your DBot.'),
         };
+        this.is_dialog_open = true;
     }
 
     @action.bound
@@ -192,6 +190,7 @@ export default class RunPanelStore {
                 'This will clear all data in the summary, transactions, and journal panels. All counters will be reset to zero.'
             ),
         };
+        this.is_dialog_open = true;
     }
 
     @action.bound
@@ -202,6 +201,7 @@ export default class RunPanelStore {
             title: localize('Import error'),
             message: localize('This strategy is currently not compatible with DBot.'),
         };
+        this.is_dialog_open = true;
     }
     // #endregion
 

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Button, Div100vhContainer, Icon } from '@deriv/components';
 import React from 'react';
+import { Button, Div100vhContainer, Icon } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 

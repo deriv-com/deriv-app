@@ -1,13 +1,13 @@
 import classNames from 'classnames';
-import { Dropdown, ButtonToggle } from '@deriv/components';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Dropdown, ButtonToggle } from '@deriv/components';
+import { toMoment } from '@deriv/shared';
 import InputField from 'App/Components/Form/InputField';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { connect } from 'Stores/connect';
 import { hasIntradayDurationUnit } from 'Stores/Modules/Trading/Helpers/duration';
-import { toMoment } from '@deriv/shared';
 import TradingDatePicker from '../../DatePicker';
 import TradingTimePicker from '../../TimePicker';
 

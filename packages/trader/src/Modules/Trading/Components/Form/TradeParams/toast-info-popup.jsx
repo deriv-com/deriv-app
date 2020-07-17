@@ -1,6 +1,6 @@
-import { ToastError } from '@deriv/components';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ToastError } from '@deriv/components';
 import { connect } from 'Stores/connect';
 
 const InfoToastMessage = ({ portal_id, is_open, setToastErrorVisibility, message, timeout }) => {

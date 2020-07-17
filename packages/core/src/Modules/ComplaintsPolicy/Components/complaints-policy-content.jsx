@@ -208,13 +208,11 @@ const Content = ({ landing_company_shortcode }) => {
                             'We shall try to resolve your complaint within 15 business days. We will inform you of the outcome together with an explanation of our position and propose any remedial measures we intend to take.'
                         ),
                     },
+                    {
+                        title: localize('3.4. Your decision'),
+                        text: getYourDecisionText(landing_company_shortcode),
+                    },
                 ],
-            },
-        },
-        {
-            title: localize('4. Your decision'),
-            content: {
-                text: getYourDecisionText(landing_company_shortcode),
             },
         },
     ];

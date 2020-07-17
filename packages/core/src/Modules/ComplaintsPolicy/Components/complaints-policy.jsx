@@ -6,7 +6,7 @@ import { connect } from 'Stores/connect';
 import ComplaintsPolicyContent from './complaints-policy-content.jsx';
 import 'Sass/app/modules/complaints-policy.scss';
 
-const ComplaintsPolicy = ({ routeBackInApp, history, landing_companies }) => {
+const ComplaintsPolicy = ({ routeBackInApp, history, landing_companies, accounts, loginid }) => {
     const [is_visible, setVisibility] = React.useState(true);
 
     React.useEffect(() => {
@@ -15,8 +15,11 @@ const ComplaintsPolicy = ({ routeBackInApp, history, landing_companies }) => {
 
     const onClickClose = () => routeBackInApp(history);
 
+    const account = accounts[loginid];
+    const landing_company_real_shortcode = account?.is_virtual === 0 ? account?.landing_company_shortcode : null;
+
     const { gaming_company, financial_company } = landing_companies;
-    const shortcode = financial_company?.shortcode || gaming_company?.shortcode;
+    const shortcode = landing_company_real_shortcode || financial_company?.shortcode || gaming_company?.shortcode;
 
     return (
         <FadeWrapper is_visible={is_visible} keyname='complaints-policy-page-wrapper'>
@@ -32,4 +35,6 @@ const ComplaintsPolicy = ({ routeBackInApp, history, landing_companies }) => {
 export default connect(({ common, client }) => ({
     routeBackInApp: common.routeBackInApp,
     landing_companies: client.landing_companies,
+    accounts: client.accounts,
+    loginid: client.loginid,
 }))(withRouter(ComplaintsPolicy));

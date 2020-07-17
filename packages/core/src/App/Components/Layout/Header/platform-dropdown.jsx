@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Div100vhContainer, Icon } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import { routes, isDesktop, isMobile } from '@deriv/shared';
+
 import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 
@@ -40,7 +40,7 @@ class PlatformDropdown extends React.PureComponent {
 
         const platform_dropdown = (
             <div className='platform-dropdown'>
-                <Div100vhContainer className='platform-dropdown__list' height_offset='151px' is_disabled={isDesktop()}>
+                <Div100vhContainer className='platform-dropdown__list' height_offset='148px' is_disabled={isDesktop()}>
                     {platform_config.map((platform, idx) => (
                         <div key={idx} onClick={closeDrawer}>
                             {platform.link_to !== undefined ? (

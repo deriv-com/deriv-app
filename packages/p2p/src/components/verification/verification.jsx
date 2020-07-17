@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon, Checklist } from '@deriv/components';
+import { routes } from '@deriv/shared';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { Localize } from 'Components/i18next';
 import './verification.scss';
@@ -27,18 +28,17 @@ const Verification = () => {
 
     const items = [
         {
-            content: nickname ? (
-                <Localize i18n_default_text='Nickname: {{nickname}}' values={{ nickname }} />
-            ) : (
-                <Localize i18n_default_text='Choose your nickname.' />
-            ),
+            content: nickname ? <p>{nickname}</p> : <Localize i18n_default_text='Choose your nickname' />,
             status: nickname ? 'done' : 'action',
             onClick: nickname ? () => {} : toggleNicknamePopup,
         },
         {
             content: poiStatusText(poi_status),
             status: poi_status === 'verified' ? 'done' : 'action',
-            onClick: poi_status === 'verified' ? () => {} : () => (window.location.href = poi_url),
+            onClick:
+                poi_status === 'verified'
+                    ? () => {}
+                    : () => (window.location.href = `${poi_url}?ext_platform_url=${routes.cashier_p2p}`),
             is_disabled: poi_status !== 'verified' && !nickname,
         },
     ];
@@ -56,11 +56,11 @@ const Verification = () => {
             <Icon icon='IcCashierSendEmail' className='p2p-verification__icon' size={102} />
             <div className='p2p-verification__text'>
                 <div className='p2p-verification__text-title'>
-                    <Localize i18n_default_text='Want to post ads?' />
+                    <Localize i18n_default_text='Please register with us!' />
                 </div>
                 <div className='p2p-verification__text-description'>
                     <p>
-                        <Localize i18n_default_text='To use DP2P, you need to choose a display name (a nickname) and verify your identity.' />
+                        <Localize i18n_default_text='To use P2P, you need to choose a display name (a nickname) and verify your identity.' />
                     </p>
                 </div>
             </div>

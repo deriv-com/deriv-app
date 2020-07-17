@@ -6,14 +6,12 @@ import {
     DesktopWrapper,
     MobileWrapper,
     Div100vhContainer,
-    PageOverlay,
     FadeWrapper,
+    PageOverlay,
 } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
+import { routes, isCryptocurrency, getSelectedRoute, isMobile, isTouchDevice } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import { getSelectedRoute } from '@deriv/shared/utils/route';
-import { isMobile, isTouchDevice } from '@deriv/shared/utils/screen';
+
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/cashier.scss';
 
@@ -71,7 +69,8 @@ class Cashier extends React.Component {
                     (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible) &&
                     (route.path !== routes.cashier_p2p ||
-                        (this.props.is_p2p_visible && /(show_p2p|verification)/.test(this.props.location.hash)))
+                        (this.props.is_p2p_visible && /show_p2p/.test(this.props.location.hash))) &&
+                    (route.path !== routes.cashier_onramp || this.props.is_onramp_tab_visible)
                 ) {
                     options.push({
                         ...(route.path === routes.cashier_p2p && { count: this.props.p2p_notification_count }),
@@ -94,7 +93,7 @@ class Cashier extends React.Component {
             : null;
         const should_show_tab_headers_note =
             !this.props.is_virtual &&
-            !CurrencyUtils.isCryptocurrency(this.props.loggedin_currency) &&
+            !isCryptocurrency(this.props.loggedin_currency) &&
             (location.pathname.startsWith(routes.cashier_deposit) ||
                 location.pathname.startsWith(routes.cashier_withdrawal));
 
@@ -161,6 +160,7 @@ class Cashier extends React.Component {
 
 Cashier.propTypes = {
     history: PropTypes.object,
+    is_onramp_tab_visible: PropTypes.bool,
     is_p2p_visible: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
@@ -179,6 +179,7 @@ export default connect(({ client, common, modules, ui }) => ({
     tab_index: modules.cashier.cashier_route_tab_index,
     setTabIndex: modules.cashier.setCashierTabIndex,
     loggedin_currency: client.currency,
+    is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
     is_p2p_visible: modules.cashier.is_p2p_visible,
     is_virtual: client.is_virtual,
     is_visible: ui.is_cashier_visible,

@@ -1,12 +1,13 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import ObjectUtils from '@deriv/shared/utils/object';
-import { Tabs, Modal, Loading } from '@deriv/components';
+import { getPropertyValue, isProduction } from '@deriv/shared';
+import { Tabs, Modal } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
+import { orderToggleIndex } from './orders/order-info';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
@@ -37,7 +38,6 @@ class App extends React.Component {
         this.ws_subscriptions = {};
         this.list_item_limit = 20;
         this.state = {
-            poi_url: this.props.poi_url,
             active_index: 0,
             loginid: this.props.client.loginid,
             order_offset: 0,
@@ -47,12 +47,12 @@ class App extends React.Component {
             is_advertiser: false,
             is_restricted: false,
             show_popup: false,
+            order_table_type: orderToggleIndex.ACTIVE,
             chat_info: {
                 app_id: '',
                 user_id: '',
                 token: '',
             },
-            is_loading: true,
         };
     }
 
@@ -164,12 +164,9 @@ class App extends React.Component {
 
                     this.setState({
                         poi_status: identity.status,
-                        is_loading: false,
                     });
                 }
             });
-        } else {
-            this.setState({ is_loading: false });
         }
     };
 
@@ -180,16 +177,15 @@ class App extends React.Component {
             return;
         }
 
-        const user_id = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
-        const token = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_token']);
+        const user_id = getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
+        const token = getPropertyValue(p2p_advertiser_info, ['chat_token']);
 
         this.setChatInfo(user_id, token);
     };
 
     setChatInfo = (user_id, token) => {
         const chat_info = {
-            // This is using QA10 SendBird AppId, please change to production's SendBird AppId when we deploy to production.
-            app_id: '4E259BA5-C383-4624-89A6-8365E06D9D39',
+            app_id: isProduction() ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69' : '4E259BA5-C383-4624-89A6-8365E06D9D39',
             user_id,
             token,
         };
@@ -291,6 +287,10 @@ class App extends React.Component {
         }
     };
 
+    changeOrderToggle = value => {
+        this.setState({ order_table_type: value });
+    };
+
     render() {
         const {
             active_index,
@@ -302,8 +302,6 @@ class App extends React.Component {
             order_table_type,
             chat_info,
             show_popup,
-            is_loading,
-            poi_url,
             poi_status,
             is_restricted,
             nickname_error,
@@ -316,6 +314,7 @@ class App extends React.Component {
             setOrderId,
             should_show_verification,
             is_mobile,
+            poi_url,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -330,7 +329,6 @@ class App extends React.Component {
         return (
             <Dp2pProvider
                 value={{
-                    order_table_type,
                     currency,
                     local_currency_config,
                     residence,
@@ -343,13 +341,12 @@ class App extends React.Component {
                     setNickname: nickname => this.setState({ nickname }),
                     setChatInfo: this.setChatInfo,
                     is_restricted,
-                    email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
+                    email_domain: getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,
                     order_offset,
                     orders,
                     order_id,
                     setOrderId,
-                    poi_url,
                     poi_status,
                     nickname_error,
                     changeTab: this.handleTabClick,
@@ -358,9 +355,11 @@ class App extends React.Component {
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
                     getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId.bind(this),
-                    createAdvertiser: this.createAdvertiser.bind(this),
+                    order_table_type,
                     changeOrderToggle: this.changeOrderToggle,
+                    createAdvertiser: this.createAdvertiser.bind(this),
                     is_mobile,
+                    poi_url,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
@@ -385,7 +384,6 @@ class App extends React.Component {
                         </>
                     ) : (
                         <>
-                            {is_loading && <Loading is_fullscreen={false} />}
                             {should_show_verification && !this.state.is_advertiser && (
                                 <div
                                     className={classNames('p2p-cashier__verification', {

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { Checkbox, Popover } from '@deriv/components';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { getDecimalPlaces } from '@deriv/shared';
 import InputField from './input-field.jsx';
 
 const InputWithCheckbox = ({
@@ -67,7 +67,7 @@ const InputWithCheckbox = ({
             error_messages={error_messages}
             error_message_alignment={error_message_alignment}
             is_disabled={is_disabled ? 'disabled' : undefined}
-            fractional_digits={CurrencyUtils.getDecimalPlaces(currency)}
+            fractional_digits={getDecimalPlaces(currency)}
             id={`dt_${name}_input`}
             inline_prefix={is_single_currency ? currency : null}
             is_autocomplete_disabled

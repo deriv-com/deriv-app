@@ -1,4 +1,4 @@
-import { action, reaction } from 'mobx';
+import { action, reaction, computed, observable } from 'mobx';
 import crc32 from 'crc-32/crc32';
 import { isProduction, cloneObject } from '@deriv/shared';
 import { DBot } from '@deriv/bot-skeleton';
@@ -7,89 +7,90 @@ import { transaction_elements } from '../constants/transactions';
 export default class DataCollectionStore {
     constructor(root_store) {
         if (!isProduction()) {
-            return;
+            this.root_store = root_store;
+
+            reaction(
+                () => this.root_store.run_panel.is_running,
+                () => (this.root_store.run_panel.is_running ? this.trackRun() : undefined)
+            );
+            reaction(
+                () => this.root_store.transactions.elements,
+                elements => this.trackTransaction(elements)
+            );
         }
+    }
 
-        this.root_store = root_store;
-        this.endpoint = 'https://dbot-conf-dot-business-intelligence-240201.df.r.appspot.com/dbotconf';
-        this.transaction_ids = {};
-        this.strategy_hash = '';
-        this.strategy_hashes = {};
+    // Constants
+    IS_PENDING = false;
+    IS_PROCESSED = true;
 
-        // Constants
-        this.IS_PENDING = false;
-        this.IS_PROCESSED = true;
+    endpoint = 'https://dbot-conf-dot-business-intelligence-240201.df.r.appspot.com/dbotconf';
+    transaction_ids = {};
+    should_post_xml = true;
 
-        reaction(
-            () => this.root_store.run_panel.is_running,
-            () => (this.root_store.run_panel.is_running ? this.trackRun() : undefined)
-        );
-        reaction(
-            () => this.root_store.transactions.elements,
-            elements => this.trackTransaction(elements)
-        );
+    @observable strategy_content = '';
+
+    @computed
+    get strategy_hash() {
+        return this.getHash(this.strategy_content);
     }
 
     @action.bound
     async trackRun() {
-        const xml_dom = this.cleanXmlFile(Blockly.Xml.workspaceToDom(DBot.workspace, /* opt_noId */ true));
+        const xml_dom = this.cleanXmlDom(Blockly.Xml.workspaceToDom(DBot.workspace, /* opt_noId */ true));
         const xml_string = Blockly.Xml.domToText(xml_dom);
+        const xml_hash = this.getHash(xml_string);
 
-        this.setStrategyHash(this.getHash(xml_string));
-        this.setRunId(this.generateRunId(xml_string));
-
-        if (!Object.keys(this.strategy_hashes).includes(this.strategy_hash)) {
-            this.strategy_hashes[this.strategy_hash] = this.IS_PENDING;
-
-            const pako = await import(/* webpackChunkName: "dbot-collection" */ 'pako');
-            const body = pako.deflate(xml_string, { to: 'string' });
-
-            fetch(`${this.endpoint}/${this.run_id}/null/${this.strategy_hash}`, {
-                body,
-                headers: {
-                    'Content-Encoding': 'gzip',
-                    'Content-Type': 'application/xml',
-                    'Content-Length': body.length,
-                },
-                method: 'POST',
-                mode: 'cors',
-            })
-                .then(() => {
-                    this.strategy_hashes[this.strategy_hash] = this.IS_PROCESSED;
-                })
-                .catch(() => {
-                    delete this.strategy_hashes[this.strategy_hash];
-                });
+        if (this.strategy_hash !== xml_hash) {
+            this.should_post_xml = true;
+            this.setStrategyContent(xml_string);
         }
+
+        // Keep track of run_id for analysis.
+        // A different run_id doesn't necessarily mean a different strategy.
+        this.setRunId(this.getHash(xml_hash + this.root_store.core.client.loginid + Math.random()));
     }
 
     @action.bound
     async trackTransaction(elements) {
+        const pako = await import(/* webpackChunkName: "dbot-collection" */ 'pako');
         const contracts = elements.filter(element => element.type === transaction_elements.CONTRACT);
         const contract = contracts[0]; // Most recent contract.
 
-        if (contract) {
-            const { buy: transaction_id } = contract.data.transaction_ids;
+        if (!contract) {
+            return;
+        }
 
-            if (!Object.keys(this.transaction_ids).includes(transaction_id.toString())) {
-                this.transaction_ids[transaction_id] = this.IS_PENDING;
+        const { buy: transaction_id } = contract.data.transaction_ids;
+        const is_known_transaction = Object.keys(this.transaction_ids).includes(transaction_id.toString());
 
-                fetch(`${this.endpoint}/${this.run_id}/${transaction_id}/${this.strategy_hash}`, {
-                    body: '',
+        if (!is_known_transaction) {
+            this.transaction_ids[transaction_id] = this.IS_PENDING;
+
+            const getPayload = () => {
+                const body = pako.deflate(this.strategy_content, { to: 'string' });
+                return {
+                    body,
                     headers: {
+                        'Content-Encoding': 'gzip',
                         'Content-Type': 'application/xml',
-                        'Content-Length': 0,
+                        'Content-Length': body.length,
                     },
-                    method: 'POST',
-                    mode: 'cors',
+                };
+            };
+
+            fetch(`${this.endpoint}/${this.run_id}/${transaction_id}/${this.strategy_hash}`, {
+                ...(this.should_post_xml ? getPayload() : {}),
+                method: 'POST',
+                mode: 'cors',
+            })
+                .then(() => {
+                    this.should_post_xml = false;
+                    this.transaction_ids[transaction_id] = this.IS_PROCESSED;
                 })
-                    .then(() => {
-                        this.transaction_ids[transaction_id] = this.IS_PROCESSED;
-                    })
-                    .catch(() => {
-                        delete this.transaction_ids[transaction_id];
-                    });
-            }
+                .catch(() => {
+                    delete this.transaction_ids[transaction_id];
+                });
         }
     }
 
@@ -99,11 +100,11 @@ export default class DataCollectionStore {
     }
 
     @action.bound
-    setStrategyHash(strategy_hash) {
-        this.strategy_hash = strategy_hash;
+    setStrategyContent(strategy_content) {
+        this.strategy_content = strategy_content;
     }
 
-    cleanXmlFile = xml_dom => {
+    cleanXmlDom = xml_dom => {
         const useless_attributes = ['x', 'y'];
         const updated_dom = cloneObject(xml_dom);
         const removeAttributesRecursively = element => {
@@ -116,8 +117,4 @@ export default class DataCollectionStore {
     };
 
     getHash = string => btoa(crc32.str(string));
-
-    generateRunId = xml_string => {
-        return this.getHash(xml_string + this.root_store.core.client.loginid + Math.random());
-    };
 }

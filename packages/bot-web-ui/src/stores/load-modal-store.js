@@ -3,6 +3,10 @@ import { localize } from '@deriv/translations';
 import { load, config, save_types, getSavedWorkspaces, removeExistingWorkspace } from '@deriv/bot-skeleton';
 
 export default class LoadModalStore {
+    constructor(root_store) {
+        this.root_store = root_store;
+    }
+
     @observable is_load_modal_open = false;
     @observable active_index = 0;
     @observable recent_files = [];
@@ -14,10 +18,6 @@ export default class LoadModalStore {
     recent_workspace;
     local_workspace;
     drop_zone;
-
-    constructor(root_store) {
-        this.root_store = root_store;
-    }
 
     @action.bound
     toggleLoadModal() {
@@ -72,7 +72,7 @@ export default class LoadModalStore {
     /** --------- Recent Tab Start --------- */
     @action.bound
     onMount() {
-        if (this.recent_files.length && this.active_index === 0) {
+        if (this.recent_files.length && this.active_index === 0 && !this.root_store.ui.is_mobile) {
             this.selected_file_id = this.recent_files[0].id;
             this.previewWorkspace(this.selected_file_id);
         }

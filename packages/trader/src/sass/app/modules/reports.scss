@@ -429,57 +429,72 @@ $side-padding: 1.2em;
         margin-top: 0.8rem;
 
         &-multiplier {
+            /* postcss-bem-linter: ignore */
             & .data-list__item {
                 background-color: var(--general-section-1);
                 border-radius: $BORDER_RADIUS;
                 padding: 0;
 
+                /* postcss-bem-linter: ignore */
                 &--wrapper {
                     padding: 0 1.6rem;
                 }
+                /* postcss-bem-linter: ignore */
                 & .progress-slider--completed {
                     display: none;
                 }
+                /* postcss-bem-linter: ignore */
                 & .positions-drawer-card {
+                    /* postcss-bem-linter: ignore */
                     &__wrapper {
                         background-color: var(--general-section-1);
                         max-width: unset;
                         margin: 0;
                     }
+                    /* postcss-bem-linter: ignore */
                     &__grid-underlying-trade {
                         border-bottom: 1px solid var(--general-main-1);
                     }
+                    /* postcss-bem-linter: ignore */
                     &__grid-items {
                         grid-template-columns: 1fr 1fr 1fr;
                         margin-top: 0.4rem;
                         margin-bottom: 0.4rem;
                     }
+                    /* postcss-bem-linter: ignore */
                     &__item {
+                        /* postcss-bem-linter: ignore */
                         &:nth-child(1) {
                             order: 0;
                         }
+                        /* postcss-bem-linter: ignore */
                         &:nth-child(3),
                         &:nth-child(5) {
                             order: 2;
                         }
+                        /* postcss-bem-linter: ignore */
                         &:nth-child(6) {
                             order: 6;
                         }
                     }
+                    /* postcss-bem-linter: ignore */
                     &__total-profit-loss {
                         flex-direction: row;
                         padding-top: 0.8rem;
                         border-color: var(--general-main-1);
 
+                        /* postcss-bem-linter: ignore */
                         &-label {
                             margin-left: auto;
                         }
+                        /* postcss-bem-linter: ignore */
                         &-value {
                             margin-right: auto;
                             padding-left: 0.8rem;
                         }
                     }
                 }
+                /* postcss-bem-linter: ignore */
                 & .positions-drawer-dialog-toggle {
                     top: 51px;
                     width: 124px;
@@ -502,10 +517,12 @@ $side-padding: 1.2em;
                     }
                 }
             }
+            /* postcss-bem-linter: ignore */
             & .open-positions__data-list-body {
                 padding: 0;
                 height: calc(100% - 48px);
             }
+            /* postcss-bem-linter: ignore */
             & .open-positions__data-list-footer {
                 height: 48px;
                 min-height: 48px;
@@ -513,11 +530,13 @@ $side-padding: 1.2em;
                 align-items: center;
                 padding: 0;
 
+                /* postcss-bem-linter: ignore */
                 &--content {
                     padding: 0 1.6rem;
                     display: grid;
                     grid-template-columns: 0.7fr 1fr;
 
+                    /* postcss-bem-linter: ignore */
                     .profit {
                         align-items: flex-start;
                     }

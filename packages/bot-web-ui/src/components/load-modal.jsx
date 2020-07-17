@@ -224,6 +224,8 @@ const LoadModal = ({
     onUnmount,
     setActiveTabIndex,
     toggleLoadModal,
+    rerender_tabs,
+    rerenderTabs,
     ...props
 }) => (
     <Modal
@@ -235,9 +237,17 @@ const LoadModal = ({
         onMount={onMount}
         onUnmount={onUnmount}
         elements_to_ignore={[document.querySelector('.injectionDiv')]}
+        onModalRendered={rerenderTabs}
     >
         <div className='load__container'>
-            <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top fit_content header_fit_content>
+            <Tabs
+                active_index={active_index}
+                onTabItemClick={setActiveTabIndex}
+                delay_render={rerender_tabs}
+                top
+                fit_content
+                header_fit_content
+            >
                 <div label={localize('Recent')}>
                     <Recent {...props} />
                 </div>
@@ -276,6 +286,8 @@ LoadModal.propTypes = {
     selected_file_id: PropTypes.string,
     setActiveTabIndex: PropTypes.func,
     toggleLoadModal: PropTypes.func,
+    rerenderTabs: PropTypes.func,
+    rerender_tabs: PropTypes.bool,
 };
 
 export default connect(({ load_modal, google_drive }) => ({
@@ -302,4 +314,6 @@ export default connect(({ load_modal, google_drive }) => ({
     selected_file_id: load_modal.selected_file_id,
     setActiveTabIndex: load_modal.setActiveTabIndex,
     toggleLoadModal: load_modal.toggleLoadModal,
+    rerenderTabs: load_modal.rerenderTabs,
+    rerender_tabs: load_modal.rerender_tabs,
 }))(LoadModal);

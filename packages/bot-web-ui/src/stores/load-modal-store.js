@@ -10,6 +10,7 @@ export default class LoadModalStore {
     @observable is_explanation_expand = false;
     @observable loaded_local_file = null;
     @observable is_open_button_loading = false;
+    @observable rerender_tabs = false;
     recent_workspace;
     local_workspace;
     drop_zone;
@@ -25,6 +26,11 @@ export default class LoadModalStore {
         if (this.is_load_modal_open) {
             this.recent_files = getSavedWorkspaces() || [];
         }
+    }
+
+    @action.bound
+    rerenderTabs() {
+        this.rerender_tabs = true;
     }
 
     @action.bound

@@ -85,6 +85,7 @@ export default class LoadModalStore {
         }
         this.selected_file_id = null;
         this.setActiveTabIndex(0);
+        this.should_rerender_tabs = false;
     }
 
     @action.bound

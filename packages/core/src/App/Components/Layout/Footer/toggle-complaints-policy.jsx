@@ -5,9 +5,12 @@ import { routes } from '@deriv/shared';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 
-const ToggleComplaintsPolicyWrapper = ({ accounts } = {}) => {
-    const has_real_account = Object.values(accounts).some(account => !account.is_virtual);
-    if (!has_real_account) return null;
+const ToggleComplaintsPolicyWrapper = ({ landing_companies }) => {
+    if (!landing_companies) return null;
+
+    const { gaming_company, financial_company } = landing_companies;
+    const shortcode = financial_company?.shortcode || gaming_company?.shortcode;
+    if (!shortcode) return null;
 
     return (
         <React.Fragment>
@@ -21,7 +24,7 @@ const ToggleComplaintsPolicyWrapper = ({ accounts } = {}) => {
 };
 
 const ToggleComplaintsPolicy = connect(({ client }) => ({
-    accounts: client.accounts,
+    landing_companies: client.landing_companies,
 }))(ToggleComplaintsPolicyWrapper);
 
 export { ToggleComplaintsPolicy };

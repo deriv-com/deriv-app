@@ -6,7 +6,7 @@ import { connect } from 'Stores/connect';
 import ComplaintsPolicyContent from './complaints-policy-content.jsx';
 import 'Sass/app/modules/complaints-policy.scss';
 
-const ComplaintsPolicy = ({ routeBackInApp, history, accounts }) => {
+const ComplaintsPolicy = ({ routeBackInApp, history, landing_companies }) => {
     const [is_visible, setVisibility] = React.useState(true);
 
     React.useEffect(() => {
@@ -15,13 +15,14 @@ const ComplaintsPolicy = ({ routeBackInApp, history, accounts }) => {
 
     const onClickClose = () => routeBackInApp(history);
 
-    const real_account = Object.values(accounts).find(account => !account.is_virtual);
+    const { gaming_company, financial_company } = landing_companies;
+    const shortcode = financial_company?.shortcode || gaming_company?.shortcode;
 
     return (
         <FadeWrapper is_visible={is_visible} keyname='complaints-policy-page-wrapper'>
             <PageOverlay header={localize('Complaints policy')} onClickClose={onClickClose}>
                 <Div100vhContainer className='complaints-policy__container' height_offset='80px'>
-                    <ComplaintsPolicyContent landing_company_shortcode={real_account.landing_company_shortcode} />
+                    <ComplaintsPolicyContent landing_company_shortcode={shortcode} />
                 </Div100vhContainer>
             </PageOverlay>
         </FadeWrapper>
@@ -30,5 +31,5 @@ const ComplaintsPolicy = ({ routeBackInApp, history, accounts }) => {
 
 export default connect(({ common, client }) => ({
     routeBackInApp: common.routeBackInApp,
-    accounts: client.accounts,
+    landing_companies: client.landing_companies,
 }))(withRouter(ComplaintsPolicy));

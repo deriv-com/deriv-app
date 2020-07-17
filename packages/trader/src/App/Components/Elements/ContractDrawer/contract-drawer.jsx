@@ -8,7 +8,6 @@ import ContractAudit from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getDurationPeriod, getDurationTime, getDurationUnitText } from 'Stores/Modules/Portfolio/Helpers/details';
 import { getEndTime, isUserSold } from 'Stores/Modules/Contract/Helpers/logic';
-import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import ContractDrawerCard from './contract-drawer-card.jsx';
 import { SwipeableContractAudit } from './swipeable-components.jsx';
 
@@ -34,7 +33,7 @@ class ContractDrawer extends React.Component {
     }
 
     getBodyContent() {
-        const { contract_type, currency, exit_tick_display_value, is_sold } = this.props.contract_info;
+        const { currency, exit_tick_display_value, is_sold } = this.props.contract_info;
 
         const {
             contract_info,
@@ -42,13 +41,13 @@ class ContractDrawer extends React.Component {
             contract_update_history,
             is_sell_requested,
             is_dark_theme,
+            is_multiplier,
             onClickCancel,
             onClickSell,
             status,
             toggleHistoryTab,
         } = this.props;
 
-        const is_multiplier = isMultiplierContract(contract_type);
         const exit_spot = isUserSold(contract_info) && !is_multiplier ? '-' : exit_tick_display_value;
 
         const contract_audit = (
@@ -104,11 +103,10 @@ class ContractDrawer extends React.Component {
         // For non-binary contract, the status is always null, so we check for is_expired in contract_info
         const fallback_result = this.props.contract_info.is_expired;
 
-        const { contract_type, exit_tick_display_value, is_sold } = this.props.contract_info;
+        const { exit_tick_display_value, is_sold } = this.props.contract_info;
 
-        const { contract_info, contract_update_history, is_dark_theme, toggleHistoryTab } = this.props;
+        const { contract_info, contract_update_history, is_dark_theme, is_multiplier, toggleHistoryTab } = this.props;
 
-        const is_multiplier = isMultiplierContract(contract_type);
         const exit_spot = isUserSold(contract_info) && !is_multiplier ? '-' : exit_tick_display_value;
 
         const contract_audit = (

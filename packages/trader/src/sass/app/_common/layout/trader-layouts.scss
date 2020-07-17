@@ -199,11 +199,15 @@ $FLOATING_HEADER_HEIGHT: 41px;
                             &__body--loss {
                                 padding-left: 0.4rem;
                             }
-                            &:nth-child(3) {
-                                order: 8;
-                            }
-                            &:nth-child(4) {
+                            &:nth-child(1) {
                                 order: 0;
+                            }
+                            &:nth-child(3),
+                            &:nth-child(5) {
+                                order: 2;
+                            }
+                            &:nth-child(6) {
+                                order: 6;
                             }
                             @media only screen and (max-width: 320px) {
                                 &__header {
@@ -385,6 +389,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
     flex-direction: column;
     height: 202px;
     position: relative;
+    flex: 1;
 
     &__content-loader {
         position: absolute;

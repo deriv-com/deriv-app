@@ -426,7 +426,104 @@ $side-padding: 1.2em;
 
     @include mobile {
         flex: 1;
+        margin-top: 0.8rem;
 
+        &-multiplier {
+            & .data-list__item {
+                background-color: var(--general-section-1);
+                border-radius: $BORDER_RADIUS;
+                padding: 0;
+
+                &--wrapper {
+                    padding: 0 1.6rem;
+                }
+                & .progress-slider--completed {
+                    display: none;
+                }
+                & .positions-drawer-card {
+                    &__wrapper {
+                        background-color: var(--general-section-1);
+                        max-width: unset;
+                        margin: 0;
+                    }
+                    &__grid-underlying-trade {
+                        border-bottom: 1px solid var(--general-main-1);
+                    }
+                    &__grid-items {
+                        grid-template-columns: 1fr 1fr 1fr;
+                        margin-top: 0.4rem;
+                        margin-bottom: 0.4rem;
+                    }
+                    &__item {
+                        &:nth-child(1) {
+                            order: 0;
+                        }
+                        &:nth-child(3),
+                        &:nth-child(5) {
+                            order: 2;
+                        }
+                        &:nth-child(6) {
+                            order: 6;
+                        }
+                    }
+                    &__total-profit-loss {
+                        flex-direction: row;
+                        padding-top: 0.8rem;
+                        border-color: var(--general-main-1);
+
+                        &-label {
+                            margin-left: auto;
+                        }
+                        &-value {
+                            margin-right: auto;
+                            padding-left: 0.8rem;
+                        }
+                    }
+                }
+                & .positions-drawer-dialog-toggle {
+                    top: 51px;
+                    width: 124px;
+                    right: 9px;
+                    border-color: var(--border-hover);
+
+                    @media only screen and (max-width: 380px) {
+                        width: 107px;
+                        height: 79px;
+                        right: 10px;
+                    }
+                    @media only screen and (max-width: 320px) {
+                        top: 52px;
+                        width: 98px;
+                        height: 80px;
+                    }
+                    @media (max-width: 320px) and (max-height: 480px) {
+                        top: 50px;
+                        height: 80px;
+                    }
+                }
+            }
+            & .open-positions__data-list-body {
+                padding: 0;
+                height: calc(100% - 48px);
+            }
+            & .open-positions__data-list-footer {
+                height: 48px;
+                min-height: 48px;
+                font-weight: bold;
+                align-items: center;
+                padding: 0;
+
+                &--content {
+                    padding: 0 1.6rem;
+                    display: grid;
+                    grid-template-columns: 0.7fr 1fr;
+
+                    .profit {
+                        align-items: flex-start;
+                    }
+                }
+            }
+        }
         &__data-list-body {
             height: calc(100% - 95px);
             padding: 0 2.4rem;
@@ -440,7 +537,7 @@ $side-padding: 1.2em;
             min-height: 95px;
             font-weight: bold;
             align-items: flex-start;
-            padding: 1.6rem 4rem 0px;
+            padding: 0.8rem 4rem 0 1rem;
 
             &--title {
                 font-size: 1.4rem;

@@ -68,6 +68,7 @@ export const setLimitOrderBarriers = ({ barriers, contract_type, contract_info =
  * @param {object} contract_info - proposal_open_contract response
  */
 export const getLimitOrderAmount = limit_order => {
+    if (!limit_order) return { stop_loss: 0, take_profit: 0 };
     const {
         stop_loss: { order_amount: stop_loss_order_amount } = {},
         take_profit: { order_amount: take_profit_order_amount } = {},

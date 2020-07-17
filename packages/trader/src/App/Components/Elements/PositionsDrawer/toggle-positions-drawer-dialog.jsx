@@ -19,7 +19,8 @@ class TogglePositionsDrawerDialog extends React.Component {
         this.dialog_ref = React.createRef();
     }
 
-    toggleDialog = () => {
+    toggleDialog = e => {
+        e.preventDefault();
         if (this.props.is_valid_to_cancel) return;
 
         this.setState(
@@ -93,7 +94,6 @@ class TogglePositionsDrawerDialog extends React.Component {
                     )}
                 </div>
                 <MobileWrapper>
-                    {/* TODO: Remove below if redundant */}
                     <MobileDialog
                         portal_element_id='modal_root'
                         visible={this.state.is_visible}

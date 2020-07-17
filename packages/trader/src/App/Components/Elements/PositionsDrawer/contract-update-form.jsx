@@ -86,9 +86,9 @@ class ContractUpdateForm extends React.Component {
         }
     };
 
-    onClick = () => {
+    onClick = e => {
         this.props.updateLimitOrder(this.props.contract_id);
-        this.props.toggleDialog();
+        this.props.toggleDialog(e);
     };
 
     render() {

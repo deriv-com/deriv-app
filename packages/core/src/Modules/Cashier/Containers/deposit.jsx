@@ -5,6 +5,7 @@ import CashierContainer from '../Components/cashier-container.jsx';
 import Error from '../Components/Error/error.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
 import FundsProtection from '../Components/funds-protection.jsx';
+import MaxTurnover from '../Components/max-turnover-form.jsx';
 
 class Deposit extends React.Component {
     componentDidMount() {
@@ -17,8 +18,11 @@ class Deposit extends React.Component {
         if (is_virtual) {
             return <Virtual />;
         }
-        if (standpoint.iom && error.is_ask_uk_funds_protection) {
+        if (error.is_ask_uk_funds_protection) {
             return <FundsProtection />;
+        }
+        if (error.is_self_exclusion_max_turnover_set) {
+            return <MaxTurnover />;
         }
         return (
             <React.Fragment>

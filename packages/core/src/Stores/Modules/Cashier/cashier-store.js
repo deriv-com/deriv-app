@@ -373,16 +373,10 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    submitFundsProtection() {
-        WS.send({ ukgc_funds_protection: 1, tnc_approval: 1 }).then(response => {
-            if (response.error) {
-                this.setErrorMessage(response.error);
-            } else {
-                this.config[this.active_container].error = {
-                    is_ask_uk_funds_protection: false,
-                };
-            }
-        });
+    setErrorConfig(config_name, value) {
+        this.config[this.active_container].error = {
+            [config_name]: value,
+        };
     }
 
     @action.bound

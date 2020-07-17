@@ -116,6 +116,17 @@ export const clientNotifications = (ui = {}, client = {}) => {
             ),
             type: 'danger',
         },
+        max_turnover_limit_not_set: {
+            key: 'max_turnover_limit_not_set',
+            header: localize('Remove deposit limits'),
+            message: (
+                <Localize
+                    i18n_default_text='Please set your <0>30-day turnover limit</0> to remove deposit limits.'
+                    components={[<BinaryLink key={0} className='link' to={routes.cashier_deposit} />]}
+                />
+            ),
+            type: 'danger',
+        },
         mf_retail: {
             ...(isMobile() && {
                 action: {
@@ -136,24 +147,6 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 />
             ),
             type: 'danger',
-        },
-        financial_limit: {
-            key: 'financial_limit',
-            header: localize('Remove deposit limits'),
-            message: (
-                <Localize
-                    i18n_default_text='Please set your <0>30-day turnover limit</0> to remove deposit limits.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            target='_blank'
-                            href={urlFor('user/security/self_exclusionws', { legacy: true })}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'warning',
         },
         risk: {
             action: {
@@ -394,13 +387,15 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
         mt5_withdrawal_locked,
         document_needs_action,
         unwelcome,
-        ukrts_max_turnover_limit_not_set,
         professional,
+        max_turnover_limit_not_set,
     } = getStatusValidations(status);
 
     addVerificationNotifications(identity, document, addNotificationMessage);
 
     const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
+    const should_show_max_turnover = client.landing_company_shortcode === 'iom' && max_turnover_limit_not_set;
+
     const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
     const has_risk_assessment = getRiskAssessment(account_status);
     const needs_poa =
@@ -434,18 +429,15 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     }
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
     if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
-    if (unwelcome) addNotificationMessage(clientNotifications().unwelcome);
+    if (unwelcome && !should_show_max_turnover) addNotificationMessage(clientNotifications().unwelcome);
     if (is_mf_retail) addNotificationMessage(clientNotifications().mf_retail);
 
-    if (ukrts_max_turnover_limit_not_set) {
-        addNotificationMessage(clientNotifications().financial_limit);
-    }
     if (has_risk_assessment) addNotificationMessage(clientNotifications().risk);
     if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
     if (needs_authentication || prompt_client_to_authenticate) {
         addNotificationMessage(clientNotifications().authenticate);
     }
-
+    if (should_show_max_turnover) addNotificationMessage(clientNotifications().max_turnover_limit_not_set);
     return {
         has_risk_assessment,
     };

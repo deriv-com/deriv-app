@@ -5,19 +5,20 @@ import { hasCorrectDecimalPlaces, getDecimalPlaces } from '@deriv/shared';
 import { Button, Input } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { WS } from 'Services';
 
-const MaxTurnoverForm = ({ submitMaxTurnover }) => {
+const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
     const initial_values = {
         max_30day_turnover: '',
     };
 
-    validateFields = values => {
-        const { currency } = this.props;
+    const validateFields = values => {
+        const errors = {};
         const is_number = /^\d+(\.\d+)?$/;
         const max_number = 9999999999999;
 
-        const required_message = localize('Please enter a max 30 days turnover.');
-        const valid_number_message = localize('Should be a valid number');
+        const required_message = localize('Please enter max 30 days turnover.');
+        const valid_number_message = localize('Should be valid number');
         const max_number_message = localize('Reached maximum number of digits');
         const max_decimal_message = (
             <Localize
@@ -26,49 +27,78 @@ const MaxTurnoverForm = ({ submitMaxTurnover }) => {
             />
         );
 
-        if (values.max_30day_turnover) {
+        if (!values.max_30day_turnover) {
+            errors.max_30day_turnover = required_message;
+        } else if (!is_number.test(values.max_30day_turnover)) {
+            errors.max_30day_turnover = valid_number_message;
+        } else if (+values.max_30day_turnover > max_number) {
+            errors.max_30day_turnover = max_number_message;
+        } else if (!hasCorrectDecimalPlaces(currency, values.max_30day_turnover)) {
+            errors.max_30day_turnover = max_decimal_message;
         }
+
+        return errors;
+    };
+
+    const handleSubmit = (values, { setSubmitting, setStatus }) => {
+        setSubmitting(true);
+        WS.send({ set_self_exclusion: 1, max_30day_turnover: values.max_30day_turnover }).then(response => {
+            if (response.error) {
+                setStatus(response.error);
+            } else {
+                setErrorConfig('is_self_exclusion_max_turnover_set', false);
+                onMount();
+            }
+            setSubmitting(false);
+        });
     };
 
     return (
         <div className='max-turnover'>
-            <Formik initialValues={initial_values} onSubmit={this.handleSubmit} validate={this.validateFields}>
-                {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting, setFieldValue }) => (
-                    <Field name='max_30day_turnover'>
-                        {({ field }) => (
-                            <Input
-                                {...field}
-                                data-lpignore='true'
-                                type='text'
-                                className='api-token__input'
-                                label={localize('Token name')}
-                                value={values.token_name}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                hint={localize('Length of token name must be between 2 and 32 characters.')}
-                                required
-                                error={touched.token_name && errors.token_name}
-                            />
-                        )}
-                    </Field>
-                )}
-            </Formik>
-            <h2 className='funds-protection__title'>{localize('Set limits')}</h2>
-            <p className='funds-protection__desc'>
+            <h2 className='max-turnover__title'>{localize('Set limits')}</h2>
+            <p className='max-turnover__desc'>
                 {localize('Please set 30 days maximum total stake limits before deposit')}
             </p>
 
-            <Button primary large onClick={submitFundsProtection}>
-                {localize('Set limit')}
-            </Button>
+            <Formik initialValues={initial_values} onSubmit={handleSubmit} validate={validateFields}>
+                {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting, dirty, status }) => (
+                    <Form>
+                        <Field name='max_30day_turnover'>
+                            {({ field }) => (
+                                <Input
+                                    {...field}
+                                    data-lpignore='true'
+                                    type='text'
+                                    className='max-turnover__input'
+                                    label={localize('30 days max total stake') + ` (${currency})`}
+                                    value={values.max_30day_turnover}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    hint={localize('Limits your max stake for 30 days for all deriv platforms')}
+                                    required
+                                    error={touched.max_30day_turnover && errors.max_30day_turnover}
+                                />
+                            )}
+                        </Field>
+                        <p className='max-turnover__error'>{status}</p>
+                        <Button disabled={!dirty || !isValid || isSubmitting} primary large type='submit'>
+                            {localize('Set limit')}
+                        </Button>
+                    </Form>
+                )}
+            </Formik>
         </div>
     );
 };
 
 MaxTurnoverForm.propTypes = {
-    submitFundsProtection: PropTypes.func,
+    currency: PropTypes.string,
+    onMount: PropTypes.func,
+    setErrorConfig: PropTypes.func,
 };
 
-export default connect(({ modules }) => ({
-    submitFundsProtection: modules.cashier.submitFundsProtection,
+export default connect(({ client, modules }) => ({
+    currency: client.currency,
+    onMount: modules.cashier.onMount,
+    setErrorConfig: modules.cashier.setErrorConfig,
 }))(MaxTurnoverForm);

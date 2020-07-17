@@ -1,10 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Formik, Form } from 'formik';
 import { Icon, Button } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { WS } from 'Services';
 
-const FundsProtection = ({ submitFundsProtection }) => {
+const FundsProtection = ({ onMount, setErrorConfig }) => {
+    const handleSubmit = ({ setSubmitting, setStatus }) => {
+        setSubmitting(true);
+        WS.send({ ukgc_funds_protection: 1, tnc_approval: 1 }).then(response => {
+            if (response.error) {
+                setStatus(response.error);
+            } else {
+                setErrorConfig('is_ask_uk_funds_protection', false);
+                onMount();
+            }
+            setSubmitting(false);
+        });
+    };
     return (
         <div className='funds-protection'>
             <Icon icon='IcMoneyTransfer' className='funds-protection__icon' />
@@ -26,17 +40,26 @@ const FundsProtection = ({ submitFundsProtection }) => {
                     />
                 }
             </p>
-            <Button primary large onClick={submitFundsProtection}>
-                {localize('Deposit now')}
-            </Button>
+            <Formik onSubmit={handleSubmit}>
+                {({ isSubmitting, status }) => (
+                    <Form>
+                        <p className='funds-protection__error'>{status.error}</p>
+                        <Button disabled={isSubmitting} primary large type='submit'>
+                            {localize('Deposit now')}
+                        </Button>
+                    </Form>
+                )}
+            </Formik>
         </div>
     );
 };
 
 FundsProtection.propTypes = {
-    submitFundsProtection: PropTypes.func,
+    onMount: PropTypes.func,
+    setErrorConfig: PropTypes.func,
 };
 
 export default connect(({ modules }) => ({
-    submitFundsProtection: modules.cashier.submitFundsProtection,
+    setErrorConfig: modules.cashier.setErrorConfig,
+    onMount: modules.cashier.onMount,
 }))(FundsProtection);

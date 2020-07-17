@@ -3,9 +3,11 @@ import { Icon, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { BinaryLink } from 'App/Components/Routes';
+import { connect } from 'Stores/connect';
 
-const ToggleComplaintsPolicy = ({ landing_company_shortcode } = {}) => {
-    if (!landing_company_shortcode) return null;
+const ToggleComplaintsPolicyWrapper = ({ accounts } = {}) => {
+    const has_real_account = Object.values(accounts).some(account => !account.is_virtual);
+    if (!has_real_account) return null;
 
     return (
         <React.Fragment>
@@ -17,5 +19,9 @@ const ToggleComplaintsPolicy = ({ landing_company_shortcode } = {}) => {
         </React.Fragment>
     );
 };
+
+const ToggleComplaintsPolicy = connect(({ client }) => ({
+    accounts: client.accounts,
+}))(ToggleComplaintsPolicyWrapper);
 
 export { ToggleComplaintsPolicy };

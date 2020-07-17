@@ -6,7 +6,7 @@ import { WS } from 'Services';
 
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
-import { website_domain } from 'App/Constants/app-config';
+import { website_name } from 'App/Constants/app-config';
 import { LocalStore, State } from '_common/storage';
 
 // TODO: Update links to app_2 links when components are done.
@@ -33,7 +33,7 @@ export const clientNotifications = (ui = {}) => {
                 <Localize
                     i18n_default_text='You have opted to be excluded from {{website_domain}} until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
                     values={{
-                        website_domain,
+                        website_domain: website_name,
                         exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
                         interpolation: { escapeValue: false },
                     }}

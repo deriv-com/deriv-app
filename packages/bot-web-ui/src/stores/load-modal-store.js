@@ -102,8 +102,6 @@ export default class LoadModalStore {
                 readOnly: true,
                 scrollbars: true,
             });
-        } else {
-            this.recent_workspace.clear();
         }
 
         load({ block_string: xml_file, drop_event: {}, workspace: this.recent_workspace });

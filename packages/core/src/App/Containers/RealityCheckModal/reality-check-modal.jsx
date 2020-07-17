@@ -77,11 +77,6 @@ const RealityCheckModal = withRouter(
             setVisibilityRealityCheck(0);
         };
 
-        const logout = () => {
-            logoutClient();
-            setVisibilityRealityCheck(0);
-        };
-
         // if user has seen the brief once and set
         // the initial reality check interval
         // we can show the summary from now on
@@ -95,7 +90,7 @@ const RealityCheckModal = withRouter(
                     openStatement={openStatement}
                     validateForm={validateForm}
                     onSubmit={onSubmit}
-                    logout={logout}
+                    logout={logoutClient}
                     reality_check_duration={reality_check_duration}
                     server_time={server_time}
                     IntervalField={IntervalField}
@@ -111,7 +106,7 @@ const RealityCheckModal = withRouter(
                 openStatement={openStatement}
                 validateForm={validateForm}
                 onSubmit={onSubmit}
-                logout={logout}
+                logout={logoutClient}
                 IntervalField={IntervalField}
             />
         );

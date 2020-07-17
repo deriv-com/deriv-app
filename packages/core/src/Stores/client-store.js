@@ -1048,7 +1048,7 @@ export default class ClientStore extends BaseStore {
         });
         this.root_store.ui.removeAllNotificationMessages();
         this.syncWithSmartTrader(this.loginid, this.accounts);
-        this.setRealityCheckDuration(undefined);
+        this.cleanupRealityCheck();
     }
 
     @action.bound
@@ -1472,18 +1472,24 @@ export default class ClientStore extends BaseStore {
     setRealityCheckDuration(duration) {
         this.reality_check_dur = +duration;
         this.clearRealityCheckTimeout();
-        if (duration) {
-            // store in localstorage to keep track of across tabs/on refresh
-            LocalStore.set('reality_check_duration', +duration);
-            this.reality_check_timeout = setTimeout(() => {
-                // set reality_check_timeout to undefined
-                this.clearRealityCheckTimeout();
-                // after this duration passes, show the summary pop up
-                this.setVisibilityRealityCheck(1);
-            }, +duration * 60 * 1000);
-        } else {
-            LocalStore.remove('reality_check_duration');
-        }
+        // store in localstorage to keep track of across tabs/on refresh
+        LocalStore.set('reality_check_duration', +duration);
+        this.reality_check_timeout = setTimeout(() => {
+            // set reality_check_timeout to undefined
+            this.clearRealityCheckTimeout();
+            // after this duration passes, show the summary pop up
+            this.setVisibilityRealityCheck(1);
+        }, +duration * 60 * 1000);
+    }
+
+    @action.bound
+    cleanupRealityCheck() {
+        this.has_reality_check = false;
+        this.is_reality_check_dismissed = undefined;
+        this.reality_check_dur = undefined;
+        this.clearRealityCheckTimeout();
+        LocalStore.remove('reality_check_duration');
+        LocalStore.remove('reality_check_dismissed');
     }
 }
 /* eslint-enable */

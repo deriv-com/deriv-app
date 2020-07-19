@@ -106,7 +106,12 @@ class PersonalDetails extends React.Component {
                                                 <RadioGroup
                                                     className='dc-radio__input'
                                                     name='salutation'
-                                                    items={this.props.salutation_list}
+                                                    items={this.props.salutation_list.map(item => {
+                                                        if (this.props.disabled_items.includes('salutation')) {
+                                                            item.disabled = true;
+                                                        }
+                                                        return item;
+                                                    })}
                                                     selected={values.salutation}
                                                     onToggle={e => {
                                                         e.persist();

@@ -88,6 +88,8 @@
         color: var(--text-general);
         @include desktop {
             width: 40%;
+            display: flex;
+            flex-direction: column;
         }
 
         @include mobile {

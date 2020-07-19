@@ -39,9 +39,8 @@
             margin: 1.6rem 0 0.8rem;
         }
         p {
-            @include typeface(--paragraph-center-normal-black);
+            @include typeface(--paragraph-center-normal-prominent);
             text-transform: none;
-            color: var(--text-prominent);
             width: 80%;
             margin-bottom: 2.4rem;
         }

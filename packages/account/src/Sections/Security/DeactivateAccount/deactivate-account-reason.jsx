@@ -72,7 +72,7 @@ const getMT5AccountDisplay = (group) => {
     let display_text = localize('MT5');
     if (/svg$/.test(value)) {
         display_text = localize('Synthetic');
-    } else if (/vanuatu/.test(value) || /svg_standard/.test(value)) {
+    } else if (/vanuatu/.test(value) || /svg_(standard|financial)/.test(value)) {
         display_text = localize('Financial');
     } else if (/labuan/.test(value)) {
         display_text = localize('Financial STP');
@@ -87,51 +87,84 @@ const AccountHasBalanceOrOpenPositions = ({
     client_accounts,
     onBackClick,
 }) => {
-    const mt5_accounts = [];
-    mt5_with_balance_id.length != 0 &&
-        mt5_with_balance_id.forEach((id) =>
-            mt5_login_list.forEach((account_obj) => account_obj.login === id && mt5_accounts.push(account_obj))
-        );
-    const mt5_with_balance_id = Object.keys(accounts_with_balance_or_open_positions.balance).filter(
-        (account_id) => !accounts_with_balance_or_open_positions[account_id].currency
-    );
-    const accounts_with_open_positions = Object.keys(accounts_with_balance_or_open_positions).map((open_position_id) =>
-        client_accounts.filter((account) => account.loginid === open_position_id)
-    );
+    const deriv_accounts_open_positions = [];
+    const deriv_accounts_with_balance = [];
+    const mt5_accounts_id = [];
+    const mt5_accounts_with_balance_or_open_positions = [];
+
+    accounts_with_balance_or_open_positions.hasOwnProperty('open_positions') &&
+        Object.keys(accounts_with_balance_or_open_positions.open_positions).forEach((account_name) => {
+            if (!accounts_with_balance_or_open_positions.open_positions[account_name].hasOwnProperty('total')) {
+                // accounts without [total] are deriv accounts.
+                const deriv_account_with_open_position = client_accounts.find(
+                    (client_account) => client_account.loginid === account_name
+                );
+                deriv_account_with_open_position &&
+                    deriv_accounts_open_positions.push(deriv_account_with_open_position);
+            } else {
+                // accounts with [total] are mt5 accounts.
+                // const mt5_account_with_open_position = mt5_login_list.find((account_obj) => account_obj.login === account_name);
+                // mt5_account_with_open_position && mt5_accounts_with_balance_or_open_positions.push(mt5_account_with_open_position);
+                mt5_accounts_id.push(account_name);
+            }
+        });
+    accounts_with_balance_or_open_positions.hasOwnProperty('balance') &&
+        Object.keys(accounts_with_balance_or_open_positions.balance).forEach((account_name) => {
+            const is_deriv_account = client_accounts.find((client_account) => client_account.loginid === account_name);
+            if (is_deriv_account) {
+                const deriv_account = accounts_with_balance_or_open_positions.balance[account_name];
+                deriv_account.id = account_name;
+                deriv_accounts_with_balance.push(deriv_account);
+            } else {
+                // const mt5_account_with_balance = mt5_login_list.find((account_obj) => account_obj.login === account_name);
+                // mt5_account_with_balance && mt5_accounts_with_balance_or_open_positions.push(mt5_account_with_balance);
+                mt5_accounts_id.push(account_name);
+            }
+        });
+    [...new Set(mt5_accounts_id)].forEach((account_name) => {
+        const mt5_account_with_balance = mt5_login_list.find((account_obj) => account_obj.login === account_name);
+        mt5_account_with_balance && mt5_accounts_with_balance_or_open_positions.push(mt5_account_with_balance);
+    });
+    console.log({ mt5_accounts_with_balance_or_open_positions });
     return (
         <React.Fragment>
+            <div className='have-open-positions'>
+                <p className='have-open-positions__title'>
+                    {localize('You have open positions in these Deriv accounts:')}
+                </p>
+                {deriv_accounts_open_positions.map((account) => (
+                    <div key={account.loginid} className='have-open-positions__accounts-wrapper'>
+                        <Icon icon={`IcCurrency-${account.title.toLowerCase()}`} size={24} />
+                        <div className='have-open-positions__accounts-data'>
+                            <span className='have-open-positions__accounts-currency'>{account.title}</span>
+                            <span className='have-open-positions__accounts-loginid'>{account.loginid}</span>
+                        </div>
+                    </div>
+                ))}
+            </div>
             <div className='existing-account-has-balance'>
                 <p className='existing-account-has-balance__action'>
                     {localize('You have funds in these Deriv accounts:')}
                 </p>
-                {Object.keys(accounts_with_balance_or_open_positions).map((account_id) => (
-                    <div key={account_id}>
-                        {accounts_with_balance_or_open_positions[account_id].currency && (
+                {deriv_accounts_with_balance.map((account) => (
+                    <div key={account.id}>
+                        {account.currency && (
                             <div className='existing-account-has-balance__container'>
                                 <div className='existing-account-has-balance__account-details'>
                                     <div className='existing-account-has-balance__account-details__icon'>
-                                        <Icon
-                                            icon={`IcCurrency-${accounts_with_balance_or_open_positions[
-                                                account_id
-                                            ].currency.toLowerCase()}`}
-                                            size={24}
-                                        />
+                                        <Icon icon={`IcCurrency-${account.currency.toLowerCase()}`} size={24} />
                                     </div>
                                     <div className='existing-account-has-balance__balance'>
                                         <span className='existing-account-has-balance__balance--currency'>
-                                            {accounts_with_balance_or_open_positions[account_id].currency}
+                                            {account.currency}
                                         </span>
-                                        <span className='existing-account-has-balance__balance--id'>{account_id}</span>
+                                        <span className='existing-account-has-balance__balance--id'>{account.id}</span>
                                     </div>
                                 </div>
                                 <div className='existing-account-has-balance__money'>
                                     <Money
-                                        currency={accounts_with_balance_or_open_positions[account_id].currency}
-                                        amount={CurrencyUtils.formatMoney(
-                                            accounts_with_balance_or_open_positions[account_id].currency,
-                                            accounts_with_balance_or_open_positions[account_id].balance,
-                                            true
-                                        )}
+                                        currency={account.currency}
+                                        amount={CurrencyUtils.formatMoney(account.currency, account.balance, true)}
                                         should_format={false}
                                     />
                                 </div>
@@ -139,7 +172,9 @@ const AccountHasBalanceOrOpenPositions = ({
                         )}
                     </div>
                 ))}
-                {mt5_accounts.map((account) => (
+            </div>
+            <div>
+                {mt5_accounts_with_balance_or_open_positions.map((account) => (
                     <div key={account.login} className='existing-account-has-balance__container'>
                         <div className='existing-account-has-balance__account-details'>
                             <div className='existing-account-has-balance__container__account-details__icon'>
@@ -161,27 +196,10 @@ const AccountHasBalanceOrOpenPositions = ({
                         </div>
                     </div>
                 ))}
-                <Button className='existing-account-has-balance__button' primary onClick={() => onBackClick()}>
-                    {localize('OK')}
-                </Button>
             </div>
-            <div className='have-open-positions'>
-                <p className='have-open-positions__title'>
-                    {localize('You have open positions in these Deriv accounts:')}
-                </p>
-                {accounts_with_open_positions.map((account) => (
-                    <div key={account[0].loginid} className='have-open-positions__accounts-wrapper'>
-                        <Icon icon={`IcCurrency-${account[0].title.toLowerCase()}`} size={24} />
-                        <div className='have-open-positions__accounts-data'>
-                            <span className='have-open-positions__accounts-currency'>{account[0].title}</span>
-                            <span className='have-open-positions__accounts-loginid'>{account[0].loginid}</span>
-                        </div>
-                    </div>
-                ))}
-                <Button className='have-open-positions__accounts-button' primary onClick={() => onBackClick()}>
-                    {localize('OK')}
-                </Button>
-            </div>
+            <Button className='existing-account-has-balance__button' primary onClick={() => onBackClick()}>
+                {localize('OK')}
+            </Button>
         </React.Fragment>
     );
 };
@@ -263,12 +281,13 @@ class DeactivateAccountReason extends React.Component {
         if (account_closure_response.account_closure === 1) {
             window.location.href = '/account-deactivated';
             return;
+        } else {
+            this.setState({
+                which_modal_should_render: account_closure_response.error.code,
+                accounts: account_closure_response.error.details,
+                is_modal_open: true,
+            });
         }
-        this.setState({
-            which_modal_should_render: account_closure_response.error.code,
-            accounts: account_closure_response.error.details.accounts,
-            is_modal_open: true,
-        });
     };
     render() {
         return this.state.is_loading ? (

@@ -323,7 +323,7 @@ export default class RunPanelStore {
     }
 
     @action.bound
-    switchToJournal = () => {
+    switchToJournal() {
         const { journal } = this.root_store;
         journal.journal_filters.push(message_types.ERROR);
         this.setActiveTabIndex(2);

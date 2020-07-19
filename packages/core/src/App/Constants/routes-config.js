@@ -96,7 +96,7 @@ const modules = [
                     {
                         path: routes.self_exclusion,
                         component: Account,
-                        title: localize('Two-factor authentication'),
+                        title: localize('Self exclusion'),
                     },
                     {
                         path: routes.account_limits,

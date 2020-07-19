@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { ContractCard } from '@deriv/components';
 import { getContractPath, isMultiplierContract } from '@deriv/shared';
-import CardFooter from './positions-drawer-card-footer.jsx';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
+import CardFooter from './positions-drawer-card-footer.jsx';
 
 const PositionsDrawerCard = ({
     className,

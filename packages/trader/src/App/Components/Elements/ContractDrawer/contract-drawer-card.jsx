@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv/components';
+import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
 import CardFooter from './contract-drawer-card-footer.jsx';
-import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 
 const ContractDrawerCard = ({
     contract_info,

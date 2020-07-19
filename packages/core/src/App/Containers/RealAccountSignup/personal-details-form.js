@@ -89,7 +89,7 @@ const personal_details_config = ({ residence_list, account_settings }) => {
                 default_value: account_settings.tax_identification_number ?? '',
                 supported_in: ['maltainvest'],
                 rules: [
-                    ['req', localize('Tax identification number is required')],
+                    ['req', localize('Tax Identification Number is required')],
                     [
                         (value, options, { tax_residence }) => {
                             return !!tax_residence;

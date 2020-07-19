@@ -314,6 +314,10 @@
         color: var(--text-prominent);
         text-align: center;
     }
+    &__sub-title {
+        font-size: var(--text-size-xxs);
+        font-weight: normal;
+    }
     @include tablet {
         form {
             display: grid;

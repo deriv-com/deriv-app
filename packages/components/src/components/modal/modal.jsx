@@ -53,6 +53,8 @@ const ModalElement = ({
         };
     }, []);
 
+    const rendered_title = typeof renderTitle === 'function' ? renderTitle() : null;
+
     return ReactDOM.createPortal(
         <div
             ref={wrapper_ref}
@@ -69,19 +71,19 @@ const ModalElement = ({
                 width: width || 'auto',
             }}
         >
-            {(header || title || renderTitle) && (
+            {(header || title || rendered_title) && (
                 <div
                     className={classNames('dc-modal-header', {
                         [`dc-modal-header--${className}`]: className,
                     })}
                 >
-                    {renderTitle && (
+                    {rendered_title && (
                         <h3
                             className={classNames('dc-modal-header__title', {
                                 [`dc-modal-header__title--${className}`]: className,
                             })}
                         >
-                            {renderTitle()}
+                            {rendered_title}
                         </h3>
                     )}
                     {title && (

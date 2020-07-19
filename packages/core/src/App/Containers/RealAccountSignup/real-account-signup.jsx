@@ -214,7 +214,9 @@ class RealAccountSignup extends React.Component {
         const { title: Title, body: ModalContent } = is_logged_in
             ? this.state.modal_content[this.active_modal_index]
             : {
-                  title: () => this.state.modal_content[this.active_modal_index].title,
+                  title: this.state.modal_content[this.active_modal_index].title
+                      ? () => this.state.modal_content[this.active_modal_index].title
+                      : null,
                   body: ModalLoginPrompt,
               };
         const has_close_icon = this.active_modal_index < 2 || this.active_modal_index === 5;

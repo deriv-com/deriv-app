@@ -1,6 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { Button } from '@deriv/components';
+import { platform_header } from '@deriv/shared';
 import '../assets/sass/notify-item.scss';
 
 export const switch_account_notification = {
@@ -29,7 +30,7 @@ export const journalError = clickFunction => {
         ),
         type: 'danger',
         is_persistent: true,
-        platform: ['DBot'],
+        platform: [platform_header.DBot],
         is_disposable: true,
     };
 };

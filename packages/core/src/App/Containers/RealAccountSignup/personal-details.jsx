@@ -333,6 +333,7 @@ class PersonalDetails extends React.Component {
                                                             label={localize(
                                                                 'I hereby confirm that the tax information I provided is true and complete. I will also inform Deriv Investments (Europe) Ltd. about any changes to this information.'
                                                             )}
+                                                            withTabIndex='0'
                                                         />
                                                     )}
                                                 </React.Fragment>

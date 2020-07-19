@@ -1,14 +1,28 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { getCurrentBinaryDomain } from './../../../../../../../shared/src/utils/config/config';
 
 const RedirectNoticeModal = () => {
     const [dialog_status, setDialogStatus] = React.useState(false);
     const [external_link, setExternalLink] = React.useState('');
-    function extractHostname(url) {
-        const hostname = url.indexOf('//') > -1 ? url.split('/')[2] : url.split('/')[0];
-        return hostname.split(':')[0].split('?')[0];
-    }
+
+    const isThirdPartyLink = href => {
+        let destination;
+        try {
+            destination = new URL(href);
+        } catch (e) {
+            return false;
+        }
+        return (
+            !!destination.host &&
+            !new RegExp(`^.*\\.${getCurrentBinaryDomain() || 'binary\\.com'}$`).test(destination.host) && // destination host is not binary subdomain
+            !new RegExp('^.*\\.binary\\.bot$').test(destination.host) && // destination host is not binary subdomain
+            !/www.(betonmarkets|xodds).com/.test(destination.host) && // destination host is not binary old domain
+            !/deriv.(app|com)/.test(destination.host) && // destination host is not deriv
+            window.location.host !== destination.host
+        );
+    };
     const onCancelDialog = () => {
         setDialogStatus(false);
     };
@@ -19,7 +33,7 @@ const RedirectNoticeModal = () => {
 
     React.useEffect(() => {
         document.addEventListener('click', function(e) {
-            if (e.target.href && e.view.location.host !== extractHostname(e.target.href)) {
+            if (isThirdPartyLink(e.target.href)) {
                 setExternalLink(e.target.href);
                 e.preventDefault();
                 setDialogStatus(true);

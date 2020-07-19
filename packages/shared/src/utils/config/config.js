@@ -13,11 +13,15 @@ export const domain_app_ids = {
     // these domains as supported "production domains"
     'deriv.app': 16929, // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
     'app.deriv.com': 16929,
+    'binary.com': 1,
 };
 const binary_desktop_app_id = 14473;
 
 export const getCurrentProductionDomain = () =>
     !/^staging\./.test(window.location.hostname) &&
+    Object.keys(domain_app_ids).find(domain => new RegExp(`.${domain}$`, 'i').test(window.location.hostname));
+
+export const getCurrentBinaryDomain = () =>
     Object.keys(domain_app_ids).find(domain => new RegExp(`.${domain}$`, 'i').test(window.location.hostname));
 
 export const isProduction = () => {

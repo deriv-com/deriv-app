@@ -62,9 +62,12 @@ export default class RunPanelStore {
             return;
         }
         await self_exclusion.checkRestriction();
-        if (self_exclusion.is_restricted) {
+        if (!self_exclusion.should_bot_run) {
+            self_exclusion.setIsRestricted(true);
             return;
         }
+        self_exclusion.setIsRestricted(false);
+
         this.registerBotListeners();
 
         if (!this.dbot.shouldRunBot()) {
@@ -92,11 +95,9 @@ export default class RunPanelStore {
 
     @action.bound
     onStopButtonClick() {
-        const { self_exclusion } = this.root_store;
         const { ui } = this.root_store.core;
         this.dbot.stopBot();
         ui.setPromptHandler(false);
-        self_exclusion.resetSelfExclusion();
 
         if (this.error_type) {
             // when user click stop button when there is a error but bot is retrying
@@ -234,7 +235,9 @@ export default class RunPanelStore {
         document.dispatchEvent(ignore_new_version);
         this.is_stop_button_disabled = false;
         const { self_exclusion } = this.root_store;
-        if (self_exclusion.run_limit !== '') {
+        this.has_open_contract = true;
+
+        if (self_exclusion.should_bot_run && self_exclusion.run_limit !== -1) {
             self_exclusion.run_limit -= 1;
             if (self_exclusion.run_limit < 0) {
                 this.onStopButtonClick();
@@ -252,8 +255,8 @@ export default class RunPanelStore {
             this.setContractStage(contract_stages.NOT_RUNNING);
             ui.setAccountSwitcherDisabledMessage(false);
             RunPanelStore.unregisterBotListeners();
+            self_exclusion.resetSelfExclusion();
         };
-
         if (this.error_type === error_types.RECOVERABLE_ERRORS) {
             // Bot should indicate it started in below cases:
             // - When error happens it's a recoverable error
@@ -265,13 +268,11 @@ export default class RunPanelStore {
                 this.setContractStage(contract_stages.PURCHASE_SENT);
             } else {
                 indicateBotStopped();
-                self_exclusion.resetSelfExclusion();
             }
         } else if (this.error_type === error_types.UNRECOVERABLE_ERRORS) {
             // Bot should indicate it stopped in below cases:
             // - When error happens and it's an unrecoverable error
             indicateBotStopped();
-            self_exclusion.resetSelfExclusion();
         } else if (this.has_open_contract) {
             // Bot should indicate the contract is closed in below cases:
             // - When bot was running and an error happens
@@ -280,6 +281,7 @@ export default class RunPanelStore {
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
             ui.setAccountSwitcherDisabledMessage(false);
             RunPanelStore.unregisterBotListeners();
+            self_exclusion.resetSelfExclusion();
         }
 
         this.has_open_contract = false;

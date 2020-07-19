@@ -324,7 +324,7 @@ export default class RunPanelStore {
 
     @action.bound
     switchToJournal() {
-        const { journal } = this.root_store;
+        const { journal, ui } = this.root_store;
         journal.journal_filters.push(message_types.ERROR);
         this.setActiveTabIndex(2);
         this.root_store.ui.toggleNotificationsModal();

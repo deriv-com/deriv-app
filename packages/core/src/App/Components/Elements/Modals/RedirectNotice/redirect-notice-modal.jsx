@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getCurrentBinaryDomain } from './../../../../../../../shared/src/utils/config/config';
+import { getCurrentBinaryDomain } from '@deriv/shared';
 
 const RedirectNoticeModal = () => {
     const [dialog_status, setDialogStatus] = React.useState(false);

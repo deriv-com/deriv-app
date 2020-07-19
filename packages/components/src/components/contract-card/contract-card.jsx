@@ -12,11 +12,11 @@ import DesktopWrapper from '../desktop-wrapper';
 
 const ContractCard = ({
     card_footer,
-    card_labels,
     className,
     contract_info,
     contract_update,
     currency,
+    getCardLabels,
     getContractPath,
     getContractTypeDisplay,
     id,
@@ -50,9 +50,9 @@ const ContractCard = ({
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}
+            getCardLabels={getCardLabels}
             is_multiplier={is_multiplier}
             status={status}
-            card_labels={card_labels}
             server_time={server_time}
         />
     );
@@ -69,13 +69,13 @@ const ContractCard = ({
     const contract_el = (
         <React.Fragment>
             <ContractCardHeader
-                card_labels={card_labels}
                 contract_info={contract_info}
+                getCardLabels={getCardLabels}
+                getContractTypeDisplay={getContractTypeDisplay}
                 has_progress_slider={!is_multiplier}
                 id={id}
                 is_sell_requested={is_sell_requested}
                 is_valid_to_sell={is_valid_to_sell}
-                getContractTypeDisplay={getContractTypeDisplay}
                 onClickSell={onClickSell}
                 server_time={server_time}
             />
@@ -93,14 +93,14 @@ const ContractCard = ({
                 <DesktopWrapper>
                     <ResultOverlay
                         contract_id={contract_info.contract_id}
+                        getCardLabels={getCardLabels}
+                        getContractPath={getContractPath}
                         is_unsupported={is_unsupported}
                         is_multiplier={is_multiplier}
                         is_visible={!!contract_info.is_sold}
                         onClickRemove={onClickRemove}
                         onClick={() => toggleUnsupportedContractModal(true)}
                         result={result || fallback_result}
-                        card_labels={card_labels}
-                        getContractPath={getContractPath}
                         is_positions={is_positions}
                     />
                 </DesktopWrapper>

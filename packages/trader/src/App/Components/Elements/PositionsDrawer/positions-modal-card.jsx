@@ -6,7 +6,7 @@ import { getContractPath } from '@deriv/shared';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
-import { card_labels, getContractTypeDisplay } from '../../../../Constants/contract';
+import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 
 const PositionsModalCard = ({
     className,
@@ -33,9 +33,9 @@ const PositionsModalCard = ({
     const contract_el = (
         <React.Fragment>
             <ContractCard
-                card_labels={card_labels}
                 contract_info={contract_info}
                 currency={currency}
+                getCardLabels={getCardLabels}
                 getContractTypeDisplay={getContractTypeDisplay}
                 id={id}
                 is_positions={false}

@@ -3,7 +3,7 @@ import React from 'react';
 import { ProgressSlider } from '@deriv/components';
 import { getCurrentTick } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { card_labels } from '../../../Constants/contract';
+import { getCardLabels } from 'Constants/contract';
 
 const ProgressSliderStream = ({ contract_info, is_loading, server_time }) => {
     if (!contract_info) {
@@ -13,9 +13,9 @@ const ProgressSliderStream = ({ contract_info, is_loading, server_time }) => {
 
     return (
         <ProgressSlider
-            card_labels={card_labels}
             current_tick={current_tick}
             expiry_time={contract_info.date_expiry}
+            getCardLabels={getCardLabels}
             is_loading={is_loading}
             server_time={server_time}
             start_time={contract_info.date_start}

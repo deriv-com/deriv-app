@@ -6,10 +6,10 @@ import ProgressTicks from './progress-ticks.jsx';
 import RemainingTime from '../remaining-time';
 
 const ProgressSlider = ({
-    card_labels,
     className,
     current_tick,
     expiry_time,
+    getCardLabels,
     is_loading,
     server_time,
     start_time,
@@ -19,11 +19,11 @@ const ProgressSlider = ({
     return (
         <div className={classNames('progress-slider', className)}>
             {ticks_count ? (
-                <ProgressTicks card_labels={card_labels} current_tick={current_tick} ticks_count={ticks_count} />
+                <ProgressTicks current_tick={current_tick} getCardLabels={getCardLabels} ticks_count={ticks_count} />
             ) : (
                 <React.Fragment>
                     <span className='progress-slider__remaining-time'>
-                        <RemainingTime card_labels={card_labels} end_time={expiry_time} start_time={server_time} />
+                        <RemainingTime end_time={expiry_time} getCardLabels={getCardLabels} start_time={server_time} />
                     </span>
                     {is_loading || percentage < 1 ? (
                         <div className='progress-slider__infinite-loader'>

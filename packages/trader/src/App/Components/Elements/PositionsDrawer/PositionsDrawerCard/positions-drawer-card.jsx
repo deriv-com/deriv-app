@@ -3,7 +3,7 @@ import React from 'react';
 import { ContractCard } from '@deriv/components';
 import { getContractPath, isMultiplierContract } from '@deriv/shared';
 import CardFooter from './positions-drawer-card-footer.jsx';
-import { card_labels, getContractTypeDisplay } from '../../../../../Constants/contract';
+import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 
 const PositionsDrawerCard = ({
     className,
@@ -39,11 +39,11 @@ const PositionsDrawerCard = ({
     return (
         <ContractCard
             card_footer={card_footer}
-            card_labels={card_labels}
             className={className}
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}
+            getCardLabels={getCardLabels}
             getContractPath={getContractPath}
             getContractTypeDisplay={getContractTypeDisplay}
             is_positions={true}

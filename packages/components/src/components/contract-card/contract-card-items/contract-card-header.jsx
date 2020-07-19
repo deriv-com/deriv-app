@@ -11,8 +11,8 @@ import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
 
 const ContractCardHeader = ({
-    card_labels,
     contract_info,
+    getCardLabels,
     has_progress_slider,
     id,
     is_sell_requested,
@@ -43,10 +43,10 @@ const ContractCardHeader = ({
                 </div>
                 <div id='contract_card_type_label' className='contract-card__type'>
                     <ContractTypeCell
+                        getContractTypeDisplay={getContractTypeDisplay}
+                        is_high_low={isHighLow({ shortcode })}
                         multiplier={multiplier}
                         type={contract_type}
-                        is_high_low={isHighLow({ shortcode })}
-                        getContractTypeDisplay={getContractTypeDisplay}
                     />
                 </div>
                 <MobileWrapper>
@@ -68,7 +68,7 @@ const ContractCardHeader = ({
                                         'dc-btn--loading': is_sell_requested,
                                     })}
                                     is_disabled={!is_valid_to_sell || is_sell_requested}
-                                    text={card_labels.SELL}
+                                    text={getCardLabels()['SELL']}
                                     onClick={() => onClickSell(id)}
                                     secondary
                                 />
@@ -81,9 +81,9 @@ const ContractCardHeader = ({
                 {(!has_progress_slider || !!is_sold) && <div className='progress-slider--completed' />}
                 {has_progress_slider && !is_sold && (
                     <ProgressSlider
-                        card_labels={card_labels}
                         current_tick={current_tick}
                         expiry_time={date_expiry}
+                        getCardLabels={getCardLabels}
                         is_loading={false}
                         server_time={server_time}
                         start_time={purchase_time}

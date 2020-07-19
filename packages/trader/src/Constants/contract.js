@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 
-export const card_labels = Object.freeze({
+export const getCardLabels = () => ({
     STAKE: localize('Stake:'),
     CURRENT_STAKE: localize('Current stake:'),
     DEAL_CANCEL_FEE: localize('Deal cancel. fee:'),

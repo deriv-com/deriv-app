@@ -5,7 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 import { NavLink } from 'react-router-dom';
 import Icon from '../../icon';
 
-export const ResultStatusIcon = ({ is_contract_won, card_labels }) => (
+export const ResultStatusIcon = ({ getCardLabels, is_contract_won }) => (
     <span
         className={classNames('result__caption', {
             'result__caption--won': is_contract_won,
@@ -14,12 +14,12 @@ export const ResultStatusIcon = ({ is_contract_won, card_labels }) => (
     >
         {is_contract_won ? (
             <React.Fragment>
-                {card_labels.WON}
+                {getCardLabels()['WON']}
                 <Icon icon='IcCheckmarkCircle' className='result__icon' color='green' />
             </React.Fragment>
         ) : (
             <React.Fragment>
-                {card_labels.LOST}
+                {getCardLabels()['LOST']}
                 <Icon icon='IcCrossCircle' className='result__icon' color='red' />
             </React.Fragment>
         )}
@@ -37,13 +37,13 @@ class ResultOverlay extends React.PureComponent {
     render() {
         const {
             contract_id,
+            getCardLabels,
+            getContractPath,
             is_multiplier,
+            is_positions,
             is_visible,
             onClickRemove,
             result,
-            card_labels,
-            getContractPath,
-            is_positions,
         } = this.props;
         const is_contract_won = result === 'won';
         return (
@@ -81,7 +81,7 @@ class ResultOverlay extends React.PureComponent {
                                 onClick={this.handleClick}
                             />
                         )}
-                        <ResultStatusIcon is_contract_won={is_contract_won} card_labels={card_labels} />
+                        <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={is_contract_won} />
                     </div>
                 </CSSTransition>
             </React.Fragment>

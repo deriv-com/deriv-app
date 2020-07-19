@@ -1,5 +1,5 @@
 import ChartStore from './chart-store';
-import ContractCardStore from './contract-card-store';
+import SummaryCardStore from './summary-card-store';
 import FlyoutStore from './flyout-store';
 import FlyoutHelpStore from './flyout-help-store';
 import GoogleDriveStore from './google-drive-store';
@@ -22,7 +22,7 @@ export default class RootStore {
         this.ws = ws;
         this.dbot = dbot;
         this.server_time = core.common.server_time;
-        this.contract_card = new ContractCardStore(this);
+        this.summary_card = new SummaryCardStore(this);
         this.flyout = new FlyoutStore(this);
         this.flyout_help = new FlyoutHelpStore(this);
         this.google_drive = new GoogleDriveStore(this);

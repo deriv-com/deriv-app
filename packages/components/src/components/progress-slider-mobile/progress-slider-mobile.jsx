@@ -7,9 +7,9 @@ import CircularProgress from '../circular-progress';
 import RemainingTime from '../remaining-time';
 
 const ProgressSliderMobile = ({
-    card_labels,
     className,
     current_tick,
+    getCardLabels,
     is_loading,
     start_time,
     expiry_time,
@@ -20,11 +20,15 @@ const ProgressSliderMobile = ({
     return (
         <div className={classNames('progress-slider-mobile', className)}>
             {ticks_count ? (
-                <ProgressTicksMobile card_labels={card_labels} current_tick={current_tick} ticks_count={ticks_count} />
+                <ProgressTicksMobile
+                    current_tick={current_tick}
+                    getCardLabels={getCardLabels}
+                    ticks_count={ticks_count}
+                />
             ) : (
                 <React.Fragment>
                     <span className='progress-slider-mobile__remaining-time'>
-                        <RemainingTime card_labels={card_labels} end_time={expiry_time} start_time={server_time} />
+                        <RemainingTime end_time={expiry_time} getCardLabels={getCardLabels} start_time={server_time} />
                     </span>
                     {is_loading || percentage < 1 ? (
                         // TODO: Change this behavior in mobile

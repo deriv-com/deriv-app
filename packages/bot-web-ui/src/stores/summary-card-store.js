@@ -38,16 +38,6 @@ export default class ContractCardStore {
         return !this.contract && !this.is_loading;
     }
 
-    @computed
-    get is_contract_losing() {
-        return this.contract && this.contract.profit < 0;
-    }
-
-    @computed
-    get is_contract_winning() {
-        return this.contract && this.contract.profit > 0;
-    }
-
     @action.bound
     onBotContractEvent(contract) {
         const { profit } = contract;

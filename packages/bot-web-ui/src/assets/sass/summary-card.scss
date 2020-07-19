@@ -1,4 +1,4 @@
-.db-contract-card {
+.db-summary-card {
     $contract-card: &;
 
     border: 1px solid var(--border-disabled);
@@ -17,16 +17,6 @@
         text-align: center;
         height: 157px;
     }
-    &--is-winning {
-        #{$contract-card}__underlying {
-            background-image: var(--gradient-success);
-        }
-    }
-    &--is-losing {
-        #{$contract-card}__underlying {
-            background-image: var(--gradient-danger);
-        }
-    }
     &--is-loading {
         background-color: inherit;
         border: 1px solid var(--general-main-1);
@@ -37,8 +27,8 @@
         &:hover {
             border: 1px solid var(--border-disabled);
         }
-    }
-    &--completed-mobile {
-        border: 1px solid var(--border-normal);
+        &-mobile {
+            border: 1px solid var(--border-normal);
+        }
     }
 }

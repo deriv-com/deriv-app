@@ -1,6 +1,5 @@
 import { action, observable } from 'mobx';
 import { formatDate, isEnded } from '@deriv/shared';
-
 import { transaction_elements } from '../constants/transactions';
 
 export default class TransactionsStore {

@@ -3,7 +3,7 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv/components';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
 import CardFooter from './contract-drawer-card-footer.jsx';
-import { card_labels, getContractTypeDisplay } from '../../../../Constants/contract';
+import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 
 const ContractDrawerCard = ({
     contract_info,
@@ -35,10 +35,10 @@ const ContractDrawerCard = ({
     const contract_card = (
         <ContractCard
             card_footer={card_footer}
-            card_labels={card_labels}
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}
+            getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
             is_positions={false}
             profit_loss={profit}

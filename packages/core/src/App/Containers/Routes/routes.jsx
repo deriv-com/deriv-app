@@ -30,7 +30,7 @@ class Routes extends React.Component {
     componentDidMount() {
         this.isBot(window.location);
         if (this.state.is_bot) {
-            this.el_landscape_blocker.classList.add('landscape-blocker--keyboard-visible');
+            this.el_landscape_blocker.classList.add('landscape-blocker--disabled');
         }
         if (!this.unlisten_to_change && !this.initial_route) {
             this.initial_route = this.props.location.pathname;
@@ -45,17 +45,17 @@ class Routes extends React.Component {
         this.props.setAppRouterHistory(this.props.history);
     }
 
-    componentDidUpdate(pp, ps) {
-        if (pp.location.pathname !== this.props.location.pathname) {
+    componentDidUpdate(previous_props, previous_state) {
+        if (previous_props.location.pathname !== this.props.location.pathname) {
             this.isBot(this.props.location);
         }
-        if (this.state.is_bot !== ps.is_bot) {
+        if (this.state.is_bot !== previous_state.is_bot) {
             if (this.state.is_bot) {
                 this.removeBlockerEvents();
-                this.el_landscape_blocker.classList.add('landscape-blocker--keyboard-visible');
+                this.el_landscape_blocker.classList.add('landscape-blocker--disabled');
             } else {
                 this.addBlockerEvents();
-                this.el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
+                this.el_landscape_blocker.classList.remove('landscape-blocker--disabled');
             }
         }
     }
@@ -75,6 +75,15 @@ class Routes extends React.Component {
             is_bot: base === 'bot',
         });
     };
+    /**
+     * Adding `focus` and `focusout` event listeners to document here to detect for on-screen keyboard on mobile browsers
+     * and storing this value in UI-store to be used across the app stores.
+     *  - when document gets `focus` event - keyboard is visible
+     *  - when document gets `focusout` or `touchstart` event - keyboard is hidden
+     *  - note: the `touchstart` event comes after `focusout` and and we want to
+     *          remove `landscape-blocker--disabled` class as late as possible
+     * [TODO]: find an alternative solution to detect for on-screen keyboard
+     */
     addBlockerEvents = () => {
         document.addEventListener('focus', this.onFocus, false);
         document.addEventListener('focusout', this.onFocusOut, false);
@@ -86,7 +95,7 @@ class Routes extends React.Component {
         document.removeEventListener('touchstart', this.onTouchStart);
     };
     onFocus = () => {
-        this.el_landscape_blocker.classList.add('landscape-blocker--keyboard-visible');
+        this.el_landscape_blocker.classList.add('landscape-blocker--disabled');
         this.props.setIsNativepickerVisible(true);
     };
 
@@ -100,7 +109,7 @@ class Routes extends React.Component {
     onTouchStart = () => {
         if (document.activeElement.tagName !== 'INPUT') {
             if (!this.state.is_bot) {
-                this.el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
+                this.el_landscape_blocker.classList.remove('landscape-blocker--disabled');
             }
         }
     };

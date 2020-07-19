@@ -40,7 +40,7 @@ class Cashier extends React.Component {
         // cleanup onscreen keyboard class suffix and eventlistener for landscape blocker upon unMount
         if (isMobile() && isTouchDevice()) {
             window.removeEventListener('resize', this.handleOnScreenKeyboard);
-            if (el_landscape_blocker) el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
+            if (el_landscape_blocker) el_landscape_blocker.classList.remove('landscape-blocker--disabled');
         }
     }
 
@@ -50,9 +50,9 @@ class Cashier extends React.Component {
         const is_android_keyboard = this.state.device_height !== window.innerHeight;
         if (el_landscape_blocker) {
             if (is_android_keyboard) {
-                el_landscape_blocker.classList.add('landscape-blocker--keyboard-visible');
+                el_landscape_blocker.classList.add('landscape-blocker--disabled');
             } else {
-                el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
+                el_landscape_blocker.classList.remove('landscape-blocker--disabled');
             }
         }
     };

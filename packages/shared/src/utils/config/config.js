@@ -40,7 +40,7 @@ export const getAppId = () => {
         app_id = user_app_id;
     } else if (
         /staging\.deriv\.app/i.test(window.location.hostname) || // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
-        /staging-deriv\.deriv\.com/i.test(window.location.hostname)
+        /staging-app\.deriv\.com/i.test(window.location.hostname)
     ) {
         window.localStorage.removeItem('config.default_app_id');
         app_id = isBot() ? 19112 : 16303; // it's being used in endpoint chrome extension - please do not remove

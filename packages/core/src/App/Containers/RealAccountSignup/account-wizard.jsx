@@ -90,7 +90,7 @@ class AccountWizard extends React.Component {
                     const items = this.state.items.slice(0);
                     this.getCountryCode().then(phone_idd => {
                         if ('phone' in items[1].form_value) {
-                            items[1].form_value.phone = phone_idd || '';
+                            items[1].form_value.phone = items[1].form_value.phone || phone_idd || '';
                             this.setState(items);
                         }
                     });

@@ -5,7 +5,7 @@ import CashierContainer from '../Components/cashier-container.jsx';
 import Error from '../Components/Error/error.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
 import FundsProtection from '../Components/funds-protection.jsx';
-import MaxTurnover from '../Components/max-turnover-form.jsx';
+import MaxTurnover from '../Components/Form/max-turnover-form.jsx';
 import DepositsLocked from '../Components/deposit-locked.jsx';
 
 class Deposit extends React.Component {

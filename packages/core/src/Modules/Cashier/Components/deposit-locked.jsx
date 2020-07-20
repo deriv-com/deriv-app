@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { routes } from '@deriv/shared';
-import { Icon, Checklist } from '@deriv/components';
+import { Icon, Checklist, Modal } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';

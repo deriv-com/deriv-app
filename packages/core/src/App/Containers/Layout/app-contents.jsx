@@ -32,7 +32,6 @@ const AppContents = ({
     const tracking_status = Cookies.get('tracking_status');
 
     React.useEffect(() => {
-        console.log('is_eu_country', is_eu_country);
         const allow_tracking = (is_eu_country !== undefined && !is_eu_country) || tracking_status === 'accepted';
         if (allow_tracking && !is_gtm_tracking) {
             pushDataLayer({ event: 'allow_tracking' });

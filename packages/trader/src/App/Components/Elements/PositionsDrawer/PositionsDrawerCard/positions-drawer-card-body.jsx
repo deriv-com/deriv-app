@@ -17,13 +17,13 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, status }
     return (
         <>
             <div className='positions-drawer-card__grid positions-drawer-card__grid-items'>
-                <div className='positions-drawer-card__item'>
+                <div className='positions-drawer-card__item positions-drawer-card__stake'>
                     <span className='positions-drawer-card__item-label'>{localize('Stake:')}</span>
                     <span className='positions-drawer-card__item-value'>
                         <Money amount={buy_price - cancellation_price} currency={currency} />
                     </span>
                 </div>
-                <div className='positions-drawer-card__item'>
+                <div className='positions-drawer-card__item positions-drawer-card__current-stake'>
                     <span className='positions-drawer-card__item-label'>{localize('Current stake:')}</span>
                     <span
                         className={classNames('positions-drawer-card__item-value', {
@@ -35,7 +35,7 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, status }
                         <Money amount={bid_price} currency={currency} />
                     </span>
                 </div>
-                <div className='positions-drawer-card__item'>
+                <div className='positions-drawer-card__item positions-drawer-card__deal-cancel-fee'>
                     <span className='positions-drawer-card__item-label'>{localize('Deal cancel. fee:')}</span>
                     <span className='positions-drawer-card__item-value'>
                         {cancellation_price ? (
@@ -45,19 +45,19 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, status }
                         )}
                     </span>
                 </div>
-                <div className='positions-drawer-card__item'>
+                <div className='positions-drawer-card__item positions-drawer-card__take-profit'>
                     <span className='positions-drawer-card__item-label'>{localize('Take profit:')}</span>
                     <span className='positions-drawer-card__item-value'>
                         {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
                     </span>
                 </div>
-                <div className='positions-drawer-card__item'>
+                <div className='positions-drawer-card__item positions-drawer-card__buy-price'>
                     <span className='positions-drawer-card__item-label'>{localize('Buy price:')}</span>
                     <span className='positions-drawer-card__item-value'>
                         <Money amount={buy_price} currency={currency} />
                     </span>
                 </div>
-                <div className='positions-drawer-card__item'>
+                <div className='positions-drawer-card__item positions-drawer-card__stop-loss'>
                     <span className='positions-drawer-card__item-label'>{localize('Stop loss:')}</span>
                     <span className='positions-drawer-card__item-value'>
                         {stop_loss ? (

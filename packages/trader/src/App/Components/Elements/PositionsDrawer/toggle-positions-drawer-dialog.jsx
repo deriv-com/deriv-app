@@ -21,6 +21,7 @@ class TogglePositionsDrawerDialog extends React.Component {
 
     toggleDialog = e => {
         e.preventDefault();
+        e.stopPropagation();
         if (this.props.is_valid_to_cancel) return;
 
         this.setState(

@@ -844,6 +844,32 @@ $MIN_HEIGHT_FLOATING: calc(
                 font-size: 1.2rem;
             }
         }
+        &__warning {
+            background-color: rgba(255, 173, 58, 0.3);
+            border-radius: $BORDER_RADIUS;
+            margin-top: 0.8rem;
+            position: relative;
+
+            &-icon {
+                position: absolute;
+                top: 0.8rem;
+                left: 0.8rem;
+            }
+            &-textbox {
+                padding: 0.9rem 3.2rem;
+            }
+            &-text {
+                color: var(--text-general);
+                font-size: var(--text-size-xxxs);
+                line-height: 1.4;
+            }
+            &-link {
+                color: var(--text-general);
+                cursor: pointer;
+                font-weight: bold;
+                text-decoration: none;
+            }
+        }
     }
     .account-limit-container {
         height: 100%;

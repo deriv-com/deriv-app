@@ -10,9 +10,8 @@ export default class CommonStore extends BaseStore {
         super({ root_store });
 
         reaction(
-            () => this.app_routing_history.length,
+            () => this.app_routing_history.map(i => i.pathname),
             () => {
-                console.log(this.root_store.ui.notifications);
                 this.root_store.ui.filterNotificationMessages();
             }
         );

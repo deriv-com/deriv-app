@@ -229,32 +229,20 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     filterNotificationMessages() {
-        // if (this.notification_messages.length) {
-        this.notification_messages.forEach(notification => {
-            if (notification.platform && !notification.platform.includes(getPathname())) {
+        this.notifications = this.notification_messages.filter(notification => {
+            if (notification.platform === undefined) {
+                return true;
+            } else if (notification.platform && notification.platform.includes(getPathname())) {
+                return true;
+            } else if (notification.platform && !notification.platform.includes(getPathname())) {
                 if (notification.is_disposable) {
                     this.removeNotificationMessage({ key: notification.key });
+                    this.removeNotificationByKey({ key: notification.key });
                 }
-            } else {
-                this.notifications = this.notification_messages.filter(
-                    check_notification =>
-                        check_notification.platform.includes(getPathname()) || check_notification.platform === undefined
-                );
+                return false;
             }
-            // if (notification) {
-            //     this.notifications = this.notification_messages.filter(
-            //         check_notification =>
-            //             check_notification.platform.includes(getPathname()) ||
-            //             check_notification.platform === undefined
-            //     );
-
-            //     if (notification.is_disposable) {
-            //         this.removeNotificationMessage({ key: notification.key });
-            //         this.removeNotificationByKey({ key: notification.key });
-            //     }
-            // }
+            return false;
         });
-        // }
     }
 
     @action.bound

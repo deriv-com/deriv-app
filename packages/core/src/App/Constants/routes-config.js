@@ -114,14 +114,14 @@ const modules = [
                         title: localize('API token'),
                     },
                     {
-                        path: routes.two_factor_authentication,
-                        component: Account,
-                        title: localize('Two-factor authentication'),
-                    },
-                    {
                         path: routes.connected_apps,
                         component: Account,
                         title: localize('Connected apps'),
+                    },
+                    {
+                        path: routes.two_factor_authentication,
+                        component: Account,
+                        title: localize('Two-factor authentication'),
                     },
                 ],
             },

@@ -1301,7 +1301,7 @@ $MIN_HEIGHT_FLOATING: calc(
             min-height: calc(100vh - 50px);
 
             .connected-apps {
-                max-height: calc(100vh - 250px);
+                max-height: calc(100vh - 100px);
             }
             .data-list__item {
                 padding: 8px;

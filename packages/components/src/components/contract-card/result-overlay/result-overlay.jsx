@@ -14,12 +14,12 @@ export const ResultStatusIcon = ({ getCardLabels, is_contract_won }) => (
     >
         {is_contract_won ? (
             <React.Fragment>
-                {getCardLabels()['WON']}
+                {getCardLabels().WON}
                 <Icon icon='IcCheckmarkCircle' className='result__icon' color='green' />
             </React.Fragment>
         ) : (
             <React.Fragment>
-                {getCardLabels()['LOST']}
+                {getCardLabels().LOST}
                 <Icon icon='IcCrossCircle' className='result__icon' color='red' />
             </React.Fragment>
         )}

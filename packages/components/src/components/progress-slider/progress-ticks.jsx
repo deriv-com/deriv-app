@@ -7,7 +7,7 @@ const ProgressTicks = ({ current_tick, getCardLabels, ticks_count }) => {
     return (
         <div className='progress-slider__ticks'>
             <span className='progress-slider__ticks-caption'>
-                {getCardLabels()['TICK']} {current_tick}
+                {getCardLabels().TICK} {current_tick}
             </span>
             <div className='progress-slider__ticks-wrapper'>
                 {arr_ticks.map(idx => (

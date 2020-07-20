@@ -6,7 +6,7 @@ const ProgressTicksMobile = ({ current_tick, getCardLabels, ticks_count }) => {
     return (
         <div className='progress-slider__ticks'>
             <span className='progress-slider__ticks-caption'>
-                {getCardLabels()['TICK']} {current_tick}
+                {getCardLabels().TICK} {current_tick}
             </span>
             <TickProgress columns={5} rows={ticks_count > 5 ? 2 : 1} size={ticks_count} value={current_tick} />
         </div>

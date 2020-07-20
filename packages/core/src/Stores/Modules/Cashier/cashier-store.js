@@ -771,7 +771,7 @@ export default class CashierStore extends BaseStore {
         const transfer_limit = getPropertyValue(getCurrencies(), [
             this.config.account_transfer.selected_from.currency,
             'transfer_between_accounts',
-            'limits',
+            this.config.account_transfer.selected_from.is_mt ? 'limits_mt5' : 'limits',
         ]);
         const decimal_places = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places

@@ -1,8 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
+import { Swipeable } from 'react-swipeable';
 import Icon from '../icon';
 
-export const MobileCarousel = ({ children }) => {
+export const MobileCarousel = ({ children, ...props }) => {
     const carousel_body = React.createRef();
     const [min_width, setMinWidth] = React.useState(0);
     const [index, setIndex] = React.useState(0);
@@ -35,15 +36,25 @@ export const MobileCarousel = ({ children }) => {
         setIndex(idx);
     };
 
+    const swipedLeft = () => goNext();
+    const swipedRight = () => goPrev();
+
     return (
         <div className='dc-carousel'>
             <div className='dc-carousel__row'>
                 <div className='dc-carousel__pref'>
                     <Icon icon='IcChevronLeft' onClick={goPrev} />
                 </div>
-                <div className='dc-carousel__body' ref={carousel_body}>
-                    {children}
-                </div>
+                <Swipeable
+                    className={classNames('dc-carousel__view')}
+                    onSwipedLeft={swipedLeft}
+                    onSwipedRight={swipedRight}
+                    {...props}
+                >
+                    <div className='dc-carousel__body' ref={carousel_body}>
+                        {children}
+                    </div>
+                </Swipeable>
                 <div className='dc-carousel__next' onClick={goNext}>
                     <Icon icon='IcChevronRight' />
                 </div>

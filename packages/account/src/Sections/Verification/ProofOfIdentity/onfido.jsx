@@ -3,7 +3,8 @@ import React from 'react';
 import { ThemedScrollbars } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
 import { isMobile } from '@deriv/shared';
-import { getLanguage } from '@deriv/translations';
+// TODO: [onfido translation] language when translations are ready
+// import { getLanguage } from '@deriv/translations';
 import UploadComplete from 'Components/poi-upload-complete';
 import Unsupported from 'Components/poi-unsupported';
 import Expired from 'Components/poi-expired';
@@ -34,7 +35,7 @@ export default class Onfido extends React.Component {
             const { documents_supported } = this.props;
             const onfido = await init({
                 containerId: onfido_container_id,
-                // TODO: add language when translations are ready
+                // TODO: [onfido translation] language when translations are ready
                 // language: {
                 //     locale: getLanguage().toLowerCase() || 'en',
                 // },

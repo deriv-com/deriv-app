@@ -18,6 +18,7 @@ const AppContents = ({
     is_cashier_visible,
     is_dark_mode,
     is_eu_country,
+    is_eu,
     is_logged_in,
     is_mt5_page,
     is_positions_drawer_on,
@@ -32,7 +33,6 @@ const AppContents = ({
     const tracking_status = Cookies.get('tracking_status');
 
     React.useEffect(() => {
-        console.log('is_eu_country', is_eu_country);
         const allow_tracking = (is_eu_country !== undefined && !is_eu_country) || tracking_status === 'accepted';
         if (allow_tracking && !is_gtm_tracking) {
             pushDataLayer({ event: 'allow_tracking' });
@@ -95,7 +95,7 @@ const AppContents = ({
         >
             <MobileWrapper>{children}</MobileWrapper>
             <DesktopWrapper>
-                <RedirectNoticeModal is_logged_in={is_logged_in} />
+                <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu} />
                 {/* Calculate height of user screen and offset height of header and footer */}
                 <ThemedScrollbars height='calc(100vh - 84px)'>{children}</ThemedScrollbars>
             </DesktopWrapper>
@@ -125,6 +125,7 @@ AppContents.propTypes = {
 export default withRouter(
     connect(({ client, gtm, segment, ui }) => ({
         is_eu_country: client.is_eu_country,
+        is_eu: client.is_eu,
         is_logged_in: client.is_logged_in,
         pushDataLayer: gtm.pushDataLayer,
         identifyEvent: segment.identifyEvent,

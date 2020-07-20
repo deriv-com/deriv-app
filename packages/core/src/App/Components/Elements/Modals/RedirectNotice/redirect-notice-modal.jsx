@@ -3,7 +3,7 @@ import { Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getCurrentProductionDomain } from '@deriv/shared';
 
-const RedirectNoticeModal = ({ is_logged_in }) => {
+const RedirectNoticeModal = ({ is_logged_in, is_eu }) => {
     const [dialog_status, setDialogStatus] = React.useState(false);
     const [external_link, setExternalLink] = React.useState('');
 
@@ -32,15 +32,14 @@ const RedirectNoticeModal = ({ is_logged_in }) => {
     };
 
     React.useEffect(() => {
-        // console.log('is_eu_country', is_eu_country);
         document.addEventListener('click', function(e) {
-            if (isThirdPartyLink(e.target.href) && is_logged_in) {
+            if (isThirdPartyLink(e.target.href) && is_logged_in && is_eu) {
                 setExternalLink(e.target.href);
                 e.preventDefault();
                 setDialogStatus(true);
             }
         });
-    }, [is_logged_in]);
+    }, [is_logged_in, is_eu]);
 
     return (
         dialog_status && (

@@ -68,6 +68,7 @@
         @include mobile {
             padding: 0;
             margin-bottom: 0.8rem;
+            background-color: transparent;
         }
 
         /* postcss-bem-linter: ignore */
@@ -159,7 +160,7 @@
         float: left;
         font-size: 10px;
         height: 32px;
-        left: 32px;
+        left: 48px;
         align-items: center;
         justify-content: center;
         width: 20px;

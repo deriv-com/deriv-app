@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Popover } from '@deriv/components';
+import { Icon, DesktopWrapper, MobileDialog, MobileWrapper, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import PopoverMessageCheckbox from 'Modules/Trading/Components/Elements/popover-message-checkbox.jsx';
@@ -19,7 +19,8 @@ class TogglePositionsDrawerDialog extends React.Component {
         this.dialog_ref = React.createRef();
     }
 
-    toggleDialog = () => {
+    toggleDialog = e => {
+        e.preventDefault();
         if (this.props.is_valid_to_cancel) return;
 
         this.setState(
@@ -92,16 +93,30 @@ class TogglePositionsDrawerDialog extends React.Component {
                         edit_icon
                     )}
                 </div>
-                <PositionsDrawerDialog
-                    ref={this.dialog_ref}
-                    is_visible={this.state.is_visible}
-                    left={this.state.left}
-                    top={this.state.top}
-                    toggle_ref={this.toggle_ref}
-                    toggleDialog={this.toggleDialog}
-                >
-                    <ContractUpdateForm contract_id={this.props.contract_id} toggleDialog={this.toggleDialog} />
-                </PositionsDrawerDialog>
+                <MobileWrapper>
+                    <MobileDialog
+                        portal_element_id='modal_root'
+                        visible={this.state.is_visible}
+                        onClose={this.toggleDialog}
+                        wrapper_classname='contract-update'
+                    >
+                        <div className='contract-update__wrapper'>
+                            <ContractUpdateForm contract_id={this.props.contract_id} toggleDialog={this.toggleDialog} />
+                        </div>
+                    </MobileDialog>
+                </MobileWrapper>
+                <DesktopWrapper>
+                    <PositionsDrawerDialog
+                        ref={this.dialog_ref}
+                        is_visible={this.state.is_visible}
+                        left={this.state.left}
+                        top={this.state.top}
+                        toggle_ref={this.toggle_ref}
+                        toggleDialog={this.toggleDialog}
+                    >
+                        <ContractUpdateForm contract_id={this.props.contract_id} toggleDialog={this.toggleDialog} />
+                    </PositionsDrawerDialog>
+                </DesktopWrapper>
             </React.Fragment>
         );
     }

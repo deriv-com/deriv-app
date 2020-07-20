@@ -216,6 +216,7 @@ class ChartTradeClass extends React.Component {
 
         const has_synthetic_index = !!active_symbols.find(s => s.market === synthetic_index);
         const active_markets = active_symbols
+            .slice()
             .sort((a, b) => (a.display_name < b.display_name ? -1 : 1))
             .map(s => s.market)
             .reduce(

@@ -40,6 +40,7 @@ const MobileDialog = props => {
 
     // sometimes input is covered by virtual keyboard on mobile chrome, uc browser
     const handleClick = e => {
+        e.stopPropagation();
         if (e.target.tagName === 'INPUT' && e.target.type === 'number') {
             const scrollToTarget = scrollToElement(e.currentTarget, e.target);
             window.addEventListener('resize', scrollToTarget, false);

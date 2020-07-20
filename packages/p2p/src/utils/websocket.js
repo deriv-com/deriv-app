@@ -101,6 +101,8 @@ const getModifiedP2POrder = response => {
     const offer_amount = +response.amount;
     const price_rate = +response.rate;
     const transaction_amount = +response.price;
+    const is_buy = response.type === 'buy';
+    const advertiser_props = is_buy ? 'advertiser_details' : 'client_details';
     const payment_method = map_payment_method.bank_transfer; // TODO: [p2p-replace-with-api] add payment method to order details once API has it
     // const payment_method = response.payment_method;
 
@@ -113,8 +115,8 @@ const getModifiedP2POrder = response => {
         transaction_amount,
         transaction_currency,
         chat_channel_url,
-        advertiser_id: getPropertyValue(response, ['advertiser_details', 'id']),
-        advertiser_name: getPropertyValue(response, ['advertiser_details', 'name']),
+        advertiser_id: getPropertyValue(response, [advertiser_props, 'id']),
+        advertiser_name: getPropertyValue(response, [advertiser_props, 'name']),
         advertiser_instructions: getPropertyValue(response, ['advert_details', 'description']),
         display_offer_amount: fmtMoney(offer_currency, offer_amount),
         display_payment_method: map_payment_method[payment_method] || payment_method,

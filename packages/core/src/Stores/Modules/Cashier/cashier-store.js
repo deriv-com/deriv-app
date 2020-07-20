@@ -113,6 +113,7 @@ export default class CashierStore extends BaseStore {
     @observable p2p_notification_count = 0;
     @observable is_p2p_advertiser = false;
     @observable cashier_route_tab_index = 0;
+    @observable is_deposit_locked = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -282,6 +283,17 @@ export default class CashierStore extends BaseStore {
             this.setSessionTimeout(false);
             this.setTimeoutCashierUrl();
         }
+        await BinarySocket.wait('get_account_status');
+        this.checkDepositLock();
+    }
+
+    @action.bound
+    async checkDepositLock() {
+        this.is_deposit_locked =
+            this.root_store.client.is_authentication_needed ||
+            this.root_store.client.is_tnc_needed ||
+            this.root_store.client.is_financial_information_incomplete ||
+            this.root_store.client.is_trading_experience_incomplete;
     }
 
     @action.bound

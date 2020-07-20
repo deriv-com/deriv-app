@@ -2,14 +2,19 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Icon from '../icon';
+import Button from '../button';
 
-const ItemStatus = ({ status, onClick }) => {
+const ItemStatus = ({ status, onClick, button_text }) => {
     switch (status) {
         case 'done':
             return (
                 <div className='dc-checklist__item-status--done'>
                     <Icon icon='IcCheckmark' color='green' size={16} />
                 </div>
+            );
+        case 'button-action':
+            return (
+                <Button primary small className='dc-checklist__item-status--button' color='active' text={button_text} />
             );
         case 'action':
         default:
@@ -21,25 +26,34 @@ const ItemStatus = ({ status, onClick }) => {
     }
 };
 
+ItemStatus.propTypes = {
+    button_text: PropTypes.string,
+    onClick: PropTypes.func,
+    status: PropTypes.string,
+};
+
 const Checklist = ({ items, className, itemClassName }) => (
     <div className={classNames('dc-checklist', className)}>
-        {items.map((item, idx) => (
-            <div
-                key={idx}
-                className={classNames('dc-checklist__item', itemClassName, {
-                    'dc-checklist__item--disabled': item.is_disabled,
-                })}
-            >
-                <div className='dc-checklist__item-text'>{item.content}</div>
-                <div
-                    className={classNames('dc-checklist__item-status', {
-                        'dc-checklist__item-status--disabled': item.is_disabled,
-                    })}
-                >
-                    <ItemStatus status={item.status} onClick={item.onClick} />
-                </div>
-            </div>
-        ))}
+        {items.map(
+            (item, idx) =>
+                item && (
+                    <div
+                        key={idx}
+                        className={classNames('dc-checklist__item', itemClassName, {
+                            'dc-checklist__item--disabled': item.is_disabled,
+                        })}
+                    >
+                        <div className='dc-checklist__item-text'>{item.content}</div>
+                        <div
+                            className={classNames('dc-checklist__item-status', {
+                                'dc-checklist__item-status--disabled': item.is_disabled,
+                            })}
+                        >
+                            <ItemStatus status={item.status} onClick={item.onClick} button_text={item.button_text} />
+                        </div>
+                    </div>
+                )
+        )}
     </div>
 );
 

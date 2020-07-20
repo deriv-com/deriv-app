@@ -280,6 +280,7 @@ class PersonalDetails extends React.Component {
                                                                 </DesktopWrapper>
                                                                 <MobileWrapper>
                                                                     <SelectNative
+                                                                        placeholder={localize('Please select')}
                                                                         name={field.name}
                                                                         label={localize('Account opening reason')}
                                                                         list_items={

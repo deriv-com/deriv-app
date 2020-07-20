@@ -65,11 +65,16 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
 };
 
 // Radio group
-export const RadioButtonGroup = ({ label, className, children, is_title_enabled }) => {
+export const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fiat }) => {
     return (
         <div className={className}>
-            {is_title_enabled && <h2>{label}</h2>}
+            {is_title_enabled && <h2 className={classNames(`${className}--is-header`)}>{label}</h2>}
             <div className='currency-list__items'>{children}</div>
+            {is_fiat && (
+                <p className='currency-selector__description'>
+                    <Localize i18n_default_text='You will not be able to change currency once you have made a deposit' />
+                </p>
+            )}
         </div>
     );
 };
@@ -117,27 +122,16 @@ class CurrencySelector extends React.Component {
         };
     }
 
-    validateCurrencies = values => {
-        const errors = {};
-
-        if (!values.currency) {
-            errors.currency = localize('Select an item');
-        }
-
-        return errors;
-    };
-
     render() {
         const { has_currency, has_real_account } = this.props;
+
         return (
             <Formik
-                initialValues={{
-                    currency: this.props.value.currency,
-                }}
+                initialValues={this.props.value}
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
-                validate={this.validateCurrencies}
+                validate={this.props.validate}
             >
                 {({
                     handleSubmit,
@@ -178,6 +172,7 @@ class CurrencySelector extends React.Component {
                                             id='currency'
                                             className='currency-selector__radio-group'
                                             label={localize('Fiat currencies')}
+                                            is_fiat
                                             value={values.currency}
                                             error={errors.currency}
                                             touched={touched.currency}
@@ -219,10 +214,11 @@ class CurrencySelector extends React.Component {
                                 </Div100vhContainer>
                                 <FormSubmitButton
                                     is_disabled={isSubmitting || !values.currency}
-                                    is_center={!has_currency || isMobile()}
-                                    label={
-                                        !has_real_account && isMobile() ? localize('Next') : localize('Set currency')
-                                    }
+                                    is_center={!has_currency}
+                                    has_cancel
+                                    onCancel={this.props.onCancel}
+                                    cancel_label={localize('Cancel')}
+                                    label={localize('Next')}
                                 />
                             </form>
                         )}

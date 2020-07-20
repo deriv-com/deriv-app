@@ -200,6 +200,8 @@ const BinarySocketBase = (() => {
             ...values,
         });
 
+    const newAccountRealMaltaInvest = values => deriv_api.send({ new_account_maltainvest: 1, ...values });
+
     const mt5NewAccount = values =>
         deriv_api.send({
             mt5_new_account: 1,
@@ -296,6 +298,7 @@ const BinarySocketBase = (() => {
     // subscribe method export for P2P use only
     // so that subscribe remains private
     const p2pSubscribe = (request, cb) => subscribe(request, cb);
+    const accountStatistics = () => deriv_api.send({ account_statistics: 1 });
 
     return {
         init,
@@ -335,6 +338,7 @@ const BinarySocketBase = (() => {
         mt5PasswordReset,
         newAccountVirtual,
         newAccountReal,
+        newAccountRealMaltaInvest,
         p2pAdvertiserInfo,
         p2pSubscribe,
         profitTable,
@@ -358,6 +362,7 @@ const BinarySocketBase = (() => {
         transferBetweenAccounts,
         loginHistory,
         closeAndOpenNewConnection,
+        accountStatistics,
     };
 })();
 

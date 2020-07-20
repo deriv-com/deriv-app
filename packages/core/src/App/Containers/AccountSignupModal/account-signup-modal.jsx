@@ -178,6 +178,7 @@ AccountSignup.propTypes = {
 const AccountSignupModal = ({
     enableApp,
     disableApp,
+    is_eu,
     is_loading,
     is_visible,
     is_logged_in,
@@ -205,6 +206,7 @@ const AccountSignupModal = ({
             <AccountSignup
                 onSignup={onSignup}
                 residence_list={residence_list}
+                is_eu={is_eu}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
             />
@@ -215,6 +217,7 @@ const AccountSignupModal = ({
 AccountSignupModal.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
+    is_eu: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
     onSignup: PropTypes.func,
@@ -226,6 +229,7 @@ export default connect(({ ui, client }) => ({
     toggleAccountSignupModal: ui.toggleAccountSignupModal,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
+    is_eu: client.is_eu,
     is_loading: ui.is_loading,
     onSignup: client.onSignup,
     is_logged_in: client.is_logged_in,

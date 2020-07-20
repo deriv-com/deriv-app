@@ -24,18 +24,20 @@
     }
 }
 
-.success-change {
+.status-dialog {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     position: relative;
     flex-grow: 1;
+    width: min-content;
+    padding: 1rem;
 
     &__icon-area {
         display: flex;
         align-items: center;
-        width: 60%;
+        width: 82%;
         justify-content: space-between;
         position: relative;
         margin-top: 3rem;
@@ -116,13 +118,13 @@
         }
     }
     &__btn-area {
-        margin: 3rem 0;
+        margin: 2rem 0 1rem;
         width: 100%;
         display: flex;
         justify-content: center;
 
         & .dc-btn {
-            margin: 0 2rem;
+            margin: 0 0.5rem;
             height: 4rem;
 
             @include mobile {
@@ -144,5 +146,6 @@
         justify-content: flex-start;
         flex-grow: unset;
         height: 33rem;
+        width: 100%;
     }
 }

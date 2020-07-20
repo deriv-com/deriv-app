@@ -3,26 +3,35 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
+    AccountLimits,
     EndpointNote,
+    GoToDeriv,
+    HelpCentre,
     NetworkStatus,
+    RegulatoryInformation,
+    ResponsibleTrading,
     ToggleFullScreen,
     ToggleSettings,
-    HelpCentre,
     ToggleComplaintsPolicy,
 } from 'App/Components/Layout/Footer';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
 
+const FooterIconSeparator = () => <div className='footer-icon-separator' />;
+
 const Footer = ({
     enableApp,
     footer_extension,
     is_app_disabled,
+    is_eu,
+    is_eu_enabled,
     is_route_modal_on,
     is_settings_modal_on,
     disableApp,
     toggleSettingsModal,
     settings_extension,
     landing_company_shortcode,
+    standpoint,
 }) => (
     <footer
         className={classNames('footer', {
@@ -37,6 +46,12 @@ const Footer = ({
             <ToggleComplaintsPolicy landing_company_shortcode={landing_company_shortcode} />
         </div>
         <div className='footer__links'>
+            <FooterIconSeparator />
+            <GoToDeriv />
+            <ResponsibleTrading />
+            <AccountLimits />
+            {is_eu_enabled && <RegulatoryInformation standpoint={standpoint} is_eu={is_eu} />}
+            <FooterIconSeparator />
             <HelpCentre />
             <ToggleSettings
                 is_settings_visible={is_settings_modal_on}
@@ -67,6 +82,9 @@ export default withRouter(
         is_app_disabled: ui.is_app_disabled,
         is_route_modal_on: ui.is_route_modal_on,
         is_logged_in: client.is_logged_in,
+        is_eu_enabled: ui.is_eu_enabled,
+        is_eu: client.is_eu,
+        standpoint: client.standpoint,
         is_loading: ui.is_loading,
         is_settings_modal_on: ui.is_settings_modal_on,
         disableApp: ui.disableApp,

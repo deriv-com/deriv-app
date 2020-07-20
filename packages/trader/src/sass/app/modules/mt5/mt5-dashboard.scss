@@ -239,7 +239,7 @@
     position: relative;
 
     &__table-row {
-        grid-template-columns: 1.5fr 1fr 2fr 1fr;
+        grid-template-columns: var(--mt5-compare-accounts-template-columns);
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
     &__star {
@@ -361,6 +361,7 @@
 .mt5-real-accounts-display,
 .mt5-demo-accounts-display {
     display: flex;
+    justify-content: center;
     margin-top: 2.4em;
 
     @include mobile {
@@ -801,49 +802,6 @@
     }
 }
 
-.account-form {
-    &__header {
-        font-size: var(--text-size-xs);
-        font-weight: bold;
-        margin-bottom: 1.6em;
-        position: relative;
-        height: 1.6em;
-    }
-    &__header:not(:first-child) {
-        margin-top: 1.6em;
-    }
-    &__header:before {
-        border-top: 1px solid var(--general-section-1);
-        content: '';
-        height: 100%;
-        left: 0;
-        position: absolute;
-        top: 0.5em;
-        width: 100%;
-    }
-    &__title {
-        background: var(--general-main-1);
-        color: var(--text-prominent);
-        padding-right: 8px;
-        position: absolute;
-    }
-    &__subtitle {
-        color: var(--text-prominent);
-        font-weight: normal;
-        padding-left: 8px;
-    }
-    @include mobile {
-        overflow: auto;
-
-        &__title {
-            background: inherit;
-        }
-        &__subtitle {
-            font-size: 1.2rem;
-        }
-    }
-}
-
 .account-poa {
     &__upload {
         &-icon {
@@ -921,10 +879,6 @@
 
         li {
             margin: 0 0 1.5rem 0;
-        }
-        .dc-field-error {
-            top: 0;
-            right: 5%;
         }
     }
     &__field-area {
@@ -1073,6 +1027,15 @@
         @include mobile {
             min-width: calc(100vw - 3.2rem);
         }
+    }
+}
+
+.mt5-single-row {
+    display: flex;
+    justify-content: center;
+
+    & > div {
+        margin: 0 1.2rem;
     }
 }
 /* stylelint-enable */

@@ -9,6 +9,7 @@ const ContractDrawerCard = ({
     contract_info,
     contract_update,
     currency,
+    is_mobile,
     is_multiplier,
     is_sell_requested,
     is_collapsed,
@@ -40,6 +41,7 @@ const ContractDrawerCard = ({
             currency={currency}
             getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
+            is_mobile={is_mobile}
             is_positions={false}
             profit_loss={profit}
             server_time={server_time}

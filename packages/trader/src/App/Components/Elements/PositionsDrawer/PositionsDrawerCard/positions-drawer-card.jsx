@@ -10,6 +10,7 @@ const PositionsDrawerCard = ({
     contract_info,
     contract_update,
     currency,
+    is_mobile,
     is_sell_requested,
     is_unsupported,
     profit_loss,
@@ -46,6 +47,7 @@ const PositionsDrawerCard = ({
             getCardLabels={getCardLabels}
             getContractPath={getContractPath}
             getContractTypeDisplay={getContractTypeDisplay}
+            is_mobile={is_mobile}
             is_positions={true}
             is_unsupported={is_unsupported}
             onClickRemove={onClickRemove}

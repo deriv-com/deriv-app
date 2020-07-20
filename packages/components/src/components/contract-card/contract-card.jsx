@@ -20,6 +20,7 @@ const ContractCard = ({
     getContractPath,
     getContractTypeDisplay,
     id,
+    is_mobile,
     is_positions,
     is_sell_requested,
     is_unsupported,
@@ -74,6 +75,8 @@ const ContractCard = ({
                 getContractTypeDisplay={getContractTypeDisplay}
                 has_progress_slider={!is_multiplier}
                 id={id}
+                is_mobile={is_mobile}
+                is_positions={is_positions}
                 is_sell_requested={is_sell_requested}
                 is_valid_to_sell={is_valid_to_sell}
                 onClickSell={onClickSell}

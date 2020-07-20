@@ -34,10 +34,18 @@
         display: grid;
         grid-template-rows: 1fr auto;
         grid-gap: 4px;
+        min-height: 4rem;
 
         &-underlying-trade {
-            grid-template-columns: 1.5fr 1fr 0.5fr;
+            grid-template-columns: 1fr 1fr;
             width: 100%;
+
+            &--positions {
+                grid-template-columns: 1.5fr 1fr;
+            }
+            &--mobile {
+                grid-template-columns: 1fr 1fr 25%;
+            }
         }
         &-profit-payout {
             grid-template-columns: 1fr 1fr;
@@ -192,14 +200,13 @@
         font-weight: bold;
         font-size: 1.2em;
         max-width: 12rem;
-        min-width: 11rem;
+        min-width: 10rem;
     }
     &__type {
         font-size: 1.2em;
         display: flex;
         justify-content: flex-start;
         font-weight: bold;
-        margin-left: 0.8rem;
 
         /* postcss-bem-linter: ignore */
         .category-type {
@@ -212,7 +219,7 @@
         }
     }
     &__symbol {
-        margin-left: 0.5rem;
+        margin-left: 0.4rem;
         font-size: 1em;
         line-height: 1.5;
     }
@@ -314,7 +321,6 @@
     &__status {
         min-width: 25%;
         display: flex;
-        margin-right: 0.4rem;
         align-items: center;
         justify-content: center;
 
@@ -323,7 +329,7 @@
         }
     }
     &__sell-button-mobile {
-        justify-self: end;
+        justify-self: center;
         align-self: center;
 
         .dc-btn--sell {

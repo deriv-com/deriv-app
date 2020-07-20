@@ -41,6 +41,7 @@ class ContractDrawer extends React.Component {
             contract_info,
             contract_update,
             contract_update_history,
+            is_mobile,
             is_sell_requested,
             is_dark_theme,
             onClickCancel,
@@ -76,6 +77,7 @@ class ContractDrawer extends React.Component {
                     contract_info={contract_info}
                     contract_update={contract_update}
                     currency={currency}
+                    is_mobile={is_mobile}
                     is_multiplier={is_multiplier}
                     is_sell_requested={is_sell_requested}
                     is_collapsed={this.is_collapsed}
@@ -148,8 +150,9 @@ class ContractDrawer extends React.Component {
 
 ContractDrawer.propTypes = {
     contract_info: PropTypes.object,
-    is_history_tab_active: PropTypes.bool,
     is_dark_theme: PropTypes.bool,
+    is_mobile: PropTypes.bool,
+    is_history_tab_active: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickContractUpdate: PropTypes.func,
@@ -158,7 +161,8 @@ ContractDrawer.propTypes = {
 };
 
 export default withRouter(
-    connect(({ common }) => ({
+    connect(({ common, ui }) => ({
         server_time: common.server_time,
+        is_mobile: ui.is_mobile,
     }))(ContractDrawer)
 );

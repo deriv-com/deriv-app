@@ -33,6 +33,7 @@ const SummaryCard = ({
                     currency={contract.currency}
                     getCardLabels={getCardLabels}
                     getContractTypeDisplay={getContractTypeDisplay}
+                    is_mobile={is_mobile}
                     is_positions={false}
                     profit_loss={contract.profit}
                     server_time={server_time}
@@ -55,13 +56,14 @@ SummaryCard.propTypes = {
     is_contract_inactive: PropTypes.bool,
     is_contract_loading: PropTypes.bool,
     is_mobile: PropTypes.bool,
+    server_time: PropTypes.object,
 };
 
 export default connect(({ summary_card, common, ui }) => ({
     contract: summary_card.contract,
     is_contract_completed: summary_card.is_contract_completed,
-    is_contract_loading: summary_card.is_contract_loading,
     is_contract_inactive: summary_card.is_contract_inactive,
+    is_contract_loading: summary_card.is_contract_loading,
     is_mobile: ui.is_mobile,
     server_time: common.server_time,
 }))(SummaryCard);

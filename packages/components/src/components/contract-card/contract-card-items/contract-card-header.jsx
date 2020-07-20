@@ -15,6 +15,8 @@ const ContractCardHeader = ({
     getCardLabels,
     has_progress_slider,
     id,
+    is_mobile,
+    is_positions,
     is_sell_requested,
     is_valid_to_sell,
     getContractTypeDisplay,
@@ -36,7 +38,12 @@ const ContractCardHeader = ({
 
     return (
         <>
-            <div className={classNames('contract-card__grid', 'contract-card__grid-underlying-trade')}>
+            <div
+                className={classNames('contract-card__grid', 'contract-card__grid-underlying-trade', {
+                    'contract-card__grid-underlying-trade--mobile': is_mobile,
+                    'contract-card__grid-underlying-trade--positions': is_positions,
+                })}
+            >
                 <div id='contract_card_underlying_label' className='contract-card__underlying-name'>
                     <Icon icon={underlying ? `IcUnderlying${underlying}` : 'IcUnknown'} width={40} size={32} />
                     <span className='contract-card__symbol'>{display_name}</span>
@@ -68,7 +75,7 @@ const ContractCardHeader = ({
                                         'dc-btn--loading': is_sell_requested,
                                     })}
                                     is_disabled={!is_valid_to_sell || is_sell_requested}
-                                    text={getCardLabels()['SELL']}
+                                    text={getCardLabels().SELL}
                                     onClick={() => onClickSell(id)}
                                     secondary
                                 />

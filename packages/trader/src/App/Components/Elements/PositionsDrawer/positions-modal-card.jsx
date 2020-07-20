@@ -13,6 +13,7 @@ const PositionsModalCard = ({
     contract_info,
     currency,
     id,
+    is_mobile,
     is_sell_requested,
     is_unsupported,
     is_valid_to_sell,
@@ -38,6 +39,7 @@ const PositionsModalCard = ({
                 getCardLabels={getCardLabels}
                 getContractTypeDisplay={getContractTypeDisplay}
                 id={id}
+                is_mobile={is_mobile}
                 is_positions={false}
                 is_sell_requested={is_sell_requested}
                 is_unsupported={is_unsupported}
@@ -87,6 +89,7 @@ PositionsModalCard.propTypes = {
     id: PropTypes.number,
     indicative: PropTypes.number,
     is_loading: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     is_unsupported: PropTypes.bool,
     is_valid_to_sell: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
@@ -102,6 +105,7 @@ PositionsModalCard.propTypes = {
     type: PropTypes.string,
 };
 
-export default connect(({ common }) => ({
+export default connect(({ common, ui }) => ({
     server_time: common.server_time,
+    is_mobile: ui.is_mobile,
 }))(PositionsModalCard);

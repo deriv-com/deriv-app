@@ -58,7 +58,6 @@ export const icons = {
         'IcChevronDownBold',
         'IcChevronDown',
         'IcChevronLeft',
-        'IcChevronRightBold',
         'IcChevronRight',
         'IcChevronUpBold',
         'IcChevronUp',

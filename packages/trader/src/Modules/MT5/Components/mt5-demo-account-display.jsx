@@ -8,7 +8,7 @@ const MT5DemoAccountDisplay = ({
     is_eu,
     is_eu_enabled,
     has_maltainvest_account,
-    showAccountNeededModal,
+    openAccountNeededModal,
     standpoint,
     is_loading,
     landing_companies,
@@ -20,7 +20,7 @@ const MT5DemoAccountDisplay = ({
 }) => {
     const openMt5Account = () => {
         if (is_eu_enabled && is_eu && !has_maltainvest_account && standpoint.iom) {
-            showAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Financial'));
+            openAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Financial'));
         } else {
             onSelectAccount({
                 category: 'demo',

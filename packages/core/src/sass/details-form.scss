@@ -80,15 +80,26 @@
     &__tax {
         position: relative;
 
+        @include mobile {
+            padding-right: 2rem;
+        }
+
         .dc-popover {
             position: absolute;
             cursor: pointer;
             top: 10px;
             right: -25px;
+
+            @include mobile {
+                right: -5px;
+            }
         }
     }
     &__tin-warn-divider {
         height: 3rem;
+        @include mobile {
+            height: 4.5rem;
+        }
     }
     &__tin-confirm {
         margin-left: -5px;

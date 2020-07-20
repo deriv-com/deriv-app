@@ -6,6 +6,7 @@ import Error from '../Components/Error/error.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
 import FundsProtection from '../Components/funds-protection.jsx';
 import MaxTurnover from '../Components/max-turnover-form.jsx';
+import DepositsLocked from '../Components/deposits-locked.jsx';
 
 class Deposit extends React.Component {
     componentDidMount() {
@@ -14,7 +15,7 @@ class Deposit extends React.Component {
     }
 
     render() {
-        const { is_virtual, error, iframe_height, iframe_url, is_loading, standpoint } = this.props;
+        const { is_authentication_needed, is_virtual, error, iframe_height, iframe_url, is_loading } = this.props;
         if (is_virtual) {
             return <Virtual />;
         }
@@ -23,6 +24,9 @@ class Deposit extends React.Component {
         }
         if (error.is_self_exclusion_max_turnover_set) {
             return <MaxTurnover />;
+        }
+        if (is_authentication_needed) {
+            return <DepositsLocked />;
         }
         return (
             <React.Fragment>
@@ -45,6 +49,7 @@ class Deposit extends React.Component {
 Deposit.propTypes = {
     container: PropTypes.string,
     error: PropTypes.object,
+    is_authentication_needed: PropTypes.bool,
     iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     iframe_url: PropTypes.string,
     is_loading: PropTypes.bool,
@@ -55,6 +60,7 @@ Deposit.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
+    is_authentication_needed: client.is_authentication_needed,
     is_virtual: client.is_virtual,
     container: modules.cashier.config.deposit.container,
     error: modules.cashier.config.deposit.error,

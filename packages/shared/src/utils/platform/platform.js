@@ -19,6 +19,22 @@ export const isMT5 = () =>
     /^\/mt5/.test(window.location.pathname) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'mt5');
 
+export const getPathname = () => {
+    if (isBot()) {
+        return platform_header.DBot;
+    } else if (isMT5()) {
+        return platform_header.DMT5;
+    } else if (window.location.pathname.split('/')[1] === '') {
+        return platform_header.DTrader;
+    } else if (window.location.pathname.split('/')[1] === 'reports') {
+        return 'Reports';
+    } else if (window.location.pathname.split('/')[1] === 'cashier') {
+        return 'Cashier';
+    } else {
+        return platform_header.SmartTrader;
+    }
+};
+
 export const getPlatformHeader = routing_history => {
     if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return 'DBot';
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return 'DMT5';

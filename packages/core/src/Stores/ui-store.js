@@ -1,5 +1,5 @@
 import { action, autorun, computed, observable } from 'mobx';
-import { getPlatformHeader, unique, isEmptyObject } from '@deriv/shared';
+import { getPlatformHeader, unique, isEmptyObject, getPathname } from '@deriv/shared';
 
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import { LocalStore } from '_common/storage';
@@ -229,26 +229,32 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     filterNotificationMessages() {
-        const new_app_routing_history = this.root_store.common.app_routing_history.slice();
-        const current_platform = getPlatformHeader(new_app_routing_history);
-
-        this.notifications.forEach(notification => {
-            if (notification.platform && !notification.platform.includes(current_platform)) {
+        // if (this.notification_messages.length) {
+        this.notification_messages.forEach(notification => {
+            if (notification.platform && !notification.platform.includes(getPathname())) {
                 if (notification.is_disposable) {
-                    this.notifications = this.notifications.filter(
-                        check_notification =>
-                            check_notification.platform.includes(current_platform) ||
-                            check_notification.platform === undefined
-                    );
-                } else {
-                    this.notifications.filter(
-                        check_notification =>
-                            check_notification.platform.includes(current_platform) ||
-                            check_notification.platform === undefined
-                    );
+                    this.removeNotificationMessage({ key: notification.key });
                 }
+            } else {
+                this.notifications = this.notification_messages.filter(
+                    check_notification =>
+                        check_notification.platform.includes(getPathname()) || check_notification.platform === undefined
+                );
             }
+            // if (notification) {
+            //     this.notifications = this.notification_messages.filter(
+            //         check_notification =>
+            //             check_notification.platform.includes(getPathname()) ||
+            //             check_notification.platform === undefined
+            //     );
+
+            //     if (notification.is_disposable) {
+            //         this.removeNotificationMessage({ key: notification.key });
+            //         this.removeNotificationByKey({ key: notification.key });
+            //     }
+            // }
         });
+        // }
     }
 
     @action.bound

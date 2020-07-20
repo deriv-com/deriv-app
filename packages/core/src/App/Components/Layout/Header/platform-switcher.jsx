@@ -17,10 +17,6 @@ class PlatformSwitcher extends React.PureComponent {
         this.state = { is_open: false };
     }
 
-    componentDidUpdate() {
-        this.props.filterNotificationMessages();
-    }
-
     toggleDrawer = () => this.setState(state => ({ is_open: !state.is_open }));
     closeDrawer = () => {
         this.setState({ is_open: false }, () => {
@@ -78,8 +74,4 @@ PlatformSwitcher.propTypes = {
     platform_config: PropTypes.array,
 };
 
-export default withRouter(
-    connect(({ ui }) => ({
-        filterNotificationMessages: ui.filterNotificationMessages,
-    }))(PlatformSwitcher)
-);
+export default withRouter(PlatformSwitcher);

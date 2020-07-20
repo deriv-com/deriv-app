@@ -95,7 +95,7 @@ const AppContents = ({
         >
             <MobileWrapper>{children}</MobileWrapper>
             <DesktopWrapper>
-                <RedirectNoticeModal is_logged_in={is_logged_in} is_eu_country={is_eu_country} />
+                <RedirectNoticeModal is_logged_in={is_logged_in} />
                 {/* Calculate height of user screen and offset height of header and footer */}
                 <ThemedScrollbars height='calc(100vh - 84px)'>{children}</ThemedScrollbars>
             </DesktopWrapper>

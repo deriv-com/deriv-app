@@ -58,7 +58,7 @@ const MT5RealAccountDisplay = ({
     const onSelectRealFinancial = () => {
         // TODO: [deriv-eu] remove is_eu_enabled when eu gets a release
         if (is_eu_enabled && is_eu && !has_maltainvest_account) {
-            openAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Financial'));
+            openAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Real Financial'));
         } else {
             onSelectAccount({ type: 'financial', category: 'real' });
         }

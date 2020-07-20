@@ -147,7 +147,7 @@ class AccountSwitcher extends React.Component {
             },
             {
                 // TODO: [remove-standard-advanced] remove standard when API groups are updated
-                account_types: ['vanuatu', 'svg_standard', 'svg_financial', 'maltainvest_standard'],
+                account_types: ['vanuatu', 'svg_standard', 'svg_financial', 'maltainvest_financial'],
                 icon: 'Financial',
                 title: localize('Financial'),
                 type: 'financial',

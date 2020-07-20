@@ -92,7 +92,7 @@ const OpenPositionsTable = ({
                                 footer={totals}
                                 rowRenderer={mobileRowRenderer}
                                 getRowAction={getRowAction}
-                                custom_width={'100%'}
+                                custom_width='100%'
                                 getRowSize={() => {
                                     if (isMobile() && is_multiplier_tab) return 228;
                                     if (isMobile()) return 208;

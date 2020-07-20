@@ -76,6 +76,7 @@ const PositionsDrawerCard = ({
                 onClick={() => toggleUnsupportedContractModal(true)}
                 result={result || fallback_result}
             />
+            {/* eslint-disable-next-line no-nested-ternary */}
             {is_unsupported ? (
                 <div
                     className={classNames('positions-drawer-card', {
@@ -86,8 +87,7 @@ const PositionsDrawerCard = ({
                 >
                     {contract_info.underlying ? contract_el : loader_el}
                 </div>
-            ) : // eslint-disable-line no-nested-ternary
-            is_link_disabled ? (
+            ) : is_link_disabled ? (
                 <div
                     className={classNames('positions-drawer-card', {
                         'positions-drawer-card--green': !is_multiplier && profit_loss > 0 && !result,

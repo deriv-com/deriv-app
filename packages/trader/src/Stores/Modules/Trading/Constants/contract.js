@@ -1,5 +1,4 @@
 import { localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 
 export const getLocalizedBasis = () => ({
     payout: localize('Payout'),

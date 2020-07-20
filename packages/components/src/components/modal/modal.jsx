@@ -32,10 +32,12 @@ const ModalElement = ({
     const wrapper_ref = React.useRef();
 
     const is_datepicker_visible = () => modal_root_ref.current.querySelectorAll('.dc-datepicker__picker').length;
+    const is_dialog_visible = () => modal_root_ref.current.querySelectorAll('.dc-mobile-dialog').length;
 
     const validateClickOutside = e =>
         has_close_icon &&
         !is_datepicker_visible() &&
+        !is_dialog_visible() &&
         is_open &&
         !(elements_to_ignore && e?.path.find(el => elements_to_ignore.includes(el)));
 

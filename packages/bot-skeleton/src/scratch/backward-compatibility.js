@@ -485,6 +485,8 @@ export default class BlockConversion {
             converted_xml.setAttribute('collection', 'true');
         }
 
+        converted_xml.setAttribute('is_dbot', 'true');
+
         this.workspace = null;
 
         Blockly.Events.enable();

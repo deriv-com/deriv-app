@@ -143,6 +143,18 @@ class Cashier extends React.Component {
                                     )
                                 }
                             />
+                            <Localize
+                                i18n_default_text='Want to exchange between e-wallet currencies? Try <0>bestchange.com</0>'
+                                components={[
+                                    <a
+                                        key={0}
+                                        href='https://www.bestchange.com/?p=1095016'
+                                        rel='noopener noreferrer'
+                                        target='_blank'
+                                        className='link'
+                                    />,
+                                ]}
+                            />
                         </DesktopWrapper>
                         <MobileWrapper>
                             <Div100vhContainer className='cashier__wrapper--is-mobile' height_offset='80px'>

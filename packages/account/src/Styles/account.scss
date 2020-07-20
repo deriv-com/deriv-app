@@ -1573,18 +1573,13 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 4px;
         }
     }
-    .have-open-positions {
-        padding: 24px;
 
+    .have-open-positions-or-balance {
+        padding: 0 24px 24px 24px;
         &__title {
             color: var(--text-prominent);
             font-size: var(--text-size-xs);
             font-weight: bold;
-        }
-        &__accounts-wrapper {
-            display: flex;
-            padding: 8px 8px 8px 16px;
-            align-items: center;
         }
         &__accounts-data {
             display: flex;
@@ -1605,19 +1600,9 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 16px;
             float: right;
         }
-    }
-    .existing-account-has-balance {
-        padding: 0 24px 24px 24px;
-
-        &__action {
-            padding: 8px 0;
-            color: var(--text-prominent);
-            font-size: var(--text-size-xs);
-            line-height: 1.43;
-            font-weight: bold;
-        }
-        &__account-details {
+        &__accounts-wrapper {
             display: flex;
+            padding: 8px 8px 8px 16px;
             align-items: center;
         }
         &__balance {

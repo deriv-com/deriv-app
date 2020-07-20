@@ -108,6 +108,7 @@ class MT5Dashboard extends React.Component {
             NotificationMessages,
             account_settings,
             is_logged_in,
+            is_eu,
         } = this.props;
 
         return (
@@ -156,6 +157,7 @@ class MT5Dashboard extends React.Component {
                                             openPasswordModal={this.openRealPasswordModal}
                                             has_real_account={has_real_account}
                                             is_logged_in={is_logged_in}
+                                            is_eu={is_eu}
                                         />
                                     </>
                                 )}
@@ -169,6 +171,7 @@ class MT5Dashboard extends React.Component {
                                     openAccountTransfer={this.openAccountTransfer}
                                     openPasswordManager={this.togglePasswordManagerModal}
                                     is_logged_in={is_logged_in}
+                                    is_eu={is_eu}
                                 />
                             </div>
                         </Tabs>
@@ -274,5 +277,6 @@ export default withRouter(
         NotificationMessages: ui.notification_messages_ui,
         onMount: modules.mt5.onMount,
         onUnmount: modules.mt5.onUnmount,
+        is_eu: client.is_eu,
     }))(MT5Dashboard)
 );

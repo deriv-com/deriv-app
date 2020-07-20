@@ -26,8 +26,10 @@ import { getClientAccountType, getMT5AccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
-
 const store_name = 'client_store';
+const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
+const eu_excluded_regex = new RegExp('^mt$');
+
 export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
@@ -345,6 +347,17 @@ export default class ClientStore extends BaseStore {
         }
 
         return false;
+    }
+
+    @computed
+    get is_eu() {
+        if (!this.landing_companies) return false;
+        const { gaming_company, financial_company } = this.landing_companies;
+        const financial_shortcode = financial_company?.shortcode;
+        const gaming_shortcode = gaming_company?.shortcode;
+        return financial_shortcode || gaming_shortcode
+            ? eu_shortcode_regex.test(financial_shortcode) || eu_shortcode_regex.test(gaming_shortcode)
+            : eu_excluded_regex.test(this.residence);
     }
 
     @computed({ keepAlive: true })

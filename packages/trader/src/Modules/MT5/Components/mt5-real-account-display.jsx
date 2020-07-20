@@ -30,6 +30,7 @@ const MT5RealAccountDisplay = ({
     openPasswordManager,
     account_settings,
     is_logged_in,
+    is_eu,
 }) => {
     const has_required_credentials =
         account_settings.citizen && account_settings.tax_identification_number && account_settings.tax_residence;
@@ -117,28 +118,30 @@ const MT5RealAccountDisplay = ({
                 specs={real_financial_specs}
                 is_logged_in={is_logged_in}
             />
-            <MT5AccountCard
-                has_mt5_account={has_mt5_account}
-                icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}
-                title={localize('Financial STP')}
-                type={{
-                    category: 'real',
-                    type: 'financial_stp',
-                }}
-                existing_data={current_list['real.financial_stp']}
-                commission_message={<Localize i18n_default_text='No commission' />}
-                onSelectAccount={onSelectRealFinancialStp}
-                button_label={button_label}
-                is_button_primary={is_pending_authentication}
-                onPasswordManager={openPasswordManager}
-                onClickFund={onClickFundRealFinancialStp}
-                descriptor={localize(
-                    'Trade major, minor, and exotic currency pairs with Straight-Through Processing (STP) of your orders direct to the market.'
-                )}
-                specs={real_financial_stp_specs}
-                is_disabled={is_real_financial_stp_disabled}
-                is_logged_in={is_logged_in}
-            />
+            {!is_eu && (
+                <MT5AccountCard
+                    has_mt5_account={has_mt5_account}
+                    icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}
+                    title={localize('Financial STP')}
+                    type={{
+                        category: 'real',
+                        type: 'financial_stp',
+                    }}
+                    existing_data={current_list['real.financial_stp']}
+                    commission_message={<Localize i18n_default_text='No commission' />}
+                    onSelectAccount={onSelectRealFinancialStp}
+                    button_label={button_label}
+                    is_button_primary={is_pending_authentication}
+                    onPasswordManager={openPasswordManager}
+                    onClickFund={onClickFundRealFinancialStp}
+                    descriptor={localize(
+                        'Trade major, minor, and exotic currency pairs with Straight-Through Processing (STP) of your orders direct to the market.'
+                    )}
+                    specs={real_financial_stp_specs}
+                    is_disabled={is_real_financial_stp_disabled}
+                    is_logged_in={is_logged_in}
+                />
+            )}
         </div>
     );
 };

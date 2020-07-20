@@ -1096,7 +1096,9 @@ export default class ClientStore extends BaseStore {
 
             search_params.forEach((value, key) => {
                 const account_keys = ['acct', 'token', 'cur'];
-                const is_account_param = account_keys.some(account_key => key?.includes(account_key));
+                const is_account_param = account_keys.some(
+                    account_key => key?.includes(account_key) && key !== 'affiliate_token'
+                );
 
                 if (is_account_param) {
                     obj_params[key] = value;

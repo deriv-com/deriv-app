@@ -849,7 +849,7 @@ export default class TradeStore extends BaseStore {
             if (this.is_multiplier) {
                 const { message, details } = response.error;
                 const commission_match = (message || '').match(/\((\d+\.*\d*)\)/);
-                if (details.field === 'stop_loss' && commission_match && commission_match[1]) {
+                if (details?.field === 'stop_loss' && commission_match?.[1]) {
                     this.commission = commission_match[1];
                 }
             }

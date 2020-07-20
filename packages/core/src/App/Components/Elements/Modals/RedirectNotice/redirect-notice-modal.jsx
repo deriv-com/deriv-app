@@ -31,15 +31,22 @@ const RedirectNoticeModal = ({ is_logged_in, is_eu }) => {
         window.open(external_link);
     };
 
+    const onClickExternalLink = e => {
+        if (isThirdPartyLink(e.target.href) && is_logged_in && is_eu) {
+            setExternalLink(e.target.href);
+            e.preventDefault();
+            setDialogStatus(true);
+        }
+    };
     React.useEffect(() => {
-        document.addEventListener('click', function(e) {
-            if (isThirdPartyLink(e.target.href) && is_logged_in && is_eu) {
-                setExternalLink(e.target.href);
-                e.preventDefault();
-                setDialogStatus(true);
-            }
-        });
+        document.addEventListener('click', onClickExternalLink);
     }, [is_logged_in, is_eu]);
+
+    React.useEffect(() => {
+        return () => {
+            document.removeEventListener('click', onClickExternalLink);
+        };
+    }, []);
 
     return (
         dialog_status && (

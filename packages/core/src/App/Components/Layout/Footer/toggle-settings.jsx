@@ -47,7 +47,7 @@ const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSett
     });
     return (
         <React.Fragment>
-            <Popover alignment='top' message={localize('Settings')} className='footer__link'>
+            <Popover alignment='top' message={localize('Platform settings')} className='footer__link'>
                 <a id='dt_settings_toggle' onClick={toggleSettings} className={toggle_settings_class}>
                     <Icon icon='IcGear' className='footer__icon ic-settings__icon' />
                 </a>

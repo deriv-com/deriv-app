@@ -49,7 +49,7 @@ class ToggleFullScreen extends React.Component {
         return (
             <Popover
                 alignment='top'
-                message={this.state.is_full_screen ? localize('Minimize') : localize('Maximize')}
+                message={this.state.is_full_screen ? localize('Exit fullscreen') : localize('Fullscreen')}
                 className='footer__link'
             >
                 <a className={full_screen_icon_class} onClick={this.toggleFullScreen} id='dt_fullscreen_toggle'>

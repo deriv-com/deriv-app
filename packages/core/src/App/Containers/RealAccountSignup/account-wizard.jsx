@@ -253,7 +253,6 @@ class AccountWizard extends React.Component {
         if (this.props.has_real_account && !this.props.has_currency) {
             this.setAccountCurrency()
                 .then(response => {
-                    setSubmitting(false);
                     this.props.onFinishSuccess(response.echo_req.set_account_currency.toLowerCase());
                 })
                 .catch(error_message => {
@@ -267,7 +266,6 @@ class AccountWizard extends React.Component {
         } else {
             this.submitForm()
                 .then(response => {
-                    setSubmitting(false);
                     if (this.props.real_account_signup_target === 'maltainvest') {
                         this.props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
                     } else {

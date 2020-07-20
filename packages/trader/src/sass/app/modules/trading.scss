@@ -68,6 +68,7 @@
         @include mobile {
             padding: 0;
             margin-bottom: 0.8rem;
+            background-color: transparent;
         }
 
         /* postcss-bem-linter: ignore */

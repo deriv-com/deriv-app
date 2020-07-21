@@ -1,6 +1,6 @@
-import { DesktopWrapper, MobileWrapper, Dropdown, SelectNative } from '@deriv/components';
 import { Field } from 'formik';
 import React from 'react';
+import { DesktopWrapper, MobileWrapper, Dropdown, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 export const EmploymentStatus = ({

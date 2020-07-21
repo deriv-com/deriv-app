@@ -1,3 +1,6 @@
+import { Formik, Field } from 'formik';
+import React from 'react';
+import { FormSubHeader } from '@deriv/account';
 import {
     Autocomplete,
     AutoHeightWrapper,
@@ -13,9 +16,6 @@ import {
     SelectNative,
     ThemedScrollbars,
 } from '@deriv/components';
-import { Field, Formik } from 'formik';
-import React from 'react';
-import { FormSubHeader } from '@deriv/account';
 import { isDesktop, isMobile, toMoment } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import 'Sass/details-form.scss';

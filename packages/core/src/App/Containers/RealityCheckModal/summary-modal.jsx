@@ -119,7 +119,7 @@ const SummaryModal = ({
                             <ThemedScrollbars height='75vh' autoHide={false} is_bypassed={isMobile()}>
                                 <Div100vhContainer
                                     className='reality-check__column-wrapper'
-                                    max_autoheight_offset='112px'
+                                    max_autoheight_offset='204px'
                                 >
                                     <div className='reality-check__column'>
                                         <div>

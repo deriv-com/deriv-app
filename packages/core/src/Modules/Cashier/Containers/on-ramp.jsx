@@ -31,13 +31,14 @@ const OnRamp = ({
                 <OnRampProviderCard key={idx} provider={provider} />
             ))}
             <Modal
-                className={should_show_dialog ? 'on-ramp__dialog' : 'on-ramp__modal'}
+                className='on-ramp__modal'
                 has_close_icon
                 is_open={is_onramp_modal_open}
                 small={should_show_dialog}
                 title={onramp_popup_modal_title}
                 toggleModal={() => setIsOnRampModalOpen(!is_onramp_modal_open)}
                 onUnmount={resetPopup}
+                width={should_show_dialog ? '440px' : '628px'}
             >
                 <Modal.Body>
                     <OnRampProviderPopup />

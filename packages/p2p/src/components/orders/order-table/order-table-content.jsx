@@ -12,22 +12,6 @@ import OrderRowComponent from 'Components/orders/order-table/order-table-row.jsx
 import OrderInfo from 'Components/orders/order-info';
 import { height_constants } from 'Utils/height_constants';
 
-/* const OrderRowLoader = () => (
-    <ContentLoader
-        height={64}
-        width={900}
-        speed={2}
-        primaryColor={'var(--general-hover)'}
-        secondaryColor={'var(--general-active)'}
-    >
-        <rect x='1' y='20' rx='5' ry='5' width='90' height='10' />
-        <rect x='180' y='20' rx='5' ry='5' width='90' height='10' />
-        <rect x='360' y='20' rx='5' ry='5' width='90' height='10' />
-        <rect x='536' y='20' rx='5' ry='5' width='90' height='10' />
-        <rect x='720' y='20' rx='5' ry='5' width='90' height='10' />
-    </ContentLoader>
-); */
-
 const OrderTableContent = ({ showDetails, is_active }) => {
     const {
         changeTab,

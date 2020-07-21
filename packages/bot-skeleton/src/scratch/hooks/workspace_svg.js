@@ -341,11 +341,8 @@ Blockly.WorkspaceSvg.prototype.showContextMenu_ = function(e) {
  * Dispose of this workspace.
  * Unlink from all DOM elements to prevent memory leaks.
  */
-Blockly.WorkspaceSvg.prototype.dispose = function() {
-    const { startLoading, endLoading } = DBotStore.instance;
-    startLoading();
-
-    setTimeout(() => {
+Blockly.WorkspaceSvg.prototype.dispose = function(should_show_loading = false) {
+    const disposeFn = () => {
         // Stop rerendering.
         this.rendered = false;
         if (this.currentGesture_) {
@@ -404,8 +401,19 @@ Blockly.WorkspaceSvg.prototype.dispose = function() {
             Blockly.unbindEvent_(this.resizeHandlerWrapper_);
             this.resizeHandlerWrapper_ = null;
         }
-        endLoading();
-    }, 50);
+    };
+
+    if (should_show_loading) {
+        const { startLoading, endLoading } = DBotStore.instance;
+        startLoading();
+
+        setTimeout(() => {
+            disposeFn();
+            endLoading();
+        }, 50);
+    } else {
+        disposeFn();
+    }
 };
 
 /**

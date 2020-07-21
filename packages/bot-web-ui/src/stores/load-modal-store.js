@@ -39,7 +39,7 @@ export default class LoadModalStore {
 
         // dispose workspace in recent tab when switch tab
         if (this.active_index !== 0 && this.recent_workspace && this.recent_workspace.rendered) {
-            this.recent_workspace.dispose();
+            this.recent_workspace.dispose(true);
         }
 
         // preview workspace when switch to recent tab
@@ -54,7 +54,7 @@ export default class LoadModalStore {
             this.local_workspace &&
             this.local_workspace.rendered
         ) {
-            this.local_workspace.dispose();
+            this.local_workspace.dispose(true);
             this.loaded_local_file = null;
         }
 
@@ -81,7 +81,7 @@ export default class LoadModalStore {
     @action.bound
     onUnmount() {
         if (this.recent_workspace && this.recent_workspace.rendered) {
-            this.recent_workspace.dispose();
+            this.recent_workspace.dispose(true);
         }
         this.selected_file_id = null;
         this.setActiveTabIndex(0);
@@ -239,7 +239,7 @@ export default class LoadModalStore {
 
     @action.bound
     closePreview() {
-        this.local_workspace.dispose();
+        this.local_workspace.dispose(true);
         this.loaded_local_file = null;
     }
     /** --------- Local Tab End --------- */

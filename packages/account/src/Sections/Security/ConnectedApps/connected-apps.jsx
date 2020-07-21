@@ -3,7 +3,7 @@ import { DesktopWrapper, MobileWrapper, Button, Modal, Icon, DataTable, DataList
 import { localize } from '@deriv/translations';
 import ErrorComponent from 'Components/error-component';
 import { WS } from 'Services/ws-methods';
-import getConnectedAppsColumnsTemplate from './data-table-template';
+import GetConnectedAppsColumnsTemplate from './data-table-template';
 
 class ConnectedApps extends React.Component {
     state = {
@@ -13,7 +13,7 @@ class ConnectedApps extends React.Component {
         is_error: false,
         connected_apps: [],
     };
-    columns_map = getConnectedAppsColumnsTemplate((app_id) => this.handleToggleModal(app_id)).reduce((map, item) => {
+    columns_map = GetConnectedAppsColumnsTemplate((app_id) => this.handleToggleModal(app_id)).reduce((map, item) => {
         map[item.col_index] = item;
         return map;
     }, {});
@@ -85,7 +85,7 @@ class ConnectedApps extends React.Component {
                             <DataTable
                                 className='connected-apps'
                                 data_source={this.state.connected_apps}
-                                columns={getConnectedAppsColumnsTemplate(this.handleToggleModal)}
+                                columns={GetConnectedAppsColumnsTemplate(this.handleToggleModal)}
                                 custom_width={'100%'}
                                 getRowSize={() => 56}
                                 is_empty={false}

@@ -6,6 +6,8 @@ import { localize, Localize } from '@deriv/translations';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
 import ToastErrorPopup from 'Modules/Trading/Containers/toast-error-popup.jsx';
 import 'Sass/app/modules/trading-mobile.scss';
+import ToastInfoPopup from '../../Components/Form/TradeParams/toast-info-popup.jsx';
+import { getMarketNamesMap } from '../../../../Constants';
 
 const MultiplierTradeParamsModal = ({ is_open, enableApp, disableApp, toggleModal, form_components }) => {
     // Fix to prevent iOS from zooming in erratically on quick taps
@@ -163,12 +165,26 @@ const TradeParamsMobile = ({
         <Tabs active_index={tab_idx} className='trade-params__multiplier-tabs' onTabItemClick={setTabIdx} top>
             {isVisible('amount') && (
                 <div header_content={getHeaderContent('amount')}>
-                    <div className='trade-params__multiplier-amount-text'>
-                        <Localize
-                            i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to <0/>.'
-                            components={[<Money key={0} amount={amount} currency={currency} />]}
-                        />
-                    </div>
+                    <ToastInfoPopup
+                        portal_id='modal_root'
+                        message={
+                            <p>
+                                <Localize
+                                    i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to <0/>.'
+                                    components={[<Money key={0} amount={amount} currency={currency} />]}
+                                />
+                            </p>
+                        }
+                        is_open={tab_idx === 0}
+                        timeout={4000}
+                    />
+                    {/* <div className='trade-params__multiplier-amount-text'> */}
+                    {/*    <Localize */}
+                    {/*        i18n_default_text='To ensure your loss does not exceed your stake,
+                    your contract will be closed automatically when your loss equals to <0/>.' */}
+                    {/*        components={[<Money key={0} amount={amount} currency={currency} />]} */}
+                    {/*    /> */}
+                    {/* </div> */}
                     <AmountMobile
                         toggleModal={toggleModal}
                         amount_tab_idx={0}
@@ -181,9 +197,15 @@ const TradeParamsMobile = ({
             )}
             {isVisible('multiplier') && (
                 <div header_content={getHeaderContent('multiplier')}>
-                    <div className='trade-params__multiplier-amount-text'>
-                        <Localize i18n_default_text='Your profit and loss are multiplied by this amount.' />
-                    </div>
+                    <ToastInfoPopup
+                        portal_id='modal_root'
+                        message={localize('Your profit and loss are multiplied by this amount.')}
+                        is_open={tab_idx === 1}
+                        timeout={3500}
+                    />
+                    {/* <div className='trade-params__multiplier-amount-text'> */}
+                    {/*     <Localize i18n_default_text='Your profit and loss are multiplied by this amount.' /> */}
+                    {/* </div> */}
                     <RadioGroup
                         className='trade-params__multiplier-radio-group'
                         name='trade-params__multiplier-radio'

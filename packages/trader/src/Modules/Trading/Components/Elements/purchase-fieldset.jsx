@@ -62,14 +62,20 @@ class PurchaseFieldset extends React.PureComponent {
                     type={type}
                     basis={basis} // mobile-only
                 />
-                <MobileWrapper>
-                    <CancelDealInfo proposal_info={info} />
-                </MobileWrapper>
+                {is_multiplier && has_cancellation && (
+                    <MobileWrapper>
+                        <CancelDealInfo proposal_info={info} />
+                    </MobileWrapper>
+                )}
             </React.Fragment>
         );
 
         return (
-            <Fieldset className='trade-container__fieldset purchase-container__option'>
+            <Fieldset
+                className={classNames('trade-container__fieldset', 'purchase-container__option', {
+                    'purchase-container__option--has-cancellation': has_cancellation,
+                })}
+            >
                 {/* {(is_purchase_locked && index === 0) && */}
                 {/* <PurchaseLock onClick={togglePurchaseLock} /> */}
                 {/* } */}

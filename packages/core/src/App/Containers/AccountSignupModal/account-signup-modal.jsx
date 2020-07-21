@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { validPassword } from 'Utils/Validator/declarative-validation-rules';

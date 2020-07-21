@@ -1,7 +1,7 @@
-import { Button, Popover } from '@deriv/components';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Button, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const SellButton = ({ contract_info, is_sell_requested, is_valid_to_sell, onClickSell }) => {

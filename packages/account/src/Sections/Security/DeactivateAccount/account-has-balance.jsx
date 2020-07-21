@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Money } from '@deriv/components';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { formatMoney } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 const getMT5AccountType = (group) => (group ? group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP)/, '') : '');
@@ -114,7 +114,7 @@ const AccountHasBalanceOrOpenPositions = ({
                                     <div className='have-open-positions-or-balance__money'>
                                         <Money
                                             currency={account.currency}
-                                            amount={CurrencyUtils.formatMoney(account.currency, account.balance, true)}
+                                            amount={formatMoney(account.currency, account.balance, true)}
                                             should_format={false}
                                         />
                                     </div>
@@ -145,7 +145,7 @@ const AccountHasBalanceOrOpenPositions = ({
                             <div className='have-open-positions-or-balance__money'>
                                 <Money
                                     currency={account.currency}
-                                    amount={CurrencyUtils.formatMoney(account.currency, account.balance, true)}
+                                    amount={formatMoney(account.currency, account.balance, true)}
                                     should_format={false}
                                 />
                             </div>

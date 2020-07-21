@@ -148,7 +148,7 @@ export default class UIStore extends BaseStore {
                 this.is_window_loaded = true;
             })
         );
-      
+
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
             // TODO: [disable-dark-bot] Delete this condition when Bot is ready

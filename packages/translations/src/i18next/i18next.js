@@ -140,11 +140,4 @@ const loadIncontextTranslation = () => {
     }
 };
 
-export default {
-    changeLanguage,
-    getAllLanguages,
-    getLanguage,
-    initializeTranslations,
-    localize,
-    Localize,
-};
+export { changeLanguage, getAllLanguages, getLanguage, initializeTranslations, localize, Localize };

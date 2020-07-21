@@ -173,7 +173,7 @@
             .dc-tabs__content {
                 display: flex;
                 flex-direction: column;
-                height: 44.5rem;
+                min-height: 340px;
             }
         }
     }
@@ -328,9 +328,19 @@
                 align-items: center;
                 margin-bottom: 1.6rem;
                 color: var(--text-general);
+                position: absolute;
+                width: 100%;
+                bottom: 0;
 
-                .dc-popover__wrapper {
-                    margin-left: 0.4rem;
+                .dc-popover {
+                    &__wrapper {
+                        margin-left: 0.4rem;
+                    }
+                    @media only screen and (max-width: 340px) {
+                        &__bubble {
+                            font-size: 1rem;
+                        }
+                    }
                 }
             }
             &-limit-orders {

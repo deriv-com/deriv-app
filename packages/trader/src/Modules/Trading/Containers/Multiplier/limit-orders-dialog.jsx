@@ -6,13 +6,7 @@ import CancelDeal from 'Modules/Trading/Components/Elements/Multiplier/cancel-de
 
 const LimitOrdersDialog = ({ is_open, onClose }) => {
     return (
-        <MobileDialog
-            portal_element_id='modal_root'
-            visible={is_open}
-            has_content_scroll
-            onClose={onClose}
-            content_height_offset='94px'
-        >
+        <MobileDialog portal_element_id='modal_root' visible={is_open} has_content_scroll onClose={onClose}>
             <div className='trade-params__multiplier-limit-orders'>
                 <TakeProfit />
                 <StopLoss />

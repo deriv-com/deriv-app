@@ -446,6 +446,12 @@
         @include mobile {
             padding: initial;
             position: relative;
+
+            &:not(&--has-cancellation) {
+                .btn-purchase--multiplier {
+                    height: 90px;
+                }
+            }
         }
     }
     &__loading {

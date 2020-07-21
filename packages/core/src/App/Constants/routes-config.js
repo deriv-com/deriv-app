@@ -96,12 +96,17 @@ const modules = [
                     {
                         path: routes.self_exclusion,
                         component: Account,
-                        title: localize('Two-factor authentication'),
+                        title: localize('Self exclusion'),
                     },
                     {
                         path: routes.account_limits,
                         component: Account,
                         title: localize('Account limits'),
+                    },
+                    {
+                        path: routes.login_history,
+                        component: Account,
+                        title: localize('Login history'),
                     },
                     {
                         path: routes.api_token,

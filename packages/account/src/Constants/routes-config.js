@@ -13,6 +13,7 @@ import {
     TwoFactorAuthentication,
     SelfExclusion,
     Account,
+    LoginHistory,
 } from 'Sections';
 
 // Error Routes
@@ -78,6 +79,11 @@ const initRoutesConfig = () => [
                         path: routes.account_limits,
                         component: AccountLimits,
                         title: localize('Account limits'),
+                    },
+                    {
+                        path: routes.login_history,
+                        component: LoginHistory,
+                        title: localize('Login history'),
                     },
                     {
                         path: routes.api_token,

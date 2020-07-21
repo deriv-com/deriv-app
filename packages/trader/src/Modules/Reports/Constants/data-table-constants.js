@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import { Icon, Label, Money } from '@deriv/components';
 import React from 'react';
+import { Icon, Label, Money } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
 import MultiplierCloseActions from 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard/multiplier-close-actions.jsx';

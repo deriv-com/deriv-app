@@ -14,7 +14,7 @@ export const switch_account_notification = {
     is_persistent: true,
 };
 
-export const journalError = clickFunction => {
+export const journalError = onClick => {
     return {
         key: 'bot_error',
         header: localize('The bot encountered an error while running.'),

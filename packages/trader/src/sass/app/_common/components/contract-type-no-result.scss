@@ -2,24 +2,24 @@
 .no-results-found {
     display: flex;
     flex-direction: column;
-    padding: 24px 8px;
+    padding: 2.4rem 0.8rem;
     justify-content: center;
     align-content: center;
     text-align: center;
 
     &__title {
-        font-size: 14px;
-        font-weight: 400;
+        font-size: var(--text-size-xs);
+        font-weight: normal;
         font-style: normal;
         line-height: 1.43;
         letter-spacing: normal;
         text-align: center;
-        margin-bottom: 8px;
+        margin-bottom: 0.8rem;
         color: var(--text-general);
     }
     &__subtitle {
-        font-size: 12px;
-        font-weight: 400;
+        font-size: 1.2rem;
+        font-weight: normal;
         font-style: normal;
         line-height: 1.5;
         letter-spacing: normal;

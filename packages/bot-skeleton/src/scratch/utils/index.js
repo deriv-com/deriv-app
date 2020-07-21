@@ -154,9 +154,9 @@ export const load = ({
             return showInvalidStrategyError();
         } finally {
             endLoading();
-
-            console.log('test');
         }
+
+        return true;
     }, 500);
 };
 

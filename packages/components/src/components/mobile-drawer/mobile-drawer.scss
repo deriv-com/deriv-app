@@ -53,6 +53,11 @@
             height: inherit;
             width: 32px;
         }
+        &-wrapper {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+        }
     }
     &__subheader {
         display: flex;

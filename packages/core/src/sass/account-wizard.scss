@@ -65,9 +65,11 @@
     display: grid;
     grid-template-rows: 13rem minmax(10rem, 1fr);
     height: 100%;
-    overflow: auto;
     position: relative;
     width: 100%;
+    @include desktop {
+        overflow: auto;
+    }
     @include mobile {
         grid-template-rows: 7rem minmax(10rem, 1fr);
     }

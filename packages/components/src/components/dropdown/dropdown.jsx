@@ -7,7 +7,7 @@ import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from '
 import Items from './items.jsx';
 import NativeSelect from './native-select.jsx';
 import DisplayText from './display-text.jsx';
-import useOnClickOutside from '../../hooks/use-onclickoutside';
+import { useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 import Icon from '../icon';
 

@@ -54,6 +54,8 @@ export default class UIStore extends BaseStore {
     @observable pwa_prompt_event = null;
 
     @observable screen_width = window.innerWidth;
+    @observable screen_height = window.innerHeight;
+    @observable is_keyboard_active = false;
 
     @observable notifications = [];
     @observable notification_messages = [];
@@ -149,7 +151,7 @@ export default class UIStore extends BaseStore {
                 this.is_window_loaded = true;
             })
         );
-      
+
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
             // TODO: [disable-dark-bot] Delete this condition when Bot is ready
@@ -201,7 +203,12 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     handleResize() {
+        if (this.is_mobile) {
+            this.is_keyboard_active =
+                window.innerWidth === this.screen_width && this.screen_height > window.innerHeight;
+        }
         this.screen_width = window.innerWidth;
+        this.screen_height = window.innerHeight;
         if (this.is_mobile) {
             this.is_positions_drawer_on = false;
         }

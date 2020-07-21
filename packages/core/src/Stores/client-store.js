@@ -473,9 +473,12 @@ export default class ClientStore extends BaseStore {
         this.user_id = response.authorize.user_id;
 
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
-        this.local_currency_config.decimal_places = +response.authorize.local_currencies[
-            this.local_currency_config.currency
-        ].fractional_digits;
+
+        // For residences without local currency (e.g. ax)
+        const default_fractional_digits = 2;
+        this.local_currency_config.decimal_places = isEmptyObject(response.authorize.local_currencies)
+            ? default_fractional_digits
+            : +response.authorize.local_currencies[this.local_currency_config.currency].fractional_digits;
 
         ClientBase.responseAuthorize(response);
     }

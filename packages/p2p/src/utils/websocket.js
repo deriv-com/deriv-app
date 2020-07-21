@@ -101,12 +101,21 @@ const getModifiedP2POrder = response => {
     const offer_amount = +response.amount;
     const price_rate = +response.rate;
     const transaction_amount = +response.price;
-    const is_buy = response.type === 'buy';
-    const advertiser_props = is_buy ? 'advertiser_details' : 'client_details';
+    const type = response.is_incoming ? getPropertyValue(response, ['advert_details', 'type']) : response.type;
+    const is_buyer = type === 'buy';
+    const advertiser_props =
+        response.type === 'buy'
+            ? is_buyer
+                ? 'advertiser_details'
+                : 'client_details'
+            : is_buyer
+            ? 'client_details'
+            : 'advertiser_details';
     const payment_method = map_payment_method.bank_transfer; // TODO: [p2p-replace-with-api] add payment method to order details once API has it
     // const payment_method = response.payment_method;
 
     return {
+        type,
         contact_info,
         offer_amount,
         offer_currency,
@@ -127,7 +136,6 @@ const getModifiedP2POrder = response => {
         is_incoming: !!is_incoming,
         order_purchase_datetime: getFormattedDateString(new Date(convertToMillis(response.created_time))),
         status: response.status,
-        type: response.is_incoming ? getPropertyValue(response, ['advert_details', 'type']) : response.type,
     };
 };
 

@@ -21,7 +21,7 @@ export const journalError = onClick => {
         message: (
             <Button
                 className='notify__item-button'
-                onClick={clickFunction}
+                onClick={onClick}
                 has_effect
                 type='button'
                 text={localize('View error in Journal')}

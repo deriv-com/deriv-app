@@ -122,7 +122,7 @@ const Recent = ({
 );
 
 const Local = ({
-    closePreview,
+    cleanUpPreview,
     handleFileChange,
     is_open_button_loading,
     loaded_local_file,
@@ -142,7 +142,7 @@ const Local = ({
                 <div id='load-local__scratch' className='preview__workspace load-local__preview-workspace'>
                     {!is_mobile && (
                         <div className='load-local__preview-close'>
-                            <Icon icon={'IcCross'} onClick={closePreview} />
+                            <Icon icon={'IcCross'} onClick={cleanUpPreview} />
                         </div>
                     )}
                     <WorkspaceControl {...props} />
@@ -183,7 +183,7 @@ const Local = ({
                         <Button
                             className='load-recent__footer-open'
                             text={localize('Cancel')}
-                            onClick={closePreview}
+                            onClick={cleanUpPreview}
                             has_effect
                             secondary
                         />
@@ -248,7 +248,7 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
 const LoadModal = ({
     active_index,
     is_load_modal_open,
-    onMount,
+    onEntered,
     onUnmount,
     setActiveTabIndex,
     toggleLoadModal,
@@ -257,7 +257,7 @@ const LoadModal = ({
 }) => {
     return is_mobile ? (
         <FadeWrapper is_visible={is_load_modal_open} className='load__wrapper' keyname='save__wrapper'>
-            <PageOverlay header={localize('Load Strategy')} onClickClose={toggleLoadModal} onMount={onMount}>
+            <PageOverlay header={localize('Load Strategy')} onClickClose={toggleLoadModal} onMount={onEntered}>
                 <MobileWrapper>
                     <Div100vhContainer className='load__wrapper--is-mobile'>
                         <Tabs
@@ -285,7 +285,7 @@ const LoadModal = ({
             width='1050px'
             is_open={is_load_modal_open}
             toggleModal={toggleLoadModal}
-            onMount={onMount}
+            onEntered={onEntered}
             onUnmount={onUnmount}
             elements_to_ignore={[document.querySelector('.injectionDiv')]}
         >
@@ -306,7 +306,7 @@ const LoadModal = ({
 
 LoadModal.propTypes = {
     active_index: PropTypes.number,
-    closePreview: PropTypes.func,
+    cleanUpPreview: PropTypes.func,
     is_explanation_expand: PropTypes.bool,
     getRecentFileIcon: PropTypes.func,
     getSaveType: PropTypes.func,
@@ -321,7 +321,7 @@ LoadModal.propTypes = {
     onDriveConnect: PropTypes.func,
     onDriveOpen: PropTypes.func,
     onExplanationToggle: PropTypes.func,
-    onMount: PropTypes.func,
+    onEntered: PropTypes.func,
     onUnmount: PropTypes.func,
     onZoomInOutClick: PropTypes.func,
     previewWorkspace: PropTypes.func,
@@ -333,7 +333,7 @@ LoadModal.propTypes = {
 
 export default connect(({ load_modal, google_drive, ui }) => ({
     active_index: load_modal.active_index,
-    closePreview: load_modal.closePreview,
+    cleanUpPreview: load_modal.cleanUpPreview,
     is_explanation_expand: load_modal.is_explanation_expand,
     getRecentFileIcon: load_modal.getRecentFileIcon,
     getSaveType: load_modal.getSaveType,
@@ -348,7 +348,7 @@ export default connect(({ load_modal, google_drive, ui }) => ({
     onExplanationToggle: load_modal.onExplanationToggle,
     onDriveConnect: load_modal.onDriveConnect,
     onDriveOpen: load_modal.onDriveOpen,
-    onMount: load_modal.onMount,
+    onEntered: load_modal.onEntered,
     onUnmount: load_modal.onUnmount,
     onZoomInOutClick: load_modal.onZoomInOutClick,
     previewWorkspace: load_modal.previewWorkspace,

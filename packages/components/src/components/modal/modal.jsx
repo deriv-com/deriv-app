@@ -132,6 +132,7 @@ const Modal = ({
     is_open,
     has_close_icon,
     height,
+    onEntered,
     onMount,
     onUnmount,
     small,
@@ -154,6 +155,7 @@ const Modal = ({
             exit: 'dc-modal__container--exit',
         }}
         unmountOnExit
+        onEntered={onEntered}
     >
         <ModalElement
             className={className}

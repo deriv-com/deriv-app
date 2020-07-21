@@ -14,19 +14,31 @@ export default class LoadModalStore {
     @observable is_explanation_expand = false;
     @observable loaded_local_file = null;
     @observable is_open_button_loading = false;
+
     recent_workspace;
     local_workspace;
     drop_zone;
 
+    TAB_LOCAL = 'local_tab';
+    TAB_GOOGLE = 'google_tab';
+    TAB_RECENT = 'recent_tab';
+
     @computed
     get preview_workspace() {
-        if (this.root_store.ui.is_mobile && this.active_index === 0) {
-            return this.local_workspace;
-        } else if (this.active_index === 0) {
-            return this.recent_workspace;
-        } else if (this.active_index === 1) {
-            return this.local_workspace;
+        if (this.tab_name === this.TAB_LOCAL) return this.local_workspace;
+        if (this.tab_name === this.TAB_RECENT) return this.recent_workspace;
+        return null;
+    }
+
+    @computed
+    get tab_name() {
+        if (this.root_store.ui.is_mobile) {
+            if (this.active_index === 0) return this.TAB_LOCAL;
+            if (this.active_index === 1) return this.TAB_GOOGLE;
         }
+        if (this.active_index === 0) return this.TAB_RECENT;
+        if (this.active_index === 1) return this.TAB_LOCAL;
+        if (this.active_index === 2) return this.TAB_GOOGLE;
     }
 
     @action.bound
@@ -35,6 +47,8 @@ export default class LoadModalStore {
 
         if (this.is_load_modal_open) {
             this.recent_files = getSavedWorkspaces() || [];
+        } else {
+            this.cleanUpPreview();
         }
     }
 
@@ -43,28 +57,26 @@ export default class LoadModalStore {
         this.active_index = index;
 
         // dispose workspace in recent tab when switch tab
-        if (this.active_index !== 0 && this.recent_workspace && this.recent_workspace.rendered) {
+        if (this.tab_name !== this.TAB_RECENT && this.recent_workspace) {
             this.recent_workspace.dispose();
         }
 
         // preview workspace when switch to recent tab
-        if (this.active_index === 0 && this.recent_files.length) {
+        if (this.tab_name === this.TAB_RECENT && this.recent_files.length) {
+            if (!this.selected_file_id) {
+                this.selected_file_id = this.recent_files[0].id;
+            }
             this.previewWorkspace(this.selected_file_id);
         }
 
         // dispose workspace in local tab when switch tab
-        if (
-            this.active_index !== 1 &&
-            this.loaded_local_file &&
-            this.local_workspace &&
-            this.local_workspace.rendered
-        ) {
+        if (this.tab_name === this.TAB_LOCAL && this.loaded_local_file && this.local_workspace) {
             this.local_workspace.dispose();
             this.loaded_local_file = null;
         }
 
         // add drag and drop event listerner when switch to local tab
-        if (this.active_index === 1) {
+        if (this.tab_name === this.TAB_LOCAL) {
             this.drop_zone = document.getElementById('import_dragndrop');
             if (this.drop_zone) {
                 this.drop_zone.addEventListener('drop', e => this.handleFileChange(e, false));
@@ -76,30 +88,21 @@ export default class LoadModalStore {
 
     /** --------- Recent Tab Start --------- */
     @action.bound
-    onMount() {
-        if (this.recent_files.length && this.active_index === 0 && !this.root_store.ui.is_mobile) {
+    onEntered() {
+        if (this.recent_files.length && this.tab_name === this.TAB_RECENT) {
             this.selected_file_id = this.recent_files[0].id;
             this.previewWorkspace(this.selected_file_id);
         }
     }
 
     @action.bound
-    onUnmount() {
-        if (this.recent_workspace && this.recent_workspace.rendered) {
-            this.recent_workspace.dispose();
-        }
-        this.selected_file_id = null;
-        this.setActiveTabIndex(0);
-    }
-
-    @action.bound
     previewWorkspace(id) {
-        const selected_file_id = this.recent_files.find(file => file.id === id);
-        if (!selected_file_id) {
+        const selected_file = this.recent_files.find(file => file.id === id);
+        if (!selected_file) {
             return;
         }
 
-        const xml_file = selected_file_id.xml;
+        const xml_file = selected_file.xml;
         this.selected_file_id = id;
 
         if (!this.recent_workspace || !this.recent_workspace.rendered) {
@@ -236,8 +239,12 @@ export default class LoadModalStore {
     }
 
     @action.bound
-    closePreview() {
-        this.local_workspace.dispose();
+    cleanUpPreview() {
+        if (this.preview_workspace) {
+            this.preview_workspace.dispose();
+        }
+
+        this.selected_file_id = null;
         this.loaded_local_file = null;
     }
     /** --------- Local Tab End --------- */

@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import { localize } from '@deriv/translations';
 import { load, config, save_types, getSavedWorkspaces, removeExistingWorkspace } from '@deriv/bot-skeleton';
 
@@ -17,6 +17,17 @@ export default class LoadModalStore {
     recent_workspace;
     local_workspace;
     drop_zone;
+
+    @computed
+    get preview_workspace() {
+        if (this.root_store.ui.is_mobile && this.active_index === 0) {
+            return this.local_workspace;
+        } else if (this.active_index === 0) {
+            return this.recent_workspace;
+        } else if (this.active_index === 1) {
+            return this.local_workspace;
+        }
+    }
 
     @action.bound
     toggleLoadModal() {
@@ -111,14 +122,7 @@ export default class LoadModalStore {
 
     @action.bound
     onZoomInOutClick(is_zoom_in) {
-        let workspace;
-        if (this.active_index === 0) {
-            workspace = this.recent_workspace;
-        } else if (this.active_index === 1) {
-            workspace = this.local_workspace;
-        }
-
-        workspace.zoomCenter(is_zoom_in ? 1 : -1);
+        this.preview_workspace?.zoomCenter?.(is_zoom_in ? 1 : -1);
     }
 
     @action.bound

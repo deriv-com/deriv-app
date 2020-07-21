@@ -78,7 +78,9 @@ class AccountSwitcher extends React.Component {
     openMt5RealAccount = account_type => {
         if (this.props.is_eu_enabled && this.props.is_eu && !this.props.has_maltainvest_account) {
             this.props.openAccountNeededModal(
-                'maltainvest',
+                account_type === 'synthetic'
+                    ? this.props.standpoint.gaming_company
+                    : this.props.standpoint.financial_company,
                 account_type === 'synthetic' ? localize('Deriv Synthetic') : localize('Deriv Financial'),
                 account_type === 'synthetic' ? localize('DMT5 Synthetic') : localize('DMT5 Financial')
             );
@@ -648,6 +650,7 @@ const account_switcher = withRouter(
         upgradeable_landing_companies: client.upgradeable_landing_companies,
         updateMt5LoginList: client.updateMt5LoginList,
         routeBackInApp: common.routeBackInApp,
+        standpoint: client.standpoint,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup: ui.openRealAccountSignup,
         toggleAccountsDialog: ui.toggleAccountsDialog,

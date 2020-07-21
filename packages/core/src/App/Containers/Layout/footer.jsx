@@ -10,6 +10,7 @@ import {
     HelpCentre,
     ToggleComplaintsPolicy,
 } from 'App/Components/Layout/Footer';
+import LiveChat from 'App/Components/Elements/live-chat.jsx';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
 
@@ -37,6 +38,7 @@ const Footer = ({
             <ToggleComplaintsPolicy landing_company_shortcode={landing_company_shortcode} />
         </div>
         <div className='footer__links'>
+            <LiveChat />
             <HelpCentre />
             <ToggleSettings
                 is_settings_visible={is_settings_modal_on}

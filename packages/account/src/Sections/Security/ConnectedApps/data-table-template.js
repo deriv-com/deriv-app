@@ -36,19 +36,16 @@ const PrepareConnectedAppsLastLogin = (last_used) => (
     <p className='last_used_content'>{toMoment(last_used).format('YYYY-MM-DD HH:mm:ss')}</p>
 );
 
+const scope_list = {
+    read: 'Read',
+    trade: 'Trade',
+    trading_information: 'Trading information',
+    payments: 'Payments',
+    admin: 'Admin',
+};
+
 const generatePermission = (scope) => {
-    switch (scope) {
-        case 'read':
-            return 'Read';
-        case 'trade':
-            return 'Trade';
-        case 'trading_information':
-            return 'Trading information';
-        case 'payments':
-            return 'Payments';
-        case 'admin':
-            return 'Admin';
-    }
+    return scope_list[scope];
 };
 const PrepareConnectedAppsScopes = (permissions_list) => {
     const is_trading_information = permissions_list.includes('trading_information');

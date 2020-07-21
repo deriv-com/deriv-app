@@ -75,9 +75,8 @@ class ConnectedApps extends React.Component {
         return (
             <section className='connected-apps'>
                 <p className='connected-apps__title'>{localize('Authorised applications')}</p>
-                {this.state.is_error ? (
-                    <ErrorComponent />
-                ) : this.state.is_loading ? (
+                {this.state.is_error && <ErrorComponent />}
+                {this.state.is_loading ? (
                     <Loading is_fullscreen={false} />
                 ) : (
                     <React.Fragment>

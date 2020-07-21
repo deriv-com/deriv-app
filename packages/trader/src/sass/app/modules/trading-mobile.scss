@@ -117,6 +117,9 @@
         width: calc(100% - 3.6rem) !important;
         top: 11rem !important;
 
+        &__multiplier-trade-info {
+            top: 1rem !important;
+        }
         .dc-toast-error__message {
             background: var(--status-info);
             font-size: 1.2rem;
@@ -173,7 +176,11 @@
             .dc-tabs__content {
                 display: flex;
                 flex-direction: column;
-                min-height: 340px;
+                min-height: 380px;
+
+                @media only screen and (max-height: 480px) {
+                    min-height: 340px;
+                }
             }
         }
     }
@@ -269,7 +276,7 @@
                 }
                 /* iPhone SE screen height fixes due to UI space restrictions */
                 @media only screen and (max-height: 480px) {
-                    transform: scale(1, 0.9);
+                    transform: scale(1, 0.92);
                     transform-origin: top;
                     margin-top: -0.4rem;
                 }

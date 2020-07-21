@@ -140,7 +140,7 @@
         justify-content: flex-end;
         padding: 1.6rem;
 
-        .dc-btn:nth-child(2) {
+        :not(.dc-form-submit-button) .dc-btn:nth-child(2) {
             margin-left: 0.8rem;
         }
         &--separator {

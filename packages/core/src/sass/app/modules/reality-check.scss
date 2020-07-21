@@ -103,6 +103,10 @@
     &__submit {
         background-color: unset;
         padding: 0 0.8rem;
+
+        @include mobile {
+            padding: 0 0.8rem;
+        }
     }
 }
 

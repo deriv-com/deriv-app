@@ -148,6 +148,16 @@ export const addDays = (date, num_of_days) =>
         .add(num_of_days, 'day');
 
 /**
+ * add the specified number of weeks to the given date
+ * @param {String} date        date
+ * @param {Number} num_of_weeks number of days to add
+ */
+export const addWeeks = (date, num_of_weeks) =>
+    toMoment(date)
+        .clone()
+        .add(num_of_weeks, 'week');
+
+/**
  * add the specified number of months to the given date
  * @param {String} date        date
  * @param {Number} num_of_months number of months to add

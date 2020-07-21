@@ -61,6 +61,14 @@ export const getDecimalPlaces = currency =>
         ? getPropertyValue(currencies_config, [currency, 'fractional_digits'])
         : calcDecimalPlaces(currency);
 
+export const hasCorrectDecimalPlaces = (currency, amount) => {
+    const currency_decimal_places = getDecimalPlaces(currency);
+    const amount_decimal_array = amount.toString().split('.')[1];
+    const amount_decimal_places = amount_decimal_array ? amount_decimal_array.length || 0 : 0;
+
+    return amount_decimal_places <= currency_decimal_places;
+};
+
 export const setCurrencies = website_status => {
     currencies_config = website_status.currencies_config;
 };

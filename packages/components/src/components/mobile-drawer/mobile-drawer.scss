@@ -53,14 +53,28 @@
             height: inherit;
             width: 32px;
         }
+        &-wrapper {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+        }
     }
     &__subheader {
         display: flex;
         height: 72px;
+        min-height: 72px;
         border-bottom: 1px solid var(--general-section-2);
         justify-content: center;
         align-items: center;
         margin-bottom: 1.8rem;
+        position: absolute;
+        width: 100%;
+        background: var(--general-main-2);
+        z-index: 1;
+
+        &--hidden {
+            visibility: hidden;
+        }
     }
     &__submenu {
         &-back {
@@ -113,8 +127,7 @@
                 pointer-events: auto;
             }
             &--has-subheader {
-                height: calc(100% + 76px);
-                top: -76px;
+                height: 100%;
             }
             &-title {
                 display: flex;
@@ -159,11 +172,13 @@
         }
     }
     &__body {
-        position: relative;
         font-size: 1.4rem;
         height: 100%;
+        padding-top: 8.8rem;
         line-height: 1.5;
         color: var(--text-prominent);
+        overflow-y: auto;
+        overflow-x: hidden;
     }
     &__item {
         padding: 0 0 3.2rem 4.8rem;

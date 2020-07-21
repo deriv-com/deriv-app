@@ -1,6 +1,6 @@
-import { Checkbox } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Checkbox } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import MediaItem, { MediaHeading, MediaIcon, MediaDescription } from 'App/Components/Elements/Media';

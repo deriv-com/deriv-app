@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import { Popover } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 

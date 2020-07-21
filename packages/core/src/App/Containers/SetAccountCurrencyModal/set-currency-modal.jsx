@@ -1,6 +1,6 @@
-import { Button, Modal } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Button, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -24,8 +24,11 @@ const SetAccountCurrencyModal = ({ is_visible, is_virtual, setCurrency, toggleMo
                         has_effect
                         text={localize('Set currency')}
                         onClick={() => {
-                            setCurrency();
                             toggleModal();
+                            // timeout is to ensure no jumpy animation when modals are overlapping enter/exit transitions
+                            setTimeout(function() {
+                                setCurrency();
+                            }, 250);
                         }}
                         primary
                     />

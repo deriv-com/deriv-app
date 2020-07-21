@@ -1539,6 +1539,7 @@ $MIN_HEIGHT_FLOATING: calc(
     .dc-modal-header {
         border: none;
         min-width: 430px;
+        margin-bottom: 8px;
     }
     .account-closure-warning-modal {
         display: flex;
@@ -1580,6 +1581,11 @@ $MIN_HEIGHT_FLOATING: calc(
             color: var(--text-prominent);
             font-size: var(--text-size-xs);
             font-weight: bold;
+            margin-bottom: 5px;
+        }
+        &__account-details {
+            display: flex;
+            align-items: center;
         }
         &__accounts-data {
             display: flex;
@@ -1602,7 +1608,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &__accounts-wrapper {
             display: flex;
-            padding: 8px 8px 8px 16px;
+            padding: 3px 3px 3px 16px;
             align-items: center;
         }
         &__balance {
@@ -1625,9 +1631,10 @@ $MIN_HEIGHT_FLOATING: calc(
 
         &__container {
             display: flex;
-            padding: 3px 16px;
+            padding: 3px 3px 3px 16px;
             justify-content: space-between;
             align-items: center;
+            max-width: 264px;
         }
         &__money {
             color: var(--text-prominent);
@@ -1635,8 +1642,11 @@ $MIN_HEIGHT_FLOATING: calc(
             line-height: 1.43;
         }
         &__button {
-            margin-top: 16px;
+            height: 40px;
+            width: 77px;
             float: right;
+            margin-right: 24px;
+            margin-bottom: 24px;
         }
     }
 }

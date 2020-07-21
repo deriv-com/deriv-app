@@ -1,10 +1,10 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { Formik, Field } from 'formik';
-import { Checkbox, Button, Input, FormSubmitButton, Modal, Icon, Money, Loading } from '@deriv/components';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
+import AccountHasBalanceOrOpenPositions from './account-has-balance.jsx';
 
 const initial_form = {
     otherFinancialPriorities: false,
@@ -63,151 +63,7 @@ const WarningModal = (props) => {
         </div>
     );
 };
-const getMT5AccountType = (group) => (group ? group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP)/, '') : '');
 
-const getMT5AccountDisplay = (group) => {
-    if (!group) return {};
-
-    const value = getMT5AccountType(group);
-    let display_text = localize('MT5');
-    if (/svg$/.test(value)) {
-        display_text = localize('Synthetic');
-    } else if (/vanuatu/.test(value) || /svg_(standard|financial)/.test(value)) {
-        display_text = localize('Financial');
-    } else if (/labuan/.test(value)) {
-        display_text = localize('Financial STP');
-    }
-
-    return display_text;
-};
-
-const AccountHasBalanceOrOpenPositions = ({
-    accounts_with_balance_or_open_positions,
-    mt5_login_list,
-    client_accounts,
-    onBackClick,
-}) => {
-    const deriv_accounts_open_positions = [];
-    const deriv_accounts_with_balance = [];
-    const mt5_accounts_id = [];
-    const mt5_accounts_with_balance_or_open_positions = [];
-
-    accounts_with_balance_or_open_positions.hasOwnProperty('open_positions') &&
-        Object.keys(accounts_with_balance_or_open_positions.open_positions).forEach((account_name) => {
-            if (!accounts_with_balance_or_open_positions.open_positions[account_name].hasOwnProperty('total')) {
-                // accounts without [total] are deriv accounts.
-                const deriv_account_with_open_position = client_accounts.find(
-                    (client_account) => client_account.loginid === account_name
-                );
-                deriv_account_with_open_position &&
-                    deriv_accounts_open_positions.push(deriv_account_with_open_position);
-            } else {
-                // accounts with [total] are mt5 accounts.
-                // const mt5_account_with_open_position = mt5_login_list.find((account_obj) => account_obj.login === account_name);
-                // mt5_account_with_open_position && mt5_accounts_with_balance_or_open_positions.push(mt5_account_with_open_position);
-                mt5_accounts_id.push(account_name);
-            }
-        });
-    accounts_with_balance_or_open_positions.hasOwnProperty('balance') &&
-        Object.keys(accounts_with_balance_or_open_positions.balance).forEach((account_name) => {
-            const is_deriv_account = client_accounts.find((client_account) => client_account.loginid === account_name);
-            if (is_deriv_account) {
-                const deriv_account = accounts_with_balance_or_open_positions.balance[account_name];
-                deriv_account.id = account_name;
-                deriv_accounts_with_balance.push(deriv_account);
-            } else {
-                // const mt5_account_with_balance = mt5_login_list.find((account_obj) => account_obj.login === account_name);
-                // mt5_account_with_balance && mt5_accounts_with_balance_or_open_positions.push(mt5_account_with_balance);
-                mt5_accounts_id.push(account_name);
-            }
-        });
-    [...new Set(mt5_accounts_id)].forEach((account_name) => {
-        const mt5_account_with_balance = mt5_login_list.find((account_obj) => account_obj.login === account_name);
-        mt5_account_with_balance && mt5_accounts_with_balance_or_open_positions.push(mt5_account_with_balance);
-    });
-    console.log({ mt5_accounts_with_balance_or_open_positions });
-    return (
-        <React.Fragment>
-            <div className='have-open-positions-or-balance'>
-                <p className='have-open-positions-or-balance__title'>
-                    {localize('You have open positions in these Deriv accounts:')}
-                </p>
-                {deriv_accounts_open_positions.map((account) => (
-                    <div key={account.loginid} className='have-open-positions-or-balance__accounts-wrapper'>
-                        <Icon icon={`IcCurrency-${account.title.toLowerCase()}`} size={24} />
-                        <div className='have-open-positions-or-balance__accounts-data'>
-                            <span className='have-open-positions-or-balance__accounts-currency'>{account.title}</span>
-                            <span className='have-open-positions-or-balance__accounts-loginid'>{account.loginid}</span>
-                        </div>
-                    </div>
-                ))}
-            </div>
-            <div className='have-open-positions-or-balance'>
-                <p className='have-open-positions-or-balance__title'>
-                    {localize('You have funds in these Deriv accounts:')}
-                </p>
-                {deriv_accounts_with_balance.map((account) => (
-                    <div key={account.id}>
-                        {account.currency && (
-                            <div className='have-open-positions-or-balance__container'>
-                                <div className='have-open-positions-or-balance__account-details'>
-                                    <div className='have-open-positions-or-balance__account-details__icon'>
-                                        <Icon icon={`IcCurrency-${account.currency.toLowerCase()}`} size={24} />
-                                    </div>
-                                    <div className='have-open-positions-or-balance__balance'>
-                                        <span className='have-open-positions-or-balance__balance--currency'>
-                                            {account.currency}
-                                        </span>
-                                        <span className='have-open-positions-or-balance__balance--id'>
-                                            {account.id}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className='have-open-positions-or-balance__money'>
-                                    <Money
-                                        currency={account.currency}
-                                        amount={CurrencyUtils.formatMoney(account.currency, account.balance, true)}
-                                        should_format={false}
-                                    />
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                ))}
-            </div>
-            <div className='have-open-positions-or-balance'>
-                <p className='have-open-positions-or-balance__action'>
-                    {localize('You have funds in these Deriv accounts:')}
-                </p>
-                {mt5_accounts_with_balance_or_open_positions.map((account) => (
-                    <div key={account.login} className='have-open-positions-or-balance__container'>
-                        <div className='have-open-positions-or-balance__account-details'>
-                            <div className='have-open-positions-or-balance__container__account-details__icon'>
-                                <Icon icon={`IcMt5-${getMT5AccountDisplay(account.group)}`} size={24} />
-                            </div>
-                            <div className='have-open-positions-or-balance__balance'>
-                                <span className='have-open-positions-or-balance__balance--currency'>
-                                    {getMT5AccountDisplay(account.group)}
-                                </span>
-                                <span className='have-open-positions-or-balance__balance--id'>{account.login}</span>
-                            </div>
-                        </div>
-                        <div className='have-open-positions-or-balance__money'>
-                            <Money
-                                currency={account.currency}
-                                amount={CurrencyUtils.formatMoney(account.currency, account.balance, true)}
-                                should_format={false}
-                            />
-                        </div>
-                    </div>
-                ))}
-            </div>
-            <Button className='have-open-positions-or-balance__button' primary onClick={() => onBackClick()}>
-                {localize('OK')}
-            </Button>
-        </React.Fragment>
-    );
-};
 class DeactivateAccountReason extends React.Component {
     state = {
         is_loading: false,
@@ -282,10 +138,9 @@ class DeactivateAccountReason extends React.Component {
             reason: this.state.reason,
         });
         this.setState({ is_loading: false });
-        console.log(account_closure_response);
+
         if (account_closure_response.account_closure === 1) {
             window.location.href = '/account-deactivated';
-            return;
         } else {
             this.setState({
                 which_modal_should_render: account_closure_response.error.code,
@@ -312,7 +167,9 @@ class DeactivateAccountReason extends React.Component {
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('I have other financial priorities.')}
-                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => {
+                                            this.handleChangeCheckbox(values, field.name, setFieldValue);
+                                        }}
                                     />
                                 )}
                             </Field>
@@ -323,7 +180,9 @@ class DeactivateAccountReason extends React.Component {
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('I want to stop myself from trading.')}
-                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => {
+                                            this.handleChangeCheckbox(values, field.name, setFieldValue);
+                                        }}
                                     />
                                 )}
                             </Field>
@@ -334,7 +193,9 @@ class DeactivateAccountReason extends React.Component {
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('I’m no longer interested in trading.')}
-                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => {
+                                            this.handleChangeCheckbox(values, field.name, setFieldValue);
+                                        }}
                                     />
                                 )}
                             </Field>
@@ -345,7 +206,9 @@ class DeactivateAccountReason extends React.Component {
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('I prefer another trading website.')}
-                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => {
+                                            this.handleChangeCheckbox(values, field.name, setFieldValue);
+                                        }}
                                     />
                                 )}
                             </Field>
@@ -356,7 +219,9 @@ class DeactivateAccountReason extends React.Component {
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('The platforms aren’t user-friendly.')}
-                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => {
+                                            this.handleChangeCheckbox(values, field.name, setFieldValue);
+                                        }}
                                     />
                                 )}
                             </Field>
@@ -367,7 +232,9 @@ class DeactivateAccountReason extends React.Component {
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('Making deposits and withdrawals is difficult.')}
-                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => {
+                                            this.handleChangeCheckbox(values, field.name, setFieldValue);
+                                        }}
                                     />
                                 )}
                             </Field>
@@ -378,7 +245,9 @@ class DeactivateAccountReason extends React.Component {
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('The platforms lack key features or functionality.')}
-                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => {
+                                            this.handleChangeCheckbox(values, field.name, setFieldValue);
+                                        }}
                                     />
                                 )}
                             </Field>
@@ -389,7 +258,9 @@ class DeactivateAccountReason extends React.Component {
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('Customer service was unsatisfactory.')}
-                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => {
+                                            this.handleChangeCheckbox(values, field.name, setFieldValue);
+                                        }}
                                     />
                                 )}
                             </Field>
@@ -400,7 +271,9 @@ class DeactivateAccountReason extends React.Component {
                                         className='deactivate-account-reasons__checkbox'
                                         {...field}
                                         label={localize('I’m deactivating my account for other reasons.')}
-                                        onChange={() => this.handleChangeCheckbox(values, field.name, setFieldValue)}
+                                        onChange={() => {
+                                            this.handleChangeCheckbox(values, field.name, setFieldValue);
+                                        }}
                                     />
                                 )}
                             </Field>

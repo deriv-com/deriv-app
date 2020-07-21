@@ -65,7 +65,7 @@ export const load = ({
     const { startLoading, endLoading } = DBotStore.instance;
     startLoading();
 
-    setTimeout(() => {
+    setTimeout(async () => {
         const showInvalidStrategyError = () => {
             endLoading();
             const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
@@ -125,7 +125,7 @@ export const load = ({
             if (is_collection) {
                 loadBlocks(xml, drop_event, event_group, workspace);
             } else {
-                loadWorkspace(xml, event_group, workspace);
+                await loadWorkspace(xml, event_group, workspace);
 
                 const is_main_workspace = workspace === Blockly.derivWorkspace;
                 if (is_main_workspace) {
@@ -154,9 +154,9 @@ export const load = ({
             return showInvalidStrategyError();
         } finally {
             endLoading();
-        }
 
-        return true;
+            console.log('test');
+        }
     }, 500);
 };
 

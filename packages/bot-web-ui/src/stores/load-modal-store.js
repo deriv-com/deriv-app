@@ -81,7 +81,7 @@ export default class LoadModalStore {
     @action.bound
     onUnmount() {
         if (this.recent_workspace && this.recent_workspace.rendered) {
-            this.recent_workspace.dispose(true);
+            this.recent_workspace.dispose(this.active_index === 0);
         }
         this.selected_file_id = null;
         this.setActiveTabIndex(0);

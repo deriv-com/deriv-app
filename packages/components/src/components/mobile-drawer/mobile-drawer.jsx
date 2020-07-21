@@ -10,7 +10,18 @@ import SubMenu from './mobile-drawer-submenu.jsx';
 import SubMenuSection from './mobile-drawer-submenu-section.jsx';
 import Icon from '../icon/icon.jsx';
 
-const MobileDrawer = ({ className, id, height, width, alignment, is_open, title, toggle, children }) => (
+const MobileDrawer = ({
+    className,
+    id,
+    height,
+    width,
+    alignment,
+    is_open,
+    title,
+    toggle,
+    children,
+    livechat: LiveChat,
+}) => (
     <Drawer
         direction={alignment}
         open={is_open}
@@ -37,15 +48,18 @@ const MobileDrawer = ({ className, id, height, width, alignment, is_open, title,
                 <div onClick={toggle} className='dc-mobile-drawer__header-close'>
                     <Icon icon='IcCross' />
                 </div>
-                {title && (
-                    <h3
-                        className={classNames('dc-mobile-drawer__header-title', {
-                            [`dc-mobile-drawer-header__title--${className}`]: className,
-                        })}
-                    >
-                        {title}
-                    </h3>
-                )}
+                <div className='dc-mobile-drawer__header-wrapper'>
+                    {title && (
+                        <h3
+                            className={classNames('dc-mobile-drawer__header-title', {
+                                [`dc-mobile-drawer-header__title--${className}`]: className,
+                            })}
+                        >
+                            {title}
+                        </h3>
+                    )}
+                    {LiveChat}
+                </div>
             </div>
             {children}
         </div>
@@ -70,6 +84,8 @@ MobileDrawer.propTypes = {
     height: PropTypes.string,
     id: PropTypes.string,
     is_open: PropTypes.bool,
+    livechat_title: PropTypes.string,
+    onClickLivechat: PropTypes.func,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     toggle: PropTypes.func,
     width: PropTypes.string,

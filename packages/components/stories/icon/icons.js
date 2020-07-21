@@ -110,6 +110,7 @@ export const icons = {
         'IcInstallationWindows',
         'IcLanguage',
         'IcLessThanEight',
+        'IcLiveChat',
         'IcLock',
         'IcLogout',
         'IcLookbacks',

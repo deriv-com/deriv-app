@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import { Button, Dialog } from '@deriv/components';
 import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Button, Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { website_name } from 'App/Constants/app-config';

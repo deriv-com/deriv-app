@@ -39,6 +39,7 @@ export default class LoadModalStore {
         if (this.active_index === 0) return this.TAB_RECENT;
         if (this.active_index === 1) return this.TAB_LOCAL;
         if (this.active_index === 2) return this.TAB_GOOGLE;
+        return '';
     }
 
     @action.bound
@@ -125,7 +126,9 @@ export default class LoadModalStore {
 
     @action.bound
     onZoomInOutClick(is_zoom_in) {
-        this.preview_workspace?.zoomCenter?.(is_zoom_in ? 1 : -1);
+        if (this.preview_workspace) {
+            this.preview_workspace.zoomCenter(is_zoom_in ? 1 : -1);
+        }
     }
 
     @action.bound

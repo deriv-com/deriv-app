@@ -110,6 +110,7 @@ import './common/ic-installation-web-real.svg';
 import './common/ic-installation-windows.svg';
 import './common/ic-language.svg';
 import './common/ic-less-than-eight.svg';
+import './common/ic-live-chat.svg';
 import './common/ic-lock.svg';
 import './common/ic-logout.svg';
 import './common/ic-lookbacks.svg';

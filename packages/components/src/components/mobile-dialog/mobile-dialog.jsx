@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import Icon from 'Components/icon/icon.jsx';
+import Icon from '../icon/icon.jsx';
 import Div100vhContainer from '../div100vh-container';
 
 const MobileDialog = props => {

@@ -1,7 +1,7 @@
-import { Icon, Modal, Button, Money } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
+import { Icon, Modal, Button, Money } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 

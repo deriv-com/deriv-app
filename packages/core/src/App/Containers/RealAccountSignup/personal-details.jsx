@@ -1,3 +1,5 @@
+import { Formik, Field } from 'formik';
+import React from 'react';
 import {
     Div100vhContainer,
     AutoHeightWrapper,
@@ -6,8 +8,6 @@ import {
     DateOfBirthPicker,
     FormSubmitButton,
 } from '@deriv/components';
-import { Formik, Field } from 'formik';
-import React from 'react';
 import { isDesktop, isMobile, toMoment } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 

@@ -5,6 +5,7 @@ import Icon from '../icon';
 
 const Native = ({
     id,
+    disabled,
     display_format,
     name,
     error,
@@ -70,6 +71,7 @@ const Native = ({
                 required
                 onBlur={handleBlur}
                 onFocus={handleFocus}
+                disabled={disabled}
                 onChange={e => {
                     onSelect(e.target.value);
                 }}

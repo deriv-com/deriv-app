@@ -141,6 +141,7 @@ class PersonalDetails extends React.Component {
                                                 <DateOfBirthField
                                                     name='date_of_birth'
                                                     label={localize('Date of birth')}
+                                                    disabled={this.props.disabled_items.includes('date_of_birth')}
                                                     placeholder={localize('01-07-1999')}
                                                 />
                                             )}

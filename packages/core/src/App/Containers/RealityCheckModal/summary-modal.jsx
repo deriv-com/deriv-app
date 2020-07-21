@@ -5,6 +5,7 @@ import {
     Modal,
     DesktopWrapper,
     MobileWrapper,
+    Div100vhContainer,
     Loading,
     ThemedScrollbars,
     Money,
@@ -115,8 +116,11 @@ const SummaryModal = ({
                 {({ errors, isSubmitting, isValid, values, touched, handleChange, handleBlur }) => (
                     <Form noValidate>
                         <Modal.Body>
-                            <ThemedScrollbars height='75vh' autoHide={false}>
-                                <div className='reality-check__column-wrapper'>
+                            <ThemedScrollbars height='75vh' autoHide={false} is_bypassed={isMobile()}>
+                                <Div100vhContainer
+                                    className='reality-check__column-wrapper'
+                                    max_autoheight_offset='112px'
+                                >
                                     <div className='reality-check__column'>
                                         <div>
                                             <Row label={localize('Login ID')} value={computed_values.loginid} />
@@ -205,7 +209,7 @@ const SummaryModal = ({
                                             handleBlur={handleBlur}
                                         />
                                     </div>
-                                </div>
+                                </Div100vhContainer>
                             </ThemedScrollbars>
                         </Modal.Body>
                         <Modal.Footer has_separator>

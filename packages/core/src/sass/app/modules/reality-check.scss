@@ -43,6 +43,7 @@
         &-wrapper {
             display: flex;
             flex-direction: row;
+            overflow-y: auto;
 
             @include mobile {
                 flex-direction: column;

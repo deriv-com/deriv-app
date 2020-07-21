@@ -1,7 +1,7 @@
-import { Autocomplete, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { Field } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Autocomplete, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const SetResidenceForm = ({

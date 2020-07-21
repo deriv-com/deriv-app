@@ -165,17 +165,18 @@ const TradeParamsMobile = ({
             {isVisible('amount') && (
                 <div header_content={getHeaderContent('amount')}>
                     <ToastInfoPopup
+                        className='multiplier-trade-info'
                         portal_id='modal_root'
                         message={
                             <p>
                                 <Localize
-                                    i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to <0/>.'
+                                    i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to your stake value. e.g - <0/>.'
                                     components={[<Money key={0} amount={amount} currency={currency} />]}
                                 />
                             </p>
                         }
                         is_open={tab_idx === 0}
-                        timeout={4000}
+                        timeout={5000}
                     />
                     <AmountMobile
                         toggleModal={toggleModal}
@@ -190,6 +191,7 @@ const TradeParamsMobile = ({
             {isVisible('multiplier') && (
                 <div header_content={getHeaderContent('multiplier')}>
                     <ToastInfoPopup
+                        className='multiplier-trade-info'
                         portal_id='modal_root'
                         message={localize('Your profit and loss are multiplied by this amount.')}
                         is_open={tab_idx === 1}

@@ -7,6 +7,7 @@ import Virtual from '../Components/Error/virtual.jsx';
 import FundsProtection from '../Components/funds-protection.jsx';
 import MaxTurnover from '../Components/Form/max-turnover-form.jsx';
 import DepositsLocked from '../Components/deposit-locked.jsx';
+import CashierLocked from '../Components/cashier-locked.jsx';
 
 class Deposit extends React.Component {
     componentDidMount() {
@@ -15,7 +16,15 @@ class Deposit extends React.Component {
     }
 
     render() {
-        const { is_deposit_locked, is_virtual, error, iframe_height, iframe_url, is_loading } = this.props;
+        const {
+            is_cashier_locked,
+            is_deposit_locked,
+            is_virtual,
+            error,
+            iframe_height,
+            iframe_url,
+            is_loading,
+        } = this.props;
         if (is_virtual) {
             return <Virtual />;
         }
@@ -28,6 +37,9 @@ class Deposit extends React.Component {
         if (is_deposit_locked) {
             return <DepositsLocked />;
         }
+        if (is_cashier_locked) {
+            return <CashierLocked />;
+        }
         if (error.message) {
             return <Error error={error} />;
         }
@@ -38,6 +50,7 @@ class Deposit extends React.Component {
 Deposit.propTypes = {
     container: PropTypes.string,
     error: PropTypes.object,
+    is_cashier_locked: PropTypes.bool,
     is_deposit_locked: PropTypes.bool,
     iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     iframe_url: PropTypes.string,
@@ -49,6 +62,7 @@ Deposit.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
+    is_cashier_locked: client.is_cashier_locked,
     is_deposit_locked: modules.cashier.is_deposit_locked,
     is_virtual: client.is_virtual,
     container: modules.cashier.config.deposit.container,

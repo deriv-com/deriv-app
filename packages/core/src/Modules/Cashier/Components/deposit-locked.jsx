@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { routes } from '@deriv/shared';
-import { Icon, Checklist, Modal } from '@deriv/components';
+import { Icon, Checklist } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -74,10 +74,17 @@ const DepositsLocked = ({
         <div className='deposit-locked'>
             <Icon icon='IcMoneyTransfer' className='deposit-locked__icon' />
             <h2 className='deposit-locked__title'>{localize('Deposits are locked')}</h2>
-            <p className='deposit-locked__desc'>
-                {localize('To enable this feature you must complete the following:')}
-            </p>
-            <Checklist className='deposit-locked__checklist' items={items} />
+
+            {items.length ? (
+                <>
+                    <p className='deposit-locked__desc'>
+                        {localize('To enable this feature you must complete the following:')}
+                    </p>
+                    <Checklist className='deposit-locked__checklist' items={items} />
+                </>
+            ) : (
+                <p className='deposit-locked__desc'>{localize('Please check your email for more details.')}</p>
+            )}
         </div>
     );
 };

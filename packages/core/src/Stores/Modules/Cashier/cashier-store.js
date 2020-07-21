@@ -113,6 +113,8 @@ export default class CashierStore extends BaseStore {
     @observable p2p_notification_count = 0;
     @observable is_p2p_advertiser = false;
     @observable cashier_route_tab_index = 0;
+    @observable is_withdrawal_locked = false;
+    @observable is_cashier_locked = false;
     @observable is_deposit_locked = false;
 
     @observable config = {
@@ -284,16 +286,36 @@ export default class CashierStore extends BaseStore {
             this.setTimeoutCashierUrl();
         }
         await BinarySocket.wait('get_account_status');
-        this.checkDepositLock();
+        this.checkCashierLock();
+        if (this.active_container === this.config.deposit.container) {
+            this.checkDepositLock();
+        }
+        if (this.active_container === this.config.withdraw.container) {
+            this.checkDepositLock();
+        }
     }
 
     @action.bound
-    async checkDepositLock() {
+    checkCashierLock() {
+        this.is_cashier_locked = this.root_store.client.account_status.status.some(
+            status => status === 'cashier_locked'
+        );
+    }
+
+    @action.bound
+    checkDepositLock() {
         this.is_deposit_locked =
             this.root_store.client.is_authentication_needed ||
             this.root_store.client.is_tnc_needed ||
             this.root_store.client.is_financial_information_incomplete ||
             (this.root_store.client.has_financial_account && this.root_store.client.is_trading_experience_incomplete);
+    }
+    @action.bound
+    checkWithdrawalLock() {
+        this.is_withdrawal_locked =
+            this.root_store.client.account_status.status.some(status =>
+                /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status)
+            ) || is_authentication_needed;
     }
 
     @action.bound

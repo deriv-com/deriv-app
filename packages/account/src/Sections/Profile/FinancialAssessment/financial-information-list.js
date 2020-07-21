@@ -297,3 +297,139 @@ export const account_turnover_list = [
         value: 'Over $500,000',
     },
 ];
+
+export const binary_options_trading_experience_list = [
+    {
+        text: localize('0-1 year'),
+        value: '0-1 year',
+    },
+    {
+        text: localize('1-2 years'),
+        value: '1-2 years',
+    },
+    {
+        text: localize('Over 3 years'),
+        value: 'Over 3 years',
+    },
+];
+
+export const binary_options_trading_frequency_list = [
+    {
+        text: localize('0-5 transactions in the past 12 months'),
+        value: '0-5 transactions in the past 12 months',
+    },
+    {
+        text: localize('6-10 transactions in the past 12 months'),
+        value: '6-10 transactions in the past 12 months',
+    },
+    {
+        text: localize('11-39 transactions in the past 12 months'),
+        value: '11-39 transactions in the past 12 months',
+    },
+    {
+        text: localize('40 transactions or more in the past 12 months'),
+        value: '40 transactions or more in the past 12 months',
+    },
+];
+
+export const cfd_trading_experience_list = [
+    {
+        text: localize('0-1 year'),
+        value: '0-1 year',
+    },
+    {
+        text: localize('1-2 years'),
+        value: '1-2 years',
+    },
+    {
+        text: localize('Over 3 years'),
+        value: 'Over 3 years',
+    },
+];
+
+export const cfd_trading_frequency_list = [
+    {
+        text: localize('0-5 transactions in the past 12 months'),
+        value: '0-5 transactions in the past 12 months',
+    },
+    {
+        text: localize('6-10 transactions in the past 12 months'),
+        value: '6-10 transactions in the past 12 months',
+    },
+    {
+        text: localize('11-39 transactions in the past 12 months'),
+        value: '11-39 transactions in the past 12 months',
+    },
+    {
+        text: localize('40 transactions or more in the past 12 months'),
+        value: '40 transactions or more in the past 12 months',
+    },
+];
+
+export const forex_trading_experience_list = [
+    {
+        text: localize('0-1 year'),
+        value: '0-1 year',
+    },
+    {
+        text: localize('1-2 years'),
+        value: '1-2 years',
+    },
+    {
+        text: localize('Over 3 years'),
+        value: 'Over 3 years',
+    },
+];
+
+export const forex_trading_frequency_list = [
+    {
+        text: localize('0-5 transactions in the past 12 months'),
+        value: '0-5 transactions in the past 12 months',
+    },
+    {
+        text: localize('6-10 transactions in the past 12 months'),
+        value: '6-10 transactions in the past 12 months',
+    },
+    {
+        text: localize('11-39 transactions in the past 12 months'),
+        value: '11-39 transactions in the past 12 months',
+    },
+    {
+        text: localize('40 transactions or more in the past 12 months'),
+        value: '40 transactions or more in the past 12 months',
+    },
+];
+
+export const other_instruments_trading_experience_list = [
+    {
+        text: localize('0-1 year'),
+        value: '0-1 year',
+    },
+    {
+        text: localize('1-2 years'),
+        value: '1-2 years',
+    },
+    {
+        text: localize('Over 3 years'),
+        value: 'Over 3 years',
+    },
+];
+
+export const other_instruments_trading_frequency_list = [
+    {
+        text: localize('0-5 transactions in the past 12 months'),
+        value: '0-5 transactions in the past 12 months',
+    },
+    {
+        text: localize('6-10 transactions in the past 12 months'),
+        value: '6-10 transactions in the past 12 months',
+    },
+    {
+        text: localize('11-39 transactions in the past 12 months'),
+        value: '11-39 transactions in the past 12 months',
+    },
+    {
+        text: localize('40 transactions or more in the past 12 months'),
+        value: '40 transactions or more in the past 12 months',
+    },
+];

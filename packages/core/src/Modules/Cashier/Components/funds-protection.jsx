@@ -7,11 +7,11 @@ import { connect } from 'Stores/connect';
 import { WS } from 'Services';
 
 const FundsProtection = ({ onMount, setErrorConfig }) => {
-    const handleSubmit = ({ setSubmitting, setStatus }) => {
+    const handleSubmit = ({ setSubmitting }) => {
         setSubmitting(true);
         WS.send({ ukgc_funds_protection: 1, tnc_approval: 1 }).then(response => {
             if (response.error) {
-                setStatus(response.error);
+                setErrorConfig('message', false);
             } else {
                 setErrorConfig('is_ask_uk_funds_protection', false);
                 onMount();
@@ -41,9 +41,8 @@ const FundsProtection = ({ onMount, setErrorConfig }) => {
                 }
             </p>
             <Formik onSubmit={handleSubmit}>
-                {({ isSubmitting, status }) => (
+                {({ isSubmitting }) => (
                     <Form>
-                        <p className='funds-protection__error'>{status.error}</p>
                         <Button disabled={isSubmitting} primary large type='submit'>
                             {localize('Deposit now')}
                         </Button>

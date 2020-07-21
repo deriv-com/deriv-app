@@ -26,7 +26,9 @@ class Account extends React.Component {
             if (this.props.account_status) {
                 const { status } = this.props.account_status;
                 const needs_financial_assessment =
-                    this.props.is_high_risk || status.includes('financial_information_not_complete');
+                    this.props.is_high_risk ||
+                    status.includes('financial_information_not_complete') ||
+                    (this.props.has_financial_account && status.includes('trading_experience_not_complete'));
                 const allow_document_upload = status.includes('allow_document_upload');
 
                 if (this.is_mounted)
@@ -158,5 +160,6 @@ export default connect(({ client, common, ui }) => ({
     is_high_risk: client.is_high_risk,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
+    has_financial_account: client.has_financial_account,
     toggleAccount: ui.toggleAccountSettings,
 }))(withRouter(Account));

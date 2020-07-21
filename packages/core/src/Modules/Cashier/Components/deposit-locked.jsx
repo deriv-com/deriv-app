@@ -11,6 +11,7 @@ const DepositsLocked = ({
     is_tnc_needed,
     is_financial_information_incomplete,
     is_trading_experience_incomplete,
+    has_financial_account,
     history,
 }) => {
     // handle authentication locked
@@ -63,19 +64,10 @@ const DepositsLocked = ({
             status: 'button-action',
             onClick: () => acceptTnc(),
         },
-        is_financial_information_incomplete && {
+        (is_financial_information_incomplete || (has_financial_account && is_trading_experience_incomplete)) && {
             content: localize('Complete the financial assessment form'),
             status: 'action',
-            onClick: () => {
-                /* TODO: Add toggle deposit popup */
-            },
-        },
-        is_trading_experience_incomplete && {
-            content: localize('Complete the trading experience form'),
-            status: 'action',
-            onClick: () => {
-                /* TODO: Add toggle deposit popup */
-            },
+            onClick: () => history.push(routes.financial_assessment),
         },
     ];
     return (
@@ -95,4 +87,5 @@ export default connect(({ client }) => ({
     is_tnc_needed: client.is_tnc_needed,
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
+    has_financial_account: client.has_financial_account,
 }))(withRouter(DepositsLocked));

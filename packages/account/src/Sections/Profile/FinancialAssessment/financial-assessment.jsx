@@ -26,6 +26,14 @@ import {
     net_income_list,
     occupation_list,
     source_of_wealth_list,
+    binary_options_trading_experience_list,
+    binary_options_trading_frequency_list,
+    cfd_trading_experience_list,
+    cfd_trading_frequency_list,
+    forex_trading_experience_list,
+    forex_trading_frequency_list,
+    other_instruments_trading_experience_list,
+    other_instruments_trading_frequency_list,
 } from './financial-information-list';
 
 const ConfirmationContent = ({ className }) => {
@@ -118,6 +126,7 @@ const SubmittedPage = withRouter(({ history }) => {
 
 class FinancialAssessment extends React.Component {
     is_mounted = false;
+    show_trading_experience = this.props.has_financial_account && this.props.is_trading_experience_incomplete;
     state = {
         is_loading: true,
         is_confirmation_visible: false,
@@ -131,6 +140,16 @@ class FinancialAssessment extends React.Component {
         net_income: '',
         estimated_worth: '',
         account_turnover: '',
+        ...(this.show_trading_experience && {
+            binary_options_trading_experience: '',
+            binary_options_trading_frequency: '',
+            cfd_trading_experience: '',
+            cfd_trading_frequency: '',
+            forex_trading_experience: '',
+            forex_trading_frequency: '',
+            other_instruments_trading_experience: '',
+            other_instruments_trading_frequency: '',
+        }),
     };
 
     componentDidMount() {
@@ -216,6 +235,14 @@ class FinancialAssessment extends React.Component {
             net_income,
             estimated_worth,
             account_turnover,
+            binary_options_trading_experience,
+            binary_options_trading_frequency,
+            cfd_trading_experience,
+            cfd_trading_frequency,
+            forex_trading_experience,
+            forex_trading_frequency,
+            other_instruments_trading_experience,
+            other_instruments_trading_frequency,
             show_form,
             is_loading,
             is_btn_loading,
@@ -238,6 +265,18 @@ class FinancialAssessment extends React.Component {
                 net_income_list,
                 occupation_list,
                 source_of_wealth_list,
+                ...(this.show_trading_experience
+                    ? [
+                          binary_options_trading_experience_list,
+                          binary_options_trading_frequency_list,
+                          cfd_trading_experience_list,
+                          cfd_trading_frequency_list,
+                          forex_trading_experience_list,
+                          forex_trading_frequency_list,
+                          other_instruments_trading_experience_list,
+                          other_instruments_trading_frequency_list,
+                      ]
+                    : []),
             ].forEach((list) => list.forEach((i) => (i.nativepicker_text = i.text)));
         }
 
@@ -254,6 +293,16 @@ class FinancialAssessment extends React.Component {
                         net_income,
                         estimated_worth,
                         account_turnover,
+                        ...(this.show_trading_experience && {
+                            binary_options_trading_experience,
+                            binary_options_trading_frequency,
+                            cfd_trading_experience,
+                            cfd_trading_frequency,
+                            forex_trading_experience,
+                            forex_trading_frequency,
+                            other_instruments_trading_experience,
+                            other_instruments_trading_frequency,
+                        }),
                     }}
                     validate={this.validateFields}
                     onSubmit={this.onSubmit}
@@ -529,6 +578,276 @@ class FinancialAssessment extends React.Component {
                                                 />
                                             </MobileWrapper>
                                         </fieldset>
+                                        {/* Trading experience fieldset */}
+                                        {this.show_trading_experience && (
+                                            <>
+                                                <FormSubHeader
+                                                    title={localize('Trading experience')}
+                                                    subtitle={isDesktop() && `(${localize('All fields are required')})`}
+                                                />
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize('Forex trading experience')}
+                                                            is_align_text_left
+                                                            name='forex_trading_experience'
+                                                            list={forex_trading_experience_list}
+                                                            value={values.forex_trading_experience}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.forex_trading_experience &&
+                                                                errors.forex_trading_experience
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='forex_trading_experience'
+                                                            label={localize('Forex trading experience')}
+                                                            list_items={forex_trading_experience_list}
+                                                            value={values.forex_trading_experience}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.forex_trading_experience &&
+                                                                errors.forex_trading_experience
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize('Forex trading frequency')}
+                                                            is_align_text_left
+                                                            name='forex_trading_frequency'
+                                                            list={forex_trading_frequency_list}
+                                                            value={values.forex_trading_frequency}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.forex_trading_frequency &&
+                                                                errors.forex_trading_frequency
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='forex_trading_frequency'
+                                                            label={localize('Forex trading frequency')}
+                                                            list_items={forex_trading_frequency_list}
+                                                            value={values.forex_trading_frequency}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.forex_trading_frequency &&
+                                                                errors.forex_trading_frequency
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize('Binary options trading experience')}
+                                                            is_align_text_left
+                                                            name='binary_options_trading_experience'
+                                                            list={binary_options_trading_experience_list}
+                                                            value={values.binary_options_trading_experience}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.binary_options_trading_experience &&
+                                                                errors.binary_options_trading_experience
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='binary_options_trading_experience'
+                                                            label={localize('Binary options trading experience')}
+                                                            list_items={binary_options_trading_experience_list}
+                                                            value={values.binary_options_trading_experience}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.binary_options_trading_experience &&
+                                                                errors.binary_options_trading_experience
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize('Binary options trading frequency')}
+                                                            is_align_text_left
+                                                            name='binary_options_trading_frequency'
+                                                            list={binary_options_trading_frequency_list}
+                                                            value={values.binary_options_trading_frequency}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.binary_options_trading_frequency &&
+                                                                errors.binary_options_trading_frequency
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='binary_options_trading_frequency'
+                                                            label={localize('Binary options trading frequency')}
+                                                            list_items={binary_options_trading_frequency_list}
+                                                            value={values.binary_options_trading_frequency}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.binary_options_trading_frequency &&
+                                                                errors.binary_options_trading_frequency
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize('CFD trading experience')}
+                                                            is_align_text_left
+                                                            name='cfd_trading_experience'
+                                                            list={cfd_trading_experience_list}
+                                                            value={values.cfd_trading_experience}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.cfd_trading_experience &&
+                                                                errors.cfd_trading_experience
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='cfd_trading_experience'
+                                                            label={localize('CFD trading experience')}
+                                                            list_items={cfd_trading_experience_list}
+                                                            value={values.cfd_trading_experience}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.cfd_trading_experience &&
+                                                                errors.cfd_trading_experience
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize('CFD trading frequency')}
+                                                            is_align_text_left
+                                                            name='cfd_trading_frequency'
+                                                            list={cfd_trading_frequency_list}
+                                                            value={values.cfd_trading_frequency}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.cfd_trading_frequency &&
+                                                                errors.cfd_trading_frequency
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='cfd_trading_frequency'
+                                                            label={localize('CFD trading frequency')}
+                                                            list_items={cfd_trading_frequency_list}
+                                                            value={values.cfd_trading_frequency}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.cfd_trading_frequency &&
+                                                                errors.cfd_trading_frequency
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize(
+                                                                'Other trading instruments experience'
+                                                            )}
+                                                            is_align_text_left
+                                                            name='other_instruments_trading_experience'
+                                                            list={other_instruments_trading_experience_list}
+                                                            value={values.other_instruments_trading_experience}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.other_instruments_trading_experience &&
+                                                                errors.other_instruments_trading_experience
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='other_instruments_trading_experience'
+                                                            label={localize('Other trading instruments experience')}
+                                                            list_items={other_instruments_trading_experience_list}
+                                                            value={values.other_instruments_trading_experience}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.other_instruments_trading_experience &&
+                                                                errors.other_instruments_trading_experience
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize(
+                                                                'Other trading instruments frequency'
+                                                            )}
+                                                            is_alignment_top
+                                                            is_align_text_left
+                                                            name='other_instruments_trading_frequency'
+                                                            list={other_instruments_trading_frequency_list}
+                                                            value={values.other_instruments_trading_frequency}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.other_instruments_trading_frequency &&
+                                                                errors.other_instruments_trading_frequency
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='other_instruments_trading_frequency'
+                                                            label={localize('Other trading instruments frequency')}
+                                                            list_items={other_instruments_trading_frequency_list}
+                                                            value={values.other_instruments_trading_frequency}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.other_instruments_trading_frequency &&
+                                                                errors.other_instruments_trading_frequency
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                            </>
+                                        )}
                                     </FormBody>
                                     <FormFooter>
                                         {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}

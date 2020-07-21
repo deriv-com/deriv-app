@@ -293,7 +293,7 @@ export default class CashierStore extends BaseStore {
             this.root_store.client.is_authentication_needed ||
             this.root_store.client.is_tnc_needed ||
             this.root_store.client.is_financial_information_incomplete ||
-            this.root_store.client.is_trading_experience_incomplete;
+            (this.root_store.client.has_financial_account && this.root_store.client.is_trading_experience_incomplete);
     }
 
     @action.bound

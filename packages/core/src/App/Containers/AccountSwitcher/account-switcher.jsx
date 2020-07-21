@@ -76,7 +76,10 @@ class AccountSwitcher extends React.Component {
     };
 
     openMt5RealAccount = account_type => {
-        if (this.props.is_eu_enabled && this.props.is_eu && !this.props.has_maltainvest_account) {
+        const has_required_account =
+            account_type === 'synthetic' ? this.props.has_malta_account : this.props.has_maltainvest_account;
+
+        if (this.props.is_eu_enabled && this.props.is_eu && !has_required_account) {
             this.props.openAccountNeededModal(
                 account_type === 'synthetic'
                     ? this.props.standpoint.gaming_company
@@ -643,6 +646,7 @@ const account_switcher = withRouter(
         mt5_login_list: client.mt5_login_list,
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,
+        has_malta_account: client.has_malta_account,
         has_maltainvest_account: client.has_maltainvest_account,
         openAccountNeededModal: ui.openAccountNeededModal,
         logoutClient: client.logout,

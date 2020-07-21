@@ -232,14 +232,13 @@ export default class UIStore extends BaseStore {
         this.notifications = this.notification_messages.filter(notification => {
             if (notification.platform === undefined) {
                 return true;
-            } else if (notification.platform && notification.platform.includes(getPathname())) {
+            } else if (notification.platform.includes(getPathname())) {
                 return true;
-            } else if (notification.platform && !notification.platform.includes(getPathname())) {
+            } else if (!notification.platform.includes(getPathname())) {
                 if (notification.is_disposable) {
                     this.removeNotificationMessage({ key: notification.key });
                     this.removeNotificationByKey({ key: notification.key });
                 }
-                return false;
             }
             return false;
         });

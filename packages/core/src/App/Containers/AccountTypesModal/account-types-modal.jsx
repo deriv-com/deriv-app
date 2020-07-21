@@ -1,3 +1,6 @@
+import PropTypes from 'prop-types';
+import React from 'react';
+import { withRouter } from 'react-router';
 import {
     MobileWrapper,
     MobileCarousel,
@@ -7,9 +10,6 @@ import {
     Modal,
     ThemedScrollbars,
 } from '@deriv/components';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { withRouter } from 'react-router';
 import { routes, getDerivComLink, urlFor } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';

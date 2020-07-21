@@ -165,7 +165,7 @@ const MT5PersonalDetailsForm = ({
             onSubmit={onSubmitForm}
         >
             {({ handleSubmit, isSubmitting, handleChange, handleBlur, errors, touched, values, setFieldValue }) => (
-                <AutoHeightWrapper default_height={200}>
+                <AutoHeightWrapper default_height={200} height_offset={148}>
                     {({ height, setRef }) => (
                         <form
                             className='mt5-financial-stp-modal__form'
@@ -173,11 +173,7 @@ const MT5PersonalDetailsForm = ({
                             onSubmit={handleSubmit}
                             autoComplete='off'
                         >
-                            <Div100vhContainer
-                                className={classNames('details-form', 'mt5-details-form')}
-                                is_disabled={isDesktop()}
-                                height_offset='199px'
-                            >
+                            <Div100vhContainer className='details-form' height_offset='199px' is_disabled={isDesktop()}>
                                 <p className='details-form__description'>
                                     <Localize
                                         i18n_default_text={
@@ -185,7 +181,7 @@ const MT5PersonalDetailsForm = ({
                                         }
                                     />
                                 </p>
-                                <ThemedScrollbars height={`calc(${height}px - 120px)`} is_bypassed={isMobile()}>
+                                <ThemedScrollbars height={height} is_bypassed={isMobile()}>
                                     <div className='details-form__elements'>
                                         <FormSubHeader title={localize('Details')} />
                                         <fieldset className='account-form__fieldset'>

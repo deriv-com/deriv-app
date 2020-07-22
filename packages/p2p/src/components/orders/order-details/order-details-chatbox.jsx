@@ -4,7 +4,7 @@ import { Channel, SendBirdProvider } from 'sendbird-uikit';
 // import { getShortNickname, generateHexColourFromNickname } from 'Utils/string';
 import 'sendbird-uikit/dist/index.css';
 
-const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url }) => {
+const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
@@ -13,12 +13,14 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url }) => {
             const el_chat_title = document.querySelector('.sendbird-chat-header__title');
             // const el_chat_avatars = document.getElementsByClassName('sendbird-avatar');
 
-            if (el_chat_title && el_chat_title.innerText !== 'No title') {
-                clearInterval(interval_header);
-                setIsLoading(false);
-                el_sendbird_conversation.setAttribute('style', 'display: flex;');
-            } else {
-                return;
+            if (el_chat_title) {
+                if (el_chat_title.innerText !== nickname) {
+                    el_chat_title.innerText = nickname;
+                    el_sendbird_conversation.setAttribute('style', 'display: flex;');
+                    setIsLoading(false);
+                } else {
+                    return;
+                }
             }
 
             // if (el_chat_avatars) {

@@ -1,36 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DeactivateAccountSteps from './deactivate-account-steps.jsx';
 import DeactivateAccountReason from './deactivate-account-reason.jsx';
 
-class DeactivateAccount extends React.Component {
-    state = {
-        is_modal_open: false,
-        accounts_with_balance: {},
-        account_closure_message: '',
-        is_loading: false,
-        render_deactivate_account_reason: false,
+const DeactivateAccount = () => {
+    const [render_deactivate_account_reason, setRenderDeactivateAccountReason] = useState(false);
+    const redirectToReasons = () => {
+        setRenderDeactivateAccountReason(true);
     };
-    redirectToReasons = () => {
-        this.setState({
-            render_deactivate_account_reason: true,
-        });
+    const redirectToSteps = () => {
+        setRenderDeactivateAccountReason(false);
     };
-    redirectToSteps = () => {
-        this.setState({
-            render_deactivate_account_reason: false,
-        });
-    };
-    render() {
-        return (
-            <div className='deactivate-account'>
-                {this.state.render_deactivate_account_reason ? (
-                    <DeactivateAccountReason onBackClick={this.redirectToSteps} />
-                ) : (
-                    <DeactivateAccountSteps redirectToReasons={this.redirectToReasons} />
-                )}
-            </div>
-        );
-    }
-}
+
+    return (
+        <div className='deactivate-account'>
+            {render_deactivate_account_reason ? (
+                <DeactivateAccountReason onBackClick={() => redirectToSteps()} />
+            ) : (
+                <DeactivateAccountSteps redirectToReasons={() => redirectToReasons()} />
+            )}
+        </div>
+    );
+};
 
 export default DeactivateAccount;

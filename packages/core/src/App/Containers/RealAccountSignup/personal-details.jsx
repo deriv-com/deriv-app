@@ -106,7 +106,12 @@ class PersonalDetails extends React.Component {
                                                 <RadioGroup
                                                     className='dc-radio__input'
                                                     name='salutation'
-                                                    items={this.props.salutation_list}
+                                                    items={this.props.salutation_list.map(item => {
+                                                        if (this.props.disabled_items.includes('salutation')) {
+                                                            item.disabled = true;
+                                                        }
+                                                        return item;
+                                                    })}
                                                     selected={values.salutation}
                                                     onToggle={e => {
                                                         e.persist();
@@ -136,6 +141,7 @@ class PersonalDetails extends React.Component {
                                                 <DateOfBirthField
                                                     name='date_of_birth'
                                                     label={localize('Date of birth')}
+                                                    disabled={this.props.disabled_items.includes('date_of_birth')}
                                                     placeholder={localize('01-07-1999')}
                                                 />
                                             )}
@@ -275,6 +281,7 @@ class PersonalDetails extends React.Component {
                                                                 </DesktopWrapper>
                                                                 <MobileWrapper>
                                                                     <SelectNative
+                                                                        placeholder={localize('Please select')}
                                                                         name={field.name}
                                                                         label={localize('Account opening reason')}
                                                                         list_items={

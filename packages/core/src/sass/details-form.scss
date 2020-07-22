@@ -78,7 +78,8 @@
         @include mobile {
             width: 100%;
             margin: 0;
-            padding: 0 1.6rem;
+            padding: 1rem 1.6rem 0;
+            overflow-y: scroll;
         }
     }
     .dc-page-error__container {
@@ -92,6 +93,8 @@
         color: var(--text-general);
         @include desktop {
             width: 40%;
+            display: flex;
+            flex-direction: column;
         }
 
         @include mobile {

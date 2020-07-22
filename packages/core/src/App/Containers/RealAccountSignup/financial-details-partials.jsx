@@ -31,6 +31,7 @@ export const EmploymentStatus = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Employment Status')}
                         list_items={employment_status_enum}
@@ -78,6 +79,7 @@ export const IncomeSource = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Source of income')}
                         list_items={income_source_enum}
@@ -125,6 +127,7 @@ export const EmploymentIndustry = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Industry of employment')}
                         list_items={employment_industry_enum}
@@ -163,6 +166,7 @@ export const Occupation = ({ values, handleChange, handleBlur, touched, errors, 
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Occupation')}
                         list_items={occupation_enum}
@@ -210,6 +214,7 @@ export const SourceOfWealth = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Source of wealth')}
                         list_items={source_of_wealth_enum}
@@ -257,6 +262,7 @@ export const EducationLevel = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Level of education')}
                         list_items={education_level_enum}
@@ -296,6 +302,7 @@ export const NetIncome = ({ values, handleChange, handleBlur, touched, errors, s
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Net annual income')}
                         list_items={net_income_enum}
@@ -343,6 +350,7 @@ export const EstimatedWorth = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Estimated net worth')}
                         list_items={estimated_worth_enum}
@@ -390,6 +398,7 @@ export const AccountTurnover = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Anticipated annual turnover')}
                         list_items={account_turnover_enum}
@@ -437,6 +446,7 @@ export const ForexTradingExperience = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Forex trading experience')}
                         list_items={forex_trading_experience_enum}
@@ -484,6 +494,7 @@ export const ForexTradingFrequency = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Forex trading frequency')}
                         list_items={forex_trading_frequency_enum}
@@ -531,6 +542,7 @@ export const BinaryOptionsTradingExperience = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Binary options trading experience')}
                         list_items={binary_options_trading_experience_enum}
@@ -578,6 +590,7 @@ export const BinaryOptionsTradingFrequency = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Binary options trading frequency')}
                         list_items={binary_options_trading_frequency_enum}
@@ -625,6 +638,7 @@ export const CFDTradingExperience = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('CFD trading experience')}
                         list_items={cfd_trading_experience_enum}
@@ -672,6 +686,7 @@ export const CFDTradingFrequency = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('CFD trading frequency')}
                         list_items={cfd_trading_frequency_enum}
@@ -721,6 +736,7 @@ export const OtherInstrumentsTradingExperience = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Experience with trading other financial instruments')}
                         list_items={other_instruments_trading_experience_enum}
@@ -772,6 +788,7 @@ export const OtherInstrumentsTradingFrequency = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Trading frequency in other financial instruments')}
                         list_items={other_instruments_trading_frequency_enum}

@@ -167,7 +167,7 @@ class CurrencySelector extends React.Component {
                                             </div>
                                         )}
                                     </MobileWrapper>
-                                    <ThemedScrollbars is_bypassed={isMobile()} height={`${height - 70}px`}>
+                                    <ThemedScrollbars is_bypassed={isMobile()} height={height}>
                                         <RadioButtonGroup
                                             id='currency'
                                             className='currency-selector__radio-group'

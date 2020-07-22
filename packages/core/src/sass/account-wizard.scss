@@ -70,7 +70,7 @@
     }
 }
 
-.dc-modal-header__real-account-signup-modal {
+.dc-modal-header--real-account-signup-modal {
     border-bottom: 1px solid var(--general-section-1);
 }
 
@@ -314,6 +314,10 @@
         @include typeface(--title-left-bold-black);
         color: var(--text-prominent);
         text-align: center;
+    }
+    &__sub-title {
+        font-size: var(--text-size-xxs);
+        font-weight: normal;
     }
     @include tablet {
         form {

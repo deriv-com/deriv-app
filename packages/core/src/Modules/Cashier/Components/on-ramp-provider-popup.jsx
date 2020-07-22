@@ -9,6 +9,7 @@ const OnRampProviderPopup = ({
     deposit_address,
     is_deposit_address_loading,
     is_deposit_address_popover_open,
+    loadProviderDependencies,
     onClickCopyDepositAddress,
     onClickDisclaimerContinue,
     onClickGoToDepositPage,
@@ -18,6 +19,12 @@ const OnRampProviderPopup = ({
     should_show_dialog,
     should_show_widget,
 }) => {
+    React.useEffect(() => {
+        if (should_show_widget && selected_provider) {
+            loadProviderDependencies(selected_provider);
+        }
+    }, [should_show_widget]);
+
     if (selected_provider === null) {
         return null;
     }
@@ -27,7 +34,11 @@ const OnRampProviderPopup = ({
     if (should_show_widget) {
         return (
             <div className='on-ramp__widget-container'>
-                <div dangerouslySetInnerHTML={{ __html: selected_provider.getWidgetHtml() }} />
+                {selected_provider.getWidgetHtml ? (
+                    <div dangerouslySetInnerHTML={{ __html: selected_provider.getWidgetHtml() }} />
+                ) : (
+                    <Loading is_fullscreen={false} />
+                )}
             </div>
         );
     }
@@ -115,6 +126,7 @@ OnRampProviderPopup.propTypes = {
     deposit_address: PropTypes.string,
     is_deposit_address_loading: PropTypes.bool,
     is_deposit_address_popover_open: PropTypes.bool,
+    loadProviderDependencies: PropTypes.func,
     selected_provider: PropTypes.object,
     setDepositAddressRef: PropTypes.func,
     setIsOnRampModalOpen: PropTypes.func,
@@ -131,6 +143,7 @@ export default connect(({ modules }) => ({
     deposit_address: modules.cashier.onramp.deposit_address,
     is_deposit_address_loading: modules.cashier.onramp.is_deposit_address_loading,
     is_deposit_address_popover_open: modules.cashier.onramp.is_deposit_address_popover_open,
+    loadProviderDependencies: modules.cashier.onramp.loadProviderDependencies,
     selected_provider: modules.cashier.onramp.selected_provider,
     setDepositAddressRef: modules.cashier.onramp.setDepositAddressRef,
     setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,

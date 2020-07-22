@@ -79,3 +79,5 @@ export const getExperianResult = status => {
 
     return EXPERIAN.SUCCESS;
 };
+
+export const screen_height_sm_threshold = 930;

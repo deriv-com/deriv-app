@@ -78,6 +78,9 @@
             &--no-stat {
                 height: var(--drawer-content-height-no-stat);
             }
+            &--mobile {
+                height: var(--drawer-content-height-mobile);
+            }
         }
     }
 }

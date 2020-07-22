@@ -8,8 +8,8 @@ import {
     ToggleFullScreen,
     ToggleSettings,
     HelpCentre,
-    ToggleComplaintsPolicy,
 } from 'App/Components/Layout/Footer';
+import LiveChat from 'App/Components/Elements/live-chat.jsx';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
 
@@ -22,7 +22,6 @@ const Footer = ({
     disableApp,
     toggleSettingsModal,
     settings_extension,
-    landing_company_shortcode,
 }) => (
     <footer
         className={classNames('footer', {
@@ -34,9 +33,10 @@ const Footer = ({
         <NetworkStatus />
         <ServerTime />
         <div className='footer__links footer__links-extras'>
-            <ToggleComplaintsPolicy landing_company_shortcode={landing_company_shortcode} />
+            {/* <ToggleComplaintsPolicy landing_company_shortcode={landing_company_shortcode} /> */}
         </div>
         <div className='footer__links'>
+            <LiveChat />
             <HelpCentre />
             <ToggleSettings
                 is_settings_visible={is_settings_modal_on}

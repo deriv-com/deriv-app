@@ -173,55 +173,62 @@ const getJournalItemContent = (message, type, className, extra) => {
     }
 };
 
-const JournalLoader = () => (
+const JournalLoader = ({ is_mobile }) => (
     <ContentLoader
-        className='journal__loader'
+        className={classnames('journal__loader', { 'journal__loader--mobile': is_mobile })}
         speed={3}
         width={350}
         height={92}
         primaryColor={'var(--general-section-1)'}
         secondaryColor={'var(--general-hover)'}
     >
-        <rect x='15' y='15' rx='5' ry='5' width='305' height='40' />
+        <rect x='15' y='15' rx='5' ry='5' width='320' height='40' />
         <rect x='15' y='60' rx='5' ry='5' width='180' height='7' />
     </ContentLoader>
 );
 
-const Journal = ({ filtered_messages, contract_stage, ...props }) => (
-    <div className='journal run-panel-tab__content--no-stat'>
-        <Tools {...props} />
-        <ThemedScrollbars
-            autoHide
-            className='journal__scrollbars'
-            style={{ height: 'calc(100% - 42px)' }}
-            hideHorizontal
+const Journal = ({ contract_stage, filtered_messages, is_mobile, is_stop_button_visible, ...props }) => {
+    return (
+        <div
+            className={classnames('journal run-panel-tab__content--no-stat', {
+                'run-panel-tab__content': !is_mobile,
+                'run-panel-tab__content--mobile': is_mobile,
+            })}
         >
-            <div className='journal__item-list'>
-                {filtered_messages.length ? (
-                    <TransitionGroup>
-                        {filtered_messages.map(item => {
-                            const { date, time, message, message_type, className, unique_id, extra } = item;
-                            const date_el = DateItem({ date, time });
+            <Tools {...props} />
+            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 42px)'}>
+                <div className='journal__item-list'>
+                    {filtered_messages.length ? (
+                        <TransitionGroup>
+                            {filtered_messages.map(item => {
+                                const { date, time, message, message_type, className, unique_id, extra } = item;
+                                const date_el = DateItem({ date, time });
 
-                            return (
-                                <CSSTransition key={unique_id} timeout={500} classNames='list__animation'>
-                                    <div className='journal__item'>
-                                        <div className='journal__item-content'>
-                                            {getJournalItemContent(message, message_type, className, extra)}
+                                return (
+                                    <CSSTransition key={unique_id} timeout={500} classNames='list__animation'>
+                                        <div className='journal__item'>
+                                            <div className='journal__item-content'>
+                                                {getJournalItemContent(message, message_type, className, extra)}
+                                            </div>
+                                            <div className='journal__text-datetime'>{date_el}</div>
                                         </div>
-                                        <div className='journal__text-datetime'>{date_el}</div>
-                                    </div>
-                                </CSSTransition>
-                            );
-                        })}
-                    </TransitionGroup>
-                ) : (
-                    <>
-                        {contract_stage >= contract_stages.STARTING ? (
-                            <JournalLoader />
-                        ) : (
-                            <div className='journal-empty__container'>
-                                <div className='journal-empty'>
+                                    </CSSTransition>
+                                );
+                            })}
+                        </TransitionGroup>
+                    ) : (
+                        <>
+                            {contract_stage >= contract_stages.STARTING &&
+                            !!props.checked_filters.length &&
+                            is_stop_button_visible ? (
+                                <JournalLoader is_mobile={is_mobile} />
+                            ) : (
+                                <div
+                                    className={classnames({
+                                        'journal-empty': !is_mobile,
+                                        'journal-empty--mobile': is_mobile,
+                                    })}
+                                >
                                     <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
                                     <h4 className='journal-empty__header'>
                                         {localize('There are no messages to display')}
@@ -235,14 +242,14 @@ const Journal = ({ filtered_messages, contract_stage, ...props }) => (
                                         </ul>
                                     </div>
                                 </div>
-                            </div>
-                        )}
-                    </>
-                )}
-            </div>
-        </ThemedScrollbars>
-    </div>
-);
+                            )}
+                        </>
+                    )}
+                </div>
+            </ThemedScrollbars>
+        </div>
+    );
+};
 
 Journal.propTypes = {
     checked_filters: PropTypes.array,
@@ -250,16 +257,19 @@ Journal.propTypes = {
     filtered_messages: PropTypes.array,
     filterMessage: PropTypes.func,
     filters: PropTypes.array,
+    is_mobile: PropTypes.bool,
+    is_stop_button_visible: PropTypes.bool,
     is_filter_dialog_visible: PropTypes.bool,
     toggleFilterDialog: PropTypes.func,
 };
 
-export default connect(({ journal, run_panel }) => ({
+export default connect(({ journal, run_panel, ui }) => ({
     checked_filters: journal.checked_filters,
     contract_stage: run_panel.contract_stage,
     filterMessage: journal.filterMessage,
     filters: journal.filters,
     filtered_messages: journal.filtered_messages,
+    is_mobile: ui.is_mobile,
     is_filter_dialog_visible: journal.is_filter_dialog_visible,
     is_stop_button_visible: run_panel.is_stop_button_visible,
     toggleFilterDialog: journal.toggleFilterDialog,

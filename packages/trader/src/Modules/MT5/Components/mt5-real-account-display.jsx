@@ -21,7 +21,7 @@ const getRealFinancialStpBtnLbl = (is_fully_authenticated, is_pending_authentica
 const MT5RealAccountDisplay = ({
     has_real_account,
     is_eu,
-    is_eu_enabled,
+    is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled once eu is released.
     has_malta_account,
     has_maltainvest_account,
     is_fully_authenticated,
@@ -50,14 +50,15 @@ const MT5RealAccountDisplay = ({
 
     const onSelectRealSynthetic = () => {
         if (is_eu_enabled && is_eu && standpoint.malta && !has_malta_account) {
+            // TODO [deriv-eu] remove is_eu_enabled once eu is released.
             openAccountNeededModal('malta', localize('Deriv Synthetic'), localize('DMT5 Synthetic'));
         } else {
             onSelectAccount({ type: 'synthetic', category: 'real' });
         }
     };
     const onSelectRealFinancial = () => {
-        // TODO: [deriv-eu] remove is_eu_enabled when eu gets a release
         if (is_eu_enabled && is_eu && !has_maltainvest_account) {
+            // TODO: [deriv-eu] remove is_eu_enabled when eu gets a release
             openAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Real Financial'));
         } else {
             onSelectAccount({ type: 'financial', category: 'real' });
@@ -98,7 +99,7 @@ const MT5RealAccountDisplay = ({
                     has_mt5_account={has_mt5_account}
                     icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
                     title={localize('Synthetic')}
-                    is_disabled={!is_eu && !has_real_account}
+                    is_disabled={(!is_eu && !has_real_account) || (!is_eu_enabled && is_eu)} // TODO [deriv-eu] remove eu enabled check
                     type={{
                         category: 'real',
                         type: 'synthetic',
@@ -117,7 +118,7 @@ const MT5RealAccountDisplay = ({
             {landing_companies?.mt_financial_company?.financial && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    is_disabled={!is_eu && !has_real_account}
+                    is_disabled={(!is_eu && !has_real_account) || (!is_eu_enabled && is_eu)} // TODO [deriv-eu] remove eu enabled check
                     icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
                     title={localize('Financial')}
                     type={{

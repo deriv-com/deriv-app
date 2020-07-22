@@ -120,9 +120,8 @@ export default class ClientStore extends BaseStore {
      */
     @computed
     get is_client_allowed_to_visit() {
-        // TODO: [deriv-eu] Remove this after complete EU merge into production
         return !!(
-            this.root_store.ui.is_eu_enabled ||
+            this.root_store.ui.is_eu_enabled || // TODO: [deriv-eu] Remove this after complete EU merge into production
             !this.is_logged_in ||
             this.is_virtual ||
             this.accounts[this.loginid].landing_company_shortcode === 'svg'
@@ -363,7 +362,14 @@ export default class ClientStore extends BaseStore {
     // this is true when a user needs to have a active real account for trading
     @computed
     get should_have_real_account() {
-        return this.standpoint.iom && this.is_uk && !this.has_any_real_account;
+        // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+        return (
+            this.root_store.ui &&
+            this.root_store.ui.is_eu_enabled &&
+            this.standpoint.iom &&
+            this.is_uk &&
+            !this.has_any_real_account
+        );
     }
 
     // Shows all possible landing companies of user between all
@@ -1189,7 +1195,11 @@ export default class ClientStore extends BaseStore {
         // Performs check to avoid login of landing companies that are currently not supported in app
         // TODO: [deriv-eu] Remove this after full merging of EU. When EU is enabled all landing companies are allowed.
         account_list.forEach(account => {
-            if (!this.root_store.ui.is_eu_enabled && !/^virtual|svg$/.test(account.landing_company_name)) {
+            if (
+                !this.root_store.ui &&
+                this.root_store.ui.is_eu_enabled &&
+                !/^virtual|svg$/.test(account.landing_company_name)
+            ) {
                 is_allowed_real = false;
             }
         });

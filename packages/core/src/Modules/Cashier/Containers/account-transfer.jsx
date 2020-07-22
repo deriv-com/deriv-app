@@ -7,6 +7,7 @@ import NoBalance from '../Components/Error/no-balance.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
 import AccountTransferForm from '../Components/Form/account-transfer-form.jsx';
 import AccountTransferReceipt from '../Components/Receipt/account-transfer-receipt.jsx';
+import TransferLock from '../Components/transfer-locked.jsx';
 import Loading from '../../../templates/_common/components/loading.jsx';
 
 class AccountTransfer extends React.Component {
@@ -21,6 +22,9 @@ class AccountTransfer extends React.Component {
         }
         if (this.props.is_loading) {
             return <Loading className='cashier__loader' />;
+        }
+        if (this.props.is_transfer_lock) {
+            return <TransferLock />;
         }
         if (this.props.error.is_show_full_page || (this.props.error.message && !this.props.accounts_list.length)) {
             // for errors with CTA hide the form and show the error,
@@ -66,6 +70,7 @@ export default connect(({ client, modules }) => ({
     has_no_accounts_balance: modules.cashier.config.account_transfer.has_no_accounts_balance,
     is_loading: modules.cashier.is_loading,
     is_transfer_successful: modules.cashier.config.account_transfer.is_transfer_successful,
+    is_transfer_lock: modules.cashier.is_transfer_lock,
     onMount: modules.cashier.onMountAccountTransfer,
     setActiveTab: modules.cashier.setActiveTab,
 }))(AccountTransfer);

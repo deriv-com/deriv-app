@@ -1,7 +1,7 @@
-import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { extractInfoFromShortcode, isHighLow } from '@deriv/shared';
+import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import { getMarketName, getTradeTypeName } from '../Helpers/market-underlying';
 
 const MarketSymbolIconRow = ({ payload, show_description }) => {

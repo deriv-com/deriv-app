@@ -3,8 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
-import Icon from 'Components/icon/icon.jsx';
-import useOnClickOutside from '../../hooks/use-onclickoutside';
+import Icon from '../icon/icon.jsx';
+import { useOnClickOutside } from '../../hooks';
 
 const PageOverlay = ({ portal_id, children, header, id, onClickClose, is_open }) => {
     const page_overlay_ref = React.useRef();

@@ -1,6 +1,6 @@
-import { Button, Modal } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Button, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 

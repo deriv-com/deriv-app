@@ -10,7 +10,12 @@ import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { processPurchase } from './Actions/purchase';
 import * as Symbol from './Actions/symbol';
 import getValidationRules, { getMultiplierValidationRules } from './Constants/validation-rules';
-import { pickDefaultSymbol, showUnavailableLocationError, isMarketClosed } from './Helpers/active-symbols';
+import {
+    pickDefaultSymbol,
+    showUnavailableLocationError,
+    showUnavailableLandingCompanyError,
+    isMarketClosed,
+} from './Helpers/active-symbols';
 import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
 import { processTradeParams } from './Helpers/process';
@@ -256,12 +261,12 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async setActiveSymbols() {
-        const { active_symbols, error } = this.should_refresh_active_symbols
-            ? // if SmartCharts has requested active_symbols, we wait for the response
-              await WS.wait('active_symbols')
-            : // else requests new active_symbols
-              await WS.activeSymbols();
-
+        const { active_symbols, error } =
+            // if SmartCharts has requested active_symbols, we wait for the response
+            this.should_refresh_active_symbols
+                ? await WS.wait('active_symbols')
+                : // else requests new active_symbols
+                  await WS.authorized.activeSymbols();
         if (error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
             return;
@@ -269,9 +274,11 @@ export default class TradeStore extends BaseStore {
             if (this.root_store.client.landing_company_shortcode !== 'maltainvest') {
                 showUnavailableLocationError(this.root_store.common.showError);
                 return;
+            } else if (this.root_store.client.landing_company_shortcode === 'maltainvest') {
+                showUnavailableLandingCompanyError(this.root_store.common.showError);
+                return;
             }
         }
-
         this.processNewValuesAsync({ active_symbols });
     }
 
@@ -295,13 +302,14 @@ export default class TradeStore extends BaseStore {
         // fallback to default currency if current logged-in client hasn't selected a currency yet
         this.currency = this.root_store.client.currency || this.root_store.client.default_currency;
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
-
-        await WS.wait('authorize');
         await when(() => !this.root_store.client.is_populating_account_list);
         await this.setActiveSymbols();
         runInAction(async () => {
             await WS.storage.contractsFor(this.symbol).then(async r => {
-                if (r.error && r.error.code === 'InvalidSymbol') {
+                if (
+                    (r.error && r.error.code === 'InvalidSymbol') ||
+                    (r.error && r.error.code === 'InputValidationFailed')
+                ) {
                     await this.resetRefresh();
                     await this.setActiveSymbols();
                     await pickDefaultSymbol();
@@ -918,9 +926,14 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async accountSwitcherListener() {
+        if (this.root_store.client.landing_company_shortcode === 'maltainvest') {
+            const { active_symbols } = await WS.authorized.activeSymbols();
+            if (!active_symbols || !active_symbols.length) {
+                showUnavailableLandingCompanyError(this.root_store.common.showError);
+            }
+        }
         this.resetErrorServices();
         await this.setContractTypes();
-
         runInAction(async () => {
             this.processNewValuesAsync(
                 { currency: this.root_store.client.currency || this.root_store.client.default_currency },

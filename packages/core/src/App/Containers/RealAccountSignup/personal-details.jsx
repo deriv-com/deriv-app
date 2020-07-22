@@ -17,7 +17,6 @@ import {
     SelectNative,
     ThemedScrollbars,
 } from '@deriv/components';
-import { Field, Formik } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, toMoment } from '@deriv/shared';
 import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';

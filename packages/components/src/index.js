@@ -34,7 +34,7 @@ export { default as Drawer } from './components/drawer';
 export { default as Dropdown } from './components/dropdown';
 export { default as ExpansionPanel } from './components/expansion-panel';
 export { default as FadeWrapper } from './components/fade-wrapper';
-export { default as FieldError } from './components/field-error';
+export { default as Field } from './components/field';
 export { default as FileDropzone } from './components/file-dropzone';
 export { default as FormProgress } from './components/form-progress';
 export { default as FormSubmitButton } from './components/form-submit-button';

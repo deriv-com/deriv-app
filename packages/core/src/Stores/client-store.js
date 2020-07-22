@@ -1012,7 +1012,6 @@ export default class ClientStore extends BaseStore {
         }
 
         runInAction(() => (this.is_switching = true));
-
         const from_login_id = this.loginid;
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
@@ -1028,6 +1027,7 @@ export default class ClientStore extends BaseStore {
         } else {
             await WS.forgetAll('balance');
             await BinarySocket.authorize(this.getToken());
+            if (this.root_store.common.has_error) this.root_store.common.setError(false, null);
         }
 
         sessionStorage.setItem('active_tab', '1');

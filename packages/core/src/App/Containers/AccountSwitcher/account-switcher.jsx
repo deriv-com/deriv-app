@@ -76,9 +76,14 @@ class AccountSwitcher extends React.Component {
     };
 
     openMt5RealAccount = account_type => {
-        if (this.props.is_eu_enabled && this.props.is_eu && !this.props.has_maltainvest_account) {
+        const has_required_account =
+            account_type === 'synthetic' ? this.props.has_malta_account : this.props.has_maltainvest_account;
+
+        if (this.props.is_eu_enabled && this.props.is_eu && !has_required_account) {
             this.props.openAccountNeededModal(
-                'maltainvest',
+                account_type === 'synthetic'
+                    ? this.props.standpoint.gaming_company
+                    : this.props.standpoint.financial_company,
                 account_type === 'synthetic' ? localize('Deriv Synthetic') : localize('Deriv Financial'),
                 account_type === 'synthetic' ? localize('DMT5 Synthetic') : localize('DMT5 Financial')
             );
@@ -143,22 +148,22 @@ class AccountSwitcher extends React.Component {
                 icon: 'Synthetic',
                 title: localize('Synthetic'),
                 type: 'synthetic',
-                api_key: 'mt_gaming_company.standard',
+                api_key: 'mt_gaming_company.financial',
             },
             {
                 // TODO: [remove-standard-advanced] remove standard when API groups are updated
-                account_types: ['vanuatu', 'svg_standard', 'svg_financial', 'maltainvest_standard'],
+                account_types: ['vanuatu', 'svg_standard', 'svg_financial', 'maltainvest_financial'],
                 icon: 'Financial',
                 title: localize('Financial'),
                 type: 'financial',
-                api_key: 'mt_financial_company.standard',
+                api_key: 'mt_financial_company.financial',
             },
             {
                 account_types: ['labuan'],
                 icon: 'Financial STP',
                 title: localize('Financial STP'),
                 type: 'financial_stp',
-                api_key: 'mt_financial_company.advanced',
+                api_key: 'mt_financial_company.financial_stp',
             },
         ];
 
@@ -629,6 +634,7 @@ const account_switcher = withRouter(
         can_change_fiat_currency: client.can_change_fiat_currency,
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,
+        is_eu: client.is_eu,
         is_eu_enabled: ui.is_eu_enabled,
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_logged_in: client.is_logged_in,
@@ -640,6 +646,7 @@ const account_switcher = withRouter(
         mt5_login_list: client.mt5_login_list,
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,
+        has_malta_account: client.has_malta_account,
         has_maltainvest_account: client.has_maltainvest_account,
         openAccountNeededModal: ui.openAccountNeededModal,
         logoutClient: client.logout,
@@ -647,6 +654,7 @@ const account_switcher = withRouter(
         upgradeable_landing_companies: client.upgradeable_landing_companies,
         updateMt5LoginList: client.updateMt5LoginList,
         routeBackInApp: common.routeBackInApp,
+        standpoint: client.standpoint,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup: ui.openRealAccountSignup,
         toggleAccountsDialog: ui.toggleAccountsDialog,

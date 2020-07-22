@@ -88,7 +88,7 @@ class PersonalDetails extends React.Component {
                 }}
             >
                 {({ handleSubmit, isSubmitting, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
-                    <AutoHeightWrapper default_height={200}>
+                    <AutoHeightWrapper default_height={200} height_offset={81}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit} autoComplete='off'>
                                 <Div100vhContainer

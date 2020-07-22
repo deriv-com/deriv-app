@@ -82,7 +82,7 @@ const personal_details_config = ({ residence_list, account_settings }) => {
                 default_value: account_settings.tax_residence
                     ? residence_list.find(item => item.value === account_settings.tax_residence).text
                     : '',
-                supported_in: ['maltainvest', 'iom', 'malta'],
+                supported_in: ['maltainvest'],
                 rules: [['req', localize('Tax residence is required')]],
             },
             tax_identification_number: {

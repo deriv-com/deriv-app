@@ -1,6 +1,6 @@
-import { DesktopWrapper, Icon, MobileWrapper, Tabs } from '@deriv/components';
 import React from 'react';
 import { withRouter } from 'react-router';
+import { DesktopWrapper, Icon, MobileWrapper, Tabs } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';

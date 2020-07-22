@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import throttle from 'lodash.throttle';
 import { useSwipeable } from 'react-swipeable';
-import Button from 'Components/button/button.jsx';
+import Button from '../button/button.jsx';
 import Icon from '../icon';
 
 const THROTTLE_INTERVAL_TIME = 100;

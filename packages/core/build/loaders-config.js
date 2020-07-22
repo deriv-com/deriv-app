@@ -2,7 +2,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 const js_loaders = [
-    '@deriv/shared/src/loaders/deriv-components-loader.js',
     '@deriv/shared/src/loaders/react-import-loader.js',
     '@deriv/shared/src/loaders/deriv-account-loader.js',
     {

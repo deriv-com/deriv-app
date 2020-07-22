@@ -1,3 +1,4 @@
+import React from 'react';
 import { action, computed, observable, toJS } from 'mobx';
 import {
     routes,
@@ -11,7 +12,7 @@ import {
 } from '@deriv/shared';
 
 import BinarySocket from '_common/base/socket_base';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import OnRampStore from './on-ramp-store';
 import BaseStore from '../../base-store';
@@ -921,8 +922,27 @@ export default class CashierStore extends BaseStore {
             };
             // set current logged in client as the default transfer from account
             if (account.loginid === this.root_store.client.loginid) {
+                // check if selected from is not allowed account
+                if (this.hasTransferNotAllowedLoginid(obj_values.value)) {
+                    obj_values.error = (
+                        <Localize
+                            i18n_default_text='Transfer from {{account}} is not allowed, Please choose another account from dropdown'
+                            values={{ account: obj_values.value }}
+                        />
+                    );
+                }
+
                 this.setSelectedFrom(obj_values);
             } else if (isEmptyObject(this.config.account_transfer.selected_to)) {
+                if (this.hasTransferNotAllowedLoginid(obj_values.value)) {
+                    // check if selected from is not allowed account
+                    obj_values.error = (
+                        <Localize
+                            i18n_default_text='Transfer to {{account}} is not allowed, Please choose another account from dropdown'
+                            values={{ account: obj_values.value }}
+                        />
+                    );
+                }
                 // set the first available account as the default transfer to account
                 this.setSelectedTo(obj_values);
             }
@@ -948,8 +968,6 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsTransferSuccessful(is_transfer_successful) {
-        console.log(is_transfer_successful);
-        console.log(this.active_container);
         this.config[this.active_container].is_transfer_successful = is_transfer_successful;
     }
 
@@ -961,12 +979,13 @@ export default class CashierStore extends BaseStore {
     }
 
     hasTransferNotAllowedLoginid(loginid) {
-        return /^(mx)$/.test(loginid);
+        return /^(MX)/.test(loginid);
     }
 
     @action.bound
     onChangeTransferFrom({ target }) {
         this.setErrorMessage('');
+        this.config.account_transfer.selected_from.error = '';
 
         const accounts = this.config.account_transfer.accounts_list;
         const selected_from = accounts.find(account => account.value === target.value);
@@ -974,10 +993,12 @@ export default class CashierStore extends BaseStore {
         // if new value of selected_from is the same as the current selected_to
         // switch the value of selected_from and selected_to
         if (this.hasTransferNotAllowedLoginid(selected_from.value)) {
-            this.setErrorMessage(
-                localize('Transfer from this account is not allowed, Please choose another account from dropdown')
+            selected_from.error = (
+                <Localize
+                    i18n_default_text='Transfer from {{account}} is not allowed, Please choose another account from dropdown'
+                    values={{ account: selected_from.value }}
+                />
             );
-            return;
         } else if (selected_from.value === this.config.account_transfer.selected_to.value) {
             this.onChangeTransferTo({ target: { value: this.config.account_transfer.selected_from.value } });
         } else if (selected_from.is_mt && this.config.account_transfer.selected_to.is_mt) {
@@ -998,12 +1019,16 @@ export default class CashierStore extends BaseStore {
     @action.bound
     onChangeTransferTo({ target }) {
         this.setErrorMessage('');
+        this.config.account_transfer.selected_to.error = '';
 
         const accounts = this.config.account_transfer.accounts_list;
         this.config.account_transfer.selected_to = accounts.find(account => account.value === target.value) || {};
         if (this.hasTransferNotAllowedLoginid(this.config.account_transfer.selected_to.value)) {
-            this.setErrorMessage(
-                localize('Transfer to this account is not allowed, Please choose another account from dropdown')
+            this.config.account_transfer.selected_to.error = (
+                <Localize
+                    i18n_default_text='Transfer to {{account}} is not allowed, Please choose another account from dropdown'
+                    values={{ account: this.config.account_transfer.selected_to.value }}
+                />
             );
         }
         this.setTransferFee();

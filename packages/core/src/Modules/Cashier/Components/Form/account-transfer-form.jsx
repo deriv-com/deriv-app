@@ -196,7 +196,6 @@ const AccountTransferForm = ({
             );
         }
     }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNote]);
-
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
             <React.Fragment>
@@ -237,6 +236,7 @@ const AccountTransferForm = ({
                                                     handleChange(e);
                                                     validateField('amount');
                                                 }}
+                                                error={selected_from.error}
                                             />
                                         </DesktopWrapper>
                                         <MobileWrapper>
@@ -252,6 +252,7 @@ const AccountTransferForm = ({
                                                     handleChange(e);
                                                     validateField('amount');
                                                 }}
+                                                error={selected_from.error}
                                             />
                                         </MobileWrapper>
                                         <DesktopWrapper>
@@ -270,6 +271,7 @@ const AccountTransferForm = ({
                                                 value={selected_to.value}
                                                 onChange={onChangeTransferTo}
                                                 hint={transfer_to_hint}
+                                                error={selected_to.error}
                                             />
                                         </DesktopWrapper>
                                         <MobileWrapper>
@@ -282,6 +284,7 @@ const AccountTransferForm = ({
                                                 list_items={to_accounts}
                                                 onChange={onChangeTransferTo}
                                                 hint={transfer_to_hint}
+                                                error={selected_to.error}
                                             />
                                         </MobileWrapper>
                                     </div>
@@ -357,10 +360,17 @@ const AccountTransferForm = ({
                                                 </MobileWrapper>
                                             </React.Fragment>
                                         )}
+
                                         <Button
                                             className='cashier__form-submit-button'
                                             type='submit'
-                                            is_disabled={!isValid || isSubmitting || !+remaining_transfers}
+                                            is_disabled={
+                                                !isValid ||
+                                                isSubmitting ||
+                                                !+remaining_transfers ||
+                                                selected_from.error ||
+                                                selected_to.error
+                                            }
                                             primary
                                             large
                                         >

@@ -5,11 +5,9 @@ import { routes, getDerivComLink } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 export const AccountLimits = () => (
-    <div className='footer__link'>
+    <Popover alignment='top' message={localize('Account limits')} className='footer__link'>
         <Link to={routes.account_limits} href={getDerivComLink('/')}>
-            <Popover alignment='bottom' message={localize('Account limits')}>
-                <Icon icon='IcAccountLimits' className='footer__icon ic-deriv__icon' />
-            </Popover>
+            <Icon icon='IcAccountLimits' className='footer__icon ic-deriv__icon' />
         </Link>
-    </div>
+    </Popover>
 );

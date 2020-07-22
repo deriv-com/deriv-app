@@ -3,6 +3,10 @@
     @include desktop {
         padding: 0 0.4rem;
     }
+    @include mobile {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 
     &__elements {
         flex-grow: 1;
@@ -99,12 +103,5 @@
             line-height: 20px;
             color: var(--text-less-prominent);
         }
-    }
-    @include mobile {
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-    @include desktop {
-        grid-template-rows: minmax(10rem, 1fr);
     }
 }

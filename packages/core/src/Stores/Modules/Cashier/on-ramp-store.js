@@ -14,57 +14,151 @@ export default class OnRampStore extends BaseStore {
     @observable should_show_widget = false;
 
     deposit_address_ref = null;
+    DEPENDENCY_TYPE_URL = 'url';
+    DEPENDENCY_TYPE_RAW = 'raw';
 
     constructor(root_store) {
         super({ root_store });
         this.onramp_providers = [
             {
-                default_from_currency: 'usd',
+                icon: 'IcCashierChangelly',
+                name: 'Changelly',
                 description: localize(
                     'Your simple access to crypto. Fast and secure way to exchange and purchase 150+ cryptocurrencies. 24/7 live-chat support.'
                 ),
-                from_currencies: ['usd', 'eur', 'gbp'],
-                widget_script_dependencies: { 'changelly-affiliate-js': 'https://widget.changelly.com/affiliate.js' },
+                currency_default: 'usd',
+                currencies_from: ['usd', 'eur', 'gbp'],
+                currencies_to: ['bch', 'btc', 'etc', 'eth', 'ltc', 'ust'],
+                payment_icons: ['IcCashierVisa', 'IcCashierMastercard'],
+                getWidgetDependencies: () => [
+                    {
+                        id: 'changelly-affiliate-js',
+                        type: this.DEPENDENCY_TYPE_URL,
+                        data: 'https://widget.changelly.com/affiliate.js',
+                    },
+                ],
                 getWidgetHtml() {
                     const currency = getCurrencyDisplayCode(root_store.client.currency).toLowerCase();
-                    return `<iframe src="https://widget.changelly.com?from=${this.from_currencies.join(
+                    return `<iframe src="https://widget.changelly.com?from=${this.currencies_from.join(
                         ','
                     )}&to=${currency}&amount=50&address=&fromDefault=${
-                        this.default_from_currency
+                        this.currency_default
                     }&toDefault=${currency}&theme=danger&merchant_id=iiq3jdt2p44yrfbx&payment_id=&v=2" width="100%" height="475px" class="changelly" scrolling="no" onLoad="function at(t){var e=t.target,i=e.parentNode,n=e.contentWindow,r=function(){return n.postMessage({width:i.offsetWidth},it.url)};window.addEventListener('resize',r),r()};at.apply(this, arguments);" style="min-height: 100%; min-width: 100%; overflow-y: visible; border: none">Can't load widget</iframe>`;
                 },
-                icon: 'IcCashierChangelly',
-                name: 'Changelly',
+            },
+            {
+                icon: 'IcUnknown',
+                name: 'Wyre',
+                description: localize(
+                    'Access the evolution of finance. World-class tools for blockchain developers, financial services and protocols.'
+                ),
+                currency_default: 'usd',
+                currencies_from: ['usd', 'cad', 'eur', 'gbp', 'aud'],
+                currencies_to: ['btc', 'eth', 'dai', 'usdc'],
                 payment_icons: ['IcCashierVisa', 'IcCashierMastercard'],
-                to_currencies: ['bch', 'btc', 'etc', 'eth', 'ltc', 'ust'],
+                getWidgetDependencies: () => {
+                    const currency = getCurrencyDisplayCode(root_store.client.currency);
+                    const getCryptoName = () => {
+                        switch (currency) {
+                            case 'ETH':
+                                return 'ethereum';
+                            case 'BTC':
+                                return 'bitcoin';
+                            case 'DAI':
+                                return 'dai';
+                            default:
+                                return 'unknown';
+                        }
+                    };
+                    return [
+                        {
+                            id: 'wyre-verify-js',
+                            type: this.DEPENDENCY_TYPE_URL,
+                            data: 'https://verify.sendwyre.com/js/verify-module-init-beta.js',
+                        },
+                        {
+                            id: 'wyre_widget',
+                            type: this.DEPENDENCY_TYPE_RAW,
+                            data: `
+                            (function () { 
+                                var widget = new Wyre({
+                                    account: 'AC_W8W4ZBTQNYE',
+                                    env: 'test',
+                                    operation: {
+                                        primaryColor: '#000',
+                                        type: 'debitcard-hosted-dialog',
+                                        // dest: '${getCryptoName()}:${this.deposit_address}',
+                                        destCurrency: '${currency}',
+                                        sourceAmount: 10.0,
+                                        paymentMethod: 'debit-card'
+                                    }
+                                });
+
+                                // Open widget immediately.
+                                widget.open();
+                            })();`,
+                            global_dependents: ['Wyre'],
+                            should_close_modal: true,
+                        },
+                    ];
+                },
             },
         ];
     }
 
     @action.bound
-    onMount() {
-        this.disposeThirdPartyJsReaction = reaction(
-            () => this.selected_provider,
-            provider => {
-                if (!provider?.widget_script_dependencies) return;
+    loadProviderDependencies(provider) {
+        const dependencies = provider.getWidgetDependencies ? provider.getWidgetDependencies() : [];
 
-                Object.keys(provider.widget_script_dependencies).forEach(script_name => {
-                    if (!document.querySelector(`#${script_name}`)) {
-                        const el_script = document.createElement('script');
-                        el_script.src = provider.widget_script_dependencies[script_name];
-                        el_script.id = script_name;
-                        document.body.appendChild(el_script);
+        dependencies.forEach(dependency => {
+            const { id, data, global_dependents = [], should_close_modal, type } = dependency;
+            const dependency_id = `on-ramp__dependency--${id}`;
+
+            if (!document.getElementById(dependency_id)) {
+                const el_host = document.querySelector('.on-ramp__widget-container');
+                const el_script = document.createElement('script');
+
+                el_script.id = dependency_id;
+
+                if (type === 'url') {
+                    el_script.src = data;
+                } else {
+                    el_script.innerHTML = data;
+                }
+
+                const doAppendScript = () => {
+                    el_host.appendChild(el_script);
+                    if (should_close_modal) {
+                        this.setSelectedProvider(null);
                     }
-                });
-            }
-        );
-    }
+                };
 
-    @action.bound
-    onUnmount() {
-        if (typeof this.disposeThirdPartyJsReaction === 'function') {
-            this.disposeThirdPartyJsReaction();
-        }
+                if (global_dependents.length) {
+                    // Some scripts depend on certain globals to be exposed. Wait for these
+                    // to be available before injecting this script tag.
+                    global_dependents.forEach(global_dependent => {
+                        let should_clear = true;
+                        const global_interval_checker = setInterval(() => {
+                            if (window[global_dependent]) {
+                                clearInterval(global_interval_checker);
+                                doAppendScript();
+                                should_clear = false;
+                            }
+                        }, 500);
+                        setTimeout(() => {
+                            // In case of global not being available in 30 secs
+                            // cleanup and pretend nothing ever happened.
+                            if (should_clear) {
+                                this.setShouldShowWidget(false);
+                                clearInterval(global_interval_checker);
+                            }
+                        }, 30000);
+                    });
+                } else {
+                    doAppendScript();
+                }
+            }
+        });
     }
 
     @computed
@@ -75,7 +169,7 @@ export default class OnRampStore extends BaseStore {
     @computed
     get filtered_onramp_providers() {
         const { currency } = this.root_store.client;
-        return this.onramp_providers.filter(provider => provider.to_currencies.includes(currency.toLowerCase()));
+        return this.onramp_providers.filter(provider => provider.currencies_to.includes(currency.toLowerCase()));
     }
 
     @computed

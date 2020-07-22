@@ -8,7 +8,6 @@ import {
     ToggleFullScreen,
     ToggleSettings,
     HelpCentre,
-    ToggleComplaintsPolicy,
 } from 'App/Components/Layout/Footer';
 import LiveChat from 'App/Components/Elements/live-chat.jsx';
 import { connect } from 'Stores/connect';
@@ -23,7 +22,6 @@ const Footer = ({
     disableApp,
     toggleSettingsModal,
     settings_extension,
-    landing_company_shortcode,
 }) => (
     <footer
         className={classNames('footer', {

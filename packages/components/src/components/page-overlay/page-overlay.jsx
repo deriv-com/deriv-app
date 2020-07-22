@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Icon from '../icon/icon.jsx';
 import { useOnClickOutside } from '../../hooks';
 
-const PageOverlay = ({ portal_id, children, header, id, onClickClose, is_open }) => {
+const PageOverlay = ({ children, header, id, is_open, onClickClose, onExited, portal_id }) => {
     const page_overlay_ref = React.useRef();
 
     useOnClickOutside(page_overlay_ref, onClickClose, () => is_open && portal_id);
@@ -45,6 +45,7 @@ const PageOverlay = ({ portal_id, children, header, id, onClickClose, is_open })
                     enterDone: 'dc-page-overlay--enter-done',
                     exit: 'dc-page-overlay--exit',
                 }}
+                onExited={onExited}
                 unmountOnExit
             >
                 {el_page_overlay}
@@ -60,10 +61,10 @@ PageOverlay.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    onClickClose: PropTypes.func,
-    portal_id: PropTypes.string,
     is_open: PropTypes.bool,
-    onMount: PropTypes.func,
+    onClickClose: PropTypes.func,
+    onExited: PropTypes.func,
+    portal_id: PropTypes.string,
 };
 
 export default PageOverlay;

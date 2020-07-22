@@ -48,8 +48,6 @@ export default class LoadModalStore {
 
         if (this.is_load_modal_open) {
             this.recent_files = getSavedWorkspaces() || [];
-        } else {
-            this.cleanUpPreview();
         }
     }
 
@@ -94,6 +92,17 @@ export default class LoadModalStore {
             this.selected_file_id = this.recent_files[0].id;
             this.previewWorkspace(this.selected_file_id);
         }
+    }
+
+    @action.bound
+    onExited() {
+        if (this.preview_workspace) {
+            this.preview_workspace.dispose();
+        }
+
+        this.active_index = 0; // Reset to first tab.
+        this.selected_file_id = null;
+        this.loaded_local_file = null;
     }
 
     @action.bound
@@ -156,8 +165,7 @@ export default class LoadModalStore {
         this.is_explanation_expand = !this.is_explanation_expand;
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    getRecentFileIcon(save_type) {
+    getRecentFileIcon = save_type => {
         switch (save_type) {
             case save_types.UNSAVED:
                 return 'IcReports';
@@ -168,10 +176,9 @@ export default class LoadModalStore {
             default:
                 return 'IcReports';
         }
-    }
+    };
 
-    // eslint-disable-next-line class-methods-use-this
-    getSaveType(save_type) {
+    getSaveType = save_type => {
         switch (save_type) {
             case save_types.UNSAVED:
                 return localize('Unsaved');
@@ -182,7 +189,7 @@ export default class LoadModalStore {
             default:
                 return localize('Unsaved');
         }
-    }
+    };
     /** --------- Recent Tab End --------- */
 
     /** --------- Local Tab Start --------- */
@@ -206,8 +213,7 @@ export default class LoadModalStore {
         event.target.value = '';
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    readFile(is_preview, drop_event, file) {
+    readFile = (is_preview, drop_event, file) => {
         const file_name = file && file.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
         reader.onload = action(e => {
@@ -231,7 +237,7 @@ export default class LoadModalStore {
             load(load_options);
         });
         reader.readAsText(file);
-    }
+    };
 
     @action.bound
     loadFileFromLocal() {
@@ -239,16 +245,6 @@ export default class LoadModalStore {
         this.readFile(false, {}, this.loaded_local_file);
         this.is_open_button_loading = false;
         this.toggleLoadModal();
-    }
-
-    @action.bound
-    cleanUpPreview() {
-        if (this.preview_workspace) {
-            this.preview_workspace.dispose();
-        }
-
-        this.selected_file_id = null;
-        this.loaded_local_file = null;
     }
     /** --------- Local Tab End --------- */
 

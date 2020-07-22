@@ -133,6 +133,7 @@ const Modal = ({
     has_close_icon,
     height,
     onEntered,
+    onExited,
     onMount,
     onUnmount,
     small,
@@ -156,6 +157,7 @@ const Modal = ({
         }}
         unmountOnExit
         onEntered={onEntered}
+        onExited={onExited}
     >
         <ModalElement
             className={className}
@@ -198,6 +200,8 @@ Modal.propTypes = {
     is_vertical_bottom: PropTypes.bool,
     is_vertical_centered: PropTypes.bool,
     is_vertical_top: PropTypes.bool,
+    onEntered: PropTypes.func,
+    onExited: PropTypes.func,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     small: PropTypes.bool,

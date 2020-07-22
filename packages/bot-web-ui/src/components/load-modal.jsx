@@ -122,12 +122,12 @@ const Recent = ({
 );
 
 const Local = ({
-    cleanUpPreview,
     handleFileChange,
     is_open_button_loading,
     loaded_local_file,
     loadFileFromLocal,
     is_mobile,
+    toggleLoadModal,
     ...props
 }) => {
     let file_input_ref = React.useRef(null);
@@ -142,7 +142,7 @@ const Local = ({
                 <div id='load-local__scratch' className='preview__workspace load-local__preview-workspace'>
                     {!is_mobile && (
                         <div className='load-local__preview-close'>
-                            <Icon icon={'IcCross'} onClick={cleanUpPreview} />
+                            <Icon icon={'IcCross'} onClick={toggleLoadModal} />
                         </div>
                     )}
                     <WorkspaceControl {...props} />
@@ -183,7 +183,7 @@ const Local = ({
                         <Button
                             className='load-recent__footer-open'
                             text={localize('Cancel')}
-                            onClick={cleanUpPreview}
+                            onClick={toggleLoadModal}
                             has_effect
                             secondary
                         />
@@ -249,6 +249,7 @@ const LoadModal = ({
     active_index,
     is_load_modal_open,
     onEntered,
+    onExited,
     onUnmount,
     setActiveTabIndex,
     toggleLoadModal,
@@ -286,6 +287,7 @@ const LoadModal = ({
             is_open={is_load_modal_open}
             toggleModal={toggleLoadModal}
             onEntered={onEntered}
+            onExited={onExited}
             onUnmount={onUnmount}
             elements_to_ignore={[document.querySelector('.injectionDiv')]}
         >
@@ -306,22 +308,22 @@ const LoadModal = ({
 
 LoadModal.propTypes = {
     active_index: PropTypes.number,
-    cleanUpPreview: PropTypes.func,
-    is_explanation_expand: PropTypes.bool,
     getRecentFileIcon: PropTypes.func,
     getSaveType: PropTypes.func,
     handleFileChange: PropTypes.func,
     is_authorised: PropTypes.bool,
+    is_explanation_expand: PropTypes.bool,
     is_load_modal_open: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_open_button_loading: PropTypes.bool,
-    loaded_local_file: PropTypes.object,
     loadFileFromLocal: PropTypes.func,
     loadFileFromRecent: PropTypes.func,
+    loaded_local_file: PropTypes.object,
     onDriveConnect: PropTypes.func,
     onDriveOpen: PropTypes.func,
-    onExplanationToggle: PropTypes.func,
     onEntered: PropTypes.func,
+    onExited: PropTypes.func,
+    onExplanationToggle: PropTypes.func,
     onUnmount: PropTypes.func,
     onZoomInOutClick: PropTypes.func,
     previewWorkspace: PropTypes.func,
@@ -333,22 +335,22 @@ LoadModal.propTypes = {
 
 export default connect(({ load_modal, google_drive, ui }) => ({
     active_index: load_modal.active_index,
-    cleanUpPreview: load_modal.cleanUpPreview,
-    is_explanation_expand: load_modal.is_explanation_expand,
     getRecentFileIcon: load_modal.getRecentFileIcon,
     getSaveType: load_modal.getSaveType,
     handleFileChange: load_modal.handleFileChange,
     is_authorised: google_drive.is_authorised,
+    is_explanation_expand: load_modal.is_explanation_expand,
     is_load_modal_open: load_modal.is_load_modal_open,
     is_mobile: ui.is_mobile,
     is_open_button_loading: load_modal.is_open_button_loading,
     loadFileFromLocal: load_modal.loadFileFromLocal,
     loadFileFromRecent: load_modal.loadFileFromRecent,
     loaded_local_file: load_modal.loaded_local_file,
-    onExplanationToggle: load_modal.onExplanationToggle,
     onDriveConnect: load_modal.onDriveConnect,
     onDriveOpen: load_modal.onDriveOpen,
     onEntered: load_modal.onEntered,
+    onExited: load_modal.onExited,
+    onExplanationToggle: load_modal.onExplanationToggle,
     onUnmount: load_modal.onUnmount,
     onZoomInOutClick: load_modal.onZoomInOutClick,
     previewWorkspace: load_modal.previewWorkspace,

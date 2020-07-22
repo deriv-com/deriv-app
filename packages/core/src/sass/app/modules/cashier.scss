@@ -996,6 +996,16 @@
     &__native-select {
         margin-bottom: 2.4rem;
     }
+    &__form-submit {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+
+        > * {
+            width: auto;
+        }
+    }
     &__receipt {
         & .cashier {
             &__text--bold {

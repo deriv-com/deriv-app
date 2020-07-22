@@ -960,6 +960,10 @@ export default class CashierStore extends BaseStore {
         };
     }
 
+    hasTransferNotAllowedLoginid(loginid) {
+        return /^(mx)$/.test(loginid);
+    }
+
     @action.bound
     onChangeTransferFrom({ target }) {
         this.setErrorMessage('');
@@ -969,7 +973,12 @@ export default class CashierStore extends BaseStore {
 
         // if new value of selected_from is the same as the current selected_to
         // switch the value of selected_from and selected_to
-        if (selected_from.value === this.config.account_transfer.selected_to.value) {
+        if (this.hasTransferNotAllowedLoginid(selected_from.value)) {
+            this.setErrorMessage(
+                localize('Transfer from this account is not allowed, Please choose another account from dropdown')
+            );
+            return;
+        } else if (selected_from.value === this.config.account_transfer.selected_to.value) {
             this.onChangeTransferTo({ target: { value: this.config.account_transfer.selected_from.value } });
         } else if (selected_from.is_mt && this.config.account_transfer.selected_to.is_mt) {
             // not allowed to transfer from MT to MT
@@ -992,6 +1001,11 @@ export default class CashierStore extends BaseStore {
 
         const accounts = this.config.account_transfer.accounts_list;
         this.config.account_transfer.selected_to = accounts.find(account => account.value === target.value) || {};
+        if (this.hasTransferNotAllowedLoginid(this.config.account_transfer.selected_to.value)) {
+            this.setErrorMessage(
+                localize('Transfer to this account is not allowed, Please choose another account from dropdown')
+            );
+        }
         this.setTransferFee();
     }
 

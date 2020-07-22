@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import Field from 'Components/field';
+import Field from '../field';
 
 const Input = (
     {

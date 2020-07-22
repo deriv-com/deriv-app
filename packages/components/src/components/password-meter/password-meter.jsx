@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import zxcvbn from '@contentpass/zxcvbn';
 import PropTypes from 'prop-types';
-import Field from 'Components/field';
+import Field from '../field';
 
 const PasswordMeter = ({ children, has_error, input }) => {
     // 0 - 4 Score for password strength

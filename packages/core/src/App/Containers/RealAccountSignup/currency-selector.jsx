@@ -15,6 +15,7 @@ import { getCurrencyDisplayCode, isMobile, isDesktop } from '@deriv/shared';
 
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
+import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
 import 'Sass/currency-select-radio.scss';
 
 // Radio input
@@ -122,6 +123,11 @@ class CurrencySelector extends React.Component {
         };
     }
 
+    handleValidate = values => {
+        const { errors } = splitValidationResultTypes(this.props.validate(values));
+        return errors;
+    };
+
     render() {
         const { has_currency, has_real_account } = this.props;
 
@@ -131,7 +137,7 @@ class CurrencySelector extends React.Component {
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
-                validate={this.props.validate}
+                validate={this.handleValidate}
             >
                 {({
                     handleSubmit,

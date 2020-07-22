@@ -4,11 +4,9 @@ import { getDerivComLink } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 export const GoToDeriv = () => (
-    <div className='footer__link'>
+    <Popover alignment='top' message={localize('Go to Deriv.com')} className='footer__link'>
         <a href={getDerivComLink('/')} target='_blank' rel='nofollow noreferrer'>
-            <Popover alignment='bottom' message={localize('Go to deriv.com')}>
-                <Icon icon='IcDerivOutline' className='footer__icon ic-deriv__icon' />
-            </Popover>
+            <Icon icon='IcDerivOutline' className='footer__icon ic-deriv__icon' />
         </a>
-    </div>
+    </Popover>
 );

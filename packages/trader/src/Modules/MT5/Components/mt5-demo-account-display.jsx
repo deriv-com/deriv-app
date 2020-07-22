@@ -8,7 +8,7 @@ const MT5DemoAccountDisplay = ({
     is_eu,
     is_eu_enabled,
     has_maltainvest_account,
-    showAccountNeededModal,
+    openAccountNeededModal,
     standpoint,
     is_loading,
     landing_companies,
@@ -20,7 +20,7 @@ const MT5DemoAccountDisplay = ({
 }) => {
     const openMt5Account = () => {
         if (is_eu_enabled && is_eu && !has_maltainvest_account && standpoint.iom) {
-            showAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Financial'));
+            openAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Demo Financial'));
         } else {
             onSelectAccount({
                 category: 'demo',
@@ -35,7 +35,7 @@ const MT5DemoAccountDisplay = ({
         </div>
     ) : (
         <div className='mt5-demo-accounts-display'>
-            {landing_companies?.mt_gaming_company?.standard && (
+            {landing_companies?.mt_gaming_company?.financial && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
                     icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
@@ -70,7 +70,7 @@ const MT5DemoAccountDisplay = ({
                     }}
                 />
             )}
-            {landing_companies?.mt_financial_company?.standard && (
+            {landing_companies?.mt_financial_company?.financial && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
                     icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
@@ -105,7 +105,7 @@ const MT5DemoAccountDisplay = ({
                     }}
                 />
             )}
-            {landing_companies?.mt_financial_company?.advanced && (
+            {landing_companies?.mt_financial_company?.financial_stp && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
                     icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}

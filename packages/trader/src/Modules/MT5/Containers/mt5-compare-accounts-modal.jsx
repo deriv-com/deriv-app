@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     Button,
     Popover,
@@ -8,7 +9,6 @@ import {
     Table,
     UILoader,
 } from '@deriv/components';
-import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -50,9 +50,9 @@ const filterAvailableAccounts = (landing_companies, table) => {
     return table.map(({ attribute, synthetic, financial_stp, financial }) => {
         return {
             attribute,
-            ...(landing_companies?.mt_gaming_company?.standard ? { synthetic } : {}),
-            ...(landing_companies?.mt_financial_company?.standard ? { financial } : {}),
-            ...(landing_companies?.mt_financial_company?.advanced ? { financial_stp } : {}),
+            ...(landing_companies?.mt_gaming_company?.financial ? { synthetic } : {}),
+            ...(landing_companies?.mt_financial_company?.financial ? { financial } : {}),
+            ...(landing_companies?.mt_financial_company?.financial_stp ? { financial_stp } : {}),
         };
     });
 };
@@ -204,9 +204,9 @@ const ModalContent = ({ landing_companies }) => {
         setCols(compareAccountsData({ landing_companies }));
 
         updateColumnsStyle(
-            `1.5fr ${landing_companies?.mt_gaming_company?.standard ? '1fr' : ''} ${
-                landing_companies?.mt_financial_company?.standard ? '2fr' : ''
-            } ${landing_companies?.mt_financial_company?.advanced ? ' 1fr ' : ''}`
+            `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
+                landing_companies?.mt_financial_company?.financial ? '2fr' : ''
+            } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
         );
     }, [landing_companies.mt_financial_company, landing_companies.mt_gaming_company]);
 
@@ -221,16 +221,16 @@ const ModalContent = ({ landing_companies }) => {
                 <Table.Header>
                     <Table.Row className='mt5-compare-accounts__table-row'>
                         <Table.Head fixed />
-                        {landing_companies?.mt_gaming_company?.standard && (
+                        {landing_companies?.mt_gaming_company?.financial && (
                             <Table.Head>{localize('Synthetic')}</Table.Head>
                         )}
-                        {landing_companies?.mt_financial_company?.standard && (
+                        {landing_companies?.mt_financial_company?.financial && (
                             <Table.Head>
                                 {localize('Financial')}
                                 <span className='mt5-compare-accounts__star'>*</span>
                             </Table.Head>
                         )}
-                        {landing_companies?.mt_financial_company?.advanced && (
+                        {landing_companies?.mt_financial_company?.financial_stp && (
                             <Table.Head>
                                 {localize('Financial STP')}
                                 <span className='mt5-compare-accounts__star'>*</span>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon, Div100vhContainer } from '@deriv/components';
+import { isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
@@ -10,7 +11,7 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
     const IconWon = ({ className }) => <Icon className={className} icon='IcCheckmarkCircle' color='green' />;
 
     return (
-        <div className='status-dialog'>
+        <Div100vhContainer className='status-dialog' is_disabled={isDesktop()} height_offset='40px'>
             <div className='status-dialog__icon-area'>
                 <IconPrevCurrency />
                 <IconArrow />
@@ -33,7 +34,7 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
                 <Button onClick={onCancel} text={localize('Maybe later')} secondary />
                 <Button onClick={onSubmit} text={localize('Deposit now')} primary />
             </div>
-        </div>
+        </Div100vhContainer>
     );
 };
 

@@ -58,18 +58,6 @@ export default class OnRampStore extends BaseStore {
                 payment_icons: ['IcCashierVisa', 'IcCashierMastercard'],
                 getWidgetDependencies: () => {
                     const currency = getCurrencyDisplayCode(root_store.client.currency);
-                    const getCryptoName = () => {
-                        switch (currency) {
-                            case 'ETH':
-                                return 'ethereum';
-                            case 'BTC':
-                                return 'bitcoin';
-                            case 'DAI':
-                                return 'dai';
-                            default:
-                                return 'unknown';
-                        }
-                    };
                     return [
                         {
                             id: 'wyre-verify-js',
@@ -87,7 +75,6 @@ export default class OnRampStore extends BaseStore {
                                     operation: {
                                         primaryColor: '#000',
                                         type: 'debitcard-hosted-dialog',
-                                        // dest: '${getCryptoName()}:${this.deposit_address}',
                                         destCurrency: '${currency}',
                                         sourceAmount: 10.0,
                                         paymentMethod: 'debit-card'

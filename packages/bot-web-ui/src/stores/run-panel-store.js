@@ -223,6 +223,10 @@ export default class RunPanelStore {
     @action.bound
     onBotRunningEvent() {
         this.has_open_contract = true;
+
+        // prevent new version update
+        const ignore_new_version = new Event('IgnorePWAUpdate');
+        document.dispatchEvent(ignore_new_version);
     }
 
     @action.bound
@@ -263,6 +267,10 @@ export default class RunPanelStore {
         }
 
         this.has_open_contract = false;
+
+        // listen for new version update
+        const listen_new_version = new Event('ListenPWAUpdate');
+        document.dispatchEvent(listen_new_version);
     }
 
     @action.bound

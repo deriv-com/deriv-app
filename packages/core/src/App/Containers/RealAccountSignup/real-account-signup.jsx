@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import { Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { routes, isNavigationFromPlatform } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -100,7 +100,7 @@ class RealAccountSignup extends React.Component {
     get modal_height() {
         // TODO [deriv-eu] remove is_eu_enabled once eu is released.
         const { currency, has_real_account, is_eu, is_eu_enabled } = this.props;
-        if (this.active_modal_index === 3) return 'fit-content'; // Status dialog
+        if (this.active_modal_index === 3) return 'auto'; // Status dialog
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
             if (is_eu && is_eu_enabled && this.active_modal_index === 1) {

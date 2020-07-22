@@ -1,3 +1,5 @@
+import { Formik, Field } from 'formik';
+import React from 'react';
 import {
     Autocomplete,
     AutoHeightWrapper,
@@ -9,8 +11,6 @@ import {
     ThemedScrollbars,
     SelectNative,
 } from '@deriv/components';
-import { Formik, Field } from 'formik';
-import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -93,7 +93,7 @@ class AddressDetails extends React.Component {
                 }}
             >
                 {({ handleSubmit, isSubmitting, errors, values, setFieldValue }) => (
-                    <AutoHeightWrapper default_height={200}>
+                    <AutoHeightWrapper default_height={200} height_offset={192}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer

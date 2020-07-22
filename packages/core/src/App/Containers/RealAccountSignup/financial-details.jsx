@@ -1,6 +1,6 @@
-import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, ThemedScrollbars } from '@deriv/components';
 import { Formik } from 'formik';
 import React from 'react';
+import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, ThemedScrollbars } from '@deriv/components';
 import { FormSubHeader } from '@deriv/account';
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { Dialog } from '@deriv/components';
 import React from 'react';
+import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 

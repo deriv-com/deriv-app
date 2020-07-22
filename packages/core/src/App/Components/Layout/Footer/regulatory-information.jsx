@@ -63,11 +63,11 @@ export const RegulatoryInformation = ({ standpoint, is_eu }) => {
     if (!is_eu) return null;
     return (
         <div className='footer__link'>
-            <a onClick={() => showModal(true)}>
-                <Popover alignment='bottom' message={localize('Regulatory Information')}>
+            <Popover alignment='top' message={localize('Regulatory Information')}>
+                <a onClick={() => showModal(true)}>
                     <Icon icon='IcRegulatoryInformation' className='footer__icon ic-deriv__icon' />
-                </Popover>
-            </a>
+                </a>
+            </Popover>
             <Modal
                 is_open={should_show_modal}
                 small

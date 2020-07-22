@@ -165,3 +165,5 @@ export const subscribeWS = (request, callbacks) =>
     ws.p2pSubscribe(request, response => {
         callbacks.map(callback => callback(getModifiedResponse(response)));
     });
+
+export const waitWS = args => ws.wait(args);

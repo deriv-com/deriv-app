@@ -6,6 +6,7 @@ import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
 import BinaryRoutes from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
+import { isBot } from '@deriv/shared';
 
 const Error = Loadable({
     loader: () => import(/* webpackChunkName: "error-component" */ 'App/Components/Elements/Errors'),
@@ -17,19 +18,10 @@ const Error = Loadable({
 });
 
 class Routes extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            is_bot: false,
-        };
-    }
     el_landscape_blocker = document.getElementById('landscape_blocker');
-    unlisten_to_change = null;
-    initial_route = null;
 
     componentDidMount() {
-        this.isBot(window.location);
-        if (this.state.is_bot) {
+        if (isBot()) {
             this.el_landscape_blocker.classList.add('landscape-blocker--disabled');
         }
         if (!this.unlisten_to_change && !this.initial_route) {
@@ -45,12 +37,9 @@ class Routes extends React.Component {
         this.props.setAppRouterHistory(this.props.history);
     }
 
-    componentDidUpdate(previous_props, previous_state) {
+    componentDidUpdate(previous_props) {
         if (previous_props.location.pathname !== this.props.location.pathname) {
-            this.isBot(this.props.location);
-        }
-        if (this.state.is_bot !== previous_state.is_bot) {
-            if (this.state.is_bot) {
+            if (isBot()) {
                 this.removeBlockerEvents();
                 this.el_landscape_blocker.classList.add('landscape-blocker--disabled');
             } else {
@@ -69,12 +58,6 @@ class Routes extends React.Component {
         }
     }
 
-    isBot = location => {
-        const base = location.pathname.split('/')[1];
-        this.setState({
-            is_bot: base === 'bot',
-        });
-    };
     /**
      * Adding `focus` and `focusout` event listeners to document here to detect for on-screen keyboard on mobile browsers
      * and storing this value in UI-store to be used across the app stores.

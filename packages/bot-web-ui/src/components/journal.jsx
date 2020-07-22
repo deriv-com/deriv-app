@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Checkbox, Icon, ThemedScrollbars } from '@deriv/components';
+import { Checkbox, Icon, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
@@ -77,14 +77,14 @@ const FormatMessage = ({ logType, className, extra }) => {
     return <div className={classnames('journal__text', className)}>{getLogMessage()}</div>;
 };
 
-const Tools = ({ checked_filters, filters, filterMessage }) => (
-    <div className='journal-tools__container'>
-        <div className='journal-tools__container-filter'>
+const Filters = ({ wrapper_ref, checked_filters, filters, filterMessage, className, classNameLabel }) => {
+    return (
+        <div ref={wrapper_ref} className={className}>
             {filters.map(item => {
                 return (
                     <Checkbox
                         key={item.id}
-                        classNameLabel='journal-tools__text'
+                        classNameLabel={classNameLabel}
                         value={checked_filters.includes(item.id)}
                         defaultChecked={checked_filters.includes(item.id)}
                         label={item.label}
@@ -93,11 +93,69 @@ const Tools = ({ checked_filters, filters, filterMessage }) => (
                 );
             })}
         </div>
-        {/* <div className='tools__container-download'>
-            <Icon icon='IcDownload' />
-        </div> */}
-    </div>
-);
+    );
+};
+
+const FilterDialog = ({
+    toggle_ref,
+    checked_filters,
+    filters,
+    filterMessage,
+    is_filter_dialog_visible,
+    toggleFilterDialog,
+}) => {
+    const wrapper_ref = React.useRef();
+
+    const validateClickOutside = event => is_filter_dialog_visible && !toggle_ref.current.contains(event.target);
+
+    useOnClickOutside(wrapper_ref, toggleFilterDialog, validateClickOutside);
+
+    return (
+        <Filters
+            wrapper_ref={wrapper_ref}
+            checked_filters={checked_filters}
+            filters={filters}
+            filterMessage={filterMessage}
+            className='filter-dialog'
+        />
+    );
+};
+
+const Tools = ({ checked_filters, filters, filterMessage, is_filter_dialog_visible, toggleFilterDialog }) => {
+    const toggle_ref = React.useRef();
+
+    return (
+        <>
+            <div className='journal-tools__container'>
+                <div ref={toggle_ref} className='journal-tools__container-filter' onClick={toggleFilterDialog}>
+                    <span className='journal-tools__container-filter--label'>
+                        <Localize i18n_default_text='Filters' />
+                    </span>
+                    <Icon icon='IcFilter' size={16} />
+                </div>
+            </div>
+            <CSSTransition
+                in={is_filter_dialog_visible}
+                classNames={{
+                    enter: 'filter-dialog--enter',
+                    enterDone: 'filter-dialog--enter-done',
+                    exit: 'filter-dialog--exit',
+                }}
+                timeout={150}
+                unmountOnExit
+            >
+                <FilterDialog
+                    toggle_ref={toggle_ref}
+                    checked_filters={checked_filters}
+                    filters={filters}
+                    filterMessage={filterMessage}
+                    is_filter_dialog_visible={is_filter_dialog_visible}
+                    toggleFilterDialog={toggleFilterDialog}
+                />
+            </CSSTransition>
+        </>
+    );
+};
 
 const getJournalItemContent = (message, type, className, extra) => {
     switch (type) {
@@ -201,6 +259,8 @@ Journal.propTypes = {
     filters: PropTypes.array,
     is_mobile: PropTypes.bool,
     is_stop_button_visible: PropTypes.bool,
+    is_filter_dialog_visible: PropTypes.bool,
+    toggleFilterDialog: PropTypes.func,
 };
 
 export default connect(({ journal, run_panel, ui }) => ({
@@ -210,5 +270,7 @@ export default connect(({ journal, run_panel, ui }) => ({
     filters: journal.filters,
     filtered_messages: journal.filtered_messages,
     is_mobile: ui.is_mobile,
+    is_filter_dialog_visible: journal.is_filter_dialog_visible,
     is_stop_button_visible: run_panel.is_stop_button_visible,
+    toggleFilterDialog: journal.toggleFilterDialog,
 }))(Journal);

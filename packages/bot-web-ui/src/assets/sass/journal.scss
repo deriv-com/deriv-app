@@ -54,16 +54,17 @@
 
             &-filter {
                 display: flex;
-                justify-content: space-around;
-                width: 85%;
-            }
-            &-download {
+                justify-content: flex-end;
+                align-items: center;
+                width: 100%;
                 cursor: pointer;
+
+                &--label {
+                    font-size: 1.4rem;
+                    color: var(--text-general);
+                    margin-right: 0.8rem;
+                }
             }
-        }
-        &__text {
-            // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
-            font-size: var(--text-size--xxs) !important;
         }
     }
     &__text {
@@ -103,6 +104,41 @@
         &--mobile {
             @extend .journal__loader;
             width: 100vw;
+        }
+    }
+}
+
+.filter-dialog {
+    position: fixed;
+    display: grid;
+    grid-gap: 1.6rem;
+    background: var(--general-main-2);
+    border-radius: $BORDER_RADIUS;
+    box-shadow: 0 4px 16px 0 var(--shadow-menu);
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
+    padding: 1.6rem 3.6rem 1.6rem 0.8rem;
+    z-index: 99;
+    right: 16px;
+
+    &--enter-done {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+    &--enter,
+    &--exit {
+        opacity: 0;
+        transform: translate3d(0, -20px, 0);
+    }
+    &__input {
+        .input-wrapper__input {
+            border: 1px solid var(--border-normal);
+        }
+    }
+    &__button {
+        margin-top: 0.8rem;
+
+        .dc-btn {
+            width: 100%;
         }
     }
 }

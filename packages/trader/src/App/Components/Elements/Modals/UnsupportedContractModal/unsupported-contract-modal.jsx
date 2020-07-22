@@ -1,9 +1,9 @@
-import { Dialog } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { website_domain } from '../../../../Constants/app-config';
+import { website_name } from '../../../../Constants/app-config';
 
 class UnsupportedContractModal extends React.Component {
     render() {
@@ -11,7 +11,7 @@ class UnsupportedContractModal extends React.Component {
         return (
             <Dialog
                 title={localize('We’re working on it')}
-                confirm_button_text={localize('Stay on {{website_domain}}', { website_domain })}
+                confirm_button_text={localize('Stay on {{website_domain}}', { website_domain: website_name })}
                 cancel_button_text={localize('Go to Binary.com')}
                 onConfirm={onConfirm}
                 onCancel={onClose}

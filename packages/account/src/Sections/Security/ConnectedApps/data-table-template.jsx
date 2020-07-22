@@ -36,17 +36,14 @@ const PrepareConnectedAppsLastLogin = (last_used) => (
     <p className='last_used_content'>{toMoment(last_used).format('YYYY-MM-DD HH:mm:ss')}</p>
 );
 
-const scope_list = {
-    read: 'Read',
-    trade: 'Trade',
-    trading_information: 'Trading information',
-    payments: 'Payments',
-    admin: 'Admin',
-};
+const generatePermissions = () => ({
+    read: localize('Read'),
+    trade: localize('Trade'),
+    trading_information: localize('Trading information'),
+    payments: localize('Payments'),
+    admin: localize('Admin'),
+});
 
-const generatePermission = (scope) => {
-    return scope_list[scope];
-};
 const PrepareConnectedAppsScopes = (permissions_list) => {
     const is_trading_information = permissions_list.includes('trading_information');
     let oauth_apps_list = [];
@@ -59,9 +56,9 @@ const PrepareConnectedAppsScopes = (permissions_list) => {
     const sorted_app_list = [];
     oauth_apps_list.forEach((permission, index) => {
         if (permissions_list.length - 1 !== index) {
-            sorted_app_list.push(`${generatePermission(permission)}, `);
+            sorted_app_list.push(`${generatePermissions()[permission]}, `);
         } else {
-            sorted_app_list.push(generatePermission(permission));
+            sorted_app_list.push(generatePermissions()[permission]);
         }
     });
     return <div>{sorted_app_list}</div>;

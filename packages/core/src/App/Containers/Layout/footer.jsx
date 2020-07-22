@@ -35,7 +35,7 @@ const Footer = ({
         <NetworkStatus />
         <ServerTime />
         <div className='footer__links footer__links-extras'>
-            <ToggleComplaintsPolicy landing_company_shortcode={landing_company_shortcode} />
+            {/* <ToggleComplaintsPolicy landing_company_shortcode={landing_company_shortcode} /> */}
         </div>
         <div className='footer__links'>
             <LiveChat />

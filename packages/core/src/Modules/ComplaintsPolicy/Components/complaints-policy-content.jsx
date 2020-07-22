@@ -5,8 +5,11 @@ import 'Sass/app/modules/complaints-policy.scss';
 const getIntroductionText = landing_company_shortcode => {
     switch (landing_company_shortcode) {
         case 'iom':
-            return localize(
-                'This complaints policy, which may change from time to time, applies to your account registered with Deriv (MX) Ltd, having its registered office address at First Floor, Millennium House, Victoria Road, Douglas, Isle of Man, IM2 4RW, licensed and regulated respectively by (1) the Gambling Supervision Commission in the Isle of Man (current licence issued on 31 August 2017) and (2) the Gambling Commission in the UK (licence no. 39172).'
+            return (
+                <Localize
+                    i18n_default_text='This complaints policy, which may change from time to time, applies to your account registered with Deriv (MX) Ltd, having its registered office address at First Floor, Millennium House, Victoria Road, Douglas, Isle of Man, IM2 4RW, licensed and regulated respectively by (1) the Gambling Supervision Commission in the Isle of Man (current <0>licence</0> issued on 31 August 2017) and (2) the Gambling Commission in the UK (<1>licence no. 39172</1>).'
+                    components={[<strong key={0} />, <strong key={1} />]}
+                />
             );
         case 'maltainvest':
             return localize(
@@ -39,7 +42,7 @@ const getYourDecisionText = landing_company_shortcode => {
             const texts = [
                 <Localize
                     key={0}
-                    i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Independent Betting Adjudication Service</0> (IBAS) by filling the IBAS adjudication form. Please note that IBAS only deals with disputes that result from transactions.'
+                    i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Independent Betting Adjudication Service (IBAS)</0> by filling the IBAS adjudication form. Please note that IBAS only deals with disputes that result from transactions.'
                     components={[
                         <a
                             key={0}
@@ -52,7 +55,7 @@ const getYourDecisionText = landing_company_shortcode => {
                 />,
                 <Localize
                     key={1}
-                    i18n_default_text="<0/><1/>Alternatively, you can send your complaint to the <2>European Commission's Online Dispute Resolution</2> (ODR) platform."
+                    i18n_default_text="<0/><1/>Alternatively, you can send your complaint to the <2>European Commission's Online Dispute Resolution (ODR)</2> platform."
                     components={[
                         <br key={0} />,
                         <br key={1} />,
@@ -126,7 +129,7 @@ const getYourDecisionText = landing_company_shortcode => {
                             className='link link--orange'
                             rel='noopener noreferrer'
                             target='_blank'
-                            href='https://financialcommission.org/'
+                            href='https://financialcommission.org/resolving-a-dispute/how-to-file-a-complaintdispute/'
                         />,
                     ]}
                 />,
@@ -275,7 +278,7 @@ const Content = ({ landing_company_shortcode }) => {
                                     className='link link--orange'
                                     rel='noopener noreferrer'
                                     target='_blank'
-                                    href='https://financialcommission.org/resolving-a-dispute/dispute-resolution/'
+                                    href='https://financialcommission.org/resolving-a-dispute/dispute-resolution-process/'
                                 />,
                             ]}
                         />

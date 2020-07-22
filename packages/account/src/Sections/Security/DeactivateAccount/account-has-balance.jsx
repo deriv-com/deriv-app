@@ -69,7 +69,7 @@ const AccountHasBalanceOrOpenPositions = ({
     }
     return (
         <React.Fragment>
-            {deriv_accounts_open_positions.length && (
+            {!!deriv_accounts_open_positions.length && (
                 <div className='have-open-positions-or-balance'>
                     <p className='have-open-positions-or-balance__title'>
                         {localize('You have open positions in these Deriv accounts:')}
@@ -89,7 +89,7 @@ const AccountHasBalanceOrOpenPositions = ({
                     ))}
                 </div>
             )}
-            {deriv_accounts_with_balance.length && (
+            {!!deriv_accounts_with_balance.length && (
                 <div className='have-open-positions-or-balance'>
                     <p className='have-open-positions-or-balance__title'>
                         {localize('You have funds in these Deriv accounts:')}
@@ -124,7 +124,7 @@ const AccountHasBalanceOrOpenPositions = ({
                     ))}
                 </div>
             )}
-            {mt5_accounts_with_balance_or_open_positions.length && (
+            {!!mt5_accounts_with_balance_or_open_positions.length && (
                 <div className='have-open-positions-or-balance'>
                     <p className='have-open-positions-or-balance__title'>
                         {localize('You have funds or open positions in these DMT5 accounts:')}

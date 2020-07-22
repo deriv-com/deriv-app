@@ -33,7 +33,7 @@ const DeactivateAccountSteps = ({ redirectToReasons }) => (
                 {localize('')}
                 <Localize
                     i18n_default_text='If you have a DMT5 real account, go to <0>DMT5 Dashboard</0> to withdraw your funds.'
-                    components={[<Link to='/cashier/withdrawal' key={0} className='deactivate-account__link' />]}
+                    components={[<Link to='/mt5' key={0} className='deactivate-account__link' />]}
                 />
             </p>
         </div>

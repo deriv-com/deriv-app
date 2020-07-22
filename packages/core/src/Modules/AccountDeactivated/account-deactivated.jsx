@@ -8,6 +8,7 @@ class AccountDeactivated extends React.Component {
         is_modal_open: true,
     };
     componentDidMount() {
+        window.history.pushState(null, null, '/');
         this.props.logout();
     }
     render() {

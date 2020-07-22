@@ -180,7 +180,7 @@ $modal_container_height: calc(100vh - 210px);
             display: flex;
             flex-direction: column;
             justify-content: center;
-            border: dashed 3px var(--border-normal);
+            border: dashed 0.2rem var(--border-normal);
             border-radius: $BORDER_RADIUS;
             padding: 50px;
             height: 100%;
@@ -242,6 +242,8 @@ $modal_container_height: calc(100vh - 210px);
             display: flex;
             flex-direction: column;
             justify-content: center;
+            border: dashed 0.2rem var(--border-normal);
+            border-radius: 4px;
             height: $modal_container_height;
 
             > * {
@@ -281,7 +283,7 @@ $modal_container_height: calc(100vh - 210px);
     &__wrapper {
         @include mobile {
             position: fixed;
-            z-index: 5;
+            z-index: 6;
             top: 40px;
             width: 100%;
             left: 0px;
@@ -340,7 +342,7 @@ $modal_container_height: calc(100vh - 210px);
                     max-height: calc(100vh - 120px);
                 }
                 &__dragndrop {
-                    height: calc(100vh - 200px);
+                    height: calc(100vh - 15.2rem);
                     overflow: overlay;
                 }
                 &__footer {
@@ -357,8 +359,7 @@ $modal_container_height: calc(100vh - 210px);
                 &__container {
                     width: calc(100vw - 3.2rem);
                     margin: 1.6rem;
-                    border: dashed 0.2rem var(--border-normal);
-                    height: calc(100vh - 200px);
+                    height: calc(100vh - 15.2rem);
                 }
                 &__buttons > * {
                     margin: 0rem 0.4rem;

@@ -37,8 +37,12 @@ class Transactions extends React.PureComponent {
                         {localize('Buy price and P/L')}
                     </span>
                 </div>
-                <div className='transactions__content'>
-                    <ThemedScrollbars autoHide hideHorizontal height='100%'>
+                <div
+                    className={classnames('transactions__content', {
+                        'transactions__content--mobile': is_mobile,
+                    })}
+                >
+                    <ThemedScrollbars autoHide hideHorizontal className='transactions__scrollbar'>
                         {elements.length ? (
                             <TransitionGroup>
                                 {elements.map(element => {
@@ -73,12 +77,7 @@ class Transactions extends React.PureComponent {
                                 {contract_stage >= contract_stages.STARTING ? (
                                     <Transaction contract={null} />
                                 ) : (
-                                    <div
-                                        className={classnames({
-                                            'transactions-empty': !is_mobile,
-                                            'transactions-empty--mobile': is_mobile,
-                                        })}
-                                    >
+                                    <div className='transactions-empty'>
                                         <Icon
                                             icon='IcBox'
                                             className='transactions-empty__icon'

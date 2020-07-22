@@ -130,7 +130,7 @@ div.radio-group {
 .save-modal__wrapper {
     @include mobile {
         position: fixed;
-        z-index: 5;
+        z-index: 6;
         width: 100%;
         left: 0px;
         background: var(--general-main-1);
@@ -175,12 +175,13 @@ div.radio-group {
             flex-direction: row;
             justify-content: flex-end;
             padding: 1.4rem;
-            height: 72px;
+            height: 6.8rem;
             border-top: solid 0.1em var(--general-section-1);
 
             &--button {
                 float: right;
                 margin-left: 0.8rem;
+                height: 4rem;
             }
         }
     }

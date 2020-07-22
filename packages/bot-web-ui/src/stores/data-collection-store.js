@@ -7,7 +7,7 @@ import { transaction_elements } from '../constants/transactions';
 export default class DataCollectionStore {
     constructor(root_store) {
         // TODO: Only track on production.
-        if (!isProduction()) {
+        if (isProduction() || /(.*?)\.binary.sx$/.test(window.location.hostname)) {
             this.root_store = root_store;
 
             reaction(
@@ -30,12 +30,18 @@ export default class DataCollectionStore {
     should_post_xml = true;
 
     @observable strategy_content = '';
+    @observable run_id = '';
+    @observable run_start = 0;
 
     @computed
     get strategy_hash() {
         return this.getHash(this.strategy_content);
     }
 
+    /**
+     * Each press on the run button should be identified by a unique run_id.
+     * It can contain multiple transactions.
+     */
     @action.bound
     async trackRun() {
         const xml_dom = this.cleanXmlDom(Blockly.Xml.workspaceToDom(DBot.workspace, /* opt_noId */ true));
@@ -47,11 +53,14 @@ export default class DataCollectionStore {
             this.setStrategyContent(xml_string);
         }
 
-        // Keep track of run_id for analysis.
-        // A different run_id doesn't necessarily mean a different strategy.
         this.setRunId(this.getHash(xml_hash + this.root_store.core.client.loginid + Math.random()));
+        this.setRunStart(this.root_store.common.server_time.unix());
     }
 
+    /**
+     * TODO: Track send + receive timestamps.
+     * @param {*} elements
+     */
     @action.bound
     async trackTransaction(elements) {
         const pako = await import(/* webpackChunkName: "dbot-collection" */ 'pako');
@@ -69,18 +78,22 @@ export default class DataCollectionStore {
             this.transaction_ids[transaction_id] = this.IS_PENDING;
 
             const getPayload = () => {
-                const body = pako.deflate(this.strategy_content, { to: 'string' });
+                const content = pako.gzip(this.strategy_content);
+                console.log({
+                    content,
+                    typeContent: typeof content,
+                });
                 return {
-                    body,
+                    body: content,
                     headers: {
                         'Content-Encoding': 'gzip',
                         'Content-Type': 'application/xml',
-                        'Content-Length': body.length,
+                        'Content-Length': content.length,
                     },
                 };
             };
 
-            fetch(`${this.endpoint}/${this.run_id}/${transaction_id}/${this.strategy_hash}`, {
+            fetch(`${this.endpoint}/${this.run_id}/${transaction_id}/${this.run_start}/${this.strategy_hash}`, {
                 ...(this.should_post_xml ? getPayload() : {}),
                 method: 'POST',
                 mode: 'cors',
@@ -98,6 +111,11 @@ export default class DataCollectionStore {
     @action.bound
     setRunId(run_id) {
         this.run_id = run_id;
+    }
+
+    @action.bound
+    setRunStart(timestamp) {
+        this.run_start = timestamp;
     }
 
     @action.bound

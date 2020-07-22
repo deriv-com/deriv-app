@@ -67,16 +67,6 @@ $header-height: 4em;
 
 /** @define .contract-card; weak */
 .contract-card {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    position: relative;
-    border-radius: $BORDER_RADIUS;
-    padding: 4px;
-    background-color: var(--general-main-1);
-    color: var(--text-prominent);
-
     &__footer {
         margin-bottom: 0.5em;
         padding: 0 4px;

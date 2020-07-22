@@ -1,3 +1,4 @@
+import { withRouter } from 'react-router-dom';
 import {
     DesktopWrapper,
     Div100vhContainer,
@@ -8,7 +9,6 @@ import {
 } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
 import { getSelectedRoute, isCryptocurrency, isMobile, isTouchDevice, routes } from '@deriv/shared';
 import 'Sass/app/modules/cashier.scss';

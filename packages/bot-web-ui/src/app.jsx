@@ -53,6 +53,10 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        // prevent new version update
+        const ignore_new_version = new Event('IgnorePWAUpdate');
+        document.dispatchEvent(ignore_new_version);
+
         DBot.initWorkspace(
             __webpack_public_path__,
             this.dbot_store,

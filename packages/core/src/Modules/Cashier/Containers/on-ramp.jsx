@@ -14,14 +14,7 @@ const OnRamp = ({
     setIsOnRampModalOpen,
     should_show_dialog,
     resetPopup,
-    onMount,
-    onUnmount,
 }) => {
-    React.useEffect(() => {
-        onMount();
-        return () => onUnmount();
-    }, []);
-
     return (
         <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
             <h2 className='on-ramp__page-header'>
@@ -54,9 +47,7 @@ OnRamp.propTypes = {
     resetPopup: PropTypes.func,
     should_show_dialog: PropTypes.bool,
     setIsOnRampModalOpen: PropTypes.func,
-    onMount: PropTypes.func,
     onramp_popup_modal_title: PropTypes.string,
-    onUnmount: PropTypes.func,
 };
 
 export default connect(({ modules }) => ({
@@ -65,7 +56,5 @@ export default connect(({ modules }) => ({
     resetPopup: modules.cashier.onramp.resetPopup,
     should_show_dialog: modules.cashier.onramp.should_show_dialog,
     setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
-    onMount: modules.cashier.onramp.onMount,
     onramp_popup_modal_title: modules.cashier.onramp.onramp_popup_modal_title,
-    onUnmount: modules.cashier.onramp.onUnmount,
 }))(OnRamp);

@@ -19,11 +19,11 @@ const GTM = (() => {
         try {
             root_store = _root_store;
 
-            const { run_panel, transactions, summary: s } = root_store;
+            const { run_panel, transactions, statistics: s } = root_store;
 
             reaction(
                 () => run_panel.is_running,
-                () => run_panel.is_running && onRunBot(s.summary)
+                () => run_panel.is_running && onRunBot(s)
             );
 
             reaction(
@@ -35,15 +35,15 @@ const GTM = (() => {
         }
     };
 
-    const onRunBot = summary => {
+    const onRunBot = statistics => {
         try {
             const run_id = `${getLoginId()}-${getServerTime()}`;
-            const counters = `tr:${summary.number_of_runs},\
-                ts:${summary.total_stake},\
-                py:${summary.total_payout},\
-                lc:${summary.lost_contracts},\
-                wc:${summary.won_contracts},\
-                pr:${summary.total_profit}`;
+            const counters = `tr:${statistics.number_of_runs},\
+                ts:${statistics.total_stake},\
+                py:${statistics.total_payout},\
+                lc:${statistics.lost_contracts},\
+                wc:${statistics.won_contracts},\
+                pr:${statistics.total_profit}`;
 
             const data = {
                 counters: counters.replace(/\s/g, ''),

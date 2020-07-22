@@ -11,6 +11,7 @@ export const routes = {
     deactivate_account: '/account/deactivate-account',
     account_deactivated: '/account-deactivated',
     account_limits: '/account/account-limits',
+    connected_apps: '/account/connected-apps',
     api_token: '/account/api-token',
     login_history: '/account/login-history',
     two_factor_authentication: '/account/two-factor-authentication',

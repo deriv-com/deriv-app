@@ -14,6 +14,7 @@ import {
     SelfExclusion,
     Account,
     DeactivateAccount,
+    ConnectedApps,
     LoginHistory,
 } from 'Sections';
 
@@ -95,6 +96,11 @@ const initRoutesConfig = () => [
                         path: routes.deactivate_account,
                         component: DeactivateAccount,
                         title: localize('Deactivate Account'),
+                    },
+                    {
+                        path: routes.connected_apps,
+                        component: ConnectedApps,
+                        title: localize('Connected apps'),
                     },
                     {
                         path: routes.two_factor_authentication,

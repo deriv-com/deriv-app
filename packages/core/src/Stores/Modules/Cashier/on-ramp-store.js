@@ -1,6 +1,6 @@
-import { action, observable, computed, reaction } from 'mobx';
+import { action, observable, computed } from 'mobx';
 import { localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, routes, websiteUrl } from '@deriv/shared';
+import { isProduction, getCurrencyDisplayCode, routes, websiteUrl } from '@deriv/shared';
 import { WS } from 'Services';
 import BaseStore from '../../base-store';
 
@@ -70,10 +70,9 @@ export default class OnRampStore extends BaseStore {
                             data: `
                             (function () { 
                                 var widget = new Wyre({
-                                    account: 'AC_W8W4ZBTQNYE',
-                                    env: 'test',
+                                    account: ${isProduction() ? 'AC_BPHBZY4P4HV' : 'AC_W8W4ZBTQNYE'},
+                                    env: ${isProduction() ? 'production' : 'test'},
                                     operation: {
-                                        primaryColor: '#000',
                                         type: 'debitcard-hosted-dialog',
                                         destCurrency: '${currency}',
                                         sourceAmount: 10.0,
@@ -84,7 +83,7 @@ export default class OnRampStore extends BaseStore {
                                 // Open widget immediately.
                                 widget.open();
                             })();`,
-                            global_dependents: ['Wyre'],
+                            global_dependants: ['Wyre'],
                             should_close_modal: true,
                         },
                     ];
@@ -98,7 +97,7 @@ export default class OnRampStore extends BaseStore {
         const dependencies = provider.getWidgetDependencies ? provider.getWidgetDependencies() : [];
 
         dependencies.forEach(dependency => {
-            const { id, data, global_dependents = [], should_close_modal, type } = dependency;
+            const { id, data, global_dependants = [], should_close_modal, type } = dependency;
             const dependency_id = `on-ramp__dependency--${id}`;
 
             if (!document.getElementById(dependency_id)) {
@@ -120,13 +119,13 @@ export default class OnRampStore extends BaseStore {
                     }
                 };
 
-                if (global_dependents.length) {
+                if (global_dependants.length) {
                     // Some scripts depend on certain globals to be exposed. Wait for these
                     // to be available before injecting this script tag.
-                    global_dependents.forEach(global_dependent => {
+                    global_dependants.forEach(global_dependant => {
                         let should_clear = true;
                         const global_interval_checker = setInterval(() => {
-                            if (window[global_dependent]) {
+                            if (window[global_dependant]) {
                                 clearInterval(global_interval_checker);
                                 doAppendScript();
                                 should_clear = false;

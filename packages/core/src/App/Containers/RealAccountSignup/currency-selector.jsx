@@ -167,13 +167,10 @@ class CurrencySelector extends React.Component {
                                                         <Localize i18n_default_text='You have an account without an assigned currency. Please choose a currency to trade with this account.' />
                                                     </p>
                                                 )}
-                                                <h2>
-                                                    <Localize i18n_default_text='Please choose your currency' />
-                                                </h2>
                                             </div>
                                         )}
                                     </MobileWrapper>
-                                    <ThemedScrollbars is_bypassed={isMobile()} height={`${height - 70}px`}>
+                                    <ThemedScrollbars is_bypassed={isMobile()} height={height}>
                                         <RadioButtonGroup
                                             id='currency'
                                             className='currency-selector__radio-group'

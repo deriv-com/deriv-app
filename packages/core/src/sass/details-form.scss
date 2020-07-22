@@ -3,6 +3,10 @@
     @include desktop {
         padding: 0 0.4rem;
     }
+    @include mobile {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 
     &__elements {
         flex-grow: 1;
@@ -74,7 +78,8 @@
         @include mobile {
             width: 100%;
             margin: 0;
-            padding: 0 1.6rem;
+            padding: 1rem 1.6rem 0;
+            overflow-y: scroll;
         }
     }
     &__tax {
@@ -122,6 +127,8 @@
         color: var(--text-general);
         @include desktop {
             width: 40%;
+            display: flex;
+            flex-direction: column;
         }
 
         @include mobile {
@@ -130,12 +137,5 @@
             line-height: 20px;
             color: var(--text-less-prominent);
         }
-    }
-    @include mobile {
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-    @include desktop {
-        grid-template-rows: minmax(10rem, 1fr);
     }
 }

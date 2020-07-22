@@ -103,7 +103,7 @@ class AddressDetails extends React.Component {
                 }}
             >
                 {({ handleSubmit, isSubmitting, errors, values, setFieldValue }) => (
-                    <AutoHeightWrapper default_height={200}>
+                    <AutoHeightWrapper default_height={200} height_offset={192}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer

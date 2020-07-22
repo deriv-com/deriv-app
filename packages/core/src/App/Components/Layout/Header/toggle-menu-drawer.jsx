@@ -174,7 +174,7 @@ class ToggleMenuDrawer extends React.Component {
     processRoutes() {
         const routes_config = getRoutesConfig();
         const primary_routes = [routes.reports, routes.account, routes.cashier];
-        const secondary_routes = [routes.complaints_policy];
+        const secondary_routes = [];
 
         this.setState({
             primary_routes_config: this.getFilteredRoutesConfig(routes_config, primary_routes),

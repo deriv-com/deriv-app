@@ -8,7 +8,6 @@ import {
     ToggleFullScreen,
     ToggleSettings,
     HelpCentre,
-    ToggleComplaintsPolicy,
 } from 'App/Components/Layout/Footer';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
@@ -22,7 +21,6 @@ const Footer = ({
     disableApp,
     toggleSettingsModal,
     settings_extension,
-    landing_company_shortcode,
 }) => (
     <footer
         className={classNames('footer', {

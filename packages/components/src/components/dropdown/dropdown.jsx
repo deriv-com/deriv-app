@@ -129,7 +129,7 @@ const Dropdown = ({
     }, [is_nativepicker, is_nativepicker_visible]);
 
     React.useEffect(() => {
-        if (!is_list_visible) dropdown_ref.current.focus();
+        if (!is_list_visible && value) dropdown_ref.current.focus();
     }, [is_list_visible]);
 
     const handleSelect = item => {
@@ -202,7 +202,10 @@ const Dropdown = ({
         const { activeElement } = document;
 
         if (activeElement.id === 'dropdown-display') {
-            Array.from(nodes.current.values())[0].focus();
+            const el = Array.from(nodes.current.values())[0];
+            if (el && el.focus instanceof Function) {
+                el.focus();
+            }
         } else {
             const active_node = nodes.current.get(activeElement.id);
             if (active_node) {

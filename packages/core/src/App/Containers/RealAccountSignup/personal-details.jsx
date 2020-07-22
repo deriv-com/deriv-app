@@ -1,3 +1,6 @@
+import { Formik, Field } from 'formik';
+import React from 'react';
+import { FormSubHeader } from '@deriv/account';
 import {
     Autocomplete,
     AutoHeightWrapper,
@@ -15,8 +18,6 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { Field, Formik } from 'formik';
-import React from 'react';
-import { FormSubHeader } from '@deriv/account';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, toMoment } from '@deriv/shared';
 import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';

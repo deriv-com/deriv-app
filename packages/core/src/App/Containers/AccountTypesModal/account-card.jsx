@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import { Button, Icon } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Button, Icon } from '@deriv/components';
 import 'Sass/app/modules/account-types.scss';
 
 const MainCard = ({ button_text, buttonOnClick, platforms, is_button_disabled, items, subtitle, title }) => {

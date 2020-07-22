@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { toMoment } from '@deriv/shared';
-import Icon from 'Components/icon';
+import Icon from '../icon';
 
 const Native = ({
     id,

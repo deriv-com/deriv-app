@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { Checkbox } from '@deriv/components';
 import React from 'react';
+import { Checkbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const PopoverMessageCheckbox = ({ defaultChecked, onChange, message, name }) => (

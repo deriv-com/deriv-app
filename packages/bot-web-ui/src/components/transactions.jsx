@@ -7,8 +7,8 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Transaction from './transaction.jsx';
 import { transaction_elements } from '../constants/transactions';
 import { connect } from '../stores/connect';
-import '../assets/sass/transactions.scss';
 import { contract_stages } from '../constants/contract-stage';
+import '../assets/sass/transactions.scss';
 
 class Transactions extends React.PureComponent {
     componentDidMount() {
@@ -38,7 +38,7 @@ class Transactions extends React.PureComponent {
                     </span>
                 </div>
                 <div className='transactions__content'>
-                    <ThemedScrollbars height='100%'>
+                    <ThemedScrollbars autoHide hideHorizontal height='100%'>
                         {elements.length ? (
                             <TransitionGroup>
                                 {elements.map(element => {

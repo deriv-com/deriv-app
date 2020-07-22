@@ -93,11 +93,6 @@ const initRoutesConfig = () => [
                         title: localize('API token'),
                     },
                     {
-                        path: routes.deactivate_account,
-                        component: DeactivateAccount,
-                        title: localize('Deactivate Account'),
-                    },
-                    {
                         path: routes.connected_apps,
                         component: ConnectedApps,
                         title: localize('Connected apps'),
@@ -106,6 +101,11 @@ const initRoutesConfig = () => [
                         path: routes.two_factor_authentication,
                         component: TwoFactorAuthentication,
                         title: localize('Two-factor authentication'),
+                    },
+                    {
+                        path: routes.deactivate_account,
+                        component: DeactivateAccount,
+                        title: localize('Deactivate account'),
                     },
                 ],
             },

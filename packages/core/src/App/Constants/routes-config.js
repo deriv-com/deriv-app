@@ -123,11 +123,6 @@ const modules = [
                         title: localize('API token'),
                     },
                     {
-                        path: routes.deactivate_account,
-                        component: Account,
-                        title: localize('Deactivate Account'),
-                    },
-                    {
                         path: routes.connected_apps,
                         component: Account,
                         title: localize('Connected apps'),
@@ -136,6 +131,11 @@ const modules = [
                         path: routes.two_factor_authentication,
                         component: Account,
                         title: localize('Two-factor authentication'),
+                    },
+                    {
+                        path: routes.deactivate_account,
+                        component: Account,
+                        title: localize('Deactivate account'),
                     },
                 ],
             },

@@ -1,9 +1,8 @@
-import { Button, Icon, Input, ThemedScrollbars, Popover } from '@deriv/components';
+import { Button, Icon, Input, ThemedScrollbars, Popover, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Dialog from './dialog.jsx';
 import LoadModal from './load-modal.jsx';
 import SaveModal from './save-modal.jsx';
 import TradeAnimation from './trade-animation.jsx';
@@ -204,14 +203,20 @@ const Toolbar = props => {
             )}
             <SaveModal />
             <LoadModal />
-            <Dialog
+            <Modal
                 title={localize('Are you sure?')}
                 is_open={is_dialog_open}
-                onOkButtonClick={onOkButtonClick}
-                onCancelButtonClick={onCancelButtonClick}
+                toggleModal={onCancelButtonClick}
+                className='no-border'
+                width={is_mobile ? 'calc(100vw - 48px)' : '440px'}
+                has_close_icon
             >
-                {localize('Any unsaved changes will be lost.')}
-            </Dialog>
+                <Modal.Body>{localize('Any unsaved changes will be lost.')}</Modal.Body>
+                <Modal.Footer>
+                    <Button large has_effect text={localize('Cancel')} onClick={onCancelButtonClick} secondary />
+                    <Button has_effect large text={localize('Ok')} onClick={onOkButtonClick} primary />
+                </Modal.Footer>
+            </Modal>
         </>
     );
 };

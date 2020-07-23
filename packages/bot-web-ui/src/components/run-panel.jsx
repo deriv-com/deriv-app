@@ -1,9 +1,8 @@
-import { Money, Button, Drawer, Tabs, Popover } from '@deriv/components';
+import { Money, Button, Drawer, Tabs, Popover, Modal } from '@deriv/components';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import Dialog from './dialog.jsx';
 import Journal from './journal.jsx';
 import Summary from './summary.jsx';
 import Transactions from './transactions.jsx';
@@ -159,8 +158,8 @@ class RunPanel extends React.PureComponent {
             setActiveTabIndex,
             toggleDrawer,
             is_dialog_open,
-            onOkButtonClick,
             onCancelButtonClick,
+            onOkButtonClick,
         } = this.props;
         const content = drawerContent({ active_index, is_drawer_open, setActiveTabIndex, ...this.props });
         const footer = drawerFooter({ is_clear_stat_disabled, onClearStatClick });
@@ -184,14 +183,40 @@ class RunPanel extends React.PureComponent {
                     </Drawer>
                     {is_mobile && <MobileDrawerFooter />}
                 </div>
-                <Dialog
+                <Modal
                     title={dialog_options.title}
                     is_open={is_dialog_open}
-                    onOkButtonClick={onOkButtonClick}
-                    onCancelButtonClick={onCancelButtonClick}
+                    toggleModal={onCancelButtonClick || onOkButtonClick}
+                    className='no-border'
+                    has_close_icon
+                    width={is_mobile ? 'calc(100vw - 48px)' : '440px'}
                 >
-                    {dialog_options.message}
-                </Dialog>
+                    <Modal.Body>{dialog_options.message}</Modal.Body>
+                    <Modal.Footer>
+                        {onCancelButtonClick && (
+                            <Button
+                                large
+                                text={
+                                    dialog_options.cancel_button_text
+                                        ? dialog_options.cancel_button_text
+                                        : localize('Cancel')
+                                }
+                                onClick={() => {
+                                    onCancelButtonClick();
+                                }}
+                                secondary
+                            />
+                        )}
+                        <Button
+                            large
+                            text={dialog_options.ok_button_text ? dialog_options.ok_button_text : localize('Ok')}
+                            onClick={() => {
+                                onOkButtonClick();
+                            }}
+                            primary
+                        />
+                    </Modal.Footer>
+                </Modal>
             </>
         );
     }
@@ -204,9 +229,9 @@ RunPanel.propTypes = {
     is_dialog_open: PropTypes.bool,
     is_drawer_open: PropTypes.bool,
     is_mobile: PropTypes.bool,
-    onCancelButtonClick: PropTypes.func,
     onClearStatClick: PropTypes.func,
     onMount: PropTypes.func,
+    onCancelButtonClick: PropTypes.func,
     onOkButtonClick: PropTypes.func,
     onUnmount: PropTypes.func,
     setActiveTabIndex: PropTypes.func,
@@ -227,9 +252,9 @@ export default connect(({ run_panel, core, ui }) => ({
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
     is_mobile: ui.is_mobile,
-    onCancelButtonClick: run_panel.onCancelButtonClick,
     onClearStatClick: run_panel.onClearStatClick,
     onMount: run_panel.onMount,
+    onCancelButtonClick: run_panel.onCancelButtonClick,
     onOkButtonClick: run_panel.onOkButtonClick,
     onUnmount: run_panel.onUnmount,
     setActiveTabIndex: run_panel.setActiveTabIndex,

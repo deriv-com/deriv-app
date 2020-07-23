@@ -25,6 +25,7 @@ export const icons = {
         'IcAccountError',
         'IcAccountMissingDetails',
         'IcAccountTransfer',
+        'IcAccountTrashCan',
         'IcAddRounded',
         'IcAdd',
         'IcAlertDanger',

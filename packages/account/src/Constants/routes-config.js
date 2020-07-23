@@ -13,6 +13,7 @@ import {
     TwoFactorAuthentication,
     SelfExclusion,
     Account,
+    ConnectedApps,
     LoginHistory,
 } from 'Sections';
 
@@ -89,6 +90,11 @@ const initRoutesConfig = () => [
                         path: routes.api_token,
                         component: ApiToken,
                         title: localize('API token'),
+                    },
+                    {
+                        path: routes.connected_apps,
+                        component: ConnectedApps,
+                        title: localize('Connected apps'),
                     },
                     {
                         path: routes.two_factor_authentication,

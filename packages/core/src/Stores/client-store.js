@@ -102,15 +102,12 @@ export default class ClientStore extends BaseStore {
      * @returns {boolean}
      */
     @computed
-    // TODO: revert this before merge, allow EU for QA testing
-    // eslint-disable-next-line class-methods-use-this
     get is_client_allowed_to_visit() {
-        // return !!(
-        //     !this.is_logged_in ||
-        //     this.is_virtual ||
-        //     this.accounts[this.loginid].landing_company_shortcode === 'svg'
-        // );
-        return true;
+        return !!(
+            !this.is_logged_in ||
+            this.is_virtual ||
+            this.accounts[this.loginid].landing_company_shortcode === 'svg'
+        );
     }
 
     @computed

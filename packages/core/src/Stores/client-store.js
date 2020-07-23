@@ -325,10 +325,15 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get has_financial_account() {
+    get is_financial_account() {
         if (!this.landing_companies) return false;
-        // TODO: [mt5 redirect] check session storage for mt5 labuan_financial_stp and labuan_advanced
         return this.account_type === 'financial';
+    }
+
+    @computed
+    get has_mt5_financial_session() {
+        const mt5_session_storage = sessionStorage.getItem('open_mt5_account_type');
+        return /labuan_financial_stp|labuan_advanced/.test(mt5_session_storage);
     }
 
     @computed

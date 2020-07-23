@@ -7,13 +7,13 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const WithdrawalLocked = ({
-    has_financial_account,
+    is_financial_account,
     is_financial_information_incomplete,
     is_trading_experience_incomplete,
     history,
 }) => {
     const items = [
-        (is_financial_information_incomplete || (has_financial_account && is_trading_experience_incomplete)) && {
+        (is_financial_information_incomplete || (is_financial_account && is_trading_experience_incomplete)) && {
             content: localize('Complete the financial assessment form'),
             status: 'action',
             onClick: () => history.push(routes.financial_assessment),
@@ -34,13 +34,13 @@ const WithdrawalLocked = ({
 };
 
 WithdrawalLocked.propTypes = {
-    has_financial_account: PropTypes.bool,
+    is_financial_account: PropTypes.bool,
     is_financial_information_incomplete: PropTypes.bool,
     is_trading_experience_incomplete: PropTypes.bool,
 };
 
 export default connect(({ client }) => ({
-    has_financial_account: client.has_financial_account,
+    is_financial_account: client.is_financial_account,
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
 }))(withRouter(WithdrawalLocked));

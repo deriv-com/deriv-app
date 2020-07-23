@@ -126,7 +126,9 @@ const SubmittedPage = withRouter(({ history }) => {
 
 class FinancialAssessment extends React.Component {
     is_mounted = false;
-    show_trading_experience = this.props.has_financial_account && this.props.is_trading_experience_incomplete;
+    show_trading_experience =
+        (this.props.has_mt5_financial_session || this.props.is_financial_account) &&
+        this.props.is_trading_experience_incomplete;
     state = {
         is_loading: true,
         is_confirmation_visible: false,
@@ -909,6 +911,9 @@ export default connect(({ client, ui }) => ({
     account_status: client.account_status,
     is_virtual: client.is_virtual,
     is_high_risk: client.is_high_risk,
+    is_financial_account: client.is_financial_account,
+    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
+    has_mt5_financial_session: client.has_mt5_financial_session,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,
 }))(FinancialAssessment);

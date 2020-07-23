@@ -42,10 +42,10 @@ const WithdrawalLocked = ({ account_status, history }) => {
 
 WithdrawalLocked.propTypes = {
     account_status: PropTypes.object,
-    has_financial_account: PropTypes.bool,
+    is_financial_account: PropTypes.bool,
 };
 
 export default connect(({ client }) => ({
     account_status: client.account_status,
-    has_financial_account: client.has_financial_account,
+    is_financial_account: client.is_financial_account,
 }))(withRouter(WithdrawalLocked));

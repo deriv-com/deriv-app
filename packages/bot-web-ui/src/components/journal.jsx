@@ -187,12 +187,20 @@ const JournalLoader = ({ is_mobile }) => (
     </ContentLoader>
 );
 
-const Journal = ({ contract_stage, filtered_messages, is_mobile, is_stop_button_visible, ...props }) => {
+const Journal = ({
+    contract_stage,
+    filtered_messages,
+    is_drawer_open,
+    is_mobile,
+    is_stop_button_visible,
+    ...props
+}) => {
     return (
         <div
             className={classnames('journal run-panel-tab__content--no-stat', {
                 'run-panel-tab__content': !is_mobile,
-                'run-panel-tab__content--journal-mobile': is_mobile,
+                'run-panel-tab__content--journal-mobile': is_mobile && is_drawer_open,
+                'run-panel-tab__content--journal-mobile-closed': is_mobile && !is_drawer_open,
             })}
         >
             <Tools {...props} />

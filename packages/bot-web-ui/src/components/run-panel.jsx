@@ -17,13 +17,13 @@ const drawerContent = ({ active_index, is_drawer_open, setActiveTabIndex, ...pro
         <>
             <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
                 <div id='db-run-panel-tab__summary' label={localize('Summary')}>
-                    <Summary />
+                    <Summary is_drawer_open={is_drawer_open} />
                 </div>
                 <div id='db-run-panel-tab__transactions' label={localize('Transactions')}>
-                    <Transactions />
+                    <Transactions is_drawer_open={is_drawer_open} />
                 </div>
                 <div id='db-run-panel-tab__journal' label={localize('Journal')}>
-                    <Journal />
+                    <Journal is_drawer_open={is_drawer_open} />
                 </div>
             </Tabs>
             {is_drawer_open && active_index !== 2 && <StatisticsSummary {...props} />}
@@ -167,9 +167,9 @@ class RunPanel extends React.PureComponent {
 
         return (
             <>
-                <div className={is_mobile && 'run-panel__container--mobile'}>
+                <div className={is_mobile ? 'run-panel__container--mobile' : undefined}>
                     <Drawer
-                        className='run-panel'
+                        className={!is_mobile ? 'run-panel__container' : undefined}
                         contentClassName='run-panel__content'
                         clear_stat_button_text={localize('Clear stat')}
                         footer={!is_mobile && footer}

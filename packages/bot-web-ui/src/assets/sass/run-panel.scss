@@ -3,11 +3,11 @@
 **/
 // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
 .run-panel {
-    height: var(--bot-content-height) !important;
-    top: 10.4rem !important;
-    width: 36.6rem !important;
-
     &__container {
+        height: var(--bot-content-height) !important;
+        top: 10.4rem !important;
+        width: 36.6rem !important;
+
         &--mobile {
             height: 100%;
             position: absolute;
@@ -15,9 +15,9 @@
             left: 0;
             width: 100vw;
         }
-    }
-    &--open {
-        transform: translateX(-36.6rem) !important;
+        &--open {
+            transform: translateX(-36.6rem) !important;
+        }
     }
     &__tile {
         display: flex;
@@ -97,6 +97,10 @@
                 position: fixed;
                 bottom: 12.8rem;
                 width: 100vw;
+
+                &-closed {
+                    position: unset;
+                }
             }
             &--journal-mobile {
                 position: fixed;

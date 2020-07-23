@@ -5,11 +5,12 @@ import ContractCard from './contract-card.jsx';
 import { connect } from '../stores/connect';
 import '../assets/sass/summary.scss';
 
-const Summary = ({ is_mobile }) => (
+const Summary = ({ is_mobile, is_drawer_open }) => (
     <div
         className={classnames('summary', {
             'run-panel-tab__content': !is_mobile,
-            'run-panel-tab__content--mobile': is_mobile,
+            'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
+            'run-panel-tab__content--mobile-closed': is_mobile && !is_drawer_open,
         })}
     >
         <ContractCard />

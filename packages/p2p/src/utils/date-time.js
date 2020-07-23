@@ -1,9 +1,14 @@
-export const getFormattedDateString = date_obj => {
-    if (!(date_obj instanceof Date)) throw Error('getFormattedDateString argument needs an instance of Date');
+export const getFormattedDateString = (date_obj, is_local = false) => {
+    if (!(date_obj instanceof Date)) {
+        throw Error('getFormattedDateString argument needs an instance of Date');
+    }
 
-    const [, day, month, year, time] = date_obj.toUTCString().split(' ');
+    const date_string = is_local ? date_obj.toString().split(' ') : date_obj.toUTCString().split(' ');
+    const [, day, month, year, time] = date_string;
     const times = time.split(':');
+
     times.pop();
+
     const time_without_sec = times.join(':');
 
     // Return in the format "DD MMM YYYY HH:mm:ss". e.g.: "01 Jan 1970 21:01:02"
@@ -11,10 +16,11 @@ export const getFormattedDateString = date_obj => {
 };
 
 export const convertToMillis = epoch => {
-    if (typeof epoch !== 'number') throw Error('getLocalEpoch argument needs a number');
+    if (typeof epoch !== 'number') {
+        throw Error('getLocalEpoch argument needs a number');
+    }
 
     const milliseconds = epoch * 1000;
-
     return milliseconds;
 };
 

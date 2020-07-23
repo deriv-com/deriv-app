@@ -134,7 +134,7 @@ const getModifiedP2POrder = response => {
         order_expiry_millis: convertToMillis(response.expiry_time),
         id: response.id,
         is_incoming: !!is_incoming,
-        order_purchase_datetime: getFormattedDateString(new Date(convertToMillis(response.created_time))),
+        order_purchase_datetime: getFormattedDateString(new Date(convertToMillis(response.created_time)), true),
         status: response.status,
     };
 };

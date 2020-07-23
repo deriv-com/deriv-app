@@ -1,7 +1,7 @@
 import { Field } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { Input } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -33,85 +33,84 @@ const IntervalField = ({ values, touched, errors, handleChange, handleBlur }) =>
     </div>
 );
 
-const RealityCheckModal = withRouter(
-    ({
-        disableApp,
-        enableApp,
-        history,
-        logoutClient,
-        is_visible,
-        reality_check_duration,
-        server_time,
-        setRealityCheckDuration,
-        setReportsTabIndex,
-        setVisibilityRealityCheck,
-    }) => {
-        const openPositions = () => {
-            // index of open positions in reports' side menu is 0
-            setReportsTabIndex(0);
-            history.push(routes.positions);
-            setVisibilityRealityCheck(0);
-        };
+const RealityCheckModal = ({
+    disableApp,
+    enableApp,
+    logoutClient,
+    is_visible,
+    reality_check_duration,
+    server_time,
+    setRealityCheckDuration,
+    setReportsTabIndex,
+    setVisibilityRealityCheck,
+}) => {
+    const history = useHistory();
 
-        const openStatement = () => {
-            // index of statement in reports' side menu is 2
-            setReportsTabIndex(2);
-            history.push(routes.statement);
-            setVisibilityRealityCheck(0);
-        };
+    const openPositions = () => {
+        // index of open positions in reports' side menu is 0
+        setReportsTabIndex(0);
+        history.push(routes.positions);
+        setVisibilityRealityCheck(0);
+    };
 
-        const validateForm = values => {
-            const error = {};
+    const openStatement = () => {
+        // index of statement in reports' side menu is 2
+        setReportsTabIndex(2);
+        history.push(routes.statement);
+        setVisibilityRealityCheck(0);
+    };
 
-            if (!values.interval) {
-                error.interval = localize('This field is required.');
-            } else if (!validNumber(values.interval, { type: 'number', min: 10, max: 60 })) {
-                error.interval = getPreBuildDVRs().number.message;
-            }
+    const validateForm = values => {
+        const error = {};
 
-            return error;
-        };
-
-        const onSubmit = values => {
-            setRealityCheckDuration(values.interval);
-            setVisibilityRealityCheck(0);
-        };
-
-        // if user has seen the brief once and set
-        // the initial reality check interval
-        // we can show the summary from now on
-        if (reality_check_duration) {
-            return (
-                <SummaryModal
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    is_visible={is_visible}
-                    openPositions={openPositions}
-                    openStatement={openStatement}
-                    validateForm={validateForm}
-                    onSubmit={onSubmit}
-                    logout={logoutClient}
-                    reality_check_duration={reality_check_duration}
-                    server_time={server_time}
-                    IntervalField={IntervalField}
-                />
-            );
+        if (!values.interval) {
+            error.interval = localize('This field is required.');
+        } else if (!validNumber(values.interval, { type: 'number', min: 10, max: 60 })) {
+            error.interval = getPreBuildDVRs().number.message;
         }
 
+        return error;
+    };
+
+    const onSubmit = values => {
+        setRealityCheckDuration(values.interval);
+        setVisibilityRealityCheck(0);
+    };
+
+    // if user has seen the brief once and set
+    // the initial reality check interval
+    // we can show the summary from now on
+    if (reality_check_duration) {
         return (
-            <BriefModal
+            <SummaryModal
                 disableApp={disableApp}
                 enableApp={enableApp}
                 is_visible={is_visible}
+                openPositions={openPositions}
                 openStatement={openStatement}
                 validateForm={validateForm}
                 onSubmit={onSubmit}
                 logout={logoutClient}
+                reality_check_duration={reality_check_duration}
+                server_time={server_time}
                 IntervalField={IntervalField}
             />
         );
     }
-);
+
+    return (
+        <BriefModal
+            disableApp={disableApp}
+            enableApp={enableApp}
+            is_visible={is_visible}
+            openStatement={openStatement}
+            validateForm={validateForm}
+            onSubmit={onSubmit}
+            logout={logoutClient}
+            IntervalField={IntervalField}
+        />
+    );
+};
 
 RealityCheckModal.propTypes = {
     disableApp: PropTypes.func,

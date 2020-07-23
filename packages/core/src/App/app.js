@@ -1,11 +1,29 @@
 import { configure } from 'mobx';
-import { setStorageEvents } from '@deriv/shared';
 import Client from '_common/base/client_base';
 import NetworkMonitor from 'Services/network-monitor';
 // import OutdatedBrowser      from 'Services/outdated-browser';
 import RootStore from 'Stores';
 
 configure({ enforceActions: 'observed' });
+
+const setStorageEvents = root_store => {
+    window.addEventListener('storage', evt => {
+        switch (evt.key) {
+            case 'active_loginid':
+                if (document.hidden) {
+                    window.location.reload();
+                }
+                break;
+            case 'reality_check_dismissed':
+                if (document.hidden) {
+                    // if new value is true, hide reality check, otherwise show it
+                    root_store.client.setVisibilityRealityCheck(!JSON.parse(evt.newValue));
+                }
+                break;
+            // no default
+        }
+    });
+};
 
 const initStore = notification_messages => {
     Client.init();

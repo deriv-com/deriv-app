@@ -119,7 +119,7 @@ ModalElement.propTypes = {
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     small: PropTypes.bool,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.node]),
     toggleModal: PropTypes.func,
     elements_to_ignore: PropTypes.array,
 };
@@ -199,7 +199,7 @@ Modal.propTypes = {
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     small: PropTypes.bool,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.node]),
     toggleModal: PropTypes.func,
     width: PropTypes.string,
     elements_to_ignore: PropTypes.array,

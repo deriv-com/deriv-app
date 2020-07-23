@@ -70,7 +70,6 @@ class Cashier extends React.Component {
     onClickClose = () => this.props.routeBackInApp(this.props.history);
 
     render() {
-        console.log(this.state.is_restricted);
         const menu_options = () => {
             const options = [];
 

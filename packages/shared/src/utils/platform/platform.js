@@ -1,4 +1,4 @@
-import { routes } from '../routes/routes';
+import { routes } from '../routes';
 
 /*
  * These functions exist because we want to refresh the browser page on switch between Bot and the rest of the platforms.
@@ -26,7 +26,17 @@ export const getPlatformIcon = routing_history => {
     return 'IcBrandDtrader';
 };
 
-export const isNavigationFromPlatform = (app_routing_history, platform_route) => {
+export const getPlatformRedirect = routing_history => {
+    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return { name: 'DBot', route: routes.bot };
+    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return { name: 'DMT5', route: routes.mt5 };
+    if (isNavigationFromPlatform(routing_history, routes.smarttrader))
+        return { name: 'SmartTrader', route: routes.smarttrader };
+    if (isNavigationFromPlatform(routing_history, routes.cashier_p2p, true))
+        return { name: 'P2P', route: routes.cashier_p2p };
+    return { name: 'DTrader', route: routes.trade };
+};
+
+export const isNavigationFromPlatform = (app_routing_history, platform_route, should_ignore_parent_path = false) => {
     if (app_routing_history.length > 0) {
         const getParentPath = pathname => (/^http/.test(pathname) ? false : pathname.split('/')[1]);
 
@@ -35,7 +45,10 @@ export const isNavigationFromPlatform = (app_routing_history, platform_route) =>
             const history_item_parent_path = getParentPath(history_item.pathname);
             const next_history_item = app_routing_history.length > i + 1 && app_routing_history[i + 1];
 
-            if (history_item_parent_path === getParentPath(platform_route)) {
+            if (
+                history_item_parent_path === getParentPath(platform_route) ||
+                (should_ignore_parent_path && history_item.pathname === platform_route)
+            ) {
                 return true;
             } else if (!next_history_item) {
                 return false;

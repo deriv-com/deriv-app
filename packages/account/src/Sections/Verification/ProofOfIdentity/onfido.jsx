@@ -2,8 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { ThemedScrollbars } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
-import { isMobile } from '@deriv/shared/utils/screen';
-import { getLanguage } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
+// TODO: [onfido translation] language when translations are ready
+// import { getLanguage } from '@deriv/translations';
 import UploadComplete from 'Components/poi-upload-complete';
 import Unsupported from 'Components/poi-unsupported';
 import Expired from 'Components/poi-expired';
@@ -23,7 +24,7 @@ const OnfidoContainer = ({ height }) => {
     );
 };
 
-class Onfido extends React.Component {
+export default class Onfido extends React.Component {
     state = {
         onfido: null,
         onfido_init_error: false,
@@ -34,9 +35,10 @@ class Onfido extends React.Component {
             const { documents_supported } = this.props;
             const onfido = await init({
                 containerId: onfido_container_id,
-                language: {
-                    locale: getLanguage().toLowerCase() || 'en',
-                },
+                // TODO: [onfido translation] language when translations are ready
+                // language: {
+                //     locale: getLanguage().toLowerCase() || 'en',
+                // },
                 token: this.props.onfido_service_token,
                 useModal: false,
                 onComplete: this.handleComplete,
@@ -80,23 +82,23 @@ class Onfido extends React.Component {
     }
 
     render() {
-        const { status, has_poa, is_description_enabled, height } = this.props;
+        const { status, height } = this.props;
 
         if (status === onfido_status_codes.onfido) return <OnfidoContainer height={height} />;
 
         switch (status) {
             case onfido_status_codes.unsupported:
-                return <Unsupported is_description_enabled={is_description_enabled} />;
+                return <Unsupported {...this.props} />;
             case onfido_status_codes.pending:
-                return <UploadComplete has_poa={has_poa} is_description_enabled={is_description_enabled} />;
+                return <UploadComplete {...this.props} />;
             case onfido_status_codes.rejected:
-                return <OnfidoFailed is_description_enabled={is_description_enabled} />;
+                return <OnfidoFailed {...this.props} />;
             case onfido_status_codes.verified:
-                return <Verified has_poa={has_poa} is_description_enabled={is_description_enabled} />;
+                return <Verified {...this.props} />;
             case onfido_status_codes.expired:
-                return <Expired is_description_enabled={is_description_enabled} />;
+                return <Expired {...this.props} />;
             case onfido_status_codes.suspected:
-                return <OnfidoFailed is_description_enabled={is_description_enabled} />;
+                return <OnfidoFailed {...this.props} />;
             default:
                 return null;
         }
@@ -110,5 +112,3 @@ Onfido.propTypes = {
     onfido_service_token: PropTypes.string,
     status: PropTypes.oneOf(Object.keys(onfido_status_codes)),
 };
-
-export default Onfido;

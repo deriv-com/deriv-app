@@ -1,22 +1,22 @@
 version: 2.1
 orbs:
   k8s: circleci/kubernetes@0.7.0
-  s3: circleci/aws-s3@1.0.13
+  slack: circleci/slack@3.4.2
 commands:
   git_checkout_from_cache:
     description: "Git checkout and save cache"
     steps:
       - restore_cache:
-          name: Git restore cache
+          name: "Git restore cache"
           keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
+            - source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ .Revision }}
+            - source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
+            - source-v{{ .Environment.CACHE_VERSION }}-
       - run:
-          name: Fetch git tags
+          name: "Fetch git tags"
           command: |
             mkdir -p ~/.ssh
-            echo 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ== ' >> ~/.ssh/known_hosts
+            echo 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==' >> ~/.ssh/known_hosts
             # Fetch tags if git cache is present
             if [ -e /home/circleci/project/.git ]
             then
@@ -24,70 +24,91 @@ commands:
             fi
       - checkout
       - run:
-          name: Compress git objects
+          name: "Compress git objects"
           command: git gc
       - save_cache:
           name: Git save cache
-          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          key: source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
+
   npm_install_from_cache:
     description: "npm install and save cache"
     steps:
+      - run:
+          name: "Create cache key"
+          command: echo $(find . ./packages/ -maxdepth 2 -name package-lock.json -type f -exec md5sum {} \; | sort -n | md5sum | cut -d' ' -f1) >> CACHE_KEY1
       - restore_cache:
           keys:
-            - node-
+            - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
       - run:
-          name: Install npm packages
-          command: npm run bootstrap
-      - run:
-          name: "create cache key"
-          command: echo $(find ./packages/ -name package-lock.json -type f -exec md5sum {} \; | md5sum | cut -d' ' -f1) >> CACHE_KEY1
+          name: "Install npm packages"
+          command: |
+            if [ -d "./node_modules" ]; then
+              echo "Found cache. Using cached node_modules."
+              node_modules/lerna/cli.js link
+            else
+              echo "Could not find cache. Bootstrapping..."
+              npm run bootstrap
+            fi
       - save_cache:
-          key: node-{{ checksum "CACHE_KEY1" }}
+          name: "Saving node_modules cache"
+          key: node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
           paths:
+            # VERIFY_CACHE_FOLDERS_START (DO NOT REMOVE)
             - "node_modules"
-            - "packages/*/node_modules"
+            - "packages/account/node_modules"
+            - "packages/bot-skeleton/node_modules"
+            - "packages/bot-web-ui/node_modules"
+            - "packages/components/node_modules"
+            - "packages/core/node_modules"
+            - "packages/p2p/node_modules"
+            - "packages/shared/node_modules"
+            - "packages/trader/node_modules"
+            - "packages/translations/node_modules"
+            # VERIFY_CACHE_FOLDERS_END (DO NOT REMOVE)
   build:
     description: "Build"
     steps:
       - run:
-          name: "build packages"
-          command: npm run build:local
-      - run:
-          name: "build core"
-          command: node_modules/lerna/cli.js exec --scope @deriv/core -- npm run build
-  compress:
-    description: "Compress"
+          name: "Build all packages"
+          command: npm run build
+
+  notify_slack:
+    description: "Notify slack"
     steps:
+      - slack/status:
+          include_project_field: false
+          failure_message: "Release failed for app.deriv.com with version *$(cat packages/core/dist/version)*"
+          success_message: "Release succeeded for app.deriv.com with version *$(cat packages/core/dist/version)*"
+          webhook: ${SLACK_WEBHOOK}
+
+  deploy:
+    description: "Deploy to static branches"
+    parameters:
+      target_branch:
+        type: string
+    steps:
+      - attach_workspace:
+          at: packages/core/dist
       - run:
-          name: "Compress"
+          name: Tag build
+          command: echo "<< parameters.target_branch >>-$(date -u +'%Y-%m-%dT%H:%M:%SZ')" > packages/core/dist/version
+      - run:
+          name: Install and configure dependencies
           command: |
-            pushd packages/core/dist/
-            tar -cvf artifact.tar *
-            mv artifact.tar ${OLDPWD}/
+            mkdir "${HOME}/.npm-packages"
+            npm config set prefix "${HOME}/.npm-packages"
+            npm i -g gh-pages
+            git config user.email "ci-build@binary.com"
+            git config user.name "ci-build"
+      - add_ssh_keys:
+          fingerprints:
+            - "01:67:4a:6d:26:9c:70:c4:1a:60:91:88:d9:dd:f0:83"
       - run:
-          name: "Tag git tag id as artifact identifer"
-          command: echo "${CIRCLE_TAG}" > artifact-info.txt
-  upload_artifact:
-    description: "upload build artifact to s3 bucket"
-    steps:
-      - s3/copy:
-          from: artifact.tar
-          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/'
-          aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
-          aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
-          aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
-          arguments: '--metadata "{\"x-amz-artifact-id\": \"${CIRCLE_TAG}\" }"'
-  upload_checksum:
-    description: "upload artifact checksum to s3"
-    steps:
-      - s3/copy:
-          from: artifact-info.txt
-          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/'
-          aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
-          aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
-          aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
+          name: Deploy docs to gh-pages branch
+          command: /home/circleci/.npm-packages/bin/gh-pages -d packages/core/dist --branch << parameters.target_branch >> --message '[skip ci]'
+
   docker_build_push:
     description: "Build and Push image to docker hub"
     parameters:
@@ -107,6 +128,7 @@ commands:
           command: |
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
             docker push ${DOCKHUB_ORGANISATION}/deriv-app
+
   k8s_deploy:
     description: "Deploy to k8s cluster"
     parameters:
@@ -135,71 +157,66 @@ commands:
               fi
             done
 jobs:
-  build_staging:
+  build:
     docker:
       - image: circleci/node:12.18.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
+  release_staging:
+    docker:
+      - image: circleci/node:12.18.0-stretch
+    steps:
+      - git_checkout_from_cache
+      - npm_install_from_cache
+      - build
+      - deploy:
+          target_branch: staging
       - docker_build_push
+      - k8s_deploy
+      - notify_slack
     environment:
       NODE_ENV: staging
-  build_production:
+
+  release_production:
     docker:
       - image: circleci/node:12.18.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
-      - compress
-      - upload_artifact
-      - upload_checksum
+      - deploy:
+          target_branch: production
       - docker_build_push:
           docker_image_latest_tag: latest
-    environment:
-      NODE_ENV: staging
-  deploy_staging:
-    docker:
-      - image: circleci/node:12.18.0-stretch
-    steps:
-      - k8s_deploy
-  deploy_production:
-    docker:
-      - image: circleci/node:12.18.0-stretch
-    steps:
       - k8s_deploy:
           k8s_svc_name: production-deriv-app
+      - notify_slack
+    environment:
+      NODE_ENV: staging
+
 workflows:
-  build_deploy_staging:
+  build:
     jobs:
-      - build_staging:
-          context: binary-frontend-artifact-upload
+      - build:
           filters:
             branches:
-              only: /^dev$/
-      - deploy_staging:
-          context: binary-frontend-artifact-upload
+              ignore: /^master$/
+
+  release_staging:
+    jobs:
+      - release_staging:
           filters:
             branches:
-              only: /^dev$/
-          requires:
-            - build_staging
-  build_deploy_production:
+              only: /^master$/
+
+  release_production:
     jobs:
-      - build_production:
+      - release_production:
           context: binary-frontend-artifact-upload
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^production.*/
-      - deploy_production:
-          context: binary-frontend-artifact-upload
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^production.*/
-          requires:
-            - build_production

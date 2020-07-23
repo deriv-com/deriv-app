@@ -1,5 +1,5 @@
-@import '~@deriv/shared/utils/styles/reset.scss';
-@import '~@deriv/shared/utils/styles/themes.scss';
+@import '~@deriv/shared/src/styles/reset.scss';
+@import '~@deriv/shared/src/styles/themes.scss';
 
 .p2p-cashier {
     background: transparent;
@@ -21,42 +21,6 @@
             & .dc-tabs__item {
                 &--header-fit-content {
                     border-bottom: 1px solid var(--general-section-1);
-                }
-            }
-            .p2p-cashier__empty {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                height: 50vh;
-                transform: translateX(-15%);
-
-                &-icon {
-                    margin-bottom: 2.4rem;
-                }
-                &-title {
-                    color: var(--text-general);
-                    font-size: var(--text-size-s);
-                    font-weight: bold;
-                    line-height: 1.5;
-                    margin: 0.8rem;
-                }
-                &-text {
-                    font-size: var(--text-size-xs);
-                    margin: 1.2rem 0;
-
-                    p {
-                        line-height: 1.43;
-                    }
-                }
-                &-contact {
-                    color: var(--text-general);
-                    font-size: var(--text-size-xs);
-                    line-height: 1.43;
-                }
-                &-button {
-                    text-decoration: none;
-                    margin-top: 1.6rem;
                 }
             }
         }
@@ -89,10 +53,6 @@
     &__separator {
         width: 100%;
         border-top: 1px solid var(--general-section-1);
-    }
-    &__button--right-aligned {
-        margin-left: auto;
-        margin-right: 1.6rem;
     }
     &__verification {
         padding-top: 3.5rem;

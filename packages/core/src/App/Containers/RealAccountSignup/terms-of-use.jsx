@@ -1,10 +1,9 @@
-import { Div100vhContainer, ThemedScrollbars, FormSubmitButton } from '@deriv/components';
 import { Field, Formik } from 'formik';
 import React from 'react';
-import { getDerivComLink } from '@deriv/shared/utils/url';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
-import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
+import { Div100vhContainer, ThemedScrollbars, FormSubmitButton } from '@deriv/components';
+import { getDerivComLink, isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
 import { Hr } from './currency-selector.jsx';
 import 'Sass/terms-of-use.scss';
 

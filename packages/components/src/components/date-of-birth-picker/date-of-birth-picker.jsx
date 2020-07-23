@@ -1,6 +1,6 @@
 import React from 'react';
-import { toMoment } from '@deriv/shared/utils/date';
-import DatePicker from 'Components/date-picker';
+import { toMoment } from '@deriv/shared';
+import DatePicker from '../date-picker';
 
 class DateOfBirthPicker extends React.Component {
     state = {

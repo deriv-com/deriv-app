@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import FieldError from 'Components/field-error';
+import FieldError from '../field-error';
 
 const Input = (
     {
@@ -43,7 +43,7 @@ const Input = (
                 <textarea
                     ref={ref}
                     {...props}
-                    className={classNames('dc-input__field', {
+                    className={classNames('dc-input__field dc-input__textarea', {
                         'dc-input__field--placeholder-visible': !label && props.placeholder,
                     })}
                     onChange={changeHandler}

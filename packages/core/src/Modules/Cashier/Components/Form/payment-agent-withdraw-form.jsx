@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, DesktopWrapper, Dropdown, Input, MobileWrapper, Money, SelectNative } from '@deriv/components';
 import { Field, Formik, Form } from 'formik';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { Button, DesktopWrapper, Dropdown, Input, MobileWrapper, Money, SelectNative } from '@deriv/components';
+import { getDecimalPlaces } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { validNumber, getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
@@ -26,7 +26,7 @@ const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
     } else if (
         !validNumber(values.amount, {
             type: 'float',
-            decimals: CurrencyUtils.getDecimalPlaces(currency),
+            decimals: getDecimalPlaces(currency),
             ...(payment_agent.min_withdrawal && {
                 min: payment_agent.min_withdrawal,
                 max: payment_agent.max_withdrawal,

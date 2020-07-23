@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { validPassword } from 'Utils/Validator/declarative-validation-rules';
@@ -180,10 +180,19 @@ const AccountSignupModal = ({
     disableApp,
     is_loading,
     is_visible,
+    is_logged_in,
+    logout,
     onSignup,
     residence_list,
     toggleAccountSignupModal,
 }) => {
+    React.useEffect(() => {
+        // a logged in user should not be able to create a new account
+        if (is_visible && is_logged_in) {
+            logout();
+        }
+    }, [is_visible, is_logged_in, logout]);
+
     return (
         <Dialog
             is_visible={is_visible}
@@ -219,5 +228,7 @@ export default connect(({ ui, client }) => ({
     disableApp: ui.disableApp,
     is_loading: ui.is_loading,
     onSignup: client.onSignup,
+    is_logged_in: client.is_logged_in,
     residence_list: client.residence_list,
+    logout: client.logout,
 }))(AccountSignupModal);

@@ -1,8 +1,7 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
-import { isDesktop } from '@deriv/shared/utils/screen';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isDesktop, isCryptocurrency, getMinPayout, cloneObject, isEmptyObject, getPropertyValue } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -40,12 +39,13 @@ export default class TradeStore extends BaseStore {
     @observable active_symbols = [];
     @observable should_refresh_active_symbols = false;
 
+    @observable form_components = [];
+
     // Contract Type
     @observable contract_expiry_type = '';
     @observable contract_start_type = '';
     @observable contract_type = '';
     @observable contract_types_list = {};
-    @observable form_components = [];
     @observable trade_types = {};
 
     // Amount
@@ -402,7 +402,10 @@ export default class TradeStore extends BaseStore {
     onHoverPurchase(is_over, contract_type) {
         if (this.is_purchase_enabled && this.main_barrier && !this.is_multiplier) {
             this.main_barrier.updateBarrierShade(is_over, contract_type);
+        } else if (!is_over && this.main_barrier && !this.is_multiplier) {
+            this.main_barrier.updateBarrierShade(false, contract_type);
         }
+
         this.hovered_contract_type = is_over ? contract_type : null;
         setLimitOrderBarriers({
             barriers: this.barriers,
@@ -592,7 +595,7 @@ export default class TradeStore extends BaseStore {
      */
     @action.bound
     updateStore(new_state) {
-        Object.keys(ObjectUtils.cloneObject(new_state)).forEach(key => {
+        Object.keys(cloneObject(new_state)).forEach(key => {
             if (key === 'root_store' || ['validation_rules', 'validation_errors', 'currency'].indexOf(key) > -1) return;
             if (JSON.stringify(this[key]) === JSON.stringify(new_state[key])) {
                 delete new_state[key];
@@ -638,17 +641,14 @@ export default class TradeStore extends BaseStore {
         }
         if (is_changed_by_user && /\bcurrency\b/.test(Object.keys(obj_new_values))) {
             const prev_currency =
-                obj_old_values && !ObjectUtils.isEmptyObject(obj_old_values) && obj_old_values.currency
+                obj_old_values && !isEmptyObject(obj_old_values) && obj_old_values.currency
                     ? obj_old_values.currency
                     : this.currency;
-            if (
-                CurrencyUtils.isCryptocurrency(obj_new_values.currency) !==
-                CurrencyUtils.isCryptocurrency(prev_currency)
-            ) {
+            if (isCryptocurrency(obj_new_values.currency) !== isCryptocurrency(prev_currency)) {
                 obj_new_values.amount =
                     is_changed_by_user && obj_new_values.amount
                         ? obj_new_values.amount
-                        : CurrencyUtils.getMinPayout(obj_new_values.currency);
+                        : getMinPayout(obj_new_values.currency);
             }
             this.currency = obj_new_values.currency;
         }
@@ -667,7 +667,7 @@ export default class TradeStore extends BaseStore {
         this.root_store.ui.setHasOnlyForwardingContracts(has_only_forward_starting_contracts);
         if (has_only_forward_starting_contracts) return;
 
-        const new_state = this.updateStore(ObjectUtils.cloneObject(obj_new_values));
+        const new_state = this.updateStore(cloneObject(obj_new_values));
 
         if (is_changed_by_user || /\b(symbol|contract_types_list)\b/.test(Object.keys(new_state))) {
             this.updateStore({
@@ -700,7 +700,6 @@ export default class TradeStore extends BaseStore {
 
             // TODO: handle barrier updates on proposal api
             // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
-
             const snapshot = await processTradeParams(this, new_state);
             snapshot.is_trade_enabled = true;
 
@@ -780,7 +779,7 @@ export default class TradeStore extends BaseStore {
             return;
         }
 
-        if (!ObjectUtils.isEmptyObject(requests)) {
+        if (!isEmptyObject(requests)) {
             this.proposal_requests = requests;
             this.purchase_info = {};
 
@@ -805,8 +804,8 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onProposalResponse(response) {
         const contract_type = response.echo_req.contract_type;
-        const prev_proposal_info = ObjectUtils.getPropertyValue(this.proposal_info, contract_type) || {};
-        const obj_prev_contract_basis = ObjectUtils.getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
+        const prev_proposal_info = getPropertyValue(this.proposal_info, contract_type) || {};
+        const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
 
         this.proposal_info = {
             ...this.proposal_info,
@@ -824,7 +823,9 @@ export default class TradeStore extends BaseStore {
             }
         }
 
-        this.setMainBarrier(response.echo_req);
+        if (!this.main_barrier || !(this.main_barrier.shade !== 'NONE_SINGLE')) {
+            this.setMainBarrier(response.echo_req);
+        }
 
         if (this.hovered_contract_type === contract_type) {
             this.addTickByProposal(response);

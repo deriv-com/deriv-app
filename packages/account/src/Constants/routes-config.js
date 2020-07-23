@@ -1,6 +1,6 @@
 import React from 'react';
-import { addRoutesConfig } from '@deriv/shared/utils/route';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import {
     AccountLimits,
@@ -11,7 +11,10 @@ import {
     ProofOfAddress,
     ApiToken,
     TwoFactorAuthentication,
+    SelfExclusion,
     Account,
+    ConnectedApps,
+    LoginHistory,
 } from 'Sections';
 
 // Error Routes
@@ -69,14 +72,29 @@ const initRoutesConfig = () => [
                         title: localize('Deriv password'),
                     },
                     {
+                        path: routes.self_exclusion,
+                        component: SelfExclusion,
+                        title: localize('Self exclusion'),
+                    },
+                    {
                         path: routes.account_limits,
                         component: AccountLimits,
                         title: localize('Account limits'),
                     },
                     {
+                        path: routes.login_history,
+                        component: LoginHistory,
+                        title: localize('Login history'),
+                    },
+                    {
                         path: routes.api_token,
                         component: ApiToken,
                         title: localize('API token'),
+                    },
+                    {
+                        path: routes.connected_apps,
+                        component: ConnectedApps,
+                        title: localize('Connected apps'),
                     },
                     {
                         path: routes.two_factor_authentication,
@@ -98,7 +116,6 @@ const getRoutesConfig = () => {
     if (!routesConfig) {
         routesConfig = initRoutesConfig();
         routesConfig.push(route_default);
-        addRoutesConfig(routesConfig);
     }
     return routesConfig;
 };

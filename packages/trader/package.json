@@ -105,7 +105,7 @@
     "@deriv/account": "^1.0.0",
     "@deriv/components": "^1.0.0",
     "@deriv/deriv-api": "^1.0.6",
-    "@deriv/deriv-charts": "^0.2.4",
+    "@deriv/deriv-charts": "^0.2.7",
     "@deriv/shared": "^1.0.0",
     "@deriv/translations": "^1.0.0",
     "acorn": "^6.1.1",

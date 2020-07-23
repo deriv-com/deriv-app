@@ -31,6 +31,7 @@ const MT5RealAccountDisplay = ({
     account_settings,
     is_logged_in,
     is_eu,
+    is_eu_country,
 }) => {
     const has_required_credentials =
         account_settings.citizen && account_settings.tax_identification_number && account_settings.tax_residence;
@@ -118,7 +119,7 @@ const MT5RealAccountDisplay = ({
                 specs={real_financial_specs}
                 is_logged_in={is_logged_in}
             />
-            {!is_eu && (
+            {((!is_logged_in && !is_eu_country) || (is_logged_in && !is_eu)) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
                     icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}

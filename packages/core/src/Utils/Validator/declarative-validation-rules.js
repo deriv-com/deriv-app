@@ -16,6 +16,7 @@ export const validRequired = (value /* , options, field */) => {
     const str = String(value).replace(/\s/g, '');
     return str.length > 0;
 };
+const confirmRequired = value => value === true;
 const validEmail = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
 export const validPassword = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
 export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
@@ -163,6 +164,7 @@ const initPreBuildDVRs = () => ({
     postcode: { func: validPostCode, message: localize('Only letters, numbers, space, and hyphen are allowed.') },
     regular: { func: validRegular, message: '' },
     req: { func: validRequired, message: field => localize('{{field}} is required', { field }) },
+    confirm: { func: confirmRequired, message: '' },
     signup_token: { func: validEmailToken, message: localize('The length of token should be 8.') },
     tax_id: {
         func: validTaxID,

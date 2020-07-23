@@ -12,8 +12,6 @@ const MT5DemoAccountDisplay = ({
     has_mt5_account,
     openPasswordManager,
     is_logged_in,
-    is_eu,
-    is_eu_country,
 }) =>
     is_loading ? (
         <div className='mt5-demo-accounts-display'>

@@ -173,8 +173,6 @@ class MT5Dashboard extends React.Component {
                                     openAccountTransfer={this.openAccountTransfer}
                                     openPasswordManager={this.togglePasswordManagerModal}
                                     is_logged_in={is_logged_in}
-                                    is_eu={is_eu}
-                                    is_eu_country={is_eu_country}
                                 />
                             </div>
                         </Tabs>

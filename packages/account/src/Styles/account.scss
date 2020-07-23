@@ -1687,6 +1687,10 @@ $MIN_HEIGHT_FLOATING: calc(
         justify-content: center;
         align-items: center;
         padding: 3.2rem;
+        width: 440px;
+        @include mobile {
+            width: unset;
+        }
 
         .dc-form-submit-button {
             justify-content: center;

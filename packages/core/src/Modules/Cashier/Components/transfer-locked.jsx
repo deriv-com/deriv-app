@@ -19,21 +19,20 @@ const WithdrawalLocked = ({
         },
     ];
     return (
-        <div className='transfer-locked'>
-            <Icon icon='IcMoneyTransfer' className='transfer-locked__icon' />
-            <h2 className='transfer-locked__title'>{localize('Transfers are locked')}</h2>
+        <div className='cashier-locked'>
+            <Icon icon='IcMoneyTransfer' className='cashier-locked__icon' />
+            <h2 className='cashier-locked__title'>{localize('Transfers are locked')}</h2>
             <>
-                <p className='transfer-locked__desc'>
+                <p className='cashier-locked__desc'>
                     {localize('To enable this feature you must complete the following:')}
                 </p>
-                <Checklist className='transfer-locked__checklist' items={items} />
+                <Checklist className='cashier-locked__checklist' items={items} />
             </>
         </div>
     );
 };
 
 export default connect(({ client }) => ({
-    account_status: client.account_status,
     has_financial_account: client.has_financial_account,
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,

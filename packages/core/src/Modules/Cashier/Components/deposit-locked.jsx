@@ -63,6 +63,7 @@ const DepositsLocked = ({
             ),
             status: 'button-action',
             onClick: () => acceptTnc(),
+            button_text: localize('I accept'),
         },
         has_financial_account &&
             (is_trading_experience_incomplete || is_financial_information_incomplete) && {
@@ -72,19 +73,19 @@ const DepositsLocked = ({
             },
     ];
     return (
-        <div className='deposit-locked'>
-            <Icon icon='IcMoneyTransfer' className='deposit-locked__icon' />
-            <h2 className='deposit-locked__title'>{localize('Deposits are locked')}</h2>
+        <div className='cashier-locked'>
+            <Icon icon='IcCashierNoBalance' className='cashier-locked__icon' />
+            <h2 className='cashier-locked__title'>{localize('Deposits are locked')}</h2>
 
             {items.length ? (
                 <>
-                    <p className='deposit-locked__desc'>
+                    <p className='cashier-locked__desc'>
                         {localize('To enable this feature you must complete the following:')}
                     </p>
-                    <Checklist className='deposit-locked__checklist' items={items} />
+                    <Checklist className='cashier-locked__checklist' items={items} />
                 </>
             ) : (
-                <p className='deposit-locked__desc'>{localize('Please check your email for more details.')}</p>
+                <p className='cashier-locked__desc'>{localize('Please check your email for more details.')}</p>
             )}
         </div>
     );

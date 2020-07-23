@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
-import { hasCorrectDecimalPlaces, getDecimalPlaces } from '@deriv/shared';
+import { hasCorrectDecimalPlaces, getDecimalPlaces, routes } from '@deriv/shared';
 import { Button, Input } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
+import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
 
@@ -55,14 +56,11 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
 
     return (
         <div className='max-turnover'>
-            <h2 className='max-turnover__title'>{localize('Set limits')}</h2>
-            <p className='max-turnover__desc'>
-                {localize('Please set 30 days maximum total stake limits before deposit')}
-            </p>
+            <h2 className='max-turnover__title'>{localize('30 days max total stake')}</h2>
 
             <Formik initialValues={initial_values} onSubmit={handleSubmit} validate={validateFields}>
                 {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting, dirty, status }) => (
-                    <Form>
+                    <Form className='max-turnover__form'>
                         <Field name='max_30day_turnover'>
                             {({ field }) => (
                                 <Input
@@ -74,15 +72,29 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
                                     value={values.max_30day_turnover}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    hint={localize('Limits your max stake for 30 days for all deriv platforms')}
+                                    hint={localize('Limits your total stake for 30 days across all Deriv platforms.')}
                                     required
                                     error={touched.max_30day_turnover && errors.max_30day_turnover}
                                 />
                             )}
                         </Field>
+
+                        <p className='max-turnover__desc'>
+                            <Localize
+                                i18n_default_text='You can further control the amount of money and time you spend on your trading activities on the <0>Self-exclusion</0> page.'
+                                components={[<BinaryLink className='link link--orange' to={routes.self_exclusion} />]}
+                            />
+                        </p>
+
                         <p className='max-turnover__error'>{status}</p>
-                        <Button disabled={!dirty || !isValid || isSubmitting} primary large type='submit'>
-                            {localize('Set limit')}
+                        <Button
+                            className='max-turnover__button'
+                            disabled={!dirty || !isValid || isSubmitting}
+                            primary
+                            large
+                            type='submit'
+                        >
+                            {localize('Set')}
                         </Button>
                     </Form>
                 )}

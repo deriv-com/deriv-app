@@ -21,19 +21,19 @@ const WithdrawalLocked = ({ account_status, history }) => {
         },
     ];
     return (
-        <div className='withdrawal-locked'>
-            <Icon icon='IcMoneyTransfer' className='withdrawal-locked__icon' />
-            <h2 className='withdrawal-locked__title'>{localize('Withdrawals are locked')}</h2>
+        <div className='cashier-locked'>
+            <Icon icon='IcMoneyTransfer' className='cashier-locked__icon' />
+            <h2 className='cashier-locked__title'>{localize('Withdrawals are locked')}</h2>
 
             {is_poi_needed ? (
                 <>
-                    <p className='withdrawal-locked__desc'>
+                    <p className='cashier-locked__desc'>
                         {localize('To enable this feature you must complete the following:')}
                     </p>
-                    <Checklist className='withdrawal-locked__checklist' items={items} />
+                    <Checklist className='cashier-locked__checklist' items={items} />
                 </>
             ) : (
-                <p className='withdrawal-locked__desc'>{localize('Please check your email for details.')}</p>
+                <p className='cashier-locked__desc'>{localize('Please check your email for details.')}</p>
             )}
         </div>
     );

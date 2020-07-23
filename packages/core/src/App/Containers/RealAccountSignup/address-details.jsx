@@ -1,3 +1,5 @@
+import { Formik, Field } from 'formik';
+import React from 'react';
 import {
     Autocomplete,
     AutoHeightWrapper,
@@ -9,8 +11,6 @@ import {
     ThemedScrollbars,
     SelectNative,
 } from '@deriv/components';
-import { Formik, Field } from 'formik';
-import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -78,7 +78,7 @@ class AddressDetails extends React.Component {
         const padding_bottom = window.innerHeight < 930 ? '10rem' : '12rem';
         return (
             <Formik
-                initialValues={{ ...this.props.value }}
+                initialValues={this.props.value}
                 validate={this.props.validate}
                 validateOnMount
                 onSubmit={(values, actions) => {
@@ -93,7 +93,7 @@ class AddressDetails extends React.Component {
                 }}
             >
                 {({ handleSubmit, isSubmitting, errors, values, setFieldValue }) => (
-                    <AutoHeightWrapper default_height={200}>
+                    <AutoHeightWrapper default_height={200} height_offset={192}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer
@@ -141,7 +141,6 @@ class AddressDetails extends React.Component {
                                                                     })}
                                                                     data-lpignore='true'
                                                                     autoComplete='new-password' // prevent chrome autocomplete
-                                                                    dropdown_offset='3.2rem'
                                                                     type='text'
                                                                     label={localize('State/Province')}
                                                                     list_items={this.props.states_list}

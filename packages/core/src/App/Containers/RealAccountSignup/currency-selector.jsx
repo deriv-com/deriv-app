@@ -1,4 +1,7 @@
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Field, Formik } from 'formik';
 import {
     AutoHeightWrapper,
     FormSubmitButton,
@@ -8,9 +11,6 @@ import {
     Icon,
     ThemedScrollbars,
 } from '@deriv/components';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { Field, Formik } from 'formik';
 import { getCurrencyDisplayCode, isMobile, isDesktop } from '@deriv/shared';
 
 import { connect } from 'Stores/connect';
@@ -65,14 +65,16 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
 };
 
 // Radio group
-export const RadioButtonGroup = ({ label, className, children, is_title_enabled }) => {
+export const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fiat }) => {
     return (
         <div className={className}>
             {is_title_enabled && <h2 className={classNames(`${className}--is-header`)}>{label}</h2>}
             <div className='currency-list__items'>{children}</div>
-            <p className='currency-selector__description'>
-                <Localize i18n_default_text='You will not be able to change currency once you have made a deposit' />
-            </p>
+            {is_fiat && (
+                <p className='currency-selector__description'>
+                    <Localize i18n_default_text='You will not be able to change currency once you have made a deposit' />
+                </p>
+            )}
         </div>
     );
 };
@@ -159,17 +161,15 @@ class CurrencySelector extends React.Component {
                                                         <Localize i18n_default_text='You have an account without an assigned currency. Please choose a currency to trade with this account.' />
                                                     </p>
                                                 )}
-                                                <h2>
-                                                    <Localize i18n_default_text='Please choose your currency' />
-                                                </h2>
                                             </div>
                                         )}
                                     </MobileWrapper>
-                                    <ThemedScrollbars is_bypassed={isMobile()} height={`${height - 70}px`}>
+                                    <ThemedScrollbars is_bypassed={isMobile()} height={height}>
                                         <RadioButtonGroup
                                             id='currency'
                                             className='currency-selector__radio-group'
                                             label={localize('Fiat currencies')}
+                                            is_fiat
                                             value={values.currency}
                                             error={errors.currency}
                                             touched={touched.currency}

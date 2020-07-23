@@ -1,6 +1,6 @@
-import { DesktopWrapper, MobileWrapper, Dropdown, SelectNative } from '@deriv/components';
 import { Field } from 'formik';
 import React from 'react';
+import { DesktopWrapper, MobileWrapper, Dropdown, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 export const EmploymentStatus = ({
@@ -31,6 +31,7 @@ export const EmploymentStatus = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Employment Status')}
                         list_items={employment_status_enum}
@@ -78,6 +79,7 @@ export const IncomeSource = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Source of income')}
                         list_items={income_source_enum}
@@ -125,6 +127,7 @@ export const EmploymentIndustry = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Industry of employment')}
                         list_items={employment_industry_enum}
@@ -163,6 +166,7 @@ export const Occupation = ({ values, handleChange, handleBlur, touched, errors, 
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Occupation')}
                         list_items={occupation_enum}
@@ -210,6 +214,7 @@ export const SourceOfWealth = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Source of wealth')}
                         list_items={source_of_wealth_enum}
@@ -257,6 +262,7 @@ export const EducationLevel = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Level of education')}
                         list_items={education_level_enum}
@@ -296,6 +302,7 @@ export const NetIncome = ({ values, handleChange, handleBlur, touched, errors, s
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Net annual income')}
                         list_items={net_income_enum}
@@ -343,6 +350,7 @@ export const EstimatedWorth = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Estimated net worth')}
                         list_items={estimated_worth_enum}
@@ -390,6 +398,7 @@ export const AccountTurnover = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Anticipated annual turnover')}
                         list_items={account_turnover_enum}
@@ -437,6 +446,7 @@ export const ForexTradingExperience = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Forex trading experience')}
                         list_items={forex_trading_experience_enum}
@@ -484,6 +494,7 @@ export const ForexTradingFrequency = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Forex trading frequency')}
                         list_items={forex_trading_frequency_enum}
@@ -531,6 +542,7 @@ export const BinaryOptionsTradingExperience = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Binary options trading experience')}
                         list_items={binary_options_trading_experience_enum}
@@ -578,6 +590,7 @@ export const BinaryOptionsTradingFrequency = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Binary options trading frequency')}
                         list_items={binary_options_trading_frequency_enum}
@@ -611,7 +624,7 @@ export const CFDTradingExperience = ({
             <React.Fragment>
                 <DesktopWrapper>
                     <Dropdown
-                        placeholder={localize('CFDs trading experience')}
+                        placeholder={localize('CFD trading experience')}
                         is_align_text_left
                         name={field.name}
                         list={cfd_trading_experience_enum}
@@ -625,8 +638,9 @@ export const CFDTradingExperience = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
-                        label={localize('CFDs trading experience')}
+                        label={localize('CFD trading experience')}
                         list_items={cfd_trading_experience_enum}
                         value={values.cfd_trading_experience}
                         use_text={true}
@@ -658,7 +672,7 @@ export const CFDTradingFrequency = ({
             <React.Fragment>
                 <DesktopWrapper>
                     <Dropdown
-                        placeholder={localize('CFDs trading frequency')}
+                        placeholder={localize('CFD trading frequency')}
                         is_align_text_left
                         name={field.name}
                         list={cfd_trading_frequency_enum}
@@ -672,8 +686,9 @@ export const CFDTradingFrequency = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
-                        label={localize('CFDs trading frequency')}
+                        label={localize('CFD trading frequency')}
                         list_items={cfd_trading_frequency_enum}
                         value={values.cfd_trading_frequency}
                         use_text={true}
@@ -705,7 +720,7 @@ export const OtherInstrumentsTradingExperience = ({
             <React.Fragment>
                 <DesktopWrapper>
                     <Dropdown
-                        placeholder={localize('Other instruments trading experience')}
+                        placeholder={localize('Experience with trading other financial instruments')}
                         is_align_text_left
                         name={field.name}
                         list={other_instruments_trading_experience_enum}
@@ -721,8 +736,9 @@ export const OtherInstrumentsTradingExperience = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
-                        label={localize('Other instruments trading experience')}
+                        label={localize('Experience with trading other financial instruments')}
                         list_items={other_instruments_trading_experience_enum}
                         value={values.other_instruments_trading_experience}
                         use_text={true}
@@ -756,7 +772,7 @@ export const OtherInstrumentsTradingFrequency = ({
             <React.Fragment>
                 <DesktopWrapper>
                     <Dropdown
-                        placeholder={localize('Other instruments trading frequency')}
+                        placeholder={localize('Trading frequency in other financial instruments')}
                         is_align_text_left
                         name={field.name}
                         list={other_instruments_trading_frequency_enum}
@@ -772,8 +788,9 @@ export const OtherInstrumentsTradingFrequency = ({
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        placeholder={localize('Please select')}
                         name={field.name}
-                        label={localize('Other instruments trading frequency')}
+                        label={localize('Trading frequency in other financial instruments')}
                         list_items={other_instruments_trading_frequency_enum}
                         value={values.other_instruments_trading_frequency}
                         use_text={true}

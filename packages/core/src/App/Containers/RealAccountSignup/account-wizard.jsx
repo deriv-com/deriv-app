@@ -5,6 +5,7 @@ import { DesktopWrapper, MobileWrapper, Div100vhContainer, FormProgress } from '
 import { isDesktop, toMoment } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { makeCancellablePromise } from '_common/base/cancellable_promise';
 
 import { getItems } from './account-wizard-form';
 
@@ -76,22 +77,29 @@ class AccountWizard extends React.Component {
     componentDidMount() {
         this.fetchFromStorage();
         this.props.fetchStatesList();
-        this.props.fetchResidenceList().then(() => {
-            this.setState({
-                items: getItems(this.props),
-                mounted: false,
-            });
-
-            if (!this.residence_list?.length) {
-                const items = this.state.items.slice(0);
-                this.getCountryCode().then(phone_idd => {
-                    if ('phone' in items[1].form_value) {
-                        items[1].form_value.phone = phone_idd || '';
-                        this.setState(items);
-                    }
+        const { cancel, promise } = makeCancellablePromise(this.props.fetchResidenceList());
+        this.cancel = cancel;
+        promise
+            .then(() => {
+                this.setState({
+                    items: getItems(this.props),
+                    mounted: false,
                 });
-            }
-        });
+
+                if (!this.residence_list?.length) {
+                    const items = this.state.items.slice(0);
+                    this.getCountryCode().then(phone_idd => {
+                        if ('phone' in items[1].form_value) {
+                            items[1].form_value.phone = items[1].form_value.phone || phone_idd || '';
+                            this.setState(items);
+                        }
+                    });
+                }
+            })
+            // eslint-disable-next-line no-unused-vars
+            .catch(error => {
+                // Cancelled. no op.
+            });
     }
 
     fetchFromStorage = () => {
@@ -195,6 +203,7 @@ class AccountWizard extends React.Component {
 
     prevStep = () => {
         if (this.state.step - 1 < 0) {
+            this.cancel();
             this.props.onClose();
             return;
         }
@@ -244,7 +253,6 @@ class AccountWizard extends React.Component {
         if (this.props.has_real_account && !this.props.has_currency) {
             this.setAccountCurrency()
                 .then(response => {
-                    setSubmitting(false);
                     this.props.onFinishSuccess(response.echo_req.set_account_currency.toLowerCase());
                 })
                 .catch(error_message => {
@@ -258,7 +266,6 @@ class AccountWizard extends React.Component {
         } else {
             this.submitForm()
                 .then(response => {
-                    setSubmitting(false);
                     if (this.props.real_account_signup_target === 'maltainvest') {
                         this.props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
                     } else {

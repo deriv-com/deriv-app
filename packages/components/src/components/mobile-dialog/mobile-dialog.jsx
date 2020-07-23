@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import Icon from 'Components/icon/icon.jsx';
+import Icon from '../icon/icon.jsx';
 import Div100vhContainer from '../div100vh-container';
 
 const MobileDialog = props => {
@@ -72,7 +72,10 @@ const MobileDialog = props => {
                     height_offset={props.content_height_offset || '8px'}
                 >
                     <div className='dc-mobile-dialog__header'>
-                        <h2 className='dc-mobile-dialog__title'>{renderTitle ? renderTitle() : title}</h2>
+                        {!!renderTitle ||
+                            (!!title && (
+                                <h2 className='dc-mobile-dialog__title'>{renderTitle ? renderTitle() : title}</h2>
+                            ))}
                         <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
                             <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
                         </div>

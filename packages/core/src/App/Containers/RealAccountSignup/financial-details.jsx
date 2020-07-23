@@ -1,6 +1,6 @@
-import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, ThemedScrollbars } from '@deriv/components';
 import { Formik } from 'formik';
 import React from 'react';
+import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, ThemedScrollbars } from '@deriv/components';
 import { FormSubHeader } from '@deriv/account';
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
@@ -135,7 +135,7 @@ class FinancialDetails extends React.Component {
                                             height={height}
                                         >
                                             <div
-                                                className='details-form__elements'
+                                                className='details-form__elements  details-form__elements--wide'
                                                 style={{ paddingBottom: isDesktop() ? padding_bottom : null }}
                                             >
                                                 <FinancialInformation

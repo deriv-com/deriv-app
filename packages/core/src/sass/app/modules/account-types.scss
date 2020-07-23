@@ -11,6 +11,10 @@
         font-size: 1.4rem;
         line-height: 1.43;
         margin: 2.4rem 6.2rem 2.4rem 4.8rem;
+
+        @include mobile {
+            margin: 2.4rem 0;
+        }
     }
     &__text-icon {
         height: 2.2rem;
@@ -21,13 +25,21 @@
         border-radius: 0.4rem;
         box-shadow: 0 8px 8px 0 var(--shadow-menu), 0 0 8px 0 var(--shadow-menu);
         display: grid;
-        grid-auto-columns: 1fr;
-        grid-auto-flow: column;
-        grid-column-gap: 2.4rem;
-        grid-template-columns: auto 1fr;
         margin: 0 auto 4rem;
         padding: 2.4rem;
-        width: 80.8rem;
+        @include desktop {
+            grid-auto-columns: 1fr;
+            grid-auto-flow: column;
+            grid-column-gap: 2.4rem;
+            grid-template-columns: auto 1fr;
+            width: 80.8rem;
+        }
+        @include mobile {
+            width: fit-content;
+            grid-auto-rows: minmax(23rem, auto);
+            grid-auto-flow: row;
+            grid-gap: 1rem;
+        }
 
         &:first-of-type {
             margin-top: 1.6rem;
@@ -58,9 +70,14 @@
     }
     &__box-icons {
         display: grid;
-        grid-auto-flow: column;
-        grid-gap: 0.8rem 1.6rem;
-        width: fit-content;
+        @include desktop {
+            grid-auto-flow: column;
+            grid-gap: 0.8rem 1.6rem;
+            width: fit-content;
+        }
+        @include mobile {
+            grid-template-columns: repeat(4, 1fr);
+        }
     }
     &__box-icon {
         height: 4.8rem;
@@ -72,6 +89,13 @@
         overflow: hidden;
         position: relative;
         width: 22.7rem;
+        min-width: 22.7rem;
+        flex-shrink: 0;
+
+        @include mobile {
+            flex-shrink: 0;
+            margin: 0 auto;
+        }
 
         &__wrapper {
             display: flex;
@@ -159,5 +183,12 @@
                 width: 6.4rem;
             }
         }
+    }
+}
+
+.dc-modal-header__title--account-types {
+    @include mobile {
+        width: 100vw;
+        justify-content: center;
     }
 }

@@ -14,7 +14,7 @@ const getDismissButton = ({ status, landing_company_shortcode, closeModal, switc
                 };
             } else if (status === EXPERIAN.WARN) {
                 return {
-                    label: localize('Trade in demo'),
+                    label: localize('Trade on demo account'),
                     action: () => {
                         closeModal();
                         switchToVirtual();

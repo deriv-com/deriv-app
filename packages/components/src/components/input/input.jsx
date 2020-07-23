@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import FieldError from 'Components/field-error';
+import FieldError from '../field-error';
 
 const Input = (
     {

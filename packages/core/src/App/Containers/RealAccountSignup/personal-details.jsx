@@ -1,3 +1,6 @@
+import { Formik, Field } from 'formik';
+import React from 'react';
+import { FormSubHeader } from '@deriv/account';
 import {
     Autocomplete,
     AutoHeightWrapper,
@@ -13,9 +16,6 @@ import {
     SelectNative,
     ThemedScrollbars,
 } from '@deriv/components';
-import { Field, Formik } from 'formik';
-import React from 'react';
-import { FormSubHeader } from '@deriv/account';
 import { isDesktop, isMobile, toMoment } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import 'Sass/details-form.scss';
@@ -88,7 +88,7 @@ class PersonalDetails extends React.Component {
                 }}
             >
                 {({ handleSubmit, isSubmitting, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
-                    <AutoHeightWrapper default_height={200}>
+                    <AutoHeightWrapper default_height={200} height_offset={81}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit} autoComplete='off'>
                                 <Div100vhContainer
@@ -106,7 +106,12 @@ class PersonalDetails extends React.Component {
                                                 <RadioGroup
                                                     className='dc-radio__input'
                                                     name='salutation'
-                                                    items={this.props.salutation_list}
+                                                    items={this.props.salutation_list.map(item => {
+                                                        if (this.props.disabled_items.includes('salutation')) {
+                                                            item.disabled = true;
+                                                        }
+                                                        return item;
+                                                    })}
                                                     selected={values.salutation}
                                                     onToggle={e => {
                                                         e.persist();
@@ -136,6 +141,7 @@ class PersonalDetails extends React.Component {
                                                 <DateOfBirthField
                                                     name='date_of_birth'
                                                     label={localize('Date of birth')}
+                                                    disabled={this.props.disabled_items.includes('date_of_birth')}
                                                     placeholder={localize('01-07-1999')}
                                                 />
                                             )}
@@ -256,6 +262,9 @@ class PersonalDetails extends React.Component {
                                                                     <Dropdown
                                                                         placeholder={localize('Account opening reason')}
                                                                         name={field.name}
+                                                                        disabled={this.props.disabled_items.includes(
+                                                                            'account_opening_reason'
+                                                                        )}
                                                                         is_alignment_top
                                                                         is_align_text_left
                                                                         list={this.props.account_opening_reason_list}
@@ -272,6 +281,7 @@ class PersonalDetails extends React.Component {
                                                                 </DesktopWrapper>
                                                                 <MobileWrapper>
                                                                     <SelectNative
+                                                                        placeholder={localize('Please select')}
                                                                         name={field.name}
                                                                         label={localize('Account opening reason')}
                                                                         list_items={

@@ -7,11 +7,11 @@
     }
 
     &--success {
-        max-height: 380px;
         border-radius: $BORDER_RADIUS;
         overflow: hidden;
         max-width: 478px;
         min-width: initial;
+        max-height: initial;
     }
     .dc-modal-header__title {
         text-transform: none;
@@ -39,13 +39,12 @@
             margin: 1.6rem 0 0.8rem;
         }
         p {
-            @include typeface(--paragraph-center-normal-black);
+            @include typeface(--paragraph-center-normal-prominent);
             text-transform: none;
-            color: var(--text-prominent);
             width: 80%;
             margin-bottom: 2.4rem;
         }
-        a {
+        a.dc-btn {
             @include typeface(--paragraph-center-bold-black);
             text-transform: none;
             text-decoration: none;
@@ -55,9 +54,19 @@
             justify-content: center;
             align-self: center;
         }
+        a.email-inline {
+            color: var(--brand-red-coral);
+            font-weight: bold;
+            text-decoration: none;
+        }
     }
-    .loading-modal {
+    &--loading {
         width: 300px;
+        max-height: 300px;
+
+        .dc-modal-header__title {
+            height: 0;
+        }
     }
 }
 
@@ -73,9 +82,11 @@
     display: grid;
     grid-template-rows: 13rem minmax(10rem, 1fr);
     height: 100%;
-    overflow: auto;
     position: relative;
     width: 100%;
+    @include desktop {
+        overflow: auto;
+    }
     @include mobile {
         grid-template-rows: 7rem minmax(10rem, 1fr);
     }
@@ -119,16 +130,20 @@
                 align-items: center;
 
                 &--is-header {
-                    font-size: 1.8rem;
+                    font-size: 1.6rem;
                     margin: 2rem 0 0;
                     font-weight: bold;
-                    color: var(--text-prominent);
+                    color: var(--text-less-prominent);
                 }
             }
             &__description {
                 font-size: 1.4rem;
                 line-height: 2.4rem;
                 margin-top: 2.4rem;
+                @include typeface(--paragraph-center-normal-prominent);
+                @include mobile {
+                    text-align: center;
+                }
             }
             &__container {
                 width: 100%;
@@ -330,6 +345,9 @@
             height: 100%;
             width: 100%;
             margin-top: 0.3rem;
+            @include mobile {
+                border-top-color: var(--general-disabled);
+            }
         }
         &--has-description {
             margin-bottom: 0.5rem;
@@ -339,12 +357,12 @@
         margin-top: 1.6em;
     }
     &__title {
-        background: var(--general-main-1);
         color: var(--text-prominent);
         padding-right: 0.8rem;
     }
     &__subtitle {
         font-size: 1rem;
+        color: var(--text-prominent);
         font-weight: normal;
         align-self: baseline;
         padding-right: 0.8rem;

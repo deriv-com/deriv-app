@@ -3,12 +3,19 @@
     @include desktop {
         padding: 0 0.4rem;
     }
+    @include mobile {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 
     &__elements {
         flex-grow: 1;
         margin: 1.2rem auto;
         width: 40%;
 
+        &--wide {
+            width: 45%;
+        }
         &-container {
             height: calc(100% - 76px);
             overflow: hidden;
@@ -71,7 +78,8 @@
         @include mobile {
             width: 100%;
             margin: 0;
-            padding: 0 1.6rem;
+            padding: 1rem 1.6rem 0;
+            overflow-y: scroll;
         }
     }
     .dc-page-error__container {
@@ -80,10 +88,14 @@
     &__description {
         text-align: left;
         font-size: var(--text-size-xxs);
-        width: 40%;
         line-height: 1.8rem;
         margin: 1.6rem auto;
         color: var(--text-general);
+        @include desktop {
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+        }
 
         @include mobile {
             text-align: left;
@@ -91,12 +103,5 @@
             line-height: 20px;
             color: var(--text-less-prominent);
         }
-    }
-    @include mobile {
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-    @include desktop {
-        grid-template-rows: minmax(10rem, 1fr);
     }
 }

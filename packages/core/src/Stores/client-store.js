@@ -85,6 +85,24 @@ export default class ClientStore extends BaseStore {
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
+
+        when(
+            () => this.should_have_real_account,
+            () => {
+                this.root_store.ui.showAccountTypesModalForEuropean();
+                this.onRealAccountSignupEnd(() => {
+                    if (!this.has_any_real_account) {
+                        this.root_store.ui.showAccountTypesModalForEuropean();
+                    }
+
+                    return Promise.resolve();
+                });
+
+                if (!this.root_store.ui.is_real_acc_signup_on) {
+                    this.root_store.ui.toggleAccountTypesModal(true);
+                }
+            }
+        );
     }
 
     @computed
@@ -276,7 +294,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_authentication_needed() {
         if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'allow_document_upload');
+        return this.account_status.authentication.needs_verification.length;
     }
 
     @computed
@@ -311,6 +329,12 @@ export default class ClientStore extends BaseStore {
         if (!this.landing_companies) return false;
         // TODO: [mt5 redirect] check session storage for mt5 labuan_financial_stp and labuan_advanced
         return this.account_type === 'financial';
+    }
+
+    @computed
+    get is_age_verified() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'age_verification');
     }
 
     @computed
@@ -367,12 +391,7 @@ export default class ClientStore extends BaseStore {
     // this is true when a user needs to have a active real account for trading
     @computed
     get should_have_real_account() {
-        return (
-            this.standpoint.iom &&
-            !this.has_any_real_account &&
-            this.residence === 'gb' &&
-            this.root_store.ui.is_real_acc_signup_on === false
-        );
+        return this.standpoint.iom && this.is_uk && !this.has_any_real_account;
     }
 
     // Shows all possible landing companies of user between all
@@ -553,9 +572,12 @@ export default class ClientStore extends BaseStore {
         this.user_id = response.authorize.user_id;
         this.upgradeable_landing_companies = response.authorize.upgradeable_landing_companies;
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
-        this.local_currency_config.decimal_places = +response.authorize.local_currencies[
-            this.local_currency_config.currency
-        ].fractional_digits;
+
+        // For residences without local currency (e.g. ax)
+        const default_fractional_digits = 2;
+        this.local_currency_config.decimal_places = isEmptyObject(response.authorize.local_currencies)
+            ? default_fractional_digits
+            : +response.authorize.local_currencies[this.local_currency_config.currency].fractional_digits;
 
         ClientBase.responseAuthorize(response);
     }
@@ -1256,7 +1278,9 @@ export default class ClientStore extends BaseStore {
 
             search_params.forEach((value, key) => {
                 const account_keys = ['acct', 'token', 'cur'];
-                const is_account_param = account_keys.some(account_key => key?.includes(account_key));
+                const is_account_param = account_keys.some(
+                    account_key => key?.includes(account_key) && key !== 'affiliate_token'
+                );
 
                 if (is_account_param) {
                     obj_params[key] = value;

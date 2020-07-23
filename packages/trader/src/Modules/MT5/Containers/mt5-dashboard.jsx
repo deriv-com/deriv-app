@@ -1,6 +1,6 @@
-import { DesktopWrapper, Icon, MobileWrapper, Tabs } from '@deriv/components';
 import React from 'react';
 import { withRouter } from 'react-router';
+import { DesktopWrapper, Icon, MobileWrapper, Tabs } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -23,9 +23,9 @@ import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
 const hasMoreThanOne = ({ mt_financial_company, mt_gaming_company }) =>
     [
-        ...(mt_financial_company?.standard ? [true] : []),
-        ...(mt_financial_company?.advanced ? [true] : []),
-        ...(mt_gaming_company?.standard ? [true] : []),
+        ...(mt_financial_company?.financial ? [true] : []),
+        ...(mt_financial_company?.financial_stp ? [true] : []),
+        ...(mt_gaming_company?.financial ? [true] : []),
     ].length > 1;
 
 const TabOrFlex = ({ landing_companies, children, is_loading, loading_component, ...props }) => {

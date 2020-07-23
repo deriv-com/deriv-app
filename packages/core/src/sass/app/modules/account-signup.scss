@@ -73,14 +73,12 @@
         }
     }
     &__residence-field {
-        width: 30rem;
+        @include desktop {
+            min-width: 30rem;
+        }
     }
     &__password-field {
-        width: 30rem;
-
-        @include mobile {
-            width: calc(100vw - 6rem);
-        }
+        width: 100%;
     }
     @include mobile {
         & .dc-select-native {

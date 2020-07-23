@@ -12,13 +12,14 @@ import {
 import { routes, isCryptocurrency, getSelectedRoute, isMobile, isTouchDevice } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
+import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/cashier.scss';
 
 const el_landscape_blocker = document.getElementById('landscape_blocker');
 
 class Cashier extends React.Component {
-    state = { device_height: window.innerHeight };
+    state = { device_height: window.innerHeight, is_restricted: true };
 
     componentDidMount() {
         this.props.toggleCashier();
@@ -32,6 +33,8 @@ class Cashier extends React.Component {
         if (isMobile() && isTouchDevice()) {
             window.addEventListener('resize', this.handleOnScreenKeyboard);
         }
+
+        this.checkIsP2pRestricted();
     }
 
     componentWillUnmount() {
@@ -43,6 +46,13 @@ class Cashier extends React.Component {
             if (el_landscape_blocker) el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
         }
     }
+
+    checkIsP2pRestricted = async () => {
+        const response = await WS.send({ p2p_advertiser_info: 1 });
+
+        if (!response.error) this.setState({ is_restricted: false });
+        else if (response.error.code !== 'RestrictedCountry') this.setState({ is_restricted: false });
+    };
 
     handleOnScreenKeyboard = () => {
         // We are listening to resize window resize events on mobile,
@@ -60,6 +70,7 @@ class Cashier extends React.Component {
     onClickClose = () => this.props.routeBackInApp(this.props.history);
 
     render() {
+        console.log(this.state.is_restricted);
         const menu_options = () => {
             const options = [];
 
@@ -68,7 +79,7 @@ class Cashier extends React.Component {
                 if (
                     (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible) &&
-                    (route.path !== routes.cashier_p2p || this.props.is_p2p_visible) &&
+                    (route.path !== routes.cashier_p2p || (this.props.is_p2p_visible && !this.state.is_restricted)) &&
                     (route.path !== routes.cashier_onramp || this.props.is_onramp_tab_visible)
                 ) {
                     options.push({

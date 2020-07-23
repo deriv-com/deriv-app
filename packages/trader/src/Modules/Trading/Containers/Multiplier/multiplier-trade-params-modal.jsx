@@ -91,7 +91,7 @@ const TradeParamsMobile = ({
     const getHeaderValues = tab_key => {
         if (tab_key === 'amount') {
             return {
-                label: localize('Amount'),
+                label: localize('Stake'),
                 value: has_amount_error ? localize('Error') : getAmountText(),
                 has_error: has_amount_error,
             };

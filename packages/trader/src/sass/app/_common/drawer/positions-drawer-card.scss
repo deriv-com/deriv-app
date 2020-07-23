@@ -292,6 +292,8 @@
         }
         &--has-cancel-btn {
             justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
 
             .dc-btn--cancel {
                 margin-left: 0.8rem;

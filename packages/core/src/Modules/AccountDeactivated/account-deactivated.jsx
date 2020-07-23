@@ -11,7 +11,7 @@ class AccountDeactivated extends React.Component {
     };
     componentDidMount() {
         window.history.pushState(null, null, '/');
-        // this.props.logout();
+        this.props.logout();
         this.handleInterval = setInterval(() => this.counter(), 1000);
         this.timerHandler = setTimeout(() => {
             window.location.href = getDerivComLink();

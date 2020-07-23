@@ -1,5 +1,5 @@
 import React from 'react';
-import { urlFor, getDerivComLink, routes, isMobile, formatDate, isEmptyObject } from '@deriv/shared';
+import { getDerivComLink, routes, isMobile, formatDate, isEmptyObject } from '@deriv/shared';
 
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';

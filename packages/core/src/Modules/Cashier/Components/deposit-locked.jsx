@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { routes, getDerivComLink } from '@deriv/shared';
 import { Icon, Checklist } from '@deriv/components';
@@ -13,6 +14,7 @@ const DepositsLocked = ({
     is_trading_experience_incomplete,
     has_financial_account,
     history,
+    onMount,
 }) => {
     // handle authentication locked
     const { identity, document, needs_verification } = account_status.authentication;
@@ -54,7 +56,7 @@ const DepositsLocked = ({
                         <a
                             key={0}
                             className='link'
-                            rel='noopener'
+                            rel='noopener noreferrer'
                             target='_blank'
                             href={getDerivComLink('terms-and-conditions')}
                         />,
@@ -91,10 +93,20 @@ const DepositsLocked = ({
     );
 };
 
-export default connect(({ client }) => ({
+DepositsLocked.propTypes = {
+    account_status: PropTypes.object,
+    is_tnc_needed: PropTypes.bool,
+    is_financial_information_incomplete: PropTypes.bool,
+    is_trading_experience_incomplete: PropTypes.bool,
+    has_financial_account: PropTypes.bool,
+    onMount: PropTypes.func,
+};
+
+export default connect(({ client, modules }) => ({
     account_status: client.account_status,
     is_tnc_needed: client.is_tnc_needed,
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     has_financial_account: client.has_financial_account,
+    onMount: modules.cashier.onMount,
 }))(withRouter(DepositsLocked));

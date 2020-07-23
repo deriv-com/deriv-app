@@ -20,6 +20,8 @@ import { getMT5AccountDisplay } from '../../Helpers/client';
 
 const bank_default_option = [{ text: localize('All payment agents'), value: 0 }];
 
+const hasTransferNotAllowedLoginid = loginid => /^(MX)/.test(loginid);
+
 class Config {
     container = '';
     is_session_timeout = true;
@@ -936,7 +938,7 @@ export default class CashierStore extends BaseStore {
             // set current logged in client as the default transfer from account
             if (account.loginid === this.root_store.client.loginid) {
                 // check if selected from is not allowed account
-                if (this.hasTransferNotAllowedLoginid(obj_values.value)) {
+                if (hasTransferNotAllowedLoginid(obj_values.value)) {
                     obj_values.error = (
                         <Localize
                             i18n_default_text='Transfer from {{account}} is not allowed, Please choose another account from dropdown'
@@ -947,7 +949,7 @@ export default class CashierStore extends BaseStore {
 
                 this.setSelectedFrom(obj_values);
             } else if (isEmptyObject(this.config.account_transfer.selected_to)) {
-                if (this.hasTransferNotAllowedLoginid(obj_values.value)) {
+                if (hasTransferNotAllowedLoginid(obj_values.value)) {
                     // check if selected from is not allowed account
                     obj_values.error = (
                         <Localize
@@ -991,10 +993,6 @@ export default class CashierStore extends BaseStore {
         };
     }
 
-    hasTransferNotAllowedLoginid(loginid) {
-        return /^(MX)/.test(loginid);
-    }
-
     @action.bound
     onChangeTransferFrom({ target }) {
         this.setErrorMessage('');
@@ -1005,7 +1003,7 @@ export default class CashierStore extends BaseStore {
 
         // if new value of selected_from is the same as the current selected_to
         // switch the value of selected_from and selected_to
-        if (this.hasTransferNotAllowedLoginid(selected_from.value)) {
+        if (hasTransferNotAllowedLoginid(selected_from.value)) {
             selected_from.error = (
                 <Localize
                     i18n_default_text='Transfer from {{account}} is not allowed, Please choose another account from dropdown'
@@ -1036,7 +1034,7 @@ export default class CashierStore extends BaseStore {
 
         const accounts = this.config.account_transfer.accounts_list;
         this.config.account_transfer.selected_to = accounts.find(account => account.value === target.value) || {};
-        if (this.hasTransferNotAllowedLoginid(this.config.account_transfer.selected_to.value)) {
+        if (hasTransferNotAllowedLoginid(this.config.account_transfer.selected_to.value)) {
             this.config.account_transfer.selected_to.error = (
                 <Localize
                     i18n_default_text='Transfer to {{account}} is not allowed, Please choose another account from dropdown'

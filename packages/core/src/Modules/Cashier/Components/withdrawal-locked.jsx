@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { Icon, Checklist } from '@deriv/components';
@@ -37,6 +38,11 @@ const WithdrawalLocked = ({ account_status, history }) => {
             )}
         </div>
     );
+};
+
+WithdrawalLocked.propTypes = {
+    account_status: PropTypes.object,
+    has_financial_account: PropTypes.bool,
 };
 
 export default connect(({ client }) => ({

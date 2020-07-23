@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { Icon, Checklist } from '@deriv/components';
@@ -30,6 +31,12 @@ const WithdrawalLocked = ({
             </>
         </div>
     );
+};
+
+WithdrawalLocked.propTypes = {
+    has_financial_account: PropTypes.bool,
+    is_financial_information_incomplete: PropTypes.bool,
+    is_trading_experience_incomplete: PropTypes.bool,
 };
 
 export default connect(({ client }) => ({

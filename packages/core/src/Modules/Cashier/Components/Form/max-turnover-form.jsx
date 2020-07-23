@@ -68,7 +68,12 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
                                     data-lpignore='true'
                                     type='text'
                                     className='max-turnover__input'
-                                    label={localize('30 days max total stake') + ` (${currency})`}
+                                    label={
+                                        <Localize
+                                            i18n_default_text='30 days max total stake {{currency}}'
+                                            values={{ currency }}
+                                        />
+                                    }
                                     value={values.max_30day_turnover}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -82,7 +87,9 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
                         <p className='max-turnover__desc'>
                             <Localize
                                 i18n_default_text='You can further control the amount of money and time you spend on your trading activities on the <0>Self-exclusion</0> page.'
-                                components={[<BinaryLink className='link link--orange' to={routes.self_exclusion} />]}
+                                components={[
+                                    <BinaryLink key={0} className='link link--orange' to={routes.self_exclusion} />,
+                                ]}
                             />
                         </p>
 

@@ -5,7 +5,7 @@ import { Icon, Checklist } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const WithdrawalLocked = ({ account_status, has_financial_account, history }) => {
+const WithdrawalLocked = ({ account_status, history }) => {
     const { identity, needs_verification } = account_status.authentication;
     const is_poi_needed = needs_verification.includes('identity');
     const has_poi_submitted = identity.status !== 'none';

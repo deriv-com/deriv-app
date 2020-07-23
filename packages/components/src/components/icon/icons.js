@@ -10,6 +10,7 @@ import './cashier/ic-cashier-changelly.svg';
 import './cashier/ic-cashier-deposit.svg';
 import './cashier/ic-cashier-dp2p.svg';
 import './cashier/ic-cashier-error.svg';
+import './cashier/ic-cashier-funds-protection.svg';
 import './cashier/ic-cashier-maestro.svg';
 import './cashier/ic-cashier-mastercard.svg';
 import './cashier/ic-cashier-no-ads.svg';

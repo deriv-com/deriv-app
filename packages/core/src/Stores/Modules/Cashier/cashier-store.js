@@ -293,7 +293,7 @@ export default class CashierStore extends BaseStore {
             this.checkDepositLock();
         }
         if (this.active_container === this.config.withdraw.container) {
-            this.checkDepositLock();
+            this.checkWithdrawalLock();
         }
     }
 
@@ -307,7 +307,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     checkDepositLock() {
         this.is_deposit_locked =
-            this.root_store.client.is_authentication_needed ||
+            !!this.root_store.client.is_authentication_needed ||
             this.root_store.client.is_tnc_needed ||
             (this.root_store.client.has_financial_account &&
                 (this.root_store.client.is_financial_information_incomplete ||
@@ -322,10 +322,11 @@ export default class CashierStore extends BaseStore {
     }
     @action.bound
     checkWithdrawalLock() {
+        const need_poi = this.root_store.client.account_status.authentication.needs_verification.includes('identity');
         this.is_withdrawal_locked =
             this.root_store.client.account_status.status.some(status =>
                 /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status)
-            ) || is_authentication_needed;
+            ) || need_poi;
     }
 
     @action.bound
@@ -421,6 +422,18 @@ export default class CashierStore extends BaseStore {
         this.config[this.active_container].error = {
             [config_name]: value,
         };
+    }
+
+    @action.bound
+    submitFundsProtection() {
+        WS.send({ ukgc_funds_protection: 1, tnc_approval: 1 }).then(response => {
+            if (response.error) {
+                this.setErrorConfig('message', response.error.message);
+            } else {
+                this.setErrorConfig('is_ask_uk_funds_protection', false);
+                this.onMount();
+            }
+        });
     }
 
     @action.bound

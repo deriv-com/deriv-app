@@ -64,11 +64,12 @@ const DepositsLocked = ({
             status: 'button-action',
             onClick: () => acceptTnc(),
         },
-        (is_financial_information_incomplete || (has_financial_account && is_trading_experience_incomplete)) && {
-            content: localize('Complete the financial assessment form'),
-            status: 'action',
-            onClick: () => history.push(routes.financial_assessment),
-        },
+        has_financial_account &&
+            (is_trading_experience_incomplete || is_financial_information_incomplete) && {
+                content: localize('Complete the financial assessment form'),
+                status: 'action',
+                onClick: () => history.push(routes.financial_assessment),
+            },
     ];
     return (
         <div className='deposit-locked'>

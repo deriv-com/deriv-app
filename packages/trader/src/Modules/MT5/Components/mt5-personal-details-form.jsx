@@ -55,11 +55,25 @@ export const InputField = ({ name, optional = false, ...props }) => (
     </Field>
 );
 
-const validatePersonalDetails = (values, residence_list, account_opening_reason) => {
+const validatePersonalDetails = (values, residence_list, account_opening_reason, { config }) => {
+    const getTaxIdentificationNumberValidation = () => {
+        const { tax_details_required, tin_format } = config;
+        const validation_rules = [];
+        if (tax_details_required) {
+            validation_rules.push(v => !!v);
+        }
+        if (tin_format?.[0]) {
+            const rule = tin_format?.[0];
+            const regexp = new RegExp(rule);
+            validation_rules.push(v => regexp.test(v));
+        }
+        return validation_rules;
+    };
+
     const validations = {
         citizen: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
         tax_residence: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
-        tax_identification_number: [v => !!v, v => /^[\w-]{0,20}$/.test(v)],
+        tax_identification_number: getTaxIdentificationNumberValidation(),
         account_opening_reason: [v => !!v, v => account_opening_reason.map(i => i.text).includes(v)],
     };
 
@@ -129,6 +143,7 @@ const submitForm = (values, actions, idx, onSubmitFn, is_dirty, residence_list) 
 const MT5PersonalDetailsForm = ({
     onSave,
     is_fully_authenticated,
+    landing_company,
     residence_list,
     onCancel,
     onSubmit,
@@ -157,11 +172,18 @@ const MT5PersonalDetailsForm = ({
             }}
             enableReinitialize
             isInitialValid={({ initialValues }) => {
-                const initial_errors = validatePersonalDetails(initialValues, residence_list, account_opening_reason);
+                const initial_errors = validatePersonalDetails(
+                    initialValues,
+                    residence_list,
+                    account_opening_reason,
+                    landing_company
+                );
                 is_initial_valid = Object.entries(initial_errors).length === 0 && initial_errors.constructor === Object;
                 return initial_errors;
             }}
-            validate={values => validatePersonalDetails(values, residence_list, account_opening_reason)}
+            validate={values =>
+                validatePersonalDetails(values, residence_list, account_opening_reason, landing_company)
+            }
             onSubmit={onSubmitForm}
         >
             {({ handleSubmit, isSubmitting, handleChange, handleBlur, errors, touched, values, setFieldValue }) => (

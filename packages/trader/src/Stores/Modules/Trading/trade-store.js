@@ -13,7 +13,7 @@ import getValidationRules, { getMultiplierValidationRules } from './Constants/va
 import {
     pickDefaultSymbol,
     showUnavailableLocationError,
-    showUnavailableLandingCompanyError,
+    showDigitalOptionsUnavailableError,
     isMarketClosed,
 } from './Helpers/active-symbols';
 import ContractType from './Helpers/contract-type';
@@ -275,7 +275,7 @@ export default class TradeStore extends BaseStore {
                 showUnavailableLocationError(this.root_store.common.showError);
                 return;
             } else if (this.root_store.client.landing_company_shortcode === 'maltainvest') {
-                showUnavailableLandingCompanyError(this.root_store.common.showError);
+                showDigitalOptionsUnavailableError(this.root_store.common.showError);
                 return;
             }
         }
@@ -929,7 +929,7 @@ export default class TradeStore extends BaseStore {
         if (this.root_store.client.landing_company_shortcode === 'maltainvest') {
             const { active_symbols } = await WS.authorized.activeSymbols();
             if (!active_symbols || !active_symbols.length) {
-                showUnavailableLandingCompanyError(this.root_store.common.showError);
+                showDigitalOptionsUnavailableError(this.root_store.common.showError);
             }
         }
         this.resetErrorServices();

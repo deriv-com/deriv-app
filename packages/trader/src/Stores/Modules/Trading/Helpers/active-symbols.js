@@ -27,7 +27,7 @@ export const showUnavailableLocationError = flow(function*(showError) {
     );
 });
 
-export const showUnavailableLandingCompanyError = showError => {
+export const showDigitalOptionsUnavailableError = showError => {
     showError(
         localize(
             'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'

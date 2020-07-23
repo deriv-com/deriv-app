@@ -123,10 +123,11 @@ const Recent = ({
 
 const Local = ({
     handleFileChange,
-    is_open_button_loading,
-    loaded_local_file,
-    loadFileFromLocal,
     is_mobile,
+    is_open_button_loading,
+    loadFileFromLocal,
+    loaded_local_file,
+    onClickPreviewCross,
     toggleLoadModal,
     ...props
 }) => {
@@ -142,7 +143,7 @@ const Local = ({
                 <div id='load-local__scratch' className='preview__workspace load-local__preview-workspace'>
                     {!is_mobile && (
                         <div className='load-local__preview-close'>
-                            <Icon icon={'IcCross'} onClick={toggleLoadModal} />
+                            <Icon icon={'IcCross'} onClick={onClickPreviewCross} />
                         </div>
                     )}
                     <WorkspaceControl {...props} />
@@ -319,6 +320,7 @@ LoadModal.propTypes = {
     loadFileFromLocal: PropTypes.func,
     loadFileFromRecent: PropTypes.func,
     loaded_local_file: PropTypes.object,
+    onClickPreviewCross: PropTypes.func,
     onDriveConnect: PropTypes.func,
     onDriveOpen: PropTypes.func,
     onEntered: PropTypes.func,
@@ -346,6 +348,7 @@ export default connect(({ load_modal, google_drive, ui }) => ({
     loadFileFromLocal: load_modal.loadFileFromLocal,
     loadFileFromRecent: load_modal.loadFileFromRecent,
     loaded_local_file: load_modal.loaded_local_file,
+    onClickPreviewCross: load_modal.onClickPreviewCross,
     onDriveConnect: load_modal.onDriveConnect,
     onDriveOpen: load_modal.onDriveOpen,
     onEntered: load_modal.onEntered,

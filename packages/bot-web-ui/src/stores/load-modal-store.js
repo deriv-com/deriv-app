@@ -246,6 +246,15 @@ export default class LoadModalStore {
         this.is_open_button_loading = false;
         this.toggleLoadModal();
     }
+
+    @action.bound
+    onClickPreviewCross() {
+        if (this.local_workspace) {
+            this.local_workspace.dispose();
+        }
+
+        this.loaded_local_file = null;
+    }
     /** --------- Local Tab End --------- */
 
     /** --------- GD Tab Start --------- */

@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import Icon from 'Components/icon/icon.jsx';
 import Body from './modal-body.jsx';
 import Footer from './modal-footer.jsx';
-import useOnClickOutside from '../../hooks/use-onclickoutside';
+import Icon from '../icon/icon.jsx';
+import { useOnClickOutside } from '../../hooks';
 
 const ModalElement = ({
     elements_to_ignore,

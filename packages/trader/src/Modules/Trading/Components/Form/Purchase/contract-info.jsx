@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import { Icon, DesktopWrapper, Money, MobileWrapper, Popover } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
+import { Icon, DesktopWrapper, Money, MobileWrapper, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased }) => (

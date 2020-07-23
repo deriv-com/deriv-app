@@ -190,7 +190,7 @@ const JournalLoader = ({ is_mobile }) => (
 const Journal = ({ contract_stage, filtered_messages, is_mobile, is_stop_button_visible, ...props }) => {
     return (
         <div
-            className={classnames('journal', {
+            className={classnames('journal run-panel-tab__content--no-stat', {
                 'run-panel-tab__content': !is_mobile,
                 'run-panel-tab__content--mobile': is_mobile,
             })}

@@ -192,11 +192,11 @@ const Journal = ({ contract_stage, filtered_messages, is_mobile, is_stop_button_
         <div
             className={classnames('journal run-panel-tab__content--no-stat', {
                 'run-panel-tab__content': !is_mobile,
-                'run-panel-tab__content--mobile': is_mobile,
+                'run-panel-tab__content--journal-mobile': is_mobile,
             })}
         >
             <Tools {...props} />
-            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 4.6rem)'}>
+            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 4.2rem)'}>
                 <div className='journal__item-list'>
                     {filtered_messages.length ? (
                         <TransitionGroup>

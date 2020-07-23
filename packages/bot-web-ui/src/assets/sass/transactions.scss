@@ -54,11 +54,7 @@
         }
     }
     &__content {
-        height: calc(100% - 3.6rem);
-
-        &--mobile {
-            height: calc(100% - 17.2rem);
-        }
+        height: calc(100% - 4.2rem);
     }
     &__scrollbar {
         height: 100%;

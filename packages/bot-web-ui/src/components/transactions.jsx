@@ -37,11 +37,7 @@ class Transactions extends React.PureComponent {
                         {localize('Buy price and P/L')}
                     </span>
                 </div>
-                <div
-                    className={classnames('transactions__content', {
-                        'transactions__content--mobile': is_mobile,
-                    })}
-                >
+                <div className='transactions__content'>
                     <ThemedScrollbars autoHide hideHorizontal className='transactions__scrollbar'>
                         {elements.length ? (
                             <TransitionGroup>

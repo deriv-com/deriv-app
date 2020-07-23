@@ -91,8 +91,13 @@
                     }
 
                     &-avatar {
-                        display: none;
-
+                        display: flex;
+                        background-color: #0808e0;
+                        width: 40px !important;
+                        height: 40px !important;
+                        text-align: center;
+                        font-size: 16px;
+                        color: var(--text-colored-background);
                         &-img {
                             display: none;
                         }
@@ -181,17 +186,19 @@
                                 }
                             }
                         }
+                        &__avatar {
+                            display: none;
+                        }
                     }
 
                     &-chat-header {
                         border-radius: $BORDER_RADIUS $BORDER_RADIUS 0 0;
                         border-bottom: none;
-                        padding: 0 16px;
+                        padding: 0 16px 0px 24px;
                         background-color: var(--general-section-2);
 
                         &__left {
                             display: flex;
-                            flex-flow: column;
                             align-items: flex-start;
                             margin-right: 0;
                         }
@@ -202,6 +209,7 @@
 
                         &__title {
                             font-size: 16px;
+                            padding-left: 16px;
                             display: flex;
                             max-width: 350px;
                             margin-right: 0;
@@ -210,6 +218,9 @@
                         }
 
                         &__subtitle {
+                            position: relative;
+                            left: -27px;
+                            top: 20px;
                             color: var(--text-less-prominent);
                         }
                     }

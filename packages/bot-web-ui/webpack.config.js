@@ -87,7 +87,7 @@ module.exports = function(env, argv) {
                     exclude: /node_modules/,
                     loader: [
                       '@deriv/shared/src/loaders/react-import-loader.js',
-                      'babel-loader'
+                      'babel-loader',
                     ],
                 },
                 {

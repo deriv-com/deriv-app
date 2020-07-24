@@ -10,7 +10,6 @@ const Summary = ({ is_mobile, is_drawer_open }) => (
         className={classnames('summary', {
             'run-panel-tab__content': !is_mobile,
             'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
-            'run-panel-tab__content--mobile-closed': is_mobile && !is_drawer_open,
         })}
     >
         <ContractCard />

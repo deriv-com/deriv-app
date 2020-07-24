@@ -204,44 +204,46 @@ const Local = ({
 
 const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, onDriveOpen, is_mobile }) => (
     <div className='load-google-drive__container'>
-        <Icon
-            icon={'IcGoogleDrive'}
-            className={classnames({
-                'load-google-drive__icon--active': is_authorised,
-                'load-google-drive__icon--disabled': !is_authorised,
-            })}
-            size={is_mobile ? 96 : 116}
-        />
-        <div className='load-google-drive__text'>
-            {is_authorised ? localize('You are connected to Google Drive') : 'Google Drive'}
-        </div>
-        {is_authorised ? (
-            <div className='load-google-drive__buttons'>
+        <div id='google-drive__box' className='load-google-drive__box'>
+            <Icon
+                icon={'IcGoogleDrive'}
+                className={classnames({
+                    'load-google-drive__icon--active': is_authorised,
+                    'load-google-drive__icon--disabled': !is_authorised,
+                })}
+                size={is_mobile ? 96 : 116}
+            />
+            <div className='load-google-drive__text'>
+                {is_authorised ? localize('You are connected to Google Drive') : 'Google Drive'}
+            </div>
+            {is_authorised ? (
+                <div className='load-google-drive__buttons'>
+                    <Button
+                        className='load-google-drive__disconnect'
+                        text={localize('Disconnect')}
+                        onClick={onDriveConnect}
+                        has_effect
+                        secondary
+                    />
+                    <Button
+                        className='load-google-drive__open'
+                        text={localize('Open')}
+                        onClick={onDriveOpen}
+                        is_loading={is_open_button_loading}
+                        has_effect
+                        primary
+                    />
+                </div>
+            ) : (
                 <Button
-                    className='load-google-drive__disconnect'
-                    text={localize('Disconnect')}
+                    className='load-google-drive__connect'
+                    text={localize('Connect')}
                     onClick={onDriveConnect}
-                    has_effect
-                    secondary
-                />
-                <Button
-                    className='load-google-drive__open'
-                    text={localize('Open')}
-                    onClick={onDriveOpen}
-                    is_loading={is_open_button_loading}
                     has_effect
                     primary
                 />
-            </div>
-        ) : (
-            <Button
-                className='load-google-drive__connect'
-                text={localize('Connect')}
-                onClick={onDriveConnect}
-                has_effect
-                primary
-            />
-        )}
+            )}
+        </div>
     </div>
 );
 
@@ -259,7 +261,7 @@ const LoadModal = ({
         <FadeWrapper is_visible={is_load_modal_open} className='load__wrapper' keyname='save__wrapper'>
             <PageOverlay header={localize('Load Strategy')} onClickClose={toggleLoadModal} onMount={onMount}>
                 <MobileWrapper>
-                    <Div100vhContainer className='load__wrapper--is-mobile'>
+                    <Div100vhContainer className='load__wrapper--is-mobile' height_offset='80px'>
                         <Tabs
                             active_index={active_index}
                             onTabItemClick={setActiveTabIndex}

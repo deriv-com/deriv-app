@@ -167,7 +167,7 @@ class RunPanel extends React.PureComponent {
 
         return (
             <>
-                <div className={is_mobile ? 'run-panel__container--mobile' : undefined}>
+                <div className={is_mobile && is_drawer_open ? 'run-panel__container--mobile' : undefined}>
                     <Drawer
                         className={!is_mobile ? 'run-panel__container' : undefined}
                         contentClassName='run-panel__content'

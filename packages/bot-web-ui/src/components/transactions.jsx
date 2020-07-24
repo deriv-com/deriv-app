@@ -26,7 +26,6 @@ class Transactions extends React.PureComponent {
                 className={classnames('transactions', {
                     'run-panel-tab__content': !is_mobile,
                     'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
-                    'run-panel-tab__content--mobile-closed': is_mobile && !is_drawer_open,
                 })}
             >
                 <div className='transactions__header'>

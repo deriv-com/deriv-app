@@ -14,6 +14,10 @@
             top: 0;
             left: 0;
             width: 100vw;
+
+            &-closed {
+                position: unset;
+            }
         }
         &--open {
             transform: translateX(-36.6rem) !important;
@@ -97,10 +101,6 @@
                 position: fixed;
                 bottom: 12.8rem;
                 width: 100vw;
-
-                &-closed {
-                    position: unset;
-                }
             }
             &--journal-mobile {
                 position: fixed;

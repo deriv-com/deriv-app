@@ -14,6 +14,7 @@ export default class UIStore extends BaseStore {
     @observable is_notifications_visible = false;
     @observable is_positions_drawer_on = false;
     @observable is_reports_visible = false;
+    @observable reports_route_tab_index = 0;
     @observable is_cashier_visible = false;
     @observable is_history_tab_active = false;
     @observable is_window_loaded = false;
@@ -591,5 +592,10 @@ export default class UIStore extends BaseStore {
     @action.bound
     setIsNativepickerVisible(is_nativepicker_visible) {
         this.is_nativepicker_visible = is_nativepicker_visible;
+    }
+
+    @action.bound
+    setReportsTabIndex(tab_index = 0) {
+        this.reports_route_tab_index = tab_index;
     }
 }

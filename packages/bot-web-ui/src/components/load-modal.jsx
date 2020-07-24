@@ -276,6 +276,7 @@ const LoadModal = ({
     toggleLoadModal,
     onEntered,
     is_mobile,
+    should_rerender_tabs,
     ...props
 }) => {
     const header_text = localize('Load strategy');
@@ -288,6 +289,7 @@ const LoadModal = ({
                             <Tabs
                                 active_index={active_index}
                                 onTabItemClick={setActiveTabIndex}
+                                should_delay_render={should_rerender_tabs}
                                 top
                                 fit_content
                                 header_fit_content
@@ -315,7 +317,14 @@ const LoadModal = ({
             onEntered={onEntered}
             elements_to_ignore={[document.querySelector('.injectionDiv')]}
         >
-            <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top fit_content header_fit_content>
+            <Tabs
+                active_index={active_index}
+                onTabItemClick={setActiveTabIndex}
+                should_delay_render={should_rerender_tabs}
+                top
+                fit_content
+                header_fit_content
+            >
                 <div label={localize('Recent')}>
                     <Recent {...props} />
                 </div>
@@ -352,6 +361,7 @@ LoadModal.propTypes = {
     recent_workspaces: PropTypes.array,
     selected_workspace_id: PropTypes.string,
     setActiveTabIndex: PropTypes.func,
+    should_rerender_tabs: PropTypes.bool,
     toggleLoadModal: PropTypes.func,
 };
 
@@ -377,5 +387,6 @@ export default connect(({ load_modal, google_drive, ui }) => ({
     recent_workspaces: load_modal.recent_workspaces,
     selected_workspace_id: load_modal.selected_workspace_id,
     setActiveTabIndex: load_modal.setActiveTabIndex,
+    should_rerender_tabs: load_modal.should_rerender_tabs,
     toggleLoadModal: load_modal.toggleLoadModal,
 }))(LoadModal);

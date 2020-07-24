@@ -37,6 +37,7 @@ export default class LoadModalStore {
     @observable loaded_local_file = null;
     @observable recent_workspaces = [];
     @observable selected_workspace_id = undefined;
+    @observable should_rerender_tabs = false;
 
     @computed
     get preview_workspace() {
@@ -119,7 +120,7 @@ export default class LoadModalStore {
             }
         } else if (this.recent_workspace) {
             // dispose workspace in recent tab when switch tab
-            this.recent_workspace.dispose();
+            this.recent_workspace.dispose(true);
         }
 
         if (this.tab_name === this.TAB_LOCAL) {
@@ -134,7 +135,7 @@ export default class LoadModalStore {
 
             // dispose workspace in local tab when switch tab
             if (this.loaded_local_file && this.local_workspace) {
-                this.local_workspace.dispose();
+                this.local_workspace.dispose(true);
                 this.loaded_local_file = null;
             }
         } else if (this.drop_zone) {
@@ -166,16 +167,19 @@ export default class LoadModalStore {
         if (this.tab_name === this.TAB_RECENT && this.selected_workspace) {
             this.previewWorkspace(this.selected_workspace.id);
         }
+
+        this.setShouldRerenderTabs(true);
     }
 
     @action.bound
     onLoadModalClose() {
         if (this.preview_workspace) {
-            this.preview_workspace.dispose();
+            this.preview_workspace.dispose(true);
         }
 
         this.setActiveTabIndex(0); // Reset to first tab.
         this.setLoadedLocalFile(null);
+        this.setShouldRerenderTabs(false);
     }
 
     @action.bound
@@ -211,8 +215,6 @@ export default class LoadModalStore {
                 readOnly: true,
                 scrollbars: true,
             });
-        } else {
-            this.recent_workspace.clear();
         }
 
         load({ block_string: this.selected_workspace.xml, drop_event: {}, workspace: this.recent_workspace });
@@ -236,6 +238,11 @@ export default class LoadModalStore {
     @action.bound
     setSelectedWorkspaceId(selected_workspace_id) {
         this.selected_workspace_id = selected_workspace_id;
+    }
+
+    @action.bound
+    setShouldRerenderTabs(should_rerender_tabs) {
+        this.should_rerender_tabs = should_rerender_tabs;
     }
 
     @action.bound
@@ -297,6 +304,7 @@ export default class LoadModalStore {
                 load_options.workspace = Blockly.derivWorkspace;
                 load_options.file_name = file_name;
             }
+
             load(load_options);
         });
         reader.readAsText(file);

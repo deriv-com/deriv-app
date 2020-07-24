@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Loading } from '@deriv/components';
 import { Channel, SendBirdProvider } from 'sendbird-uikit';
-// import { getShortNickname, generateHexColourFromNickname } from 'Utils/string';
+import { getShortNickname, generateHexColourFromNickname } from 'Utils/string';
 import 'sendbird-uikit/dist/index.css';
 
 const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) => {
@@ -11,27 +11,28 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
         const interval_header = setInterval(() => {
             const el_sendbird_conversation = document.querySelector('.sendbird-conversation');
             const el_chat_title = document.querySelector('.sendbird-chat-header__title');
-            // const el_chat_avatars = document.getElementsByClassName('sendbird-avatar');
+            const el_chat_avatar = document.querySelector('.sendbird-avatar');
 
             if (el_chat_title) {
                 if (el_chat_title.innerText !== nickname) {
                     el_chat_title.innerText = nickname;
-                    el_sendbird_conversation.setAttribute('style', 'display: flex;');
-                    setIsLoading(false);
                 } else {
                     return;
                 }
             }
 
-            // if (el_chat_avatars) {
-            //     const short_name = getShortNickname(nickname);
-            //     Array.from(el_chat_avatars).map(element => {
-            //         if (element.innerText !== short_name) {
-            //             element.innerText = short_name;
-            //             element.style.backgroundColor = generateHexColourFromNickname(nickname);
-            //         }
-            //     });
-            // }
+            if (el_chat_avatar) {
+                const short_name = 'CS';
+                console.log(el_chat_avatar.innerText);
+                // el_chat_avatar.innerText = short_name;
+                Array.from(el_chat_avatar).forEach(element => {
+                    //     console.log((element.innerText = short_name));
+                    if (!element.innerText) {
+                        element.innerText = short_name;
+                        //     element.style.backgroundColor = generateHexColourFromNickname(nickname);
+                    }
+                });
+            }
 
             const new_character_count_class = 'sendbird-chat-footer--textarea__character-count';
 

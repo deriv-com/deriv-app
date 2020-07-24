@@ -221,7 +221,7 @@ const ModalContent = ({ is_eu, is_eu_country, is_logged_in }) => (
                         {Object.keys(row).map(
                             (col, j) =>
                                 (j !== 3 ||
-                                    (j == 3 && ((!is_logged_in && !is_eu_country) || (is_logged_in && !is_eu)))) && (
+                                    (j === 3 && ((!is_logged_in && !is_eu_country) || (is_logged_in && !is_eu)))) && (
                                     <Table.Cell key={j} fixed={j === 0}>
                                         {row[col]}
                                     </Table.Cell>

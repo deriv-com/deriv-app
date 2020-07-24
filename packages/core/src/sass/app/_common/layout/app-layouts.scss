@@ -199,6 +199,12 @@
     }
 }
 
+/** @define popup-root */
+.popup-root {
+    position: absolute;
+    z-index: 9999;
+}
+
 /** @define contract */
 .contract {
     &--enter {

@@ -1,12 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Div100vhContainer, Tabs, Modal, Money, RadioGroup, Popover } from '@deriv/components';
-import { connect } from 'Stores/connect';
+import { Div100vhContainer, Tabs, Modal, Money, RadioGroup, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
 import ToastErrorPopup from 'Modules/Trading/Containers/toast-error-popup.jsx';
 import 'Sass/app/modules/trading-mobile.scss';
-import ToastInfoPopup from '../../Components/Form/TradeParams/toast-info-popup.jsx';
 
 const MultiplierTradeParamsModal = ({ is_open, enableApp, disableApp, toggleModal, form_components }) => {
     // Fix to prevent iOS from zooming in erratically on quick taps
@@ -73,10 +72,11 @@ const TradeParamsMobile = ({
     multiplier,
     toggleModal,
     isVisible,
+    is_purchase_enabled,
     multiplier_range_list,
     onChange,
+    addToast,
 }) => {
-    const [tab_idx, setTabIdx] = React.useState(0);
     const [stake_value, setStakeValue] = React.useState(amount);
     const [has_amount_error, setAmountError] = React.useState(false);
 
@@ -132,52 +132,66 @@ const TradeParamsMobile = ({
         });
     };
 
+    const showCommissionToast = () => {
+        const text = (
+            <Localize
+                i18n_default_text='<0>{{commission_percentage}}%</0> of (<1/> * {{multiplier}})'
+                values={{ commission_percentage, multiplier }}
+                components={[<span className='bold' key={0} />, <Money key={1} amount={amount} currency={currency} />]}
+            />
+        );
+
+        addToast({
+            key: 'multiplier_commission',
+            content: text,
+            type: 'info',
+        });
+    };
+
+    const showStakeToast = () => {
+        const text = (
+            <Localize
+                i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to <0/>.'
+                components={[<Money key={0} amount={stake_value} currency={currency} />]}
+            />
+        );
+
+        addToast({
+            key: 'multiplier_stake',
+            content: text,
+            type: 'info',
+        });
+    };
+
+    const showMultiplierToast = () => {
+        const text = localize('Your profit and loss are multiplied by this amount.');
+
+        addToast({
+            key: 'multiplier',
+            content: text,
+            type: 'info',
+        });
+    };
+
     const commission_percentage = Number((commission * 100) / (multiplier * amount)).toFixed(4);
 
-    const commision_popover = (
+    const commission_message = (
         <div className='trade-params__multiplier-commission-tooltip'>
             <Localize
                 i18n_default_text='Commission: <0/>'
                 components={[<Money key={0} amount={commission} currency={currency} />]}
             />
-            <Popover
-                alignment='top'
-                id='dt_multiplier__tooltip'
-                icon='info'
-                disable_message_icon={true}
-                message={
-                    <Localize
-                        i18n_default_text='<0>{{commission_percentage}}%</0> of (<1/> * {{multiplier}})'
-                        values={{ commission_percentage, multiplier }}
-                        components={[
-                            <span className='bold' key={0} />,
-                            <Money key={1} amount={amount} currency={currency} />,
-                        ]}
-                    />
-                }
-                relative_render
-            />
+            <Icon icon='IcInfoOutline' onClick={showCommissionToast} />
         </div>
     );
 
     return (
-        <Tabs active_index={tab_idx} className='trade-params__multiplier-tabs' onTabItemClick={setTabIdx} top>
+        <Tabs className='trade-params__multiplier-tabs' top>
             {isVisible('amount') && (
                 <div header_content={getHeaderContent('amount')}>
-                    <ToastInfoPopup
-                        className='multiplier-trade-info'
-                        portal_id='modal_root'
-                        message={
-                            <p>
-                                <Localize
-                                    i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to your stake value. e.g - <0/>.'
-                                    components={[<Money key={0} amount={amount} currency={currency} />]}
-                                />
-                            </p>
-                        }
-                        is_open={tab_idx === 0}
-                        timeout={5000}
-                    />
+                    <div className='trade-params__multiplier-icinfo-wrapper'>
+                        <Icon icon='IcInfoOutline' onClick={showStakeToast} />
+                    </div>
                     <AmountMobile
                         toggleModal={toggleModal}
                         amount_tab_idx={0}
@@ -185,18 +199,14 @@ const TradeParamsMobile = ({
                         setAmountError={setAmountError}
                         stake_value={stake_value}
                     />
-                    {commision_popover}
+                    {commission_message}
                 </div>
             )}
             {isVisible('multiplier') && (
                 <div header_content={getHeaderContent('multiplier')}>
-                    <ToastInfoPopup
-                        className='multiplier-trade-info'
-                        portal_id='modal_root'
-                        message={localize('Your profit and loss are multiplied by this amount.')}
-                        is_open={tab_idx === 1}
-                        timeout={3500}
-                    />
+                    <div className='trade-params__multiplier-icinfo-wrapper'>
+                        <Icon icon='IcInfoOutline' onClick={showMultiplierToast} />
+                    </div>
                     <RadioGroup
                         className='trade-params__multiplier-radio-group'
                         name='trade-params__multiplier-radio'
@@ -208,18 +218,20 @@ const TradeParamsMobile = ({
                         selected={!Number.isNaN(multiplier) ? multiplier.toString() : ''}
                         onToggle={onChangeMultiplier}
                     />
-                    {commision_popover}
+                    {is_purchase_enabled && commission_message}
                 </div>
             )}
         </Tabs>
     );
 };
 
-const TradeParamsMobileWrapper = connect(({ modules }) => ({
+const TradeParamsMobileWrapper = connect(({ ui, modules }) => ({
     amount: modules.trade.amount,
     currency: modules.trade.currency,
     commission: modules.trade.commission,
     multiplier: modules.trade.multiplier,
     multiplier_range_list: modules.trade.multiplier_range_list,
+    is_purchase_enabled: modules.trade.is_purchase_enabled,
     onChange: modules.trade.onChange,
+    addToast: ui.addToast,
 }))(TradeParamsMobile);

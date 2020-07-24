@@ -110,6 +110,7 @@ export default class UIStore extends BaseStore {
     @observable should_show_toast_error = false;
     @observable mobile_toast_error = '';
     @observable mobile_toast_timeout = 1500;
+    @observable.shallow toasts = [];
 
     @observable is_mt5_page = false;
     @observable is_nativepicker_visible = false;
@@ -586,6 +587,26 @@ export default class UIStore extends BaseStore {
     setToastErrorMessage(msg, timeout = 1500) {
         this.mobile_toast_timeout = timeout;
         this.mobile_toast_error = msg;
+    }
+
+    @action.bound
+    addToast(toast_config) {
+        if (toast_config.key && !this.toasts.some(t => t.key === toast_config.key)) {
+            toast_config.timeout = toast_config.timeout || 3500;
+            if (toast_config.is_bottom) {
+                this.toasts.push(toast_config);
+            } else {
+                this.toasts.unshift(toast_config);
+            }
+        }
+    }
+
+    @action.bound
+    removeToast(key) {
+        const index = this.toasts.findIndex(t => t.key === key);
+        if (index > -1) {
+            this.toasts.splice(index, 1);
+        }
     }
 
     @action.bound

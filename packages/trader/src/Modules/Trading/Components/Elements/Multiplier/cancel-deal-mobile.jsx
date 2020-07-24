@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, RadioGroup, Popover, Dialog } from '@deriv/components';
+import { Checkbox, RadioGroup, Dialog, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Contract/Helpers/multiplier';
@@ -46,6 +46,7 @@ const DealCancellationWarningDialog = connect(({ ui }) => ({
 }))(DealCancellationWarning);
 
 const CancelDeal = ({
+    addToast,
     has_cancellation,
     has_take_profit,
     has_stop_loss,
@@ -60,6 +61,17 @@ const CancelDeal = ({
         const should_show_popover = (has_take_profit || has_stop_loss) && should_show_cancellation_warning;
         if (should_show_popover) setDealCancelWarningVisibility(should_show_popover);
         return !should_show_popover;
+    };
+
+    const showToast = () => {
+        addToast({
+            key: 'deal_cancellation',
+            content: localize(
+                'Allows you to cancel your trade within a chosen time frame should the market move against your favour.'
+            ),
+            type: 'info',
+            is_bottom: true,
+        });
     };
 
     return (
@@ -85,15 +97,7 @@ const CancelDeal = ({
                         label={localize('Deal cancellation')}
                         defaultChecked={has_cancellation}
                     />
-                    <Popover
-                        alignment='bottom'
-                        icon='info'
-                        id='dt_cancellation-checkbox__tooltip'
-                        message={localize(
-                            'Allows you to cancel your trade within a chosen time frame should the market move against your favour.'
-                        )}
-                        relative_render
-                    />
+                    <Icon icon='IcInfoOutline' onClick={showToast} />
                 </div>
                 {has_cancellation && (
                     <React.Fragment>
@@ -116,6 +120,7 @@ const CancelDeal = ({
 };
 
 export default connect(({ ui, modules }) => ({
+    addToast: ui.addToast,
     has_cancellation: modules.trade.has_cancellation,
     has_take_profit: modules.trade.has_take_profit,
     has_stop_loss: modules.trade.has_stop_loss,

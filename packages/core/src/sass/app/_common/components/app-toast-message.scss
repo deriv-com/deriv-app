@@ -30,9 +30,6 @@
     align-items: center;
 
     &__message {
-        display: flex;
-        align-items: center;
-        justify-content: center;
         min-height: 34px;
         padding: 0.4rem 0.8rem;
         @include typeface(--paragraph-center-normal-black);

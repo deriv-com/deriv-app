@@ -6,12 +6,10 @@ export default class LoadModalStore {
     constructor(root_store) {
         this.root_store = root_store;
 
-        // After index change, initialise workspaces.
         reaction(
             () => this.active_index,
             () => this.onActiveIndexChange()
         );
-        // On load modal open re-populate saved workspaces.
         reaction(
             () => this.is_load_modal_open,
             is_load_modal_open => {
@@ -24,6 +22,14 @@ export default class LoadModalStore {
         );
     }
 
+    TAB_LOCAL = 'local_tab';
+    TAB_GOOGLE = 'google_tab';
+    TAB_RECENT = 'recent_tab';
+
+    recent_workspace;
+    local_workspace;
+    drop_zone;
+
     @observable active_index = 0;
     @observable is_load_modal_open = false;
     @observable is_explanation_expand = false;
@@ -31,14 +37,6 @@ export default class LoadModalStore {
     @observable loaded_local_file = null;
     @observable recent_workspaces = [];
     @observable selected_workspace_id = undefined;
-
-    recent_workspace;
-    local_workspace;
-    drop_zone;
-
-    TAB_LOCAL = 'local_tab';
-    TAB_GOOGLE = 'google_tab';
-    TAB_RECENT = 'recent_tab';
 
     @computed
     get preview_workspace() {

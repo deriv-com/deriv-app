@@ -68,11 +68,9 @@ export default connect(({ client, modules, ui }) => ({
 const TradeParamsMobile = ({
     amount,
     currency,
-    commission,
     multiplier,
     toggleModal,
     isVisible,
-    is_purchase_enabled,
     multiplier_range_list,
     onChange,
     addToast,
@@ -132,22 +130,6 @@ const TradeParamsMobile = ({
         });
     };
 
-    const showCommissionToast = () => {
-        const text = (
-            <Localize
-                i18n_default_text='<0>{{commission_percentage}}%</0> of (<1/> * {{multiplier}})'
-                values={{ commission_percentage, multiplier }}
-                components={[<span className='bold' key={0} />, <Money key={1} amount={amount} currency={currency} />]}
-            />
-        );
-
-        addToast({
-            key: 'multiplier_commission',
-            content: text,
-            type: 'info',
-        });
-    };
-
     const showStakeToast = () => {
         const text = (
             <Localize
@@ -173,18 +155,6 @@ const TradeParamsMobile = ({
         });
     };
 
-    const commission_percentage = Number((commission * 100) / (multiplier * amount)).toFixed(4);
-
-    const commission_message = (
-        <div className='trade-params__multiplier-commission-tooltip'>
-            <Localize
-                i18n_default_text='Commission: <0/>'
-                components={[<Money key={0} amount={commission} currency={currency} />]}
-            />
-            <Icon icon='IcInfoOutline' onClick={showCommissionToast} />
-        </div>
-    );
-
     return (
         <Tabs className='trade-params__multiplier-tabs' top>
             {isVisible('amount') && (
@@ -199,7 +169,6 @@ const TradeParamsMobile = ({
                         setAmountError={setAmountError}
                         stake_value={stake_value}
                     />
-                    {commission_message}
                 </div>
             )}
             {isVisible('multiplier') && (
@@ -218,7 +187,6 @@ const TradeParamsMobile = ({
                         selected={!Number.isNaN(multiplier) ? multiplier.toString() : ''}
                         onToggle={onChangeMultiplier}
                     />
-                    {is_purchase_enabled && commission_message}
                 </div>
             )}
         </Tabs>
@@ -228,10 +196,8 @@ const TradeParamsMobile = ({
 const TradeParamsMobileWrapper = connect(({ ui, modules }) => ({
     amount: modules.trade.amount,
     currency: modules.trade.currency,
-    commission: modules.trade.commission,
     multiplier: modules.trade.multiplier,
     multiplier_range_list: modules.trade.multiplier_range_list,
-    is_purchase_enabled: modules.trade.is_purchase_enabled,
     onChange: modules.trade.onChange,
     addToast: ui.addToast,
 }))(TradeParamsMobile);

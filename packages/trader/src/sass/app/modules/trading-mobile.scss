@@ -176,10 +176,10 @@
             .dc-tabs__content {
                 display: flex;
                 flex-direction: column;
-                min-height: 415px;
+                min-height: 400px;
 
                 @media only screen and (max-height: 480px) {
-                    min-height: 375px;
+                    min-height: 360px;
                 }
             }
         }
@@ -328,20 +328,6 @@
                 line-height: 1.4rem;
                 text-align: center;
                 color: var(--text-general);
-            }
-            &-commission-tooltip {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin-bottom: 1.6rem;
-                color: var(--text-general);
-                position: absolute;
-                width: 100%;
-                bottom: 0;
-
-                .dc-icon {
-                    margin-left: 0.5rem;
-                }
             }
             &-limit-orders {
                 .trade-container__fieldset {

@@ -302,11 +302,13 @@ export default class ClientStore extends BaseStore {
         return ClientBase.shouldAcceptTnc(this.account_settings);
     }
 
+    @computed
     get is_financial_information_incomplete() {
         if (!this.account_status.status) return false;
         return this.account_status.status.some(status => status === 'financial_information_not_complete');
     }
 
+    @computed
     get is_trading_experience_incomplete() {
         if (!this.account_status.status) return false;
         return this.account_status.status.some(status => status === 'trading_experience_not_complete');

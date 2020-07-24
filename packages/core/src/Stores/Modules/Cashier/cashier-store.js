@@ -116,10 +116,6 @@ export default class CashierStore extends BaseStore {
     @observable p2p_notification_count = 0;
     @observable is_p2p_advertiser = false;
     @observable cashier_route_tab_index = 0;
-    @observable is_withdrawal_locked = false;
-    @observable is_cashier_locked = false;
-    @observable is_deposit_locked = false;
-    @observable is_transfer_locked = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -289,49 +285,60 @@ export default class CashierStore extends BaseStore {
             this.setSessionTimeout(false);
             this.setTimeoutCashierUrl();
         }
-        await BinarySocket.wait('get_account_status');
-        this.checkCashierLock();
-        if (this.active_container === this.config.deposit.container) {
-            this.checkDepositLock();
-        }
-        if (this.active_container === this.config.withdraw.container) {
-            this.checkWithdrawalLock();
-        }
-        if (this.active_container === this.config.account_transfer.container) {
-            this.checkTransferLock();
-        }
     }
 
-    @action.bound
-    checkCashierLock() {
-        this.is_cashier_locked = this.root_store.client.account_status.status.some(
-            status => status === 'cashier_locked'
+    @computed
+    is_cashier_locked() {
+        if (!this.root_store.client.account_status) return false;
+        const { status } = this.root_store.client.account_status;
+
+        return status.some(status_name => status_name === 'cashier_locked');
+    }
+
+    @computed
+    is_deposit_locked() {
+        const {
+            is_authentication_needed,
+            is_tnc_needed,
+            is_financial_account,
+            is_financial_information_incomplete,
+            is_trading_experience_incomplete,
+            account_status,
+        } = this.root_store.client;
+
+        if (!account_status) return false;
+        const need_financial_assessment =
+            is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
+
+        // is_authentication_needed return integer instead of boolean, it will make the proptypes failed
+        return !!is_authentication_needed || is_tnc_needed || need_financial_assessment;
+    }
+    @computed
+    is_transfer_locked() {
+        const {
+            is_financial_account,
+            is_financial_information_incomplete,
+            is_trading_experience_incomplete,
+            account_status,
+        } = this.root_store.client;
+
+        if (!account_status) return false;
+
+        const need_financial_assessment =
+            is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
+
+        return need_financial_assessment;
+    }
+    @computed
+    is_withdrawal_locked() {
+        if (!this.root_store.client.account_status) return false;
+        const { status, authentication } = this.root_store.client.account_status;
+        const need_poi = authentication.needs_verification.includes('identity');
+        const has_withdrawal_lock_status = status.some(status_name =>
+            /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
         );
-    }
 
-    @action.bound
-    checkDepositLock() {
-        this.is_deposit_locked =
-            !!this.root_store.client.is_authentication_needed ||
-            this.root_store.client.is_tnc_needed ||
-            (this.root_store.client.is_financial_account &&
-                (this.root_store.client.is_financial_information_incomplete ||
-                    this.root_store.client.is_trading_experience_incomplete));
-    }
-    @action.bound
-    checkTransferLock() {
-        this.is_transfer_locked =
-            this.root_store.client.is_financial_account &&
-            (this.root_store.client.is_financial_information_incomplete ||
-                this.root_store.client.is_trading_experience_incomplete);
-    }
-    @action.bound
-    checkWithdrawalLock() {
-        const need_poi = this.root_store.client.account_status.authentication.needs_verification.includes('identity');
-        this.is_withdrawal_locked =
-            this.root_store.client.account_status.status.some(status =>
-                /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status)
-            ) || need_poi;
+        return has_withdrawal_lock_status || need_poi;
     }
 
     @action.bound

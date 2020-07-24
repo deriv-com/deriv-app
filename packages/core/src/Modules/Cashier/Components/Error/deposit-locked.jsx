@@ -61,7 +61,7 @@ const DepositsLocked = ({
                   {
                       content: (
                           <Localize
-                              i18n_default_text='Accept our <0>updated Terms and Conditions</0>'
+                              i18n_default_text='Accept our updated <0>terms and conditions</0>'
                               components={[
                                   <a
                                       key={0}

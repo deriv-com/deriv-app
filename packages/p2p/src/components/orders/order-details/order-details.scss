@@ -91,13 +91,19 @@
                     }
 
                     &-avatar {
-                        display: flex;
-                        background-color: #0808e0;
+                        display: table;
                         width: 40px !important;
                         height: 40px !important;
-                        text-align: center;
-                        font-size: 16px;
                         color: var(--text-colored-background);
+                        &-text {
+                            display: table-cell;
+                            position: relative;
+                            text-align: center;
+                            font-size: 14px;
+                            width: 40px;
+                            height: 20px;
+                            vertical-align: middle;
+                        }
                         &-img {
                             display: none;
                         }
@@ -218,9 +224,10 @@
                         }
 
                         &__subtitle {
-                            position: relative;
-                            left: -27px;
-                            top: 20px;
+                            display: flex;
+                            align-self: flex-end;
+                            position: absolute;
+                            padding-left: 56px;
                             color: var(--text-less-prominent);
                         }
                     }

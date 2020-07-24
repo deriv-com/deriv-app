@@ -14,24 +14,21 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
             const el_chat_avatar = document.querySelector('.sendbird-avatar');
 
             if (el_chat_title) {
-                if (el_chat_title.innerText !== nickname) {
-                    el_chat_title.innerText = nickname;
-                } else {
-                    return;
-                }
-            }
+                if (/^Chat about order [0-9]+$/.test(el_chat_title.innerText)) {
+                    const short_name = getShortNickname(nickname);
+                    const chat_header_avatar = document.createElement('div');
 
-            if (el_chat_avatar) {
-                const short_name = 'CS';
-                console.log(el_chat_avatar.innerText);
-                // el_chat_avatar.innerText = short_name;
-                Array.from(el_chat_avatar).forEach(element => {
-                    //     console.log((element.innerText = short_name));
-                    if (!element.innerText) {
-                        element.innerText = short_name;
-                        //     element.style.backgroundColor = generateHexColourFromNickname(nickname);
-                    }
-                });
+                    el_chat_title.innerText = nickname;
+
+                    chat_header_avatar.innerText = short_name;
+                    el_chat_avatar.appendChild(chat_header_avatar);
+                    el_chat_avatar.style.backgroundColor = generateHexColourFromNickname(nickname);
+                    chat_header_avatar.className = 'sendbird-avatar-text';
+
+                    el_sendbird_conversation.setAttribute('style', 'display: flex;');
+                    setIsLoading(false);
+                    clearInterval(interval_header);
+                }
             }
 
             const new_character_count_class = 'sendbird-chat-footer--textarea__character-count';

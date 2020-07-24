@@ -61,7 +61,9 @@ class ConfigPaymentAgentTransfer {
     @observable container = 'payment_agent_transfer';
     @observable error = new ConfigError();
     @observable is_payment_agent = false;
+    @observable is_try_transfer_successful = false;
     @observable is_transfer_successful = false;
+    @observable confirm = {};
     @observable receipt = {};
     @observable transfer_limit = {};
 }
@@ -186,7 +188,7 @@ export default class CashierStore extends BaseStore {
                 this.sortAccountsTransfer();
             }
 
-            if (!this.onramp.is_onramp_tab_visible && window.location.pathname.startsWith(routes.cashier_onramp)) {
+            if (!this.onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
 
@@ -217,7 +219,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setIsP2pVisible(is_p2p_visible) {
         this.is_p2p_visible = is_p2p_visible;
-        if (!is_p2p_visible && window.location.pathname.startsWith(routes.cashier_p2p)) {
+        if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
             this.root_store.common.routeTo(routes.cashier_deposit);
         }
     }
@@ -553,7 +555,7 @@ export default class CashierStore extends BaseStore {
         } else {
             this.config.payment_agent.filtered_list = this.config.payment_agent.list;
         }
-        if (!this.is_payment_agent_visible && window.location.pathname.startsWith(routes.cashier_pa)) {
+        if (!this.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
             this.root_store.common.routeTo(routes.cashier_deposit);
         }
     }
@@ -582,7 +584,7 @@ export default class CashierStore extends BaseStore {
             });
             if (
                 !payment_agent_list.paymentagent_list.list.length &&
-                window.location.pathname.startsWith(routes.cashier_pa)
+                window.location.pathname.endsWith(routes.cashier_pa)
             ) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
@@ -860,6 +862,11 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setIsTryTransferSuccessful(is_try_transfer_successful) {
+        this.config[this.active_container].is_try_transfer_successful = is_try_transfer_successful;
+    }
+
+    @action.bound
     setIsTransferSuccessful(is_transfer_successful) {
         this.config[this.active_container].is_transfer_successful = is_transfer_successful;
     }
@@ -979,7 +986,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsPaymentAgent(is_payment_agent) {
-        if (!is_payment_agent && window.location.pathname.startsWith(routes.cashier_pa_transfer)) {
+        if (!is_payment_agent && window.location.pathname.endsWith(routes.cashier_pa_transfer)) {
             this.root_store.common.routeTo(routes.cashier_deposit);
         }
         this.config.payment_agent_transfer.is_payment_agent = !!is_payment_agent;
@@ -992,6 +999,41 @@ export default class CashierStore extends BaseStore {
             max: max_withdrawal,
         };
     }
+
+    @action.bound
+    setConfirmationPaymentAgentTransfer({ amount, client_id, client_name, description }) {
+        this.config.payment_agent_transfer.confirm = {
+            amount,
+            client_id,
+            client_name,
+            description,
+        };
+    }
+
+    @action.bound
+    requestTryPaymentAgentTransfer = async ({ amount, currency, description, transfer_to }) => {
+        const payment_agent_transfer = await WS.authorized.paymentAgentTransfer({
+            amount,
+            currency,
+            description,
+            transfer_to,
+            dry_run: 1,
+        });
+        if (+payment_agent_transfer.paymentagent_transfer === 2) {
+            // show confirmation screen
+            this.setConfirmationPaymentAgentTransfer({
+                client_id: transfer_to,
+                client_name: payment_agent_transfer.client_to_full_name,
+                amount,
+                description,
+            });
+            this.setIsTryTransferSuccessful(true);
+        } else {
+            this.setErrorMessage(payment_agent_transfer.error, this.resetPaymentAgentTransfer);
+        }
+
+        return payment_agent_transfer;
+    };
 
     @action.bound
     setReceiptPaymentAgentTransfer({ amount_transferred, client_id, client_name }) {
@@ -1017,6 +1059,13 @@ export default class CashierStore extends BaseStore {
                 client_name: payment_agent_transfer.client_to_full_name,
             });
             this.setIsTransferSuccessful(true);
+            this.setIsTryTransferSuccessful(false);
+            this.setConfirmationPaymentAgentTransfer({
+                amount: '',
+                client_id: '',
+                client_name: '',
+                description: '',
+            });
         } else {
             this.setErrorMessage(payment_agent_transfer.error, this.resetPaymentAgentTransfer);
         }

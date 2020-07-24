@@ -126,12 +126,10 @@ const SubmittedPage = withRouter(({ history }) => {
 
 class FinancialAssessment extends React.Component {
     is_mounted = false;
-    show_trading_experience =
-        (this.props.has_mt5_financial_session || this.props.is_financial_account) &&
-        this.props.is_trading_experience_incomplete;
     state = {
         is_loading: true,
         is_confirmation_visible: false,
+        has_trading_experience: false,
         show_form: true,
         income_source: '',
         employment_status: '',
@@ -142,16 +140,14 @@ class FinancialAssessment extends React.Component {
         net_income: '',
         estimated_worth: '',
         account_turnover: '',
-        ...(this.show_trading_experience && {
-            binary_options_trading_experience: '',
-            binary_options_trading_frequency: '',
-            cfd_trading_experience: '',
-            cfd_trading_frequency: '',
-            forex_trading_experience: '',
-            forex_trading_frequency: '',
-            other_instruments_trading_experience: '',
-            other_instruments_trading_frequency: '',
-        }),
+        binary_options_trading_experience: '',
+        binary_options_trading_frequency: '',
+        cfd_trading_experience: '',
+        cfd_trading_frequency: '',
+        forex_trading_experience: '',
+        forex_trading_frequency: '',
+        other_instruments_trading_experience: '',
+        other_instruments_trading_frequency: '',
     };
 
     componentDidMount() {
@@ -162,9 +158,17 @@ class FinancialAssessment extends React.Component {
             WS.authorized.storage.getFinancialAssessment().then((data) => {
                 // TODO: Find a better solution for handling no-op instead of using is_mounted flags
                 if (this.is_mounted) {
+                    const mt5_session_storage = sessionStorage.getItem('open_mt5_account_type');
+                    const has_mt5_financial_session = /labuan_financial_stp|labuan_advanced/.test(mt5_session_storage);
+                    const has_trading_experience =
+                        (has_mt5_financial_session || this.props.is_financial_account) &&
+                        this.props.is_trading_experience_incomplete;
                     const needs_financial_assessment =
-                        this.props.account_status.status.includes('financial_information_not_complete') ||
-                        this.props.is_high_risk;
+                        this.props.is_financial_information_incomplete ||
+                        this.props.is_high_risk ||
+                        has_trading_experience;
+
+                    this.setState({ has_trading_experience });
 
                     if (data.error) {
                         this.setState({ api_initial_load_error: data.error.message });
@@ -250,6 +254,7 @@ class FinancialAssessment extends React.Component {
             is_btn_loading,
             is_submit_success,
             is_confirmation_visible,
+            has_trading_experience,
         } = this.state;
 
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
@@ -267,7 +272,7 @@ class FinancialAssessment extends React.Component {
                 net_income_list,
                 occupation_list,
                 source_of_wealth_list,
-                ...(this.show_trading_experience
+                ...(has_trading_experience
                     ? [
                           binary_options_trading_experience_list,
                           binary_options_trading_frequency_list,
@@ -295,7 +300,7 @@ class FinancialAssessment extends React.Component {
                         net_income,
                         estimated_worth,
                         account_turnover,
-                        ...(this.show_trading_experience && {
+                        ...(has_trading_experience && {
                             binary_options_trading_experience,
                             binary_options_trading_frequency,
                             cfd_trading_experience,
@@ -581,7 +586,7 @@ class FinancialAssessment extends React.Component {
                                             </MobileWrapper>
                                         </fieldset>
                                         {/* Trading experience fieldset */}
-                                        {this.show_trading_experience && (
+                                        {has_trading_experience && (
                                             <>
                                                 <FormSubHeader
                                                     title={localize('Trading experience')}
@@ -913,7 +918,7 @@ export default connect(({ client, ui }) => ({
     is_high_risk: client.is_high_risk,
     is_financial_account: client.is_financial_account,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
-    has_mt5_financial_session: client.has_mt5_financial_session,
+    is_financial_information_incomplete: client.is_financial_information_incomplete,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,
 }))(FinancialAssessment);

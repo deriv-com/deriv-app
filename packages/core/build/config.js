@@ -39,7 +39,7 @@ const copyConfig = base => [
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/**'), to: 'css', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/*.*'), to: 'js', flatten: true },
     {
-        from: path.resolve(__dirname, '../../translations/src/translations/*.*'),
+        from: path.resolve(__dirname, '../node_modules/@deriv/translations/src/translations/*.*'),
         to: 'public/i18n',
         flatten: true,
     },

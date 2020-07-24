@@ -2,7 +2,7 @@
   "name": "@deriv/bot-skeleton",
   "version": "1.0.0",
   "description": "Visual automation for Deriv.com",
-  "main": "dist/bot-skeleton.js",
+  "main": "src/app.js",
   "private": true,
   "jest": {
     "setupFilesAfterEnv": [

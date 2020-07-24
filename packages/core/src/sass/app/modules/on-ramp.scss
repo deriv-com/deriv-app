@@ -89,7 +89,7 @@
             height: 2px;
             width: 100%;
             background-color: var(--general-section-2);
-            margin: 1.6rem 0;
+            margin: 2.4rem 0;
         }
         &-disclaimer {
             &-title {
@@ -141,26 +141,15 @@
     }
 }
 
-.cashier__wrapper--is-mobile {
-    .on-ramp {
-        padding: 2.4rem;
-    }
-}
-
-.dc-modal {
-    &-body {
-        padding-top: 0.8rem;
-    }
-    &-header {
-        &__title {
-            padding-top: 2.4rem !important;
+.dc-modal__container {
+    &_on-ramp__modal {
+        > .dc-modal-body {
+            padding-top: 0.8rem;
         }
-    }
-    &__container {
-        width: 440px !important;
-
-        &_on-ramp__modal {
-            width: 628px !important;
+        > .dc-modal-header {
+            &__title {
+                padding-top: 2.4rem !important;
+            }
         }
     }
 }

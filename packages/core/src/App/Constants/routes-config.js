@@ -96,7 +96,7 @@ const modules = [
                     {
                         path: routes.self_exclusion,
                         component: Account,
-                        title: localize('Two-factor authentication'),
+                        title: localize('Self exclusion'),
                     },
                     {
                         path: routes.account_limits,
@@ -112,6 +112,11 @@ const modules = [
                         path: routes.api_token,
                         component: Account,
                         title: localize('API token'),
+                    },
+                    {
+                        path: routes.connected_apps,
+                        component: Account,
+                        title: localize('Connected apps'),
                     },
                     {
                         path: routes.two_factor_authentication,

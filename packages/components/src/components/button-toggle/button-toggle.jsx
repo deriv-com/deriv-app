@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Button from 'Components/button/button.jsx';
 import HighlightWrapper from './button-highlight-wrapper.jsx';
+import Button from '../button/button.jsx';
+import Counter from '../counter/counter.jsx';
 
 const ButtonToggle = ({ buttons_arr, className, id, is_animated, name, onChange, value, has_rounded_button }) => {
     const changeValue = selected_value => {
@@ -17,11 +18,13 @@ const ButtonToggle = ({ buttons_arr, className, id, is_animated, name, onChange,
             <Button
                 id={`dc_${val.value}_toggle_item`}
                 key={idx}
-                text={`${val.text.charAt(0).toUpperCase()}${val.text.slice(1)}`}
                 onClick={() => changeValue(val.value)}
                 className={menuClassNames}
                 is_button_toggle
-            />
+            >
+                {`${val.text.charAt(0).toUpperCase()}${val.text.slice(1)}`}
+                {!!val.count && <Counter className='dc-button-menu__counter' count={val.count} />}
+            </Button>
         );
     });
     return (

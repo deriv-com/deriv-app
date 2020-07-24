@@ -237,6 +237,7 @@ class AccountSwitcher extends React.Component {
     }
 
     get can_open_multi() {
+        if (this.props.available_crypto_currencies.length < 1 && !this.props.has_fiat) return true;
         return !!(!this.props.is_virtual && this.props.available_crypto_currencies.length > 0);
     }
 
@@ -558,6 +559,7 @@ AccountSwitcher.propTypes = {
     accounts: PropTypes.object,
     can_change_fiat_currency: PropTypes.bool,
     can_upgrade_to: PropTypes.string,
+    has_fiat: PropTypes.bool,
     has_any_real_account: PropTypes.bool,
     is_loading_mt5: PropTypes.bool,
     is_logged_in: PropTypes.bool,
@@ -590,6 +592,7 @@ const account_switcher = withRouter(
         is_mt5_allowed: client.is_mt5_allowed,
         is_pending_authentication: client.is_pending_authentication,
         is_virtual: client.is_virtual,
+        has_fiat: client.has_fiat,
         has_any_real_account: client.has_any_real_account,
         mt5_login_list: client.mt5_login_list,
         obj_total_balance: client.obj_total_balance,

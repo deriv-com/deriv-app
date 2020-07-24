@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { Icon, Checklist } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -10,14 +10,18 @@ const WithdrawalLocked = ({
     is_financial_account,
     is_financial_information_incomplete,
     is_trading_experience_incomplete,
-    history,
 }) => {
+    const history = useHistory();
     const items = [
-        (is_financial_information_incomplete || (is_financial_account && is_trading_experience_incomplete)) && {
-            content: localize('Complete the financial assessment form'),
-            status: 'action',
-            onClick: () => history.push(routes.financial_assessment),
-        },
+        ...(is_trading_experience_incomplete || (is_financial_account && is_financial_information_incomplete)
+            ? [
+                  {
+                      content: localize('Complete the financial assessment form'),
+                      status: 'action',
+                      onClick: () => history.push(routes.financial_assessment),
+                  },
+              ]
+            : []),
     ];
     return (
         <div className='cashier-locked'>
@@ -43,4 +47,4 @@ export default connect(({ client }) => ({
     is_financial_account: client.is_financial_account,
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
-}))(withRouter(WithdrawalLocked));
+}))(WithdrawalLocked);

@@ -1,18 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { Icon, Checklist } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const WithdrawalLocked = ({ account_status, history }) => {
+const WithdrawalLocked = ({ account_status }) => {
     const { identity, needs_verification } = account_status.authentication;
     const is_poi_needed = needs_verification.includes('identity');
     const has_poi_submitted = identity.status !== 'none';
     const poi_text = has_poi_submitted
         ? localize('Check proof of identity document verification status')
         : localize('Upload a proof of identity to verify your identity');
+    const history = useHistory();
 
     const items = [
         {
@@ -48,4 +49,4 @@ WithdrawalLocked.propTypes = {
 export default connect(({ client }) => ({
     account_status: client.account_status,
     is_financial_account: client.is_financial_account,
-}))(withRouter(WithdrawalLocked));
+}))(WithdrawalLocked);

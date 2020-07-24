@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { routes, getDerivComLink } from '@deriv/shared';
 import { Icon, Checklist } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
@@ -13,7 +13,6 @@ const DepositsLocked = ({
     is_financial_information_incomplete,
     is_trading_experience_incomplete,
     is_financial_account,
-    history,
     onMount,
 }) => {
     // handle authentication locked
@@ -28,6 +27,7 @@ const DepositsLocked = ({
     const poa_text = has_poa_submitted
         ? localize('Check proof of address document verification status')
         : localize('Upload a proof of address to verify your address');
+    const history = useHistory();
 
     // handle TnC
     const acceptTnc = async () => {
@@ -38,42 +38,56 @@ const DepositsLocked = ({
 
     // handle all deposits lock status
     const items = [
-        is_poi_needed && {
-            content: poi_text,
-            status: 'action',
-            onClick: () => history.push(routes.proof_of_identity),
-        },
-        is_poa_needed && {
-            content: poa_text,
-            status: 'action',
-            onClick: () => history.push(routes.proof_of_address),
-        },
-        is_tnc_needed && {
-            content: (
-                <Localize
-                    i18n_default_text='Accept our <0>updated Terms and Conditions</0>'
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            rel='noopener noreferrer'
-                            target='_blank'
-                            href={getDerivComLink('terms-and-conditions')}
-                        />,
-                    ]}
-                />
-            ),
-            status: 'button-action',
-            onClick: () => acceptTnc(),
-            button_text: localize('I accept'),
-        },
-        is_trading_experience_incomplete ||
-            (is_financial_account &&
-                is_financial_information_incomplete && {
-                    content: localize('Complete the financial assessment form'),
-                    status: 'action',
-                    onClick: () => history.push(routes.financial_assessment),
-                }),
+        ...(is_poi_needed
+            ? [
+                  {
+                      content: poi_text,
+                      status: 'action',
+                      onClick: () => history.push(routes.proof_of_identity),
+                  },
+              ]
+            : []),
+        ...(is_poa_needed
+            ? [
+                  {
+                      content: poa_text,
+                      status: 'action',
+                      onClick: () => history.push(routes.proof_of_address),
+                  },
+              ]
+            : []),
+        ...(is_tnc_needed
+            ? [
+                  {
+                      content: (
+                          <Localize
+                              i18n_default_text='Accept our <0>updated Terms and Conditions</0>'
+                              components={[
+                                  <a
+                                      key={0}
+                                      className='link'
+                                      rel='noopener noreferrer'
+                                      target='_blank'
+                                      href={getDerivComLink('terms-and-conditions')}
+                                  />,
+                              ]}
+                          />
+                      ),
+                      status: 'button-action',
+                      onClick: () => acceptTnc(),
+                      button_text: localize('I accept'),
+                  },
+              ]
+            : []),
+        ...(is_trading_experience_incomplete || (is_financial_account && is_financial_information_incomplete)
+            ? [
+                  {
+                      content: localize('Complete the financial assessment form'),
+                      status: 'action',
+                      onClick: () => history.push(routes.financial_assessment),
+                  },
+              ]
+            : []),
     ];
     return (
         <div className='cashier-locked'>
@@ -110,4 +124,4 @@ export default connect(({ client, modules }) => ({
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_financial_account: client.is_financial_account,
     onMount: modules.cashier.onMount,
-}))(withRouter(DepositsLocked));
+}))(DepositsLocked);

@@ -252,6 +252,8 @@ const LoadModal = ({
     is_load_modal_open,
     onMount,
     onUnmount,
+    rerenderTabs,
+    should_rerender_tabs,
     setActiveTabIndex,
     toggleLoadModal,
     is_mobile,
@@ -289,9 +291,17 @@ const LoadModal = ({
             toggleModal={toggleLoadModal}
             onMount={onMount}
             onUnmount={onUnmount}
+            onModalRendered={rerenderTabs}
             elements_to_ignore={[document.querySelector('.injectionDiv')]}
         >
-            <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top fit_content header_fit_content>
+            <Tabs
+                active_index={active_index}
+                onTabItemClick={setActiveTabIndex}
+                should_delay_render={should_rerender_tabs}
+                top
+                fit_content
+                header_fit_content
+            >
                 <div label={localize('Recent')}>
                     <Recent {...props} />
                 </div>
@@ -328,6 +338,8 @@ LoadModal.propTypes = {
     onZoomInOutClick: PropTypes.func,
     previewWorkspace: PropTypes.func,
     recent_files: PropTypes.array,
+    rerenderTabs: PropTypes.func,
+    should_rerender_tabs: PropTypes.bool,
     selected_file_id: PropTypes.string,
     setActiveTabIndex: PropTypes.func,
     toggleLoadModal: PropTypes.func,
@@ -355,6 +367,8 @@ export default connect(({ load_modal, google_drive, ui }) => ({
     onZoomInOutClick: load_modal.onZoomInOutClick,
     previewWorkspace: load_modal.previewWorkspace,
     recent_files: load_modal.recent_files,
+    rerenderTabs: load_modal.rerenderTabs,
+    should_rerender_tabs: load_modal.should_rerender_tabs,
     selected_file_id: load_modal.selected_file_id,
     setActiveTabIndex: load_modal.setActiveTabIndex,
     toggleLoadModal: load_modal.toggleLoadModal,

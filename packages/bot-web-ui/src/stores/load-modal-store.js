@@ -14,6 +14,7 @@ export default class LoadModalStore {
     @observable is_explanation_expand = false;
     @observable loaded_local_file = null;
     @observable is_open_button_loading = false;
+    @observable should_rerender_tabs = false;
     recent_workspace;
     local_workspace;
     drop_zone;
@@ -28,12 +29,17 @@ export default class LoadModalStore {
     }
 
     @action.bound
+    rerenderTabs() {
+        this.should_rerender_tabs = true;
+    }
+
+    @action.bound
     setActiveTabIndex(index) {
         this.active_index = index;
 
         // dispose workspace in recent tab when switch tab
         if (this.active_index !== 0 && this.recent_workspace && this.recent_workspace.rendered) {
-            this.recent_workspace.dispose();
+            this.recent_workspace.dispose(true);
         }
 
         // preview workspace when switch to recent tab
@@ -48,7 +54,7 @@ export default class LoadModalStore {
             this.local_workspace &&
             this.local_workspace.rendered
         ) {
-            this.local_workspace.dispose();
+            this.local_workspace.dispose(true);
             this.loaded_local_file = null;
         }
 
@@ -75,10 +81,11 @@ export default class LoadModalStore {
     @action.bound
     onUnmount() {
         if (this.recent_workspace && this.recent_workspace.rendered) {
-            this.recent_workspace.dispose();
+            this.recent_workspace.dispose(this.active_index === 0);
         }
         this.selected_file_id = null;
         this.setActiveTabIndex(0);
+        this.should_rerender_tabs = false;
     }
 
     @action.bound
@@ -102,8 +109,6 @@ export default class LoadModalStore {
                 readOnly: true,
                 scrollbars: true,
             });
-        } else {
-            this.recent_workspace.clear();
         }
 
         load({ block_string: xml_file, drop_event: {}, workspace: this.recent_workspace });
@@ -218,6 +223,7 @@ export default class LoadModalStore {
                 load_options.workspace = Blockly.derivWorkspace;
                 load_options.file_name = file_name;
             }
+
             load(load_options);
         });
         reader.readAsText(file);
@@ -233,7 +239,7 @@ export default class LoadModalStore {
 
     @action.bound
     closePreview() {
-        this.local_workspace.dispose();
+        this.local_workspace.dispose(true);
         this.loaded_local_file = null;
     }
     /** --------- Local Tab End --------- */

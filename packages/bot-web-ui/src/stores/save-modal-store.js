@@ -54,7 +54,7 @@ export default class SaveModalStore {
         }
 
         this.updateBotName(bot_name);
-        saveWorkspaceToRecent(is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
+        saveWorkspaceToRecent(xml, is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
         this.toggleSaveModal();
     }
 

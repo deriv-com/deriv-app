@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import {
     Button,
     Popover,
@@ -184,31 +185,48 @@ const MT5CompareAccountHint = () => (
     </div>
 );
 
-const ModalContent = () => (
+const ModalContent = ({ is_eu, is_eu_country, is_logged_in }) => (
     <div className='mt5-compare-accounts'>
         <Table fixed scroll_height={isMobile() ? '100%' : 'calc(100% - 130px)'}>
             <Table.Header>
-                <Table.Row className='mt5-compare-accounts__table-row'>
+                <Table.Row
+                    className={classNames('mt5-compare-accounts__table-row', {
+                        'mt5-compare-accounts__table-row-eu':
+                            (!is_logged_in && is_eu_country) || (is_logged_in && is_eu),
+                    })}
+                >
                     <Table.Head fixed />
                     <Table.Head>{localize('Synthetic')}</Table.Head>
                     <Table.Head>
                         {localize('Financial')}
                         <span className='mt5-compare-accounts__star'>*</span>
                     </Table.Head>
-                    <Table.Head>
-                        {localize('Financial STP')}
-                        <span className='mt5-compare-accounts__star'>*</span>
-                    </Table.Head>
+                    {((!is_logged_in && !is_eu_country) || (is_logged_in && !is_eu)) && (
+                        <Table.Head>
+                            {localize('Financial STP')}
+                            <span className='mt5-compare-accounts__star'>*</span>
+                        </Table.Head>
+                    )}
                 </Table.Row>
             </Table.Header>
             <Table.Body>
                 {compareAccountsData.map((row, i) => (
-                    <Table.Row key={i} className='mt5-compare-accounts__table-row'>
-                        {Object.keys(row).map((col, j) => (
-                            <Table.Cell key={j} fixed={j === 0}>
-                                {row[col]}
-                            </Table.Cell>
-                        ))}
+                    <Table.Row
+                        key={i}
+                        className={classNames('mt5-compare-accounts__table-row', {
+                            'mt5-compare-accounts__table-row-eu':
+                                (!is_logged_in && is_eu_country) || (is_logged_in && is_eu),
+                        })}
+                    >
+                        {Object.keys(row).map(
+                            (col, j) =>
+                                (j !== 3 ||
+                                    (j == 3 && ((!is_logged_in && !is_eu_country) || (is_logged_in && !is_eu)))) && (
+                                    <Table.Cell key={j} fixed={j === 0}>
+                                        {row[col]}
+                                    </Table.Cell>
+                                )
+                        )}
                     </Table.Row>
                 ))}
             </Table.Body>
@@ -219,7 +237,15 @@ const ModalContent = () => (
     </div>
 );
 
-const CompareAccountsModal = ({ disableApp, enableApp, is_compare_accounts_visible, toggleCompareAccounts }) => (
+const CompareAccountsModal = ({
+    is_eu,
+    is_eu_country,
+    is_logged_in,
+    disableApp,
+    enableApp,
+    is_compare_accounts_visible,
+    toggleCompareAccounts,
+}) => (
     <div className='mt5-compare-accounts-modal__wrapper'>
         <Button
             className='mt5-dashboard__welcome-message--button'
@@ -241,7 +267,7 @@ const CompareAccountsModal = ({ disableApp, enableApp, is_compare_accounts_visib
                     height='696px'
                     width='903px'
                 >
-                    <ModalContent />
+                    <ModalContent is_eu_country={is_eu_country} is_logged_in={is_logged_in} is_eu={is_eu} />
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -260,9 +286,12 @@ const CompareAccountsModal = ({ disableApp, enableApp, is_compare_accounts_visib
     </div>
 );
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ client, modules, ui }) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
     toggleCompareAccounts: modules.mt5.toggleCompareAccountsModal,
+    is_eu: client.is_eu,
+    is_eu_country: client.is_eu_country,
+    is_logged_in: client.is_logged_in,
 }))(CompareAccountsModal);

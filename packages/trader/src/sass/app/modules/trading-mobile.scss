@@ -176,10 +176,10 @@
             .dc-tabs__content {
                 display: flex;
                 flex-direction: column;
-                min-height: 380px;
+                min-height: 415px;
 
                 @media only screen and (max-height: 480px) {
-                    min-height: 340px;
+                    min-height: 375px;
                 }
             }
         }
@@ -339,15 +339,8 @@
                 width: 100%;
                 bottom: 0;
 
-                .dc-popover {
-                    &__wrapper {
-                        margin-left: 0.4rem;
-                    }
-                    @media only screen and (max-width: 340px) {
-                        &__bubble {
-                            font-size: 1rem;
-                        }
-                    }
+                .dc-icon {
+                    margin-left: 0.5rem;
                 }
             }
             &-limit-orders {
@@ -368,10 +361,19 @@
                     padding: 1.6rem 0rem;
                 }
             }
-            &-warning-label {
-                padding-top: 1.6rem;
-                line-height: 2rem;
-                font-size: 1.4rem;
+            &-icinfo-wrapper {
+                display: flex;
+                justify-content: flex-end;
+                padding: 1.6rem 3rem 0rem;
+            }
+            &-deal-cancellation-dialog {
+                .dc-checkbox {
+                    margin-top: 2.6rem;
+
+                    .dc-checkbox__box {
+                        margin-left: 0rem;
+                    }
+                }
             }
         }
     }

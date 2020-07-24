@@ -4,10 +4,10 @@ import { connect } from 'Stores/connect';
 import CashierContainer from '../Components/cashier-container.jsx';
 import Error from '../Components/Error/error.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
-import FundsProtection from '../Components/funds-protection.jsx';
+import CashierLocked from '../Components/Error/cashier-locked.jsx';
+import DepositsLocked from '../Components/Error/deposit-locked.jsx';
+import FundsProtection from '../Components/Error/funds-protection.jsx';
 import MaxTurnover from '../Components/Form/max-turnover-form.jsx';
-import DepositsLocked from '../Components/deposit-locked.jsx';
-import CashierLocked from '../Components/cashier-locked.jsx';
 
 class Deposit extends React.Component {
     componentDidMount() {

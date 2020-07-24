@@ -297,6 +297,9 @@ export default class CashierStore extends BaseStore {
         if (this.active_container === this.config.withdraw.container) {
             this.checkWithdrawalLock();
         }
+        if (this.active_container === this.config.account_transfer.container) {
+            this.checkTransferLock();
+        }
     }
 
     @action.bound

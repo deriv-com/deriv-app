@@ -14,6 +14,7 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
     };
 
     const validateFields = values => {
+        // TODO: [self-exclusion] handle shared self exclusion validation
         const errors = {};
         const is_number = /^\d+(\.\d+)?$/;
         const max_number = 9999999999999;

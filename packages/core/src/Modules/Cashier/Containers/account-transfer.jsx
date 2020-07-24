@@ -5,9 +5,10 @@ import AccountTransferNoAccount from '../Components/Error/account-transfer-no-ac
 import Error from '../Components/Error/error.jsx';
 import NoBalance from '../Components/Error/no-balance.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
+import CashierLocked from '../Components/Error/cashier-locked.jsx';
+import TransferLock from '../Components/Error/transfer-locked.jsx';
 import AccountTransferForm from '../Components/Form/account-transfer-form.jsx';
 import AccountTransferReceipt from '../Components/Receipt/account-transfer-receipt.jsx';
-import TransferLock from '../Components/transfer-locked.jsx';
 import Loading from '../../../templates/_common/components/loading.jsx';
 
 class AccountTransfer extends React.Component {
@@ -22,6 +23,9 @@ class AccountTransfer extends React.Component {
         }
         if (this.props.is_loading) {
             return <Loading className='cashier__loader' />;
+        }
+        if (this.props.is_cashier_locked) {
+            return <CashierLocked />;
         }
         if (this.props.is_transfer_lock) {
             return <TransferLock />;
@@ -53,6 +57,7 @@ AccountTransfer.propTypes = {
     error: PropTypes.object,
     has_no_account: PropTypes.bool,
     has_no_accounts_balance: PropTypes.bool,
+    is_cashier_locked: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_transfer_successful: PropTypes.bool,
     is_virtual: PropTypes.bool,
@@ -68,6 +73,7 @@ export default connect(({ client, modules }) => ({
     error: modules.cashier.config.account_transfer.error,
     has_no_account: modules.cashier.config.account_transfer.has_no_account,
     has_no_accounts_balance: modules.cashier.config.account_transfer.has_no_accounts_balance,
+    is_cashier_locked: modules.cashier.is_cashier_locked,
     is_loading: modules.cashier.is_loading,
     is_transfer_successful: modules.cashier.config.account_transfer.is_transfer_successful,
     is_transfer_lock: modules.cashier.is_transfer_lock,

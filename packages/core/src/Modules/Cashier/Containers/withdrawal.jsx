@@ -6,8 +6,8 @@ import SendEmail from '../Components/Email/send-email.jsx';
 import Error from '../Components/Error/error.jsx';
 import NoBalance from '../Components/Error/no-balance.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
-import WithdrawalLocked from '../Components/withdrawal-locked.jsx';
-import CashierLocked from '../Components/cashier-locked.jsx';
+import WithdrawalLocked from '../Components/Error/withdrawal-locked.jsx';
+import CashierLocked from '../Components/Error/cashier-locked.jsx';
 
 class Withdrawal extends React.Component {
     componentDidMount() {

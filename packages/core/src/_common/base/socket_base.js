@@ -232,13 +232,13 @@ const BinarySocketBase = (() => {
     const paymentAgentList = (country, currency) =>
         deriv_api.send({ paymentagent_list: country, ...(currency && { currency }) });
 
-    const paymentAgentWithdraw = ({ loginid, currency, amount, verification_code }) =>
+    const paymentAgentWithdraw = ({ loginid, currency, amount, verification_code, dry_run = 0 }) =>
         deriv_api.send({
             amount,
             currency,
             verification_code,
             paymentagent_withdraw: 1,
-            dry_run: 0,
+            dry_run,
             paymentagent_loginid: loginid,
         });
 

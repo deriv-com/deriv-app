@@ -1,26 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { Button, Icon, Money } from '@deriv/components';
-
-const Row = ({ label, value }) => (
-    <div className='payment-agent-transfer__confirm-row'>
-        <span>{label}</span>
-        {Array.isArray(value) ? (
-            <span>
-                {value.map((v, idx) => (
-                    <React.Fragment key={idx}>
-                        <strong>{v}</strong>
-                        <br />
-                    </React.Fragment>
-                ))}
-            </span>
-        ) : (
-            <strong>{value}</strong>
-        )}
-    </div>
-);
+import { Money } from '@deriv/components';
+import Confirm from '../confirm.jsx';
 
 const PaymentAgentTransferConfirm = ({
     amount,
@@ -32,31 +15,21 @@ const PaymentAgentTransferConfirm = ({
     transfer_to,
     transfer_to_name,
 }) => (
-    <div className='cashier__wrapper'>
-        <Icon icon='IcConfirmDetails' width='128' height='128' />
-        <h2 className='cashier__header payment-agent-transfer__confirm-header'>
-            <Localize i18n_default_text='Please confirm the transaction details in order to complete the transfer:' />
-        </h2>
-        <div className='payment-agent-transfer__confirm-column-wrapper'>
-            <div className='payment-agent-transfer__confirm-column'>
-                <Row label='Transfer from' value={loginid} />
-                <Row label='Transfer to' value={[transfer_to, transfer_to_name]} />
-                <Row label='Amount' value={<Money currency={currency} amount={amount} />} />
-                <Row label='Description' value={description} />
-            </div>
-        </div>
-        <div className='payment-agent-transfer__confirm-submit'>
-            <Button large text={localize('Back')} onClick={() => setIsTryTransferSuccessful(false)} secondary />
-            <Button
-                large
-                text={localize('Confirm')}
-                onClick={() => {
-                    requestPaymentAgentTransfer({ amount, currency, description, transfer_to });
-                }}
-                primary
-            />
-        </div>
-    </div>
+    <Confirm
+        data={[
+            { label: localize('Transfer from'), value: loginid },
+            { label: localize('Transfer to'), value: [transfer_to, transfer_to_name] },
+            { label: localize('Amount'), value: <Money currency={currency} amount={amount} /> },
+            { label: localize('Description'), value: description },
+        ]}
+        header={localize('Please confirm the transaction details in order to complete the transfer:')}
+        onClickBack={() => {
+            setIsTryTransferSuccessful(false);
+        }}
+        onClickConfirm={() => {
+            requestPaymentAgentTransfer({ amount, currency, description, transfer_to });
+        }}
+    />
 );
 
 PaymentAgentTransferConfirm.propTypes = {
@@ -66,7 +39,6 @@ PaymentAgentTransferConfirm.propTypes = {
     loginid: PropTypes.string,
     requestPaymentAgentTransfer: PropTypes.func,
     setIsTryTransferSuccessful: PropTypes.func,
-    setReceiptPaymentAgentTransfer: PropTypes.func,
     transfer_to: PropTypes.string,
     transfer_to_name: PropTypes.string,
 };
@@ -78,7 +50,6 @@ export default connect(({ client, modules }) => ({
     description: modules.cashier.config.payment_agent_transfer.confirm.description,
     requestPaymentAgentTransfer: modules.cashier.requestPaymentAgentTransfer,
     setIsTryTransferSuccessful: modules.cashier.setIsTryTransferSuccessful,
-    setReceiptPaymentAgentTransfer: modules.cashier.setReceiptPaymentAgentTransfer,
     transfer_to: modules.cashier.config.payment_agent_transfer.confirm.client_id,
     transfer_to_name: modules.cashier.config.payment_agent_transfer.confirm.client_name,
 }))(PaymentAgentTransferConfirm);

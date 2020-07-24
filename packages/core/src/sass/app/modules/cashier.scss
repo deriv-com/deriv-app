@@ -392,6 +392,52 @@
             }
         }
     }
+    &__confirm {
+        &-header {
+            margin-top: 1.4rem;
+            margin-bottom: 2.4rem;
+        }
+        &-column {
+            &-wrapper {
+                display: flex;
+                justify-content: center;
+
+                @include mobile {
+                    flex-direction: column;
+                }
+            }
+        }
+        &-row {
+            width: 40rem;
+            display: flex;
+            padding: 0.8rem 0;
+            font-size: 1.4rem;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--general-section-1);
+
+            :last-child {
+                text-align: right;
+                max-width: 50%;
+            }
+        }
+        &-submit {
+            margin: 2.4rem auto;
+            width: 40rem;
+            display: flex;
+            justify-content: flex-end;
+
+            > :not(:first-child) {
+                margin-left: 0.8rem;
+            }
+        }
+
+        @include mobile {
+            &-row,
+            &-submit {
+                width: 100%;
+            }
+        }
+    }
     /** @define cashier-error */
     &-error {
         &__icon {
@@ -1096,45 +1142,6 @@ div.payment-agent-transfer {
             }
         }
     }
-    &__confirm {
-        &-header {
-            margin-top: 1.4rem;
-            margin-bottom: 2.4rem;
-        }
-        &-column {
-            &-wrapper {
-                display: flex;
-                justify-content: center;
-
-                @include mobile {
-                    flex-direction: column;
-                }
-            }
-        }
-        &-row {
-            width: 40rem;
-            display: flex;
-            padding: 0.8rem 0;
-            font-size: 1.4rem;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--general-section-1);
-
-            :last-child {
-                text-align: right;
-                max-width: 50%;
-            }
-        }
-        &-submit {
-            margin: 2.4rem auto;
-            width: 40rem;
-            display: flex;
-            justify-content: flex-end;
-
-            > :not(:first-child) {
-                margin-left: 0.8rem;
-            }
-        }
-    }
     &__wrapper {
         & .cashier {
             &__transferred-details-wrapper {
@@ -1249,12 +1256,6 @@ div.payment-agent-transfer {
             &:not(:first-child) {
                 margin-left: unset;
                 margin-bottom: 5.3rem;
-            }
-        }
-        &__confirm {
-            &-row,
-            &-submit {
-                width: 100%;
             }
         }
     }

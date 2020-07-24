@@ -50,7 +50,9 @@ class ConfigPaymentAgent {
     @observable filtered_list = [];
     @observable is_name_selected = true;
     @observable is_withdraw = false;
+    @observable is_try_withdraw_successful = false;
     @observable is_withdraw_successful = false;
+    @observable confirm = {};
     @observable receipt = {};
     @observable selected_bank = bank_default_option[0].value;
     @observable supported_banks = bank_default_option;
@@ -599,8 +601,23 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setIsTryWithdrawSuccessful(is_try_withdraw_successful) {
+        this.config.payment_agent.is_try_withdraw_successful = is_try_withdraw_successful;
+    }
+
+    @action.bound
     setIsWithdrawSuccessful(is_withdraw_successful) {
         this.config.payment_agent.is_withdraw_successful = is_withdraw_successful;
+    }
+
+    @action.bound
+    setConfirmation({ amount, currency, loginid, payment_agent_name }) {
+        this.config.payment_agent.confirm = {
+            amount,
+            currency,
+            loginid,
+            payment_agent_name,
+        };
     }
 
     @action.bound
@@ -636,6 +653,29 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    async requestTryPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
+        const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
+            loginid,
+            currency,
+            amount,
+            verification_code,
+            dry_run: 1,
+        });
+        if (+payment_agent_withdraw.paymentagent_withdraw === 2) {
+            const selected_agent = this.config.payment_agent.agents.find(agent => agent.value === loginid);
+            this.setConfirmation({
+                amount,
+                currency,
+                loginid,
+                ...(selected_agent && { payment_agent_name: selected_agent.text }),
+            });
+            this.setIsTryWithdrawSuccessful(true);
+        } else {
+            this.setErrorMessage(payment_agent_withdraw.error, this.resetPaymentAgent);
+        }
+    }
+
+    @action.bound
     async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
         const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
             loginid,
@@ -659,6 +699,8 @@ export default class CashierStore extends BaseStore {
                 }),
             });
             this.setIsWithdrawSuccessful(true);
+            this.setIsTryWithdrawSuccessful(false);
+            this.setConfirmation({});
         } else {
             this.setErrorMessage(payment_agent_withdraw.error, this.resetPaymentAgent);
         }
@@ -1060,12 +1102,7 @@ export default class CashierStore extends BaseStore {
             });
             this.setIsTransferSuccessful(true);
             this.setIsTryTransferSuccessful(false);
-            this.setConfirmationPaymentAgentTransfer({
-                amount: '',
-                client_id: '',
-                client_name: '',
-                description: '',
-            });
+            this.setConfirmationPaymentAgentTransfer({});
         } else {
             this.setErrorMessage(payment_agent_transfer.error, this.resetPaymentAgentTransfer);
         }

@@ -400,15 +400,6 @@ export default class CashierStore extends BaseStore {
                     is_ask_uk_funds_protection: true,
                 };
                 break;
-            case 'ASK_AUTHENTICATE':
-                // TODO: handle ask authentication
-                break;
-            case 'ASK_FINANCIAL_RISK_APPROVAL':
-                // TODO: handle risk error
-                break;
-            case 'ASK_AGE_VERIFICATION':
-                // TODO: handle age error
-                break;
             case 'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET':
                 this.config[this.active_container].error = {
                     is_self_exclusion_max_turnover_set: true,

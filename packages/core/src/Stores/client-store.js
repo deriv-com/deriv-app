@@ -1358,7 +1358,6 @@ export default class ClientStore extends BaseStore {
     setDeviceData() {
         // Set client URL params on init
         const url_params = new URLSearchParams(window.location.search);
-        console.warn(url_params.get('affiliate_token'));
         const device_data = {
             ...(url_params.get('affiliate_token') && { affiliate_token: url_params.get('affiliate_token') }),
             ...(url_params.get('gclid_url') && { gclid_url: url_params.get('gclid_url') }),

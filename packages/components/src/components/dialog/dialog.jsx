@@ -82,7 +82,7 @@ class Dialog extends React.Component {
                                         has_effect
                                         text={cancel_button_text}
                                         onClick={this.handleCancel}
-                                        tertiary
+                                        secondary
                                         large
                                     />
                                 )}

@@ -261,12 +261,11 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async setActiveSymbols() {
-        const { active_symbols, error } =
-            // if SmartCharts has requested active_symbols, we wait for the response
-            this.should_refresh_active_symbols
-                ? await WS.wait('active_symbols')
-                : // else requests new active_symbols
-                  await WS.authorized.activeSymbols();
+        const { active_symbols, error } = this.should_refresh_active_symbols
+            ? // if SmartCharts has requested active_symbols, we wait for the response
+              await WS.wait('active_symbols')
+            : // else requests new active_symbols
+              await WS.authorized.activeSymbols();
         if (error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
             return;
@@ -306,7 +305,7 @@ export default class TradeStore extends BaseStore {
         await this.setActiveSymbols();
         runInAction(async () => {
             await WS.storage.contractsFor(this.symbol).then(async r => {
-                if (r.error && (r.error.code === 'InvalidSymbol' || r.error.code === 'InputValidationFailed')) {
+                if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
                     await this.resetRefresh();
                     await this.setActiveSymbols();
                     await pickDefaultSymbol();
@@ -923,7 +922,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async accountSwitcherListener() {
-        if (this.root_store.client.landing_company_shortcode === 'maltainvest') {
+        if (this.root_store.client.standpoint.maltainvest) {
             const { active_symbols } = await WS.authorized.activeSymbols();
             if (!active_symbols || !active_symbols.length) {
                 showDigitalOptionsUnavailableError(this.root_store.common.showError);

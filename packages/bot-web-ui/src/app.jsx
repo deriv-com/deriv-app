@@ -1,5 +1,6 @@
 import { reaction } from 'mobx';
 import React from 'react';
+import { showDigitalOptionsUnavailableError } from '@deriv/shared';
 import { runIrreversibleEvents, ApiHelpers, DBot, ServerTime } from '@deriv/bot-skeleton';
 import './public-path'; // Leave this here! OK boss!
 import Audio from './components/audio.jsx';
@@ -104,15 +105,20 @@ class App extends React.Component {
      * Register a reaction to switchaccount
      */
     registerOnAccountSwitch = () => {
-        const { client } = this.root_store.core;
-
+        const { client, common } = this.root_store.core;
+        if (client.landing_company_shortcode === 'maltainvest') {
+            showDigitalOptionsUnavailableError(common.showError, 'DBot');
+        }
         this.disposeSwitchAccountListener = reaction(
             () => client.switch_broadcast,
             switch_broadcast => {
                 if (!switch_broadcast) {
                     return;
                 }
-
+                if (client.landing_company_shortcode === 'maltainvest') {
+                    showDigitalOptionsUnavailableError(common.showError, 'DBot');
+                    return;
+                }
                 const { derivWorkspace: workspace } = Blockly;
                 const { active_symbols, contracts_for } = ApiHelpers.instance;
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { LinearProgress } from 'Components/linear-progress/linear-progress.jsx';
+import { LinearProgress } from './linear-progress.jsx';
 
 class LinearProgressContainer extends React.Component {
     constructor(props) {

@@ -1,3 +1,5 @@
+import { Formik, Field } from 'formik';
+import React from 'react';
 import {
     Autocomplete,
     AutoHeightWrapper,
@@ -9,11 +11,11 @@ import {
     ThemedScrollbars,
     SelectNative,
 } from '@deriv/components';
-import { Formik, Field } from 'formik';
-import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
+import { screen_height_sm_threshold } from 'App/Containers/RealAccountSignup/helpers/constants';
 
 const InputField = props => {
     return (
@@ -46,7 +48,10 @@ const getLocation = (location_list, value, type) => {
 class AddressDetails extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { has_fetched_states_list: false, address_state_to_display: '' };
+        this.state = {
+            has_fetched_states_list: false,
+            address_state_to_display: '',
+        };
         // TODO: Find a better solution for handling no-op instead of using is_mounted flags
         this.is_mounted = false;
     }
@@ -74,12 +79,17 @@ class AddressDetails extends React.Component {
         return this.state.has_fetched_states_list && this.props.states_list.length > 0;
     }
 
+    handleValidate = values => {
+        const { errors } = splitValidationResultTypes(this.props.validate(values));
+        return errors;
+    };
+
     render() {
-        const padding_bottom = window.innerHeight < 930 ? '10rem' : '12rem';
+        const padding_bottom = window.innerHeight < screen_height_sm_threshold ? '10rem' : '12rem';
         return (
             <Formik
                 initialValues={this.props.value}
-                validate={this.props.validate}
+                validate={this.handleValidate}
                 validateOnMount
                 onSubmit={(values, actions) => {
                     if (isDesktop() && values.address_state) {
@@ -93,7 +103,7 @@ class AddressDetails extends React.Component {
                 }}
             >
                 {({ handleSubmit, isSubmitting, errors, values, setFieldValue }) => (
-                    <AutoHeightWrapper default_height={200}>
+                    <AutoHeightWrapper default_height={200} height_offset={192}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer

@@ -39,9 +39,8 @@
             margin: 1.6rem 0 0.8rem;
         }
         p {
-            @include typeface(--paragraph-center-normal-black);
+            @include typeface(--paragraph-center-normal-prominent);
             text-transform: none;
-            color: var(--text-prominent);
             width: 80%;
             margin-bottom: 2.4rem;
         }
@@ -71,7 +70,7 @@
     }
 }
 
-.dc-modal-header__real-account-signup-modal {
+.dc-modal-header--real-account-signup-modal {
     border-bottom: 1px solid var(--general-section-1);
 }
 
@@ -83,9 +82,11 @@
     display: grid;
     grid-template-rows: 13rem minmax(10rem, 1fr);
     height: 100%;
-    overflow: auto;
     position: relative;
     width: 100%;
+    @include desktop {
+        overflow: auto;
+    }
     @include mobile {
         grid-template-rows: 7rem minmax(10rem, 1fr);
     }
@@ -313,6 +314,10 @@
         @include typeface(--title-left-bold-black);
         color: var(--text-prominent);
         text-align: center;
+    }
+    &__sub-title {
+        font-size: var(--text-size-xxs);
+        font-weight: normal;
     }
     @include tablet {
         form {

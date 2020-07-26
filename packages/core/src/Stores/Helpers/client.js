@@ -27,7 +27,11 @@ export const getMT5AccountDisplay = group => {
     let display_text = localize('MT5');
     if (/svg$/.test(value) || /malta$/.test(value)) {
         display_text = localize('Synthetic');
-    } else if (/vanuatu/.test(value) || /svg_(standard|financial)/.test(value) || /maltainvest_standard$/.test(value)) {
+    } else if (
+        /vanuatu/.test(value) ||
+        /svg_(standard|financial)/.test(value) ||
+        /maltainvest_financial$/.test(value)
+    ) {
         // TODO: [remove-standard-advanced] remove standard when API groups are updated
         display_text = localize('Financial');
     } else if (/labuan/.test(value)) {

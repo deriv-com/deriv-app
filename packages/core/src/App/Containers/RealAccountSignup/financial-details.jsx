@@ -1,10 +1,12 @@
-import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, ThemedScrollbars } from '@deriv/components';
 import { Formik } from 'formik';
 import React from 'react';
+import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, ThemedScrollbars } from '@deriv/components';
 import { FormSubHeader } from '@deriv/account';
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
+import { screen_height_sm_threshold } from 'App/Containers/RealAccountSignup/helpers/constants';
 import {
     AccountTurnover,
     BinaryOptionsTradingExperience,
@@ -93,108 +95,109 @@ const TradingExperience = ({
         />
     </React.Fragment>
 );
-class FinancialDetails extends React.Component {
-    handleCancel = values => {
-        this.props.onSave(this.props.index, values);
-        this.props.onCancel();
+
+const FinancialDetails = props => {
+    const padding_bottom = window.innerHeight < screen_height_sm_threshold ? '10rem' : '12rem';
+
+    const handleCancel = values => {
+        props.onSave(props.index, values);
+        props.onCancel();
     };
 
-    render() {
-        const padding_bottom = window.innerHeight < 930 ? '10rem' : '12rem';
-        return (
-            <Formik
-                initialValues={{ ...this.props.value }}
-                validate={this.props.validate}
-                onSubmit={(values, actions) => {
-                    this.props.onSubmit(this.props.index, values, actions.setSubmitting);
-                }}
-                validateOnMount
-            >
-                {({ handleSubmit, isSubmitting, errors, values, setFieldValue, handleChange, handleBlur, touched }) => {
-                    const shared_props = {
-                        values,
-                        handleChange,
-                        handleBlur,
-                        touched,
-                        errors,
-                        setFieldValue,
-                    };
+    const handleValidate = values => {
+        const { errors } = splitValidationResultTypes(props.validate(values));
+        return errors;
+    };
 
-                    return (
-                        <AutoHeightWrapper default_height={200}>
-                            {({ setRef, height }) => (
-                                <form ref={setRef} onSubmit={handleSubmit}>
-                                    <Div100vhContainer
-                                        className='details-form'
-                                        height_offset='199px'
-                                        is_disabled={isDesktop()}
+    return (
+        <Formik
+            initialValues={{ ...props.value }}
+            validate={handleValidate}
+            onSubmit={(values, actions) => {
+                props.onSubmit(props.index, values, actions.setSubmitting);
+            }}
+            validateOnMount
+        >
+            {({ handleSubmit, isSubmitting, errors, values, setFieldValue, handleChange, handleBlur, touched }) => {
+                const shared_props = {
+                    values,
+                    handleChange,
+                    handleBlur,
+                    touched,
+                    errors,
+                    setFieldValue,
+                };
+
+                return (
+                    <AutoHeightWrapper default_height={200}>
+                        {({ setRef, height }) => (
+                            <form ref={setRef} onSubmit={handleSubmit}>
+                                <Div100vhContainer
+                                    className='details-form'
+                                    height_offset='199px'
+                                    is_disabled={isDesktop()}
+                                >
+                                    <ThemedScrollbars
+                                        is_native={isMobile()}
+                                        autoHide={!(window.innerHeight < 890)}
+                                        height={height}
                                     >
-                                        <ThemedScrollbars
-                                            is_native={isMobile()}
-                                            autoHide={!(window.innerHeight < 890)}
-                                            height={height}
+                                        <div
+                                            className='details-form__elements  details-form__elements--wide'
+                                            style={{ paddingBottom: isDesktop() ? padding_bottom : null }}
                                         >
-                                            <div
-                                                className='details-form__elements  details-form__elements--wide'
-                                                style={{ paddingBottom: isDesktop() ? padding_bottom : null }}
-                                            >
-                                                <FinancialInformation
-                                                    shared_props={shared_props}
-                                                    income_source_enum={this.props.income_source_enum}
-                                                    employment_status_enum={this.props.employment_status_enum}
-                                                    employment_industry_enum={this.props.employment_industry_enum}
-                                                    occupation_enum={this.props.occupation_enum}
-                                                    source_of_wealth_enum={this.props.source_of_wealth_enum}
-                                                    education_level_enum={this.props.education_level_enum}
-                                                    net_income_enum={this.props.net_income_enum}
-                                                    estimated_worth_enum={this.props.estimated_worth_enum}
-                                                    account_turnover_enum={this.props.account_turnover_enum}
-                                                />
-                                                <TradingExperience
-                                                    shared_props={shared_props}
-                                                    forex_trading_experience_enum={
-                                                        this.props.forex_trading_experience_enum
-                                                    }
-                                                    forex_trading_frequency_enum={
-                                                        this.props.forex_trading_frequency_enum
-                                                    }
-                                                    binary_options_trading_experience_enum={
-                                                        this.props.binary_options_trading_experience_enum
-                                                    }
-                                                    binary_options_trading_frequency_enum={
-                                                        this.props.binary_options_trading_frequency_enum
-                                                    }
-                                                    cfd_trading_experience_enum={this.props.cfd_trading_experience_enum}
-                                                    cfd_trading_frequency_enum={this.props.cfd_trading_frequency_enum}
-                                                    other_instruments_trading_experience_enum={
-                                                        this.props.other_instruments_trading_experience_enum
-                                                    }
-                                                    other_instruments_trading_frequency_enum={
-                                                        this.props.other_instruments_trading_frequency_enum
-                                                    }
-                                                />
-                                            </div>
-                                        </ThemedScrollbars>
-                                    </Div100vhContainer>
-                                    <FormSubmitButton
-                                        is_disabled={
-                                            // eslint-disable-next-line no-unused-vars
-                                            isSubmitting || Object.keys(errors).length > 0
-                                        }
-                                        label={localize('Next')}
-                                        has_cancel
-                                        cancel_label={localize('Previous')}
-                                        onCancel={this.handleCancel.bind(this, values)}
-                                    />
-                                </form>
-                            )}
-                        </AutoHeightWrapper>
-                    );
-                }}
-            </Formik>
-        );
-    }
-}
+                                            <FinancialInformation
+                                                shared_props={shared_props}
+                                                income_source_enum={props.income_source_enum}
+                                                employment_status_enum={props.employment_status_enum}
+                                                employment_industry_enum={props.employment_industry_enum}
+                                                occupation_enum={props.occupation_enum}
+                                                source_of_wealth_enum={props.source_of_wealth_enum}
+                                                education_level_enum={props.education_level_enum}
+                                                net_income_enum={props.net_income_enum}
+                                                estimated_worth_enum={props.estimated_worth_enum}
+                                                account_turnover_enum={props.account_turnover_enum}
+                                            />
+                                            <TradingExperience
+                                                shared_props={shared_props}
+                                                forex_trading_experience_enum={props.forex_trading_experience_enum}
+                                                forex_trading_frequency_enum={props.forex_trading_frequency_enum}
+                                                binary_options_trading_experience_enum={
+                                                    props.binary_options_trading_experience_enum
+                                                }
+                                                binary_options_trading_frequency_enum={
+                                                    props.binary_options_trading_frequency_enum
+                                                }
+                                                cfd_trading_experience_enum={props.cfd_trading_experience_enum}
+                                                cfd_trading_frequency_enum={props.cfd_trading_frequency_enum}
+                                                other_instruments_trading_experience_enum={
+                                                    props.other_instruments_trading_experience_enum
+                                                }
+                                                other_instruments_trading_frequency_enum={
+                                                    props.other_instruments_trading_frequency_enum
+                                                }
+                                            />
+                                        </div>
+                                    </ThemedScrollbars>
+                                </Div100vhContainer>
+                                <FormSubmitButton
+                                    is_disabled={
+                                        // eslint-disable-next-line no-unused-vars
+                                        isSubmitting || Object.keys(errors).length > 0
+                                    }
+                                    label={localize('Next')}
+                                    has_cancel
+                                    cancel_label={localize('Previous')}
+                                    onCancel={() => handleCancel(values)}
+                                />
+                            </form>
+                        )}
+                    </AutoHeightWrapper>
+                );
+            }}
+        </Formik>
+    );
+};
 
 export default connect(({ client }) => ({
     is_gb_residence: client.residence === 'gb',

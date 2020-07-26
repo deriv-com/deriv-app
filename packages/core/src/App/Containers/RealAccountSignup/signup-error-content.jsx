@@ -48,7 +48,7 @@ const SignupErrorContent = ({ message, code, onConfirm }) => {
                     </p>
                 );
             default:
-                return message;
+                return <p>{message}</p>;
         }
     };
 

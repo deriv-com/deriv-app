@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import zxcvbn from '@contentpass/zxcvbn';
 import PropTypes from 'prop-types';
-import FieldError from 'Components/field-error';
+import Field from '../field';
 
 const PasswordMeter = ({ children, has_error, input }) => {
     // 0 - 4 Score for password strength
@@ -32,7 +32,7 @@ const PasswordMeter = ({ children, has_error, input }) => {
                     style={{ transform: `scale(${width_scale}, 1)` }}
                 />
                 {feedback.warning && !has_error && (
-                    <FieldError className='dc-password-meter__warning' message={`${feedback.warning}.`} />
+                    <Field className='dc-password-meter__warning' message={`${feedback.warning}.`} type='error' />
                 )}
             </div>
         </React.Fragment>

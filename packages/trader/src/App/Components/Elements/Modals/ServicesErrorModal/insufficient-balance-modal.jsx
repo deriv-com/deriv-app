@@ -1,7 +1,7 @@
-import { Button, Modal } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { Button, Modal } from '@deriv/components';
 import { routes, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 

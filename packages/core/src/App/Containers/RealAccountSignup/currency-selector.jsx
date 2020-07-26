@@ -1,4 +1,7 @@
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Field, Formik } from 'formik';
 import {
     AutoHeightWrapper,
     FormSubmitButton,
@@ -8,13 +11,11 @@ import {
     Icon,
     ThemedScrollbars,
 } from '@deriv/components';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { Field, Formik } from 'formik';
 import { getCurrencyDisplayCode, isMobile, isDesktop } from '@deriv/shared';
 
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
+import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
 import 'Sass/currency-select-radio.scss';
 
 // Radio input
@@ -122,6 +123,11 @@ class CurrencySelector extends React.Component {
         };
     }
 
+    handleValidate = values => {
+        const { errors } = splitValidationResultTypes(this.props.validate(values));
+        return errors;
+    };
+
     render() {
         const { has_currency, has_real_account } = this.props;
 
@@ -131,7 +137,7 @@ class CurrencySelector extends React.Component {
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
-                validate={this.props.validate}
+                validate={this.handleValidate}
             >
                 {({
                     handleSubmit,
@@ -161,13 +167,10 @@ class CurrencySelector extends React.Component {
                                                         <Localize i18n_default_text='You have an account without an assigned currency. Please choose a currency to trade with this account.' />
                                                     </p>
                                                 )}
-                                                <h2>
-                                                    <Localize i18n_default_text='Please choose your currency' />
-                                                </h2>
                                             </div>
                                         )}
                                     </MobileWrapper>
-                                    <ThemedScrollbars is_bypassed={isMobile()} height={`${height - 70}px`}>
+                                    <ThemedScrollbars is_bypassed={isMobile()} height={height}>
                                         <RadioButtonGroup
                                             id='currency'
                                             className='currency-selector__radio-group'

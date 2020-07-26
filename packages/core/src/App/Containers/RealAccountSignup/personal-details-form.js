@@ -82,14 +82,14 @@ const personal_details_config = ({ residence_list, account_settings }) => {
                 default_value: account_settings.tax_residence
                     ? residence_list.find(item => item.value === account_settings.tax_residence).text
                     : '',
-                supported_in: ['maltainvest', 'iom', 'malta'],
+                supported_in: ['maltainvest'],
                 rules: [['req', localize('Tax residence is required')]],
             },
             tax_identification_number: {
                 default_value: account_settings.tax_identification_number ?? '',
                 supported_in: ['maltainvest'],
                 rules: [
-                    ['req', localize('Tax identification number is required')],
+                    ['req', localize('Tax Identification Number is required')],
                     [
                         (value, options, { tax_residence }) => {
                             return !!tax_residence;
@@ -104,14 +104,19 @@ const personal_details_config = ({ residence_list, account_settings }) => {
                             const tax_regex = from_list[0]?.tin_format?.[0];
                             return tax_regex ? new RegExp(tax_regex).test(value) : true;
                         },
-                        localize('Tax identification number is not in a proper format'),
+                        [
+                            'warn',
+                            localize(
+                                'This Tax Identification Number (TIN) is invalid. You may continue with account creation, but to facilitate future payment processes, valid tax information will be required.'
+                            ),
+                        ],
                     ],
                 ],
             },
             tax_identification_confirm: {
-                default_value: '',
+                default_value: false,
                 supported_in: ['maltainvest'],
-                rules: [['req', localize('Please confirm your tax information')]],
+                rules: [['confirm', localize('Please confirm your tax information')]],
             },
         },
         disabled_items,

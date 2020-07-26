@@ -1,3 +1,6 @@
+import { Formik, Field } from 'formik';
+import React from 'react';
+import { FormSubHeader } from '@deriv/account';
 import {
     Autocomplete,
     AutoHeightWrapper,
@@ -9,15 +12,14 @@ import {
     Div100vhContainer,
     FormSubmitButton,
     Input,
+    Popover,
     RadioGroup,
     SelectNative,
     ThemedScrollbars,
 } from '@deriv/components';
-import { Field, Formik } from 'formik';
-import React from 'react';
-import { FormSubHeader } from '@deriv/account';
+import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, toMoment } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
 import 'Sass/details-form.scss';
 
 const DateOfBirthField = props => (
@@ -41,7 +43,7 @@ const DateOfBirthField = props => (
     </Field>
 );
 
-const FormInputField = ({ name, optional = false, ...props }) => (
+const FormInputField = ({ name, optional = false, warn, ...props }) => (
     <Field name={name}>
         {({ field, form: { errors, touched } }) => (
             <Input
@@ -51,6 +53,7 @@ const FormInputField = ({ name, optional = false, ...props }) => (
                 autoComplete='off'
                 maxLength='30'
                 error={touched[field.name] && errors[field.name]}
+                warn={warn}
                 {...field}
                 {...props}
             />
@@ -65,6 +68,9 @@ class PersonalDetails extends React.Component {
             // add padding-bottom to the form when datepicker is active
             // to add empty spaces at the bottom when scrolling
             paddingBottom: 'unset',
+            is_tax_residence_popover_open: false,
+            is_tin_popover_open: false,
+            warnings: {},
         };
     }
 
@@ -77,20 +83,40 @@ class PersonalDetails extends React.Component {
         this.setState({ paddingBottom: is_active ? '18rem' : 'unset' });
     };
 
+    handleValidate = values => {
+        const { errors, warnings } = splitValidationResultTypes(this.props.validate(values));
+        this.setState({ warnings });
+        return errors;
+    };
+
+    handleClickOutside = () => {
+        if (this.state.is_tax_residence_popover_open) {
+            this.setState({ is_tax_residence_popover_open: false });
+        }
+        if (this.state.is_tin_popover_open) {
+            this.setState({ is_tin_popover_open: false });
+        }
+    };
+
     render() {
         return (
             <Formik
                 initialValues={{ ...this.props.value }}
-                validate={this.props.validate}
+                validate={this.handleValidate}
                 validateOnMount
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
             >
                 {({ handleSubmit, isSubmitting, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
-                    <AutoHeightWrapper default_height={200}>
+                    <AutoHeightWrapper default_height={200} height_offset={81}>
                         {({ setRef, height }) => (
-                            <form ref={setRef} onSubmit={handleSubmit} autoComplete='off'>
+                            <form
+                                ref={setRef}
+                                onSubmit={handleSubmit}
+                                autoComplete='off'
+                                onClick={this.handleClickOutside}
+                            >
                                 <Div100vhContainer
                                     className='details-form'
                                     height_offset='199px'
@@ -106,7 +132,12 @@ class PersonalDetails extends React.Component {
                                                 <RadioGroup
                                                     className='dc-radio__input'
                                                     name='salutation'
-                                                    items={this.props.salutation_list}
+                                                    items={this.props.salutation_list.map(item => {
+                                                        if (this.props.disabled_items.includes('salutation')) {
+                                                            item.disabled = true;
+                                                        }
+                                                        return item;
+                                                    })}
                                                     selected={values.salutation}
                                                     onToggle={e => {
                                                         e.persist();
@@ -136,6 +167,7 @@ class PersonalDetails extends React.Component {
                                                 <DateOfBirthField
                                                     name='date_of_birth'
                                                     label={localize('Date of birth')}
+                                                    disabled={this.props.disabled_items.includes('date_of_birth')}
                                                     placeholder={localize('01-07-1999')}
                                                 />
                                             )}
@@ -199,37 +231,102 @@ class PersonalDetails extends React.Component {
                                                     {'tax_residence' in this.props.value && (
                                                         <Field name='tax_residence'>
                                                             {({ field }) => (
-                                                                <Autocomplete
-                                                                    {...field}
-                                                                    data-lpignore='true'
-                                                                    autoComplete='off' // prevent chrome autocomplete
-                                                                    type='text'
-                                                                    label={localize('Tax residence')}
-                                                                    error={
-                                                                        touched.tax_residence && errors.tax_residence
-                                                                    }
-                                                                    list_items={this.props.residence_list}
-                                                                    onItemSelection={({ value, text }) =>
-                                                                        setFieldValue(
-                                                                            'tax_residence',
-                                                                            value ? text : '',
-                                                                            true
-                                                                        )
-                                                                    }
-                                                                />
+                                                                <div className='details-form__tax'>
+                                                                    <Autocomplete
+                                                                        {...field}
+                                                                        data-lpignore='true'
+                                                                        autoComplete='off' // prevent chrome autocomplete
+                                                                        type='text'
+                                                                        label={localize('Tax residence')}
+                                                                        error={
+                                                                            touched.tax_residence &&
+                                                                            errors.tax_residence
+                                                                        }
+                                                                        list_items={this.props.residence_list}
+                                                                        onItemSelection={({ value, text }) =>
+                                                                            setFieldValue(
+                                                                                'tax_residence',
+                                                                                value ? text : '',
+                                                                                true
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                    <div
+                                                                        onClick={e => {
+                                                                            this.setState({
+                                                                                is_tax_residence_popover_open: true,
+                                                                                is_tin_popover_open: false,
+                                                                            });
+                                                                            e.stopPropagation();
+                                                                        }}
+                                                                    >
+                                                                        <Popover
+                                                                            alignment='right'
+                                                                            icon='info'
+                                                                            message={localize(
+                                                                                'Tax residence, also known as fiscal residency or redisence for tax purposes, is an important concept for all taxpayers living and working abroad. It determines the tax liabilities that the individual has to beer within a particular country (jurisdiction).'
+                                                                            )}
+                                                                            zIndex={9999}
+                                                                            disable_message_icon
+                                                                            is_open={
+                                                                                this.state.is_tax_residence_popover_open
+                                                                            }
+                                                                        />
+                                                                    </div>
+                                                                </div>
                                                             )}
                                                         </Field>
                                                     )}
                                                     {'tax_identification_number' in this.props.value && (
-                                                        <FormInputField
-                                                            name='tax_identification_number'
-                                                            label={localize('Tax identification number')}
-                                                            placeholder={localize('Tax identification number')}
-                                                        />
+                                                        <div className='details-form__tax'>
+                                                            <FormInputField
+                                                                name='tax_identification_number'
+                                                                label={localize('Tax Identification Number')}
+                                                                placeholder={localize('Tax Identification Number')}
+                                                                warn={this.state.warnings?.tax_identification_number}
+                                                            />
+                                                            <div
+                                                                onClick={e => {
+                                                                    this.setState({
+                                                                        is_tin_popover_open: true,
+                                                                        is_tax_residence_popover_open: false,
+                                                                    });
+                                                                    e.stopPropagation();
+                                                                }}
+                                                            >
+                                                                <Popover
+                                                                    alignment='right'
+                                                                    icon='info'
+                                                                    is_open={this.state.is_tin_popover_open}
+                                                                    message={
+                                                                        <Localize
+                                                                            i18n_default_text={
+                                                                                'A Tax Identification Number (TIN) is a unique identifying number used for tax purposes by countries (jurisdictions) that observe the Common Reporting Standards. To determine your TIN or its equivalent, follow <0>this link</0>, locate your jurisdiction, and read the information provided on taxation guidelines.'
+                                                                            }
+                                                                            components={[
+                                                                                <a
+                                                                                    key={0}
+                                                                                    className='link link--red'
+                                                                                    rel='noopener noreferrer'
+                                                                                    target='_blank'
+                                                                                    href='https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
+                                                                                />,
+                                                                            ]}
+                                                                        />
+                                                                    }
+                                                                    zIndex={9999}
+                                                                    disable_message_icon
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {this.state.warnings?.tax_identification_number && (
+                                                        <div className='details-form__tin-warn-divider' />
                                                     )}
                                                     {'tax_identification_confirm' in this.props.value && (
                                                         <Checkbox
                                                             name='tax_identification_confirm'
+                                                            className='details-form__tin-confirm'
                                                             data-lpignore
                                                             onChange={() =>
                                                                 setFieldValue(
@@ -240,8 +337,9 @@ class PersonalDetails extends React.Component {
                                                             }
                                                             value={values.tax_identification_confirm}
                                                             label={localize(
-                                                                'I hereby confirm that the tax information i provided is true and complete. I will also inform Binary Investments (Europe) Ltd. about any changes to this information.'
+                                                                'I hereby confirm that the tax information I provided is true and complete. I will also inform Deriv Investments (Europe) Ltd. about any changes to this information.'
                                                             )}
+                                                            withTabIndex='0'
                                                         />
                                                     )}
                                                 </React.Fragment>
@@ -275,6 +373,7 @@ class PersonalDetails extends React.Component {
                                                                 </DesktopWrapper>
                                                                 <MobileWrapper>
                                                                     <SelectNative
+                                                                        placeholder={localize('Please select')}
                                                                         name={field.name}
                                                                         label={localize('Account opening reason')}
                                                                         list_items={

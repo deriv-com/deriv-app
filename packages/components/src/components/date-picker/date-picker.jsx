@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { addDays, daysFromTodayTo, toMoment, convertDateFormat, isMobile } from '@deriv/shared';
 
-import DesktopWrapper from 'Components/desktop-wrapper';
-import MobileWrapper from 'Components/mobile-wrapper';
 import Input from './date-picker-input.jsx';
 import Calendar from './date-picker-calendar.jsx';
 import Native from './date-picker-native.jsx';
+import MobileWrapper from '../mobile-wrapper';
+import DesktopWrapper from '../desktop-wrapper';
 
 class DatePicker extends React.PureComponent {
     datepicker = React.createRef();
@@ -192,7 +192,8 @@ class DatePicker extends React.PureComponent {
     }
 
     render() {
-        const { id, name, value, onBlur, onFocus, required, type, ...props } = this.props;
+        const { id, name, value, onBlur, onFocus, required, type, disabled, ...props } = this.props;
+
         return (
             <>
                 <MobileWrapper>
@@ -209,12 +210,14 @@ class DatePicker extends React.PureComponent {
                         onSelect={this.onSelectCalendarNative}
                         placeholder={this.props.placeholder}
                         value={this.calendar_value} // native picker accepts date format yyyy-mm-dd
+                        disabled={disabled}
                     />
                 </MobileWrapper>
                 <DesktopWrapper>
                     <div id={id} ref={this.datepicker} className='dc-datepicker' data-value={this.input_value}>
                         <Input
                             {...props}
+                            disabled={disabled}
                             name={name}
                             onClick={this.handleVisibility}
                             onChangeInput={this.onChangeInput}

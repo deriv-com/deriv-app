@@ -7,24 +7,32 @@ import { WS } from 'Services/ws-methods';
 import AccountHasBalanceOrOpenPositions from './account-has-balance.jsx';
 
 const initial_form = {
-    otherFinancialPriorities: false,
-    stopTrading: false,
-    notIntrested: false,
-    anotherTradingWebsite: false,
-    notUserFriendly: false,
-    isDifficult: false,
-    lackFeaturesFunctionality: false,
-    unsatisfactoryCs: false,
-    otherReasons: false,
+    'I have other financial priorities': false,
+    'I want to stop myself from trading': false,
+    "I'm no longer interested in trading": false,
+    'I prefer another trading website': false,
+    "The platforms aren't user-friendly": false,
+    'Making deposits and withdrawals is difficult': false,
+    'The platforms lack key features or functionality': false,
+    'Customer service was unsatisfactory': false,
+    "I'm deactivating my account for other reasons": false,
     otherTradingPlatforms: '',
     doToImprove: '',
 };
 
 const preparingReason = (values) => {
-    const selected_reasons = selectedReasons(values)
+    let selected_reasons = selectedReasons(values)
         .map((val) => val[0])
         .toString();
-    return `${selected_reasons}, ${values.otherTradingPlatforms}, ${values.doToImprove}`;
+    const is_other_trading_platform__has_value = !!values.otherTradingPlatforms.length;
+    const is_to_do_improve_has_value = !!values.doToImprove.length;
+    if (is_other_trading_platform__has_value) {
+        selected_reasons = `${selected_reasons}, ${values.otherTradingPlatforms}`;
+    }
+    if (is_to_do_improve_has_value) {
+        selected_reasons = `${selected_reasons}, ${values.doToImprove}`;
+    }
+    return selected_reasons;
 };
 
 const selectedReasons = (values) => {
@@ -83,22 +91,29 @@ class DeactivateAccountReason extends React.Component {
         }
         if ((values.otherTradingPlatforms + values.doToImprove).length > 0) {
             const max_characters = 250;
+            const final_value = preparingReason(values);
             const selected_reasons = selectedReasons(values)
                 .map((val) => val[0])
                 .toString();
-            const max_characters_can_use = max_characters - selected_reasons.length;
-            // The nuumber 4 subtraction is for two commas and two spaces on the final result
-            const remaining_characters =
-                max_characters_can_use - values.otherTradingPlatforms.length - values.doToImprove.length - 4;
+            const is_other_trading_platform__has_value = !!values.otherTradingPlatforms.length;
+            const is_to_do_improve_has_value = !!values.doToImprove.length;
+            let max_input_characters_can_use = max_characters - selected_reasons.length;
+            // by adding new fields, we are adding 2 more characters to the final value
+            if (is_other_trading_platform__has_value) {
+                max_input_characters_can_use -= 2;
+            }
+            if (is_to_do_improve_has_value) {
+                max_input_characters_can_use -= 2;
+            }
+            const remaining_characters = max_characters - final_value.length;
             if (remaining_characters >= 0) {
                 this.setState({ remaining_characters });
             } else {
                 this.setState({ remaining_characters: undefined });
             }
-            const final_value = `${selected_reasons}, ${values.otherTradingPlatforms}, ${values.doToImprove}`;
             const regex_rule = `^[0-9A-Za-z .,'-]{0,${max_characters}}$`;
             if (!new RegExp(regex_rule).test(final_value)) {
-                error.characters_limits = `please insert up to ${max_characters_can_use} characters combine both fields.`;
+                error.characters_limits = `please insert up to ${max_input_characters_can_use} characters combine both fields.`;
             }
         }
         return error;
@@ -138,7 +153,6 @@ class DeactivateAccountReason extends React.Component {
             reason: this.state.reason,
         });
         this.setState({ is_loading: false });
-
         if (account_closure_response.account_closure === 1) {
             window.location.href = '/account-deactivated';
         } else {
@@ -160,7 +174,7 @@ class DeactivateAccountReason extends React.Component {
                 <Formik initialValues={initial_form} validate={this.validateFields} onSubmit={this.handleSubmitForm}>
                     {({ values, setFieldValue, errors, handleChange, handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
-                            <Field name='otherFinancialPriorities'>
+                            <Field name='I have other financial priorities'>
                                 {({ field }) => (
                                     <Checkbox
                                         disabled={this.state.is_checkbox_disabled && !values[field.name]}
@@ -173,7 +187,7 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
-                            <Field name='stopTrading'>
+                            <Field name='I want to stop myself from trading'>
                                 {({ field }) => (
                                     <Checkbox
                                         disabled={this.state.is_checkbox_disabled && !values[field.name]}
@@ -186,7 +200,7 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
-                            <Field name='notIntrested'>
+                            <Field name="I'm no longer interested in trading">
                                 {({ field }) => (
                                     <Checkbox
                                         disabled={this.state.is_checkbox_disabled && !values[field.name]}
@@ -199,7 +213,7 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
-                            <Field name='anotherTradingWebsite'>
+                            <Field name='I prefer another trading website'>
                                 {({ field }) => (
                                     <Checkbox
                                         disabled={this.state.is_checkbox_disabled && !values[field.name]}
@@ -212,7 +226,7 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
-                            <Field name='notUserFriendly'>
+                            <Field name="The platforms aren't user-friendly">
                                 {({ field }) => (
                                     <Checkbox
                                         disabled={this.state.is_checkbox_disabled && !values[field.name]}
@@ -225,7 +239,7 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
-                            <Field name='isDifficult'>
+                            <Field name='Making deposits and withdrawals is difficult'>
                                 {({ field }) => (
                                     <Checkbox
                                         disabled={this.state.is_checkbox_disabled && !values[field.name]}
@@ -238,7 +252,7 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
-                            <Field name='lackFeaturesFunctionality'>
+                            <Field name='The platforms lack key features or functionality'>
                                 {({ field }) => (
                                     <Checkbox
                                         disabled={this.state.is_checkbox_disabled && !values[field.name]}
@@ -251,7 +265,7 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
-                            <Field name='unsatisfactoryCs'>
+                            <Field name='Customer service was unsatisfactory'>
                                 {({ field }) => (
                                     <Checkbox
                                         disabled={this.state.is_checkbox_disabled && !values[field.name]}
@@ -264,7 +278,7 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
-                            <Field name='otherReasons'>
+                            <Field name="I'm deactivating my account for other reasons">
                                 {({ field }) => (
                                     <Checkbox
                                         disabled={this.state.is_checkbox_disabled && !values[field.name]}

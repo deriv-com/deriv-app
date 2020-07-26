@@ -4,44 +4,39 @@ import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getDerivComLink } from '@deriv/shared';
 
-class AccountDeactivated extends React.Component {
-    state = {
-        is_modal_open: true,
-        timer: 10,
-    };
-    componentDidMount() {
+const AccountDeactivated = ({ logout }) => {
+    const [is_modal_open, setModalState] = React.useState(true);
+    const [timer, setTimer] = React.useState(10);
+
+    React.useEffect(() => {
         window.history.pushState(null, null, '/');
-        this.props.logout();
-        this.handleInterval = setInterval(() => this.counter(), 1000);
-        this.timerHandler = setTimeout(() => {
+        logout();
+        const handleInterval = setInterval(() => counter(), 1000);
+        return () => {
+            if (handleInterval) clearInterval(handleInterval);
+        };
+    }, [timer]);
+
+    const counter = () => {
+        if (timer > 0) {
+            setTimer(timer - 1);
+        } else {
             window.location.href = getDerivComLink();
-        }, 10000);
-    }
-    componentWillUnmount() {
-        if (this.timerHandler) clearTimeout(this.timerHandler);
-        if (this.handleInterval) clearInterval(this.handleInterval);
-    }
-    counter() {
-        if (this.state.timer > -1) {
-            this.setState({ timer: this.state.timer - 1 });
         }
-    }
-    render() {
-        return (
-            <Modal
-                is_open={this.state.is_modal_open}
-                toggleModal={() => {
-                    this.setState({ is_modal_open: !this.state.is_modal_open });
-                }}
-            >
-                <p className='account-deactivated'>
-                    <Localize i18n_default_text='We’re sorry to see you leave. Your account is now deactivated.' />{' '}
-                    {this.state.timer}
-                </p>
-            </Modal>
-        );
-    }
-}
+    };
+    return (
+        <Modal
+            is_open={is_modal_open}
+            toggleModal={() => {
+                setModalState(!is_modal_open);
+            }}
+        >
+            <p className='account-deactivated'>
+                <Localize i18n_default_text='We’re sorry to see you leave. Your account is now deactivated.' /> {timer}
+            </p>
+        </Modal>
+    );
+};
 
 export default connect(({ client }) => ({
     logout: client.logout,

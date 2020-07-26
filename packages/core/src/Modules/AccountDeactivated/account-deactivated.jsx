@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getDerivComLink } from '@deriv/shared';
 
@@ -35,7 +35,8 @@ class AccountDeactivated extends React.Component {
                 }}
             >
                 <p className='account-deactivated'>
-                    {localize('We’re sorry to see you leave. Your account is now deactivated.')} {this.state.timer}
+                    <Localize i18n_default_text='We’re sorry to see you leave. Your account is now deactivated.' />{' '}
+                    {this.state.timer}
                 </p>
             </Modal>
         );

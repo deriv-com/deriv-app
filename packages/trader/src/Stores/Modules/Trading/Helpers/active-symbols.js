@@ -27,18 +27,6 @@ export const showUnavailableLocationError = flow(function*(showError) {
     );
 });
 
-export const showDigitalOptionsUnavailableError = showError => {
-    showError(
-        localize(
-            'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
-        ),
-        localize('DTrader is not available for this account'),
-        localize('Go to DMT5 dashboard'),
-        () => (window.location.href = `${location.protocol}//${location.hostname}/mt5`),
-        false
-    );
-};
-
 export const isMarketClosed = (active_symbols = [], symbol) => {
     if (!active_symbols.length) return false;
     return active_symbols.filter(x => x.symbol === symbol)[0]

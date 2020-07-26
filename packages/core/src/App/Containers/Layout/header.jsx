@@ -36,6 +36,8 @@ class Header extends React.Component {
             currency,
             enableApp,
             header_extension,
+            is_eu,
+            is_eu_country,
             is_acc_switcher_on,
             is_acc_switcher_disabled,
             is_app_disabled,
@@ -61,9 +63,14 @@ class Header extends React.Component {
 
         const filterPlatformsForClients = payload =>
             payload.filter(config => {
-                // non-CR clients cannot open MT5 account
-                const is_mt5_eligible = !(is_logged_in && config.link_to === routes.mt5 && !is_mt5_allowed);
-                return is_mt5_eligible;
+                const { link_to, href } = config;
+                if (link_to === routes.mt5) {
+                    return !is_logged_in && is_mt5_allowed; // TODO remove login check once MT5 is allowed for guest clients.
+                }
+                if (href === 'https://smarttrader.deriv.com') {
+                    return is_logged_in ? !is_eu : !is_eu_country;
+                }
+                return true;
             });
 
         return (
@@ -191,6 +198,8 @@ export default connect(({ client, common, ui, modules }) => ({
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     balance: client.balance,
     currency: client.currency,
+    is_eu: client.is_eu,
+    is_eu_country: client.is_eu_country,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     logoutClient: client.logout,

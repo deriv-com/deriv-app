@@ -41,6 +41,7 @@ module.exports = async ({ config, mode }) => {
     //     enforce: 'pre',
     // });
 
+
     config.module.rules.push({
         resolve: {
             alias: {
@@ -50,11 +51,36 @@ module.exports = async ({ config, mode }) => {
             extensions: ['.js', '.jsx'],
         },
     });
+    config.module.rules.push({
+        test   : /\.js[x]?$/,
+        exclude: /(node_modules)/,
+        use    : {
+            loader : 'babel-loader',
+            options: {
+                "presets": [
+                    "@babel/preset-env",
+                    "@babel/preset-react"
+                ],
+                "plugins": [
+                    [ "@babel/plugin-proposal-decorators", { "legacy": true } ],
+                    [ "@babel/plugin-proposal-class-properties", { "loose": true } ],
+                    "@babel/plugin-proposal-export-default-from",
+                    "@babel/plugin-proposal-object-rest-spread",
+                    "@babel/plugin-proposal-export-namespace-from",
+                    "@babel/plugin-syntax-dynamic-import",
+                    "@babel/plugin-proposal-optional-chaining",
+                    "@babel/plugin-proposal-nullish-coalescing-operator"
+                ]
+            },
+        },
+    });
 
     config.plugins.push(
-        new CopyPlugin([
-            { from: path.resolve(__dirname, '../lib/icon/sprite'), to: 'public/images/sprite', toType: 'dir' },
-		])
+        new CopyPlugin({
+            patterns: [
+                { from: path.resolve(__dirname, '../lib/icon/sprite'), to: 'public/images/sprite', toType: 'dir' },
+            ]
+        })
     );
     // Return the altered config
     return config;

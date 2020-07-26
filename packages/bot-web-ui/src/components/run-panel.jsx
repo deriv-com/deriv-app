@@ -12,19 +12,22 @@ import { popover_zindex } from '../constants/z-indexes';
 import { connect } from '../stores/connect';
 import '../assets/sass/run-panel.scss';
 
-const drawerContent = ({ active_index, setActiveTabIndex }) => {
+const drawerContent = ({ active_index, is_drawer_open, setActiveTabIndex, ...props }) => {
     return (
-        <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
-            <div id='db-run-panel-tab__summary' label={localize('Summary')}>
-                <Summary />
-            </div>
-            <div id='db-run-panel-tab__transactions' label={localize('Transactions')}>
-                <Transactions />
-            </div>
-            <div id='db-run-panel-tab__journal' label={localize('Journal')}>
-                <Journal />
-            </div>
-        </Tabs>
+        <>
+            <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
+                <div id='db-run-panel-tab__summary' label={localize('Summary')}>
+                    <Summary is_drawer_open={is_drawer_open} />
+                </div>
+                <div id='db-run-panel-tab__transactions' label={localize('Transactions')}>
+                    <Transactions is_drawer_open={is_drawer_open} />
+                </div>
+                <div id='db-run-panel-tab__journal' label={localize('Journal')}>
+                    <Journal is_drawer_open={is_drawer_open} />
+                </div>
+            </Tabs>
+            {is_drawer_open && active_index !== 2 && <StatisticsSummary {...props} />}
+        </>
     );
 };
 
@@ -43,6 +46,7 @@ const StatisticsTile = props => (
 );
 
 const StatisticsSummary = ({
+    is_mobile,
     total_stake,
     currency,
     total_payout,
@@ -51,7 +55,11 @@ const StatisticsSummary = ({
     won_contracts,
     total_profit,
 }) => (
-    <div className='run-panel__stat'>
+    <div
+        className={classNames('run-panel__stat', {
+            'run-panel__stat--mobile': is_mobile,
+        })}
+    >
         <StatisticsTile
             title={localize('Total stake')}
             alignment='top'
@@ -107,9 +115,8 @@ const StatisticsSummary = ({
     </div>
 );
 
-const drawerFooter = ({ active_index, is_clear_stat_disabled, onClearStatClick, should_show_statistics, ...props }) => (
+const drawerFooter = ({ is_clear_stat_disabled, onClearStatClick }) => (
     <div className='run-panel__footer'>
-        {should_show_statistics && <StatisticsSummary {...props} />}
         <Button
             id='db-run-panel__clear-button'
             className='run-panel__footer-button'
@@ -122,10 +129,9 @@ const drawerFooter = ({ active_index, is_clear_stat_disabled, onClearStatClick, 
     </div>
 );
 
-const MobileDrawerFooter = ({ should_show_statistics, is_drawer_open, ...props }) => {
+const MobileDrawerFooter = () => {
     return (
         <div className='controls__section'>
-            {is_drawer_open && should_show_statistics && <StatisticsSummary {...props} />}
             <div className='controls__buttons'>
                 <TradeAnimation className='controls__animation' should_show_overlay info_direction={'right'} />
             </div>
@@ -156,26 +162,28 @@ class RunPanel extends React.PureComponent {
             onOkButtonClick,
             onCancelButtonClick,
         } = this.props;
-        const content = drawerContent({ active_index, setActiveTabIndex });
-        const footer = drawerFooter({ ...this.props, should_show_statistics: active_index !== 2 });
+        const content = drawerContent({ active_index, is_drawer_open, setActiveTabIndex, ...this.props });
+        const footer = drawerFooter({ is_clear_stat_disabled, onClearStatClick });
 
         return (
             <>
-                <Drawer
-                    className='run-panel'
-                    contentClassName='run-panel__content'
-                    clear_stat_button_text={localize('Clear stat')}
-                    footer={!is_mobile && footer}
-                    is_clear_stat_disabled={is_clear_stat_disabled}
-                    is_mobile={is_mobile}
-                    is_open={is_drawer_open}
-                    onClearStatClick={onClearStatClick}
-                    toggleDrawer={toggleDrawer}
-                    zIndex={popover_zindex.RUN_PANEL}
-                >
-                    {content}
-                </Drawer>
-                {is_mobile && <MobileDrawerFooter {...this.props} should_show_statistics={active_index !== 2} />}
+                <div className={is_mobile && is_drawer_open ? 'run-panel__container--mobile' : undefined}>
+                    <Drawer
+                        className={!is_mobile ? 'run-panel__container' : undefined}
+                        contentClassName='run-panel__content'
+                        clear_stat_button_text={localize('Clear stat')}
+                        footer={!is_mobile && footer}
+                        is_clear_stat_disabled={is_clear_stat_disabled}
+                        is_mobile={is_mobile}
+                        is_open={is_drawer_open}
+                        onClearStatClick={onClearStatClick}
+                        toggleDrawer={toggleDrawer}
+                        zIndex={popover_zindex.RUN_PANEL}
+                    >
+                        {content}
+                    </Drawer>
+                    {is_mobile && <MobileDrawerFooter />}
+                </div>
                 <Dialog
                     title={dialog_options.title}
                     is_open={is_dialog_open}

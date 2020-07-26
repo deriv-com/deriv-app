@@ -168,6 +168,19 @@ class Chart extends React.Component {
         return isDesktop() && this.props.is_digit_contract;
     }
 
+    get chart_yAxis_margin() {
+        const margin = {
+            top: isMobile() ? 96 : 136,
+            bottom: this.is_bottom_widget_visible ? 128 : 112,
+        };
+
+        if (isMobile()) {
+            margin.bottom = 16;
+        }
+
+        return margin;
+    }
+
     render() {
         return (
             <SmartChart
@@ -196,10 +209,7 @@ class Chart extends React.Component {
                 isConnectionOpened={this.props.is_socket_opened}
                 isStaticChart={false}
                 shouldFetchTradingTimes={!this.props.end_epoch}
-                yAxisMargin={{
-                    top: isMobile() ? 116 : 136,
-                    bottom: this.is_bottom_widget_visible ? 128 : 112,
-                }}
+                yAxisMargin={this.chart_yAxis_margin}
             >
                 {this.props.markers_array.map(marker => (
                     <ChartMarker

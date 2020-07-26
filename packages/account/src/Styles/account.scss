@@ -1676,6 +1676,12 @@ $MIN_HEIGHT_FLOATING: calc(
 
 /* stylelint-disable */
 .dc-modal__container_deactivate-account-reasons {
+    @include mobile {
+        max-height: 70vh;
+    }
+    .have-open-positions-or-balance-scroll {
+        overflow-y: auto;
+    }
     .dc-modal-header {
         border: none;
         min-width: 430px;

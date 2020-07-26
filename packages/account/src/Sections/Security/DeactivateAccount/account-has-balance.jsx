@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Money } from '@deriv/components';
+import { Button, Icon, Money, ThemedScrollbars } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
@@ -69,7 +69,7 @@ const AccountHasBalanceOrOpenPositions = ({
         });
     }
     return (
-        <React.Fragment>
+        <ThemedScrollbars className='have-open-positions-or-balance-scroll'>
             {!!deriv_accounts_open_positions.length && (
                 <div className='have-open-positions-or-balance'>
                     <p className='have-open-positions-or-balance__title'>
@@ -159,7 +159,7 @@ const AccountHasBalanceOrOpenPositions = ({
                     {localize('OK')}
                 </Button>
             </div>
-        </React.Fragment>
+        </ThemedScrollbars>
     );
 };
 

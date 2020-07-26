@@ -1,6 +1,14 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
-import { isDesktop, isCryptocurrency, getMinPayout, cloneObject, isEmptyObject, getPropertyValue } from '@deriv/shared';
+import {
+    isDesktop,
+    isCryptocurrency,
+    getMinPayout,
+    cloneObject,
+    isEmptyObject,
+    getPropertyValue,
+    showDigitalOptionsUnavailableError,
+} from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
@@ -10,12 +18,7 @@ import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { processPurchase } from './Actions/purchase';
 import * as Symbol from './Actions/symbol';
 import getValidationRules, { getMultiplierValidationRules } from './Constants/validation-rules';
-import {
-    pickDefaultSymbol,
-    showUnavailableLocationError,
-    showDigitalOptionsUnavailableError,
-    isMarketClosed,
-} from './Helpers/active-symbols';
+import { pickDefaultSymbol, showUnavailableLocationError, isMarketClosed } from './Helpers/active-symbols';
 import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
 import { processTradeParams } from './Helpers/process';
@@ -274,7 +277,7 @@ export default class TradeStore extends BaseStore {
                 showUnavailableLocationError(this.root_store.common.showError);
                 return;
             } else if (this.root_store.client.landing_company_shortcode === 'maltainvest') {
-                showDigitalOptionsUnavailableError(this.root_store.common.showError);
+                showDigitalOptionsUnavailableError(this.root_store.common.showError, 'DTrader');
                 return;
             }
         }
@@ -925,7 +928,7 @@ export default class TradeStore extends BaseStore {
         if (this.root_store.client.standpoint.maltainvest) {
             const { active_symbols } = await WS.authorized.activeSymbols();
             if (!active_symbols || !active_symbols.length) {
-                showDigitalOptionsUnavailableError(this.root_store.common.showError);
+                showDigitalOptionsUnavailableError(this.root_store.common.showError, 'DTrader');
             }
         }
         this.resetErrorServices();

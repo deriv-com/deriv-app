@@ -269,6 +269,7 @@ class AccountSwitcher extends React.Component {
     }
 
     get can_open_multi() {
+        if (this.props.is_eu) return false;
         if (this.props.available_crypto_currencies.length < 1 && !this.props.has_fiat) return true;
         return !!(!this.props.is_virtual && this.props.available_crypto_currencies.length > 0);
     }

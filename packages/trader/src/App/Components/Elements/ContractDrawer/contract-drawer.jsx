@@ -146,6 +146,8 @@ class ContractDrawer extends React.Component {
                         !!getEndTime(this.props.contract_info) || (is_multiplier && isMobile()),
                     'contract-drawer--is-expanded': this.state.should_show_contract_audit,
                     'contract-drawer--is-multiplier': is_multiplier && isMobile(),
+                    'contract-drawer--is-multiplier-sold':
+                        is_multiplier && isMobile() && getEndTime(this.props.contract_info),
                 })}
             >
                 <div className='contract-drawer__body'>{body_content}</div>

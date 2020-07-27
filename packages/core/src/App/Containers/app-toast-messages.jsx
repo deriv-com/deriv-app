@@ -6,7 +6,7 @@ import { CSSTransition } from 'react-transition-group';
 import { connect } from 'Stores/connect';
 import 'Sass/app/_common/components/app-toast-message.scss';
 
-// TODO: Refactor existing ToastError component to this component
+// TODO: Refactor existing ToastError component to this component. Add prioritize and absolute positioning features.
 const Toast = ({ children, className, is_open = true, onClose, onClick, type, timeout = 0 }) => {
     const [is_visible, setVisible] = React.useState(false);
 

@@ -14,7 +14,11 @@ import StatusDialogContainer from './status-dialog-container.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
-const LoadingModal = props => <Loading {...props} is_fullscreen={false} />;
+const LoadingModal = props => (
+    <div className='account-signup-loader'>
+        <Loading {...props} is_fullscreen={false} />
+    </div>
+);
 
 const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, is_belgium_residence }) => {
     if (!currency) {

@@ -7,6 +7,7 @@ import {
     FormSubmitButton,
     Div100vhContainer,
     MobileWrapper,
+    Modal,
     Popover,
     Icon,
     ThemedScrollbars,
@@ -215,14 +216,16 @@ class CurrencySelector extends React.Component {
                                         )}
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <FormSubmitButton
-                                    is_disabled={isSubmitting || !values.currency}
-                                    is_center={!has_currency}
-                                    has_cancel
-                                    onCancel={this.props.onCancel}
-                                    cancel_label={localize('Cancel')}
-                                    label={localize('Next')}
-                                />
+                                <Modal.Footer has_separator>
+                                    <FormSubmitButton
+                                        is_disabled={isSubmitting || !values.currency}
+                                        is_center={!has_currency}
+                                        has_cancel
+                                        onCancel={this.props.onCancel}
+                                        cancel_label={localize('Cancel')}
+                                        label={localize('Next')}
+                                    />
+                                </Modal.Footer>
                             </form>
                         )}
                     </AutoHeightWrapper>

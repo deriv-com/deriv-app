@@ -52,16 +52,15 @@ class AccountSignup extends React.Component {
     };
 
     onSignupComplete = error => {
-        // Error would be returned on invalid token (and the like) cases.
-        // TODO: Proper error handling (currently we have no place to put the message)
-
-        if (error) {
-            throw Error(error);
-        }
-
         // Handle lower level modal controls due to overriding modal rendering
         this.props.isModalVisible(false);
         this.props.enableApp();
+
+        // Error would be returned on invalid token (and the like) cases.
+        // TODO: Proper error handling (currently we have no place to put the message)
+        if (error) {
+            throw Error(error);
+        }
     };
 
     render() {

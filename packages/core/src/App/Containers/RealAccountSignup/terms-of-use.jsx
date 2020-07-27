@@ -1,6 +1,6 @@
 import { Field, Formik } from 'formik';
 import React from 'react';
-import { Div100vhContainer, ThemedScrollbars, FormSubmitButton } from '@deriv/components';
+import { Div100vhContainer, Modal, ThemedScrollbars, FormSubmitButton } from '@deriv/components';
 import { getDerivComLink, isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
@@ -60,14 +60,16 @@ class TermsOfUse extends React.Component {
                                 />
                             </Div100vhContainer>
                         </ThemedScrollbars>
-                        <FormSubmitButton
-                            is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
-                            label={localize('Add account')}
-                            has_cancel={true}
-                            onCancel={this.props.onCancel}
-                            cancel_label={localize('Previous')}
-                            form_error={this.props.form_error}
-                        />
+                        <Modal.Footer has_separator>
+                            <FormSubmitButton
+                                is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
+                                label={localize('Add account')}
+                                has_cancel={true}
+                                onCancel={this.props.onCancel}
+                                cancel_label={localize('Previous')}
+                                form_error={this.props.form_error}
+                            />
+                        </Modal.Footer>
                     </form>
                 )}
             </Formik>

@@ -271,6 +271,8 @@ class AccountSwitcher extends React.Component {
     }
 
     get can_open_multi() {
+        if (this.props.is_eu) return false;
+        if (this.props.available_crypto_currencies.length < 1 && !this.props.has_fiat) return true;
         return !!(!this.props.is_virtual && this.props.available_crypto_currencies.length > 0);
     }
 
@@ -497,8 +499,7 @@ class AccountSwitcher extends React.Component {
                                                 secondary
                                                 small
                                                 is_disabled={
-                                                    (!this.props.is_eu_enabled && // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
-                                                        !this.props.is_eu &&
+                                                    ((!this.props.is_eu_enabled || !this.props.is_eu) && // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
                                                         !this.props.has_any_real_account) ||
                                                     (account.type === 'financial_stp' &&
                                                         this.props.is_pending_authentication)
@@ -606,6 +607,7 @@ AccountSwitcher.propTypes = {
     accounts: PropTypes.object,
     can_change_fiat_currency: PropTypes.bool,
     can_upgrade_to: PropTypes.string,
+    has_fiat: PropTypes.bool,
     has_any_real_account: PropTypes.bool,
     is_eu_enabled: PropTypes.bool, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
     is_loading_mt5: PropTypes.bool,
@@ -644,6 +646,7 @@ const account_switcher = withRouter(
         is_pending_authentication: client.is_pending_authentication,
         is_uk: client.is_uk,
         is_virtual: client.is_virtual,
+        has_fiat: client.has_fiat,
         has_any_real_account: client.has_any_real_account,
         mt5_login_list: client.mt5_login_list,
         obj_total_balance: client.obj_total_balance,

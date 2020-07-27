@@ -401,13 +401,11 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     const needs_poa =
         needs_verification.length &&
         needs_verification.includes('document') &&
-        !needs_verification.includes('identity') &&
         document.status !== 'rejected' &&
         document.status !== 'expired';
     const needs_poi =
         needs_verification.length &&
         needs_verification.includes('identity') &&
-        !needs_verification.includes('document') &&
         identity.status !== 'rejected' &&
         identity.status !== 'expired';
 

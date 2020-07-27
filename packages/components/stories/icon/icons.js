@@ -26,6 +26,7 @@ export const icons = {
         'IcAccountLimits',
         'IcAccountMissingDetails',
         'IcAccountTransfer',
+        'IcAccountTrashCan',
         'IcAddRounded',
         'IcAdd',
         'IcAlertDanger',

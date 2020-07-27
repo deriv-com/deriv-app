@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ContentLoader from 'react-content-loader';
 import { Loading, Button } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
@@ -12,22 +11,6 @@ import OrderTableHeader from 'Components/orders/order-table/order-table-header.j
 import OrderRowComponent from 'Components/orders/order-table/order-table-row.jsx';
 import OrderInfo from 'Components/orders/order-info';
 import { height_constants } from 'Utils/height_constants';
-
-const OrderRowLoader = () => (
-    <ContentLoader
-        height={64}
-        width={900}
-        speed={2}
-        primaryColor={'var(--general-hover)'}
-        secondaryColor={'var(--general-active)'}
-    >
-        <rect x='1' y='20' rx='5' ry='5' width='90' height='10' />
-        <rect x='180' y='20' rx='5' ry='5' width='90' height='10' />
-        <rect x='360' y='20' rx='5' ry='5' width='90' height='10' />
-        <rect x='536' y='20' rx='5' ry='5' width='90' height='10' />
-        <rect x='720' y='20' rx='5' ry='5' width='90' height='10' />
-    </ContentLoader>
-);
 
 const OrderTableContent = ({ showDetails, is_active }) => {
     const {
@@ -112,7 +95,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                         items={modified_list}
                         item_size={item_height}
                         RenderComponent={Row}
-                        RowLoader={OrderRowLoader}
+                        // RowLoader={OrderRowLoader}
                         has_more_items_to_load={has_more_items_to_load}
                         loadMore={loadMoreOrders}
                     />

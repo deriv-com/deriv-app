@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     Button,
     Popover,
@@ -8,7 +9,6 @@ import {
     Table,
     UILoader,
 } from '@deriv/components';
-import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';

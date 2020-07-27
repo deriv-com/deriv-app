@@ -44,6 +44,10 @@ export default class ClientStore extends BaseStore {
     @observable selected_currency = '';
     @observable is_populating_account_list = false;
     @observable is_populating_mt5_account_list = true;
+    @observable has_reality_check = false;
+    @observable is_reality_check_dismissed;
+    @observable reality_check_dur;
+    @observable reality_check_timeout;
     @observable website_status = {};
     @observable account_settings = {};
     @observable account_status = {};
@@ -104,6 +108,26 @@ export default class ClientStore extends BaseStore {
             this.is_virtual ||
             this.accounts[this.loginid].landing_company_shortcode === 'svg'
         );
+    }
+
+    @computed
+    get is_reality_check_visible() {
+        if (!this.loginid || !this.landing_company) {
+            return false;
+        }
+        return !!(this.has_reality_check && !this.reality_check_dismissed);
+    }
+
+    @computed
+    get reality_check_duration() {
+        return this.has_reality_check ? this.reality_check_dur || +LocalStore.get('reality_check_duration') : undefined;
+    }
+
+    @computed
+    get reality_check_dismissed() {
+        return this.has_reality_check
+            ? this.is_reality_check_dismissed || JSON.parse(LocalStore.get('reality_check_dismissed') || false)
+            : undefined;
     }
 
     @computed
@@ -201,6 +225,16 @@ export default class ClientStore extends BaseStore {
         return this.has_fiat
             ? this.upgradeable_currencies.filter(acc => values.includes(acc.value) && acc.type === 'fiat')[0].value
             : undefined;
+    }
+
+    // return the landing company object that belongs to the current client by matching shortcode
+    // note that it will be undefined for logged out and virtual clients
+    @computed
+    get current_landing_company() {
+        const landing_company = Object.keys(this.landing_companies).find(
+            company => this.landing_companies[company]?.shortcode === this.landing_company_shortcode
+        );
+        return landing_company ? this.landing_companies[landing_company] : undefined;
     }
 
     @computed
@@ -436,9 +470,12 @@ export default class ClientStore extends BaseStore {
         this.user_id = response.authorize.user_id;
 
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
-        this.local_currency_config.decimal_places = +response.authorize.local_currencies[
-            this.local_currency_config.currency
-        ].fractional_digits;
+
+        // For residences without local currency (e.g. ax)
+        const default_fractional_digits = 2;
+        this.local_currency_config.decimal_places = isEmptyObject(response.authorize.local_currencies)
+            ? default_fractional_digits
+            : +response.authorize.local_currencies[this.local_currency_config.currency].fractional_digits;
 
         ClientBase.responseAuthorize(response);
     }
@@ -742,6 +779,21 @@ export default class ClientStore extends BaseStore {
     @action.bound
     responseLandingCompany(response) {
         this.landing_companies = response.landing_company;
+        this.setRealityCheck();
+    }
+
+    @action.bound
+    setRealityCheck() {
+        this.has_reality_check = this.current_landing_company?.has_reality_check;
+        // if page reloaded after reality check was submitted
+        // use the submitted values to initiate rather than asking again
+        if (
+            this.has_reality_check &&
+            this.reality_check_duration &&
+            typeof this.reality_check_timeout === 'undefined'
+        ) {
+            this.setRealityCheckDuration(this.reality_check_duration);
+        }
     }
 
     @action.bound
@@ -996,6 +1048,7 @@ export default class ClientStore extends BaseStore {
         });
         this.root_store.ui.removeAllNotificationMessages();
         this.syncWithSmartTrader(this.loginid, this.accounts);
+        this.cleanupRealityCheck();
     }
 
     @action.bound
@@ -1096,7 +1149,9 @@ export default class ClientStore extends BaseStore {
 
             search_params.forEach((value, key) => {
                 const account_keys = ['acct', 'token', 'cur'];
-                const is_account_param = account_keys.some(account_key => key?.includes(account_key));
+                const is_account_param = account_keys.some(
+                    account_key => key?.includes(account_key) && key !== 'affiliate_token'
+                );
 
                 if (is_account_param) {
                     obj_params[key] = value;
@@ -1394,6 +1449,47 @@ export default class ClientStore extends BaseStore {
     @computed
     get has_residence() {
         return !!this.accounts[this.loginid]?.residence;
+    }
+
+    @action.bound
+    setVisibilityRealityCheck(is_visible) {
+        // if reality check timeout has been set, don't make it visible until it runs out
+        if (is_visible && typeof this.reality_check_timeout === 'number') {
+            return;
+        }
+        this.is_reality_check_dismissed = !is_visible;
+        // store in localstorage to keep track of across tabs/on refresh
+        LocalStore.set('reality_check_dismissed', !is_visible);
+    }
+
+    @action.bound
+    clearRealityCheckTimeout() {
+        clearTimeout(this.reality_check_timeout);
+        this.reality_check_timeout = undefined;
+    }
+
+    @action.bound
+    setRealityCheckDuration(duration) {
+        this.reality_check_dur = +duration;
+        this.clearRealityCheckTimeout();
+        // store in localstorage to keep track of across tabs/on refresh
+        LocalStore.set('reality_check_duration', +duration);
+        this.reality_check_timeout = setTimeout(() => {
+            // set reality_check_timeout to undefined
+            this.clearRealityCheckTimeout();
+            // after this duration passes, show the summary pop up
+            this.setVisibilityRealityCheck(1);
+        }, +duration * 60 * 1000);
+    }
+
+    @action.bound
+    cleanupRealityCheck() {
+        this.has_reality_check = false;
+        this.is_reality_check_dismissed = undefined;
+        this.reality_check_dur = undefined;
+        this.clearRealityCheckTimeout();
+        LocalStore.remove('reality_check_duration');
+        LocalStore.remove('reality_check_dismissed');
     }
 }
 /* eslint-enable */

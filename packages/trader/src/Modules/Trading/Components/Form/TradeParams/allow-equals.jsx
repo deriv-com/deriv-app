@@ -1,6 +1,6 @@
-import { Popover, Checkbox } from '@deriv/components';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Popover, Checkbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
     hasCallPutEqual,

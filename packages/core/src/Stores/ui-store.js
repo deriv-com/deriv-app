@@ -14,6 +14,7 @@ export default class UIStore extends BaseStore {
     @observable is_notifications_visible = false;
     @observable is_positions_drawer_on = false;
     @observable is_reports_visible = false;
+    @observable reports_route_tab_index = 0;
     @observable is_cashier_visible = false;
     @observable is_history_tab_active = false;
     @observable is_window_loaded = false;
@@ -53,6 +54,8 @@ export default class UIStore extends BaseStore {
     @observable pwa_prompt_event = null;
 
     @observable screen_width = window.innerWidth;
+    @observable screen_height = window.innerHeight;
+    @observable is_keyboard_active = false;
 
     @observable notifications = [];
     @observable notification_messages = [];
@@ -148,7 +151,7 @@ export default class UIStore extends BaseStore {
                 this.is_window_loaded = true;
             })
         );
-      
+
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
             // TODO: [disable-dark-bot] Delete this condition when Bot is ready
@@ -200,7 +203,12 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     handleResize() {
+        if (this.is_mobile) {
+            this.is_keyboard_active =
+                window.innerWidth === this.screen_width && this.screen_height > window.innerHeight;
+        }
         this.screen_width = window.innerWidth;
+        this.screen_height = window.innerHeight;
         if (this.is_mobile) {
             this.is_positions_drawer_on = false;
         }
@@ -584,5 +592,10 @@ export default class UIStore extends BaseStore {
     @action.bound
     setIsNativepickerVisible(is_nativepicker_visible) {
         this.is_nativepicker_visible = is_nativepicker_visible;
+    }
+
+    @action.bound
+    setReportsTabIndex(tab_index = 0) {
+        this.reports_route_tab_index = tab_index;
     }
 }

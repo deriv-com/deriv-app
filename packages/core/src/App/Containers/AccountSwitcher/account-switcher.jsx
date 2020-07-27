@@ -496,8 +496,7 @@ class AccountSwitcher extends React.Component {
                                                 secondary
                                                 small
                                                 is_disabled={
-                                                    (!this.props.is_eu_enabled &&
-                                                        !this.props.is_eu &&
+                                                    ((!this.props.is_eu_enabled || !this.props.is_eu) &&
                                                         !this.props.has_any_real_account) ||
                                                     (account.type === 'financial_stp' &&
                                                         this.props.is_pending_authentication)

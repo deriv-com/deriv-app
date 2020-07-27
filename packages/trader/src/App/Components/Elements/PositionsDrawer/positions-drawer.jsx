@@ -9,12 +9,10 @@ import { Icon, ThemedScrollbars } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
-import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { connect } from 'Stores/connect';
 import { isValidToSell } from 'Stores/Modules/Contract/Helpers/logic';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
-import { getContractTypesConfig } from 'Stores/Modules/Trading/Constants/contract';
-import { isCallPut } from 'Stores/Modules/Contract/Helpers/contract-type';
+import { filterByContractType } from './helpers';
 import PositionsDrawerCard from './PositionsDrawerCard';
 
 const ThemedScrollbarsWrapper = React.forwardRef((props, ref) => (
@@ -110,18 +108,6 @@ class PositionsDrawer extends React.Component {
         );
     };
 
-    filterByContractType = ({ contract_type, shortcode }) => {
-        const { trade_contract_type } = this.props;
-        const is_call_put = isCallPut(trade_contract_type);
-        const is_high_low = Shortcode.isHighLow({ shortcode });
-        const trade_types = is_call_put
-            ? ['CALL', 'CALLE', 'PUT', 'PUTE']
-            : getContractTypesConfig()[trade_contract_type]?.trade_types;
-        const match = trade_types?.includes(contract_type);
-        if (trade_contract_type === 'high_low') return is_high_low;
-        return match && !is_high_low;
-    };
-
     hasPositionsHeightChanged = (newPositionsHeight, oldPositionsHeight) => {
         if (newPositionsHeight.length !== oldPositionsHeight.length) {
             return true;
@@ -166,10 +152,21 @@ class PositionsDrawer extends React.Component {
     };
 
     render() {
-        const { all_positions, error, is_empty, is_positions_drawer_on, symbol, toggleDrawer } = this.props;
+        const {
+            all_positions,
+            error,
+            is_empty,
+            is_positions_drawer_on,
+            symbol,
+            toggleDrawer,
+            trade_contract_type,
+        } = this.props;
 
         this.positions = all_positions.filter(
-            p => p.contract_info && symbol === p.contract_info.underlying && this.filterByContractType(p.contract_info)
+            p =>
+                p.contract_info &&
+                symbol === p.contract_info.underlying &&
+                filterByContractType(p.contract_info, trade_contract_type)
         );
         this.calculatePositionsHeight();
 

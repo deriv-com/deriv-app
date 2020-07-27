@@ -35,14 +35,11 @@ const AccountHasBalanceOrOpenPositions = ({
 
     if (accounts_with_balance_or_open_positions.open_positions) {
         Object.keys(accounts_with_balance_or_open_positions.open_positions).forEach((account_name) => {
-            if (!accounts_with_balance_or_open_positions.open_positions[account_name].total) {
-                // accounts without [total] are deriv accounts.
-                const deriv_account_with_open_position = client_accounts.find(
-                    (client_account) => client_account.loginid === account_name
-                );
-                if (deriv_account_with_open_position) {
-                    deriv_accounts_open_positions.push(deriv_account_with_open_position);
-                }
+            const deriv_account_with_open_position = client_accounts.find(
+                (client_account) => client_account.loginid === account_name
+            );
+            if (deriv_account_with_open_position) {
+                deriv_accounts_open_positions.push(deriv_account_with_open_position);
             } else {
                 mt5_accounts_id.push(account_name);
             }
@@ -140,7 +137,9 @@ const AccountHasBalanceOrOpenPositions = ({
                                     <span className='have-open-positions-or-balance__balance--currency'>
                                         {getMT5AccountDisplay(account.group)}
                                     </span>
-                                    <span className='have-open-positions-or-balance__balance--id'>{account.login}</span>
+                                    <span className='have-open-positions-or-balance__balance--id'>
+                                        {account.login.replace('MTR', '')}
+                                    </span>
                                 </div>
                             </div>
                             <div className='have-open-positions-or-balance__money'>

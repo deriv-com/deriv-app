@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
-import { hasCorrectDecimalPlaces, getDecimalPlaces, routes } from '@deriv/shared';
+import { getDecimalPlaces, routes } from '@deriv/shared';
 import { Button, Input } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
+import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
 import { WS } from 'Services';
 
 const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
@@ -16,27 +17,20 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
     const validateFields = values => {
         // TODO: [self-exclusion] handle shared self exclusion validation
         const errors = {};
-        const is_number = /^\d+(\.\d+)?$/;
+        const min_number = 0;
         const max_number = 9999999999999;
 
-        const required_message = localize('Please enter max 30 days turnover.');
-        const valid_number_message = localize('Should be valid number');
-        const max_number_message = localize('Reached maximum number of digits');
-        const max_decimal_message = (
-            <Localize
-                i18n_default_text='Reached maximum number of decimals: {{decimal}}'
-                values={{ decimal: getDecimalPlaces(currency) }}
-            />
-        );
-
         if (!values.max_30day_turnover) {
-            errors.max_30day_turnover = required_message;
-        } else if (!is_number.test(values.max_30day_turnover)) {
-            errors.max_30day_turnover = valid_number_message;
-        } else if (+values.max_30day_turnover > max_number) {
-            errors.max_30day_turnover = max_number_message;
-        } else if (!hasCorrectDecimalPlaces(currency, values.max_30day_turnover)) {
-            errors.max_30day_turnover = max_decimal_message;
+            errors.max_30day_turnover = localize('This field is required.');
+        } else if (
+            !validNumber(values.max_30day_turnover, {
+                type: 'float',
+                decimals: getDecimalPlaces(currency),
+                min: min_number,
+                max: max_number,
+            })
+        ) {
+            errors.max_30day_turnover = getPreBuildDVRs().number.message;
         }
 
         return errors;

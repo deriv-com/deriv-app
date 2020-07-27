@@ -28,12 +28,12 @@ const WithdrawalLocked = ({ account_status }) => {
             <h2 className='cashier-locked__title'>{localize('Withdrawals are locked')}</h2>
 
             {is_poi_needed ? (
-                <>
+                <React.Fragment>
                     <p className='cashier-locked__desc'>
                         {localize('To enable this feature you must complete the following:')}
                     </p>
                     <Checklist className='cashier-locked__checklist' items={items} />
-                </>
+                </React.Fragment>
             ) : (
                 <p className='cashier-locked__desc'>{localize('Please check your email for details.')}</p>
             )}

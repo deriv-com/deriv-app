@@ -95,12 +95,12 @@ const DepositsLocked = ({
             <h2 className='cashier-locked__title'>{localize('Deposits are locked')}</h2>
 
             {items.length ? (
-                <>
+                <React.Fragment>
                     <p className='cashier-locked__desc'>
                         {localize('To enable this feature you must complete the following:')}
                     </p>
                     <Checklist className='cashier-locked__checklist' items={items} />
-                </>
+                </React.Fragment>
             ) : (
                 <p className='cashier-locked__desc'>{localize('Please check your email for more details.')}</p>
             )}

@@ -20,7 +20,7 @@ import { getMT5AccountDisplay } from '../../Helpers/client';
 
 const bank_default_option = [{ text: localize('All payment agents'), value: 0 }];
 
-const hasTransferNotAllowedLoginid = loginid => /^(MX)/.test(loginid);
+const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
 
 const getSelectedError = selected_value => {
     return (
@@ -297,7 +297,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @computed
-    is_cashier_locked() {
+    get is_cashier_locked() {
         if (!this.root_store.client.account_status) return false;
         const { status } = this.root_store.client.account_status;
 
@@ -305,7 +305,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @computed
-    is_deposit_locked() {
+    get is_deposit_locked() {
         const {
             is_authentication_needed,
             is_tnc_needed,
@@ -322,8 +322,9 @@ export default class CashierStore extends BaseStore {
         // is_authentication_needed return integer instead of boolean, it will make the proptypes failed
         return !!is_authentication_needed || is_tnc_needed || need_financial_assessment;
     }
+
     @computed
-    is_transfer_locked() {
+    get is_transfer_locked() {
         const {
             is_financial_account,
             is_financial_information_incomplete,
@@ -338,8 +339,9 @@ export default class CashierStore extends BaseStore {
 
         return need_financial_assessment;
     }
+
     @computed
-    is_withdrawal_locked() {
+    get is_withdrawal_locked() {
         if (!this.root_store.client.account_status) return false;
         const { status, authentication } = this.root_store.client.account_status;
         const need_poi = authentication.needs_verification.includes('identity');

@@ -6,6 +6,7 @@ import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card.jsx';
+import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { connect } from 'Stores/connect';
 import TogglePositions from './toggle-positions.jsx';
 
@@ -18,14 +19,24 @@ class TogglePositionsMobile extends React.Component {
             is_empty,
             onClickSell,
             onClickRemove,
+            symbol,
             togglePositionsDrawer,
             toggleUnsupportedContractModal,
+            trade_contract_type,
         } = this.props;
+
+        this.positions = all_positions.filter(
+            p =>
+                p.contract_info &&
+                symbol === p.contract_info.underlying &&
+                filterByContractType(p.contract_info, trade_contract_type)
+        );
+
         // Show only 5 most recent open contracts
         const body_content = (
             <React.Fragment>
                 <TransitionGroup component='div'>
-                    {all_positions.slice(0, 5).map(portfolio_position => (
+                    {this.positions.slice(0, 5).map(portfolio_position => (
                         <CSSTransition
                             appear
                             key={portfolio_position.id}
@@ -101,7 +112,9 @@ class TogglePositionsMobile extends React.Component {
 }
 // TODO: Needs to be connected to store due to issue with trade-header-extensions not updating all_positions prop
 // Fixes issue with positions not updated in positions modal
-export default connect(({ ui }) => ({
+export default connect(({ modules, ui }) => ({
+    symbol: modules.trade.symbol,
+    trade_contract_type: modules.trade.contract_type,
     togglePositionsDrawer: ui.togglePositionsDrawer,
     is_positions_drawer_on: ui.is_positions_drawer_on,
 }))(TogglePositionsMobile);

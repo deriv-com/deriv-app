@@ -9,15 +9,12 @@ const platform_config = [
         description: () => localize('A whole new trading experience on a powerful yet easy to use platform.'),
         link_to: routes.trade,
     },
-    // TODO: remove isDesktop() when Dbot and SmartTrader are supported in mobile
-    isDesktop()
-        ? {
-              icon: 'IcBrandDbot',
-              title: () => localize('DBot'),
-              description: () => localize('Automated trading at your fingertips. No coding needed.'),
-              link_to: routes.bot,
-          }
-        : undefined,
+    {
+        icon: 'IcBrandDbot',
+        title: () => localize('DBot'),
+        description: () => localize('Automated trading at your fingertips. No coding needed.'),
+        link_to: routes.bot,
+    },
     {
         icon: 'IcBrandDmt5',
         title: () => localize('DMT5'),

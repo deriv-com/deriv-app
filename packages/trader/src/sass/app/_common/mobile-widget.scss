@@ -44,14 +44,28 @@
             }
         }
     }
-    &__multiplier-amount {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 0.8rem;
+    &__multiplier {
+        &-amount {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0.8rem;
 
-        .mobile-widget__item-label {
-            margin-right: 0.4rem;
+            .mobile-widget__item-label {
+                margin-right: 0.4rem;
+            }
+        }
+        &-commission {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            top: -0.4rem;
+            position: relative;
+
+            /* postcss-bem-linter: ignore */
+            .dc-icon {
+                margin-left: 0.5rem;
+            }
         }
     }
     &__wrapper {

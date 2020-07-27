@@ -82,7 +82,7 @@ class Trade extends React.Component {
                     id='chart_container'
                     className='chart-container'
                     is_disabled={isDesktop()}
-                    height_offset='249px'
+                    height_offset='259px'
                 >
                     <NotificationMessages />
                     <React.Suspense

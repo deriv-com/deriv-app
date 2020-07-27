@@ -13,7 +13,7 @@ const WithdrawalLocked = ({
 }) => {
     const history = useHistory();
     const items = [
-        ...(is_trading_experience_incomplete || (is_financial_account && is_financial_information_incomplete)
+        ...(is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete)
             ? [
                   {
                       content: localize('Complete the financial assessment form'),

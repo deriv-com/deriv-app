@@ -68,7 +68,7 @@ const initRoutesConfig = () => [
             },
         ],
     },
-    { path: routes.trade, component: Trade, title: localize('Trade'), exact: true },
+    { path: routes.trade, component: Trade, title: localize('Trader'), exact: true },
 ];
 
 let routesConfig;

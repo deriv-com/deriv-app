@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { Icon, Money, Popover, IconTradeTypes } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { convertDateFormat } from '@deriv/shared';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import PropTypes from 'prop-types';
@@ -39,12 +40,12 @@ const TransactionIconLoader = () => (
     <ContentLoader
         className='transactions__loader-icon'
         speed={3}
-        width={30}
-        height={30}
+        width={24}
+        height={24}
         primaryColor={'var(--general-section-1)'}
         secondaryColor={'var(--general-hover)'}
     >
-        <rect x='0' y='0' rx='5' ry='5' width='30' height='30' />
+        <rect x='0' y='0' rx='5' ry='5' width='24' height='24' />
     </ContentLoader>
 );
 
@@ -94,14 +95,22 @@ const PopoverContent = ({ contract }) => (
             ))}
         {contract.date_start && (
             <PopoverItem title={localize('Start time')}>
-                <div className='transactions__popover-value'>{contract.date_start}</div>
+                <div className='transactions__popover-value'>
+                    {convertDateFormat(contract.date_start, 'YYYY-M-D HH:mm:ss [GMT]', 'YYYY-MM-DD HH:mm:ss [GMT]')}
+                </div>
             </PopoverItem>
         )}
         {contract.entry_tick && (
             <PopoverItem title={localize('Entry spot')}>
                 <div className='transactions__popover-value'>{contract.entry_tick}</div>
                 {contract.entry_tick_time && (
-                    <div className='transactions__popover-value'>{contract.entry_tick_time}</div>
+                    <div className='transactions__popover-value'>
+                        {convertDateFormat(
+                            contract.entry_tick_time,
+                            'YYYY-M-D HH:mm:ss [GMT]',
+                            'YYYY-MM-DD HH:mm:ss [GMT]'
+                        )}
+                    </div>
                 )}
             </PopoverItem>
         )
@@ -110,7 +119,9 @@ const PopoverContent = ({ contract }) => (
         {(contract.exit_tick && contract.exit_tick_time && (
             <PopoverItem title={localize('Exit spot')}>
                 <div className='transactions__popover-value'>{contract.exit_tick}</div>
-                <div className='transactions__popover-value'>{contract.exit_tick_time}</div>
+                <div className='transactions__popover-value'>
+                    {convertDateFormat(contract.exit_tick_time, 'YYYY-M-D HH:mm:ss [GMT]', 'YYYY-MM-DD HH:mm:ss [GMT]')}
+                </div>
             </PopoverItem>
         )) ||
             (contract.exit_tick && (
@@ -133,22 +144,27 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
             className='transactions__item'
             onClick={contract && (() => setActiveTransactionId(contract.transaction_ids.buy))}
         >
-            {/* TODO: Re-enable when <Icon> is shared.
-        <div className='transactions__cell transactions__symbol'>
-            <TransactionIconWithText
-                icon={<UnderlyingIcon market={contract.underlying} />}
-                title={contract.display_name}
-            />
-        </div> */}
             <div className='transactions__cell transactions__trade-type'>
-                {contract ? (
-                    <TransactionIconWithText
-                        icon={<IconTradeTypes type={contract.contract_type} />}
-                        title={getContractTypeName(contract)}
-                    />
-                ) : (
-                    <TransactionIconLoader />
-                )}
+                <div className='transactions__loader-container'>
+                    {contract ? (
+                        <TransactionIconWithText
+                            icon={<Icon icon={`IcUnderlying${contract.underlying}`} size={16} />}
+                            title={contract.display_name}
+                        />
+                    ) : (
+                        <TransactionIconLoader />
+                    )}
+                </div>
+                <div className='transactions__loader-container'>
+                    {contract ? (
+                        <TransactionIconWithText
+                            icon={<IconTradeTypes type={contract.contract_type} size={16} />}
+                            title={getContractTypeName(contract)}
+                        />
+                    ) : (
+                        <TransactionIconLoader />
+                    )}
+                </div>
             </div>
             <div className='transactions__cell transactions__entry-spot'>
                 <TransactionIconWithText
@@ -201,8 +217,7 @@ Transaction.propTypes = {
     setActiveTransactionId: PropTypes.func,
 };
 
-export default connect(({ transactions, run_panel }) => ({
-    contract_stage: run_panel.contract_stage,
+export default connect(({ transactions }) => ({
     active_transaction_id: transactions.active_transaction_id,
     setActiveTransactionId: transactions.setActiveTransactionId,
 }))(Transaction);

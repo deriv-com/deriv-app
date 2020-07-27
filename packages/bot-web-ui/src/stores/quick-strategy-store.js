@@ -25,6 +25,8 @@ export default class QuickStrategyStore {
     @observable trade_type_dropdown = [];
     @observable duration_unit_dropdown = [];
 
+    is_creating_strategy = false;
+
     @computed
     get initial_values() {
         const init = {
@@ -172,6 +174,10 @@ export default class QuickStrategyStore {
 
     @action.bound
     async createStrategy({ button }) {
+        // Avoid being called twice.
+        if (this.is_creating_strategy) return;
+        this.is_creating_strategy = true;
+
         const symbol = this.selected_symbol.value;
         const trade_type = this.selected_trade_type.value;
         const duration_unit = this.selected_duration_unit.value;
@@ -231,20 +237,24 @@ export default class QuickStrategyStore {
             }
         });
 
-        const file_name = strategies[strategy_name].label;
-        const workspace = Blockly.derivWorkspace;
+        const file_name = strategies?.[strategy_name]?.label || localize('Unknown');
+        const { derivWorkspace: workspace } = Blockly;
+
         load({ block_string: Blockly.Xml.domToText(strategy_dom), file_name, workspace, from: save_types.UNSAVED });
 
         if (button === 'run') {
-            const trade_definition_block = workspace.getTradeDefinitionBlock();
-
-            workspace.waitForBlockEvent(trade_definition_block.id, Blockly.Events.BLOCK_CREATE).then(() => {
-                this.toggleStrategyModal();
-                this.root_store.run_panel.onRunButtonClick();
-            });
-        } else {
+            await workspace.waitForBlockEvent(workspace.getTradeDefinitionBlock().id, Blockly.Events.BLOCK_CREATE);
+        }
+        // Close modal if open for edit + run.
+        if (this.is_strategy_modal_open) {
             this.toggleStrategyModal();
         }
+        // Only run if user clicked run.
+        if (button === 'run') {
+            this.root_store.run_panel.onRunButtonClick();
+        }
+
+        this.is_creating_strategy = false;
     }
 
     @action.bound

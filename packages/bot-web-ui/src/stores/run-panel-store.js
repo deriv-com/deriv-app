@@ -367,13 +367,14 @@ export default class RunPanelStore {
 
     @action.bound
     showErrorMessage(data) {
-        const { journal } = this.root_store;
+        const { journal, ui } = this.root_store;
 
         journal.onError(data);
         if (journal.journal_filters.some(filter => filter === message_types.ERROR)) {
             this.setActiveTabIndex(2);
         } else {
-            this.root_store.ui.addNotificationMessage(journalError(this.switchToJournal));
+            ui.addNotificationMessage(journalError(this.switchToJournal));
+            ui.removeNotificationMessage({ key: 'bot_error' });
         }
     }
 
@@ -383,7 +384,6 @@ export default class RunPanelStore {
         journal.journal_filters.push(message_types.ERROR);
         this.setActiveTabIndex(2);
         ui.toggleNotificationsModal();
-        ui.removeNotificationMessage({ key: 'bot_error' });
         ui.removeNotificationByKey({ key: 'bot_error' });
     }
 

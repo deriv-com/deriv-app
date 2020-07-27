@@ -7,20 +7,16 @@ import { connect } from 'Stores/connect';
 import { Hr, RadioButtonGroup, RadioButton } from './currency-selector.jsx';
 
 const messages = [
-    'Choose your preferred cryptocurrency',
-    'You can open an account for each cryptocurrency.',
-    'Add a real account',
-    'Choose a currency you would like to trade with.',
+    <Localize key={0} i18n_default_text='Choose your preferred cryptocurrency' />,
+    <Localize key={1} i18n_default_text='You can open an account for each cryptocurrency.' />,
+    <Localize key={2} i18n_default_text='Add a real account' />,
+    <Localize key={3} i18n_default_text='Choose a currency you would like to trade with.' />,
 ];
 
 const Headers = ({ heading, subheading }) => (
     <React.Fragment>
-        <h1>
-            <Localize i18n_default_text={heading} />
-        </h1>
-        <h3>
-            <Localize i18n_default_text={subheading} />
-        </h3>
+        <h1>{heading}</h1>
+        <h3>{subheading}</h3>
     </React.Fragment>
 );
 

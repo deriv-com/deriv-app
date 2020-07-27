@@ -110,20 +110,24 @@ const InputWithCheckbox = ({
     );
 
     const showToast = () => {
-        addToast({
-            key: name,
-            content: tooltip_label,
-            type: 'info',
-            is_bottom: true,
-        });
+        if (typeof addToast === 'function') {
+            addToast({
+                key: name,
+                content: tooltip_label,
+                type: 'info',
+                is_bottom: true,
+            });
+        }
     };
 
     const showErrorToast = () => {
-        addToast({
-            key: `${name}__error`,
-            content: error_messages,
-            type: 'error',
-        });
+        if (typeof addToast === 'function') {
+            addToast({
+                key: `${name}__error`,
+                content: error_messages,
+                type: 'error',
+            });
+        }
     };
 
     return (

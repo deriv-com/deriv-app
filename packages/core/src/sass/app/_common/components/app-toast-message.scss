@@ -30,11 +30,10 @@
     align-items: center;
 
     &__message {
-        min-height: 34px;
         padding: 0.4rem 0.8rem;
         @include typeface(--paragraph-center-normal-black);
         color: var(--text-colored-background);
-        border-radius: 4px;
+        border-radius: $BORDER_RADIUS;
         margin-bottom: 1rem;
     }
     &__error {

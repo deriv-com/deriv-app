@@ -92,6 +92,7 @@ class ContractUpdateForm extends React.Component {
     };
 
     render() {
+        const { addToast } = this.props;
         const { buy_price, currency, is_valid_to_cancel } = this.contract_info;
         const cancellation_price = getCancellationPrice(this.contract_info);
         const {
@@ -103,6 +104,7 @@ class ContractUpdateForm extends React.Component {
 
         const take_profit_input = (
             <InputWithCheckbox
+                addToast={addToast}
                 classNameInlinePrefix='trade-container__currency'
                 currency={currency}
                 error_messages={this.error_messages.take_profit}
@@ -120,6 +122,7 @@ class ContractUpdateForm extends React.Component {
 
         const stop_loss_input = (
             <InputWithCheckbox
+                addToast={addToast}
                 classNameInlinePrefix='trade-container__currency'
                 currency={currency}
                 defaultChecked={has_contract_update_stop_loss}
@@ -162,7 +165,8 @@ ContractUpdateForm.propTypes = {
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ modules, ui }) => ({
+    addToast: ui.addToast,
     clearContractUpdateConfigValues: modules.contract_trade.clearContractUpdateConfigValues,
     getContractById: modules.contract_trade.getContractById,
     onChange: modules.contract_trade.onChange,

@@ -64,7 +64,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.14.2",
-    "eslint-plugin-react-hooks": "^4.0.4",
+    "eslint-plugin-react-hooks": "^4.0.8",
     "expose-loader": "^0.7.5",
     "jest": "^24.8.0",
     "js-interpreter": "^2.1.0",

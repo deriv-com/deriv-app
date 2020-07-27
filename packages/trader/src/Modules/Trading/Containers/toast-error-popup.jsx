@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { MobileWrapper, ToastError } from '@deriv/components';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { MobileWrapper, ToastError } from '@deriv/components';
 import { connect } from 'Stores/connect';
 
 const ToastErrorPopup = ({

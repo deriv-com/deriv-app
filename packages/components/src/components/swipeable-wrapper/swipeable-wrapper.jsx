@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Swipeable } from 'react-swipeable';
-import Icon from 'Components/icon';
+import Icon from '../icon';
 
 const SwipeableWrapper = ({ children, className, onChange, ...props }) => {
     const [active_index, setActiveIndex] = React.useState(0);

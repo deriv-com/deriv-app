@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon, Input } from '@deriv/components';
 import { Field, Formik, Form } from 'formik';
+import { Button, Icon, Input } from '@deriv/components';
 import { getDecimalPlaces } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';

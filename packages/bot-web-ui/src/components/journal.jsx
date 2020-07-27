@@ -173,25 +173,37 @@ const getJournalItemContent = (message, type, className, extra) => {
     }
 };
 
-const JournalLoader = () => (
+const JournalLoader = ({ is_mobile }) => (
     <ContentLoader
-        className='journal__loader'
+        className={classnames('journal__loader', { 'journal__loader--mobile': is_mobile })}
         speed={3}
         width={350}
         height={92}
         primaryColor={'var(--general-section-1)'}
         secondaryColor={'var(--general-hover)'}
     >
-        <rect x='15' y='15' rx='5' ry='5' width='305' height='40' />
+        <rect x='15' y='15' rx='5' ry='5' width='320' height='40' />
         <rect x='15' y='60' rx='5' ry='5' width='180' height='7' />
     </ContentLoader>
 );
 
-const Journal = ({ filtered_messages, contract_stage, is_stop_button_visible, ...props }) => {
+const Journal = ({
+    contract_stage,
+    filtered_messages,
+    is_drawer_open,
+    is_mobile,
+    is_stop_button_visible,
+    ...props
+}) => {
     return (
-        <div className='journal run-panel-tab__content'>
+        <div
+            className={classnames('journal run-panel-tab__content--no-stat', {
+                'run-panel-tab__content': !is_mobile,
+                'run-panel-tab__content--journal-mobile': is_mobile && is_drawer_open,
+            })}
+        >
             <Tools {...props} />
-            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 50px)'}>
+            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 4.2rem)'}>
                 <div className='journal__item-list'>
                     {filtered_messages.length ? (
                         <TransitionGroup>
@@ -216,27 +228,20 @@ const Journal = ({ filtered_messages, contract_stage, is_stop_button_visible, ..
                             {contract_stage >= contract_stages.STARTING &&
                             !!props.checked_filters.length &&
                             is_stop_button_visible ? (
-                                <JournalLoader />
+                                <JournalLoader is_mobile={is_mobile} />
                             ) : (
-                                <div className='journal-empty__container'>
-                                    <div className='journal-empty'>
-                                        <Icon
-                                            icon='IcBox'
-                                            className='journal-empty__icon'
-                                            size={64}
-                                            color='secondary'
-                                        />
-                                        <h4 className='journal-empty__header'>
-                                            {localize('There are no messages to display')}
-                                        </h4>
-                                        <div className='journal-empty__message'>
-                                            <span>{localize('Here are the possible reasons:')}</span>
-                                            <ul className='journal-empty__list'>
-                                                <li>{localize('The bot is not running')}</li>
-                                                <li>{localize('The stats are cleared')}</li>
-                                                <li>{localize('All messages are filtered out')}</li>
-                                            </ul>
-                                        </div>
+                                <div className='journal-empty'>
+                                    <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
+                                    <h4 className='journal-empty__header'>
+                                        {localize('There are no messages to display')}
+                                    </h4>
+                                    <div className='journal-empty__message'>
+                                        <span>{localize('Here are the possible reasons:')}</span>
+                                        <ul className='journal-empty__list'>
+                                            <li>{localize('The bot is not running')}</li>
+                                            <li>{localize('The stats are cleared')}</li>
+                                            <li>{localize('All messages are filtered out')}</li>
+                                        </ul>
                                     </div>
                                 </div>
                             )}
@@ -254,16 +259,19 @@ Journal.propTypes = {
     filtered_messages: PropTypes.array,
     filterMessage: PropTypes.func,
     filters: PropTypes.array,
+    is_mobile: PropTypes.bool,
+    is_stop_button_visible: PropTypes.bool,
     is_filter_dialog_visible: PropTypes.bool,
     toggleFilterDialog: PropTypes.func,
 };
 
-export default connect(({ journal, run_panel }) => ({
+export default connect(({ journal, run_panel, ui }) => ({
     checked_filters: journal.checked_filters,
     contract_stage: run_panel.contract_stage,
     filterMessage: journal.filterMessage,
     filters: journal.filters,
     filtered_messages: journal.filtered_messages,
+    is_mobile: ui.is_mobile,
     is_filter_dialog_visible: journal.is_filter_dialog_visible,
     is_stop_button_visible: run_panel.is_stop_button_visible,
     toggleFilterDialog: journal.toggleFilterDialog,

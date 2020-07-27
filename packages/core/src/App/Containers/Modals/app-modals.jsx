@@ -14,6 +14,9 @@ const ResetPasswordModal = React.lazy(() =>
 const SetResidenceModal = React.lazy(() =>
     import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal')
 );
+const RealityCheckModal = React.lazy(() =>
+    import(/* webpackChunkName: "reality-check-modal"  */ '../RealityCheckModal')
+);
 const AccountTypesModal = React.lazy(() =>
     import(/* webpackChunkName: "account-types-modal"  */ '../AccountTypesModal')
 );
@@ -22,6 +25,7 @@ const AppModals = ({
     is_account_needed_modal_on,
     is_account_types_modal_visible,
     is_denial_of_service_modal_visible,
+    is_reality_check_visible,
     is_set_residence_modal_visible,
     url_action_param,
     switchAccount,
@@ -57,6 +61,8 @@ const AppModals = ({
                 );
             } else if (is_set_residence_modal_visible) {
                 ComponentToLoad = <SetResidenceModal />;
+            } else if (is_reality_check_visible) {
+                ComponentToLoad = <RealityCheckModal />;
             }
             break;
     }
@@ -78,6 +84,7 @@ export default connect(({ client, ui }) => ({
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     is_denial_of_service_modal_visible: !client.is_client_allowed_to_visit,
+    is_reality_check_visible: client.is_reality_check_visible,
     switchAccount: client.switchAccount,
     virtual_account_loginid: client.virtual_account_loginid,
 }))(AppModals);

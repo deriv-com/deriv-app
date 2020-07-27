@@ -66,7 +66,7 @@ class AddOrManageAccounts extends React.Component {
     };
 
     get no_crypto_available() {
-        return this.props.available_crypto_currencies.length === 0;
+        return this.props.available_crypto_currencies.length === 0 && this.props.has_fiat;
     }
 
     get should_hide_crypto() {

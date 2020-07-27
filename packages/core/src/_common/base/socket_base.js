@@ -300,6 +300,8 @@ const BinarySocketBase = (() => {
     const p2pSubscribe = (request, cb) => subscribe(request, cb);
     const accountStatistics = () => deriv_api.send({ account_statistics: 1 });
 
+    const realityCheck = () => deriv_api.send({ reality_check: 1 });
+
     return {
         init,
         forgetStream,
@@ -363,6 +365,7 @@ const BinarySocketBase = (() => {
         loginHistory,
         closeAndOpenNewConnection,
         accountStatistics,
+        realityCheck,
     };
 })();
 

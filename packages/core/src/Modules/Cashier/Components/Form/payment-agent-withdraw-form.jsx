@@ -183,7 +183,11 @@ class PaymentAgentWithdrawForm extends React.Component {
                         // in case coming back from confirmation screen, populate the recent data to be edited
                         amount: this.props.amount || '',
                         payment_agent: should_fill_id ? this.props.payment_agent_id : '',
-                        payment_agents: this.props.payment_agent_list[0]?.value,
+                        payment_agents:
+                            should_fill_id || !this.props.payment_agent_name
+                                ? this.props.payment_agent_list[0]?.value
+                                : this.props.payment_agent_list.find(pa => pa.text === this.props.payment_agent_name)
+                                      ?.value,
                         payment_method: should_fill_id ? 'payment_agent' : 'payment_agents',
                     }}
                     validate={this.validateWithdrawalPassthrough}

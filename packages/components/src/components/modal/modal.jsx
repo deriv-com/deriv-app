@@ -121,7 +121,7 @@ ModalElement.propTypes = {
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     small: PropTypes.bool,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.node]),
     toggleModal: PropTypes.func,
     elements_to_ignore: PropTypes.array,
 };
@@ -136,6 +136,7 @@ const Modal = ({
     height,
     onMount,
     onUnmount,
+    onModalRendered,
     small,
     is_vertical_bottom,
     is_vertical_centered,
@@ -155,6 +156,7 @@ const Modal = ({
             enterDone: 'dc-modal__container--enter-done',
             exit: 'dc-modal__container--exit',
         }}
+        onEntered={onModalRendered}
         unmountOnExit
     >
         <ModalElement
@@ -200,8 +202,9 @@ Modal.propTypes = {
     is_vertical_top: PropTypes.bool,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
+    onModalRendered: PropTypes.func,
     small: PropTypes.bool,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.node]),
     toggleModal: PropTypes.func,
     width: PropTypes.string,
     elements_to_ignore: PropTypes.array,

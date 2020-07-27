@@ -246,6 +246,7 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                     onClick={onDriveConnect}
                     has_effect
                     secondary
+                    large
                 />
                 <Button
                     className='load-google-drive__open'
@@ -254,6 +255,7 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                     is_loading={is_open_button_loading}
                     has_effect
                     primary
+                    large
                 />
             </div>
         ) : (

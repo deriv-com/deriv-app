@@ -9,10 +9,9 @@ const Row = ({ label, value }) => (
         {Array.isArray(value) ? (
             <span>
                 {value.map((v, idx) => (
-                    <React.Fragment key={idx}>
+                    <div key={idx}>
                         <strong>{v}</strong>
-                        <br />
-                    </React.Fragment>
+                    </div>
                 ))}
             </span>
         ) : (

@@ -16,7 +16,7 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
             if (el_chat_title) {
                 if (/^Chat about order [0-9]+$/.test(el_chat_title.innerText)) {
                     const short_name = getShortNickname(nickname);
-                    const chat_header_avatar = document.createElement('div');
+                    const el_chat_header_avatar = document.createElement('div');
 
                     el_chat_title.innerText = nickname;
 

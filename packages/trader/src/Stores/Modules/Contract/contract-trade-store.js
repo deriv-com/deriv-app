@@ -1,5 +1,5 @@
 import { action, computed, observable, toJS } from 'mobx';
-import { isDesktop } from '@deriv/shared';
+import { isMobile, isDesktop } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import { LocalStore } from '_common/storage';
 import { switch_to_tick_chart } from './Helpers/chart-notifications';
@@ -87,11 +87,16 @@ export default class ContractTradeStore extends BaseStore {
 
         WS.contractUpdate(contract_id, limit_order).then(response => {
             if (response.error) {
-                this.root_store.common.setServicesError({
-                    type: response.msg_type,
-                    ...response.error,
-                });
-                this.root_store.ui.toggleServicesErrorModal(true);
+                if (isMobile()) {
+                    this.root_store.ui.setToastErrorMessage(response.error.message, 5000);
+                    this.root_store.ui.setToastErrorVisibility(true);
+                } else {
+                    this.root_store.common.setServicesError({
+                        type: response.msg_type,
+                        ...response.error,
+                    });
+                    this.root_store.ui.toggleServicesErrorModal(true);
+                }
                 return;
             }
 

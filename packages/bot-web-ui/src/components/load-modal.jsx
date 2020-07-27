@@ -230,8 +230,7 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
     <div className='load-google-drive__container'>
         <Icon
             icon={'IcGoogleDrive'}
-            className={classnames({
-                'load-google-drive__icon--active': is_authorised,
+            className={classnames('load-google-drive__icon', {
                 'load-google-drive__icon--disabled': !is_authorised,
             })}
             size={is_mobile ? 96 : 116}
@@ -264,6 +263,7 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                 onClick={onDriveConnect}
                 has_effect
                 primary
+                large
             />
         )}
     </div>

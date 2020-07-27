@@ -281,6 +281,8 @@ $modal_container_height: calc(100vh - 210px);
             margin-top: 16px;
         }
         &__icon {
+            margin-top: 130px;
+
             &--disabled {
                 opacity: 0.32;
             }

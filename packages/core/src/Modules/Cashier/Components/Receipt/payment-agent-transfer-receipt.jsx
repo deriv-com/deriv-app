@@ -36,7 +36,7 @@ class PaymentAgentTransferReceipt extends React.Component {
                         </span>
                         <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
                         <span className='account-transfer__transfer-details-to'>
-                            <Icon icon='IcUserOutline' />
+                            <Icon icon='IcClient' />
                             <span className='cashier__transferred-details'>
                                 <span className='cashier__text--bold'>{this.props.receipt.client_name}</span>
                                 <span className='cashier__text--faint'>{this.props.receipt.client_id}</span>

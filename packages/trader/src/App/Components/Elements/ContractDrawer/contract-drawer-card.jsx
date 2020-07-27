@@ -62,7 +62,7 @@ const ContractDrawerCard = ({
             />
         </ContractCard>
     );
-    console.warn(is_multiplier, is_sold);
+
     return (
         <React.Fragment>
             <DesktopWrapper>{contract_card}</DesktopWrapper>

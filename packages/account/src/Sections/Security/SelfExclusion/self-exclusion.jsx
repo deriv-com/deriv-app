@@ -817,7 +817,7 @@ export default connect(({ client }) => ({
     currency: client.currency,
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,
-    is_mlt: client.standpoint.malta,
-    is_mx: client.standpoint.iom,
+    is_mlt: client.landing_company_shortcode === 'malta',
+    is_mx: client.landing_company_shortcode === 'iom',
     logout: client.logout,
 }))(SelfExclusion);

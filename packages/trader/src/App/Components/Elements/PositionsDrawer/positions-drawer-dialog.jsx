@@ -22,7 +22,7 @@ class PositionsDrawerDialog extends React.Component {
             if (this.ref.current.contains(event.target)) {
                 event.stopPropagation();
             } else if (!this.props.toggle_ref.current.contains(event.target)) {
-                this.props.toggleDialog();
+                this.props.toggleDialog(event);
             }
         }
     };

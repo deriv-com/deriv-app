@@ -488,7 +488,7 @@ export default class ClientStore extends BaseStore {
     get is_eu_country() {
         const country = this.website_status.clients_country;
         if (country) return isEuCountry(country);
-        return country;
+        return false;
     }
     /**
      * Store Values relevant to the loginid to local storage.

@@ -20,10 +20,10 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
 
                     el_chat_title.innerText = nickname;
 
-                    chat_header_avatar.innerText = short_name;
-                    el_chat_avatar.appendChild(chat_header_avatar);
+                    el_chat_header_avatar.innerText = short_name;
+                    el_chat_avatar.appendChild(el_chat_header_avatar);
                     el_chat_avatar.style.backgroundColor = generateHexColourFromNickname(nickname);
-                    chat_header_avatar.className = 'sendbird-avatar-text';
+                    el_chat_header_avatar.className = 'sendbird-avatar-text';
 
                     el_sendbird_conversation.setAttribute('style', 'display: flex;');
                     setIsLoading(false);

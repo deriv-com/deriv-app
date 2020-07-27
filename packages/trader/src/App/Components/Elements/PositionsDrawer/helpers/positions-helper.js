@@ -1,5 +1,8 @@
 import moment from 'moment';
 import { localize } from '@deriv/translations';
+import Shortcode from 'Modules/Reports/Helpers/shortcode';
+import { getContractTypesConfig } from 'Stores/Modules/Trading/Constants/contract';
+import { isCallPut } from 'Stores/Modules/Contract/Helpers/contract-type';
 
 export const addCommaToNumber = (num, decimal_places) => {
     if (!num || isNaN(num)) {
@@ -48,3 +51,14 @@ const digitTypeMap = contract_info => ({
     DIGITOVER: localize('Over {{barrier}}', { barrier: contract_info.barrier }),
     DIGITUNDER: localize('Under {{barrier}}', { barrier: contract_info.barrier }),
 });
+
+export const filterByContractType = ({ contract_type, shortcode }, trade_contract_type) => {
+    const is_call_put = isCallPut(trade_contract_type);
+    const is_high_low = Shortcode.isHighLow({ shortcode });
+    const trade_types = is_call_put
+        ? ['CALL', 'CALLE', 'PUT', 'PUTE']
+        : getContractTypesConfig()[trade_contract_type]?.trade_types;
+    const match = trade_types?.includes(contract_type);
+    if (trade_contract_type === 'high_low') return is_high_low;
+    return match && !is_high_low;
+};

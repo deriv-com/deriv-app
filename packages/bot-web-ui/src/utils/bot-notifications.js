@@ -15,6 +15,7 @@ export const switch_account_notification = {
 };
 
 export const journalError = onClick => {
+    console.log('hi');
     return {
         key: 'bot_error',
         header: localize('The bot encountered an error while running.'),

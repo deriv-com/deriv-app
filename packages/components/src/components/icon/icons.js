@@ -25,6 +25,7 @@ import './cashier/ic-cashier-withdrawal.svg';
 import './common/ic-account-error.svg';
 import './common/ic-account-missing-details.svg';
 import './common/ic-account-transfer.svg';
+import './common/ic-account-trash-can.svg';
 import './common/ic-add-rounded.svg';
 import './common/ic-add.svg';
 import './common/ic-alert-danger.svg';

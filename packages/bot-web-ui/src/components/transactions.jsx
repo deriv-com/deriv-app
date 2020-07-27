@@ -7,8 +7,8 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Transaction from './transaction.jsx';
 import { transaction_elements } from '../constants/transactions';
 import { connect } from '../stores/connect';
-import '../assets/sass/transactions.scss';
 import { contract_stages } from '../constants/contract-stage';
+import '../assets/sass/transactions.scss';
 
 class Transactions extends React.PureComponent {
     componentDidMount() {
@@ -20,12 +20,12 @@ class Transactions extends React.PureComponent {
     }
 
     render() {
-        const { elements, is_mobile, contract_stage } = this.props;
+        const { elements, is_drawer_open, is_mobile, contract_stage } = this.props;
         return (
             <div
                 className={classnames('transactions', {
                     'run-panel-tab__content': !is_mobile,
-                    'run-panel-tab__content--mobile': is_mobile,
+                    'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
                 })}
             >
                 <div className='transactions__header'>
@@ -38,7 +38,7 @@ class Transactions extends React.PureComponent {
                     </span>
                 </div>
                 <div className='transactions__content'>
-                    <ThemedScrollbars height='100%'>
+                    <ThemedScrollbars autoHide hideHorizontal className='transactions__scrollbar'>
                         {elements.length ? (
                             <TransitionGroup>
                                 {elements.map(element => {
@@ -73,12 +73,7 @@ class Transactions extends React.PureComponent {
                                 {contract_stage >= contract_stages.STARTING ? (
                                     <Transaction contract={null} />
                                 ) : (
-                                    <div
-                                        className={classnames({
-                                            'transactions-empty': !is_mobile,
-                                            'transactions-empty--mobile': is_mobile,
-                                        })}
-                                    >
+                                    <div className='transactions-empty'>
                                         <Icon
                                             icon='IcBox'
                                             className='transactions-empty__icon'

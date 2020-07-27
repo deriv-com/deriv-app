@@ -91,7 +91,7 @@ class Routes extends React.Component {
 
     onTouchStart = () => {
         if (document.activeElement.tagName !== 'INPUT') {
-            if (!this.state.is_bot) {
+            if (!isBot()) {
                 this.el_landscape_blocker.classList.remove('landscape-blocker--disabled');
             }
         }

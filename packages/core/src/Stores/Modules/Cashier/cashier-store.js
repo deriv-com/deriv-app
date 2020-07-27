@@ -483,9 +483,10 @@ export default class CashierStore extends BaseStore {
             return BinarySocket.wait('paymentagent_list');
         }
 
-        const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
-        const currency = this.root_store.client.currency;
-        return WS.authorized.paymentAgentList(residence, currency);
+        // wait for get_settings so residence gets populated in client-store
+        // TODO: set residence in client-store from authorize so it's faster
+        await BinarySocket.wait('get_settings');
+        return WS.authorized.paymentAgentList(this.root_store.client.residence, this.root_store.client.currency);
     }
 
     @action.bound
@@ -590,9 +591,11 @@ export default class CashierStore extends BaseStore {
             ) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
-        }
 
-        this.setLoading(false);
+            this.setLoading(false);
+        } else {
+            this.setLoading(false);
+        }
     }
 
     @action.bound

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Collapsible } from '@deriv/components';
+import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import ContractCard from 'App/Components/Elements/ContractCard';
 import CardBody from './contract-drawer-card-body.jsx';
 import CardFooter from './contract-drawer-card-footer.jsx';
@@ -21,7 +22,8 @@ const ContractDrawerCard = ({
     status,
     toggleContractAuditDrawer,
 }) => {
-    const { is_sold, profit } = contract_info;
+    const { profit } = contract_info;
+    const is_sold = !!getEndTime(contract_info);
 
     const card_body = (
         <CardBody
@@ -47,7 +49,7 @@ const ContractDrawerCard = ({
             is_multiplier={is_multiplier}
             contract_info={contract_info}
             profit_loss={profit}
-            is_sold={!!is_sold}
+            is_sold={is_sold}
         >
             <CardHeader contract_info={contract_info} has_progress_slider={!is_multiplier} />
             {card_body_wrapper}
@@ -66,10 +68,10 @@ const ContractDrawerCard = ({
             <DesktopWrapper>{contract_card}</DesktopWrapper>
             <MobileWrapper>
                 <SwipeableContractDrawer
-                    onSwipedUp={is_sold ? onSwipedUp : undefined}
-                    onSwipedDown={is_sold ? onSwipedDown : undefined}
+                    onSwipedUp={is_sold || is_multiplier ? onSwipedUp : undefined}
+                    onSwipedDown={is_sold || is_multiplier ? onSwipedDown : undefined}
                 >
-                    {!!is_sold && (
+                    {(is_sold || is_multiplier) && (
                         <Collapsible.ArrowButton onClick={toggleContractAuditDrawer} is_collapsed={is_collapsed} />
                     )}
                     {contract_card}

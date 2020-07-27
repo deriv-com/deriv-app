@@ -9,7 +9,7 @@ import {
     FadeWrapper,
     PageOverlay,
 } from '@deriv/components';
-import { isMobile, getSelectedRoute } from '@deriv/shared';
+import { getSelectedRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/reports.scss';
@@ -70,7 +70,7 @@ class Reports extends React.Component {
                         </DesktopWrapper>
                         <MobileWrapper>
                             <Div100vhContainer className='reports__mobile-wrapper' height_offset='80px'>
-                                {isMobile() && selected_route && (
+                                {selected_route && (
                                     <selected_route.component component_icon={selected_route.icon_component} />
                                 )}
                             </Div100vhContainer>

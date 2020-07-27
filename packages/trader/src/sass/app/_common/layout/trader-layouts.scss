@@ -118,10 +118,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 &__mobile-wrapper {
                     position: relative;
                     max-height: 188px;
-                    flex: 1;
+                    flex: 2;
 
                     &--is-multiplier {
-                        max-height: 220px;
+                        max-height: 244px;
+                        top: -0.5rem;
                     }
                 }
                 &--with-collapsible-btn {
@@ -260,7 +261,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         }
                     }
                     &.contract-drawer--is-expanded {
-                        transform: translateY(calc(-100% + 270px));
+                        transform: translateY(calc(-100% + 328px));
 
                         @media (max-width: 320px) and (max-height: 480px) {
                             transform: translateY(calc(-100% + 238px));

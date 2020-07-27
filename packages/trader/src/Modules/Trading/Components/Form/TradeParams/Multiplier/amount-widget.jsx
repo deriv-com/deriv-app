@@ -1,7 +1,7 @@
 import React from 'react';
-import { Money } from '@deriv/components';
+import { Money, Icon } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import MultiplierTradeParamsModal from 'Modules/Trading/Containers/Multiplier/multiplier-trade-params-modal.jsx';
 
 const AmountWidget = ({ amount, currency, multiplier }) => {
@@ -30,8 +30,46 @@ const AmountWidget = ({ amount, currency, multiplier }) => {
     );
 };
 
-export default connect(({ modules }) => ({
+export const MultiplierAmountWidget = connect(({ modules }) => ({
     amount: modules.trade.amount,
     currency: modules.trade.currency,
     multiplier: modules.trade.multiplier,
 }))(AmountWidget);
+
+const CommissionWidget = ({ commission, multiplier, amount, currency, addToast }) => {
+    const commission_percentage = Number((commission * 100) / (multiplier * amount)).toFixed(4);
+
+    const showCommissionToast = () => {
+        const text = (
+            <Localize
+                i18n_default_text='<0>{{commission_percentage}}%</0> of (<1/> * {{multiplier}})'
+                values={{ commission_percentage, multiplier }}
+                components={[<span className='bold' key={0} />, <Money key={1} amount={amount} currency={currency} />]}
+            />
+        );
+
+        addToast({
+            key: 'multiplier_commission',
+            content: text,
+            type: 'info',
+        });
+    };
+
+    return (
+        <div className='mobile-widget__multiplier-commission'>
+            <Localize
+                i18n_default_text='Commission: <0/>'
+                components={[<Money key={0} amount={commission} currency={currency} />]}
+            />
+            <Icon icon='IcInfoOutline' onClick={showCommissionToast} />
+        </div>
+    );
+};
+
+export const MultiplierCommissionWidget = connect(({ modules, ui }) => ({
+    amount: modules.trade.amount,
+    currency: modules.trade.currency,
+    multiplier: modules.trade.multiplier,
+    commission: modules.trade.commission,
+    addToast: ui.addToast,
+}))(CommissionWidget);

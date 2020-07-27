@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
 import { connect } from 'Stores/connect';
 
 const TakeProfit = ({
+    addToast,
     currency,
     has_take_profit,
     is_single_currency,
@@ -30,6 +30,7 @@ const TakeProfit = ({
     return (
         <Fieldset className='trade-container__fieldset'>
             <InputWithCheckbox
+                addToast={addToast}
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput='trade-container__input'
                 currency={currency}
@@ -44,8 +45,8 @@ const TakeProfit = ({
                 tooltip_label={localize(
                     'Your contract is closed automatically when your profit is more than or equals to this amount.'
                 )}
-                tooltip_alignment={isMobile() ? 'bottom' : 'left'}
-                error_message_alignment={isMobile() ? 'bottom' : 'left'}
+                tooltip_alignment='left'
+                error_message_alignment='left'
                 value={take_profit}
             />
         </Fieldset>
@@ -62,7 +63,8 @@ TakeProfit.propTypes = {
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules, client }) => ({
+export default connect(({ modules, client, ui }) => ({
+    addToast: ui.addToast,
     is_single_currency: client.is_single_currency,
     currency: modules.trade.currency,
     has_take_profit: modules.trade.has_take_profit,

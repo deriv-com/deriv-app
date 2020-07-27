@@ -681,7 +681,7 @@ class SelfExclusion extends React.Component {
                                                     </Field>
                                                 </div>
                                             </div>
-                                            {(this.props.is_mlt || this.props.is_mx) && (
+                                            {values.exclude_until && (this.props.is_mlt || this.props.is_mx) && (
                                                 <div className='self-exclusion__warning'>
                                                     <Icon
                                                         icon='IcAlertWarning'

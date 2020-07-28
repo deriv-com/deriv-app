@@ -298,10 +298,10 @@ export default class CashierStore extends BaseStore {
 
     @computed
     get is_cashier_locked() {
-        if (!this.root_store.client.account_status) return false;
-        const account_status = this.root_store.client.account_status.status || [];
+        if (!this.root_store.client.account_status.status) return false;
+        const { status } = this.root_store.client.account_status.status;
 
-        return account_status.some(status_name => status_name === 'cashier_locked');
+        return status.some(status_name => status_name === 'cashier_locked');
     }
 
     @computed
@@ -315,7 +315,7 @@ export default class CashierStore extends BaseStore {
             account_status,
         } = this.root_store.client;
 
-        if (!account_status) return false;
+        if (!account_status.status) return false;
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
 
@@ -332,7 +332,7 @@ export default class CashierStore extends BaseStore {
             account_status,
         } = this.root_store.client;
 
-        if (!account_status) return false;
+        if (!account_status.status) return false;
 
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
@@ -342,7 +342,7 @@ export default class CashierStore extends BaseStore {
 
     @computed
     get is_withdrawal_locked() {
-        if (!this.root_store.client.account_status) return false;
+        if (!this.root_store.client.account_status.status) return false;
         const { status, authentication } = this.root_store.client.account_status;
         const need_poi = authentication.needs_verification.includes('identity');
         const has_withdrawal_lock_status = status.some(status_name =>

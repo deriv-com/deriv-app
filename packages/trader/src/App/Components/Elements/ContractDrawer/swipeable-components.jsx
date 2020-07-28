@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -17,7 +18,12 @@ export const SwipeableContractAudit = ({ is_multiplier, children, onSwipedDown }
 
     return ReactDOM.createPortal(
         <Div100vhContainer className='contract-audit-card' height_offset='220px'>
-            <div {...swipe_handlers} style={{ height: is_multiplier ? 'calc(100% - 64px)' : 'calc(100% - 4px)' }}>
+            <div
+                {...swipe_handlers}
+                className={classNames('contract-audit-card__container', {
+                    'contract-audit-card__container--is-multiplier': is_multiplier,
+                })}
+            >
                 {children}
             </div>
         </Div100vhContainer>,

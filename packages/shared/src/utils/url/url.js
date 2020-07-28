@@ -63,9 +63,9 @@ export const urlFor = (
         if (/localhost|binary\.sx/.test(domain)) {
             domain = `https://binary.com/${lang || 'en'}/`;
         } else {
-            domain = domain.replace(/deriv\.com/, `binary.com/${lang || 'en'}`);
+            // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+            domain = domain.replace(/app\.deriv\.com|deriv\.app/, `binary.com/${lang || 'en'}`);
         }
-        domain = domain.replace(/deriv\.com/, `binary.com/${lang || 'en'}`);
     }
     const new_url = `${domain}${normalizePath(path) || 'home'}.html${query_string ? `?${query_string}` : ''}`;
 

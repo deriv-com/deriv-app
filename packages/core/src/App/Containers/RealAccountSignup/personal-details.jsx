@@ -107,7 +107,7 @@ class PersonalDetails extends React.Component {
                                             style={{ paddingBottom: this.state.paddingBottom }}
                                         >
                                             <FormInputField
-                                                name='first_name_yyy'
+                                                name='first_name'
                                                 label={localize('First name*')}
                                                 placeholder={localize('John')}
                                                 data-lpignore='true'

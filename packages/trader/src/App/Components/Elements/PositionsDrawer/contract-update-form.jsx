@@ -9,19 +9,15 @@ import { getCancellationPrice } from 'Stores/Modules/Contract/Helpers/logic';
 
 class ContractUpdateForm extends React.Component {
     componentWillUnmount() {
-        this.props.clearContractUpdateConfigValues(this.props.contract_id);
-    }
-
-    get contract() {
-        return this.props.getContractById(this.props.contract_id);
+        this.props.clearContractUpdateConfigValues(this.props.contract.contract_id);
     }
 
     get contract_info() {
-        return this.contract.contract_info;
+        return this.props.contract.contract_info;
     }
 
     get contract_update_config() {
-        return this.contract.contract_update_config;
+        return this.props.contract.contract_update_config;
     }
 
     get limit_order() {
@@ -35,11 +31,12 @@ class ContractUpdateForm extends React.Component {
 
     get is_valid_contract_update() {
         const {
-            has_contract_update_take_profit,
-            has_contract_update_stop_loss,
             contract_update_take_profit,
+            has_contract_update_take_profit,
             contract_update_stop_loss,
-        } = this.contract_update_config;
+            has_contract_update_stop_loss,
+        } = this.props;
+
         const { current_take_profit, current_stop_loss } = this.limit_order;
 
         const is_take_profit_valid = has_contract_update_take_profit
@@ -53,7 +50,7 @@ class ContractUpdateForm extends React.Component {
     }
 
     get error_messages() {
-        const { has_contract_update_stop_loss, has_contract_update_take_profit } = this.contract_update_config;
+        const { has_contract_update_take_profit, has_contract_update_stop_loss } = this.props;
 
         const {
             contract_update_stop_loss: stop_loss,
@@ -81,27 +78,26 @@ class ContractUpdateForm extends React.Component {
                     name,
                     value,
                 },
-                this.props.contract_id
+                this.props.contract.contract_id
             );
         }
     };
 
     onClick = e => {
-        this.props.updateLimitOrder(this.props.contract_id);
+        this.props.updateLimitOrder(this.props.contract.contract_id);
         this.props.toggleDialog(e);
     };
 
     render() {
-        const { addToast } = this.props;
-        const { buy_price, currency, is_valid_to_cancel } = this.contract_info;
-        const cancellation_price = getCancellationPrice(this.contract_info);
         const {
-            has_contract_update_stop_loss,
+            addToast,
+            contract_update_take_profit,
             has_contract_update_take_profit,
             contract_update_stop_loss,
-            contract_update_take_profit,
-        } = this.contract_update_config;
-
+            has_contract_update_stop_loss,
+        } = this.props;
+        const { buy_price, currency, is_valid_to_cancel } = this.contract_info;
+        const cancellation_price = getCancellationPrice(this.contract_info);
         const take_profit_input = (
             <InputWithCheckbox
                 addToast={addToast}
@@ -157,7 +153,7 @@ class ContractUpdateForm extends React.Component {
 }
 
 ContractUpdateForm.propTypes = {
-    contract_id: PropTypes.number,
+    contract: PropTypes.object,
     currency: PropTypes.string,
     getContractById: PropTypes.func,
     resetContractUpdate: PropTypes.func,
@@ -165,11 +161,18 @@ ContractUpdateForm.propTypes = {
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules, ui }) => ({
-    addToast: ui.addToast,
-    clearContractUpdateConfigValues: modules.contract_trade.clearContractUpdateConfigValues,
-    getContractById: modules.contract_trade.getContractById,
-    onChange: modules.contract_trade.onChange,
-    updateLimitOrder: modules.contract_trade.updateLimitOrder,
-    validation_errors: modules.contract_trade.validation_errors,
-}))(ContractUpdateForm);
+export default connect(({ modules, ui }, props) => {
+    const contract_update_config = props.contract.contract_update_config;
+    return {
+        addToast: ui.addToast,
+        clearContractUpdateConfigValues: modules.contract_trade.clearContractUpdateConfigValues,
+        getContractById: modules.contract_trade.getContractById,
+        onChange: modules.contract_trade.onChange,
+        updateLimitOrder: modules.contract_trade.updateLimitOrder,
+        validation_errors: modules.contract_trade.validation_errors,
+        contract_update_take_profit: contract_update_config?.contract_update_take_profit,
+        contract_update_stop_loss: contract_update_config?.contract_update_stop_loss,
+        has_contract_update_take_profit: contract_update_config?.has_contract_update_take_profit,
+        has_contract_update_stop_loss: contract_update_config?.has_contract_update_stop_loss,
+    };
+})(ContractUpdateForm);

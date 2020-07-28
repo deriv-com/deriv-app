@@ -182,7 +182,6 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
             </div>
             <div className='transactions__cell transactions__stake'>
                 <TransactionIconWithText
-                    icon={<Icon icon='IcContractBuyPrice' />}
                     title={localize('Buy price')}
                     message={
                         contract ? (

@@ -90,7 +90,7 @@ const InputWithCheckbox = ({
             name={name}
             onChange={onChange}
             onClickInputWrapper={is_disabled ? undefined : enableInputOnClick}
-            type='tel'
+            type='number'
             value={value}
         />
     );

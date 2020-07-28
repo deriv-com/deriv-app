@@ -1,7 +1,6 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable } from 'mobx';
-import { isDesktop, toMoment } from '@deriv/shared';
-import Shortcode from 'Modules/Reports/Helpers/shortcode';
+import { toMoment } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 
 import getDateBoundaries from './Helpers/format-request';
@@ -46,12 +45,6 @@ export default class ProfitTableStore extends BaseStore {
     @computed
     get has_selected_date() {
         return !!(this.date_from || this.date_to);
-    }
-
-    @computed
-    get data_source() {
-        // TODO: remove this getter once Multiplier is supported in mobile
-        return isDesktop() ? this.data : this.data.filter(row => !Shortcode.isMultiplier({ shortcode: row.shortcode }));
     }
 
     shouldFetchNextBatch(should_load_partially) {

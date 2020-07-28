@@ -109,7 +109,7 @@ class RealAccountSignup extends React.Component {
         if (has_real_account && currency) {
             if (is_eu && is_eu_enabled && this.active_modal_index === 1) {
                 // Manage account
-                return '400px'; // Since crypto is disabled for EU clients, lower the height of modal
+                return '347px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
             if (this.active_modal_index === 2) {
                 return 'auto';

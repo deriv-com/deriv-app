@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
+import { Div100vhContainer } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import 'Sass/app/_common/components/app-toast-message.scss';
 
@@ -69,10 +70,10 @@ const AppToastMessages = ({ toasts, removeToast }) => {
     };
 
     const toast_messages = (
-        <div className='dc-toast-messages'>
+        <Div100vhContainer className='dc-toast-messages' height_offset='15px'>
             <div className='dc-toast-messages__top'>{top_toasts.map(toast)}</div>
             <div className='dc-toast-messages__bottom'>{bottom_toasts.map(toast)}</div>
-        </div>
+        </Div100vhContainer>
     );
 
     return ReactDOM.createPortal(toast_messages, document.getElementById('popup_root'));

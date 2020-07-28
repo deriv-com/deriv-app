@@ -299,9 +299,9 @@ export default class CashierStore extends BaseStore {
     @computed
     get is_cashier_locked() {
         if (!this.root_store.client.account_status) return false;
-        const { status } = this.root_store.client.account_status;
+        const account_status = this.root_store.client.account_status.status || [];
 
-        return status.some(status_name => status_name === 'cashier_locked');
+        return account_status.some(status_name => status_name === 'cashier_locked');
     }
 
     @computed

@@ -2,6 +2,7 @@ import { Formik, Field } from 'formik';
 import React from 'react';
 import { FormSubHeader } from '@deriv/account';
 import {
+    Modal,
     Autocomplete,
     AutoHeightWrapper,
     Checkbox,
@@ -405,16 +406,18 @@ class PersonalDetails extends React.Component {
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <FormSubmitButton
-                                    cancel_label={localize('Previous')}
-                                    has_cancel
-                                    is_disabled={
-                                        // eslint-disable-next-line no-unused-vars
-                                        isSubmitting || Object.keys(errors).length > 0
-                                    }
-                                    label={localize('Next')}
-                                    onCancel={this.handleCancel.bind(this, values)}
-                                />
+                                <Modal.Footer has_separator>
+                                    <FormSubmitButton
+                                        cancel_label={localize('Previous')}
+                                        has_cancel
+                                        is_disabled={
+                                            // eslint-disable-next-line no-unused-vars
+                                            isSubmitting || Object.keys(errors).length > 0
+                                        }
+                                        label={localize('Next')}
+                                        onCancel={this.handleCancel.bind(this, values)}
+                                    />
+                                </Modal.Footer>
                             </form>
                         )}
                     </AutoHeightWrapper>

@@ -1665,7 +1665,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
     @include mobile {
-        width: 92%;
+        width: calc(100% - 3rem);
         margin: 0 auto;
 
         .dc-form-submit-button {

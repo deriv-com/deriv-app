@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { getDerivComLink } from '@deriv/shared';
+import { connect } from 'Stores/connect';
 
 const AccountDeactivated = ({ logout }) => {
     const [is_modal_open, setModalState] = React.useState(true);
@@ -10,17 +10,18 @@ const AccountDeactivated = ({ logout }) => {
 
     React.useEffect(() => {
         window.history.pushState(null, null, '/');
-        logout();
+        if (!is_modal_open) logout();
         const handleInterval = setInterval(() => counter(), 1000);
         return () => {
             if (handleInterval) clearInterval(handleInterval);
         };
-    }, [timer]);
+    }, [timer, is_modal_open]);
 
     const counter = () => {
         if (timer > 0) {
             setTimer(timer - 1);
         } else {
+            logout();
             window.location.href = getDerivComLink();
         }
     };

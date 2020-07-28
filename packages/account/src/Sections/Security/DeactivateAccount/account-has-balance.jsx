@@ -32,11 +32,12 @@ const AccountHasBalanceOrOpenPositions = ({
     const deriv_accounts_with_balance = [];
     const mt5_accounts_id = [];
     const mt5_accounts_with_balance_or_open_positions = [];
+    const isActiveAccount = (client_account, account_name) => client_account.loginid === account_name;
 
     if (accounts_with_balance_or_open_positions.open_positions) {
         Object.keys(accounts_with_balance_or_open_positions.open_positions).forEach((account_name) => {
-            const deriv_account_with_open_position = client_accounts.find(
-                (client_account) => client_account.loginid === account_name
+            const deriv_account_with_open_position = client_accounts.find((client_account) =>
+                isActiveAccount(client_account, account_name)
             );
             if (deriv_account_with_open_position) {
                 deriv_accounts_open_positions.push(deriv_account_with_open_position);
@@ -47,7 +48,9 @@ const AccountHasBalanceOrOpenPositions = ({
     }
     if (accounts_with_balance_or_open_positions.balance) {
         Object.keys(accounts_with_balance_or_open_positions.balance).forEach((account_name) => {
-            const is_deriv_account = client_accounts.find((client_account) => client_account.loginid === account_name);
+            const is_deriv_account = client_accounts.find((client_account) =>
+                isActiveAccount(client_account, account_name)
+            );
             if (is_deriv_account) {
                 const deriv_account = accounts_with_balance_or_open_positions.balance[account_name];
                 deriv_account.id = account_name;
@@ -154,7 +157,7 @@ const AccountHasBalanceOrOpenPositions = ({
                 </div>
             )}
             <div>
-                <Button className='have-open-positions-or-balance__button' primary onClick={() => onBackClick()}>
+                <Button className='have-open-positions-or-balance__button' primary onClick={onBackClick}>
                     {localize('OK')}
                 </Button>
             </div>

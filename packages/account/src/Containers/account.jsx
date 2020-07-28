@@ -100,10 +100,11 @@ class Account extends React.Component {
             });
         }
 
-        const selected_route = isMobile()
-            ? getSelectedRoute({ routes: subroutes, pathname: this.props.location.pathname })
-            : null;
-
+        const selected_route = getSelectedRoute({ routes: subroutes, pathname: this.props.location.pathname });
+        if (selected_route.path === routes.account_deactivated) {
+            const { component: AccountDeactivated } = selected_route;
+            return <AccountDeactivated />;
+        }
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}

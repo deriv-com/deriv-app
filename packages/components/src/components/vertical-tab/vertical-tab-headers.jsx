@@ -72,16 +72,19 @@ class VerticalTabHeaders extends React.PureComponent {
                               group={group}
                               key={idx}
                           >
-                              {group.subitems.map((item_idx, header_idx) => (
-                                  <VerticalTabHeader
-                                      item={this.props.items[item_idx]}
-                                      onChange={this.onTabChange}
-                                      is_floating={this.props.is_floating}
-                                      is_routed={this.props.is_routed}
-                                      selected={this.props.selected}
-                                      key={header_idx}
-                                  />
-                              ))}
+                              {group.subitems.map(
+                                  (item_idx, header_idx) =>
+                                      !this.props.items[item_idx]?.should_hide_route && (
+                                          <VerticalTabHeader
+                                              item={this.props.items[item_idx]}
+                                              onChange={this.onTabChange}
+                                              is_floating={this.props.is_floating}
+                                              is_routed={this.props.is_routed}
+                                              selected={this.props.selected}
+                                              key={header_idx}
+                                          />
+                                      )
+                              )}
                           </VerticalTabHeaderGroup>
                       ))
                     : this.props.items.map((item, idx) => (

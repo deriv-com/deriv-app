@@ -154,7 +154,7 @@ class DeactivateAccountReason extends React.Component {
         });
         this.setState({ is_loading: false });
         if (account_closure_response.account_closure === 1) {
-            window.location.href = '/account-deactivated';
+            window.location.href = '/account/account-deactivated';
         } else {
             this.setState({
                 which_modal_should_render: account_closure_response.error.code,

@@ -11,6 +11,7 @@ import Account from 'Containers/account.jsx';
 import DeactivateAccount from 'Sections/Security/DeactivateAccount';
 import ConnectedApps from 'Sections/Security/ConnectedApps';
 import LoginHistory from 'Sections/Security/LoginHistory';
+import AccountDeactivated from 'Sections/Security/AccountDeactivated';
 
 export {
     AccountLimits,
@@ -26,4 +27,5 @@ export {
     DeactivateAccount,
     ConnectedApps,
     LoginHistory,
+    AccountDeactivated,
 };

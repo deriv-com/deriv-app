@@ -16,6 +16,7 @@ import {
     DeactivateAccount,
     ConnectedApps,
     LoginHistory,
+    AccountDeactivated,
 } from 'Sections';
 
 // Error Routes
@@ -106,6 +107,12 @@ const initRoutesConfig = () => [
                         path: routes.deactivate_account,
                         component: DeactivateAccount,
                         title: localize('Deactivate account'),
+                    },
+                    {
+                        path: routes.account_deactivated,
+                        component: AccountDeactivated,
+                        title: localize('Account deactivated'),
+                        should_hide_route: true,
                     },
                 ],
             },

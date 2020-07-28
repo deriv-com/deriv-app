@@ -297,6 +297,8 @@ const BinarySocketBase = (() => {
     // so that subscribe remains private
     const p2pSubscribe = (request, cb) => subscribe(request, cb);
 
+    const realityCheck = () => deriv_api.send({ reality_check: 1 });
+
     return {
         init,
         forgetStream,
@@ -358,6 +360,7 @@ const BinarySocketBase = (() => {
         transferBetweenAccounts,
         loginHistory,
         closeAndOpenNewConnection,
+        realityCheck,
     };
 })();
 

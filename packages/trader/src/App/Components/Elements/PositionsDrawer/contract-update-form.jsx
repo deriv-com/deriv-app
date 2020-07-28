@@ -9,15 +9,11 @@ import { getCancellationPrice } from 'Stores/Modules/Contract/Helpers/logic';
 
 class ContractUpdateForm extends React.Component {
     componentWillUnmount() {
-        this.props.clearContractUpdateConfigValues(this.props.contract.contract_id);
+        this.props.contract.clearContractUpdateConfigValues();
     }
 
     get contract_info() {
         return this.props.contract.contract_info;
-    }
-
-    get contract_update_config() {
-        return this.props.contract.contract_update_config;
     }
 
     get limit_order() {
@@ -72,19 +68,16 @@ class ContractUpdateForm extends React.Component {
     onChange = e => {
         const { name, value } = e.target;
 
-        if (typeof this.props.onChange === 'function') {
-            this.props.onChange(
-                {
-                    name,
-                    value,
-                },
-                this.props.contract.contract_id
-            );
+        if (typeof this.props.contract.onChange === 'function') {
+            this.props.contract.onChange({
+                name,
+                value,
+            });
         }
     };
 
     onClick = e => {
-        this.props.updateLimitOrder(this.props.contract.contract_id);
+        this.props.contract.updateLimitOrder();
         this.props.toggleDialog(e);
     };
 
@@ -162,17 +155,15 @@ ContractUpdateForm.propTypes = {
 };
 
 export default connect(({ modules, ui }, props) => {
-    const contract_update_config = props.contract.contract_update_config;
+    const contract = props.contract;
     return {
         addToast: ui.addToast,
-        clearContractUpdateConfigValues: modules.contract_trade.clearContractUpdateConfigValues,
         getContractById: modules.contract_trade.getContractById,
-        onChange: modules.contract_trade.onChange,
         updateLimitOrder: modules.contract_trade.updateLimitOrder,
-        validation_errors: modules.contract_trade.validation_errors,
-        contract_update_take_profit: contract_update_config?.contract_update_take_profit,
-        contract_update_stop_loss: contract_update_config?.contract_update_stop_loss,
-        has_contract_update_take_profit: contract_update_config?.has_contract_update_take_profit,
-        has_contract_update_stop_loss: contract_update_config?.has_contract_update_stop_loss,
+        validation_errors: contract.validation_errors,
+        contract_update_take_profit: contract.contract_update_take_profit,
+        contract_update_stop_loss: contract.contract_update_stop_loss,
+        has_contract_update_take_profit: contract.has_contract_update_take_profit,
+        has_contract_update_stop_loss: contract.has_contract_update_stop_loss,
     };
 })(ContractUpdateForm);

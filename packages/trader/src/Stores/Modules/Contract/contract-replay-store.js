@@ -121,7 +121,7 @@ export default class ContractReplayStore extends BaseStore {
         this.prev_indicative = new_indicative;
 
         // update the contract_store here passing contract_info
-        this.contract_store.populateConfig(this.contract_info, true);
+        this.contract_store.populateConfig(this.contract_info);
 
         const end_time = this.contract_store.end_time;
 

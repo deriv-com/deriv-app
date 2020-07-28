@@ -380,12 +380,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 height: 100%;
                 width: calc(100% - 1.6rem);
                 margin-left: 0.8rem;
-
-                .drag-price {
-                    .arrow-icon {
-                        display: none;
-                    }
-                }
             }
         }
         @include mobile {

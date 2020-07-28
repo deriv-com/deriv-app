@@ -15,6 +15,7 @@ import './flyout_base';
 import './gesture';
 import './utils';
 import './icon';
+import './inject';
 import './procedures';
 import './toolbox';
 import './trashcan';

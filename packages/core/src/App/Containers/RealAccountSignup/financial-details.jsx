@@ -1,6 +1,6 @@
 import { Formik } from 'formik';
 import React from 'react';
-import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, ThemedScrollbars } from '@deriv/components';
+import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
 import { FormSubHeader } from '@deriv/account';
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
@@ -180,16 +180,18 @@ const FinancialDetails = props => {
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <FormSubmitButton
-                                    is_disabled={
-                                        // eslint-disable-next-line no-unused-vars
-                                        isSubmitting || Object.keys(errors).length > 0
-                                    }
-                                    label={localize('Next')}
-                                    has_cancel
-                                    cancel_label={localize('Previous')}
-                                    onCancel={() => handleCancel(values)}
-                                />
+                                <Modal.Footer has_separator>
+                                    <FormSubmitButton
+                                        is_disabled={
+                                            // eslint-disable-next-line no-unused-vars
+                                            isSubmitting || Object.keys(errors).length > 0
+                                        }
+                                        label={localize('Next')}
+                                        has_cancel
+                                        cancel_label={localize('Previous')}
+                                        onCancel={() => handleCancel(values)}
+                                    />
+                                </Modal.Footer>
                             </form>
                         )}
                     </AutoHeightWrapper>

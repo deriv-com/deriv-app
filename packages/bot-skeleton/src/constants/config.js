@@ -289,10 +289,5 @@ export const config = {
             ),
         },
     },
-    popover_zindex: {
-        quick_strategy: '99999',
-        toolbar: '5',
-        run_panel_tooltips: '5',
-    },
     default_file_name: localize('Untitled Bot'),
 };

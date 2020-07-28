@@ -60,7 +60,12 @@ export const urlFor = (
     const lang = language?.toLowerCase?.() ?? default_language;
     let domain = `https://${window.location.hostname}/`;
     if (legacy) {
-        domain = `https://binary.com/${lang || 'en'}/`;
+        if (/localhost|binary\.sx/.test(domain)) {
+            domain = `https://binary.com/${lang || 'en'}/`;
+        } else {
+            domain = domain.replace(/deriv\.com/, `binary.com/${lang || 'en'}`);
+        }
+        domain = domain.replace(/deriv\.com/, `binary.com/${lang || 'en'}`);
     }
     const new_url = `${domain}${normalizePath(path) || 'home'}.html${query_string ? `?${query_string}` : ''}`;
 

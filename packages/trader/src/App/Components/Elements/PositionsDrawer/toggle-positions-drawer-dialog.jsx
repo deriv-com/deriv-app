@@ -17,6 +17,7 @@ class TogglePositionsDrawerDialog extends React.Component {
         };
         this.toggle_ref = React.createRef();
         this.dialog_ref = React.createRef();
+        this.contract = props.getContractById(props.contract_id);
     }
 
     toggleDialog = e => {
@@ -102,7 +103,7 @@ class TogglePositionsDrawerDialog extends React.Component {
                         wrapper_classname='contract-update'
                     >
                         <div className='contract-update__wrapper'>
-                            <ContractUpdateForm contract_id={this.props.contract_id} toggleDialog={this.toggleDialog} />
+                            <ContractUpdateForm contract={this.contract} toggleDialog={this.toggleDialog} />
                         </div>
                     </MobileDialog>
                 </MobileWrapper>
@@ -115,7 +116,7 @@ class TogglePositionsDrawerDialog extends React.Component {
                         toggle_ref={this.toggle_ref}
                         toggleDialog={this.toggleDialog}
                     >
-                        <ContractUpdateForm contract_id={this.props.contract_id} toggleDialog={this.toggleDialog} />
+                        <ContractUpdateForm contract={this.contract} toggleDialog={this.toggleDialog} />
                     </PositionsDrawerDialog>
                 </DesktopWrapper>
             </React.Fragment>
@@ -128,7 +129,8 @@ PropTypes.TogglePositionsDrawerDialog = {
     contract_id: PropTypes.string,
 };
 
-export default connect(({ ui }) => ({
+export default connect(({ modules, ui }) => ({
     toggleCancellationWarning: ui.toggleCancellationWarning,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,
+    getContractById: modules.contract_trade.getContractById,
 }))(TogglePositionsDrawerDialog);

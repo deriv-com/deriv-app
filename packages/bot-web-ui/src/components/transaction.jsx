@@ -181,16 +181,11 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
                 />
             </div>
             <div className='transactions__cell transactions__stake'>
-                <TransactionIconWithText
-                    title={localize('Buy price')}
-                    message={
-                        contract ? (
-                            <Money amount={contract.buy_price} currency={contract.currency} />
-                        ) : (
-                            <TransactionFieldLoader />
-                        )
-                    }
-                />
+                {contract ? (
+                    <Money amount={contract.buy_price} currency={contract.currency} />
+                ) : (
+                    <TransactionFieldLoader />
+                )}
             </div>
             <div className='transactions__cell transactions__profit'>
                 {contract && contract.profit ? (

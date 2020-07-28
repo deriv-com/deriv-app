@@ -56,12 +56,12 @@ const CommissionWidget = ({ commission, multiplier, amount, currency, addToast }
     };
 
     return (
-        <div className='mobile-widget__multiplier-commission'>
+        <div className='mobile-widget__multiplier-commission' onClick={showCommissionToast}>
             <Localize
                 i18n_default_text='Commission: <0/>'
                 components={[<Money key={0} amount={commission} currency={currency} />]}
             />
-            <Icon icon='IcInfoOutline' onClick={showCommissionToast} />
+            <Icon icon='IcInfoOutline' />
         </div>
     );
 };

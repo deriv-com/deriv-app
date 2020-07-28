@@ -28,7 +28,8 @@ const getUrlBase = (path = '') => {
     return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
 };
 
-const isStaging = () => /staging\.deriv\.app/i.test(window.location.hostname);
+// TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+const isStaging = () => /staging\.deriv\.app|staging-app\.deriv\.com/i.test(window.location.hostname);
 
 const isLanguageAvailable = lang => {
     if (!lang) return false;
@@ -44,7 +45,7 @@ const isLanguageAvailable = lang => {
     return Object.keys(ALL_LANGUAGES).includes(selected_language);
 };
 
-const getAllLanguages = () => ALL_LANGUAGES;
+export const getAllLanguages = () => ALL_LANGUAGES;
 
 const getInitialLanguage = () => {
     const url_params = new URLSearchParams(window.location.search);
@@ -93,19 +94,19 @@ const i18n_config = {
 i18n.use(initReactI18next) // passes i18n down to react-i18next
     .init(i18n_config);
 
-const initializeTranslations = async () => {
+export const initializeTranslations = async () => {
     if (isStaging()) {
         loadIncontextTranslation();
     }
     await loadLanguageJson(initial_language);
 };
 
-const getLanguage = () => {
+export const getLanguage = () => {
     return i18n.language || initial_language;
 };
 
 // eslint-disable-next-line no-unused-vars
-const changeLanguage = async (lang, cb) => {
+export const changeLanguage = async (lang, cb) => {
     // TODO: uncomment this when translations are ready
     // if (isLanguageAvailable(lang)) {
     //     await loadLanguageJson(lang);
@@ -117,9 +118,9 @@ const changeLanguage = async (lang, cb) => {
 };
 
 // <Localize /> component wrapped with i18n
-const Localize = withI18n(i18n);
+export const Localize = withI18n(i18n);
 
-const localize = (string, values) => {
+export const localize = (string, values) => {
     if (!string) return '';
 
     return i18n.t(crc32(string), { defaultValue: string, ...values });
@@ -138,13 +139,4 @@ const loadIncontextTranslation = () => {
         `;
         document.head.appendChild(jipt);
     }
-};
-
-export default {
-    changeLanguage,
-    getAllLanguages,
-    getLanguage,
-    initializeTranslations,
-    localize,
-    Localize,
 };

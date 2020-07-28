@@ -11,7 +11,10 @@ import { cookie_banner_expires_in_days, cookie_banner_domain } from '../../Const
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 // import InstallPWA    from './install-pwa.jsx';
 
-const cookie_api = Cookies.withAttributes({ domain: cookie_banner_domain });
+Cookies.defaults = {
+    path: '/',
+    domain: cookie_banner_domain,
+};
 
 const AppContents = ({
     children,
@@ -32,7 +35,7 @@ const AppContents = ({
     const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
     const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
 
-    const tracking_status = cookie_api.get('tracking_status');
+    const tracking_status = Cookies.get('tracking_status');
 
     React.useEffect(() => {
         const allow_tracking = !is_eu_country || tracking_status === 'accepted';
@@ -69,7 +72,7 @@ const AppContents = ({
 
     // handle accept/decline cookies
     const onAccept = () => {
-        cookie_api.set('tracking_status', 'accepted', {
+        Cookies.set('tracking_status', 'accepted', {
             expires: cookie_banner_expires_in_days,
         });
         pushDataLayer({ event: 'allow_tracking' });
@@ -78,7 +81,7 @@ const AppContents = ({
     };
 
     const onDecline = () => {
-        cookie_api.set('tracking_status', 'declined', {
+        Cookies.set('tracking_status', 'declined', {
             expires: cookie_banner_expires_in_days,
         });
         setShowCookieBanner(false);

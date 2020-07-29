@@ -3,6 +3,9 @@
     $info-modal: 'modal--info';
 
     &__container {
+        min-height: 59.1rem;
+        max-height: 591px !important;
+
         .modal__scrollbar {
             max-height: 516px;
             margin-bottom: 75px;
@@ -12,6 +15,9 @@
                 padding: 24px;
                 height: calc(100% - 200px);
                 max-height: 636px;
+            }
+            .dc-tabs__content {
+                height: calc(100% - 4.8rem);
             }
         }
     }
@@ -41,10 +47,12 @@
         overflow: auto;
     }
     &__form {
-        padding: 0 1.6rem;
         height: 100%;
         max-height: calc(100vh - 120px);
 
+        &--mobile {
+            padding: 0 1.6rem;
+        }
         &-content {
             display: flex;
             flex-direction: column;

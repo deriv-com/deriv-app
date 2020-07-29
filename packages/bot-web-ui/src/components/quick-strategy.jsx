@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import {
     Autocomplete,
     Button,
@@ -46,7 +47,7 @@ const QuickStrategyForm = ({
     showInfoModal,
     description,
 }) => (
-    <div className='quick-strategy__form'>
+    <div className={classNames('quick-strategy__form', { 'quick-strategy__form--mobile': is_mobile })}>
         <Formik
             initialValues={initial_values}
             validate={validateQuickStrategy}
@@ -64,9 +65,9 @@ const QuickStrategyForm = ({
                     ? `calc(100vh - 170px)`
                     : `calc(100% - 72px)`;
                 return (
-                    <Form style={{ height: form_margin }}>
+                    <React.Fragment>
                         <ThemedScrollbars autohide>
-                            <div>
+                            <Form style={{ height: form_margin }}>
                                 <div className='quick-strategy__description'>{description}</div>
                                 <div className='quick-strategy__form-row'>
                                     <Field name='quick-strategy__symbol'>
@@ -404,7 +405,7 @@ const QuickStrategyForm = ({
                                         </Button.Group>
                                     </div>
                                 )}
-                            </div>
+                            </Form>
                         </ThemedScrollbars>
                         {(!is_mobile || !is_keyboard_active) && (
                             <div className='quick-strategy__form-footer'>
@@ -436,7 +437,7 @@ const QuickStrategyForm = ({
                                 </Button.Group>
                             </div>
                         )}
-                    </Form>
+                    </React.Fragment>
                 );
             }}
         </Formik>

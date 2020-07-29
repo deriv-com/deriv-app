@@ -44,6 +44,11 @@ const modules = [
         title: localize('Bot'),
     },
     {
+        path: routes.account_deactivated,
+        component: Account,
+        title: localize('Account deactivated'),
+    },
+    {
         path: routes.account,
         component: Account,
         title: localize('Accounts Settings'),

@@ -349,7 +349,7 @@ export default class ClientStore extends BaseStore {
         return false;
     }
 
-    //TODO: remove to resolve conflict when eu branch is complete
+    // TODO remove to resolve conflict when eu branch is complete
     @computed
     get is_eu() {
         if (!this.landing_companies) return false;

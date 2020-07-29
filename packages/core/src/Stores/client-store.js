@@ -349,15 +349,20 @@ export default class ClientStore extends BaseStore {
         return false;
     }
 
+    //TODO: remove to resolve conflict when eu branch is complete
     @computed
     get is_eu() {
         if (!this.landing_companies) return false;
+
         const { gaming_company, financial_company } = this.landing_companies;
         const financial_shortcode = financial_company?.shortcode;
         const gaming_shortcode = gaming_company?.shortcode;
-        return financial_shortcode || gaming_shortcode
-            ? eu_shortcode_regex.test(financial_shortcode) || eu_shortcode_regex.test(gaming_shortcode)
-            : eu_excluded_regex.test(this.residence);
+        const is_eu_residence = eu_excluded_regex.test(this.residence);
+        const is_eu_shortcode = eu_shortcode_regex.test(financial_shortcode || gaming_shortcode);
+
+        if (!financial_shortcode || !gaming_shortcode) return is_eu_residence;
+
+        return is_eu_shortcode;
     }
 
     @computed({ keepAlive: true })

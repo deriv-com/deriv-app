@@ -185,57 +185,57 @@ const MT5CompareAccountHint = () => (
     </div>
 );
 
-const ModalContent = ({ is_eu, is_eu_country, is_logged_in }) => (
-    <div className='mt5-compare-accounts'>
-        <Table fixed scroll_height={isMobile() ? '100%' : 'calc(100% - 130px)'}>
-            <Table.Header>
-                <Table.Row
-                    className={classNames('mt5-compare-accounts__table-row', {
-                        'mt5-compare-accounts__table-row-eu':
-                            (!is_logged_in && is_eu_country) || (is_logged_in && is_eu),
-                    })}
-                >
-                    <Table.Head fixed />
-                    <Table.Head>{localize('Synthetic')}</Table.Head>
-                    <Table.Head>
-                        {localize('Financial')}
-                        <span className='mt5-compare-accounts__star'>*</span>
-                    </Table.Head>
-                    {((!is_logged_in && !is_eu_country) || (is_logged_in && !is_eu)) && (
-                        <Table.Head>
-                            {localize('Financial STP')}
-                            <span className='mt5-compare-accounts__star'>*</span>
-                        </Table.Head>
-                    )}
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-                {compareAccountsData.map((row, i) => (
+const ModalContent = ({ is_eu, is_eu_country, is_logged_in }) => {
+    const is_eu_display = (!is_logged_in && is_eu_country) || (is_logged_in && is_eu);
+    return (
+        <div className='mt5-compare-accounts'>
+            <Table fixed scroll_height={isMobile() ? '100%' : 'calc(100% - 130px)'}>
+                <Table.Header>
                     <Table.Row
-                        key={i}
                         className={classNames('mt5-compare-accounts__table-row', {
-                            'mt5-compare-accounts__table-row-eu':
-                                (!is_logged_in && is_eu_country) || (is_logged_in && is_eu),
+                            'mt5-compare-accounts__table-row-eu': is_eu_display,
                         })}
                     >
-                        {Object.keys(row).map(
-                            (col, j) =>
-                                (j !== 3 ||
-                                    (j === 3 && ((!is_logged_in && !is_eu_country) || (is_logged_in && !is_eu)))) && (
-                                    <Table.Cell key={j} fixed={j === 0}>
-                                        {row[col]}
-                                    </Table.Cell>
-                                )
+                        <Table.Head fixed />
+                        <Table.Head>{localize('Synthetic')}</Table.Head>
+                        <Table.Head>
+                            {localize('Financial')}
+                            <span className='mt5-compare-accounts__star'>*</span>
+                        </Table.Head>
+                        {!is_eu_display && (
+                            <Table.Head>
+                                {localize('Financial STP')}
+                                <span className='mt5-compare-accounts__star'>*</span>
+                            </Table.Head>
                         )}
                     </Table.Row>
-                ))}
-            </Table.Body>
-        </Table>
-        <DesktopWrapper>
-            <MT5CompareAccountHint />
-        </DesktopWrapper>
-    </div>
-);
+                </Table.Header>
+                <Table.Body>
+                    {compareAccountsData.map((row, idx) => (
+                        <Table.Row
+                            key={idx}
+                            className={classNames('mt5-compare-accounts__table-row', {
+                                'mt5-compare-accounts__table-row-eu': is_eu_display,
+                            })}
+                        >
+                            {Object.keys(row).map(
+                                (col, j) =>
+                                    (col !== 'financial_stp' || (col === 'financial_stp' && !is_eu_display)) && (
+                                        <Table.Cell key={j} fixed={j === 0}>
+                                            {row[col]}
+                                        </Table.Cell>
+                                    )
+                            )}
+                        </Table.Row>
+                    ))}
+                </Table.Body>
+            </Table>
+            <DesktopWrapper>
+                <MT5CompareAccountHint />
+            </DesktopWrapper>
+        </div>
+    );
+};
 
 const CompareAccountsModal = ({
     is_eu,

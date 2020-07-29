@@ -389,6 +389,7 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
         unwelcome,
         professional,
         max_turnover_limit_not_set,
+        allow_document_upload,
     } = getStatusValidations(status);
 
     addVerificationNotifications(identity, document, addNotificationMessage);
@@ -396,18 +397,10 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
     const should_show_max_turnover = client.landing_company_shortcode === 'iom' && max_turnover_limit_not_set;
 
-    const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
+    const needs_authentication = needs_verification.length || allow_document_upload;
     const has_risk_assessment = getRiskAssessment(account_status);
-    const needs_poa =
-        needs_verification.length &&
-        needs_verification.includes('document') &&
-        document.status !== 'rejected' &&
-        document.status !== 'expired';
-    const needs_poi =
-        needs_verification.length &&
-        needs_verification.includes('identity') &&
-        identity.status !== 'rejected' &&
-        identity.status !== 'expired';
+    const needs_poa = needs_authentication && needs_verification.includes('document');
+    const needs_poi = needs_authentication && needs_verification.includes('identity');
 
     if (needs_poa) addNotificationMessage(clientNotifications().needs_poa);
     if (needs_poi) addNotificationMessage(clientNotifications().needs_poi);
@@ -432,9 +425,7 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
 
     if (has_risk_assessment) addNotificationMessage(clientNotifications().risk);
     if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
-    if (needs_authentication || prompt_client_to_authenticate) {
-        addNotificationMessage(clientNotifications().authenticate);
-    }
+
     if (should_show_max_turnover) addNotificationMessage(clientNotifications().max_turnover_limit_not_set);
     return {
         has_risk_assessment,

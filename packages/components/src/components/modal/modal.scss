@@ -62,11 +62,6 @@
                 border-bottom: none;
             }
         }
-        &_no-border {
-            .dc-modal-header {
-                border-bottom: none;
-            }
-        }
         @include desktop {
             min-width: 400px;
             max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});

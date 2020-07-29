@@ -1,4 +1,4 @@
-import { Button, Icon, Input, ThemedScrollbars, Popover, Modal } from '@deriv/components';
+import { Button, Icon, Input, ThemedScrollbars, Popover, Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
@@ -141,7 +141,7 @@ const Toolbar = props => {
         active_tab,
         is_dialog_open,
         onOkButtonClick,
-        onCancelButtonClick,
+        toggleResetModal,
         onToolboxToggle,
         toggleStrategyModal,
         toggleLoadModal,
@@ -203,20 +203,18 @@ const Toolbar = props => {
             )}
             <SaveModal />
             <LoadModal />
-            <Modal
+            <Dialog
                 title={localize('Are you sure?')}
-                is_open={is_dialog_open}
-                toggleModal={onCancelButtonClick}
-                className='no-border'
-                width={is_mobile ? 'calc(100vw - 48px)' : '440px'}
+                is_visible={is_dialog_open}
+                confirm_button_text={localize('OK')}
+                onConfirm={onOkButtonClick}
+                cancel_button_text={localize('Cancel')}
+                onCancel={toggleResetModal}
+                is_mobile_full_width={false}
                 has_close_icon
             >
-                <Modal.Body>{localize('Any unsaved changes will be lost.')}</Modal.Body>
-                <Modal.Footer>
-                    <Button large has_effect text={localize('Cancel')} onClick={onCancelButtonClick} secondary />
-                    <Button has_effect large text={localize('Ok')} onClick={onOkButtonClick} primary />
-                </Modal.Footer>
-            </Modal>
+                {localize('Any unsaved changes will be lost.')}
+            </Dialog>
         </>
     );
 };
@@ -231,7 +229,7 @@ Toolbar.propTypes = {
     is_search_loading: PropTypes.bool,
     is_stop_button_disabled: PropTypes.bool,
     is_stop_button_visible: PropTypes.bool,
-    onCancelButtonClick: PropTypes.func,
+    toggleResetModal: PropTypes.func,
     onGoogleDriveClick: PropTypes.func,
     onOkButtonClick: PropTypes.func,
     onResetClick: PropTypes.func,
@@ -259,7 +257,7 @@ export default connect(({ main_content, run_panel, save_modal, load_modal, toolb
     is_search_loading: toolbar.is_search_loading,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     is_stop_button_visible: run_panel.is_stop_button_visible,
-    onCancelButtonClick: toolbar.onResetCancelButtonClick,
+    toggleResetModal: toolbar.toggleResetModal,
     onGoogleDriveClick: toolbar.onGoogleDriveClick,
     onOkButtonClick: toolbar.onResetOkButtonClick,
     onResetClick: toolbar.onResetClick,

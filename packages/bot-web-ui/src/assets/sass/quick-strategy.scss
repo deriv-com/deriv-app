@@ -1,5 +1,6 @@
 .dc-modal {
     $strategy-modal: 'modal--strategy';
+    $info-modal: 'modal--info';
 
     &__container {
         .modal__scrollbar {
@@ -12,6 +13,15 @@
                 height: calc(100% - 200px);
                 max-height: 636px;
             }
+        }
+    }
+    &-header {
+        &--#{$info-modal} {
+            border-bottom: none !important;
+            padding: 10px 8px;
+        }
+        &__title--#{$info-modal} {
+            font-size: 16px !important;
         }
     }
 }
@@ -153,6 +163,14 @@
                 }
             }
         }
+    }
+    &_info-icon {
+        height: 16px;
+        width: 20px;
+    }
+    &_info-message {
+        font-size: 1.4rem;
+        padding: 0px 6px 16px;
     }
 }
 

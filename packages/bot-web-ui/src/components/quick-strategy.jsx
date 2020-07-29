@@ -42,6 +42,7 @@ const QuickStrategyForm = ({
     is_mobile,
     selected_symbol,
     selected_trade_type,
+    showInfoModal,
     description,
 }) => (
     <div className='quick-strategy__form'>
@@ -158,13 +159,28 @@ const QuickStrategyForm = ({
                                             }}
                                             placeholder='5'
                                             trailing_icon={
-                                                <Popover
-                                                    alignment={is_mobile ? 'top' : 'bottom'}
-                                                    message={localize('The trade length of your purchased contract.')}
-                                                    zIndex={popover_zindex.QUICK_STRATEGY}
-                                                >
-                                                    <Icon icon='IcInfoOutline' />
-                                                </Popover>
+                                                is_mobile ? (
+                                                    <Icon
+                                                        className='quick-strategy_info-icon'
+                                                        icon='IcInfoOutline'
+                                                        onClick={() =>
+                                                            showInfoModal(
+                                                                localize('Duration value'),
+                                                                localize('The trade length of your purchased contract.')
+                                                            )
+                                                        }
+                                                    />
+                                                ) : (
+                                                    <Popover
+                                                        alignment={is_mobile ? 'top' : 'bottom'}
+                                                        message={localize(
+                                                            'The trade length of your purchased contract.'
+                                                        )}
+                                                        zIndex={popover_zindex.QUICK_STRATEGY}
+                                                    >
+                                                        <Icon icon='IcInfoOutline' />
+                                                    </Popover>
+                                                )
                                             }
                                         />
                                     )}
@@ -188,13 +204,26 @@ const QuickStrategyForm = ({
                                             }}
                                             placeholder='10'
                                             trailing_icon={
-                                                <Popover
-                                                    alignment={is_mobile ? 'top' : 'bottom'}
-                                                    message={localize('The amount that you pay to enter a trade.')}
-                                                    zIndex={popover_zindex.QUICK_STRATEGY}
-                                                >
-                                                    <Icon icon='IcInfoOutline' />
-                                                </Popover>
+                                                is_mobile ? (
+                                                    <Icon
+                                                        className='quick-strategy_info-icon'
+                                                        icon='IcInfoOutline'
+                                                        onClick={() =>
+                                                            showInfoModal(
+                                                                localize('Initial stake'),
+                                                                localize('The amount that you pay to enter a trade.')
+                                                            )
+                                                        }
+                                                    />
+                                                ) : (
+                                                    <Popover
+                                                        alignment={is_mobile ? 'top' : 'bottom'}
+                                                        message={localize('The amount that you pay to enter a trade.')}
+                                                        zIndex={popover_zindex.QUICK_STRATEGY}
+                                                    >
+                                                        <Icon icon='IcInfoOutline' />
+                                                    </Popover>
+                                                )
                                             }
                                         />
                                     )}
@@ -216,15 +245,30 @@ const QuickStrategyForm = ({
                                             }}
                                             placeholder='5000'
                                             trailing_icon={
-                                                <Popover
-                                                    alignment={is_mobile ? 'top' : 'bottom'}
-                                                    message={localize(
-                                                        'The bot will stop trading if your total loss exceeds this amount.'
-                                                    )}
-                                                    zIndex={popover_zindex.QUICK_STRATEGY}
-                                                >
-                                                    <Icon icon='IcInfoOutline' />
-                                                </Popover>
+                                                is_mobile ? (
+                                                    <Icon
+                                                        className='quick-strategy_info-icon'
+                                                        icon='IcInfoOutline'
+                                                        onClick={() =>
+                                                            showInfoModal(
+                                                                localize('Loss threshold'),
+                                                                localize(
+                                                                    'The bot will stop trading if your total loss exceeds this amount.'
+                                                                )
+                                                            )
+                                                        }
+                                                    />
+                                                ) : (
+                                                    <Popover
+                                                        alignment={is_mobile ? 'top' : 'bottom'}
+                                                        message={localize(
+                                                            'The bot will stop trading if your total loss exceeds this amount.'
+                                                        )}
+                                                        zIndex={popover_zindex.QUICK_STRATEGY}
+                                                    >
+                                                        <Icon icon='IcInfoOutline' />
+                                                    </Popover>
+                                                )
                                             }
                                         />
                                     )}
@@ -248,13 +292,23 @@ const QuickStrategyForm = ({
                                             }}
                                             placeholder='2'
                                             trailing_icon={
-                                                <Popover
-                                                    alignment={is_mobile ? 'top' : 'bottom'}
-                                                    message={getSizeDesc(active_index)}
-                                                    zIndex={popover_zindex.QUICK_STRATEGY}
-                                                >
-                                                    <Icon icon='IcInfoOutline' />
-                                                </Popover>
+                                                is_mobile ? (
+                                                    <Icon
+                                                        className='quick-strategy_info-icon'
+                                                        icon='IcInfoOutline'
+                                                        onClick={() =>
+                                                            showInfoModal(localize('Size'), getSizeDesc(active_index))
+                                                        }
+                                                    />
+                                                ) : (
+                                                    <Popover
+                                                        alignment={is_mobile ? 'top' : 'bottom'}
+                                                        message={getSizeDesc(active_index)}
+                                                        zIndex={popover_zindex.QUICK_STRATEGY}
+                                                    >
+                                                        <Icon icon='IcInfoOutline' />
+                                                    </Popover>
+                                                )
                                             }
                                         />
                                     )}
@@ -276,15 +330,30 @@ const QuickStrategyForm = ({
                                             }}
                                             placeholder='5000'
                                             trailing_icon={
-                                                <Popover
-                                                    alignment={is_mobile ? 'top' : 'bottom'}
-                                                    message={localize(
-                                                        'The bot will stop trading if your total profit exceeds this amount.'
-                                                    )}
-                                                    zIndex={popover_zindex.QUICK_STRATEGY}
-                                                >
-                                                    <Icon icon='IcInfoOutline' />
-                                                </Popover>
+                                                is_mobile ? (
+                                                    <Icon
+                                                        className='quick-strategy_info-icon'
+                                                        icon='IcInfoOutline'
+                                                        onClick={() =>
+                                                            showInfoModal(
+                                                                localize('Profit threshold'),
+                                                                localize(
+                                                                    'The bot will stop trading if your total profit exceeds this amount.'
+                                                                )
+                                                            )
+                                                        }
+                                                    />
+                                                ) : (
+                                                    <Popover
+                                                        alignment={is_mobile ? 'top' : 'bottom'}
+                                                        message={localize(
+                                                            'The bot will stop trading if your total profit exceeds this amount.'
+                                                        )}
+                                                        zIndex={popover_zindex.QUICK_STRATEGY}
+                                                    >
+                                                        <Icon icon='IcInfoOutline' />
+                                                    </Popover>
+                                                )
                                             }
                                         />
                                     )}
@@ -385,6 +454,7 @@ const ContentRenderer = props => {
         getSizeText,
         initial_errors,
         initial_values,
+        is_info_modal_open,
         is_keyboard_active,
         is_mobile,
         is_stop_button_visible,
@@ -392,9 +462,11 @@ const ContentRenderer = props => {
         onChangeInputValue,
         onHideDropdownList,
         onScrollStopDropdownList,
+        toggleInfoModal,
         validateQuickStrategy,
         selected_symbol,
         selected_trade_type,
+        showInfoModal,
     } = props;
     const symbol_dropdown_options = symbol_dropdown.map(symbol => ({
         component: <MarketOption symbol={symbol} />,
@@ -420,6 +492,7 @@ const ContentRenderer = props => {
                                     getSizeText={getSizeText}
                                     initial_errors={initial_errors}
                                     initial_values={initial_values}
+                                    is_info_modal_open={is_info_modal_open}
                                     is_stop_button_visible={is_stop_button_visible}
                                     onChangeDropdownItem={onChangeDropdownItem}
                                     onChangeInputValue={onChangeInputValue}
@@ -432,6 +505,8 @@ const ContentRenderer = props => {
                                     is_mobile={is_mobile}
                                     selected_symbol={selected_symbol}
                                     selected_trade_type={selected_trade_type}
+                                    showInfoModal={showInfoModal}
+                                    toggleInfoModal={toggleInfoModal}
                                     description={description}
                                 />
                             </div>
@@ -444,7 +519,15 @@ const ContentRenderer = props => {
 };
 
 const QuickStrategy = props => {
-    const { is_strategy_modal_open, is_mobile, toggleStrategyModal } = props;
+    const {
+        is_strategy_modal_open,
+        is_mobile,
+        toggleStrategyModal,
+        info_label,
+        info_message,
+        is_info_modal_open,
+        toggleInfoModal,
+    } = props;
 
     return (
         <>
@@ -458,6 +541,16 @@ const QuickStrategy = props => {
                         <MobileWrapper>
                             <Div100vhContainer className='quick-strategy__wrapper--is-mobile' height_offset='80px'>
                                 <ContentRenderer {...props} />
+                                <Modal
+                                    className='modal--info'
+                                    title={info_label}
+                                    is_open={is_info_modal_open}
+                                    toggleModal={toggleInfoModal}
+                                >
+                                    <Modal.Body>
+                                        <div className='quick-strategy_info-message'>{info_message}</div>
+                                    </Modal.Body>
+                                </Modal>
                             </Div100vhContainer>
                         </MobileWrapper>
                     </PageOverlay>
@@ -487,6 +580,8 @@ QuickStrategy.propTypes = {
     getSizeText: PropTypes.func,
     initial_errors: PropTypes.object,
     initial_values: PropTypes.object,
+    info_label: PropTypes.string,
+    info_message: PropTypes.string,
     is_keyboard_active: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_stop_button_visible: PropTypes.bool,
@@ -499,10 +594,13 @@ QuickStrategy.propTypes = {
     setActiveTabIndex: PropTypes.func,
     selected_symbol: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     selected_trade_type: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    showInfoModal: PropTypes.func,
     symbol_dropdown: PropTypes.array,
+    toggleInfoModal: PropTypes.func,
     toggleStrategyModal: PropTypes.func,
     trade_type_dropdown: PropTypes.array,
     validateQuickStrategy: PropTypes.func,
+    is_info_modal_open: PropTypes.bool,
 };
 
 export default connect(({ run_panel, quick_strategy, ui }) => ({
@@ -513,6 +611,8 @@ export default connect(({ run_panel, quick_strategy, ui }) => ({
     getSizeText: quick_strategy.getSizeText,
     initial_errors: quick_strategy.initial_errors,
     initial_values: quick_strategy.initial_values,
+    info_label: quick_strategy.info_label,
+    info_message: quick_strategy.info_message,
     is_keyboard_active: ui.is_keyboard_active,
     is_mobile: ui.is_mobile,
     is_stop_button_visible: run_panel.is_stop_button_visible,
@@ -525,8 +625,11 @@ export default connect(({ run_panel, quick_strategy, ui }) => ({
     setActiveTabIndex: quick_strategy.setActiveTabIndex,
     selected_symbol: quick_strategy.selected_symbol,
     selected_trade_type: quick_strategy.selected_trade_type,
+    showInfoModal: quick_strategy.showInfoModal,
     symbol_dropdown: quick_strategy.symbol_dropdown,
+    toggleInfoModal: quick_strategy.toggleInfoModal,
     toggleStrategyModal: quick_strategy.toggleStrategyModal,
     trade_type_dropdown: quick_strategy.trade_type_dropdown,
     validateQuickStrategy: quick_strategy.validateQuickStrategy,
+    is_info_modal_open: quick_strategy.is_info_modal_open,
 }))(QuickStrategy);

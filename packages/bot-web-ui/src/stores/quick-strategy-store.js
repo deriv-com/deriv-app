@@ -24,6 +24,9 @@ export default class QuickStrategyStore {
     @observable symbol_dropdown = [];
     @observable trade_type_dropdown = [];
     @observable duration_unit_dropdown = [];
+    @observable is_info_modal_open = false;
+    @observable info_label;
+    @observable info_message;
 
     @computed
     get initial_values() {
@@ -168,6 +171,18 @@ export default class QuickStrategyStore {
         if (this.is_strategy_modal_open) {
             await this.updateSymbolDropdown();
         }
+    }
+
+    @action.bound
+    async toggleInfoModal() {
+        this.is_info_modal_open = !this.is_info_modal_open;
+    }
+
+    @action.bound
+    showInfoModal(label, message) {
+        this.info_label = label;
+        this.info_message = message;
+        this.toggleInfoModal();
     }
 
     @action.bound

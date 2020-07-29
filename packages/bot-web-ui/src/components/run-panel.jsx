@@ -8,6 +8,7 @@ import Journal from './journal.jsx';
 import Summary from './summary.jsx';
 import Transactions from './transactions.jsx';
 import TradeAnimation from './trade-animation.jsx';
+import SelfExclusion from './self-exclusion.jsx';
 import { popover_zindex } from '../constants/z-indexes';
 import { connect } from '../stores/connect';
 import '../assets/sass/run-panel.scss';
@@ -159,6 +160,7 @@ class RunPanel extends React.PureComponent {
             toggleDrawer,
             is_dialog_open,
             onOkButtonClick,
+            onRunButtonClick,
             onCancelButtonClick,
         } = this.props;
         const content = drawerContent({ active_index, is_drawer_open, setActiveTabIndex, ...this.props });
@@ -191,6 +193,10 @@ class RunPanel extends React.PureComponent {
                 >
                     {dialog_options.message}
                 </Dialog>
+                <SelfExclusion
+                    onRunButtonClick={onRunButtonClick}
+                    onCancelButtonClick={this.props.resetSelfExclusion}
+                />
             </>
         );
     }
@@ -207,6 +213,7 @@ RunPanel.propTypes = {
     onClearStatClick: PropTypes.func,
     onMount: PropTypes.func,
     onOkButtonClick: PropTypes.func,
+    onRunButtonClick: PropTypes.func,
     onUnmount: PropTypes.func,
     setActiveTabIndex: PropTypes.func,
     toggleDrawer: PropTypes.func,
@@ -230,6 +237,7 @@ export default connect(({ run_panel, core, ui }) => ({
     onClearStatClick: run_panel.onClearStatClick,
     onMount: run_panel.onMount,
     onOkButtonClick: run_panel.onOkButtonClick,
+    onRunButtonClick: run_panel.onRunButtonClick,
     onUnmount: run_panel.onUnmount,
     setActiveTabIndex: run_panel.setActiveTabIndex,
     toggleDrawer: run_panel.toggleDrawer,

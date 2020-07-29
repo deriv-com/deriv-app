@@ -39,11 +39,12 @@ const SelfExclusionForm = props => {
         resetErrors();
         initialFormErrors();
         if (form_max_losses !== api_max_losses) {
-            if (api_max_losses !== 0 && (form_max_losses === 0 || form_max_losses > api_max_losses)) {
-                setMaxLossesError(
-                    localize('Please enter a number between 0 and {{api_max_losses}}.', { api_max_losses })
-                );
-                return;
+            if (form_max_losses !== api_max_losses) {
+                if (api_max_losses !== 0 && (form_max_losses < 0 || form_max_losses > api_max_losses)) {
+                    setMaxLossesError(
+                        localize('Please enter a number between 0 and {{api_max_losses}}.', { api_max_losses })
+                    );
+                }
             }
             const set_losses = await updateSelfExclusion({ max_losses: form_max_losses });
             if (set_losses?.error) {
@@ -54,13 +55,24 @@ const SelfExclusionForm = props => {
         onRunButtonClick();
     };
     const onFormLimitUpdate = e => {
+        setRunLimitError('');
         const value = parseInt(e.currentTarget.value);
         if (value) {
             setRunLimit(value);
+        } else {
+            setRunLimit(-1);
         }
     };
 
     const onFormMaxLossesUpdate = e => {
+        setMaxLossesError('');
+        if (e.currentTarget.value !== api_max_losses) {
+            if (api_max_losses !== 0 && (e.currentTarget.value < 0 || e.currentTarget.value > api_max_losses)) {
+                setMaxLossesError(
+                    localize('Please enter a number between 0 and {{api_max_losses}}.', { api_max_losses })
+                );
+            }
+        }
         const value = parseFloat(e.currentTarget.value) || 0;
         setFormMaxLosses(value);
     };
@@ -87,9 +99,8 @@ const SelfExclusionForm = props => {
                                                 onFormMaxLossesUpdate(e);
                                             }}
                                             error={errors[field.name] || max_losses_error}
-                                            placeholder='10'
                                             hint={localize(
-                                                'Maximum number of trades your bot will execute for this run.'
+                                                'Limits your potential losses for the day across all Deriv platforms.'
                                             )}
                                         />
                                     )}
@@ -102,7 +113,6 @@ const SelfExclusionForm = props => {
                                                 className='self-exclusion__input'
                                                 type='number'
                                                 label={localize('Maximum consecutive trades')}
-                                                placeholder='10'
                                                 value={run_limit > 0 ? run_limit : ''}
                                                 onChange={e => {
                                                     handleChange(e);

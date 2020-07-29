@@ -81,7 +81,6 @@ export default class RunPanelStore {
             )
         );
         runInAction(() => {
-            this.is_stop_button_disabled = false;
             this.is_running = true;
             ui.setPromptHandler(true, route_prompt_dialog.shouldNavigateAfterPrompt);
             this.toggleDrawer(true);
@@ -233,7 +232,6 @@ export default class RunPanelStore {
         // prevent new version update
         const ignore_new_version = new Event('IgnorePWAUpdate');
         document.dispatchEvent(ignore_new_version);
-        this.is_stop_button_disabled = false;
         const { self_exclusion } = this.root_store;
         this.has_open_contract = true;
 

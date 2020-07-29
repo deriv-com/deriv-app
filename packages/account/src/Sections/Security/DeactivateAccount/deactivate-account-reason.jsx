@@ -1,4 +1,6 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Formik, Field } from 'formik';
 import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading } from '@deriv/components';
@@ -75,6 +77,7 @@ const WarningModal = (props) => {
 class DeactivateAccountReason extends React.Component {
     state = {
         is_loading: false,
+        is_account_deactivated: false,
         is_modal_open: false,
         reason: null,
         accounts: undefined,
@@ -154,7 +157,7 @@ class DeactivateAccountReason extends React.Component {
         });
         this.setState({ is_loading: false });
         if (account_closure_response.account_closure === 1) {
-            window.location.href = '/account/account-deactivated';
+            this.setState({ is_account_deactivated: true });
         } else {
             this.setState({
                 which_modal_should_render: account_closure_response.error.code,
@@ -164,6 +167,7 @@ class DeactivateAccountReason extends React.Component {
         }
     };
     render() {
+        if (this.state.is_account_deactivated) return <Redirect to={routes.account_deactivated} />;
         return this.state.is_loading ? (
             <Loading is_fullscreen={false} />
         ) : (

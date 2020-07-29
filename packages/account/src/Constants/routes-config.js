@@ -25,6 +25,12 @@ const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/P
 // Order matters
 const initRoutesConfig = () => [
     {
+        path: routes.account_deactivated,
+        component: AccountDeactivated,
+        is_authenticated: false,
+        title: localize('Account deactivated'),
+    },
+    {
         path: routes.account,
         component: Account,
         is_authenticated: true,
@@ -107,12 +113,6 @@ const initRoutesConfig = () => [
                         path: routes.deactivate_account,
                         component: DeactivateAccount,
                         title: localize('Deactivate account'),
-                    },
-                    {
-                        path: routes.account_deactivated,
-                        component: AccountDeactivated,
-                        title: localize('Account deactivated'),
-                        should_hide_route: true,
                     },
                 ],
             },

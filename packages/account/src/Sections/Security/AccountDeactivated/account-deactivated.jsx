@@ -10,7 +10,7 @@ const AccountDeactivated = ({ logout }) => {
 
     React.useEffect(() => {
         window.history.pushState(null, null, '/');
-        if (!is_modal_open) logout();
+        logout();
         const handleInterval = setInterval(() => counter(), 1000);
         return () => {
             if (handleInterval) clearInterval(handleInterval);
@@ -21,7 +21,6 @@ const AccountDeactivated = ({ logout }) => {
         if (timer > 0) {
             setTimer(timer - 1);
         } else {
-            logout();
             window.location.href = getDerivComLink();
         }
     };

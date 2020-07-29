@@ -71,9 +71,16 @@ class Trade extends React.Component {
     };
 
     onTrySyntheticIndicesClick = () => {
-        this.setState({
-            try_synthetic_indices: true,
-        });
+        this.setState(
+            {
+                try_synthetic_indices: true,
+            },
+            () => {
+                this.setState({
+                    try_synthetic_indices: false,
+                });
+            }
+        );
     };
 
     render() {

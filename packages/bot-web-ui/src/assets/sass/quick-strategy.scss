@@ -3,8 +3,8 @@
     $info-modal: 'modal--info';
 
     &__container {
-        min-height: 59.1rem;
-        max-height: 591px !important;
+        // min-height: 59.1rem;
+        max-height: 57.1rem !important;
 
         .modal__scrollbar {
             max-height: 516px;
@@ -24,7 +24,7 @@
     &-header {
         &--#{$info-modal} {
             border-bottom: none !important;
-            padding: 10px 8px;
+            padding: 10px 8px 0px;
         }
         &__title--#{$info-modal} {
             font-size: 16px !important;
@@ -196,7 +196,7 @@
     }
     &_info-message {
         font-size: 1.4rem;
-        padding: 0px 6px 16px;
+        padding: 0px 0px 16px;
     }
 }
 

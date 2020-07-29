@@ -572,7 +572,7 @@ class AccountSwitcher extends React.Component {
                 </div>
                 <div className='acc-switcher__separator' />
                 <div className='acc-switcher__footer'>
-                    {this.props.is_uk && this.props.has_any_real_account && (
+                    {this.props.is_uk && (
                         <Button
                             className='acc-switcher__compare'
                             type='button'

@@ -233,7 +233,6 @@ class AccountTypesModal extends React.Component {
                 className='account-types'
                 is_open={this.props.is_account_types_modal_visible}
                 toggleModal={this.closeModal}
-                has_close_icon={this.props.is_dismissible}
             >
                 <Div100vhContainer height_offset='120px'>
                     <ThemedScrollbars>
@@ -292,7 +291,6 @@ class AccountTypesModal extends React.Component {
 AccountTypesModal.propTypes = {
     has_any_real_account: PropTypes.bool,
     is_account_types_modal_visible: PropTypes.bool,
-    is_dismissible: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_virtual: PropTypes.bool,
@@ -311,7 +309,6 @@ export default withRouter(
         landing_company_shortcode: client.landing_company_shortcode,
         has_iom_account: client.has_iom_account,
         has_maltainvest_account: client.has_maltainvest_account,
-        is_dismissible: !client.should_have_real_account,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,
         is_virtual: client.is_virtual,

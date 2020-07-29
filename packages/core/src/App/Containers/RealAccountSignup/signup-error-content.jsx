@@ -34,7 +34,7 @@ const SignupErrorContent = ({ message, code, onConfirm }) => {
                 return (
                     <p>
                         <Localize
-                            i18n_default_text='An account with your details already exists. If you are having problems signing into your account please contact email <0>support@deriv.com</0>'
+                            i18n_default_text='An account with your details already exists. If you are having problems signing into your account please email <0>support@deriv.com</0>'
                             components={[
                                 <a
                                     className='email-inline'

@@ -21,7 +21,7 @@ const AccountList = ({
 }) => {
     if (is_disabled && !currency) return null;
 
-    let market_type = React.useMemo(() => {
+    const market_type = React.useMemo(() => {
         if (loginid.startsWith('MX') || loginid.startsWith('MLT')) {
             return localize('Synthetic');
         } else if (loginid.startsWith('MF')) {

@@ -10,7 +10,7 @@ const ContractResultOverlay = props => {
 
     return (
         <div
-            className={classNames('db-contract-card__result', {
+            className={classNames('db-contract-card__result', props.className, {
                 'db-contract-card__result--won': has_won_contract,
                 'db-contract-card__result--lost': !has_won_contract,
             })}

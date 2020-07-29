@@ -10,20 +10,26 @@ import { connect } from 'Stores/connect';
 import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
 import Loading from '../../../../templates/_common/components/loading.jsx';
 
-const AccountOption = ({ account, idx }) => (
-    <React.Fragment key={idx}>
-        {(account.currency || account.mt_icon) && (
-            <Icon
-                icon={account.mt_icon ? `IcMt5-${account.mt_icon}` : `IcCurrency-${account.currency.toLowerCase()}`}
-                className='account-transfer__currency-icon'
-            />
-        )}
-        <span className='account-transfer__currency'>{account.text}</span>
-        <span className='account-transfer__balance cashier__drop-down-display-brackets'>
-            <Money amount={account.balance} currency={account.currency} />
-        </span>
-    </React.Fragment>
-);
+const AccountOption = ({ account, idx }) => {
+    return (
+        <React.Fragment key={idx}>
+            {(account.currency || account.mt_icon) && (
+                <Icon
+                    icon={account.mt_icon ? `IcMt5-${account.mt_icon}` : `IcCurrency-${account.currency.toLowerCase()}`}
+                    className='account-transfer__currency-icon'
+                />
+            )}
+            <div className='account-transfer__currency-wrapper'>
+                <span className='account-transfer__currency'>{account.text}</span>
+                <span className='account-transfer__loginid'>{account.value}</span>
+            </div>
+
+            <span className='account-transfer__balance cashier__drop-down-display-brackets'>
+                <Money amount={account.balance} currency={account.currency} />
+            </span>
+        </React.Fragment>
+    );
+};
 
 const AccountTransferBullet = ({ children }) => (
     <div className='account-transfer__bullet-wrapper'>

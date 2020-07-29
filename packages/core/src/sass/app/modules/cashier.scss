@@ -1014,14 +1014,18 @@
     }
     &__drop-down-wrapper .account-transfer__drop-down {
         text-align: left;
-        width: fit-content;
-        min-width: 36rem;
+        max-width: 36rem;
         margin: 0 auto 5.1rem;
 
         @include mobile {
             width: 100%;
             min-width: auto;
             margin-bottom: 2.4rem;
+        }
+
+        & .dc-dropdown__display-text {
+            width: 100%;
+            align-items: center;
         }
     }
     &__wrapper .account-transfer__input {
@@ -1040,11 +1044,22 @@
         line-height: 1.43;
     }
     &__currency {
-        margin: 0 0.4rem;
+        font-size: 1.2rem;
 
         &-icon {
             align-self: center;
         }
+        &-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-left: 8px;
+            margin-right: 8px;
+        }
+    }
+    &__loginid {
+        @include typeface(--xsmall-left-normal-grey);
     }
     &__balance {
         margin-left: auto;

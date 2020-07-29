@@ -31,7 +31,6 @@ const QuickStrategyForm = ({
     getSizeText,
     initial_errors,
     initial_values,
-    is_info_modal_open,
     is_stop_button_visible,
     onChangeDropdownItem,
     onChangeInputValue,

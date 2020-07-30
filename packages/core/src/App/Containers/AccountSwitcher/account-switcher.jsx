@@ -80,6 +80,7 @@ class AccountSwitcher extends React.Component {
             account_type === 'synthetic' ? this.props.has_malta_account : this.props.has_maltainvest_account;
 
         if (this.props.is_eu_enabled && this.props.is_eu && !has_required_account) {
+            // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
             this.props.openAccountNeededModal(
                 account_type === 'synthetic'
                     ? this.props.standpoint.gaming_company
@@ -126,9 +127,10 @@ class AccountSwitcher extends React.Component {
 
     onClickUpgrade = account => {
         if (this.props.is_eu_enabled) {
+            // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
             this.props.openRealAccountSignup(account);
         } else {
-            window.open(urlFor('new_account/maltainvestws', { legacy: true }));
+            window.open(urlFor('user/accounts', { legacy: true })); // TODO [deriv-eu] Remove this before launching eu production
         }
     };
 
@@ -498,7 +500,7 @@ class AccountSwitcher extends React.Component {
                                                 secondary
                                                 small
                                                 is_disabled={
-                                                    ((!this.props.is_eu_enabled || !this.props.is_eu) &&
+                                                    ((!this.props.is_eu_enabled || !this.props.is_eu) && // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
                                                         !this.props.has_any_real_account) ||
                                                     (account.type === 'financial_stp' &&
                                                         this.props.is_pending_authentication)
@@ -609,7 +611,7 @@ AccountSwitcher.propTypes = {
     has_fiat: PropTypes.bool,
     has_any_real_account: PropTypes.bool,
     is_eu: PropTypes.bool,
-    is_eu_enabled: PropTypes.bool,
+    is_eu_enabled: PropTypes.bool, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
     is_loading_mt5: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
@@ -639,7 +641,7 @@ const account_switcher = withRouter(
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,
         is_eu: client.is_eu,
-        is_eu_enabled: ui.is_eu_enabled,
+        is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,

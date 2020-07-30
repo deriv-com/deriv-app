@@ -415,6 +415,7 @@ class AccountSwitcher extends React.Component {
                                         has_balance={'balance' in this.props.accounts[account.loginid]}
                                         is_disabled={account.is_disabled}
                                         is_virtual={account.is_virtual}
+                                        is_eu={this.props.is_eu}
                                         loginid={account.loginid}
                                         onClickAccount={
                                             account.is_disabled ? undefined : this.doSwitch.bind(this, account.loginid)
@@ -607,6 +608,7 @@ AccountSwitcher.propTypes = {
     can_upgrade_to: PropTypes.string,
     has_fiat: PropTypes.bool,
     has_any_real_account: PropTypes.bool,
+    is_eu: PropTypes.bool,
     is_eu_enabled: PropTypes.bool,
     is_loading_mt5: PropTypes.bool,
     is_logged_in: PropTypes.bool,

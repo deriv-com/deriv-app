@@ -381,6 +381,9 @@
         cursor: pointer;
         font-weight: bold;
     }
+    &__button {
+        margin-top: 3.2rem;
+    }
     &__virtual {
         &-header {
             @include typeface(--title-center-bold-prominent);

@@ -407,9 +407,6 @@ export default class CashierStore extends BaseStore {
     @action.bound
     handleCashierError(error) {
         switch (error.code) {
-            case 'ASK_EMAIL_VERIFY':
-                // TODO: hanle email verify
-                break;
             case 'ASK_TNC_APPROVAL':
                 this.setErrorMessage(error, null, true);
                 break;

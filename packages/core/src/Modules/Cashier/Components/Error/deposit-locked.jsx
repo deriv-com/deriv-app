@@ -91,7 +91,7 @@ const DepositsLocked = ({
     ];
     return (
         <div className='cashier-locked'>
-            <Icon icon='IcCashierNoBalance' className='cashier-locked__icon' />
+            <Icon icon='IcCashierDepositLock' className='cashier-locked__icon' />
             <h2 className='cashier-locked__title'>{localize('Deposits are locked')}</h2>
 
             {items.length ? (

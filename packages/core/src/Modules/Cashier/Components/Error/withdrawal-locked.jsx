@@ -24,7 +24,7 @@ const WithdrawalLocked = ({ account_status }) => {
     ];
     return (
         <div className='cashier-locked'>
-            <Icon icon='IcMoneyTransfer' className='cashier-locked__icon' />
+            <Icon icon='IcCashierWithdrawalLock' className='cashier-locked__icon' />
             <h2 className='cashier-locked__title'>{localize('Withdrawals are locked')}</h2>
 
             {is_poi_needed ? (

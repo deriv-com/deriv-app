@@ -48,16 +48,8 @@ const AppContents = ({
     React.useEffect(() => {
         if (is_window_loaded) {
             if (is_eu_country && !tracking_status) {
-                // eslint-disable-next-line
-                console.log('1', is_eu_country, is_logged_in, is_window_loaded, is_eu);
                 setShowCookieBanner(!is_logged_in);
-            } else {
-                // eslint-disable-next-line
-                console.log('2', is_eu_country, is_logged_in, is_window_loaded, is_eu);
             }
-        } else {
-            // eslint-disable-next-line
-            console.log('3', 'window not loaded yet');
         }
     }, [is_logged_in, is_window_loaded, is_eu_country]);
 

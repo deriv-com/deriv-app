@@ -310,7 +310,7 @@ const QuickStrategyForm = ({
                                                             icon='IcInfoOutline'
                                                             onClick={() =>
                                                                 showInfoModal(
-                                                                    localize('Size'),
+                                                                    getSizeText(active_index),
                                                                     getSizeDesc(active_index)
                                                                 )
                                                             }

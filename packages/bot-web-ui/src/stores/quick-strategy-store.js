@@ -174,7 +174,7 @@ export default class QuickStrategyStore {
     }
 
     @action.bound
-    async toggleInfoModal() {
+    toggleInfoModal() {
         this.is_info_modal_open = !this.is_info_modal_open;
     }
 

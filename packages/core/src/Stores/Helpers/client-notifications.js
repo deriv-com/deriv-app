@@ -374,7 +374,6 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
         document_needs_action,
         unwelcome,
         ukrts_max_turnover_limit_not_set,
-        professional,
     } = getStatusValidations(status);
 
     addVerificationNotifications(identity, document, addNotificationMessage);

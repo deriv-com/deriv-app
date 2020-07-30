@@ -91,8 +91,19 @@
                     }
 
                     &-avatar {
-                        display: none;
-
+                        display: table;
+                        width: 40px !important;
+                        height: 40px !important;
+                        color: var(--text-colored-background);
+                        &-text {
+                            display: table-cell;
+                            position: relative;
+                            text-align: center;
+                            font-size: 14px;
+                            width: 40px;
+                            height: 20px;
+                            vertical-align: middle;
+                        }
                         &-img {
                             display: none;
                         }
@@ -181,17 +192,19 @@
                                 }
                             }
                         }
+                        &__avatar {
+                            display: none;
+                        }
                     }
 
                     &-chat-header {
                         border-radius: $BORDER_RADIUS $BORDER_RADIUS 0 0;
                         border-bottom: none;
-                        padding: 0 16px;
+                        padding: 0 16px 0px 24px;
                         background-color: var(--general-section-2);
 
                         &__left {
                             display: flex;
-                            flex-flow: column;
                             align-items: flex-start;
                             margin-right: 0;
                         }
@@ -202,6 +215,7 @@
 
                         &__title {
                             font-size: 16px;
+                            padding-left: 16px;
                             display: flex;
                             max-width: 350px;
                             margin-right: 0;
@@ -210,6 +224,10 @@
                         }
 
                         &__subtitle {
+                            display: flex;
+                            align-self: flex-end;
+                            position: absolute;
+                            padding-left: 56px;
                             color: var(--text-less-prominent);
                         }
                     }

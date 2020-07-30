@@ -44,6 +44,11 @@ const modules = [
         title: localize('Bot'),
     },
     {
+        path: routes.account_deactivated,
+        component: Account,
+        title: localize('Account deactivated'),
+    },
+    {
         path: routes.account,
         component: Account,
         title: localize('Accounts Settings'),
@@ -122,6 +127,11 @@ const modules = [
                         path: routes.two_factor_authentication,
                         component: Account,
                         title: localize('Two-factor authentication'),
+                    },
+                    {
+                        path: routes.deactivate_account,
+                        component: Account,
+                        title: localize('Deactivate account'),
                     },
                 ],
             },

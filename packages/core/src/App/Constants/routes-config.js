@@ -132,7 +132,7 @@ const modules = [
         component: Trader,
         title: localize('Trader'),
         routes: [
-            { path: routes.mt5, component: Trader, title: localize('MT5'), is_authenticated: true },
+            { path: routes.mt5, component: Trader, title: localize('MT5'), is_authenticated: false },
             {
                 path: routes.reports,
                 component: Trader,

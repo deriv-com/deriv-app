@@ -11,6 +11,9 @@ const MT5DemoAccountDisplay = ({
     current_list,
     has_mt5_account,
     openPasswordManager,
+    is_logged_in,
+    is_eu,
+    is_eu_country,
 }) =>
     is_loading ? (
         <div className='mt5-demo-accounts-display'>
@@ -48,6 +51,7 @@ const MT5DemoAccountDisplay = ({
                     [localize('Stop out level')]: localize('50%'),
                     [localize('Number of assets')]: localize('10+'),
                 }}
+                is_logged_in={is_logged_in}
             />
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}
@@ -86,40 +90,44 @@ const MT5DemoAccountDisplay = ({
                     [localize('Stop out level')]: localize('75%'),
                     [localize('Number of assets')]: localize('50+'),
                 }}
+                is_logged_in={is_logged_in}
             />
-            <MT5AccountCard
-                has_mt5_account={has_mt5_account}
-                icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}
-                title={localize('Financial STP')}
-                type={{
-                    category: 'demo',
-                    type: 'financial_stp',
-                }}
-                existing_data={current_list['demo.financial_stp']}
-                commission_message={<Localize i18n_default_text='No commission' />}
-                onSelectAccount={() =>
-                    onSelectAccount({
+            {((!is_logged_in && !is_eu_country) || (is_logged_in && !is_eu)) && (
+                <MT5AccountCard
+                    has_mt5_account={has_mt5_account}
+                    icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}
+                    title={localize('Financial STP')}
+                    type={{
                         category: 'demo',
                         type: 'financial_stp',
-                    })
-                }
-                onPasswordManager={openPasswordManager}
-                onClickFund={() =>
-                    openAccountTransfer(current_list['demo.financial_stp'], {
-                        category: 'demo',
-                        type: 'financial_stp',
-                    })
-                }
-                descriptor={localize(
-                    'Trade major, minor, and exotic currency pairs with Straight-Through Processing (STP) of your orders direct to the market.'
-                )}
-                specs={{
-                    [localize('Leverage')]: localize('Up to 1:100'),
-                    [localize('Margin call')]: localize('150%'),
-                    [localize('Stop out level')]: localize('75%'),
-                    [localize('Number of assets')]: localize('50+'),
-                }}
-            />
+                    }}
+                    existing_data={current_list['demo.financial_stp']}
+                    commission_message={<Localize i18n_default_text='No commission' />}
+                    onSelectAccount={() =>
+                        onSelectAccount({
+                            category: 'demo',
+                            type: 'financial_stp',
+                        })
+                    }
+                    onPasswordManager={openPasswordManager}
+                    onClickFund={() =>
+                        openAccountTransfer(current_list['demo.financial_stp'], {
+                            category: 'demo',
+                            type: 'financial_stp',
+                        })
+                    }
+                    descriptor={localize(
+                        'Trade major, minor, and exotic currency pairs with Straight-Through Processing (STP) of your orders direct to the market.'
+                    )}
+                    specs={{
+                        [localize('Leverage')]: localize('Up to 1:100'),
+                        [localize('Margin call')]: localize('150%'),
+                        [localize('Stop out level')]: localize('75%'),
+                        [localize('Number of assets')]: localize('50+'),
+                    }}
+                    is_logged_in={is_logged_in}
+                />
+            )}
         </div>
     );
 

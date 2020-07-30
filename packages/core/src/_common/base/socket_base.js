@@ -234,24 +234,24 @@ const BinarySocketBase = (() => {
     const paymentAgentList = (country, currency) =>
         deriv_api.send({ paymentagent_list: country, ...(currency && { currency }) });
 
-    const paymentAgentWithdraw = ({ loginid, currency, amount, verification_code }) =>
+    const paymentAgentWithdraw = ({ loginid, currency, amount, verification_code, dry_run = 0 }) =>
         deriv_api.send({
             amount,
             currency,
             verification_code,
             paymentagent_withdraw: 1,
-            dry_run: 0,
+            dry_run,
             paymentagent_loginid: loginid,
         });
 
-    const paymentAgentTransfer = ({ amount, currency, description, transfer_to }) =>
+    const paymentAgentTransfer = ({ amount, currency, description, transfer_to, dry_run = 0 }) =>
         deriv_api.send({
             amount,
             currency,
             description,
             transfer_to,
             paymentagent_transfer: 1,
-            dry_run: 0,
+            dry_run,
         });
 
     const activeSymbols = (mode = 'brief') => deriv_api.activeSymbols(mode);
@@ -299,6 +299,8 @@ const BinarySocketBase = (() => {
     // so that subscribe remains private
     const p2pSubscribe = (request, cb) => subscribe(request, cb);
     const accountStatistics = () => deriv_api.send({ account_statistics: 1 });
+
+    const realityCheck = () => deriv_api.send({ reality_check: 1 });
 
     return {
         init,
@@ -363,6 +365,7 @@ const BinarySocketBase = (() => {
         loginHistory,
         closeAndOpenNewConnection,
         accountStatistics,
+        realityCheck,
     };
 })();
 

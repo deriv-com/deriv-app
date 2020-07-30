@@ -4,6 +4,7 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
+import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { cookie_banner_expires_in_days } from '../../Constants/app-config';
@@ -17,6 +18,7 @@ const AppContents = ({
     is_cashier_visible,
     is_dark_mode,
     is_eu_country,
+    is_eu,
     is_logged_in,
     is_mt5_page,
     is_positions_drawer_on,
@@ -93,6 +95,7 @@ const AppContents = ({
         >
             <MobileWrapper>{children}</MobileWrapper>
             <DesktopWrapper>
+                <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu} />
                 {/* Calculate height of user screen and offset height of header and footer */}
                 <ThemedScrollbars height='calc(100vh - 84px)'>{children}</ThemedScrollbars>
             </DesktopWrapper>
@@ -122,6 +125,7 @@ AppContents.propTypes = {
 export default withRouter(
     connect(({ client, gtm, segment, ui }) => ({
         is_eu_country: client.is_eu_country,
+        is_eu: client.is_eu,
         is_logged_in: client.is_logged_in,
         pushDataLayer: gtm.pushDataLayer,
         identifyEvent: segment.identifyEvent,

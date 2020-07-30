@@ -32,12 +32,12 @@
     position: relative;
     flex-grow: 1;
     width: min-content;
-    padding: 1rem;
+    padding: 2rem 2rem 1rem;
 
     &__icon-area {
         display: flex;
         align-items: center;
-        width: 82%;
+        width: 100%;
         justify-content: space-between;
         position: relative;
 
@@ -67,7 +67,8 @@
             .bottom-right-overlay {
                 width: 48px;
                 height: 48px;
-                right: 0;
+                right: -1rem;
+                bottom: -1rem;
 
                 @include mobile {
                     max-width: 36px;

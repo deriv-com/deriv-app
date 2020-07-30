@@ -1,6 +1,7 @@
 import { Formik, Field } from 'formik';
 import React from 'react';
 import {
+    Modal,
     Autocomplete,
     AutoHeightWrapper,
     DesktopWrapper,
@@ -115,7 +116,7 @@ class AddressDetails extends React.Component {
                                         <strong>
                                             <Localize i18n_default_text='Only use an address for which you have proof of residence - ' />
                                         </strong>
-                                        <Localize i18n_default_text='a recent utility bill (e.g. electricity, water, gas, landline or internet), bank statement, or government-issued letter with your name and this address.' />
+                                        <Localize i18n_default_text='a recent utility bill (e.g. electricity, water, gas, landline, or internet), bank statement, or government-issued letter with your name and this address.' />
                                     </p>
                                     <ThemedScrollbars is_bypassed={isMobile()} height={height}>
                                         <div
@@ -195,13 +196,15 @@ class AddressDetails extends React.Component {
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <FormSubmitButton
-                                    is_disabled={isSubmitting || Object.keys(errors).length > 0}
-                                    label={localize('Next')}
-                                    has_cancel
-                                    cancel_label={localize('Previous')}
-                                    onCancel={this.handleCancel.bind(this, values)}
-                                />
+                                <Modal.Footer has_separator>
+                                    <FormSubmitButton
+                                        is_disabled={isSubmitting || Object.keys(errors).length > 0}
+                                        label={localize('Next')}
+                                        has_cancel
+                                        cancel_label={localize('Previous')}
+                                        onCancel={this.handleCancel.bind(this, values)}
+                                    />
+                                </Modal.Footer>
                             </form>
                         )}
                     </AutoHeightWrapper>

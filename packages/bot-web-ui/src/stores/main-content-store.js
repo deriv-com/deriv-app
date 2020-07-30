@@ -37,6 +37,5 @@ export default class MainContentStore {
     @action.bound
     onUnmount() {
         window.removeEventListener('resize', this.setContainerSize);
-        this.disposeIsDrawerOpenReaction();
     }
 }

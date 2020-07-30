@@ -3,7 +3,6 @@ import React from 'react';
 import { Button, Icon, ButtonLink } from '@deriv/components';
 import { getDerivComLink } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (
@@ -45,11 +44,6 @@ class Error extends React.Component {
         this.props.setErrorMessage('');
     };
 
-    acceptTNC = async () => {
-        await WS.tncApproval();
-        this.onClickButton();
-    };
-
     render() {
         let AccountError;
         switch (this.props.error.code) {
@@ -62,29 +56,6 @@ class Error extends React.Component {
                         }
                         onClickButton={this.onClickButton}
                         button_text={localize('Request a new link')}
-                    />
-                );
-                break;
-            case 'ASK_TNC_APPROVAL':
-                AccountError = (
-                    <ErrorComponent
-                        header={localize('Our terms and conditions have changed')}
-                        message={
-                            <Localize
-                                i18n_default_text='Please accept our updated <0>terms and conditions</0> to continue.'
-                                components={[
-                                    <a
-                                        key={0}
-                                        className='link'
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                        href={getDerivComLink('terms-and-conditions/#general')}
-                                    />,
-                                ]}
-                            />
-                        }
-                        onClickButton={this.acceptTNC}
-                        button_text={localize('I accept')}
                     />
                 );
                 break;

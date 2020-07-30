@@ -14,7 +14,14 @@ const ItemStatus = ({ status, onClick, button_text }) => {
             );
         case 'button-action':
             return (
-                <Button primary small className='dc-checklist__item-status--button' color='active' text={button_text} />
+                <Button
+                    primary
+                    small
+                    className='dc-checklist__item-status--button'
+                    color='active'
+                    text={button_text}
+                    onClick={onClick}
+                />
             );
         case 'action':
         default:

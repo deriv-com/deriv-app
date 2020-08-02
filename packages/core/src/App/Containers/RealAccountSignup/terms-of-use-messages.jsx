@@ -75,7 +75,7 @@ export const MaltaInvestDescription = () => (
         <p>
             <Localize
                 i18n_default_text={
-                    'Your account will be opened with Deriv (Investments) Europe Limited, regulated by the Malta Financial Services Authority (MFSA) and will be subject to the jurisdiction and laws of Malta.'
+                    'Your account will be opened with Deriv Investments (Europe) Limited, regulated by the Malta Financial Services Authority (MFSA) and will be subject to the jurisdiction and laws of Malta.'
                 }
             />
         </p>

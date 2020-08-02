@@ -70,6 +70,7 @@ class ChangeAccountCurrency extends React.Component {
                             ))}
                         </RadioButtonGroup>
                         <FormSubmitButton
+                            className='change-currency__button'
                             is_disabled={isSubmitting || !values.fiat}
                             label={localize('Change currency')}
                             is_absolute={false}

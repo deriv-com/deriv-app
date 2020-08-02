@@ -35,11 +35,14 @@
     padding: 2rem 2rem 1rem;
 
     &__icon-area {
-        display: flex;
         align-items: center;
-        width: 100%;
-        justify-content: space-between;
+        display: grid;
+        grid-auto-flow: column;
+        grid-template-columns: auto 6.4rem auto;
+        justify-items: center;
+        justify-content: center;
         position: relative;
+        width: auto;
 
         .bottom-right-overlay {
             position: absolute;

@@ -122,7 +122,7 @@
                 display: flex;
                 flex-direction: column;
                 flex-grow: 1;
-                justify-content: space-around;
+                justify-content: center;
                 align-items: center;
 
                 &--is-header {
@@ -151,6 +151,9 @@
                         margin-top: 0;
                     }
                 }
+            }
+            &__button {
+                margin-top: 1.6rem;
             }
         }
         @include desktop {
@@ -316,6 +319,9 @@
     &__sub-title {
         font-size: var(--text-size-xxs);
         font-weight: normal;
+    }
+    &__button {
+        margin-top: 1.6rem;
     }
     @include tablet {
         form {

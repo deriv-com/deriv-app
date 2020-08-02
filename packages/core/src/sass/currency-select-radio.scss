@@ -6,7 +6,7 @@
     }
     &__items {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         @include mobile {
             display: grid;
             grid-template-columns: 1fr 1fr;

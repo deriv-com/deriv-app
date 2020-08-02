@@ -57,14 +57,14 @@ const QuickStrategyForm = ({
                 const is_valid = Object.keys(validation_errors).length === 0;
                 const is_submit_enabled = !isSubmitting && is_valid;
                 const form_margin = !is_mobile
-                    ? `calc(100% - 120px)`
+                    ? '438px'
                     : is_keyboard_active
                     ? `calc(100vh - 170px)`
                     : `calc(100% - 72px)`;
                 return (
                     <Form style={{ height: form_margin }}>
                         <ThemedScrollbars autohide>
-                            <div>
+                            <div className='quick-strategy__form-content'>
                                 <div className='quick-strategy__description'>{description}</div>
                                 <div className='quick-strategy__form-row'>
                                     <Field name='quick-strategy__symbol'>

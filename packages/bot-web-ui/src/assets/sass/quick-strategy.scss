@@ -36,9 +36,7 @@
         max-height: calc(100vh - 120px);
 
         &-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            margin-bottom: 70px;
         }
         &-row {
             align-items: flex-end;

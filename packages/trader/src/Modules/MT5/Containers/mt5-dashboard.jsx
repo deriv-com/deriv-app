@@ -172,7 +172,7 @@ class MT5Dashboard extends React.Component {
                                             )}
                                         <MT5RealAccountDisplay
                                             is_eu={this.props.is_eu}
-                                            is_eu_enabled={this.props.is_eu_enabled}
+                                            is_eu_enabled={this.props.is_eu_enabled} // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
                                             has_maltainvest_account={this.props.has_maltainvest_account}
                                             has_malta_account={this.props.has_malta_account}
                                             openAccountNeededModal={this.props.openAccountNeededModal}
@@ -195,7 +195,7 @@ class MT5Dashboard extends React.Component {
                                 <div label={localize('Demo account')}>
                                     <MT5DemoAccountDisplay
                                         is_eu={this.props.is_eu}
-                                        is_eu_enabled={this.props.is_eu_enabled}
+                                        is_eu_enabled={this.props.is_eu_enabled} // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
                                         has_maltainvest_account={this.props.has_maltainvest_account}
                                         openAccountNeededModal={this.props.openAccountNeededModal}
                                         standpoint={this.props.standpoint}
@@ -292,7 +292,7 @@ export default withRouter(
         current_list: modules.mt5.current_list,
         landing_companies: client.landing_companies,
         is_logged_in: client.is_logged_in,
-        is_eu_enabled: ui.is_eu_enabled,
+        is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
         is_eu: client.is_eu,
         has_maltainvest_account: client.has_maltainvest_account,
         has_malta_account: client.has_malta_account,

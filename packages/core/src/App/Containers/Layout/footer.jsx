@@ -24,7 +24,7 @@ const Footer = ({
     footer_extension,
     is_app_disabled,
     is_eu,
-    is_eu_enabled,
+    is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
     is_route_modal_on,
     is_settings_modal_on,
     disableApp,
@@ -50,7 +50,14 @@ const Footer = ({
             <GoToDeriv />
             <ResponsibleTrading />
             <AccountLimits />
-            {is_eu_enabled && <RegulatoryInformation standpoint={standpoint} is_eu={is_eu} />}
+            {is_eu_enabled && (
+                <RegulatoryInformation
+                    standpoint={
+                        standpoint // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+                    }
+                    is_eu={is_eu}
+                />
+            )}
             <FooterIconSeparator />
             <HelpCentre />
             <ToggleSettings
@@ -82,7 +89,7 @@ export default withRouter(
         is_app_disabled: ui.is_app_disabled,
         is_route_modal_on: ui.is_route_modal_on,
         is_logged_in: client.is_logged_in,
-        is_eu_enabled: ui.is_eu_enabled,
+        is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
         is_eu: client.is_eu,
         standpoint: client.standpoint,
         is_loading: ui.is_loading,

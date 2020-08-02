@@ -5,6 +5,7 @@ import { routes } from '@deriv/shared';
 import { Icon, Checklist } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import CashierLocked from './cashier-locked.jsx';
 
 const WithdrawalLocked = ({ account_status }) => {
     const { identity, needs_verification } = account_status.authentication;
@@ -16,28 +17,32 @@ const WithdrawalLocked = ({ account_status }) => {
     const history = useHistory();
 
     const items = [
-        {
-            content: poi_text,
-            status: 'action',
-            onClick: () => history.push(routes.proof_of_identity),
-        },
+        ...(is_poi_needed
+            ? [
+                  {
+                      content: poi_text,
+                      status: 'action',
+                      onClick: () => history.push(routes.proof_of_identity),
+                  },
+              ]
+            : []),
     ];
     return (
-        <div className='cashier-locked'>
-            <Icon icon='IcCashierWithdrawalLock' className='cashier-locked__icon' />
-            <h2 className='cashier-locked__title'>{localize('Withdrawals are locked')}</h2>
+        <React.Fragment>
+            {items.length ? (
+                <div className='cashier-locked'>
+                    <Icon icon='IcCashierWithdrawalLock' className='cashier-locked__icon' />
+                    <h2 className='cashier-locked__title'>{localize('Withdrawals are locked')}</h2>
 
-            {is_poi_needed ? (
-                <React.Fragment>
                     <p className='cashier-locked__desc'>
                         {localize('To enable this feature you must complete the following:')}
                     </p>
                     <Checklist className='cashier-locked__checklist' items={items} />
-                </React.Fragment>
+                </div>
             ) : (
-                <p className='cashier-locked__desc'>{localize('Please check your email for details.')}</p>
+                <CashierLocked />
             )}
-        </div>
+        </React.Fragment>
     );
 };
 

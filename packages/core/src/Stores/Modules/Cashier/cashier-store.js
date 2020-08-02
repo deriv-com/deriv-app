@@ -22,10 +22,19 @@ const bank_default_option = [{ text: localize('All payment agents'), value: 0 }]
 
 const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
 
-const getSelectedError = selected_value => {
+const getSelectedError = (selected_value, is_from_account) => {
+    if (is_from_account) {
+        return (
+            <Localize
+                i18n_default_text='Transfer from {{selected_value}} is not allowed, Please choose another account from dropdown'
+                values={{ selected_value }}
+            />
+        );
+    }
+
     return (
         <Localize
-            i18n_default_text='Transfer from {{selected_value}} is not allowed, Please choose another account from dropdown'
+            i18n_default_text='Transfer to {{selected_value}} is not allowed, Please choose another account from dropdown'
             values={{ selected_value }}
         />
     );
@@ -53,6 +62,9 @@ class ConfigError {
     @observable onClickButton = null;
     @observable is_ask_uk_funds_protection = false;
     @observable is_self_exclusion_max_turnover_set = false;
+    @observable is_ask_authentication = false;
+    @observable is_ask_financial_risk_approval = false;
+    @observable is_cashier_forward_error = false;
 }
 
 class ConfigPaymentAgent {
@@ -260,7 +272,6 @@ export default class CashierStore extends BaseStore {
 
         // if session has timed out reset everything
         this.setIframeUrl('');
-
         if (
             (this.active_container === this.config.withdraw.container && !verification_code) ||
             this.root_store.client.is_virtual
@@ -276,10 +287,9 @@ export default class CashierStore extends BaseStore {
         if (current_container !== this.active_container) {
             return;
         }
-
         if (response_cashier.error) {
-            this.setLoading(false);
             this.handleCashierError(response_cashier.error);
+            this.setLoading(false);
             this.setSessionTimeout(true);
             this.clearTimeoutCashierUrl();
             if (verification_code) {
@@ -318,13 +328,38 @@ export default class CashierStore extends BaseStore {
             is_trading_experience_incomplete,
             account_status,
         } = this.root_store.client;
-
         if (!account_status.status) return false;
+
+        const need_authentication = this.config.deposit.error.is_ask_authentication || is_authentication_needed;
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
 
-        // is_authentication_needed return integer instead of boolean, it will make the proptypes failed
-        return !!is_authentication_needed || is_tnc_needed || need_financial_assessment;
+        return (
+            need_authentication ||
+            is_tnc_needed ||
+            need_financial_assessment ||
+            this.config.deposit.error.is_ask_financial_risk_approval ||
+            this.config.deposit.error.is_cashier_forward_error
+        );
+    }
+
+    @computed
+    get is_withdrawal_locked() {
+        if (!this.root_store.client.account_status.status) return false;
+        const { status, authentication } = this.root_store.client.account_status;
+        const need_poi = authentication.needs_verification.includes('identity');
+
+        const need_authentication = this.config.withdraw.error.is_ask_authentication && need_poi;
+        const has_withdrawal_lock_status = status.some(status_name =>
+            /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
+        );
+
+        return (
+            has_withdrawal_lock_status ||
+            need_authentication ||
+            this.config.withdraw.error.is_ask_financial_risk_approval ||
+            this.config.withdraw.error.is_cashier_forward_error
+        );
     }
 
     @computed
@@ -341,19 +376,7 @@ export default class CashierStore extends BaseStore {
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
 
-        return need_financial_assessment;
-    }
-
-    @computed
-    get is_withdrawal_locked() {
-        if (!this.root_store.client.account_status.status) return false;
-        const { status, authentication } = this.root_store.client.account_status;
-        const need_poi = authentication.needs_verification.includes('identity');
-        const has_withdrawal_lock_status = status.some(status_name =>
-            /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
-        );
-
-        return has_withdrawal_lock_status || need_poi;
+        return need_financial_assessment && this.config.account_transfer.error.is_ask_financial_risk_approval;
     }
 
     @action.bound
@@ -427,7 +450,30 @@ export default class CashierStore extends BaseStore {
                     is_self_exclusion_max_turnover_set: true,
                 };
                 break;
+            case 'ASK_AUTHENTICATE':
+            case 'ASK_AGE_VERIFICATION':
+                this.config[this.active_container].error = {
+                    is_ask_authentication: true,
+                };
+                break;
+            case 'ASK_FINANCIAL_RISK_APPROVAL':
+                this.config[this.active_container].error = {
+                    is_ask_financial_risk_approval: true,
+                };
+                break;
+            case 'CashierForwardError':
+                this.config[this.active_container].error = {
+                    is_cashier_forward_error: true,
+                };
+                break;
             default:
+                this.config[this.active_container].error = {
+                    is_ask_uk_funds_protection: false,
+                    is_self_exclusion_max_turnover_set: false,
+                    is_ask_authentication: false,
+                    is_ask_financial_risk_approval: false,
+                    is_cashier_forward_error: false,
+                };
                 this.setErrorMessage(error);
         }
     }
@@ -995,13 +1041,13 @@ export default class CashierStore extends BaseStore {
             if (account.loginid === this.root_store.client.loginid) {
                 // check if selected from is not allowed account
                 if (hasTransferNotAllowedLoginid(obj_values.value)) {
-                    obj_values.error = getSelectedError(obj_values.value);
+                    obj_values.error = getSelectedError(obj_values.value, true);
                 }
 
                 this.setSelectedFrom(obj_values);
             } else if (isEmptyObject(this.config.account_transfer.selected_to)) {
                 if (hasTransferNotAllowedLoginid(obj_values.value)) {
-                    // check if selected from is not allowed account
+                    // check if selected to is not allowed account
                     obj_values.error = getSelectedError(obj_values.value);
                 }
                 // set the first available account as the default transfer to account
@@ -1048,15 +1094,14 @@ export default class CashierStore extends BaseStore {
     onChangeTransferFrom({ target }) {
         this.setErrorMessage('');
         this.config.account_transfer.selected_from.error = '';
+        this.config.account_transfer.selected_to.error = '';
 
         const accounts = this.config.account_transfer.accounts_list;
         const selected_from = accounts.find(account => account.value === target.value);
 
         // if new value of selected_from is the same as the current selected_to
         // switch the value of selected_from and selected_to
-        if (hasTransferNotAllowedLoginid(selected_from.value)) {
-            selected_from.error = getSelectedError(selected_from.value);
-        } else if (selected_from.value === this.config.account_transfer.selected_to.value) {
+        if (selected_from.value === this.config.account_transfer.selected_to.value) {
             this.onChangeTransferTo({ target: { value: this.config.account_transfer.selected_from.value } });
         } else if (selected_from.is_mt && this.config.account_transfer.selected_to.is_mt) {
             // not allowed to transfer from MT to MT
@@ -1068,6 +1113,10 @@ export default class CashierStore extends BaseStore {
             this.onChangeTransferTo({ target: { value: first_fiat.value } });
         }
 
+        if (hasTransferNotAllowedLoginid(selected_from.value)) {
+            selected_from.error = getSelectedError(selected_from.value, true);
+        }
+
         this.config.account_transfer.selected_from = selected_from;
         this.setMinimumFee();
         this.setTransferLimit();
@@ -1077,6 +1126,7 @@ export default class CashierStore extends BaseStore {
     onChangeTransferTo({ target }) {
         this.setErrorMessage('');
         this.config.account_transfer.selected_to.error = '';
+        this.config.account_transfer.selected_from.error = '';
 
         const accounts = this.config.account_transfer.accounts_list;
         this.config.account_transfer.selected_to = accounts.find(account => account.value === target.value) || {};

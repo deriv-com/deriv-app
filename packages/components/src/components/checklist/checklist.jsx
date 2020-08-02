@@ -13,16 +13,7 @@ const ItemStatus = ({ status, onClick, button_text }) => {
                 </div>
             );
         case 'button-action':
-            return (
-                <Button
-                    primary
-                    small
-                    className='dc-checklist__item-status--button'
-                    color='active'
-                    text={button_text}
-                    onClick={onClick}
-                />
-            );
+            return <Button primary color='active' text={button_text} onClick={onClick} />;
         case 'action':
         default:
             return (
@@ -52,6 +43,7 @@ const Checklist = ({ items, className, itemClassName }) => (
                 <div
                     className={classNames('dc-checklist__item-status', {
                         'dc-checklist__item-status--disabled': item.is_disabled,
+                        'dc-checklist__item-status--button': item.status === 'button-action',
                     })}
                 >
                     <ItemStatus status={item.status} onClick={item.onClick} button_text={item.button_text} />

@@ -50,12 +50,12 @@ class Error extends React.Component {
             case 'InvalidToken':
                 AccountError = (
                     <ErrorComponent
-                        header={localize('Identity confirmation failed')}
+                        header={localize('Email verification failed')}
                         message={
-                            <Localize i18n_default_text='It looks like your link is incorrect or no longer valid.' />
+                            <Localize i18n_default_text='The verification link you used is invalid or expired. Please request for a new one.' />
                         }
                         onClickButton={this.onClickButton}
-                        button_text={localize('Request a new link')}
+                        button_text={localize('Resend email')}
                     />
                 );
                 break;

@@ -86,6 +86,7 @@ const Dropdown = ({
             'dc-dropdown--left': is_alignment_left,
             'dc-dropdown--show': is_list_visible,
             'dc-dropdown--disabled': isSingleOption() || disabled,
+            'dc-dropdown--error': error,
         });
     };
 
@@ -290,10 +291,11 @@ const Dropdown = ({
                             className={classNames('dc-dropdown__select-arrow', {
                                 'dc-dropdown__select-arrow--left': is_alignment_left,
                                 'dc-dropdown__select-arrow--up': is_list_visible,
+                                'dc-dropdown__select-arrow--error': error || hint,
                             })}
                         />
                     )}
-                    {error && <p className='dc-field-error'>{error}</p>}
+                    {error && <p className='dc-field__error'>{error}</p>}
                     {is_nativepicker ? (
                         <NativeSelect
                             ref={native_select_ref}

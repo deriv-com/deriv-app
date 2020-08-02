@@ -6,6 +6,7 @@ import { Icon, Checklist } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
+import CashierLocked from './cashier-locked.jsx';
 
 const DepositsLocked = ({
     account_status,
@@ -13,6 +14,7 @@ const DepositsLocked = ({
     is_financial_information_incomplete,
     is_trading_experience_incomplete,
     is_financial_account,
+    is_ask_financial_risk_approval,
     onMount,
 }) => {
     // handle authentication locked
@@ -79,7 +81,9 @@ const DepositsLocked = ({
                   },
               ]
             : []),
-        ...(is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete)
+        ...(is_ask_financial_risk_approval &&
+        is_financial_account &&
+        (is_financial_information_incomplete || is_trading_experience_incomplete)
             ? [
                   {
                       content: localize('Complete the financial assessment form'),
@@ -90,21 +94,21 @@ const DepositsLocked = ({
             : []),
     ];
     return (
-        <div className='cashier-locked'>
-            <Icon icon='IcCashierDepositLock' className='cashier-locked__icon' />
-            <h2 className='cashier-locked__title'>{localize('Deposits are locked')}</h2>
-
+        <React.Fragment>
             {items.length ? (
-                <React.Fragment>
+                <div className='cashier-locked'>
+                    <Icon icon='IcCashierDepositLock' className='cashier-locked__icon' />
+                    <h2 className='cashier-locked__title'>{localize('Deposits are locked')}</h2>
+
                     <p className='cashier-locked__desc'>
                         {localize('To enable this feature you must complete the following:')}
                     </p>
                     <Checklist className='cashier-locked__checklist' items={items} />
-                </React.Fragment>
+                </div>
             ) : (
-                <p className='cashier-locked__desc'>{localize('Please check your email for more details.')}</p>
+                <CashierLocked />
             )}
-        </div>
+        </React.Fragment>
     );
 };
 
@@ -123,5 +127,6 @@ export default connect(({ client, modules }) => ({
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_financial_account: client.is_financial_account,
+    is_ask_financial_risk_approval: modules.cashier.config.deposit.error.is_ask_financial_risk_approval,
     onMount: modules.cashier.onMount,
 }))(DepositsLocked);

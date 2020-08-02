@@ -9,7 +9,6 @@ import {
     getPropertyValue,
     showDigitalOptionsUnavailableError,
 } from '@deriv/shared';
-
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -277,7 +276,13 @@ export default class TradeStore extends BaseStore {
                 showUnavailableLocationError(this.root_store.common.showError);
                 return;
             } else if (this.root_store.client.landing_company_shortcode === 'maltainvest') {
-                showDigitalOptionsUnavailableError(this.root_store.common.showError, 'DTrader');
+                showDigitalOptionsUnavailableError(this.root_store.common.showError, {
+                    title: localize(
+                        'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                    ),
+                    text: localize('DTrader is not available for this account'),
+                    link: localize('Go to DMT5 dashboard'),
+                });
                 return;
             }
         }
@@ -928,7 +933,13 @@ export default class TradeStore extends BaseStore {
         if (this.root_store.client.standpoint.maltainvest) {
             const { active_symbols } = await WS.authorized.activeSymbols();
             if (!active_symbols || !active_symbols.length) {
-                showDigitalOptionsUnavailableError(this.root_store.common.showError, 'DTrader');
+                showDigitalOptionsUnavailableError(this.root_store.common.showError, {
+                    title: localize(
+                        'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                    ),
+                    text: localize('DTrader is not available for this account'),
+                    link: localize('Go to DMT5 dashboard'),
+                });
             }
         }
         this.resetErrorServices();

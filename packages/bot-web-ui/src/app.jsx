@@ -1,6 +1,7 @@
 import { reaction } from 'mobx';
 import React from 'react';
 import { showDigitalOptionsUnavailableError } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { runIrreversibleEvents, ApiHelpers, DBot, ServerTime } from '@deriv/bot-skeleton';
 import './public-path'; // Leave this here! OK boss!
 import Audio from './components/audio.jsx';
@@ -113,7 +114,13 @@ class App extends React.Component {
     registerOnAccountSwitch = () => {
         const { client, common } = this.root_store.core;
         if (client.landing_company_shortcode === 'maltainvest') {
-            showDigitalOptionsUnavailableError(common.showError, 'DBot');
+            showDigitalOptionsUnavailableError(common.showError, {
+                title: localize(
+                    'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                ),
+                text: localize('DBot is not available for this account'),
+                link: localize('Go to DMT5 dashboard'),
+            });
         }
         this.disposeSwitchAccountListener = reaction(
             () => client.switch_broadcast,
@@ -122,7 +129,13 @@ class App extends React.Component {
                     return;
                 }
                 if (client.landing_company_shortcode === 'maltainvest') {
-                    showDigitalOptionsUnavailableError(common.showError, 'DBot');
+                    showDigitalOptionsUnavailableError(common.showError, {
+                        title: localize(
+                            'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                        ),
+                        text: localize('DBot is not available for this account'),
+                        link: localize('Go to DMT5 dashboard'),
+                    });
                     return;
                 }
                 const { derivWorkspace: workspace } = Blockly;

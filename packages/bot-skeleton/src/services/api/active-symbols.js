@@ -28,7 +28,7 @@ export default class ActiveSymbols {
         const { active_symbols } = await this.ws.activeSymbols();
 
         this.active_symbols = active_symbols;
-        this.processed_symbols = this.processActiveSymbols();
+        this.processed_symbols = await this.processActiveSymbols();
         this.trading_times.onMarketOpenCloseChanged = changes => {
             Object.keys(changes).forEach(symbol_name => {
                 const symbol_obj = this.active_symbols[symbol_name];

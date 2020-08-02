@@ -53,8 +53,5 @@
     "prettier": "^1.19.1",
     "stylelint": "^10.1.0",
     "stylelint-selector-bem-pattern": "^2.1.0"
-  },
-  "dependencies": {
-    "@deriv/translations": "^1.0.0"
   }
 }

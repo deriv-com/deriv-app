@@ -680,6 +680,11 @@
     }
     @include desktop {
         overflow: hidden;
+
+        & .details-form__description {
+            width: 100%;
+            text-align: center;
+        }
     }
     @include mobile {
         overflow: auto;

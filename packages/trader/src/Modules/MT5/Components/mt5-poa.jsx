@@ -216,6 +216,7 @@ class MT5POA extends React.Component {
                     address_postcode,
                     document_file: this.state.document_file,
                 }}
+                validateOnMount
                 isInitialValid={({ initialValues }) => this.validateForm(initialValues)}
                 validate={this.validateForm}
                 onSubmit={this.onSubmit}

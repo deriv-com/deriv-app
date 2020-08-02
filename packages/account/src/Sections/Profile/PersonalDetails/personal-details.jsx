@@ -134,7 +134,7 @@ class PersonalDetailsForm extends React.Component {
             'address_city',
         ];
         validateValues((val) => val, required_fields, localize('This field is required'));
-        const only_alphabet_fields = ['first_name', 'last_name', 'address_state'];
+        const only_alphabet_fields = ['first_name', 'last_name'];
         validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
         const { residence_list } = this.props;
@@ -205,9 +205,8 @@ class PersonalDetailsForm extends React.Component {
 
         const state_is_input_element = values.address_state && !this.props.states_list.length;
         if (state_is_input_element) {
-            const max_state_length = 35;
-            if (!validLength(values.address_state, { min: 0, max: max_state_length })) {
-                errors.address_state = localize('You should enter 0-35 characters.');
+            if (!/^[\w\s\W'.-;,]{0,60}$/.test(values.address_state)) {
+                errors.address_state = localize('State is not in a proper format');
             }
         }
 

@@ -1,5 +1,5 @@
-import { sequence } from '../object';
 import { takeField } from './math';
+import { sequence } from '../object';
 
 const calcGain = (q1, q2) => (q2 > q1 ? q2 - q1 : 0);
 const calcLoss = (q1, q2) => (q2 < q1 ? q1 - q2 : 0);
@@ -58,9 +58,7 @@ export const relativeStrengthIndex = (data, config, memoizedDiff) => {
 
     const vals = takeField(data.slice(0, periods + 1), field);
 
-    let restSeq;
-    let initAvgGain;
-    let initAvgLoss;
+    let restSeq, initAvgGain, initAvgLoss;
 
     if (memoizedDiff && 'gain' in memoizedDiff) {
         restSeq = takeField(data.slice(-2), field);

@@ -1,5 +1,5 @@
-import { sequence } from '../object';
 import { sum, takeLast } from './math';
+import { sequence } from '../object';
 
 /**
  * @param {Array} data

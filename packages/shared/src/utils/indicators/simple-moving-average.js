@@ -1,6 +1,15 @@
 import { sequence } from '../object';
 import { sum, takeLast } from './math';
 
+/**
+ * @param {Array} data
+ * @param {Object} config of type
+ * {
+ *  periods: number,
+ *  field?: 'open' | 'high' | 'low' | 'close',
+ *  pipSize: number,
+ * }
+ */
 export const simpleMovingAverage = (data, config) => {
     const { periods, field } = config;
 
@@ -13,6 +22,15 @@ export const simpleMovingAverage = (data, config) => {
     return sum(vals) / periods;
 };
 
+/**
+ * @param {Array} data
+ * @param {Object} config of type
+ * {
+ *  periods: number,
+ *  field?: 'open' | 'high' | 'low' | 'close',
+ *  pipSize: number,
+ * }
+ */
 export const simpleMovingAverageArray = (data, config) => {
     const { periods, pipSize = 2 } = config;
     return sequence(data.length - periods + 1).map(

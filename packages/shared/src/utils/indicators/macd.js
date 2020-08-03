@@ -8,6 +8,17 @@ const paddingLeft = (data, length) => {
     return [...arr, ...data];
 };
 
+/**
+ * @param {Array} data
+ * @param {Object} config of type
+ * {
+ *  fastEmaPeriod: number,
+ *  slowEmaPeriod: number,
+ *  signalEmaPeriod: number
+ *  field?: 'open' | 'high' | 'low' | 'close',
+ *  pipSize: number,
+ * }
+ */
 export const macdArray = (data, config) => {
     const { field, fastEmaPeriod = 12, slowEmaPeriod = 26, signalEmaPeriod = 9, pipSize = 2 } = config;
 

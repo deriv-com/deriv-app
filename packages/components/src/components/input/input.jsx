@@ -14,7 +14,6 @@ const Input = (
         max_characters,
         trailing_icon,
         label,
-        type,
         lpignore,
         ...props
     },

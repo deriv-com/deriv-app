@@ -1597,3 +1597,207 @@ $MIN_HEIGHT_FLOATING: calc(
         width: auto !important;
     }
 }
+
+/** @define deactivate-account; weak */
+.deactivate-account {
+    max-width: 67.2rem;
+
+    &__information {
+        @include typeface(--paragraph-left-normal-prominent, none);
+        line-height: 1.43;
+        margin-bottom: 8px;
+
+        &--bold {
+            font-weight: bold;
+            margin-bottom: 8px;
+            margin-top: 5px;
+        }
+    }
+    &__steps {
+        margin-top: 16px;
+        @include typeface(--paragraph-left-normal-prominent, none);
+        line-height: 1.43;
+    }
+    &__title {
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+    &__content {
+        color: var(--text-general);
+    }
+    &__link {
+        color: var(--text-loss-danger);
+        font-weight: bold;
+        text-decoration: none;
+    }
+    &__button {
+        margin-top: 24px;
+        float: right;
+    }
+    .deactivate-account-reasons {
+        color: var(--text-prominent);
+        font-size: var(--text-size-xs);
+        line-height: 1.43;
+        font-weight: bold;
+
+        &__title {
+            margin-bottom: 18px;
+        }
+        &__checkbox {
+            margin-top: 10px;
+            width: fit-content;
+
+            .dc-checkbox__label {
+                font-weight: normal;
+            }
+        }
+        &__input {
+            margin: 16px 0 0;
+            max-width: 400px;
+            text-overflow: ellipsis;
+
+            > input {
+                min-height: 96px;
+            }
+        }
+        &__error {
+            color: var(--text-loss-danger);
+        }
+    }
+    @include mobile {
+        width: calc(100% - 3rem);
+        margin: 0 auto;
+
+        .dc-form-submit-button {
+            background-color: var(--general-main-1);
+        }
+    }
+}
+
+/* stylelint-disable */
+.dc-modal__container_deactivate-account-reasons {
+    @include mobile {
+        max-height: 70vh;
+    }
+    .have-open-positions-or-balance-scroll {
+        overflow-y: auto;
+    }
+    .dc-modal-header {
+        border: none;
+        min-width: 430px;
+        margin-bottom: 8px;
+    }
+    .account-closure-warning-modal {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 3.2rem;
+        width: 440px;
+        @include mobile {
+            width: unset;
+        }
+
+        .dc-form-submit-button {
+            justify-content: center;
+            padding: 2rem 0 0;
+
+            @include mobile {
+                background: unset;
+            }
+        }
+        &__warning-message {
+            color: var(--text-loss-danger);
+            padding: 16px 0;
+            font-size: var(--text-size-s);
+            font-weight: bold;
+            line-height: 1.43;
+        }
+        &__content {
+            @include typeface(--paragraph-left-normal-prominent, none);
+            color: var(--text-general);
+            line-height: 1.43;
+        }
+        &__content-wrapper {
+            display: flex;
+            align-items: center;
+            margin-top: 4px;
+        }
+    }
+
+    .have-open-positions-or-balance {
+        padding: 0 24px 24px 24px;
+        &__title {
+            color: var(--text-prominent);
+            font-size: var(--text-size-xs);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        &__account-details {
+            display: flex;
+            align-items: center;
+        }
+        &__accounts-data {
+            display: flex;
+            flex-direction: column;
+            margin-left: 8px;
+        }
+        &__accounts-loginid {
+            color: var(--text-prominent);
+            font-size: var(--text-size-xxxs);
+            line-height: 1.4;
+        }
+        &__accounts-currency {
+            color: var(--text-prominent);
+            font-size: var(--text-size-xs);
+            line-height: 1.43;
+        }
+        &__accounts-button {
+            margin-top: 16px;
+            float: right;
+        }
+        &__accounts-wrapper {
+            display: flex;
+            padding: 3px 3px 3px 16px;
+            align-items: center;
+        }
+        &__balance {
+            margin-left: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            &--currency {
+                color: var(--text-prominent);
+                font-size: var(--text-size-xs);
+                line-height: 1.43;
+            }
+            &--id {
+                color: var(--text-prominent);
+                font-size: var(--text-size-xxxs);
+                line-height: 1.4;
+            }
+        }
+
+        &__container {
+            display: flex;
+            padding: 3px 3px 3px 16px;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 264px;
+        }
+        &__money {
+            color: var(--text-prominent);
+            font-size: var(--text-size-xs);
+            line-height: 1.43;
+        }
+        &__button {
+            height: 40px;
+            width: 77px;
+            float: right;
+            margin-right: 24px;
+            margin-bottom: 24px;
+        }
+    }
+}
+/* stylelint-enable */

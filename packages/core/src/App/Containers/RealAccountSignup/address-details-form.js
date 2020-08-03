@@ -76,7 +76,10 @@ export const addressDetailsConfig = ({ real_account_signup_target, residence, ac
         body: AddressDetails,
         form_value: getDefaultFields(real_account_signup_target, config),
         props: {
-            validate: generateValidationFunction(real_account_signup_target, transformForResidence(config, residence)),
+            validate: generateValidationFunction(
+                real_account_signup_target,
+                transformConfig(transformForResidence(config, residence), real_account_signup_target)
+            ),
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
     };
@@ -100,4 +103,13 @@ const transformForResidence = (rules, residence) => {
     }
 
     return rules;
+};
+
+const transformConfig = (config, { real_account_signup_target }) => {
+    // Remove required rule for svg clients
+    if (!real_account_signup_target || real_account_signup_target === 'svg') {
+        config.address_state.rules.shift();
+    }
+
+    return config;
 };

@@ -105,6 +105,13 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
+    updateContractReplayStore(response) {
+        const contract_replay = this.root_store.modules.contract_replay;
+        if (contract_replay.contract_id === response.proposal_open_contract.contract_id) {
+            contract_replay.populateConfig(response);
+        }
+    }
+
     updateTradeStore(is_over, portfolio_position, is_limit_order_update) {
         const trade = this.root_store.modules.trade;
         if (!is_limit_order_update) {
@@ -122,6 +129,7 @@ export default class PortfolioStore extends BaseStore {
     proposalOpenContractHandler(response) {
         if ('error' in response) {
             this.updateContractTradeStore(response);
+            this.updateContractReplayStore(response);
             return;
         }
 
@@ -130,6 +138,7 @@ export default class PortfolioStore extends BaseStore {
 
         if (!portfolio_position) return;
         this.updateContractTradeStore(response);
+        this.updateContractReplayStore(response);
 
         const formatted_position = formatPortfolioPosition(
             proposal,

@@ -48,14 +48,14 @@ const SocketCache = (() => {
 
     const set = (key, response) => {
         const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
-
         // check if response has subscription, since we only want to cache non-streaming responses
-        if (response.subscription || response.echo_req.end === 'latest') return;
-
-        // TODO: remove once caching is fixed to distinguish non-streaming/expired contracts from poc calls
-        if (msg_type === 'proposal_open_contract') {
-            if (!response.proposal_open_contract.is_sold) return;
+        // sold proposal_open_contract response can be cached
+        if (response.subscription) {
+            const can_cache = msg_type === 'proposal_open_contract' && response.proposal_open_contract.is_sold;
+            if (!can_cache) return;
         }
+
+        if (response.echo_req.end === 'latest') return;
 
         if (!config[msg_type]) return;
         // prevent unwanted page behaviour

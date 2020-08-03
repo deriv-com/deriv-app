@@ -1,4 +1,5 @@
 import { action, extendObservable, observable, toJS } from 'mobx';
+import { WS } from 'Services/ws-methods';
 import { createChartMarkers } from './Helpers/chart-markers';
 import { getDigitInfo, isDigitContract } from './Helpers/digits';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
@@ -75,6 +76,11 @@ export default class ContractStore {
             this.contract_update_config.has_contract_update = true;
         }
     }
+
+    cacheProposalOpenContractResponse = response => {
+        const { contract_id } = response.proposal_open_contract;
+        WS.storage.set({ proposal_open_contract: 1, contract_id }, response);
+    };
 
     @action.bound
     populateContractUpdateConfig(response) {

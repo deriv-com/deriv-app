@@ -372,23 +372,27 @@ class AccountSwitcher extends React.Component {
                         <div className='acc-switcher__accounts'>
                             {this.sorted_account_list
                                 .filter(account => !account.is_virtual)
-                                .map(account => (
-                                    <AccountList
-                                        key={account.loginid}
-                                        balance={this.props.accounts[account.loginid].balance}
-                                        currency={this.props.accounts[account.loginid].currency}
-                                        currency_icon={`IcCurrency-${account.icon}`}
-                                        display_type={'currency'}
-                                        has_balance={'balance' in this.props.accounts[account.loginid]}
-                                        is_disabled={account.is_disabled}
-                                        is_virtual={account.is_virtual}
-                                        loginid={account.loginid}
-                                        onClickAccount={
-                                            account.is_disabled ? undefined : this.doSwitch.bind(this, account.loginid)
-                                        }
-                                        selected_loginid={this.props.account_loginid}
-                                    />
-                                ))}
+                                .map(account => {
+                                    return (
+                                        <AccountList
+                                            key={account.loginid}
+                                            balance={this.props.accounts[account.loginid].balance}
+                                            currency={this.props.accounts[account.loginid].currency}
+                                            currency_icon={`IcCurrency-${account.icon}`}
+                                            display_type={'currency'}
+                                            has_balance={'balance' in this.props.accounts[account.loginid]}
+                                            is_disabled={account.is_disabled}
+                                            is_virtual={account.is_virtual}
+                                            loginid={account.loginid}
+                                            onClickAccount={
+                                                account.is_disabled
+                                                    ? undefined
+                                                    : this.doSwitch.bind(this, account.loginid)
+                                            }
+                                            selected_loginid={this.props.account_loginid}
+                                        />
+                                    );
+                                })}
                         </div>
                         {this.can_upgrade && (
                             <div className='acc-switcher__new-account'>

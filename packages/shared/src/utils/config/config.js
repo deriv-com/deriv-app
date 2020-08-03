@@ -75,7 +75,8 @@ export const getSocketURL = () => {
 };
 
 export const checkAndSetEndpointFromUrl = () => {
-    if (/^(staging\.deriv\.app|(.*)\.binary\.sx)$/i.test(location.hostname)) {
+    // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+    if (/^(staging\.deriv\.app|staging-app\.deriv\.com|(.*)\.binary\.sx)$/i.test(location.hostname)) {
         const url_params = new URLSearchParams(location.search.slice(1));
 
         if (url_params.has('qa_server') && url_params.has('app_id')) {

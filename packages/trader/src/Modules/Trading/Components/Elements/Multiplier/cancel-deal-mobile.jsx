@@ -22,6 +22,7 @@ const DealCancellationWarning = ({
         onConfirm={onConfirm}
         onCancel={onCancel}
         is_mobile_full_width={false}
+        is_cancel_secondary={true}
         is_visible={is_visible}
         disableApp={disableApp}
         enableApp={enableApp}

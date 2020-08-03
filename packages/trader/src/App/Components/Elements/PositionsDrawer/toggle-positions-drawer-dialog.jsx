@@ -21,8 +21,8 @@ class TogglePositionsDrawerDialog extends React.Component {
     }
 
     toggleDialog = e => {
-        e.preventDefault();
         e.stopPropagation();
+
         if (this.props.is_valid_to_cancel) return;
 
         this.setState(
@@ -71,7 +71,7 @@ class TogglePositionsDrawerDialog extends React.Component {
         return (
             <React.Fragment>
                 <div ref={this.toggle_ref} className='positions-drawer-dialog-toggle' onClick={this.toggleDialog}>
-                    {is_valid_to_cancel ? (
+                    {is_valid_to_cancel && should_show_cancellation_warning ? (
                         <Popover
                             alignment='right'
                             classNameBubble='trade-container__popover'

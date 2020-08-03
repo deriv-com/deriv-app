@@ -1,6 +1,14 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
-import { isDesktop, isCryptocurrency, getMinPayout, cloneObject, isEmptyObject, getPropertyValue } from '@deriv/shared';
+import {
+    isDesktop,
+    isMobile,
+    isCryptocurrency,
+    getMinPayout,
+    cloneObject,
+    isEmptyObject,
+    getPropertyValue,
+} from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
@@ -548,7 +556,14 @@ export default class TradeStore extends BaseStore {
                             // and then set the chart view to the start_time
                             // draw the start time line and show longcode then mount contract
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
-                            if (isDesktop()) this.root_store.ui.openPositionsDrawer();
+                            if (isDesktop()) {
+                                this.root_store.ui.openPositionsDrawer();
+                            } else if (isMobile()) {
+                                // TODO: Remove this when markers for multipliers are enabled
+                                if (this.is_multiplier) {
+                                    this.root_store.ui.openPositionsDrawer();
+                                }
+                            }
                             this.proposal_info = {};
                             this.forgetAllProposal();
                             this.purchase_info = response;

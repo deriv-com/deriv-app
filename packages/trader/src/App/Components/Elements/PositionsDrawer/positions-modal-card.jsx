@@ -188,15 +188,18 @@ const PositionsModalCard = ({
                 is_multiplier={is_multiplier}
                 status={status}
             />
-            <CardFooter
-                contract_info={contract_info}
-                is_multiplier={is_multiplier}
-                is_sell_requested={is_sell_requested}
-                onClickCancel={onClickCancel}
-                onClickSell={onClickSell}
-            />
         </React.Fragment>
     );
+
+    const contract_footer_el = is_multiplier ? (
+        <CardFooter
+            contract_info={contract_info}
+            is_multiplier={is_multiplier}
+            is_sell_requested={is_sell_requested}
+            onClickCancel={onClickCancel}
+            onClickSell={onClickSell}
+        />
+    ) : null;
 
     const contract_el = is_multiplier ? contract_multiplier_el : contract_options_el;
 
@@ -210,15 +213,18 @@ const PositionsModalCard = ({
                     {contract_info.underlying ? contract_el : loader_el}
                 </div>
             ) : (
-                <BinaryLink
-                    onClick={togglePositions}
-                    className={classNames('positions-modal-card', {
-                        'positions-modal-card--multiplier': is_multiplier,
-                    })}
-                    to={getContractPath(id)}
-                >
-                    {contract_info.underlying ? contract_el : loader_el}
-                </BinaryLink>
+                <React.Fragment>
+                    <BinaryLink
+                        onClick={togglePositions}
+                        className={classNames('positions-modal-card', {
+                            'positions-modal-card--multiplier': is_multiplier,
+                        })}
+                        to={getContractPath(id)}
+                    >
+                        {contract_info.underlying ? contract_el : loader_el}
+                    </BinaryLink>
+                    {contract_footer_el}
+                </React.Fragment>
             )}
         </div>
     );

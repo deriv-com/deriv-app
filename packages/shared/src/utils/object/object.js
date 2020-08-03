@@ -60,3 +60,5 @@ export const removeEmptyPropertiesFromObject = obj => {
 
     return clone;
 };
+
+export const sequence = n => Array.from(Array(n).keys());

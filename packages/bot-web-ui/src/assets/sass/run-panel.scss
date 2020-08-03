@@ -3,16 +3,81 @@
 **/
 // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
 .run-panel {
-    height: var(--bot-content-height) !important;
-    top: 104px !important;
+    &__container {
+        height: var(--bot-content-height) !important;
+        top: 10.4rem !important;
+        width: 36.6rem !important;
 
-    &__footer {
-        text-align: center;
+        &--mobile {
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+
+            &-closed {
+                position: unset;
+            }
+        }
+        &--open {
+            transform: translateX(-36.6rem) !important;
+        }
+    }
+    &__tile {
         display: flex;
-        height: 156px;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        height: 100%;
+
+        &-title {
+            height: 18px;
+            margin-bottom: 4px;
+            @include typeface(--small-center-bold-black, none);
+        }
+        &-content {
+            height: 18px;
+            margin-bottom: 4px;
+            @include typeface(--small-center-normal-black, none);
+        }
+    }
+    &__stat {
+        display: grid;
+        grid-template: 64px 64px / 1fr 1fr 1fr;
+        width: 100%;
+        background-color: var(--general-section-1);
+        position: fixed;
+        bottom: 5.7rem;
+
+        &-amount {
+            @include typeface(--small-center-normal-black, none);
+
+            &--positive {
+                font-weight: bold;
+                color: var(--text-profit-success);
+            }
+            &--negative {
+                font-weight: bold;
+                color: var(--text-loss-danger);
+            }
+        }
+        &--mobile {
+            bottom: 0;
+        }
+    }
+    &__footer {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+
+        &-button {
+            width: 318px;
+            // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+            height: 32px !important;
+            margin: 12px 24px;
+        }
     }
     &__content {
         overflow: hidden !important;
@@ -24,21 +89,25 @@
         margin-top: 1rem;
         align-items: center;
     }
-    &__icon-info {
-        vertical-align: middle;
-    }
-    &__info {
-        display: block;
-        font-size: 10px;
-    }
-    &__animation {
-        height: 64px;
-        margin: 0 16px;
-        width: 90%;
-    }
     &-tab {
         &__content {
             height: var(--drawer-content-height);
+
+            &--no-stat {
+                height: var(--drawer-content-height-no-stat);
+            }
+            &--mobile {
+                height: var(--drawer-content-height-mobile);
+                position: fixed;
+                bottom: 12.8rem;
+                width: 100vw;
+            }
+            &--journal-mobile {
+                position: fixed;
+                bottom: 0;
+                width: 100vw;
+                height: calc(100% - 7.6rem);
+            }
         }
     }
 }
@@ -46,18 +115,19 @@
 .controls {
     &__section {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        height: 6rem;
-        padding: 0.8rem 2.4rem;
         position: fixed;
         bottom: 0;
         width: 100%;
         background-color: var(--general-main-1);
         border-top: solid 2px var(--general-section-1);
+        z-index: 5;
     }
     &__buttons {
+        padding: 0.8rem 2.4rem;
+        height: 6rem;
         display: flex;
         width: inherit;
         padding-right: 8px;

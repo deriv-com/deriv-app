@@ -1,13 +1,14 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { Field, Formik, Form } from 'formik';
+import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { website_name } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
 import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
+import FormError from '../Error/form-error.jsx';
 import Loading from '../../../../templates/_common/components/loading.jsx';
 
 const AccountOption = ({ account, idx }) => (
@@ -335,28 +336,7 @@ const AccountTransferForm = ({
                                         )}
                                     </Field>
                                     <div className='cashier__form-submit cashier__form-submit--align-end account-transfer__form-submit'>
-                                        {error.message && (
-                                            <React.Fragment>
-                                                <DesktopWrapper>
-                                                    <div className='cashier__form-error-wrapper account-transfer__form-error'>
-                                                        <Icon
-                                                            icon='IcAlertDanger'
-                                                            className='cashier__form-error-small-icon'
-                                                        />
-                                                        <p className='cashier__form-error'>{error.message}</p>
-                                                    </div>
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
-                                                    <div className='cashier__form-error-container'>
-                                                        <Icon
-                                                            icon='IcAlertDanger'
-                                                            className='cashier__form-error-small-icon'
-                                                        />
-                                                        <p className='cashier__form-error'>{error.message}</p>
-                                                    </div>
-                                                </MobileWrapper>
-                                            </React.Fragment>
-                                        )}
+                                        {error.message && <FormError error_message={error.message} />}
                                         <Button
                                             className='cashier__form-submit-button'
                                             type='submit'

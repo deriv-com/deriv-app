@@ -185,7 +185,7 @@ export default class RunPanelStore {
         this.dialog_options = {
             title: localize('Are you sure?'),
             message: localize(
-                'This will reset all counters to zero in summary panel and clear all transactions in transaction panel.'
+                'This will clear all data in the summary, transactions, and journal panels. All counters will be reset to zero.'
             ),
             ok_button_text: localize('Yes'),
             cancel_button_text: localize('No'),

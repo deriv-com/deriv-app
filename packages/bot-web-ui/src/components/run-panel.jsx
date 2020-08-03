@@ -120,7 +120,7 @@ const drawerFooter = ({ is_clear_stat_disabled, onClearStatClick }) => (
             id='db-run-panel__clear-button'
             className='run-panel__footer-button'
             is_disabled={is_clear_stat_disabled}
-            text={localize('Clear stat')}
+            text={localize('Reset')}
             onClick={onClearStatClick}
             has_effect
             secondary
@@ -171,7 +171,7 @@ class RunPanel extends React.PureComponent {
                     <Drawer
                         className={!is_mobile ? 'run-panel__container' : undefined}
                         contentClassName='run-panel__content'
-                        clear_stat_button_text={localize('Clear stat')}
+                        clear_stat_button_text={localize('Reset')}
                         footer={!is_mobile && footer}
                         is_clear_stat_disabled={is_clear_stat_disabled}
                         is_mobile={is_mobile}
@@ -187,11 +187,9 @@ class RunPanel extends React.PureComponent {
                 <Dialog
                     title={dialog_options.title}
                     is_visible={is_dialog_open}
-                    cancel_button_text={
-                        dialog_options.cancel_button_text ? dialog_options.cancel_button_text : localize('Cancel')
-                    }
+                    cancel_button_text={dialog_options.cancel_button_text || localize('Cancel')}
                     onCancel={onCancelButtonClick}
-                    confirm_button_text={dialog_options.ok_button_text ? dialog_options.ok_button_text : localize('OK')}
+                    confirm_button_text={dialog_options.ok_button_text || localize('OK')}
                     onConfirm={onOkButtonClick || onCloseDialog}
                     is_mobile_full_width={false}
                     has_close_icon

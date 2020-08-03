@@ -22,6 +22,7 @@ class TogglePositionsDrawerDialog extends React.Component {
     }
 
     toggleDialog = e => {
+        e.preventDefault();
         e.stopPropagation();
         const { addToast, should_show_cancellation_warning, is_valid_to_cancel } = this.props;
         if (isMobile() && should_show_cancellation_warning && is_valid_to_cancel) {

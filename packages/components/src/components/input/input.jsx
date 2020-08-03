@@ -30,7 +30,7 @@ const Input = (
         e.target.value = input_value;
         props.onChange(e);
     };
-    const dataLpignore = lpignore || (type === 'password' ? false : true);
+    const dataLpignore = lpignore || (props.type === 'password' ? false : true);
     return (
         <div
             className={classNames('dc-input', className, {
@@ -42,7 +42,7 @@ const Input = (
                 React.cloneElement(leading_icon, {
                     className: classNames('dc-input__leading-icon', leading_icon.props.className),
                 })}
-            {type === 'textarea' ? (
+            {props.type === 'textarea' ? (
                 <textarea
                     ref={ref}
                     {...props}
@@ -54,7 +54,6 @@ const Input = (
                 />
             ) : (
                 <input
-                    type={type}
                     ref={ref}
                     {...props}
                     className={classNames('dc-input__field', {

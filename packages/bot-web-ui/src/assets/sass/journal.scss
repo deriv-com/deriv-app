@@ -3,7 +3,7 @@
  */
 .journal {
     &-empty {
-        height: calc(100vh - 37.9rem);
+        height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -28,14 +28,16 @@
             list-style-type: circle;
             margin-left: 20px;
         }
-        &--mobile {
-            @extend .journal-empty;
-            height: calc(100vh - 22.5rem);
-        }
+    }
+    &__scrollbars {
+        height: 100%;
     }
     &__item {
         padding: 16px;
 
+        &-list {
+            height: 100%;
+        }
         &-content {
             > * {
                 width: 100%;

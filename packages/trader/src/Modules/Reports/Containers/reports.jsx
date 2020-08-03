@@ -9,7 +9,7 @@ import {
     FadeWrapper,
     PageOverlay,
 } from '@deriv/components';
-import { isMobile, getSelectedRoute } from '@deriv/shared';
+import { getSelectedRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/reports.scss';

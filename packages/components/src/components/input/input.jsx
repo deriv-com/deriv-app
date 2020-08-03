@@ -29,7 +29,6 @@ const Input = (
         e.target.value = input_value;
         props.onChange(e);
     };
-    const dataLpignore = lpignore || (props.type === 'password' ? false : true);
     return (
         <div
             className={classNames('dc-input', className, {
@@ -59,7 +58,7 @@ const Input = (
                         'dc-input__field--placeholder-visible': !label && props.placeholder,
                     })}
                     disabled={disabled}
-                    data-lpignore={dataLpignore}
+                    data-lpignore={props.type === 'password' ? undefined : true}
                 />
             )}
             {trailing_icon &&

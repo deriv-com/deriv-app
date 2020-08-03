@@ -1,4 +1,5 @@
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
 import SummaryCard from './summary-card.jsx';
 import { connect } from '../stores/connect';

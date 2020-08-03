@@ -79,10 +79,6 @@ export default class DataCollectionStore {
 
             const getPayload = () => {
                 const content = pako.gzip(this.strategy_content);
-                console.log({
-                    content,
-                    typeContent: typeof content,
-                });
                 return {
                     body: content,
                     headers: {

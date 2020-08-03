@@ -155,7 +155,9 @@ class MT5POA extends React.Component {
                 actions.setSubmitting(false);
                 return;
             }
-            const { identity } = get_account_status.authentication;
+
+            const identity = get_account_status?.authentication?.identity;
+            // const { identity } = get_account_status.authentication;
             const has_poi = !(identity && identity.status === 'none');
             if (has_poi) {
                 this.proceed();
@@ -167,11 +169,7 @@ class MT5POA extends React.Component {
                     this.handleCancel(get_settings);
                 }, 3000);
             }
-        } catch (e) {
-            this.setState({
-                form_error: e.message,
-            });
-        }
+        } catch (e) {}
         actions.setSubmitting(false);
         this.props.onSave(this.props.index, values);
         this.props.onSubmit(this.props.index, values, actions.setSubmitting);

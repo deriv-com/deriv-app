@@ -24,7 +24,7 @@ class TogglePositionsDrawerDialog extends React.Component {
     toggleDialog = e => {
         e.stopPropagation();
         const { addToast, should_show_cancellation_warning, is_valid_to_cancel } = this.props;
-        if (isMobile() && should_show_cancellation_warning) {
+        if (isMobile() && should_show_cancellation_warning && is_valid_to_cancel) {
             addToast({
                 key: 'deal_cancellation_active',
                 content: localize('Take profit and/or stop loss are not available while deal cancellation is active.'),

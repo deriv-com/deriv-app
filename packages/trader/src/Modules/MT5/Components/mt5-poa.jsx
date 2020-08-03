@@ -8,6 +8,7 @@ import {
     Dropdown,
     Loading,
     Div100vhContainer,
+    Modal,
     SelectNative,
     DesktopWrapper,
     MobileWrapper,
@@ -215,6 +216,7 @@ class MT5POA extends React.Component {
                     address_postcode,
                     document_file: this.state.document_file,
                 }}
+                validateOnMount
                 isInitialValid={({ initialValues }) => this.validateForm(initialValues)}
                 validate={this.validateForm}
                 onSubmit={this.onSubmit}
@@ -235,7 +237,7 @@ class MT5POA extends React.Component {
                             <form ref={setRef} onSubmit={handleSubmit} className='mt5-proof-of-address'>
                                 <Div100vhContainer
                                     className='details-form'
-                                    height_offset='110px'
+                                    height_offset='100px'
                                     is_disabled={isDesktop()}
                                 >
                                     {is_loading && (
@@ -244,7 +246,7 @@ class MT5POA extends React.Component {
                                     {is_form_visible && (
                                         <ThemedScrollbars
                                             autohide={false}
-                                            height={`calc(${height}px - 100px)`}
+                                            height={`calc(${height}px - 72px)`}
                                             is_bypassed={isMobile()}
                                         >
                                             <div className='mt5-proof-of-address__field-area'>
@@ -326,7 +328,7 @@ class MT5POA extends React.Component {
                                                         }
                                                     />
                                                     {errors.document_file && touched.document_file && (
-                                                        <p className='dc-field-error'>{errors.document_file}</p>
+                                                        <p className='dc-field--error'>{errors.document_file}</p>
                                                     )}
                                                 </div>
                                             </div>
@@ -358,17 +360,19 @@ class MT5POA extends React.Component {
                                             )}
                                         </ThemedScrollbars>
                                     )}
-                                    {is_form_visible && (
-                                        <FormSubmitButton
-                                            has_cancel
-                                            cancel_label={localize('Previous')}
-                                            is_disabled={!!Object.keys(errors).length || isSubmitting}
-                                            label={localize('Next')}
-                                            is_loading={isSubmitting}
-                                            form_error={this.state.form_error}
-                                            onCancel={() => this.handleCancel(values)}
-                                        />
-                                    )}
+                                    <Modal.Footer>
+                                        {is_form_visible && (
+                                            <FormSubmitButton
+                                                has_cancel
+                                                cancel_label={localize('Previous')}
+                                                is_disabled={!!Object.keys(errors).length || isSubmitting}
+                                                label={localize('Next')}
+                                                is_loading={isSubmitting}
+                                                form_error={this.state.form_error}
+                                                onCancel={() => this.handleCancel(values)}
+                                            />
+                                        )}
+                                    </Modal.Footer>
                                 </Div100vhContainer>
                             </form>
                         )}

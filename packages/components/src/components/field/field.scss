@@ -5,11 +5,11 @@
     font-size: var(--text-size-xxs);
     line-height: 1.25;
 
-    &__error {
+    &--error {
         padding-left: 1rem;
         color: var(--brand-red-coral);
     }
-    &__warn {
+    &--warn {
         padding-left: 1.2rem;
         padding-top: 0.4rem;
         font-size: var(--text-size-xxs);

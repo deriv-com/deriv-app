@@ -680,6 +680,11 @@
     }
     @include desktop {
         overflow: hidden;
+
+        & .details-form__description {
+            width: 100%;
+            text-align: center;
+        }
     }
     @include mobile {
         overflow: auto;
@@ -921,7 +926,7 @@
             }
         }
         &__file-upload {
-            .dc-field-error {
+            .dc-field--error {
                 top: 50%;
                 left: 0;
                 right: unset;

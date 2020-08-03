@@ -110,25 +110,21 @@ class PersonalDetails extends React.Component {
                                                 name='first_name'
                                                 label={localize('First name*')}
                                                 placeholder={localize('John')}
-                                                data-lpignore='true'
                                             />
                                             <FormInputField
                                                 name='last_name'
                                                 label={localize('Last name*')}
                                                 placeholder={localize('Doe')}
-                                                data-lpignore='true'
                                             />
                                             <DateOfBirthField
                                                 name='date_of_birth'
                                                 label={localize('Date of birth*')}
                                                 placeholder={localize('01-07-1999')}
-                                                data-lpignore='true'
                                             />
                                             <FormInputField
                                                 name='phone'
                                                 label={localize('Phone number*')}
                                                 placeholder={localize('Phone number')}
-                                                data-lpignore='true'
                                             />
                                         </div>
                                     </ThemedScrollbars>

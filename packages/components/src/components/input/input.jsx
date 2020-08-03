@@ -14,6 +14,8 @@ const Input = (
         max_characters,
         trailing_icon,
         label,
+        type,
+        lpignore,
         ...props
     },
     ref
@@ -28,6 +30,7 @@ const Input = (
         e.target.value = input_value;
         props.onChange(e);
     };
+    const dataLpignore = lpignore || (type === 'password' ? false : true);
     return (
         <div
             className={classNames('dc-input', className, {
@@ -39,7 +42,7 @@ const Input = (
                 React.cloneElement(leading_icon, {
                     className: classNames('dc-input__leading-icon', leading_icon.props.className),
                 })}
-            {props.type === 'textarea' ? (
+            {type === 'textarea' ? (
                 <textarea
                     ref={ref}
                     {...props}
@@ -51,12 +54,14 @@ const Input = (
                 />
             ) : (
                 <input
+                    type={type}
                     ref={ref}
                     {...props}
                     className={classNames('dc-input__field', {
                         'dc-input__field--placeholder-visible': !label && props.placeholder,
                     })}
                     disabled={disabled}
+                    data-lpignore={dataLpignore}
                 />
             )}
             {trailing_icon &&

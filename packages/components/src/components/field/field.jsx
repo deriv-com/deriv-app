@@ -5,8 +5,8 @@ import React from 'react';
 const Field = ({ message, className, type }) => (
     <p
         className={classNames('dc-field', className, {
-            'dc-field-error': type === 'error',
-            'dc-field-warn': type === 'warn',
+            'dc-field--error': type === 'error',
+            'dc-field--warn': type === 'warn',
         })}
     >
         {message}

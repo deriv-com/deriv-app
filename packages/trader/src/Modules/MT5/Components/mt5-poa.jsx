@@ -328,7 +328,7 @@ class MT5POA extends React.Component {
                                                         }
                                                     />
                                                     {errors.document_file && touched.document_file && (
-                                                        <p className='dc-field-error'>{errors.document_file}</p>
+                                                        <p className='dc-field--error'>{errors.document_file}</p>
                                                     )}
                                                 </div>
                                             </div>

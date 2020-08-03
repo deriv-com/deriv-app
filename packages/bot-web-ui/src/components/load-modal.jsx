@@ -24,20 +24,21 @@ const WorkspaceControl = ({ onZoomInOutClick }) => (
     </div>
 );
 
-const Recent = ({
-    is_explanation_expand,
-    is_open_button_loading,
-    getRecentFileIcon,
-    getSaveType,
-    loadFileFromRecent,
-    toggleExplanationExpand,
-    onEntered,
-    previewWorkspace,
-    recent_workspaces,
-    selected_workspace_id,
-    is_mobile,
-    ...props
-}) => {
+const Recent = props => {
+    const {
+        getRecentFileIcon,
+        getSaveType,
+        is_explanation_expand,
+        is_mobile,
+        is_open_button_loading,
+        loadFileFromRecent,
+        onEntered,
+        previewWorkspace,
+        recent_workspaces,
+        selected_workspace_id,
+        toggleExplanationExpand,
+    } = props;
+
     if (recent_workspaces.length) {
         return (
             <div className='load-recent__container'>
@@ -139,16 +140,17 @@ const Recent = ({
     );
 };
 
-const Local = ({
-    handleFileChange,
-    is_mobile,
-    is_open_button_loading,
-    loadFileFromLocal,
-    loaded_local_file,
-    toggleLoadModal,
-    ...props
-}) => {
+const Local = props => {
+    const {
+        handleFileChange,
+        is_mobile,
+        is_open_button_loading,
+        loadFileFromLocal,
+        loaded_local_file,
+        toggleLoadModal,
+    } = props;
     let file_input_ref = React.useRef(null);
+
     return (
         <div className='load-local__container'>
             <div
@@ -271,17 +273,18 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
     </div>
 );
 
-const LoadModal = ({
-    active_index,
-    is_load_modal_open,
-    setActiveTabIndex,
-    toggleLoadModal,
-    onEntered,
-    is_mobile,
-    should_rerender_tabs,
-    ...props
-}) => {
+const LoadModal = props => {
+    const {
+        active_index,
+        is_load_modal_open,
+        is_mobile,
+        onEntered,
+        setActiveTabIndex,
+        should_rerender_tabs,
+        toggleLoadModal,
+    } = props;
     const header_text = localize('Load strategy');
+
     if (is_mobile) {
         return (
             <FadeWrapper is_visible={is_load_modal_open} className='load__wrapper' keyname='save__wrapper'>
@@ -297,10 +300,10 @@ const LoadModal = ({
                                 header_fit_content
                             >
                                 <div label={localize('Local')}>
-                                    <Local is_mobile={is_mobile} {...props} />
+                                    <Local {...props} />
                                 </div>
                                 <div label='Google Drive'>
-                                    <GoogleDrive is_mobile={is_mobile} {...props} />
+                                    <GoogleDrive {...props} />
                                 </div>
                             </Tabs>
                         </Div100vhContainer>

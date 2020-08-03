@@ -3,7 +3,7 @@
     $grid-template-columns: 0.9fr 1fr 1fr;
 
     &-empty {
-        height: calc(100vh - 37.9rem);
+        height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -27,10 +27,6 @@
         &__list {
             list-style-type: circle;
             margin-left: 2rem;
-        }
-        &--mobile {
-            @extend .transactions-empty;
-            height: calc(100vh - 22.5rem);
         }
     }
     &__header {
@@ -58,7 +54,10 @@
         }
     }
     &__content {
-        height: calc(100% - 42px);
+        height: calc(100% - 4.2rem);
+    }
+    &__scrollbar {
+        height: 100%;
     }
     &__item {
         display: grid;

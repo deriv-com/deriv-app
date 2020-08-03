@@ -8,8 +8,10 @@ import TwoFactorAuthentication from 'Sections/Security/TwoFactorAuthentication';
 import ApiToken from 'Sections/Security/ApiToken';
 import SelfExclusion from 'Sections/Security/SelfExclusion';
 import Account from 'Containers/account.jsx';
+import DeactivateAccount from 'Sections/Security/DeactivateAccount';
 import ConnectedApps from 'Sections/Security/ConnectedApps';
 import LoginHistory from 'Sections/Security/LoginHistory';
+import AccountDeactivated from 'Sections/Security/AccountDeactivated';
 
 export {
     AccountLimits,
@@ -22,6 +24,8 @@ export {
     ApiToken,
     SelfExclusion,
     Account,
+    DeactivateAccount,
     ConnectedApps,
     LoginHistory,
+    AccountDeactivated,
 };

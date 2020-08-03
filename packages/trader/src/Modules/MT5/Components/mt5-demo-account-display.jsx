@@ -102,7 +102,12 @@ const MT5DemoAccountDisplay = ({
                         type: 'financial_stp',
                     }}
                     existing_data={current_list['demo.financial_stp']}
-                    commission_message={<Localize i18n_default_text='No commission' />}
+                    commission_message={
+                        <Localize
+                            i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
+                            components={[<span key={0} className='mt5-dashboard--hint' />]}
+                        />
+                    }
                     onSelectAccount={() =>
                         onSelectAccount({
                             category: 'demo',

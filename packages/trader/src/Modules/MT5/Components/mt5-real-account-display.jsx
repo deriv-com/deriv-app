@@ -129,7 +129,12 @@ const MT5RealAccountDisplay = ({
                         type: 'financial_stp',
                     }}
                     existing_data={current_list['real.financial_stp']}
-                    commission_message={<Localize i18n_default_text='No commission' />}
+                    commission_message={
+                        <Localize
+                            i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
+                            components={[<span key={0} className='mt5-dashboard--hint' />]}
+                        />
+                    }
                     onSelectAccount={onSelectRealFinancialStp}
                     button_label={button_label}
                     is_button_primary={is_pending_authentication}

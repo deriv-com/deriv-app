@@ -108,7 +108,7 @@ const compareAccountsData = [
         ),
         synthetic: localize('No'),
         financial: localize('No'),
-        financial_stp: localize('No'),
+        financial_stp: localize('Yes'),
     },
     {
         attribute: <MT5AttributeDescriber name={localize('Minimum deposit')} />,
@@ -160,13 +160,13 @@ const compareAccountsData = [
         ),
         synthetic: localize('N/A'),
         financial: localize('24/7'),
-        financial_stp: localize('N/A'),
+        financial_stp: localize('24/7'),
     },
     {
         attribute: <MT5AttributeDescriber name={localize('Trading instruments')} />,
         synthetic: localize('Synthetics'),
         financial: localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
-        financial_stp: localize('FX-majors, FX-minors, FX-exotics'),
+        financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
     },
 ];
 

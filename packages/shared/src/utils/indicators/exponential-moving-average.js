@@ -1,5 +1,15 @@
 import { takeField, mean } from './math';
 
+/**
+ * @param {Array} data
+ * @param {Object} config of type
+ * {
+ *  periods: number,
+ *  field?: 'open' | 'high' | 'low' | 'close',
+ *  pipSize: number,
+ * }
+ * @param {Number} initVal
+ */
 export const exponentialMovingAverage = (data, config, initVal) => {
     const { periods, field, pipSize = 2 } = config;
 
@@ -23,6 +33,15 @@ export const exponentialMovingAverage = (data, config, initVal) => {
         .toFixed(pipSize);
 };
 
+/**
+ * @param {Array} data
+ * @param {Object} config of type
+ * {
+ *  periods: number,
+ *  field?: 'open' | 'high' | 'low' | 'close',
+ *  pipSize: number,
+ * }
+ */
 export const exponentialMovingAverageArray = (data, config) => {
     const { periods } = config;
 

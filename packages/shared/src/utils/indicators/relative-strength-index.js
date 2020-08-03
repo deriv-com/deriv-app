@@ -35,6 +35,16 @@ const calcSecondAvgDiff = (vals, comp, periods, initAvg) => {
     });
 };
 
+/**
+ * @param {Array} data
+ * @param {Object} config of type
+ * {
+ *  periods: number,
+ *  field?: 'open' | 'high' | 'low' | 'close',
+ *  pipSize: number,
+ * }
+ * @param {any} memoizedDiff
+ */
 export const relativeStrengthIndex = (data, config, memoizedDiff) => {
     const { periods, field } = config;
 
@@ -84,6 +94,15 @@ export const relativeStrengthIndex = (data, config, memoizedDiff) => {
     return 100 - 100 / (1 + RS);
 };
 
+/**
+ * @param {Array} data
+ * @param {Object} config of type
+ * {
+ *  periods: number,
+ *  field?: 'open' | 'high' | 'low' | 'close',
+ *  pipSize: number,
+ * }
+ */
 export const relativeStrengthIndexArray = (data, config) => {
     const { periods, pipSize = 2 } = config;
     const memoizedDiff = {};

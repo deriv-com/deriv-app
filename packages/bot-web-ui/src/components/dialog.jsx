@@ -1,4 +1,4 @@
-import { Button, Modal } from '@deriv/components';
+import { Button, Modal, Icon } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
@@ -6,14 +6,19 @@ import '../assets/sass/bot-ui-dialog.scss';
 
 const Dialog = ({ children, onOkButtonClick, onCancelButtonClick, is_open, title }) => {
     return (
-        <Modal className='bot-dialog' is_open={is_open} has_close_icon={false} toggleModal={onCancelButtonClick}>
+        <Modal className='bot-dialog' is_open={is_open} toggleModal={onCancelButtonClick}>
             <div className='bot-dialog__content'>
-                <div className='bot-dialog__header'>{title}</div>
+                <div className='bot-dialog__header'>
+                    <div className='bot-dialog__title'>{title}</div>
+                    <div onClick={onCancelButtonClick}>
+                        <Icon icon='IcCross' />
+                    </div>
+                </div>
                 <div className='bot-dialog__text'>{children}</div>
                 <div className='bot-dialog__footer'>
                     {onCancelButtonClick && (
                         <Button
-                            className='bot-dialog__cancel'
+                            className='bot-dialog__button bot-dialog__cancel'
                             text={localize('Cancel')}
                             onClick={onCancelButtonClick}
                             has_effect
@@ -22,7 +27,7 @@ const Dialog = ({ children, onOkButtonClick, onCancelButtonClick, is_open, title
                     )}
                     {onOkButtonClick && (
                         <Button
-                            className='bot-dialog__ok'
+                            className='bot-dialog__button bot-dialog__ok'
                             text={localize('Ok')}
                             onClick={onOkButtonClick}
                             has_effect

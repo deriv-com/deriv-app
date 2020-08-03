@@ -14,6 +14,7 @@ import QuickStrategyStore from './quick-strategy-store';
 import MainContentStore from './main-content-store';
 import RoutePromptDialogStore from './route-prompt-dialog-store';
 import DataCollectionStore from './data-collection-store';
+import BlocklyStore from './blockly-store';
 
 export default class RootStore {
     constructor(core, ws, dbot) {
@@ -23,6 +24,7 @@ export default class RootStore {
         this.ws = ws;
         this.dbot = dbot;
         this.server_time = core.common.server_time;
+        this.blockly_store = new BlocklyStore(this);
         this.contract_card = new ContractCardStore(this);
         this.flyout = new FlyoutStore(this);
         this.flyout_help = new FlyoutHelpStore(this);

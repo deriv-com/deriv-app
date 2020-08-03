@@ -112,7 +112,7 @@ export default class UIStore extends BaseStore {
     @observable current_focus = null;
 
     // Enabling EU users
-    @observable is_eu_enabled = true; // TODO: [deriv-eu] - Remove this constant when all EU sections are done.
+    @observable is_eu_enabled = false; // TODO: [deriv-eu] - Remove this constant when all EU sections are done.
 
     // Mobile
     @observable should_show_toast_error = false;
@@ -166,6 +166,9 @@ export default class UIStore extends BaseStore {
                 this.is_window_loaded = true;
             })
         );
+
+        // TODO: [deiv-eu] remove this manual enabler
+        this.is_eu_enabled = !!+localStorage.getItem('is_eu_enabled');
 
         window.addEventListener('resize', this.handleResize);
         autorun(() => {

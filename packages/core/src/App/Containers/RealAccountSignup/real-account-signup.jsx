@@ -102,12 +102,12 @@ class RealAccountSignup extends React.Component {
     }
 
     get modal_height() {
-        // TODO [deriv-eu] remove is_eu_enabled once eu is released.
-        const { currency, has_real_account, is_eu, is_eu_enabled } = this.props;
+        const { currency, has_real_account, is_eu, is_eu_enabled } = this.props; // TODO [deriv-eu] remove is_eu_enabled once eu is released.
         if (this.active_modal_index === 3) return 'auto'; // Status dialog
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
             if (is_eu && is_eu_enabled && this.active_modal_index === 1) {
+                // TODO [deriv-eu] remove is_eu_enabled once eu is released.
                 // Manage account
                 return '400px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
@@ -273,7 +273,7 @@ export default connect(({ ui, client, common }) => ({
     has_real_account: client.has_active_real_account,
     currency: client.currency,
     is_eu: client.is_eu,
-    is_eu_enabled: ui.is_eu_enabled,
+    is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled once eu is released.
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     real_account_signup_target: ui.real_account_signup_target,
     is_logged_in: client.is_logged_in,

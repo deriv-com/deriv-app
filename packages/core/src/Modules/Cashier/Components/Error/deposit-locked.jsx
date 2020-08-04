@@ -10,12 +10,14 @@ import CashierLocked from './cashier-locked.jsx';
 
 const DepositsLocked = ({
     account_status,
+    is_age_verified,
     is_tnc_needed,
     is_financial_information_incomplete,
     is_trading_experience_incomplete,
     is_financial_account,
     is_ask_financial_risk_approval,
     onMount,
+    standpoint,
 }) => {
     // handle authentication locked
     const { identity, document, needs_verification } = account_status.authentication;

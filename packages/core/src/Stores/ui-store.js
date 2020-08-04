@@ -168,7 +168,7 @@ export default class UIStore extends BaseStore {
         );
 
         // TODO: [deiv-eu] remove this manual enabler
-        this.is_eu_enabled = localStorage.getItem('is_eu_enabled') === 'true';
+        this.toggleIsEuEnabled(localStorage.getItem('is_eu_enabled') === 'true');
 
         window.addEventListener('resize', this.handleResize);
         autorun(() => {

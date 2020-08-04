@@ -39,7 +39,6 @@ class Dialog extends React.Component {
             children,
             confirm_button_text,
             onCancel,
-            is_cancel_secondary = false,
             is_loading,
             is_visible,
             is_mobile_full_width = true,
@@ -84,7 +83,7 @@ class Dialog extends React.Component {
                                     has_effect
                                     text={cancel_button_text}
                                     onClick={this.handleCancel}
-                                    {...(is_cancel_secondary ? { secondary: true } : { tertiary: true })}
+                                    secondary
                                     large
                                 />
                             )}
@@ -122,7 +121,6 @@ Dialog.propTypes = {
     confirm_button_text: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
-    is_cancel_secondary: PropTypes.bool,
     is_closed_on_cancel: PropTypes.bool,
     is_closed_on_confirm: PropTypes.bool,
     is_loading: PropTypes.bool,

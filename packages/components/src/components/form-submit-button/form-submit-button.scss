@@ -3,7 +3,6 @@
     align-items: center;
     justify-content: flex-end;
     align-self: flex-end;
-    padding: 2rem;
     width: 100%;
 
     .dc-btn {
@@ -21,6 +20,7 @@
         position: absolute;
         left: 0;
         padding: 2.4em;
+        background-color: var(--general-main-1);
         border-top: 1px solid var(--general-section-1);
     }
     &--center {

@@ -50,6 +50,30 @@ export default class FlyoutHelpStore {
         }
     };
 
+    getHelpContent = async block_node => {
+        let block_content;
+
+        if (block_node) {
+            const target_blocks = this.xml_list_group[block_node];
+            const block_type = target_blocks[0].getAttribute('type');
+            const help_string_obj = await import(/* webpackChunkName: `[request]` */ '@deriv/bot-skeleton');
+            block_content = help_string_obj.default[block_type];
+        }
+
+        return block_content;
+    };
+
+    getFilledHelpContents = async blocks_Type => {
+        const blocks_content = await Promise.all(blocks_Type.map(block => this.getHelpContent(block)));
+        return blocks_content.map((key, index) => (key != null ? index : null)).filter(value => value != null);
+    };
+
+    getNextHelpContentIndex = async direction => {
+        const filled_blocks_index = await this.getFilledHelpContents(Object.keys(this.xml_list_group));
+
+        return direction ? filled_blocks_index[filled_blocks_index.length - 1] : filled_blocks_index[0];
+    };
+
     @action.bound
     onBackClick() {
         // eslint-disable-next-line no-underscore-dangle
@@ -79,15 +103,24 @@ export default class FlyoutHelpStore {
 
         const getNextBlock = async (xml, current_index, direction) => {
             const next_index = current_index + (direction ? 1 : -1);
-            const block_type = Object.keys(xml).find((key, index) => next_index === index);
+            const next_blocks_Type = Object.keys(xml).filter((key, index) =>
+                direction ? next_index <= index : next_index >= index
+            );
+            const next_filled_bock = await this.getFilledHelpContents(next_blocks_Type);
 
-            if (!block_type) {
+            const next_filled_bock_lenght = next_filled_bock.length;
+            const next_filled_bock_index = direction
+                ? next_filled_bock[0]
+                : next_filled_bock[next_filled_bock_lenght - 1];
+            const next_block_type = next_blocks_Type[next_filled_bock_index];
+
+            if (!next_block_type) {
                 return false;
             }
 
             try {
                 await import(/* webpackChunkName: `[request]` */ '@deriv/bot-skeleton');
-                return block_type;
+                return next_block_type;
             } catch (e) {
                 return getNextBlock(xml, next_index, direction);
             }
@@ -111,13 +144,20 @@ export default class FlyoutHelpStore {
     }
 
     @action.bound
-    updateSequenceButtons() {
+    async updateSequenceButtons() {
         const current_block = this.xml_list.find(xml => xml.getAttribute('type') === this.block_type);
         const current_index = Object.keys(this.xml_list_group).findIndex(
             key => current_block.getAttribute('type') === key
         );
-        this.should_previous_disable = current_index === 0;
-        this.should_next_disable = current_index === Object.keys(this.xml_list_group).length - 1;
+
+        const last_content_index = await this.getNextHelpContentIndex(true);
+        const first_content_index = await this.getNextHelpContentIndex(false);
+
+        runInAction(() => {
+            this.should_previous_disable = current_index === 0 || current_index === first_content_index;
+            this.should_next_disable =
+                current_index === Object.keys(this.xml_list_group).length - 1 || current_index === last_content_index;
+        });
     }
 
     // eslint-disable-next-line

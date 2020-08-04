@@ -72,6 +72,7 @@ module.exports = {
         'airbnb-base',
         'binary',
         'plugin:react/recommended',
+        'plugin:react-hooks/recommended'
     ],
     parserOptions: {
         ecmaVersion : 6,

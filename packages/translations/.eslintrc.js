@@ -67,7 +67,7 @@ module.exports = {
         'react/self-closing-comp': 'error',
         // 'react/sort-prop-types'             : ['error', { ignoreCase: true, sortShapeProp: true }],
     },
-    extends: ['prettier', 'prettier/react', 'airbnb-base', 'binary', 'plugin:react/recommended'],
+    extends: ['prettier', 'prettier/react', 'airbnb-base', 'binary', 'plugin:react/recommended', 'plugin:react-hooks/recommended'],
     parserOptions: {
         ecmaVersion: 6,
         ecmaFeatures: {

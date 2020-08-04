@@ -141,7 +141,7 @@ const Toolbar = props => {
         active_tab,
         is_dialog_open,
         onOkButtonClick,
-        toggleResetModal,
+        toggleResetDialog,
         onToolboxToggle,
         toggleStrategyModal,
         toggleLoadModal,
@@ -209,7 +209,7 @@ const Toolbar = props => {
                 confirm_button_text={localize('OK')}
                 onConfirm={onOkButtonClick}
                 cancel_button_text={localize('Cancel')}
-                onCancel={toggleResetModal}
+                onCancel={toggleResetDialog}
                 is_mobile_full_width={false}
                 has_close_icon
             >
@@ -229,7 +229,7 @@ Toolbar.propTypes = {
     is_search_loading: PropTypes.bool,
     is_stop_button_disabled: PropTypes.bool,
     is_stop_button_visible: PropTypes.bool,
-    toggleResetModal: PropTypes.func,
+    toggleResetDialog: PropTypes.func,
     onGoogleDriveClick: PropTypes.func,
     onOkButtonClick: PropTypes.func,
     onResetClick: PropTypes.func,
@@ -257,7 +257,7 @@ export default connect(({ main_content, run_panel, save_modal, load_modal, toolb
     is_search_loading: toolbar.is_search_loading,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     is_stop_button_visible: run_panel.is_stop_button_visible,
-    toggleResetModal: toolbar.toggleResetModal,
+    toggleResetDialog: toolbar.toggleResetDialog,
     onGoogleDriveClick: toolbar.onGoogleDriveClick,
     onOkButtonClick: toolbar.onResetOkButtonClick,
     onResetClick: toolbar.onResetClick,

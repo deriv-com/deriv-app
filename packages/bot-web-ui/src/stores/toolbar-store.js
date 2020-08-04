@@ -84,7 +84,7 @@ export default class ToolbarStore {
     }
 
     @action.bound
-    toggleResetModal() {
+    toggleResetDialog() {
         this.is_dialog_open = false;
     }
 
@@ -104,7 +104,7 @@ export default class ToolbarStore {
             'reset'
         );
 
-        this.toggleResetModal();
+        this.toggleResetDialog();
     }
 
     onSortClick = () => {

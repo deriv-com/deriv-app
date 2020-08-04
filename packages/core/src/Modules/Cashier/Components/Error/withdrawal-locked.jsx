@@ -8,7 +8,10 @@ import { connect } from 'Stores/connect';
 import CashierLocked from './cashier-locked.jsx';
 
 const WithdrawalLocked = ({ account_status }) => {
-    const { identity, needs_verification } = account_status.authentication;
+    const { status, identity, needs_verification } = account_status.authentication;
+    const has_withdrawal_lock_status = status.some(status_name =>
+        /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
+    );
     const is_poi_needed = needs_verification.includes('identity');
     const has_poi_submitted = identity.status !== 'none';
     const poi_text = has_poi_submitted
@@ -29,15 +32,20 @@ const WithdrawalLocked = ({ account_status }) => {
     ];
     return (
         <React.Fragment>
-            {items.length ? (
+            {items.length || has_withdrawal_lock_status ? (
                 <div className='cashier-locked'>
                     <Icon icon='IcCashierWithdrawalLock' className='cashier-locked__icon' />
                     <h2 className='cashier-locked__title'>{localize('Withdrawals are locked')}</h2>
-
-                    <p className='cashier-locked__desc'>
-                        {localize('To enable this feature you must complete the following:')}
-                    </p>
-                    <Checklist className='cashier-locked__checklist' items={items} />
+                    {has_withdrawal_lock_status ? (
+                        <p className='cashier-locked__desc'>{localize('Please check your email for more details.')}</p>
+                    ) : (
+                        <React.Fragment>
+                            <p className='cashier-locked__desc'>
+                                {localize('To enable this feature you must complete the following:')}
+                            </p>
+                            <Checklist className='cashier-locked__checklist' items={items} />
+                        </React.Fragment>
+                    )}
                 </div>
             ) : (
                 <CashierLocked />

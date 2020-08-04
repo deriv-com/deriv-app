@@ -54,7 +54,7 @@ class MT5POA extends React.Component {
             address_city: [v => !!v, v => validLength(v, { min: 1, max: 35 })],
             address_state: [v => !!v, v => !v || validLength(v, { min: 1, max: 35 })],
             address_postcode: [v => validLength(v, { min: 1, max: 20 }), v => validPostCode(v)],
-            document_file: [v => !!v, ([file]) => !!file.name],
+            document_file: [v => !!v, ([file]) => !!file?.name],
         };
 
         const validation_errors = {
@@ -103,7 +103,7 @@ class MT5POA extends React.Component {
     };
 
     proceed = () => {
-        this.props.onSubmit(this.props.index, ...this.state);
+        this.props.onSubmit(this.props.index, this.state);
     };
 
     onSubmit = async (values, actions) => {

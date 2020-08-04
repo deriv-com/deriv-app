@@ -93,17 +93,16 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
         });
     };
 
-    nextStep = setSubmitting => {
+    nextStep = () => {
         this.clearError();
         if (this.has_more_steps) {
             this.goNext();
         } else {
-            this.finishWizard(setSubmitting);
+            this.finishWizard();
         }
     };
 
-    finishWizard = setSubmitting => {
-        setSubmitting(false);
+    finishWizard = () => {
         this.props.openPendingDialog();
         this.props.toggleModal();
     };

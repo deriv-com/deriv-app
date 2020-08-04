@@ -42,19 +42,19 @@ export const getMtCompanies = () => {
             synthetic: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Real Synthetic'),
+                title: localize('Synthetic'),
                 short_title: synthetic_config.short_title,
             },
             financial: {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
-                title: localize('Real Financial'),
+                title: localize('Financial'),
                 short_title: financial_config.short_title,
             },
             financial_stp: {
                 mt5_account_type: financial_stp_config.account_type,
                 leverage: financial_stp_config.leverage,
-                title: localize('Real Financial STP'),
+                title: localize('Financial STP'),
                 short_title: financial_stp_config.short_title,
             },
         },
@@ -94,6 +94,22 @@ export const getMt5GroupConfig = (group = undefined) => {
         demo_labuan_financial_stp: {
             type: 'financial_stp',
             category: 'demo',
+        },
+        demo_maltainvest_financial: {
+            type: 'financial',
+            category: 'demo',
+        },
+        real_maltainvest_financial: {
+            type: 'financial',
+            category: 'real',
+        },
+        demo_malta: {
+            type: 'synthetic',
+            category: 'demo',
+        },
+        real_malta: {
+            type: 'synthetic',
+            category: 'real',
         },
     };
 

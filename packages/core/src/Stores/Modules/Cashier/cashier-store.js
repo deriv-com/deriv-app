@@ -1094,7 +1094,6 @@ export default class CashierStore extends BaseStore {
     onChangeTransferFrom({ target }) {
         this.setErrorMessage('');
         this.config.account_transfer.selected_from.error = '';
-        this.config.account_transfer.selected_to.error = '';
 
         const accounts = this.config.account_transfer.accounts_list;
         const selected_from = accounts.find(account => account.value === target.value);
@@ -1126,7 +1125,6 @@ export default class CashierStore extends BaseStore {
     onChangeTransferTo({ target }) {
         this.setErrorMessage('');
         this.config.account_transfer.selected_to.error = '';
-        this.config.account_transfer.selected_from.error = '';
 
         const accounts = this.config.account_transfer.accounts_list;
         this.config.account_transfer.selected_to = accounts.find(account => account.value === target.value) || {};

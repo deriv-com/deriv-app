@@ -9,7 +9,7 @@ import FormError from '../form/error.jsx';
 import './nickname-form.scss';
 
 const NicknameForm = ({ handleClose }) => {
-    const { createAdvertiser, nickname_error, is_mobile } = React.useContext(Dp2pContext);
+    const { createAdvertiser, is_mobile, nickname_error, resetNicknameErrorState } = React.useContext(Dp2pContext);
 
     const handleSubmit = values => createAdvertiser(values.nickname);
 
@@ -83,10 +83,13 @@ const NicknameForm = ({ handleClose }) => {
                                             <Input
                                                 {...field}
                                                 data-lpignore='true'
-                                                error={errors.nickname}
+                                                error={nickname_error || errors.nickname}
                                                 label={localize('Your nickname')}
                                                 className='nickname__form-field'
-                                                onChange={handleChange}
+                                                onChange={e => {
+                                                    handleChange(e);
+                                                    resetNicknameErrorState();
+                                                }}
                                                 required
                                             />
                                         )}

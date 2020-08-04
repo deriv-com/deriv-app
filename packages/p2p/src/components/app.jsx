@@ -140,6 +140,10 @@ class App extends React.Component {
         }
     };
 
+    resetNicknameErrorState = () => {
+        this.setState({ nickname_error: undefined });
+    };
+
     setIsAdvertiser = response => {
         const { p2p_advertiser_info } = response;
         if (!response.error) {
@@ -379,6 +383,7 @@ class App extends React.Component {
                     order_table_type,
                     changeOrderToggle: this.changeOrderToggle,
                     createAdvertiser: this.createAdvertiser.bind(this),
+                    resetNicknameErrorState: this.resetNicknameErrorState,
                     is_mobile,
                     poi_url,
                 }}

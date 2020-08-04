@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { Icon, Popover } from '@deriv/components';
+import { localize } from '@deriv/translations';
 
 class ToggleFullScreen extends React.Component {
     constructor(props) {
@@ -46,13 +47,19 @@ class ToggleFullScreen extends React.Component {
             'ic-fullscreen--active': this.state.is_full_screen,
         });
         return (
-            <a className={full_screen_icon_class} onClick={this.toggleFullScreen} id='dt_fullscreen_toggle'>
-                {this.state.is_full_screen ? (
-                    <Icon icon='IcFullScreenRestore' className='footer__icon' />
-                ) : (
-                    <Icon icon='IcFullScreen' className='footer__icon' />
-                )}
-            </a>
+            <Popover
+                alignment='top'
+                message={this.state.is_full_screen ? localize('Exit') : localize('Full screen')}
+                className='footer__link'
+            >
+                <a className={full_screen_icon_class} onClick={this.toggleFullScreen} id='dt_fullscreen_toggle'>
+                    {this.state.is_full_screen ? (
+                        <Icon icon='IcFullScreenRestore' className='footer__icon' />
+                    ) : (
+                        <Icon icon='IcFullScreen' className='footer__icon' />
+                    )}
+                </a>
+            </Popover>
         );
     }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, DesktopWrapper, MobileDialog, MobileWrapper, Popover } from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import PopoverMessageCheckbox from 'Modules/Trading/Components/Elements/popover-message-checkbox.jsx';
@@ -23,7 +24,16 @@ class TogglePositionsDrawerDialog extends React.Component {
     toggleDialog = e => {
         e.preventDefault();
         e.stopPropagation();
-        if (this.props.is_valid_to_cancel) return;
+        const { addToast, should_show_cancellation_warning, is_valid_to_cancel } = this.props;
+        if (isMobile() && should_show_cancellation_warning && is_valid_to_cancel) {
+            addToast({
+                key: 'deal_cancellation_active',
+                content: localize('Take profit and/or stop loss are not available while deal cancellation is active.'),
+                type: 'error',
+            });
+        }
+
+        if (is_valid_to_cancel) return;
 
         this.setState(
             state => ({ is_visible: !state.is_visible }),
@@ -68,32 +78,35 @@ class TogglePositionsDrawerDialog extends React.Component {
             />
         );
 
+        const toggle_wrapper =
+            should_show_cancellation_warning && isDesktop() ? (
+                <Popover
+                    alignment='right'
+                    classNameBubble='trade-container__popover'
+                    is_bubble_hover_enabled
+                    margin={2}
+                    zIndex={2}
+                    message={
+                        <PopoverMessageCheckbox
+                            defaultChecked={!should_show_cancellation_warning}
+                            message={localize(
+                                'Take profit and/or stop loss are not available while deal cancellation is active.'
+                            )}
+                            name='should_show_cancellation_warning'
+                            onChange={() => toggleCancellationWarning()}
+                        />
+                    }
+                >
+                    <div className='positions-drawer-dialog-toggle__wrapper'>{edit_icon}</div>
+                </Popover>
+            ) : (
+                <div className='positions-drawer-dialog-toggle__wrapper'>{edit_icon}</div>
+            );
+
         return (
             <React.Fragment>
                 <div ref={this.toggle_ref} className='positions-drawer-dialog-toggle' onClick={this.toggleDialog}>
-                    {is_valid_to_cancel ? (
-                        <Popover
-                            alignment='right'
-                            classNameBubble='trade-container__popover'
-                            is_bubble_hover_enabled
-                            margin={2}
-                            zIndex={2}
-                            message={
-                                <PopoverMessageCheckbox
-                                    defaultChecked={!should_show_cancellation_warning}
-                                    message={localize(
-                                        'Take profit and/or stop loss are not available while deal cancellation is active.'
-                                    )}
-                                    name='should_show_cancellation_warning'
-                                    onChange={() => toggleCancellationWarning()}
-                                />
-                            }
-                        >
-                            <div className='positions-drawer-dialog-toggle__wrapper'>{edit_icon}</div>
-                        </Popover>
-                    ) : (
-                        edit_icon
-                    )}
+                    {is_valid_to_cancel ? toggle_wrapper : edit_icon}
                 </div>
                 <MobileWrapper>
                     <MobileDialog
@@ -133,4 +146,5 @@ export default connect(({ modules, ui }) => ({
     toggleCancellationWarning: ui.toggleCancellationWarning,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,
     getContractById: modules.contract_trade.getContractById,
+    addToast: ui.addToast,
 }))(TogglePositionsDrawerDialog);

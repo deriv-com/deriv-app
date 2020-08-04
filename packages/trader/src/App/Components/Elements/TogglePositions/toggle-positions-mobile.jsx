@@ -19,6 +19,7 @@ class TogglePositionsMobile extends React.Component {
             is_empty,
             onClickSell,
             onClickRemove,
+            onClickCancel,
             symbol,
             togglePositionsDrawer,
             toggleUnsupportedContractModal,
@@ -52,6 +53,7 @@ class TogglePositionsMobile extends React.Component {
                         >
                             <PositionsModalCard
                                 onClickSell={onClickSell}
+                                onClickCancel={onClickCancel}
                                 onClickRemove={onClickRemove}
                                 key={portfolio_position.id}
                                 currency={currency}

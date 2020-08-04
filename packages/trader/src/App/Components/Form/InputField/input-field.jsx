@@ -40,6 +40,7 @@ class InputField extends React.Component {
             is_read_only = false,
             is_signed = false,
             is_unit_at_right = false,
+            inputmode,
             label,
             max_length,
             max_value,
@@ -248,6 +249,7 @@ class InputField extends React.Component {
                 required={required}
                 setCurrentFocus={setCurrentFocus}
                 type={type}
+                inputmode={inputmode}
             />
         );
 

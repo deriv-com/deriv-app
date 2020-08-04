@@ -47,6 +47,7 @@ class Checkbox extends React.Component {
         return (
             <label
                 htmlFor={id}
+                onClick={e => e.stopPropagation()}
                 className={classNames('dc-checkbox', className, {
                     'dc-checkbox--disabled': this.props.disabled,
                 })}

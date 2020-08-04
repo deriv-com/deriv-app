@@ -34,6 +34,9 @@
         color: var(--text-colored-background);
         border-radius: $BORDER_RADIUS;
         margin-bottom: 1rem;
+        min-height: 34px;
+        display: flex;
+        align-items: center;
     }
     &__error {
         .dc-toast__message {

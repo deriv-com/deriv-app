@@ -170,8 +170,11 @@ export default class ContractStore extends BaseStore {
         WS.contractUpdate(this.contract_id, limit_order).then(response => {
             if (response.error) {
                 if (isMobile()) {
-                    this.root_store.ui.setToastErrorMessage(response.error.message, 5000);
-                    this.root_store.ui.setToastErrorVisibility(true);
+                    this.root_store.ui.addToast({
+                        key: `update-limit-order__error`,
+                        content: response.error.message,
+                        type: 'error',
+                    });
                 } else {
                     this.root_store.common.setServicesError({
                         type: response.msg_type,

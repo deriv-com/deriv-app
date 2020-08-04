@@ -48,7 +48,9 @@ const Toast = ({ children, className, is_open = true, onClose, onClick, type, ti
                 })}
                 onClick={onClick}
             >
-                <div className='dc-toast__message'>{children}</div>
+                <div className='dc-toast__message'>
+                    <div className='dc-toast__message-content'>{children}</div>
+                </div>
             </div>
         </CSSTransition>
     );

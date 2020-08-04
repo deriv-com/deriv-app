@@ -16,6 +16,7 @@ class TradeHeaderExtensions extends React.Component {
             is_positions_empty,
             onPositionsRemove,
             onPositionsSell,
+            onPositionsCancel,
             positions,
             positions_currency,
             positions_error,
@@ -35,6 +36,7 @@ class TradeHeaderExtensions extends React.Component {
                         error={positions_error}
                         onClickSell={onPositionsSell}
                         onClickRemove={onPositionsRemove}
+                        onClickCancel={onPositionsCancel}
                     />
                 </MobxContentProvider>
             </MobileWrapper>
@@ -86,6 +88,7 @@ export default connect(({ client, modules, ui }) => ({
     is_positions_empty: modules.portfolio.is_empty,
     onPositionsSell: modules.portfolio.onClickSell,
     onPositionsRemove: modules.portfolio.removePositionById,
+    onPositionsCancel: modules.portfolio.onClickCancel,
     onMountCashier: modules.cashier.onMountCommon,
     onMountPositions: modules.portfolio.onMount,
     onUnmountPositions: modules.portfolio.onUnmount,

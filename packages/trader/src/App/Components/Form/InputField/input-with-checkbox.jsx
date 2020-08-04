@@ -91,6 +91,7 @@ const InputWithCheckbox = ({
             onChange={onChange}
             onClickInputWrapper={is_disabled ? undefined : enableInputOnClick}
             type='number'
+            inputmode='decimal'
             value={value}
         />
     );

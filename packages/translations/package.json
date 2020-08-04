@@ -32,6 +32,7 @@
     "dependencies": {
         "commander": "^3.0.2",
         "crc-32": "^1.2.0",
+        "eslint-plugin-react-hooks": "^4.0.8",
         "glob": "^7.1.5",
         "i18next": "^18.0.0",
         "prop-types": "^15.7.2",

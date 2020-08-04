@@ -102,6 +102,7 @@
     "commander": "^2.20.0",
     "concat-stream": "^2.0.0",
     "core-js": "^2.6.5",
+    "eslint-plugin-react-hooks": "^4.0.8",
     "file-saver": "^2.0.2",
     "formik": "^2.1.4",
     "gh-pages": "^2.0.1",

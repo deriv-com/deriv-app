@@ -2,6 +2,8 @@
     $strategy-modal: 'modal--strategy';
 
     &__container {
+        max-height: 57.1rem !important;
+
         .modal__scrollbar {
             max-height: 516px;
             margin-bottom: 75px;
@@ -36,7 +38,7 @@
         max-height: calc(100vh - 120px);
 
         &-content {
-            margin-bottom: 70px;
+            margin-bottom: 80px;
         }
         &-row {
             align-items: flex-end;
@@ -73,6 +75,9 @@
             bottom: 0;
             right: 0;
             padding: 1.6rem;
+        }
+        .dc-autocomplete {
+            margin-bottom: unset;
         }
         .dc-input {
             margin-bottom: 0;

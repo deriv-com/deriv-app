@@ -18,7 +18,7 @@ class AutoHeightWrapper extends React.Component {
     updateHeight = () =>
         this.setHeight(
             this.state.ref.clientHeight > this.props.default_height
-                ? this.state.ref.clientHeight - this.props.height_offset
+                ? this.state.ref.clientHeight - (this.props.height_offset || 0)
                 : this.props.default_height
         );
     componentDidMount() {

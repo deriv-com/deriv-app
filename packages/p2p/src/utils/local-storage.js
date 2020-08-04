@@ -28,18 +28,26 @@ class LocalStorage {
         return this.getNotifications().filter(n => n.unread_msgs > 0 || !n.has_seen_order).length;
     }
 
+    getActiveNotificationCount(is_active = true) {
+        return this.getNotifications().filter(
+            n => n.is_active === is_active && (n.unread_msgs > 0 || !n.has_seen_order)
+        ).length;
+    }
+
     getNotifications() {
         return this.getSettings().notifications;
     }
 
     getSettings() {
         const user_settings = this.getAllSettings()[this.loginid];
+
         if (isEmptyObject(user_settings)) {
             return {
                 is_cached: false,
                 notifications: [],
             };
         }
+
         return user_settings;
     }
 
@@ -91,6 +99,7 @@ class LocalStorage {
 
     updateNotifications(settings) {
         const p2p_settings = this.getAllSettings();
+
         p2p_settings[this.loginid] = settings;
         localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(p2p_settings));
         this.syncNotifications();

@@ -222,15 +222,10 @@ class App extends React.Component {
         const { is_cached, notifications } = LocalStorage.getSettings();
 
         new_orders.forEach(new_order => {
-            const order_info = new OrderInfo(new_order);
+            const new_order_info = new OrderInfo(new_order);
             const notification = notifications.find(n => n.order_id === new_order.id);
             const old_order = old_orders.find(o => o.id === new_order.id);
             const is_current_order = new_order.id === this.props.order_id;
-            const notification_obj = {
-                order_id: new_order.id,
-                is_seen: is_current_order,
-                is_active: order_info.is_active,
-            };
 
             if (old_order) {
                 if (old_order.status !== new_order.status) {
@@ -244,6 +239,7 @@ class App extends React.Component {
                             channel_url: new_order.chat_channel_url,
                             unread_msgs: 0,
                             has_seen_order: is_current_order,
+                            is_active: new_order_info.is_active,
                         });
                     }
                 }
@@ -259,6 +255,7 @@ class App extends React.Component {
                     channel_url: new_order.chat_channel_url,
                     unread_msgs: 0,
                     has_seen_order,
+                    is_active: new_order_info.is_active,
                 });
             }
         });

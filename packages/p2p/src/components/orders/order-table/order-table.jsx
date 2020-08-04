@@ -7,22 +7,17 @@ import OrderTableContent from './order-table-content.jsx';
 import { orderToggleIndex } from '../order-info';
 
 const OrderTable = ({ showDetails }) => {
-    const {
-        active_notification_count,
-        inactive_notification_count,
-        order_table_type,
-        changeOrderToggle,
-    } = React.useContext(Dp2pContext);
-    const orders_filters = [
+    const { LocalStorage, changeOrderToggle, order_table_type } = React.useContext(Dp2pContext);
+    const getOrderFilters = () => [
         {
             text: localize('Active order'),
             value: orderToggleIndex.ACTIVE,
-            count: active_notification_count,
+            count: LocalStorage.getActiveNotificationCount(),
         },
         {
             text: localize('Past order'),
             value: orderToggleIndex.INACTIVE,
-            count: inactive_notification_count,
+            count: LocalStorage.getActiveNotificationCount(false),
         },
     ];
 
@@ -30,7 +25,7 @@ const OrderTable = ({ showDetails }) => {
         <>
             <div className='orders__header'>
                 <ButtonToggle
-                    buttons_arr={orders_filters}
+                    buttons_arr={getOrderFilters()}
                     className='orders__header-filter'
                     is_animated
                     name='filter'

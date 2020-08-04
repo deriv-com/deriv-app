@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import { Button } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Button } from '@deriv/components';
 
 const FormSubmitButton = ({
     cancel_label,

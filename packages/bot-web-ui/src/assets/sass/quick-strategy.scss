@@ -31,6 +31,15 @@
         overflow: auto;
     }
     &__form {
+        padding: 0 1.6rem;
+        height: 100%;
+        max-height: calc(100vh - 120px);
+
+        &-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
         &-row {
             align-items: flex-end;
             display: flex;
@@ -60,13 +69,20 @@
             }
         }
         &-footer {
-            text-align: right;
+            width: 100%;
+            background-color: var(--general-main-1);
             position: fixed;
-            right: 20px;
-            bottom: 15px;
+            bottom: 0;
+            right: 0;
+            padding: 1.6rem;
         }
         .dc-input {
             margin-bottom: 0;
+        }
+        .dc-btn__group {
+            display: flex;
+            justify-content: flex-end;
+            flex-direction: row;
         }
     }
     &__option {
@@ -88,6 +104,73 @@
         padding: 3px;
         margin: 2px;
         background-color: var(--general-section-1);
+    }
+    &__leading {
+        .dc-input__field {
+            padding-left: 6rem;
+        }
+        .dc-input__leading-icon {
+            .dc-icon {
+                margin-left: 0.2rem;
+                margin-right: 0.3rem;
+            }
+        }
+    }
+    &__wrapper {
+        @include mobile {
+            position: fixed;
+            z-index: 6;
+            width: 100%;
+            left: 0px;
+            top: 8rem;
+            background: var(--general-main-1);
+
+            & .dc-dropdown-list {
+                &__group {
+                    &-header {
+                        padding: 0.6rem 2rem !important;
+                        color: var(--brand-dark-grey) !important;
+                        justify-content: start !important;
+                    }
+                }
+            }
+            & .quick-strategy__tabs {
+                padding: 0 0.5rem;
+            }
+            & .dc {
+                &-tabs {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+                    max-height: calc(100vh - 80px);
+
+                    &__list {
+                        width: 100%;
+                        height: 4rem;
+                    }
+                    &__item {
+                        width: 50%;
+                    }
+                    &__content {
+                        height: calc(100% - 4rem);
+                    }
+                }
+            }
+            & .dc-page-overlay__header {
+                position: fixed;
+                top: 4rem;
+                width: 100%;
+                height: 4rem;
+            }
+            & .dc-page-overlay__content {
+                z-index: 5;
+            }
+            .dc-themed-scrollbars__autohide--is-hovered {
+                &::-webkit-scrollbar-thumb {
+                    display: unset;
+                }
+            }
+        }
     }
 }
 

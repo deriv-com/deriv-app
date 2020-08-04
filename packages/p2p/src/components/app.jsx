@@ -5,9 +5,9 @@ import { isDeepEqual, isProduction, getPropertyValue } from '@deriv/shared';
 import { Tabs, Modal } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
-import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
+import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS, waitWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
-import { orderToggleIndex } from './orders/order-info';
+import OrderInfo, { orderToggleIndex } from './orders/order-info';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import NicknameForm from './nickname/nickname-form.jsx';
@@ -42,6 +42,8 @@ class App extends React.Component {
             order_offset: 0,
             orders: [],
             notification_count: 0,
+            active_notification_count: 0,
+            inactive_notification_count: 0,
             parameters: null,
             is_advertiser: false,
             is_restricted: false,
@@ -74,24 +76,26 @@ class App extends React.Component {
             });
         }
 
-        this.ws_subscriptions = {
-            advertiser_subscription: subscribeWS(
-                {
-                    p2p_advertiser_info: 1,
-                    subscribe: 1,
-                },
-                [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
-            ),
-            order_list_subscription: subscribeWS(
-                {
-                    p2p_order_list: 1,
-                    subscribe: 1,
-                    offset: 0,
-                    limit: this.list_item_limit,
-                },
-                [this.setP2pOrderList]
-            ),
-        };
+        waitWS('authorize').then(() => {
+            this.ws_subscriptions = {
+                advertiser_subscription: subscribeWS(
+                    {
+                        p2p_advertiser_info: 1,
+                        subscribe: 1,
+                    },
+                    [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
+                ),
+                order_list_subscription: subscribeWS(
+                    {
+                        p2p_order_list: 1,
+                        subscribe: 1,
+                        offset: 0,
+                        limit: this.list_item_limit,
+                    },
+                    [this.setP2pOrderList]
+                ),
+            };
+        });
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -218,9 +222,15 @@ class App extends React.Component {
         const { is_cached, notifications } = LocalStorage.getSettings();
 
         new_orders.forEach(new_order => {
-            const old_order = old_orders.find(o => o.id === new_order.id);
+            const order_info = new OrderInfo(new_order);
             const notification = notifications.find(n => n.order_id === new_order.id);
+            const old_order = old_orders.find(o => o.id === new_order.id);
             const is_current_order = new_order.id === this.props.order_id;
+            const notification_obj = {
+                order_id: new_order.id,
+                is_seen: is_current_order,
+                is_active: order_info.is_active,
+            };
 
             if (old_order) {
                 if (old_order.status !== new_order.status) {

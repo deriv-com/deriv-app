@@ -44,6 +44,11 @@ const modules = [
         title: localize('Bot'),
     },
     {
+        path: routes.account_deactivated,
+        component: Account,
+        title: localize('Account deactivated'),
+    },
+    {
         path: routes.account,
         component: Account,
         title: localize('Accounts Settings'),
@@ -96,7 +101,7 @@ const modules = [
                     {
                         path: routes.self_exclusion,
                         component: Account,
-                        title: localize('Two-factor authentication'),
+                        title: localize('Self exclusion'),
                     },
                     {
                         path: routes.account_limits,
@@ -114,9 +119,19 @@ const modules = [
                         title: localize('API token'),
                     },
                     {
+                        path: routes.connected_apps,
+                        component: Account,
+                        title: localize('Connected apps'),
+                    },
+                    {
                         path: routes.two_factor_authentication,
                         component: Account,
                         title: localize('Two-factor authentication'),
+                    },
+                    {
+                        path: routes.deactivate_account,
+                        component: Account,
+                        title: localize('Deactivate account'),
                     },
                 ],
             },
@@ -127,7 +142,7 @@ const modules = [
         component: Trader,
         title: localize('Trader'),
         routes: [
-            { path: routes.mt5, component: Trader, title: localize('MT5'), is_authenticated: true },
+            { path: routes.mt5, component: Trader, title: localize('MT5'), is_authenticated: false },
             {
                 path: routes.reports,
                 component: Trader,

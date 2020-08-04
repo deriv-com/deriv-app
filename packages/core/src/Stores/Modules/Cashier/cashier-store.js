@@ -50,7 +50,9 @@ class ConfigPaymentAgent {
     @observable filtered_list = [];
     @observable is_name_selected = true;
     @observable is_withdraw = false;
+    @observable is_try_withdraw_successful = false;
     @observable is_withdraw_successful = false;
+    @observable confirm = {};
     @observable receipt = {};
     @observable selected_bank = bank_default_option[0].value;
     @observable supported_banks = bank_default_option;
@@ -61,7 +63,9 @@ class ConfigPaymentAgentTransfer {
     @observable container = 'payment_agent_transfer';
     @observable error = new ConfigError();
     @observable is_payment_agent = false;
+    @observable is_try_transfer_successful = false;
     @observable is_transfer_successful = false;
+    @observable confirm = {};
     @observable receipt = {};
     @observable transfer_limit = {};
 }
@@ -183,7 +187,7 @@ export default class CashierStore extends BaseStore {
                 this.sortAccountsTransfer();
             }
 
-            if (!this.onramp.is_onramp_tab_visible && window.location.pathname.startsWith(routes.cashier_onramp)) {
+            if (!this.onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
         }
@@ -451,9 +455,10 @@ export default class CashierStore extends BaseStore {
             return BinarySocket.wait('paymentagent_list');
         }
 
-        const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
-        const currency = this.root_store.client.currency;
-        return WS.authorized.paymentAgentList(residence, currency);
+        // wait for get_settings so residence gets populated in client-store
+        // TODO: set residence in client-store from authorize so it's faster
+        await BinarySocket.wait('get_settings');
+        return WS.authorized.paymentAgentList(this.root_store.client.residence, this.root_store.client.currency);
     }
 
     @action.bound
@@ -525,7 +530,7 @@ export default class CashierStore extends BaseStore {
         } else {
             this.config.payment_agent.filtered_list = this.config.payment_agent.list;
         }
-        if (!this.is_payment_agent_visible && window.location.pathname.startsWith(routes.cashier_pa)) {
+        if (!this.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
             this.root_store.common.routeTo(routes.cashier_deposit);
         }
     }
@@ -554,13 +559,15 @@ export default class CashierStore extends BaseStore {
             });
             if (
                 !payment_agent_list.paymentagent_list.list.length &&
-                window.location.pathname.startsWith(routes.cashier_pa)
+                window.location.pathname.endsWith(routes.cashier_pa)
             ) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
-        }
 
-        this.setLoading(false);
+            this.setLoading(false);
+        } else {
+            this.setLoading(false);
+        }
     }
 
     @action.bound
@@ -569,8 +576,23 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setIsTryWithdrawSuccessful(is_try_withdraw_successful) {
+        this.config.payment_agent.is_try_withdraw_successful = is_try_withdraw_successful;
+    }
+
+    @action.bound
     setIsWithdrawSuccessful(is_withdraw_successful) {
         this.config.payment_agent.is_withdraw_successful = is_withdraw_successful;
+    }
+
+    @action.bound
+    setConfirmation({ amount, currency, loginid, payment_agent_name }) {
+        this.config.payment_agent.confirm = {
+            amount,
+            currency,
+            loginid,
+            payment_agent_name,
+        };
     }
 
     @action.bound
@@ -606,6 +628,29 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    async requestTryPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
+        const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
+            loginid,
+            currency,
+            amount,
+            verification_code,
+            dry_run: 1,
+        });
+        if (+payment_agent_withdraw.paymentagent_withdraw === 2) {
+            const selected_agent = this.config.payment_agent.agents.find(agent => agent.value === loginid);
+            this.setConfirmation({
+                amount,
+                currency,
+                loginid,
+                ...(selected_agent && { payment_agent_name: selected_agent.text }),
+            });
+            this.setIsTryWithdrawSuccessful(true);
+        } else {
+            this.setErrorMessage(payment_agent_withdraw.error, this.resetPaymentAgent);
+        }
+    }
+
+    @action.bound
     async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
         const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
             loginid,
@@ -629,6 +674,8 @@ export default class CashierStore extends BaseStore {
                 }),
             });
             this.setIsWithdrawSuccessful(true);
+            this.setIsTryWithdrawSuccessful(false);
+            this.setConfirmation({});
         } else {
             this.setErrorMessage(payment_agent_withdraw.error, this.resetPaymentAgent);
         }
@@ -832,6 +879,11 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setIsTryTransferSuccessful(is_try_transfer_successful) {
+        this.config[this.active_container].is_try_transfer_successful = is_try_transfer_successful;
+    }
+
+    @action.bound
     setIsTransferSuccessful(is_transfer_successful) {
         this.config[this.active_container].is_transfer_successful = is_transfer_successful;
     }
@@ -951,7 +1003,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsPaymentAgent(is_payment_agent) {
-        if (!is_payment_agent && window.location.pathname.startsWith(routes.cashier_pa_transfer)) {
+        if (!is_payment_agent && window.location.pathname.endsWith(routes.cashier_pa_transfer)) {
             this.root_store.common.routeTo(routes.cashier_deposit);
         }
         this.config.payment_agent_transfer.is_payment_agent = !!is_payment_agent;
@@ -964,6 +1016,41 @@ export default class CashierStore extends BaseStore {
             max: max_withdrawal,
         };
     }
+
+    @action.bound
+    setConfirmationPaymentAgentTransfer({ amount, client_id, client_name, description }) {
+        this.config.payment_agent_transfer.confirm = {
+            amount,
+            client_id,
+            client_name,
+            description,
+        };
+    }
+
+    @action.bound
+    requestTryPaymentAgentTransfer = async ({ amount, currency, description, transfer_to }) => {
+        const payment_agent_transfer = await WS.authorized.paymentAgentTransfer({
+            amount,
+            currency,
+            description,
+            transfer_to,
+            dry_run: 1,
+        });
+        if (+payment_agent_transfer.paymentagent_transfer === 2) {
+            // show confirmation screen
+            this.setConfirmationPaymentAgentTransfer({
+                client_id: transfer_to,
+                client_name: payment_agent_transfer.client_to_full_name,
+                amount,
+                description,
+            });
+            this.setIsTryTransferSuccessful(true);
+        } else {
+            this.setErrorMessage(payment_agent_transfer.error, this.resetPaymentAgentTransfer);
+        }
+
+        return payment_agent_transfer;
+    };
 
     @action.bound
     setReceiptPaymentAgentTransfer({ amount_transferred, client_id, client_name }) {
@@ -989,6 +1076,8 @@ export default class CashierStore extends BaseStore {
                 client_name: payment_agent_transfer.client_to_full_name,
             });
             this.setIsTransferSuccessful(true);
+            this.setIsTryTransferSuccessful(false);
+            this.setConfirmationPaymentAgentTransfer({});
         } else {
             this.setErrorMessage(payment_agent_transfer.error, this.resetPaymentAgentTransfer);
         }

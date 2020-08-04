@@ -239,9 +239,15 @@
     position: relative;
 
     &__table-row {
-        grid-template-columns: 1.5fr 1fr 2fr 1fr;
+        grid-template-columns: var(--mt5-compare-accounts-template-columns);
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
+
+    &__table-row-eu {
+        grid-template-columns: 1.5fr 2fr 2fr;
+        box-shadow: inset 0 -1px 0 0 var(--general-section-1);
+    }
+
     &__star {
         color: var(--brand-red-coral);
         font-weight: bold;
@@ -361,7 +367,9 @@
 .mt5-real-accounts-display,
 .mt5-demo-accounts-display {
     display: flex;
+    justify-content: center;
     margin-top: 2.4em;
+    justify-content: center;
 
     @include mobile {
         flex-direction: column;
@@ -375,6 +383,10 @@
     flex-flow: column nowrap;
     min-height: 35.8rem;
     width: 30.4em;
+
+    &__logged-out {
+        min-height: 29rem;
+    }
 
     &:not(:last-child) {
         margin-right: 2.4rem;
@@ -492,6 +504,7 @@
     &__commission {
         text-align: center;
         margin-top: 1.6rem;
+        margin-bottom: 1.6rem;
 
         &.mt5-account-card--paragraph {
             line-height: 1.4em;
@@ -502,7 +515,7 @@
         display: flex;
         height: 4rem;
         justify-content: center;
-        margin: 1.6rem 1.6rem 1.5rem; // -1 for border
+        margin: 0 1.6rem 1.5rem; // -1 for border
         padding: 0;
         text-decoration: none;
         width: 27rem;
@@ -549,6 +562,7 @@
 
         .dc-btn {
             width: 100%;
+            margin-bottom: 1.6rem;
 
             &:not(:last-child) {
                 margin-right: 1.6rem;
@@ -659,17 +673,18 @@
     width: 100%;
 
     &__heading {
-        padding: 2em 2em 0 2em;
     }
     &__form,
     &__body {
         display: grid;
     }
-    &__form {
-        grid-template-rows: minmax(20rem, 1fr) 7rem;
-    }
     @include desktop {
         overflow: hidden;
+
+        & .details-form__description {
+            width: 100%;
+            text-align: center;
+        }
     }
     @include mobile {
         overflow: auto;
@@ -779,7 +794,6 @@
 }
 
 .mt5-details-form {
-    height: 100%;
     @include tablet {
         display: grid;
         grid-template-rows: 7rem minmax(10rem, 1fr);
@@ -801,49 +815,6 @@
     }
 }
 
-.account-form {
-    &__header {
-        font-size: var(--text-size-xs);
-        font-weight: bold;
-        margin-bottom: 1.6em;
-        position: relative;
-        height: 1.6em;
-    }
-    &__header:not(:first-child) {
-        margin-top: 1.6em;
-    }
-    &__header:before {
-        border-top: 1px solid var(--general-section-1);
-        content: '';
-        height: 100%;
-        left: 0;
-        position: absolute;
-        top: 0.5em;
-        width: 100%;
-    }
-    &__title {
-        background: var(--general-main-1);
-        color: var(--text-prominent);
-        padding-right: 8px;
-        position: absolute;
-    }
-    &__subtitle {
-        color: var(--text-prominent);
-        font-weight: normal;
-        padding-left: 8px;
-    }
-    @include mobile {
-        overflow: auto;
-
-        &__title {
-            background: inherit;
-        }
-        &__subtitle {
-            font-size: 1.2rem;
-        }
-    }
-}
-
 .account-poa {
     &__upload {
         &-icon {
@@ -851,6 +822,7 @@
         }
         &-section {
             margin-top: 0em;
+            display: flex;
         }
         &-list {
             width: 100%;
@@ -922,10 +894,6 @@
         li {
             margin: 0 0 1.5rem 0;
         }
-        .dc-field-error {
-            top: 0;
-            right: 5%;
-        }
     }
     &__field-area {
         max-width: 556px;
@@ -959,7 +927,7 @@
             }
         }
         &__file-upload {
-            .dc-field-error {
+            .dc-field--error {
                 top: 50%;
                 left: 0;
                 right: unset;
@@ -982,7 +950,7 @@
     }
     & .details-form {
         display: grid;
-        grid-template-rows: minmax(10rem, 1fr) 7.2rem;
+        grid-template-rows: minmax(10rem, 1fr) 8.2rem;
         height: 100%;
         position: relative;
     }
@@ -1073,6 +1041,15 @@
         @include mobile {
             min-width: calc(100vw - 3.2rem);
         }
+    }
+}
+
+.mt5-single-row {
+    display: flex;
+    justify-content: center;
+
+    & > div {
+        margin: 0 1.2rem;
     }
 }
 /* stylelint-enable */

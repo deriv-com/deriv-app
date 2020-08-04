@@ -273,8 +273,10 @@ export default class TradeStore extends BaseStore {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
             return;
         } else if (!active_symbols || !active_symbols.length) {
-            showUnavailableLocationError(this.root_store.common.showError);
-            return;
+            if (this.root_store.client.landing_company_shortcode !== 'maltainvest') {
+                showUnavailableLocationError(this.root_store.common.showError);
+                return;
+            }
         }
 
         this.processNewValuesAsync({ active_symbols });
@@ -578,9 +580,16 @@ export default class TradeStore extends BaseStore {
                     }
                     this.forgetAllProposal();
                     this.purchase_info = response;
-                    this.is_purchase_enabled = true;
+                    this.enablePurchase();
                 })
             );
+        }
+    }
+
+    @action.bound
+    enablePurchase() {
+        if (!this.root_store.client.is_unwelcome) {
+            this.is_purchase_enabled = true;
         }
     }
 
@@ -863,7 +872,7 @@ export default class TradeStore extends BaseStore {
             this.validateAllProperties();
         }
 
-        this.is_purchase_enabled = true;
+        this.enablePurchase();
     }
 
     @action.bound
@@ -1031,6 +1040,7 @@ export default class TradeStore extends BaseStore {
     }
 
     prev_chart_layout = null;
+
     get chart_layout() {
         let layout = null;
         if (this.prev_chart_layout && this.prev_chart_layout.is_used === false) {

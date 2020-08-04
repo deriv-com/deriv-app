@@ -7,7 +7,7 @@ import Icon from '../icon/icon.jsx';
 import Div100vhContainer from '../div100vh-container';
 
 const MobileDialog = props => {
-    const { title, visible, children, portal_element_id, wrapper_classname, footer } = props;
+    const { title, visible, children, portal_element_id, renderTitle, wrapper_classname, footer } = props;
 
     const footer_ref = React.useRef(false);
     const [footer_height, setHeight] = React.useState(0);
@@ -72,7 +72,10 @@ const MobileDialog = props => {
                     height_offset={props.content_height_offset || '8px'}
                 >
                     <div className='dc-mobile-dialog__header'>
-                        <h2 className='dc-mobile-dialog__title'>{title}</h2>
+                        {!!renderTitle ||
+                            (!!title && (
+                                <h2 className='dc-mobile-dialog__title'>{renderTitle ? renderTitle() : title}</h2>
+                            ))}
                         <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
                             <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
                         </div>
@@ -107,6 +110,7 @@ MobileDialog.propTypes = {
     onClose: PropTypes.func,
     has_content_scroll: PropTypes.bool,
     portal_element_id: PropTypes.string.isRequired,
+    renderTitle: PropTypes.func,
     title: PropTypes.string,
     visible: PropTypes.bool,
     wrapper_classname: PropTypes.string,

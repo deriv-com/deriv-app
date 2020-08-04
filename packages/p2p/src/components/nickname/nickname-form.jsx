@@ -5,7 +5,6 @@ import { Input, Button, ThemedScrollbars, Icon } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import IconClose from 'Assets/icon-close.jsx';
-import FormError from '../form/error.jsx';
 import './nickname-form.scss';
 
 const NicknameForm = ({ handleClose }) => {
@@ -101,7 +100,6 @@ const NicknameForm = ({ handleClose }) => {
                             </div>
                         </ThemedScrollbars>
                         <div className='nickname__form-footer'>
-                            {nickname_error && <FormError message={nickname_error} />}
                             <Button.Group>
                                 <Button secondary type='button' onClick={handleClose} large>
                                     {localize('Cancel')}

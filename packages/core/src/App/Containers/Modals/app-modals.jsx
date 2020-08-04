@@ -61,8 +61,6 @@ const AppModals = ({
                 );
             } else if (is_set_residence_modal_visible) {
                 ComponentToLoad = <SetResidenceModal />;
-            } else if (is_reality_check_visible) {
-                ComponentToLoad = <RealityCheckModal />;
             }
             break;
     }
@@ -73,6 +71,10 @@ const AppModals = ({
 
     if (is_account_needed_modal_on) {
         ComponentToLoad = <MT5AccountNeededModal />;
+    }
+
+    if (is_reality_check_visible) {
+        ComponentToLoad = <RealityCheckModal />;
     }
 
     return ComponentToLoad ? <React.Suspense fallback={<div />}>{ComponentToLoad}</React.Suspense> : null;

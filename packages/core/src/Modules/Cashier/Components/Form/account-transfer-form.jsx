@@ -215,7 +215,16 @@ const AccountTransferForm = ({
                     }}
                     onSubmit={onTransferPassthrough}
                 >
-                    {({ errors, isSubmitting, isValid, touched, validateField, handleChange }) => (
+                    {({
+                        errors,
+                        isSubmitting,
+                        isValid,
+                        touched,
+                        validateField,
+                        setFieldValue,
+                        setFieldError,
+                        handleChange,
+                    }) => (
                         <React.Fragment>
                             {isSubmitting ? (
                                 <div className='cashier__loader-wrapper'>
@@ -242,6 +251,8 @@ const AccountTransferForm = ({
                                                     onChangeTransferFrom(e);
                                                     handleChange(e);
                                                     validateField('amount');
+                                                    setFieldValue('amount', '');
+                                                    setFieldError('amount', '');
                                                 }}
                                                 error={selected_from.error}
                                             />
@@ -258,6 +269,8 @@ const AccountTransferForm = ({
                                                     onChangeTransferFrom(e);
                                                     handleChange(e);
                                                     validateField('amount');
+                                                    setFieldValue('amount', '');
+                                                    setFieldError('amount', '');
                                                 }}
                                                 error={selected_from.error}
                                             />

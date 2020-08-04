@@ -226,7 +226,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             key: 'needs_poi',
             header: localize('Proof of identity required'),
             message: localize('Please submit your proof of identity.'),
-            type: 'warning',
+            type: 'danger',
         },
         needs_poa: {
             action: {
@@ -236,7 +236,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             key: 'needs_poa',
             header: localize('Proof of address required'),
             message: localize('Please submit your proof of address.'),
-            type: 'warning',
+            type: 'danger',
         },
         needs_poa_virtual: {
             action: {

@@ -23,6 +23,12 @@ const DepositsLocked = ({
     const is_poa_needed = needs_verification.includes('document');
     const has_poi_submitted = identity.status !== 'none';
     const has_poa_submitted = document.status !== 'none';
+    const is_age_verification_failed = is_poa_needed && has_poa_submitted;
+    const deposit_desc = is_age_verification_failed
+        ? localize(
+              'We were unable to verify your information automatically. To enable this feature you must complete the following:'
+          )
+        : localize('To enable this feature you must complete the following:');
     const poi_text = has_poi_submitted
         ? localize('Check proof of identity document verification status')
         : localize('Upload an ID document to verify your identity');
@@ -100,9 +106,7 @@ const DepositsLocked = ({
                     <Icon icon='IcCashierDepositLock' className='cashier-locked__icon' />
                     <h2 className='cashier-locked__title'>{localize('Deposits are locked')}</h2>
 
-                    <p className='cashier-locked__desc'>
-                        {localize('To enable this feature you must complete the following:')}
-                    </p>
+                    <p className='cashier-locked__desc'>{deposit_desc}</p>
                     <Checklist className='cashier-locked__checklist' items={items} />
                 </div>
             ) : (

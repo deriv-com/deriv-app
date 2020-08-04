@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import React from 'react';
 import { Popover, DesktopWrapper, Loading, MobileWrapper } from '@deriv/components';
 import { getDerivComLink, formatMoney, isMobile } from '@deriv/shared';
-
 import { localize, Localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import FormBody from 'Components/form-body';
@@ -68,7 +67,7 @@ class AccountLimits extends React.Component {
         if (this.props.is_virtual) {
             this.setState({ is_loading: false });
         } else {
-            this.props.onMount();
+            this.props.onMount().then(this.setState({ is_loading: false }));
         }
     }
 
@@ -97,11 +96,12 @@ class AccountLimits extends React.Component {
         if (this.props.is_switching || this.state.is_loading)
             return <Loading is_fullscreen={false} className='account___intial-loader' />;
 
-        const { commodities, forex, indices, synthetic_index } = market_specific;
+        const { commodities, forex, indices, synthetic_index } = { ...market_specific };
         const { currency, is_fully_authenticated } = this.props;
-
-        const forex_ordered = forex.sort((a, b) => (a.name < b.name ? 1 : -1));
-        forex_ordered.push(forex_ordered.shift());
+        const forex_ordered = forex?.sort?.((a, b) => (a.name < b.name ? 1 : -1));
+        if (forex_ordered && forex_ordered.push) {
+            forex_ordered.push(forex_ordered.shift());
+        }
 
         return (
             <section className='account-limit-container'>
@@ -197,10 +197,10 @@ class AccountLimits extends React.Component {
                                 </Row>
                             </thead>
                             <tbody>
-                                {makeTurnoverLimitRow(currency, commodities)}
-                                {makeTurnoverLimitRow(currency, forex_ordered, localize('Forex'))}
-                                {makeTurnoverLimitRow(currency, indices)}
-                                {makeTurnoverLimitRow(currency, synthetic_index)}
+                                {commodities && makeTurnoverLimitRow(currency, commodities)}
+                                {forex_ordered && makeTurnoverLimitRow(currency, forex_ordered, localize('Forex'))}
+                                {indices && makeTurnoverLimitRow(currency, indices)}
+                                {synthetic_index && makeTurnoverLimitRow(currency, synthetic_index)}
                             </tbody>
                         </table>
                         <table className='account-management-table'>

@@ -353,16 +353,13 @@ export default class CashierStore extends BaseStore {
     @computed
     get is_withdrawal_locked() {
         if (!this.root_store.client.account_status.status) return false;
-        const { status, authentication } = this.root_store.client.account_status;
+        const { authentication } = this.root_store.client.account_status;
         const need_poi = authentication.needs_verification.includes('identity');
 
         const need_authentication = this.config.withdraw.error.is_ask_authentication && need_poi;
-        const has_withdrawal_lock_status = status.some(status_name =>
-            /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
-        );
 
         return (
-            has_withdrawal_lock_status ||
+            this.root_store.client.is_withdrawal_lock ||
             need_authentication ||
             this.config.withdraw.error.is_ask_financial_risk_approval ||
             this.config.withdraw.error.is_cashier_forward_error
@@ -463,6 +460,7 @@ export default class CashierStore extends BaseStore {
                     is_ask_authentication: true,
                 };
                 break;
+            case 'FinancialAssessmentRequired':
             case 'ASK_FINANCIAL_RISK_APPROVAL':
                 this.config[this.active_container].error = {
                     is_ask_financial_risk_approval: true,

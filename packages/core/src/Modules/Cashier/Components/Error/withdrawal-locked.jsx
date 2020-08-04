@@ -7,11 +7,9 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from './cashier-locked.jsx';
 
-const WithdrawalLocked = ({ account_status }) => {
-    const { status, identity, needs_verification } = account_status.authentication;
-    const has_withdrawal_lock_status = status.some(status_name =>
-        /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
-    );
+const WithdrawalLocked = ({ account_status, is_withdrawal_lock, is_ask_financial_risk_approval }) => {
+    const { identity, needs_verification } = account_status.authentication;
+
     const is_poi_needed = needs_verification.includes('identity');
     const has_poi_submitted = identity.status !== 'none';
     const poi_text = has_poi_submitted
@@ -29,14 +27,23 @@ const WithdrawalLocked = ({ account_status }) => {
                   },
               ]
             : []),
+        ...(is_ask_financial_risk_approval
+            ? [
+                  {
+                      content: localize('Complete the financial assessment form'),
+                      status: 'action',
+                      onClick: () => history.push(routes.financial_assessment),
+                  },
+              ]
+            : []),
     ];
     return (
         <React.Fragment>
-            {items.length || has_withdrawal_lock_status ? (
+            {items.length || is_withdrawal_lock ? (
                 <div className='cashier-locked'>
                     <Icon icon='IcCashierWithdrawalLock' className='cashier-locked__icon' />
                     <h2 className='cashier-locked__title'>{localize('Withdrawals are locked')}</h2>
-                    {has_withdrawal_lock_status ? (
+                    {is_withdrawal_lock ? (
                         <p className='cashier-locked__desc'>{localize('Please check your email for more details.')}</p>
                     ) : (
                         <React.Fragment>
@@ -56,10 +63,12 @@ const WithdrawalLocked = ({ account_status }) => {
 
 WithdrawalLocked.propTypes = {
     account_status: PropTypes.object,
-    is_financial_account: PropTypes.bool,
+    is_withdrawal_lock: PropTypes.bool,
+    is_ask_financial_risk_approval: PropTypes.bool,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ modules, client }) => ({
     account_status: client.account_status,
-    is_financial_account: client.is_financial_account,
+    is_withdrawal_lock: client.is_withdrawal_lock,
+    is_ask_financial_risk_approval: modules.cashier.config.withdraw.error.is_ask_financial_risk_approval,
 }))(WithdrawalLocked);

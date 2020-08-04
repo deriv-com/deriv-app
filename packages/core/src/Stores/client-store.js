@@ -343,6 +343,14 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_withdrawal_lock() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status_name =>
+            /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
+        );
+    }
+
+    @computed
     get is_trading_experience_incomplete() {
         if (!this.account_status.status) return false;
         return this.account_status.status.some(status => status === 'trading_experience_not_complete');

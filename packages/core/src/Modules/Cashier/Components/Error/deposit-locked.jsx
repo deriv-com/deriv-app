@@ -89,9 +89,8 @@ const DepositsLocked = ({
                   },
               ]
             : []),
-        ...(is_ask_financial_risk_approval &&
-        is_financial_account &&
-        (is_financial_information_incomplete || is_trading_experience_incomplete)
+        ...(is_ask_financial_risk_approval ||
+        (is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete))
             ? [
                   {
                       content: localize('Complete the financial assessment form'),

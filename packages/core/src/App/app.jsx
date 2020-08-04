@@ -33,8 +33,9 @@ const App = ({ root_store }) => {
         initializeTranslations();
         setUrlLanguage(getLanguage());
     }, []);
-    if (isMobile()) {
-        React.useEffect(() => {
+
+    React.useEffect(() => {
+        if (isMobile()) {
             const el_landscape_blocker = document.getElementById('landscape_blocker');
 
             const onFocus = () => {
@@ -69,14 +70,14 @@ const App = ({ root_store }) => {
             document.addEventListener('focusout', onFocusOut, false);
             document.addEventListener('touchstart', onTouchStart, true);
 
-            // componentWillUnmount lifecycle
             return () => {
                 document.removeEventListener('focus', onFocus);
                 document.removeEventListener('focusout', onFocusOut);
                 document.removeEventListener('touchstart', onTouchStart);
             };
-        }, []);
-    }
+        }
+        return () => {};
+    }, [root_store.ui]);
 
     const platform_passthrough = {
         root_store,

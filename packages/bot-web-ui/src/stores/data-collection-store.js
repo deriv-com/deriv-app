@@ -6,7 +6,6 @@ import { transaction_elements } from '../constants/transactions';
 
 export default class DataCollectionStore {
     constructor(root_store) {
-        // TODO: Only track on production.
         if (isProduction() || /(.*?)\.binary.sx$/.test(window.location.hostname)) {
             this.root_store = root_store;
 

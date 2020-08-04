@@ -35,7 +35,7 @@ message "Updating p2p translations branch" &&
 git branch -D p2p_translations &&
 git push origin --delete p2p_translations
 git checkout -b p2p_translations &&
-git pull upstream dev &&
+git pull upstream master &&
 
 confirm "Update the source file (messages.json) and push to Crowdin?" &&
 if [[ $REPLY =~ ^[Yy]$ ]]

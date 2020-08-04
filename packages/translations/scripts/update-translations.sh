@@ -35,7 +35,7 @@ message "Updating deriv app translations branch" &&
 git branch -D ${NEW_TRANSLATION_BRANCH} &&
 git push origin --delete ${NEW_TRANSLATION_BRANCH}
 git checkout -b ${NEW_TRANSLATION_BRANCH} &&
-git pull upstream dev &&
+git pull upstream master &&
 
 confirm "Update the source file (messages.json) and push to Crowdin?" &&
 if [[ $REPLY =~ ^[Yy]$ ]]

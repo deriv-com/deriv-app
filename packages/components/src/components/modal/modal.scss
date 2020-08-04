@@ -88,6 +88,11 @@
             align-items: center;
             height: 100%;
 
+            &:empty {
+                padding: 0;
+                border: none;
+            }
+
             @include mobile {
                 font-size: 1.4rem;
                 padding: 1.6rem;

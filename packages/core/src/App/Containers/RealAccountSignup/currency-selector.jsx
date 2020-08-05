@@ -19,6 +19,21 @@ import 'Sass/currency-select-radio.scss';
 
 // Radio input
 export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, label, className, ...props }) => {
+    const popover_message = /^UST$/i.test(id) ? (
+        <Localize
+            i18n_default_text={
+                'Tether on Omnilayer (USDT) is a version of Tether, a digital token issued on blockchains and holds a value pegged to 1 USD at all times.<0 /><0 />USDT is built on the bitcoin blockchain via Omni Layer, a platform for digital assets and currencies that run in the bitcoin network.'
+            }
+            components={[<br key={0} />]}
+        />
+    ) : (
+        <Localize
+            i18n_default_text={
+                'Tether as an ERC20 token (eUSDT) is a version of Tether that is hosted on Ethereum, an open software platform where anyone can build and deploy decentralised applications.'
+            }
+        />
+    );
+
     return (
         <React.Fragment>
             <input
@@ -42,16 +57,14 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
             >
                 <div>
                     <Icon className='currency-list__icon' icon={`IcCurrency-${id.toLowerCase()}`} />
-                    {/^UST$/i.test(id) && (
+                    {/^(UST|eUSDT)$/i.test(id) && (
                         <Popover
                             alignment='top'
                             icon='info'
                             disable_message_icon
                             zIndex={9999}
                             className='currency-list__popover'
-                            message={localize(
-                                'Deriv currently supports Tether (USDT). Please deposit USDT from your Omni Layer-enabled wallet into your Deriv account.'
-                            )}
+                            message={popover_message}
                         />
                     )}
                     <div className='label currency-list__item-text'>

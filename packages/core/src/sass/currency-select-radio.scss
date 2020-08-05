@@ -6,7 +6,8 @@
     }
     &__items {
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
+        flex-wrap: wrap;
         @include mobile {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -20,7 +21,7 @@
         height: 128px;
         justify-content: space-around;
         margin: 1.6rem 2rem 0;
-        width: 128px;
+        width: 20%;
 
         &:hover:not(&--selected) {
             cursor: pointer;

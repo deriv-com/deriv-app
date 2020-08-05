@@ -14,22 +14,22 @@ describe('bollingerBands', () => {
 
     it('whole data sample', () => {
         const result = bollingerBands([1, 2, 3], { periods: 3 });
-        const roundedResult = roundResult(result);
-        expect(roundedResult).toEqual([2, 3.63, 0.37]);
+        const rounded_result = roundResult(result);
+        expect(rounded_result).toEqual([2, 3.63, 0.37]);
     });
 
     it('can extract field', () => {
         const data = [{ close: 1 }, { close: 2 }, { close: 3 }];
         const result = bollingerBands(data, { periods: 3, field: 'close' });
-        const roundedResult = roundResult(result);
-        expect(roundedResult).toEqual([2, 3.63, 0.37]);
+        const rounded_result = roundResult(result);
+        expect(rounded_result).toEqual([2, 3.63, 0.37]);
     });
 
     it('fractions', () => {
         const data = [28.93, 28.48, 28.44, 28.91, 28.48];
         const result = bollingerBands(data, { periods: 5 });
-        const roundedResult = roundResult(result);
-        expect(roundedResult).toEqual([28.65, 29.09, 28.2]);
+        const rounded_result = roundResult(result);
+        expect(rounded_result).toEqual([28.65, 29.09, 28.2]);
     });
 
     it('throws if periods is longer than data length', () => {
@@ -44,8 +44,8 @@ describe('bollingerBands', () => {
             [7.67, 11.78, 3.56],
         ];
         const result = bollingerBandsArray(data, { periods: 3 });
-        const roundedResult = result.map(x => roundResult(x));
-        expect(roundedResult).toEqual(expected);
+        const rounded_result = result.map(x => roundResult(x));
+        expect(rounded_result).toEqual(expected);
     });
 
     it('real world', () => {
@@ -94,7 +94,7 @@ describe('bollingerBands', () => {
             90.65,
         ];
 
-        const middleBand = [
+        const middle_band = [
             88.71,
             89.05,
             89.24,
@@ -120,7 +120,7 @@ describe('bollingerBands', () => {
             91.05,
         ];
 
-        const upperBand = [
+        const upper_band = [
             91.29,
             91.95,
             92.61,
@@ -146,7 +146,7 @@ describe('bollingerBands', () => {
             94.15,
         ];
 
-        const lowerBand = [
+        const lower_band = [
             86.13,
             86.14,
             85.87,
@@ -172,11 +172,11 @@ describe('bollingerBands', () => {
             87.95,
         ];
 
-        const wholeBand = middleBand.map((x, i) => [middleBand[i], upperBand[i], lowerBand[i]]);
+        const whole_band = middle_band.map((x, i) => [middle_band[i], upper_band[i], lower_band[i]]);
 
         const result = bollingerBandsArray(data, { periods: 20 });
-        const roundedResult = result.map(x => roundResult(x));
+        const rounded_result = result.map(x => roundResult(x));
 
-        expect(roundedResult).toEqual(wholeBand);
+        expect(rounded_result).toEqual(whole_band);
     });
 });

@@ -7,7 +7,7 @@ import { sequence } from '../object';
  * {
  *  periods: number,
  *  field?: 'open' | 'high' | 'low' | 'close',
- *  pipSize: number,
+ *  pip_size: number,
  * }
  */
 export const simpleMovingAverage = (data, config) => {
@@ -28,12 +28,12 @@ export const simpleMovingAverage = (data, config) => {
  * {
  *  periods: number,
  *  field?: 'open' | 'high' | 'low' | 'close',
- *  pipSize: number,
+ *  pip_size: number,
  * }
  */
 export const simpleMovingAverageArray = (data, config) => {
-    const { periods, pipSize = 2 } = config;
+    const { periods, pip_size = 2 } = config;
     return sequence(data.length - periods + 1).map(
-        (x, i) => +simpleMovingAverage(data.slice(i, i + periods), config).toFixed(pipSize)
+        (x, i) => +simpleMovingAverage(data.slice(i, i + periods), config).toFixed(pip_size)
     );
 };

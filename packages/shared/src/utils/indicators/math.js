@@ -7,8 +7,8 @@ export const sum = data => data.reduce((acc, x) => acc + x);
 export const mean = data => data.reduce((a, b) => a + b) / data.length;
 
 export const stddev = data => {
-    const dataMean = mean(data);
-    const sqDiff = data.map(n => Math.pow(n - dataMean, 2));
-    const avgSqDiff = mean(sqDiff);
-    return Math.sqrt(avgSqDiff);
+    const data_mean = mean(data);
+    const sq_diff = data.map(n => Math.pow(n - data_mean, 2));
+    const avg_sq_diff = mean(sq_diff);
+    return Math.sqrt(avg_sq_diff);
 };

@@ -6,31 +6,31 @@ import { takeField, mean } from './math';
  * {
  *  periods: number,
  *  field?: 'open' | 'high' | 'low' | 'close',
- *  pipSize: number,
+ *  pip_size: number,
  * }
- * @param {Number} initVal
+ * @param {Number} init_val
  */
-export const exponentialMovingAverage = (data, config, initVal) => {
-    const { periods, field, pipSize = 2 } = config;
+export const exponentialMovingAverage = (data, config, init_val) => {
+    const { periods, field, pip_size = 2 } = config;
 
-    const weightingMultiplier = 2 / (periods + 1);
+    const weighting_multiplier = 2 / (periods + 1);
 
     const vals = takeField(data, field);
 
-    if (initVal) {
-        return (vals[0] - initVal) * weightingMultiplier + initVal;
+    if (init_val) {
+        return (vals[0] - init_val) * weighting_multiplier + init_val;
     }
 
     if (data.length < periods) {
         throw new Error('Periods longer than data length');
     }
 
-    const meanVal = mean(takeField(data.slice(0, periods), field));
+    const mean_val = mean(takeField(data.slice(0, periods), field));
 
     return +vals
         .slice(periods)
-        .reduce((prev, e) => (e - prev) * weightingMultiplier + prev, meanVal)
-        .toFixed(pipSize);
+        .reduce((prev, e) => (e - prev) * weighting_multiplier + prev, mean_val)
+        .toFixed(pip_size);
 };
 
 /**
@@ -39,15 +39,15 @@ export const exponentialMovingAverage = (data, config, initVal) => {
  * {
  *  periods: number,
  *  field?: 'open' | 'high' | 'low' | 'close',
- *  pipSize: number,
+ *  pip_size: number,
  * }
  */
 export const exponentialMovingAverageArray = (data, config) => {
     const { periods } = config;
 
-    let initVal = exponentialMovingAverage(data.slice(0, periods), config);
+    let init_val = exponentialMovingAverage(data.slice(0, periods), config);
 
     return data
         .slice(periods - 1)
-        .map((x, i) => (!i ? initVal : (initVal = exponentialMovingAverage([x], config, initVal))));
+        .map((x, i) => (!i ? init_val : (init_val = exponentialMovingAverage([x], config, init_val))));
 };

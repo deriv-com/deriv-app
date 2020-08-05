@@ -295,7 +295,7 @@ const Dropdown = ({
                             })}
                         />
                     )}
-                    {error && <p className='dc-field-error'>{error}</p>}
+                    {error && <p className='dc-field--error'>{error}</p>}
                     {is_nativepicker ? (
                         <NativeSelect
                             ref={native_select_ref}

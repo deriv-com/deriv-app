@@ -15,10 +15,10 @@ const messages = [
 
 const Headers = ({ heading, subheading }) => (
     <React.Fragment>
-        <h1>
+        <h1 className='add-crypto-currency__title'>
             <Localize i18n_default_text={heading} />
         </h1>
-        <h3>
+        <h3 className='add-crypto-currency__sub-title'>
             <Localize i18n_default_text={subheading} />
         </h3>
     </React.Fragment>
@@ -116,6 +116,7 @@ class AddCryptoCurrency extends React.Component {
                                 <Hr />
                                 <RadioButtonGroup
                                     id='fiat_currency'
+                                    is_fiat
                                     className='currency-selector__radio-group'
                                     label={localize('Fiat currencies')}
                                     value={values.currency}

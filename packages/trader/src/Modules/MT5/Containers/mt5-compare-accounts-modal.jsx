@@ -112,14 +112,12 @@ const compareAccountsData = ({ landing_companies }) =>
                 <MT5AttributeDescriber
                     name={localize('Commission')}
                     counter={4}
-                    tooltip={localize(
-                        'Deriv charges no commission across all account types, except cryptocurrency accounts.'
-                    )}
+                    tooltip={localize('Deriv charges no commission across all account types, except cryptocurrencies.')}
                 />
             ),
             synthetic: localize('No'),
             financial: localize('No'),
-            financial_stp: localize('Yes'),
+            financial_stp: localize('No'),
         },
         {
             attribute: <MT5AttributeDescriber name={localize('Minimum deposit')} />,

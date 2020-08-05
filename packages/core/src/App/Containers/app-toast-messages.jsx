@@ -21,9 +21,9 @@ const AppToastMessages = ({ toasts, removeToast }) => {
     };
 
     const toast_messages = (
-        <Div100vhContainer className='dc-toast-messages' height_offset='15px'>
-            <div className='dc-toast-messages__top'>{top_toasts.map(createToast)}</div>
-            <div className='dc-toast-messages__bottom'>{bottom_toasts.map(createToast)}</div>
+        <Div100vhContainer className='toast-messages' height_offset='15px'>
+            <div className='toast-messages__top'>{top_toasts.map(createToast)}</div>
+            <div className='toast-messages__bottom'>{bottom_toasts.map(createToast)}</div>
         </Div100vhContainer>
     );
 

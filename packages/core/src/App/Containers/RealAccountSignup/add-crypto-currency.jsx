@@ -7,10 +7,10 @@ import { connect } from 'Stores/connect';
 import { Hr, RadioButtonGroup, RadioButton } from './currency-selector.jsx';
 
 const messages = [
-    'Choose your preferred cryptocurrency',
-    'You can open an account for each cryptocurrency.',
-    'Add a real account',
-    'Choose a currency you would like to trade with.',
+    localize('Add a cryptocurrency account'),
+    localize('You can open an account for each cryptocurrency.'),
+    localize('Add a real account'),
+    localize('Choose a currency you would like to trade with.'),
 ];
 
 const Headers = ({ heading, subheading }) => (
@@ -138,7 +138,6 @@ class AddCryptoCurrency extends React.Component {
                         <FormSubmitButton
                             is_disabled={isSubmitting || !values.currency}
                             label={localize('Add account')}
-                            is_center={true}
                             form_error={this.props.form_error}
                         />
                     </form>

@@ -5,6 +5,25 @@
     form {
         flex-direction: column;
     }
+    .dc-tabs__list--header-fit-content {
+        margin: 0 auto;
+    }
+    h1 {
+        @include typeface(--title-center-bold-black);
+        color: var(--text-prominent);
+        text-transform: none;
+        margin-top: 3rem;
+    }
+    h3 {
+        @include typeface(--small-center-normal-black);
+        text-transform: none;
+        color: var(--text-general);
+        margin-bottom: 1.6rem;
+    }
+    .change-currency {
+        height: 60vh;
+    }
+
     @include mobile {
         flex-direction: column;
         flex-wrap: unset;

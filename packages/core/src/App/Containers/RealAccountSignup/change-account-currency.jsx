@@ -72,8 +72,7 @@ class ChangeAccountCurrency extends React.Component {
                         <FormSubmitButton
                             is_disabled={isSubmitting || !values.fiat}
                             label={localize('Change currency')}
-                            is_absolute={false}
-                            is_center
+                            is_absolute
                             form_error={this.props.form_error}
                         />
                     </form>

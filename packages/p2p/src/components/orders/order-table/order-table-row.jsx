@@ -31,11 +31,6 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
 
     let interval;
 
-    const isOrderSeen = () => {
-        const notifications = LocalStorage.getNotifications();
-        return notifications.some(n => n.order_id === id && n.unread_msgs === 0 && n.has_seen_order);
-    };
-
     const countDownTimer = () => {
         const distance = ServerTime.getDistanceToServerTime(order_expiry_millis);
         const timer = secondsToTimer(distance);
@@ -72,7 +67,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
                     'orders__table-grid--active': is_active,
-                    'orders__table-row--attention': !isOrderSeen(),
+                    'orders__table-row--attention': !LocalStorage.hasReadNotification(id),
                 })}
             >
                 <Table.Cell>{is_buyer ? localize('Buy') : localize('Sell')}</Table.Cell>

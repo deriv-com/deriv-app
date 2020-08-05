@@ -42,8 +42,6 @@ class App extends React.Component {
             order_offset: 0,
             orders: [],
             notification_count: 0,
-            active_notification_count: 0,
-            inactive_notification_count: 0,
             parameters: null,
             is_advertiser: false,
             is_restricted: false,
@@ -70,8 +68,12 @@ class App extends React.Component {
         // Shows package notification count. LocalStorage is a utility class
         // originating from this @deriv/p2p package, which is passed back by the consumer
         // to ensure they share the same instance.
-        if (this.props.LocalStorage) {
-            this.props.LocalStorage.addNotificationListener(notification_count => {
+        const { LocalStorage } = this.props;
+
+        if (LocalStorage) {
+            this.setState({ notification_count: LocalStorage.getTotalNotificationCount() });
+
+            LocalStorage.addNotificationListener(notification_count => {
                 this.setState({ notification_count });
             });
         }
@@ -232,6 +234,7 @@ class App extends React.Component {
                     if (notification) {
                         // If order status changed, notify the user.
                         notification.has_seen_order = is_current_order;
+                        notification.is_active = new_order_info.is_active;
                     } else {
                         // If we have an old_order, but don't have a copy in local storage.
                         notifications.push({
@@ -257,6 +260,10 @@ class App extends React.Component {
                     has_seen_order,
                     is_active: new_order_info.is_active,
                 });
+            } else if (notification) {
+                // No old order (fresh list), but existing notification.
+                // Only update whether it's active or not.
+                notification.is_active = new_order_info.is_active;
             }
         });
 
@@ -445,7 +452,6 @@ App.propTypes = {
     }),
     is_mobile: PropTypes.bool,
     lang: PropTypes.string,
-    notification_count: PropTypes.number,
     order_id: PropTypes.string,
     setOrderId: PropTypes.func,
     should_show_verification: PropTypes.bool,

@@ -14,9 +14,10 @@ export const header_links = [
     },
     {
         id: 'dt_cashier_tab',
-        icon: <CashierNotifications />,
+        icon: <Icon icon='IcCashier' className='header__icon' />,
         text: () => localize('Cashier'),
         link_to: routes.cashier,
         login_only: true,
+        logo: <CashierNotifications />,
     },
 ];

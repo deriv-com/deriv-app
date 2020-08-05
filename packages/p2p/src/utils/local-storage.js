@@ -20,15 +20,19 @@ class LocalStorage {
         this.notification_listeners.push(callback);
     }
 
+    hasReadNotification(order_id) {
+        return this.getNotifications().some(n => n.order_id === order_id && n.unread_msgs === 0 && n.has_seen_order);
+    }
+
     resetNotificationListeners() {
         this.notification_listeners = [];
     }
 
-    getNotificationCount() {
+    getTotalNotificationCount() {
         return this.getNotifications().filter(n => n.unread_msgs > 0 || !n.has_seen_order).length;
     }
 
-    getActiveNotificationCount(is_active = true) {
+    getActiveNotificationCount(is_active) {
         return this.getNotifications().filter(
             n => n.is_active === is_active && (n.unread_msgs > 0 || !n.has_seen_order)
         ).length;
@@ -76,12 +80,16 @@ class LocalStorage {
             if (options?.has_seen_order !== undefined) {
                 notification.has_seen_order = options.has_seen_order;
             }
+            if (options?.is_active !== undefined) {
+                notification.is_active = options.is_active;
+            }
         } else {
             notifications.push({
                 order_id,
                 channel_url: options?.chat_channel_url,
                 unread_msgs: options?.unread_msgs || 0,
                 has_seen_order: options?.has_seen_order || true,
+                is_active: options?.is_active,
             });
         }
 
@@ -89,7 +97,7 @@ class LocalStorage {
     }
 
     syncNotifications() {
-        const notification_count = this.getNotificationCount();
+        const notification_count = this.getTotalNotificationCount();
 
         if (this.notification_count !== notification_count) {
             this.notification_listeners.forEach(listener => listener(notification_count));

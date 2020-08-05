@@ -27,6 +27,7 @@
     }
     .dc-input {
         margin-bottom: 0;
+        padding-right: 1.625rem;
 
         &--error {
             .dc-autocomplete__trailing-icon {
@@ -35,6 +36,10 @@
                 }
             }
         }
+    }
+    .dc-input__field {
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
     .dc-dropdown-list {
         box-shadow: 0 8px 16px 0 var(--shadow-menu);

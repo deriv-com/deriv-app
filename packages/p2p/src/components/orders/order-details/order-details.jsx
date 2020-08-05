@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Dialog } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { chatCreate } from 'Utils/sendbird';
 import OrderDetailsStatusBlock from './order-details-status-block.jsx';
 import OrderInfoBlock from './order-info-block.jsx';
@@ -17,7 +16,6 @@ import './order-details.scss';
 
 const OrderDetails = ({ order_details, chat_info }) => {
     const {
-        advertiser_id,
         advertiser_name,
         advertiser_instructions,
         chat_channel_url,
@@ -26,6 +24,7 @@ const OrderDetails = ({ order_details, chat_info }) => {
         display_price_rate,
         display_transaction_amount,
         is_buyer,
+        is_incoming,
         is_expired,
         is_completed,
         is_buyer_cancelled,
@@ -39,8 +38,6 @@ const OrderDetails = ({ order_details, chat_info }) => {
     const [channel_url, setChannelUrl] = React.useState(chat_channel_url);
     const [show_popup, setShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
-    const { advertiser_id: ad_advertiser_id } = React.useContext(Dp2pContext);
-    const is_my_ad = advertiser_id === ad_advertiser_id;
     const onCancelClick = () => setShowPopup(false);
     const handleShowPopup = options => {
         setPopupOptions(options);
@@ -84,7 +81,7 @@ const OrderDetails = ({ order_details, chat_info }) => {
                                     <OrderInfoBlock
                                         label={is_buyer ? localize('Seller') : localize('Buyer')}
                                         // TODO: Once we have access to other party's information we can update below.
-                                        value={is_my_ad ? '-' : advertiser_name}
+                                        value={advertiser_name}
                                     />
                                 </div>
                                 <div className='order-details__info--right'>
@@ -106,7 +103,7 @@ const OrderDetails = ({ order_details, chat_info }) => {
                                     />
                                 </React.Fragment>
                             )}
-                            {!is_my_ad && (
+                            {!is_incoming && (
                                 <OrderInfoBlock
                                     label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
                                     value={advertiser_instructions || '-'}

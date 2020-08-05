@@ -13,6 +13,7 @@ export const domain_app_ids = {
     // these domains as supported "production domains"
     'deriv.app': 16929, // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
     'app.deriv.com': 16929,
+    'binary.com': 1,
 };
 const binary_desktop_app_id = 14473;
 
@@ -75,7 +76,8 @@ export const getSocketURL = () => {
 };
 
 export const checkAndSetEndpointFromUrl = () => {
-    if (/^(staging\.deriv\.app|(.*)\.binary\.sx)$/i.test(location.hostname)) {
+    // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+    if (/^(staging\.deriv\.app|staging-app\.deriv\.com|(.*)\.binary\.sx)$/i.test(location.hostname)) {
         const url_params = new URLSearchParams(location.search.slice(1));
 
         if (url_params.has('qa_server') && url_params.has('app_id')) {

@@ -3,12 +3,19 @@
     @include desktop {
         padding: 0 0.4rem;
     }
+    @include mobile {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 
     &__elements {
         flex-grow: 1;
         margin: 1.2rem auto;
-        width: 40%;
+        width: 45%;
 
+        &--wide {
+            width: 45%;
+        }
         &-container {
             height: calc(100% - 76px);
             overflow: hidden;
@@ -19,6 +26,9 @@
                 overflow: unset;
                 margin: 1.6rem auto;
             }
+        }
+        .dc-radio__input {
+            margin-bottom: 2.3rem;
         }
         .dc-input {
             &__label {
@@ -62,20 +72,64 @@
                 background-color: var(--general-main-2);
             }
         }
+        .dc-dropdown__container {
+            margin-bottom: 3rem;
+        }
         @include mobile {
             width: 100%;
             margin: 0;
-            padding: 0 1.6rem;
+            padding: 1rem 1.6rem 0;
+            overflow-y: scroll;
+        }
+    }
+    &__tax {
+        position: relative;
+
+        @include mobile {
+            padding-right: 2rem;
+        }
+
+        .dc-popover {
+            position: absolute;
+            cursor: pointer;
+            top: 10px;
+            right: -25px;
+
+            @include mobile {
+                right: -5px;
+            }
+        }
+    }
+    &__tin-warn-divider {
+        height: 3rem;
+        @include mobile {
+            height: 4.5rem;
+        }
+    }
+    &__tin-confirm {
+        margin-left: -5px;
+
+        .dc-checkbox__box {
+            align-self: baseline;
+        }
+        .dc-checkbox__label {
+            line-height: 1.43;
         }
     }
     .dc-page-error__container {
         height: 100%;
     }
     &__description {
-        text-align: center;
+        text-align: left;
         font-size: var(--text-size-xxs);
-        margin: 1.6rem 0;
+        line-height: 1.8rem;
+        margin: 1.6rem auto;
         color: var(--text-general);
+        @include desktop {
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+        }
 
         @include mobile {
             text-align: left;
@@ -83,12 +137,5 @@
             line-height: 20px;
             color: var(--text-less-prominent);
         }
-    }
-    @include mobile {
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-    @include desktop {
-        grid-template-rows: 4rem minmax(10rem, 1fr);
     }
 }

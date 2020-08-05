@@ -1,4 +1,4 @@
-import { action, observable, reaction } from 'mobx';
+import { action, observable } from 'mobx';
 import { onWorkspaceResize } from '@deriv/bot-skeleton';
 import { tabs_title } from '../constants/bot-contents';
 import { storeSetting, getSetting } from '../utils/settings';
@@ -6,12 +6,6 @@ import { storeSetting, getSetting } from '../utils/settings';
 export default class MainContentStore {
     constructor(root_store) {
         this.root_store = root_store;
-        const { run_panel } = this.root_store;
-
-        this.disposeIsDrawerOpenReaction = reaction(
-            () => run_panel.is_drawer_open,
-            () => this.setContainerSize()
-        );
     }
 
     @observable active_tab = tabs_title.WORKSPACE;
@@ -43,6 +37,5 @@ export default class MainContentStore {
     @action.bound
     onUnmount() {
         window.removeEventListener('resize', this.setContainerSize);
-        this.disposeIsDrawerOpenReaction();
     }
 }

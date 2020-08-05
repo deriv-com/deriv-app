@@ -35,7 +35,7 @@ class TermsOfUse extends React.Component {
                                 <p>
                                     <Localize
                                         i18n_default_text={
-                                            'Your account will be opened with Binary (SVG) Ltd., and will be subject to the jurisdiction and laws of Saint Vincent and the Grenadines.'
+                                            'Your account will be opened with Deriv (SVG) Ltd., and will be subject to the jurisdiction and laws of Saint Vincent and the Grenadines.'
                                         }
                                     />
                                 </p>

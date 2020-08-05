@@ -12,6 +12,9 @@ $side-padding: 1.2em;
         justify-content: space-between;
         padding: 0 24px 16px;
 
+        &--statement {
+            justify-content: flex-end;
+        }
         &-description {
             &--heading {
                 @include typeface(--title-left-bold-black, none);
@@ -33,6 +36,9 @@ $side-padding: 1.2em;
         &-filter {
             position: relative;
             display: flex;
+            justify-content: flex-end;
+            max-width: 36rem;
+            width: 100%;
         }
 
         @include desktop {
@@ -96,10 +102,13 @@ $side-padding: 1.2em;
 
 /** @define statement; weak */
 .statement {
+    .table__head {
+        font-weight: bold;
+    }
+
     @include desktop {
         height: 100%;
     }
-
     @include mobile {
         flex: 1;
 
@@ -206,6 +215,47 @@ $side-padding: 1.2em;
         .statement__card-list {
             padding: 0 $side-padding;
             height: 100%;
+        }
+    }
+    &__statement-header {
+        justify-content: flex-end;
+    }
+    &__account-statistics {
+        width: 43.2rem;
+        height: 6.4rem;
+        display: flex;
+        flex-direction: row;
+        text-align: left;
+
+        :last-child {
+            border-right: unset;
+        }
+        :first-child {
+            padding-left: 0;
+        }
+        &--is-rectangle {
+            text-align: left;
+            height: 100%;
+            border-right: 1px solid $color-grey-2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8px 0 0 16px;
+            align-items: flex-start;
+            max-width: 14.4rem;
+            width: 100%;
+        }
+        &-title {
+            text-align: left;
+            color: $color-grey-1;
+            font-size: 14px;
+            margin-bottom: 9px;
+        }
+        &-amount {
+            text-align: left;
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--text-prominent);
         }
     }
 }
@@ -539,6 +589,7 @@ $side-padding: 1.2em;
             .table__cell {
                 padding-top: 0px;
                 padding-bottom: 0px;
+                font-weight: bold;
             }
         }
         .table__body {

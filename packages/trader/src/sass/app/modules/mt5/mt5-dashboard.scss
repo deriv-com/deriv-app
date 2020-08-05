@@ -79,7 +79,7 @@
         &--heading {
             @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
-            line-height: 1.5em;
+            line-height: 1.5;
         }
     }
     &__missing-real {
@@ -92,7 +92,7 @@
 
         &--heading {
             color: var(--text-prominent);
-            line-height: 1.5rem;
+            line-height: 1.5;
             @include typeface(--title-left-bold-black, none);
             @include mobile {
                 font-size: 1.2rem;
@@ -397,12 +397,12 @@
     &--heading {
         @include typeface(--title-left-bold-black, none);
         color: var(--text-prominent);
-        line-height: 1.5em;
+        line-height: 1.5;
     }
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
-        line-height: 1.45em;
+        line-height: 1.45;
     }
     &--balance {
         @include typeface(--title-left-bold-black);
@@ -497,7 +497,7 @@
             .mt5-account-card--paragraph {
                 @include typeface(--paragraph-left-bold-black, none);
                 color: var(--text-prominent);
-                line-height: 1.45em;
+                line-height: 1.45;
             }
         }
     }
@@ -507,7 +507,7 @@
         margin-bottom: 1.6rem;
 
         &.mt5-account-card--paragraph {
-            line-height: 1.4em;
+            line-height: 1.4;
         }
     }
     &__account-selection {
@@ -717,6 +717,9 @@
         .dc-form-submit-button {
             background-color: inherit;
         }
+    }
+    .dc-autocomplete {
+        margin-bottom: 2.4rem;
     }
 }
 

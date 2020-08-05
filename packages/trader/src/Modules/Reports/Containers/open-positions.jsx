@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable } from '@deriv/components';
-import { urlFor, isMobile } from '@deriv/shared';
+import { urlFor, isMobile, isDesktop } from '@deriv/shared';
 
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
@@ -92,7 +92,7 @@ const OpenPositionsTable = ({
                                 rowRenderer={mobileRowRenderer}
                                 getRowAction={getRowAction}
                                 custom_width={'100%'}
-                                getRowSize={() => 194}
+                                getRowSize={() => 230}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataList>
@@ -155,27 +155,27 @@ class OpenPositions extends React.Component {
         const { date_expiry, date_start } = contract_info;
         const duration_type = getContractDurationType(contract_info.longcode);
         const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
+        // Remove 'Type' title in mobile mode
+        const column_clone = { ...this.columns_map };
+        column_clone.type.title = '';
 
         return (
             <>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.type} />
+                    <DataList.Cell row={row} column={column_clone.type} />
                     <ProgressBar label={duration_type} value={progress_value} />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.reference} />
+                    <DataList.Cell row={row} column={column_clone.reference} />
+                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={column_clone.currency} />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.purchase} />
-                    <DataList.Cell
-                        className='data-list__row-cell--amount'
-                        row={row}
-                        column={this.columns_map.indicative}
-                    />
+                    <DataList.Cell row={row} column={column_clone.purchase} />
+                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={column_clone.indicative} />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.payout} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.profit} />
+                    <DataList.Cell row={row} column={column_clone.payout} />
+                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={column_clone.profit} />
                 </div>
             </>
         );
@@ -330,35 +330,30 @@ class OpenPositions extends React.Component {
                         'View all active trades on your account that can still incur a profit or a loss.'
                     )}
                 />
-                <DesktopWrapper>
-                    <Tabs
-                        active_index={this.state.active_index}
-                        className='open-positions'
-                        onTabItemClick={this.setActiveTabIndex}
-                        top
-                        header_fit_content
-                    >
-                        <div label={localize('Options')}>
-                            <OpenPositionsTable
-                                className='open-positions'
-                                columns={this.columns}
-                                {...shared_props}
-                                row_size={63}
-                            />
-                        </div>
-                        <div label={localize('Multipliers')}>
-                            <OpenPositionsTable
-                                className='open-positions-multiplier open-positions'
-                                columns={this.columns}
-                                row_size={68}
-                                {...shared_props}
-                            />
-                        </div>
-                    </Tabs>
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <OpenPositionsTable className='open-positions' columns={this.columns} {...shared_props} />
-                </MobileWrapper>
+                <Tabs
+                    active_index={this.state.active_index}
+                    className='open-positions'
+                    onTabItemClick={this.setActiveTabIndex}
+                    top
+                    header_fit_content={isDesktop()}
+                >
+                    <div label={localize('Options')}>
+                        <OpenPositionsTable
+                            className='open-positions'
+                            columns={this.columns}
+                            {...shared_props}
+                            row_size={63}
+                        />
+                    </div>
+                    <div label={localize('Multipliers')}>
+                        <OpenPositionsTable
+                            className='open-positions-multiplier open-positions'
+                            columns={this.columns}
+                            row_size={68}
+                            {...shared_props}
+                        />
+                    </div>
+                </Tabs>
             </React.Fragment>
         );
     }

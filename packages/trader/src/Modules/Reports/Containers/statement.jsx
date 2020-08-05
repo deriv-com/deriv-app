@@ -27,23 +27,26 @@ class Statement extends React.Component {
     }
 
     mobileRowRenderer = ({ row }) => {
+        // Remove 'Type' title in mobile mode
+        const column_clone = { ...this.columns_map };
+        column_clone.icon.title = '';
+
         return (
             <>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.icon} />
-                    <DataList.Cell row={row} column={this.columns_map.action_type} />
+                    <DataList.Cell row={row} column={column_clone.icon} />
+                    <DataList.Cell row={row} column={column_clone.action_type} />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.refid} />
-                    <DataList.Cell
-                        className='data-list__row-cell--amount'
-                        row={row}
-                        column={this.columns_map.balance}
-                    />
+                    <DataList.Cell row={row} column={column_clone.refid} />
+                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={column_clone.currency} />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.date} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.amount} />
+                    <DataList.Cell row={row} column={column_clone.date} />
+                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={column_clone.amount} />
+                </div>
+                <div className='data-list__row'>
+                    <DataList.Cell row={row} column={column_clone.balance} />
                 </div>
             </>
         );
@@ -125,7 +128,7 @@ class Statement extends React.Component {
                 <ReportsMeta
                     i18n_heading={localize('Statement')}
                     i18n_message={localize(
-                        'View all transactions on your account, including trades, deposits, and withdrawals.'
+                        'View all active trades on your account that can still incur a profit or a loss.'
                     )}
                     filter_component={filter_component}
                 />
@@ -164,7 +167,7 @@ class Statement extends React.Component {
                                 getRowAction={this.getRowAction}
                                 onScroll={handleScroll}
                                 custom_width={'100%'}
-                                getRowSize={() => 162}
+                                getRowSize={() => 180}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataList>

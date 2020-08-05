@@ -46,6 +46,10 @@ $side-padding: 1.2em;
             &-filter {
                 padding-bottom: 1.6rem;
             }
+            #dt_calendar_input {
+                text-align: left;
+                padding-left: 3rem;
+            }
         }
     }
     &__mobile-wrapper {
@@ -119,6 +123,13 @@ $side-padding: 1.2em;
                     display: none;
                 }
             }
+            .balance {
+                display: flex;
+
+                &__row-title {
+                    flex: 50%;
+                }
+            }
         }
     }
 
@@ -134,8 +145,8 @@ $side-padding: 1.2em;
         flex: 1;
     }
     &__row {
-        /*                     icon   refId tr_time  transaction cred/debt  balance */
-        grid-template-columns: 0.8fr 1.2fr 1fr 0.8fr 1fr 1fr;
+        /* icon refId currency tr_time transaction cred/debt balance */
+        grid-template-columns: 0.8fr 1.4fr 1.4fr 1.2fr 1fr 1.2fr 1fr;
 
         .date {
             text-align: left;
@@ -156,16 +167,6 @@ $side-padding: 1.2em;
         }
         &--loss {
             color: var(--text-loss-danger);
-        }
-    }
-    .refid {
-        @include mobile {
-            display: flex;
-            flex-direction: row;
-
-            &__row-title {
-                margin-right: 4px;
-            }
         }
     }
     .market-symbol-icon {
@@ -329,8 +330,8 @@ $side-padding: 1.2em;
         flex: 1;
     }
     &__row {
-        /*                     icon   refId buy_time  buy_price sell_time  sell_price profit/loss */
-        grid-template-columns: 0.8fr 1.2fr 1fr 0.8fr 1fr 1fr 1fr;
+        /* icon refId currency buy_time buy_price sell_time sell_price profit/loss */
+        grid-template-columns: 0.6fr 1fr 1fr 1.2fr 1fr 1.2fr 1fr 1fr;
     }
     .buy_price,
     .sell_price,
@@ -348,14 +349,11 @@ $side-padding: 1.2em;
     }
     .profit_loss {
         font-weight: bold;
-    }
-    .transaction_id {
         @include mobile {
             display: flex;
-            flex-direction: row;
 
             &__row-title {
-                margin-right: 4px;
+                flex: 50%;
             }
         }
     }
@@ -536,6 +534,10 @@ $side-padding: 1.2em;
         margin-top: 20px;
 
         .table__head {
+            @media only screen and (max-width: 1160px) and (min-width: 1024px) {
+                white-space: unset;
+            }
+
             .table__cell {
                 padding-top: 0px;
                 padding-bottom: 0px;
@@ -545,11 +547,15 @@ $side-padding: 1.2em;
             .open-positions__row_wrapper {
                 border-bottom: 1px solid var(--general-section-1);
             }
+            .payout,
+            .purchase {
+                padding-right: 2rem;
+            }
         }
     }
     &__row {
-        /*                     icon   refId buy_price  potential_payout potential_profit  indicative_price rem_time */
-        grid-template-columns: 0.8fr 1.2fr 1fr 1fr 1fr 1fr 1fr;
+        /* icon refId currency buy_price potential_payout potential_profit indicative_price rem_time */
+        grid-template-columns: 0.8fr 1.2fr 1fr 1fr 1.4fr 2fr 1.2fr 2fr;
         width: 100%;
         grid-auto-rows: auto;
 
@@ -604,16 +610,6 @@ $side-padding: 1.2em;
             width: 80px;
         }
     }
-    .reference {
-        @include mobile {
-            display: flex;
-            flex-direction: row;
-
-            &__row-title {
-                margin-right: 4px;
-            }
-        }
-    }
     .table__row {
         padding: 0 0.8rem;
     }
@@ -623,8 +619,8 @@ $side-padding: 1.2em;
 .open-positions-multiplier {
     .open-positions {
         &__row {
-            /*                     icon multiplier stake cancellation buy_price  limit_order current_stake total_profit_loss action */
-            grid-template-columns: 5.5rem 6rem 1fr 1fr 1fr 1fr 1fr 1.1fr 10rem;
+            /* icon multiplier currency stake cancellation buy_price limit_order current_stake total_profit_loss action */
+            grid-template-columns: 0.5fr 0.9fr 0.8fr 0.8fr 1.5fr 1fr 1fr 1.2fr 1.1fr 1.2fr;
 
             &-action {
                 display: flex;

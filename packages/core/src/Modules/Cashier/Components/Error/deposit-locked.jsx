@@ -26,7 +26,7 @@ const DepositsLocked = ({
     const has_poa_submitted = document.status !== 'none';
     const deposit_desc = standpoint.iom
         ? localize(
-              'We were unable to verify your information automatically. To enable this feature you must complete the following:'
+              'We were unable to verify your information automatically. To enable this function, you must complete the following:'
           )
         : localize('To enable this feature you must complete the following:');
     const poi_text = has_poi_submitted

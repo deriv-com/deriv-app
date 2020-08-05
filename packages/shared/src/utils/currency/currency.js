@@ -91,6 +91,78 @@ export const CryptoConfig = (() => {
             pa_min_withdrawal: 0.002,
             fractional_digits: 8,
         },
+        BUSD: {
+            display_code: 'BUSD',
+            name: 'Binance USD',
+            min_withdrawal: 0.002,
+            pa_max_withdrawal: 5,
+            pa_min_withdrawal: 0.002,
+            fractional_digits: 2,
+        },
+        DAI: {
+            display_code: 'DAI',
+            name: 'Multi-Collateral DAI',
+            min_withdrawal: 0.002,
+            pa_max_withdrawal: 5,
+            pa_min_withdrawal: 0.002,
+            fractional_digits: 2,
+        },
+        EURS: {
+            display_code: 'EURS',
+            name: 'STATIS Euro',
+            min_withdrawal: 0.002,
+            pa_max_withdrawal: 5,
+            pa_min_withdrawal: 0.002,
+            fractional_digits: 2,
+        },
+        IDK: {
+            display_code: 'IDK',
+            name: 'IDK',
+            min_withdrawal: 0.002,
+            pa_max_withdrawal: 5,
+            pa_min_withdrawal: 0.002,
+            fractional_digits: 2,
+        },
+        PAX: {
+            display_code: 'PAX',
+            name: 'Paxos Standard',
+            min_withdrawal: 0.002,
+            pa_max_withdrawal: 5,
+            pa_min_withdrawal: 0.002,
+            fractional_digits: 2,
+        },
+        TUSD: {
+            display_code: 'TUSD',
+            name: 'True USD',
+            min_withdrawal: 0.002,
+            pa_max_withdrawal: 5,
+            pa_min_withdrawal: 0.002,
+            fractional_digits: 2,
+        },
+        USDC: {
+            display_code: 'USDC',
+            name: 'USD Coin',
+            min_withdrawal: 0.002,
+            pa_max_withdrawal: 5,
+            pa_min_withdrawal: 0.002,
+            fractional_digits: 2,
+        },
+        USDK: {
+            display_code: 'USDK',
+            name: 'USDK',
+            min_withdrawal: 0.002,
+            pa_max_withdrawal: 5,
+            pa_min_withdrawal: 0.002,
+            fractional_digits: 2,
+        },
+        eUSDT: {
+            display_code: 'eUSDT',
+            name: 'Tether ERC20',
+            min_withdrawal: 0.002,
+            pa_max_withdrawal: 5,
+            pa_min_withdrawal: 0.002,
+            fractional_digits: 2,
+        },
         BCH: {
             display_code: 'BCH',
             name: 'Bitcoin Cash',
@@ -201,9 +273,7 @@ export const getCurrencyDisplayCode = (currency = '') => {
     return getPropertyValue(CryptoConfig.get(), [currency.toUpperCase(), 'display_code']) || currency.toUpperCase();
 };
 
-export const getCurrencyName = currency => {
-    return getPropertyValue(CryptoConfig.get(), [currency, 'name']) || '';
-};
+export const getCurrencyName = (currency = '') => getPropertyValue(currencies_config, [currency, 'name']) || '';
 
 export const getMinPayout = currency => {
     return getPropertyValue(currencies_config, [currency, 'stake_default']);

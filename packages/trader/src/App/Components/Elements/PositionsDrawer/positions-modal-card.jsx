@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
+import CurrencyBadge from 'App/Components/Elements/currency-badge.jsx';
 import { Button, Icon, Money } from '@deriv/components';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { BinaryLink } from 'App/Components/Routes';
@@ -81,6 +82,7 @@ const PositionsModalCard = ({
                     </div>
                 </CSSTransition>
             </div>
+            <CurrencyBadge className='contract-card__currency-indicator' currency={contract_info?.currency ?? ''} />
             <div className={classNames('positions-modal-card__grid', 'positions-modal-card__grid-body')}>
                 <div className={classNames('positions-modal-card__grid-profit-payout')}>
                     <div

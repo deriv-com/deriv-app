@@ -122,7 +122,7 @@ const CardBody = ({ contract_info, contract_update, currency, is_multiplier, sta
                         'positions-drawer-card__profit-loss-label'
                     )}
                 >
-                    {is_sold ? localize('Profit/Loss:') : localize('Potential profit/loss:')}
+                    {is_sold ? localize('Profit/Loss:') : localize('Indicative profit/loss:')}
                 </div>
                 <div
                     className={classNames(
@@ -169,7 +169,7 @@ const CardBody = ({ contract_info, contract_update, currency, is_multiplier, sta
                     </span>
                 </div>
                 <div className='positions-drawer-card__payout-price'>
-                    <span className='positions-drawer-card__payout-label'>{localize('Potential payout:')}</span>
+                    <span className='positions-drawer-card__payout-label'>{localize('Payout limit:')}</span>
                     <span className='positions-drawer-card__payout-value'>
                         {contract_info.payout ? (
                             <Money amount={contract_info.payout} currency={currency} />

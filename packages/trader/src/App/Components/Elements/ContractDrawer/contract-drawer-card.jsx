@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import CurrencyBadge from 'App/Components/Elements/currency-badge.jsx';
 import { DesktopWrapper, MobileWrapper, Collapsible } from '@deriv/components';
 import ContractCard from 'App/Components/Elements/ContractCard';
 import CardBody from './contract-drawer-card-body.jsx';
@@ -50,6 +51,7 @@ const ContractDrawerCard = ({
             is_sold={!!is_sold}
         >
             <CardHeader contract_info={contract_info} has_progress_slider={!is_multiplier} />
+            <CurrencyBadge className='contract-card__currency-indicator' currency={contract_info?.currency ?? ''} />
             {card_body_wrapper}
             <CardFooter
                 contract_info={contract_info}

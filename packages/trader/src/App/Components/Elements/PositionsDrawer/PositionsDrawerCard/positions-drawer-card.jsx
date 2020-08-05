@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import CurrencyBadge from 'App/Components/Elements/currency-badge.jsx';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import CardHeader from './positions-drawer-card-header.jsx';
@@ -39,6 +40,7 @@ const PositionsDrawerCard = ({
     const contract_el = (
         <React.Fragment>
             <CardHeader contract_info={contract_info} has_progress_slider={!is_multiplier} />
+            <CurrencyBadge className='positions-drawer-card__currency-indicator' currency={currency} />
             <CardBody
                 contract_info={contract_info}
                 contract_update={contract_update}

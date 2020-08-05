@@ -10,7 +10,6 @@ import CashierLocked from './cashier-locked.jsx';
 
 const DepositsLocked = ({
     account_status,
-    is_age_verified,
     is_tnc_needed,
     is_financial_information_incomplete,
     is_trading_experience_incomplete,
@@ -25,12 +24,11 @@ const DepositsLocked = ({
     const is_poa_needed = needs_verification.includes('document');
     const has_poi_submitted = identity.status !== 'none';
     const has_poa_submitted = document.status !== 'none';
-    const deposit_desc =
-        standpoint.iom && !is_age_verified
-            ? localize(
-                  'We were unable to verify your information automatically. To enable this feature you must complete the following:'
-              )
-            : localize('To enable this feature you must complete the following:');
+    const deposit_desc = standpoint.iom
+        ? localize(
+              'We were unable to verify your information automatically. To enable this feature you must complete the following:'
+          )
+        : localize('To enable this feature you must complete the following:');
     const poi_text = has_poi_submitted
         ? localize('Check proof of identity document verification status')
         : localize('Upload an ID document to verify your identity');
@@ -132,7 +130,6 @@ export default connect(({ client, modules }) => ({
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_financial_account: client.is_financial_account,
-    is_age_verified: client.is_age_verified,
     is_ask_financial_risk_approval: modules.cashier.config.deposit.error.is_ask_financial_risk_approval,
     onMount: modules.cashier.onMount,
     standpoint: client.standpoint,

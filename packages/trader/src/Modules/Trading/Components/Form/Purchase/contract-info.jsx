@@ -11,7 +11,12 @@ const CancelDealInfo = ({ amount, currency, error }) => {
             <div className='trade-container__price-info-basis'>{localize('Deal cancel. fee')}</div>
             <div className='trade-container__price-info-value'>
                 {!error && (
-                    <Money amount={amount} className='trade-container__price-info-currency' currency={currency} />
+                    <Money
+                        amount={amount}
+                        className='trade-container__price-info-currency'
+                        currency={currency}
+                        show_currency
+                    />
                 )}
             </div>
         </React.Fragment>
@@ -26,6 +31,7 @@ const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_i
                     amount={proposal_info.obj_contract_basis.value}
                     className='trade-container__price-info-currency'
                     currency={currency}
+                    show_currency
                 />
             )}
         </div>

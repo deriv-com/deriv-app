@@ -68,6 +68,9 @@
             height: 0;
         }
     }
+    & .dc-themed-scrollbars {
+        height: 100%;
+    }
 }
 
 .dc-modal-header--real-account-signup-modal {
@@ -80,15 +83,16 @@
     height: 100%;
     position: relative;
     width: 100%;
-    @include desktop {
-        overflow: auto;
-    }
     @include mobile {
         grid-template-rows: 7rem minmax(10rem, 1fr);
     }
 
     &.add-or-manage {
         grid-template-rows: 1fr 1fr;
+
+        & .dc-form-submit-button {
+            padding: 2rem;
+        }
         @include desktop {
             & form {
                 grid-template-rows: auto;
@@ -311,9 +315,13 @@
         color: var(--text-prominent);
         text-align: center;
     }
+    &__title {
+        margin-top: 3rem;
+    }
     &__sub-title {
         font-size: var(--text-size-xxs);
         font-weight: normal;
+        margin-bottom: 1rem;
     }
     @include tablet {
         form {

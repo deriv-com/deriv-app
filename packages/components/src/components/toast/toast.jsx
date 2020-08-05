@@ -3,14 +3,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 
-const ToastError = ({ children, className, is_open = true, onClose, onClick, timeout = 0 }) => {
+const Toast = ({ children, className, is_open = true, onClose, onClick, type = 'info', timeout = 0 }) => {
     const [is_visible, setVisible] = React.useState(false);
 
     React.useEffect(() => {
         setVisible(is_open);
 
         if (timeout) {
-            const timeout_id = setTimeout(() => setVisible(false), timeout);
+            const timeout_id = setTimeout(() => {
+                setVisible(false);
+            }, timeout);
             return () => clearTimeout(timeout_id);
         }
 
@@ -29,25 +31,33 @@ const ToastError = ({ children, className, is_open = true, onClose, onClick, tim
                 setVisible(false);
             }}
             classNames={{
-                appear: 'dc-toast-error--enter',
-                enter: 'dc-toast-error--enter',
-                enterDone: 'dc-toast-error--enter-done',
-                exit: 'dc-toast-error--exit',
+                appear: 'dc-toast--enter',
+                enter: 'dc-toast--enter',
+                enterDone: 'dc-toast--enter-done',
+                exit: 'dc-toast--exit',
             }}
         >
-            <div className={classNames('dc-toast-error', className)} onClick={onClick}>
-                <div className='dc-toast-error__message'>{children}</div>
+            <div
+                className={classNames('dc-toast', className, {
+                    [`dc-toast__${type}`]: type,
+                })}
+                onClick={onClick}
+            >
+                <div className='dc-toast__message'>
+                    <div className='dc-toast__message-content'>{children}</div>
+                </div>
             </div>
         </CSSTransition>
     );
 };
 
-ToastError.propTypes = {
+Toast.propTypes = {
     className: PropTypes.string,
     is_open: PropTypes.bool,
     onClick: PropTypes.func,
     onClose: PropTypes.func,
+    type: PropTypes.oneOf(['error', 'info']),
     timeout: PropTypes.number,
 };
 
-export default ToastError;
+export default Toast;

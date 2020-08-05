@@ -541,17 +541,6 @@
     }
 }
 
-/** @define popup-root */
-@include mobile {
-    .popup-root {
-        /* postcss-bem-linter: ignore */
-        .dc-toast-error {
-            z-index: 9999;
-            top: 2em;
-        }
-    }
-}
-
 /** @define market-unavailable-modal */
 @include mobile {
     .market-unavailable-modal {

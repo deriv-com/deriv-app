@@ -7,7 +7,6 @@ import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mob
 import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile.jsx';
 import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
-import ToastErrorPopup from 'Modules/Trading/Containers/toast-error-popup.jsx';
 import 'Sass/app/modules/trading-mobile.scss';
 
 const DEFAULT_DURATION = Object.freeze({
@@ -100,12 +99,6 @@ class TradeParamsModal extends React.Component {
         const { currency, duration_units_list } = this.props;
         return (
             <React.Fragment>
-                <ToastErrorPopup
-                    portal_id={this.props.is_open ? 'modal_root' : null}
-                    className={classNames('trade-params__error-popup', {
-                        'trade-params__error-popup--has-numpad': this.props.is_open,
-                    })}
-                />
                 <Modal
                     id='dt_trade_parameters_mobile'
                     className='trade-params'

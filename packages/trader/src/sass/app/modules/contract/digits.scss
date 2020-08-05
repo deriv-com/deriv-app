@@ -13,6 +13,7 @@
 
 /** @define digits; weak */
 .digits {
+    $self: &;
     display: flex;
     align-items: center;
     position: relative;
@@ -448,6 +449,11 @@
         }
         &__digit {
             margin: auto;
+        }
+    }
+    @include mobile {
+        @at-root .popup-root #{$self}__toast-info {
+            top: 10.5rem;
         }
     }
 }

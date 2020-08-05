@@ -68,7 +68,7 @@ export { default as SwipeableWrapper } from './components/swipeable-wrapper';
 export { default as RelativeDatepicker } from './components/relative-datepicker';
 export { default as Table } from './components/table';
 export { default as Tabs } from './components/tabs';
-export { default as ToastError } from './components/toast-error';
+export { default as Toast } from './components/toast';
 export { default as ThemedScrollbars } from './components/themed-scrollbars';
 export { default as ToggleSwitch } from './components/toggle-switch';
 export { default as TickPicker } from './components/tick-picker';

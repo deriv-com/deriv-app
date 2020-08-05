@@ -4,7 +4,6 @@ import { Div100vhContainer, Tabs, Modal, Money, RadioGroup, Icon } from '@deriv/
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
-import ToastErrorPopup from 'Modules/Trading/Containers/toast-error-popup.jsx';
 import 'Sass/app/modules/trading-mobile.scss';
 
 const MultiplierTradeParamsModal = ({ is_open, enableApp, disableApp, toggleModal, form_components }) => {
@@ -27,12 +26,6 @@ const MultiplierTradeParamsModal = ({ is_open, enableApp, disableApp, toggleModa
 
     return (
         <React.Fragment>
-            <ToastErrorPopup
-                portal_id={is_open ? 'modal_root' : null}
-                className={classNames('trade-params__error-popup', {
-                    'trade-params__error-popup--has-numpad': is_open,
-                })}
-            />
             <Modal
                 id='dt_trade_parameters_mobile'
                 className='trade-params'

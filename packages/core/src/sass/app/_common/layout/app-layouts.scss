@@ -36,13 +36,20 @@
     .modal-root {
         height: 100% !important;
     }
-    .deriv-app,
-    .modal-root {
-        .dc-toast-error {
-            top: 4.8rem;
+    .popup-root {
+        > .dc-toast {
+            top: #{$HEADER_HEIGHT};
             z-index: 3;
-            width: fit-content;
             margin: auto;
+            position: relative;
+        }
+        .dc-toast-popup {
+            max-width: calc(100vw - 1.6rem);
+            left: 1.6rem;
+            width: calc(100vw - 3.2rem);
+            top: #{$HEADER_HEIGHT};
+            position: absolute;
+            right: 1.6rem;
         }
     }
 }

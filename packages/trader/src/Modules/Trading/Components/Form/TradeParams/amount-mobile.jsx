@@ -6,6 +6,7 @@ import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const Basis = ({
+    addToast,
     duration_unit,
     duration_value,
     toggleModal,
@@ -20,8 +21,6 @@ const Basis = ({
     trade_duration,
     trade_duration_unit,
     setAmountError,
-    setToastErrorMessage,
-    setToastErrorVisibility,
 }) => {
     const user_currency_decimal_places = getDecimalPlaces(currency);
     const onNumberChange = num => {
@@ -53,17 +52,14 @@ const Basis = ({
         const selected_value = parseFloat(value.toString());
 
         if (value.toString() === '0.' || selected_value === 0) {
-            setToastErrorMessage(localized_message, 2000);
-            setToastErrorVisibility(true);
+            addToast({ key: 'amount_error', content: localized_message, type: 'error', timeout: 2000 });
             setAmountError(true);
             return 'error';
         } else if (isNaN(selected_value) || selected_value < min_amount || value.toString().length < 1) {
-            setToastErrorMessage(localized_message, 2000);
-            setToastErrorVisibility(true);
+            addToast({ key: 'amount_error', content: localized_message, type: 'error', timeout: 2000 });
             setAmountError(true);
             return false;
         }
-        setToastErrorVisibility(false);
         setAmountError(false);
         return true;
     };
@@ -102,8 +98,7 @@ const AmountWrapper = connect(({ modules, client, ui }) => ({
     trade_duration_unit: modules.trade.duration_unit,
     trade_duration: modules.trade.duration,
     currency: client.currency,
-    setToastErrorMessage: ui.setToastErrorMessage,
-    setToastErrorVisibility: ui.setToastErrorVisibility,
+    addToast: ui.addToast,
 }))(Basis);
 
 const Amount = ({

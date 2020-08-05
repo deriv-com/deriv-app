@@ -115,9 +115,7 @@ export default class UIStore extends BaseStore {
     @observable is_eu_enabled = false; // TODO: [deriv-eu] - Remove this constant when all EU sections are done.
 
     // Mobile
-    @observable should_show_toast_error = false;
-    @observable mobile_toast_error = '';
-    @observable mobile_toast_timeout = 1500;
+    mobile_toast_timeout = 3500;
     @observable.shallow toasts = [];
 
     @observable is_mt5_page = false;
@@ -619,17 +617,6 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    setToastErrorVisibility(status) {
-        this.should_show_toast_error = status;
-    }
-
-    @action.bound
-    setToastErrorMessage(msg, timeout = 1500) {
-        this.mobile_toast_timeout = timeout;
-        this.mobile_toast_error = msg;
-    }
-
-    @action.bound
     addToast(toast_config) {
         if (toast_config.key) {
             const toast_index = this.toasts.findIndex(t => t.key === toast_config.key);
@@ -637,7 +624,7 @@ export default class UIStore extends BaseStore {
                 this.toasts.splice(toast_index, 1);
             }
 
-            toast_config.timeout = toast_config.timeout || 3500;
+            toast_config.timeout = toast_config.timeout ?? this.mobile_toast_timeout;
             if (toast_config.is_bottom) {
                 this.toasts.push(toast_config);
             } else {

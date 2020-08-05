@@ -112,7 +112,9 @@ const compareAccountsData = ({ landing_companies }) =>
                 <MT5AttributeDescriber
                     name={localize('Commission')}
                     counter={4}
-                    tooltip={localize('Deriv charges no commission across all account types, except cryptocurrencies.')}
+                    tooltip={localize(
+                        'Deriv charges no commission across all account types, except for cryptocurrencies.'
+                    )}
                 />
             ),
             synthetic: localize('No'),

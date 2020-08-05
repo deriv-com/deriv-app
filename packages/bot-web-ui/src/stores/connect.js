@@ -25,7 +25,7 @@ function injectStorePropsToComponent(propsToSelectFn, BaseComponent) {
 }
 
 export const MobxContentProvider = ({ store, children }) => {
-    return <MobxContent.Provider value={{ ...store, mobxStores: store }}>{children}</MobxContent.Provider>;
+    return <MobxContent.Provider value={{ ...store, ...store.core }}>{children}</MobxContent.Provider>;
 };
 
 export const connect = propsToSelectFn => Component => injectStorePropsToComponent(propsToSelectFn, Component);

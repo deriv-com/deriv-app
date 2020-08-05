@@ -21,7 +21,7 @@ const Download = ({ tab, onClickDownloadTransaction, onClickDownloadJournal, is_
                 classNameBubble='run-panel__info--bubble'
                 alignment='bottom'
                 message={popover_message}
-                zIndex={4}
+                zIndex={5}
             >
                 <Button
                     id='download-button'

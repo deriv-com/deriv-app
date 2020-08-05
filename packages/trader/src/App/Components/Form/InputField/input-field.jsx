@@ -296,13 +296,7 @@ class InputField extends React.Component {
             <React.Fragment>
                 {!!prefix && (
                     <div className={classNamePrefix}>
-                        <span
-                            className={classNames(
-                                `${classNamePrefix}--symbol`,
-                                'symbols',
-                                `symbols--${prefix.toLowerCase()}`
-                            )}
-                        />
+                        <span className={classNames(`${classNamePrefix}--symbol`, 'symbols')}>{currency}</span>
                     </div>
                 )}
                 <div className={classNames('input-field', className)} onClick={onClickInputWrapper}>

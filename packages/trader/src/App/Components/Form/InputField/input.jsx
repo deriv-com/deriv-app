@@ -64,10 +64,11 @@ const Input = ({
                         className={classNames(
                             classNameInlinePrefix ? `${classNameInlinePrefix}--symbol` : '',
                             'symbols',
-                            `symbols--${inline_prefix.toLowerCase()}`,
                             { disabled: !!is_disabled }
                         )}
-                    />
+                    >
+                        {inline_prefix}
+                    </span>
                 </div>
             )}
             <input

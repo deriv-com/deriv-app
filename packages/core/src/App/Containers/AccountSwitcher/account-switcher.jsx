@@ -533,6 +533,7 @@ class AccountSwitcher extends React.Component {
                                 this.is_real_account_tab ? this.total_real_assets : this.total_demo_assets,
                                 true
                             )}
+                            show_currency
                             should_format={false}
                         />
                     </span>

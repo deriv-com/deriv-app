@@ -101,9 +101,10 @@
     }
     @include mobile {
         &__balance {
+            font-size: 1.4rem;
+
             &--no-currency {
                 white-space: nowrap;
-                font-size: 1.4rem;
             }
         }
     }

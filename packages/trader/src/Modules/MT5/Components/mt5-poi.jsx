@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer } from '@deriv/components';
+import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal } from '@deriv/components';
 import { ProofOfIdentityContainer } from '@deriv/account';
 import { WS } from 'Services/ws-methods';
 import { isDesktop } from '@deriv/shared';
@@ -59,14 +59,16 @@ class MT5POI extends React.PureComponent {
                                             is_description_enabled={false}
                                         />
                                     </Div100vhContainer>
-                                    <FormSubmitButton
-                                        has_cancel
-                                        cancel_label={localize('Previous')}
-                                        is_disabled={!['pending', 'verified'].includes(this.state.poi_state)}
-                                        label={localize('Next')}
-                                        onCancel={this.props.onCancel}
-                                        form_error={this.props.form_error}
-                                    />
+                                    <Modal.Footer>
+                                        <FormSubmitButton
+                                            has_cancel
+                                            cancel_label={localize('Previous')}
+                                            is_disabled={!['pending', 'verified'].includes(this.state.poi_state)}
+                                            label={localize('Next')}
+                                            onCancel={this.props.onCancel}
+                                            form_error={this.props.form_error}
+                                        />
+                                    </Modal.Footer>
                                 </div>
                             </form>
                         )}

@@ -113,6 +113,7 @@ class App extends React.Component {
 
     toggleNicknamePopup = () => {
         this.setState({ show_popup: !this.state.show_popup });
+        this.resetNicknameErrorState();
     };
 
     onNicknamePopupClose = () => {

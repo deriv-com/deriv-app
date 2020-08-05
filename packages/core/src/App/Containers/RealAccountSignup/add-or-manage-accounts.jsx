@@ -99,7 +99,8 @@ class AddOrManageAccounts extends React.Component {
                                 <div className='account-wizard--disabled-message'>
                                     <p>
                                         {localize(
-                                            'You already have an account for each of the cryptocurrencies available on Deriv.'
+                                            'You already have an account for each of the cryptocurrencies available on [_1].',
+                                            website_name
                                         )}
                                     </p>
                                 </div>

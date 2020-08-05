@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money } from '@deriv/components';
 import { formatMoney, getCurrencyName } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 
 const AccountList = ({
@@ -77,7 +77,7 @@ const AccountList = ({
     );
 };
 
-const CurrencyDisplay = ({ currency, is_eu, is_virtual, market_type }) => {
+const CurrencyDisplay = ({ currency, is_virtual }) => {
     if (is_virtual) {
         return <Localize i18n_default_text='Demo' />;
     }

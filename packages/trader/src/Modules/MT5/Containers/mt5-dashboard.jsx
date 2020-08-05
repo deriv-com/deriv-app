@@ -127,6 +127,7 @@ class MT5Dashboard extends React.Component {
             beginRealSignupForMt5,
             createMT5Account,
             is_loading,
+            is_logged_in,
             is_eu,
             has_mt5_account,
             has_real_account,
@@ -141,7 +142,11 @@ class MT5Dashboard extends React.Component {
                     <div className='mt5-dashboard'>
                         <div className='mt5-dashboard__welcome-message'>
                             <h1 className='mt5-dashboard__welcome-message--heading'>
-                                <Localize i18n_default_text='Welcome to your MetaTrader 5 (DMT5 account dashboard)' />
+                                {is_logged_in ? (
+                                    <Localize i18n_default_text='Welcome to your MetaTrader 5 (DMT5 account dashboard)' />
+                                ) : (
+                                    <Localize i18n_default_text='Welcome to MetaTrader 5 (DMT5 account dashboard)' />
+                                )}
                             </h1>
                         </div>
                         <div className='mt5-dashboard__accounts-display'>
@@ -153,7 +158,7 @@ class MT5Dashboard extends React.Component {
                                 selected_account_type={this.state.password_manager.selected_account_type}
                                 toggleModal={this.togglePasswordManagerModal}
                             />
-                            {!this.props.is_eu && !hasMoreThanOne(this.props.landing_companies) && (
+                            {!this.props.is_eu && !hasMoreThanOne(this.props.landing_companies) && is_logged_in && (
                                 <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
                             )}
                             <TabOrFlex

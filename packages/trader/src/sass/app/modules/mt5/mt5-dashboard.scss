@@ -806,10 +806,10 @@
         padding: 0;
     }
     & .mt5-tax-identification-number {
-        margin-top: 1em;
+        margin-top: 1rem;
     }
     & .dc-autocomplete {
-        margin-bottom: 2.4em;
+        margin-bottom: 2.4rem;
         &__input-field {
             .dc-input {
                 margin-bottom: 0;
@@ -824,7 +824,7 @@
             width: 25px;
         }
         &-section {
-            margin-top: 0em;
+            margin-top: 0;
             display: flex;
         }
         &-list {
@@ -869,14 +869,14 @@
         }
         &-box {
             display: flex;
-            margin-bottom: 2em;
+            margin-bottom: 2rem;
             align-items: center;
             justify-content: flex-start;
         }
         &-item {
             min-width: 238px;
             width: 100%;
-            margin-left: 1em;
+            margin-left: 1rem;
             font-size: var(--text-size-xxs);
             line-height: 1.5;
             color: var(--text-prominent);
@@ -908,7 +908,7 @@
     &__inline-fields {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        grid-gap: 1em;
+        grid-gap: 1rem;
 
         .dc-dropdown-container {
             margin-top: 0;
@@ -974,6 +974,14 @@
 
         .dc-btn:first-child {
             margin-left: 0;
+        }
+    }
+    .dc-input {
+        &__label {
+            top: 0.9rem;
+        }
+        &__hint {
+            top: 4.8rem;
         }
     }
 }

@@ -28,13 +28,13 @@ const hasMoreThanOne = ({ mt_financial_company, mt_gaming_company }) =>
         ...(mt_gaming_company?.financial ? [true] : []),
     ].length > 1;
 
-const TabOrFlex = ({ landing_companies, children, is_loading, loading_component, ...props }) => {
+const TabOrFlex = ({ landing_companies, children, is_loading, is_logged_in, loading_component, ...props }) => {
     const LoadingComponent = loading_component;
     if (is_loading) {
         return <LoadingComponent />;
     }
 
-    const should_show_tab = hasMoreThanOne(landing_companies);
+    const should_show_tab = hasMoreThanOne(landing_companies) || !is_logged_in;
 
     if (should_show_tab) {
         return <Tabs {...props}>{children}</Tabs>;
@@ -127,6 +127,7 @@ class MT5Dashboard extends React.Component {
             beginRealSignupForMt5,
             createMT5Account,
             is_loading,
+            is_logged_in,
             has_mt5_account,
             has_real_account,
             NotificationMessages,
@@ -158,6 +159,7 @@ class MT5Dashboard extends React.Component {
                             <TabOrFlex
                                 landing_companies={this.props.landing_companies}
                                 active_index={this.state.active_index}
+                                is_logged_in={is_logged_in}
                                 top
                                 center
                                 is_loading={is_loading}

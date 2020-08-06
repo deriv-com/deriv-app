@@ -6,6 +6,7 @@ import { transaction_elements } from '../constants/transactions';
 
 export default class DataCollectionStore {
     constructor(root_store) {
+        // TODO: Remove binary.sx from conditions.
         if (isProduction() || /(.*?)\.binary.sx$/.test(window.location.hostname)) {
             this.root_store = root_store;
 
@@ -81,8 +82,7 @@ export default class DataCollectionStore {
                 return {
                     body: content,
                     headers: {
-                        // Is actually referrer, but no-cors is restrictive.
-                        Accept: window.location.hostname,
+                        Accept: window.location.hostname, // === referrer (no-cors is restrictive).
                         'Content-Type': 'text/plain',
                     },
                 };

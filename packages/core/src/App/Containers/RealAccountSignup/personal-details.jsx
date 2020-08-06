@@ -265,7 +265,7 @@ class PersonalDetails extends React.Component {
                                                                             alignment='right'
                                                                             icon='info'
                                                                             message={localize(
-                                                                                'Tax residence, also known as fiscal residency or redisence for tax purposes, is an important concept for all taxpayers living and working abroad. It determines the tax liabilities that the individual has to beer within a particular country (jurisdiction).'
+                                                                                'The country in which you meet the criteria for paying taxes. Usually the country in which you physically reside.'
                                                                             )}
                                                                             zIndex={9999}
                                                                             disable_message_icon
@@ -302,7 +302,7 @@ class PersonalDetails extends React.Component {
                                                                     message={
                                                                         <Localize
                                                                             i18n_default_text={
-                                                                                'A Tax Identification Number (TIN) is a unique identifying number used for tax purposes by countries (jurisdictions) that observe the Common Reporting Standards. To determine your TIN or its equivalent, follow <0>this link</0>, locate your jurisdiction, and read the information provided on taxation guidelines.'
+                                                                                "Don't know your tax identification number? Click <0>here<0/> to learn more."
                                                                             }
                                                                             components={[
                                                                                 <a

@@ -63,7 +63,7 @@ const LiveChat = ({
                             onClick={() => {
                                 window.LC_API.open_chat_window();
                             }}
-                            id='gtm-deriv-livechat'
+                            className='gtm-deriv-livechat'
                         >
                             <Icon icon='IcLiveChat' className='livechat__icon' />
                             <p className='livechat__title'>{localize('Live chat')}</p>
@@ -81,7 +81,7 @@ const LiveChat = ({
                                 onClick={() => {
                                     window.LC_API.open_chat_window();
                                 }}
-                                id='gtm-deriv-livechat'
+                                className='gtm-deriv-livechat'
                             />
                         </Popover>
                     )}

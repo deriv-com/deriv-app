@@ -20,8 +20,31 @@
         color: var(--text-general);
         margin-bottom: 1.6rem;
     }
-    .change-currency {
-        height: 60vh;
+    .account-wizard--disabled {
+        .currency-list__items {
+            margin-top: 6rem;
+        }
+        &-message p:first-child {
+            margin-top: 6rem;
+            padding-top: 1.1rem;
+            background-color: var(--general-section-1);
+            font-size: 1.2rem;
+            height: 58px;
+            vertical-align: middle;
+            border-radius: $BORDER_RADIUS;
+        }
+    }
+    @include desktop {
+        .currency-selector__radio-group {
+            margin-bottom: 6rem;
+        }
+        .add-crypto-currency {
+            padding: 0 20px 20px 0;
+        }
+        .dc-form-submit-button--absolute {
+            position: fixed;
+            padding: 1.4rem;
+        }
     }
 
     @include mobile {
@@ -37,8 +60,35 @@
                 margin: 0 1.6rem;
             }
         }
+        .currency-selector__radio-group {
+            margin-bottom: 12rem;
+        }
+        .dc-form-submit-button--relative {
+            height: 72px;
+            position: fixed;
+            padding: 15px;
+            bottom: 56px;
+            border-top: 2px solid var(--general-section-1);
+        }
         & .change-currency {
-            margin-bottom: 1.6rem;
+            .currency-list__items {
+                margin-bottom: 12rem;
+            }
+            .dc-form-submit-button--relative {
+                position: fixed;
+                background-color: unset;
+            }
+        }
+        .account-wizard--disabled {
+            &-message p:first-child {
+                width: 100%;
+                height: 75px;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            .currency-list__items {
+                margin-top: 8rem;
+            }
         }
     }
 }

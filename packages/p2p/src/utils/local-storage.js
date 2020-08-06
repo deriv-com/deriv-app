@@ -17,7 +17,6 @@ class LocalStorage {
         if (!this.notification_listeners.some(listener => listener === callback)) {
             this.notification_listeners.push(callback);
         }
-        this.notification_listeners.push(callback);
     }
 
     hasReadNotification(order_id) {

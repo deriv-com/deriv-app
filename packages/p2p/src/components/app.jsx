@@ -72,10 +72,7 @@ class App extends React.Component {
 
         if (LocalStorage) {
             this.setState({ notification_count: LocalStorage.getTotalNotificationCount() });
-
-            LocalStorage.addNotificationListener(notification_count => {
-                this.setState({ notification_count });
-            });
+            LocalStorage.addNotificationListener(this.setNotificationCount);
         }
 
         waitWS('authorize').then(() => {
@@ -215,6 +212,10 @@ class App extends React.Component {
         }
 
         this.setState({ chat_info });
+    };
+
+    setNotificationCount = notification_count => {
+        this.setState({ notification_count });
     };
 
     handleNotifications = (old_orders, new_orders) => {

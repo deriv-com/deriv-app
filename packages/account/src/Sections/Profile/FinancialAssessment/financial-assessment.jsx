@@ -142,7 +142,7 @@ class FinancialAssessment extends React.Component {
                 // TODO: Find a better solution for handling no-op instead of using is_mounted flags
                 if (this.is_mounted) {
                     const needs_financial_assessment =
-                        this.props.account_status.status.includes('financial_information_not_complete') ||
+                        this.props.account_status?.status?.includes('financial_information_not_complete') ||
                         this.props.is_high_risk;
 
                     if (data.error) {

@@ -85,7 +85,7 @@ class ConnectedApps extends React.Component {
                                 className='connected-apps'
                                 data_source={this.state.connected_apps}
                                 columns={GetConnectedAppsColumnsTemplate(this.handleToggleModal)}
-                                custom_width={'100%'}
+                                custom_width='100%'
                                 getRowSize={() => 56}
                                 is_empty={false}
                             />
@@ -94,7 +94,7 @@ class ConnectedApps extends React.Component {
                             <DataList
                                 className='connected-apps'
                                 data_source={this.state.connected_apps}
-                                custom_width={'100%'}
+                                custom_width='100%'
                                 getRowSize={() => 128}
                                 is_empty={false}
                                 rowRenderer={this.mobileRowRenderer}

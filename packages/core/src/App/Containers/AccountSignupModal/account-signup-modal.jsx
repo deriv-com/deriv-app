@@ -59,6 +59,12 @@ class AccountSignup extends React.Component {
         // Error would be returned on invalid token (and the like) cases.
         // TODO: Proper error handling (currently we have no place to put the message)
         if (error) {
+            console.warn(error);
+            // this.root_store.common.setServicesError({
+            //     type: response.msg_type,
+            //     ...response.error,
+            // });
+            // this.root_store.ui.toggleServicesErrorModal(true);
             throw Error(error);
         }
     };

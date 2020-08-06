@@ -57,12 +57,13 @@ const filterAvailableAccounts = (landing_companies, table) => {
     });
 };
 
-const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logged_in }) =>
-    filterAvailableAccounts(landing_companies, [
+const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logged_in }) => {
+    const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+    return filterAvailableAccounts(landing_companies, [
         {
             attribute: <MT5AttributeDescriber name={localize('Account currency')} />,
-            synthetic: localize('USD'),
-            financial: localize('USD'),
+            synthetic: show_eu_related ? localize('EUR') : localize('USD'),
+            financial: show_eu_related ? localize('EUR/GBP') : localize('USD'),
             financial_stp: localize('USD'),
         },
         {
@@ -138,7 +139,7 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
                 />
             ),
             synthetic: localize('100%'),
-            financial: localize('150%'),
+            financial: show_eu_related ? localize('100%') : localize('150%'),
             financial_stp: localize('150%'),
         },
         {
@@ -152,7 +153,7 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
                 />
             ),
             synthetic: localize('50%'),
-            financial: localize('75%'),
+            financial: show_eu_related ? localize('50%') : localize('75%'),
             financial_stp: localize('75%'),
         },
         {
@@ -176,13 +177,13 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
         {
             attribute: <MT5AttributeDescriber name={localize('Trading instruments')} />,
             synthetic: localize('Synthetics'),
-            financial:
-                (is_logged_in && is_eu) || (!is_logged_in && is_eu_country)
-                    ? localize('FX-majors (standard), FX-minors, Commodities, Cryptocurrencies')
-                    : localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
+            financial: show_eu_related
+                ? localize('FX-majors (standard), FX-minors, Commodities, Cryptocurrencies')
+                : localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
             financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
         },
     ]);
+};
 
 const MT5CompareAccountHint = () => (
     <div className='mt5-compare-account--hint'>

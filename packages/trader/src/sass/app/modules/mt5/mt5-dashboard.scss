@@ -947,6 +947,9 @@
         @include mobile {
             position: relative;
         }
+        .dc-themed-scrollbars {
+            height: 100%;
+        }
     }
     & .details-form {
         display: grid;

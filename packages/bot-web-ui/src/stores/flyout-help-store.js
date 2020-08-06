@@ -97,17 +97,17 @@ export default class FlyoutHelpStore {
             }
         });
 
-        const getNextBlock = async (xml, current_index, direction) => {
-            const next_index = current_index + (direction ? 1 : -1);
-            const next_blocks_Type = Object.keys(xml).filter((key, index) =>
-                direction ? next_index <= index : next_index >= index
+        const getNextBlock = async (xml, current_index, is_next) => {
+            const next_index = current_index + (is_next ? 1 : -1);
+            const next_blocks_type = Object.keys(xml).filter((key, index) =>
+                is_next ? next_index <= index : next_index >= index
             );
-            const next_filled_block = await this.getFilledBlocksIndex(next_blocks_Type);
+            const next_filled_block = await this.getFilledBlocksIndex(next_blocks_type);
 
-            const next_filled_block_index = direction
+            const next_filled_block_index = is_next
                 ? next_filled_block[0]
                 : next_filled_block[next_filled_block.length - 1];
-            const next_block_type = next_blocks_Type[next_filled_block_index];
+            const next_block_type = next_blocks_type[next_filled_block_index];
 
             if (!next_block_type) {
                 return false;
@@ -117,7 +117,7 @@ export default class FlyoutHelpStore {
                 await import(/* webpackChunkName: `[request]` */ '@deriv/bot-skeleton');
                 return next_block_type;
             } catch (e) {
-                return getNextBlock(xml, next_index, direction);
+                return getNextBlock(xml, next_index, is_next);
             }
         };
 

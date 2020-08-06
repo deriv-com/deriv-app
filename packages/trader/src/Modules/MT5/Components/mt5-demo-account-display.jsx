@@ -6,11 +6,12 @@ import Loading from '../../../templates/_common/components/loading.jsx';
 
 const MT5DemoAccountDisplay = ({
     is_eu,
-    is_eu_enabled,
+    is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
     has_maltainvest_account,
     openAccountNeededModal,
     standpoint,
     is_loading,
+    is_logged_in,
     landing_companies,
     onSelectAccount,
     openAccountTransfer,
@@ -19,6 +20,7 @@ const MT5DemoAccountDisplay = ({
     openPasswordManager,
 }) => {
     const openMt5Account = () => {
+        // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
         if (is_eu_enabled && is_eu && !has_maltainvest_account && standpoint.iom) {
             openAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Demo Financial'));
         } else {
@@ -44,6 +46,7 @@ const MT5DemoAccountDisplay = ({
                         category: 'demo',
                         type: 'synthetic',
                     }}
+                    is_logged_in={is_logged_in}
                     existing_data={current_list['demo.synthetic']}
                     commission_message={<Localize i18n_default_text='No commission' />}
                     onSelectAccount={() =>
@@ -75,6 +78,7 @@ const MT5DemoAccountDisplay = ({
                     has_mt5_account={has_mt5_account}
                     icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
                     title={localize('Financial')}
+                    is_logged_in={is_logged_in}
                     type={{
                         category: 'demo',
                         type: 'financial',
@@ -114,8 +118,14 @@ const MT5DemoAccountDisplay = ({
                         category: 'demo',
                         type: 'financial_stp',
                     }}
+                    is_logged_in={is_logged_in}
                     existing_data={current_list['demo.financial_stp']}
-                    commission_message={<Localize i18n_default_text='No commission' />}
+                    commission_message={
+                        <Localize
+                            i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
+                            components={[<span key={0} className='mt5-dashboard--hint' />]}
+                        />
+                    }
                     onSelectAccount={() =>
                         onSelectAccount({
                             category: 'demo',
@@ -130,7 +140,7 @@ const MT5DemoAccountDisplay = ({
                         })
                     }
                     descriptor={localize(
-                        'Trade major, minor, and exotic currency pairs with Straight-Through Processing (STP) of your orders direct to the market.'
+                        'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
                     )}
                     specs={{
                         [localize('Leverage')]: localize('Up to 1:100'),

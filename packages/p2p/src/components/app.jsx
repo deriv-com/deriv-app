@@ -306,11 +306,7 @@ class App extends React.Component {
     };
 
     changeOrderToggle = value => {
-        if (value === 'active') {
-            this.is_active_tab = true;
-        } else {
-            this.is_active_tab = false;
-        }
+        this.is_active_tab = value === 'active';
         this.setState({ order_table_type: value });
     };
 

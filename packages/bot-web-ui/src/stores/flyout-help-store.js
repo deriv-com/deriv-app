@@ -27,9 +27,6 @@ export default class FlyoutHelpStore {
         const block_type = block_node.getAttribute('type');
         const title = Blockly.Blocks[block_type].meta().display_name;
 
-        /* TODO break each help-string a separate chunk and load it on demand, for this we need to loop
-        through the folder in bot-skeleton webpack and create entrypoint of each file. then import them as :
-        const help_string_obj = await import(/* webpackChunkName: `[request]` `@deriv/bot-skeleton/${block_type}`; */
         const help_string_obj = await import(/* webpackChunkName: `[request]` */ '@deriv/bot-skeleton');
         const start_scale = config.workspaces.flyoutWorkspacesStartScale;
 
@@ -42,7 +39,7 @@ export default class FlyoutHelpStore {
             this.block_node = block_node;
             this.block_type = block_type;
             this.title = title;
-            this.help_string = help_string_obj.default[block_type];
+            this.help_string = help_string_obj[block_type];
         });
 
         if (!flyout.is_search_flyout) {
@@ -53,25 +50,24 @@ export default class FlyoutHelpStore {
     getHelpContent = async block_node => {
         let block_content;
 
+        const help_string_obj = await import(/* webpackChunkName: `[request]` */ '@deriv/bot-skeleton');
+
         if (block_node) {
             const target_blocks = this.xml_list_group[block_node];
             const block_type = target_blocks[0].getAttribute('type');
-            const help_string_obj = await import(/* webpackChunkName: `[request]` */ '@deriv/bot-skeleton');
-            block_content = help_string_obj.default[block_type];
+            block_content = help_string_obj[block_type];
         }
-
         return block_content;
     };
 
-    getFilledHelpContents = async blocks_Type => {
-        const blocks_content = await Promise.all(blocks_Type.map(block => this.getHelpContent(block)));
-        return blocks_content.map((key, index) => (key != null ? index : null)).filter(value => value != null);
+    getFilledBlocksIndex = async blocks_type => {
+        const blocks_content = await Promise.all(blocks_type.map(block => this.getHelpContent(block)));
+        return blocks_content.map((key, index) => (key ? index : null)).filter(value => value !== null);
     };
 
-    getNextHelpContentIndex = async direction => {
-        const filled_blocks_index = await this.getFilledHelpContents(Object.keys(this.xml_list_group));
-
-        return direction ? filled_blocks_index[filled_blocks_index.length - 1] : filled_blocks_index[0];
+    getNextHelpContentIndex = async is_last => {
+        const filled_blocks_index = await this.getFilledBlocksIndex(Object.keys(this.xml_list_group));
+        return is_last ? filled_blocks_index[filled_blocks_index.length - 1] : filled_blocks_index[0];
     };
 
     @action.bound
@@ -106,13 +102,12 @@ export default class FlyoutHelpStore {
             const next_blocks_Type = Object.keys(xml).filter((key, index) =>
                 direction ? next_index <= index : next_index >= index
             );
-            const next_filled_bock = await this.getFilledHelpContents(next_blocks_Type);
+            const next_filled_block = await this.getFilledBlocksIndex(next_blocks_Type);
 
-            const next_filled_bock_lenght = next_filled_bock.length;
-            const next_filled_bock_index = direction
-                ? next_filled_bock[0]
-                : next_filled_bock[next_filled_bock_lenght - 1];
-            const next_block_type = next_blocks_Type[next_filled_bock_index];
+            const next_filled_block_index = direction
+                ? next_filled_block[0]
+                : next_filled_block[next_filled_block.length - 1];
+            const next_block_type = next_blocks_Type[next_filled_block_index];
 
             if (!next_block_type) {
                 return false;
@@ -150,13 +145,14 @@ export default class FlyoutHelpStore {
             key => current_block.getAttribute('type') === key
         );
 
-        const last_content_index = await this.getNextHelpContentIndex(true);
-        const first_content_index = await this.getNextHelpContentIndex(false);
+        const last_filled_content_index = await this.getNextHelpContentIndex(true);
+        const first_filled_content_index = await this.getNextHelpContentIndex(false);
 
         runInAction(() => {
-            this.should_previous_disable = current_index === 0 || current_index === first_content_index;
+            this.should_previous_disable = current_index === 0 || current_index === first_filled_content_index;
             this.should_next_disable =
-                current_index === Object.keys(this.xml_list_group).length - 1 || current_index === last_content_index;
+                current_index === Object.keys(this.xml_list_group).length - 1 ||
+                current_index === last_filled_content_index;
         });
     }
 

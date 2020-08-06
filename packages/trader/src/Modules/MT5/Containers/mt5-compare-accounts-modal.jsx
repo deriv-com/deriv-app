@@ -57,7 +57,7 @@ const filterAvailableAccounts = (landing_companies, table) => {
     });
 };
 
-const compareAccountsData = ({ landing_companies }) =>
+const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logged_in }) =>
     filterAvailableAccounts(landing_companies, [
         {
             attribute: <MT5AttributeDescriber name={localize('Account currency')} />,
@@ -176,7 +176,10 @@ const compareAccountsData = ({ landing_companies }) =>
         {
             attribute: <MT5AttributeDescriber name={localize('Trading instruments')} />,
             synthetic: localize('Synthetics'),
-            financial: localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
+            financial:
+                (is_logged_in && is_eu) || (!is_logged_in && is_eu_country)
+                    ? localize('FX-majors (standard), FX-minors, Commodities, Cryptocurrencies')
+                    : localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
             financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
         },
     ]);
@@ -196,19 +199,19 @@ const MT5CompareAccountHint = () => (
     </div>
 );
 
-const ModalContent = ({ landing_companies }) => {
+const ModalContent = ({ landing_companies, is_eu, is_eu_country, is_logged_in }) => {
     const [cols, setCols] = React.useState([]);
     const [template_columns, updateColumnsStyle] = React.useState('1.5fr 1fr 2fr 1fr');
 
     React.useEffect(() => {
-        setCols(compareAccountsData({ landing_companies }));
+        setCols(compareAccountsData({ landing_companies, is_eu, is_eu_country, is_logged_in }));
 
         updateColumnsStyle(
             `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
                 landing_companies?.mt_financial_company?.financial ? '2fr' : ''
             } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
         );
-    }, [landing_companies.mt_financial_company, landing_companies.mt_gaming_company]);
+    }, [landing_companies.mt_financial_company, landing_companies.mt_gaming_company, is_eu]);
 
     return (
         <div
@@ -263,6 +266,9 @@ const CompareAccountsModal = ({
     is_compare_accounts_visible,
     landing_companies,
     is_loading,
+    is_logged_in,
+    is_eu,
+    is_eu_country,
     toggleCompareAccounts,
 }) => (
     <div className='mt5-compare-accounts-modal__wrapper'>
@@ -287,7 +293,12 @@ const CompareAccountsModal = ({
                     height='696px'
                     width='903px'
                 >
-                    <ModalContent landing_companies={landing_companies} />
+                    <ModalContent
+                        is_logged_in={is_logged_in}
+                        is_eu={is_eu}
+                        is_eu_country={is_eu_country}
+                        landing_companies={landing_companies}
+                    />
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -299,7 +310,12 @@ const CompareAccountsModal = ({
                     onClose={toggleCompareAccounts}
                     footer={<MT5CompareAccountHint />}
                 >
-                    <ModalContent landing_companies={landing_companies} />
+                    <ModalContent
+                        is_logged_in={is_logged_in}
+                        is_eu={is_eu}
+                        is_eu_country={is_eu_country}
+                        landing_companies={landing_companies}
+                    />
                 </MobileDialog>
             </MobileWrapper>
         </React.Suspense>
@@ -311,6 +327,9 @@ export default connect(({ modules, ui, client }) => ({
     enableApp: ui.enableApp,
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
     is_loading: client.is_populating_mt5_account_list,
+    is_eu: client.is_eu,
+    is_eu_country: client.is_eu_country,
+    is_logged_in: client.is_logged_in,
     landing_companies: client.landing_companies,
     toggleCompareAccounts: modules.mt5.toggleCompareAccountsModal,
 }))(CompareAccountsModal);

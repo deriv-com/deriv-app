@@ -73,6 +73,8 @@
         }
     }
     &__residence-field {
+        margin-bottom: 3.2rem;
+
         @include desktop {
             min-width: 30rem;
         }

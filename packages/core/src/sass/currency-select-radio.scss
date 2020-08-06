@@ -5,12 +5,12 @@
         width: 100%;
     }
     &__items {
-        display: flex;
-        justify-content: space-around;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
         width: 100%;
+        justify-items: center;
 
         @include mobile {
-            display: grid;
             grid-template-columns: 1fr 1fr;
         }
     }

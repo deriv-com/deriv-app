@@ -26,7 +26,6 @@ const MT5RealAccountDisplay = ({
     has_maltainvest_account,
     is_fully_authenticated,
     is_pending_authentication,
-    // landing_companies,
     onSelectAccount,
     openAccountTransfer,
     openPasswordModal,
@@ -160,7 +159,7 @@ const MT5RealAccountDisplay = ({
                 onPasswordManager={openPasswordManager}
                 onClickFund={onClickFundRealFinancialStp}
                 descriptor={localize(
-                    'Trade major, minor, and exotic currency pairs with Straight-Through Processing (STP) of your orders direct to the market.'
+                    'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
                 )}
                 specs={real_financial_stp_specs}
                 is_disabled={!is_eu && is_real_financial_stp_disabled}

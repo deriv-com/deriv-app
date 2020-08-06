@@ -12,7 +12,6 @@ const MT5DemoAccountDisplay = ({
     standpoint,
     is_loading,
     is_logged_in,
-    // landing_companies,
     onSelectAccount,
     openAccountTransfer,
     current_list,
@@ -133,7 +132,7 @@ const MT5DemoAccountDisplay = ({
                     })
                 }
                 descriptor={localize(
-                    'Trade major, minor, and exotic currency pairs with Straight-Through Processing (STP) of your orders direct to the market.'
+                    'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
                 )}
                 specs={{
                     [localize('Leverage')]: localize('Up to 1:100'),

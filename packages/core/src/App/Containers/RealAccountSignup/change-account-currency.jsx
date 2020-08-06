@@ -4,6 +4,7 @@ import React from 'react';
 import { FormSubmitButton } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
 import { RadioButtonGroup, RadioButton, reorderFiatCurrencies } from './currency-selector.jsx';
 
 class ChangeAccountCurrency extends React.Component {
@@ -72,7 +73,7 @@ class ChangeAccountCurrency extends React.Component {
                         <FormSubmitButton
                             is_disabled={isSubmitting || !values.fiat}
                             label={localize('Change currency')}
-                            is_absolute
+                            is_absolute={!isMobile()}
                             form_error={this.props.form_error}
                         />
                     </form>

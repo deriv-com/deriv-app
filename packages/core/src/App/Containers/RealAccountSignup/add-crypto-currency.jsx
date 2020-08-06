@@ -4,6 +4,7 @@ import React from 'react';
 import { FormSubmitButton } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { isMobile } from '@deriv/shared';
 import { Hr, RadioButtonGroup, RadioButton } from './currency-selector.jsx';
 
 const messages = [
@@ -139,6 +140,7 @@ class AddCryptoCurrency extends React.Component {
                         <FormSubmitButton
                             is_disabled={isSubmitting || !values.currency}
                             label={localize('Add account')}
+                            is_absolute={!isMobile()}
                             form_error={this.props.form_error}
                         />
                     </form>

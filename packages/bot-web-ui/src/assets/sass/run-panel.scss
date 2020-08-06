@@ -194,6 +194,17 @@
         justify-content: flex-end;
         padding: 1.4rem;
         border-top: 2px solid var(--general-section-2);
+        @include mobile {
+            position: absolute;
+            width: 100%;
+            bottom: 40px;
+            left: 0px;
+
+            &--relative {
+                position: relative;
+                margin-top: 5rem;
+            }
+        }
     }
     &__info {
         margin-bottom: 2rem;

@@ -3,11 +3,15 @@ import PropTypes from 'prop-types';
 import { Input, Button, Modal, MobileWrapper, Div100vhContainer, FadeWrapper, PageOverlay } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { Formik, Form, Field } from 'formik';
+import classNames from 'classnames';
 import { connect } from '../stores/connect';
 
 const SelfExclusionForm = props => {
     const [max_losses_error, setMaxLossesError] = React.useState('');
     const {
+        is_mobile,
+        is_keyboard_active,
+        is_logged_in,
         initial_values,
         api_max_losses,
         onRunButtonClick,
@@ -18,7 +22,7 @@ const SelfExclusionForm = props => {
     } = props;
 
     React.useEffect(() => {
-        if (reality_check_is_visible) {
+        if (reality_check_is_visible || !is_logged_in) {
             resetSelfExclusion();
         }
     });
@@ -88,8 +92,10 @@ const SelfExclusionForm = props => {
             }
         });
         has_max_limit.forEach(item => {
-            if (api_max_losses !== values[item] && api_max_losses < values[item]) {
+            if (api_max_losses !== 0 && api_max_losses !== values[item] && api_max_losses < values[item]) {
                 errors[item] = max_losses_limit_message;
+            } else {
+                setMaxLossesError('');
             }
         });
 
@@ -103,7 +109,7 @@ const SelfExclusionForm = props => {
                     {localize('Enter limits to stop your bot from trading when any of these conditions are met.')}
                 </div>
                 <Formik initialValues={initial_values} validate={validateFields} onSubmit={onSubmitLimits}>
-                    {({ values, errors, isValid, handleChange }) => {
+                    {({ values, touched, errors, isValid, handleChange }) => {
                         return (
                             <Form>
                                 <div className='self-exclusion__form-group'>
@@ -116,7 +122,7 @@ const SelfExclusionForm = props => {
                                                 label={localize('Daily loss limit')}
                                                 value={values.form_max_losses}
                                                 onChange={handleChange}
-                                                error={errors[field.name] || max_losses_error}
+                                                error={max_losses_error || (touched[field.name] && errors[field.name])}
                                                 hint={localize(
                                                     'Limits your potential losses for the day across all Deriv platforms.'
                                                 )}
@@ -135,7 +141,7 @@ const SelfExclusionForm = props => {
                                                     label={localize('Maximum consecutive trades')}
                                                     value={values.run_limit}
                                                     onChange={handleChange}
-                                                    error={errors.run_limit}
+                                                    error={touched[field.name] && errors.run_limit}
                                                     hint={localize(
                                                         'Maximum number of trades your bot will execute for this run.'
                                                     )}
@@ -144,13 +150,22 @@ const SelfExclusionForm = props => {
                                         }}
                                     </Field>
                                 </div>
-                                <div className='self-exclusion__footer'>
+                                <div
+                                    className={classNames('self-exclusion__footer', {
+                                        'self-exclusion__footer--relative': is_mobile && is_keyboard_active,
+                                    })}
+                                >
                                     <Button large text={localize('Cancel')} onClick={resetSelfExclusion} secondary />
                                     <Button
                                         type='submit'
                                         large
                                         text={localize('Apply and run')}
-                                        is_disabled={!isValid || !values.run_limit || !values.form_max_losses}
+                                        is_disabled={
+                                            !isValid ||
+                                            !values.run_limit ||
+                                            !values.form_max_losses ||
+                                            max_losses_error !== ''
+                                        }
                                         primary
                                     />
                                 </div>
@@ -194,7 +209,9 @@ const SelfExclusion = props => {
 };
 
 SelfExclusion.propTypes = {
+    is_keyboard_active: PropTypes.bool,
     is_mobile: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
     is_restricted: PropTypes.bool,
     initial_values: PropTypes.object,
     api_max_losses: PropTypes.number,
@@ -208,7 +225,9 @@ SelfExclusion.propTypes = {
 
 export default connect(({ client, self_exclusion, ui }) => ({
     initial_values: self_exclusion.initial_values,
+    is_keyboard_active: ui.is_keyboard_active,
     is_mobile: ui.is_mobile,
+    is_logged_in: client.is_logged_in,
     is_restricted: self_exclusion.is_restricted,
     api_max_losses: self_exclusion.api_max_losses,
     run_limit: self_exclusion.run_limit,

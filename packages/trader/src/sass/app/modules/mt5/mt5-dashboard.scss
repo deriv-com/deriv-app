@@ -959,12 +959,10 @@
     }
 }
 .dc-modal__container_mt5-financial-stp-signup-modal {
+    max-height: calc(100vh - 102px) !important;
     @include desktop {
         display: grid;
         grid-template-rows: 6rem minmax(20rem, 1fr);
-    }
-    @include tablet {
-        max-height: calc(100vh - 102px); // HEADER and FOOTER
     }
 }
 .dc-modal__container_mt5-password-modal {

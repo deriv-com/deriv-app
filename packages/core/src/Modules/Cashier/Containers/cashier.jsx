@@ -14,7 +14,6 @@ import { getSelectedRoute, isCryptocurrency, isMobile, isTouchDevice, routes } f
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/cashier.scss';
-import { connect } from 'Stores/connect';
 
 const el_landscape_blocker = document.getElementById('landscape_blocker');
 

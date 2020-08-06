@@ -8,11 +8,10 @@ export default class SelfExclusionStore {
     @observable api_max_losses = 0;
     @observable run_limit = -1;
     @observable is_restricted = false;
-    @observable form_has_error = false;
     @computed
     get initial_values() {
         return {
-            form_max_losses: this.api_max_losses || 0,
+            form_max_losses: this.api_max_losses || '',
             run_limit: this.run_limit !== -1 ? this.run_limit : '',
         };
     }
@@ -20,19 +19,10 @@ export default class SelfExclusionStore {
     @computed
     get should_bot_run() {
         const { client } = this.root_store.core;
-        if (
-            client.is_eu &&
-            !client.is_virtual &&
-            (this.api_max_losses === 0 || this.run_limit === -1 || this.form_has_error)
-        ) {
+        if (client.is_eu && !client.is_virtual && (this.api_max_losses === 0 || this.run_limit === -1)) {
             return false;
         }
         return true;
-    }
-
-    @action.bound
-    setFormHasError(has_error) {
-        this.form_has_error = has_error;
     }
 
     @action.bound

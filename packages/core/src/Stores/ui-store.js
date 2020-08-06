@@ -159,13 +159,23 @@ export default class UIStore extends BaseStore {
         ];
 
         super({ root_store, local_storage_properties, store_name });
-
-        window.addEventListener(
-            'load',
-            action('windowLoadSuccess', () => {
-                this.is_window_loaded = true;
-            })
-        );
+        // TODO: Remove after debugging
+        const perfEntries = performance.getEntriesByType('navigation');
+        const already_loaded = perfEntries.every(e => e.loadEventEnd);
+        if (already_loaded) {
+            // eslint-disable-next-line
+            console.log('Window loaded before attaching event listener');
+            this.is_window_loaded = true;
+        } else {
+            // eslint-disable-next-line
+            console.log('Window loaded while we were listening to it.');
+            window.addEventListener(
+                'load',
+                action('windowLoadSuccess', () => {
+                    this.is_window_loaded = true;
+                })
+            );
+        }
 
         // TODO: [deiv-eu] remove this manual enabler
         this.is_eu_enabled = !!+localStorage.getItem('is_eu_enabled');

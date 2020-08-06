@@ -2,6 +2,7 @@ import React from 'react';
 import { Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import {
+    eu_real_financial_specs,
     real_financial_stp_specs,
     real_financial_specs,
     real_synthetic_specs,
@@ -22,6 +23,7 @@ const MT5RealAccountDisplay = ({
     has_real_account,
     is_eu,
     is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled once eu is released.
+    is_eu_country,
     has_malta_account,
     has_maltainvest_account,
     is_fully_authenticated,
@@ -92,7 +94,7 @@ const MT5RealAccountDisplay = ({
             category: 'real',
             type: 'financial_stp',
         });
-
+    const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     return (
         <div className='mt5-real-accounts-display'>
             {landing_companies?.mt_gaming_company?.financial && (
@@ -140,7 +142,7 @@ const MT5RealAccountDisplay = ({
                     descriptor={localize(
                         'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
                     )}
-                    specs={real_financial_specs}
+                    specs={should_show_eu ? eu_real_financial_specs : real_financial_specs}
                     is_logged_in={is_logged_in}
                 />
             )}

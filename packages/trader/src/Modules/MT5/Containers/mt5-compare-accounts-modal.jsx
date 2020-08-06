@@ -77,7 +77,7 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
                 />
             ),
             synthetic: localize('Up to 1:1000'),
-            financial: localize('Up to 1:1000'),
+            financial: show_eu_related ? localize('Up to 1:30') : localize('Up to 1:1000'),
             financial_stp: localize('Up to 1:100'),
         },
         {

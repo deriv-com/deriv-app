@@ -1,8 +1,8 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
-import { addRoutesConfig } from '@deriv/shared/utils/route';
+import { routes } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import Trade from 'Modules/Trading';
 
@@ -39,7 +39,7 @@ const lazyLoadReportComponent = makeLazyLoader(() => import(/* webpackChunkName:
 // Order matters
 const initRoutesConfig = () => [
     { path: routes.contract, component: ContractDetails, title: localize('Contract Details'), is_authenticated: true },
-    { path: routes.mt5, component: MT5, title: localize('MT5'), is_authenticated: true },
+    { path: routes.mt5, component: MT5, title: localize('MT5'), is_authenticated: false },
     {
         path: routes.reports,
         component: lazyLoadReportComponent('Reports'),
@@ -68,7 +68,7 @@ const initRoutesConfig = () => [
             },
         ],
     },
-    { path: routes.trade, component: Trade, title: localize('Trade'), exact: true },
+    { path: routes.trade, component: Trade, title: localize('Trader'), exact: true },
 ];
 
 let routesConfig;
@@ -80,7 +80,6 @@ const getRoutesConfig = () => {
     if (!routesConfig) {
         routesConfig = initRoutesConfig();
         routesConfig.push(route_default);
-        addRoutesConfig(routesConfig);
     }
     return routesConfig;
 };

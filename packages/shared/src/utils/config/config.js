@@ -1,5 +1,5 @@
 // const Cookies = require('js-cookie');
-import { isBot } from '../platform/platform';
+import { isBot } from '../platform';
 
 /*
  * Configuration values needed in js codes
@@ -11,7 +11,9 @@ import { isBot } from '../platform/platform';
  */
 export const domain_app_ids = {
     // these domains as supported "production domains"
-    'deriv.app': 16929,
+    'deriv.app': 16929, // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+    'app.deriv.com': 16929,
+    'binary.com': 1,
 };
 const binary_desktop_app_id = 14473;
 
@@ -37,7 +39,10 @@ export const getAppId = () => {
     } else if (user_app_id.length) {
         window.localStorage.setItem('config.default_app_id', user_app_id);
         app_id = user_app_id;
-    } else if (/staging\.deriv\.app/i.test(window.location.hostname)) {
+    } else if (
+        /staging\.deriv\.app/i.test(window.location.hostname) || // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+        /staging-app\.deriv\.com/i.test(window.location.hostname)
+    ) {
         window.localStorage.removeItem('config.default_app_id');
         app_id = isBot() ? 19112 : 16303; // it's being used in endpoint chrome extension - please do not remove
     } else if (/localhost/i.test(window.location.hostname)) {
@@ -71,7 +76,8 @@ export const getSocketURL = () => {
 };
 
 export const checkAndSetEndpointFromUrl = () => {
-    if (/^(staging\.deriv\.app|(.*)\.binary\.sx)$/i.test(location.hostname)) {
+    // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+    if (/^(staging\.deriv\.app|staging-app\.deriv\.com|(.*)\.binary\.sx)$/i.test(location.hostname)) {
         const url_params = new URLSearchParams(location.search.slice(1));
 
         if (url_params.has('qa_server') && url_params.has('app_id')) {
@@ -91,7 +97,7 @@ export const checkAndSetEndpointFromUrl = () => {
 
             location.href = `${location.protocol}//${location.hostname}${location.pathname}${
                 params ? `?${params}` : ''
-            }${hash ? hash : ''}`;
+            }${hash || ''}`;
         }
     }
 };

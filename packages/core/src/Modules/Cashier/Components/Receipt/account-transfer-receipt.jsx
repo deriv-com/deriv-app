@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Modal, Icon } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -95,7 +95,7 @@ class AccountTransferReceipt extends React.Component {
                         </div>
                     </span>
                 </div>
-                <div className='account-transfer__form-submit'>
+                <div className='account-transfer__receipt-form-submit'>
                     <Button
                         className='account-transfer__button'
                         has_effect
@@ -119,7 +119,7 @@ class AccountTransferReceipt extends React.Component {
                     toggleModal={this.toggleSwitchAlert}
                     enableApp={enableApp}
                     disableApp={disableApp}
-                    has_close_icon={false}
+                    has_close_icon
                     id='account_transfer_switch_modal'
                     small
                     title={localize('Switching accounts')}
@@ -131,7 +131,6 @@ class AccountTransferReceipt extends React.Component {
                         />
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button has_effect text={localize('Cancel')} onClick={this.toggleSwitchAlert} secondary large />
                         <Button has_effect text={localize('OK')} onClick={this.switchAndRedirect} primary large />
                     </Modal.Footer>
                 </Modal>

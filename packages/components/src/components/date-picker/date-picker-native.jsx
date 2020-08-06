@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
-import { toMoment } from '@deriv/shared/utils/date';
-import Icon from 'Components/icon';
+import { toMoment } from '@deriv/shared';
+import Icon from '../icon';
 
 const Native = ({
     id,
+    disabled,
     display_format,
     name,
     error,
@@ -70,6 +71,7 @@ const Native = ({
                 required
                 onBlur={handleBlur}
                 onFocus={handleFocus}
+                disabled={disabled}
                 onChange={e => {
                     onSelect(e.target.value);
                 }}

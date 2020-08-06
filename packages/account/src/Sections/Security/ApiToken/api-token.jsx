@@ -14,14 +14,13 @@ import {
     Clipboard,
     Loading,
 } from '@deriv/components';
-import ObjectUtils from '@deriv/shared/utils/object';
-import DateUtils from '@deriv/shared/utils/date';
+import { getPropertyValue, formatDate } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
-import DemoMessage from 'Components/demo-message';
 import LoadErrorMessage from 'Components/load-error-message';
-import Article from './article.jsx';
+import Article from 'Components/article';
 import Card from './card.jsx';
 
 class ApiToken extends React.Component {
@@ -72,7 +71,7 @@ class ApiToken extends React.Component {
     getScopeValue = (token) => {
         const titled_scopes = token.scopes.map((scope) => this.formatTokenScopes(scope));
         const mapped_scopes = titled_scopes.length === 5 ? localize('All') : titled_scopes.join(', ');
-        const date_format = token.last_used ? DateUtils.formatDate(token.last_used, 'DD/MM/YYYY') : localize('Never');
+        const date_format = token.last_used ? formatDate(token.last_used, 'DD/MM/YYYY') : localize('Never');
 
         return {
             display_name: token.display_name,
@@ -97,7 +96,7 @@ class ApiToken extends React.Component {
             } else {
                 this.setState({
                     is_success: true,
-                    api_tokens: ObjectUtils.getPropertyValue(token_response, ['api_token', 'tokens']),
+                    api_tokens: getPropertyValue(token_response, ['api_token', 'tokens']),
                 });
                 setTimeout(() => {
                     this.setState({ is_success: false });
@@ -115,17 +114,18 @@ class ApiToken extends React.Component {
         if (response.error) {
             this.setState({
                 is_loading: false,
-                error_message: ObjectUtils.getPropertyValue(response, ['error', 'message']),
+                error_message: getPropertyValue(response, ['error', 'message']),
             });
         } else {
             this.setState({
                 is_loading: false,
-                api_tokens: ObjectUtils.getPropertyValue(response, ['api_token', 'tokens']),
+                api_tokens: getPropertyValue(response, ['api_token', 'tokens']),
             });
         }
     };
 
     getApiTokens = async () => {
+        this.setState({ is_loading: true });
         const token_response = await WS.authorized.apiToken({ api_token: 1 });
         this.populateTokenResponse(token_response);
     };
@@ -135,8 +135,8 @@ class ApiToken extends React.Component {
         const token_response = await WS.authorized.apiToken({ api_token: 1, delete_token: token });
         this.populateTokenResponse(token_response);
         this.setState({ is_delete_loading: false, is_delete_success: true });
+        this.closeDialog();
         setTimeout(() => {
-            this.closeDialog();
             this.setState({ is_delete_success: false });
         }, 500);
     };
@@ -150,10 +150,11 @@ class ApiToken extends React.Component {
     };
 
     componentDidMount() {
-        const { is_virtual } = this.props;
-        if (is_virtual) {
-            this.setState({ is_loading: false });
-        } else {
+        this.getApiTokens();
+    }
+
+    componentDidUpdate(prev_props) {
+        if (prev_props.is_switching !== this.props.is_switching && prev_props.is_switching) {
             this.getApiTokens();
         }
     }
@@ -173,9 +174,7 @@ class ApiToken extends React.Component {
             is_delete_loading,
             is_delete_success,
         } = this.state;
-        const { is_virtual, is_switching } = this.props;
-
-        if (is_virtual) return <DemoMessage />;
+        const { is_switching } = this.props;
 
         if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account___intial-loader' />;
 
@@ -440,6 +439,5 @@ class ApiToken extends React.Component {
 }
 
 export default connect(({ client }) => ({
-    is_virtual: client.is_virtual,
     is_switching: client.is_switching,
 }))(ApiToken);

@@ -10,7 +10,7 @@ Blockly.Blocks.block_holder = {
             args0: [
                 {
                     type: 'field_label',
-                    text: 'Ignore %1 %2',
+                    text: 'Ignore',
                     class: 'blocklyTextRootBlockHeader',
                 },
                 {

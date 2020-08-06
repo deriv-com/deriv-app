@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isEmptyObject } from '@deriv/shared';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
-import { measurePerformance } from 'Services/performance-checker';
 import { connect } from 'Stores/connect';
 
 const Purchase = ({
@@ -11,9 +10,10 @@ const Purchase = ({
     contract_type,
     currency,
     has_cancellation,
-    is_client_allowed_to_visit,
+    is_client_allowed_to_visit, // TODO: [deriv-eu] Remove this after complete EU merge into production
     is_multiplier,
     is_mobile,
+    is_purchase_enabled,
     // is_purchase_confirm_on,
     purchased_states_arr,
     // is_purchase_locked,
@@ -22,7 +22,6 @@ const Purchase = ({
     onHoverPurchase,
     // togglePurchaseLock,
     purchase_info,
-    pushLoadPerformance,
     proposal_info,
     setPurchaseState,
     trade_types,
@@ -33,7 +32,7 @@ const Purchase = ({
         const has_validation_error = Object.values(validation_errors).some(e => e.length);
         return !has_validation_error && !info.has_error && !info.id;
     };
-    const is_proposal_empty = ObjectUtils.isEmptyObject(proposal_info);
+    const is_proposal_empty = isEmptyObject(proposal_info);
 
     const components = [];
     Object.keys(trade_types).map((type, index) => {
@@ -43,7 +42,7 @@ const Purchase = ({
             return index;
         };
         const info = proposal_info[type] || {};
-        const is_disabled = !is_trade_enabled || !info.id || !is_client_allowed_to_visit;
+        const is_disabled = !is_trade_enabled || !info.id || !is_client_allowed_to_visit || !is_purchase_enabled;
         const is_proposal_error = is_multiplier ? info.has_error && !info.has_error_details : info.has_error;
         const is_market_close =
             is_proposal_error && info.error_code === 'ContractBuyValidationError' && info.error_field === 'symbol';
@@ -87,11 +86,6 @@ const Purchase = ({
                 break;
         }
     });
-
-    if (components && components.length === 2 && !components[0].props.is_disabled && !components[1].props.is_disabled) {
-        // the moment that both purchase buttons are enabled
-        measurePerformance(pushLoadPerformance);
-    }
     return components;
 };
 
@@ -110,20 +104,19 @@ Purchase.propTypes = {
     proposal_info: PropTypes.object,
     purchase_info: PropTypes.object,
     purchased_states_arr: PropTypes.array,
-    pushLoadPerformance: PropTypes.func,
     setPurchaseState: PropTypes.func,
     // togglePurchaseLock        : PropTypes.func,
     trade_types: PropTypes.object,
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ client, modules, ui, gtm }) => ({
+export default connect(({ client, modules, ui }) => ({
     currency: client.currency,
     is_client_allowed_to_visit: client.is_client_allowed_to_visit,
     basis: modules.trade.basis,
     contract_type: modules.trade.contract_type,
     has_cancellation: modules.trade.has_cancellation,
-    pushLoadPerformance: gtm.pushLoadPerformance,
+    is_purchase_enabled: modules.trade.is_purchase_enabled,
     is_trade_enabled: modules.trade.is_trade_enabled,
     is_multiplier: modules.trade.is_multiplier,
     onClickPurchase: modules.trade.onPurchase,

@@ -1,24 +1,43 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Icon from 'Components/icon/icon.jsx';
+import Icon from '../icon/icon.jsx';
 
 const Content = ({ is_routed, items, selected }) => {
     const selected_item = items.find(item => item.label === selected.label);
     const TabContent = selected_item.value;
+
+    const [side_note, setSideNote] = React.useState(null);
+
+    React.useEffect(() => {
+        setSideNote(null);
+    }, [selected_item]);
+
     return (
         <React.Fragment>
             {is_routed ? (
                 <Switch>
                     {items.map(({ value, component, path, icon }, idx) => {
                         const Component = value || component;
-                        return <Route key={idx} path={path} render={() => <Component component_icon={icon} />} />;
+                        return (
+                            <Route
+                                key={idx}
+                                path={path}
+                                render={() => <Component component_icon={icon} setSideNote={setSideNote} />}
+                            />
+                        );
                     })}
                 </Switch>
             ) : (
-                <TabContent key={selected_item.label} className='item-id' />
+                <TabContent key={selected_item.label} className='item-id' setSideNote={setSideNote} />
             )}
-            {selected_item.has_side_note && <div className='dc-vertical-tab__content-side-note' />}
+            {selected.has_side_note && (
+                // for components that have side note, even if no note is passed currently,
+                // we want to keep the column space for side note
+                <div className='dc-vertical-tab__content-side-note'>
+                    {side_note && <div className='dc-vertical-tab__content-side-note-wrapper'>{side_note}</div>}
+                </div>
+            )}
         </React.Fragment>
     );
 };

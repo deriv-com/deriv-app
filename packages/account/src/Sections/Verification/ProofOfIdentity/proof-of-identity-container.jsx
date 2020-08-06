@@ -29,7 +29,7 @@ class ProofOfIdentityContainer extends React.Component {
                         service: 'onfido',
                     })
                     .then((response) => {
-                        if (response.error || !response.service_token) {
+                        if (response.error || !response.service_token?.onfido) {
                             if (response.error.code === unsupported_country_code) {
                                 this.setState({ onfido_unsupported: true });
                             } else {
@@ -39,7 +39,7 @@ class ProofOfIdentityContainer extends React.Component {
                             return;
                         }
 
-                        const { token } = response.service_token;
+                        const { token } = response.service_token.onfido;
                         const in_90_minutes = 1 / 16;
                         Cookies.set(onfido_cookie_name, token, {
                             expires: in_90_minutes,
@@ -145,6 +145,7 @@ class ProofOfIdentityContainer extends React.Component {
                 has_poa={has_poa}
                 height={this.props.height ?? null}
                 handleComplete={this.handleComplete}
+                redirect_button={this.props.redirect_button}
             />
         );
     }

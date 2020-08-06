@@ -1,12 +1,11 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
-import { Timeline, ThemedScrollbars, DesktopWrapper, MobileWrapper, Clipboard, Icon, Loading } from '@deriv/components';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { Timeline, ThemedScrollbars, Clipboard, Icon, Loading } from '@deriv/components';
+import { getPropertyValue } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import LoadErrorMessage from 'Components/load-error-message';
-import Article from './article.jsx';
 import DigitForm from './digit-form.jsx';
 
 class TwoFactorAuthentication extends React.Component {
@@ -30,7 +29,7 @@ class TwoFactorAuthentication extends React.Component {
             this.setState({ is_loading: false, error_message: generate_response.error.message });
             return;
         }
-        const secret_key = ObjectUtils.getPropertyValue(generate_response, ['account_security', 'totp', 'secret_key']);
+        const secret_key = getPropertyValue(generate_response, ['account_security', 'totp', 'secret_key']);
 
         const qr_secret_key = `otpauth://totp/${this.props.email_address}?secret=${secret_key}&issuer=Deriv.com`;
 
@@ -52,7 +51,7 @@ class TwoFactorAuthentication extends React.Component {
             return;
         }
 
-        const is_enabled = ObjectUtils.getPropertyValue(status_response, ['account_security', 'totp', 'is_enabled']);
+        const is_enabled = getPropertyValue(status_response, ['account_security', 'totp', 'is_enabled']);
 
         if (is_enabled) {
             this.setEnabled(is_enabled);
@@ -107,9 +106,6 @@ class TwoFactorAuthentication extends React.Component {
                 ) : (
                     <div className='two-factor__wrapper'>
                         <ThemedScrollbars autoHide className='two-factor__scrollbars' hideHorizontal={true}>
-                            <MobileWrapper>
-                                <Article />
-                            </MobileWrapper>
                             <h2 className='two-factor__title'>
                                 {localize('How to set up 2FA for your Deriv account')}
                             </h2>
@@ -180,9 +176,6 @@ class TwoFactorAuthentication extends React.Component {
                                 </Timeline>
                             </div>
                         </ThemedScrollbars>
-                        <DesktopWrapper>
-                            <Article />
-                        </DesktopWrapper>
                     </div>
                 )}
             </section>

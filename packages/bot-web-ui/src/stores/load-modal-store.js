@@ -1,7 +1,12 @@
 import { observable, action } from 'mobx';
+import { localize } from '@deriv/translations';
 import { load, config, save_types, getSavedWorkspaces, removeExistingWorkspace } from '@deriv/bot-skeleton';
 
 export default class LoadModalStore {
+    constructor(root_store) {
+        this.root_store = root_store;
+    }
+
     @observable is_load_modal_open = false;
     @observable active_index = 0;
     @observable recent_files = [];
@@ -9,13 +14,10 @@ export default class LoadModalStore {
     @observable is_explanation_expand = false;
     @observable loaded_local_file = null;
     @observable is_open_button_loading = false;
+    @observable should_rerender_tabs = false;
     recent_workspace;
     local_workspace;
     drop_zone;
-
-    constructor(root_store) {
-        this.root_store = root_store;
-    }
 
     @action.bound
     toggleLoadModal() {
@@ -27,12 +29,17 @@ export default class LoadModalStore {
     }
 
     @action.bound
+    rerenderTabs() {
+        this.should_rerender_tabs = true;
+    }
+
+    @action.bound
     setActiveTabIndex(index) {
         this.active_index = index;
 
         // dispose workspace in recent tab when switch tab
         if (this.active_index !== 0 && this.recent_workspace && this.recent_workspace.rendered) {
-            this.recent_workspace.dispose();
+            this.recent_workspace.dispose(true);
         }
 
         // preview workspace when switch to recent tab
@@ -47,7 +54,7 @@ export default class LoadModalStore {
             this.local_workspace &&
             this.local_workspace.rendered
         ) {
-            this.local_workspace.dispose();
+            this.local_workspace.dispose(true);
             this.loaded_local_file = null;
         }
 
@@ -65,7 +72,7 @@ export default class LoadModalStore {
     /** --------- Recent Tab Start --------- */
     @action.bound
     onMount() {
-        if (this.recent_files.length && this.active_index === 0) {
+        if (this.recent_files.length && this.active_index === 0 && !this.root_store.ui.is_mobile) {
             this.selected_file_id = this.recent_files[0].id;
             this.previewWorkspace(this.selected_file_id);
         }
@@ -74,10 +81,11 @@ export default class LoadModalStore {
     @action.bound
     onUnmount() {
         if (this.recent_workspace && this.recent_workspace.rendered) {
-            this.recent_workspace.dispose();
+            this.recent_workspace.dispose(this.active_index === 0);
         }
         this.selected_file_id = null;
         this.setActiveTabIndex(0);
+        this.should_rerender_tabs = false;
     }
 
     @action.bound
@@ -101,8 +109,6 @@ export default class LoadModalStore {
                 readOnly: true,
                 scrollbars: true,
             });
-        } else {
-            this.recent_workspace.clear();
         }
 
         load({ block_string: xml_file, drop_event: {}, workspace: this.recent_workspace });
@@ -161,7 +167,16 @@ export default class LoadModalStore {
 
     // eslint-disable-next-line class-methods-use-this
     getSaveType(save_type) {
-        return save_type.replace(/\b\w/g, l => l.toUpperCase());
+        switch (save_type) {
+            case save_types.UNSAVED:
+                return localize('Unsaved');
+            case save_types.LOCAL:
+                return localize('Local');
+            case save_types.GOOGLE_DRIVE:
+                return localize('Google Drive');
+            default:
+                return localize('Unsaved');
+        }
     }
     /** --------- Recent Tab End --------- */
 
@@ -208,6 +223,7 @@ export default class LoadModalStore {
                 load_options.workspace = Blockly.derivWorkspace;
                 load_options.file_name = file_name;
             }
+
             load(load_options);
         });
         reader.readAsText(file);
@@ -223,7 +239,7 @@ export default class LoadModalStore {
 
     @action.bound
     closePreview() {
-        this.local_workspace.dispose();
+        this.local_workspace.dispose(true);
         this.loaded_local_file = null;
     }
     /** --------- Local Tab End --------- */

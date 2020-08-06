@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import Input from 'Components/input/input.jsx';
-import Button from 'Components/button/button.jsx';
+import { isCryptocurrency } from '@deriv/shared';
+import Input from '../input/input.jsx';
+import Button from '../button/button.jsx';
 
 const getDecimals = val => {
     const array_value = typeof val === 'string' ? val.split('.') : val.toString().split('.');
@@ -12,7 +12,7 @@ const getDecimals = val => {
 
 const StepInput = ({ className, max, min, value, onChange, render, pip_size = 0, currency }) => {
     const getSmallestScale = () => {
-        const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
+        const is_crypto = !!currency && isCryptocurrency(currency);
         const decimal_places = Number.isFinite(+value) ? getDecimals(value) : 0;
         if (is_crypto || (!currency && decimal_places)) {
             return parseFloat(1 * 10 ** (0 - decimal_places));
@@ -34,7 +34,7 @@ const StepInput = ({ className, max, min, value, onChange, render, pip_size = 0,
             increment_value = min;
         } else {
             const decimal_places = Number.isFinite(+value) ? getDecimals(value) : 0;
-            const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
+            const is_crypto = !!currency && isCryptocurrency(currency);
 
             if (is_crypto || (!currency && decimal_places)) {
                 const new_value = parseFloat(+value) + parseFloat(1 * 10 ** (0 - decimal_places));
@@ -57,7 +57,7 @@ const StepInput = ({ className, max, min, value, onChange, render, pip_size = 0,
             increment_value = min;
         } else {
             const decimal_places = Number.isFinite(+value) ? getDecimals(value) : 0;
-            const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
+            const is_crypto = !!currency && isCryptocurrency(currency);
 
             if (is_crypto || (!currency && decimal_places)) {
                 const new_value = parseFloat(+value) - parseFloat(1 * 10 ** (0 - decimal_places));

@@ -2,14 +2,16 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Dialog, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
-import { localize, Localize } from 'Components/i18next';
+import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
+import Empty from 'Components/empty/empty.jsx';
+import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
+import Popup from 'Components/orders/popup.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
+import { height_constants } from 'Utils/height_constants';
 import { requestWS } from 'Utils/websocket';
 import { MyAdsLoader } from './my-ads-loader.jsx';
-import ToggleAds from './toggle-ads.jsx';
-import Popup from '../orders/popup.jsx';
 
 const getHeaders = offered_currency => [
     { text: localize('Ad ID') },
@@ -62,8 +64,8 @@ RowComponent.propTypes = {
 RowComponent.displayName = 'RowComponent';
 
 const MyAdsTable = ({ onClickCreate }) => {
-    const { currency, list_item_limit, is_advertiser } = React.useContext(Dp2pContext);
-    const mounted = React.useRef(false);
+    const { currency, list_item_limit, is_listed } = React.useContext(Dp2pContext);
+    const is_mounted = React.useRef(false);
     const item_offset = React.useRef(0);
     const [is_loading, setIsLoading] = React.useState(true);
     const [api_error_message, setApiErrorMessage] = React.useState('');
@@ -71,21 +73,12 @@ const MyAdsTable = ({ onClickCreate }) => {
     const [selected_ad_id, setSelectedAdId] = React.useState('');
     const [show_popup, setShowPopup] = React.useState(false);
     const [ads, setAds] = React.useState([]);
-    const [is_enabled, setEnabled] = React.useState(true);
 
     React.useEffect(() => {
-        mounted.current = true;
+        is_mounted.current = true;
         loadMoreAds(item_offset.current);
 
-        if (is_advertiser) {
-            requestWS({ p2p_advertiser_info: 1 }).then(response => {
-                if (mounted.current && !response.error) {
-                    setEnabled(!!response.p2p_advertiser_info.is_listed);
-                }
-            });
-        }
-
-        return () => (mounted.current = false);
+        return () => (is_mounted.current = false);
     }, []);
 
     const loadMoreAds = start_idx => {
@@ -95,7 +88,7 @@ const MyAdsTable = ({ onClickCreate }) => {
                 offset: start_idx,
                 limit: list_item_limit,
             }).then(response => {
-                if (mounted.current) {
+                if (is_mounted.current) {
                     if (!response.error) {
                         setHasMoreItemsToLoad(response.length >= list_item_limit);
                         setAds(ads.concat(response));
@@ -142,28 +135,28 @@ const MyAdsTable = ({ onClickCreate }) => {
 
     if (ads.length) {
         const item_height = 56;
-        const height_values = {
-            screen_size: '100vh',
-            header_size: '48px',
-            page_overlay_header: '53px',
-            page_overlay_content_padding: '2.4rem',
-            tabs_height: '36px',
-            my_ads_header: '50px',
-            my_ads_header_margin: '4rem', // 1.6rem + 2.4rem
-            table_header_height: '50px',
-            footer_size: '37px',
-        };
+        const height_values = [
+            height_constants.screen,
+            height_constants.core_header,
+            height_constants.page_overlay_header,
+            height_constants.page_overlay_content_padding,
+            height_constants.tabs,
+            '50px', // p2p-my-ads__header
+            '4rem', // p2p-my-ads__header: 1.6rem + 2.4rem
+            height_constants.table_header,
+            height_constants.core_footer,
+        ];
         return (
             <React.Fragment>
                 <div className='p2p-my-ads__header'>
                     <Button large primary onClick={onClickCreate}>
                         {localize('Create new ad')}
                     </Button>
-                    <ToggleAds is_enabled={is_enabled} onToggle={enabled => setEnabled(enabled)} />
+                    <ToggleAds />
                 </div>
                 <Table
                     className={classNames('p2p-my-ads__table', {
-                        'p2p-my-ads__table--disabled': !is_enabled,
+                        'p2p-my-ads__table--disabled': !is_listed,
                     })}
                 >
                     <Table.Header>
@@ -175,7 +168,7 @@ const MyAdsTable = ({ onClickCreate }) => {
                     </Table.Header>
                     <Table.Body>
                         <InfiniteLoaderList
-                            autosizer_height={`calc(${Object.values(height_values).join(' - ')})`}
+                            autosizer_height={`calc(${height_values.join(' - ')})`}
                             items={ads.slice()}
                             item_size={item_height}
                             row_actions={{ onClickDelete }}
@@ -206,15 +199,11 @@ const MyAdsTable = ({ onClickCreate }) => {
     }
 
     return (
-        <div className='p2p-cashier__empty'>
-            <Icon icon='IcCashierNoAds' className='p2p-cashier__empty-icon' size={128} />
-            <div className='p2p-cashier__empty-title'>
-                <Localize i18n_default_text='You have no ads' />
-            </div>
-            <Button primary large className='p2p-cashier__empty-button' onClick={() => onClickCreate()}>
+        <Empty icon='IcCashierNoAds' title={localize('You have no ads')}>
+            <Button primary large className='p2p-empty__button' onClick={() => onClickCreate()}>
                 {localize('Create new ad')}
             </Button>
-        </div>
+        </Empty>
     );
 };
 

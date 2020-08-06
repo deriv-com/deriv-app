@@ -1,19 +1,17 @@
 import React from 'react';
-import { Button } from '@deriv/components';
-import { urlFor, getDerivComLink } from '@deriv/shared/utils/url';
-import routes from '@deriv/shared/utils/routes';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { urlFor, getDerivComLink, routes, isMobile, formatDate, isEmptyObject } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
-import { formatDate } from '@deriv/shared/utils/date';
-import ObjectUtils from '@deriv/shared/utils/object';
+
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
+import { website_name } from 'App/Constants/app-config';
 import { LocalStore, State } from '_common/storage';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
-export const clientNotifications = (ui = {}) => {
+export const clientNotifications = (ui = {}, client = {}) => {
     const notifications = {
         currency: {
             action: {
@@ -33,14 +31,13 @@ export const clientNotifications = (ui = {}) => {
             header: localize('Self-exclusion detected'),
             message: (
                 <Localize
-                    i18n_default_text='You have opted to be excluded from Binary.com until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
+                    i18n_default_text='You have opted to be excluded from {{website_domain}} until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
                     values={{
+                        website_domain: website_name,
                         exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
                         interpolation: { escapeValue: false },
                     }}
-                    components={[
-                        <a key={0} className='link' target='_blank' href={urlFor('contact', { legacy: true })} />,
-                    ]}
+                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
                 />
             ),
             type: 'danger',
@@ -60,6 +57,14 @@ export const clientNotifications = (ui = {}) => {
             header: localize('Cashier disabled'),
             message: localize(
                 'Deposits and withdrawals have been disabled on your account. Please check your email for more details.'
+            ),
+            type: 'warning',
+        },
+        withdrawal_locked_review: {
+            key: 'withdrawal_locked_review',
+            header: localize('Withdrawal disabled'),
+            message: localize(
+                'Withdrawals have been disabled on your account. Please wait until your uploaded documents are verified.'
             ),
             type: 'warning',
         },
@@ -91,46 +96,21 @@ export const clientNotifications = (ui = {}) => {
             type: 'warning',
         },
         unwelcome: {
+            ...(isMobile() && {
+                action: {
+                    text: localize('Contact us'),
+                    onClick: () => {
+                        window.open(getDerivComLink('contact-us'));
+                    },
+                },
+            }),
             key: 'unwelcome',
             header: localize('Trading and deposits disabled'),
             message: isMobile() ? (
-                <Localize
-                    i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact customer support for assistance.<0/>'
-                    components={[
-                        <React.Fragment key={0}>
-                            <br />
-                            <a className='link link--right' target='_blank' href={getDerivComLink('contact-us')}>
-                                <Button secondary medium text={localize('Contact Us')} />
-                            </a>
-                        </React.Fragment>,
-                    ]}
-                />
+                <Localize i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact customer support for assistance.' />
             ) : (
                 <Localize
                     i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
-                />
-            ),
-            type: 'danger',
-        },
-        mf_retail: {
-            key: 'mf_retail',
-            header: localize('Digital options trading disabled'),
-            message: isMobile() ? (
-                <Localize
-                    i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact customer support for assistance.<0/>'
-                    components={[
-                        <React.Fragment key={0}>
-                            <br />
-                            <a className='link link--right' target='_blank' href={getDerivComLink('contact-us')}>
-                                <Button secondary medium text={localize('Contact Us')} />
-                            </a>
-                        </React.Fragment>,
-                    ]}
-                />
-            ) : (
-                <Localize
-                    i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
                     components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
                 />
             ),
@@ -244,6 +224,34 @@ export const clientNotifications = (ui = {}) => {
             message: localize('Please submit your proof of address.'),
             type: 'warning',
         },
+        needs_poa_virtual: {
+            action: {
+                route: routes.proof_of_address,
+                text: localize('Verify address'),
+            },
+            key: 'needs_poa_virtual',
+            header: localize('Please Verify your address'),
+            message: localize(
+                'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your address.'
+            ),
+            type: 'danger',
+        },
+        needs_poi_virtual: {
+            action: {
+                onClick: async () => {
+                    const { switchAccount, first_switchable_real_loginid } = client;
+
+                    await switchAccount(first_switchable_real_loginid);
+                },
+                text: localize('Verify identity'),
+            },
+            key: 'needs_poi_virtual',
+            header: localize('Please Verify your identity'),
+            message: localize(
+                'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your identity.'
+            ),
+            type: 'danger',
+        },
         poa_expired: {
             action: {
                 route: routes.proof_of_address,
@@ -295,6 +303,7 @@ const hasMissingRequiredField = (account_settings, client) => {
     const { landing_company_shortcode } = client;
     const is_svg = landing_company_shortcode === 'svg' || landing_company_shortcode === 'costarica';
 
+    // TODO: [deriv-eu] refactor into its own function once more exceptions are added.
     let required_fields;
     if (is_svg) {
         required_fields = getSVGRequiredFields();
@@ -347,27 +356,28 @@ const addVerificationNotifications = (identity, document, addNotificationMessage
 };
 
 const checkAccountStatus = (account_status, client, addNotificationMessage, loginid) => {
-    if (ObjectUtils.isEmptyObject(account_status)) return {};
+    if (isEmptyObject(account_status)) return {};
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     const {
-        authentication: { document, identity, needs_verification, prompt_client_to_authenticate },
+        authentication: { document, identity, needs_verification },
+        prompt_client_to_authenticate,
+        risk_classification,
         status,
     } = account_status;
 
     const {
+        authenticated,
         cashier_locked,
         withdrawal_locked,
         mt5_withdrawal_locked,
         document_needs_action,
         unwelcome,
         ukrts_max_turnover_limit_not_set,
-        professional,
     } = getStatusValidations(status);
 
     addVerificationNotifications(identity, document, addNotificationMessage);
 
-    const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
     const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
     const has_risk_assessment = getRiskAssessment(account_status);
     const needs_poa =
@@ -386,11 +396,22 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     if (needs_poa) addNotificationMessage(clientNotifications().needs_poa);
     if (needs_poi) addNotificationMessage(clientNotifications().needs_poi);
     if (cashier_locked) addNotificationMessage(clientNotifications().cashier_locked);
-    if (withdrawal_locked) addNotificationMessage(clientNotifications().withdrawal_locked);
+    if (withdrawal_locked) {
+        // if client is withdrawal locked but it's because they need to authenticate
+        // and they have submitted verification documents,
+        // we should wait for review of documents to be done and show a different message
+        const is_high_risk = risk_classification === 'high';
+        const should_authenticate = !authenticated || prompt_client_to_authenticate;
+        const doc_is_under_review = document.status === 'pending';
+        if (is_high_risk && should_authenticate && doc_is_under_review) {
+            addNotificationMessage(clientNotifications().withdrawal_locked_review);
+        } else {
+            addNotificationMessage(clientNotifications().withdrawal_locked);
+        }
+    }
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
     if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
     if (unwelcome) addNotificationMessage(clientNotifications().unwelcome);
-    if (is_mf_retail) addNotificationMessage(clientNotifications().mf_retail);
 
     if (ukrts_max_turnover_limit_not_set) {
         addNotificationMessage(clientNotifications().financial_limit);

@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
-import { isMobile } from '@deriv/shared/utils/screen';
-import { getDecimalPlaces } from '@deriv/shared/utils/currency';
+import { routes, isMobile, getDecimalPlaces } from '@deriv/shared';
+
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
+import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import { connect } from 'Stores/connect';
 import { clientNotifications } from 'Stores/Helpers/client-notifications';
 import { header_links } from 'App/Constants/header-links';
@@ -26,14 +26,6 @@ class Header extends React.Component {
     onClickDeposit = () => {
         this.props.history.push(routes.cashier_deposit);
     };
-
-    componentWillUnmount() {
-        document.removeEventListener('UpdateAvailable', this.addUpdateNotification);
-    }
-
-    componentDidMount() {
-        document.addEventListener('UpdateAvailable', this.addUpdateNotification);
-    }
 
     render() {
         const {
@@ -156,6 +148,7 @@ class Header extends React.Component {
                 </div>
                 <RealAccountSignup />
                 <SetAccountCurrencyModal />
+                <NewVersionNotification onUpdate={this.addUpdateNotification} />
             </header>
         );
     }

@@ -2,9 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import { VerticalTab, DesktopWrapper, MobileWrapper, FadeWrapper, PageOverlay } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
-import { isMobile } from '@deriv/shared/utils/screen';
-import { getSelectedRoute } from '@deriv/shared/utils/route';
+import { routes, isMobile, getSelectedRoute } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
@@ -101,10 +100,7 @@ class Account extends React.Component {
             });
         }
 
-        const selected_route = isMobile()
-            ? getSelectedRoute({ routes: subroutes, pathname: this.props.location.pathname })
-            : null;
-
+        const selected_route = getSelectedRoute({ routes: subroutes, pathname: this.props.location.pathname });
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}
@@ -113,7 +109,6 @@ class Account extends React.Component {
             >
                 <div className='account'>
                     <PageOverlay
-                        has_side_note
                         header={isMobile() ? selected_route.title : localize('Settings')}
                         onClickClose={this.onClickClose}
                     >

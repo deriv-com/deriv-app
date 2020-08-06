@@ -25,7 +25,7 @@ export default class SaveModalStore {
         const errors = {};
 
         if (values.bot_name.trim() === '') {
-            errors.bot_name = localize('Field name cannot be empty');
+            errors.bot_name = localize('Strategy name cannot be empty');
         }
 
         return errors;
@@ -54,7 +54,7 @@ export default class SaveModalStore {
         }
 
         this.updateBotName(bot_name);
-        saveWorkspaceToRecent(is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
+        saveWorkspaceToRecent(xml, is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
         this.toggleSaveModal();
     }
 

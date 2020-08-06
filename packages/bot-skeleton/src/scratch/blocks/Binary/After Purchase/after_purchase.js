@@ -58,5 +58,5 @@ Blockly.JavaScript.after_purchase = block => {
         Bot.isTradeAgain(false);
         return false;
     };`;
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+    return code;
 };

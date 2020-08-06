@@ -5,13 +5,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { DesktopWrapper } from '@deriv/components';
-import { checkAndSetEndpointFromUrl } from '@deriv/shared/utils/config';
-import { setUrlLanguage } from '@deriv/shared/utils/url';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { checkAndSetEndpointFromUrl, setUrlLanguage, isMobile } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';
-import { MobxProvider } from 'Stores/connect';
+import { MobxContentProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
@@ -30,13 +28,11 @@ const App = ({ root_store }) => {
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
     const url_params = new URLSearchParams(l.search);
-
     React.useEffect(() => {
         checkAndSetEndpointFromUrl();
         initializeTranslations();
         setUrlLanguage(getLanguage());
     }, []);
-
     if (isMobile()) {
         React.useEffect(() => {
             const el_landscape_blocker = document.getElementById('landscape_blocker');
@@ -90,7 +86,7 @@ const App = ({ root_store }) => {
 
     return (
         <Router basename={has_base ? `/${base}` : null}>
-            <MobxProvider store={root_store}>
+            <MobxContentProvider store={root_store}>
                 <React.Fragment>
                     <Header />
                     <ErrorBoundary>
@@ -105,7 +101,7 @@ const App = ({ root_store }) => {
                     <AppModals url_action_param={url_params.get('action')} />
                     <SmartTraderIFrame />
                 </React.Fragment>
-            </MobxProvider>
+            </MobxContentProvider>
         </Router>
     );
 };

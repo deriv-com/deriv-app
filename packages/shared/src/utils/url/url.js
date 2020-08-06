@@ -9,9 +9,7 @@ const host_map = {
     'tech.binary.com': 'tech.binary.com',
     'blog.binary.com': 'blog.binary.com',
 };
-let location_url = undefined;
-let static_host = undefined;
-let default_language = undefined;
+let location_url, static_host, default_language;
 
 export const urlForLanguage = (target_language, url = window.location.href) =>
     url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
@@ -62,10 +60,13 @@ export const urlFor = (
     const lang = language?.toLowerCase?.() ?? default_language;
     let domain = `https://${window.location.hostname}/`;
     if (legacy) {
-        if (/localhost|binary\.sx/.test(domain)) {
-            domain = `https://binary.com/${lang || 'en'}/`;
+        if (/staging-app\.deriv\.com/.test(domain)) {
+            domain = domain.replace(/staging-app\.deriv\.com/, `staging.binary.com/${lang || 'en'}`);
+        } else if (/app\.deriv\.com|deriv\.app/.test(domain)) {
+            // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+            domain = domain.replace(/app\.deriv\.com|deriv\.app/, `binary.com/${lang || 'en'}`);
         } else {
-            domain = domain.replace(/deriv\.app/, `binary.com/${lang || 'en'}`);
+            domain = `https://binary.com/${lang || 'en'}/`;
         }
     }
     const new_url = `${domain}${normalizePath(path) || 'home'}.html${query_string ? `?${query_string}` : ''}`;
@@ -142,8 +143,9 @@ export const setUrlLanguage = lang => {
 
 export const getDerivComLink = (path = '') => {
     const host = 'https://deriv.com';
-    const lang = default_language?.toLowerCase();
-    const link_lang = lang === 'en' ? '' : `/${lang}`;
+    let lang = default_language?.toLowerCase();
+    if (lang && lang !== 'en') lang = `/${lang}`;
+    else lang = '';
 
-    return `${host}${link_lang}/${normalizePath(path)}`;
+    return `${host}${lang}/${normalizePath(path)}`;
 };

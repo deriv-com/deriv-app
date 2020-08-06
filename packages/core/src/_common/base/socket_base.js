@@ -1,7 +1,8 @@
 const DerivAPIBasic = require('@deriv/deriv-api/dist/DerivAPIBasic');
-const getAppId = require('@deriv/shared/utils/config').getAppId;
-const getSocketURL = require('@deriv/shared/utils/config').getSocketURL;
-const ObjectUtils = require('@deriv/shared/utils/object');
+const getAppId = require('@deriv/shared').getAppId;
+const getSocketURL = require('@deriv/shared').getSocketURL;
+const cloneObject = require('@deriv/shared').cloneObject;
+const getPropertyValue = require('@deriv/shared').getPropertyValue;
 const { getLanguage } = require('@deriv/translations');
 const website_name = require('App/Constants/app-config').website_name;
 const ClientBase = require('./client_base');
@@ -100,11 +101,11 @@ const BinarySocketBase = (() => {
 
         deriv_api.onMessage().subscribe(({ data: response }) => {
             const msg_type = response.msg_type;
-            State.set(['response', msg_type], ObjectUtils.cloneObject(response));
+            State.set(['response', msg_type], cloneObject(response));
 
             config.wsEvent('message');
 
-            if (ObjectUtils.getPropertyValue(response, ['error', 'code']) === 'InvalidAppID') {
+            if (getPropertyValue(response, ['error', 'code']) === 'InvalidAppID') {
                 wrong_app_id = getAppId();
             }
 
@@ -176,8 +177,7 @@ const BinarySocketBase = (() => {
 
     const sell = (contract_id, bid_price) => deriv_api.send({ sell: contract_id, price: bid_price });
 
-    const cashier = (action, verification_code) =>
-        deriv_api.send({ cashier: action, ...(verification_code && { verification_code }) });
+    const cashier = (action, parameters = {}) => deriv_api.send({ cashier: action, ...parameters });
 
     const newAccountVirtual = (verification_code, client_password, residence, device_data) =>
         deriv_api.send({
@@ -199,6 +199,8 @@ const BinarySocketBase = (() => {
             new_account_real: 1,
             ...values,
         });
+
+    const newAccountRealMaltaInvest = values => deriv_api.send({ new_account_maltainvest: 1, ...values });
 
     const mt5NewAccount = values =>
         deriv_api.send({
@@ -232,24 +234,24 @@ const BinarySocketBase = (() => {
     const paymentAgentList = (country, currency) =>
         deriv_api.send({ paymentagent_list: country, ...(currency && { currency }) });
 
-    const paymentAgentWithdraw = ({ loginid, currency, amount, verification_code }) =>
+    const paymentAgentWithdraw = ({ loginid, currency, amount, verification_code, dry_run = 0 }) =>
         deriv_api.send({
             amount,
             currency,
             verification_code,
             paymentagent_withdraw: 1,
-            dry_run: 0,
+            dry_run,
             paymentagent_loginid: loginid,
         });
 
-    const paymentAgentTransfer = ({ amount, currency, description, transfer_to }) =>
+    const paymentAgentTransfer = ({ amount, currency, description, transfer_to, dry_run = 0 }) =>
         deriv_api.send({
             amount,
             currency,
             description,
             transfer_to,
             paymentagent_transfer: 1,
-            dry_run: 0,
+            dry_run,
         });
 
     const activeSymbols = (mode = 'brief') => deriv_api.activeSymbols(mode);
@@ -287,9 +289,18 @@ const BinarySocketBase = (() => {
 
     const p2pAdvertiserInfo = () => deriv_api.send({ p2p_advertiser_info: 1 });
 
+    const loginHistory = limit =>
+        deriv_api.send({
+            login_history: 1,
+            limit,
+        });
+
     // subscribe method export for P2P use only
     // so that subscribe remains private
     const p2pSubscribe = (request, cb) => subscribe(request, cb);
+    const accountStatistics = () => deriv_api.send({ account_statistics: 1 });
+
+    const realityCheck = () => deriv_api.send({ reality_check: 1 });
 
     return {
         init,
@@ -329,6 +340,7 @@ const BinarySocketBase = (() => {
         mt5PasswordReset,
         newAccountVirtual,
         newAccountReal,
+        newAccountRealMaltaInvest,
         p2pAdvertiserInfo,
         p2pSubscribe,
         profitTable,
@@ -350,7 +362,10 @@ const BinarySocketBase = (() => {
         subscribeWebsiteStatus,
         tncApproval,
         transferBetweenAccounts,
+        loginHistory,
         closeAndOpenNewConnection,
+        accountStatistics,
+        realityCheck,
     };
 })();
 

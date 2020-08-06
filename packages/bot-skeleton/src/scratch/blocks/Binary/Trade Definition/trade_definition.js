@@ -95,6 +95,7 @@ Blockly.Blocks.trade_definition = {
         return {
             display_name: localize('Trade parameters'),
             description: localize('Here is where you define the parameters of your contract.'),
+            key_words: localize('market, trade type, contract type'),
         };
     },
     onchange(event) {

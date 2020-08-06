@@ -1,5 +1,5 @@
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { setCurrencies, formatMoney, getCurrencies, isEmptyObject, getPropertyValue } from '@deriv/shared';
+
 import { localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 
@@ -13,15 +13,15 @@ export const init = (websocket, local_currency_decimal_places) => {
 };
 
 const setCurrenciesConfig = website_status_response => {
-    if ('website_status' in website_status_response && ObjectUtils.isEmptyObject(CurrencyUtils.currencies_config)) {
-        CurrencyUtils.setCurrencies(website_status_response.website_status);
+    if ('website_status' in website_status_response && isEmptyObject(getCurrencies())) {
+        setCurrencies(website_status_response.website_status);
     }
 };
 
-const formatMoney = (currency, amount) => CurrencyUtils.formatMoney(currency, amount, true);
+const fmtMoney = (currency, amount) => formatMoney(currency, amount, true);
 
 const populateInitialResponses = async () => {
-    if (ObjectUtils.isEmptyObject(initial_responses)) {
+    if (isEmptyObject(initial_responses)) {
         initial_responses.website_status = await ws.send({ website_status: 1 });
         setCurrenciesConfig(initial_responses.website_status);
     }
@@ -41,7 +41,7 @@ const getModifiedP2PAdvertList = (response, is_original) => {
         const offer_currency = filtered_list[i].account_currency;
         const transaction_currency = filtered_list[i].local_currency;
 
-        const offer_currency_decimals = ObjectUtils.getPropertyValue(initial_responses, [
+        const offer_currency_decimals = getPropertyValue(initial_responses, [
             'website_status',
             'website_status',
             'currencies_config',
@@ -73,17 +73,17 @@ const getModifiedP2PAdvertList = (response, is_original) => {
             price_rate,
             transaction_currency,
             transaction_currency_decimals,
-            advertiser_name: ObjectUtils.getPropertyValue(filtered_list[i], ['advertiser_details', 'name']),
-            advertiser_id: ObjectUtils.getPropertyValue(filtered_list[i], ['advertiser_details', 'id']),
+            advertiser_name: getPropertyValue(filtered_list[i], ['advertiser_details', 'name']),
+            advertiser_id: getPropertyValue(filtered_list[i], ['advertiser_details', 'id']),
             advertiser_instructions: filtered_list[i].description,
-            display_available_amount: formatMoney(offer_currency, available_amount),
-            display_max_available: formatMoney(offer_currency, max_available), // for displaying limit fields in buy/sell and ads table
-            display_min_available: formatMoney(offer_currency, min_available), // for displaying limit fields in buy/sell and ads table
-            display_max_order_amount: formatMoney(offer_currency, max_transaction),
-            display_min_order_amount: formatMoney(offer_currency, min_transaction),
-            display_offer_amount: formatMoney(offer_currency, offer_amount),
+            display_available_amount: fmtMoney(offer_currency, available_amount),
+            display_max_available: fmtMoney(offer_currency, max_available), // for displaying limit fields in buy/sell and ads table
+            display_min_available: fmtMoney(offer_currency, min_available), // for displaying limit fields in buy/sell and ads table
+            display_max_order_amount: fmtMoney(offer_currency, max_transaction),
+            display_min_order_amount: fmtMoney(offer_currency, min_transaction),
+            display_offer_amount: fmtMoney(offer_currency, offer_amount),
             display_payment_method: map_payment_method[payment_method] || payment_method,
-            display_price_rate: formatMoney(transaction_currency, price_rate),
+            display_price_rate: fmtMoney(transaction_currency, price_rate),
             id: filtered_list[i].id,
             // for view in my ads tab (advertiser perspective), we should show the original type of the ad
             // for view in buy/sell table (client perspective), we should show the counter-party type
@@ -101,10 +101,21 @@ const getModifiedP2POrder = response => {
     const offer_amount = +response.amount;
     const price_rate = +response.rate;
     const transaction_amount = +response.price;
+    const type = response.is_incoming ? getPropertyValue(response, ['advert_details', 'type']) : response.type;
+    const is_buyer = type === 'buy';
+    const advertiser_props =
+        response.type === 'buy'
+            ? is_buyer
+                ? 'advertiser_details'
+                : 'client_details'
+            : is_buyer
+            ? 'client_details'
+            : 'advertiser_details';
     const payment_method = map_payment_method.bank_transfer; // TODO: [p2p-replace-with-api] add payment method to order details once API has it
     // const payment_method = response.payment_method;
 
     return {
+        type,
         contact_info,
         offer_amount,
         offer_currency,
@@ -113,19 +124,18 @@ const getModifiedP2POrder = response => {
         transaction_amount,
         transaction_currency,
         chat_channel_url,
-        advertiser_id: ObjectUtils.getPropertyValue(response, ['advertiser_details', 'id']),
-        advertiser_name: ObjectUtils.getPropertyValue(response, ['advertiser_details', 'name']),
-        advertiser_instructions: ObjectUtils.getPropertyValue(response, ['advert_details', 'description']),
-        display_offer_amount: formatMoney(offer_currency, offer_amount),
+        advertiser_id: getPropertyValue(response, [advertiser_props, 'id']),
+        advertiser_name: getPropertyValue(response, [advertiser_props, 'name']),
+        advertiser_instructions: getPropertyValue(response, ['advert_details', 'description']),
+        display_offer_amount: fmtMoney(offer_currency, offer_amount),
         display_payment_method: map_payment_method[payment_method] || payment_method,
-        display_price_rate: formatMoney(offer_currency, price_rate),
-        display_transaction_amount: formatMoney(transaction_currency, transaction_amount),
+        display_price_rate: fmtMoney(offer_currency, price_rate),
+        display_transaction_amount: fmtMoney(transaction_currency, transaction_amount),
         order_expiry_millis: convertToMillis(response.expiry_time),
         id: response.id,
         is_incoming: !!is_incoming,
         order_purchase_datetime: getFormattedDateString(new Date(convertToMillis(response.created_time))),
         status: response.status,
-        type: response.is_incoming ? ObjectUtils.getPropertyValue(response, ['advert_details', 'type']) : response.type,
     };
 };
 
@@ -165,3 +175,5 @@ export const subscribeWS = (request, callbacks) =>
     ws.p2pSubscribe(request, response => {
         callbacks.map(callback => callback(getModifiedResponse(response)));
     });
+
+export const waitWS = args => ws.wait(args);

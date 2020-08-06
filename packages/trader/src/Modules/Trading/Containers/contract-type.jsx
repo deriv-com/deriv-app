@@ -4,10 +4,11 @@ import { MobileWrapper } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import { localize } from '@deriv/translations';
+import { unsupported_contract_types_list } from 'Stores/Modules/Trading/Constants/contract';
 import ToastInfoPopup from '../Components/Form/TradeParams/toast-info-popup.jsx';
 import { getMarketNamesMap } from '../../../Constants';
 import ContractTypeWidget from '../Components/Form/ContractType';
-import { getAvailableContractTypes, unsupported_contract_types_list } from '../Helpers/contract-type';
+import { getAvailableContractTypes } from '../Helpers/contract-type';
 
 const Contract = ({ contract_type, contract_types_list, is_digit_view, is_equal, onChange, symbol }) => {
     const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);

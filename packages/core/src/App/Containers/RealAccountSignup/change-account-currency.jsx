@@ -28,7 +28,8 @@ class ChangeAccountCurrency extends React.Component {
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(false, values, actions.setSubmitting);
                 }}
-                render={({
+            >
+                {({
                     handleSubmit,
                     // setFieldValue,
                     // setFieldTouched,
@@ -43,10 +44,10 @@ class ChangeAccountCurrency extends React.Component {
                             handleSubmit();
                         }}
                     >
-                        <h1>
+                        <h1 className='change-currency__title'>
                             <Localize i18n_default_text='Change your currency' />
                         </h1>
-                        <h3>
+                        <h3 className='change-currency__sub-title'>
                             <Localize i18n_default_text='Choose the currency you would like to trade with.' />
                         </h3>
                         <RadioButtonGroup
@@ -77,7 +78,7 @@ class ChangeAccountCurrency extends React.Component {
                         />
                     </form>
                 )}
-            />
+            </Formik>
         );
     }
 }

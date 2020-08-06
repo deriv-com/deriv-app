@@ -1,6 +1,6 @@
-import { Checkbox } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Checkbox } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import MediaItem, { MediaHeading, MediaIcon, MediaDescription } from 'App/Components/Elements/Media';
@@ -45,17 +45,12 @@ const ChartSettings = ({ is_countdown_visible, is_dark_mode, setCountdown }) => 
 );
 
 ChartSettings.propTypes = {
-    is_asset_visible: PropTypes.bool,
     is_countdown_visible: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
-    toggleAsset: PropTypes.func,
-    toggleCountdown: PropTypes.func,
 };
 
 export default connect(({ ui }) => ({
-    is_asset_visible: ui.is_chart_asset_info_visible,
     is_countdown_visible: ui.is_chart_countdown_visible,
     is_dark_mode: ui.is_dark_mode_on,
-    setAsset: ui.setChartAssetInfo,
     setCountdown: ui.setChartCountdown,
 }))(ChartSettings);

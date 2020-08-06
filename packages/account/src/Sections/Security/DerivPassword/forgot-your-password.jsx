@@ -1,7 +1,7 @@
 import React from 'react';
 import { Div100vhContainer, Icon, SendEmailTemplate } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { isDesktop } from '@deriv/shared';
 import ScrollbarsContainer from 'Components/scrollbars-container';
 
 const ForgotYourPassword = ({ onClickSendEmail }) => (

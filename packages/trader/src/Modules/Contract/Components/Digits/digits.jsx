@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { toJS } from 'mobx';
 import { DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { isContractElapsed } from 'Stores/Modules/Contract/Helpers/logic';
 import { Bounce, SlideIn } from 'App/Components/Animations';
@@ -48,9 +48,11 @@ const DigitsWrapper = ({
         }
     }
 
-    if (props.onChangeStatus) {
-        props.onChangeStatus({ status, current_tick: tick ? tick.current_tick : null });
-    }
+    React.useEffect(() => {
+        if (props.onChangeStatus) {
+            props.onChangeStatus({ status, current_tick: tick ? tick.current_tick : null });
+        }
+    }, [tick, is_trade_page, display_status]);
 
     return (
         <LastDigitPrediction

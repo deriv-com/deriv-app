@@ -166,8 +166,8 @@ export const config = {
         ],
     },
     BARRIER_TYPES: [
-        ['Offset\u00A0+', '+'],
-        ['Offset\u00A0-', '-'],
+        ['Offset +', '+'],
+        ['Offset -', '-'],
     ],
     ohlcFields: [
         [localize('Open'), 'open'],
@@ -288,11 +288,6 @@ export const config = {
                 "The Oscar's Grind Strategy is a low-risk positive progression strategy that first appeared in 1965. By using this strategy, the size of your contract will increase after successful trades, but remains unchanged after unsuccessful trades."
             ),
         },
-    },
-    popover_zindex: {
-        quick_strategy: '99999',
-        toolbar: '5',
-        run_panel_tooltips: '5',
     },
     default_file_name: localize('Untitled Bot'),
 };

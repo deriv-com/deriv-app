@@ -1,17 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Loading, Icon } from '@deriv/components';
-import { Localize } from 'Components/i18next';
+import { Loading } from '@deriv/components';
+import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
+import Empty from 'Components/empty/empty.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
+import { height_constants } from 'Utils/height_constants';
 import { requestWS } from 'Utils/websocket';
 import { RowComponent, BuySellRowLoader } from './row.jsx';
 import { BuySellTable } from './buy-sell-table.jsx';
 
 const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
     const { list_item_limit } = React.useContext(Dp2pContext);
-    const mounted = React.useRef(false);
+    const is_mounted = React.useRef(false);
     const item_offset = React.useRef(0);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
     const [api_error_message, setApiErrorMessage] = React.useState('');
@@ -19,14 +21,14 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
     const [items, setItems] = React.useState([]);
 
     React.useEffect(() => {
-        mounted.current = true;
+        is_mounted.current = true;
         loadMoreItems(item_offset.current, list_item_limit);
-        return () => (mounted.current = false);
+        return () => (is_mounted.current = false);
     }, []);
 
     React.useEffect(() => {
         setIsLoading(true);
-        if (mounted.current) {
+        if (is_mounted.current) {
             loadMoreItems(item_offset.current, list_item_limit);
         }
     }, [is_buy]);
@@ -39,7 +41,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
                 offset: start_idx,
                 limit: list_item_limit,
             }).then(response => {
-                if (mounted.current) {
+                if (is_mounted.current) {
                     if (!response.error) {
                         setHasMoreItemsToLoad(response.length >= list_item_limit);
                         setItems(items.concat(response));
@@ -65,21 +67,21 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
 
     if (items.length) {
         const item_height = 56;
-        const height_values = {
-            screen_size: '100vh',
-            header_size: '48px',
-            page_overlay_header: '53px',
-            page_overlay_content_padding: '2.4rem',
-            tabs_height: '36px',
-            filter_height: '44px',
-            filter_margin_padding: '4rem', // 2.4rem + 1.6rem
-            table_header_height: '50px',
-            footer_size: '37px',
-        };
+        const height_values = [
+            height_constants.screen,
+            height_constants.core_header,
+            height_constants.page_overlay_header,
+            height_constants.page_overlay_content_padding,
+            height_constants.tabs,
+            height_constants.filters,
+            height_constants.filters_margin,
+            height_constants.table_header,
+            height_constants.core_footer,
+        ];
         return (
             <BuySellTable>
                 <InfiniteLoaderList
-                    autosizer_height={`calc(${Object.values(height_values).join(' - ')})`}
+                    autosizer_height={`calc(${height_values.join(' - ')})`}
                     items={items}
                     item_size={item_height}
                     RenderComponent={Row}
@@ -91,14 +93,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
         );
     }
 
-    return (
-        <div className='p2p-cashier__empty'>
-            <Icon icon='IcCashierNoAds' className='p2p-cashier__empty-icon' size={128} />
-            <div className='p2p-cashier__empty-title'>
-                <Localize i18n_default_text='No ads found' />
-            </div>
-        </div>
-    );
+    return <Empty has_tabs icon='IcCashierNoAds' title={localize('No ads found')} />;
 };
 
 BuySellTableContent.propTypes = {

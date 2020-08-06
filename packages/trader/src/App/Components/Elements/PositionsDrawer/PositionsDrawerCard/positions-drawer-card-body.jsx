@@ -2,14 +2,15 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Money } from '@deriv/components';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { isCryptocurrency } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-orders';
 import { getCancellationPrice, getIndicativePrice } from 'Stores/Modules/Contract/Helpers/logic';
 
 const MultiplierCardBody = ({ contract_info, contract_update, currency, status }) => {
-    const { buy_price, is_sold, profit, multiplier } = contract_info;
+    const { buy_price, bid_price, is_sold, profit } = contract_info;
 
+    const total_profit = bid_price - buy_price;
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_update);
     const cancellation_price = getCancellationPrice(contract_info);
 
@@ -23,35 +24,15 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, status }
                     </span>
                 </div>
                 <div className='positions-drawer-card__item'>
-                    <span className='positions-drawer-card__item-label'>
-                        {is_sold ? localize('Profit/Loss:') : localize('Potential profit/loss:')}
-                    </span>
-                    <div
-                        className={classNames('positions-drawer-card__profit-loss', {
-                            'positions-drawer-card__profit-loss--is-crypto': CurrencyUtils.isCryptocurrency(currency),
-                            'positions-drawer-card__profit-loss--negative': profit < 0,
-                            'positions-drawer-card__profit-loss--positive': profit > 0,
+                    <span className='positions-drawer-card__item-label'>{localize('Current stake:')}</span>
+                    <span
+                        className={classNames('positions-drawer-card__item-value', {
+                            'positions-drawer-card__profit-loss--is-crypto': isCryptocurrency(currency),
+                            'positions-drawer-card--loss': profit < 0,
+                            'positions-drawer-card--profit': profit > 0,
                         })}
                     >
-                        <Money amount={Math.abs(profit)} currency={currency} />
-                        <div
-                            className={classNames('positions-drawer-card__indicative--movement', {
-                                'positions-drawer-card__indicative--movement-complete': !!is_sold,
-                            })}
-                        >
-                            {status === 'profit' && <Icon icon='IcProfit' />}
-                            {status === 'loss' && <Icon icon='IcLoss' />}
-                        </div>
-                    </div>
-                </div>
-                <div className='positions-drawer-card__item'>
-                    <span className='positions-drawer-card__item-label'>{localize('Multiplier:')}</span>
-                    <span className='positions-drawer-card__item-value'>x{multiplier}</span>
-                </div>
-                <div className='positions-drawer-card__item'>
-                    <span className='positions-drawer-card__item-label'>{localize('Take profit:')}</span>
-                    <span className='positions-drawer-card__item-value'>
-                        {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
+                        <Money amount={bid_price} currency={currency} />
                     </span>
                 </div>
                 <div className='positions-drawer-card__item'>
@@ -62,6 +43,18 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, status }
                         ) : (
                             <strong>-</strong>
                         )}
+                    </span>
+                </div>
+                <div className='positions-drawer-card__item'>
+                    <span className='positions-drawer-card__item-label'>{localize('Take profit:')}</span>
+                    <span className='positions-drawer-card__item-value'>
+                        {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
+                    </span>
+                </div>
+                <div className='positions-drawer-card__item'>
+                    <span className='positions-drawer-card__item-label'>{localize('Buy price:')}</span>
+                    <span className='positions-drawer-card__item-value'>
+                        <Money amount={buy_price} currency={currency} />
                     </span>
                 </div>
                 <div className='positions-drawer-card__item'>
@@ -76,6 +69,29 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, status }
                             <strong>-</strong>
                         )}
                     </span>
+                </div>
+            </div>
+            <div className='positions-drawer-card__total-profit-loss'>
+                <span className='positions-drawer-card__total-profit-loss-label'>{localize('Total profit/loss:')}</span>
+                <div
+                    className={classNames(
+                        ' positions-drawer-card__profit-loss positions-drawer-card__total-profit-loss-value',
+                        {
+                            'positions-drawer-card__profit-loss--is-crypto': isCryptocurrency(currency),
+                            'positions-drawer-card__profit-loss--negative': total_profit < 0,
+                            'positions-drawer-card__profit-loss--positive': total_profit > 0,
+                        }
+                    )}
+                >
+                    <Money amount={total_profit} currency={currency} />
+                    <div
+                        className={classNames('positions-drawer-card__indicative--movement', {
+                            'positions-drawer-card__indicative--movement-complete': is_sold,
+                        })}
+                    >
+                        {status === 'profit' && <Icon icon='IcProfit' />}
+                        {status === 'loss' && <Icon icon='IcLoss' />}
+                    </div>
                 </div>
             </div>
         </>
@@ -118,7 +134,7 @@ const CardBody = ({ contract_info, contract_update, currency, is_multiplier, sta
                 </div>
                 <div
                     className={classNames('positions-drawer-card__profit-loss', {
-                        'positions-drawer-card__profit-loss--is-crypto': CurrencyUtils.isCryptocurrency(currency),
+                        'positions-drawer-card__profit-loss--is-crypto': isCryptocurrency(currency),
                         'positions-drawer-card__profit-loss--negative': profit < 0,
                         'positions-drawer-card__profit-loss--positive': profit > 0,
                     })}
@@ -126,7 +142,7 @@ const CardBody = ({ contract_info, contract_update, currency, is_multiplier, sta
                     <Money amount={Math.abs(profit)} currency={currency} />
                     <div
                         className={classNames('positions-drawer-card__indicative--movement', {
-                            'positions-drawer-card__indicative--movement-complete': !!is_sold,
+                            'positions-drawer-card__indicative--movement-complete': is_sold,
                         })}
                     >
                         {status === 'profit' && <Icon icon='IcProfit' />}
@@ -137,7 +153,7 @@ const CardBody = ({ contract_info, contract_update, currency, is_multiplier, sta
                     <Money amount={sell_price || indicative} currency={currency} />
                     <div
                         className={classNames('positions-drawer-card__indicative--movement', {
-                            'positions-drawer-card__indicative--movement-complete': !!is_sold,
+                            'positions-drawer-card__indicative--movement-complete': is_sold,
                         })}
                     >
                         {status === 'profit' && <Icon icon='IcProfit' />}

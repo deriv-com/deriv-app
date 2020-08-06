@@ -42,19 +42,19 @@ export const getMtCompanies = () => {
             synthetic: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Real Synthetic'),
+                title: localize('Synthetic'),
                 short_title: synthetic_config.short_title,
             },
             financial: {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
-                title: localize('Real Financial'),
+                title: localize('Financial'),
                 short_title: financial_config.short_title,
             },
             financial_stp: {
                 mt5_account_type: financial_stp_config.account_type,
                 leverage: financial_stp_config.leverage,
-                title: localize('Real Financial STP'),
+                title: localize('Financial STP'),
                 short_title: financial_stp_config.short_title,
             },
         },
@@ -63,37 +63,53 @@ export const getMtCompanies = () => {
 
 export const getMt5GroupConfig = (group = undefined) => {
     const map_mode = {
-        'real\\svg': {
+        real_svg: {
             type: 'synthetic',
             category: 'real',
         },
-        'real\\svg_standard': {
+        real_svg_financial: {
             type: 'financial',
             category: 'real',
         },
-        'real\\vanuatu_standard': {
+        real_vanuatu_financial: {
             type: 'financial',
             category: 'real',
         },
-        'real\\labuan_advanced': {
+        real_labuan_financial_stp: {
             type: 'financial_stp',
             category: 'real',
         },
-        'demo\\svg': {
+        demo_svg: {
             type: 'synthetic',
             category: 'demo',
         },
-        'demo\\svg_standard': {
+        demo_svg_financial: {
             type: 'financial',
             category: 'demo',
         },
-        'demo\\vanuatu_standard': {
+        demo_vanuatu_financial: {
             type: 'financial',
             category: 'demo',
         },
-        'demo\\labuan_advanced': {
+        demo_labuan_financial_stp: {
             type: 'financial_stp',
             category: 'demo',
+        },
+        demo_maltainvest_financial: {
+            type: 'financial',
+            category: 'demo',
+        },
+        real_maltainvest_financial: {
+            type: 'financial',
+            category: 'real',
+        },
+        demo_malta: {
+            type: 'synthetic',
+            category: 'demo',
+        },
+        real_malta: {
+            type: 'synthetic',
+            category: 'real',
         },
     };
 
@@ -123,11 +139,11 @@ export const getAccountTypeFields = ({ category, type }) => {
             },
             financial: {
                 account_type: 'financial',
-                mt5_account_type: 'standard', // API still calls it standard
+                mt5_account_type: 'financial',
             },
             financial_stp: {
                 account_type: 'financial',
-                mt5_account_type: 'advanced', // API still calls it advanced
+                mt5_account_type: 'financial_stp',
             },
         },
         demo: {
@@ -136,11 +152,11 @@ export const getAccountTypeFields = ({ category, type }) => {
             },
             financial: {
                 account_type: 'demo',
-                mt5_account_type: 'standard', // API still calls it standard
+                mt5_account_type: 'financial',
             },
             financial_stp: {
                 account_type: 'demo',
-                mt5_account_type: 'advanced', // API still calls it advanced
+                mt5_account_type: 'financial_stp',
             },
         },
     };

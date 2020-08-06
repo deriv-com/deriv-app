@@ -1,7 +1,5 @@
 import { action, observable } from 'mobx';
-import routes from '@deriv/shared/utils/routes';
-import { toMoment } from '@deriv/shared/utils/date';
-import { getUrlSmartTrader } from '@deriv/shared/utils/storage';
+import { routes, toMoment, getUrlSmartTrader } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { currentLanguage } from 'Utils/Language/index';
 import BaseStore from './base-store';
@@ -40,6 +38,8 @@ export default class CommonStore extends BaseStore {
 
             if (ext_url?.indexOf(getUrlSmartTrader()) === 0) {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
+            } else if (ext_url?.indexOf(routes.cashier_p2p) === 0) {
+                this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH' });
             } else {
                 this.addRouteHistoryItem({ ...location, action: 'PUSH' });
             }
@@ -151,7 +151,7 @@ export default class CommonStore extends BaseStore {
     }
 
     @action.bound
-    routeBackInApp(history) {
+    routeBackInApp(history, additional_platform_path = []) {
         let route_to_item_idx = -1;
         const route_to_item = this.app_routing_history.find((history_item, idx) => {
             if (history_item.action === 'PUSH') {
@@ -162,7 +162,10 @@ export default class CommonStore extends BaseStore {
                 const parent_path = history_item.pathname.split('/')[1];
                 const platform_parent_paths = [routes.mt5, routes.bot, routes.trade].map(i => i.split('/')[1]); // map full path to just base path (`/mt5/abc` -> `mt5`)
 
-                if (platform_parent_paths.includes(parent_path)) {
+                if (
+                    platform_parent_paths.includes(parent_path) ||
+                    additional_platform_path.includes(history_item.pathname)
+                ) {
                     route_to_item_idx = idx;
                     return true;
                 }
@@ -177,7 +180,11 @@ export default class CommonStore extends BaseStore {
                 return;
             } else if (route_to_item_idx > -1) {
                 this.app_routing_history.splice(0, route_to_item_idx + 1);
-                history.push(route_to_item.pathname);
+                // remove once p2p is ready
+                const ui_store = this.root_store.ui;
+                if (route_to_item.pathname === routes.cashier_p2p && ui_store.is_mobile)
+                    history.push(`${route_to_item.pathname}#verification`);
+                else history.push(route_to_item.pathname);
                 return;
             }
         }

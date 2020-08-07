@@ -52,7 +52,7 @@ const personal_details_config = ({ residence_list, account_settings }) => {
                     ['req', localize('Date of birth is required')],
                     [
                         v => toMoment(v).isValid() && toMoment(v).isBefore(toMoment().subtract(18, 'years')),
-                        localize('Date of birth is not in a proper format'),
+                        localize('You must be 18 years old and above.'),
                     ],
                 ],
             },

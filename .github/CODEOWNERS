@@ -38,16 +38,12 @@
 #  aaron-binary
 #  ashkanx
 #  balakrishna-binary
-#  brandon-binary
-#  kelly-binary
 #  mahdiaryayi-fs
-#  mahdipourziaei-binary
 #  mustofa-binary
 #  negar-binary
 #  negarn
 #  oskar-binary
 #  reza-fs
-#  sam-binary
 #  zaki-binary
 
 
@@ -78,8 +74,7 @@
 #  Used for approving all relevant changes to Bot
 #
 #   - aaron-binary
-#   - brandon-binary
-#   - sam-binary
+#   - negarn
 
 
 # ==============================================================
@@ -88,7 +83,7 @@
 #  Used for approving all relevant changes to Core
 #
 #   - aaron-binary
-#   - mahdipourziaei-binary
+#   - balakrishna-binary
 
 
 # ==============================================================
@@ -97,7 +92,6 @@
 #  Used for approving all relevant changes to P2P
 #
 #   - aaron-binary
-#   - mahdipourziaei-binary
 #   - mustofa-binary
 #   - negarn
 #   - oskar-binary
@@ -120,9 +114,7 @@
 #  Used for approving all relevant changes to Trader
 #
 #   - balakrishna-binary
-#   - kelly-binary
 #   - mahdiaryayi-fs
-#   - mahdipourziaei-binary
 #   - negarn
 #   - oskar-binary
 #   - reza-fs

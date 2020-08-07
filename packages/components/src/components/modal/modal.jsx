@@ -25,6 +25,7 @@ const ModalElement = ({
     children,
     height,
     width,
+    renderTitle,
     small,
 }) => {
     const el_ref = React.useRef(document.createElement('div'));
@@ -32,12 +33,18 @@ const ModalElement = ({
     const wrapper_ref = React.useRef();
 
     const is_datepicker_visible = () => modal_root_ref.current.querySelectorAll('.dc-datepicker__picker').length;
+    const validateClickOutside = e => {
+        const is_reality_check_visible = modal_root_ref.current.querySelectorAll('.dc-modal__container_reality-check')
+            .length;
 
-    const validateClickOutside = e =>
-        has_close_icon &&
-        !is_datepicker_visible() &&
-        is_open &&
-        !(elements_to_ignore && e?.path.find(el => elements_to_ignore.includes(el)));
+        return (
+            has_close_icon &&
+            !is_datepicker_visible() &&
+            is_open &&
+            !is_reality_check_visible &&
+            !(elements_to_ignore && e?.path.find(el => elements_to_ignore.includes(el)))
+        );
+    };
 
     useOnClickOutside(wrapper_ref, toggleModal, validateClickOutside);
 
@@ -51,6 +58,8 @@ const ModalElement = ({
             if (typeof onUnmount === 'function') onUnmount();
         };
     }, []);
+
+    const rendered_title = typeof renderTitle === 'function' ? renderTitle() : null;
 
     return ReactDOM.createPortal(
         <div
@@ -68,12 +77,21 @@ const ModalElement = ({
                 width: width || 'auto',
             }}
         >
-            {(header || title) && (
+            {(header || title || rendered_title) && (
                 <div
                     className={classNames('dc-modal-header', {
                         [`dc-modal-header--${className}`]: className,
                     })}
                 >
+                    {rendered_title && (
+                        <h3
+                            className={classNames('dc-modal-header__title', {
+                                [`dc-modal-header__title--${className}`]: className,
+                            })}
+                        >
+                            {rendered_title}
+                        </h3>
+                    )}
                     {title && (
                         <h3
                             className={classNames('dc-modal-header__title', {
@@ -119,6 +137,7 @@ ModalElement.propTypes = {
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     small: PropTypes.bool,
+    renderTitle: PropTypes.func,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.node]),
     toggleModal: PropTypes.func,
     elements_to_ignore: PropTypes.array,
@@ -139,6 +158,7 @@ const Modal = ({
     is_vertical_bottom,
     is_vertical_centered,
     is_vertical_top,
+    renderTitle,
     title,
     toggleModal,
     width,
@@ -171,6 +191,7 @@ const Modal = ({
             height={height}
             onMount={onMount}
             onUnmount={onUnmount}
+            renderTitle={renderTitle}
             small={small}
             width={width}
             elements_to_ignore={elements_to_ignore}
@@ -200,6 +221,7 @@ Modal.propTypes = {
     is_vertical_top: PropTypes.bool,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
+    renderTitle: PropTypes.func,
     onModalRendered: PropTypes.func,
     small: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.node]),

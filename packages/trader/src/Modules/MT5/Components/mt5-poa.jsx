@@ -246,7 +246,7 @@ class MT5POA extends React.Component {
                                     {is_form_visible && (
                                         <ThemedScrollbars
                                             autohide={false}
-                                            height={`calc(${height}px - 72px)`}
+                                            height={`${height - 77}px`}
                                             is_bypassed={isMobile()}
                                         >
                                             <div className='mt5-proof-of-address__field-area'>
@@ -360,7 +360,7 @@ class MT5POA extends React.Component {
                                             )}
                                         </ThemedScrollbars>
                                     )}
-                                    <Modal.Footer>
+                                    <Modal.Footer is_bypassed={isMobile()}>
                                         {is_form_visible && (
                                             <FormSubmitButton
                                                 has_cancel

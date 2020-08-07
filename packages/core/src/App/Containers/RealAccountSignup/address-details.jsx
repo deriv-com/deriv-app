@@ -104,12 +104,12 @@ class AddressDetails extends React.Component {
                 }}
             >
                 {({ handleSubmit, isSubmitting, errors, values, setFieldValue }) => (
-                    <AutoHeightWrapper default_height={200} height_offset={192}>
+                    <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 192 : null}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer
                                     className='details-form'
-                                    height_offset='199px'
+                                    height_offset='179px'
                                     is_disabled={isDesktop()}
                                 >
                                     <p className='details-form__description'>
@@ -196,7 +196,7 @@ class AddressDetails extends React.Component {
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer has_separator>
+                                <Modal.Footer has_separator is_bypassed={isMobile()}>
                                     <FormSubmitButton
                                         is_disabled={isSubmitting || Object.keys(errors).length > 0}
                                         label={localize('Next')}

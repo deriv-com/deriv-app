@@ -3,7 +3,7 @@
     flex-direction: column;
     transition: all 0.3s ease-in-out;
     @include tablet {
-        max-height: calc(100vh - 102px); // Header and footer
+        max-height: calc(100vh - 102px) !important; // Header and footer
     }
 
     &--success {
@@ -85,6 +85,7 @@
     width: 100%;
     @include mobile {
         grid-template-rows: 7rem minmax(10rem, 1fr);
+        overflow: hidden;
     }
 
     &.add-or-manage {
@@ -100,6 +101,8 @@
         }
         @include mobile {
             grid-template-rows: 1fr 1fr;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
     }
     & > h2 {
@@ -154,6 +157,18 @@
                     &--no-top-margin {
                         margin-top: 0;
                     }
+                }
+            }
+        }
+        // fix for safari bug with autoheight wrapper not working properly for calculating modal footer offset
+        @media not all and (min-resolution: 0.001dpcm) {
+            // stylelint-disable-line
+            @supports (-webkit-appearance: none) and (stroke-color: transparent) {
+                @include desktop {
+                    max-height: calc(100% - 48px);
+                }
+                @include tablet {
+                    max-height: calc(100% - 48px);
                 }
             }
         }

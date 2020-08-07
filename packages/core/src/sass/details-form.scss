@@ -127,15 +127,18 @@
         font-size: var(--text-size-xxs);
         line-height: 1.8rem;
         margin: 1.6rem auto;
+        width: 40%;
         color: var(--text-general);
         @include desktop {
-            width: 40%;
             display: flex;
             flex-direction: column;
         }
-
+        @include tablet {
+            width: 70%;
+        }
         @include mobile {
             text-align: left;
+            width: unset;
             margin: 0 2.4rem;
             line-height: 20px;
             color: var(--text-less-prominent);

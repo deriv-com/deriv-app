@@ -68,7 +68,7 @@ class TermsOfUse extends React.Component {
                                         />
                                     </Div100vhContainer>
                                 </ThemedScrollbars>
-                                <Modal.Footer has_separator>
+                                <Modal.Footer has_separator is_bypassed={isMobile()}>
                                     <FormSubmitButton
                                         is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
                                         label={localize('Add account')}

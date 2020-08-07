@@ -62,7 +62,6 @@ PageOverlay.propTypes = {
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     is_open: PropTypes.bool,
     onClickClose: PropTypes.func,
-    onExited: PropTypes.func,
     portal_id: PropTypes.string,
 };
 

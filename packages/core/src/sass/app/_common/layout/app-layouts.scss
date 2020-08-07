@@ -41,7 +41,7 @@
             top: #{$HEADER_HEIGHT};
             z-index: 3;
             margin: auto;
-            position: relative;
+            position: absolute;
         }
         .dc-toast-popup {
             max-width: calc(100vw - 1.6rem);

@@ -209,7 +209,6 @@ export default class PortfolioStore extends BaseStore {
                         type: response.msg_type,
                         ...response.error,
                     });
-                    this.root_store.ui.toggleServicesErrorModal(true);
                 } else {
                     this.root_store.ui.addNotificationMessage(contractCancelled());
                 }
@@ -236,11 +235,10 @@ export default class PortfolioStore extends BaseStore {
 
             // invalidToken error will handle in socket-general.js
             if (response.error.code !== 'InvalidToken') {
-                this.root_store.common.services_error = {
+                this.root_store.common.setServicesError({
                     type: response.msg_type,
                     ...response.error,
-                };
-                this.root_store.ui.toggleServicesErrorModal(true);
+                });
             }
         } else if (!response.error && response.sell) {
             const i = this.getPositionIndexById(response.sell.contract_id);

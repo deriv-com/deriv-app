@@ -580,11 +580,10 @@ export default class TradeStore extends BaseStore {
                         this.disablePurchaseButtons();
                         // invalidToken error will handle in socket-general.js
                         if (response.error.code !== 'InvalidToken') {
-                            this.root_store.common.services_error = {
+                            this.root_store.common.setServicesError({
                                 type: response.msg_type,
                                 ...response.error,
-                            };
-                            this.root_store.ui.toggleServicesErrorModal(true);
+                            });
                         }
                     }
                     this.forgetAllProposal();

@@ -618,18 +618,17 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     addToast(toast_config) {
-        if (toast_config.key) {
-            const toast_index = this.toasts.findIndex(t => t.key === toast_config.key);
-            if (toast_index > -1) {
-                this.toasts.splice(toast_index, 1);
-            }
+        toast_config.key = toast_config.key ?? toast_config.content;
+        const toast_index = this.toasts.findIndex(t => t.key === toast_config.key);
+        if (toast_index > -1) {
+            this.toasts.splice(toast_index, 1);
+        }
 
-            toast_config.timeout = toast_config.timeout ?? this.mobile_toast_timeout;
-            if (toast_config.is_bottom) {
-                this.toasts.push(toast_config);
-            } else {
-                this.toasts.unshift(toast_config);
-            }
+        toast_config.timeout = toast_config.timeout ?? this.mobile_toast_timeout;
+        if (toast_config.is_bottom) {
+            this.toasts.push(toast_config);
+        } else {
+            this.toasts.unshift(toast_config);
         }
     }
 
